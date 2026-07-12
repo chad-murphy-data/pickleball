@@ -52,6 +52,7 @@ SD_D_PRIOR = float(os.environ.get("SRM_SD_D_PRIOR", 1.5))
 PLAYER_TOUR = os.environ.get("SRM_PLAYER_TOUR", "") == "1"
 NEWNESS = os.environ.get("SRM_NEWNESS", "") == "1"
 SAVE_DRAWS = os.environ.get("SRM_SAVE_DRAWS", "") == "1"
+MINMAX = os.environ.get("SRM_MINMAX", "") == "1"
 NEW_GAMES = 6      # a dyad's first N games count as "new"
 NEW_MIN_TOTAL = 15 # ...but only for pairs that eventually log >= this many
 
@@ -118,6 +119,11 @@ def model(dat, n_players, n_dyads, n_matches, n_pc, pc, pt=None, n_pt=0):
         val = val + u[pt]
     team1 = val[:, 0] + val[:, 1]
     team2 = val[:, 2] + val[:, 3]
+    if MINMAX:
+        # strongest-link vs weakest-link: team = sum + gamma * |gap|
+        gamma = numpyro.sample("gamma", dist.Normal(0, 0.5))
+        team1 = team1 + gamma * jnp.abs(val[:, 0] - val[:, 1])
+        team2 = team2 + gamma * jnp.abs(val[:, 2] - val[:, 3])
     mu = (beta_tour[dat["tour"]]
           + team1 - team2
           + d[dat["dyad1"]] - d[dat["dyad2"]]
@@ -161,7 +167,7 @@ def main():
 
     # scalars + convergence
     from numpyro.diagnostics import summary as nsummary
-    extra_scalars = [k for k in ("sd_pt", "beta_new") if k in samp]
+    extra_scalars = [k for k in ("sd_pt", "beta_new", "gamma") if k in samp]
     scal = nsummary({k: samp[k] for k in
                      ("sd_v", "sd_w", "sd_d", "sd_m", "sd_e", "beta_tour") + tuple(extra_scalars)})
     rhats = []
