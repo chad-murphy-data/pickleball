@@ -301,14 +301,14 @@ Model refit on games before 2026-06-01 only, then used to predict every later ga
 
 Calibration is *under*confident (e.g. games called ~65% go the favorite's way ~76% of the time) — the conservative direction: player values generalize at least as well as their posteriors claim.
 
-## Benchmark: platform rating vs this model
+## Benchmark: DUPR vs this model
 
-pickleball.com embeds its own per-player rating (its in-house system — not DUPR, which requires an authenticated API) as an as-of-match snapshot in the raw payloads. Head-to-head on the same holdout games (≥ 2026-06-01, n = 518), predicting each game's winner:
+pickleball.com embeds each player's rating as an as-of-match snapshot in the raw payloads — and this **is their synced DUPR doubles rating**: the client bundle states DUPR is "Pickleball.com's official rating system," the values span 2.5–7.0 (DUPR's 2–8 scale, top: Dekel Bar 7.01), and a player's same-day snapshot is identical across mixed and gendered doubles (DUPR keeps one doubles rating; singles is a separate rating and does not touch this number). Head-to-head on the same holdout games (≥ 2026-06-01, n = 518), predicting each game's winner:
 
 | predictor | accuracy | Brier |
 |:--|--:|--:|
 | this model (frozen 2026-06-01) | 73.7% | 0.179 |
-| platform rating (as-of-match, updates all season) | 64.7% | 0.229 |
+| DUPR (as-of-match, updates all season) | 64.7% | 0.229 |
 
 The two systems agree on 69% of games; correlation between model value and latest rating is 0.65 (men, n=137) / 0.53 (women, n=112). The model wins despite the rating having an information edge (it updates through the test window; the model is frozen at the split). Notable rating oddities the model avoids: Gabriel Tardio (#1 here) ranked ~#30 by rating; Jackie Kawamoto's rating collapsed mid-season from 6.13 to 3.50 — an apparent reset/identity glitch in the rating engine.
 

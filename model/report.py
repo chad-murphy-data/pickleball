@@ -332,16 +332,20 @@ def main():
     rc_p = ROOT / "model" / "rating_comparison.json"
     if rc_p.exists():
         rc = json.loads(rc_p.read_text())
-        A("## Benchmark: platform rating vs this model\n")
-        A("pickleball.com embeds its own per-player rating (its in-house system — not "
-          "DUPR, which requires an authenticated API) as an as-of-match snapshot in the "
-          "raw payloads. Head-to-head on the same holdout games "
+        A("## Benchmark: DUPR vs this model\n")
+        A("pickleball.com embeds each player's rating as an as-of-match snapshot in the "
+          "raw payloads — and this **is their synced DUPR doubles rating**: the client "
+          "bundle states DUPR is \"Pickleball.com's official rating system,\" the values "
+          "span 2.5–7.0 (DUPR's 2–8 scale, top: Dekel Bar 7.01), and a player's same-day "
+          "snapshot is identical across mixed and gendered doubles (DUPR keeps one "
+          "doubles rating; singles is a separate rating and does not touch this number). "
+          "Head-to-head on the same holdout games "
           f"(≥ {rc['split']}, n = {rc['n_games']}), predicting each game's winner:\n")
         A("| predictor | accuracy | Brier |")
         A("|:--|--:|--:|")
         A(f"| this model (frozen {rc['split']}) | {rc['model']['accuracy']:.1%} | "
           f"{rc['model']['brier']:.3f} |")
-        A(f"| platform rating (as-of-match, updates all season) | "
+        A(f"| DUPR (as-of-match, updates all season) | "
           f"{rc['platform_rating']['accuracy']:.1%} | {rc['platform_rating']['brier']:.3f} |")
         cm, cf = rc["value_rating_correlation"]["M"], rc["value_rating_correlation"]["F"]
         A(f"\nThe two systems agree on {rc['agreement']:.0%} of games; correlation between "
