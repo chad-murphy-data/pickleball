@@ -24,6 +24,17 @@ nd = NormalDist()
 
 def main():
     tp = {r["player_id"]: r for r in csv.DictReader((DATA / "results_players_train.csv").open())}
+    # posterior draws (if the train fit was run with SRM_SAVE_DRAWS=1):
+    # integrate win probabilities over the posterior instead of plugging in means
+    draws = None
+    dnpz = ROOT / "model" / "draws_train.npz"
+    if dnpz.exists():
+        import numpy as np
+        z = np.load(dnpz, allow_pickle=True)
+        pid_to_col = {str(pid): i for i, pid in enumerate(z["player_ids"])}
+        draws = {"v": z["v"], "sd": np.sqrt(z["sd_m"]**2 + z["sd_e"]**2),
+                 "col": pid_to_col, "np": np}
+        print(f"using {z['v'].shape[0]} posterior draws for win probabilities")
     dy_ids = {frozenset((d["p1_id"], d["p2_id"])): int(d["idx"])
               for d in csv.DictReader((DATA / "model_dyads_train.csv").open())}
     chem = [float(r["chemistry_mean"])
@@ -50,7 +61,16 @@ def main():
         mu = vals[0][0] + vals[1][0] - vals[2][0] - vals[3][0] + c1 - c2
         margin = int(g["margin"])
         won = margin > 0
-        p1 = nd.cdf(mu / SD)
+        if draws is not None:
+            np_ = draws["np"]
+            cols = [draws["col"][u] for u in t1 + t2]
+            mu_s = (draws["v"][:, cols[0]] + draws["v"][:, cols[1]]
+                    - draws["v"][:, cols[2]] - draws["v"][:, cols[3]] + c1 - c2)
+            from math import erf, sqrt
+            zsc = mu_s / draws["sd"]
+            p1 = float(np_.mean(0.5 * (1.0 + np_.vectorize(erf)(zsc / np_.sqrt(2)))))
+        else:
+            p1 = nd.cdf(mu / SD)
         n_eval += 1
         correct += ((mu > 0) == won)
         brier += (p1 - won) ** 2

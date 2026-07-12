@@ -48,6 +48,12 @@ N_WARMUP = int(os.environ.get("SRM_WARMUP", 700))
 N_SAMPLES = int(os.environ.get("SRM_SAMPLES", 700))
 N_CHAINS = int(os.environ.get("SRM_CHAINS", 2))
 SUFFIX = os.environ.get("SRM_SUFFIX", "")
+SD_D_PRIOR = float(os.environ.get("SRM_SD_D_PRIOR", 1.5))
+PLAYER_TOUR = os.environ.get("SRM_PLAYER_TOUR", "") == "1"
+NEWNESS = os.environ.get("SRM_NEWNESS", "") == "1"
+SAVE_DRAWS = os.environ.get("SRM_SAVE_DRAWS", "") == "1"
+NEW_GAMES = 6      # a dyad's first N games count as "new"
+NEW_MIN_TOTAL = 15 # ...but only for pairs that eventually log >= this many
 
 
 def load():
@@ -60,6 +66,21 @@ def load():
         dyad1=col("dyad1"), dyad2=col("dyad2"),
         match=col("match_idx"), ctx=col("ctx_idx"), tour=col("tour_idx"),
     )
+    # ramp-up indicator: rows are date-ordered, so a running per-dyad counter
+    # marks each pairing's first NEW_GAMES games (established dyads only)
+    from collections import Counter
+    totals = Counter()
+    for r in rows:
+        totals[r["dyad1"]] += 1; totals[r["dyad2"]] += 1
+    seen = Counter()
+    xnew = np.zeros(len(rows), dtype=np.float32)
+    for i, r in enumerate(rows):
+        for dcol, sign in (("dyad1", 1.0), ("dyad2", -1.0)):
+            k = r[dcol]
+            if totals[k] >= NEW_MIN_TOTAL and seen[k] < NEW_GAMES:
+                xnew[i] += sign
+            seen[k] += 1
+    dat["xnew"] = xnew
     players = list(csv.DictReader((DATA / f"model_players{SUFFIX}.csv").open()))
     dyads = list(csv.DictReader((DATA / f"model_dyads{SUFFIX}.csv").open()))
     return dat, players, dyads
@@ -77,10 +98,10 @@ def build_pc_index(dat, n_players):
     return pc, combos
 
 
-def model(dat, n_players, n_dyads, n_matches, n_pc, pc):
+def model(dat, n_players, n_dyads, n_matches, n_pc, pc, pt=None, n_pt=0):
     sd_v = numpyro.sample("sd_v", dist.HalfNormal(3.0))
     sd_w = numpyro.sample("sd_w", dist.HalfNormal(1.5))
-    sd_d = numpyro.sample("sd_d", dist.HalfNormal(1.5))
+    sd_d = numpyro.sample("sd_d", dist.HalfNormal(SD_D_PRIOR))
     sd_m = numpyro.sample("sd_m", dist.HalfNormal(3.0))
     sd_e = numpyro.sample("sd_e", dist.HalfNormal(5.0))
     beta_tour = numpyro.sample("beta_tour", dist.Normal(0, 3).expand([2]))
@@ -91,12 +112,19 @@ def model(dat, n_players, n_dyads, n_matches, n_pc, pc):
     m = numpyro.sample("m_raw", dist.Normal(0, 1).expand([n_matches])) * sd_m
 
     val = v[dat["a"]] + w[pc]                     # (games, 4)
+    if pt is not None:
+        sd_pt = numpyro.sample("sd_pt", dist.HalfNormal(1.0))
+        u = numpyro.sample("pt_raw", dist.Normal(0, 1).expand([n_pt])) * sd_pt
+        val = val + u[pt]
     team1 = val[:, 0] + val[:, 1]
     team2 = val[:, 2] + val[:, 3]
     mu = (beta_tour[dat["tour"]]
           + team1 - team2
           + d[dat["dyad1"]] - d[dat["dyad2"]]
           + m[dat["match"]])
+    if NEWNESS:
+        beta_new = numpyro.sample("beta_new", dist.Normal(0, 2))
+        mu = mu + beta_new * dat["xnew"]
     numpyro.sample("y", dist.Normal(mu, sd_e), obs=dat["margin"])
 
 
@@ -106,6 +134,16 @@ def main():
     n_matches = int(dat["match"].max()) + 1
     pc, combos = build_pc_index(dat, n_players)
     n_pc = len(combos)
+    pt, ptcombos, n_pt = None, {}, 0
+    if PLAYER_TOUR:
+        pt = np.zeros((len(dat["margin"]), 4), dtype=np.int32)
+        for g in range(len(dat["margin"])):
+            t = dat["tour"][g]
+            for slot in range(4):
+                key = (dat["a"][g, slot], t)
+                pt[g, slot] = ptcombos.setdefault(key, len(ptcombos))
+        n_pt = len(ptcombos)
+        print(f"player-tour combos: {n_pt}")
     print(f"games={len(dat['margin'])} players={n_players} dyads={n_dyads} "
           f"matches={n_matches} player-context combos={n_pc}")
 
@@ -114,7 +152,8 @@ def main():
     mcmc = MCMC(kernel, num_warmup=N_WARMUP, num_samples=N_SAMPLES,
                 num_chains=N_CHAINS, chain_method="parallel", progress_bar=True)
     mcmc.run(jax.random.PRNGKey(SEED), jdat, n_players, n_dyads, n_matches,
-             n_pc, jnp.asarray(pc))
+             n_pc, jnp.asarray(pc),
+             pt=None if pt is None else jnp.asarray(pt), n_pt=n_pt)
 
     samp = mcmc.get_samples(group_by_chain=True)  # (chains, draws, ...)
     extra = mcmc.get_extra_fields()
@@ -122,7 +161,9 @@ def main():
 
     # scalars + convergence
     from numpyro.diagnostics import summary as nsummary
-    scal = nsummary({k: samp[k] for k in ("sd_v", "sd_w", "sd_d", "sd_m", "sd_e", "beta_tour")})
+    extra_scalars = [k for k in ("sd_pt", "beta_new") if k in samp]
+    scal = nsummary({k: samp[k] for k in
+                     ("sd_v", "sd_w", "sd_d", "sd_m", "sd_e", "beta_tour") + tuple(extra_scalars)})
     rhats = []
     for k in ("v_raw", "d_raw"):
         s = nsummary({k: samp[k]})[k]
@@ -177,6 +218,24 @@ def main():
                            round(float(dm[i]), 3), round(float(ds[i]), 3),
                            round(float(p_pos[i]), 3), round(float(pct[i]), 1)])
 
+    if SAVE_DRAWS:
+        np.savez_compressed(
+            OUT / f"draws{SUFFIX}.npz",
+            v=v.astype(np.float32), d=d.astype(np.float32),
+            sd_m=np.asarray(samp["sd_m"]).reshape(-1).astype(np.float32),
+            sd_e=np.asarray(samp["sd_e"]).reshape(-1).astype(np.float32),
+            player_ids=np.array([p["player_id"] for p in players]))
+    if PLAYER_TOUR:
+        sd_pt_s = np.asarray(samp["sd_pt"]).reshape(-1)
+        uu = np.asarray(samp["pt_raw"]).reshape(-1, n_pt) * sd_pt_s[:, None]
+        um = uu.mean(axis=0); us = uu.std(axis=0)
+        with (DATA / f"results_player_tour{SUFFIX}.csv").open("w", newline="") as fh:
+            wcsv = csv.writer(fh)
+            wcsv.writerow(["player_id", "full_name", "tour", "effect_mean", "effect_sd"])
+            for (pi, t), idx in ptcombos.items():
+                wcsv.writerow([players[int(pi)]["player_id"], players[int(pi)]["full_name"],
+                               "MLP" if t == 0 else "PPA",
+                               round(float(um[idx]), 3), round(float(us[idx]), 3)])
     fit_summary = {
         "n_divergences": n_div,
         "max_rhat_v_d": rhats,
