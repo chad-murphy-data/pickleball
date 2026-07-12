@@ -1,0 +1,4 @@
+date filter < 2025-01-01: 10679 games
+date filter >= 2024-01-01: 10679 games
+core-pool filter (>=30 games/player): 10679 -> 6055 games
+model_data: 6055 games | 301 players | 1309 dyads | 2589 matches
