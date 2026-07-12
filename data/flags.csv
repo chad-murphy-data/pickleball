@@ -1,74 +1,245 @@
 context,date,event_id,event_name,game_id,reason,score,stage,tour
+mens,2025-07-19,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,8117a356-1ade-45a4-ac3a-e669de5799d3:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-19,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,8d9b9bed-5806-4cfc-adb0-18389d3c19a0:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-05-03,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,b01ea524-4015-4cbc-8723-9dfc44f3a451:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-03,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,20e03b5e-1a83-44f0-9125-8995c8c75c50:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-07-06,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,ad7c075f-bae4-4223-8de1-f4ad74fc7850:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-06,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,1f012c55-7f20-4222-988e-a0ceeebd834e:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,e6205d98-e7e7-4056-8324-f1bd261eb62f:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,18582455-cccb-4050-aee0-1a19c9c0e7e7:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mens,2025-05-31,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,fcf765f2-2092-45d8-b6be-79624ad0ffa4:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-31,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,fa871777-d898-475e-a526-6bd4adf102a0:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 womens,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,24f4d273-9282-4276-8606-4b71e4ada3ab:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
 mixed,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,4dd70625-e227-4cda-b87b-b50cdf87e05c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
 mixed,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,660ccff2-bfd4-446d-946e-d21405c68913:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
 mens,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,c70058f6-46ef-4322-9801-f2547fdddf38:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 L1,MLP
 mixed,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,5ca7edc4-06b6-4aa5-9e4c-4b580be4d78a:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 L1,MLP
+mens,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,c3e897da-6ba4-4043-8e80-b8a1d907dfed:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 L1,MLP
+mens,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,0befd1e6-a7ea-473d-ab79-e28f80dd8df0:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Quarter Finals W,MLP
+womens,2025-06-01,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,0ca25f29-5bad-481e-8cf1-49b4bec6cfd5:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-01,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,5f1252d8-c53f-4b96-b3a3-8c795ef7356b:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-06-29,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,a69bf899-3f03-4973-8cda-996a8c577765:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-29,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,e4468558-858f-4e11-b701-b3fd23d706c9:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-29,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,bc9bea84-e649-4ba6-bdb1-1de3e3ffa19e:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,2e24a461-2b8c-4972-8f72-57da020bfbd0:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 RR,MLP
 mens,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,cdc7ec44-d623-407f-a0be-2eac2f72a01c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
 mixed,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,9ac1d2d7-98ce-463f-ae80-dd9531586b2c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
+womens,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,96a99bbb-da59-49c4-af5c-4478812277db:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 RR,MLP
+mixed,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,dfb8972b-feb8-48f4-af5b-517a5ff467dd:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 RR,MLP
+mens,2025-07-05,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,a12c7be4-bece-46ff-b5fc-3bb7242dfa68:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-05,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,b325b595-a5fe-49d6-9bdd-932d29f1e02c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 womens,2026-06-28,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,50710e12-6ca1-45af-872d-fa336e2426d2:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
 mens,2026-06-28,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,98c1f2de-aef8-4bea-923a-891af3be9d45:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
 mixed,2026-06-28,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,395865fa-b93c-46df-8a94-a0149c6ffa0a:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
+womens,2025-05-31,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,31c3f993-873f-4507-9e48-ff4f62fc36c2:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-01,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,90552d20-69e5-4cd6-90ae-6cdaacba1f14:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 mens,2026-05-24,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,b3273cab-e093-40d9-9575-98117d9ade45:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
 mixed,2026-05-24,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,dcaa7841-362f-4a21-b8af-eca168d4c490:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mens,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,47e921db-bc4c-4cd1-b967-5f8cdfc8d6f7:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 L1,MLP
+mixed,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,581c7f70-dbf9-485f-bc33-dc6e31a42da1:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 L1,MLP
+mens,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,a12b3d97-6909-4d07-946f-e919c79c8aac:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 L1,MLP
+mixed,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,8d06c084-3374-4425-923a-368866785a96:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 L1,MLP
+mens,2025-05-02,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,d0f75222-3709-4c36-b567-20ceb19b06d4:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-02,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,ac2c7585-ac54-42c6-be8a-25c95c0fbcf3:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+womens,2025-06-08,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,af415aca-5bba-415d-80de-e11584f53ba8:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-06-08,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,981e58be-4b5b-4825-bcf3-bb6a84b80a97:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-08,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,c842e720-4427-49a7-92d3-3e550b534f07:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-06-01,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,7668a235-38ba-495f-a57f-a13b73393000:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-01,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,59b51f20-f004-46e0-acc7-0648cdd3a8d0:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+womens,2025-05-30,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,185e8573-2804-4629-b3a8-2236bbf8b0fd:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-30,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,95607533-622b-4a34-ba93-0a9f5db20105:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 mens,2026-06-14,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,c4f53d7b-2321-43e0-be11-cbeeff5c4b67:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
 mixed,2026-06-14,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,f8954448-8122-4587-9e0f-540b0f6ae9ea:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
 womens,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,1dcc30fa-4f42-454a-8bb5-e352ed73ce8b:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
 mixed,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,49c53243-2848-47bc-8997-78ebf717f88b:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
 mixed,2026-05-24,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,363fbc32-db21-4a06-b5fb-60a9dc9c15dc:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+mixed,2025-06-06,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,ae0799a4-4703-42fe-b92e-073aae7b7236:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-07-18,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,a6004d63-e21d-4462-8dff-628ba9d109d4:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-18,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,5cd6b6f6-7d05-4f71-9124-c6668a513da9:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 womens,2026-05-24,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,f56a7598-2472-48c7-9425-72938d258af6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
 mixed,2026-05-24,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,71a241a0-18b6-4177-b45d-f1b060fc6230:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mens,2025-07-20,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,07808206-46e6-4b71-8482-cab98b40fbd6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-20,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,3ab8a4b1-81d7-4a6a-abc9-f6920b538b32:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-07-13,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,fac1a955-766a-4d0d-a676-6cb9c4fce54c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 6 L1,MLP
+mixed,2025-07-13,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,9f9e9fd0-af60-4db6-8217-ef52c7561cfe:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 6 L1,MLP
 womens,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,be9ec823-97c9-46c9-a984-021d915e1302:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
 mixed,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,ff47b933-e00e-4377-a7fa-ad9363f5e2a1:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
 mens,2026-07-11,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,c0835374-d24f-4040-863a-6442ac238060:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 L1,MLP
 mixed,2026-07-11,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,55d03928-69a9-4635-8a31-28d5a68188b7:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 L1,MLP
+mens,2025-07-04,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,7b64a833-9c0b-4a09-aad9-be51d754d6a9:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-04,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,09d76022-58fc-448b-9c67-1a5775439fc8:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 mens,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,592422f5-b5ec-46ff-8b60-f8cde2ea3f47:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
 mixed,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,f7721a1b-3640-4d28-8de0-9aff552113a3:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mens,2025-07-17,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,0483cd8d-7902-45db-9bd6-f736ea82140f:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-17,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,a2319e19-e1d5-4675-97b4-13b8089e90f9:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 mens,2026-06-19,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,d0f75d5c-bfd0-4b7b-acf3-d4a2a7428092:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
 mixed,2026-06-19,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,4aca212a-95c6-4634-a4f4-c8c3a0a920d6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mens,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,01af8320-40db-4459-b8ab-8f83917df07b:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 L1,MLP
+mixed,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,bee0f0e2-c4a2-4bf5-9560-c84c3987b6c6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 L1,MLP
+womens,2025-06-28,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,fdfd9f58-39fe-46b3-82ca-ba8e06ef1b1d:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-06-28,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,9c792733-d179-494a-84cd-71b2c8872fd8:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-28,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,e6696f81-bd2f-45b1-9b13-673839af7b4a:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-28,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,b2e9982e-f55c-4939-8008-2712ea3ab5b8:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-07-10,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,afb97ce0-8e9d-480c-8153-47cdb9a942ff:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 16 W,MLP
+mens,2025-06-08,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,f6617d3b-01b0-4de7-8811-87f330c34490:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-08,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,a90c9421-508d-455d-9163-085a3b4bd0e7:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 womens,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,020354a4-b548-433e-b67c-f55a5de319e3:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 16 W,MLP
 mens,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,5c632857-6966-47ae-8431-5d34c208e0dc:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 L1,MLP
+womens,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,e8d59539-5dc9-46d1-af5e-1faa0536f696:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
+mixed,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,cd4c57c8-52a4-4adc-b4bc-3c0b8258f171:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
+mens,2025-05-02,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,373ef43d-f507-4143-808f-7b348e2500b6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-02,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,1b95eb27-0d5b-4d0c-94ba-47f30b12e766:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-02,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,2e3c3bdd-b809-40fc-b8e6-23b8455351c0:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-06-01,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,200a3320-8371-4415-bbb9-5b4ab2ec4b15:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-01,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,847bebbc-6726-4000-98fa-fda1d4c97c9a:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 mens,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,0522f622-aa94-4584-a570-39848d2b31e2:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 16 W,MLP
 mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,203ac715-ca82-43fb-864b-49bbfd75b766:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 16 W,MLP
+womens,2025-07-03,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,75b4d173-8148-42d6-8ae9-15673937fcc6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-03,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,ce6bdc81-668b-4c51-a0eb-fec7578cfad9:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-03,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,5a40b697-674e-4bbf-8f6d-aad90064d231:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 mens,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,ccc447b3-1f48-4262-8090-f99b82d97173:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 L1,MLP
 mixed,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,cd16f0a1-3bbf-43da-a30a-85074c575434:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 L1,MLP
+womens,2025-07-06,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,5ba90b3b-8cab-40e4-8b1a-adf9fd015e43:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-07-06,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,64599805-b998-4258-ac01-f2cc166d7338:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-06,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,6bd27a96-7a65-4a15-9dfa-f0e13afebd88:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+womens,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,52242040-84de-425d-85d2-6d13457719f2:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,8d19e750-8e30-4d71-b0ba-b31a27b9ba9b:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+womens,2025-06-01,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,ad738fca-625d-4a8a-a831-e0cf134eee25:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-01,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,8f7eecbb-7e67-4ab7-970c-469ac006551c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-05-04,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,04cb23e8-0def-4a4c-91a6-7f6d5ac8e8e1:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-04,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,c0b0b167-8bd7-42a3-91bb-455b9fde5c5a:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+womens,2025-06-05,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,8b9d8f72-dbe8-450b-9b6e-d0b79e9dc9fb:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-05,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,57dea0ae-e819-4374-ac8d-18a7feaa82fa:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+womens,2025-11-02,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,bb0d36ac-b0c0-45ac-ae02-4cbac9ec6f78:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Semi-Finals W,MLP
+mixed,2025-11-02,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,04da4868-ead8-4976-b7ec-b6ae9fb10976:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Semi-Finals W,MLP
+mens,2025-06-08,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,794fd635-faa3-4cd9-b3b8-f65514726567:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-08,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,6e54aa89-bf71-41e1-b753-50cab3b7c335:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 womens,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,5a341140-5454-4399-b699-9fa8154dc212:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
 mixed,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,ca5ea04d-569a-4368-a117-b74a68e3b30e:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+womens,2025-05-03,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,b3a8e892-2f49-4b5a-9cde-a281b37a98ed:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-05-03,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,b3a46db2-ee02-4c5f-bb04-5e7b700018fa:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-03,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,f773611b-0e2b-4936-bb43-887fee9daf5c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-03,0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,e0f2eb3a-b26d-44d6-80a3-860699b4a132:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 womens,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,5ef051a0-0c5f-46f2-8afa-52e00174ca31:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
 mixed,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,f7ebdf38-18ee-44a4-a12e-93abe4e9f414:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+womens,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,fecd1f85-0241-47f1-8e0e-8e7c76a604a5:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 RR,MLP
+mixed,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,f35cff3a-0c7f-4b24-9c59-efd9bcfdf5db:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 RR,MLP
+mens,2025-07-11,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,ba0aaf7b-7ade-43bd-a671-1be79851af7e:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Quarter Finals W,MLP
+mixed,2025-07-11,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,b47d558c-72bf-46d8-b4f4-7199fcfe8ff1:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Quarter Finals W,MLP
+womens,2025-06-28,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,a1d3fbbe-c4ed-44f5-9ef7-80714e46b92f:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-29,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,1e7363b8-d096-42d9-a709-ef5ffa0fdcc7:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+womens,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,644f519b-3b92-42ed-b9b4-acd75510dacf:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,4c90d387-3ebb-4b98-8123-481f5e52c079:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mens,2025-05-30,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,90d53f21-8dfd-4303-adcd-ec3d876aac1a:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-30,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,8add1a0d-70f2-413a-8cd8-64e5eb5b83ff:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-07-10,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,407569ba-fea0-42d0-9a02-c3b747b3dcc3:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 16 W,MLP
+mixed,2025-07-10,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,0783f3b5-b117-4961-8ced-3542ec95ef5b:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 16 W,MLP
+mens,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,47bbed19-a034-49c4-979d-d04a5ba63988:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Quarter Finals W,MLP
+mixed,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,5e97ec66-1ca2-4a7a-b530-8a6f8fc2a227:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Quarter Finals W,MLP
+womens,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,c2a894ea-f4a5-4ff2-a369-646af0b3ea3d:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+womens,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,1f2a903a-abd9-4bc2-8bd1-5a2284f4b565:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
+mixed,2025-11-02,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,37980b58-4ccb-4d22-8bf4-03c611805cbc:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
+mens,2025-07-20,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,224661ad-e48b-4a71-8aa6-7888ebe55350:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-20,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,19acfa80-1775-49c1-8580-10038b6601d9:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-06-27,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,c3968877-fa00-45a0-b704-ce96ba56a752:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-28,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,457e3a7f-7834-460d-888d-6f84b88fc3f1:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-28,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,4917b9e2-9874-4ef5-9750-eaaa853747da:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-07-06,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,205aeb93-a9dd-4b2f-8d3b-bd821b9a41c9:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-06,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,58cc9d31-ec2f-40ce-a58e-b2cf0af83119:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-07-11,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,29466a00-2576-403e-9ba8-a247bcde639a:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 L1,MLP
+mixed,2025-07-11,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,34bb4c5c-e1d0-4158-af3c-a3eee8ffe77c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 L1,MLP
+mens,2025-06-07,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,2c49eac2-f0b6-4919-9bf6-4d1340f39f4e:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-07,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,edfeb027-d48a-4cfa-8c4b-72d099f14b9e:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+womens,2025-08-03,65e490e1-7f92-456b-a0d5-e475d66b6239,MLP Salt Lake City,ab891f5a-5831-4d14-9e0b-8bb97876e13c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-08-03,65e490e1-7f92-456b-a0d5-e475d66b6239,MLP Salt Lake City,7b04bbf8-73a8-4e5c-9430-e4981b6c7af6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-07-18,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,43513852-0e35-44bc-a6f1-9301334e06fa:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-18,fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,66d5f203-c954-4b36-8ae3-2bb6e719615c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,c8c2716d-6f56-401c-8ec3-80b49b1c6a4f:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
+mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,a7e35701-46d6-458c-a7b4-aa607a270b12:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
+mens,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,9c1824d7-13ad-4c56-8a21-17bad0390f77:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Semi-Finals W,MLP
+mixed,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,eec7f806-25b8-4213-af3f-0fb4736b7716:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Semi-Finals W,MLP
+mens,2025-06-29,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,e0353aca-55bf-4510-bbe7-45f758147322:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-29,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,d3fc1960-4fad-42a9-aabc-83935d531255:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-29,88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,f23ee20e-0e85-4e15-ba31-5b265199ee10:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-11-02,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,d7a3630d-8bec-45c6-b46c-ed1b97de1f24:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
 womens,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,573b03b1-99d8-41a3-9dd1-7bef19c11a1c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 RR,MLP
 mixed,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,104acf7a-2697-4cca-badb-84d6234fe331:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 RR,MLP
+mens,2025-07-11,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,7df5fc8b-e1f4-44a9-b449-400568504931:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 L1,MLP
+mixed,2025-07-11,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,7ab93164-ea49-47a3-a4a8-7fb503fb4142:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 L1,MLP
 mens,2026-06-20,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,25c73c29-2cd0-40bb-bdd7-fafa066c75f6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
 mixed,2026-06-20,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,fc059f53-28f2-40eb-a8be-67af0a9e2b25:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
 mixed,2026-06-20,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,b2cc362c-9ddb-4e05-b998-2755f520120d:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+mens,2025-06-06,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,ef90da03-a0a8-4f26-a416-b17a52d2ea12:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-06,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,24438903-5b92-46f1-adf2-9ebb9959b9b1:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,35def3b0-f224-4f5e-b468-4a5bd5773a7c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 L1,MLP
+mixed,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,10ce6f41-b6a8-431c-9def-2f33ed63e14d:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 L1,MLP
 womens,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,f601b3ad-7bbd-4555-ae8a-c21bd2f4422d:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
 mixed,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,2e82ea56-66c6-486d-8730-3b007866fb0d:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mens,2025-07-05,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,af951e51-9a1d-4c53-9e35-b750a96756c4:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-07-05,dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,3470d94e-8a7b-4923-a470-edc0b56f1a65:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-05-29,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,cd9d34af-43b4-4b72-95a5-30097d698158:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-05-29,ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,124bce72-5823-4f9d-97f7-41c79da08e25:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mens,2025-06-06,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,57ab1908-ec17-4ffd-ab4f-ec1c6294f222:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
+mixed,2025-06-06,14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,67f8ac8d-d317-4811-b1f6-893c46636b20:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,RR,MLP
 womens,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,132c6a2f-0c5c-4800-a84c-5b4d53524b51:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
 mixed,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,b6ef5a4b-3664-46cb-9911-233ca1926ef5:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
 ,,,,,MLP fixture 01fb2c30-9d6e-4981-9c31-d2292d13bbce has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 0eb6e992-d13f-47fb-ac47-af7ec5b35892 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 1395e510-f75d-4c19-8e5c-7ea7399e1192 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 16f0811a-e5c6-455d-a650-7efb42980944 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 19fa3a1c-f8c5-4a61-80d9-c25a7d38783f has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 1c633b0e-ede3-4a07-b5d7-823f826c912b has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 212d02b7-8287-44f2-9159-9a9bbfa50b36 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 27c4b6d5-7e04-4781-9ee9-d3694ef0968d has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 2b659118-40b2-49b3-a4c0-c02f8445fafd has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 3851e52a-c9f1-4fa4-a1fb-d76d581dd7b8 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 39094809-1287-468f-8c9e-7dd5aa4d3540 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 3b5221c5-8478-49c8-919e-6b79730afe13 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 3d336b4d-3b58-4c66-9ca2-4fd904a6c224 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 40709e0a-53c2-4a51-be0d-f2be9c2a9e2c has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 43e8a929-4585-4e09-84bf-69ffe4acf893 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 471d8438-0be6-4e26-8e7c-c530113e3b85 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 477ad660-a642-41ae-bda1-66455409f6be has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 485af4b2-5d9c-4061-abd8-89f2009121d3 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 489b1ebc-b89f-42d4-af7d-66c27df28299 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 57e15e7b-d675-4c9c-8ccb-ac22845a0359 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 58836ef8-4e6f-4097-8cad-d1395aaea5a9 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 59760093-c02c-48d3-9876-a56bc687470b has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 5d1d5be1-ca87-4b14-adb6-4c6f4ea7556a has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 62333210-b99a-425d-9d87-1456b03b813e has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 65c6b2fc-936a-4e28-a36f-2fa5a9e72acf has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 6b7d276f-b4e9-4de0-8681-9c2a53e96ee2 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 72d37e9f-3737-4099-a269-b4173a63ccae has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 766aa65e-2710-409d-bba0-f3d32cde33f5 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 77d62a2f-f3a1-46be-9f01-69d7c7ec866f has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 7987df7a-ffa8-40a2-8d9d-9246c623e465 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 79c5e7b6-c411-47a3-a454-f0d38af5a812 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 83853f42-10f9-4c08-bb6d-9b020094d7d8 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 8631a4ce-ee73-4873-913e-6a12592af63c has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 9112c866-bd2c-457d-9103-694e63a6731b has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture 91ac85ea-23a3-40be-9d67-a63c60f0b54a has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 9973e6e5-17fd-4fe6-8622-010a259a2966 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture a13efb98-1c68-462a-a655-2302f198b9b5 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture a235d1fe-0f9e-48f2-9c81-4be86fee9c68 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture a47a32eb-3fc0-48ce-874e-eb62f975297b has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture a5f84b30-fccc-44f6-b3ef-afe2f48c7ed0 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture a9d65865-4998-4344-9985-7e50f0fc4500 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture aba347af-6ebe-49da-aea2-ab3fad05f360 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture adb5bdbd-60df-4c91-abe9-e4e15790b3a2 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture b18b0f17-bcc7-45c3-88a5-312c62113f17 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture b4301ca5-099e-47af-8e40-1c8cddcfec63 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture b9248e3d-263a-4cbe-9352-b64f2c9359fe has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture bc2849fb-1ea6-44ee-a9d7-4f9e36719eaf has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture c5c04010-242b-4572-bb68-c96080d72a88 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture d3d4081b-0d25-471f-8147-ec400f8b5c7d has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture d4dae3c7-0936-45b6-a340-c4dd8085d584 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture d5351e09-5a7b-411a-99b0-80ea7dbc8728 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture d6cde113-14dc-436f-9d32-79d5dc567946 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture d92c2a4c-3144-46df-b2a8-72a407ac91cf has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture e317da9e-23de-4ece-8d2e-11549ac5724d has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture e33d29df-d2dc-40bd-aac5-53640f9dcae0 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture e7ded863-7358-463a-b1e6-40cdfa02c4be has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture ea2385a6-a40e-4655-8c39-e4fb15d038b2 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture faa39479-f27c-4d1a-8c7d-bf3d72e3975d has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture ff1bf2ac-919d-424b-91b0-92c6665aebeb has 3 non-DB games (expect 4),,,MLP
+mixed,2024-09-01,2edb8f20-82c0-4edf-ba16-7f67bcaf92fb,PPA Tour: Gold Coast Open,2cbf0bfe-1fd7-4d80-9ecb-2aa8ee637472:g2,"deuce game should end exactly 2 apart (to 11, got 9-12)",9-12,Pro Mixed Doubles Main Draw (4.5+) — Bronze,PPA
