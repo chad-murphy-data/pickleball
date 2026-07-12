@@ -1,0 +1,155 @@
+context,date,event_id,event_name,game_id,reason,score,stage,tour
+womens,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,24f4d273-9282-4276-8606-4b71e4ada3ab:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
+mixed,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,4dd70625-e227-4cda-b87b-b50cdf87e05c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
+mixed,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,660ccff2-bfd4-446d-946e-d21405c68913:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
+mens,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,c70058f6-46ef-4322-9801-f2547fdddf38:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 L1,MLP
+mixed,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,5ca7edc4-06b6-4aa5-9e4c-4b580be4d78a:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 L1,MLP
+mens,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,cdc7ec44-d623-407f-a0be-2eac2f72a01c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
+mixed,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,9ac1d2d7-98ce-463f-ae80-dd9531586b2c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
+womens,2026-06-28,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,50710e12-6ca1-45af-872d-fa336e2426d2:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
+mens,2026-06-28,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,98c1f2de-aef8-4bea-923a-891af3be9d45:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
+mixed,2026-06-28,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,395865fa-b93c-46df-8a94-a0149c6ffa0a:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 RR,MLP
+mens,2026-05-24,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,b3273cab-e093-40d9-9575-98117d9ade45:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mixed,2026-05-24,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,dcaa7841-362f-4a21-b8af-eca168d4c490:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mens,2026-06-14,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,c4f53d7b-2321-43e0-be11-cbeeff5c4b67:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
+mixed,2026-06-14,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,f8954448-8122-4587-9e0f-540b0f6ae9ea:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,One and Done - Playoff W,MLP
+womens,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,1dcc30fa-4f42-454a-8bb5-e352ed73ce8b:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mixed,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,49c53243-2848-47bc-8997-78ebf717f88b:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mixed,2026-05-24,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,363fbc32-db21-4a06-b5fb-60a9dc9c15dc:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+womens,2026-05-24,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,f56a7598-2472-48c7-9425-72938d258af6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mixed,2026-05-24,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,71a241a0-18b6-4177-b45d-f1b060fc6230:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+womens,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,be9ec823-97c9-46c9-a984-021d915e1302:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mixed,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,ff47b933-e00e-4377-a7fa-ad9363f5e2a1:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mens,2026-07-11,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,c0835374-d24f-4040-863a-6442ac238060:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 L1,MLP
+mixed,2026-07-11,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,55d03928-69a9-4635-8a31-28d5a68188b7:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 L1,MLP
+mens,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,592422f5-b5ec-46ff-8b60-f8cde2ea3f47:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mixed,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,f7721a1b-3640-4d28-8de0-9aff552113a3:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mens,2026-06-19,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,d0f75d5c-bfd0-4b7b-acf3-d4a2a7428092:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mixed,2026-06-19,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,4aca212a-95c6-4634-a4f4-c8c3a0a920d6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+womens,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,020354a4-b548-433e-b67c-f55a5de319e3:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 16 W,MLP
+mens,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,5c632857-6966-47ae-8431-5d34c208e0dc:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 1 L1,MLP
+mens,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,0522f622-aa94-4584-a570-39848d2b31e2:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 16 W,MLP
+mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,203ac715-ca82-43fb-864b-49bbfd75b766:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 16 W,MLP
+mens,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,ccc447b3-1f48-4262-8090-f99b82d97173:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 L1,MLP
+mixed,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,cd16f0a1-3bbf-43da-a30a-85074c575434:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 L1,MLP
+womens,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,5a341140-5454-4399-b699-9fa8154dc212:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+mixed,2026-06-26,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,ca5ea04d-569a-4368-a117-b74a68e3b30e:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+womens,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,5ef051a0-0c5f-46f2-8afa-52e00174ca31:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+mixed,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,f7ebdf38-18ee-44a4-a12e-93abe4e9f414:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 4 RR,MLP
+womens,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,573b03b1-99d8-41a3-9dd1-7bef19c11a1c:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 RR,MLP
+mixed,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,104acf7a-2697-4cca-badb-84d6234fe331:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 3 RR,MLP
+mens,2026-06-20,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,25c73c29-2cd0-40bb-bdd7-fafa066c75f6:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+mixed,2026-06-20,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,fc059f53-28f2-40eb-a8be-67af0a9e2b25:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+mixed,2026-06-20,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,b2cc362c-9ddb-4e05-b998-2755f520120d:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+womens,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,f601b3ad-7bbd-4555-ae8a-c21bd2f4422d:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+mixed,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,2e82ea56-66c6-486d-8730-3b007866fb0d:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 2 RR,MLP
+womens,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,132c6a2f-0c5c-4800-a84c-5b4d53524b51:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+mixed,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,b6ef5a4b-3664-46cb-9911-233ca1926ef5:g1,mid-match player swap recorded — listed lineup may not have played the whole game,,Round 5 RR,MLP
+,,,,,MLP fixture 01fb2c30-9d6e-4981-9c31-d2292d13bbce has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 2b659118-40b2-49b3-a4c0-c02f8445fafd has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 3851e52a-c9f1-4fa4-a1fb-d76d581dd7b8 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 3b5221c5-8478-49c8-919e-6b79730afe13 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 3d336b4d-3b58-4c66-9ca2-4fd904a6c224 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 43e8a929-4585-4e09-84bf-69ffe4acf893 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 471d8438-0be6-4e26-8e7c-c530113e3b85 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 57e15e7b-d675-4c9c-8ccb-ac22845a0359 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 58836ef8-4e6f-4097-8cad-d1395aaea5a9 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 5d1d5be1-ca87-4b14-adb6-4c6f4ea7556a has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 65c6b2fc-936a-4e28-a36f-2fa5a9e72acf has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 766aa65e-2710-409d-bba0-f3d32cde33f5 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 77d62a2f-f3a1-46be-9f01-69d7c7ec866f has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 7987df7a-ffa8-40a2-8d9d-9246c623e465 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture 91ac85ea-23a3-40be-9d67-a63c60f0b54a has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture a13efb98-1c68-462a-a655-2302f198b9b5 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture a47a32eb-3fc0-48ce-874e-eb62f975297b has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture adb5bdbd-60df-4c91-abe9-e4e15790b3a2 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture b18b0f17-bcc7-45c3-88a5-312c62113f17 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture bc2849fb-1ea6-44ee-a9d7-4f9e36719eaf has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture d3d4081b-0d25-471f-8147-ec400f8b5c7d has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture d5351e09-5a7b-411a-99b0-80ea7dbc8728 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture d92c2a4c-3144-46df-b2a8-72a407ac91cf has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture e33d29df-d2dc-40bd-aac5-53640f9dcae0 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture e7ded863-7358-463a-b1e6-40cdfa02c4be has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture ea2385a6-a40e-4655-8c39-e4fb15d038b2 has 3 non-DB games (expect 4),,,MLP
+,,,,,MLP fixture faa39479-f27c-4d1a-8c7d-bf3d72e3975d has 3 non-DB games (expect 4),,,MLP
+mens,2026-05-30,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,897a963d-1d30-49de-9f97-c7b690171139:g1,winning score 19 with unresolved format (check for to-15/to-21 leak),19-17,,PPA
+mens,2026-05-30,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,1288eb39-d7fb-4071-8e9b-fbc87a18deab:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),17-15,,PPA
+mens,2026-05-30,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,14879262-c4be-4217-a5f6-5d2a55729123:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,92c6cb11-2488-4981-8779-20d759ec8568:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,38a9c4e1-2d0d-408a-aa11-f9b88a123f8f:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,1d6a2999-dbcf-4aef-935e-13b50e9a3809:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),15-17,,PPA
+mixed,2026-06-28,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,892cc388-d280-49d5-9dcd-b97ab621c28e:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,6cad5171-c248-49c3-93cc-35f25fa31619:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+womens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,9f7cabc5-1673-46b7-9224-7a5e68a5c03c:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),15-17,,PPA
+womens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,65a6a827-f73d-4791-af63-fdebe3bcce66:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,66cb9ffb-81af-481b-a812-7674dafa54e8:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,dffd193d-ed8e-487a-8656-80f075760245:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,d0c94161-1e8e-4621-b6eb-1bb88425b9cb:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-02-22,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,d24a61a6-8d89-4793-b979-c022e107b59a:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-02-22,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,de4e8cc5-c6f3-4b2c-a090-331bb4ad0b6c:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),15-17,,PPA
+mixed,2026-02-22,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,fd6dfe80-aaa1-4196-ad76-03dd45871564:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),15-17,,PPA
+mixed,2026-02-22,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,60337c21-656a-4b0f-b291-e82907642ac5:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+womens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,d8f2fdd7-f5fd-4ea3-8e58-695c981fa9d8:g1,winning score 18 with unresolved format (check for to-15/to-21 leak),18-16,,PPA
+mens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,a8583739-c2d1-478f-913b-990970e25253:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,caa6608e-058c-43e4-b244-f762cb505994:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,1344cbd6-81aa-442f-a90d-291e0fef345a:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),17-15,,PPA
+mens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,2d6005f5-6729-4e0f-b69c-ab3ddcc9d20b:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-01-11,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,6ae9d72f-d91e-40c3-a4cb-17ac2729b942:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),17-15,,PPA
+mixed,2026-01-11,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,d0bd916a-ffd8-420c-b4ea-45e67b128090:g1,winning score 21 with unresolved format (check for to-15/to-21 leak),19-21,,PPA
+mixed,2026-01-11,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,662d15f5-17b6-4350-8b02-fbfafee491ec:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,136b68af-9625-4609-89ad-68dab1232ad3:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),17-15,,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,6679d2b9-eb8b-40fc-950f-0d01e2968247:g1,winning score 18 with unresolved format (check for to-15/to-21 leak),16-18,,PPA
+womens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,ab6be284-95b1-4baa-b32a-79354ae3c9cf:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,a3f094aa-a39a-41b6-befc-64e1f02da196:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,68b47f47-6d5c-40fc-b189-869d47f46789:g1,winning score 18 with unresolved format (check for to-15/to-21 leak),18-16,,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,5eab8283-5aa3-47d8-98e9-203a770b910f:g1,winning score 18 with unresolved format (check for to-15/to-21 leak),18-16,,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,7fb6cbbd-7c6c-4bc6-a1e2-c6a9deaf6ec6:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mixed,2026-04-05,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,b86a06a1-c3fe-41a4-b4c4-f26b378d2322:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-04-05,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,42140431-acb5-4443-b83e-8df0e6caa1ee:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-04-05,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,f9f3a088-0c2c-4949-ba1f-9718426b5c09:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,4427f0f1-ef80-4469-8a78-e35ea955cc30:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,f8b924e3-17bb-4404-8b8a-7e3b3a7b6694:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,254e5da3-7593-4b8f-b8b5-47a71a985dd6:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+womens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,fd8f62f8-880c-4e4d-88b0-05115b7cf76d:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,be06666d-c7be-4c17-a0a9-74de2f4be6ff:g1,winning score 18 with unresolved format (check for to-15/to-21 leak),16-18,,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,cd372fa4-0546-4579-9ab5-34b640f88d22:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),15-17,,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,c74ad8fc-0c11-4ae6-8905-19474db4bad1:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,3a3d8210-babc-4c36-ad56-96f50b1dd0f7:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,8065b91e-1808-4ea2-bf79-da81e668dd0b:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),15-17,,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,e1dc5d5e-709c-4342-9539-70be6c18a3af:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,c8d78594-b3a6-48d8-ad5e-a5b7127f47e3:g1,winning score 22 with unresolved format (check for to-15/to-21 leak),20-22,,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,7f5baae2-a383-4133-8480-9d62e09f5d97:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),17-15,,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,8d84f05a-6d7b-4d0a-a004-f5d720795f38:g1,winning score 19 with unresolved format (check for to-15/to-21 leak),19-17,,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,983a369e-78bf-4feb-a3ed-defa1741f923:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mixed,2026-04-19,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,a23379cb-04f0-4d72-9411-19b8d53b4271:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mixed,2026-04-19,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,ffe7d6a3-5aa4-4437-86e6-c61bc5d2016c:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+womens,2026-06-13,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,46477616-0a4c-44bd-bef6-20729bb613e7:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-06-13,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,273e4306-3078-44ed-9bbc-9aab1771ef23:g1,winning score 18 with unresolved format (check for to-15/to-21 leak),18-16,,PPA
+mens,2026-06-13,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,5955e913-49e6-41a7-a2d6-f48724eb7a67:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-06-13,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,2c3e3a45-78d5-49ab-ad71-bb4ed85ca15e:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mixed,2026-06-14,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,83f4cef9-b3aa-4e1a-a0c6-9f44926be5f9:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mixed,2026-06-14,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,57e8c8aa-f064-4a67-bc9e-a7c2406d2ea4:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,21dd9b50-ccbe-4645-bba3-ae8d68b00137:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,b805ea8d-0682-44f5-94b3-4302530876a0:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,32c0e5b8-5bf2-4441-b3d1-abec8ecc04c9:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,9caea758-3cc1-4602-a7d3-d0f20e2efca8:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-05-03,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,b5e9f5a5-6167-4fb6-b58c-19217883bb4d:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mixed,2026-05-03,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,397b2071-adff-4e20-83e0-7d261c555093:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),17-15,,PPA
+mixed,2026-05-03,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,a0433ddc-d843-40f7-9bbc-c8352b3ea9ea:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),17-15,,PPA
+mixed,2026-05-03,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,610ee39f-8de9-4f3f-baf5-216e998be82b:g1,winning score 18 with unresolved format (check for to-15/to-21 leak),16-18,,PPA
+womens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,7a55e06d-fd90-48b4-81a2-9096983ab931:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),17-15,,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,e2ce4e0c-1acc-4518-8515-547bf70aa037:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,d087dd75-df9b-474b-9f24-dc738d5a98d5:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),15-17,,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,81576ac0-4a6a-49f7-880f-1c12e5ec3cc1:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,8f992c39-f85d-4f25-b6c8-b0bce2f7b5d5:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,7398ff15-c214-4a11-b2fd-dec82f185764:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+womens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,1558274d-aa1b-4e58-8d03-8225291f09e3:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,378f093c-a4f3-4ba2-b930-2d7c06a9e5e0:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,Round 16,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,a9e92df6-1af9-4658-ba71-98d1b0299899:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),17-15,Round 16,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,d9374c19-6f38-400b-8769-287a89f26e69:g1,winning score 17 with unresolved format (check for to-15/to-21 leak),17-15,Round 32,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,76f0c29b-e9c3-4e41-b1aa-9bae6bfb02eb:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,Round 32,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,9d08ed86-6eb7-40bc-99db-4fd5809c093e:g1,winning score 20 with unresolved format (check for to-15/to-21 leak),20-18,,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,c1465210-b705-4912-aa41-b424ae14d80e:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,e3b722ed-ffcf-46cf-9e81-88c950c3faf8:g1,winning score 20 with unresolved format (check for to-15/to-21 leak),18-20,,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,217fdb76-7a4c-4f67-b350-c646b4f5199d:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),14-16,,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,2c657981-d0a7-4183-a215-61f77fae4204:g1,winning score 16 with unresolved format (check for to-15/to-21 leak),16-14,,PPA

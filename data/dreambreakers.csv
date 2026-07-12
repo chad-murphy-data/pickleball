@@ -1,0 +1,37 @@
+match_id,matchup_id,event_name,date,t1_score,t2_score,scoring_format,stage
+853f1835-44ef-422d-8476-e65e7fe74846,007a1952-4d7f-45bf-a792-ac9b04d1fd7c,Edward Jones Mid-Season Tournament,2026-07-11,21,18,rally_21,Round 3 L1
+c4adeb8f-2794-4a42-9b90-f2a991df441a,0d374aed-bdab-43d5-b9da-9a04b504fd06,MLP New York,2026-06-28,19,21,rally_21,Round 2 RR
+9a9a5d99-6297-4e47-b475-b22665e7d23d,0d6d30fa-9ff7-45da-a8b9-30069df7ee6c,MLP Austin,2026-06-13,20,22,rally_21,Round 3 RR
+75157632-01e1-4c76-a9c7-8ec4d6a4d85c,11357e02-6cc0-41fa-904a-179635d07b74,MLP Columbus,2026-05-28,5,21,rally_21,Round 1 RR
+1f39d0e0-a2a7-4061-9d42-6e513537e1d2,115f8546-bae5-4016-ba99-c3553ca84fea,MLP New York,2026-06-28,21,15,rally_21,One and Done - Playoff W
+6d3f9754-cc0c-40cf-adf0-c1fe4c054eae,1212e6df-9765-4431-a7b3-86d068c2718a,MLP Austin,2026-06-12,9,21,rally_21,Round 2 RR
+f300a04e-dfc5-43b1-9a3a-b9f77f18ae2d,1b7f359f-f4df-4c4f-a196-dcdeee257d13,MLP Columbus,2026-05-29,9,21,rally_21,Round 3 RR
+56366bfe-4c20-4ef0-829b-90d735f6c646,24b31b89-8a21-4b80-82e0-77e4ec0d8ae6,MLP New York,2026-06-28,19,21,rally_21,One and Done - Playoff W
+fa3d1232-2625-4e2c-ae5b-9d863a562c42,2a9b822c-b74b-45e8-83c6-e1a7ccf681b3,MLP Dallas,2026-05-24,11,21,rally_21,Round 2 RR
+d505e6da-7e09-4401-98db-a738d8b21168,2c4cc818-8047-4a6e-b13d-e421b596c643,MLP New York,2026-06-27,19,21,rally_21,Round 1 RR
+3c7200a8-f57e-47dd-9f0f-59903cbf7aea,473f14cc-98ae-4147-8a01-e860d95584d0,MLP Austin,2026-06-14,21,13,rally_21,One and Done - Playoff W
+936fc978-9d02-43a4-b8cc-a8609233dd0c,4c5d43c0-3be9-43f0-bf50-e2d99a5ad130,MLP Columbus,2026-05-30,21,15,rally_21,Round 2 RR
+733733ba-b2ba-4c2c-842c-dac9f6415206,5a6fcd5e-f23f-46e3-befc-2b8d0debb20c,MLP Austin,2026-06-13,9,21,rally_21,Round 4 RR
+294419d4-299f-4071-92e3-bfbef1356566,5c89d534-cef3-409c-991c-49ce01c7cd75,MLP Columbus,2026-05-30,21,15,rally_21,Round 2 RR
+baf76def-0999-4712-b047-ab935d40be1c,6263fea4-9332-4ec8-884e-ee350a9f2b5c,MLP St. Louis,2026-06-06,21,15,rally_21,Round 4 RR
+426a6964-28eb-4b42-9d5c-c7a4a80a5243,67d60d04-6f69-41ac-96a9-65638f97c03f,MLP New York,2026-06-26,21,16,rally_21,Round 1 RR
+f9f2200e-d218-4dc2-90f6-7396fa2a40bf,80bf7078-39e2-4198-a455-864b52ecdb45,Edward Jones Mid-Season Tournament,2026-07-09,21,23,rally_21,Round 16 W
+7a1c44d8-e1b5-406b-b4fc-270b731f2885,8425b668-e06a-4f83-9272-33bdbdd01078,MLP Austin,2026-06-13,17,21,rally_21,Round 3 RR
+3f5f1be1-da5c-4913-9e12-fc2d94f14a6a,90751f3e-d967-4201-9277-17bc89657915,MLP Austin,2026-06-11,21,11,rally_21,Round 2 RR
+b0572402-2c31-41d3-8b63-2db8fe46795b,90a298b3-525e-4b71-85aa-a10cdb66468b,MLP Dallas,2026-05-25,21,15,rally_21,One and Done - Playoff W
+5550b767-49c2-4501-901d-840938457b5e,9335634b-575d-4bcb-bed0-8d415f4dd147,Edward Jones Mid-Season Tournament,2026-07-08,21,11,rally_21,Round 32 W
+ed254c3f-5fce-4f43-9c49-50dcdcb1ddf9,95b5b97a-ffc5-4a31-ad7b-441a04aad459,MLP Dallas,2026-05-22,21,7,rally_21,Round 5 RR
+8846cc05-0bc3-4015-bf54-3f873d74599f,98bb6d3e-f2ec-449c-91c5-d90b6ba5c88c,MLP Dallas,2026-05-25,15,21,rally_21,Round 1 RR
+3e0e5cc8-7d37-411b-8c46-77569aabae95,999e231d-b4d9-4575-b059-1e8ba8b29a29,Edward Jones Mid-Season Tournament,2026-07-11,21,16,rally_21,Quarter Finals W
+19244542-5716-460f-9096-1d0e54e679b8,9b88299f-e957-44a7-a93d-856dafa59cc3,MLP Dallas,2026-05-23,21,14,rally_21,Round 3 RR
+c7713138-3b5d-4f4d-b99f-3108b79eb49e,9d15006a-69d1-4bbb-b18b-79ff8a266a2a,MLP Columbus,2026-05-30,21,14,rally_21,Round 4 RR
+bed1b59f-0f29-4948-ae71-b3f0c62d8c2a,a1c08402-519d-4dbf-a01d-589e47bdaf47,MLP St. Louis,2026-06-05,15,21,rally_21,Round 1 RR
+ddb3e2bf-f898-494a-8bc0-987d7d9941e1,a463894c-e5f3-47c6-b964-ff50d24b3f5d,Edward Jones Mid-Season Tournament,2026-07-08,21,14,rally_21,Round 32 W
+030cbdd4-9730-432e-978b-e4b82c024700,a9db4552-f0bb-4019-8cf9-9aa2243ae8cc,MLP New York,2026-06-28,15,21,rally_21,Round 4 RR
+52469f10-1b72-4a61-9f84-28bfd7048485,beaf54c0-51e9-4c47-bd80-ef165d9421e7,MLP New York,2026-06-28,23,21,rally_21,Round 3 RR
+38ff3376-e825-409f-bc8b-3b89737102eb,c27ad0fa-15e7-473c-b062-dc51a888699a,Edward Jones Mid-Season Tournament,2026-07-11,21,18,rally_21,Round 3 L1
+f5e4ab13-b394-48dc-9a58-712ba8ea7981,d0fe683d-1470-4b9f-b784-328ad775ec9e,Edward Jones Mid-Season Tournament,2026-07-10,21,17,rally_21,Round 16 W
+f8162534-39a9-4871-9bf5-28a67e08f73f,d393d638-2ff9-4745-a565-24e51ef20b8c,Edward Jones Mid-Season Tournament,2026-07-10,21,17,rally_21,Round 2 L1
+01bc27e4-5760-44fa-916a-4de5cdb6a676,d7cde0c5-88fb-4295-b716-777bb572876f,MLP St. Petersburg,2026-06-17,16,21,rally_21,Round 4 RR
+453bfd5d-a0c7-48d3-8cee-2191df934fe0,e152c71e-f8ff-4d0f-ae07-34fd3d751c01,MLP St. Petersburg,2026-06-20,8,21,rally_21,Round 5 RR
+5d191124-9cdb-4a5d-8f55-4fbfd697bebc,f4b8f74a-26c4-4a13-b1c7-ebf3cd8b9594,MLP St. Louis,2026-06-07,21,19,rally_21,One and Done - Playoff W
