@@ -202,6 +202,29 @@ Std-dev of a player's dyad-chemistry estimates (dyads with ≥8 games, players w
 | Lyn Yuen Choo | 3 | +0.07 | 0.03 |
 | Mark Dancuart | 5 | +0.06 | 0.02 |
 
+## Unshrunk ("fixed effects") chemistry check
+
+OLS with a fixed effect per player + one dyad dummy, cluster-robust SEs by match — no shrinkage prior at all (`model/fixed_effects_dyads.py`, all dyads with ≥30 games). If the Bayesian prior were burying real chemistry, it would show up here. It doesn't:
+
+| pair | context | games | unshrunk est. | ±se | t | Bayesian (shrunk) |
+|:--|:--|--:|--:|--:|--:|--:|
+| Kate Fahey + Federico Staksrud | mixed | 78 | +0.59 | 0.84 | +0.7 | +0.16 |
+| Anna Bright + Hayden Patriquin | mixed | 138 | +0.54 | 0.92 | +0.6 | +0.10 |
+| Andrei Daescu + Federico Staksrud | mens | 101 | -0.02 | 0.77 | -0.0 | +0.06 |
+| Jorja Johnson + Tyra Hurricane Black | womens | 83 | -0.04 | 0.88 | -0.1 | -0.03 |
+| Noe Khlif + Tina Pisnik | mixed | 46 | -0.08 | 0.93 | -0.1 | +0.01 |
+| Anna Leigh Waters + Ben Johns | mixed | 111 | -0.20 | 0.88 | -0.2 | -0.00 |
+| Ben Johns + Gabriel Tardio | mens | 113 | -0.51 | 0.87 | -0.6 | -0.07 |
+| Catherine Parenteau + Gabriel Tardio | mixed | 79 | -0.52 | 0.90 | -0.6 | -0.00 |
+| Jorja Johnson + JW Johnson | mixed | 95 | -1.27 | 0.93 | -1.4 | -0.14 |
+| Noe Khlif + Will Howells | mens | 41 | -1.58 | 1.13 | -1.4 | -0.18 |
+| Anna Leigh Waters + Anna Bright | womens | 98 | -1.72 | 0.92 | -1.9 | -0.15 |
+| Christian Alshon + Hayden Patriquin | mens | 95 | -1.72 | 0.90 | -1.9 | -0.21 |
+
+Across all 50 high-volume dyads, the t-statistics have mean +0.31 and sd 1.28 (pure noise would give ≈0 and ≈1). The mild overdispersion is the small league-wide chemistry variance; the positive mean hints at survivorship (pairs that keep playing together are pairs it's working for). No individual pair separates from the pack.
+
+Note for Bright + Patriquin specifically: Patriquin is Bright's only mixed partner, so her personal mixed-context shift and the pair dummy are the same regression column — the unshrunk estimate is their *sum*, i.e. if anything an overstatement of pure pair chemistry.
+
 ## Does it predict? Temporal holdout
 
 Model refit on games before 2026-06-01 only, then used to predict every later game whose four players all had ≥10 training games (n = 686 — mostly MLP, predicted from PPA-heavy training):

@@ -250,6 +250,41 @@ def main():
         A(f"| {name}{' *(focal)*' if name in FOCAL else ''} | {n} | {f(mu)} | {sd:.2f} |")
     A("")
 
+    # ---- unshrunk fixed-effects dyad estimates (if present) ----
+    fe_p = DATA / "results_dyads_fe.csv"
+    if fe_p.exists():
+        fe = list(csv.DictReader(fe_p.open()))
+        for r in fe:
+            r["fe_estimate"] = float(r["fe_estimate"]); r["fe_se"] = float(r["fe_se"])
+            r["t"] = float(r["t"]); r["games"] = int(r["games"])
+        A("## Unshrunk (\"fixed effects\") chemistry check\n")
+        A("OLS with a fixed effect per player + one dyad dummy, cluster-robust SEs by "
+          "match — no shrinkage prior at all (`model/fixed_effects_dyads.py`, all dyads "
+          "with ≥30 games). If the Bayesian prior were burying real chemistry, it would "
+          "show up here. It doesn't:\n")
+        A("| pair | context | games | unshrunk est. | ±se | t | Bayesian (shrunk) |")
+        A("|:--|:--|--:|--:|--:|--:|--:|")
+        bayes = {frozenset((d["p1_name"], d["p2_name"])): d for d in dyads}
+        focal_set2 = set(FOCAL)
+        shown = [r for r in fe if r["p1_name"] in focal_set2 or r["p2_name"] in focal_set2]
+        for r in sorted(shown, key=lambda x: -x["fe_estimate"]):
+            b = bayes.get(frozenset((r["p1_name"], r["p2_name"])))
+            bs = f(b["chemistry_mean"]) if b else "—"
+            A(f"| {r['p1_name']} + {r['p2_name']} | {r['context']} | {r['games']} | "
+              f"{f(r['fe_estimate'])} | {r['fe_se']:.2f} | {r['t']:+.1f} | {bs} |")
+        ts = [r["t"] for r in fe]
+        mu_t = sum(ts) / len(ts)
+        sd_t = (sum((t - mu_t) ** 2 for t in ts) / (len(ts) - 1)) ** 0.5
+        A(f"\nAcross all {len(fe)} high-volume dyads, the t-statistics have mean "
+          f"{mu_t:+.2f} and sd {sd_t:.2f} (pure noise would give ≈0 and ≈1). The mild "
+          "overdispersion is the small league-wide chemistry variance; the positive mean "
+          "hints at survivorship (pairs that keep playing together are pairs it's working "
+          "for). No individual pair separates from the pack.\n")
+        A("Note for Bright + Patriquin specifically: Patriquin is Bright's only mixed "
+          "partner, so her personal mixed-context shift and the pair dummy are the same "
+          "regression column — the unshrunk estimate is their *sum*, i.e. if anything an "
+          "overstatement of pure pair chemistry.\n")
+
     # ---- temporal holdout (if holdout_summary.json exists) ----
     ho_p = ROOT / "model" / "holdout_summary.json"
     if ho_p.exists():
