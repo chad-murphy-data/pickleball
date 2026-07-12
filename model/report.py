@@ -338,7 +338,9 @@ def main():
           "bundle states DUPR is \"Pickleball.com's official rating system,\" the values "
           "span 2.5–7.0 (DUPR's 2–8 scale, top: Dekel Bar 7.01), and a player's same-day "
           "snapshot is identical across mixed and gendered doubles (DUPR keeps one "
-          "doubles rating; singles is a separate rating and does not touch this number). "
+          "doubles rating; singles is a separate ledger — verified empirically: players "
+          "carry different ratings in singles vs doubles matches within the same week, "
+          "e.g. Waters 6.60 singles vs 6.75 doubles at the Texas Open). "
           "Head-to-head on the same holdout games "
           f"(≥ {rc['split']}, n = {rc['n_games']}), predicting each game's winner:\n")
         A("| predictor | accuracy | Brier |")

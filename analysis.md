@@ -303,7 +303,7 @@ Calibration is *under*confident (e.g. games called ~65% go the favorite's way ~7
 
 ## Benchmark: DUPR vs this model
 
-pickleball.com embeds each player's rating as an as-of-match snapshot in the raw payloads — and this **is their synced DUPR doubles rating**: the client bundle states DUPR is "Pickleball.com's official rating system," the values span 2.5–7.0 (DUPR's 2–8 scale, top: Dekel Bar 7.01), and a player's same-day snapshot is identical across mixed and gendered doubles (DUPR keeps one doubles rating; singles is a separate rating and does not touch this number). Head-to-head on the same holdout games (≥ 2026-06-01, n = 518), predicting each game's winner:
+pickleball.com embeds each player's rating as an as-of-match snapshot in the raw payloads — and this **is their synced DUPR doubles rating**: the client bundle states DUPR is "Pickleball.com's official rating system," the values span 2.5–7.0 (DUPR's 2–8 scale, top: Dekel Bar 7.01), and a player's same-day snapshot is identical across mixed and gendered doubles (DUPR keeps one doubles rating; singles is a separate ledger — verified empirically: players carry different ratings in singles vs doubles matches within the same week, e.g. Waters 6.60 singles vs 6.75 doubles at the Texas Open). Head-to-head on the same holdout games (≥ 2026-06-01, n = 518), predicting each game's winner:
 
 | predictor | accuracy | Brier |
 |:--|--:|--:|
