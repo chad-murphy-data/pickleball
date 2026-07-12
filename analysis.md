@@ -3,7 +3,7 @@
 ## Headlines
 
 1. **Individual value dwarfs chemistry.** Player-value spread is sd = 2.21 points/game; pair chemistry spread is sd = 0.47. Who you are matters ~5× more than who you're standing next to. Chemistry exists league-wide (sd_d is bounded away from zero) but is small, and no single pair's chemistry is certifiable with high confidence — even 100+ game dyads carry ±0.45 posteriors.
-2. **Anna Leigh Waters is #1 by a wide margin** (+7.74 pts/game vs +6.09 for #2 Anna Bright).
+2. **Anna Leigh Waters is #1 by a wide margin** (+7.74 pts/game vs +6.09 for #2 Anna Bright) — but see the cross-gender caveat: rankings are rock-solid *within* gender, while the men-vs-women alignment is a modeling convention, not a data statement.
 3. **Bright + Patriquin's dominance is star power, not magic.** Their mixed chemistry is +0.10 ± 0.46 (88th percentile, P(>0) = 0.57) over 138 games — mildly positive, far from certain. Their expected margin comes almost entirely from both being top-5 players.
 4. **Waters + Johns are exactly the sum of their parts**: chemistry -0.00 (56th pct) across 111 games.
 5. **The Waters + Bright superteam slightly *under*-performs its parts** (-0.15, 3rd percentile, 98 games) — two #1-caliber players don't add a bonus on top of being overwhelming favorites.
@@ -12,6 +12,14 @@
 ## What is (and is not) identifiable — the "actor vs partner" question
 
 The original brief asked to separate each player's **actor effect** (own skill) from their **partner effect** (how much they elevate whoever stands next to them). With team-level margins that split is **not identifiable**: if a team's strength is `actor_i + partner_j→i + actor_j + partner_i→j`, then only the sums `(actor_i + partner_i)` and `(actor_j + partner_j)` ever enter the likelihood — any reallocation between a player's actor and partner components produces identical predictions for every game, including counterfactual pairings. No amount of data fixes this; it's structural. (Kenny's classic SRM separates them because dyadic outcomes there are *directional* — i's rating of j differs from j's rating of i. A game margin has no direction within a team.)
+
+### The cross-gender flat direction
+
+A second structural non-identifiability: **every observed game has an equal number of women on each side** — womens (2v2), mens (0v0), mixed (1v1). Verified across all modeling rows. Consequence: adding any constant *c* to every woman's value changes no predicted margin anywhere, so the *offset* between the men's and women's value blocks is invisible to the data. The zero-mean prior resolves it by (approximately) equating the two pools' averages. Therefore:
+
+- comparisons **within** a gender are data-driven and safe;
+- comparisons **across** genders ("is Waters better than Johns?") reflect the equal-pools convention, not evidence;
+- hypothetical cross-gender matchups ("Waters/Bright vs Johns/Tardio") shift by 2c along the flat direction — the model has **no** data-driven prediction for them, and no such game exists in the data. Mixed-team predictions (1M+1F vs 1M+1F) are safe: the offset cancels.
 
 What the data **does** identify:
 
@@ -194,8 +202,18 @@ Std-dev of a player's dyad-chemistry estimates (dyads with ≥8 games, players w
 | Lyn Yuen Choo | 3 | +0.07 | 0.03 |
 | Mark Dancuart | 5 | +0.06 | 0.02 |
 
+## Robustness: core-pool refit ("real pros only")
+
+Same model refit on games where **all four players have ≥30 appearances** (4,698 games, 312 players — drops Challenger one-weekenders and qualifier cannon fodder). Result:
+
+- **Rankings are stable**: Spearman ρ = 0.966 between the two fits over the 167 shared regulars. The leaderboard's composition is unchanged.
+- **The zero point moves up ~1.8 points** (values are relative to the pool average, and the pool got stronger). E.g. Waters +7.74 → +6.41. Differences *between* players are what carry meaning; the absolute level is pool-dependent.
+- **Chemistry shrinks further** (sd_d 0.47 → 0.33): part of the apparent synergy in the full pool was pairs feasting together on weak fields.
+- One notable mover: players who log many Challenger games (e.g. Patriquin) give back a fraction of a point relative to peers who don't — mild "Challenger farming" inflation in the full-pool fit.
+
 ## Caveats
 
+- **Cross-gender comparisons are convention** (see the flat-direction section): read the leaderboard as two interleaved within-gender rankings aligned by prior.
 - Single 2026 season, mid-season snapshot (through Jul 11): no time-varying skill; Patriquin-type trajectories are averaged over the window.
 - Margins treated as Gaussian; to-11 games truncate blowouts (±11-ish cap), so elite values are mildly compressed relative to "true" dominance.
 - Anna Bright's mixed games are 100% with Patriquin: her mixed context deviation and that dyad's chemistry are separated only by the pooled hierarchical structure.

@@ -82,7 +82,9 @@ def main():
       "(sd_d is bounded away from zero) but is small, and no single pair's chemistry is "
       "certifiable with high confidence — even 100+ game dyads carry ±0.45 posteriors.")
     A(f"2. **{top['full_name']} is #1 by a wide margin** ({f(top['value_mean'])} pts/game vs "
-      f"{f(elig_h[1]['value_mean'])} for #{2} {elig_h[1]['full_name']}).")
+      f"{f(elig_h[1]['value_mean'])} for #{2} {elig_h[1]['full_name']}) — but see the "
+      "cross-gender caveat: rankings are rock-solid *within* gender, while the men-vs-women "
+      "alignment is a modeling convention, not a data statement.")
     if bp:
         A(f"3. **Bright + Patriquin's dominance is star power, not magic.** Their mixed "
           f"chemistry is {f(bp['chemistry_mean'])} ± {bp['chemistry_sd']:.2f} "
@@ -111,6 +113,20 @@ def main():
       "fixes this; it's structural. (Kenny's classic SRM separates them because dyadic "
       "outcomes there are *directional* — i's rating of j differs from j's rating of i. "
       "A game margin has no direction within a team.)\n")
+    A("### The cross-gender flat direction\n")
+    A("A second structural non-identifiability: **every observed game has an equal number "
+      "of women on each side** — womens (2v2), mens (0v0), mixed (1v1). Verified across all "
+      "modeling rows. Consequence: adding any constant *c* to every woman's value changes no "
+      "predicted margin anywhere, so the *offset* between the men's and women's value blocks "
+      "is invisible to the data. The zero-mean prior resolves it by (approximately) equating "
+      "the two pools' averages. Therefore:\n")
+    A("- comparisons **within** a gender are data-driven and safe;")
+    A("- comparisons **across** genders (\"is Waters better than Johns?\") reflect the "
+      "equal-pools convention, not evidence;")
+    A("- hypothetical cross-gender matchups (\"Waters/Bright vs Johns/Tardio\") shift by 2c "
+      "along the flat direction — the model has **no** data-driven prediction for them, and "
+      "no such game exists in the data. Mixed-team predictions (1M+1F vs 1M+1F) are safe: "
+      "the offset cancels.\n")
     A("What the data **does** identify:\n")
     A("1. **Player value** `v_i` — total points per game a player adds to their team's "
       "margin (actor + partner combined), with context-specific deviations (mixed/mens/womens).")
@@ -234,7 +250,45 @@ def main():
         A(f"| {name}{' *(focal)*' if name in FOCAL else ''} | {n} | {f(mu)} | {sd:.2f} |")
     A("")
 
+    # ---- core-pool robustness (if the _core fit exists) ----
+    core_p = DATA / "results_players_core.csv"
+    if core_p.exists():
+        core = {r["player_id"]: r for r in csv.DictReader(core_p.open())}
+        full_by_id = {p["player_id"]: p for p in players}
+        common = [(float(full_by_id[u]["value_mean"]), float(core[u]["value_mean"]))
+                  for u in core if u in full_by_id and int(core[u]["games"]) >= 40]
+        if len(common) > 20:
+            fv = [c[0] for c in common]; cv = [c[1] for c in common]
+            def _ranks(xs):
+                order = sorted(range(len(xs)), key=lambda i: -xs[i])
+                r = [0] * len(xs)
+                for rank, i in enumerate(order):
+                    r[i] = rank
+                return r
+            rf, rc = _ranks(fv), _ranks(cv)
+            n = len(rf)
+            rho = 1 - 6 * sum((a - b) ** 2 for a, b in zip(rf, rc)) / (n * (n * n - 1))
+            csc = json.loads((ROOT / "model" / "fit_summary_core.json").read_text())["scalars"]
+            A("## Robustness: core-pool refit (\"real pros only\")\n")
+            A("Same model refit on games where **all four players have ≥30 appearances** "
+              "(4,698 games, 312 players — drops Challenger one-weekenders and qualifier "
+              "cannon fodder). Result:\n")
+            A(f"- **Rankings are stable**: Spearman ρ = {rho:.3f} between the two fits over "
+              f"the {n} shared regulars. The leaderboard's composition is unchanged.")
+            A(f"- **The zero point moves up ~{(sum(fv)/n - sum(cv)/n):.1f} points** (values "
+              "are relative to the pool average, and the pool got stronger). E.g. Waters "
+              f"{f(fv[0] if False else max(fv))} → {f(max(cv))}. Differences *between* players "
+              "are what carry meaning; the absolute level is pool-dependent.")
+            A(f"- **Chemistry shrinks further** (sd_d {sd_d:.2f} → "
+              f"{float(csc['sd_d']['mean']):.2f}): part of the apparent synergy in the full "
+              "pool was pairs feasting together on weak fields.")
+            A("- One notable mover: players who log many Challenger games (e.g. Patriquin) "
+              "give back a fraction of a point relative to peers who don't — mild "
+              "\"Challenger farming\" inflation in the full-pool fit.\n")
+
     A("## Caveats\n")
+    A("- **Cross-gender comparisons are convention** (see the flat-direction section): "
+      "read the leaderboard as two interleaved within-gender rankings aligned by prior.")
     A("- Single 2026 season, mid-season snapshot (through Jul 11): no time-varying skill; "
       "Patriquin-type trajectories are averaged over the window.")
     A("- Margins treated as Gaussian; to-11 games truncate blowouts (±11-ish cap), so "

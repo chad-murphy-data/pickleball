@@ -30,9 +30,25 @@ TOUR = {"MLP": 0, "PPA": 1}
 
 
 def main():
+    import os
+    min_pg = int(os.environ.get("MIN_PLAYER_GAMES", 0))
+    suffix = os.environ.get("OUT_SUFFIX", "")
     games = [g for g in csv.DictReader((DATA / "games.csv").open())
              if g["is_forfeit"] == "False" and g["scoring_format"] == "sideout_11"]
     players = {r["player_id"]: r for r in csv.DictReader((DATA / "players.csv").open())}
+    if min_pg:
+        # "core pool" robustness: keep only games where all four players have
+        # at least min_pg appearances in the full modeling set
+        from collections import Counter
+        appearances = Counter()
+        for g in games:
+            for c in ("t1_p1", "t1_p2", "t2_p1", "t2_p2"):
+                appearances[g[c]] += 1
+        before = len(games)
+        games = [g for g in games
+                 if all(appearances[g[c]] >= min_pg
+                        for c in ("t1_p1", "t1_p2", "t2_p1", "t2_p2"))]
+        print(f"core-pool filter (>={min_pg} games/player): {before} -> {len(games)} games")
 
     pidx, didx, midx = {}, {}, {}
     dyad_meta = {}
@@ -67,18 +83,18 @@ def main():
             "stage": g["stage"],
         })
 
-    with (DATA / "model_data.csv").open("w", newline="") as fh:
+    with (DATA / f"model_data{suffix}.csv").open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         w.writeheader(); w.writerows(rows)
 
-    with (DATA / "model_players.csv").open("w", newline="") as fh:
+    with (DATA / f"model_players{suffix}.csv").open("w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["idx", "player_id", "full_name", "gender"])
         for uuid, i in sorted(pidx.items(), key=lambda x: x[1]):
             rec = players.get(uuid, {})
             w.writerow([i, uuid, rec.get("full_name", ""), rec.get("gender", "")])
 
-    with (DATA / "model_dyads.csv").open("w", newline="") as fh:
+    with (DATA / f"model_dyads{suffix}.csv").open("w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["idx", "p1_id", "p2_id", "p1_name", "p2_name", "context"])
         for key, i in sorted(didx.items(), key=lambda x: x[1]):

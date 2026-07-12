@@ -47,10 +47,11 @@ SEED = 20260712
 N_WARMUP = int(os.environ.get("SRM_WARMUP", 700))
 N_SAMPLES = int(os.environ.get("SRM_SAMPLES", 700))
 N_CHAINS = int(os.environ.get("SRM_CHAINS", 2))
+SUFFIX = os.environ.get("SRM_SUFFIX", "")
 
 
 def load():
-    rows = list(csv.DictReader((DATA / "model_data.csv").open()))
+    rows = list(csv.DictReader((DATA / f"model_data{SUFFIX}.csv").open()))
     def col(k, dtype=np.int32):
         return np.array([dtype(r[k]) for r in rows])
     dat = dict(
@@ -59,8 +60,8 @@ def load():
         dyad1=col("dyad1"), dyad2=col("dyad2"),
         match=col("match_idx"), ctx=col("ctx_idx"), tour=col("tour_idx"),
     )
-    players = list(csv.DictReader((DATA / "model_players.csv").open()))
-    dyads = list(csv.DictReader((DATA / "model_dyads.csv").open()))
+    players = list(csv.DictReader((DATA / f"model_players{SUFFIX}.csv").open()))
+    dyads = list(csv.DictReader((DATA / f"model_dyads{SUFFIX}.csv").open()))
     return dat, players, dyads
 
 
@@ -149,7 +150,7 @@ def main():
     for (pi, c), idx in combos.items():
         w_by_player.setdefault(int(pi), {})[ctx_names[int(c)]] = float(w_mean[idx])
 
-    with (DATA / "results_players.csv").open("w", newline="") as fh:
+    with (DATA / f"results_players{SUFFIX}.csv").open("w", newline="") as fh:
         wcsv = csv.writer(fh)
         wcsv.writerow(["player_id", "full_name", "gender", "games",
                        "value_mean", "value_sd", "w_mixed", "w_mens", "w_womens"])
@@ -167,7 +168,7 @@ def main():
     order = np.argsort(dm)
     pct = np.empty_like(order, dtype=float)
     pct[order] = np.arange(n_dyads) / (n_dyads - 1) * 100
-    with (DATA / "results_dyads.csv").open("w", newline="") as fh:
+    with (DATA / f"results_dyads{SUFFIX}.csv").open("w", newline="") as fh:
         wcsv = csv.writer(fh)
         wcsv.writerow(["p1_name", "p2_name", "context", "games",
                        "chemistry_mean", "chemistry_sd", "p_positive", "percentile"])
@@ -183,7 +184,7 @@ def main():
                         for kk, vv in s.items() if kk in ("mean", "std", "r_hat", "n_eff")}
                     for k, s in scal.items()},
     }
-    (OUT / "fit_summary.json").write_text(json.dumps(fit_summary, indent=1, default=str))
+    (OUT / f"fit_summary{SUFFIX}.json").write_text(json.dumps(fit_summary, indent=1, default=str))
     print(json.dumps(fit_summary["scalars"], indent=1, default=str)[:1500])
     print("divergences:", n_div, "| max rhat (v,d):", rhats)
 
