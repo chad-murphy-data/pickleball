@@ -55,28 +55,67 @@ Team-one bias: MLP +0.11 ± 0.16 (≈0, as expected — home/away is arbitrary),
 
 `value` = points per game added to team margin vs. an average pro in this pool. A pairing's predicted margin ≈ (v+w of your two) − (v+w of theirs) + chemistry terms.
 
-| rank | player | value | ±sd | games | w_mixed | w_mens | w_womens |
-|--:|:--|--:|--:|--:|--:|--:|--:|
-| 1 | Anna Leigh Waters *(focal)* | +7.74 | 0.54 | 259 | 0.024 | nan | 0.014 |
-| 2 | Anna Bright *(focal)* | +6.09 | 0.64 | 261 | 0.011 | nan | 0.023 |
-| 3 | Gabriel Tardio *(focal)* | +5.55 | 0.52 | 265 | 0.014 | 0.021 | nan |
-| 4 | Ben Johns *(focal)* | +5.47 | 0.58 | 263 | 0.026 | -0.003 | nan |
-| 5 | Hayden Patriquin *(focal)* | +5.42 | 0.61 | 259 | 0.028 | 0.01 | nan |
-| 6 | JW Johnson | +5.39 | 0.55 | 221 | -0.005 | 0.033 | nan |
-| 7 | Christian Alshon | +5.27 | 0.53 | 224 | 0.028 | -0.002 | nan |
-| 8 | Parris Todd | +5.17 | 0.51 | 202 | -0.01 | nan | 0.047 |
-| 9 | Jorja Johnson *(focal)* | +5.15 | 0.54 | 224 | -0.01 | nan | 0.029 |
-| 10 | Jade Kawamoto *(focal)* | +5.07 | 0.64 | 94 | 0.006 | nan | 0.013 |
-| 11 | Rachel Rohrabacher | +5.07 | 0.51 | 208 | 0.003 | nan | 0.028 |
-| 12 | Tina Pisnik | +5.02 | 0.46 | 223 | -0.015 | nan | 0.038 |
-| 13 | Sofia Sewing | +5.00 | 0.79 | 48 | 0.007 | nan | 0.022 |
-| 14 | Eric Oncins | +4.98 | 0.49 | 205 | 0.028 | -0.01 | nan |
-| 15 | Jackie Kawamoto | +4.82 | 0.62 | 84 | 0.011 | nan | 0.02 |
-| 16 | Tyra Hurricane Black *(focal)* | +4.81 | 0.49 | 214 | -0.004 | nan | 0.024 |
-| 17 | Andrei Daescu | +4.74 | 0.49 | 269 | 0.029 | -0.009 | nan |
-| 18 | Mari Humberg | +4.62 | 0.48 | 161 | 0.005 | nan | 0.017 |
-| 19 | Federico Staksrud *(focal)* | +4.54 | 0.48 | 240 | -0.004 | 0.012 | nan |
-| 20 | Danni-Elle Townsend | +4.51 | 0.66 | 75 | 0.021 | nan | 0.001 |
+Shown separately by gender — within-gender order is data-driven; the alignment *between* the two lists is the equal-pools prior convention (see above).
+
+### Men (top 25 of 138 with ≥40 games)
+
+| rank | player | value | ±sd | games |
+|--:|:--|--:|--:|--:|
+| 1 | Gabriel Tardio *(focal)* | +5.55 | 0.52 | 265 |
+| 2 | Ben Johns *(focal)* | +5.47 | 0.58 | 263 |
+| 3 | Hayden Patriquin *(focal)* | +5.42 | 0.61 | 259 |
+| 4 | JW Johnson | +5.39 | 0.55 | 221 |
+| 5 | Christian Alshon | +5.27 | 0.53 | 224 |
+| 6 | Eric Oncins | +4.98 | 0.49 | 205 |
+| 7 | Andrei Daescu | +4.74 | 0.49 | 269 |
+| 8 | Federico Staksrud *(focal)* | +4.54 | 0.48 | 240 |
+| 9 | Jay Devilliers | +4.39 | 0.55 | 149 |
+| 10 | Riley Newman | +4.34 | 0.62 | 92 |
+| 11 | Nicolas Acevedo | +4.29 | 0.56 | 110 |
+| 12 | Jack Sock | +4.28 | 0.60 | 107 |
+| 13 | Bruno Faletto | +4.20 | 0.75 | 63 |
+| 14 | Noe Khlif *(focal)* | +4.00 | 0.46 | 190 |
+| 15 | Armaan Bhatia | +3.92 | 0.56 | 97 |
+| 16 | Juan Benitez | +3.92 | 0.66 | 76 |
+| 17 | Connor Garnett | +3.82 | 0.52 | 162 |
+| 18 | CJ Klinger | +3.71 | 0.53 | 185 |
+| 19 | Oscar Serra | +3.68 | 1.15 | 52 |
+| 20 | Tama Shimabukuro | +3.65 | 0.52 | 167 |
+| 21 | Will Howells *(focal)* | +3.64 | 0.62 | 87 |
+| 22 | Mark Dancuart | +3.56 | 0.83 | 55 |
+| 23 | Hunter Johnson | +3.55 | 0.52 | 112 |
+| 24 | Yuta Funemizu | +3.50 | 0.61 | 108 |
+| 25 | Dekel Bar | +3.47 | 0.51 | 135 |
+
+### Women (top 25 of 114 with ≥40 games)
+
+| rank | player | value | ±sd | games |
+|--:|:--|--:|--:|--:|
+| 1 | Anna Leigh Waters *(focal)* | +7.74 | 0.54 | 259 |
+| 2 | Anna Bright *(focal)* | +6.09 | 0.64 | 261 |
+| 3 | Parris Todd | +5.17 | 0.51 | 202 |
+| 4 | Jorja Johnson *(focal)* | +5.15 | 0.54 | 224 |
+| 5 | Jade Kawamoto *(focal)* | +5.07 | 0.64 | 94 |
+| 6 | Rachel Rohrabacher | +5.07 | 0.51 | 208 |
+| 7 | Tina Pisnik | +5.02 | 0.46 | 223 |
+| 8 | Sofia Sewing | +5.00 | 0.79 | 48 |
+| 9 | Jackie Kawamoto | +4.82 | 0.62 | 84 |
+| 10 | Tyra Hurricane Black *(focal)* | +4.81 | 0.49 | 214 |
+| 11 | Mari Humberg | +4.62 | 0.48 | 161 |
+| 12 | Danni-Elle Townsend | +4.51 | 0.66 | 75 |
+| 13 | Kate Fahey *(focal)* | +4.40 | 0.52 | 186 |
+| 14 | Ewa Radzikowska | +4.28 | 0.80 | 65 |
+| 15 | Lucy Kovalova | +3.77 | 0.93 | 43 |
+| 16 | Chao Yi Wang | +3.73 | 0.53 | 112 |
+| 17 | Lacy Schneemann | +3.72 | 0.47 | 174 |
+| 18 | Sahra Dennehy | +3.49 | 0.76 | 51 |
+| 19 | Meghan Dizon | +3.45 | 0.53 | 134 |
+| 20 | Marisa Ruiz | +3.44 | 0.93 | 51 |
+| 21 | Catherine Parenteau | +3.42 | 0.53 | 200 |
+| 22 | Estee Widdershoven | +3.37 | 0.63 | 111 |
+| 23 | Allyce Jones | +3.36 | 0.57 | 132 |
+| 24 | Carlota Trevino | +3.25 | 0.59 | 108 |
+| 25 | Isabella Dunlap | +3.23 | 0.47 | 198 |
 
 ## Focal players
 

@@ -168,13 +168,17 @@ def main():
       "A pairing's predicted margin ≈ (v+w of your two) − (v+w of theirs) + chemistry terms.\n")
     elig = [p for p in players if p["games"] >= MIN_GAMES_LEADERBOARD]
     elig.sort(key=lambda p: -p["value_mean"])
-    A("| rank | player | value | ±sd | games | w_mixed | w_mens | w_womens |")
-    A("|--:|:--|--:|--:|--:|--:|--:|--:|")
-    for i, p in enumerate(elig[:20], 1):
-        wm = p["w_mixed"] or "—"; wn = p["w_mens"] or "—"; ww = p["w_womens"] or "—"
-        A(f"| {i} | {p['full_name']}{' *(focal)*' if p['full_name'] in FOCAL else ''} | "
-          f"{f(p['value_mean'])} | {p['value_sd']:.2f} | {p['games']} | {wm} | {wn} | {ww} |")
-    A("")
+    A("Shown separately by gender — within-gender order is data-driven; the alignment "
+      "*between* the two lists is the equal-pools prior convention (see above).\n")
+    for gkey, glabel in (("M", "Men"), ("F", "Women")):
+        sub = [p for p in elig if p["gender"] == gkey]
+        A(f"### {glabel} (top 25 of {len(sub)} with ≥{MIN_GAMES_LEADERBOARD} games)\n")
+        A("| rank | player | value | ±sd | games |")
+        A("|--:|:--|--:|--:|--:|")
+        for i, p in enumerate(sub[:25], 1):
+            A(f"| {i} | {p['full_name']}{' *(focal)*' if p['full_name'] in FOCAL else ''} | "
+              f"{f(p['value_mean'])} | {p['value_sd']:.2f} | {p['games']} |")
+        A("")
 
     # focal profiles
     A("## Focal players\n")
