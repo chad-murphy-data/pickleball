@@ -301,6 +301,13 @@ def main():
           "the difference is. Candidate real mechanisms (court-side preference conflicts, "
           "role redundancy) and plain multiple-comparisons luck are both live; the "
           "season's remaining games are the honest test.\n")
+        A("A further confound: for both stars the negative-chemistry partner is PPA-only "
+          "(Waters, Alshon) and the positive-chemistry partner is MLP-only (Fahey, "
+          "Tardio), so the partner contrast is collinear with a player-by-tour contrast "
+          "the model doesn't include. The one testable implication — Bright+Patriquin's "
+          "own games split by tour — shows no MLP advantage (MLP +0.04 ± 0.94 vs PPA "
+          "+0.36 ± 0.77, unshrunk), which disfavors but cannot rule out the tour story "
+          "(only 23 MLP games together).\n")
 
     # ---- temporal holdout (if holdout_summary.json exists) ----
     ho_p = ROOT / "model" / "holdout_summary.json"

@@ -286,6 +286,8 @@ Note for Bright + Patriquin specifically: Patriquin is Bright's only mixed partn
 
 A player's value is fitted to their *average* performance across partnerships, so their dyad effects are deviations around that average: one strongly negative pairing mechanically implies their other pairings lean positive. The apparent "outliers" (Waters+Bright −1.7, Alshon+Patriquin −1.7) and the mirrored positives (Bright+Fahey +1.6, Patriquin+Tardio +1.8) are therefore **not independent facts** — each within-player set is one identified contrast: *Bright's games with Waters run ~2–3 points worse than her games with her other partners* (≈2.3σ), and likewise Patriquin with Alshon vs Tardio (≈2.3σ). Which pairing deserves the label "bad" vs "good" is not identified — only the difference is. Candidate real mechanisms (court-side preference conflicts, role redundancy) and plain multiple-comparisons luck are both live; the season's remaining games are the honest test.
 
+A further confound: for both stars the negative-chemistry partner is PPA-only (Waters, Alshon) and the positive-chemistry partner is MLP-only (Fahey, Tardio), so the partner contrast is collinear with a player-by-tour contrast the model doesn't include. The one testable implication — Bright+Patriquin's own games split by tour — shows no MLP advantage (MLP +0.04 ± 0.94 vs PPA +0.36 ± 0.77, unshrunk), which disfavors but cannot rule out the tour story (only 23 MLP games together).
+
 ## Does it predict? Temporal holdout
 
 Model refit on games before 2026-06-01 only, then used to predict every later game whose four players all had ≥10 training games (n = 686 — mostly MLP, predicted from PPA-heavy training):
