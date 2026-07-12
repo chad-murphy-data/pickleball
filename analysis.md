@@ -247,22 +247,44 @@ OLS with a fixed effect per player + one dyad dummy, cluster-robust SEs by match
 
 | pair | context | games | unshrunk est. | ±se | t | Bayesian (shrunk) |
 |:--|:--|--:|--:|--:|--:|--:|
+| Kate Fahey + Gabriel Tardio | mixed | 19 | +1.78 | 1.13 | +1.6 | +0.31 |
+| Gabriel Tardio + Hayden Patriquin | mens | 25 | +1.76 | 1.18 | +1.5 | +0.30 |
+| Kate Fahey + Anna Bright | womens | 25 | +1.59 | 1.11 | +1.4 | +0.34 |
+| Anna Leigh Waters + Jorja Johnson | womens | 25 | +1.49 | 0.85 | +1.8 | +0.34 |
+| Jade Kawamoto + Jackie Kawamoto | womens | 29 | +1.31 | 1.24 | +1.1 | +0.20 |
+| Christian Alshon + Tyra Hurricane Black | mixed | 21 | +1.23 | 1.20 | +1.0 | +0.19 |
+| Jade Kawamoto + Ben Johns | mixed | 19 | +1.20 | 1.35 | +0.9 | +0.23 |
+| Anna Leigh Waters + Noe Khlif | mixed | 25 | +1.05 | 1.08 | +1.0 | +0.22 |
+| Jorja Johnson + Will Howells | mixed | 21 | +0.84 | 1.27 | +0.7 | +0.12 |
+| Parris Todd + Tyra Hurricane Black | womens | 22 | +0.72 | 0.81 | +0.9 | +0.22 |
 | Kate Fahey + Federico Staksrud | mixed | 78 | +0.59 | 0.84 | +0.7 | +0.16 |
 | Anna Bright + Hayden Patriquin | mixed | 138 | +0.54 | 0.92 | +0.6 | +0.10 |
+| Ben Johns + Max Freeman | mens | 20 | +0.24 | 1.04 | +0.2 | +0.10 |
+| Federico Staksrud + Milan Rane | mixed | 18 | +0.13 | 0.94 | +0.1 | +0.07 |
+| Parris Todd + Kate Fahey | womens | 28 | +0.05 | 1.03 | +0.1 | +0.03 |
+| Noe Khlif + Tyra Hurricane Black | mixed | 17 | +0.02 | 1.02 | +0.0 | +0.07 |
 | Andrei Daescu + Federico Staksrud | mens | 101 | -0.02 | 0.77 | -0.0 | +0.06 |
+| Andrei Daescu + Gabriel Tardio | mens | 15 | -0.04 | 1.12 | -0.0 | -0.05 |
 | Jorja Johnson + Tyra Hurricane Black | womens | 83 | -0.04 | 0.88 | -0.1 | -0.03 |
 | Noe Khlif + Tina Pisnik | mixed | 46 | -0.08 | 0.93 | -0.1 | +0.01 |
 | Anna Leigh Waters + Ben Johns | mixed | 111 | -0.20 | 0.88 | -0.2 | -0.00 |
 | Ben Johns + Gabriel Tardio | mens | 113 | -0.51 | 0.87 | -0.6 | -0.07 |
 | Catherine Parenteau + Gabriel Tardio | mixed | 79 | -0.52 | 0.90 | -0.6 | -0.00 |
+| Jade Kawamoto + Catherine Parenteau | womens | 29 | -0.70 | 1.25 | -0.6 | -0.04 |
+| Andrei Daescu + Tyra Hurricane Black | mixed | 21 | -0.81 | 1.26 | -0.6 | -0.11 |
+| Jack Sock + Federico Staksrud | mens | 15 | -0.81 | 1.31 | -0.6 | -0.05 |
 | Jorja Johnson + JW Johnson | mixed | 95 | -1.27 | 0.93 | -1.4 | -0.14 |
 | Noe Khlif + Will Howells | mens | 41 | -1.58 | 1.13 | -1.4 | -0.18 |
 | Anna Leigh Waters + Anna Bright | womens | 98 | -1.72 | 0.92 | -1.9 | -0.15 |
 | Christian Alshon + Hayden Patriquin | mens | 95 | -1.72 | 0.90 | -1.9 | -0.21 |
 
-Across all 50 high-volume dyads, the t-statistics have mean +0.31 and sd 1.28 (pure noise would give ≈0 and ≈1). The mild overdispersion is the small league-wide chemistry variance; the positive mean hints at survivorship (pairs that keep playing together are pairs it's working for). No individual pair separates from the pack.
+Across all 200 high-volume dyads, the t-statistics have mean +0.44 and sd 1.32 (pure noise would give ≈0 and ≈1). The mild overdispersion is the small league-wide chemistry variance; the positive mean hints at survivorship (pairs that keep playing together are pairs it's working for). No individual pair separates from the pack.
 
 Note for Bright + Patriquin specifically: Patriquin is Bright's only mixed partner, so her personal mixed-context shift and the pair dummy are the same regression column — the unshrunk estimate is their *sum*, i.e. if anything an overstatement of pure pair chemistry.
+
+### Why a player's dyad estimates see-saw (read before over-interpreting)
+
+A player's value is fitted to their *average* performance across partnerships, so their dyad effects are deviations around that average: one strongly negative pairing mechanically implies their other pairings lean positive. The apparent "outliers" (Waters+Bright −1.7, Alshon+Patriquin −1.7) and the mirrored positives (Bright+Fahey +1.6, Patriquin+Tardio +1.8) are therefore **not independent facts** — each within-player set is one identified contrast: *Bright's games with Waters run ~2–3 points worse than her games with her other partners* (≈2.3σ), and likewise Patriquin with Alshon vs Tardio (≈2.3σ). Which pairing deserves the label "bad" vs "good" is not identified — only the difference is. Candidate real mechanisms (court-side preference conflicts, role redundancy) and plain multiple-comparisons luck are both live; the season's remaining games are the honest test.
 
 ## Does it predict? Temporal holdout
 

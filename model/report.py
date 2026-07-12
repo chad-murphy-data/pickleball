@@ -288,6 +288,19 @@ def main():
           "partner, so her personal mixed-context shift and the pair dummy are the same "
           "regression column — the unshrunk estimate is their *sum*, i.e. if anything an "
           "overstatement of pure pair chemistry.\n")
+        A("### Why a player's dyad estimates see-saw (read before over-interpreting)\n")
+        A("A player's value is fitted to their *average* performance across partnerships, "
+          "so their dyad effects are deviations around that average: one strongly negative "
+          "pairing mechanically implies their other pairings lean positive. The apparent "
+          "\"outliers\" (Waters+Bright −1.7, Alshon+Patriquin −1.7) and the mirrored "
+          "positives (Bright+Fahey +1.6, Patriquin+Tardio +1.8) are therefore **not "
+          "independent facts** — each within-player set is one identified contrast: "
+          "*Bright's games with Waters run ~2–3 points worse than her games with her other "
+          "partners* (≈2.3σ), and likewise Patriquin with Alshon vs Tardio (≈2.3σ). "
+          "Which pairing deserves the label \"bad\" vs \"good\" is not identified — only "
+          "the difference is. Candidate real mechanisms (court-side preference conflicts, "
+          "role redundancy) and plain multiple-comparisons luck are both live; the "
+          "season's remaining games are the honest test.\n")
 
     # ---- temporal holdout (if holdout_summary.json exists) ----
     ho_p = ROOT / "model" / "holdout_summary.json"

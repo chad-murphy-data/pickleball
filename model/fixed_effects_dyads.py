@@ -26,7 +26,7 @@ from scipy.sparse.linalg import spsolve
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 
-MIN_G = 30
+MIN_G = int(__import__("os").environ.get("FE_MIN_G", 30))
 FOCAL_PAIRS = [
     ("Anna Bright", "Hayden Patriquin"),
     ("Anna Leigh Waters", "Ben Johns"),
