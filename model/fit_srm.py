@@ -53,6 +53,7 @@ PLAYER_TOUR = os.environ.get("SRM_PLAYER_TOUR", "") == "1"
 NEWNESS = os.environ.get("SRM_NEWNESS", "") == "1"
 SAVE_DRAWS = os.environ.get("SRM_SAVE_DRAWS", "") == "1"
 MINMAX = os.environ.get("SRM_MINMAX", "") == "1"
+MIXTEST = os.environ.get("SRM_MIXTEST", "") == "1"
 NEW_GAMES = 6      # a dyad's first N games count as "new"
 NEW_MIN_TOTAL = 15 # ...but only for pairs that eventually log >= this many
 
@@ -84,6 +85,12 @@ def load():
     dat["xnew"] = xnew
     players = list(csv.DictReader((DATA / f"model_players{SUFFIX}.csv").open()))
     dyads = list(csv.DictReader((DATA / f"model_dyads{SUFFIX}.csv").open()))
+    gmap = {"M": 1.0, "F": -1.0}
+    gender = np.array([gmap.get(p["gender"], 0.0) for p in players], dtype=np.float32)
+    dat["slot_gender"] = gender[dat["a"]]          # (games, 4)
+    # apply mixed terms only when all four genders are known
+    known = (np.abs(dat["slot_gender"]).sum(axis=1) == 4).astype(np.float32)
+    dat["mixed_ok"] = known * (dat["ctx"] == 0)
     return dat, players, dyads
 
 
@@ -124,6 +131,20 @@ def model(dat, n_players, n_dyads, n_matches, n_pc, pc, pt=None, n_pt=0):
         gamma = numpyro.sample("gamma", dist.Normal(0, 0.5))
         team1 = team1 + gamma * jnp.abs(val[:, 0] - val[:, 1])
         team2 = team2 + gamma * jnp.abs(val[:, 2] - val[:, 3])
+    if MIXTEST:
+        # horse race in mixed: gender-blind weakest link (gamma_mix * |gap|)
+        # vs gender-role weighting (delta * (v_man - v_woman), offset-immune)
+        gamma_same = numpyro.sample("gamma_same", dist.Normal(0, 0.5))
+        gamma_mix = numpyro.sample("gamma_mix", dist.Normal(0, 0.5))
+        delta = numpyro.sample("delta", dist.Normal(0, 0.5))
+        is_mixed = dat["mixed_ok"]
+        is_same = 1.0 - (dat["ctx"] == 0)
+        g1 = jnp.abs(val[:, 0] - val[:, 1]); g2 = jnp.abs(val[:, 2] - val[:, 3])
+        sg = dat["slot_gender"]
+        signed1 = sg[:, 0] * val[:, 0] + sg[:, 1] * val[:, 1]   # v_man - v_woman, team1
+        signed2 = sg[:, 2] * val[:, 2] + sg[:, 3] * val[:, 3]
+        team1 = team1 + is_same * gamma_same * g1 + is_mixed * (gamma_mix * g1 + delta * signed1)
+        team2 = team2 + is_same * gamma_same * g2 + is_mixed * (gamma_mix * g2 + delta * signed2)
     mu = (beta_tour[dat["tour"]]
           + team1 - team2
           + d[dat["dyad1"]] - d[dat["dyad2"]]
@@ -167,7 +188,7 @@ def main():
 
     # scalars + convergence
     from numpyro.diagnostics import summary as nsummary
-    extra_scalars = [k for k in ("sd_pt", "beta_new", "gamma") if k in samp]
+    extra_scalars = [k for k in ("sd_pt", "beta_new", "gamma", "gamma_same", "gamma_mix", "delta") if k in samp]
     scal = nsummary({k: samp[k] for k in
                      ("sd_v", "sd_w", "sd_d", "sd_m", "sd_e", "beta_tour") + tuple(extra_scalars)})
     rhats = []
