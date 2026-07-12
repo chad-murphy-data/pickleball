@@ -1,0 +1,254 @@
+"""Generate analysis.md from the fitted SRM results.
+
+Run after fit_srm.py:  python model/report.py
+"""
+from __future__ import annotations
+
+import csv
+import json
+import math
+from collections import defaultdict
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+DATA = ROOT / "data"
+OUT = ROOT / "analysis.md"
+
+FOCAL = ["Ben Johns", "Anna Leigh Waters", "Anna Bright", "Hayden Patriquin",
+         "Gabriel Tardio", "Federico Staksrud", "Jade Kawamoto", "Jorja Johnson",
+         "Will Howells", "Noe Khlif", "Kate Fahey", "Tyra Hurricane Black"]
+
+MIN_GAMES_LEADERBOARD = 40
+MIN_GAMES_CHEM = 15
+
+
+def f(x, nd=2):
+    return f"{float(x):+.{nd}f}"
+
+
+def ordinal(x):
+    n = int(round(float(x)))
+    suf = "th" if 10 <= n % 100 <= 20 else {1: "st", 2: "nd", 3: "rd"}.get(n % 10, "th")
+    return f"{n}{suf}"
+
+
+def main():
+    players = list(csv.DictReader((DATA / "results_players.csv").open()))
+    dyads = list(csv.DictReader((DATA / "results_dyads.csv").open()))
+    fit = json.loads((ROOT / "model" / "fit_summary.json").read_text())
+    for p in players:
+        p["games"] = int(p["games"]); p["value_mean"] = float(p["value_mean"])
+        p["value_sd"] = float(p["value_sd"])
+    for d in dyads:
+        d["games"] = int(d["games"]); d["chemistry_mean"] = float(d["chemistry_mean"])
+        d["chemistry_sd"] = float(d["chemistry_sd"])
+        d["p_positive"] = float(d["p_positive"]); d["percentile"] = float(d["percentile"])
+
+    by_name = {p["full_name"]: p for p in players}
+    sc = fit["scalars"]
+
+    def scalar(name, idx=None):
+        m = sc[name]["mean"]
+        s = sc[name]["std"]
+        if idx is not None:
+            return float(m[idx]), float(s[idx])
+        return float(m), float(s)
+
+    sd_v, _ = scalar("sd_v"); sd_w, _ = scalar("sd_w")
+    sd_d, _ = scalar("sd_d"); sd_m, _ = scalar("sd_m"); sd_e, _ = scalar("sd_e")
+    b_mlp = scalar("beta_tour", 0); b_ppa = scalar("beta_tour", 1)
+
+    L = []
+    A = L.append
+    A("# analysis.md — player value & pair chemistry, 2026 MLP + PPA\n")
+
+    # ---- headlines (computed) ----
+    def dyad_row(n1, n2):
+        for dd in dyads:
+            if {dd["p1_name"], dd["p2_name"]} == {n1, n2}:
+                return dd
+        return None
+
+    elig_h = sorted([p for p in players if p["games"] >= MIN_GAMES_LEADERBOARD],
+                    key=lambda p: -p["value_mean"])
+    top = elig_h[0]
+    bp = dyad_row("Anna Bright", "Hayden Patriquin")
+    wj = dyad_row("Anna Leigh Waters", "Ben Johns")
+    bw = dyad_row("Anna Leigh Waters", "Anna Bright")
+    A("## Headlines\n")
+    A(f"1. **Individual value dwarfs chemistry.** Player-value spread is sd = {sd_v:.2f} "
+      f"points/game; pair chemistry spread is sd = {sd_d:.2f}. Who you are matters ~"
+      f"{sd_v/sd_d:.0f}× more than who you're standing next to. Chemistry exists league-wide "
+      "(sd_d is bounded away from zero) but is small, and no single pair's chemistry is "
+      "certifiable with high confidence — even 100+ game dyads carry ±0.45 posteriors.")
+    A(f"2. **{top['full_name']} is #1 by a wide margin** ({f(top['value_mean'])} pts/game vs "
+      f"{f(elig_h[1]['value_mean'])} for #{2} {elig_h[1]['full_name']}).")
+    if bp:
+        A(f"3. **Bright + Patriquin's dominance is star power, not magic.** Their mixed "
+          f"chemistry is {f(bp['chemistry_mean'])} ± {bp['chemistry_sd']:.2f} "
+          f"({ordinal(bp['percentile'])} percentile, P(>0) = {bp['p_positive']:.2f}) over "
+          f"{bp['games']} games — mildly positive, far from certain. Their expected margin "
+          "comes almost entirely from both being top-5 players.")
+    if wj:
+        A(f"4. **Waters + Johns are exactly the sum of their parts**: chemistry "
+          f"{f(wj['chemistry_mean'])} ({ordinal(wj['percentile'])} pct) across {wj['games']} games.")
+    if bw:
+        A(f"5. **The Waters + Bright superteam slightly *under*-performs its parts** "
+          f"({f(bw['chemistry_mean'])}, {ordinal(bw['percentile'])} percentile, {bw['games']} games) "
+          "— two #1-caliber players don't add a bonus on top of being overwhelming favorites.")
+    A(f"6. **Skill transfers across contexts almost perfectly**: the mixed/mens/womens "
+      f"deviation scale is sd_w = {sd_w:.2f} — negligible. A player's gendered-doubles level "
+      "is their mixed level.\n")
+
+    A("## What is (and is not) identifiable — the \"actor vs partner\" question\n")
+    A("The original brief asked to separate each player's **actor effect** (own skill) "
+      "from their **partner effect** (how much they elevate whoever stands next to them). "
+      "With team-level margins that split is **not identifiable**: if a team's strength is "
+      "`actor_i + partner_j→i + actor_j + partner_i→j`, then only the sums "
+      "`(actor_i + partner_i)` and `(actor_j + partner_j)` ever enter the likelihood — any "
+      "reallocation between a player's actor and partner components produces identical "
+      "predictions for every game, including counterfactual pairings. No amount of data "
+      "fixes this; it's structural. (Kenny's classic SRM separates them because dyadic "
+      "outcomes there are *directional* — i's rating of j differs from j's rating of i. "
+      "A game margin has no direction within a team.)\n")
+    A("What the data **does** identify:\n")
+    A("1. **Player value** `v_i` — total points per game a player adds to their team's "
+      "margin (actor + partner combined), with context-specific deviations (mixed/mens/womens).")
+    A("2. **Dyad chemistry** `d_ij` — how far a specific pair deviates from the sum of its "
+      "parts. This is exactly the \"relationship effect\" of the SRM.")
+    A("3. **Partner-dependence** (descriptive) — the spread of a player's dyad effects: "
+      "players whose pairs consistently over/under-perform additivity vs. players who are "
+      "partner-proof.\n")
+
+    A("## Model\n")
+    A("```")
+    A("margin_g ~ Normal(mu_g, sigma_e)")
+    A("mu_g = beta_tour + sum(v_i + w_i,ctx | team1) - sum(... | team2)")
+    A("     + d_dyad1 - d_dyad2 + m_match")
+    A("v ~ N(0, sd_v)   w ~ N(0, sd_w)   d ~ N(0, sd_d)   m ~ N(0, sd_m)")
+    A("```")
+    A("Fit with NUTS (numpyro), 2 chains × 700/700, non-centered, on the 8,875 "
+      "side-out-to-11 non-forfeit games (to-15 Challenger rounds excluded — different "
+      "margin scale).\n")
+    conv = fit.get("max_rhat_v_d", [])
+    A(f"Convergence: {fit.get('n_divergences', '?')} divergences; "
+      f"max R̂ over all player values {conv[0]:.3f}, over all dyad effects {conv[1]:.3f}.\n")
+
+    A("### Variance decomposition (posterior means of scales)\n")
+    A("| component | sd (points) | interpretation |")
+    A("|:--|--:|:--|")
+    A(f"| player value sd_v | {sd_v:.2f} | spread of individual ability |")
+    A(f"| context deviation sd_w | {sd_w:.2f} | how much skill shifts across mixed/mens/womens |")
+    A(f"| dyad chemistry sd_d | {sd_d:.2f} | typical size of pair-specific synergy |")
+    A(f"| match intercept sd_m | {sd_m:.2f} | shared match-day component (Bo3 correlation) |")
+    A(f"| residual sd_e | {sd_e:.2f} | game-to-game noise |")
+    A(f"\nTeam-one bias: MLP {f(b_mlp[0])} ± {b_mlp[1]:.2f} (≈0, as expected — home/away is "
+      f"arbitrary), PPA {f(b_ppa[0])} ± {b_ppa[1]:.2f} (small residual seeding bias after "
+      "conditioning on player values; compare +2.79 raw).\n")
+
+    # leaderboard
+    A(f"## Leaderboard — player value (≥{MIN_GAMES_LEADERBOARD} games)\n")
+    A("`value` = points per game added to team margin vs. an average pro in this pool. "
+      "A pairing's predicted margin ≈ (v+w of your two) − (v+w of theirs) + chemistry terms.\n")
+    elig = [p for p in players if p["games"] >= MIN_GAMES_LEADERBOARD]
+    elig.sort(key=lambda p: -p["value_mean"])
+    A("| rank | player | value | ±sd | games | w_mixed | w_mens | w_womens |")
+    A("|--:|:--|--:|--:|--:|--:|--:|--:|")
+    for i, p in enumerate(elig[:20], 1):
+        wm = p["w_mixed"] or "—"; wn = p["w_mens"] or "—"; ww = p["w_womens"] or "—"
+        A(f"| {i} | {p['full_name']}{' *(focal)*' if p['full_name'] in FOCAL else ''} | "
+          f"{f(p['value_mean'])} | {p['value_sd']:.2f} | {p['games']} | {wm} | {wn} | {ww} |")
+    A("")
+
+    # focal profiles
+    A("## Focal players\n")
+    A("| player | value | ±sd | games | value rank (≥40g) |")
+    A("|:--|--:|--:|--:|--:|")
+    ranks = {p["full_name"]: i for i, p in enumerate(elig, 1)}
+    for name in FOCAL:
+        p = by_name.get(name)
+        if not p:
+            A(f"| {name} | — | | | |")
+            continue
+        A(f"| {name} | {f(p['value_mean'])} | {p['value_sd']:.2f} | {p['games']} | "
+          f"{ranks.get(name, '—')}/{len(elig)} |")
+    A("")
+
+    # chemistry
+    A(f"## Pair chemistry (dyads with ≥{MIN_GAMES_CHEM} games)\n")
+    A("`chemistry` = points per game beyond the sum of the two players' values. "
+      "`P(>0)` = posterior probability the synergy is real rather than shrinkage noise.\n")
+    chem = [d for d in dyads if d["games"] >= MIN_GAMES_CHEM]
+    chem.sort(key=lambda d: -d["chemistry_mean"])
+    A("### Best chemistry\n")
+    A("| pair | context | chem | ±sd | P(>0) | pct | games |")
+    A("|:--|:--|--:|--:|--:|--:|--:|")
+    for d in chem[:12]:
+        A(f"| {d['p1_name']} + {d['p2_name']} | {d['context']} | {f(d['chemistry_mean'])} | "
+          f"{d['chemistry_sd']:.2f} | {d['p_positive']:.2f} | {d['percentile']:.0f} | {d['games']} |")
+    A("\n### Worst chemistry\n")
+    A("| pair | context | chem | ±sd | P(>0) | pct | games |")
+    A("|:--|:--|--:|--:|--:|--:|--:|")
+    for d in chem[-8:]:
+        A(f"| {d['p1_name']} + {d['p2_name']} | {d['context']} | {f(d['chemistry_mean'])} | "
+          f"{d['chemistry_sd']:.2f} | {d['p_positive']:.2f} | {d['percentile']:.0f} | {d['games']} |")
+    A("")
+
+    A("### Focal dyads\n")
+    A("| pair | context | chem | ±sd | P(>0) | pct | games |")
+    A("|:--|:--|--:|--:|--:|--:|--:|")
+    focal_set = set(FOCAL)
+    fd = [d for d in dyads
+          if (d["p1_name"] in focal_set or d["p2_name"] in focal_set) and d["games"] >= 10]
+    fd.sort(key=lambda d: -d["chemistry_mean"])
+    for d in fd:
+        A(f"| {d['p1_name']} + {d['p2_name']} | {d['context']} | {f(d['chemistry_mean'])} | "
+          f"{d['chemistry_sd']:.2f} | {d['p_positive']:.2f} | {d['percentile']:.0f} | {d['games']} |")
+    A("")
+
+    # partner-dependence: spread of a player's dyad means (>=8 games each, >=3 dyads)
+    A("## Partner-dependence (descriptive)\n")
+    A("Std-dev of a player's dyad-chemistry estimates (dyads with ≥8 games, players with "
+      "≥3 such dyads). High = chemistry-sensitive; low = partner-proof. Descriptive only — "
+      "see the identifiability note.\n")
+    per_player = defaultdict(list)
+    for d in dyads:
+        if d["games"] >= 8:
+            per_player[d["p1_name"]].append(d["chemistry_mean"])
+            per_player[d["p2_name"]].append(d["chemistry_mean"])
+    rows = []
+    for name, chems in per_player.items():
+        if len(chems) >= 3 and name in by_name and by_name[name]["games"] >= MIN_GAMES_LEADERBOARD:
+            mu = sum(chems) / len(chems)
+            sd = math.sqrt(sum((c - mu) ** 2 for c in chems) / (len(chems) - 1))
+            rows.append((name, len(chems), mu, sd))
+    rows.sort(key=lambda r: -r[3])
+    A("| player | dyads | mean chem | spread (sd) |")
+    A("|:--|--:|--:|--:|")
+    for name, n, mu, sd in rows[:12]:
+        A(f"| {name}{' *(focal)*' if name in FOCAL else ''} | {n} | {f(mu)} | {sd:.2f} |")
+    A("\n*Most partner-proof (lowest spread):*\n")
+    A("| player | dyads | mean chem | spread (sd) |")
+    A("|:--|--:|--:|--:|")
+    for name, n, mu, sd in rows[-8:]:
+        A(f"| {name}{' *(focal)*' if name in FOCAL else ''} | {n} | {f(mu)} | {sd:.2f} |")
+    A("")
+
+    A("## Caveats\n")
+    A("- Single 2026 season, mid-season snapshot (through Jul 11): no time-varying skill; "
+      "Patriquin-type trajectories are averaged over the window.")
+    A("- Margins treated as Gaussian; to-11 games truncate blowouts (±11-ish cap), so "
+      "elite values are mildly compressed relative to \"true\" dominance.")
+    A("- Anna Bright's mixed games are 100% with Patriquin: her mixed context deviation and "
+      "that dyad's chemistry are separated only by the pooled hierarchical structure.")
+    A("- Selection: PPA game 3 exists only after 1–1 splits; handled by the match intercept, "
+      "not modeled as an explicit selection process.")
+    A("- Qualifier and Challenger main-draw games are included; they mostly inform the tail "
+      "of the player pool and tighten opponent-quality adjustment for focal players.")
+
+    OUT.write_text("\n".join(L))
+    print(f"wrote {OUT}")
+
+
+if __name__ == "__main__":
+    main()
