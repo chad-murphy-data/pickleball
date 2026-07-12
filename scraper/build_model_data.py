@@ -33,8 +33,12 @@ def main():
     import os
     min_pg = int(os.environ.get("MIN_PLAYER_GAMES", 0))
     suffix = os.environ.get("OUT_SUFFIX", "")
+    date_before = os.environ.get("DATE_BEFORE", "")
     games = [g for g in csv.DictReader((DATA / "games.csv").open())
              if g["is_forfeit"] == "False" and g["scoring_format"] == "sideout_11"]
+    if date_before:
+        games = [g for g in games if g["date"] < date_before]
+        print(f"date filter < {date_before}: {len(games)} games")
     players = {r["player_id"]: r for r in csv.DictReader((DATA / "players.csv").open())}
     if min_pg:
         # "core pool" robustness: keep only games where all four players have

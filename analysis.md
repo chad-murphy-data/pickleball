@@ -202,6 +202,19 @@ Std-dev of a player's dyad-chemistry estimates (dyads with ≥8 games, players w
 | Lyn Yuen Choo | 3 | +0.07 | 0.03 |
 | Mark Dancuart | 5 | +0.06 | 0.02 |
 
+## Does it predict? Temporal holdout
+
+Model refit on games before 2026-06-01 only, then used to predict every later game whose four players all had ≥10 training games (n = 686 — mostly MLP, predicted from PPA-heavy training):
+
+| metric | model | coin flip |
+|:--|--:|--:|
+| winner accuracy | 74.9% | 50% |
+| Brier score | 0.177 | 0.250 |
+| log loss | 0.533 | 0.693 |
+| margin MAE | 4.38 | 5.69 (predict 0) |
+
+Calibration is *under*confident (e.g. games called ~65% go the favorite's way ~76% of the time) — the conservative direction: player values generalize at least as well as their posteriors claim.
+
 ## Robustness: core-pool refit ("real pros only")
 
 Same model refit on games where **all four players have ≥30 appearances** (4,698 games, 312 players — drops Challenger one-weekenders and qualifier cannon fodder). Result:

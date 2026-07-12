@@ -250,6 +250,25 @@ def main():
         A(f"| {name}{' *(focal)*' if name in FOCAL else ''} | {n} | {f(mu)} | {sd:.2f} |")
     A("")
 
+    # ---- temporal holdout (if holdout_summary.json exists) ----
+    ho_p = ROOT / "model" / "holdout_summary.json"
+    if ho_p.exists():
+        ho = json.loads(ho_p.read_text())
+        A("## Does it predict? Temporal holdout\n")
+        A(f"Model refit on games before {ho['split']} only, then used to predict every "
+          f"later game whose four players all had ≥10 training games "
+          f"(n = {ho['test_games_evaluable']} — mostly MLP, predicted from PPA-heavy "
+          "training):\n")
+        A("| metric | model | coin flip |")
+        A("|:--|--:|--:|")
+        A(f"| winner accuracy | {ho['accuracy']:.1%} | 50% |")
+        A(f"| Brier score | {ho['brier']:.3f} | 0.250 |")
+        A(f"| log loss | {ho['log_loss']:.3f} | 0.693 |")
+        A(f"| margin MAE | {ho['mae_model']:.2f} | {ho['mae_zero_baseline']:.2f} (predict 0) |")
+        A("\nCalibration is *under*confident (e.g. games called ~65% go the favorite's way "
+          "~76% of the time) — the conservative direction: player values generalize at "
+          "least as well as their posteriors claim.\n")
+
     # ---- core-pool robustness (if the _core fit exists) ----
     core_p = DATA / "results_players_core.csv"
     if core_p.exists():
