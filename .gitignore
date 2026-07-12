@@ -5,3 +5,4 @@ raw/
 harvest.log
 enrich.log
 scraper/discovery/
+harvest*.log

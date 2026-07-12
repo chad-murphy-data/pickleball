@@ -92,20 +92,20 @@ womens,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento
 womens,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,2e9b69d8-2803-4b00-aee5-19017e282cd6,no played games (forfeit/walkover),Qualifier — Semi-Finals,PPA
 womens,2026-04-17,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,fc32f379-939f-405b-ad7f-b01db39f4912,no played games (forfeit/walkover),Quarter Finals,PPA
 womens,2026-04-19,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,b53896c8-7fc8-4a11-bcf7-0a212ec771ef,no played games (forfeit/walkover),Bronze,PPA
-mens,2026-05-30,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,ff67d98b-1a45-4eee-8bbe-622cdba7eda7,"missing player uuid(s): t1_p1,t1_p2",,PPA
-womens,2026-05-30,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,5481b156-2df4-40c0-9335-33e5f19c405c,"missing player uuid(s): t1_p1,t1_p2",,PPA
+mens,2026-05-30,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,ff67d98b-1a45-4eee-8bbe-622cdba7eda7,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-05-30,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,5481b156-2df4-40c0-9335-33e5f19c405c,"bracket bye/shell (empty side, no scores)",,PPA
 mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,073346ef-b652-4133-ba62-b2b0a0f9e836,no played games (forfeit/walkover),,PPA
 mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,85be58fa-a842-4a69-ab47-332eac09f827,no played games (forfeit/walkover),,PPA
 mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,adce84ee-07cd-4e8c-a348-3ba4bac980f9,no played games (forfeit/walkover),Round 32,PPA
-mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,1c915e98-4aa3-4d39-abab-3d9f15892117,"missing player uuid(s): t1_p1,t1_p2",,PPA
+mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,1c915e98-4aa3-4d39-abab-3d9f15892117,"bracket bye/shell (empty side, no scores)",,PPA
 mens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,b2b0e91c-2762-4434-bc97-afeabaa6d15e,no played games (forfeit/walkover),,PPA
 mens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,6fa4738f-20bd-4e94-aeb5-8c06ed5a6ba6,no played games (forfeit/walkover),,PPA
 mens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,70a88152-dc47-4fa4-8800-3caf2453a9bd,no played games (forfeit/walkover),Round 32,PPA
-mens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,cdc40432-fa04-40a9-a5a9-ed3bacb8fbd2,"missing player uuid(s): t1_p1,t1_p2",,PPA
-womens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,a0ef11ef-f7f5-4ec7-879c-0240f626266c,"missing player uuid(s): t1_p1,t1_p2",,PPA
+mens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,cdc40432-fa04-40a9-a5a9-ed3bacb8fbd2,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,a0ef11ef-f7f5-4ec7-879c-0240f626266c,"bracket bye/shell (empty side, no scores)",,PPA
 mixed,2026-06-28,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,69cf9e93-4214-4d70-8e10-271c34aab10f,no played games (forfeit/walkover),,PPA
 mixed,2026-06-28,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,6a0b21e2-3108-4374-ab88-0ab81623d343,no played games (forfeit/walkover),,PPA
-mixed,2026-06-28,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,1f7a8690-0b83-4ac2-8b2f-4f63656aa2c2,"missing player uuid(s): t1_p1,t1_p2",,PPA
+mixed,2026-06-28,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,1f7a8690-0b83-4ac2-8b2f-4f63656aa2c2,"bracket bye/shell (empty side, no scores)",,PPA
 mixed,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,e9db2f8e-06cd-44b4-9836-f604217c0d66,match not completed (status=1),Qualifier — Quarter Finals,PPA
 mixed,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,bfaf6a9e-55ee-46ba-82eb-90b6b49865a1,match not completed (status=1),Qualifier — Quarter Finals,PPA
 mixed,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,9248b335-553b-410f-9c66-2d7bbd2fff30,match not completed (status=1),Qualifier — Quarter Finals,PPA
@@ -193,14 +193,14 @@ mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger
 mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,6b6823eb-ff3d-4e78-bf72-58812e181ef9,no played games (forfeit/walkover),,PPA
 mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,e41ddc1e-477e-4f3b-9b0a-08064cd2d11e,no played games (forfeit/walkover),Round 64,PPA
 mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,8c61e747-536d-4a4d-82e2-746ac92d1793,no played games (forfeit/walkover),Round 64,PPA
-mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,b1c1eb39-c184-43c3-8851-4460f6df1c28,"missing player uuid(s): t1_p1,t1_p2",,PPA
-womens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,94d3aa2b-df9e-45ad-a467-c715e94a43a6,"missing player uuid(s): t1_p1,t1_p2",,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,b1c1eb39-c184-43c3-8851-4460f6df1c28,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,94d3aa2b-df9e-45ad-a467-c715e94a43a6,"bracket bye/shell (empty side, no scores)",,PPA
 mixed,2026-04-19,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,749a9279-583d-4954-acd3-70e27fb99a77,no played games (forfeit/walkover),,PPA
 mixed,2026-04-19,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,672657ba-12ed-44b3-9ee9-e5c94054a200,no played games (forfeit/walkover),,PPA
-mixed,2026-04-19,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,faa79425-0024-4f53-a43a-d157e5825947,"missing player uuid(s): t1_p1,t1_p2",,PPA
-mens,2026-06-13,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,,fc05d559-9241-4146-858f-793c4818ea0a,"missing player uuid(s): t1_p1,t1_p2",,PPA
-womens,2026-06-13,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,,ef22e5a7-9138-49d6-a4e2-0a0f1395cbe4,"missing player uuid(s): t1_p1,t1_p2",,PPA
-mixed,2026-06-14,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,,fbbef326-ec43-41b6-9b1f-9b37a8136821,"missing player uuid(s): t1_p1,t1_p2",,PPA
+mixed,2026-04-19,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,faa79425-0024-4f53-a43a-d157e5825947,"bracket bye/shell (empty side, no scores)",,PPA
+mens,2026-06-13,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,,fc05d559-9241-4146-858f-793c4818ea0a,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-06-13,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,,ef22e5a7-9138-49d6-a4e2-0a0f1395cbe4,"bracket bye/shell (empty side, no scores)",,PPA
+mixed,2026-06-14,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,,fbbef326-ec43-41b6-9b1f-9b37a8136821,"bracket bye/shell (empty side, no scores)",,PPA
 mens,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,0c19ea13-938a-4de0-8843-b2129333a7be,no played games (forfeit/walkover),Qualifier — Round 64,PPA
 mixed,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,891598ef-9dba-44e9-975a-f8f6decf814d,no played games (forfeit/walkover),Qualifier — Round 32,PPA
 mixed,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,88386c31-4253-44ed-a9a7-072e3f0d21e0,match not completed (status=1),Qualifier — Quarter Finals,PPA
@@ -257,9 +257,9 @@ mixed,2026-01-20,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National 
 mixed,2026-01-22,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,7768a200-8f09-4c82-8c9c-f48a36d3a53a,no played games (forfeit/walkover),Round 16,PPA
 mixed,2026-01-25,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,6274fc79-fd13-410a-8a3c-59a3a3787fd4,no played games (forfeit/walkover),Bronze,PPA
 womens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,f2a853a0-77ec-43bb-9453-8c7e72c5ed62,no played games (forfeit/walkover),,PPA
-mens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,312d3cba-cd51-4673-8def-c1c7296661bf,"missing player uuid(s): t1_p1,t1_p2",,PPA
-womens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,6267902b-c77a-4345-885e-ef28cbc0f4b6,"missing player uuid(s): t1_p1,t1_p2",,PPA
-mixed,2026-05-03,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,30dbe3ad-4887-48e5-a177-4900cb13cbed,"missing player uuid(s): t1_p1,t1_p2",,PPA
+mens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,312d3cba-cd51-4673-8def-c1c7296661bf,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,6267902b-c77a-4345-885e-ef28cbc0f4b6,"bracket bye/shell (empty side, no scores)",,PPA
+mixed,2026-05-03,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,30dbe3ad-4887-48e5-a177-4900cb13cbed,"bracket bye/shell (empty side, no scores)",,PPA
 mixed,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,8861d173-3861-42b5-a7f6-7ddb93c257f3,no played games (forfeit/walkover),Qualifier — Semi-Finals,PPA
 mixed,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,6d3c01ad-2d39-4818-83f6-b6982905b843,no played games (forfeit/walkover),Qualifier — Semi-Finals,PPA
 womens,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,ab3dbc0f-f507-41d8-9ced-ce4af1366f3c,no played games (forfeit/walkover),Qualifier — Bronze,PPA
@@ -301,12 +301,12 @@ mens,2026-02-22,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa
 mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,f38f88cb-6d07-4c37-a520-bf0e7627efa8,no played games (forfeit/walkover),,PPA
 mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,64191f86-3889-427e-a222-88797ee0602d,no played games (forfeit/walkover),,PPA
 mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,a30f0a84-0952-4daa-a82d-17bddfefd117,no played games (forfeit/walkover),Round 64,PPA
-mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,33043198-a95d-447a-b07d-a787f3a5249c,"missing player uuid(s): t1_p1,t1_p2",,PPA
-womens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,193e44a6-4164-4ff9-a170-e071e901e2b6,"missing player uuid(s): t1_p1,t1_p2",,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,33043198-a95d-447a-b07d-a787f3a5249c,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,193e44a6-4164-4ff9-a170-e071e901e2b6,"bracket bye/shell (empty side, no scores)",,PPA
 mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,c8ea38c1-ba9b-442d-9ccc-ddbb785ff63d,no played games (forfeit/walkover),,PPA
 mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,286019a7-7e5b-4e13-82e7-c19c7f8494f1,no played games (forfeit/walkover),,PPA
 mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,3f1680ba-d188-4908-8f63-1210649fdfae,no played games (forfeit/walkover),,PPA
 mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,dfa772cb-3851-458c-85e6-04bbf5069dd3,no played games (forfeit/walkover),,PPA
 mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,e012c9cc-751c-4ea1-b4f4-a3b4bea90f9e,no played games (forfeit/walkover),,PPA
 mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,1feef659-4447-4d8f-a308-a9bb404ae9bf,no played games (forfeit/walkover),Round 64,PPA
-mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,82a10317-f84c-410b-ae25-3dcb2103b8c5,"missing player uuid(s): t1_p1,t1_p2",,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,82a10317-f84c-410b-ae25-3dcb2103b8c5,"bracket bye/shell (empty side, no scores)",,PPA

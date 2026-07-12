@@ -13,6 +13,7 @@ from __future__ import annotations
 import csv
 import json
 import math
+import re
 import statistics as st
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -225,7 +226,13 @@ def main():
         A(f"Flagged-but-kept rows: **{len(fl)}** (full detail in `data/flags.csv`):\n")
         A("| flag | rows |")
         A("|:--|--:|")
-        for r, n in Counter(f["reason"].split("(")[0].strip()[:60] for f in fl).most_common(12):
+
+        def flag_key(reason):
+            # collapse per-uuid variants into one line
+            r = re.sub(r"[0-9a-f]{8}-[0-9a-f-]{27,}", "<uuid>", reason)
+            return r.split("(")[0].strip()[:70]
+
+        for r, n in Counter(flag_key(f["reason"]) for f in fl).most_common(12):
             A(f"| {r} | {n} |")
         A("")
 
@@ -372,6 +379,14 @@ def main():
             + ("compression confirmed (game 3 exists only after a 1–1 split), consistent "
                "with real, correctly-labeled data." if m3 < m12 else
                "⚠️ NO compression in game 3 — investigate before trusting the data."))
+    if flags_path.exists():
+        n_dead = sum(1 for f in fl if "non-DB games" in f["reason"])
+        if n_dead:
+            verdicts.append(
+                f"- **(MLP structure)** {n_dead} fixtures have only 3 doubles games: in every "
+                "case a 3-0 sweep where the dead 4th game (MXD2) was skipped. The handoff's "
+                "\"all four games are always played\" does NOT hold in 2026 — but the games "
+                "that are played are all live, so no garbage-time filtering is needed.")
     if by_tour["PPA"]["n"] and abs(by_tour["PPA"]["mean"]) > 1:
         verdicts.append(
             f"- **(d-note)** PPA mean *signed* margin is {by_tour['PPA']['mean']:+.2f}: "

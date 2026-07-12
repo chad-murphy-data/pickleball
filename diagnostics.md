@@ -11,8 +11,7 @@ Scoring formats present (modeling rows):
 | MLP | sideout_11 | 1 | 821 |
 | PPA | sideout_11 | 3 | 7948 |
 | PPA | sideout_11 | 5 | 106 |
-| PPA | sideout_15 | 1 | 50 |
-| PPA | unknown | 1 | 1059 |
+| PPA | sideout_15 | 1 | 1109 |
 
 Dropped rows: **311** (full detail in `data/dropped.csv`):
 
@@ -21,24 +20,14 @@ Dropped rows: **311** (full detail in `data/dropped.csv`):
 | no played games | 157 |
 | match not completed | 106 |
 | bye matchup | 30 |
-| missing player uuid | 18 |
+| bracket bye/shell | 18 |
 
-Flagged-but-kept rows: **154** (full detail in `data/flags.csv`):
+Flagged-but-kept rows: **73** (full detail in `data/flags.csv`):
 
 | flag | rows |
 |:--|--:|
-| winning score 16 with unresolved format | 51 |
-| mid-match player swap recorded — listed lineup may not have  | 46 |
-| winning score 17 with unresolved format | 17 |
-| winning score 18 with unresolved format | 7 |
-| winning score 19 with unresolved format | 2 |
-| winning score 20 with unresolved format | 2 |
-| MLP fixture 01fb2c30-9d6e-4981-9c31-d2292d13bbce has 3 non-D | 1 |
-| MLP fixture 2b659118-40b2-49b3-a4c0-c02f8445fafd has 3 non-D | 1 |
-| MLP fixture 3851e52a-c9f1-4fa4-a1fb-d76d581dd7b8 has 3 non-D | 1 |
-| MLP fixture 3b5221c5-8478-49c8-919e-6b79730afe13 has 3 non-D | 1 |
-| MLP fixture 3d336b4d-3b58-4c66-9ca2-4fd904a6c224 has 3 non-D | 1 |
-| MLP fixture 43e8a929-4585-4e09-84bf-69ffe4acf893 has 3 non-D | 1 |
+| mid-match player swap recorded — listed lineup may not have played the | 46 |
+| MLP fixture <uuid> has 3 non-DB games | 27 |
 
 ## (a) Dyad game-count distribution
 
@@ -142,17 +131,19 @@ Component membership of focal players (size of their component, partner-edge gra
 
 ## (d) Margin distributions
 
+Computed on `sideout_11` rows only (8875 games; 1109 games in other formats excluded from this comparison — see format table above).
+
 | slice | n games | mean margin | SD | mean \|margin\| |
 |:--|--:|--:|--:|--:|
 | MLP | 821 | +0.61 | 6.22 | 5.62 |
-| PPA | 9163 | +2.64 | 6.03 | 5.93 |
-| PPA game 1 | 4614 | +2.66 | 6.21 | 6.05 |
+| PPA | 8054 | +2.79 | 5.79 | 5.81 |
+| PPA game 1 | 3505 | +2.98 | 5.70 | 5.81 |
 | PPA game 2 | 3505 | +2.99 | 5.81 | 5.93 |
 | PPA game 3 | 1028 | +1.42 | 5.87 | 5.44 |
 | PPA game 4 | 11 | +3.18 | 4.33 | 4.64 |
 | PPA game 5 | 5 | +3.20 | 3.96 | 4.40 |
 
-Margin histogram (absolute margin, modeling rows):
+Margin histogram (absolute margin, sideout_11 modeling rows):
 
 
 **MLP**
@@ -170,19 +161,22 @@ Margin histogram (absolute margin, modeling rows):
 
 | \|margin\| | games | |
 |---:|---:|:---|
-|       2 |  1535 | ███████████████████ |
-|     3–4 |  1744 | █████████████████████ |
-|     5–6 |  1940 | ███████████████████████ |
-|     7–8 |  1986 | ████████████████████████ |
-|    9–10 |  1427 | █████████████████ |
-|     11+ |   531 | ██████ |
+|       2 |  1357 | ██████████████████ |
+|     3–4 |  1567 | █████████████████████ |
+|     5–6 |  1748 | ███████████████████████ |
+|     7–8 |  1801 | ████████████████████████ |
+|    9–10 |  1238 | ████████████████ |
+|     11+ |   343 | █████ |
 
 ## Interpretation & verdict
 
 - **(a)** 36 focal dyads have ≥10 games; 28 are under 10 (heavy shrinkage for those).
 - **(b)** every resolved focal player has ≥2 distinct partners — actor/partner effects separable.
+- **(b-caveat)** single-partner *within a context*: Anna Bright in mixed (138 games, only partner: Hayden Patriquin). Within that context alone, actor and dyad effects for these players are confounded — separation leans on their play in other contexts (i.e., on the pooled-SRM structure).
 - **(c/mixed)** giant component holds 575/935 players (61%); focal players all inside it.
 - **(c/mens)** giant component holds 503/899 players (56%); focal players all inside it.
 - **(c/womens)** giant component holds 253/421 players (60%); focal players all inside it.
-- **(d)** PPA mean |margin|: games 1–2 = 6.00, game 3 = 5.41 → compression confirmed (game 3 exists only after a 1–1 split), consistent with real, correctly-labeled data.
-- **(d)** margin SD: MLP 6.22 vs PPA 6.03 (3% relative gap) — comparable across tours, as expected for same-format side-out-to-11 games.
+- **(d)** PPA mean |margin|: games 1–2 = 5.87, game 3 = 5.41 → compression confirmed (game 3 exists only after a 1–1 split), consistent with real, correctly-labeled data.
+- **(MLP structure)** 27 fixtures have only 3 doubles games: in every case a 3-0 sweep where the dead 4th game (MXD2) was skipped. The handoff's "all four games are always played" does NOT hold in 2026 — but the games that are played are all live, so no garbage-time filtering is needed.
+- **(d-note)** PPA mean *signed* margin is +2.79: team one is not random (bracket convention favors the higher seed / qualifier winner), so signed margins are not zero-centered. Not a bug — but don't interpret raw team-one margins as symmetric.
+- **(d)** margin SD: MLP 6.22 vs PPA 5.79 (7% relative gap) — comparable across tours, as expected for same-format side-out-to-11 games.
