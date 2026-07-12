@@ -21,3 +21,11 @@ fit also has Tardio (+0.28) and Fahey (+0.24) as MLP-positive, same direction.
 Offsetting wildcard: a DreamBreaker is 40% likely and Waters — the sport's
 best singles player — plays for NJ, so the 50/50 DB assumption plausibly
 understates NJ overall.
+
+## Addendum: v2 forecast (still pre-match, 2026-07-12 later same day)
+
+Validated v2 model (77.4% holdout), full posterior simulation:
+WD NJ 88% (11-5/11-6) | MD STL 92% (11-5/11-4) | MXD1 NJ 54% (11-9) |
+MXD2 STL 75% (11-7). Paths: NJ 3-1/4-0 16.0%, DreamBreaker 46.5%,
+STL 3-1/4-0 37.5%. Overall: STL 60.7% at DB=50/50; STL 53.8% if
+Waters' singles makes the DB 65% NJ. The match hinges on the DB.
