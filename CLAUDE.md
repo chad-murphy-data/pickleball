@@ -5,6 +5,18 @@ Bayesian rating models, publish predictions with receipts. Hobby project,
 honesty-first. Read EXPLAINER.md for the plain-language story, analysis.md
 for full technical results, design_handoff.md for the content/social plan.
 
+## Working rules (user-set)
+
+- **Given an easy way and a hard way, pick the best way.** Difficulty is
+  never a blocker and never a virtue — choose on merit, then do it.
+  (Example of the standard: when asked "is the model underconfident?",
+  the answer was to fit the recalibration out-of-sample on the frozen
+  _train values, not to eyeball the old v1 curve.)
+- **No probability is ever displayed as 0% or 100%.** Empirical basis:
+  ~1% of ≥99% favorites lose (44/4,248 across all games). The calibration
+  layer (web/calibration.json, refit via web/fit_calibration.py) encodes
+  this as a mixture floor eps ≈ 0.021.
+
 ## Pipeline (run in this order; everything is idempotent & cached)
 
 ```bash
@@ -87,6 +99,12 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 - The embedded per-match "rating" IS the player's synced DUPR doubles
   rating (verified: singles is a separate ledger; scale 2–8; compresses
   hard at the top and has data glitches — see analysis.md benchmark).
+  Known artifacts, re-verified 2026-07-13 against a fresh refetch:
+  Jackie Kawamoto = 3.50021 since 2026-06-04 (was 6.13 in Feb; 3.5 is
+  DUPR's reset default — the platform still serves it, treat as glitch,
+  site nulls it via data.finalize_dupr); tour-wide recalibration dropped
+  everyone ~0.3–0.7 on 2026-05-22 (Truong 5.83→5.137 and Jade Kawamoto
+  6.1→5.819 are CORRECT post-recal values, confirmed in fresh records).
 - Be polite: ~1 req/s harvest, ≥15 s live-poll interval.
 
 ## Live win probability (in progress)

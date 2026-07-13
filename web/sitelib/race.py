@@ -70,6 +70,22 @@ def team_eta(v1: float, v2: float, v3: float, v4: float,
     return (v1 + v2 + gamma * abs(v1 - v2)) - (v3 + v4 + gamma * abs(v3 - v4))
 
 
+_CAL = {"a": 0.0, "b": 1.0, "eps": 0.0}
+
+
+def set_calibration(a: float, b: float, eps: float):
+    """Install the fitted display-calibration map (web/calibration.json)."""
+    _CAL.update(a=a, b=b, eps=eps)
+
+
+def calibrate(p: float) -> float:
+    """p_cal = (1-eps)*sigmoid(a + b*logit(p)) + eps/2.  With eps > 0 no
+    calibrated probability is ever 0 or 1 — there is always a chance."""
+    p = min(max(p, 1e-12), 1 - 1e-12)
+    l = math.log(p / (1 - p))
+    return (1 - _CAL["eps"]) * sigmoid(_CAL["a"] + _CAL["b"] * l) + _CAL["eps"] / 2
+
+
 def value_points(v: float, gamma: float = GAMMA, T: int = 11) -> float:
     """Convert a per-point logit value to the human scale: expected margin of
     (player + average partner) vs an average pair in a race to 11.  The

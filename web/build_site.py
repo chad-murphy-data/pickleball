@@ -19,7 +19,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sitelib import charts, data as D, style
 from sitelib.charts import esc
-from sitelib.race import GAMMA, race_dist, sigmoid, value_points
+from sitelib.race import (GAMMA, calibrate, race_dist, set_calibration,
+                          sigmoid, value_points)
+
+CAL = json.loads((Path(__file__).resolve().parent / "calibration.json").read_text())
+set_calibration(CAL["a"], CAL["b"], CAL["eps"])
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = ROOT / "site"
@@ -71,6 +75,17 @@ def chem_pts(logit):
     return race_dist(round(sigmoid(logit), 4))["exp_margin"]
 
 
+def dupr_cell(p):
+    if p.dupr:
+        asof = f' title="synced from the player&#39;s latest match ({p.dupr_asof})"' \
+            if p.dupr_asof else ""
+        return f'<span{asof}>{p.dupr:.2f}</span>'
+    if p.dupr_glitch:
+        return (f'<span class="gray" title="platform currently shows a ~3.5 reset '
+                f'artifact; last credible value {p.dupr_glitch:.2f} — excluded">—⚠</span>')
+    return '<span class="gray">—</span>'
+
+
 # ---------------------------------------------------------------- rankings
 
 def build_rankings(players, updated, n_games):
@@ -83,7 +98,7 @@ def build_rankings(players, updated, n_games):
         for p in pool:
             st = p.stats
             rec = wl(st.w, st.l) if st else "—"
-            dupr = f"{p.dupr:.2f}" if p.dupr else '<span class="gray">—</span>'
+            dupr = dupr_cell(p)
             last = p.last_date[:7] if p.last_date else "—"
             rows.append(
                 f'<tr><td class="num">{p.rank or "—"}</td><td>{plink(p)}</td>'
@@ -173,7 +188,16 @@ def build_player_page(p, players, chem, updated):
             (players[o].name.split()[-1] if o in players else "?") for o in e["opp"])
 
     share = st.pf / max(st.pf + st.pa, 1)
-    dupr_txt = f"{p.dupr:.2f}" if p.dupr else "—"
+    if p.dupr:
+        dupr_txt, dupr_k = f"{p.dupr:.2f}", \
+            f"official DUPR (own scale{', as of ' + p.dupr_asof if p.dupr_asof else ''})"
+    elif p.dupr_glitch:
+        dupr_txt = "—"
+        dupr_k = (f"official DUPR — the platform currently shows a ~3.5 reset "
+                  f"artifact (last credible value {p.dupr_glitch:.2f}); excluded "
+                  f"from comparisons")
+    else:
+        dupr_txt, dupr_k = "—", "official DUPR (none synced)"
     tiles = f"""
 <div class="tiles">
  <div class="tile"><div class="v">{p.pts:+.1f} <span class="note">({p.pts_lo:+.1f}…{p.pts_hi:+.1f})</span></div>
@@ -181,7 +205,7 @@ def build_player_page(p, players, chem, updated):
  <div class="tile"><div class="v">{f"#{p.rank}" if p.rank else "—"}</div><div class="k">of {sum(1 for q in players.values() if q.dynamic and q.gender == p.gender and q.rank)} active {'men' if p.gender == 'M' else 'women'} (within gender only{'' if p.rank else '; no 2026 games'})</div></div>
  <div class="tile"><div class="v">{wl(st.w, st.l)}</div><div class="k">career record · {pct(st.w / max(st.w + st.l, 1))} wins, {pct(share)} of points</div></div>
  <div class="tile"><div class="v">{trend_arrow(p)}</div><div class="k">6-month form</div></div>
- <div class="tile"><div class="v">{dupr_txt}</div><div class="k">official DUPR (own scale)</div></div>
+ <div class="tile"><div class="v">{dupr_txt}</div><div class="k">{dupr_k}</div></div>
 </div>"""
 
     traj_html = charts.trajectory_chart(p.traj)
@@ -330,12 +354,21 @@ about the players — that's the honest part.</p>
 <p class="note">Fine print: pair chemistry is excluded on purpose — the fitted
 effects are almost all within ±0.1 pts and none is statistically certifiable.
 Values come from a joint Bayesian fit of ~36k games; the win-probability
-interval is the 90% posterior range from player-value uncertainty. If the two
-sides' gender mix differs, the number rests on a modeling convention that no
-game data can test (<a href="methods.html">methods</a>).</p>
+interval is the 90% posterior range from player-value uncertainty.
+Probabilities are calibrated against out-of-sample games and never reach
+0% or 100% — across 36k games, favorites we price above 99% still lost about
+1 time in 100, so that's the ceiling (<a href="methods.html">methods</a>).
+If the two sides' gender mix differs, the number rests on a modeling
+convention that no game data can test.</p>
 <script>
 const P = {pdata};
 const GAMMA = {GAMMA}, BETA_NEW = 0.088;
+const CAL = {{ a: {CAL["a"]}, b: {CAL["b"]}, eps: {CAL["eps"]} }};  // web/calibration.json
+function pCal(p) {{
+  p = Math.min(Math.max(p, 1e-12), 1 - 1e-12);
+  const l = Math.log(p / (1 - p));
+  return (1 - CAL.eps) * sig(CAL.a + CAL.b * l) + CAL.eps / 2;
+}}
 const byName = Object.fromEntries(P.map(p => [p.n.toLowerCase(), p]));
 const byId = Object.fromEntries(P.map(p => [p.id, p]));
 const dl = document.getElementById('plist');
@@ -408,8 +441,8 @@ function update(push) {{
   const newa = document.getElementById('newa').checked, newb = document.getElementById('newb').checked;
   let mu = teamEta(a1, a2) - teamEta(b1, b2) + (newa ? BETA_NEW : 0) - (newb ? BETA_NEW : 0);
   const sd = Math.sqrt(a1.s ** 2 + a2.s ** 2 + b1.s ** 2 + b2.s ** 2);
-  const g = gWinAvg(mu, sd, T);
-  const gLo = gWin(mu - 1.645 * sd, T), gHi = gWin(mu + 1.645 * sd, T);
+  const g = pCal(gWinAvg(mu, sd, T));
+  const gLo = pCal(gWin(mu - 1.645 * sd, T)), gHi = pCal(gWin(mu + 1.645 * sd, T));
   const m = matchProb(g, bo), mLo = matchProb(gLo, bo).p, mHi = matchProb(gHi, bo).p;
   const dist = raceDist(sig(mu), T);
   const aN = `${{a1.n.split(' ').pop()}}/${{a2.n.split(' ').pop()}}`;
@@ -466,7 +499,7 @@ document.getElementById('share').onclick = async () => {{
 def build_receipts(updated):
     R = D.load_receipts()
     val = R["validation"]
-    cal = D.load_v1_calibration()
+    cal = CAL["buckets_raw"]
 
     graded_items = [i for e in R["entries"] if e["status"] == "graded"
                     for i in e["items"] if i["result"] is not None]
@@ -524,9 +557,14 @@ publicly wrong is part of the product.</p>
 <h2>Calibration</h2>
 <p class="note">When the frozen model said a team should win X% of the time,
 how often did they actually win? Dots on the diagonal = honest probabilities.
-(Curve from the v1 holdout, the model family's published calibration check;
-if anything the current model is slightly <em>under</em>confident in the
-65–80% band — favorites won more often than stated.)</p>
+Curve measured out-of-sample: every post-June-2026 game priced by the frozen
+pre-June fit ({CAL["fit_on"]["n_games"]} games). The fitted correction is
+nearly the identity (slope {CAL["b"]:.2f}) — the earlier v1 model ran
+underconfident, this one doesn't. What the data does insist on: across all
+36k games, favorites priced above 99% still lost {CAL["tail"]["losses"]} of
+{CAL["tail"]["n_extreme"]} games (~1%), so site probabilities are floored —
+nothing is ever 0% or 100%. Frozen predictions in the ledger above are
+graded exactly as committed, never re-calibrated after the fact.</p>
 {charts.calibration_chart(cal)}
 """
     write("receipts.html", style.page("Receipts — Pickleball, Priced",
@@ -560,7 +598,7 @@ def build_records(players, agg, games, updated):
         upset_rows.append(
             f'<tr><td class="num gray">{g["date"]}</td>'
             f'<td>{pair_names(winners)}</td><td>{pair_names(losers)}</td>'
-            f'<td class="num">{sc}</td><td class="num"><strong>{100 * pw:.1f}%</strong></td></tr>')
+            f'<td class="num">{sc}</td><td class="num"><strong>{100 * calibrate(pw):.1f}%</strong></td></tr>')
 
     mar_rows = []
     for total, g in agg["marathons"]:
@@ -603,9 +641,11 @@ DreamBreakers and forfeits excluded).</p>
 </div>
 <h2>Biggest upsets</h2>
 <p class="note">Games the model prices lowest for the eventual winners, using
-each month's values (retrospective pricing, all four players tracked).
-Games priced under 0.2% and games with recorded mid-match player swaps are
-excluded as probable data quirks rather than miracles.</p>
+each month's values (retrospective pricing, all four players tracked;
+calibrated probabilities — no price ever reaches 0%, because across 36k
+games about 1 in 100 "sure things" lost anyway). Games with recorded
+mid-match player swaps and raw prices under 0.2% are excluded as probable
+data quirks rather than miracles.</p>
 <div class="tblwrap"><table><tr><th>date</th><th>winners</th><th>over</th>
 <th class="num">score</th><th class="num">model gave them</th></tr>{''.join(upset_rows)}</table></div>
 <h2>Overtime marathons</h2>
@@ -631,6 +671,17 @@ excluded as probable data quirks rather than miracles.</p>
 
 def build_dupr(players, updated):
     panels, tables = [], []
+    glitched = [p for p in players.values()
+                if p.dynamic and p.dupr_glitch and not p.dupr]
+    excluded_note = ""
+    if glitched:
+        names = ", ".join(
+            f"{plink(p)} (platform shows a ~3.5 reset artifact; last credible "
+            f"value {p.dupr_glitch:.2f})" for p in glitched)
+        excluded_note = (f'<p class="note">Excluded from the comparison: '
+                         f'{names}. A rating that collapses to DUPR\'s reset '
+                         f'default while the player keeps winning pro games is '
+                         f'a recording artifact, not a measurement.</p>')
     for gender, label in (("M", "Men"), ("F", "Women")):
         pool = [p for p in players.values()
                 if p.dynamic and p.gender == gender and p.dupr
@@ -676,11 +727,16 @@ gender, among 2026-active tracked players.</p>
 </div>
 <div class="cols">{''.join(panels)}</div>
 <div class="cols">{''.join(tables)}</div>
+{excluded_note}
 <p class="note">Caveats we insist on: the DUPR scale compresses hard at the
 top and its history contains recorded data glitches (a pro dropping 6.13 →
-3.50 mid-season; a tour-wide ~0.5 overnight recalibration), so treat rank
-gaps as directional. Correlation between the systems is r ≈ 0.65 (men) /
-0.53 (women) — they mostly agree; the divergences are the story.</p>
+3.50 mid-season; a tour-wide ~0.5 overnight recalibration on 2026-05-22 —
+both visible in our per-match snapshots), so treat rank gaps as
+directional. Ratings shown are the value synced at each player's most
+recent match, with the as-of date in the tooltip; DUPR's own site may
+show a newer or different number. Correlation between the systems is
+r ≈ 0.65 (men) / 0.53 (women) — they mostly agree; the divergences are
+the story.</p>
 """
     write("dupr.html", style.page("DUPR × model — Pickleball, Priced",
                                   body, "dupr.html", "", updated))
@@ -755,6 +811,10 @@ games).</li>
 <li><strong>Display scale:</strong> the site converts per-point logits to
 "expected margin vs an average pairing in a race to 11" — median regular
 ≈ +2 pts, superstar ≈ +7.</li>
+<li><strong>Calibrated, floored probabilities:</strong> win probabilities are
+passed through a map fitted on out-of-sample games (near-identity: slope
+0.90) with an empirical tail floor — ~1% of ≥99% favorites lose, so no
+probability is ever shown as 0% or 100%. There is always a chance.</li>
 </ul>
 <p class="note">Full writeups, code, data and diagnostics:
 <a href="{REPO}">the repository</a> — see analysis.md for every table and
@@ -785,6 +845,7 @@ def main():
     updated = max(g["date"] for g in games)
     print(f"aggregating {len(games):,} games …")
     agg = D.aggregate(players, games)
+    D.finalize_dupr(players)
     D.infer_missing_genders(players)
     D.rank_players(players)
     chem = D.load_dyads()

@@ -28,7 +28,7 @@ def month_key(date: str) -> str:
 class Player:
     __slots__ = ("pid", "name", "gender", "games", "value", "sd", "dynamic",
                  "pts", "pts_lo", "pts_hi", "rank", "traj", "dupr", "dupr_hist",
-                 "stats", "form_delta", "last_date")
+                 "stats", "form_delta", "last_date", "dupr_asof", "dupr_glitch")
 
     def __init__(self, pid, name, gender, games, value, sd, dynamic):
         self.pid, self.name, self.gender = pid, name, gender
@@ -43,6 +43,8 @@ class Player:
         self.stats = None
         self.form_delta = None  # 6-month value change (logit)
         self.last_date = None
+        self.dupr_asof = None   # date of the latest synced rating snapshot
+        self.dupr_glitch = None # last credible value when latest is an artifact
 
 
 class PStats:
@@ -246,6 +248,24 @@ def aggregate(players, games):
     }
 
 
+def finalize_dupr(players):
+    """Latest synced rating per player, with an as-of date and a reset-
+    artifact screen: a rating that falls to DUPR's ~3.5 reset default after
+    a >=5.0 history is a recording artifact, not a skill measurement (one
+    known case: a 6.13 player re-appearing at 3.50021 mid-season).  Artifact
+    ratings are nulled for comparisons; the last credible value is kept for
+    the footnote."""
+    for p in players.values():
+        if not p.dupr_hist:
+            continue
+        p.dupr_asof, p.dupr = p.dupr_hist[-1]
+        peak = max(r for _, r in p.dupr_hist)
+        if p.dupr <= 3.65 and peak >= 5.0:
+            credible = [r for _, r in p.dupr_hist if r > 3.65]
+            p.dupr_glitch = credible[-1] if credible else None
+            p.dupr = None
+
+
 def infer_missing_genders(players):
     """A handful of players lack a gender in players.csv; their game contexts
     (mens/womens) pin it down."""
@@ -301,6 +321,3 @@ def load_receipts():
     return json.loads((MODEL / "receipts.json").read_text())
 
 
-def load_v1_calibration():
-    j = json.loads((MODEL / "holdout_summary.json").read_text())
-    return j.get("calibration", {})
