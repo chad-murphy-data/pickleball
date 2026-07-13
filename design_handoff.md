@@ -115,3 +115,34 @@ most. Evergreen ammunition: Tardio ranked ~#30 by DUPR while #1 here.
   come from margins via ~4.7 points of per-game luck.
 - Attribution: "based on public results data" — this is unofficial fan
   analytics, not tour-affiliated content.
+
+---
+
+## E. Match-card field menu (evergreen, any match)
+
+Tier 1 headline: overall win prob; most-likely outcome; full outcome tree
+(3-0/3-1/DB/1-3/0-3 for MLP, 2-0/2-1 for PPA Bo3); modal game scores;
+prediction-locked timestamp.
+
+Tier 2 per game: win prob; score distribution; HINGE INDEX (how much the
+overall flips if this game flips — the card's signature stat); P(deciding
+game); upset-alert badge (<65% favorite); expected total points.
+
+Tier 3 per pairing: record together + avg score; combined value; internal
+balance gap + weakest-link penalty in points; chemistry ± sd + percentile;
+new-pairing badge; exact-pairing head-to-head with scores.
+
+Tier 4 per player: season W-L%; avg score for/against; value ± sd + gender
+rank; 3-month form arrow; deciding-game record; overtime record (games past
+11); blowout rate (wins allowing <=5); DUPR + divergence flag.
+
+Tier 5 context (MLP): season series; rematch/history flags; prior meetings
+of the same four pairings; DreamBreaker sensitivity line; best player on
+court; star-collision callout.
+
+Tier 6 trust strip: model record (77% on 884 unseen games vs DUPR 65%);
+uncertainty shown wherever it exists; "public results data, unofficial."
+
+All fields regenerate from games.csv + v2_players.csv + v2_draws.npz +
+the matchup cache. Example values for every field exist in the 2026-07-12
+Gold final worked example (session log / prediction_midseason_final.md).
