@@ -1,0 +1,1931 @@
+{
+ "generated": "2026-07-13",
+ "note": "Projected lineups (each team's most recent completed matchup); DreamBreaker 50/50 by convention; calibrated probabilities.",
+ "forecasts": [
+  {
+   "date": "2026-07-16",
+   "start": "2026-07-16T17:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Columbus Sliders",
+   "team2": "Orlando Squeeze",
+   "lineups_from": {
+    "team1": "2026-07-12",
+    "team2": "2026-07-10"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9824,
+     "modal": "11-3",
+     "margin": 7.4,
+     "t1_pair": [
+      "Parris Todd",
+      "Tyra Hurricane Black"
+     ],
+     "t2_pair": [
+      "Alex Walker",
+      "Milan Rane"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.8702,
+     "modal": "11-5",
+     "margin": 4.37,
+     "t1_pair": [
+      "Andrei Daescu",
+      "CJ Klinger"
+     ],
+     "t2_pair": [
+      "Federico Staksrud",
+      "Yates Johnson"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8586,
+     "modal": "11-6",
+     "margin": 4.19,
+     "t1_pair": [
+      "Parris Todd",
+      "Andrei Daescu"
+     ],
+     "t2_pair": [
+      "Milan Rane",
+      "Federico Staksrud"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.9757,
+     "modal": "11-3",
+     "margin": 6.93,
+     "t1_pair": [
+      "Tyra Hurricane Black",
+      "CJ Klinger"
+     ],
+     "t2_pair": [
+      "Alex Walker",
+      "Yates Johnson"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.9854,
+    "p_40": 0.7162,
+    "p_31": 0.2554,
+    "p_db": 0.0275,
+    "p_13": 0.0009,
+    "p_04": 0.0
+   }
+  },
+  {
+   "date": "2026-07-16",
+   "start": "2026-07-16T18:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "SoCal Hard Eights",
+   "team2": "Florida Smash",
+   "lineups_from": {
+    "team1": "2026-07-11",
+    "team2": "2026-07-10"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.6226,
+     "modal": "11-8",
+     "margin": 1.21,
+     "t1_pair": [
+      "Cailyn Campbell",
+      "Meghan Dizon"
+     ],
+     "t2_pair": [
+      "Martina Frantova",
+      "Zoey Weil"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.44,
+     "modal": "9-11",
+     "margin": -0.82,
+     "t1_pair": [
+      "Rafael Lenhard",
+      "Will Mackinnon"
+     ],
+     "t2_pair": [
+      "Christopher Crouch",
+      "Connor Mogle"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.4567,
+     "modal": "9-11",
+     "margin": -0.64,
+     "t1_pair": [
+      "Meghan Dizon",
+      "Rafael Lenhard"
+     ],
+     "t2_pair": [
+      "Zoey Weil",
+      "Connor Mogle"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.6725,
+     "modal": "11-8",
+     "margin": 1.78,
+     "t1_pair": [
+      "Cailyn Campbell",
+      "Will Mackinnon"
+     ],
+     "t2_pair": [
+      "Paula Rives",
+      "Christopher Crouch"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.5726,
+    "p_40": 0.0841,
+    "p_31": 0.2991,
+    "p_db": 0.3787,
+    "p_13": 0.2004,
+    "p_04": 0.0376
+   }
+  },
+  {
+   "date": "2026-07-16",
+   "start": "2026-07-16T20:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Phoenix Flames",
+   "team2": "Orlando Squeeze",
+   "lineups_from": {
+    "team1": "2026-07-11",
+    "team2": "2026-07-10"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.7135,
+     "modal": "11-7",
+     "margin": 2.27,
+     "t1_pair": [
+      "Alexa Schull",
+      "Daria Walczak"
+     ],
+     "t2_pair": [
+      "Alex Walker",
+      "Milan Rane"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.5622,
+     "modal": "11-9",
+     "margin": 0.53,
+     "t1_pair": [
+      "Camden Chaffin",
+      "Jonathan Truong"
+     ],
+     "t2_pair": [
+      "Federico Staksrud",
+      "Yates Johnson"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.3143,
+     "modal": "7-11",
+     "margin": -2.23,
+     "t1_pair": [
+      "Daria Walczak",
+      "Jonathan Truong"
+     ],
+     "t2_pair": [
+      "Milan Rane",
+      "Federico Staksrud"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.8341,
+     "modal": "11-6",
+     "margin": 3.83,
+     "t1_pair": [
+      "Alexa Schull",
+      "Camden Chaffin"
+     ],
+     "t2_pair": [
+      "Alex Walker",
+      "Yates Johnson"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.6666,
+    "p_40": 0.1052,
+    "p_31": 0.3745,
+    "p_db": 0.374,
+    "p_13": 0.1321,
+    "p_04": 0.0143
+   }
+  },
+  {
+   "date": "2026-07-16",
+   "start": "2026-07-16T21:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "California Black Bears",
+   "team2": "Columbus Sliders",
+   "lineups_from": {
+    "team1": "2026-07-10",
+    "team2": "2026-07-12"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.0276,
+     "modal": "3-11",
+     "margin": -6.86,
+     "t1_pair": [
+      "Emma Nelson",
+      "Sahra Dennehy"
+     ],
+     "t2_pair": [
+      "Parris Todd",
+      "Tyra Hurricane Black"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.1265,
+     "modal": "5-11",
+     "margin": -4.62,
+     "t1_pair": [
+      "Anouar Braham",
+      "Joseph Wild"
+     ],
+     "t2_pair": [
+      "Andrei Daescu",
+      "CJ Klinger"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.0174,
+     "modal": "3-11",
+     "margin": -7.49,
+     "t1_pair": [
+      "Mya Bui",
+      "Anouar Braham"
+     ],
+     "t2_pair": [
+      "Parris Todd",
+      "Andrei Daescu"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.2912,
+     "modal": "7-11",
+     "margin": -2.49,
+     "t1_pair": [
+      "Sahra Dennehy",
+      "Joseph Wild"
+     ],
+     "t2_pair": [
+      "Tyra Hurricane Black",
+      "CJ Klinger"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.0271,
+    "p_40": 0.0,
+    "p_31": 0.0018,
+    "p_db": 0.0506,
+    "p_13": 0.356,
+    "p_04": 0.5916
+   }
+  },
+  {
+   "date": "2026-07-16",
+   "start": "2026-07-16T23:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Florida Smash",
+   "team2": "Phoenix Flames",
+   "lineups_from": {
+    "team1": "2026-07-10",
+    "team2": "2026-07-11"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.4727,
+     "modal": "9-11",
+     "margin": -0.46,
+     "t1_pair": [
+      "Martina Frantova",
+      "Zoey Weil"
+     ],
+     "t2_pair": [
+      "Alexa Schull",
+      "Daria Walczak"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.459,
+     "modal": "9-11",
+     "margin": -0.61,
+     "t1_pair": [
+      "Christopher Crouch",
+      "Connor Mogle"
+     ],
+     "t2_pair": [
+      "Camden Chaffin",
+      "Jonathan Truong"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.5429,
+     "modal": "11-9",
+     "margin": 0.31,
+     "t1_pair": [
+      "Zoey Weil",
+      "Connor Mogle"
+     ],
+     "t2_pair": [
+      "Daria Walczak",
+      "Jonathan Truong"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.3057,
+     "modal": "7-11",
+     "margin": -2.32,
+     "t1_pair": [
+      "Paula Rives",
+      "Christopher Crouch"
+     ],
+     "t2_pair": [
+      "Alexa Schull",
+      "Camden Chaffin"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.4174,
+    "p_40": 0.036,
+    "p_31": 0.1947,
+    "p_db": 0.3734,
+    "p_13": 0.3054,
+    "p_04": 0.0905
+   }
+  },
+  {
+   "date": "2026-07-17",
+   "start": "2026-07-17T16:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "Atlanta Bouncers",
+   "team2": "Dallas Flash",
+   "lineups_from": {
+    "team1": "2026-07-12",
+    "team2": "2026-07-12"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.4414,
+     "modal": "9-11",
+     "margin": -0.81,
+     "t1_pair": [
+      "Jessie Irvine",
+      "Mari Humberg"
+     ],
+     "t2_pair": [
+      "Alix Truong",
+      "Danni-Elle Townsend"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.3528,
+     "modal": "8-11",
+     "margin": -1.79,
+     "t1_pair": [
+      "Jaume Martinez Vich",
+      "Jay Devilliers"
+     ],
+     "t2_pair": [
+      "Augustus Ge",
+      "JW Johnson"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.4164,
+     "modal": "8-11",
+     "margin": -1.08,
+     "t1_pair": [
+      "Jessie Irvine",
+      "Jay Devilliers"
+     ],
+     "t2_pair": [
+      "Brooke Buckner",
+      "JW Johnson"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.4441,
+     "modal": "9-11",
+     "margin": -0.78,
+     "t1_pair": [
+      "Mari Humberg",
+      "Jaume Martinez Vich"
+     ],
+     "t2_pair": [
+      "Danni-Elle Townsend",
+      "Augustus Ge"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.3716,
+    "p_40": 0.0288,
+    "p_31": 0.1657,
+    "p_db": 0.3542,
+    "p_13": 0.334,
+    "p_04": 0.1173
+   }
+  },
+  {
+   "date": "2026-07-17",
+   "start": "2026-07-17T17:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "California Black Bears",
+   "team2": "Orlando Squeeze",
+   "lineups_from": {
+    "team1": "2026-07-10",
+    "team2": "2026-07-10"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.631,
+     "modal": "11-8",
+     "margin": 1.3,
+     "t1_pair": [
+      "Emma Nelson",
+      "Sahra Dennehy"
+     ],
+     "t2_pair": [
+      "Alex Walker",
+      "Milan Rane"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.4833,
+     "modal": "9-11",
+     "margin": -0.35,
+     "t1_pair": [
+      "Anouar Braham",
+      "Joseph Wild"
+     ],
+     "t2_pair": [
+      "Federico Staksrud",
+      "Yates Johnson"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.0901,
+     "modal": "5-11",
+     "margin": -5.23,
+     "t1_pair": [
+      "Mya Bui",
+      "Anouar Braham"
+     ],
+     "t2_pair": [
+      "Milan Rane",
+      "Federico Staksrud"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.9368,
+     "modal": "11-4",
+     "margin": 5.63,
+     "t1_pair": [
+      "Sahra Dennehy",
+      "Joseph Wild"
+     ],
+     "t2_pair": [
+      "Alex Walker",
+      "Yates Johnson"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.5632,
+    "p_40": 0.0257,
+    "p_31": 0.3043,
+    "p_db": 0.4664,
+    "p_13": 0.1926,
+    "p_04": 0.011
+   }
+  },
+  {
+   "date": "2026-07-17",
+   "start": "2026-07-17T18:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Florida Smash",
+   "team2": "Columbus Sliders",
+   "lineups_from": {
+    "team1": "2026-07-10",
+    "team2": "2026-07-12"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.0337,
+     "modal": "3-11",
+     "margin": -6.61,
+     "t1_pair": [
+      "Martina Frantova",
+      "Zoey Weil"
+     ],
+     "t2_pair": [
+      "Parris Todd",
+      "Tyra Hurricane Black"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.1387,
+     "modal": "5-11",
+     "margin": -4.43,
+     "t1_pair": [
+      "Christopher Crouch",
+      "Connor Mogle"
+     ],
+     "t2_pair": [
+      "Andrei Daescu",
+      "CJ Klinger"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.075,
+     "modal": "4-11",
+     "margin": -5.52,
+     "t1_pair": [
+      "Zoey Weil",
+      "Connor Mogle"
+     ],
+     "t2_pair": [
+      "Parris Todd",
+      "Andrei Daescu"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.0502,
+     "modal": "4-11",
+     "margin": -6.09,
+     "t1_pair": [
+      "Paula Rives",
+      "Christopher Crouch"
+     ],
+     "t2_pair": [
+      "Tyra Hurricane Black",
+      "CJ Klinger"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.0144,
+    "p_40": 0.0,
+    "p_31": 0.0012,
+    "p_db": 0.0264,
+    "p_13": 0.2412,
+    "p_04": 0.7312
+   }
+  },
+  {
+   "date": "2026-07-17",
+   "start": "2026-07-17T18:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "SoCal Hard Eights",
+   "team2": "Phoenix Flames",
+   "lineups_from": {
+    "team1": "2026-07-11",
+    "team2": "2026-07-11"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.5823,
+     "modal": "11-9",
+     "margin": 0.75,
+     "t1_pair": [
+      "Cailyn Campbell",
+      "Meghan Dizon"
+     ],
+     "t2_pair": [
+      "Alexa Schull",
+      "Daria Walczak"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.3858,
+     "modal": "8-11",
+     "margin": -1.42,
+     "t1_pair": [
+      "Rafael Lenhard",
+      "Will Mackinnon"
+     ],
+     "t2_pair": [
+      "Camden Chaffin",
+      "Jonathan Truong"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.4853,
+     "modal": "9-11",
+     "margin": -0.32,
+     "t1_pair": [
+      "Meghan Dizon",
+      "Rafael Lenhard"
+     ],
+     "t2_pair": [
+      "Daria Walczak",
+      "Jonathan Truong"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.4618,
+     "modal": "9-11",
+     "margin": -0.58,
+     "t1_pair": [
+      "Cailyn Campbell",
+      "Will Mackinnon"
+     ],
+     "t2_pair": [
+      "Alexa Schull",
+      "Camden Chaffin"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.468,
+    "p_40": 0.0503,
+    "p_31": 0.2283,
+    "p_db": 0.3785,
+    "p_13": 0.2717,
+    "p_04": 0.0711
+   }
+  },
+  {
+   "date": "2026-07-17",
+   "start": "2026-07-17T19:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "Utah Black Diamonds",
+   "team2": "Bay Area Breakers",
+   "lineups_from": {
+    "team1": "2026-07-11",
+    "team2": "2026-07-09"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9264,
+     "modal": "11-5",
+     "margin": 5.39,
+     "t1_pair": [
+      "Allyce Jones",
+      "Etta Tuionetoa"
+     ],
+     "t2_pair": [
+      "Ella Yeh",
+      "Kiora Kunimoto"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.6426,
+     "modal": "11-8",
+     "margin": 1.43,
+     "t1_pair": [
+      "Connor Garnett",
+      "Tama Shimabukuro"
+     ],
+     "t2_pair": [
+      "Len Yang",
+      "Blaine Hovenier"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8127,
+     "modal": "11-6",
+     "margin": 3.53,
+     "t1_pair": [
+      "Etta Tuionetoa",
+      "Tama Shimabukuro"
+     ],
+     "t2_pair": [
+      "Kiora Kunimoto",
+      "James Delgado"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.7534,
+     "modal": "11-7",
+     "margin": 2.75,
+     "t1_pair": [
+      "Allyce Jones",
+      "Connor Garnett"
+     ],
+     "t2_pair": [
+      "Genie Erokhina",
+      "Blaine Hovenier"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.8859,
+    "p_40": 0.3645,
+    "p_31": 0.435,
+    "p_db": 0.1728,
+    "p_13": 0.0265,
+    "p_04": 0.0012
+   }
+  },
+  {
+   "date": "2026-07-17",
+   "start": "2026-07-17T20:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Los Angeles Mad Drops",
+   "team2": "Atlanta Bouncers",
+   "lineups_from": {
+    "team1": "2026-07-12",
+    "team2": "2026-07-12"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.7596,
+     "modal": "11-7",
+     "margin": 2.83,
+     "t1_pair": [
+      "Jade Kawamoto",
+      "Catherine Parenteau"
+     ],
+     "t2_pair": [
+      "Jessie Irvine",
+      "Mari Humberg"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.6442,
+     "modal": "11-8",
+     "margin": 1.45,
+     "t1_pair": [
+      "Ben Johns",
+      "Max Freeman"
+     ],
+     "t2_pair": [
+      "Jaume Martinez Vich",
+      "Jay Devilliers"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.9126,
+     "modal": "11-5",
+     "margin": 5.11,
+     "t1_pair": [
+      "Jade Kawamoto",
+      "Ben Johns"
+     ],
+     "t2_pair": [
+      "Jessie Irvine",
+      "Jay Devilliers"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.4451,
+     "modal": "9-11",
+     "margin": -0.77,
+     "t1_pair": [
+      "Catherine Parenteau",
+      "Max Freeman"
+     ],
+     "t2_pair": [
+      "Mari Humberg",
+      "Jaume Martinez Vich"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.7834,
+    "p_40": 0.1988,
+    "p_31": 0.4395,
+    "p_db": 0.2903,
+    "p_13": 0.0673,
+    "p_04": 0.0041
+   }
+  },
+  {
+   "date": "2026-07-17",
+   "start": "2026-07-17T21:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Florida Smash",
+   "team2": "California Black Bears",
+   "lineups_from": {
+    "team1": "2026-07-10",
+    "team2": "2026-07-10"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.5642,
+     "modal": "11-9",
+     "margin": 0.55,
+     "t1_pair": [
+      "Martina Frantova",
+      "Zoey Weil"
+     ],
+     "t2_pair": [
+      "Emma Nelson",
+      "Sahra Dennehy"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.5382,
+     "modal": "11-9",
+     "margin": 0.26,
+     "t1_pair": [
+      "Christopher Crouch",
+      "Connor Mogle"
+     ],
+     "t2_pair": [
+      "Anouar Braham",
+      "Joseph Wild"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8341,
+     "modal": "11-6",
+     "margin": 3.83,
+     "t1_pair": [
+      "Zoey Weil",
+      "Connor Mogle"
+     ],
+     "t2_pair": [
+      "Mya Bui",
+      "Anouar Braham"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.1348,
+     "modal": "5-11",
+     "margin": -4.49,
+     "t1_pair": [
+      "Paula Rives",
+      "Christopher Crouch"
+     ],
+     "t2_pair": [
+      "Sahra Dennehy",
+      "Joseph Wild"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.533,
+    "p_40": 0.0341,
+    "p_31": 0.2816,
+    "p_db": 0.4346,
+    "p_13": 0.2208,
+    "p_04": 0.0289
+   }
+  },
+  {
+   "date": "2026-07-17",
+   "start": "2026-07-17T21:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "Orlando Squeeze",
+   "team2": "SoCal Hard Eights",
+   "lineups_from": {
+    "team1": "2026-07-10",
+    "team2": "2026-07-11"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.2531,
+     "modal": "7-11",
+     "margin": -2.94,
+     "t1_pair": [
+      "Alex Walker",
+      "Milan Rane"
+     ],
+     "t2_pair": [
+      "Cailyn Campbell",
+      "Meghan Dizon"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.596,
+     "modal": "11-9",
+     "margin": 0.9,
+     "t1_pair": [
+      "Federico Staksrud",
+      "Yates Johnson"
+     ],
+     "t2_pair": [
+      "Rafael Lenhard",
+      "Will Mackinnon"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.7348,
+     "modal": "11-7",
+     "margin": 2.52,
+     "t1_pair": [
+      "Milan Rane",
+      "Federico Staksrud"
+     ],
+     "t2_pair": [
+      "Meghan Dizon",
+      "Rafael Lenhard"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.2192,
+     "modal": "6-11",
+     "margin": -3.35,
+     "t1_pair": [
+      "Alex Walker",
+      "Yates Johnson"
+     ],
+     "t2_pair": [
+      "Cailyn Campbell",
+      "Will Mackinnon"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.4206,
+    "p_40": 0.0243,
+    "p_31": 0.1835,
+    "p_db": 0.4257,
+    "p_13": 0.304,
+    "p_04": 0.0625
+   }
+  },
+  {
+   "date": "2026-07-17",
+   "start": "2026-07-17T22:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "Dallas Flash",
+   "team2": "Bay Area Breakers",
+   "lineups_from": {
+    "team1": "2026-07-12",
+    "team2": "2026-07-09"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9475,
+     "modal": "11-4",
+     "margin": 5.9,
+     "t1_pair": [
+      "Alix Truong",
+      "Danni-Elle Townsend"
+     ],
+     "t2_pair": [
+      "Ella Yeh",
+      "Kiora Kunimoto"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.8638,
+     "modal": "11-6",
+     "margin": 4.27,
+     "t1_pair": [
+      "Augustus Ge",
+      "JW Johnson"
+     ],
+     "t2_pair": [
+      "Len Yang",
+      "Blaine Hovenier"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.9289,
+     "modal": "11-5",
+     "margin": 5.45,
+     "t1_pair": [
+      "Brooke Buckner",
+      "JW Johnson"
+     ],
+     "t2_pair": [
+      "Kiora Kunimoto",
+      "James Delgado"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.8027,
+     "modal": "11-6",
+     "margin": 3.39,
+     "t1_pair": [
+      "Danni-Elle Townsend",
+      "Augustus Ge"
+     ],
+     "t2_pair": [
+      "Genie Erokhina",
+      "Blaine Hovenier"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.9664,
+    "p_40": 0.6103,
+    "p_31": 0.3267,
+    "p_db": 0.0587,
+    "p_13": 0.0042,
+    "p_04": 0.0001
+   }
+  },
+  {
+   "date": "2026-07-17",
+   "start": "2026-07-17T23:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Utah Black Diamonds",
+   "team2": "Los Angeles Mad Drops",
+   "lineups_from": {
+    "team1": "2026-07-11",
+    "team2": "2026-07-12"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.2579,
+     "modal": "7-11",
+     "margin": -2.88,
+     "t1_pair": [
+      "Allyce Jones",
+      "Etta Tuionetoa"
+     ],
+     "t2_pair": [
+      "Jade Kawamoto",
+      "Catherine Parenteau"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.2642,
+     "modal": "7-11",
+     "margin": -2.81,
+     "t1_pair": [
+      "Connor Garnett",
+      "Tama Shimabukuro"
+     ],
+     "t2_pair": [
+      "Ben Johns",
+      "Max Freeman"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.0512,
+     "modal": "4-11",
+     "margin": -6.06,
+     "t1_pair": [
+      "Etta Tuionetoa",
+      "Tama Shimabukuro"
+     ],
+     "t2_pair": [
+      "Jade Kawamoto",
+      "Ben Johns"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.5867,
+     "modal": "11-9",
+     "margin": 0.8,
+     "t1_pair": [
+      "Allyce Jones",
+      "Connor Garnett"
+     ],
+     "t2_pair": [
+      "Catherine Parenteau",
+      "Max Freeman"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.186,
+    "p_40": 0.002,
+    "p_31": 0.051,
+    "p_db": 0.2661,
+    "p_13": 0.4668,
+    "p_04": 0.2141
+   }
+  },
+  {
+   "date": "2026-07-18",
+   "start": "2026-07-18T16:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "California Black Bears",
+   "team2": "SoCal Hard Eights",
+   "lineups_from": {
+    "team1": "2026-07-10",
+    "team2": "2026-07-11"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.3573,
+     "modal": "8-11",
+     "margin": -1.74,
+     "t1_pair": [
+      "Emma Nelson",
+      "Sahra Dennehy"
+     ],
+     "t2_pair": [
+      "Cailyn Campbell",
+      "Meghan Dizon"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.5652,
+     "modal": "11-9",
+     "margin": 0.56,
+     "t1_pair": [
+      "Anouar Braham",
+      "Joseph Wild"
+     ],
+     "t2_pair": [
+      "Rafael Lenhard",
+      "Will Mackinnon"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.2226,
+     "modal": "6-11",
+     "margin": -3.31,
+     "t1_pair": [
+      "Mya Bui",
+      "Anouar Braham"
+     ],
+     "t2_pair": [
+      "Meghan Dizon",
+      "Rafael Lenhard"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.7778,
+     "modal": "11-7",
+     "margin": 3.06,
+     "t1_pair": [
+      "Sahra Dennehy",
+      "Joseph Wild"
+     ],
+     "t2_pair": [
+      "Cailyn Campbell",
+      "Will Mackinnon"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.4681,
+    "p_40": 0.035,
+    "p_31": 0.2219,
+    "p_db": 0.4225,
+    "p_13": 0.2724,
+    "p_04": 0.0483
+   }
+  },
+  {
+   "date": "2026-07-18",
+   "start": "2026-07-18T17:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Dallas Flash",
+   "team2": "Utah Black Diamonds",
+   "lineups_from": {
+    "team1": "2026-07-12",
+    "team2": "2026-07-11"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.5923,
+     "modal": "11-9",
+     "margin": 0.86,
+     "t1_pair": [
+      "Alix Truong",
+      "Danni-Elle Townsend"
+     ],
+     "t2_pair": [
+      "Allyce Jones",
+      "Etta Tuionetoa"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.7816,
+     "modal": "11-7",
+     "margin": 3.11,
+     "t1_pair": [
+      "Augustus Ge",
+      "JW Johnson"
+     ],
+     "t2_pair": [
+      "Connor Garnett",
+      "Tama Shimabukuro"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.7415,
+     "modal": "11-7",
+     "margin": 2.61,
+     "t1_pair": [
+      "Brooke Buckner",
+      "JW Johnson"
+     ],
+     "t2_pair": [
+      "Etta Tuionetoa",
+      "Tama Shimabukuro"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.5817,
+     "modal": "11-9",
+     "margin": 0.74,
+     "t1_pair": [
+      "Danni-Elle Townsend",
+      "Augustus Ge"
+     ],
+     "t2_pair": [
+      "Allyce Jones",
+      "Connor Garnett"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.7535,
+    "p_40": 0.1997,
+    "p_31": 0.4064,
+    "p_db": 0.2948,
+    "p_13": 0.0895,
+    "p_04": 0.0096
+   }
+  },
+  {
+   "date": "2026-07-18",
+   "start": "2026-07-18T18:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Orlando Squeeze",
+   "team2": "Florida Smash",
+   "lineups_from": {
+    "team1": "2026-07-10",
+    "team2": "2026-07-10"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.3493,
+     "modal": "8-11",
+     "margin": -1.83,
+     "t1_pair": [
+      "Alex Walker",
+      "Milan Rane"
+     ],
+     "t2_pair": [
+      "Martina Frantova",
+      "Zoey Weil"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.5225,
+     "modal": "11-9",
+     "margin": 0.09,
+     "t1_pair": [
+      "Federico Staksrud",
+      "Yates Johnson"
+     ],
+     "t2_pair": [
+      "Christopher Crouch",
+      "Connor Mogle"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.6854,
+     "modal": "11-8",
+     "margin": 1.93,
+     "t1_pair": [
+      "Milan Rane",
+      "Federico Staksrud"
+     ],
+     "t2_pair": [
+      "Zoey Weil",
+      "Connor Mogle"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.3583,
+     "modal": "8-11",
+     "margin": -1.73,
+     "t1_pair": [
+      "Alex Walker",
+      "Yates Johnson"
+     ],
+     "t2_pair": [
+      "Paula Rives",
+      "Christopher Crouch"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.4667,
+    "p_40": 0.0448,
+    "p_31": 0.2253,
+    "p_db": 0.3932,
+    "p_13": 0.274,
+    "p_04": 0.0627
+   }
+  },
+  {
+   "date": "2026-07-18",
+   "start": "2026-07-18T18:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "Phoenix Flames",
+   "team2": "Columbus Sliders",
+   "lineups_from": {
+    "team1": "2026-07-11",
+    "team2": "2026-07-12"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.0401,
+     "modal": "4-11",
+     "margin": -6.38,
+     "t1_pair": [
+      "Alexa Schull",
+      "Daria Walczak"
+     ],
+     "t2_pair": [
+      "Parris Todd",
+      "Tyra Hurricane Black"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.1712,
+     "modal": "6-11",
+     "margin": -3.98,
+     "t1_pair": [
+      "Camden Chaffin",
+      "Jonathan Truong"
+     ],
+     "t2_pair": [
+      "Andrei Daescu",
+      "CJ Klinger"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.0662,
+     "modal": "4-11",
+     "margin": -5.7,
+     "t1_pair": [
+      "Daria Walczak",
+      "Jonathan Truong"
+     ],
+     "t2_pair": [
+      "Parris Todd",
+      "Andrei Daescu"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.1261,
+     "modal": "5-11",
+     "margin": -4.62,
+     "t1_pair": [
+      "Alexa Schull",
+      "Camden Chaffin"
+     ],
+     "t2_pair": [
+      "Tyra Hurricane Black",
+      "CJ Klinger"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.0264,
+    "p_40": 0.0001,
+    "p_31": 0.0029,
+    "p_db": 0.0469,
+    "p_13": 0.3009,
+    "p_04": 0.6492
+   }
+  },
+  {
+   "date": "2026-07-18",
+   "start": "2026-07-18T19:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "Atlanta Bouncers",
+   "team2": "Utah Black Diamonds",
+   "lineups_from": {
+    "team1": "2026-07-12",
+    "team2": "2026-07-11"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.5198,
+     "modal": "11-9",
+     "margin": 0.06,
+     "t1_pair": [
+      "Jessie Irvine",
+      "Mari Humberg"
+     ],
+     "t2_pair": [
+      "Allyce Jones",
+      "Etta Tuionetoa"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.6438,
+     "modal": "11-8",
+     "margin": 1.45,
+     "t1_pair": [
+      "Jaume Martinez Vich",
+      "Jay Devilliers"
+     ],
+     "t2_pair": [
+      "Connor Garnett",
+      "Tama Shimabukuro"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.6565,
+     "modal": "11-8",
+     "margin": 1.59,
+     "t1_pair": [
+      "Jessie Irvine",
+      "Jay Devilliers"
+     ],
+     "t2_pair": [
+      "Etta Tuionetoa",
+      "Tama Shimabukuro"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.5116,
+     "modal": "9-11",
+     "margin": -0.03,
+     "t1_pair": [
+      "Mari Humberg",
+      "Jaume Martinez Vich"
+     ],
+     "t2_pair": [
+      "Allyce Jones",
+      "Connor Garnett"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.624,
+    "p_40": 0.1124,
+    "p_31": 0.3321,
+    "p_db": 0.3589,
+    "p_13": 0.1678,
+    "p_04": 0.0287
+   }
+  },
+  {
+   "date": "2026-07-18",
+   "start": "2026-07-18T20:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Bay Area Breakers",
+   "team2": "Los Angeles Mad Drops",
+   "lineups_from": {
+    "team1": "2026-07-09",
+    "team2": "2026-07-12"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.0257,
+     "modal": "3-11",
+     "margin": -6.95,
+     "t1_pair": [
+      "Ella Yeh",
+      "Kiora Kunimoto"
+     ],
+     "t2_pair": [
+      "Jade Kawamoto",
+      "Catherine Parenteau"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.1689,
+     "modal": "6-11",
+     "margin": -4.01,
+     "t1_pair": [
+      "Len Yang",
+      "Blaine Hovenier"
+     ],
+     "t2_pair": [
+      "Ben Johns",
+      "Max Freeman"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.0152,
+     "modal": "2-11",
+     "margin": -7.7,
+     "t1_pair": [
+      "Kiora Kunimoto",
+      "James Delgado"
+     ],
+     "t2_pair": [
+      "Jade Kawamoto",
+      "Ben Johns"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.3321,
+     "modal": "8-11",
+     "margin": -2.02,
+     "t1_pair": [
+      "Genie Erokhina",
+      "Blaine Hovenier"
+     ],
+     "t2_pair": [
+      "Catherine Parenteau",
+      "Max Freeman"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.0372,
+    "p_40": 0.0,
+    "p_31": 0.0024,
+    "p_db": 0.0696,
+    "p_13": 0.3953,
+    "p_04": 0.5326
+   }
+  },
+  {
+   "date": "2026-07-18",
+   "start": "2026-07-18T21:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Phoenix Flames",
+   "team2": "California Black Bears",
+   "lineups_from": {
+    "team1": "2026-07-11",
+    "team2": "2026-07-10"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.6052,
+     "modal": "11-8",
+     "margin": 1.01,
+     "t1_pair": [
+      "Alexa Schull",
+      "Daria Walczak"
+     ],
+     "t2_pair": [
+      "Emma Nelson",
+      "Sahra Dennehy"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.593,
+     "modal": "11-9",
+     "margin": 0.87,
+     "t1_pair": [
+      "Camden Chaffin",
+      "Jonathan Truong"
+     ],
+     "t2_pair": [
+      "Anouar Braham",
+      "Joseph Wild"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8164,
+     "modal": "11-6",
+     "margin": 3.58,
+     "t1_pair": [
+      "Daria Walczak",
+      "Jonathan Truong"
+     ],
+     "t2_pair": [
+      "Mya Bui",
+      "Anouar Braham"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.2861,
+     "modal": "7-11",
+     "margin": -2.55,
+     "t1_pair": [
+      "Alexa Schull",
+      "Camden Chaffin"
+     ],
+     "t2_pair": [
+      "Sahra Dennehy",
+      "Joseph Wild"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.619,
+    "p_40": 0.0838,
+    "p_31": 0.3402,
+    "p_db": 0.3898,
+    "p_13": 0.1651,
+    "p_04": 0.0211
+   }
+  },
+  {
+   "date": "2026-07-18",
+   "start": "2026-07-18T21:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "Columbus Sliders",
+   "team2": "SoCal Hard Eights",
+   "lineups_from": {
+    "team1": "2026-07-12",
+    "team2": "2026-07-11"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9508,
+     "modal": "11-4",
+     "margin": 5.99,
+     "t1_pair": [
+      "Parris Todd",
+      "Tyra Hurricane Black"
+     ],
+     "t2_pair": [
+      "Cailyn Campbell",
+      "Meghan Dizon"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.9069,
+     "modal": "11-5",
+     "margin": 5.0,
+     "t1_pair": [
+      "Andrei Daescu",
+      "CJ Klinger"
+     ],
+     "t2_pair": [
+      "Rafael Lenhard",
+      "Will Mackinnon"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.9469,
+     "modal": "11-4",
+     "margin": 5.88,
+     "t1_pair": [
+      "Parris Todd",
+      "Andrei Daescu"
+     ],
+     "t2_pair": [
+      "Meghan Dizon",
+      "Rafael Lenhard"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.9077,
+     "modal": "11-5",
+     "margin": 5.02,
+     "t1_pair": [
+      "Tyra Hurricane Black",
+      "CJ Klinger"
+     ],
+     "t2_pair": [
+      "Cailyn Campbell",
+      "Will Mackinnon"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.9856,
+    "p_40": 0.7411,
+    "p_31": 0.2314,
+    "p_db": 0.0262,
+    "p_13": 0.0013,
+    "p_04": 0.0
+   }
+  },
+  {
+   "date": "2026-07-18",
+   "start": "2026-07-18T22:30:00Z",
+   "event": "MLP San Diego",
+   "team1": "Bay Area Breakers",
+   "team2": "Atlanta Bouncers",
+   "lineups_from": {
+    "team1": "2026-07-09",
+    "team2": "2026-07-12"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.0792,
+     "modal": "5-11",
+     "margin": -5.43,
+     "t1_pair": [
+      "Ella Yeh",
+      "Kiora Kunimoto"
+     ],
+     "t2_pair": [
+      "Jessie Irvine",
+      "Mari Humberg"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.2656,
+     "modal": "7-11",
+     "margin": -2.79,
+     "t1_pair": [
+      "Len Yang",
+      "Blaine Hovenier"
+     ],
+     "t2_pair": [
+      "Jaume Martinez Vich",
+      "Jay Devilliers"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.1183,
+     "modal": "5-11",
+     "margin": -4.75,
+     "t1_pair": [
+      "Kiora Kunimoto",
+      "James Delgado"
+     ],
+     "t2_pair": [
+      "Jessie Irvine",
+      "Jay Devilliers"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.2714,
+     "modal": "7-11",
+     "margin": -2.72,
+     "t1_pair": [
+      "Genie Erokhina",
+      "Blaine Hovenier"
+     ],
+     "t2_pair": [
+      "Mari Humberg",
+      "Jaume Martinez Vich"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.0841,
+    "p_40": 0.0007,
+    "p_31": 0.0166,
+    "p_db": 0.1338,
+    "p_13": 0.4146,
+    "p_04": 0.4344
+   }
+  },
+  {
+   "date": "2026-07-18",
+   "start": "2026-07-18T23:00:00Z",
+   "event": "MLP San Diego",
+   "team1": "Los Angeles Mad Drops",
+   "team2": "Dallas Flash",
+   "lineups_from": {
+    "team1": "2026-07-12",
+    "team2": "2026-07-12"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.6996,
+     "modal": "11-7",
+     "margin": 2.1,
+     "t1_pair": [
+      "Jade Kawamoto",
+      "Catherine Parenteau"
+     ],
+     "t2_pair": [
+      "Alix Truong",
+      "Danni-Elle Townsend"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.4829,
+     "modal": "9-11",
+     "margin": -0.35,
+     "t1_pair": [
+      "Ben Johns",
+      "Max Freeman"
+     ],
+     "t2_pair": [
+      "Augustus Ge",
+      "JW Johnson"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8698,
+     "modal": "11-5",
+     "margin": 4.37,
+     "t1_pair": [
+      "Jade Kawamoto",
+      "Ben Johns"
+     ],
+     "t2_pair": [
+      "Brooke Buckner",
+      "JW Johnson"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.3762,
+     "modal": "8-11",
+     "margin": -1.53,
+     "t1_pair": [
+      "Catherine Parenteau",
+      "Max Freeman"
+     ],
+     "t2_pair": [
+      "Danni-Elle Townsend",
+      "Augustus Ge"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.6653,
+    "p_40": 0.1105,
+    "p_31": 0.3657,
+    "p_db": 0.3781,
+    "p_13": 0.1331,
+    "p_04": 0.0126
+   }
+  }
+ ]
+}

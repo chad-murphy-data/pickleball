@@ -26,9 +26,17 @@ python scraper/parse.py                      # raw/ → data/games.csv etc.
 python scraper/build_model_data.py           # games → model tables (env-configurable)
 python model/fit_v2.py                       # THE model (dynamic + race likelihood)
 python model/report.py                       # regenerate analysis.md (v1 sections)
+python scraper/extract_ratings.py            # raw/ → per-match + latest DUPR (merges)
 python scraper/live_poller.py                # live score JSONL during event days
+python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
+                                             #   --commit freezes into receipts.json
 python web/build_site.py                     # data/*.csv → site/ static website (~4 s)
 ```
+
+Deploy: .github/workflows/site.yml → GitHub Pages on push to main +
+nightly data refresh (raw/ cached in Actions; guard restores committed
+CSVs if a partial parse shrinks games.csv). Setup once: Settings → Pages
+→ Source "GitHub Actions".
 
 `harvest.py` accepts `--start/--end`; re-runs only fetch new/recent dates
 (last 3 days are "volatile" and refetched). Data source: pickleball.com's

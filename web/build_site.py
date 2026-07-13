@@ -494,6 +494,191 @@ document.getElementById('share').onclick = async () => {{
                                        body, "simulator.html", "", updated))
 
 
+# ---------------------------------------------------------------- forecasts
+
+def pct_floor(x):
+    """Percent that never reads as 0% or 100% (house rule)."""
+    if x < 0.005:
+        return "&lt;1%"
+    if x > 0.995:
+        return "&gt;99%"
+    return pct(x)
+
+
+def build_forecast(players, updated):
+    fj = D.DATA / "forecasts.json"
+    if fj.exists():
+        F = json.loads(fj.read_text())
+        cards, cur_date = [], None
+        for f in F["forecasts"]:
+            if f["date"] != cur_date:
+                cur_date = f["date"]
+                cards.append(f"<h2>{cur_date}</h2>")
+            t = f.get("tree")
+            if t:
+                head = (f'<div class="big">{esc(f["team1"])} {pct_floor(t["p_win"])}'
+                        f'<span class="gray"> — {pct_floor(1 - t["p_win"])} {esc(f["team2"])}</span></div>'
+                        f'<div class="pmbar"><div class="a" style="width:{100 * t["p_win"]}%"></div>'
+                        f'<div class="b" style="flex:1"></div></div>'
+                        f'<p class="note">paths: 4–0 {pct_floor(t["p_40"])} · 3–1 {pct_floor(t["p_31"])} · '
+                        f'DreamBreaker {pct_floor(t["p_db"])} (priced 50/50) · '
+                        f'1–3 {pct_floor(t["p_13"])} · 0–4 {pct_floor(t["p_04"])}</p>')
+            else:
+                head = (f'<div class="big">{esc(f["team1"])} <span class="gray">vs</span> '
+                        f'{esc(f["team2"])}</div><p class="note">not priceable yet '
+                        f'(missing recent lineups or untracked players)</p>')
+            rows = []
+            for g in f["games"]:
+                if not g:
+                    continue
+                rows.append(
+                    f'<tr><td>{g["slot"]}</td>'
+                    f'<td>{esc(" / ".join(n.split()[-1] for n in g["t1_pair"]))}</td>'
+                    f'<td>{esc(" / ".join(n.split()[-1] for n in g["t2_pair"]))}</td>'
+                    f'<td class="num"><strong>{pct_floor(g["p"])}</strong></td>'
+                    f'<td class="num">{g["modal"]}</td></tr>')
+            tbl = (f'<div class="tblwrap"><table><tr><th>game</th>'
+                   f'<th>{esc(f["team1"])}</th><th>{esc(f["team2"])}</th>'
+                   f'<th class="num">P({esc(f["team1"].split()[-1])})</th>'
+                   f'<th class="num">modal</th></tr>{"".join(rows)}</table></div>'
+                   if rows else "")
+            src = f["lineups_from"]
+            cards.append(f"""<div class="card">{head}{tbl}
+<p class="note">projected lineups from each team's last completed matchup
+({src["team1"] or "?"} / {src["team2"] or "?"}) — actual lineups are announced
+close to match time and can differ.</p></div>""")
+        gen = F["generated"]
+        stale = ' <strong>(stale — regenerate with web/make_forecast.py)</strong>' \
+            if gen < updated else ""
+        body_mid = (f'<p class="note">generated {gen}{stale} · '
+                    f'{len(F["forecasts"])} scheduled matchups priced</p>'
+                    + "".join(cards))
+    else:
+        body_mid = ('<p class="note">No forecast snapshot yet — run '
+                    '<code>python web/make_forecast.py</code> (network) to price '
+                    'the next week of scheduled MLP matchups.</p>')
+    body = f"""
+<h1>Upcoming matchup forecasts</h1>
+<p class="sub">Every scheduled MLP matchup in the next week, priced before it
+happens. Lineups are <strong>projected</strong> from each team's most recent
+completed matchup; per-game probabilities use current player values, the
+weakest-link penalty and display calibration; the DreamBreaker is treated as
+a coin flip by stated convention. To make a forecast part of the permanent
+record, it must be frozen into the <a href="receipts.html">receipts ledger</a>
+before first serve (<code>make_forecast.py --commit</code>) — this page alone
+is a living view, not a commitment.</p>
+{body_mid}
+"""
+    write("forecast.html", style.page("Forecasts — Pickleball, Priced",
+                                      body, "forecast.html", "", updated))
+
+
+# ---------------------------------------------------------------- results
+
+def build_results(players, games, updated, days=14):
+    mv = D.month_values(players)
+    cutoff = (__import__("datetime").date.fromisoformat(updated)
+              - __import__("datetime").timedelta(days=days)).isoformat()
+    recent = [g for g in games if g["date"] >= cutoff]
+    rows, cur = [], None
+    n_upsets = 0
+    for g in reversed(recent):
+        s1, s2 = int(g["t1_score"]), int(g["t2_score"])
+        if s1 == s2:
+            continue
+        t1_won = s1 > s2
+        exp = D.expected_share(players, mv, g)
+        price = ""
+        upset = ""
+        if exp is not None:
+            w_exp = exp if t1_won else 1 - exp
+            T = 15 if g["scoring_format"].endswith("15") else 11
+            pw = calibrate(race_dist(round(w_exp, 4), T)["p_win"])
+            price = f"{100 * pw:.0f}%"
+            if pw < 0.25:
+                upset = ' <span class="chip miss">UPSET</span>'
+                n_upsets += 1
+        winners = (g["t1_p1"], g["t1_p2"]) if t1_won else (g["t2_p1"], g["t2_p2"])
+        losers = (g["t2_p1"], g["t2_p2"]) if t1_won else (g["t1_p1"], g["t1_p2"])
+        def pnames(pids):
+            return " / ".join(
+                plink(players[u]) if u in players else "?" for u in pids)
+        if g["date"] != cur:
+            cur = g["date"]
+            rows.append(f'<tr><td colspan="6" style="padding-top:14px">'
+                        f'<strong>{cur}</strong></td></tr>')
+        ot = max(s1, s2) > (15 if g["scoring_format"].endswith("15") else 11)
+        rows.append(
+            f'<tr><td class="gray small">{esc(g["event_name"])[:34]}</td>'
+            f'<td class="gray small">{g["tour"]}{" · " + (g["context"] or "") if g["context"] else ""}</td>'
+            f'<td>{pnames(winners)}</td><td>{pnames(losers)}</td>'
+            f'<td class="num"><strong>{max(s1, s2)}-{min(s1, s2)}</strong>'
+            f'{" OT" if ot else ""}</td>'
+            f'<td class="num">{price}{upset}</td></tr>')
+    body = f"""
+<h1>Recent results, priced</h1>
+<p class="sub">Every pro doubles game of the last {days} days with the win
+probability the model would have quoted for the eventual winners before the
+game (current monthly values — a living retrospective, not a frozen
+commitment; the <a href="receipts.html">receipts page</a> holds those).
+Winners listed first. {n_upsets} upsets (winner priced under 25%).</p>
+<div class="tblwrap"><table><tr><th>event</th><th></th><th>winners</th>
+<th>over</th><th class="num">score</th><th class="num">winner was priced</th></tr>
+{''.join(rows)}</table></div>
+"""
+    write("results.html", style.page("Results — Pickleball, Priced",
+                                     body, "results.html", "", updated))
+
+
+# ---------------------------------------------------------------- downloads
+
+DOWNLOADS = [
+    ("games.csv", "every game 2024–26: both pairs (player UUIDs), score, "
+                  "date, tour, format, stage; the modeling unit"),
+    ("players.csv", "canonical player registry: UUID, name, gender, name variants"),
+    ("v2_players.csv", "current-form model values (per-point logit) ± sd per player"),
+    ("v2_trajectories.csv", "monthly skill curve for every ≥60-game player"),
+    ("v2_dyads.csv", "pair-chemistry posteriors (small and honest)"),
+    ("yearly_values.csv", "season-by-season v1 values (points scale) + gender ranks"),
+    ("platform_ratings.csv", "latest synced DUPR per player + snapshot count"),
+]
+
+
+def build_downloads(games, updated):
+    import shutil
+    (SITE / "data").mkdir(parents=True, exist_ok=True)
+    rows = []
+    for fname, desc in DOWNLOADS:
+        src = D.DATA / fname
+        if not src.exists():
+            continue
+        shutil.copy(src, SITE / "data" / fname)
+        n = sum(1 for _ in src.open()) - 1
+        mb = src.stat().st_size / 1e6
+        rows.append(f'<tr><td><a href="data/{fname}" download>{fname}</a></td>'
+                    f'<td class="num">{n:,}</td><td class="num">{mb:.1f} MB</td>'
+                    f'<td>{desc}</td></tr>')
+    shutil.copy(D.MODEL / "receipts.json", SITE / "data" / "receipts.json")
+    rows.append('<tr><td><a href="data/receipts.json" download>receipts.json</a></td>'
+                '<td class="num">—</td><td class="num">&lt;0.1 MB</td>'
+                '<td>the public prediction ledger, machine-readable</td></tr>')
+    body = f"""
+<h1>Open data</h1>
+<p class="sub">The CSVs behind every page, free to use with attribution
+("based on public results data via Pickleball, Priced"). Player identity is
+by UUID — names collide (there are three Kawamotos; two are twins).</p>
+<div class="tblwrap"><table><tr><th>file</th><th class="num">rows</th>
+<th class="num">size</th><th>contents</th></tr>{''.join(rows)}</table></div>
+<p class="note">Model values are on a per-point logit scale; the site
+displays them as expected margin vs an average pairing via the race DP
+(<a href="methods.html">methods</a>). DreamBreakers and forfeits are
+excluded from games.csv-derived stats. Refreshed with the nightly build;
+data through {updated}.</p>
+"""
+    write("data.html", style.page("Open data — Pickleball, Priced",
+                                  body, "data.html", "", updated))
+
+
 # ---------------------------------------------------------------- receipts
 
 def build_receipts(updated):
@@ -854,14 +1039,17 @@ def main():
     (SITE / "assets" / "style.css").write_text(style.CSS)
     (SITE / ".nojekyll").write_text("")
 
-    print("pages: rankings, simulator, receipts, records, dupr, methods …")
+    print("pages: rankings, forecasts, results, simulator, receipts, records, dupr, methods, data …")
     build_rankings(players, updated, len(games))
     build_player_index(players, updated)
+    build_forecast(players, updated)
+    build_results(players, games, updated)
     build_simulator(players, updated)
     build_receipts(updated)
     build_records(players, agg, games, updated)
     build_dupr(players, updated)
     build_methods(updated)
+    build_downloads(games, updated)
 
     dyn = [p for p in players.values() if p.dynamic and p.stats]
     print(f"player pages: {len(dyn)} …")

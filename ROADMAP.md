@@ -26,7 +26,8 @@ of evenings · **XL** = a season-long side quest. Status: ✅ built, 🔜 next,
   MISS (full table in model/prediction_midseason_final.md). First entries
   live in `model/receipts.json`, the machine-readable public ledger.
 - 🔜 **Run the poller for real** during MLP San Diego (Jul 16–19) — shakes
-  out Tier 1 and starts accumulating live JSONL
+  out Tier 1 and starts accumulating live JSONL (runbook in README; needs
+  any machine that stays awake — laptop, Pi, $5 VPS)
 - ⬜ **SSE discovery session** (Tier 2): during any live match, stream
   rte.pbgql.co with httpx, dump events, write the parser (S–M). Unlocks
   rally-resolution live data + serve/return estimation
@@ -53,8 +54,16 @@ All pages regenerate from existing CSVs in ~4 s: `python web/build_site.py`
 - ✅ Methods page (EXPLAINER rendered + technical appendix), record book
   (streaks/upsets/marathons mined from games.csv)
 - ✅ DUPR-vs-model scoreboard page (scatter + biggest-disagreement tables)
-- ⬜ Open CSV downloads page; deploy target + nightly rebuild (GitHub Pages
-  action or VPS cron), custom domain
+- ✅ Open CSV downloads page (site/data/ + schema notes)
+- ✅ Deploy + nightly rebuild: .github/workflows/site.yml (GitHub Pages;
+  nightly run refreshes games/ratings/forecasts from the API with a cached
+  raw/). One-time setup: Settings → Pages → Source = "GitHub Actions"
+- ✅ **Forecast page** (pre-match, receipts culture automated):
+  web/make_forecast.py prices scheduled MLP matchups with projected
+  lineups → forecast.html; `--commit` freezes them into receipts.json
+- ✅ **Recent-results page**: last 14 days, every game with the winner's
+  pre-game price + upset chips
+- ⬜ Custom domain
 
 ## Phase 3 — Live layer (M; needs a persistent $5 VPS)
 

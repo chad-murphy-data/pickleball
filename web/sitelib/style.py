@@ -105,9 +105,10 @@ button { cursor: pointer; font-weight: 600; }
 """
 
 NAV = [("index.html", "Rankings"), ("players/index.html", "Players"),
+       ("forecast.html", "Forecasts"), ("results.html", "Results"),
        ("simulator.html", "Simulator"), ("receipts.html", "Receipts"),
        ("records.html", "Record book"), ("dupr.html", "DUPR × model"),
-       ("methods.html", "Methods")]
+       ("methods.html", "Methods"), ("data.html", "Data")]
 
 
 def page(title, body, here="", root="", updated=""):
