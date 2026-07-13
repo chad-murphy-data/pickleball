@@ -40,13 +40,13 @@ of evenings · **XL** = a season-long side quest. Status: ✅ built, 🔜 next,
 
 All pages regenerate from existing CSVs on a nightly pipeline run.
 
-- ⬜ Power rankings page (men/women, uncertainty bars, form arrows)
-- ⬜ Player pages: trajectory curve + band, W/L splits, clutch stats
+- ⬜ ★ PILLAR 1 — Power rankings page (men/women, uncertainty bars, form arrows)
+- ⬜ ★ PILLAR 2 — Player pages: trajectory curve + band, W/L splits, clutch stats
   (deciding-game/overtime records), DUPR overlay, partner network,
   **game log vs expectation** chart
-- ⬜ **Matchup simulator** — the sticky toy: values JSON + 50-line race DP
+- ⬜ ★ PILLAR 3 — **Matchup simulator** — the sticky toy: values JSON + 50-line race DP
   runs fully client-side; shareable permalinks (M)
-- ⬜ Receipts ledger + live calibration curve (auto-generated from graded
+- ⬜ ★ PILLAR 4 — Receipts ledger + live calibration curve (auto-generated from graded
   predictions; the moat feature)
 - ⬜ Methods page (EXPLAINER), open CSV downloads, record book
   (streaks/upsets mined from games.csv)
@@ -55,7 +55,7 @@ All pages regenerate from existing CSVs on a nightly pipeline run.
 ## Phase 3 — Live layer (M; needs a persistent $5 VPS)
 
 - ⬜ Deploy Tier-1 poller as a systemd service, schedule-aware
-- ⬜ **Live win-probability charts**: pre-match lookup tables (score × 4
+- ⬜ ★ PILLAR 5 — **Live win-probability charts**: pre-match lookup tables (score × 4
   serve states) shipped as JSON; browser indexes as events arrive; step
   chart with annotations + uncertainty ribbon
 - ⬜ Layer Tier-2 SSE feed on top when discovered (rally resolution)
