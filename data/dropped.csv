@@ -69,10 +69,10 @@ mixed,2026-06-14,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,642c796e-1c23-
 ,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,98e29ae0-5b5e-45f7-8645-79887b5e852a,bye matchup (no opponent),,MLP
 mixed,2025-07-13,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,d0298b46-33b9-421c-b8c3-bbe38f559074,no played games (forfeit/walkover),Round 6 L1,MLP
 ,2026-06-04,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,9b7a7a14-925b-49b4-9000-f888d13a3ffc,bye matchup (no opponent),,MLP
-womens,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,7efe48ea-1b9a-4880-a0f3-3f380a069c8b,match not completed (status=1),Round 6 B,MLP
-mens,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,d8a8316e-f465-49ec-be58-abfa61b220e6,match not completed (status=1),Round 6 B,MLP
-mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,9c5c0d94-b0c2-49b4-bdec-3ef382b9eb26,match not completed (status=1),Round 6 B,MLP
-mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,9c3cae9f-2339-406a-8c8a-e7ff1905b417,match not completed (status=1),Round 6 B,MLP
+womens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,7efe48ea-1b9a-4880-a0f3-3f380a069c8b,match not completed (status=1),Round 6 B,MLP
+mens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,d8a8316e-f465-49ec-be58-abfa61b220e6,match not completed (status=1),Round 6 B,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,9c5c0d94-b0c2-49b4-bdec-3ef382b9eb26,match not completed (status=1),Round 6 B,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,9c3cae9f-2339-406a-8c8a-e7ff1905b417,match not completed (status=1),Round 6 B,MLP
 mixed,2026-07-08,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,120a4fb8-afed-47af-a93a-d8d8be33e81d,no played games (forfeit/walkover),Round 32 W,MLP
 mixed,2025-08-16,141fe139-b4d2-4846-ac9f-a36b5dd6db41,Toray MLP Playoffs - San Diego,,f97f645d-4df9-4c15-9b02-015ffd45cfb3,no played games (forfeit/walkover),RR,MLP
 mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,cec4612d-a7f7-4b40-b99c-de7b552f1d1f,no played games (forfeit/walkover),Round 16 W,MLP
@@ -110,8 +110,7 @@ mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season To
 mixed,2026-06-28,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,384df07d-d40c-4deb-b4ad-51d12c50e065,no played games (forfeit/walkover),One and Done - Playoff W,MLP
 mixed,2026-05-25,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,d8ff2987-f9e2-4fb9-9390-760bed028b14,no played games (forfeit/walkover),One and Done - Playoff W,MLP
 ,2026-06-17,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,,f58ffb74-8356-449b-a741-aba343653c1a,bye matchup (no opponent),,MLP
-womens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,03460950-6966-4bd6-950e-1608e1262f25,match not completed (status=1),Round 4 L1,MLP
-mens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,51ac65ff-a94c-4535-829b-1b900711fda2,match not completed (status=1),Round 4 L1,MLP
+mens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,51ac65ff-a94c-4535-829b-1b900711fda2,match not completed (status=2),Round 4 L1,MLP
 mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,e6876ca5-7f45-4411-aad0-6f2a3960b2fa,match not completed (status=1),Round 4 L1,MLP
 mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,b521fabb-6637-46cd-9e4d-997bd691f223,match not completed (status=1),Round 4 L1,MLP
 mixed,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,d79606a6-0c93-4bcb-9bdf-c1bd704ff190,no played games (forfeit/walkover),Round 5 RR,MLP
