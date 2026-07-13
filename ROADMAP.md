@@ -21,9 +21,10 @@ of evenings · **XL** = a season-long side quest. Status: ✅ built, 🔜 next,
 
 ## Phase 1 — Receipts operations (now → September; S each; no new infra)
 
-- 🔜 **Grade the Gold final forecast** once the API finalizes it (WD 88%
-  call vs reported Waters losses; STL 61% match call) — first entry in the
-  public receipts ledger
+- ✅ **Grade the Gold final forecast** — graded 2026-07-13 from the API
+  matchup record: STL won 3-0; overall 61% call HIT, headline WD 88% call
+  MISS (full table in model/prediction_midseason_final.md). First entries
+  live in `model/receipts.json`, the machine-readable public ledger.
 - 🔜 **Run the poller for real** during MLP San Diego (Jul 16–19) — shakes
   out Tier 1 and starts accumulating live JSONL
 - ⬜ **SSE discovery session** (Tier 2): during any live match, stream
@@ -38,19 +39,22 @@ of evenings · **XL** = a season-long side quest. Status: ✅ built, 🔜 next,
 
 ## Phase 2 — Website MVP (M–L total; static site, no backend)
 
-All pages regenerate from existing CSVs on a nightly pipeline run.
+All pages regenerate from existing CSVs in ~4 s: `python web/build_site.py`
+→ `site/` (gitignored build artifact; 506 pages). Host anywhere static.
 
-- ⬜ ★ PILLAR 1 — Power rankings page (men/women, uncertainty bars, form arrows)
-- ⬜ ★ PILLAR 2 — Player pages: trajectory curve + band, W/L splits, clutch stats
+- ✅ ★ PILLAR 1 — Power rankings page (men/women, uncertainty bars, form arrows)
+- ✅ ★ PILLAR 2 — Player pages: trajectory curve + band, W/L splits, clutch stats
   (deciding-game/overtime records), DUPR overlay, partner network,
-  **game log vs expectation** chart
-- ⬜ ★ PILLAR 3 — **Matchup simulator** — the sticky toy: values JSON + 50-line race DP
-  runs fully client-side; shareable permalinks (M)
-- ⬜ ★ PILLAR 4 — Receipts ledger + live calibration curve (auto-generated from graded
-  predictions; the moat feature)
-- ⬜ Methods page (EXPLAINER), open CSV downloads, record book
-  (streaks/upsets mined from games.csv)
-- ⬜ DUPR-vs-model scoreboard page
+  **game log vs expectation** chart (499 pages, one per tracked player)
+- ✅ ★ PILLAR 3 — **Matchup simulator** — values embedded, race DP + weakest
+  link + uncertainty integration in client-side JS; shareable permalinks
+- ✅ ★ PILLAR 4 — Receipts ledger + calibration curve, generated from
+  `model/receipts.json` (Gold final graded; chemistry preregistrations pending)
+- ✅ Methods page (EXPLAINER rendered + technical appendix), record book
+  (streaks/upsets/marathons mined from games.csv)
+- ✅ DUPR-vs-model scoreboard page (scatter + biggest-disagreement tables)
+- ⬜ Open CSV downloads page; deploy target + nightly rebuild (GitHub Pages
+  action or VPS cron), custom domain
 
 ## Phase 3 — Live layer (M; needs a persistent $5 VPS)
 

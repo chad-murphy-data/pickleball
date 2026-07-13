@@ -15,6 +15,7 @@ python scraper/build_model_data.py           # games → model tables (env-confi
 python model/fit_v2.py                       # THE model (dynamic + race likelihood)
 python model/report.py                       # regenerate analysis.md (v1 sections)
 python scraper/live_poller.py                # live score JSONL during event days
+python web/build_site.py                     # data/*.csv → site/ static website (~4 s)
 ```
 
 `harvest.py` accepts `--start/--end`; re-runs only fetch new/recent dates
@@ -105,17 +106,33 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 
 - **September 2026**: score `model/registered_predictions.md` (frozen
   2026-07-12) against games dated AFTER 2026-07-12 only, using the method
-  written in that file. Also grade `model/prediction_midseason_final.md`
-  vs the actual Gold final result (user reports Waters lost twice —
-  verify once the API finalizes the matchup; our 61% STL call likely HIT
-  while the 88% WD call missed — both go in the receipts ledger).
+  written in that file; update the pending entry in `model/receipts.json`.
 - Season end (~Sept): full re-harvest + v2 refit + refresh analysis.md,
-  trajectories, leaderboards.
+  trajectories, leaderboards; rebuild the site.
+- ~~Grade the Gold final~~ DONE 2026-07-13, verified from the API matchup
+  record: STL won 3-0 (WD Bright/Fahey 11-6, MD Tardio/Patriquin 11-3,
+  MXD1 Bright/Patriquin 11-8; MXD2 skipped, no DB — Waters did lose twice).
+  Overall 61% STL HIT, headline WD 88% MISS. Graded table appended to
+  model/prediction_midseason_final.md; ledger entries in model/receipts.json.
+
+## Website (Phase 2 MVP — BUILT; see ROADMAP Phase 2)
+
+`python web/build_site.py` regenerates `site/` (gitignored, ~506 pages) from
+data/*.csv + model/receipts.json in ~4 s, stdlib-only (no pandas). Pages:
+power rankings, 499 player pages (trajectory + game-log-vs-expectation
+SVGs), client-side matchup simulator (race DP + weakest link + uncertainty
+in embedded JS, shareable permalinks), receipts ledger + calibration,
+record book, DUPR×model, methods. Conventions: values are displayed as
+"expected margin vs an average pairing" via web/sitelib/race.py:value_points;
+the race DP there mirrors model/v2_holdout.py AND the JS inside
+build_simulator — keep all three in sync. Rankings rank 2026-active players
+only; men/women always separate. `model/receipts.json` is the receipts
+source of truth — commit predictions there BEFORE matches, grade after.
 
 ## Open threads (specced, unbuilt)
 
-Website (design_handoff.md §A–E + session notes): static site off the CSVs,
-client-side matchup simulator (values JSON + race DP in JS), receipts
-ledger, live win-prob charts (needs Tier 1/2 listener on a VPS). Scorebug
-OCR of YouTube broadcasts could backfill point-by-point history (Tier 0 of
-the vision pipeline; championship-court sample bias noted).
+Website extras: open-CSV downloads page, deploy target + nightly rebuild
+(Pages action or VPS cron), live win-prob charts (needs Tier 1/2 listener
+on a VPS). Scorebug OCR of YouTube broadcasts could backfill point-by-point
+history (Tier 0 of the vision pipeline; championship-court sample bias
+noted).

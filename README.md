@@ -30,3 +30,19 @@ to pick up new events.
 
 `scraper/discover.py` is the network-interception probe kept for reference;
 the discovered BFF endpoints made it unnecessary (see recon.md).
+
+## Website
+
+A fully static site (power rankings, player pages with skill trajectories,
+a client-side matchup simulator, the public receipts ledger, record book,
+DUPR-vs-model comparison, methods) regenerates from the CSVs in seconds:
+
+```bash
+python web/build_site.py           # data/*.csv + model/receipts.json → site/
+python -m http.server -d site      # preview at http://localhost:8000
+```
+
+`site/` is gitignored — it is a build artifact; host it by pointing any
+static host (GitHub Pages, Netlify, a VPS) at the generated directory.
+`model/receipts.json` is the source of truth for the receipts page: every
+prediction is committed there before the match and graded after.
