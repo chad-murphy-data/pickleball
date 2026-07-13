@@ -88,6 +88,25 @@ def dupr_cell(p):
 
 # ---------------------------------------------------------------- rankings
 
+def rank_probs(pool, n_draws=100_000, top=12):
+    """P(true #1) and P(true top-3) by Monte Carlo over posterior marginals.
+    Approximation: posterior correlations between players are ignored (the
+    joint draws file is regenerated only at refit time); good enough for a
+    who's-really-first panel, and labeled as such on the page."""
+    import random
+    rng = random.Random(20260713)          # deterministic build
+    pool = sorted(pool, key=lambda p: -p.value)[:top]
+    wins = [0] * len(pool)
+    top3 = [0] * len(pool)
+    for _ in range(n_draws):
+        draws = [rng.gauss(p.value, p.sd) for p in pool]
+        order = sorted(range(len(pool)), key=lambda i: -draws[i])
+        wins[order[0]] += 1
+        for i in order[:3]:
+            top3[i] += 1
+    return [(p, wins[i] / n_draws, top3[i] / n_draws) for i, p in enumerate(pool)]
+
+
 def build_rankings(players, updated, n_games):
     def table(pool):
         if not pool:
@@ -121,7 +140,18 @@ def build_rankings(players, updated, n_games):
                         key=lambda p: p.rank)[:75]
         inactive = sorted((p for p in pool if not D.is_active(p)),
                           key=lambda p: -p.value)
-        sections.append(f"<h2>{label}</h2>" + table(active))
+        probs = [(p, p1, p3) for p, p1, p3 in rank_probs(active) if p1 >= 0.01]
+        prob_bits = " · ".join(
+            f'{plink(p)} <strong>{pct_floor(p1)}</strong>'
+            f'<span class="gray"> (top-3 {pct_floor(p3)}, {p.games} g)</span>'
+            for p, p1, p3 in probs)
+        panel = (f'<div class="card"><strong>Who is actually #1?</strong> '
+                 f'Posterior probability each player is the true best, not just '
+                 f'the current point-estimate leader: {prob_bits}. '
+                 f'<span class="note">Monte Carlo over posterior marginals '
+                 f'(correlations ignored); wide-interval players earn real '
+                 f'probability — that is the point.</span></div>')
+        sections.append(f"<h2>{label}</h2>" + panel + table(active))
         if inactive:
             sections.append(
                 f'<details><summary class="note">{len(inactive)} rated players '
