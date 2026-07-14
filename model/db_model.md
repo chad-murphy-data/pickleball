@@ -69,3 +69,35 @@ With the full singles corpus harvested (26,048 PPA pro singles games,
   (imputed +1.60) and NJ's DB edge grows to 60.0%.
 
 make_forecast.py now uses the singles-based model (K_DB_SINGLES = 0.42).
+
+## v3 (same day): roster economics — pricing the DreamBreaker specialist
+
+Question (user): Kate Fahey is a good-not-elite doubles player and an
+elite singles player. How many doubles games does she cost you vs how
+many DreamBreakers does she win you — especially against Waters teams?
+
+Confirmed premise: Fahey is the **#2 women's singles player** (+1.80, 340
+games; Waters +2.27). Her singles residual vs doubles-implied is +0.29 —
+the quantified definition of a singles specialist.
+
+The exchange rate (STL vs NJ context, the graded Gold final matchup;
+baseline 60.8% ≈ the committed 60.7%):
+
+- Fahey −0.10 doubles logit → −5.6 pp matchup (she plays 2 of 4 games).
+- +5 pp of DB win prob → +2.2 pp matchup (DB reached 44.5%, and one
+  player is only 1/4 of DB rallies). Generic DB skill trades ~4:1
+  against you: **doubles is the main course.**
+
+The Fahey-vs-Jade-Kawamoto swap, real numbers (per 100 matchups vs NJ):
+doubles channel −3.4 (Fahey 1.081 vs Jade 1.156, −0.075 logit); DB
+channel +1.2 (DB 42.8% with Fahey vs 40.0% with Jade-imputed-singles
++1.60). **Net −2.2: Jade wins the swap** — but the verdict hinges on
+Jade's unobservable singles (zero pro singles games; imputation is
+selection-biased upward). If her true singles is ~+1.0, the swap goes to
+near break-even.
+
+The Waters asymmetry survives in milder form: NJ's DB roster prices at
+57.2% over STL-with-Fahey (not the 65% the pre-match memo feared —
+Fahey personally drags it back). Against DB-strong opponents the
+specialist's value is defensive and roughly doubles; against average
+opponents it shrinks. Slots directly into the Phase 4 lineup optimizer.
