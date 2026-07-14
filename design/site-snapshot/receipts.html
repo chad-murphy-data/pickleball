@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Receipts — Pickleball, Priced</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%232a78d6'/%3E%3Ccircle cx='5.5' cy='6' r='1.3' fill='%23fcfcfb'/%3E%3Ccircle cx='10.5' cy='6' r='1.3' fill='%23fcfcfb'/%3E%3Ccircle cx='8' cy='10.5' r='1.3' fill='%23fcfcfb'/%3E%3C/svg%3E">
+<header class="site"><div class="wrap">
+  <span class="brand"><a href="index.html" style="color:inherit">Pickleball, Priced</a></span>
+  <nav><a href="index.html">Rankings</a><a href="players/index.html">Players</a><a href="forecast.html">Forecasts</a><a href="results.html">Results</a><a href="simulator.html">Simulator</a><a href="receipts.html" class="here">Receipts</a><a href="records.html">Record book</a><a href="dupr.html">DUPR × model</a><a href="methods.html">Methods</a><a href="data.html">Data</a></nav>
+</div></header>
+<div class="wrap">
+
+<h1>Receipts</h1>
+<p class="sub">Every prediction is committed with a timestamp before the match
+and graded in public — hit or miss. Brier score = (probability − outcome)²;
+0 is clairvoyance, 0.25 is a coin flip, lower is better. The model being
+publicly wrong is part of the product.</p>
+<div class="tiles">
+ <div class="tile"><div class="v">77.4%</div>
+  <div class="k">winners called on 884 unseen games (frozen 6 weeks)</div></div>
+ <div class="tile"><div class="v">64.7%</div>
+  <div class="k">DUPR on the same games — while its ratings kept updating</div></div>
+ <div class="tile"><div class="v">0.165</div>
+  <div class="k">holdout Brier (DUPR 0.229)</div></div>
+ <div class="tile"><div class="v">3/5</div>
+  <div class="k">public registered calls hit so far · mean Brier 0.289</div></div>
+</div>
+
+<div class="card"><h3 style="margin-top:0">MLP Mid-Season Tournament Gold Final — New Jersey 5s vs St. Louis Shock </h3>
+<p class="note">committed <strong>2026-07-12</strong> · graded <strong>2026-07-13</strong> · v2 (posterior simulation), DreamBreaker treated as 50/50 ·
+<a href="https://github.com/chad-murphy-data/pickleball/blob/main/model/prediction_midseason_final.md">frozen source ↗</a></p>
+<p>St. Louis Shock won 3-0. MXD2 skipped as a dead game; no DreamBreaker. Anna Leigh Waters lost both her games (6-11 WD, 8-11 MXD1).</p>
+<div class="tblwrap"><table><tr><th>call</th><th class="num">prob</th><th>outcome</th>
+<th>grade</th><th class="num">Brier</th></tr><tr><td>Overall: St. Louis Shock wins the final</td><td class="num">61%</td><td>STL won 3-0</td><td><span class="chip hit">✓ HIT</span></td><td class="num">0.154</td></tr><tr><td>WD: Waters/Johnson over Bright/Fahey</td><td class="num">88%</td><td>Bright/Fahey won 11-6</td><td><span class="chip miss">✗ MISS</span></td><td class="num">0.774</td></tr><tr><td>MD: Tardio/Patriquin over Khlif/Howells</td><td class="num">92%</td><td>Tardio/Patriquin won 11-3</td><td><span class="chip hit">✓ HIT</span></td><td class="num">0.006</td></tr><tr><td>MXD1: Waters/Khlif over Bright/Patriquin</td><td class="num">54%</td><td>Bright/Patriquin won 11-8</td><td><span class="chip miss">✗ MISS</span></td><td class="num">0.292</td></tr><tr><td>MXD2: Fahey/Tardio over Johnson/Howells</td><td class="num">75%</td><td>not played (match decided 3-0)</td><td><span class="chip void">– VOID</span></td><td class="num">—</td></tr><tr><td>Match reaches a DreamBreaker</td><td class="num">46%</td><td>no DreamBreaker</td><td><span class="chip hit">✓ HIT</span></td><td class="num">0.216</td></tr></table></div>
+<p class="note">The earlier v1 forecast (same file, committed hours before) grades identically in direction: overall STL 57.0% HIT, WD 69.5% MISS, MD 79.1% HIT, MXD1 52.9% MISS. Both models called the match and missed the headline WD game.</p></div>
+<div class="card"><h3 style="margin-top:0">Preregistered chemistry predictions (second half of 2026 season) <span class="chip pending">PENDING</span></h3>
+<p class="note">committed <strong>2026-07-12</strong> · to be graded after 2026-09-01 · v1 dyad chemistry + fixed-effects regression scoring (method frozen in the source file) ·
+<a href="https://github.com/chad-murphy-data/pickleball/blob/main/model/registered_predictions.md">frozen source ↗</a></p>
+
+<div class="tblwrap"><table><tr><th>call</th><th class="num">prob</th><th>outcome</th>
+<th>grade</th><th class="num">Brier</th></tr><tr><td>Waters + Bright (womens, PPA) underperform sum-of-parts in remaining 2026 games</td><td class="num">—</td><td><span class="gray">awaiting games</span></td><td><span class="chip pending">● PENDING</span></td><td class="num">—</td></tr><tr><td>Alshon + Patriquin (mens, PPA) underperform sum-of-parts in remaining 2026 games</td><td class="num">—</td><td><span class="gray">awaiting games</span></td><td><span class="chip pending">● PENDING</span></td><td class="num">—</td></tr><tr><td>Bright + Patriquin (mixed) chemistry stays small: |chem| &lt; 1 point/game unshrunk</td><td class="num">—</td><td><span class="gray">awaiting games</span></td><td><span class="chip pending">● PENDING</span></td><td class="num">—</td></tr><tr><td>League-wide dyad-chemistry scale (sd_d) refit on H2-only games stays under 1.0 point/game</td><td class="num">—</td><td><span class="gray">awaiting games</span></td><td><span class="chip pending">● PENDING</span></td><td class="num">—</td></tr></table></div>
+<p class="note">Scored in September against games dated after 2026-07-12 only, using the method written into the frozen file.</p></div>
+<h2>Calibration</h2>
+<p class="note">When the frozen model said a team should win X% of the time,
+how often did they actually win? Dots on the diagonal = honest probabilities.
+Curve measured out-of-sample: every post-June-2026 game priced by the frozen
+pre-June fit (885 games). The fitted correction is
+nearly the identity (slope 0.90) — the earlier v1 model ran
+underconfident, this one doesn't. What the data does insist on: across all
+36k games, favorites priced above 99% still lost 44 of
+4248 games (~1%), so site probabilities are floored —
+nothing is ever 0% or 100%. Frozen predictions in the ledger above are
+graded exactly as committed, never re-calibrated after the fact.</p>
+<svg class="chart capped" viewBox="0 0 420 340" role="img" aria-label="Calibration: forecast probability vs actual win rate"><line class="grid" x1="46.0" y1="12" x2="46.0" y2="306"/><line class="grid" x1="46" y1="306.0" x2="406" y2="306.0"/><text class="axis" x="46.0" y="324" text-anchor="middle">50%</text><text class="axis" x="40" y="309.5" text-anchor="end">50%</text><line class="grid" x1="118.0" y1="12" x2="118.0" y2="306"/><line class="grid" x1="46" y1="247.2" x2="406" y2="247.2"/><text class="axis" x="118.0" y="324" text-anchor="middle">60%</text><text class="axis" x="40" y="250.7" text-anchor="end">60%</text><line class="grid" x1="190.0" y1="12" x2="190.0" y2="306"/><line class="grid" x1="46" y1="188.4" x2="406" y2="188.4"/><text class="axis" x="190.0" y="324" text-anchor="middle">70%</text><text class="axis" x="40" y="191.9" text-anchor="end">70%</text><line class="grid" x1="262.0" y1="12" x2="262.0" y2="306"/><line class="grid" x1="46" y1="129.6" x2="406" y2="129.6"/><text class="axis" x="262.0" y="324" text-anchor="middle">80%</text><text class="axis" x="40" y="133.1" text-anchor="end">80%</text><line class="grid" x1="334.0" y1="12" x2="334.0" y2="306"/><line class="grid" x1="46" y1="70.8" x2="406" y2="70.8"/><text class="axis" x="334.0" y="324" text-anchor="middle">90%</text><text class="axis" x="40" y="74.3" text-anchor="end">90%</text><line class="grid" x1="406.0" y1="12" x2="406.0" y2="306"/><line class="grid" x1="46" y1="12.0" x2="406" y2="12.0"/><text class="axis" x="406.0" y="324" text-anchor="middle">100%</text><text class="axis" x="40" y="15.5" text-anchor="end">100%</text><line class="zeroline" x1="46.0" y1="306.0" x2="406.0" y2="12.0"/><circle class="s1dot" cx="82.0" cy="246.5" r="5"><title>forecast 50–59%: won 60% of 163 games</title></circle><circle class="s1dot" cx="154.0" cy="185.8" r="5"><title>forecast 60–69%: won 70% of 176 games</title></circle><circle class="s1dot" cx="226.0" cy="153.1" r="5"><title>forecast 70–79%: won 76% of 150 games</title></circle><circle class="s1dot" cx="298.0" cy="114.7" r="5"><title>forecast 80–89%: won 83% of 166 games</title></circle><circle class="s1dot" cx="370.0" cy="60.6" r="5"><title>forecast 90–99%: won 92% of 230 games</title></circle><text class="axis" x="226" y="338" text-anchor="middle">forecast win probability</text><text class="axis" transform="translate(12 159) rotate(-90)" text-anchor="middle">actual win rate</text></svg>
+
+<footer class="site">Unofficial fan analytics based on public results data —
+not affiliated with any tour. Every number that has an error bar shows it;
+cross-gender rankings are never published as fact (<a href="methods.html">why</a>).
+Model: Bayesian, 36k games, validated 77.4% winner accuracy on 884 unseen
+games · data through 2026-07-12.</footer>
+</div>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Methods — Pickleball, Priced</title>
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='7' fill='%232a78d6'/%3E%3Ccircle cx='5.5' cy='6' r='1.3' fill='%23fcfcfb'/%3E%3Ccircle cx='10.5' cy='6' r='1.3' fill='%23fcfcfb'/%3E%3Ccircle cx='8' cy='10.5' r='1.3' fill='%23fcfcfb'/%3E%3C/svg%3E">
+<header class="site"><div class="wrap">
+  <span class="brand"><a href="index.html" style="color:inherit">Pickleball, Priced</a></span>
+  <nav><a href="index.html">Rankings</a><a href="players/index.html">Players</a><a href="forecast.html">Forecasts</a><a href="results.html">Results</a><a href="simulator.html">Simulator</a><a href="receipts.html">Receipts</a><a href="records.html">Record book</a><a href="dupr.html">DUPR × model</a><a href="methods.html" class="here">Methods</a><a href="data.html">Data</a></nav>
+</div></header>
+<div class="wrap">
+
+<h1>What we did, in plain language</h1>
+<p><em>A walkthrough for the number-curious. No statistics degree required.</em></p>
+<h2>The question</h2>
+<p>Pro pickleball doubles has an obvious puzzle: when a team wins, who gets the credit? Anna Bright and Hayden Patriquin dominate mixed doubles — is that because they&#x27;re both great, or because they&#x27;re great <em>together</em>? Announcers love the chemistry story. We wanted to know if the numbers do.</p>
+<h2>Step 1: Get every game</h2>
+<p>The tours&#x27; results website quietly loads its data from a public feed. We wrote a polite little program (one request per second) that walked through every date since January 2024 and collected every professional doubles game — both tours, every player, every game score. About <strong>36,000 games</strong> and <strong>3,600 players</strong>, each with a permanent ID number so that &quot;Tyra Hurricane Black&quot; and &quot;Tyra Black&quot; never get counted as two people.</p>
+<h2>Step 2: Rate the players — all at once</h2>
+<p>Here&#x27;s the whole model in one sentence: <strong>every game&#x27;s point margin should equal the value of your two players, minus the value of their two players, plus luck.</strong> Write that equation down for all 36,000 games, then ask a computer to find the player values that explain the results best.</p>
+<p>Doing it this way — everyone at once — is the trick. Beating someone 11-7 means more if their teammates were strong, and the model knows exactly how strong, because their games are in the system too. Every rating is automatically adjusted for the quality of every partner and every opponent.</p>
+<p>One more ingredient: skepticism. The model treats every player as average until the evidence pushes it off that assumption. Twenty games of hot streak move your rating a little; two hundred games move it a lot. (Statisticians call this <em>shrinkage</em>. Think of it as the model saying &quot;prove it.&quot;)</p>
+<h2>Step 3: Check that it actually works</h2>
+<p>A rating system that can&#x27;t predict the future is just vibes with decimals. So we froze the model on June 1st and made it predict every game for the next six weeks — games it had never seen.</p>
+<p><strong>It called 75% of winners correctly.</strong> For comparison, a coin flip gets 50%, and the official rating system used by the tours (using ratings that kept updating all summer, an unfair advantage) got 65% on the same games.</p>
+<h2>What we found</h2>
+<p><strong>1. Anna Leigh Waters is on her own planet.</strong> She adds about 7.7 points per game to a team, roughly 1.7 more than the #2 woman (Anna Bright). That gap — between #1 and #2 — is about the same size as the <em>entire spread of the men&#x27;s top 25</em>. The men&#x27;s #1 spot is a genuine pileup: Tardio, Johns, Patriquin, JW Johnson and Alshon are all within a whisker of each other.</p>
+<p><strong>2. Chemistry is mostly a myth.</strong> How good the players are matters about <strong>five times more</strong> than how well they fit together. Bright &amp; Patriquin&#x27;s dominance? Two top-5 players standing on the same side of the net. Their special sauce is worth maybe a tenth of a point per game — and we can&#x27;t even be sure it&#x27;s real. Nobody&#x27;s chemistry cleared that bar. To <em>prove</em> a typical chemistry effect exists for one specific pair, you&#x27;d need about a thousand games together; the busiest pair in pickleball played 138.</p>
+<p><strong>3. Pickleball is a weakest-link game.</strong> This was the sleeper finding. A team isn&#x27;t worth the sum of its players — every point of skill gap between partners costs about half a point of team strength. Star-plus-passenger loses to balanced-and-solid at the same total talent. And in mixed doubles, the target on someone&#x27;s back follows <em>skill</em>, not gender: the data rejects the old &quot;attack the woman&quot; doctrine in favor of &quot;attack the weaker player, whoever that is.&quot;</p>
+<p><strong>4. The stories in the ratings are real.</strong> Gabriel Tardio climbed from #8 to #4 to #1 among men across three seasons. Ben Johns slid from clear #1 — the kind of gap Waters has now — to &quot;member of a five-way tie.&quot; The official rating, for what it&#x27;s worth, had Tardio <em>declining</em> through his breakout, which tells you something about official ratings.</p>
+<h2>What we can&#x27;t know (and refuse to pretend we do)</h2>
+<ul><li><strong>Can&#x27;t split &quot;great player&quot; from &quot;great partner.&quot;</strong> A game score only tells you what the <em>team</em> did, so a player&#x27;s own skill and their boost to a partner are mathematically welded together. We say so instead of making it up. (This is also why the weakest-link discovery was exciting — it&#x27;s the closest thing to a real &quot;partner effect&quot; the data can support.)</li><li><strong>Can&#x27;t compare men to women.</strong> Men and women never play <em>against</em> each other — every game has the same number of women on each side — so the data literally contains no information about how the two rankings line up. Waters #1-overall is a convention, not a measurement.</li><li><strong>Chemistry verdicts on specific pairs are soft.</strong> We wrote down our best guesses (in public, with timestamps) and the rest of the season will grade them.</li></ul>
+<h2>The punchline</h2>
+<p>If you remember one thing: <strong>in pro doubles, who you are beats who you&#x27;re with — and if you must choose a partner, choose your equal.</strong></p>
+<p><em>(All code, data, and the full technical writeups live in this repository. A fancier version of the model — with month-by-month skill tracking — is fitting as this file is written.)</em></p>
+<div class="card"><h2 style="margin-top:0">The technical version, in brief</h2>
+<ul>
+<li><strong>Likelihood:</strong> every game is a per-point Binomial race —
+points won ~ Binomial(total points, σ(η)) — so games to 11 and to 15 enter
+one model natively.</li>
+<li><strong>η</strong> = (team 1 skill − team 2 skill) + pair-chemistry
+deviations + a per-match random effect; team skill = sum of player values
++ γ·|partner gap| (the weakest link, γ ≈ −0.18 on the per-point logit
+scale).</li>
+<li><strong>Dynamics:</strong> each ≥60-game player's value follows a monthly
+Gaussian random walk (2024-01 → now); everyone else is static with
+shrinkage.</li>
+<li><strong>Validation:</strong> frozen on pre-June-2026 data, scored on the
+next six weeks: 77.4% winners, Brier 0.165 (DUPR: 64.7% / 0.229 on the same
+games).</li>
+<li><strong>Display scale:</strong> the site converts per-point logits to
+"expected margin vs an average pairing in a race to 11" — median regular
+≈ +2 pts, superstar ≈ +7.</li>
+<li><strong>Calibrated, floored probabilities:</strong> win probabilities are
+passed through a map fitted on out-of-sample games (near-identity: slope
+0.90) with an empirical tail floor — ~1% of ≥99% favorites lose, so no
+probability is ever shown as 0% or 100%. There is always a chance.</li>
+</ul>
+<p class="note">Full writeups, code, data and diagnostics:
+<a href="https://github.com/chad-murphy-data/pickleball">the repository</a> — see analysis.md for every table and
+robustness check.</p></div>
+<div class="card"><h2 style="margin-top:0">Things we refuse to publish</h2>
+<ul>
+<li><strong>Cross-gender rankings as fact.</strong> Every game has equal women
+per side, so nothing in 36,000 games links the men's and women's scales.</li>
+<li><strong>"Great partner" awards.</strong> A game score credits the team;
+a player's own skill and their boost to a partner are mathematically
+inseparable.</li>
+<li><strong>Certified chemistry.</strong> Proving a typical pair effect takes
+~1,000 games together; the record is 138. We publish the estimates with
+their (wide) error bars instead.</li>
+</ul></div>
+
+<footer class="site">Unofficial fan analytics based on public results data —
+not affiliated with any tour. Every number that has an error bar shows it;
+cross-gender rankings are never published as fact (<a href="methods.html">why</a>).
+Model: Bayesian, 36k games, validated 77.4% winner accuracy on 884 unseen
+games · data through 2026-07-12.</footer>
+</div>
