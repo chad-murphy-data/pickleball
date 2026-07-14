@@ -42,6 +42,21 @@ set_calibration(CAL["a"], CAL["b"], CAL["eps"])
 SLOTS = ("WD", "MD", "MXD1", "MXD2")
 LOOKBACK_DAYS = 60
 
+# DreamBreaker model (fit on all 101 historical DBs, model/db_model.md):
+# per-rally logit = K_DB * (mean roster doubles value gap); doubles skill
+# transfers to DB rallies at roughly half strength. CI [0.15, 0.95] — wide,
+# but cleanly excludes zero, so 50/50 is retired for roster-gapped teams.
+K_DB = 0.55
+
+
+def db_win_prob(roster1_vals, roster2_vals):
+    if not roster1_vals or not roster2_vals:
+        return 0.5
+    gap = sum(roster1_vals) / len(roster1_vals) - sum(roster2_vals) / len(roster2_vals)
+    p = race_dist(round(sigmoid(K_DB * gap), 4), 21)["p_win"]
+    eps = CAL["eps"]
+    return min(max(p, eps / 2), 1 - eps / 2)
+
 
 def load_values():
     vals = {}
@@ -196,7 +211,18 @@ def main():
                                 "t2_pair": [vals[u][0] for u in lu2[slot]],
                             }
                         games.append(pj)
-                    tree = matchup_tree(ps) if len(ps) == 4 else None
+                    p_db = 0.5
+                    if lu1 and lu2:
+                        r1 = {u for pr in lu1.values() for u in pr}
+                        r2 = {u for pr in lu2.values() for u in pr}
+                        try:
+                            p_db = db_win_prob([vals[u][1] for u in r1],
+                                               [vals[u][1] for u in r2])
+                        except KeyError:
+                            pass
+                    tree = matchup_tree(ps, p_db) if len(ps) == 4 else None
+                    if tree:
+                        tree["p_db_win"] = round(p_db, 4)
                     forecasts.append({
                         "date": str(d),
                         "start": mu.get("plannedStartDate"),

@@ -75,6 +75,15 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    Tardio's rise is smooth and real.
 5. New pairings OVERperform first ~6 games (beta_new > 0) — window-edge
    caveat only partially resolved; treat gently.
+6. DreamBreakers are NOT 50/50: doubles skill transfers to DB rallies at
+   ~half strength (rally-level k = 0.55, CI [0.15, 0.95], n = 101 DBs;
+   model/db_model.md). Stronger roster wins 57%. Wired into make_forecast.
+7. Cross-gender offset: the γ|gap| term is the ONLY identification channel
+   and it's stable in-form (c* ≈ +0.08 logit, scales ~1:1) but the nominal
+   precision is fake (values held fixed; form-borne). House rule stands —
+   never publish as fact. A single 2W-vs-2M exhibition game carries ~se
+   0.24 logit of DIRECT offset info; a weekend of them beats 14k mixed
+   games. (Session analysis 2026-07-13; not on the site.)
 
 ## House rules (hard-won; violating these produces silently wrong results)
 

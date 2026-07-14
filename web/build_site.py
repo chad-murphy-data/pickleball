@@ -551,8 +551,10 @@ def build_forecast(players, updated):
                         f'<div class="pmbar"><div class="a" style="width:{100 * t["p_win"]}%"></div>'
                         f'<div class="b" style="flex:1"></div></div>'
                         f'<p class="note">paths: 4–0 {pct_floor(t["p_40"])} · 3–1 {pct_floor(t["p_31"])} · '
-                        f'DreamBreaker {pct_floor(t["p_db"])} (priced 50/50) · '
-                        f'1–3 {pct_floor(t["p_13"])} · 0–4 {pct_floor(t["p_04"])}</p>')
+                        f'DreamBreaker {pct_floor(t["p_db"])}'
+                        + (f' ({esc(f["team1"].split()[-1])} {pct_floor(t["p_db_win"])} if played)'
+                           if t.get("p_db_win") is not None else ' (priced 50/50)')
+                        + f' · 1–3 {pct_floor(t["p_13"])} · 0–4 {pct_floor(t["p_04"])}</p>')
             else:
                 head = (f'<div class="big">{esc(f["team1"])} <span class="gray">vs</span> '
                         f'{esc(f["team2"])}</div><p class="note">not priceable yet '
@@ -592,8 +594,10 @@ close to match time and can differ.</p></div>""")
 <p class="sub">Every scheduled MLP matchup in the next week, priced before it
 happens. Lineups are <strong>projected</strong> from each team's most recent
 completed matchup; per-game probabilities use current player values, the
-weakest-link penalty and display calibration; the DreamBreaker is treated as
-a coin flip by stated convention. To make a forecast part of the permanent
+weakest-link penalty and display calibration; the DreamBreaker is priced by
+a rally-level model fit on all 101 historical DreamBreakers — doubles skill
+transfers to DB rallies at roughly half strength, so the stronger roster is
+a mild (not heavy) DB favorite. To make a forecast part of the permanent
 record, it must be frozen into the <a href="receipts.html">receipts ledger</a>
 before first serve (<code>make_forecast.py --commit</code>) — this page alone
 is a living view, not a commitment.</p>
