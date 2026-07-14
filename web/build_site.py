@@ -675,6 +675,8 @@ DOWNLOADS = [
     ("v2_dyads.csv", "pair-chemistry posteriors (small and honest)"),
     ("yearly_values.csv", "season-by-season v1 values (points scale) + gender ranks"),
     ("platform_ratings.csv", "latest synced DUPR per player + snapshot count"),
+    ("singles_games.csv", "every PPA pro singles game 2024–26 (26k games)"),
+    ("singles_players.csv", "singles rating per player (MAP fit, recency-weighted)"),
 ]
 
 

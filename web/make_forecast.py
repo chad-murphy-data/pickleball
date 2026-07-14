@@ -42,18 +42,38 @@ set_calibration(CAL["a"], CAL["b"], CAL["eps"])
 SLOTS = ("WD", "MD", "MXD1", "MXD2")
 LOOKBACK_DAYS = 60
 
-# DreamBreaker model (fit on all 101 historical DBs, model/db_model.md):
-# per-rally logit = K_DB * (mean roster doubles value gap); doubles skill
-# transfers to DB rallies at roughly half strength. CI [0.15, 0.95] — wide,
-# but cleanly excludes zero, so 50/50 is retired for roster-gapped teams.
-K_DB = 0.55
+# DreamBreaker model v2 (fit on all 101 historical DBs, model/db_model.md):
+# per-rally logit = K_DB_SINGLES * (mean roster SINGLES value gap). Singles
+# values from model/fit_singles.py; players with <10 singles games are
+# imputed from doubles via the fitted regression (singles ≈ 0.28 + 1.14*d).
+# Singles-gap model beats the doubles proxy by 3.1 nll on the 101 DBs.
+K_DB_SINGLES = 0.42
+SINGLES_IMPUTE = (0.28, 1.14)
 
 
-def db_win_prob(roster1_vals, roster2_vals):
-    if not roster1_vals or not roster2_vals:
+def load_singles():
+    path = DATA / "singles_players.csv"
+    if not path.exists():
+        return {}
+    return {r["player_id"]: (float(r["singles_value"]), int(r["singles_games"]))
+            for r in csv.DictReader(path.open())}
+
+
+def db_win_prob(roster1, roster2, vals, singles):
+    """P(team1 wins DreamBreaker) from mean roster singles strength."""
+    def s_of(u):
+        if u in singles and singles[u][1] >= 10:
+            return singles[u][0]
+        if u in vals:
+            a, b = SINGLES_IMPUTE
+            return a + b * vals[u][1]
+        return None
+    s1 = [s_of(u) for u in roster1]
+    s2 = [s_of(u) for u in roster2]
+    if not s1 or not s2 or any(v is None for v in s1 + s2):
         return 0.5
-    gap = sum(roster1_vals) / len(roster1_vals) - sum(roster2_vals) / len(roster2_vals)
-    p = race_dist(round(sigmoid(K_DB * gap), 4), 21)["p_win"]
+    gap = sum(s1) / len(s1) - sum(s2) / len(s2)
+    p = race_dist(round(sigmoid(K_DB_SINGLES * gap), 4), 21)["p_win"]
     eps = CAL["eps"]
     return min(max(p, eps / 2), 1 - eps / 2)
 
@@ -175,6 +195,7 @@ def main():
     args = ap.parse_args()
 
     vals = load_values()
+    singles = load_singles()
     c = PBClient()
     today = date.today()
     lineup_cache = {}
@@ -215,11 +236,7 @@ def main():
                     if lu1 and lu2:
                         r1 = {u for pr in lu1.values() for u in pr}
                         r2 = {u for pr in lu2.values() for u in pr}
-                        try:
-                            p_db = db_win_prob([vals[u][1] for u in r1],
-                                               [vals[u][1] for u in r2])
-                        except KeyError:
-                            pass
+                        p_db = db_win_prob(r1, r2, vals, singles)
                     tree = matchup_tree(ps, p_db) if len(ps) == 4 else None
                     if tree:
                         tree["p_db_win"] = round(p_db, 4)

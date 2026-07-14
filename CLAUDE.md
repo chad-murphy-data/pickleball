@@ -26,6 +26,8 @@ python scraper/parse.py                      # raw/ → data/games.csv etc.
 python scraper/build_model_data.py           # games → model tables (env-configurable)
 python model/fit_v2.py                       # THE model (dynamic + race likelihood)
 python model/report.py                       # regenerate analysis.md (v1 sections)
+python scraper/parse_singles.py              # raw/ → data/singles_games.csv (26k games)
+python model/fit_singles.py                  # singles MAP ratings (pure python, ~10 s)
 python scraper/extract_ratings.py            # raw/ → per-match + latest DUPR (merges)
 python scraper/live_poller.py                # live score JSONL during event days
 python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
@@ -75,9 +77,13 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    Tardio's rise is smooth and real.
 5. New pairings OVERperform first ~6 games (beta_new > 0) — window-edge
    caveat only partially resolved; treat gently.
-6. DreamBreakers are NOT 50/50: doubles skill transfers to DB rallies at
-   ~half strength (rally-level k = 0.55, CI [0.15, 0.95], n = 101 DBs;
-   model/db_model.md). Stronger roster wins 57%. Wired into make_forecast.
+6. DreamBreakers are NOT 50/50: mean roster SINGLES value predicts them
+   (k = 0.42, CI [0.20, 0.65], n = 101; beats the doubles proxy by 3.1
+   nll; stronger-singles roster wins 60%; model/db_model.md). Singles
+   ratings: 26k PPA singles games, fit_singles.py; singles~doubles
+   r = 0.74; imputation for never-plays-singles rosters ≈ 0.28+1.14·d.
+   Waters +2.27 / Fahey +1.80 are the top two women's singles values.
+   Wired into make_forecast (K_DB_SINGLES).
 7. Cross-gender offset: the γ|gap| term is the ONLY identification channel
    and it's stable in-form (c* ≈ +0.08 logit, scales ~1:1) but the nominal
    precision is fake (values held fixed; form-borne). House rule stands —

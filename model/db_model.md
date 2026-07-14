@@ -43,3 +43,29 @@ alongside the P(reaches DB) path.
   distrust 50/50.
 - DB segments are same-gender (W vs W, M vs M), so none of this touches
   the cross-gender identification problem.
+
+## v2 (same day): singles values replace the doubles proxy
+
+With the full singles corpus harvested (26,048 PPA pro singles games,
+2024–26) and model/fit_singles.py fitted:
+
+- **Singles-gap model: k = 0.42, 95% CI [0.20, 0.65]** — beats the
+  doubles-gap proxy by 3.1 nll units on the same 101 DBs. Picking the
+  stronger-singles roster calls 60.4% of DBs (doubles proxy: 57.4%).
+- Players without a singles history (many MLP-only rosters) are imputed
+  via the fitted cross-skill regression singles ≈ 0.28 + 1.14·doubles
+  (r = 0.74, n = 543). Selection caveat: never-plays-singles players are
+  plausibly below their imputation.
+- Cross-check that fell out for free: the biggest singles OVERperformers
+  vs their doubles-implied value (Haworth, Crum, Z. Ford, G. Joseph,
+  Bouchard) largely coincide with the "DUPR ranks them far above our
+  doubles model" disagreement list — that divergence was singles skill,
+  not noise.
+- Worked example (the Gold final rosters): NJ's DreamBreaker roster
+  (Waters +2.27 singles, Khlif +1.48, Howells +1.32, Johnson +1.20)
+  prices at 57.2% over STL-with-Fahey — milder than the 65% the pre-match
+  memo hypothesized, because Fahey (+1.80, the #2 women's singles player)
+  drags the gap back. Swap her for a Jade-Kawamoto-caliber woman
+  (imputed +1.60) and NJ's DB edge grows to 60.0%.
+
+make_forecast.py now uses the singles-based model (K_DB_SINGLES = 0.42).
