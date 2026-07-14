@@ -52,6 +52,7 @@ jobs:
           python scraper/harvest.py
           python scraper/enrich_formats.py
           python scraper/parse.py
+          python scraper/parse_singles.py
           python scraper/extract_ratings.py
           python web/make_forecast.py --days 7
         timeout-minutes: 90
