@@ -1,0 +1,16 @@
+date filter < 2025-01-01: 10679 games
+date filter >= 2024-01-01: 10679 games
+core-pool filter (>=30 games/player): 10679 -> 6055 games
+model_data: 6055 games | 301 players | 1309 dyads | 2589 matches
+divergences: 0 | max rhat (v,d): [1.0042542219161987, 1.001767873764038]
+date filter < 2026-01-01: 24668 games
+date filter >= 2025-01-01: 13989 games
+core-pool filter (>=30 games/player): 13989 -> 8044 games
+model_data: 8044 games | 407 players | 1871 dyads | 4104 matches
+divergences: 0 | max rhat (v,d): [1.030351161956787, 1.0053750276565552]
+date filter < 2027-01-01: 33543 games
+date filter >= 2026-01-01: 8875 games
+core-pool filter (>=30 games/player): 8875 -> 4698 games
+model_data: 4698 games | 312 players | 1213 dyads | 2450 matches
+divergences: 1 | max rhat (v,d): [1.0054746866226196, 1.0018022060394287]
+CORE_FITS_DONE

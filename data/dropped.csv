@@ -1,0 +1,834 @@
+context,date,event_id,event_name,game,match_id,reason,stage,tour
+womens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,f310d335-41e7-4df9-98bc-d180a0dd0fb8,match not completed (status=1),Round 4 L1,MLP
+mens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,da5b87dc-4bab-49e8-a8e8-5da17a587e2d,match not completed (status=1),Round 4 L1,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,f7cef37d-41be-4dcf-b99a-5f8e260e270c,match not completed (status=1),Round 4 L1,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,ad41a907-6d86-45ea-9298-08e302bcca10,match not completed (status=1),Round 4 L1,MLP
+mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,3848f0b3-4865-49b5-8872-a492b3a476e8,no played games (forfeit/walkover),Round 16 W,MLP
+,2026-06-11,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,0586df70-baec-4c2d-828d-5ccb1ec4434f,bye matchup (no opponent),,MLP
+,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,0a1110ff-4c7c-46e5-b8d2-06fd36aac321,bye matchup (no opponent),,MLP
+,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,0cb0af37-62ec-4044-b016-4edac6b89bfb,bye matchup (no opponent),,MLP
+,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,0d040394-2236-46d8-bd01-ad2d52f63ac0,bye matchup (no opponent),,MLP
+mixed,2025-08-22,5d9d8bbd-845b-4607-94bd-c48748c61946,"DoorDash MLP Finals NYC, powered by Toray",,da255da9-2b25-456e-9b86-cde72ad7c600,no played games (forfeit/walkover),RR,MLP
+,2026-05-28,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,119b8e93-d7c5-42a9-8a4e-75dda5887f5a,bye matchup (no opponent),,MLP
+,2026-06-11,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,128cf0e7-f95f-411c-9a4b-c8b309755054,bye matchup (no opponent),,MLP
+mixed,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,03814bd2-4deb-40ee-84f8-91836d952b76,no played games (forfeit/walkover),Round 1 L1,MLP
+,2026-06-17,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,,13961c84-2ebc-4907-b64b-1f169e207c4f,bye matchup (no opponent),,MLP
+mixed,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,9604fe52-fee8-4726-b7f8-7d330aa5826a,no played games (forfeit/walkover),Quarter Finals W,MLP
+mixed,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,fe4b4262-43af-4b1e-bb5d-cb5c1265b116,no played games (forfeit/walkover),Round 3 RR,MLP
+mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,1f6f9075-5598-4c45-8166-9d5e6a1a961f,no played games (forfeit/walkover),Round 2 RR,MLP
+,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,1d40231a-26ef-4c04-a890-d2868d1020a0,bye matchup (no opponent),,MLP
+mixed,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,bdc5fd4b-0101-4572-991d-c8ae62e95480,no played games (forfeit/walkover),Round 3 RR,MLP
+,2026-06-17,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,,257ae627-bfcb-4b1a-9254-6031a59e707e,bye matchup (no opponent),,MLP
+mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,df69119c-d826-4ac0-b26b-23f145c1337c,no played games (forfeit/walkover),Round 1 RR,MLP
+,2026-06-11,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,28a4ca80-f1d1-4d7b-b537-a182a4e8a623,bye matchup (no opponent),,MLP
+,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,28ff48de-a395-49e6-86ff-583f04215813,bye matchup (no opponent),,MLP
+,2026-06-11,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,29b11fc6-0a6a-46aa-b501-6a2ae3f8a16a,bye matchup (no opponent),,MLP
+mixed,2026-06-28,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,0be4d9da-3aaa-4c76-9284-15f7e2b77bda,no played games (forfeit/walkover),Round 1 RR,MLP
+mixed,2026-05-31,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,2960fddd-778d-4124-8fec-f19d58b80a54,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,38ccb419-ab51-438c-a15e-1bc6b2928c76,bye matchup (no opponent),,MLP
+mixed,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,1318fd3a-b757-4c88-8805-59719e50a145,no played games (forfeit/walkover),Quarter Finals W,MLP
+,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,3ad90512-1138-48e2-b7c2-5c0e0af22b69,bye matchup (no opponent),,MLP
+,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,3aebdae7-a874-461e-a713-a9b5d7f1a9de,bye matchup (no opponent),,MLP
+mixed,2026-07-08,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,e03489cd-d506-42d6-9266-83032d328c5f,no played games (forfeit/walkover),Round 32 W,MLP
+,2026-05-28,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,3bc000d9-458c-455e-a81e-7864249f9a5f,bye matchup (no opponent),,MLP
+mixed,2026-07-11,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,6d757f70-2ed2-4e26-b7f7-f92271dbc3c9,no played games (forfeit/walkover),Quarter Finals W,MLP
+mixed,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,433b7e4d-7f31-4707-9429-d1c2d3b93277,no played games (forfeit/walkover),Round 4 L1,MLP
+womens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,a8dc2a82-acd4-4484-924b-adf0f4fc606b,match not completed (status=1),Round 5 L1,MLP
+mens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,6243f123-f94c-4746-baee-c20a109de0d5,match not completed (status=1),Round 5 L1,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,2f946038-6332-404c-a9e9-f5e13a479a5d,match not completed (status=1),Round 5 L1,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,692d1256-6fc5-4160-8ca9-54b56a070ef2,match not completed (status=1),Round 5 L1,MLP
+mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,9de36581-9ee4-4eb7-8d31-fecd779048ee,no played games (forfeit/walkover),Round 1 L1,MLP
+,2026-06-04,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,46026cf4-1f2a-4a1d-b202-2b74b3adcc07,bye matchup (no opponent),,MLP
+mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,3a435232-0fa9-43c6-b819-2ed4b1da30d0,no played games (forfeit/walkover),Round 16 W,MLP
+mixed,2025-11-02,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,661b0443-9393-4199-97a7-ac90b63bfeb9,no played games (forfeit/walkover),Semi-Finals W,MLP
+mixed,2025-08-15,141fe139-b4d2-4846-ac9f-a36b5dd6db41,Toray MLP Playoffs - San Diego,,9bb010f9-74e8-4bba-97cc-85d53c3f08f9,no played games (forfeit/walkover),RR,MLP
+mixed,2025-07-10,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,694680d5-8d22-49b7-b95e-654020a6361b,no played games (forfeit/walkover),Round 16 W,MLP
+mixed,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,,247627f1-1a20-4769-a0b6-0fc4661e2527,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+mixed,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,3dce15a4-5a14-4d73-8373-16c54943f390,no played games (forfeit/walkover),Round 4 RR,MLP
+mixed,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,fb40f378-cde8-42d6-88f7-981f53bbfc3f,no played games (forfeit/walkover),Quarter Finals W,MLP
+,2026-06-04,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,5c118161-8f28-43ff-bf1c-8d810716076c,bye matchup (no opponent),,MLP
+mixed,2026-07-11,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,68e91f01-a742-4ee3-b2d8-5f1b2c8b04f8,no played games (forfeit/walkover),Round 3 L1,MLP
+mixed,2025-11-02,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,0879b4d3-f974-43e8-9164-f5f2c8107a93,no played games (forfeit/walkover),Round 4 RR,MLP
+mixed,2026-06-21,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,,2d54642a-b60b-4267-9c79-72507937785e,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+mixed,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,f52aeed8-a146-4e3d-babe-aae581f93ff8,no played games (forfeit/walkover),Round 3 RR,MLP
+,2026-06-04,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,6f68c1b7-469f-4f14-923d-f5f37c4d7c14,bye matchup (no opponent),,MLP
+mixed,2025-07-10,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,675edbb8-3630-4a85-be4f-42c999c00492,no played games (forfeit/walkover),Round 16 W,MLP
+mixed,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,88618853-9957-45b3-b48b-15b83413c582,no played games (forfeit/walkover),Round 16 W,MLP
+mixed,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,a62fdfa8-2075-47d6-9518-45e190093f9a,no played games (forfeit/walkover),Round 1 L1,MLP
+mixed,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,d1300b1b-e2b2-4022-86bc-07acc70db02f,no played games (forfeit/walkover),Round 1 L1,MLP
+mixed,2025-11-02,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,7691eac6-2991-4152-9ba1-69184db0a4d0,no played games (forfeit/walkover),Round 1 RR,MLP
+,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,7f53d79b-6f82-4957-873e-48ba1b1bfd87,bye matchup (no opponent),,MLP
+mixed,2025-08-22,5d9d8bbd-845b-4607-94bd-c48748c61946,"DoorDash MLP Finals NYC, powered by Toray",,3ff1b420-8831-44ae-981c-8d84a41bf743,no played games (forfeit/walkover),RR,MLP
+mixed,2025-08-22,5d9d8bbd-845b-4607-94bd-c48748c61946,"DoorDash MLP Finals NYC, powered by Toray",,4600afa9-9d36-4933-aa85-a1a8d69238c0,no played games (forfeit/walkover),RR,MLP
+,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,8d4d62bf-f156-4cb0-926f-4bf56e5e7e9a,bye matchup (no opponent),,MLP
+,2026-06-17,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,,8db81016-9f54-485a-818e-9e07dd7c63ca,bye matchup (no opponent),,MLP
+,2026-05-28,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,8f9f914f-c867-49ad-a2bf-a2d628b24a8e,bye matchup (no opponent),,MLP
+mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,764a5bde-2731-4507-8e1f-1d6cc33a4a82,no played games (forfeit/walkover),Round 4 RR,MLP
+,2026-05-28,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,9160ba6b-ab34-4685-b731-6d075565d733,bye matchup (no opponent),,MLP
+mixed,2026-06-14,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,642c796e-1c23-4301-a3ee-de44b26cfe96,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,98e29ae0-5b5e-45f7-8645-79887b5e852a,bye matchup (no opponent),,MLP
+mixed,2025-07-13,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,d0298b46-33b9-421c-b8c3-bbe38f559074,no played games (forfeit/walkover),Round 6 L1,MLP
+,2026-06-04,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,9b7a7a14-925b-49b4-9000-f888d13a3ffc,bye matchup (no opponent),,MLP
+womens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,7efe48ea-1b9a-4880-a0f3-3f380a069c8b,match not completed (status=1),Round 6 B,MLP
+mens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,d8a8316e-f465-49ec-be58-abfa61b220e6,match not completed (status=1),Round 6 B,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,9c5c0d94-b0c2-49b4-bdec-3ef382b9eb26,match not completed (status=1),Round 6 B,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,9c3cae9f-2339-406a-8c8a-e7ff1905b417,match not completed (status=1),Round 6 B,MLP
+mixed,2026-07-08,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,120a4fb8-afed-47af-a93a-d8d8be33e81d,no played games (forfeit/walkover),Round 32 W,MLP
+mixed,2025-08-16,141fe139-b4d2-4846-ac9f-a36b5dd6db41,Toray MLP Playoffs - San Diego,,f97f645d-4df9-4c15-9b02-015ffd45cfb3,no played games (forfeit/walkover),RR,MLP
+mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,cec4612d-a7f7-4b40-b99c-de7b552f1d1f,no played games (forfeit/walkover),Round 16 W,MLP
+mixed,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,bc57aad3-3762-4868-88b9-2b8c657500f6,no played games (forfeit/walkover),Round 3 RR,MLP
+,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,a6dc6047-934d-40dd-8fe8-eaf9ebe2032c,bye matchup (no opponent),,MLP
+mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,d8636497-fb90-4ba5-993d-475af09e65de,no played games (forfeit/walkover),Round 3 RR,MLP
+mixed,2025-07-11,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,bd359166-87b7-4a96-9400-9a9066c88f8c,no played games (forfeit/walkover),Quarter Finals W,MLP
+mixed,2026-07-08,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,c41d7109-b2bb-4068-af79-c3e5b19ae27d,no played games (forfeit/walkover),Round 32 W,MLP
+,2026-06-17,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,,ae8dfa74-863c-4d2e-8aa2-505b567b00b7,bye matchup (no opponent),,MLP
+mixed,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,f9bfc3da-fcc5-473b-9357-7274f402283c,no played games (forfeit/walkover),Round 1 L1,MLP
+mixed,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,af8c26e0-00c5-4ccd-b577-5cc73340212f,no played games (forfeit/walkover),Quarter Finals W,MLP
+,2026-06-04,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,b907834f-abcc-4529-bf6c-3b85f9f30f95,bye matchup (no opponent),,MLP
+mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,1c2762ef-a8b2-4d25-9730-7918b53cf9bc,no played games (forfeit/walkover),Round 2 RR,MLP
+mixed,2026-07-08,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,893eef83-8b41-4619-9300-f5fcd6178aed,no played games (forfeit/walkover),Round 32 W,MLP
+mixed,2025-07-10,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,68ff9aa2-8213-47e3-af2a-9c92ba723a8e,no played games (forfeit/walkover),Round 16 W,MLP
+womens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,6548e1ac-4d54-47b9-a336-dc2716988388,match not completed (status=1),Finals GS,MLP
+mens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,3df7a7b7-046e-474b-ae4e-8a1b4491dcc7,match not completed (status=1),Finals GS,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,b5442e2c-962f-4358-8c40-af10ff23be2f,match not completed (status=1),Finals GS,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,8f20ec62-88c8-4355-b5f8-a629b586fb32,match not completed (status=1),Finals GS,MLP
+,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,c9c2086a-4d4c-4c23-9d0a-c134120873ca,bye matchup (no opponent),,MLP
+,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,d1b9e57c-3acd-4767-a1af-669bab809a80,bye matchup (no opponent),,MLP
+mixed,2026-05-31,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,cbc8a702-8f4e-4277-a028-0da169a139d4,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,73aa4200-baa0-45be-9b61-f0d62b4b6bfd,no played games (forfeit/walkover),Round 2 RR,MLP
+mixed,2026-07-11,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,8a424030-19c9-4c40-9e15-4526e42464ea,no played games (forfeit/walkover),Quarter Finals W,MLP
+mixed,2025-08-16,141fe139-b4d2-4846-ac9f-a36b5dd6db41,Toray MLP Playoffs - San Diego,,25b0ec6a-0577-4f50-a1da-8dc288f7c251,no played games (forfeit/walkover),RR,MLP
+mixed,2026-06-07,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,f240559c-a128-46fb-aa1e-52f6c854d899,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+,2026-06-11,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,d93a9d7d-bfbc-46da-93d2-49c4f3ba7ffa,bye matchup (no opponent),,MLP
+,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,e094dfe1-749d-4526-82b0-3f2bad56af5d,bye matchup (no opponent),,MLP
+mixed,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,4edcc71c-da5e-4ba4-88aa-c25643c27b7b,no played games (forfeit/walkover),Round 4 L1,MLP
+mixed,2026-06-07,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,c92b7e56-e444-46cc-81f5-174984467d6d,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+womens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,e28b7f01-9fbc-412f-86fb-871506c9faad,match not completed (status=1),Round 5 L1,MLP
+mens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,75bb4db9-73cf-4609-8fa3-aa8b289398b2,match not completed (status=1),Round 5 L1,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,a60b1c37-daf4-4ce9-9722-f2bb5a2952fc,match not completed (status=1),Round 5 L1,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,e6e8d19d-a63b-47f9-ad79-66674c570609,match not completed (status=1),Round 5 L1,MLP
+mixed,2026-06-28,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,384df07d-d40c-4deb-b4ad-51d12c50e065,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+mixed,2026-05-25,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,d8ff2987-f9e2-4fb9-9390-760bed028b14,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+,2026-06-17,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,,f58ffb74-8356-449b-a741-aba343653c1a,bye matchup (no opponent),,MLP
+mens,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,51ac65ff-a94c-4535-829b-1b900711fda2,match not completed (status=2),Round 4 L1,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,e6876ca5-7f45-4411-aad0-6f2a3960b2fa,match not completed (status=1),Round 4 L1,MLP
+mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,b521fabb-6637-46cd-9e4d-997bd691f223,match not completed (status=1),Round 4 L1,MLP
+mixed,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,d79606a6-0c93-4bcb-9bdf-c1bd704ff190,no played games (forfeit/walkover),Round 5 RR,MLP
+,2026-05-28,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,fd7672a6-e2fa-464d-a105-2ebfe7aa64a9,bye matchup (no opponent),,MLP
+mixed,2025-07-10,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,91a021dc-9799-4a38-85e2-ef4f0aa0af3a,no played games (forfeit/walkover),Round 16 W,MLP
+mens,2024-04-17,00c4a0ca-c3f9-468b-b97a-bb022335ccf4,PPA Tour: Veolia LA Open,,c25ff1c9-77d4-4e53-bdcc-ad510e42bdf0,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-04-17,00c4a0ca-c3f9-468b-b97a-bb022335ccf4,PPA Tour: Veolia LA Open,,f71bc16e-cc47-425b-8b76-7f545235ad53,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2024-04-20,00c4a0ca-c3f9-468b-b97a-bb022335ccf4,PPA Tour: Veolia LA Open,,558b8708-b77a-44bd-a5d9-4dfab5591f88,no played games (forfeit/walkover),Round 64,PPA
+mixed,2025-09-24,03b56937-6be0-4115-a103-d95ed667af94,PPA TOUR ASIA PANAS MALAYSIA CUP 2025,,3042eadf-22ae-4661-a41c-fdd5be9410a6,no played games (forfeit/walkover),Pro Mixed Doubles Qualifier — Round 32,PPA
+mixed,2025-09-24,03b56937-6be0-4115-a103-d95ed667af94,PPA TOUR ASIA PANAS MALAYSIA CUP 2025,,7fa22ea1-bb44-4730-b36e-1254f36f9c42,no played games (forfeit/walkover),Pro Mixed Doubles Qualifier — Round 32,PPA
+mens,2025-09-24,03b56937-6be0-4115-a103-d95ed667af94,PPA TOUR ASIA PANAS MALAYSIA CUP 2025,,1d9fd9fd-1b94-4398-9d27-ff96d3fcb271,no played games (forfeit/walkover),Pro Men's Doubles Qualifier — Round 16,PPA
+mens,2025-09-24,03b56937-6be0-4115-a103-d95ed667af94,PPA TOUR ASIA PANAS MALAYSIA CUP 2025,,4678397e-7911-4375-b922-7f31335615be,no played games (forfeit/walkover),Pro Men's Doubles Qualifier — Round 32,PPA
+mens,2025-09-24,03b56937-6be0-4115-a103-d95ed667af94,PPA TOUR ASIA PANAS MALAYSIA CUP 2025,,2e67e011-88a8-401a-b613-bf653e93f977,no played games (forfeit/walkover),Pro Men's Doubles Qualifier — Round 32,PPA
+mens,2025-09-24,03b56937-6be0-4115-a103-d95ed667af94,PPA TOUR ASIA PANAS MALAYSIA CUP 2025,,a55ccb9a-b32a-47a1-8809-d770baacb08b,no played games (forfeit/walkover),Pro Men's Doubles Qualifier — Round 32,PPA
+mens,2024-08-14,044c0e1e-d894-49be-9f5e-4b40ccd49781,PPA Tour: Bristol Open,,d1de34f4-7f2e-441b-bb79-207012d3cd6f,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mens,2024-08-14,044c0e1e-d894-49be-9f5e-4b40ccd49781,PPA Tour: Bristol Open,,a36c8f7c-27af-4a86-96e9-e7b18fbc2a0f,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mens,2024-08-14,044c0e1e-d894-49be-9f5e-4b40ccd49781,PPA Tour: Bristol Open,,ddb0a322-38e5-4247-88c7-a6a9b950f67a,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2024-08-14,044c0e1e-d894-49be-9f5e-4b40ccd49781,PPA Tour: Bristol Open,,ab734de1-db5a-4b7f-81b3-a5d16c1629c7,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2024-10-09,068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,,e71d3354-27a3-4f7a-b7eb-9d20bf66a93b,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-10-09,068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,2,59858822-a032-49b9-afe6-ca4b880c466c,completed game below target 1-0 (to 11),Qualifier — Round 32,PPA
+mixed,2024-10-11,068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,,66d77687-8eb9-4f7e-b75c-4d3ef3779458,no played games (forfeit/walkover),Round 64,PPA
+mixed,2024-10-11,068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,,c0393d9f-8f12-4d55-8c55-a79242b1a5d8,no played games (forfeit/walkover),Round 64,PPA
+mixed,2024-10-11,068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,,4cc9dd2e-5533-4d7c-8df5-050c46a41113,no played games (forfeit/walkover),Round 64,PPA
+womens,2024-10-12,068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,,2d2caec3-da8d-4f2a-a8bf-4c337cc1aad2,no played games (forfeit/walkover),Round 32,PPA
+womens,2024-10-12,068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,,996974af-5d22-41f8-a562-a65938cb4c97,no played games (forfeit/walkover),Round 64,PPA
+womens,2024-10-12,068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,,30bc11ac-1aee-4a3c-b291-d9979f4143ef,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-10-12,068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,,a02c3a34-d3c4-4f67-9755-6abd21bb9a01,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-10-12,068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,,830d8958-896b-4891-8aac-a17e472fb55b,no played games (forfeit/walkover),Round 64,PPA
+womens,2024-02-20,08e9832a-d061-4e90-aaac-453eda53a50d,PPA Tour: Mesa AZ,,c61e9434-e5aa-4c0d-833a-02203b3daf74,no played games (forfeit/walkover),Round 128,PPA
+mens,2024-02-20,08e9832a-d061-4e90-aaac-453eda53a50d,PPA Tour: Mesa AZ,,0af98532-8250-4484-941f-838695c40693,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2024-02-20,08e9832a-d061-4e90-aaac-453eda53a50d,PPA Tour: Mesa AZ,,1403ebfc-9c60-46ed-9bb4-4c47b3e4de3a,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-02-20,08e9832a-d061-4e90-aaac-453eda53a50d,PPA Tour: Mesa AZ,,3e4e51d2-bb4c-46f7-9fcf-d71daa8dfa0b,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-02-20,08e9832a-d061-4e90-aaac-453eda53a50d,PPA Tour: Mesa AZ,,53cbcbac-5b8a-4984-9195-203e6c66a469,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-02-20,08e9832a-d061-4e90-aaac-453eda53a50d,PPA Tour: Mesa AZ,,63ca6ec6-ec80-49cc-a6d5-8388bdab64f5,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-02-23,08e9832a-d061-4e90-aaac-453eda53a50d,PPA Tour: Mesa AZ,,9b60d6f9-5865-4101-9cef-ddfb384468fa,no played games (forfeit/walkover),Quarter Finals,PPA
+mens,2024-02-25,08e9832a-d061-4e90-aaac-453eda53a50d,PPA Tour: Mesa AZ,,8e553461-8674-47e0-b797-a7ccb1bc04bb,no played games (forfeit/walkover),Bronze,PPA
+mixed,2024-02-25,08e9832a-d061-4e90-aaac-453eda53a50d,PPA Tour: Mesa AZ,,c3341c51-e309-41bd-9771-33a70b735055,no played games (forfeit/walkover),Bronze,PPA
+mixed,2025-12-16,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,6576e65c-21fc-48cb-8c9c-d7f6a4ed193c,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-12-16,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,aae20003-50ca-4f3c-942f-fb0d4ae206a1,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-12-16,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,2bb2812d-7488-4b4a-a187-254005494912,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-12-16,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,3efea9a7-39b9-4c83-976d-06c830fd2937,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-12-16,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,d1b7e67e-b32f-46a0-9449-86958b8fce60,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2025-12-16,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,cb01bf58-fa03-4a24-98b9-0956a7520b47,match not completed (status=1),Qualifier — Semi-Finals,PPA
+mens,2025-12-16,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,b98abdf1-5e30-4f40-9859-174f364ae127,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-12-16,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,91c84111-9254-475a-bab6-ce13fb10b065,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-12-16,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,a36a1a62-5e73-445d-b596-abfef21ca66d,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2025-12-16,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,16ebb311-074b-4900-b348-15e54c6087d4,match not completed (status=1),Qualifier — Semi-Finals,PPA
+mixed,2025-12-18,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,1a17644e-5413-4e61-b1e8-3bb67fa5a459,no played games (forfeit/walkover),Round 64,PPA
+mixed,2025-12-18,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,024843b5-59a7-404b-8d42-a7df5c9a96fd,no played games (forfeit/walkover),Round 64,PPA
+womens,2025-12-19,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,89bb5454-7e23-449a-a40a-0e80e24c7be6,no played games (forfeit/walkover),Round 32,PPA
+mens,2025-12-19,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,7cc434ed-d31d-49f4-a688-fe0458f7daca,no played games (forfeit/walkover),Round 64,PPA
+mens,2025-12-21,1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,,247eb833-6aac-4758-9ba9-70281e022a42,no played games (forfeit/walkover),Bronze,PPA
+mens,2024-08-07,14798b52-0c02-4eb7-99c1-5e7103d67a1f,PPA Tour: Selkirk Kansas City Open,,17a5fac1-c747-4484-9c90-1a2a10572240,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2024-09-09,1c186bb9-a8fd-40e9-988b-118e2f10b62c,PPA Tour: CIBC Atlanta Slam,,88299749-d52b-4874-8297-f19d9fa53643,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-09-09,1c186bb9-a8fd-40e9-988b-118e2f10b62c,PPA Tour: CIBC Atlanta Slam,,a3a8ca52-d824-446f-9c54-71df592542da,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+womens,2024-09-10,1c186bb9-a8fd-40e9-988b-118e2f10b62c,PPA Tour: CIBC Atlanta Slam,,7a2ecfce-8c58-4f8c-9e4e-dd5d0a8edc84,no played games (forfeit/walkover),Round 64,PPA
+womens,2024-09-10,1c186bb9-a8fd-40e9-988b-118e2f10b62c,PPA Tour: CIBC Atlanta Slam,,955a1e6b-2272-4262-81e3-0f7461007c96,no played games (forfeit/walkover),Round 64,PPA
+mens,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,09d6d65f-f05c-4623-ac6c-8be6e39c3f95,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,01b7e0d6-85a2-41fd-97be-d08d8455c967,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,459b67a1-8c25-4f16-a9a9-d46713231615,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,64497d7e-fbf2-4050-9452-cfdecea22ac1,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,9b11eba9-27ea-4f31-9846-85895cdd80a1,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,a6632344-b45f-4ef4-b066-d715a4eb7380,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,843fc265-467c-494b-9064-c21c4e319f8a,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,e13ac3f5-5e6a-453e-8ac2-82ed12964db9,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,13eeda12-f0e3-4c95-abe7-57e3ab51eb25,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,419b20cb-5be6-4e42-b0f1-373cba8a8f09,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2025-11-18,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,c30c7f71-aa93-46b8-8794-31d19e6d06a0,match not completed (status=1),Qualifier — Semi-Finals,PPA
+mixed,2025-11-20,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,4d69b210-9b2c-4473-8a85-e04d67fb2233,no played games (forfeit/walkover),Round 64,PPA
+mens,2025-11-21,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,e1573d89-97db-45d7-aabd-14a87ea77ab2,no played games (forfeit/walkover),Round 32,PPA
+mens,2025-11-21,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,ecc132a7-e988-493d-8d8c-5b9bededc33c,no played games (forfeit/walkover),Round 32,PPA
+womens,2025-11-23,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,14aab52a-1b46-4298-89be-7a14a169a6ba,no played games (forfeit/walkover),Bronze,PPA
+mens,2025-11-23,1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,,a02aca92-7bc5-4bf4-b2fe-0c00000afae7,no played games (forfeit/walkover),Bronze,PPA
+mens,2025-09-08,1f96bd4a-2cab-4b70-8dce-96ab62f9d29b,PPA Tour: Veolia Cincinnati Showcase presented by Six Zero,,eba0e419-89bf-416f-a762-1412d7b6661e,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mens,2025-09-10,1f96bd4a-2cab-4b70-8dce-96ab62f9d29b,PPA Tour: Veolia Cincinnati Showcase presented by Six Zero,,7c50f0c2-a4c9-4b9d-93b4-46eb4f1766e7,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-09-11,1f96bd4a-2cab-4b70-8dce-96ab62f9d29b,PPA Tour: Veolia Cincinnati Showcase presented by Six Zero,,71f33126-e37d-4e1c-9a4e-2fb4faeded23,no played games (forfeit/walkover),Round 16,PPA
+mens,2025-09-11,1f96bd4a-2cab-4b70-8dce-96ab62f9d29b,PPA Tour: Veolia Cincinnati Showcase presented by Six Zero,,e174fb9a-04ac-4629-a4a1-b8adaaee92ab,no played games (forfeit/walkover),Round 16,PPA
+mixed,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,64ae786d-587f-4690-8b36-d56e9eac1123,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mixed,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,c841f90b-b5be-4b1f-aeec-608343878b9a,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mixed,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,452720f7-fe16-480a-8be7-7e63b78f7abc,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mixed,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,8bbcef15-bf25-479c-a740-9fad81ae5c7d,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,a438eff9-ce86-43d9-bd17-0df1c41832d1,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,a3aeb80a-c46b-46f0-8d8f-866a22aed163,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,b9a438a6-043c-4f3b-9686-3611336d6035,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,95b45eb9-0a72-4ded-9d46-c16432e4b519,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+womens,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,563f1a5c-cea3-4418-9c74-c316eb004e24,no played games (forfeit/walkover),Qualifier — Semi-Finals,PPA
+womens,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,2e9b69d8-2803-4b00-aee5-19017e282cd6,no played games (forfeit/walkover),Qualifier — Semi-Finals,PPA
+womens,2026-04-17,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,fc32f379-939f-405b-ad7f-b01db39f4912,no played games (forfeit/walkover),Quarter Finals,PPA
+womens,2026-04-19,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,b53896c8-7fc8-4a11-bcf7-0a212ec771ef,no played games (forfeit/walkover),Bronze,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,008733c5-3937-4349-8c7f-34b8ea32bbe1,match not completed (status=1),Round 64,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,342a9cf3-dd21-41a9-a149-2672d9057a19,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,359cf770-e509-494c-848f-d556baa6073e,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,46f6859b-2552-4b5d-9bac-3fe9e1b99a1e,match not completed (status=1),Round 64,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,50bdcbd2-d1fe-416e-b9eb-903fd3493046,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,714ff777-ee66-4652-94a5-76cfbdca6c6c,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,8568adc6-1789-491d-93a3-a8d91fe0eb4f,match not completed (status=1),Round 64,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,85c910fc-2db9-4c18-a2a6-4e3ffbf7cb5f,match not completed (status=1),Round 64,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,87e452e8-e113-4cc8-ba06-d829968591c7,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,8bf40aa4-f687-4ed9-a657-c1846aa4b671,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,98f76e1f-c533-418f-b102-214cb208019b,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,9bd1f707-8c2a-482a-a4e4-f0b45ea725e2,match not completed (status=1),Round 64,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,a86df336-7af0-42a8-a515-74c4654d0aed,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,a8c42ed3-bb18-4d77-b99c-b3b326e490ae,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,b1c097c7-4a80-4839-a265-ec2bcc0b07fc,match not completed (status=1),Round 64,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,cb7fe287-376a-4e95-8f64-ceb8a85eba81,match not completed (status=1),Round 64,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,0e208f35-6ca1-4871-9607-fd5618f0cf20,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,1169322a-6e83-4f1d-9389-31d2604e81e6,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,2353f138-75d1-4dd3-9a8b-16f1c8115c50,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,2c76350d-572e-4165-abd1-c0f0a7436bc1,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,73593a08-3afc-4728-8487-6fd82ffd1c18,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,de45ac41-c01d-4dfd-a439-6c67829a56bf,match not completed (status=1),Round 32,PPA
+mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,eb538d06-28d1-44e9-a055-6bb585c43d01,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,ccf4fa7f-3ca3-48ce-be28-3a9522fda991,no played games (forfeit/walkover),,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,12b90458-f816-4e1b-8380-1e08c58e18b1,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,c84015a4-c859-4b80-b594-28f7aa472a35,match not completed (status=1),Round 64,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,4516bffa-a660-49bb-b516-2f9d01846306,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,4aa398a1-db29-4e41-a764-8ee317320096,match not completed (status=1),Round 64,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,51b8a4c0-6be2-4092-9fbc-ddd57afd21ee,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,b2752485-62b4-4405-bb82-e72078de4a9e,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,c16a5431-07bd-4515-a769-cb57955bc6ce,match not completed (status=1),Round 64,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,ee93f962-373f-499e-9bf9-964064690c33,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,7fcc431d-289b-40b3-baa9-cfcc53b41ad4,match not completed (status=1),Round 64,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,c27e5af5-0524-4c2a-920f-885be003578d,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,b68c26cf-da67-4ad5-a6b4-720b5b90fb0e,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,8da381ea-0dad-4143-a516-3f5a155a1478,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,d21d5234-9929-4813-9020-fd84635af7b5,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,ae8c5f23-0bb0-493e-aafa-19406bbe6554,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,a5e1b083-5712-48ee-ac87-52c6cc553ff2,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,c8653a4d-aded-4857-9ba9-498f74999a29,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,e440bd6c-7be3-4312-b09d-023b0b7f4f6f,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,98c596ea-7ebf-4a6a-a46a-eefb2e22c7db,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,3c30338a-fd4d-4d40-9c11-298c410a3533,match not completed (status=1),Round 32,PPA
+mixed,2025-08-24,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,2fae3b6d-cf4c-447b-a611-3698d256e9da,match not completed (status=1),Round 32,PPA
+mens,2026-05-30,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,ff67d98b-1a45-4eee-8bbe-622cdba7eda7,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-05-30,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,5481b156-2df4-40c0-9335-33e5f19c405c,"bracket bye/shell (empty side, no scores)",,PPA
+mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,073346ef-b652-4133-ba62-b2b0a0f9e836,no played games (forfeit/walkover),,PPA
+mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,85be58fa-a842-4a69-ab47-332eac09f827,no played games (forfeit/walkover),,PPA
+mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,adce84ee-07cd-4e8c-a348-3ba4bac980f9,no played games (forfeit/walkover),Round 32,PPA
+mixed,2026-05-31,2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,,1c915e98-4aa3-4d39-abab-3d9f15892117,"bracket bye/shell (empty side, no scores)",,PPA
+mens,2025-01-06,2a35d3a1-bb1a-474b-9986-897a09de73b1,PPA Tour: Masters,,974a232c-8a5e-458b-8133-81a2a353c92b,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2025-01-06,2a35d3a1-bb1a-474b-9986-897a09de73b1,PPA Tour: Masters,,863a129e-91f9-4ca4-a96c-c7d08dc736f9,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2025-01-06,2a35d3a1-bb1a-474b-9986-897a09de73b1,PPA Tour: Masters,,47e9f569-b126-4090-a8c8-ef351bfcf182,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2025-01-06,2a35d3a1-bb1a-474b-9986-897a09de73b1,PPA Tour: Masters,,43b687d6-3035-4720-b310-b03f74ed06c2,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2025-01-08,2a35d3a1-bb1a-474b-9986-897a09de73b1,PPA Tour: Masters,,37dbd520-297c-496a-910e-6b561c725a54,no played games (forfeit/walkover),Round 64,PPA
+mixed,2025-01-07,2a35d3a1-bb1a-474b-9986-897a09de73b1,PPA Tour: Masters,,c7340723-925b-45ed-a7f4-f935edd9d688,no played games (forfeit/walkover),Round 64,PPA
+womens,2025-01-08,2a35d3a1-bb1a-474b-9986-897a09de73b1,PPA Tour: Masters,,2c516bd2-9219-48b1-a479-9f9e009f203d,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-01-12,2a35d3a1-bb1a-474b-9986-897a09de73b1,PPA Tour: Masters,,a4c64ca4-9c3d-48f1-b2f8-1fc1b4003842,no played games (forfeit/walkover),Bronze,PPA
+mens,2025-10-06,2b3050b3-8f87-45b5-bf44-0f056c1bd305,PPA Tour: Fasenra Virginia Beach Cup presented by Joola,,fc828c39-0466-4467-89fc-f324e018ddf4,no played games (forfeit/walkover),Qualifier — Round 16,PPA
+womens,2025-10-08,2b3050b3-8f87-45b5-bf44-0f056c1bd305,PPA Tour: Fasenra Virginia Beach Cup presented by Joola,,a1def730-fa95-44e7-9573-c62e0702dcab,no played games (forfeit/walkover),Round 32,PPA
+womens,2025-10-08,2b3050b3-8f87-45b5-bf44-0f056c1bd305,PPA Tour: Fasenra Virginia Beach Cup presented by Joola,,708e1383-7f4c-4ca1-b087-65bab06d1ff1,no played games (forfeit/walkover),Round 32,PPA
+mens,2025-10-12,2b3050b3-8f87-45b5-bf44-0f056c1bd305,PPA Tour: Fasenra Virginia Beach Cup presented by Joola,,bd665620-9a86-47c4-999b-f1c13e0526f5,no played games (forfeit/walkover),Bronze,PPA
+womens,2025-10-12,2b3050b3-8f87-45b5-bf44-0f056c1bd305,PPA Tour: Fasenra Virginia Beach Cup presented by Joola,,66a35e8a-fa42-4561-98b3-a35d825ebdbc,no played games (forfeit/walkover),Bronze,PPA
+womens,2025-10-11,2b3050b3-8f87-45b5-bf44-0f056c1bd305,PPA Tour: Fasenra Virginia Beach Cup presented by Joola,,8b1abaa4-1d24-4ce5-9c67-defcb3e4454c,no played games (forfeit/walkover),Semi-Finals,PPA
+mixed,2025-10-12,2b3050b3-8f87-45b5-bf44-0f056c1bd305,PPA Tour: Fasenra Virginia Beach Cup presented by Joola,,456b1f12-5e42-4695-ad78-c5a4803ef071,no played games (forfeit/walkover),Bronze,PPA
+mens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,b2b0e91c-2762-4434-bc97-afeabaa6d15e,no played games (forfeit/walkover),,PPA
+mens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,6fa4738f-20bd-4e94-aeb5-8c06ed5a6ba6,no played games (forfeit/walkover),,PPA
+mens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,70a88152-dc47-4fa4-8800-3caf2453a9bd,no played games (forfeit/walkover),Round 32,PPA
+mens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,cdc40432-fa04-40a9-a5a9-ed3bacb8fbd2,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-06-27,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,a0ef11ef-f7f5-4ec7-879c-0240f626266c,"bracket bye/shell (empty side, no scores)",,PPA
+mixed,2026-06-28,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,69cf9e93-4214-4d70-8e10-271c34aab10f,no played games (forfeit/walkover),,PPA
+mixed,2026-06-28,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,6a0b21e2-3108-4374-ab88-0ab81623d343,no played games (forfeit/walkover),,PPA
+mixed,2026-06-28,2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,,1f7a8690-0b83-4ac2-8b2f-4f63656aa2c2,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2024-08-31,2edb8f20-82c0-4edf-ba16-7f67bcaf92fb,PPA Tour: Gold Coast Open,,0707f630-59a9-4654-af18-a1f6bcca359a,no played games (forfeit/walkover),Pro Women's Doubles Main Draw (4.5+) — Bronze,PPA
+mens,2024-08-30,2edb8f20-82c0-4edf-ba16-7f67bcaf92fb,PPA Tour: Gold Coast Open,,550e0771-da61-4d49-8765-915b8b8b5850,no played games (forfeit/walkover),Pro Men's Doubles Main Draw (4.5+) — Round 16,PPA
+mixed,2024-08-31,2edb8f20-82c0-4edf-ba16-7f67bcaf92fb,PPA Tour: Gold Coast Open,,ecf90099-3db8-4a9d-b72d-cf4aebf9904e,no played games (forfeit/walkover),Pro Mixed Doubles Main Draw (4.5+) — Round 32,PPA
+mixed,2024-08-31,2edb8f20-82c0-4edf-ba16-7f67bcaf92fb,PPA Tour: Gold Coast Open,,54bb90e3-6bd9-4e38-837c-537b60edc87e,no played games (forfeit/walkover),Pro Mixed Doubles Main Draw (4.5+) — Round 32,PPA
+mixed,2024-08-31,2edb8f20-82c0-4edf-ba16-7f67bcaf92fb,PPA Tour: Gold Coast Open,,b5025a68-ce37-4ad1-ae42-10696d420af0,no played games (forfeit/walkover),Pro Mixed Doubles Main Draw (4.5+) — Round 32,PPA
+mixed,2025-12-03,309bc6d6-945f-4e60-a79e-69f68070d332,PPA Tour Asia Hangzhou Open 2025,,a074ecf6-c01e-42d7-8bf9-3ac8057b6e5f,no played games (forfeit/walkover),Pro Mixed Doubles — Round 32,PPA
+mixed,2025-12-03,309bc6d6-945f-4e60-a79e-69f68070d332,PPA Tour Asia Hangzhou Open 2025,,e2d32a45-3455-4d68-9ed5-bb8050aac369,no played games (forfeit/walkover),Pro Mixed Doubles Qualifier — Round 16,PPA
+womens,2025-12-03,309bc6d6-945f-4e60-a79e-69f68070d332,PPA Tour Asia Hangzhou Open 2025,,0f2f112d-07de-4057-a81e-f9ce8126f0d4,no played games (forfeit/walkover),Pro Women's Doubles Qualifier — Quarter Finals,PPA
+womens,2025-09-06,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,b43700f9-f25c-4e72-a2c6-a80921c99495,no played games (forfeit/walkover),,PPA
+mens,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,b7b63478-d00d-495c-a6eb-5ff29b8d93e7,no played games (forfeit/walkover),,PPA
+womens,2025-09-06,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,031eb94c-2994-4326-a40f-f1ba21585d5b,no played games (forfeit/walkover),,PPA
+mens,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,fdb842fd-e5ed-48bc-b440-7e60771fdd3e,no played games (forfeit/walkover),,PPA
+mens,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,88b6d1e2-2c19-4a15-af4a-d3edee02ffc0,no played games (forfeit/walkover),,PPA
+mens,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,c89b4014-2e07-4223-9b65-fd4294fe3f5c,no played games (forfeit/walkover),,PPA
+mens,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,852789af-b52c-4eff-8623-142012030f74,no played games (forfeit/walkover),,PPA
+mens,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,ae73e430-126c-4647-bf73-c9d4ad76cc34,no played games (forfeit/walkover),,PPA
+mens,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,139b3f18-238d-4c54-9a71-f5802970274d,no played games (forfeit/walkover),,PPA
+mens,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,1ec0fbf1-461e-49b7-b44d-46132f214865,no played games (forfeit/walkover),,PPA
+mens,2025-09-06,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,78b65190-1fe5-41bb-b3ec-8814890db7cc,no played games (forfeit/walkover),,PPA
+mens,2025-09-06,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,598ffce0-72af-44d0-8d0c-5c5d17591328,no played games (forfeit/walkover),,PPA
+mens,2025-09-06,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,9205cc2b-1946-421e-98fc-3457b67e332a,no played games (forfeit/walkover),,PPA
+mens,2025-09-06,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,9db54d58-2675-42c3-9519-0ee37e271fa0,no played games (forfeit/walkover),,PPA
+mens,2025-09-06,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,7b793e8d-a128-44a1-8f1a-935db63d0c95,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,1dc8d8d8-ffd2-426a-a9c5-eb84529b6c4c,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,1ff4c96a-77cc-4a36-84c1-f7b3435845c9,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,4c073706-e98e-4b98-a854-133b14a9bd53,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,78bd46fa-d08f-4a4e-8546-041934e5dc7a,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,047e711c-d85a-4327-ba97-6631f32c0782,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,e1b45ae5-9696-4593-8269-bba3582da8b0,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,20087dab-ad51-4d74-91af-2816360aada3,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,2e418354-4aa6-4af3-933b-0060b9b9d963,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,35b31aae-e1dc-441b-99f7-f3c959b436a4,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,f6fcadcd-7c4e-41f2-b1c6-b596791e7a7e,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,2286f239-65dc-4cfa-bf46-0b40b6ce3701,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,2f672354-548f-4d3e-9fb3-65e19f9bbf5e,no played games (forfeit/walkover),,PPA
+mixed,2025-09-07,34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,,8092c98b-a061-4e30-a809-06f608ef7f93,no played games (forfeit/walkover),,PPA
+mixed,2025-08-26,35e7ef8b-32a9-4963-9ecf-083303d98dcb,"PPA TOUR ASIA, Sansan FUKUOKA OPEN",,7006199e-d1b6-4b93-a840-cb2dc36a09a8,no played games (forfeit/walkover),Pro Qualifier Mixed Doubles Skill: (Any) Age: (Any) — Round 32,PPA
+mixed,2025-08-26,35e7ef8b-32a9-4963-9ecf-083303d98dcb,"PPA TOUR ASIA, Sansan FUKUOKA OPEN",,4ec4896c-d1df-4372-91e2-bb2a85dad201,no played games (forfeit/walkover),Pro Qualifier Mixed Doubles Skill: (Any) Age: (Any) — Round 32,PPA
+womens,2025-08-27,35e7ef8b-32a9-4963-9ecf-083303d98dcb,"PPA TOUR ASIA, Sansan FUKUOKA OPEN",,00479e50-ae09-42de-ac60-b6217d36e6e8,no played games (forfeit/walkover),Pro QualifierWomens Doubles Skill: (Any) Age: (Any) — Round 16,PPA
+mens,2024-01-31,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,903c74b3-81c8-4de3-9cba-7ae9f15e1e38,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mens,2024-02-01,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,b64e2805-bb1a-4331-95ad-8dd54084b5b0,no played games (forfeit/walkover),PPA Points Draw — Round 32,PPA
+mixed,2024-02-03,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,89f762e3-2d91-4324-9f8a-80d98359a3fb,no played games (forfeit/walkover),PPA Points Draw — Round 32,PPA
+mixed,2024-02-03,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,71ecdecd-7e73-42c7-9985-25bf6b4f0950,no played games (forfeit/walkover),PPA Points Draw — Round 32,PPA
+mixed,2024-02-02,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,a250a3bd-1573-4c9c-a5db-4bff1502ac81,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mixed,2024-02-02,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,6e479ae2-affb-4f9d-8882-b1b9b4ed778c,no played games (forfeit/walkover),Bonus Draw — Quarter Finals,PPA
+mixed,2024-02-02,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,b8ce4209-3cf6-476a-aa05-f884a651075b,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mixed,2024-02-02,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,3499a9a5-b01a-46be-b9fc-c22cccc8ac1a,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mixed,2024-02-02,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,26b88025-c211-4c66-b3c3-dad0d060035d,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mixed,2024-02-02,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,a7a8ef65-6d25-450e-80a5-6178bf95faff,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mixed,2024-02-02,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,ff3e758e-55d2-4ef5-a9f5-f2f1f8918df6,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mixed,2024-02-02,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,efc4a0ec-f83a-493a-a15b-9a425ffa0324,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-02-02,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,48838996-2da3-4b6f-8ef0-ff47dffb7d04,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+womens,2024-02-03,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,7aae5c87-b2c7-4daa-bd2e-7a53a56db3c3,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+womens,2024-02-03,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,d036ee94-6b3d-4a11-8ed1-e2e4b4ad8d11,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+womens,2024-02-03,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,606349e5-566d-4b54-945b-91c9836ba016,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mens,2024-02-03,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,cf6693e6-7d90-4425-b8bf-432fcf553533,no played games (forfeit/walkover),Bonus Draw — Quarter Finals,PPA
+mens,2024-02-03,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,09fc6c12-a814-4f84-b85a-bdde6a78170c,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+womens,2024-02-03,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,5e38ed67-b865-44f7-a238-ee58fff9d113,no played games (forfeit/walkover),Round 32,PPA
+womens,2024-02-03,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,2140b397-4aad-4235-beed-ba361a33feb4,no played games (forfeit/walkover),Round 64,PPA
+womens,2024-02-03,3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,,e4822de7-2c96-412a-93f3-b17e4e94c926,no played games (forfeit/walkover),Round 32,PPA
+womens,2025-08-21,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,82ffb5b5-fa38-4867-8d3d-099d0a757aa1,match not completed (status=1),Pro Women's Doubles Qualifier — Finals,PPA
+womens,2025-08-21,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,ff68eda7-60c5-4d91-bb0f-60c3eb173f58,"missing player uuid(s) WITH real scores — data loss: t2_p1,t2_p2",Pro Women's Doubles Qualifier — Semi-Finals,PPA
+womens,2025-08-21,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,b4bc62b5-8fa8-4097-b77f-6066096f49a7,"missing player uuid(s) WITH real scores — data loss: t2_p1,t2_p2",Pro Women's Doubles Qualifier — Semi-Finals,PPA
+womens,2025-08-21,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,264e39f0-7a67-4e46-b8ea-499d0e920d1e,"missing player uuid(s) WITH real scores — data loss: t2_p1,t2_p2",Pro Women's Doubles Qualifier — Semi-Finals,PPA
+womens,2025-08-21,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,bbf9b7b2-058d-482d-823e-36e96aa74ac6,"missing player uuid(s) WITH real scores — data loss: t2_p1,t2_p2",Pro Women's Doubles Qualifier — Semi-Finals,PPA
+womens,2025-08-21,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,369448fb-cd03-4903-ba40-10f89439c21d,no played games (forfeit/walkover),Pro Women's Doubles Qualifier — Quarter Finals,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,99967636-8b45-4e75-9b7f-9e0d4a67ad89,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,a8069830-d895-4202-88de-6a85462f995a,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,b2b685de-3779-4d45-b051-30e26787c253,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,fa612d0f-c0eb-4e3f-8e5d-9ce9432bbd38,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,e3785dd8-7288-4e52-a882-6e3a7773601e,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,b99880c6-1d37-49bc-b1b2-dbf5f850d1a2,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,c3435852-c6c4-4e95-a615-896accecdbc8,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,df9be966-a306-4e45-81c0-66f24026366f,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,e0a9c4d2-f1a9-4915-a795-25efe68e05bc,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,a396a1f0-a3c5-495f-bf66-7a260b9a5008,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,9b450280-ae29-40ae-8193-3f87a8dc7f44,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,268a470a-9d88-46d1-933a-d543e8d08e23,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,758b9188-46b2-40d4-b27c-dd79e3e9b4bb,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,7061cbea-85ec-4c1c-80e7-9f6470c36ece,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,05a0b942-fa59-48eb-a980-86ac504e71a9,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,6cd4dd12-8ab2-4428-acdf-2f83bf0ac2cc,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,6cca8f7c-3259-47c5-b31e-fa13d377ac02,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,67c2b618-4690-4cd7-bb74-5a7be32bc66d,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,5d71df5a-d95f-410a-93e5-364bc5f49416,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,5b9c39af-a0ad-4152-b957-b8bedb0ea4c7,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,4dad64b5-efe2-46fd-983e-f7bb28bc5061,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,3d183be2-9825-4260-91a2-1724002db2ac,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,2cd90762-24e6-4f7c-a1bf-64012c011734,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+womens,2025-08-23,3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",,2abfbb0e-bbaa-4486-8752-e03eaa6e9b75,match not completed (status=1),Pro Womens Doubles — Round 16,PPA
+mens,2024-04-10,3b283897-4f46-415a-abea-2737d26a9c21,PPA Tour: Veolia Houston Open,,bf59fbd1-dd65-4791-aeb9-0d60d40c1f07,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-04-12,3b283897-4f46-415a-abea-2737d26a9c21,PPA Tour: Veolia Houston Open,,fb796b93-8251-4ea0-8115-bff7b6d901b9,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-04-13,3b283897-4f46-415a-abea-2737d26a9c21,PPA Tour: Veolia Houston Open,,fb2160d9-e104-4f93-a6dc-adc3e712a2be,no played games (forfeit/walkover),Round 64,PPA
+mens,2024-04-13,3b283897-4f46-415a-abea-2737d26a9c21,PPA Tour: Veolia Houston Open,,3b9bf809-47d0-4424-8dcb-317895b3a742,no played games (forfeit/walkover),Round 64,PPA
+womens,2025-12-13,3c40bcc6-3b7f-4fe9-b477-86afcdb47477,Raleigh PPA Challenger,,61689404-d5b4-48e0-ab13-f653930d84eb,no played games (forfeit/walkover),,PPA
+mens,2025-12-13,3c40bcc6-3b7f-4fe9-b477-86afcdb47477,Raleigh PPA Challenger,,e4f03fa6-9cba-4d50-a5a7-deda13d113d7,no played games (forfeit/walkover),,PPA
+mens,2025-12-13,3c40bcc6-3b7f-4fe9-b477-86afcdb47477,Raleigh PPA Challenger,,3d4a807a-e58b-4eb3-9ab0-a2198dd06abc,match not completed (status=1),,PPA
+womens,2025-12-13,3c40bcc6-3b7f-4fe9-b477-86afcdb47477,Raleigh PPA Challenger,,7397026e-424a-4747-a450-40221a480dd6,match not completed (status=1),,PPA
+mixed,2025-12-14,3c40bcc6-3b7f-4fe9-b477-86afcdb47477,Raleigh PPA Challenger,,8e2709bf-0816-410e-a681-edeba293b524,no played games (forfeit/walkover),,PPA
+mixed,2025-12-14,3c40bcc6-3b7f-4fe9-b477-86afcdb47477,Raleigh PPA Challenger,,41a1a853-40fd-4002-9fa9-c5a057c80a4d,no played games (forfeit/walkover),,PPA
+mixed,2025-12-14,3c40bcc6-3b7f-4fe9-b477-86afcdb47477,Raleigh PPA Challenger,,04bac647-a610-4c7b-8e83-4640bc264b1f,no played games (forfeit/walkover),,PPA
+mixed,2025-12-14,3c40bcc6-3b7f-4fe9-b477-86afcdb47477,Raleigh PPA Challenger,,aed90c74-1327-4293-8a34-3085ec357936,no played games (forfeit/walkover),,PPA
+mixed,2025-12-14,3c40bcc6-3b7f-4fe9-b477-86afcdb47477,Raleigh PPA Challenger,,0a49fe53-55a9-4f77-a29a-a0b0797f743c,match not completed (status=1),,PPA
+mixed,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,3f74125b-8de9-43b7-be14-6ce29b7db232,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,b6a94851-445a-4426-abd8-b7710b0974cf,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,ec20e166-423b-43c9-b6d0-611511709b07,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,1275d916-7076-47df-8fec-54f47932ff20,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,074d3861-dcd2-423e-99b2-cc3a74d2e6fb,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,3a7397b8-24b3-4d49-95b9-3a0672b12501,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,be22876e-63cb-48ca-ae8f-41abbdfb104f,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,10d3d490-4d9a-4255-98a6-7e674c6fdba7,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,a8e03774-0242-434e-ab9d-98cade7440df,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,dc432105-59c8-458b-9a3d-0b551275966f,match not completed (status=1),Qualifier — Semi-Finals,PPA
+mens,2025-10-20,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,d5e49898-e6f6-4f2e-8ee9-5612f890f191,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-10-21,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,fb8fc485-3cc7-4370-b4c0-db4eb961389a,no played games (forfeit/walkover),Round 64,PPA
+mixed,2025-10-21,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,49d5b601-fb66-416d-8319-c1286b651767,no played games (forfeit/walkover),Round 64,PPA
+mens,2025-10-22,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,6d020cf2-cdc7-439f-93ef-f21959eaa973,no played games (forfeit/walkover),Round 32,PPA
+womens,2025-10-22,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,27072d2c-c291-410f-b5e4-179fa5c03c65,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-10-22,3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,,b3448952-b5db-4163-a6e7-09a2ec859432,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-03-12,3e4dfb79-372b-4e49-805e-aff3ebdb469f,PPA Tour: CIBC Texas Open - 2025,,93fa3a7c-2aa7-4a52-9578-bd4387cb833c,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2025-03-14,3e4dfb79-372b-4e49-805e-aff3ebdb469f,PPA Tour: CIBC Texas Open - 2025,,4b03a269-bbab-43cd-9dda-4a9edc1510e3,no played games (forfeit/walkover),Round 64,PPA
+womens,2025-03-15,3e4dfb79-372b-4e49-805e-aff3ebdb469f,PPA Tour: CIBC Texas Open - 2025,,7b82d947-244d-48e1-98de-4cdcd8b63efc,no played games (forfeit/walkover),Round 32,PPA
+womens,2025-03-15,3e4dfb79-372b-4e49-805e-aff3ebdb469f,PPA Tour: CIBC Texas Open - 2025,,599609f7-74ce-4c19-983a-9d744108282b,no played games (forfeit/walkover),Round 32,PPA
+mens,2025-03-15,3e4dfb79-372b-4e49-805e-aff3ebdb469f,PPA Tour: CIBC Texas Open - 2025,,3d898639-618a-48ca-bfbb-dd1978dd8b1a,no played games (forfeit/walkover),Round 64,PPA
+mens,2025-03-15,3e4dfb79-372b-4e49-805e-aff3ebdb469f,PPA Tour: CIBC Texas Open - 2025,,5f6ccff4-cbfa-47c8-b9f7-7c89a43d5498,no played games (forfeit/walkover),Round 64,PPA
+mens,2025-03-15,3e4dfb79-372b-4e49-805e-aff3ebdb469f,PPA Tour: CIBC Texas Open - 2025,,444ae7d2-1c70-49e3-aee9-c48c399e6002,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,e9db2f8e-06cd-44b4-9836-f604217c0d66,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,bfaf6a9e-55ee-46ba-82eb-90b6b49865a1,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,9248b335-553b-410f-9c66-2d7bbd2fff30,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,6d2d1e40-0926-489e-85bc-da25bcbb7aa9,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,c911ff61-5fbb-467e-8a83-dc1f24810b32,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,bff515f0-4689-4231-add7-4406853b2d05,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,ae28ac76-b4f4-451e-b1f4-e372acb3f710,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,ab685907-e4c5-4382-b158-f667510c1941,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,ab6de1c6-6cf5-4d27-807b-0d2d0c89fb7e,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,f52d7d4d-5944-449c-9ff0-e00bc46a255f,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2026-02-10,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,900588b2-62f8-417b-9035-4cb81449e0dd,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-02-12,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,e3b0aa61-1745-4c01-96ad-487b43fcc253,no played games (forfeit/walkover),Round 16,PPA
+mens,2025-04-01,4575ae49-0a16-4906-b8cd-def7795b034b,PPA Tour: Veolia North Carolina Open,,b0b7897a-83cb-4289-be5e-5c5571125be1,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,9cbe2cdb-824d-4164-ac98-37862ce831a6,no played games (forfeit/walkover),,PPA
+mens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,841a98dd-cbe3-4f50-be2f-6c99868f600b,no played games (forfeit/walkover),,PPA
+mens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,101e4eee-b476-4a27-8100-3be73d4e6bf7,no played games (forfeit/walkover),,PPA
+womens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,a7426064-5e22-4ec7-8873-368c2532ed65,no played games (forfeit/walkover),,PPA
+womens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,a4f76517-5c1f-442c-8e6b-727ed6e1b423,no played games (forfeit/walkover),,PPA
+womens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,5284affd-b7a7-4cf1-a507-9a1503cedf14,no played games (forfeit/walkover),Round 32,PPA
+womens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,9de1db69-2092-428b-b811-1f00dab712ea,no played games (forfeit/walkover),,PPA
+womens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,71753184-62db-4ff5-a80d-40db64fe15ba,no played games (forfeit/walkover),Round 64,PPA
+womens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,6ee1e92f-c377-44a5-85ae-4d94146e6587,no played games (forfeit/walkover),Round 32,PPA
+mens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,89cef962-2ef2-428a-9e4a-54c96a3046a4,match not completed (status=1),,PPA
+womens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,f189f7a8-c07e-452e-bbff-e0314df89a9a,match not completed (status=1),,PPA
+mixed,2026-02-22,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,4c439d35-d56d-48f0-8620-6742017f80aa,no played games (forfeit/walkover),,PPA
+mixed,2026-02-22,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,9aa1717d-7591-4642-89f3-add6bce2de9f,no played games (forfeit/walkover),,PPA
+mixed,2026-02-22,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,6b40ce30-63da-4465-81bb-b7b719ba07e7,no played games (forfeit/walkover),,PPA
+mixed,2026-02-22,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,752f77f6-d82c-41d9-bb83-ffd3fb06c82c,no played games (forfeit/walkover),,PPA
+mixed,2026-02-22,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,2925613f-b140-4b86-b7a2-d8e7816e5e25,no played games (forfeit/walkover),,PPA
+mixed,2026-02-22,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,27abcbf2-b473-42a8-b841-25cf6ca805d8,match not completed (status=1),,PPA
+mixed,2025-04-24,481b5c99-cdbb-4094-99c1-93674721d8f8,PPA Tour NZ: Pickleball Cup,,b5fc2a3d-6772-4951-a8da-1ef8e01e544f,no played games (forfeit/walkover),Pro Mixed Doubles Qualifier: 5.0 And Above — Finals,PPA
+mixed,2025-04-24,481b5c99-cdbb-4094-99c1-93674721d8f8,PPA Tour NZ: Pickleball Cup,,8274a65f-038b-4343-b54a-35141e0b627f,no played games (forfeit/walkover),Pro Mixed Doubles Qualifier: 5.0 And Above — Quarter Finals,PPA
+mixed,2025-04-26,481b5c99-cdbb-4094-99c1-93674721d8f8,PPA Tour NZ: Pickleball Cup,,a9ab53b3-4a15-475a-b47f-006fbf9681df,no played games (forfeit/walkover),Pro Masters 50+ Mixed Doubles: 4.0 And Above — Round 16,PPA
+mixed,2025-04-26,481b5c99-cdbb-4094-99c1-93674721d8f8,PPA Tour NZ: Pickleball Cup,,b8859dd6-3e9d-4068-8519-2cb5e67d35f5,no played games (forfeit/walkover),Pro Masters 50+ Mixed Doubles: 4.0 And Above,PPA
+mens,2025-04-25,481b5c99-cdbb-4094-99c1-93674721d8f8,PPA Tour NZ: Pickleball Cup,,91c1b341-3521-4408-805b-7917ecbf5578,no played games (forfeit/walkover),Pro Men's Doubles: 5.0 And Above — Round 32,PPA
+womens,2025-04-27,481b5c99-cdbb-4094-99c1-93674721d8f8,PPA Tour NZ: Pickleball Cup,,8cfb3b80-a008-4e67-aa39-6c6e812c5dcf,no played games (forfeit/walkover),Pro Masters 50+ Women's Doubles: 4.0 And Above,PPA
+womens,2025-04-27,481b5c99-cdbb-4094-99c1-93674721d8f8,PPA Tour NZ: Pickleball Cup,,434530c5-f47d-4129-880c-125ecd522fd6,no played games (forfeit/walkover),Pro Masters 50+ Women's Doubles: 4.0 And Above — Quarter Finals,PPA
+mens,2025-04-26,481b5c99-cdbb-4094-99c1-93674721d8f8,PPA Tour NZ: Pickleball Cup,,7bf3f0ff-faff-4909-8d90-f87048d7cc3e,no played games (forfeit/walkover),Pro Men's Doubles: 5.0 And Above — Round 32,PPA
+mixed,2026-03-02,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,78ba0f9b-0004-4107-816f-fa3559b0ee54,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-03-02,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,f0a32354-42c9-442f-b9e7-47aca0413020,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-03-02,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,00d6f43c-6282-4faf-9487-7b5020bbf215,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-03-02,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,4b046708-a695-4b9a-8726-8dd9232504b2,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-02,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,ef2a4fdd-ec85-4be5-ad13-a5cfc5e0847d,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-02,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,a3bcd1f5-eef2-438b-af27-59605eadec6c,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-02,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,9776c0db-73fd-486d-90be-c876e2b4c9dd,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-02,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,645ccebd-bdfd-49d2-b520-9465a0064435,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2026-03-02,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,668ee407-2f7a-4e23-89eb-43f03c668451,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2026-03-02,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,7a9a1ef9-be80-40e9-be5d-7389c8326299,match not completed (status=1),Qualifier — Semi-Finals,PPA
+mixed,2026-03-03,48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,,302ab26d-4e32-49cf-9822-a60a8eae7658,no played games (forfeit/walkover),Round 128,PPA
+mixed,2024-11-04,4b073aa7-e67f-43f4-9fcb-cab0fff733fe,2024 Lapiplasty Pickleball World Championships,,22d55aaa-1c8b-44f9-88e6-54a983fa5467,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-11-04,4b073aa7-e67f-43f4-9fcb-cab0fff733fe,2024 Lapiplasty Pickleball World Championships,,8fd3100d-de97-4ba0-8f0d-e7dc954c0564,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+womens,2024-11-05,4b073aa7-e67f-43f4-9fcb-cab0fff733fe,2024 Lapiplasty Pickleball World Championships,,f63aad6e-aee8-4ada-8414-d04d650df12c,no played games (forfeit/walkover),Round 64,PPA
+womens,2024-11-06,4b073aa7-e67f-43f4-9fcb-cab0fff733fe,2024 Lapiplasty Pickleball World Championships,,ade59703-456c-462a-b8a1-184ab921e0ac,no played games (forfeit/walkover),Round 32,PPA
+mens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,6f959a3e-d9da-4203-874b-aa7378f76b15,no played games (forfeit/walkover),,PPA
+mens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,4eb7bc51-6b9b-4364-9379-23d721474901,no played games (forfeit/walkover),,PPA
+mens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,aa5206e2-5662-4776-9941-bf3fa66e4395,no played games (forfeit/walkover),,PPA
+mens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,511e3510-e74c-4c98-8e1f-fbb7875d1d8e,no played games (forfeit/walkover),Round 64,PPA
+mens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,e2fa73da-0f22-4065-b1f6-b5443ac6c54b,match not completed (status=1),,PPA
+womens,2026-01-10,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,08429fd6-e135-4623-8ae7-734c4c48061d,match not completed (status=1),,PPA
+mixed,2026-01-11,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,26ce39e2-fdbf-48d9-833b-beb3bd078c1a,no played games (forfeit/walkover),,PPA
+mixed,2026-01-11,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,ee6669a3-cd01-4f06-be1a-fd592ae5f80f,no played games (forfeit/walkover),,PPA
+mixed,2026-01-11,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,9ae847d6-8380-421b-9638-41f040e10fa0,no played games (forfeit/walkover),,PPA
+mixed,2026-01-11,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,c067c6ca-334a-434d-8343-600717d11cfe,no played games (forfeit/walkover),,PPA
+mixed,2026-01-11,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,3145b519-5914-4767-9092-6c9e862cc7cf,no played games (forfeit/walkover),,PPA
+mixed,2026-01-11,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,3c4b6a5f-120b-4cb5-b773-2fab3ae427bc,no played games (forfeit/walkover),,PPA
+mixed,2026-01-11,55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,,1d369539-c6b3-498c-9975-ce8fc7671103,match not completed (status=1),,PPA
+mens,2024-06-24,5f38269d-d0c2-4e53-83ba-46ca5aa9872f,PPA Tour: Select Medical Orange County Cup,,cd628268-630d-4f29-a31d-57d16c270660,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2024-06-24,5f38269d-d0c2-4e53-83ba-46ca5aa9872f,PPA Tour: Select Medical Orange County Cup,,0ad81206-59b6-4f05-804f-d8136d8e1e2b,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-06-24,5f38269d-d0c2-4e53-83ba-46ca5aa9872f,PPA Tour: Select Medical Orange County Cup,,6899e555-5521-4091-ab76-1de80c803fc2,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2025-09-26,64bbc71e-f0e2-425a-97f5-4a45ac47ee3e,PPA Tour: Pickleball Central Sacramento Vintage Open,,1f258a5f-45f9-41a2-b7b4-46c8b2470be8,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-09-26,64bbc71e-f0e2-425a-97f5-4a45ac47ee3e,PPA Tour: Pickleball Central Sacramento Vintage Open,,17219b8c-b64e-4e3a-93c3-55a0004d2a1e,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-09-26,64bbc71e-f0e2-425a-97f5-4a45ac47ee3e,PPA Tour: Pickleball Central Sacramento Vintage Open,,5529e386-c987-4af0-8c8e-0fc4b3ec2d74,no played games (forfeit/walkover),Round 64,PPA
+womens,2025-09-27,64bbc71e-f0e2-425a-97f5-4a45ac47ee3e,PPA Tour: Pickleball Central Sacramento Vintage Open,,019d2f9a-53ec-466b-8de1-4c19cb736d3b,no played games (forfeit/walkover),Round 16,PPA
+mens,2025-09-27,64bbc71e-f0e2-425a-97f5-4a45ac47ee3e,PPA Tour: Pickleball Central Sacramento Vintage Open,,edfc974a-f04e-4da9-aa57-8282a3f6b782,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-09-28,64bbc71e-f0e2-425a-97f5-4a45ac47ee3e,PPA Tour: Pickleball Central Sacramento Vintage Open,,bf6bb56c-6717-4c00-8790-ae3cfd819118,no played games (forfeit/walkover),Bronze,PPA
+mens,2025-06-16,6721a195-d4c9-480e-b5d5-957a7a4870b2,PPA Tour: Select Medical Orange County Cup - 2025,,53028d84-2bef-4555-aa02-6aaaa2167c28,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,170815af-782f-4284-af4a-44dde3accafb,no played games (forfeit/walkover),,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,308eb71f-18db-4dd1-bb2c-61ae2cf0a7d9,no played games (forfeit/walkover),,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,5f99adac-20f8-427b-b350-4e0933e47282,no played games (forfeit/walkover),,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,c98d0db2-3ac7-414a-ba8a-7a6478f02b01,no played games (forfeit/walkover),,PPA
+mens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,ec9a14ff-2c03-40dd-8776-84db592618ac,match not completed (status=1),,PPA
+womens,2026-04-04,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,260ddd77-e550-42e0-883a-d00a0933fe11,match not completed (status=1),,PPA
+mixed,2026-04-05,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,55989657-ef38-485d-a6c9-f02ee88700d2,no played games (forfeit/walkover),,PPA
+mixed,2026-04-05,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,1677d670-a765-408d-bab4-d61d21f617bd,no played games (forfeit/walkover),,PPA
+mixed,2026-04-05,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,de799d7b-60fe-4fda-9013-fbc24c4a3f84,no played games (forfeit/walkover),,PPA
+mixed,2026-04-05,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,4a76511a-fa63-408a-98c0-fbfb91bba35f,no played games (forfeit/walkover),,PPA
+mixed,2026-04-05,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,763d84cb-6fe3-4256-9854-1ba2afcc3877,no played games (forfeit/walkover),,PPA
+mixed,2026-04-05,6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,,afcacf35-1a3d-401a-91e0-14d6e5593c9b,match not completed (status=1),,PPA
+mens,2025-02-08,6e284f6f-ef45-43cf-a09a-eff88f9ce391,PPA Tour: Proton Tucson Open,,204a7a9e-10d5-4fae-ae83-08b45572f81b,no played games (forfeit/walkover),Round 32,PPA
+mens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,11e5dd11-5bf6-4927-b741-445536405501,no played games (forfeit/walkover),,PPA
+mens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,4a7d0b08-cc0c-4f95-9f65-4f1420ad6487,no played games (forfeit/walkover),,PPA
+mens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,67687aa9-51af-4398-91ae-c21a92d35ace,no played games (forfeit/walkover),,PPA
+mens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,0dc81a86-2ff1-46df-a22e-6480425ce1ea,no played games (forfeit/walkover),Round 32,PPA
+mens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,724484f7-feb4-444f-b41f-c3581a3f124f,no played games (forfeit/walkover),,PPA
+mens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,11b83489-6c05-42d1-a8c2-761fb45d3169,match not completed (status=1),,PPA
+womens,2026-01-24,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,b3fd229b-3997-4ace-a311-a53b742ecf8c,match not completed (status=1),,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,beb1531d-d371-4285-a090-6e438f64b598,no played games (forfeit/walkover),,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,4dd9b8dd-0e0c-4b60-ba08-4081c32b2cf0,no played games (forfeit/walkover),,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,ae588610-c051-418f-a690-e2b3b443b70a,no played games (forfeit/walkover),,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,e73db3a9-c99c-420e-946e-efd6a4cc94f0,no played games (forfeit/walkover),,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,f4103231-adf5-49f5-b11f-5e0f1ed5743c,no played games (forfeit/walkover),,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,32f12193-26c4-4863-a7bb-290f5114a22d,no played games (forfeit/walkover),,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,e7a8dbb1-876c-476f-9096-0a6a209223be,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,117d5421-5b5e-4e82-920f-3b7354087666,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-01-25,71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,,13b24d09-a3a9-4680-9abf-8bce81aef7a9,match not completed (status=1),,PPA
+womens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,bdf3f7de-1d57-4876-8760-93790915db9a,no played games (forfeit/walkover),,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,6e84a29e-6ee3-4edf-80bb-de5c82bc6e63,no played games (forfeit/walkover),,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,0c65b0fa-326f-4ecd-8dc7-e3ec415f0c87,no played games (forfeit/walkover),,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,6b6823eb-ff3d-4e78-bf72-58812e181ef9,no played games (forfeit/walkover),,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,e41ddc1e-477e-4f3b-9b0a-08064cd2d11e,no played games (forfeit/walkover),Round 64,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,8c61e747-536d-4a4d-82e2-746ac92d1793,no played games (forfeit/walkover),Round 64,PPA
+mens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,b1c1eb39-c184-43c3-8851-4460f6df1c28,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-04-18,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,94d3aa2b-df9e-45ad-a467-c715e94a43a6,"bracket bye/shell (empty side, no scores)",,PPA
+mixed,2026-04-19,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,749a9279-583d-4954-acd3-70e27fb99a77,no played games (forfeit/walkover),,PPA
+mixed,2026-04-19,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,672657ba-12ed-44b3-9ee9-e5c94054a200,no played games (forfeit/walkover),,PPA
+mixed,2026-04-19,7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,,faa79425-0024-4f53-a43a-d157e5825947,"bracket bye/shell (empty side, no scores)",,PPA
+mens,2026-06-13,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,,fc05d559-9241-4146-858f-793c4818ea0a,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-06-13,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,,ef22e5a7-9138-49d6-a4e2-0a0f1395cbe4,"bracket bye/shell (empty side, no scores)",,PPA
+mixed,2026-06-14,78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,,fbbef326-ec43-41b6-9b1f-9b37a8136821,"bracket bye/shell (empty side, no scores)",,PPA
+mens,2024-12-18,796cbe85-b541-4ab1-870e-0c4498087745,PPA Tour: Daytona Beach Open Presented by Roar,,b1b8fc2d-910b-4ab2-be3c-8b9afaf73a33,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2024-12-18,796cbe85-b541-4ab1-870e-0c4498087745,PPA Tour: Daytona Beach Open Presented by Roar,,52b397ae-528b-4184-a89e-2cb7e81f4163,no played games (forfeit/walkover),Qualifier — Round 128,PPA
+mixed,2024-12-18,796cbe85-b541-4ab1-870e-0c4498087745,PPA Tour: Daytona Beach Open Presented by Roar,,3632dcf4-04c9-4d3c-b728-6cad752d162c,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2024-11-16,7cf26ebf-54ec-4342-8293-a9c0025af28e,PPA Tour: Veolia Milwaukee Open,,93b1fff7-df44-4c90-87b7-d3e62364260c,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-08-05,82b1a95d-a818-4412-b84b-db1c52f3143c,PPA Tour: Bristol Open - 2025,,b5a68270-daec-4a03-bf16-3712a068c672,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2025-08-07,82b1a95d-a818-4412-b84b-db1c52f3143c,PPA Tour: Bristol Open - 2025,,5cfa843c-6900-4e0b-8b34-f78ad9e634ed,no played games (forfeit/walkover),Round 64,PPA
+mixed,2025-08-07,82b1a95d-a818-4412-b84b-db1c52f3143c,PPA Tour: Bristol Open - 2025,,b56e2bb7-b56a-4b77-a34e-b833c18b4aff,no played games (forfeit/walkover),Round 64,PPA
+womens,2025-08-08,82b1a95d-a818-4412-b84b-db1c52f3143c,PPA Tour: Bristol Open - 2025,,06ebf268-8a29-4b40-a848-633bd98670e1,no played games (forfeit/walkover),Round 16,PPA
+womens,2025-08-08,82b1a95d-a818-4412-b84b-db1c52f3143c,PPA Tour: Bristol Open - 2025,,9935de00-40f3-4af3-ab75-c61025f27419,no played games (forfeit/walkover),Round 32,PPA
+mens,2025-08-08,82b1a95d-a818-4412-b84b-db1c52f3143c,PPA Tour: Bristol Open - 2025,,d0d48a17-c441-42b1-8e95-5587c9e4bbfa,no played games (forfeit/walkover),Round 32,PPA
+mens,2025-08-08,82b1a95d-a818-4412-b84b-db1c52f3143c,PPA Tour: Bristol Open - 2025,,c5df8fbe-c962-483b-b571-263bf57a65b1,no played games (forfeit/walkover),Round 32,PPA
+mens,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,0c19ea13-938a-4de0-8843-b2129333a7be,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,891598ef-9dba-44e9-975a-f8f6decf814d,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,88386c31-4253-44ed-a9a7-072e3f0d21e0,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,d06c0d56-3143-4ef5-bd5a-6f884df07eb8,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,8e85cd22-1505-4e39-8115-298985024f3c,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,479bf606-9775-42d3-9f71-8b62065892c6,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,e2e6d8c9-eafa-46fc-9239-225136572d36,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,46cf44d3-033e-4a51-bfff-5d1982e51859,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,10e6b1fc-ebab-4518-a765-3a1c53c75257,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,70c961a8-56da-40cd-9db1-bc0fd6df59a5,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,952d64ff-c4dd-48d4-b549-6210d7b73e25,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,bb5631ea-1cc8-4dd3-b4f2-7778708e0739,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2026-01-14,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,2b994fb7-7424-4e64-b5cc-54b0ed4b98d9,no played games (forfeit/walkover),Round 64,PPA
+mens,2026-01-14,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,bde72b0e-d709-4fc7-90c2-74b6b47d8967,no played games (forfeit/walkover),Round 64,PPA
+womens,2025-03-09,923b6d24-15ac-4ed0-860b-f83b52863e3e,PPA Tour: Veolia Cape Coral Open,,6f5b9a56-6694-4c48-91ae-407d00f3d51f,no played games (forfeit/walkover),Bronze,PPA
+mixed,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,0255a4c5-fefa-41b2-832a-69b9659831a8,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mixed,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,1748e69f-ad52-456b-94bb-f98d2a78593e,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mixed,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,70376c38-40e1-4146-88e4-f7bc18356bd4,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mixed,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,8f7c6641-27f7-42ba-b178-db7f97ed7b2b,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+womens,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,348f83e8-3e66-4746-b77c-3f36ec9bf48a,no played games (forfeit/walkover),Qualifier — Semi-Finals,PPA
+womens,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,8881eae6-4178-4002-90e4-68b0fa0e63af,no played games (forfeit/walkover),Qualifier — Semi-Finals,PPA
+mens,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,21fc784b-4771-45f9-b862-b5d1b5fc408a,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,5cd7a445-5215-4b4b-8056-5e7a87efb430,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,697c8cb0-e661-44a8-a73e-e3b7353bbfb7,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,9650832d-872c-446c-80be-7a3b812a01ba,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-04-28,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,588a180c-6072-4b29-9618-c22fa04c2a3b,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-04-28,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,3fa4088e-c43b-4047-91b9-8b7e61ad9eec,no played games (forfeit/walkover),Round 128,PPA
+mens,2025-09-06,94cc819d-e1bf-4f99-9cc7-609d4efd0e25,"PPA Tour Asia, MB Vietnam Open 2025",,ccd154d1-92e5-41eb-8270-5201a797118a,match not completed (status=1),Pro Men's Doubles — Round 16,PPA
+mens,2025-09-06,94cc819d-e1bf-4f99-9cc7-609d4efd0e25,"PPA Tour Asia, MB Vietnam Open 2025",,3a3b175e-9465-4004-8345-9baa1d283651,match not completed (status=1),Pro Men's Doubles — Round 16,PPA
+mens,2025-09-06,94cc819d-e1bf-4f99-9cc7-609d4efd0e25,"PPA Tour Asia, MB Vietnam Open 2025",,3d47cedc-0633-42b1-a6ff-877a3faeef53,match not completed (status=1),Pro Men's Doubles — Round 16,PPA
+mens,2025-09-06,94cc819d-e1bf-4f99-9cc7-609d4efd0e25,"PPA Tour Asia, MB Vietnam Open 2025",,aa1a1690-1605-486d-af9f-ee99969ebd30,match not completed (status=1),Pro Men's Doubles — Round 16,PPA
+mens,2025-09-06,94cc819d-e1bf-4f99-9cc7-609d4efd0e25,"PPA Tour Asia, MB Vietnam Open 2025",,e3c0ca34-c336-4245-a43d-c190f7f28bca,match not completed (status=1),Pro Men's Doubles — Quarter Finals,PPA
+mens,2025-09-06,94cc819d-e1bf-4f99-9cc7-609d4efd0e25,"PPA Tour Asia, MB Vietnam Open 2025",,84c3e6ed-f288-4981-a61b-363408f22471,match not completed (status=1),Pro Men's Doubles — Quarter Finals,PPA
+mens,2025-09-06,94cc819d-e1bf-4f99-9cc7-609d4efd0e25,"PPA Tour Asia, MB Vietnam Open 2025",,2a0f9be1-6a4a-4458-b11f-1506a64d6b72,match not completed (status=1),Pro Men's Doubles — Quarter Finals,PPA
+mens,2025-09-06,94cc819d-e1bf-4f99-9cc7-609d4efd0e25,"PPA Tour Asia, MB Vietnam Open 2025",,279c22dd-c0f2-45f8-b243-24c6463301d7,match not completed (status=1),Pro Men's Doubles — Quarter Finals,PPA
+mens,2024-08-21,970d08db-a426-424e-8d45-b7a9ee13b08b,PPA Tour: Picklr Utah Open,,946c29b5-7a03-4ae7-8b34-98d65ff7fc67,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2024-08-21,970d08db-a426-424e-8d45-b7a9ee13b08b,PPA Tour: Picklr Utah Open,,b288111c-4c41-4afe-9640-0b5a8fb3a841,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-08-21,970d08db-a426-424e-8d45-b7a9ee13b08b,PPA Tour: Picklr Utah Open,,daee1a3d-cf5c-4b62-947b-f07906d978d8,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-08-21,970d08db-a426-424e-8d45-b7a9ee13b08b,PPA Tour: Picklr Utah Open,,bc75caaa-81cc-460e-b909-34866d514fc5,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-08-23,970d08db-a426-424e-8d45-b7a9ee13b08b,PPA Tour: Picklr Utah Open,,fc0d8ac2-e4ba-444b-a81c-5550f13e25e7,no played games (forfeit/walkover),Round 32,PPA
+mixed,2024-08-23,970d08db-a426-424e-8d45-b7a9ee13b08b,PPA Tour: Picklr Utah Open,,5c230e37-ec70-4260-86f0-d72c9c9c757f,no played games (forfeit/walkover),Round 64,PPA
+mens,2024-08-24,970d08db-a426-424e-8d45-b7a9ee13b08b,PPA Tour: Picklr Utah Open,,3c39092e-3016-4c2e-94fa-7771c5899fad,no played games (forfeit/walkover),Round 32,PPA
+womens,2025-05-12,9c61faee-196b-4c55-9ba0-e99b641f93bf,PPA Tour: Veolia Atlanta Pickleball Championships,,1f647d77-79b2-457e-a4fa-fb358c8e54e6,no played games (forfeit/walkover),Qualifier — Round 16,PPA
+mens,2025-05-12,9c61faee-196b-4c55-9ba0-e99b641f93bf,PPA Tour: Veolia Atlanta Pickleball Championships,,c2b60189-198d-49e1-a6c1-565c2360be9a,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2025-05-12,9c61faee-196b-4c55-9ba0-e99b641f93bf,PPA Tour: Veolia Atlanta Pickleball Championships,,cffe5fc3-f50c-4d6c-b949-4916905eae30,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2025-05-12,9c61faee-196b-4c55-9ba0-e99b641f93bf,PPA Tour: Veolia Atlanta Pickleball Championships,,f3ff7198-0e33-42ba-8831-c34fff7e5370,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+womens,2025-05-15,9c61faee-196b-4c55-9ba0-e99b641f93bf,PPA Tour: Veolia Atlanta Pickleball Championships,,6750eefb-de65-49a3-b431-795f6e05f0c5,no played games (forfeit/walkover),Round 16,PPA
+mixed,2025-03-30,9da4f63a-4225-4ca2-8646-f5766e1be56d,Columbia PPA Challenger,,f88b92e9-2368-4427-8a4a-717eb04af4c2,no played games (forfeit/walkover),,PPA
+mens,2025-07-26,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,cab0cbb8-2e30-47ae-8b73-9d8bc38b23be,no played games (forfeit/walkover),,PPA
+womens,2025-07-26,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,af6e573e-7eb2-4064-9990-d802219c74be,no played games (forfeit/walkover),,PPA
+womens,2025-07-26,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,5cff0da6-94df-47b7-8bc2-a57828487639,no played games (forfeit/walkover),Round 16,PPA
+mens,2025-07-26,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,3e85d034-ba7c-4d38-990f-1d1fa76605f5,no played games (forfeit/walkover),,PPA
+mens,2025-07-26,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,5ca32372-6167-48b5-a03c-ba7f86c07c49,no played games (forfeit/walkover),Round 32,PPA
+mens,2025-07-26,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,6fcbc88e-532a-4459-9cc1-d626c450cbe6,no played games (forfeit/walkover),,PPA
+mens,2025-07-26,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,30142028-7212-48eb-b0cb-b90c34b2a58c,no played games (forfeit/walkover),,PPA
+mens,2025-07-26,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,6e3c4df9-6582-4aa8-b9e6-1355a805458d,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-07-27,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,d7141e22-b460-459f-aa2b-bfeddfdbc90e,no played games (forfeit/walkover),,PPA
+mixed,2025-07-27,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,a70e9ef9-dba6-4956-b11a-d217bf6cda45,no played games (forfeit/walkover),,PPA
+mixed,2025-07-27,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,25f13ca9-7b3e-4f60-a670-cf88fc6a2d6d,no played games (forfeit/walkover),,PPA
+mixed,2025-07-27,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,af8149e6-a4e8-456f-81c9-ebcaab024f58,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-07-27,9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,,dafa018c-fd7d-4112-9380-f5b3621e0c8a,no played games (forfeit/walkover),Round 32,PPA
+mixed,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,736f9144-ca45-4770-8eaf-059db2a56bf8,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,e94377e0-4da8-4288-abf9-da1f73011f4d,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,a45dae5d-a94d-4ac3-ab61-e1774b6e61f2,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,bb2bdb7d-9a2d-4ee6-ace0-64c950fc1c32,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,60e0a7af-ecc5-459b-9f41-ca34f86b7586,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,9371452d-af18-4c64-8896-f4b7b108047a,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,8640ba30-8d06-404e-ba19-6f91b3ca9451,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,79a95c3c-1447-4fb9-be4f-eb0bd129bd50,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,a3e06ddb-8c8c-47ba-b0c2-57e390ea3b93,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,a1b678ed-6ba1-4f80-bd44-e9a18c405b0c,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2026-03-09,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,264b93b0-56e2-4f6a-bd85-05287f28cd3a,match not completed (status=1),Qualifier — Semi-Finals,PPA
+mens,2026-03-10,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,8670d83d-fc7f-4e18-a0c2-0ccbc5d4e407,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-03-10,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,b0d9d113-710e-4e0e-a94d-73e75a9c6741,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-03-10,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,e1845335-7e92-44e8-88b9-e133a118a388,no played games (forfeit/walkover),Round 128,PPA
+womens,2026-03-10,a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,,ad9623bd-222d-45f1-9c16-f680f4eab0aa,no played games (forfeit/walkover),Round 64,PPA
+mens,2024-05-13,a30bcb3a-ee0f-4164-bc85-35fbdfe510c0,PPA Tour: Vizzy Atlanta Slam,,56a2919f-426e-4ba6-b369-f0f61a6120c2,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-05-13,a30bcb3a-ee0f-4164-bc85-35fbdfe510c0,PPA Tour: Vizzy Atlanta Slam,,836ee7fb-e733-4c7d-92b7-3452c1641208,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-05-13,a30bcb3a-ee0f-4164-bc85-35fbdfe510c0,PPA Tour: Vizzy Atlanta Slam,,66d8afab-da31-4d8d-a0ec-700f552993b8,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mens,2024-05-16,a30bcb3a-ee0f-4164-bc85-35fbdfe510c0,PPA Tour: Vizzy Atlanta Slam,,9fe8e05b-243c-4ac8-9d27-eb21d0001359,no played games (forfeit/walkover),Round 16,PPA
+mixed,2026-01-19,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,e642ab6f-32cc-42d1-b6d9-c1a2c0b7bcf4,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-01-19,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,ae1fc5f6-258d-40bb-b8ff-99581457afee,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-01-19,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,56ce1a29-4d2e-408b-962f-dddc0f4a254c,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-01-19,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,2722f883-3904-44f6-a0f7-83ac70e8a397,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-01-19,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,41c300da-039b-4cbf-8724-9ac64c998c1a,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-01-19,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,5b0e14aa-c571-45d9-bf95-9add4436a2fa,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-01-19,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,a11ab654-ef85-4e59-9843-0b128a4cd7a8,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-01-19,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,c9ab8273-42e7-4368-be98-90fdcc8cf92b,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2026-01-19,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,ac2f7987-68ea-46d8-8fb0-13f783a8f25d,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2026-01-19,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,0fa7357f-9fec-49bd-8668-12ca18c2532b,match not completed (status=1),Qualifier — Semi-Finals,PPA
+mens,2026-01-20,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,f545a140-a983-4b94-abf9-62eac2083693,no played games (forfeit/walkover),Round 32,PPA
+mixed,2026-01-20,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,5b05b678-5877-4292-ab76-86a3ad78efbb,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-01-22,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,7768a200-8f09-4c82-8c9c-f48a36d3a53a,no played games (forfeit/walkover),Round 16,PPA
+mixed,2026-01-25,a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,,6274fc79-fd13-410a-8a3c-59a3a3787fd4,no played games (forfeit/walkover),Bronze,PPA
+mixed,2025-09-30,aeb21200-04b6-4900-95d0-4a1e2d9e2770,"PPA TOUR ASIA, MB VIETNAM CUP 2025",,33cc2c79-8f14-443b-97ae-0431a641f8b9,no played games (forfeit/walkover),Pro Mixed Doubles Qualifier — Round 32,PPA
+womens,2025-10-01,aeb21200-04b6-4900-95d0-4a1e2d9e2770,"PPA TOUR ASIA, MB VIETNAM CUP 2025",,993ec262-9f2a-4640-9edf-11a6000dc233,no played games (forfeit/walkover),Pro Womens Doubles — Round 32,PPA
+womens,2025-10-01,aeb21200-04b6-4900-95d0-4a1e2d9e2770,"PPA TOUR ASIA, MB VIETNAM CUP 2025",,534d57ab-b806-427d-aa16-d4e17b169d06,no played games (forfeit/walkover),Pro Womens Doubles — Round 32,PPA
+womens,2025-07-03,bc0ebed9-2641-4a5a-bbee-5d33d0ea4bc6,"PPA Tour Asia, Panas Malaysia Open 2025",,cdc21689-f6bc-420f-b126-7cd4a0321ae9,no played games (forfeit/walkover),Pro Women's Doubles Qualifier — Semi-Finals,PPA
+mixed,2025-07-06,bc0ebed9-2641-4a5a-bbee-5d33d0ea4bc6,"PPA Tour Asia, Panas Malaysia Open 2025",,50f61a24-2f79-496c-be57-12b0c1edcc27,no played games (forfeit/walkover),Pro Mixed Doubles — Bronze,PPA
+mixed,2025-03-25,bd8ef132-a848-4ff8-ba4f-cb06b0f203d3,PPA Tour: Black Desert Resort Red Rock Open,,4583e18a-a851-4991-aa00-68c1ded73b5a,no played games (forfeit/walkover),Qualifier — Round 16,PPA
+womens,2025-03-28,bd8ef132-a848-4ff8-ba4f-cb06b0f203d3,PPA Tour: Black Desert Resort Red Rock Open,,d85948b9-cf29-4407-9333-c66df0a87551,no played games (forfeit/walkover),Round 16,PPA
+mens,2025-02-17,c19054b4-056e-474a-993c-46091b3f397e,PPA Tour: Carvana Mesa Cup,,2e7e216b-7f76-4611-a236-64fda1096825,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2025-02-17,c19054b4-056e-474a-993c-46091b3f397e,PPA Tour: Carvana Mesa Cup,,ea2bbef8-7651-4e9d-b581-fe1ffd2c177d,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mens,2025-02-19,c19054b4-056e-474a-993c-46091b3f397e,PPA Tour: Carvana Mesa Cup,,eaf5ec19-54a3-495f-aa0c-99f73f87216b,no played games (forfeit/walkover),Round 32,PPA
+womens,2025-05-24,c437ce67-98a9-4719-9da8-0b7293e40c2d,Punta Gorda PPA Challenger,,d27967d0-b941-4bfb-950e-2c0e7d45e553,no played games (forfeit/walkover),,PPA
+womens,2025-05-24,c437ce67-98a9-4719-9da8-0b7293e40c2d,Punta Gorda PPA Challenger,,2e656400-0af1-49ff-8450-1690181df55d,no played games (forfeit/walkover),Round 32,PPA
+mens,2025-05-24,c437ce67-98a9-4719-9da8-0b7293e40c2d,Punta Gorda PPA Challenger,,25f984c0-3455-450a-ab03-9f8430e70aa3,no played games (forfeit/walkover),,PPA
+mens,2025-05-24,c437ce67-98a9-4719-9da8-0b7293e40c2d,Punta Gorda PPA Challenger,,7a1009b4-c202-4fca-97c0-283354b72e01,no played games (forfeit/walkover),,PPA
+mens,2025-05-10,c99d3632-36f8-4b0d-a8a7-2292f9529ea6,New England PPA Challenger,,e546e91b-2b88-42fe-a026-d42242a1aaf5,no played games (forfeit/walkover),,PPA
+mixed,2025-04-06,cd075e2c-056f-472e-97b8-d0990abeab98,Baton Rouge PPA Challenger,,2ba3315c-6267-4e68-979e-487159086fe1,no played games (forfeit/walkover),,PPA
+mixed,2025-04-06,cd075e2c-056f-472e-97b8-d0990abeab98,Baton Rouge PPA Challenger,,3271ca40-bf16-478b-ac22-b0e2e212f4ac,no played games (forfeit/walkover),Round 16,PPA
+womens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,f2a853a0-77ec-43bb-9453-8c7e72c5ed62,no played games (forfeit/walkover),,PPA
+mens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,312d3cba-cd51-4673-8def-c1c7296661bf,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,6267902b-c77a-4345-885e-ef28cbc0f4b6,"bracket bye/shell (empty side, no scores)",,PPA
+mixed,2026-05-03,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,30dbe3ad-4887-48e5-a177-4900cb13cbed,"bracket bye/shell (empty side, no scores)",,PPA
+mens,2024-03-07,cfc270b2-59e0-4b68-ae6f-9504e63c89e7,PPA Tour: Lakeville MN,,f6274549-e170-4ccd-bb30-4ce8631478b4,no played games (forfeit/walkover),PPA Points Draw — Quarter Finals,PPA
+mens,2024-03-07,cfc270b2-59e0-4b68-ae6f-9504e63c89e7,PPA Tour: Lakeville MN,,902844d1-ee18-4ff0-9826-226918019fef,no played games (forfeit/walkover),PPA Points Draw — Quarter Finals,PPA
+mens,2024-03-07,cfc270b2-59e0-4b68-ae6f-9504e63c89e7,PPA Tour: Lakeville MN,,88661696-600a-4067-9007-3ca43dbc7f40,no played games (forfeit/walkover),PPA Points Draw — Round 16,PPA
+mixed,2024-03-08,cfc270b2-59e0-4b68-ae6f-9504e63c89e7,PPA Tour: Lakeville MN,,a54bc14b-a91f-4f4e-bdc9-a7faab7987d6,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mixed,2024-03-08,cfc270b2-59e0-4b68-ae6f-9504e63c89e7,PPA Tour: Lakeville MN,,611f741a-9bf0-4b79-a12f-29caec107718,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mens,2024-03-09,cfc270b2-59e0-4b68-ae6f-9504e63c89e7,PPA Tour: Lakeville MN,,341e7427-cebc-4356-8430-e719a74bf73d,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mens,2024-03-09,cfc270b2-59e0-4b68-ae6f-9504e63c89e7,PPA Tour: Lakeville MN,,6baa83f2-549a-44e2-b2e5-5faff07383b2,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mens,2024-03-09,cfc270b2-59e0-4b68-ae6f-9504e63c89e7,PPA Tour: Lakeville MN,,bb4c0b34-f125-4032-b2e3-5996c250272d,no played games (forfeit/walkover),Bonus Draw — Round 16,PPA
+mens,2024-03-09,cfc270b2-59e0-4b68-ae6f-9504e63c89e7,PPA Tour: Lakeville MN,,507adb60-4c2c-4eca-a6f7-546f45bbca8f,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,8861d173-3861-42b5-a7f6-7ddb93c257f3,no played games (forfeit/walkover),Qualifier — Semi-Finals,PPA
+mixed,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,6d3c01ad-2d39-4818-83f6-b6982905b843,no played games (forfeit/walkover),Qualifier — Semi-Finals,PPA
+womens,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,ab3dbc0f-f507-41d8-9ced-ce4af1366f3c,no played games (forfeit/walkover),Qualifier — Bronze,PPA
+womens,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,bb66d951-2cb0-46e2-8728-0afca5a4ac55,no played games (forfeit/walkover),Qualifier — Finals,PPA
+mens,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,7c97ea9b-c509-4db4-8312-2760d5f9c213,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,6b32d4cc-bb8b-4d68-8b87-e2a5e78de2c9,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,2bfa5722-ae87-4286-8298-417138d08bb7,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+mens,2026-05-04,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,ead9c4b1-a268-4140-900f-6dae70f5081f,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
+womens,2026-05-06,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,45473360-51da-4053-9486-594361333338,no played games (forfeit/walkover),Top 8 Ranked — Bronze,PPA
+mixed,2026-05-06,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,a9cfd73a-bb4c-49cd-8a1d-fc615985db88,no played games (forfeit/walkover),Top 8 Ranked — Bronze,PPA
+mens,2026-05-06,d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,,a6c3a88f-a4df-4d25-8292-d27c758900a5,no played games (forfeit/walkover),Top 8 Ranked — Bronze,PPA
+mixed,2024-04-24,d9e98d4d-2dad-4915-95fa-d8f301c49c8b,PPA Tour: Selkirk Red Rock Open,,8d1c976c-45ba-4cfc-b45c-ee636fb06fc7,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-04-26,d9e98d4d-2dad-4915-95fa-d8f301c49c8b,PPA Tour: Selkirk Red Rock Open,,8b3fc4aa-c510-408d-bb29-ef293c24c23a,no played games (forfeit/walkover),Round 64,PPA
+womens,2024-04-27,d9e98d4d-2dad-4915-95fa-d8f301c49c8b,PPA Tour: Selkirk Red Rock Open,,8a1d5efc-1754-49f8-bcfe-f0fa317b3797,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-04-27,d9e98d4d-2dad-4915-95fa-d8f301c49c8b,PPA Tour: Selkirk Red Rock Open,,bf9cfcc1-4c0f-47c8-a7e8-ed5207a77481,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-04-27,d9e98d4d-2dad-4915-95fa-d8f301c49c8b,PPA Tour: Selkirk Red Rock Open,,86c6e253-786a-4e54-a0a8-dd04acc008a5,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-04-28,d9e98d4d-2dad-4915-95fa-d8f301c49c8b,PPA Tour: Selkirk Red Rock Open,,aafb10b7-ef69-4d86-9a9b-47005ba0fc5e,no played games (forfeit/walkover),Bronze,PPA
+mens,2024-08-27,dd85421f-87b4-483b-ae78-646424be9fbe,PPA Tour: Las Vegas Pickleball Cup,,a9d58c5e-918c-44e8-b568-81535cb1e640,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mens,2024-06-05,de8a09d6-6688-44d8-b764-8bfec574ecf9,PPA Tour: Veolia Sacramento Open,,0f88b7fb-d3e5-4c15-9e42-6222f0b18442,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-06-07,de8a09d6-6688-44d8-b764-8bfec574ecf9,PPA Tour: Veolia Sacramento Open,,ab181537-b4be-4848-af78-688df7f83378,no played games (forfeit/walkover),Round 32,PPA
+womens,2024-06-08,de8a09d6-6688-44d8-b764-8bfec574ecf9,PPA Tour: Veolia Sacramento Open,,b0c5a9fe-9c55-4129-9a83-20fa10a4b854,no played games (forfeit/walkover),Round 32,PPA
+womens,2024-06-08,de8a09d6-6688-44d8-b764-8bfec574ecf9,PPA Tour: Veolia Sacramento Open,,4110e598-724c-413d-8385-74857ec7f4ac,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-06-08,de8a09d6-6688-44d8-b764-8bfec574ecf9,PPA Tour: Veolia Sacramento Open,,2a0b6bcd-e3ea-45fe-bb70-671786f791a4,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-06-08,de8a09d6-6688-44d8-b764-8bfec574ecf9,PPA Tour: Veolia Sacramento Open,,29097ca2-4435-43a0-9d8d-98669e91eb7a,no played games (forfeit/walkover),Round 64,PPA
+womens,2025-10-11,df5e4382-7788-468c-8290-8044c8030c59,Rock City Rally PPA Challenger,,95b4c813-dbc5-4810-a589-db85468cadb1,no played games (forfeit/walkover),,PPA
+womens,2025-10-11,df5e4382-7788-468c-8290-8044c8030c59,Rock City Rally PPA Challenger,,7c68512a-22d6-436c-aac6-5ad2755e7790,no played games (forfeit/walkover),Round 16,PPA
+mens,2025-10-11,df5e4382-7788-468c-8290-8044c8030c59,Rock City Rally PPA Challenger,,0fbf75f9-7789-4cf8-b8e7-f56009a9c74b,match not completed (status=1),,PPA
+womens,2025-10-11,df5e4382-7788-468c-8290-8044c8030c59,Rock City Rally PPA Challenger,,28831a64-02cc-41ab-9963-84a9a5524cc9,match not completed (status=1),,PPA
+mixed,2025-10-12,df5e4382-7788-468c-8290-8044c8030c59,Rock City Rally PPA Challenger,,ca109a31-5462-4e39-8f29-2e89c6a017d5,no played games (forfeit/walkover),,PPA
+mixed,2025-10-12,df5e4382-7788-468c-8290-8044c8030c59,Rock City Rally PPA Challenger,,f1fee172-8cc0-476b-bdb5-51d208176396,no played games (forfeit/walkover),,PPA
+mixed,2025-10-12,df5e4382-7788-468c-8290-8044c8030c59,Rock City Rally PPA Challenger,,a421c112-65e1-4332-917d-b8168d144c48,no played games (forfeit/walkover),,PPA
+mixed,2025-10-12,df5e4382-7788-468c-8290-8044c8030c59,Rock City Rally PPA Challenger,,e91fcfb1-7d69-4ab5-8e5e-b8c2ba993bb4,match not completed (status=1),,PPA
+mixed,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,2e031d2c-ed15-4096-84e6-41844241f1f5,no played games (forfeit/walkover),Qualifier — Round 16,PPA
+mixed,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,f5cef8a8-230a-4709-b51d-f405edcd24b8,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,c1d01f4c-ac34-4dd5-91bf-0d3917420854,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,85b8f0b0-e6ac-4882-9119-7b8fb07650af,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,1ffc4a54-ec68-4dd9-a857-93d6f16f5cc5,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,24bdb0ec-254f-4de6-98f5-8ef56de8be7b,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,0795c973-5347-4de3-8e8a-aad3bedaba08,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,f3928515-05b0-428f-850e-7de5c9eaf154,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,d90ac48e-ee4a-458e-b257-e37f862d27ae,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,d2ac1814-68bc-4f9d-9f8a-f2dc58780282,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2026-03-23,e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,,487f1057-43d3-4b7b-b808-82c74e3fc5ad,match not completed (status=1),Qualifier — Semi-Finals,PPA
+mens,2024-04-01,e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,,40e34a07-aa42-4a3a-8130-12234c1eb9bc,no played games (forfeit/walkover),Qualifier — Round 16,PPA
+mens,2024-04-01,e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,,a99c23ad-6a0e-43db-80d2-403a7c027465,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mens,2024-04-01,e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,,d550b5a1-1be8-4d3a-b2a8-a1dce82d2193,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mens,2024-04-01,e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,,cc46f0ab-3445-4532-97ef-2a84e798c047,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-04-01,e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,,ddab48ae-faed-40f4-bfd4-492a3d64a2c2,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-04-01,e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,,0eeeda54-a0c0-4af5-a9aa-7f354b55c7f4,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mens,2024-04-03,e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,,ca828f8b-8434-4101-92f3-83b5303cf045,no played games (forfeit/walkover),Round 32,PPA
+womens,2024-04-03,e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,,ed5050d3-1cd4-4b10-9c21-ebdd50710012,no played games (forfeit/walkover),Round 32,PPA
+mixed,2024-04-03,e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,,09bed15a-79b5-4b5f-be88-258f79fedb86,no played games (forfeit/walkover),Round 32,PPA
+womens,2024-04-07,e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,,39677ca8-d348-4f61-85b5-9e32ff40d3c6,no played games (forfeit/walkover),Bronze,PPA
+mixed,2025-06-01,e1842e7a-e840-47dd-8cfb-831e39766f8b,Boise PPA Challenger,,52b7724c-c5d3-4645-adaf-c6f35f79721e,no played games (forfeit/walkover),,PPA
+mixed,2025-06-01,e1842e7a-e840-47dd-8cfb-831e39766f8b,Boise PPA Challenger,,98153732-44c3-47b0-9371-17a9bfa139ee,no played games (forfeit/walkover),Round 16,PPA
+mens,2024-09-30,e36b4125-8164-4cf8-a6bf-09bd0019619b,PPA Tour: Stratusphere Gin Virginia Beach Cup,,3b542841-86fa-4d1c-bccb-31f0372ab90f,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-09-30,e36b4125-8164-4cf8-a6bf-09bd0019619b,PPA Tour: Stratusphere Gin Virginia Beach Cup,,8c30887e-c8ff-40ed-ba1f-87a7f448e65e,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+womens,2024-10-01,e36b4125-8164-4cf8-a6bf-09bd0019619b,PPA Tour: Stratusphere Gin Virginia Beach Cup,,7915167c-2937-48b0-8ca2-f24498d5813a,no played games (forfeit/walkover),Round 64,PPA
+womens,2024-10-02,e36b4125-8164-4cf8-a6bf-09bd0019619b,PPA Tour: Stratusphere Gin Virginia Beach Cup,,e190669d-b77b-43ce-a5ed-bd947df563c1,no played games (forfeit/walkover),Round 32,PPA
+womens,2024-10-02,e36b4125-8164-4cf8-a6bf-09bd0019619b,PPA Tour: Stratusphere Gin Virginia Beach Cup,,8916b09d-ca10-4fb6-8e16-139e02e7ee72,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,5b49f232-955a-40be-9a6d-5141a45a5a38,no played games (forfeit/walkover),Round 32,PPA
+womens,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,82e1db35-3e84-4d5e-8cda-86490c02d8b5,no played games (forfeit/walkover),Round 128,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,ff4487c9-085b-4404-b6ba-2a604fd5cec4,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,c03fa6c2-77c5-4784-ac43-adac6c4fe9cb,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,dde66a41-1d02-4520-a0fc-e2308d6097d9,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,ba66eb3a-1552-4756-8208-3c45b66570f2,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,ea224ac3-dad6-4684-8cfb-d935fa4856ba,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,f6f3409c-3927-420d-ad8d-99604379ffea,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,82600aa9-8b2b-4199-ac85-3a9cdb5374dd,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,81c7477a-9c88-4cdc-88fa-0cb1b0f0170b,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,f80e7d05-8ebc-4942-8181-5b80f16d7c60,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,00b03385-9241-4bf5-a7d4-00a541071bd4,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,11bc8a7c-d004-4895-a3e0-bd6f4ea2965a,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,6ca7c124-374d-4a0d-910d-93ef62798c07,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,6b3df901-2315-44c1-83a2-ff45f28a533d,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,685a478e-804c-44aa-af6c-f0e70f4db29a,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,63839a3b-c704-4bda-8a80-52cddd3a4eac,match not completed (status=1),Round 64,PPA
+mixed,2024-01-10,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,435fc2d0-fac4-4e48-af90-3d9a3bba588a,match not completed (status=1),Round 64,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,5affd536-281d-475c-8b0d-4e0dbfcc6ce8,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,12097eec-c77c-435e-9561-3f26b80a55b2,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,12d011a8-192a-46b5-92a3-790261eea54c,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,136fa265-3a6a-4c76-819e-6e3eec7c93d4,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,e50b45c7-fbaa-4a20-ad93-c89e878e3f07,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,e1c3e09b-6b2c-4e97-b54b-d8bc583c061f,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,1ae67da1-022e-417f-90ce-39f8604d2679,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,45bd17e5-0e81-4678-816c-8151cd29f011,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,c85a787c-c928-4d57-b86d-839ba27eece4,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,74ae4f72-6303-47f7-a95f-cb490ef9399d,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,c0cc4108-9fd6-41f9-96ea-bdc0c2306a80,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,66eaec25-3f55-425c-98ad-52e585102d61,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,6b0d3253-4f93-4859-8382-61b7a5e9a6ec,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,96a7ffbd-862a-4629-a86a-b308bc077481,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,8246476b-c3ea-41f8-9192-f8f801090441,match not completed (status=1),Round 32,PPA
+mixed,2024-01-11,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,6ebbab30-bb34-4e0a-b790-bf7954c5ab1a,match not completed (status=1),Round 32,PPA
+mens,2024-01-14,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,886c88f1-c492-4939-9eac-f0adad97ca30,no played games (forfeit/walkover),Bronze,PPA
+mixed,2024-01-14,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,ce0a3f0a-39fc-440c-9cec-02ee4bb908eb,no played games (forfeit/walkover),Bronze,PPA
+womens,2024-01-14,ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,,7aff7243-f698-4674-ad6b-cbe1613090d1,no played games (forfeit/walkover),Bronze,PPA
+mixed,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,4d966671-ad83-4428-8662-08d4379042df,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,6b80a86a-0ad7-45b3-980e-968b21939daa,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,aec20962-5287-4327-a52d-a7082774a4d4,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,cf8cfafa-8b6c-4f13-8dce-2f0d79710b16,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,743762e0-1223-48a5-8d7f-8ddc54958a22,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,b065bc21-a3c7-4fac-96c8-91d71303b59d,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,ba0c840a-2ab8-4ad3-a4bf-19c9730bbc92,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,db582f27-3934-4ae1-9927-890a74b33ce4,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,176f9048-db8e-426e-85cf-3d61ad876ba9,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,4d51a41b-960a-41fe-84a8-603249a96899,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,c4af4585-da9a-4451-a0ff-62e40a60852a,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2025-11-03,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,fe73d4c6-7cdd-426d-9b5a-925dec638aca,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2025-11-04,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,3de771f8-c28c-46c4-a903-171b305f76cb,no played games (forfeit/walkover),Round 64,PPA
+womens,2025-11-05,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,07a26cfa-a779-423f-94d1-2bf82a9cc7f3,no played games (forfeit/walkover),Round 32,PPA
+mens,2025-11-06,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,fa01b545-ce9a-425e-9af4-fbd5f1284456,no played games (forfeit/walkover),Round 16,PPA
+womens,2025-11-09,f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,,803274c9-5f04-4ac8-b1a1-da32bb7aff18,no played games (forfeit/walkover),Bronze,PPA
+mens,2025-10-04,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,d82ebfae-ae04-4c08-b125-390f0e0660f7,no played games (forfeit/walkover),,PPA
+mens,2025-10-04,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,8bd98306-4cb2-492e-bc75-c706094afe55,no played games (forfeit/walkover),,PPA
+mens,2025-10-04,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,f52043c7-b48d-4808-bf6d-b4d663e9325d,no played games (forfeit/walkover),,PPA
+mens,2025-10-04,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,354ae2c3-d425-4c1c-a8d6-0b26548b26ee,no played games (forfeit/walkover),,PPA
+mens,2025-10-04,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,61745c8f-daa5-48d3-b662-b84dfe9d7fb4,no played games (forfeit/walkover),,PPA
+mens,2025-10-04,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,f7d9d24c-6613-453e-becc-1d1117c184cb,no played games (forfeit/walkover),,PPA
+mens,2025-10-04,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,8dec314b-b93c-4829-b073-d8d57a6701f7,no played games (forfeit/walkover),Round 64,PPA
+mixed,2025-10-05,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,ba39b78e-59c2-4d87-b22a-54d32277a266,no played games (forfeit/walkover),,PPA
+mixed,2025-10-05,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,b90e8712-092f-4536-8650-466bcd046e32,no played games (forfeit/walkover),,PPA
+mixed,2025-10-05,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,f4327ca7-212e-4f3f-92b1-f432b3980a94,no played games (forfeit/walkover),,PPA
+mixed,2025-10-05,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,77ca4f75-07ad-41b8-a82c-cc40991bd431,no played games (forfeit/walkover),,PPA
+mixed,2025-10-05,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,d9c45d87-8560-47de-8738-3d401d75f37a,no played games (forfeit/walkover),,PPA
+mixed,2025-10-05,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,2f9d762b-ed88-484e-96c5-d06d504b3cd9,no played games (forfeit/walkover),,PPA
+mixed,2025-10-05,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,fdc4b02b-b4f1-4c82-9326-db228883756d,no played games (forfeit/walkover),,PPA
+mixed,2025-10-05,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,fa42f968-916d-49ca-afeb-9ac20d6c08f1,no played games (forfeit/walkover),Round 32,PPA
+mixed,2025-10-05,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,5fd778b9-13ca-4b17-ba28-18594dcbebed,no played games (forfeit/walkover),,PPA
+mixed,2025-10-05,f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,,55d3e211-74f5-4608-8c27-cb66244a5756,no played games (forfeit/walkover),Round 32,PPA
+mixed,2024-03-13,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,4bb17447-11a2-49bd-97fe-03abce9f26de,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-03-13,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,3c2d10c8-4ceb-4aba-97cc-a6baace838c2,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-03-13,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,402ef734-70b6-482b-b457-56c2df733840,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-03-13,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,0942ac9e-3f13-491d-83d9-1e4e584a076a,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+womens,2024-03-16,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,ed4b2ca0-d24e-4b7d-a8ff-c5afcdf41799,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-03-16,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,843ea1a9-9264-4f7d-81ce-a4749d64e32d,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-03-16,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,029672c4-91fb-444d-8d5f-680ce6d32262,no played games (forfeit/walkover),Round 32,PPA
+womens,2024-03-16,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,cd705ae5-3b08-4de2-a2ec-798baefe0054,no played games (forfeit/walkover),Round 64,PPA
+womens,2024-03-16,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,bc5e91e3-05d1-4c6f-b5ea-c398acac6947,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-03-16,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,03004b94-53b1-479f-9d5f-1cb315a714f1,no played games (forfeit/walkover),Round 32,PPA
+mens,2024-03-16,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,36de9799-934b-4260-a4f1-f6de099f63c8,no played games (forfeit/walkover),Round 64,PPA
+womens,2024-03-17,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,001af881-a66e-4328-bcf8-82bd97057463,no played games (forfeit/walkover),Bronze,PPA
+mixed,2024-03-17,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,0728e633-a7d1-4f77-ae8d-e33cb49dfa0c,no played games (forfeit/walkover),Bronze,PPA
+mens,2024-03-17,f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,,6345e5a5-ab49-4028-9861-017d6ebbad2d,no played games (forfeit/walkover),Bronze,PPA
+mixed,2024-05-29,f6a44544-a7db-40ef-bf14-2718b612bfc2,PPA Tour: CIBC Texas Open,,1b85b5fa-9224-49cd-805b-efcd2d32368c,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+mixed,2024-05-29,f6a44544-a7db-40ef-bf14-2718b612bfc2,PPA Tour: CIBC Texas Open,,b9c71d2f-559b-4ca7-af7e-6ef76df557a2,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2024-05-29,f6a44544-a7db-40ef-bf14-2718b612bfc2,PPA Tour: CIBC Texas Open,,1bdd2236-98d7-4fdc-8e09-5cda1f50d061,no played games (forfeit/walkover),Qualifier — Round 32,PPA
+womens,2024-06-01,f6a44544-a7db-40ef-bf14-2718b612bfc2,PPA Tour: CIBC Texas Open,,d0d9f40c-39fe-42a1-8fa1-a0eba798b7f3,no played games (forfeit/walkover),Round 32,PPA
+womens,2024-06-01,f6a44544-a7db-40ef-bf14-2718b612bfc2,PPA Tour: CIBC Texas Open,,5a5316ca-b051-4f4c-b2f3-43589febe037,no played games (forfeit/walkover),Round 64,PPA
+mens,2024-06-01,f6a44544-a7db-40ef-bf14-2718b612bfc2,PPA Tour: CIBC Texas Open,,ad123129-7e8a-4a79-b2c4-44619a89aebe,no played games (forfeit/walkover),Round 64,PPA
+mens,2024-06-02,f6a44544-a7db-40ef-bf14-2718b612bfc2,PPA Tour: CIBC Texas Open,,5678869a-6cba-4688-95ee-84413c1210ac,no played games (forfeit/walkover),Bronze,PPA
+mens,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,6618e7e5-2906-49e8-83a5-1d0590db1564,no played games (forfeit/walkover),Qualifier — Round 64,PPA
+mixed,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,8e550aed-6c8b-44e5-9ba6-bece730d3569,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,6ed15aad-117e-42c8-a01b-0c6621a59049,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,b4052eb0-21ea-4ca6-8b40-d29f1323616d,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mixed,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,34abe04b-092f-4a73-b47e-d520c7222d37,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,98ef5135-4d84-4672-a6f0-17742f1665c5,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,85c174b5-e784-478d-9bce-aeab32cf710d,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,7dd3d921-46a9-47cf-ad5e-b2da7904790c,match not completed (status=1),Qualifier — Quarter Finals,PPA
+mens,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,242e98fb-8a17-4244-9f87-d84ea7fa9839,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,432a79db-fd85-45d2-89d0-5e1e1ed42d38,match not completed (status=1),Qualifier — Semi-Finals,PPA
+womens,2026-02-16,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,b45368d6-49bd-4c55-a55e-b05049f1723b,match not completed (status=1),Qualifier — Semi-Finals,PPA
+mens,2026-02-17,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,f3696357-6e1b-46b9-81c0-5042251557c2,no played games (forfeit/walkover),Round 64,PPA
+mens,2026-02-17,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,1595a416-3bba-4f5a-8b64-04fda39d13f1,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-02-17,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,33bd66c4-6eb1-4bed-9875-bda397fa076f,no played games (forfeit/walkover),Round 128,PPA
+womens,2026-02-20,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,f9f251ec-6075-4abd-b977-053548b662c7,no played games (forfeit/walkover),Quarter Finals,PPA
+mens,2026-02-22,fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,,4ada0e2f-2d03-489e-a294-d2cd551e2592,no played games (forfeit/walkover),Bronze,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,f38f88cb-6d07-4c37-a520-bf0e7627efa8,no played games (forfeit/walkover),,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,64191f86-3889-427e-a222-88797ee0602d,no played games (forfeit/walkover),,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,a30f0a84-0952-4daa-a82d-17bddfefd117,no played games (forfeit/walkover),Round 64,PPA
+mens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,33043198-a95d-447a-b07d-a787f3a5249c,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-05-23,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,193e44a6-4164-4ff9-a170-e071e901e2b6,"bracket bye/shell (empty side, no scores)",,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,c8ea38c1-ba9b-442d-9ccc-ddbb785ff63d,no played games (forfeit/walkover),,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,286019a7-7e5b-4e13-82e7-c19c7f8494f1,no played games (forfeit/walkover),,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,3f1680ba-d188-4908-8f63-1210649fdfae,no played games (forfeit/walkover),,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,dfa772cb-3851-458c-85e6-04bbf5069dd3,no played games (forfeit/walkover),,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,e012c9cc-751c-4ea1-b4f4-a3b4bea90f9e,no played games (forfeit/walkover),,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,1feef659-4447-4d8f-a308-a9bb404ae9bf,no played games (forfeit/walkover),Round 64,PPA
+mixed,2026-05-24,ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,,82a10317-f84c-410b-ae25-3dcb2103b8c5,"bracket bye/shell (empty side, no scores)",,PPA

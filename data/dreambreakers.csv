@@ -1,0 +1,102 @@
+match_id,matchup_id,event_name,date,t1_score,t2_score,scoring_format,stage
+853f1835-44ef-422d-8476-e65e7fe74846,007a1952-4d7f-45bf-a792-ac9b04d1fd7c,Edward Jones Mid-Season Tournament,2026-07-11,21,18,rally_21,Round 3 L1
+4353fe02-8197-4bea-9d24-f2a223aadee6,048c5923-7b45-4ac5-af5d-4252d198605a,MLP Phoenix,2025-05-30,21,19,rally_21,RR
+f565b1ff-9de2-4ea6-8607-7f9ed462426c,0b5ace97-1ebc-4b72-a338-2725663a14f5,MLP Columbus,2025-05-01,13,21,rally_21,RR
+8f1c520b-ac91-4d89-a96b-73f4612e98a0,0c5aca9b-9399-4f05-a751-6ba94f90a0fc,MLP Phoenix,2025-05-31,21,16,rally_21,RR
+d1072f55-5363-47f0-838c-8140d1c0d13a,0cd8ca42-faf8-4db9-ab85-3e0081169887,MLP Orlando,2025-04-25,19,21,rally_21,RR
+c4adeb8f-2794-4a42-9b90-f2a991df441a,0d374aed-bdab-43d5-b9da-9a04b504fd06,MLP New York,2026-06-28,19,21,rally_21,Round 2 RR
+9a9a5d99-6297-4e47-b475-b22665e7d23d,0d6d30fa-9ff7-45da-a8b9-30069df7ee6c,MLP Austin,2026-06-13,20,22,rally_21,Round 3 RR
+e31684f2-7c6b-4bb3-bcbc-490925f1d263,0ddd31e3-c7b5-45b1-9aa9-430ee9074c76,MLP Salt Lake City,2025-07-31,13,21,rally_21,RR
+1e220175-1ac9-4e3f-9ac5-17866ed82b2a,11021b24-3d60-4731-9864-07c34f58dd89,Marathon MLP St. Louis,2025-07-20,13,21,rally_21,RR
+75157632-01e1-4c76-a9c7-8ec4d6a4d85c,11357e02-6cc0-41fa-904a-179635d07b74,MLP Columbus,2026-05-28,5,21,rally_21,Round 1 RR
+1f39d0e0-a2a7-4061-9d42-6e513537e1d2,115f8546-bae5-4016-ba99-c3553ca84fea,MLP New York,2026-06-28,21,15,rally_21,One and Done - Playoff W
+6d3f9754-cc0c-40cf-adf0-c1fe4c054eae,1212e6df-9765-4431-a7b3-86d068c2718a,MLP Austin,2026-06-12,9,21,rally_21,Round 2 RR
+f300a04e-dfc5-43b1-9a3a-b9f77f18ae2d,1b7f359f-f4df-4c4f-a196-dcdeee257d13,MLP Columbus,2026-05-29,9,21,rally_21,Round 3 RR
+418bc8ff-84e1-478e-957a-24ede50b5de8,1c58a401-e871-4d58-95d5-0ddeec12845a,Edward Jones MLP San Clemente,2025-06-29,19,21,rally_21,RR
+56366bfe-4c20-4ef0-829b-90d735f6c646,24b31b89-8a21-4b80-82e0-77e4ec0d8ae6,MLP New York,2026-06-28,19,21,rally_21,One and Done - Playoff W
+2693f503-5431-44ad-9a5b-ba5f68dcb271,263a743e-ce83-46a0-93f3-09189f521a3a,MLP Columbus,2025-05-02,24,22,rally_21,RR
+82135c2d-36cd-47de-80b9-12f956f45745,263f966f-85c8-4309-bf7d-554cabca075a,"DoorDash MLP Finals NYC, powered by Toray",2025-08-22,13,21,rally_21,RR
+fa3d1232-2625-4e2c-ae5b-9d863a562c42,2a9b822c-b74b-45e8-83c6-e1a7ccf681b3,MLP Dallas,2026-05-24,11,21,rally_21,Round 2 RR
+cd2bb62d-1613-41a2-b687-7056131ba5e7,2c255d84-44be-476d-9266-18dd4d6c9eb6,MLP Columbus,2025-05-04,17,21,rally_21,RR
+d505e6da-7e09-4401-98db-a738d8b21168,2c4cc818-8047-4a6e-b13d-e421b596c643,MLP New York,2026-06-27,19,21,rally_21,Round 1 RR
+f493cd72-6e2d-4d07-8bec-2eb46a5f0016,2c814512-bc9f-4de0-ba0e-eb699454c78d,MLP Salt Lake City,2025-08-02,16,21,rally_21,RR
+8f1a2a25-d3b8-46b4-92f6-b3f9b3aacf0b,30e2b2fb-6099-4d4d-a066-e2c83cb908f2,MLP Austin,2025-05-25,21,11,rally_21,RR
+147e92c8-396d-4776-82c7-8335f7740ad0,44148ea6-ffdb-43dc-bbab-4625407d3de0,MLP Salt Lake City,2025-08-02,22,20,rally_21,RR
+3c7200a8-f57e-47dd-9f0f-59903cbf7aea,473f14cc-98ae-4147-8a01-e860d95584d0,MLP Austin,2026-06-14,21,13,rally_21,One and Done - Playoff W
+936fc978-9d02-43a4-b8cc-a8609233dd0c,4c5d43c0-3be9-43f0-bf50-e2d99a5ad130,MLP Columbus,2026-05-30,21,15,rally_21,Round 2 RR
+1b78b685-4116-42b9-807c-1d5b6341949b,4c7e0458-46bd-4076-8b77-d6d2fa6a84c7,Toray MLP Playoffs - San Diego,2025-08-17,18,21,rally_21,RR
+08ac640b-0846-4cd9-a044-0164966a3399,4eaabcd7-c6ce-4a20-acbd-8067cfbc86d2,Advil Targeted Relief MLP Dallas,2025-07-27,12,21,rally_21,RR
+52da33a5-5c26-4411-a02b-f7415a1cd5e8,4fce9340-8549-4418-b2b7-c470764e07f7,MLP Daytona,2025-06-06,21,18,rally_21,RR
+33f6623e-58d4-45c7-83dc-3852cc539fbb,5027a962-2140-4a5c-9774-94e79ff0a598,Toray MLP Playoffs - San Diego,2025-08-15,21,19,rally_21,RR
+e340ee8d-2b48-46f5-9a4e-f46af3f6bbc8,51a85995-9799-4bdb-8593-87df4aa9633d,MLP Orlando,2025-04-27,21,14,rally_21,RR
+9cd0eb96-19cc-4278-b745-4e5f06a1a4ae,547efb66-dcfb-4df2-97d5-96da621be181,Edward Jones MLP Mid-Season Tournament,2025-07-11,20,22,rally_21,Round 3 L1
+88e3afa7-4b22-405b-8eea-a0994d74886e,548d5217-1789-4e41-ba8a-bb6522d86b0a,Advil Targeted Relief MLP Dallas,2025-07-27,18,21,rally_21,RR
+1bb7211a-6c69-475d-971c-8e5a59d5785a,58802f5c-baf8-426b-9c10-d1f7e170039c,"DoorDash MLP Finals NYC, powered by Toray",2025-08-23,21,17,rally_21,RR
+733733ba-b2ba-4c2c-842c-dac9f6415206,5a6fcd5e-f23f-46e3-befc-2b8d0debb20c,MLP Austin,2026-06-13,9,21,rally_21,Round 4 RR
+294419d4-299f-4071-92e3-bfbef1356566,5c89d534-cef3-409c-991c-49ce01c7cd75,MLP Columbus,2026-05-30,21,15,rally_21,Round 2 RR
+8dafc6aa-3b6c-482e-8792-e97468df6603,5d82e693-6c27-4a4a-8d4a-e246082cbf35,MLP Columbus,2025-05-04,21,16,rally_21,RR
+7695f49e-b963-436c-8f59-540986a86cbe,5f9e0f44-f4cb-4788-ad0e-fc8206fa39eb,MLP Columbus,2025-05-04,20,22,rally_21,RR
+baf76def-0999-4712-b047-ab935d40be1c,6263fea4-9332-4ec8-884e-ee350a9f2b5c,MLP St. Louis,2026-06-06,21,15,rally_21,Round 4 RR
+426a6964-28eb-4b42-9d5c-c7a4a80a5243,67d60d04-6f69-41ac-96a9-65638f97c03f,MLP New York,2026-06-26,21,16,rally_21,Round 1 RR
+3a1657bb-a422-4d6f-bc4d-41ea66919513,689fcea1-b44a-4986-a8e4-8356ef17837b,Edward Jones MLP San Clemente,2025-06-30,6,21,rally_21,RR
+39c1f6b8-0a11-4b23-b42c-8ad6b201ab04,693bc558-e52c-407a-935a-983fb8e961d6,Marathon MLP St. Louis,2025-07-19,15,21,rally_21,RR
+cef858ce-ed86-47e1-bb1c-9d0d91fb029d,6bcee32a-e5a7-4ca9-821f-4d6c66edb7ac,Marathon MLP St. Louis,2025-07-19,21,13,rally_21,RR
+4e116d67-4a33-4607-b503-902966403cc2,6cccbbb7-fa5a-4577-bc26-1b06c2626c86,Edward Jones MLP Mid-Season Tournament,2025-07-12,16,21,rally_21,Round 4 L1
+9f8fd306-074a-4fa7-bfba-9bdd06b84c9e,6d441237-b4c1-447b-99c3-2fb4f5944c35,MLP Orlando,2025-04-25,21,17,rally_21,RR
+9397eb63-0e60-494c-afe0-d916c317a06d,6d6b71ba-bd89-48d6-8fab-ae942e023d63,Edward Jones MLP San Clemente,2025-06-27,21,18,rally_21,RR
+42414c35-65ae-4570-8de0-2090fa2507f3,6f52a082-1e4e-43a2-9006-ce68a4ad343f,"DoorDash MLP Finals NYC, powered by Toray",2025-08-24,15,21,rally_21,RR
+46a226dd-8b5f-4c61-837c-e6755ec54729,722f7d65-fe2c-4dcb-a801-51f9576c2ef7,Toray MLP Playoffs - San Diego,2025-08-17,14,21,rally_21,RR
+82be90d5-b039-445e-958f-901113533722,73e461fd-66a0-420f-9d44-e404e0293a10,Marathon MLP St. Louis,2025-07-19,21,16,rally_21,RR
+131fead2-160a-4e0a-b63f-3c1ddff0ac99,7efdfe15-7e8b-484e-8689-7c1afdb66e51,MLP Austin,2025-05-24,20,22,rally_21,RR
+f9f2200e-d218-4dc2-90f6-7396fa2a40bf,80bf7078-39e2-4198-a455-864b52ecdb45,Edward Jones Mid-Season Tournament,2026-07-09,21,23,rally_21,Round 16 W
+7a1c44d8-e1b5-406b-b4fc-270b731f2885,8425b668-e06a-4f83-9272-33bdbdd01078,MLP Austin,2026-06-13,17,21,rally_21,Round 3 RR
+c7393d09-fac8-4e38-9b13-d1744e18a7aa,885485c7-a21a-4433-9e73-66293ec5249e,MLP Salt Lake City,2025-07-31,21,18,rally_21,RR
+7a76e0d3-0c7d-445f-b66e-e6bbff83556a,8ba88624-2388-439c-b2cd-b232cbc9543e,Toray MLP Playoffs - San Diego,2025-08-16,21,18,rally_21,RR
+3f5f1be1-da5c-4913-9e12-fc2d94f14a6a,90751f3e-d967-4201-9277-17bc89657915,MLP Austin,2026-06-11,21,11,rally_21,Round 2 RR
+b0572402-2c31-41d3-8b63-2db8fe46795b,90a298b3-525e-4b71-85aa-a10cdb66468b,MLP Dallas,2026-05-25,21,15,rally_21,One and Done - Playoff W
+5550b767-49c2-4501-901d-840938457b5e,9335634b-575d-4bcb-bed0-8d415f4dd147,Edward Jones Mid-Season Tournament,2026-07-08,21,11,rally_21,Round 32 W
+49469775-6a1a-468d-9af4-c945926caaec,93fe8218-cab2-4d44-99b7-1b767c8391bd,Edward Jones MLP Mid-Season Tournament,2025-07-09,21,14,rally_21,Semi-Finals W
+ed254c3f-5fce-4f43-9c49-50dcdcb1ddf9,95b5b97a-ffc5-4a31-ad7b-441a04aad459,MLP Dallas,2026-05-22,21,7,rally_21,Round 5 RR
+8846cc05-0bc3-4015-bf54-3f873d74599f,98bb6d3e-f2ec-449c-91c5-d90b6ba5c88c,MLP Dallas,2026-05-25,15,21,rally_21,Round 1 RR
+3e0e5cc8-7d37-411b-8c46-77569aabae95,999e231d-b4d9-4575-b059-1e8ba8b29a29,Edward Jones Mid-Season Tournament,2026-07-11,21,16,rally_21,Quarter Finals W
+19244542-5716-460f-9096-1d0e54e679b8,9b88299f-e957-44a7-a93d-856dafa59cc3,MLP Dallas,2026-05-23,21,14,rally_21,Round 3 RR
+c7713138-3b5d-4f4d-b99f-3108b79eb49e,9d15006a-69d1-4bbb-b18b-79ff8a266a2a,MLP Columbus,2026-05-30,21,14,rally_21,Round 4 RR
+953060bf-2dfd-46b3-8887-60a693e991e5,9e47062a-b7d7-47e8-b265-eee7cd2115cf,MLP Daytona,2025-06-05,13,21,rally_21,RR
+bed1b59f-0f29-4948-ae71-b3f0c62d8c2a,a1c08402-519d-4dbf-a01d-589e47bdaf47,MLP St. Louis,2026-06-05,15,21,rally_21,Round 1 RR
+56fc82f3-1c77-497e-9c4a-4c9f08087fbd,a2c98c08-2261-4f83-bfc2-e0c3971386e6,MLP Daytona,2025-06-06,21,12,rally_21,RR
+ddb3e2bf-f898-494a-8bc0-987d7d9941e1,a463894c-e5f3-47c6-b964-ff50d24b3f5d,Edward Jones Mid-Season Tournament,2026-07-08,21,14,rally_21,Round 32 W
+99021d0b-39f4-4323-a07c-7b379c59f0f2,a5f40b5a-9b7c-4ccd-a92f-6353b343f904,MLP Columbus,2025-05-03,19,21,rally_21,RR
+030cbdd4-9730-432e-978b-e4b82c024700,a9db4552-f0bb-4019-8cf9-9aa2243ae8cc,MLP New York,2026-06-28,15,21,rally_21,Round 4 RR
+bfb040fa-ff1c-465d-8742-6049da736d65,acbd7247-6fa8-4181-8b0f-b57aa62894c2,Edward Jones MLP San Clemente,2025-06-29,19,21,rally_21,RR
+3a108adb-7ca8-415a-915e-f5873c8ef9e0,ace94f89-5189-4b32-9f5f-7c7948609cbf,MLP Daytona,2025-06-05,12,21,rally_21,RR
+a76e0e57-c25e-4579-b6e4-1b20861a7e0d,b44a8a4a-6cc8-48f4-b4fb-3c70b72f53ca,2025 Edward Jones MLP Cup,2025-10-31,21,18,rally_21,Round 2 RR
+e36545db-f5b2-473d-b9d1-ae23f9f34d9b,b4d84f39-be92-48fd-8d37-0935434069a3,MLP Columbus,2025-05-03,18,21,rally_21,RR
+f8039c63-0ed9-49a1-865a-c982ecd43f18,b743038b-1b3e-4653-a920-d24f077850de,Edward Jones MLP Mid-Season Tournament,2025-07-10,18,21,rally_21,Round 16 W
+d54aae43-35c5-41ac-be39-60548fd1ccb3,b8b8f85c-76da-4f9c-9c8f-8bd67f65b9fe,Edward Jones MLP Mid-Season Tournament,2025-07-09,11,21,rally_21,Quarter Finals W
+612934ec-231f-4ffb-92e9-2204e649fd8a,bb8dff81-eb93-42a2-85d9-3f729fa89dad,2025 Edward Jones MLP Cup,2025-11-02,21,14,rally_21,Round 1 RR
+52469f10-1b72-4a61-9f84-28bfd7048485,beaf54c0-51e9-4c47-bd80-ef165d9421e7,MLP New York,2026-06-28,23,21,rally_21,Round 3 RR
+74c21b5b-7800-4324-8643-b0fc07465087,bfa15bc7-7581-4cf9-99aa-f352a790c89a,Advil Targeted Relief MLP Dallas,2025-07-26,22,20,rally_21,RR
+38ff3376-e825-409f-bc8b-3b89737102eb,c27ad0fa-15e7-473c-b062-dc51a888699a,Edward Jones Mid-Season Tournament,2026-07-11,21,18,rally_21,Round 3 L1
+bd3c783d-56e7-4aa6-8383-e215e1747a62,c66d47cd-96b5-460f-a93e-74ec25e9fd5b,Edward Jones MLP Mid-Season Tournament,2025-07-12,21,18,rally_21,Round 4 L1
+c360f070-a23c-4bc5-8ab2-c914b91d95ad,c7687e40-3b40-429e-88f8-30827db5e639,MLP New York,2025-07-06,20,22,rally_21,RR
+573a819c-0e62-4e77-88aa-3327e2f3de99,c77c9f36-a10f-4baf-b7b4-f6b9f09d9280,Edward Jones MLP Mid-Season Tournament,2025-07-11,21,9,rally_21,Round 3 L1
+f5e4ab13-b394-48dc-9a58-712ba8ea7981,d0fe683d-1470-4b9f-b784-328ad775ec9e,Edward Jones Mid-Season Tournament,2026-07-10,21,17,rally_21,Round 16 W
+f8162534-39a9-4871-9bf5-28a67e08f73f,d393d638-2ff9-4745-a565-24e51ef20b8c,Edward Jones Mid-Season Tournament,2026-07-10,21,17,rally_21,Round 2 L1
+160252b3-81f5-4010-81f6-fe22fb56ebdb,d71cac6f-c75e-4b1f-b958-bdbcf0d44965,Edward Jones MLP San Clemente,2025-06-29,19,21,rally_21,RR
+01bc27e4-5760-44fa-916a-4de5cdb6a676,d7cde0c5-88fb-4295-b716-777bb572876f,MLP St. Petersburg,2026-06-17,16,21,rally_21,Round 4 RR
+82b6e7b7-dd33-4db1-bdac-312fa3cfa3a4,d8680b50-cb9a-4a98-bfb3-88831c4623c4,MLP Orlando,2025-04-25,21,7,rally_21,RR
+7210db8b-8f93-4065-a445-8c71a97a1b07,da802025-5021-4ece-8ca5-909df665dace,MLP Columbus,2025-05-01,23,21,rally_21,RR
+bd581c8b-3bf4-4189-9a9d-b0850644000d,da8f5fdc-2d37-44ed-936f-fb5f5c276a8d,Toray MLP Playoffs - San Diego,2025-08-17,21,13,rally_21,RR
+dff2d981-a76d-4e6c-a163-993720db8c55,db7969df-a861-4f28-b9f2-ecbdff2f00fd,MLP Orlando,2025-04-24,21,18,rally_21,RR
+d50440c7-355f-4890-880d-fc83664eb3de,dc578c3b-6045-4bd3-93d9-5baf2e39c42c,Marathon MLP St. Louis,2025-07-17,16,21,rally_21,RR
+9388472e-a551-4a0a-84dd-8d7108c9775e,e01cb64d-2e88-4aa1-a444-e0f778e0b070,MLP Salt Lake City,2025-08-01,21,14,rally_21,RR
+376f2cf6-d0de-46c8-9108-d1eeeab14842,e0463c70-f82a-4bef-9e24-f4fcb90e0a1a,Edward Jones MLP Mid-Season Tournament,2025-07-11,19,21,rally_21,Round 3 L1
+453bfd5d-a0c7-48d3-8cee-2191df934fe0,e152c71e-f8ff-4d0f-ae07-34fd3d751c01,MLP St. Petersburg,2026-06-20,8,21,rally_21,Round 5 RR
+ec338820-0678-40c6-8ece-d3056b82ed5d,e45e582c-5970-491c-bc20-929475a0ac33,Advil Targeted Relief MLP Dallas,2025-07-25,21,16,rally_21,RR
+96ba2439-cb3c-4162-b097-14ba01fda1c6,ebc5f93f-c639-45e0-a6f3-3e3c254a3790,2025 Edward Jones MLP Cup,2025-11-01,21,19,rally_21,Round 3 RR
+5d191124-9cdb-4a5d-8f55-4fbfd697bebc,f4b8f74a-26c4-4a13-b1c7-ebf3cd8b9594,MLP St. Louis,2026-06-07,21,19,rally_21,One and Done - Playoff W
+2b7d01c3-59da-47ab-ab56-3126a6f03a8b,f55d06ae-00bf-4b41-b3b1-f1b91ec8a033,2025 Edward Jones MLP Cup,2025-11-01,19,21,rally_21,Round 1 RR
+aab63c5b-2f00-4c8e-b12c-787b08531689,f9202594-8ca5-4b14-a379-813e5cbba3c9,MLP Orlando,2025-04-27,19,21,rally_21,RR
+bbd9ac8a-37b9-4156-836b-b3400b35da7c,fa30a827-97d2-40a0-8e50-902f497b634c,Edward Jones MLP San Clemente,2025-06-27,21,12,rally_21,RR
+fb8b716c-de61-4554-93f7-7450e7e515cc,fb4e6022-4775-4bbe-9759-1bafc68cfcb3,MLP Daytona,2025-06-08,19,21,rally_21,RR
+d94f898e-cbb7-4909-b6fb-45376cca1ba7,fc954a04-30e0-49d5-9439-86e5c45aed31,MLP Daytona,2025-06-07,21,17,rally_21,RR

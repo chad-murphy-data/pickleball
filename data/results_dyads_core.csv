@@ -1,0 +1,1214 @@
+p1_name,p2_name,context,games,chemistry_mean,chemistry_sd,p_positive,percentile
+Tom Protzek,Martin Emmrich,mens,13,-0.088,0.401,0.426,6.4
+Vincent Rettke,Miles Hoover,mens,6,-0.107,0.401,0.404,3.1
+Ashley Griffith,Brooke Caruso,womens,11,0.131,0.396,0.615,96.8
+Estee Widdershoven,Jaeda Minniefield,womens,2,-0.104,0.425,0.415,3.4
+Elsie Hendershot,Lina Padegimaite,womens,9,-0.034,0.364,0.454,30.4
+Martina Frantova,Rachel Summers,womens,8,0.031,0.384,0.534,73.5
+Ewa Radzikowska,Tamaryn Emmrich,womens,28,0.162,0.387,0.644,98.3
+Christa Gecheva,Mehvish Safdar,womens,8,0.085,0.41,0.574,90.8
+Camden Chaffin,Juan Benitez,mens,7,0.064,0.39,0.568,85.8
+Andrea Koop,Mari Humberg,womens,7,-0.037,0.368,0.474,28.3
+Samantha Buyckx,Kelsey Laurente,womens,3,0.015,0.394,0.517,66.0
+Nicole Conard,Paula Rives,womens,5,-0.068,0.391,0.439,10.4
+Kayla Williams,Keilly Ulery,womens,10,0.042,0.373,0.553,78.7
+George Rangelov,Nejc Sitar,mens,2,-0.009,0.375,0.476,48.8
+Luca Mack,Anouar Braham,mens,11,0.075,0.387,0.577,88.5
+Jada Bui,Mya Bui,womens,7,-0.054,0.401,0.457,16.7
+Valerie R Simon,Victoria Simon,womens,21,0.02,0.352,0.516,68.7
+Christopher Crouch,Paula Rives,mixed,38,0.015,0.353,0.532,65.8
+Jada Bui,Juan Benitez,mixed,4,-0.007,0.365,0.491,49.8
+Ashley Griffith,George Rangelov,mixed,24,-0.018,0.37,0.478,41.7
+Mehvish Safdar,Anouar Braham,mixed,5,0.051,0.349,0.568,82.0
+Austin Bricker,Mya Bui,mixed,9,0.023,0.353,0.516,70.6
+Andrea Koop,Camden Chaffin,mixed,4,-0.01,0.38,0.49,48.3
+Ewa Radzikowska,Martin Emmrich,mixed,28,-0.055,0.382,0.456,15.6
+Luca Mack,Estee Widdershoven,mixed,26,-0.034,0.373,0.469,30.1
+Adalynn Lund,Christian Lund,mixed,5,-0.016,0.409,0.48,44.0
+Kayla Williams,Parth Mody,mixed,5,-0.026,0.369,0.491,35.4
+David Litvinov,Maddy Rasmusen,mixed,3,0.001,0.384,0.505,55.8
+Natalie Hur,Jaikin Gomez,mixed,6,-0.018,0.361,0.477,42.1
+Victor Rodrigo,Matt Burkhardt,mens,11,0.031,0.368,0.521,73.7
+Nicolas Almeida,Karthik Ganesh,mens,2,-0.052,0.389,0.445,17.7
+Naomi Nguyen,Rio Newcombe,mixed,12,0.027,0.36,0.541,71.9
+Averee Beck,Joel Poland,mixed,5,-0.002,0.378,0.487,53.6
+Cc Eleven Sacca,Ethan Bakalinsky,mixed,4,0.008,0.375,0.522,60.3
+Olivia Phillips,Maddy Rasmusen,womens,3,-0.008,0.387,0.489,49.3
+Naomi Nguyen,Averee Beck,womens,5,-0.002,0.378,0.496,52.9
+Abigail Okelley,Will Mackinnon,mixed,3,-0.044,0.384,0.465,23.3
+Mike Radermacher,Jessica Ho,mixed,5,-0.042,0.372,0.458,24.9
+Nicolas Almeida,Stevie Petropouleas,mixed,2,0.049,0.382,0.539,81.2
+Olivia Phillips,Braden Jacobson,mixed,2,-0.039,0.388,0.45,27.3
+Maggie Brascia,Augustus Ge,mixed,7,-0.096,0.384,0.413,4.8
+Ivan Jakovljevic,Judit Castillo,mixed,46,0.241,0.416,0.7,99.8
+Christian Alshon,Tyra Hurricane Black,mixed,21,0.11,0.359,0.614,94.1
+Ella Yeh,Adam Harvey,mixed,6,-0.009,0.399,0.485,48.4
+Jade Rau,Cason Campbell,mixed,4,0.008,0.351,0.521,60.6
+Caden Nemoff,Jaeda Minniefield,mixed,2,-0.019,0.358,0.491,40.1
+Gabriel Joseph,Ella Cosma,mixed,6,0.054,0.372,0.551,83.1
+Catherine Parenteau,Gabriel Tardio,mixed,73,-0.013,0.347,0.477,46.2
+Christine Trifunovic,Spartak Rahachou,mixed,4,-0.039,0.37,0.473,27.1
+Elsie Hendershot,Andrew Caldarella,mixed,4,0.058,0.378,0.561,84.4
+Chao Yi Wang,Tyson McGuffin,mixed,24,-0.091,0.383,0.415,5.6
+Jalina Ingram,John Lucian Goins,mixed,15,0.022,0.342,0.526,69.7
+Austin Bricker,Camila Zilveti,mixed,4,-0.021,0.381,0.477,38.5
+Luana Stanciu,Wil Shaffer,mixed,2,0.01,0.373,0.511,61.8
+Juan Benitez,Brooke Caruso,mixed,5,-0.021,0.375,0.488,38.7
+Natalia Simson,Karthik Ganesh,mixed,9,0.016,0.381,0.52,66.3
+Jorja Johnson,JW Johnson,mixed,93,-0.073,0.37,0.438,9.1
+Eric Oncins,Meghan Dizon,mixed,20,0.055,0.348,0.576,83.4
+Collin Johns,Albie Huang,mixed,16,0.033,0.352,0.531,74.4
+Max Freeman,Milan Rane,mixed,4,0.005,0.393,0.51,57.8
+Armaan Bhatia,Mya Bui,mixed,4,-0.091,0.388,0.421,5.8
+Riley Newman,Cailyn Campbell,mixed,26,0.102,0.379,0.612,93.2
+Tom Protzek,Allison Phillips,mixed,10,0.041,0.379,0.535,78.4
+Ross Whittaker,Ava Ignatowich,mixed,2,-0.005,0.383,0.499,51.0
+Carlota Trevino,Rafael Lenhard,mixed,4,-0.045,0.377,0.461,22.6
+Lucy Kovalova,Matt Wright,mixed,24,0.114,0.409,0.593,95.0
+Tyler Loong,Kiora Kunimoto,mixed,6,0.039,0.378,0.533,77.6
+Ting Chieh Wei,Anderson Scarpa,mixed,4,0.006,0.356,0.501,58.7
+Zoeya Khan,Brandon French,mixed,2,-0.002,0.383,0.49,52.6
+Noe Khlif,Tina Pisnik,mixed,44,-0.004,0.361,0.504,51.8
+Callie Smith,CJ Klinger,mixed,11,0.103,0.385,0.591,93.3
+Rachel Rettger,Wesley Burrows,mixed,4,0.028,0.383,0.515,72.0
+Andre Mercado,Isabella Dunlap,mixed,2,-0.132,0.377,0.372,0.9
+Luc Pham,Giovanna Morelli,mixed,4,0.16,0.432,0.642,98.2
+Anna Bright,Hayden Patriquin,mixed,138,0.043,0.347,0.542,79.3
+Nicole Conard,Pesa Teoni,mixed,7,-0.013,0.404,0.479,46.3
+Blaine Hovenier,Jade Kawamoto,mixed,5,-0.124,0.379,0.384,1.4
+Marshall Brown,Olivia McMillan,mixed,6,0.059,0.38,0.558,84.7
+Roscoe Bellamy,Alex Walker,mixed,3,-0.023,0.362,0.464,37.8
+Donald Young,Lindsey Newman,mixed,5,0.02,0.376,0.514,68.3
+Chuck Taylor,Abbigal Hatton,mixed,3,-0.025,0.416,0.475,36.2
+Zane Navratil,Lina Padegimaite,mixed,6,-0.111,0.393,0.424,2.3
+Lingwei Kong,Michael Loyd,mixed,4,0.022,0.41,0.516,70.2
+Julian Arnold,Lauren Stratman,mixed,9,-0.021,0.354,0.464,39.4
+Yates Johnson,Samantha Parker,mixed,2,-0.03,0.377,0.471,32.9
+Rachel Rohrabacher,Will Howells,mixed,8,0.087,0.377,0.584,91.0
+Christa Gecheva,Yuta Funemizu,mixed,22,-0.107,0.363,0.402,2.9
+Allyce Jones,Connor Garnett,mixed,43,0.053,0.332,0.533,82.9
+Eric Roddy,Marcela Aguila Ampon,mixed,2,-0.002,0.389,0.507,53.5
+Anna Leigh Waters,Ben Johns,mixed,111,0.007,0.349,0.515,59.7
+Jay Devilliers,Jessie Irvine,mixed,38,0.112,0.369,0.616,94.7
+Jack Sock,Mari Humberg,mixed,10,-0.015,0.391,0.485,44.8
+Hannah Blatt,Christopher Haworth,mixed,4,0.029,0.381,0.52,72.4
+Kaitlyn Christian,Travis Rettenmaier,mixed,4,0.026,0.366,0.526,71.6
+Chloe Igleski,Darrian Young,mixed,9,-0.07,0.388,0.432,10.1
+Kate Fahey,Federico Staksrud,mixed,78,0.083,0.345,0.581,90.0
+Rachel Rohrabacher,Catherine Parenteau,womens,61,0.127,0.376,0.603,96.5
+Abbigal Hatton,Albie Huang,womens,7,0.085,0.37,0.581,90.5
+Tyler Loong,Brandon French,mens,6,-0.012,0.411,0.489,46.5
+Julian Arnold,Patrick Smith,mens,6,0.103,0.39,0.598,93.2
+Luana Stanciu,Rachel Rettger,womens,4,-0.029,0.369,0.476,33.3
+Ella Yeh,Jaeda Minniefield,womens,4,0.044,0.371,0.541,79.7
+Elsie Hendershot,Ella Cosma,womens,2,-0.019,0.369,0.488,40.2
+Jonathan Truong,Alix Truong,mixed,21,-0.026,0.374,0.483,35.5
+Hannah Blatt,Allison Phillips,womens,7,-0.062,0.391,0.437,12.6
+Samantha Parker,Christa Gecheva,womens,12,0.053,0.371,0.532,82.8
+Kate Fahey,Tina Pisnik,womens,7,-0.081,0.37,0.424,7.4
+Angie Walker,Alex Walker,womens,22,-0.011,0.357,0.501,47.4
+Zoeya Khan,Kiora Kunimoto,womens,3,-0.066,0.379,0.436,10.7
+AJ Koller,Jonathan Truong,mens,6,0.028,0.346,0.521,72.2
+Jace Morris,Wil Shaffer,mens,5,-0.045,0.369,0.464,22.4
+Dylan Frazier,Lea Jansen,mixed,39,0.113,0.363,0.598,94.9
+Zane Navratil,Blaine Hovenier,mens,7,0.11,0.395,0.604,94.1
+Eduardo Santini Ayon,Joel Poland,mens,48,-0.008,0.367,0.503,49.4
+Carlota Trevino,Cc Eleven Sacca,womens,4,-0.15,0.406,0.359,0.4
+Noe Khlif,Will Howells,mens,39,-0.111,0.373,0.386,2.4
+Zane Ford,John Lucian Goins,mens,4,-0.045,0.365,0.453,23.1
+Daniel Phillips,Chuck Taylor,mens,2,0.003,0.375,0.5,56.9
+Armaan Bhatia,Yuta Funemizu,mens,7,0.049,0.409,0.548,81.1
+Gabriel Joseph,Spartak Rahachou,mens,6,-0.04,0.387,0.474,26.5
+Travis Rettenmaier,Braden Jacobson,mens,6,0.022,0.365,0.534,69.8
+Edward Perez,Austin Bricker,mens,7,0.012,0.358,0.509,63.5
+Gregory Dow,Anderson Scarpa,mens,26,-0.139,0.382,0.371,0.8
+Andre Mercado,Tama Shimabukuro,mens,3,0.018,0.395,0.51,67.8
+Angie Walker,James Delgado,mixed,7,-0.099,0.392,0.412,4.0
+Mohaned Alhouni,Genie Erokhina,mixed,10,-0.074,0.367,0.437,8.4
+Anna Leigh Waters,Anna Bright,womens,88,-0.047,0.328,0.459,21.3
+Etta Tuionetoa,Hunter Johnson,mixed,4,-0.048,0.371,0.451,20.1
+Mohaned Alhouni,Mota Alhouni,mens,3,-0.019,0.367,0.48,40.8
+Ross Whittaker,Ivan Jakovljevic,mens,17,0.062,0.379,0.541,85.2
+Jack Sock,Pablo Tellez,mens,33,0.11,0.358,0.61,94.5
+Roscoe Bellamy,Darrian Young,mens,7,-0.051,0.372,0.465,18.2
+Dekel Bar,Jackie Kawamoto,mixed,6,-0.034,0.396,0.451,30.6
+Nicole Conard,Isabella Dunlap,womens,22,-0.012,0.354,0.493,46.9
+Natalie Hur,Lyn Yuen Choo,womens,18,-0.016,0.369,0.48,43.6
+Yates Johnson,Marshall Brown,mens,2,-0.004,0.373,0.493,51.9
+Christian Alshon,Hayden Patriquin,mens,89,-0.11,0.355,0.391,2.6
+Brooke Buckner,Pablo Tellez,mixed,23,-0.084,0.357,0.419,6.8
+JW Johnson,CJ Klinger,mens,84,0.108,0.375,0.616,93.9
+Eric Roddy,James Delgado,mens,2,-0.047,0.395,0.456,21.5
+Rafael Lenhard,Troy Akin,mens,15,0.085,0.373,0.585,90.8
+Jade Kawamoto,Jackie Kawamoto,womens,29,0.127,0.392,0.614,96.6
+Andrei Daescu,Lacy Schneemann,mixed,5,0.021,0.371,0.514,69.0
+Jorja Johnson,Tyra Hurricane Black,womens,81,0.002,0.375,0.505,56.3
+Kaitlyn Christian,Jessie Irvine,womens,42,-0.059,0.338,0.429,14.2
+Camila Zilveti,Ava Ignatowich,womens,2,-0.038,0.387,0.45,27.5
+Ting Chieh Wei,Liz Truluck,womens,4,0.014,0.393,0.508,64.7
+Riley Newman,Will Mackinnon,mens,14,-0.193,0.389,0.326,0.0
+Jay Devilliers,Dekel Bar,mens,15,-0.117,0.382,0.399,1.9
+Alix Truong,Meghan Dizon,womens,13,-0.048,0.38,0.466,20.5
+Cailyn Campbell,Giovanna Morelli,womens,2,-0.012,0.387,0.48,47.3
+Callie Smith,Lea Jansen,womens,50,0.213,0.4,0.681,99.7
+Lindsey Newman,Olivia McMillan,womens,6,-0.011,0.356,0.479,48.1
+Mari Humberg,Allyce Jones,womens,6,-0.1,0.382,0.421,3.9
+Lina Padegimaite,Judit Castillo,womens,7,-0.024,0.38,0.471,36.9
+Hunter Johnson,Wyatt Stone,mens,5,-0.025,0.362,0.47,36.0
+Lucy Kovalova,Milan Rane,womens,14,-0.005,0.389,0.506,50.9
+Jalina Ingram,Pierina Imparato,womens,3,0.034,0.377,0.539,74.8
+Dylan Frazier,Eric Oncins,mens,79,0.036,0.365,0.53,76.1
+Christopher Crouch,Anouar Braham,mens,2,-0.037,0.386,0.468,28.5
+Andrei Daescu,Federico Staksrud,mens,101,0.032,0.33,0.537,74.0
+Pesa Teoni,Luc Pham,mens,2,-0.04,0.374,0.459,26.2
+Tamaryn Emmrich,Lauren Stratman,womens,2,-0.039,0.388,0.454,26.8
+Rafa Hewett,Collin Johns,mens,8,-0.162,0.389,0.361,0.2
+Max Freeman,Tyson McGuffin,mens,37,0.036,0.37,0.543,75.9
+Etta Tuionetoa,Lacy Schneemann,womens,17,0.022,0.346,0.525,70.0
+Mya Bui,Paula Rives,womens,15,0.206,0.431,0.671,99.5
+Lingwei Kong,Genie Erokhina,womens,20,0.098,0.383,0.598,92.7
+Ben Johns,Gabriel Tardio,mens,109,-0.032,0.358,0.468,31.8
+Brooke Buckner,Chao Yi Wang,womens,19,0.047,0.358,0.549,80.4
+Matt Wright,Jaume Martinez Vich,mens,12,-0.007,0.366,0.488,49.7
+Augustus Ge,Connor Garnett,mens,26,-0.042,0.375,0.451,24.8
+Mehvish Safdar,John Lucian Goins,mixed,2,-0.026,0.364,0.488,35.6
+Hannah Blatt,Zane Navratil,mixed,3,-0.012,0.397,0.489,47.2
+Edward Perez,Ashley Griffith,mixed,5,-0.016,0.391,0.472,43.3
+Zane Ford,Lindsey Newman,mixed,3,0.047,0.391,0.545,80.5
+Lingwei Kong,Martin Emmrich,mixed,9,-0.008,0.342,0.502,49.3
+Connor Mogle,Abbigal Hatton,mixed,5,0.094,0.386,0.598,92.0
+Lauren Stratman,Wyatt Stone,mixed,4,-0.078,0.402,0.444,7.6
+Adam Harvey,Giovanna Morelli,mixed,2,-0.002,0.367,0.497,53.5
+Monika Wynne,Freddie Powell,mixed,2,0.019,0.372,0.513,68.2
+Zoey Weil,Jaume Martinez Vich,mixed,3,-0.065,0.401,0.436,11.5
+Rafa Hewett,Valerie R Simon,mixed,5,0.017,0.4,0.518,66.9
+Ivan Jakovljevic,Anderson Scarpa,mens,12,-0.107,0.38,0.382,3.0
+Jaikin Gomez,Mouaad Alhouni,mens,8,-0.023,0.365,0.474,37.6
+Lacy Schneemann,Max Freeman,mixed,15,-0.099,0.371,0.4,4.0
+Camden Chaffin,Emma Nelson,mixed,3,0.071,0.382,0.564,88.0
+Caden Nemoff,Luana Stanciu,mixed,4,0.022,0.41,0.518,70.1
+Roscoe Bellamy,Lina Padegimaite,mixed,4,0.048,0.382,0.534,80.8
+Andrea Koop,Brandon French,mixed,6,-0.044,0.371,0.451,23.5
+Milan Rane,Connor Garnett,mixed,22,0.065,0.379,0.564,86.2
+Ernesto Fajardo,Sydney Sonday,mixed,2,-0.018,0.396,0.483,42.2
+Mota Alhouni,Anouar Braham,mens,4,0.06,0.396,0.551,84.8
+Gabriel Joseph,Connor Mogle,mens,2,-0.084,0.402,0.422,7.0
+Will Mackinnon,Ava Ignatowich,mixed,3,0.077,0.419,0.556,88.9
+Tama Shimabukuro,Luc Pham,mens,6,-0.032,0.359,0.48,32.0
+Daniel Miron,Dale Kim,mens,2,-0.056,0.367,0.454,15.3
+Ross Whittaker,Edward Perez,mens,3,-0.057,0.395,0.449,14.8
+Freddie Powell,Eli Steiner,mens,11,0.043,0.4,0.529,79.4
+Michael Loyd,Alex Walker,mixed,5,0.008,0.381,0.515,60.5
+Donald Young,Olivia McMillan,mixed,3,-0.034,0.381,0.471,30.4
+Allison Phillips,Cason Campbell,mixed,8,-0.073,0.405,0.438,9.0
+Callie Smith,Hunter Johnson,mixed,11,0.003,0.361,0.503,57.3
+Ella Cosma,Luc Pham,mixed,2,-0.017,0.375,0.483,43.2
+Mari Humberg,Augustus Ge,mixed,44,0.056,0.345,0.556,83.7
+Isabella Dunlap,Christopher Haworth,mixed,16,-0.073,0.374,0.451,8.9
+Paula Rives,Darrian Young,mixed,3,0.025,0.382,0.522,71.5
+Dekel Bar,Allyce Jones,mixed,3,-0.086,0.353,0.416,6.8
+James Delgado,Gregory Dow,mens,5,0.11,0.415,0.593,94.3
+Julian Arnold,Martin Emmrich,mens,18,0.048,0.359,0.549,81.0
+Christa Gecheva,Isabella Dunlap,womens,4,0.02,0.358,0.516,68.8
+Ashley Griffith,Ava Ignatowich,womens,4,-0.036,0.375,0.467,28.8
+Allison Phillips,Mehvish Safdar,womens,3,-0.003,0.345,0.503,52.1
+Dekel Bar,Wyatt Stone,mens,14,0.184,0.406,0.665,99.0
+Chuck Taylor,Patrick Smith,mens,5,0.01,0.364,0.504,61.9
+Alix Truong,Federico Staksrud,mixed,4,-0.072,0.413,0.449,9.5
+Anouar Braham,Marcela Aguila Ampon,mixed,2,-0.024,0.369,0.487,37.1
+Zoeya Khan,Anderson Scarpa,mixed,2,-0.004,0.409,0.494,51.7
+Blaine Hovenier,Hunter Johnson,mens,10,-0.084,0.385,0.434,6.9
+AJ Koller,Yuta Funemizu,mens,6,-0.009,0.384,0.484,48.7
+Hannah Blatt,Tamaryn Emmrich,womens,3,-0.03,0.353,0.469,33.3
+Giovanna Morelli,Marcela Aguila Ampon,womens,5,0.038,0.382,0.538,76.9
+Zoeya Khan,Paula Rives,womens,7,0.056,0.416,0.543,83.8
+Mota Alhouni,Victoria Simon,mixed,2,-0.089,0.385,0.416,6.1
+Camden Chaffin,Christopher Haworth,mens,2,-0.003,0.365,0.474,52.2
+Michael Loyd,Donald Young,mens,3,-0.013,0.384,0.476,46.4
+Zane Navratil,Carlos Di Laura III,mens,5,-0.046,0.39,0.472,22.0
+Tom Protzek,Yates Johnson,mens,3,0.003,0.368,0.515,56.6
+Federico Staksrud,CJ Klinger,mens,13,0.08,0.367,0.569,89.6
+Blaine Hovenier,Kaitlyn Christian,mixed,6,0.042,0.365,0.549,79.0
+Sydney Sonday,Monika Wynne,womens,2,-0.045,0.399,0.448,22.4
+Zoey Weil,Andrea Koop,womens,2,-0.072,0.392,0.434,9.3
+Nicole Conard,Kiora Kunimoto,womens,6,-0.017,0.393,0.478,42.9
+Andrei Daescu,Gabriel Tardio,mens,15,-0.016,0.341,0.49,44.1
+Parris Todd,Andrei Daescu,mixed,78,0.016,0.349,0.511,66.3
+Abbigal Hatton,Emma Nelson,womens,3,-0.051,0.38,0.466,18.6
+Cailyn Campbell,Tina Pisnik,womens,11,0.029,0.387,0.521,72.5
+Mohaned Alhouni,John Lucian Goins,mens,8,-0.015,0.363,0.51,44.7
+Cason Campbell,Adam Harvey,mens,27,0.098,0.399,0.595,92.7
+Meghan Dizon,Lacy Schneemann,womens,18,0.018,0.358,0.51,67.7
+Jay Devilliers,Pablo Tellez,mens,11,0.046,0.389,0.524,80.1
+Parris Todd,Tyra Hurricane Black,womens,20,0.118,0.385,0.599,95.5
+Allison Phillips,Samantha Parker,womens,14,0.22,0.421,0.688,99.8
+Sydney Sonday,Zoey Weil,womens,3,-0.032,0.387,0.483,31.4
+Jalina Ingram,Jaeda Minniefield,womens,9,0.029,0.362,0.526,72.6
+Wendy Weston,Katie Neils,womens,4,-0.059,0.405,0.44,14.1
+Caden Nemoff,Jaikin Gomez,mens,2,-0.048,0.376,0.455,20.4
+Tama Shimabukuro,Riley Inn,mens,10,-0.013,0.383,0.489,45.9
+Maverick Messinger,Jace Howard,mens,20,-0.028,0.365,0.479,34.4
+Audrey Adele Brown,Lindsey Newman,womens,4,-0.041,0.408,0.476,25.8
+Jackson Ayotte,Armaan Jiwa Mawji,mens,11,0.036,0.393,0.546,76.0
+Connor McCartney,Rio Newcombe,mens,8,0.068,0.38,0.561,87.0
+Nicholas Wade,Bret Berryman,mens,2,-0.011,0.385,0.475,47.6
+Daniel Phillips,Braden Jacobson,mens,3,-0.019,0.375,0.484,40.3
+Janet Liu,Kelly Chen,womens,7,-0.123,0.363,0.373,1.6
+Jake Anderson,Eli Steiner,mens,5,0.005,0.387,0.515,58.0
+Austin Bricker,Connor Mogle,mens,3,-0.047,0.38,0.449,20.9
+Billy Buchhauser,Kendall Kikkawa,mens,10,-0.019,0.399,0.486,40.9
+Andre Mercado,Wil Shaffer,mens,3,-0.032,0.399,0.492,31.4
+Lucas Pascoe,Zach Gonnering,mens,3,-0.035,0.365,0.464,29.2
+Jazz Hearn IV,Chloe Diskin,womens,2,-0.04,0.412,0.459,26.4
+Lindsey Newman,Rio Newcombe,mixed,5,-0.019,0.346,0.491,41.1
+Maddy Rasmusen,Braden Jacobson,mixed,6,-0.066,0.383,0.444,10.9
+Sydney Sonday,Austin Bricker,mixed,11,0.122,0.397,0.612,96.0
+Chloe Igleski,Lucas Pascoe,mixed,9,0.083,0.387,0.576,90.2
+Tama Shimabukuro,Samantha Parker,mixed,10,-0.062,0.364,0.449,12.5
+Jalina Ingram,Rafael Lenhard,mixed,9,0.188,0.393,0.665,99.2
+Zoey Weil,Pesa Teoni,mixed,2,-0.046,0.391,0.462,22.2
+Daniel Phillips,Allison Phillips,mixed,24,-0.038,0.378,0.464,28.0
+Yolena Carlon,Jackson Ayotte,mixed,2,-0.015,0.388,0.487,44.6
+Connor Mogle,Audrey Adele Brown,mixed,27,0.018,0.368,0.501,67.6
+Janet Liu,Matthew Finnerty,mixed,16,0.049,0.383,0.537,81.4
+Miles Hoover,Jaeda Minniefield,mixed,11,0.036,0.387,0.531,76.2
+Armaan Jiwa Mawji,Stevie Petropouleas,mixed,2,-0.034,0.379,0.479,30.0
+Caden Nemoff,Christine Trifunovic,mixed,2,-0.073,0.399,0.427,8.6
+Anouar Braham,Anne-Sophie Courteau,mixed,4,-0.007,0.396,0.491,50.1
+Kayla Williams,Zach Gonnering,mixed,4,0.103,0.424,0.576,93.5
+Maverick Messinger,Kelly Goodnow,mixed,2,-0.044,0.392,0.459,23.7
+Monika Wynne,Matt Burkhardt,mixed,9,-0.055,0.37,0.447,15.9
+Wendy Weston,Matthew Mead,mixed,2,-0.045,0.377,0.469,22.5
+Jake Anderson,Keilly Ulery,mixed,11,0.053,0.37,0.553,82.5
+Naomi Nguyen,Joel Poland,mixed,2,-0.094,0.387,0.417,5.0
+Rachael James,Freddie Powell,mixed,2,-0.057,0.387,0.447,14.7
+Samantha Buyckx,Daniel Miron,mixed,9,0.116,0.393,0.603,95.1
+Daniel Miron,Bret Berryman,mens,4,-0.089,0.377,0.407,6.2
+Ross Whittaker,Rachel Rettger,mixed,2,-0.037,0.382,0.467,28.5
+Abbigal Hatton,Luc Pham,mixed,6,0.025,0.379,0.509,71.4
+Alex Walker,Anderson Scarpa,mixed,14,0.018,0.388,0.511,67.7
+Zoeya Khan,Anouar Braham,mixed,7,0.001,0.394,0.494,55.3
+Andre Mercado,Emma Nelson,mixed,2,-0.098,0.376,0.411,4.1
+Jade Rau,Will Mackinnon,mixed,4,0.111,0.382,0.604,94.6
+Julian Arnold,Pierina Imparato,mixed,5,0.04,0.403,0.548,77.9
+Travis Rettenmaier,Paula Rives,mixed,6,0.066,0.387,0.551,86.4
+Gabriel Joseph,Valerie R Simon,mixed,5,-0.065,0.381,0.452,11.4
+Elsie Hendershot,Tyler Loong,mixed,5,-0.112,0.392,0.409,2.1
+Jace Morris,Yates Johnson,mens,2,-0.063,0.38,0.454,12.3
+Jonathan Truong,Milan Rane,mixed,4,-0.023,0.362,0.481,37.3
+Lingwei Kong,Juan Benitez,mixed,2,-0.047,0.37,0.463,21.0
+Austin Bricker,Giovanna Morelli,mixed,4,-0.129,0.391,0.382,1.0
+Jace Morris,Jaeda Minniefield,mixed,9,0.038,0.359,0.542,77.1
+Zoey Weil,Wyatt Stone,mixed,12,-0.123,0.379,0.387,1.5
+Genie Erokhina,Camden Chaffin,mixed,2,-0.056,0.386,0.455,15.1
+Zane Ford,Maria Ford,mixed,9,-0.014,0.371,0.483,45.4
+Samantha Buyckx,Estee Widdershoven,womens,13,-0.021,0.377,0.491,38.4
+Abbigal Hatton,Brooke Caruso,womens,5,0.013,0.387,0.516,64.6
+Jade Rau,Rachel Rettger,womens,3,-0.012,0.359,0.486,47.1
+Andre Mercado,Marshall Brown,mens,4,0.063,0.38,0.547,85.6
+Spartak Rahachou,George Rangelov,mens,5,-0.016,0.382,0.497,43.9
+Ashley Griffith,Adam Harvey,mixed,12,0.056,0.382,0.561,83.7
+Parth Mody,Keilly Ulery,mixed,3,-0.002,0.379,0.489,53.4
+Rafael Lenhard,Marcela Aguila Ampon,mixed,4,-0.007,0.347,0.484,49.5
+Kentaro Hamaguchi,Haley Ferguson,mixed,2,-0.022,0.375,0.48,38.1
+Yates Johnson,Lauren Stratman,mixed,15,-0.006,0.394,0.486,50.4
+Alix Truong,Hunter Johnson,mixed,6,0.093,0.423,0.584,91.9
+Cason Campbell,Brooke Caruso,mixed,4,-0.043,0.392,0.456,24.3
+Caden Nemoff,Victoria Simon,mixed,4,0.008,0.374,0.523,60.6
+Braylon Ohrel,Ethan Bakalinsky,mens,2,-0.035,0.372,0.467,29.7
+Tama Shimabukuro,Yuta Funemizu,mens,53,0.156,0.394,0.625,97.9
+Lucas Pascoe,Luc Pham,mens,2,-0.035,0.406,0.449,29.1
+Tamaryn Emmrich,Carlos Di Laura III,mixed,8,0.101,0.369,0.591,93.1
+Andrei Daescu,Jade Kawamoto,mixed,8,0.072,0.364,0.57,88.2
+Audrey Adele Brown,Lucas Pascoe,mixed,2,0.017,0.371,0.514,67.1
+Maria Ford,Stevie Petropouleas,womens,3,-0.0,0.392,0.478,54.5
+Ting Chieh Wei,Roscoe Bellamy,mixed,5,0.018,0.399,0.507,67.9
+Michael Loyd,Kiora Kunimoto,mixed,5,-0.098,0.386,0.414,4.5
+Mohaned Alhouni,Camden Chaffin,mens,12,-0.039,0.368,0.47,26.7
+Edward Perez,Gabriel Joseph,mens,2,0.031,0.395,0.521,73.3
+Audrey Adele Brown,Rachel Summers,womens,2,-0.051,0.39,0.444,18.6
+Zane Ford,Juan Benitez,mens,12,-0.014,0.371,0.491,45.3
+Kentaro Hamaguchi,Juan Varon,mens,2,-0.001,0.381,0.508,54.1
+Armaan Bhatia,Austin Bricker,mens,5,0.049,0.363,0.549,81.4
+Ernesto Fajardo,Jake Anderson,mens,2,-0.049,0.376,0.459,19.4
+Mohaned Alhouni,Tyra Hurricane Black,mixed,7,-0.036,0.382,0.482,29.0
+Christopher Crouch,Mya Bui,mixed,5,-0.021,0.373,0.492,38.6
+Hannah Blatt,Donald Young,mixed,4,0.053,0.377,0.546,82.8
+Parris Todd,Dekel Bar,mixed,12,-0.139,0.397,0.383,0.7
+Connor Mogle,Pesa Teoni,mens,7,-0.049,0.379,0.451,19.7
+Christopher Crouch,Rafael Lenhard,mens,2,-0.017,0.402,0.499,43.1
+Andrea Koop,Albie Huang,womens,4,-0.027,0.381,0.477,34.9
+Adalynn Lund,Abigail Okelley,womens,2,-0.044,0.386,0.464,23.3
+George Rangelov,Ava Ignatowich,mixed,3,0.019,0.377,0.503,68.2
+Kate Fahey,Lacy Schneemann,womens,8,-0.14,0.399,0.388,0.7
+Kiora Kunimoto,Giovanna Morelli,womens,2,-0.003,0.364,0.513,52.3
+Eric Oncins,Jackie Kawamoto,mixed,5,0.033,0.397,0.533,74.3
+Armaan Bhatia,Liz Truluck,mixed,2,0.009,0.368,0.506,61.0
+Christa Gecheva,Lina Padegimaite,womens,6,-0.047,0.39,0.454,20.8
+Genie Erokhina,Judit Castillo,womens,28,-0.017,0.36,0.496,43.0
+Milan Rane,Tina Pisnik,womens,13,-0.035,0.361,0.466,29.6
+Lingwei Kong,Jalina Ingram,womens,12,0.035,0.36,0.536,75.8
+Noe Khlif,Pablo Tellez,mens,8,-0.064,0.394,0.444,11.9
+Rachel Rohrabacher,Christian Alshon,mixed,63,0.048,0.357,0.556,80.9
+Allison Phillips,Marcela Aguila Ampon,womens,5,0.01,0.387,0.511,62.0
+Martina Frantova,Liz Truluck,womens,6,-0.062,0.385,0.45,12.5
+Hannah Blatt,Olivia McMillan,womens,8,-0.013,0.38,0.484,45.7
+Zoey Weil,Lauren Stratman,womens,6,0.042,0.384,0.518,78.9
+Jonathan Truong,Wyatt Stone,mens,18,0.041,0.378,0.545,78.3
+Travis Rettenmaier,Brandon French,mens,2,-0.027,0.385,0.475,34.7
+Ting Chieh Wei,Allyce Jones,womens,34,0.179,0.393,0.659,98.8
+Chloe Igleski,Cailyn Campbell,womens,2,-0.018,0.39,0.473,41.3
+Parris Todd,Alix Truong,womens,16,0.017,0.396,0.487,67.0
+Oscar Serra,Sanil Jagtiani,mens,17,0.095,0.383,0.586,92.3
+Collin Johns,Jaume Martinez Vich,mens,6,0.03,0.392,0.525,72.9
+Zane Navratil,Donald Young,mens,8,0.015,0.376,0.52,65.2
+Rafa Hewett,John Lucian Goins,mens,5,-0.034,0.413,0.472,29.9
+Hunter Johnson,Roscoe Bellamy,mens,10,-0.098,0.372,0.409,4.2
+Michael Loyd,James Delgado,mens,3,-0.005,0.39,0.507,51.2
+Blaine Hovenier,Darrian Young,mens,8,-0.055,0.37,0.443,15.4
+Emma Nelson,Mari Humberg,womens,5,0.002,0.365,0.511,56.2
+Zoeya Khan,Mehvish Safdar,womens,3,0.007,0.367,0.499,60.1
+Tom Protzek,Tyler Loong,mens,10,-0.039,0.366,0.455,26.9
+Sydney Sonday,Sammy Lee,mixed,5,-0.03,0.37,0.467,32.7
+Janet Liu,Matt Burkhardt,mixed,10,-0.043,0.372,0.464,24.4
+Elliott Schupp,Kyle Koszuta,mens,18,0.041,0.36,0.537,78.5
+Zach Gonnering,Chloe Diskin,mixed,5,-0.063,0.375,0.461,12.0
+Eduardo Santini Ayon,Chelsea Purcell,mixed,9,-0.002,0.408,0.491,53.2
+Daniel Byun,Kelly Chen,mixed,3,-0.011,0.444,0.484,48.0
+William Hsieh,Dan Nguyen,mens,2,-0.05,0.375,0.446,19.1
+Kailas Shekar,Riley Inn,mens,23,0.015,0.38,0.516,65.3
+Daniel Traxler,Miles Hoover,mens,18,-0.053,0.425,0.444,17.2
+Eddy Kim,Blake Suard,mens,5,-0.061,0.361,0.445,13.1
+Rafa Hewett,Kaitlyn Christian,mixed,5,0.031,0.379,0.533,73.2
+Zoeya Khan,Juan Benitez,mixed,2,-0.025,0.376,0.475,36.1
+AJ Koller,Etta Tuionetoa,mixed,10,0.023,0.403,0.516,70.3
+Jack Sock,Lacy Schneemann,mixed,28,0.124,0.384,0.606,96.2
+Len Yang,Paula Rives,mixed,4,-0.092,0.419,0.437,5.4
+Zach Gonnering,Eli Steiner,mens,2,-0.019,0.381,0.474,41.2
+Cameron Luhring,Matthew Barlow,mens,6,-0.004,0.353,0.497,51.4
+Connor Mogle,Andrew Caldarella,mens,3,-0.013,0.375,0.488,45.8
+Gabriel Joseph,Elsie Hendershot,mixed,5,0.076,0.384,0.579,88.6
+Luana Stanciu,Wesley Burrows,mixed,6,-0.001,0.401,0.51,53.9
+Blaine Hovenier,Genie Erokhina,mixed,9,0.105,0.37,0.611,93.6
+Kiora Kunimoto,Anouar Braham,mixed,5,-0.091,0.351,0.415,5.7
+Edward Perez,Ava Ignatowich,mixed,9,-0.066,0.361,0.436,11.2
+Tama Shimabukuro,Marcela Aguila Ampon,mixed,4,0.011,0.371,0.496,63.0
+Ella Cosma,Braden Jacobson,mixed,2,0.002,0.365,0.501,56.0
+Ting Chieh Wei,Michael Loyd,mixed,4,0.005,0.41,0.504,58.2
+Marshall Brown,Lina Padegimaite,mixed,2,-0.055,0.406,0.458,15.3
+Daria Walczak,Camden Chaffin,mixed,5,-0.052,0.358,0.448,17.3
+Ross Whittaker,Abbigal Hatton,mixed,4,0.016,0.399,0.504,66.2
+Armaan Bhatia,Darrian Young,mens,7,0.035,0.37,0.534,75.4
+Victor Rodrigo,Sammy Lee,mens,4,0.022,0.387,0.514,70.0
+Rachel Summers,Luc Pham,mixed,4,0.061,0.386,0.55,85.1
+Victoria Dimuzio,John Lucian Goins,mixed,2,0.011,0.413,0.5,63.1
+Rafael Lenhard,Rachel Rettger,mixed,3,-0.043,0.382,0.458,24.2
+Jade Rau,Christopher Crouch,mixed,9,0.056,0.366,0.554,83.9
+Lingwei Kong,Eric Roddy,mixed,3,0.011,0.392,0.514,62.5
+Christopher Crouch,Marshall Brown,mens,2,-0.104,0.421,0.405,3.5
+Donald Young,Braden Jacobson,mens,3,-0.073,0.379,0.446,8.7
+Rafael Lenhard,Pesa Teoni,mens,5,0.081,0.36,0.578,89.7
+Caden Nemoff,Camila Zilveti,mixed,2,-0.041,0.405,0.464,25.3
+Blaine Hovenier,Tyler Loong,mens,4,-0.019,0.368,0.472,40.3
+Christine Trifunovic,Mota Alhouni,mixed,4,0.047,0.401,0.521,80.7
+Andrei Daescu,Tyra Hurricane Black,mixed,21,-0.057,0.367,0.443,14.5
+Emma Nelson,Max Freeman,mixed,4,0.083,0.428,0.559,90.1
+Liz Truluck,Martin Emmrich,mixed,3,-0.061,0.384,0.439,13.0
+Mohaned Alhouni,Lindsey Newman,mixed,19,0.202,0.402,0.679,99.4
+Roscoe Bellamy,Milan Rane,mixed,3,-0.077,0.406,0.43,7.8
+Maggie Brascia,Will Mackinnon,mixed,4,0.055,0.373,0.559,83.3
+Mota Alhouni,John Lucian Goins,mens,4,0.039,0.395,0.529,77.3
+Edward Perez,Luke Wasson,mens,4,-0.014,0.397,0.477,45.1
+Tom Protzek,Patrick Smith,mens,2,-0.066,0.382,0.429,11.1
+Jalina Ingram,Christa Gecheva,womens,4,0.054,0.372,0.558,83.2
+Alix Truong,Alex Walker,womens,9,0.02,0.385,0.52,68.6
+Pierina Imparato,Kiora Kunimoto,womens,2,-0.051,0.37,0.45,19.1
+Angie Walker,Mari Humberg,womens,6,0.029,0.387,0.517,72.3
+Lingwei Kong,Lindsey Newman,womens,3,-0.013,0.412,0.469,46.0
+Liz Truluck,Mya Bui,womens,2,-0.045,0.393,0.458,22.8
+Camila Zilveti,Brooke Caruso,womens,5,0.0,0.378,0.505,55.0
+Jalina Ingram,CJ Klinger,mixed,14,-0.102,0.359,0.406,3.6
+Gabriel Joseph,Wesley Burrows,mens,4,-0.066,0.414,0.446,11.3
+Roscoe Bellamy,Brandon French,mens,3,-0.021,0.395,0.486,39.3
+Collin Johns,Hunter Johnson,mens,5,0.042,0.393,0.544,79.1
+Yates Johnson,Anouar Braham,mens,4,0.041,0.395,0.529,78.5
+Paula Rives,Giovanna Morelli,womens,4,0.032,0.391,0.524,73.8
+Jade Rau,Luana Stanciu,womens,2,-0.017,0.365,0.495,42.7
+Rafa Hewett,Noe Khlif,mens,10,0.086,0.372,0.586,90.9
+Zoeya Khan,Ella Yeh,womens,2,-0.059,0.369,0.443,14.0
+Tamaryn Emmrich,Cailyn Campbell,womens,2,-0.051,0.402,0.454,18.4
+Zoey Weil,Brandon French,mixed,12,0.058,0.369,0.551,84.3
+Ella Cosma,Jaeda Minniefield,womens,2,0.062,0.395,0.536,85.3
+Sydney Sonday,Chloe Diskin,womens,2,-0.038,0.384,0.476,27.9
+Rachel Summers,Rachel Rettger,womens,7,-0.027,0.364,0.475,34.7
+Naomi Nguyen,Daria Walczak,womens,4,0.021,0.388,0.517,69.6
+Len Yang,Etienne Blaszkewycz,mens,4,0.023,0.387,0.516,70.5
+Etta Tuionetoa,Meghan Dizon,womens,7,-0.062,0.364,0.454,12.8
+Lacy Schneemann,Tina Pisnik,womens,36,0.259,0.424,0.726,99.9
+Parris Todd,Kate Fahey,womens,28,0.035,0.357,0.542,75.6
+Nicole Conard,Abbigal Hatton,womens,10,-0.057,0.378,0.452,15.0
+Camila Zilveti,Luana Stanciu,womens,7,0.01,0.378,0.519,61.6
+Mark Dancuart,Ryan Torresin,mens,10,0.003,0.354,0.507,56.8
+Bruno Faletto,Anouar Braham,mens,8,0.041,0.398,0.533,78.2
+Ella Yeh,Allison Phillips,womens,7,0.033,0.382,0.529,74.3
+Christopher Crouch,Connor Mogle,mens,34,0.155,0.387,0.644,97.8
+Carlos Di Laura III,Martin Emmrich,mens,8,0.09,0.395,0.569,91.7
+Indigo Dagnall,Luc Pham,mens,2,-0.058,0.4,0.438,14.4
+Christa Gecheva,Paula Rives,womens,7,-0.108,0.381,0.403,2.8
+Zoey Weil,Samantha Parker,womens,15,0.056,0.354,0.546,83.5
+Rachel Summers,Stevie Petropouleas,womens,2,-0.016,0.406,0.496,43.5
+Ava Cavataio,Estee Widdershoven,womens,6,0.127,0.358,0.626,96.5
+Tom Protzek,Luca Mack,mens,3,-0.033,0.369,0.464,31.1
+Yolena Carlon,Chloe Diskin,womens,9,0.035,0.389,0.522,75.5
+Tamaryn Emmrich,Lindsey Newman,womens,2,-0.126,0.413,0.388,1.2
+Carlota Trevino,Allie Reichert,womens,8,0.049,0.363,0.571,81.3
+Ashley Griffith,Averee Beck,womens,2,-0.037,0.392,0.459,28.7
+Austin Bricker,Juan Benitez,mens,3,-0.06,0.397,0.456,13.4
+Marisa Ruiz,Kelsey Laurente,womens,7,0.033,0.376,0.534,74.7
+Zoeya Khan,Lina Padegimaite,womens,9,0.119,0.433,0.604,95.7
+Liam Duffin,Nicholas Wade,mens,11,0.059,0.418,0.552,84.7
+Jake Anderson,Bret Berryman,mens,2,0.01,0.394,0.499,61.5
+Kayla Williams,Jaeda Minniefield,womens,5,-0.044,0.378,0.46,23.4
+Jada Bui,Ryan Torresin,mixed,14,0.049,0.377,0.549,81.5
+Christa Gecheva,Mark Dancuart,mixed,5,-0.028,0.393,0.482,34.2
+Lindsey Newman,Martin Emmrich,mixed,9,0.072,0.397,0.556,88.0
+Abbigal Hatton,Etienne Blaszkewycz,mixed,5,-0.076,0.365,0.426,8.0
+Ivan Jakovljevic,Samantha Parker,mixed,2,-0.098,0.391,0.4,4.4
+Ava Cavataio,Juan Benitez,mixed,9,0.079,0.371,0.568,89.4
+Carlota Trevino,Anouar Braham,mixed,4,-0.009,0.373,0.509,48.8
+Bruno Faletto,Marisa Ruiz,mixed,5,-0.072,0.4,0.454,9.2
+Zoey Weil,Camden Chaffin,mixed,7,0.104,0.394,0.604,93.6
+Nicholas Wade,Maddy Rasmusen,mixed,4,-0.066,0.397,0.439,11.1
+Ross Whittaker,Shannon Pretorius,mixed,2,-0.024,0.393,0.486,36.8
+Zach Gonnering,Averee Beck,mixed,5,0.011,0.379,0.511,63.2
+Matthew Finnerty,Anna Lenhart,mixed,5,-0.018,0.365,0.482,41.4
+Vritti Sethi,Karthik Ganesh,mixed,5,-0.046,0.382,0.467,21.9
+Luana Stanciu,Miles Hoover,mixed,11,0.119,0.401,0.61,95.6
+Kentaro Hamaguchi,Kayla Williams,mixed,2,-0.045,0.395,0.466,22.9
+Tom Protzek,Ella Yeh,mixed,3,0.021,0.401,0.504,69.4
+Mike Radermacher,Chloe Diskin,mixed,3,0.025,0.379,0.513,71.0
+Jaikin Gomez,Stevie Petropouleas,mixed,3,-0.016,0.38,0.491,43.8
+Rio Newcombe,Kelly Goodnow,mixed,3,-0.044,0.387,0.467,23.6
+Genie Erokhina,Anderson Scarpa,mixed,4,0.019,0.357,0.52,68.1
+Tyler Loong,Marcela Aguila Ampon,mixed,2,-0.051,0.387,0.462,18.7
+Carlos Di Laura III,Angie Walker,mixed,3,-0.027,0.385,0.493,35.1
+Lucas Pascoe,Abbigal Hatton,mixed,4,0.098,0.395,0.587,92.6
+Eric Oncins,Tina Pisnik,mixed,34,-0.11,0.378,0.382,2.5
+Julian Arnold,Allyce Jones,mixed,10,0.04,0.367,0.534,77.6
+Pierina Imparato,Christopher Haworth,mixed,2,-0.045,0.399,0.443,22.7
+Blaine Hovenier,Cailyn Campbell,mixed,22,0.068,0.376,0.563,86.8
+Alix Truong,Christian Alshon,mixed,6,0.035,0.373,0.539,75.7
+Luana Stanciu,Rafael Lenhard,mixed,2,-0.052,0.383,0.459,17.4
+Len Yang,Ting Chieh Wei,mixed,10,0.062,0.38,0.559,85.4
+Zoeya Khan,Armaan Bhatia,mixed,3,-0.016,0.361,0.471,44.1
+Adam Harvey,Brooke Caruso,mixed,2,-0.049,0.395,0.459,19.6
+Liz Truluck,James Delgado,mixed,27,0.015,0.344,0.505,65.1
+Jace Morris,Ella Cosma,mixed,5,-0.019,0.378,0.486,40.4
+Andre Mercado,Natalia Simson,mixed,3,0.034,0.388,0.526,74.9
+Nicole Conard,Will Mackinnon,mixed,8,0.017,0.387,0.516,67.2
+Brooke Buckner,Roscoe Bellamy,mixed,6,-0.02,0.416,0.491,39.5
+Victoria Dimuzio,Collin Johns,mixed,6,0.016,0.356,0.502,66.1
+Zach Gonnering,Miles Hoover,mens,5,0.012,0.387,0.516,63.9
+Jonathan Truong,Meghan Dizon,mixed,6,0.035,0.391,0.536,75.3
+Naomi Nguyen,Cameron Luhring,mixed,4,0.053,0.382,0.548,82.6
+Jade Rau,Edward Perez,mixed,4,0.079,0.398,0.57,89.3
+Christa Gecheva,Clayton Powell,mixed,4,0.031,0.404,0.531,73.3
+Aiko Yoshitomi,Kenta Miyoshi,mixed,8,-0.054,0.386,0.446,16.5
+Tom Protzek,Daria Walczak,mixed,3,-0.018,0.367,0.479,42.2
+Aiko Yoshitomi,Albie Huang,womens,5,0.006,0.388,0.494,59.0
+Madison Grollman,Chelsea Purcell,womens,10,-0.019,0.371,0.474,41.3
+Rafa Hewett,Lingwei Kong,mixed,8,0.06,0.38,0.538,85.0
+Rachel Rohrabacher,Gabriel Tardio,mixed,14,-0.105,0.356,0.387,3.2
+George Wall,Albie Huang,mixed,9,0.011,0.381,0.504,63.3
+Hannah Blatt,Luc Pham,mixed,2,-0.025,0.4,0.486,35.9
+Pablo Tellez,Kaitlyn Christian,mixed,8,0.041,0.352,0.531,78.1
+John Lucian Goins,Olivia McMillan,mixed,7,0.027,0.374,0.516,71.8
+Noe Khlif,Tyra Hurricane Black,mixed,15,0.008,0.374,0.516,60.4
+Caden Nemoff,Rachel Summers,mixed,2,-0.008,0.405,0.485,49.0
+Naomi Nguyen,Kelly Goodnow,womens,2,-0.015,0.408,0.491,44.3
+Eric Roddy,Wil Shaffer,mens,4,0.052,0.401,0.55,82.4
+Julian Arnold,James Delgado,mens,9,0.066,0.387,0.558,86.5
+Zane Navratil,Armaan Bhatia,mens,4,0.042,0.371,0.534,79.0
+Tama Shimabukuro,Gregory Dow,mens,4,0.006,0.4,0.491,59.2
+Andre Mercado,Connor Mogle,mens,7,0.079,0.419,0.554,89.4
+Len Yang,Collin Johns,mens,28,0.134,0.382,0.624,96.9
+Ashley Griffith,Mehvish Safdar,womens,2,-0.049,0.392,0.466,19.8
+George Wall,Kenta Miyoshi,mens,21,0.034,0.351,0.519,74.8
+George Rangelov,Mota Alhouni,mens,3,0.036,0.394,0.535,76.4
+Max Freeman,Mari Humberg,mixed,11,0.003,0.363,0.507,56.7
+Jade Rau,Brooke Caruso,womens,2,-0.038,0.371,0.456,27.6
+Parris Todd,Rachel Rohrabacher,womens,34,0.074,0.376,0.582,88.4
+Tyler Loong,Rafael Lenhard,mens,7,-0.01,0.377,0.477,48.3
+Edward Perez,Christopher Crouch,mens,2,0.088,0.445,0.559,91.4
+Eric Roddy,Mehvish Safdar,mixed,4,0.058,0.386,0.548,84.2
+Noe Khlif,AJ Koller,mens,7,0.112,0.403,0.606,94.8
+Eli Steiner,Troy Akin,mens,2,-0.044,0.386,0.458,23.9
+Daria Walczak,Angie Walker,womens,9,0.015,0.391,0.51,65.8
+Jonathan Truong,Brandon French,mens,2,-0.03,0.374,0.475,33.0
+Rafa Hewett,Anouar Braham,mens,2,-0.093,0.435,0.426,5.0
+Carlos Di Laura III,Michael Loyd,mens,4,0.062,0.385,0.553,85.5
+Yates Johnson,Hunter Johnson,mens,3,-0.013,0.371,0.487,46.5
+Cailyn Campbell,Mari Humberg,womens,6,0.106,0.405,0.595,93.7
+Chao Yi Wang,Milan Rane,womens,5,0.025,0.359,0.521,71.1
+Brooke Buckner,Kate Fahey,womens,11,-0.097,0.415,0.419,4.5
+Chloe Igleski,Kiora Kunimoto,womens,3,-0.003,0.368,0.496,52.1
+Will Mackinnon,Luc Pham,mens,5,0.057,0.375,0.545,84.1
+Zoey Weil,Victoria Dimuzio,womens,6,0.024,0.375,0.52,70.9
+Liz Truluck,Pierina Imparato,womens,5,-0.011,0.392,0.486,47.7
+Lindsey Newman,Marcela Aguila Ampon,womens,3,-0.002,0.374,0.502,53.0
+Jay Devilliers,Jaume Martinez Vich,mens,47,0.117,0.378,0.604,95.3
+Ella Cosma,Luana Stanciu,womens,6,-0.145,0.398,0.374,0.6
+Isabella Dunlap,Mehvish Safdar,womens,2,0.002,0.397,0.494,56.1
+Haley Ferguson,Masa Grgan,womens,4,-0.039,0.39,0.484,27.2
+Juan Varon,Eli Steiner,mens,11,0.004,0.362,0.521,57.7
+Tamaryn Emmrich,Olivia McMillan,womens,4,0.026,0.379,0.518,71.5
+Monika Wynne,Shannon Pretorius,womens,2,0.003,0.417,0.504,56.8
+Tamaryn Emmrich,James Delgado,mixed,10,-0.09,0.365,0.401,5.9
+Isabella Dunlap,Freddie Powell,mixed,15,0.043,0.375,0.546,79.5
+Paula Rives,Martin Emmrich,mixed,3,-0.044,0.407,0.471,23.8
+Ava Cavataio,Clayton Powell,mixed,8,-0.023,0.367,0.474,37.5
+Jada Bui,Nejc Sitar,mixed,7,0.03,0.381,0.539,73.1
+Shannon Pretorius,Allie Reichert,womens,7,-0.03,0.382,0.47,33.2
+Matthew Mead,Matthew Finnerty,mens,3,0.003,0.363,0.499,57.1
+Daniel Miron,Austin White,mens,6,0.014,0.378,0.514,64.9
+Nicholas Wade,Domenico Geminiani,mens,10,-0.052,0.354,0.451,18.0
+Kayla Williams,Braden Jacobson,mixed,3,-0.05,0.407,0.459,19.2
+Zach Gonnering,Jake Anderson,mens,5,-0.027,0.364,0.483,34.5
+Spartak Rahachou,Luke Wasson,mens,2,-0.018,0.38,0.499,42.0
+Clayton Powell,Gregory Dow,mens,4,0.016,0.372,0.524,66.7
+Gabriel Joseph,George Rangelov,mens,2,-0.018,0.364,0.466,41.5
+Tom Protzek,Mya Bui,mixed,6,-0.044,0.398,0.452,23.2
+Christopher Haworth,Patrick Smith,mens,2,-0.041,0.395,0.461,25.4
+Ross Whittaker,Jace Morris,mens,4,0.051,0.404,0.553,81.9
+Ross Whittaker,Luana Stanciu,mixed,2,-0.017,0.369,0.475,42.3
+Matthew Barlow,Emma Nelson,mixed,4,-0.011,0.37,0.487,47.8
+Natalia Simson,Vritti Sethi,womens,5,0.004,0.38,0.507,57.4
+Mohaned Alhouni,Lingwei Kong,mixed,2,-0.059,0.412,0.446,13.9
+Rafa Hewett,Pierina Imparato,mixed,10,0.096,0.376,0.587,92.4
+Callie Smith,Jay Devilliers,mixed,13,0.021,0.365,0.52,69.5
+Vritti Sethi,Martin Stanchev,mixed,2,-0.018,0.393,0.486,41.8
+Ethan Bakalinsky,Bret Berryman,mens,2,-0.012,0.369,0.479,46.6
+Andre Mercado,Abbigal Hatton,mixed,3,0.011,0.379,0.524,62.8
+Ava Cavataio,George Wall,mixed,5,0.022,0.366,0.503,69.9
+Ting Chieh Wei,Armaan Bhatia,mixed,5,-0.064,0.369,0.429,11.6
+Kaitlyn Christian,Jaume Martinez Vich,mixed,17,0.025,0.359,0.531,71.0
+Tama Shimabukuro,Cailyn Campbell,mixed,2,-0.047,0.356,0.457,20.6
+Lina Padegimaite,John Lucian Goins,mixed,2,-0.047,0.379,0.455,21.1
+Zane Navratil,Elsie Hendershot,mixed,8,-0.053,0.368,0.449,17.1
+Jade Rau,Elsie Hendershot,womens,4,0.07,0.436,0.546,87.5
+Ava Cavataio,Audrey Adele Brown,womens,2,-0.057,0.382,0.449,14.6
+Pesa Teoni,Etienne Blaszkewycz,mens,4,0.04,0.377,0.533,77.7
+Eric Roddy,Carlos Di Laura III,mens,3,-0.022,0.379,0.485,38.3
+Hannah Blatt,Julian Arnold,mixed,2,-0.049,0.386,0.457,19.6
+Tamaryn Emmrich,Marshall Brown,mixed,4,0.051,0.394,0.556,82.1
+Lucas Pascoe,Albie Huang,mixed,2,-0.006,0.383,0.485,50.7
+Christian Alshon,Jessie Irvine,mixed,10,-0.02,0.364,0.484,39.8
+Rafael Lenhard,Giovanna Morelli,mixed,10,0.007,0.369,0.524,59.9
+Tyler Loong,Lindsey Newman,mixed,16,-0.001,0.344,0.494,54.3
+Samantha Parker,Brandon French,mixed,5,-0.102,0.38,0.397,3.5
+Carlos Di Laura III,Martina Frantova,mixed,9,-0.059,0.378,0.441,13.9
+Genie Erokhina,Augustus Ge,mixed,7,0.068,0.397,0.562,87.0
+Ella Yeh,Will Mackinnon,mixed,4,-0.006,0.367,0.49,50.2
+Christine Trifunovic,Daniel Phillips,mixed,2,0.015,0.38,0.512,65.3
+Austin Bricker,Jaeda Minniefield,mixed,2,-0.046,0.402,0.456,21.6
+Gabriel Joseph,Camila Zilveti,mixed,3,0.065,0.389,0.554,86.3
+Blaine Hovenier,Lauren Stratman,mixed,5,-0.053,0.411,0.44,17.2
+Alix Truong,Clayton Powell,mixed,2,-0.097,0.395,0.416,4.7
+Nicole Conard,Juan Benitez,mixed,8,0.155,0.417,0.625,97.9
+Isabella Dunlap,Abbigal Hatton,womens,18,0.176,0.38,0.658,98.8
+Janet Liu,Jessica Ho,womens,5,-0.021,0.366,0.485,38.8
+Pierina Imparato,Marcela Aguila Ampon,womens,3,0.015,0.369,0.525,65.9
+Tyler Loong,John Lucian Goins,mens,14,0.115,0.384,0.612,95.0
+Lauren Stratman,Lindsey Newman,womens,3,0.011,0.372,0.499,62.5
+Ting Chieh Wei,Lina Padegimaite,womens,3,-0.046,0.372,0.459,22.1
+Noe Khlif,Blaine Hovenier,mens,7,-0.008,0.364,0.491,49.2
+Mari Humberg,Milan Rane,womens,18,0.085,0.375,0.574,90.7
+Victoria Dimuzio,Mya Bui,womens,2,-0.007,0.388,0.501,50.0
+Ella Yeh,Kiora Kunimoto,womens,12,0.056,0.384,0.547,84.0
+Mohaned Alhouni,Marshall Brown,mens,3,-0.062,0.395,0.446,12.9
+Rachel Rohrabacher,Dekel Bar,mixed,5,-0.012,0.404,0.476,47.0
+Armaan Bhatia,Pablo Tellez,mens,6,0.065,0.357,0.556,86.0
+Brandon French,Wyatt Stone,mens,4,0.085,0.372,0.579,90.6
+Jonathan Truong,Lacy Schneemann,mixed,8,-0.021,0.386,0.471,38.9
+Rafa Hewett,Jonathan Truong,mens,10,0.044,0.377,0.536,79.5
+Anouar Braham,Juan Benitez,mens,2,-0.035,0.365,0.474,29.8
+Angie Walker,Michael Loyd,mixed,7,0.094,0.393,0.579,92.2
+Giovanna Morelli,Brooke Caruso,womens,4,-0.055,0.356,0.454,15.8
+Chao Yi Wang,Jessie Irvine,womens,7,0.02,0.35,0.516,68.6
+Kaitlyn Christian,Emma Nelson,womens,11,0.148,0.424,0.626,97.7
+Nicole Conard,Cailyn Campbell,womens,3,-0.026,0.375,0.477,35.2
+Matt Wright,Dekel Bar,mens,3,-0.057,0.402,0.451,14.9
+Duncan Mulenga Jr.,Martin Thomas,mens,4,-0.07,0.392,0.439,10.1
+Ethan Bakalinsky,Eddy Kim,mens,4,0.044,0.386,0.529,79.6
+Mihae Kwon,Syed Uzair Sufi,mixed,12,-0.016,0.389,0.481,43.4
+Duncan Mulenga Jr.,Wendy Weston,mixed,4,-0.009,0.391,0.486,48.9
+Noe Khlif,Alix Truong,mixed,5,-0.024,0.408,0.49,36.6
+Tom Protzek,Genie Erokhina,mixed,10,-0.039,0.371,0.467,27.4
+Luke Wasson,Pesa Teoni,mens,2,-0.025,0.384,0.481,36.4
+Rafael Lenhard,Christopher Haworth,mens,5,0.087,0.38,0.579,91.1
+Dekel Bar,Jessie Irvine,mixed,10,0.164,0.379,0.659,98.4
+Elsie Hendershot,Camden Chaffin,mixed,2,-0.029,0.407,0.464,33.5
+Cc Eleven Sacca,Jace Howard,mixed,5,0.046,0.404,0.549,80.2
+Zane Ford,George Rangelov,mens,3,0.037,0.387,0.531,76.7
+Christopher Crouch,Matthew Barlow,mens,5,-0.044,0.368,0.451,24.1
+AJ Koller,Alex Walker,mixed,3,0.001,0.365,0.493,55.4
+Isabella Dunlap,Brandon French,mixed,10,0.001,0.361,0.501,55.2
+Christine Trifunovic,Marshall Brown,mixed,2,0.016,0.353,0.514,66.6
+Ivan Jakovljevic,Patrick Smith,mens,3,-0.022,0.39,0.48,38.0
+Lucas Pascoe,Camden Chaffin,mens,4,-0.022,0.418,0.484,38.4
+Wil Shaffer,Andrew Caldarella,mens,2,-0.002,0.375,0.496,53.7
+Austin Bricker,Marcela Aguila Ampon,mixed,2,-0.013,0.385,0.5,46.0
+Andrew Caldarella,Maddy Rasmusen,mixed,5,0.097,0.385,0.58,92.5
+Chloe Igleski,Anouar Braham,mixed,4,0.013,0.383,0.517,64.1
+Nicolas Acevedo,Rachel Rettger,mixed,2,-0.015,0.411,0.496,44.6
+Jack Sock,Lea Jansen,mixed,9,-0.123,0.384,0.389,1.7
+Meghan Dizon,Will Howells,mixed,7,0.035,0.359,0.526,75.2
+Kiora Kunimoto,Darrian Young,mixed,3,0.029,0.38,0.526,72.7
+Tya Karina,Julian Chow,mixed,9,-0.024,0.376,0.466,36.7
+Michael Loyd,Darrian Young,mens,9,-0.014,0.353,0.482,45.0
+Dylan Frazier,Tyra Hurricane Black,mixed,8,-0.092,0.366,0.4,5.2
+Naomi Nguyen,Clayton Powell,mixed,5,-0.017,0.387,0.492,42.8
+Tamaryn Emmrich,Anderson Scarpa,mixed,3,-0.034,0.404,0.479,30.2
+Lindsey Newman,Patrick Smith,mixed,2,-0.009,0.394,0.491,48.6
+Zach Gonnering,Matt Burkhardt,mens,2,0.013,0.376,0.511,64.2
+Marshall Brown,Mota Alhouni,mens,4,0.035,0.384,0.526,75.2
+Jase Edwards,Chloe Diskin,mixed,2,0.069,0.404,0.568,87.1
+Jazz Hearn IV,Miles Hoover,mixed,8,-0.024,0.374,0.455,37.2
+Hunter Johnson,Milan Rane,mixed,6,-0.072,0.385,0.432,9.4
+Wil Shaffer,Kelly Goodnow,mixed,3,-0.029,0.401,0.479,33.6
+Tyler Loong,Lina Padegimaite,mixed,3,-0.026,0.371,0.469,35.6
+Tama Shimabukuro,Maggie Brascia,mixed,5,0.059,0.407,0.557,84.6
+Nicolas Acevedo,Clayton Powell,mens,16,0.071,0.369,0.564,87.8
+Christopher Haworth,Emma Nelson,mixed,3,0.003,0.396,0.511,57.2
+Jackson Ayotte,Yaamunan Venkatesan,mens,5,0.041,0.388,0.526,78.1
+Edward Perez,Braden Jacobson,mens,3,-0.053,0.372,0.451,16.7
+Mike Radermacher,Bret Berryman,mens,2,0.009,0.385,0.508,60.8
+Jade Rau,Ava Ignatowich,womens,2,-0.02,0.378,0.484,39.6
+Riley Newman,Armaan Bhatia,mens,14,0.136,0.409,0.619,97.2
+Cailyn Campbell,Emma Nelson,womens,2,-0.049,0.41,0.458,19.5
+Naomi Nguyen,Lina Padegimaite,womens,3,0.055,0.342,0.556,83.3
+Natalia Simson,Rachel Rettger,womens,2,-0.073,0.367,0.425,9.2
+Allison Phillips,Jaeda Minniefield,womens,4,0.033,0.364,0.528,74.5
+Ella Boydston,Maddy Rasmusen,womens,2,0.006,0.38,0.499,59.1
+Zoey Weil,Liz Truluck,womens,5,-0.023,0.376,0.476,37.4
+Yates Johnson,AJ Koller,mens,3,0.106,0.377,0.598,93.8
+Mihae Kwon,Nok Yiu Tang,womens,11,0.014,0.407,0.523,64.9
+Chao Yi Wang,Alix Truong,womens,7,-0.118,0.366,0.394,1.8
+Lindsey Newman,Kelly Goodnow,womens,2,-0.033,0.388,0.469,30.7
+Will Mackinnon,Brandon French,mens,5,0.02,0.381,0.527,68.5
+Connor Mogle,Anouar Braham,mens,3,0.023,0.397,0.519,70.5
+Brooke Buckner,Mari Humberg,womens,5,0.024,0.363,0.527,70.8
+Lingwei Kong,Elsie Hendershot,womens,2,-0.051,0.39,0.451,18.8
+Ashley Griffith,Marcela Aguila Ampon,womens,2,-0.035,0.387,0.479,29.4
+Matthew Barlow,Rio Newcombe,mens,7,0.141,0.401,0.615,97.4
+Connor McCartney,Miles Hoover,mens,2,-0.041,0.371,0.455,25.5
+Naomi Nguyen,Maddy Rasmusen,womens,4,0.028,0.379,0.516,72.1
+Lucas Pascoe,Freddie Powell,mens,3,-0.105,0.406,0.412,3.1
+Andrew Caldarella,Braden Jacobson,mens,5,0.094,0.388,0.588,92.1
+Lindsey Newman,Mehvish Safdar,womens,8,0.029,0.381,0.532,72.4
+Carlota Trevino,Alexa Schull,womens,7,-0.176,0.411,0.344,0.1
+Janet Liu,Janaye Sakkas,womens,5,0.09,0.389,0.584,91.7
+Carlos Di Laura III,Augustus Ge,mens,4,-0.017,0.363,0.487,42.4
+Mohaned Alhouni,Sammy Lee,mens,4,-0.002,0.375,0.509,53.3
+Haley Ferguson,Monika Wynne,womens,2,-0.032,0.374,0.474,31.5
+Ella Cosma,Audrey Adele Brown,womens,2,-0.004,0.384,0.503,51.7
+Spartak Rahachou,Eddy Kim,mens,2,-0.027,0.395,0.484,34.8
+Brandon French,Darrian Young,mens,10,0.158,0.379,0.649,98.1
+Victor Rodrigo,Jace Morris,mens,2,-0.054,0.409,0.452,16.4
+Daniel Traxler,Jackson Ayotte,mens,2,-0.028,0.376,0.486,34.2
+Allison Phillips,Olivia Phillips,womens,5,-0.039,0.391,0.459,26.7
+Will Mackinnon,Mehvish Safdar,mixed,7,-0.032,0.413,0.467,31.9
+Tyler Loong,Chloe Diskin,mixed,3,-0.001,0.401,0.503,54.2
+Alexa Schull,Darrian Young,mixed,22,0.208,0.396,0.692,99.6
+Andre Mercado,Maddy Rasmusen,mixed,2,-0.003,0.369,0.487,52.5
+Daria Walczak,Augustus Ge,mixed,9,-0.006,0.368,0.492,50.7
+Freddie Powell,Jaeda Minniefield,mixed,5,-0.083,0.384,0.418,7.1
+Andrew Caldarella,Abbigal Hatton,mixed,5,-0.071,0.381,0.432,9.7
+Tom Protzek,Kiora Kunimoto,mixed,12,0.201,0.4,0.665,99.3
+Angie Walker,Kyle Koszuta,mixed,5,0.011,0.376,0.509,62.2
+Wendy Weston,Jake Anderson,mixed,5,0.027,0.371,0.523,71.9
+Jalina Ingram,Rio Newcombe,mixed,5,-0.126,0.37,0.382,1.1
+Indigo Dagnall,Ella Cosma,mixed,8,0.076,0.375,0.556,88.8
+Antonio Medina,Elise Fortino,mixed,3,-0.033,0.374,0.457,30.9
+Janet Liu,Pesa Teoni,mixed,9,-0.04,0.371,0.467,26.2
+Braden Jacobson,Kelly Goodnow,mixed,6,0.013,0.372,0.506,64.0
+Christine Trifunovic,Gabriel Joseph,mixed,2,-0.04,0.386,0.456,26.3
+Eduardo Santini Ayon,Carlota Trevino,mixed,2,-0.032,0.372,0.465,32.1
+Cameron Luhring,Riley Inn,mens,6,0.043,0.418,0.53,79.2
+Hayden Rand,William Hsieh,mens,2,-0.034,0.368,0.471,30.0
+Mike Radermacher,Matt Burkhardt,mens,7,-0.03,0.379,0.488,32.8
+Billy Buchhauser,Yaamunan Venkatesan,mens,4,-0.088,0.367,0.421,6.4
+Zach Gonnering,Melissa Beré,mixed,2,-0.024,0.403,0.481,37.0
+David Litvinov,Sienna Hitzeman,mixed,6,-0.008,0.371,0.488,49.1
+Jalina Ingram,Michael Loyd,mixed,10,-0.055,0.405,0.469,15.5
+Adam Harvey,Keilly Ulery,mixed,5,-0.031,0.403,0.469,32.4
+Matthew Barlow,Christopher Haworth,mens,3,-0.047,0.375,0.456,21.5
+Kailas Shekar,Victor Rodrigo,mens,5,0.007,0.422,0.497,59.8
+Daniel Phillips,Spartak Rahachou,mens,2,-0.015,0.389,0.494,45.0
+Kiora Kunimoto,CJ Klinger,mixed,4,-0.062,0.368,0.443,12.7
+Andre Mercado,Jace Morris,mens,4,0.018,0.377,0.521,67.4
+Zach Gonnering,Pesa Teoni,mens,2,0.009,0.381,0.506,60.7
+Zoeya Khan,Zane Navratil,mixed,5,0.015,0.392,0.516,65.6
+Hunter Johnson,Lacy Schneemann,mixed,6,0.015,0.387,0.521,65.5
+Jace Morris,Emma Nelson,mixed,3,-0.042,0.384,0.456,25.0
+Zane Ford,Daniel Traxler,mens,2,-0.0,0.372,0.498,54.6
+Chloe Igleski,Len Yang,mixed,4,0.029,0.373,0.521,72.8
+Donald Young,Jaeda Minniefield,mixed,2,-0.061,0.396,0.444,13.0
+Noe Khlif,Meghan Dizon,mixed,9,0.004,0.406,0.518,57.6
+Lingwei Kong,Connor Garnett,mixed,5,-0.019,0.373,0.481,40.8
+Christine Trifunovic,Braden Jacobson,mixed,2,-0.019,0.408,0.481,40.5
+Caden Nemoff,Kelly Goodnow,mixed,3,0.078,0.384,0.563,89.0
+Mohaned Alhouni,Lina Padegimaite,mixed,19,0.122,0.388,0.616,95.9
+Christopher Crouch,Giovanna Morelli,mixed,8,0.072,0.381,0.564,88.1
+Callie Smith,Roscoe Bellamy,mixed,8,-0.054,0.353,0.427,16.2
+Austin Bricker,Rachel Rettger,mixed,3,0.118,0.402,0.601,95.5
+Caden Nemoff,Gabriel Joseph,mens,3,-0.004,0.403,0.485,51.5
+Samantha Parker,Wyatt Stone,mixed,6,0.012,0.372,0.511,63.9
+Elsie Hendershot,Darrian Young,mixed,2,-0.021,0.382,0.473,39.4
+Dylan Frazier,Milan Rane,mixed,8,-0.017,0.388,0.476,42.5
+Rafael Lenhard,Luc Pham,mens,6,-0.06,0.381,0.446,13.4
+Indigo Dagnall,Mota Alhouni,mens,3,-0.045,0.356,0.455,22.9
+David Litvinov,Jackson Ayotte,mens,13,0.052,0.378,0.558,82.2
+Kelly Chen,Matt Burkhardt,mixed,7,0.088,0.38,0.566,91.3
+Catherine Parenteau,Max Freeman,mixed,22,-0.021,0.36,0.488,38.9
+Mohaned Alhouni,Donald Young,mens,2,-0.03,0.356,0.45,32.6
+Austin Bricker,Adam Harvey,mens,3,0.016,0.358,0.507,66.8
+AJ Koller,Connor Garnett,mens,6,-0.054,0.421,0.444,16.6
+Jonathan Truong,Michael Loyd,mens,4,-0.002,0.377,0.501,53.1
+Julian Arnold,Ivan Jakovljevic,mens,2,-0.053,0.378,0.449,16.9
+Patrick Smith,Braden Jacobson,mens,2,-0.034,0.381,0.452,30.3
+Darrian Young,Wyatt Stone,mens,4,0.047,0.366,0.546,80.4
+Zane Navratil,Clayton Powell,mens,2,-0.068,0.399,0.44,10.5
+Blaine Hovenier,Jaume Martinez Vich,mens,8,0.123,0.404,0.604,96.0
+Lingwei Kong,Lina Padegimaite,womens,4,-0.006,0.361,0.486,50.6
+Keilly Ulery,Jaeda Minniefield,womens,5,0.009,0.361,0.516,61.1
+Allison Phillips,Audrey Adele Brown,womens,2,-0.004,0.387,0.472,51.6
+Jade Rau,Andre Mercado,mixed,2,0.021,0.421,0.524,69.2
+Eric Oncins,Tyra Hurricane Black,mixed,14,0.07,0.379,0.566,87.5
+Jessie Irvine,Judit Castillo,womens,8,0.05,0.374,0.544,81.7
+Jade Rau,Giovanna Morelli,womens,2,-0.069,0.379,0.437,10.2
+Jonathan Truong,Jessie Irvine,mixed,7,0.079,0.376,0.573,89.2
+Yates Johnson,Kenta Miyoshi,mens,2,-0.021,0.408,0.481,39.0
+Dekel Bar,Tina Pisnik,mixed,24,0.063,0.384,0.546,85.6
+Genie Erokhina,Lauren Stratman,womens,5,0.021,0.393,0.524,69.1
+Meghan Dizon,Catherine Parenteau,womens,6,0.012,0.375,0.511,63.8
+Jalina Ingram,Nicole Conard,womens,2,-0.011,0.397,0.494,47.9
+Dekel Bar,Augustus Ge,mens,9,0.071,0.389,0.57,87.9
+Chloe Igleski,Zoeya Khan,womens,4,0.038,0.382,0.531,76.8
+Elsie Hendershot,Kelly Goodnow,womens,5,-0.091,0.383,0.413,5.4
+Rafa Hewett,Anderson Scarpa,mens,15,0.069,0.359,0.574,87.4
+Austin Bricker,Juan Varon,mens,7,0.013,0.393,0.517,64.4
+James Delgado,Martin Emmrich,mens,5,0.061,0.396,0.545,85.1
+Adam Harvey,Freddie Powell,mens,9,0.103,0.371,0.587,93.4
+Rachael James,Mehvish Safdar,womens,4,-0.019,0.382,0.475,41.0
+Zach Gonnering,Luke Wasson,mens,2,-0.047,0.381,0.48,20.7
+Edward Perez,George Rangelov,mens,2,-0.026,0.365,0.474,35.7
+Jade Rau,Ashley Griffith,womens,7,-0.002,0.375,0.501,53.1
+Monika Wynne,Natalia Simson,womens,2,-0.012,0.404,0.491,46.9
+Camden Chaffin,Anouar Braham,mens,5,-0.04,0.371,0.456,25.9
+Parth Mody,Dale Kim,mens,13,0.116,0.396,0.595,95.2
+Marcela Aguila Ampon,Olivia McMillan,womens,3,-0.03,0.391,0.485,33.1
+Liz Truluck,Anderson Scarpa,mixed,10,0.089,0.405,0.584,91.5
+Haley Ferguson,Garrison Eaby,mixed,5,0.001,0.406,0.517,55.4
+Yolena Carlon,Austin Bricker,mixed,4,-0.001,0.366,0.487,54.0
+Elise Fortino,Miles Hoover,mixed,7,0.04,0.377,0.557,77.8
+Rafa Hewett,Nicole Conard,mixed,6,0.03,0.382,0.506,73.0
+Donald Young,Marcela Aguila Ampon,mixed,2,0.011,0.412,0.504,62.1
+Mya Bui,Anouar Braham,mixed,6,0.082,0.402,0.558,89.8
+Daniel Miron,Keilly Ulery,mixed,7,0.035,0.356,0.527,75.1
+Oscar Serra,Anne-Sophie Courteau,mixed,7,-0.046,0.402,0.462,21.9
+Camden Chaffin,Paula Rives,mixed,3,-0.066,0.377,0.449,11.0
+Adam Harvey,Mehvish Safdar,mixed,2,-0.095,0.385,0.431,4.9
+Parth Mody,Helen To,mixed,5,-0.062,0.388,0.461,12.4
+Eduardo Santini Ayon,Jackson Ayotte,mens,4,-0.001,0.381,0.506,54.4
+Mike Radermacher,Mouaad Alhouni,mens,2,-0.031,0.387,0.488,32.3
+Anna Lenhart,Ryan Camras,mixed,5,-0.058,0.405,0.448,14.3
+Jose Martinez,Jake Anderson,mens,2,-0.088,0.38,0.415,6.5
+Rachel Summers,Zach Gonnering,mixed,3,-0.024,0.387,0.474,37.0
+Eduardo Santini Ayon,Maddy Rasmusen,mixed,6,-0.076,0.383,0.43,8.1
+Chuck Taylor,Zach Gonnering,mens,5,0.007,0.412,0.499,60.0
+Haley Ferguson,Maddy Rasmusen,womens,2,-0.051,0.376,0.446,19.0
+Samantha Buyckx,Helen To,womens,4,-0.011,0.373,0.477,47.5
+Ava Cavataio,Alexa Schull,womens,9,-0.092,0.401,0.423,5.3
+Jade Rau,Wil Shaffer,mixed,2,-0.064,0.414,0.454,11.8
+Layne Sleeth,Victoria Dimuzio,womens,4,0.032,0.411,0.533,73.8
+Camila Zilveti,Rachel Rettger,womens,2,-0.05,0.373,0.457,19.3
+Ella Cosma,Andrew Caldarella,mixed,3,-0.025,0.367,0.476,36.3
+Zoey Weil,Pierina Imparato,womens,4,0.011,0.373,0.506,62.3
+Roscoe Bellamy,Kiora Kunimoto,mixed,4,0.041,0.39,0.537,78.6
+Zane Navratil,Will Mackinnon,mens,4,0.023,0.358,0.512,70.4
+Andre Mercado,Indigo Dagnall,mens,4,-0.063,0.364,0.446,12.1
+Rafa Hewett,Nicolas Acevedo,mens,7,-0.003,0.41,0.503,52.0
+Chao Yi Wang,Armaan Bhatia,mixed,5,-0.04,0.402,0.467,26.1
+Ava Cavataio,Anouar Braham,mixed,2,-0.039,0.402,0.461,27.1
+Luana Stanciu,Chuck Taylor,mixed,2,0.006,0.402,0.504,58.8
+Ting Chieh Wei,Camden Chaffin,mixed,5,-0.029,0.371,0.477,33.4
+Lingwei Kong,Tyler Loong,mixed,3,0.012,0.378,0.506,63.7
+AJ Koller,Martin Emmrich,mens,5,-0.017,0.385,0.481,42.6
+Brooke Buckner,AJ Koller,mixed,3,-0.033,0.387,0.475,30.9
+Noe Khlif,Jessie Irvine,mixed,6,-0.02,0.4,0.501,39.9
+Nicole Conard,Mota Alhouni,mixed,2,-0.037,0.364,0.467,28.1
+Aiko Yoshitomi,Estee Widdershoven,womens,4,0.079,0.384,0.566,89.1
+Julian Arnold,Kaitlyn Christian,mixed,2,-0.077,0.396,0.429,7.9
+Will Mackinnon,Cailyn Campbell,mixed,22,0.016,0.365,0.52,66.5
+Julian Arnold,Yates Johnson,mens,4,-0.048,0.394,0.453,20.3
+Daniel Phillips,Wil Shaffer,mens,2,-0.02,0.359,0.477,39.9
+Allison Phillips,Abbigal Hatton,womens,6,-0.035,0.366,0.478,29.5
+Hunter Johnson,Meghan Dizon,mixed,6,0.044,0.361,0.546,79.8
+Ella Yeh,Collin Johns,mixed,3,-0.066,0.373,0.429,10.8
+Matthew Barlow,Mya Bui,mixed,5,0.067,0.374,0.57,86.6
+Victoria Dimuzio,Clayton Powell,mixed,2,0.034,0.395,0.536,75.0
+Lacy Schneemann,Jaume Martinez Vich,mixed,5,-0.088,0.394,0.426,6.3
+Carlos Di Laura III,James Delgado,mens,2,-0.073,0.39,0.433,8.8
+Blaine Hovenier,Allyce Jones,mixed,5,-0.038,0.374,0.451,27.6
+Pablo Tellez,Giovanna Morelli,mixed,3,0.001,0.384,0.496,55.1
+Hunter Johnson,Christopher Haworth,mens,8,0.026,0.391,0.519,71.7
+Jace Morris,Braden Jacobson,mens,3,0.008,0.392,0.506,60.1
+Chloe Igleski,Ella Yeh,womens,4,-0.051,0.389,0.439,18.1
+Zoeya Khan,Austin Bricker,mixed,2,-0.047,0.388,0.46,20.5
+Dylan Frazier,Jade Kawamoto,mixed,4,-0.027,0.352,0.482,35.1
+Kenta Miyoshi,Brooke Caruso,mixed,4,0.013,0.384,0.523,64.4
+Riley Newman,Layne Sleeth,mixed,2,-0.121,0.393,0.404,1.7
+Sahra Dennehy,Tama Shimabukuro,mixed,12,0.091,0.402,0.584,91.8
+Will Howells,Tyra Hurricane Black,mixed,6,0.012,0.374,0.504,63.6
+Jay Devilliers,Etta Tuionetoa,mixed,7,0.011,0.378,0.519,63.0
+Lingwei Kong,Andrea Koop,womens,4,0.011,0.362,0.506,62.7
+Audrey Adele Brown,Ava Ignatowich,womens,2,-0.021,0.373,0.484,39.2
+Mohaned Alhouni,Patrick Smith,mens,2,-0.018,0.345,0.474,41.9
+Matthew Barlow,Ivan Jakovljevic,mens,4,0.031,0.387,0.513,73.6
+Indigo Dagnall,Camila Zilveti,mixed,2,-0.014,0.399,0.481,45.2
+Jalina Ingram,Kiora Kunimoto,womens,2,-0.047,0.376,0.446,21.0
+Pesa Teoni,Marcela Aguila Ampon,mixed,3,0.009,0.375,0.512,61.4
+Angie Walker,Donald Young,mixed,4,0.036,0.384,0.529,76.2
+Jack Sock,Blaine Hovenier,mens,9,0.017,0.374,0.527,67.2
+Meghan Dizon,Tina Pisnik,womens,7,-0.014,0.402,0.486,45.5
+Eric Roddy,Austin Bricker,mens,2,0.013,0.389,0.516,64.3
+Braylon Ohrel,Christian Lund,mens,2,0.0,0.379,0.506,54.7
+Sahra Dennehy,Danni-Elle Townsend,womens,11,-0.097,0.39,0.419,4.6
+Liz Truluck,Mari Humberg,womens,6,0.089,0.364,0.581,91.6
+Danni-Elle Townsend,CJ Klinger,mixed,19,0.044,0.384,0.524,80.0
+Callie Smith,Max Freeman,mixed,2,-0.04,0.389,0.474,26.6
+Lucy Kovalova,Kaitlyn Christian,womens,3,-0.033,0.416,0.469,31.2
+Noe Khlif,Matt Wright,mens,2,-0.078,0.371,0.414,7.7
+Angie Walker,Cailyn Campbell,womens,2,-0.054,0.375,0.454,16.3
+Lauren Stratman,Alex Walker,womens,4,0.037,0.359,0.533,76.6
+Brooke Buckner,Milan Rane,womens,4,0.088,0.397,0.579,91.3
+Elsie Hendershot,Genie Erokhina,womens,6,0.002,0.366,0.504,56.4
+Ella Cosma,Kelly Goodnow,womens,3,-0.006,0.371,0.499,50.5
+Michael Loyd,Camden Chaffin,mens,2,0.001,0.376,0.498,55.7
+Martina Frantova,Mehvish Safdar,womens,2,-0.018,0.362,0.472,41.7
+Zane Ford,Andrew Caldarella,mens,2,-0.052,0.367,0.459,17.7
+Clayton Powell,Will Howells,mens,4,0.016,0.384,0.516,66.4
+Jonathan Truong,Jaume Martinez Vich,mens,3,-0.086,0.385,0.419,6.7
+Tom Protzek,Donald Young,mens,6,0.124,0.407,0.604,96.3
+Roscoe Bellamy,Connor Garnett,mens,11,0.13,0.385,0.621,96.7
+Jake Anderson,Ryan Camras,mens,6,-0.002,0.36,0.486,52.8
+Ninh Nguyen,Sunny Krittayaweth,mens,5,-0.011,0.384,0.497,47.9
+Jackson Ayotte,Andrew Caldarella,mens,2,-0.067,0.407,0.448,10.6
+Lindsey Newman,Chloe Diskin,womens,4,-0.051,0.352,0.444,18.9
+Christine Trifunovic,Anna Lenhart,womens,2,-0.055,0.394,0.466,16.0
+Tyler Loong,Braden Jacobson,mens,8,0.07,0.366,0.582,87.6
+Jase Edwards,Matt Burkhardt,mens,6,-0.029,0.378,0.471,33.8
+Sammy Lee,Mike Radermacher,mens,3,-0.02,0.379,0.485,39.7
+Monika Wynne,Ella Boydston,womens,2,0.099,0.391,0.589,92.8
+Elsie Hendershot,Braden Jacobson,mixed,7,0.187,0.435,0.659,99.1
+Cameron Luhring,Chloe Diskin,mixed,9,-0.044,0.368,0.458,23.8
+Isabella Dunlap,Rafael Lenhard,mixed,9,0.076,0.392,0.549,88.7
+Andrew Caldarella,Kelly Goodnow,mixed,6,-0.009,0.388,0.491,48.5
+Chuck Taylor,Melissa Beré,mixed,2,-0.043,0.372,0.459,24.5
+Liam Duffin,Ella Boydston,mixed,2,-0.074,0.385,0.423,8.5
+Maddy Rasmusen,Rio Newcombe,mixed,6,0.006,0.379,0.491,59.2
+Ella Cosma,Jase Edwards,mixed,8,-0.043,0.372,0.456,24.3
+Nicolas Almeida,Olivia Phillips,mixed,3,-0.016,0.349,0.496,43.6
+Katie Neils,Kendall Kikkawa,mixed,3,0.001,0.383,0.504,55.6
+Cameron Luhring,Rio Newcombe,mens,6,-0.001,0.376,0.497,54.0
+Wil Shaffer,Mike Radermacher,mens,5,0.032,0.397,0.525,73.9
+Martin Thomas,Melissa Beré,mixed,4,-0.033,0.384,0.473,30.8
+Ava Cavataio,Mota Alhouni,mixed,9,0.01,0.382,0.506,62.0
+Ella Yeh,Jace Morris,mixed,6,0.0,0.355,0.496,54.8
+Jade Kawamoto,Catherine Parenteau,womens,29,-0.046,0.361,0.448,21.7
+Ting Chieh Wei,Kate Fahey,womens,6,0.042,0.375,0.53,78.8
+Levi Daniel,Janaye Sakkas,mixed,4,-0.117,0.406,0.394,2.0
+Eric Oncins,Jessie Irvine,mixed,7,-0.026,0.356,0.481,35.8
+Collin Johns,Christa Gecheva,mixed,6,-0.007,0.376,0.494,49.6
+Will Mackinnon,Kiora Kunimoto,mixed,5,-0.014,0.379,0.483,45.5
+Victoria Dimuzio,Yuta Funemizu,mixed,3,-0.013,0.403,0.485,46.1
+Kenta Miyoshi,Olivia McMillan,mixed,3,0.014,0.38,0.512,64.8
+Jace Morris,Will Mackinnon,mens,5,0.084,0.396,0.573,90.3
+Nicole Conard,Luc Pham,mixed,3,0.025,0.394,0.524,71.3
+Naomi Nguyen,AJ Koller,mixed,2,-0.026,0.383,0.474,35.3
+Isabella Dunlap,Nicolas Acevedo,mixed,14,0.17,0.408,0.643,98.6
+Layne Sleeth,Tyler Loong,mixed,12,0.035,0.355,0.529,75.7
+Zoey Weil,Michael Loyd,mixed,7,0.082,0.384,0.574,89.9
+Christopher Crouch,Mota Alhouni,mens,3,-0.089,0.383,0.419,6.0
+Genie Erokhina,Rafael Lenhard,mixed,5,-0.078,0.388,0.429,7.8
+Hong Kit Wong,Aiko Yoshitomi,mixed,2,0.015,0.402,0.517,65.4
+Hannah Blatt,Yates Johnson,mixed,4,0.063,0.403,0.546,85.7
+Federico Staksrud,Tina Pisnik,mixed,6,-0.0,0.385,0.482,54.5
+Danni-Elle Townsend,Clayton Powell,mixed,7,0.003,0.389,0.495,57.3
+Adam Harvey,Paula Rives,mixed,5,-0.01,0.375,0.481,48.2
+Cason Campbell,Marcela Aguila Ampon,mixed,2,-0.043,0.362,0.45,24.6
+Tom Protzek,Rafa Hewett,mens,2,-0.042,0.402,0.479,25.2
+Noe Khlif,Tyson McGuffin,mens,7,0.053,0.382,0.544,82.7
+Riley Newman,Connor Garnett,mens,11,0.11,0.361,0.609,94.2
+Layne Sleeth,Isabella Dunlap,womens,9,0.006,0.356,0.504,58.6
+Chao Yi Wang,Kaitlyn Christian,womens,6,-0.023,0.369,0.489,37.5
+Christa Gecheva,Albie Huang,womens,5,0.009,0.389,0.509,60.9
+Naomi Nguyen,Cailyn Campbell,womens,7,0.004,0.383,0.498,57.8
+Ella Yeh,Marcela Aguila Ampon,womens,4,0.069,0.391,0.553,87.3
+Augustus Ge,Darrian Young,mens,5,-0.111,0.413,0.392,2.1
+Michael Loyd,Luc Pham,mens,7,-0.029,0.341,0.47,33.7
+Blaine Hovenier,AJ Koller,mens,3,0.006,0.372,0.513,58.7
+Jonathan Truong,Alexa Schull,mixed,2,-0.041,0.404,0.475,25.7
+Brooke Buckner,Augustus Ge,mixed,3,0.001,0.412,0.501,55.5
+Len Yang,Mya Bui,mixed,4,-0.052,0.381,0.449,17.8
+Etta Tuionetoa,Allyce Jones,womens,19,0.047,0.339,0.555,80.6
+Federico Staksrud,Milan Rane,mixed,16,0.039,0.35,0.516,77.2
+Eric Oncins,Layne Sleeth,mixed,15,0.123,0.402,0.621,96.1
+Genie Erokhina,Pablo Tellez,mixed,6,0.135,0.385,0.619,97.0
+Layne Sleeth,Lea Jansen,womens,17,-0.002,0.371,0.488,52.7
+Genie Erokhina,Mya Bui,womens,9,-0.159,0.393,0.375,0.2
+Tama Shimabukuro,Etta Tuionetoa,mixed,17,0.058,0.388,0.556,84.5
+Jade Kawamoto,Ben Johns,mixed,19,0.14,0.393,0.623,97.4
+Daniel Phillips,Brandon French,mens,1,0.0,0.395,0.499,54.9
+Gabriel Tardio,Hayden Patriquin,mens,24,0.191,0.404,0.674,99.3
+Lacy Schneemann,Milan Rane,womens,15,0.01,0.381,0.501,61.6
+Danni-Elle Townsend,Alix Truong,womens,14,0.157,0.412,0.639,98.0
+Andrei Daescu,Alix Truong,mixed,5,0.12,0.392,0.62,95.8
+Len Yang,Pablo Tellez,mens,9,-0.082,0.398,0.421,7.2
+Augustus Ge,JW Johnson,mens,18,0.065,0.354,0.569,85.9
+Camden Chaffin,Judit Castillo,mixed,2,0.011,0.368,0.512,62.9
+JW Johnson,Tyra Hurricane Black,mixed,3,-0.064,0.401,0.44,12.0
+Alexa Schull,Judit Castillo,womens,4,-0.125,0.375,0.379,1.3
+Brooke Buckner,Tyra Hurricane Black,womens,5,0.065,0.398,0.556,86.1
+Abbigal Hatton,Brandon French,mixed,7,-0.06,0.401,0.445,13.5
+Kate Fahey,Anna Bright,womens,24,0.171,0.395,0.66,98.7
+Daniel Phillips,Samantha Parker,mixed,2,0.016,0.396,0.509,66.7
+Kate Fahey,Gabriel Tardio,mixed,18,0.169,0.415,0.656,98.5
+Jack Sock,Federico Staksrud,mens,14,0.005,0.356,0.508,57.9
+Andrei Daescu,CJ Klinger,mens,23,-0.101,0.392,0.407,3.8
+Tama Shimabukuro,Connor Garnett,mens,19,-0.109,0.379,0.402,2.6
+Ben Johns,Max Freeman,mens,20,0.038,0.366,0.55,77.0
+Zoeya Khan,Giovanna Morelli,womens,2,-0.052,0.385,0.462,17.9
+Rachel Summers,Keilly Ulery,womens,2,-0.046,0.407,0.459,22.3
+Rafa Hewett,James Delgado,mens,2,-0.081,0.394,0.419,7.3
+Clayton Powell,Anouar Braham,mens,4,0.05,0.349,0.554,81.8
+Nicolas Acevedo,Yuta Funemizu,mens,9,-0.013,0.382,0.484,45.6
+Averee Beck,Marcela Aguila Ampon,womens,4,-0.028,0.398,0.47,34.3
+Monika Wynne,Janet Liu,womens,2,-0.035,0.369,0.478,29.5
+Marisa Ruiz,Nicole Conard,womens,5,0.052,0.384,0.55,82.3
+Andrea Koop,Lauren Stratman,womens,4,0.1,0.404,0.588,92.9
+Anna Leigh Waters,Jorja Johnson,womens,25,0.183,0.391,0.654,98.9
+Ella Yeh,Luc Pham,mixed,3,-0.039,0.387,0.461,27.0
+Samantha Parker,Darrian Young,mixed,3,-0.03,0.369,0.458,32.8
+Ella Yeh,Genie Erokhina,womens,7,-0.025,0.392,0.48,36.5
+Pablo Tellez,Luc Pham,mens,2,-0.055,0.378,0.443,15.7
+Anna Leigh Waters,Noe Khlif,mixed,25,0.136,0.391,0.629,97.1
+Jorja Johnson,Will Howells,mixed,21,0.051,0.365,0.551,81.8
+Clayton Powell,Estee Widdershoven,mixed,21,0.125,0.367,0.622,96.4
+Nicole Conard,Mark Dancuart,mixed,5,0.036,0.396,0.535,76.3
+Mehvish Safdar,Etienne Blaszkewycz,mixed,4,0.018,0.393,0.506,67.5
+Carlota Trevino,Nicholas Wade,mixed,11,0.069,0.394,0.557,87.2
+Lauren Stratman,Nicolas Acevedo,mixed,9,0.038,0.367,0.539,77.1
+Eric Roddy,Pierina Imparato,mixed,3,-0.069,0.4,0.446,10.3
+Monika Wynne,Juan Varon,mixed,2,-0.051,0.388,0.459,18.3
+Samantha Buyckx,Anouar Braham,mixed,2,-0.06,0.404,0.456,13.6
+Zoeya Khan,Julian Arnold,mixed,3,-0.018,0.365,0.477,41.6
+Jade Rau,Adam Harvey,mixed,2,-0.073,0.398,0.434,8.7
+Augustus Ge,Tyra Hurricane Black,mixed,1,0.052,0.395,0.558,82.3
+Camden Chaffin,Alexa Schull,mixed,5,0.109,0.384,0.608,94.0
+Elsie Hendershot,John Lucian Goins,mixed,1,0.003,0.385,0.511,56.4
+Alexa Schull,Wyatt Stone,mixed,1,0.011,0.381,0.514,63.4
+Tama Shimabukuro,Victoria Dimuzio,mixed,2,-0.042,0.394,0.454,24.7
+Jonathan Truong,Judit Castillo,mixed,2,0.01,0.386,0.51,61.7
+Daniel Phillips,Darrian Young,mens,1,-0.031,0.389,0.484,32.3
+Jonathan Truong,Camden Chaffin,mens,6,0.017,0.37,0.53,67.3
+Brooke Buckner,JW Johnson,mixed,16,0.11,0.389,0.598,94.4
+Allison Phillips,Darrian Young,mixed,2,-0.056,0.401,0.45,15.2
+Victoria Dimuzio,Allyce Jones,womens,1,-0.032,0.405,0.466,31.6
+Victoria Dimuzio,Etta Tuionetoa,womens,1,-0.023,0.378,0.493,37.7
+Victoria Dimuzio,Connor Garnett,mixed,1,-0.031,0.366,0.464,32.5
+Dekel Bar,Tyson McGuffin,mens,15,0.022,0.38,0.509,69.6
+Jessie Irvine,Jaume Martinez Vich,mixed,9,-0.126,0.383,0.386,1.2
+Isabella Dunlap,Estee Widdershoven,womens,17,-0.102,0.411,0.403,3.7
+Parris Todd,Danni-Elle Townsend,womens,6,0.011,0.371,0.5,62.4
+Blaine Hovenier,Liz Truluck,mixed,9,0.073,0.369,0.567,88.3
+Cason Campbell,Martina Frantova,mixed,3,-0.038,0.359,0.469,27.8
+Jay Devilliers,Kaitlyn Christian,mixed,7,-0.108,0.367,0.399,2.7
+Sahra Dennehy,Anouar Braham,mixed,6,0.011,0.406,0.505,63.4
+Callie Smith,Liz Truluck,womens,7,-0.045,0.37,0.47,23.0
+Zoey Weil,Martina Frantova,womens,23,0.14,0.379,0.64,97.3
+Ting Chieh Wei,Mari Humberg,womens,11,-0.093,0.386,0.414,5.1
+Sahra Dennehy,Emma Nelson,womens,5,-0.076,0.385,0.423,8.2
+Zane Navratil,Hunter Johnson,mens,11,0.101,0.373,0.599,93.0
+Michael Loyd,Anouar Braham,mens,5,0.015,0.373,0.517,65.7
+Blaine Hovenier,Roscoe Bellamy,mens,8,-0.091,0.363,0.394,5.5
+Christopher Crouch,Travis Rettenmaier,mens,4,-0.111,0.408,0.404,2.2
+Zane Navratil,Mari Humberg,mixed,10,-0.081,0.37,0.412,7.3
+Sofia Sewing,Tyson McGuffin,mixed,14,0.054,0.374,0.555,83.0
+Connor Mogle,Allison Phillips,mixed,1,-0.017,0.401,0.476,43.2
+Ting Chieh Wei,Hunter Johnson,mixed,9,0.037,0.39,0.529,76.7
+Sofia Sewing,Tina Pisnik,womens,25,0.088,0.381,0.59,91.2
+Connor Mogle,Brandon French,mens,1,-0.044,0.392,0.453,24.0
+Christopher Crouch,Martina Frantova,mixed,1,0.003,0.373,0.485,56.5
+Michael Loyd,Emma Nelson,mixed,2,-0.005,0.396,0.496,51.1
+Zoey Weil,Cason Campbell,mixed,12,0.044,0.4,0.534,79.9
+Zoey Weil,Christopher Crouch,mixed,2,-0.075,0.39,0.438,8.3
+Callie Smith,Chao Yi Wang,womens,4,-0.15,0.407,0.386,0.3
+Abbigal Hatton,Darrian Young,mixed,4,-0.017,0.41,0.481,42.7
+Connor Mogle,Samantha Parker,mixed,1,0.019,0.378,0.529,68.0
+Sahra Dennehy,Kiora Kunimoto,womens,8,0.085,0.39,0.577,90.4
+Connor Mogle,Darrian Young,mens,1,0.005,0.415,0.491,58.3
+Zoey Weil,Paula Rives,womens,1,-0.021,0.378,0.476,39.1
+Rio Newcombe,Riley Inn,mens,3,-0.04,0.371,0.465,26.0
+Maddy Rasmusen,Jaeda Minniefield,womens,11,0.049,0.371,0.547,81.6
+Caden Nemoff,Maverick Messinger,mens,2,-0.012,0.389,0.481,46.7
+Daniel Traxler,Jaikin Gomez,mens,4,0.057,0.393,0.561,84.2
+Miles Hoover,Troy Akin,mens,2,-0.006,0.376,0.49,50.3
+Naomi Nguyen,Sydney Sonday,womens,9,0.009,0.393,0.507,61.2
+Ella Yeh,Kelly Goodnow,womens,6,0.002,0.383,0.497,55.9
+Marianna Petrei,Ella Boydston,womens,8,0.025,0.369,0.514,71.2
+Juan Varon,Jose Martinez,mens,4,-0.003,0.364,0.513,52.4
+Antonio Medina,TJ Rudden,mens,2,-0.054,0.362,0.451,16.3
+Clayton Powell,Yuta Funemizu,mens,1,-0.053,0.386,0.456,17.0
+Christopher Crouch,Cason Campbell,mens,11,0.08,0.372,0.582,89.5
+Chao Yi Wang,Roscoe Bellamy,mixed,11,0.312,0.464,0.766,100.0
+Roscoe Bellamy,Braden Jacobson,mens,3,0.008,0.384,0.504,60.2
+Chao Yi Wang,Liz Truluck,womens,7,0.032,0.413,0.518,74.2
+Isabella Dunlap,Yuta Funemizu,mixed,1,-0.02,0.381,0.474,40.0
+Sahra Dennehy,Michael Loyd,mixed,1,0.014,0.419,0.518,65.0
+Emma Nelson,Anouar Braham,mixed,2,-0.005,0.385,0.499,51.2
+Sydney Sonday,Rio Newcombe,mixed,2,-0.041,0.389,0.481,25.6
+Carlota Trevino,Joel Poland,mixed,8,0.143,0.389,0.631,97.5
+Natalie Hur,Jose Martinez,mixed,6,0.083,0.387,0.571,89.9
+Naomi Nguyen,Kyle Koszuta,mixed,2,-0.053,0.394,0.462,16.8
+Elise Fortino,Eli Steiner,mixed,2,-0.033,0.391,0.471,31.3
+Len Yang,Genie Erokhina,mixed,7,-0.016,0.388,0.479,44.2
+Len Yang,Luc Pham,mens,4,-0.038,0.41,0.463,27.7
+Rachel Rohrabacher,Jackie Kawamoto,womens,13,-0.06,0.361,0.439,13.8
+Meghan Dizon,Cailyn Campbell,womens,15,0.006,0.36,0.501,59.3
+Daria Walczak,Alix Truong,womens,5,-0.001,0.413,0.495,53.8
+Armaan Bhatia,Meghan Dizon,mixed,10,-0.041,0.377,0.462,25.7
+Riley Newman,Christian Alshon,mens,11,0.023,0.369,0.527,70.7
+Armaan Bhatia,Will Mackinnon,mens,10,-0.07,0.367,0.431,9.9
+Riley Newman,Jackie Kawamoto,mixed,12,0.067,0.394,0.561,86.6
+Mya Bui,Luc Pham,mixed,2,0.021,0.38,0.518,69.3
+Christopher Haworth,Jackie Kawamoto,mixed,5,-0.028,0.356,0.477,34.0
+Daria Walczak,Wyatt Stone,mixed,2,-0.057,0.391,0.458,14.9
+Christian Alshon,Christopher Haworth,mens,4,0.067,0.373,0.558,86.7
+Rafael Lenhard,Cailyn Campbell,mixed,1,-0.047,0.39,0.467,21.4
+Tyler Loong,Connor Garnett,mens,1,0.021,0.388,0.515,69.1
+Etta Tuionetoa,Tyler Loong,mixed,1,0.007,0.364,0.493,59.5
+Armaan Bhatia,Rafael Lenhard,mens,3,0.007,0.403,0.503,59.7
+Ella Yeh,Mya Bui,womens,5,0.073,0.403,0.569,88.4
+Kate Fahey,John Lucian Goins,mixed,1,-0.055,0.376,0.456,15.8
+Liz Truluck,Roscoe Bellamy,mixed,1,-0.022,0.364,0.477,38.2
+Callie Smith,Blaine Hovenier,mixed,1,-0.036,0.373,0.464,29.0
+Yates Johnson,Alex Walker,mixed,1,-0.005,0.394,0.494,50.8
+Eric Oncins,Nicolas Acevedo,mens,20,-0.061,0.373,0.424,13.2
+Andrei Daescu,Judit Castillo,mixed,5,0.006,0.377,0.505,58.9
+Keilly Ulery,Jaume Martinez Vich,mixed,3,0.039,0.372,0.531,77.5
+Aiko Yoshitomi,Darrian Young,mixed,3,-0.048,0.377,0.456,20.0
+Albie Huang,Augustus Ge,mixed,5,-0.089,0.374,0.411,5.9
+Jessie Irvine,Keilly Ulery,womens,5,-0.098,0.406,0.423,4.3
+Danni-Elle Townsend,Judit Castillo,womens,5,-0.105,0.388,0.411,3.3
+Aiko Yoshitomi,Nicole Conard,womens,1,-0.025,0.37,0.469,36.1
+Brooke Buckner,Albie Huang,womens,5,-0.067,0.384,0.439,10.6
+Dylan Frazier,Clayton Powell,mens,10,0.111,0.389,0.593,94.6
+James Delgado,Anouar Braham,mens,1,-0.032,0.414,0.473,31.8
+Lea Jansen,Nicolas Acevedo,mixed,11,-0.075,0.373,0.437,8.3
+James Delgado,Kiora Kunimoto,mixed,5,0.03,0.365,0.516,72.9
+Pablo Tellez,Mya Bui,mixed,10,-0.015,0.341,0.486,44.9
+Donald Young,Jaume Martinez Vich,mens,2,0.044,0.355,0.534,80.0
+Donald Young,Keilly Ulery,mixed,2,-0.047,0.397,0.462,21.2
+Matthew Barlow,Marcela Aguila Ampon,mixed,1,-0.019,0.387,0.481,40.7
+Aiko Yoshitomi,Abbigal Hatton,womens,1,-0.042,0.403,0.459,25.2
+Dylan Frazier,Isabella Dunlap,mixed,11,-0.147,0.384,0.354,0.5
+Genie Erokhina,Luc Pham,mixed,1,0.039,0.382,0.537,77.4
+Michael Loyd,Abbigal Hatton,mixed,1,-0.025,0.379,0.48,36.6
+James Delgado,Emma Nelson,mixed,2,0.068,0.395,0.556,86.9
+David Litvinov,Troy Akin,mens,2,-0.042,0.398,0.453,25.1
+Mohaned Alhouni,Bruno Faletto,mens,7,0.056,0.38,0.554,83.6
+Olivia Phillips,Averee Beck,womens,2,-0.036,0.396,0.479,28.9
+Bret Berryman,Blake Suard,mens,4,0.007,0.38,0.496,59.6
+Chloe Igleski,Marianna Petrei,womens,7,-0.022,0.365,0.479,38.0
+Armaan Jiwa Mawji,Eli Steiner,mens,2,-0.019,0.402,0.479,40.6
+Jalina Ingram,Lindsey Newman,womens,9,-0.071,0.353,0.422,9.8
+Connor McCartney,Jackson Ayotte,mens,2,-0.065,0.398,0.454,11.6
+Carlota Trevino,Kelly Goodnow,womens,5,0.164,0.42,0.645,98.3
+Michael Loyd,Brandon French,mens,2,0.02,0.392,0.513,68.4
+Nicole Conard,Michael Loyd,mixed,3,-0.086,0.378,0.431,6.6
+Naomi Nguyen,Rafael Lenhard,mixed,1,-0.055,0.406,0.445,16.1
+Bruno Faletto,Carlota Trevino,mixed,11,0.04,0.389,0.536,78.0
+Chloe Igleski,Adam Harvey,mixed,2,0.005,0.389,0.5,58.1
+Eduardo Santini Ayon,Jalina Ingram,mixed,6,0.065,0.376,0.564,86.1
+Andre Mercado,Kelly Goodnow,mixed,4,0.06,0.36,0.549,84.9
+Monika Wynne,Eli Steiner,mixed,2,-0.007,0.392,0.486,49.8
+Ella Boydston,Andrew Caldarella,mixed,4,-0.042,0.374,0.46,24.8
+Chuck Taylor,Olivia Phillips,mixed,2,-0.06,0.396,0.458,13.3
+Yolena Carlon,Nicholas Wade,mixed,4,-0.038,0.4,0.473,28.1
+Parth Mody,Sienna Hitzeman,mixed,2,-0.058,0.394,0.455,14.4
+Janaye Sakkas,Dale Kim,mixed,2,-0.032,0.414,0.47,31.7
+Freddie Powell,Chloe Diskin,mixed,3,0.046,0.395,0.543,80.3
+Will Mackinnon,Rafael Lenhard,mens,4,-0.072,0.39,0.444,9.6
+Meghan Dizon,Rafael Lenhard,mixed,4,-0.048,0.387,0.469,19.9
+Martina Frantova,Travis Rettenmaier,mixed,2,0.0,0.386,0.505,55.0
+CJ Klinger,Tyra Hurricane Black,mixed,5,0.002,0.375,0.514,55.9
+Tyson McGuffin,Tina Pisnik,mixed,3,-0.051,0.385,0.464,18.2
+Tama Shimabukuro,Tyler Loong,mens,1,-0.046,0.372,0.453,21.8
+Cason Campbell,Travis Rettenmaier,mens,1,0.006,0.406,0.508,58.5
+Lea Jansen,Marcela Aguila Ampon,womens,1,-0.012,0.392,0.479,47.4
+Eric Oncins,Marcela Aguila Ampon,mixed,1,-0.028,0.381,0.466,34.1
+Matthew Barlow,Lea Jansen,mixed,1,-0.052,0.375,0.45,17.6
+Kaitlyn Christian,Nicolas Acevedo,mixed,7,0.009,0.37,0.514,61.1
+Eric Oncins,Lea Jansen,mixed,8,0.011,0.388,0.509,62.6
+Liz Truluck,Clayton Powell,mixed,7,-0.037,0.382,0.451,28.4
+Michael Loyd,Kelly Goodnow,mixed,5,0.004,0.397,0.508,57.5
+Naomi Nguyen,Armaan Bhatia,mixed,4,0.003,0.383,0.514,57.0
+Zane Navratil,John Lucian Goins,mens,6,0.095,0.375,0.584,92.2
+Ting Chieh Wei,AJ Koller,mixed,2,-0.06,0.361,0.455,13.7
+Len Yang,Blaine Hovenier,mens,4,0.07,0.388,0.554,87.7
+Abbigal Hatton,Kelly Goodnow,womens,5,-0.064,0.42,0.447,11.7
+Roscoe Bellamy,Clayton Powell,mens,4,-0.079,0.364,0.421,7.5
+Kaitlyn Christian,Lea Jansen,womens,8,-0.016,0.376,0.486,43.7
+Danni-Elle Townsend,Augustus Ge,mixed,6,0.146,0.397,0.627,97.6
+Ting Chieh Wei,Elsie Hendershot,womens,7,-0.007,0.384,0.498,49.9
+Hannah Blatt,Jackie Kawamoto,womens,6,0.005,0.383,0.511,58.3
+Hannah Blatt,Christian Alshon,mixed,2,0.031,0.39,0.527,73.4
+Blaine Hovenier,Pablo Tellez,mens,2,-0.012,0.399,0.502,46.8
+Chao Yi Wang,Braden Jacobson,mixed,3,0.033,0.373,0.531,74.6
+Ting Chieh Wei,John Lucian Goins,mixed,1,-0.003,0.383,0.496,52.6
+Ting Chieh Wei,Jalina Ingram,womens,1,0.009,0.36,0.509,61.3
+AJ Koller,John Lucian Goins,mens,1,-0.029,0.372,0.471,33.9
+Zoey Weil,Connor Mogle,mixed,6,-0.07,0.376,0.44,10.0
+Clayton Powell,Braden Jacobson,mens,3,-0.051,0.392,0.462,18.5
+Danni-Elle Townsend,Ivan Jakovljevic,mixed,1,-0.031,0.367,0.488,32.2
+Abigail Okelley,Jaeda Minniefield,womens,3,-0.015,0.39,0.48,44.5
+Monika Wynne,Anna Lenhart,womens,3,0.013,0.358,0.501,64.5
+Ethan Bakalinsky,Dale Kim,mens,4,-0.034,0.359,0.463,30.5
+Elliott Schupp,Anderson Scarpa,mens,4,0.117,0.399,0.604,95.4
+Jade Rau,Stevie Petropouleas,womens,4,-0.071,0.388,0.424,9.7
+Vincent Rettke,Bret Berryman,mens,2,-0.027,0.362,0.479,35.0
+George Rangelov,Daniel Miron,mens,2,-0.023,0.386,0.484,37.9
+Garrison Eaby,Preston Gordon,mens,2,0.032,0.386,0.537,74.1
+Edward Perez,Adam Harvey,mens,2,-0.052,0.384,0.461,17.5
+Mike Radermacher,Usama Khalid,mens,4,-0.006,0.359,0.494,50.2
+Zane Navratil,AJ Koller,mens,1,-0.037,0.413,0.471,28.6
+Ella Yeh,Len Yang,mixed,1,-0.035,0.378,0.474,29.3
+Edward Perez,Jaeda Minniefield,mixed,2,0.02,0.408,0.518,68.9
+Abigail Okelley,Dale Kim,mixed,2,-0.037,0.4,0.475,28.2
+Tristan Dussault,Andrea Koop,mixed,5,0.077,0.375,0.574,88.9
+Elliott Schupp,Audrey Adele Brown,mixed,2,-0.048,0.386,0.464,20.0
+Mari Humberg,Jaume Martinez Vich,mixed,4,0.048,0.409,0.54,80.9
+Jessie Irvine,Mari Humberg,womens,4,0.007,0.374,0.509,59.4
+Daria Walczak,Alexa Schull,womens,4,0.132,0.39,0.628,96.9
+Pablo Tellez,Emma Nelson,mixed,1,-0.027,0.392,0.468,34.6
+Ting Chieh Wei,Zane Navratil,mixed,3,0.005,0.377,0.52,58.4
+Pablo Tellez,Anouar Braham,mens,1,-0.033,0.375,0.479,31.0
+Dylan Frazier,Yuta Funemizu,mens,3,0.083,0.36,0.562,90.3
+Daria Walczak,Jonathan Truong,mixed,4,-0.015,0.39,0.489,44.4
+Milan Rane,Alex Walker,womens,2,-0.063,0.391,0.454,12.2
+Christopher Haworth,Pesa Teoni,mens,2,0.036,0.377,0.541,76.5
+Hannah Blatt,Pesa Teoni,mixed,2,-0.048,0.392,0.459,20.2
+Yates Johnson,Federico Staksrud,mens,1,-0.029,0.401,0.477,33.7
+Zane Ford,Estee Widdershoven,mixed,1,-0.005,0.393,0.499,51.3

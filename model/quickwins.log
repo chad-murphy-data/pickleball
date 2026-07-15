@@ -1,0 +1,10 @@
+=== 1. player-tour + newness (2026) ===
+}
+divergences: 0 | max rhat (v,d): [1.0062397718429565, 1.0055683851242065]
+=== 2. sd_d prior 0.5 ===
+divergences: 2 | max rhat (v,d): [1.006931185722351, 1.0122644901275635]
+=== 3. sd_d prior 3.0 ===
+divergences: 0 | max rhat (v,d): [1.005301833152771, 1.0089377164840698]
+=== 4. train refit with draws ===
+divergences: 0 | max rhat (v,d): [1.0163604021072388, 1.0168782472610474]
+QUICKWINS_DONE

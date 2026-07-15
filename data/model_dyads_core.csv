@@ -1,0 +1,1214 @@
+idx,p1_id,p2_id,p1_name,p2_name,context
+0,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,e9849183-4693-4340-abf5-f4b6f3cb226f,Tom Protzek,Martin Emmrich,mens
+1,aa45af3b-41b0-4e03-9a17-4ca16a108df3,c971bb40-090b-4e47-be58-905495e38401,Vincent Rettke,Miles Hoover,mens
+2,38fdc174-96d6-459f-a27c-df35eb9f945c,fd565e56-6223-4ef0-882e-02346e7e0573,Ashley Griffith,Brooke Caruso,womens
+3,bf84d952-c6a8-4494-943d-064b223e764f,dba7cf49-9f57-43e3-878d-a63ced26a243,Estee Widdershoven,Jaeda Minniefield,womens
+4,34270d82-e968-407d-a918-8aa57f0123a6,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Elsie Hendershot,Lina Padegimaite,womens
+5,65bcab7c-9c93-4dc8-a847-a34da426b933,79046b96-4601-4443-ad6a-b1d2451be668,Martina Frantova,Rachel Summers,womens
+6,1d51becb-4ea0-4878-9660-e3fd2dfaa0ea,435e466e-22c7-4917-8cb4-ff45bbccde19,Ewa Radzikowska,Tamaryn Emmrich,womens
+7,6a87bc44-5190-44db-8a2f-467de4de48c6,be74032b-1035-4ece-bf4f-773b45da4d58,Christa Gecheva,Mehvish Safdar,womens
+8,99b25b49-2a51-412d-9fbf-e1b6804acce0,f4c43443-fdff-4344-b291-274cfd26361e,Camden Chaffin,Juan Benitez,mens
+9,45e53881-72e4-4de1-9763-c2e7f7f854ba,b1ab7d76-a859-4136-8405-3ed7c9be287a,Andrea Koop,Mari Humberg,womens
+10,1d36eae4-41f1-4739-b9d2-0783fd371112,f2a996de-50a0-4d1d-b16f-f6450daa4a1e,Samantha Buyckx,Kelsey Laurente,womens
+11,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,ad6e69ff-7913-4b21-86dd-9489f749be01,Nicole Conard,Paula Rives,womens
+12,4214dfa2-6d13-43c3-b98b-f36e4556402d,c3012322-e95e-4e38-a0d8-106f9e236869,Kayla Williams,Keilly Ulery,womens
+13,79ee2d66-5ba3-47cc-bc43-f489a09d2d5a,cecffdc0-29ee-46c0-9832-2dbe04700307,George Rangelov,Nejc Sitar,mens
+14,2aa8ced3-d599-4c83-86dd-ecc80196833b,d8d51930-abf9-468b-9e43-55a9c0728d58,Luca Mack,Anouar Braham,mens
+15,1e538b1f-66e9-4166-ac60-3aef311ee0b5,87d60b6f-6f2e-4610-ab89-487e8acc097e,Jada Bui,Mya Bui,womens
+16,7cf93ef3-86b7-4bb4-937b-5b5dc4c72c32,efedfcd1-7638-4c6e-8225-fea7f8d40031,Valerie R Simon,Victoria Simon,womens
+17,306da673-de7e-44f5-bc16-0738b44bd089,ad6e69ff-7913-4b21-86dd-9489f749be01,Christopher Crouch,Paula Rives,mixed
+18,1e538b1f-66e9-4166-ac60-3aef311ee0b5,f4c43443-fdff-4344-b291-274cfd26361e,Jada Bui,Juan Benitez,mixed
+19,38fdc174-96d6-459f-a27c-df35eb9f945c,79ee2d66-5ba3-47cc-bc43-f489a09d2d5a,Ashley Griffith,George Rangelov,mixed
+20,be74032b-1035-4ece-bf4f-773b45da4d58,d8d51930-abf9-468b-9e43-55a9c0728d58,Mehvish Safdar,Anouar Braham,mixed
+21,3d67b6d0-063e-466c-a475-7679d0764354,87d60b6f-6f2e-4610-ab89-487e8acc097e,Austin Bricker,Mya Bui,mixed
+22,45e53881-72e4-4de1-9763-c2e7f7f854ba,99b25b49-2a51-412d-9fbf-e1b6804acce0,Andrea Koop,Camden Chaffin,mixed
+23,1d51becb-4ea0-4878-9660-e3fd2dfaa0ea,e9849183-4693-4340-abf5-f4b6f3cb226f,Ewa Radzikowska,Martin Emmrich,mixed
+24,2aa8ced3-d599-4c83-86dd-ecc80196833b,bf84d952-c6a8-4494-943d-064b223e764f,Luca Mack,Estee Widdershoven,mixed
+25,070be5dd-2dcf-44b6-b2e7-37d9fbd29aa2,f932a82f-0702-44ac-9a1f-09bb5670b25c,Adalynn Lund,Christian Lund,mixed
+26,4214dfa2-6d13-43c3-b98b-f36e4556402d,9d7b2972-477c-4cea-977d-f65f86dccac5,Kayla Williams,Parth Mody,mixed
+27,25139050-f977-4456-9545-7d63b72fa380,b025eccb-868e-4ce6-a4db-c1082a288b59,David Litvinov,Maddy Rasmusen,mixed
+28,1abf464c-e8fc-472b-b1c8-f42a5c1fc02a,8172788a-eec8-4064-90ee-a01dd09e2729,Natalie Hur,Jaikin Gomez,mixed
+29,079cece3-01b2-4dd1-9e95-957b83b14cd7,cb9ea037-f204-4216-ac56-930a01009166,Victor Rodrigo,Matt Burkhardt,mens
+30,68c97127-3873-41f9-a1ec-9bb608a7a74a,d5d2a4dc-fb77-4686-8f63-d75694831b5c,Nicolas Almeida,Karthik Ganesh,mens
+31,12c765d0-8384-41d3-a498-de63fd7c37da,e8e10ea8-2ff2-4155-9169-cc33ff8c6265,Naomi Nguyen,Rio Newcombe,mixed
+32,9e8ad96a-17a3-48bf-9363-7b35cc96b2b8,dc69fcde-bcda-4441-8b66-a8bafeb12ded,Averee Beck,Joel Poland,mixed
+33,a0581131-7d36-4424-b7f1-a5a4eaaed30f,d0a30dc1-a7d7-475c-bfc9-d55e0aa8e7e3,Cc Eleven Sacca,Ethan Bakalinsky,mixed
+34,91846d4e-67fb-4891-87a6-bed8362b8e2c,b025eccb-868e-4ce6-a4db-c1082a288b59,Olivia Phillips,Maddy Rasmusen,womens
+35,12c765d0-8384-41d3-a498-de63fd7c37da,9e8ad96a-17a3-48bf-9363-7b35cc96b2b8,Naomi Nguyen,Averee Beck,womens
+36,2feffeaa-aca5-4c5d-aad6-62eb0d38a6be,81535c8c-27d9-452c-a72a-61fc9f755b01,Abigail Okelley,Will Mackinnon,mixed
+37,a6f57d71-bf90-48fc-b05b-abe66980a132,fa7cb18f-9d87-4d49-bb43-5291b7201bd3,Mike Radermacher,Jessica Ho,mixed
+38,68c97127-3873-41f9-a1ec-9bb608a7a74a,cd9ee524-11da-4099-805f-1f362f2bc468,Nicolas Almeida,Stevie Petropouleas,mixed
+39,91846d4e-67fb-4891-87a6-bed8362b8e2c,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Olivia Phillips,Braden Jacobson,mixed
+40,736475dd-7ccd-40d8-8b43-8c2d9ef9e674,ba491f1c-0112-47a8-a348-4695289e958a,Maggie Brascia,Augustus Ge,mixed
+41,614e164a-4197-44eb-855c-586cf79fbfc9,ec4cdfe2-c6f6-4de1-824e-9adcaeb31196,Ivan Jakovljevic,Judit Castillo,mixed
+42,79a11da1-6aeb-4719-9b1e-9918e0163cec,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Christian Alshon,Tyra Hurricane Black,mixed
+43,25104e43-16f9-4ce3-9085-70243d8b350a,7464628e-931a-44c9-b0df-749a7cb32eaa,Ella Yeh,Adam Harvey,mixed
+44,03db4060-fcb3-41f7-83d5-7ee732dd8841,518626d4-2600-4134-8c6a-0ae9315f9625,Jade Rau,Cason Campbell,mixed
+45,1e5d81dc-961d-455a-b80f-d6c30c518cde,dba7cf49-9f57-43e3-878d-a63ced26a243,Caden Nemoff,Jaeda Minniefield,mixed
+46,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,Gabriel Joseph,Ella Cosma,mixed
+47,9b97206b-783a-4fab-85e9-45a6240325a5,d50310a6-9378-4228-823f-7fb54f7bd698,Catherine Parenteau,Gabriel Tardio,mixed
+48,22989ac3-e778-487a-ba32-a30243acd294,6f149538-c6f6-4ad5-9e60-2afc100f97c1,Christine Trifunovic,Spartak Rahachou,mixed
+49,34270d82-e968-407d-a918-8aa57f0123a6,8a71d348-6401-4068-bedd-f4ed30460d2f,Elsie Hendershot,Andrew Caldarella,mixed
+50,20684550-cb89-4ea2-9e2f-0f44eb920b45,dbcb41e9-e983-410b-bc23-d184d034cfc0,Chao Yi Wang,Tyson McGuffin,mixed
+51,574957ae-e8d5-486e-aabc-a1cc6a392f8d,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Jalina Ingram,John Lucian Goins,mixed
+52,3d67b6d0-063e-466c-a475-7679d0764354,4e39b9bd-436d-495d-99d7-c2818bbea4ab,Austin Bricker,Camila Zilveti,mixed
+53,53b056f9-095a-40fa-881d-142629905f8a,69633ccf-87be-4975-a578-53d6e166c91b,Luana Stanciu,Wil Shaffer,mixed
+54,f4c43443-fdff-4344-b291-274cfd26361e,fd565e56-6223-4ef0-882e-02346e7e0573,Juan Benitez,Brooke Caruso,mixed
+55,37a2a373-8d3e-4177-bf1b-e6c9eaa52f5e,d5d2a4dc-fb77-4686-8f63-d75694831b5c,Natalia Simson,Karthik Ganesh,mixed
+56,b51ea0fb-c243-4427-85f8-b798febb51ff,bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,Jorja Johnson,JW Johnson,mixed
+57,52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,8f521dcc-1cb5-4c8d-933c-af6b267bd395,Eric Oncins,Meghan Dizon,mixed
+58,6160a7c7-6b90-41f1-96d3-af5fa1623ca5,b6fe1237-b049-405c-a641-d57f8170a9a0,Collin Johns,Albie Huang,mixed
+59,b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Max Freeman,Milan Rane,mixed
+60,33292af3-984d-4752-8d18-b3a5c147e9fe,87d60b6f-6f2e-4610-ab89-487e8acc097e,Armaan Bhatia,Mya Bui,mixed
+61,05b194b3-db88-4f77-a26f-5ef5cfbf6146,9eff9049-c45c-42ee-9a49-e9a797cc2116,Riley Newman,Cailyn Campbell,mixed
+62,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,4025f403-d676-42ee-97a1-61d9b38c211b,Tom Protzek,Allison Phillips,mixed
+63,0d23964f-d43f-4006-b1e0-13001393216c,f8b6b217-f9f8-4fd3-a71d-ae4dfcbb9c89,Ross Whittaker,Ava Ignatowich,mixed
+64,70c18684-f615-4d05-9aa9-5cbdbd53ab9f,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Carlota Trevino,Rafael Lenhard,mixed
+65,504e8c08-caf6-4db8-b454-11ffa321261c,759ecf95-26a6-4ffe-bb8b-035d3ec05f31,Lucy Kovalova,Matt Wright,mixed
+66,88fb0858-b9c3-4620-9408-0dda0eb241ef,a95df9a8-772c-4dbf-8c28-e200b7308584,Tyler Loong,Kiora Kunimoto,mixed
+67,29e8121d-6f86-4192-b7af-ab05b77b89fe,fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae,Ting Chieh Wei,Anderson Scarpa,mixed
+68,0ccab93d-398c-40a8-821f-07a2ded79dde,a9a168ae-7822-4d31-b07b-fba40480c1fc,Zoeya Khan,Brandon French,mixed
+69,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,f879086b-e0e5-4772-b0a6-4055c265da69,Noe Khlif,Tina Pisnik,mixed
+70,0c1bb94d-3af2-42f4-b938-d712c707ace4,ead35052-7367-4296-96d4-064f546cc2b9,Callie Smith,CJ Klinger,mixed
+71,d69ec633-93c9-4d07-8870-be9f5acd5330,f03d156f-3d8a-4830-a5d1-ae4372ad5009,Rachel Rettger,Wesley Burrows,mixed
+72,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,719e2d3b-d10d-402d-a195-41f072214679,Andre Mercado,Isabella Dunlap,mixed
+73,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Luc Pham,Giovanna Morelli,mixed
+74,db5eef5c-99dd-49d9-bbfc-65171a366bda,fc05556e-3e38-4a38-99c2-f855174a7c28,Anna Bright,Hayden Patriquin,mixed
+75,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,bc7b2475-e580-4734-bc14-814a153bec5d,Nicole Conard,Pesa Teoni,mixed
+76,4057f30d-d42a-4189-a158-11576fb5f52a,6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,Blaine Hovenier,Jade Kawamoto,mixed
+77,74afd19c-8f82-4ca2-9345-e4d693111033,f91b88a1-7d1e-41ad-9782-200959faf6bd,Marshall Brown,Olivia McMillan,mixed
+78,925c1306-6b3b-4510-8482-f34168a0842a,f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1,Roscoe Bellamy,Alex Walker,mixed
+79,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,Donald Young,Lindsey Newman,mixed
+80,571d4503-e073-4580-a555-be3c7f93c59c,a018902f-114c-4519-997c-4fdf52d4a0e1,Chuck Taylor,Abbigal Hatton,mixed
+81,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Zane Navratil,Lina Padegimaite,mixed
+82,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,763b4d27-8140-47cd-86f5-982706cd4ebb,Lingwei Kong,Michael Loyd,mixed
+83,2bfe44bb-d558-411f-abeb-c8522dd42ce9,76419f3a-712c-4241-8940-6f9bda847ba7,Julian Arnold,Lauren Stratman,mixed
+84,469988c9-b401-4c68-9e07-e1b1b104b791,6794d224-7da3-43d9-8300-e24e731f5dea,Yates Johnson,Samantha Parker,mixed
+85,50908953-a944-4a34-898b-16af312bc814,d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,Rachel Rohrabacher,Will Howells,mixed
+86,6a87bc44-5190-44db-8a2f-467de4de48c6,ce4f0e14-80ea-4ed0-a81c-7341d356d427,Christa Gecheva,Yuta Funemizu,mixed
+87,efe9989b-5864-48c2-806c-06697024e1da,ff38654d-daae-4bad-a1a7-690e4e5706eb,Allyce Jones,Connor Garnett,mixed
+88,38b1bfb1-576b-4a3e-ab6b-e8bc46031c1d,ec94501d-8b59-4236-b77d-7238f8925e48,Eric Roddy,Marcela Aguila Ampon,mixed
+89,129b2771-34b5-4b7f-9c23-e020a6aa3e6a,6f862c1d-1317-4fe7-bdcd-64caa0dbb088,Anna Leigh Waters,Ben Johns,mixed
+90,295e343a-31a0-4e1d-a286-d62592291435,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,Jay Devilliers,Jessie Irvine,mixed
+91,3a43c56f-b9d8-4e72-ae8a-58fd69291946,b1ab7d76-a859-4136-8405-3ed7c9be287a,Jack Sock,Mari Humberg,mixed
+92,25a6f570-d617-427a-9fc4-3bf6115a9a84,a91e2b68-7357-4518-baf9-f59b0b4c2477,Hannah Blatt,Christopher Haworth,mixed
+93,66a6c35b-33a2-4a23-b5db-fa53c96d643a,7925aefe-e260-4b83-8bfc-214da1d14fb5,Kaitlyn Christian,Travis Rettenmaier,mixed
+94,04158680-ebb3-4554-96a1-500cc6d00882,d45a3391-82f4-45d0-ba66-f1901854a8d0,Chloe Igleski,Darrian Young,mixed
+95,3af01041-5679-400a-87b8-12c01db8cec4,7edb882c-6d17-4129-8208-710e3c82364c,Kate Fahey,Federico Staksrud,mixed
+96,50908953-a944-4a34-898b-16af312bc814,9b97206b-783a-4fab-85e9-45a6240325a5,Rachel Rohrabacher,Catherine Parenteau,womens
+97,a018902f-114c-4519-997c-4fdf52d4a0e1,b6fe1237-b049-405c-a641-d57f8170a9a0,Abbigal Hatton,Albie Huang,womens
+98,88fb0858-b9c3-4620-9408-0dda0eb241ef,a9a168ae-7822-4d31-b07b-fba40480c1fc,Tyler Loong,Brandon French,mens
+99,2bfe44bb-d558-411f-abeb-c8522dd42ce9,ebb2a1e0-7c6c-48a4-b994-e81edd8ddb97,Julian Arnold,Patrick Smith,mens
+100,53b056f9-095a-40fa-881d-142629905f8a,d69ec633-93c9-4d07-8870-be9f5acd5330,Luana Stanciu,Rachel Rettger,womens
+101,25104e43-16f9-4ce3-9085-70243d8b350a,dba7cf49-9f57-43e3-878d-a63ced26a243,Ella Yeh,Jaeda Minniefield,womens
+102,34270d82-e968-407d-a918-8aa57f0123a6,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,Elsie Hendershot,Ella Cosma,womens
+103,62955f38-bdf5-46af-9622-13c7afe90619,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,Jonathan Truong,Alix Truong,mixed
+104,25a6f570-d617-427a-9fc4-3bf6115a9a84,4025f403-d676-42ee-97a1-61d9b38c211b,Hannah Blatt,Allison Phillips,womens
+105,6794d224-7da3-43d9-8300-e24e731f5dea,6a87bc44-5190-44db-8a2f-467de4de48c6,Samantha Parker,Christa Gecheva,womens
+106,3af01041-5679-400a-87b8-12c01db8cec4,f879086b-e0e5-4772-b0a6-4055c265da69,Kate Fahey,Tina Pisnik,womens
+107,5f367bee-cf3e-4aad-a6e6-72cca04d97e2,f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1,Angie Walker,Alex Walker,womens
+108,0ccab93d-398c-40a8-821f-07a2ded79dde,a95df9a8-772c-4dbf-8c28-e200b7308584,Zoeya Khan,Kiora Kunimoto,womens
+109,50c2125b-406c-41e7-aad6-5432c7cd8e1c,62955f38-bdf5-46af-9622-13c7afe90619,AJ Koller,Jonathan Truong,mens
+110,35f81e87-382e-41cc-9bab-687116861954,69633ccf-87be-4975-a578-53d6e166c91b,Jace Morris,Wil Shaffer,mens
+111,1de884f8-7bf7-4b49-9de8-3f1fd74cabd6,7319013d-d511-4aa5-a356-4aa2cccf94f5,Dylan Frazier,Lea Jansen,mixed
+112,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,4057f30d-d42a-4189-a158-11576fb5f52a,Zane Navratil,Blaine Hovenier,mens
+113,146dd2f7-7f5d-495d-b2f1-96d433742fec,dc69fcde-bcda-4441-8b66-a8bafeb12ded,Eduardo Santini Ayon,Joel Poland,mens
+114,70c18684-f615-4d05-9aa9-5cbdbd53ab9f,a0581131-7d36-4424-b7f1-a5a4eaaed30f,Carlota Trevino,Cc Eleven Sacca,womens
+115,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,Noe Khlif,Will Howells,mens
+116,0c5b84bb-4c04-4906-86bc-deb533ff4eec,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Zane Ford,John Lucian Goins,mens
+117,26b13d9f-ccab-497c-8e3a-68299be5ea70,571d4503-e073-4580-a555-be3c7f93c59c,Daniel Phillips,Chuck Taylor,mens
+118,33292af3-984d-4752-8d18-b3a5c147e9fe,ce4f0e14-80ea-4ed0-a81c-7341d356d427,Armaan Bhatia,Yuta Funemizu,mens
+119,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,6f149538-c6f6-4ad5-9e60-2afc100f97c1,Gabriel Joseph,Spartak Rahachou,mens
+120,7925aefe-e260-4b83-8bfc-214da1d14fb5,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Travis Rettenmaier,Braden Jacobson,mens
+121,1374dfe9-4573-4ab6-991d-16bed0a6d25c,3d67b6d0-063e-466c-a475-7679d0764354,Edward Perez,Austin Bricker,mens
+122,c96f7a83-9cc1-4fbe-a610-126ed8e3a202,fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae,Gregory Dow,Anderson Scarpa,mens
+123,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,Andre Mercado,Tama Shimabukuro,mens
+124,5f367bee-cf3e-4aad-a6e6-72cca04d97e2,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,Angie Walker,James Delgado,mixed
+125,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,461f063e-a587-4638-bad9-421ff33d91d7,Mohaned Alhouni,Genie Erokhina,mixed
+126,129b2771-34b5-4b7f-9c23-e020a6aa3e6a,db5eef5c-99dd-49d9-bbfc-65171a366bda,Anna Leigh Waters,Anna Bright,womens
+127,676b1cbc-766c-4616-bf39-1787ffd8c72a,8160ad59-4654-46b1-b229-8d5f2a9a45f9,Etta Tuionetoa,Hunter Johnson,mixed
+128,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,Mohaned Alhouni,Mota Alhouni,mens
+129,0d23964f-d43f-4006-b1e0-13001393216c,614e164a-4197-44eb-855c-586cf79fbfc9,Ross Whittaker,Ivan Jakovljevic,mens
+130,3a43c56f-b9d8-4e72-ae8a-58fd69291946,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,Jack Sock,Pablo Tellez,mens
+131,925c1306-6b3b-4510-8482-f34168a0842a,d45a3391-82f4-45d0-ba66-f1901854a8d0,Roscoe Bellamy,Darrian Young,mens
+132,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,be33755f-9262-461b-aedd-e9a7a686a82c,Dekel Bar,Jackie Kawamoto,mixed
+133,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,719e2d3b-d10d-402d-a195-41f072214679,Nicole Conard,Isabella Dunlap,womens
+134,1abf464c-e8fc-472b-b1c8-f42a5c1fc02a,2b508074-59ec-455c-8974-31de393bc165,Natalie Hur,Lyn Yuen Choo,womens
+135,469988c9-b401-4c68-9e07-e1b1b104b791,74afd19c-8f82-4ca2-9345-e4d693111033,Yates Johnson,Marshall Brown,mens
+136,79a11da1-6aeb-4719-9b1e-9918e0163cec,fc05556e-3e38-4a38-99c2-f855174a7c28,Christian Alshon,Hayden Patriquin,mens
+137,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,Brooke Buckner,Pablo Tellez,mixed
+138,bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,ead35052-7367-4296-96d4-064f546cc2b9,JW Johnson,CJ Klinger,mens
+139,38b1bfb1-576b-4a3e-ab6b-e8bc46031c1d,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,Eric Roddy,James Delgado,mens
+140,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,f370a1a0-2e1a-463b-a35c-30899131f7d6,Rafael Lenhard,Troy Akin,mens
+141,6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,be33755f-9262-461b-aedd-e9a7a686a82c,Jade Kawamoto,Jackie Kawamoto,womens
+142,581183e8-3d9e-459e-b69f-7337d8b6f3d2,a3ed7970-35d2-485c-8285-187c298a2d83,Andrei Daescu,Lacy Schneemann,mixed
+143,b51ea0fb-c243-4427-85f8-b798febb51ff,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Jorja Johnson,Tyra Hurricane Black,womens
+144,66a6c35b-33a2-4a23-b5db-fa53c96d643a,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,Kaitlyn Christian,Jessie Irvine,womens
+145,4e39b9bd-436d-495d-99d7-c2818bbea4ab,f8b6b217-f9f8-4fd3-a71d-ae4dfcbb9c89,Camila Zilveti,Ava Ignatowich,womens
+146,29e8121d-6f86-4192-b7af-ab05b77b89fe,71992955-8b6f-470b-a991-796cfa56a826,Ting Chieh Wei,Liz Truluck,womens
+147,05b194b3-db88-4f77-a26f-5ef5cfbf6146,81535c8c-27d9-452c-a72a-61fc9f755b01,Riley Newman,Will Mackinnon,mens
+148,295e343a-31a0-4e1d-a286-d62592291435,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,Jay Devilliers,Dekel Bar,mens
+149,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,8f521dcc-1cb5-4c8d-933c-af6b267bd395,Alix Truong,Meghan Dizon,womens
+150,9eff9049-c45c-42ee-9a49-e9a797cc2116,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Cailyn Campbell,Giovanna Morelli,womens
+151,0c1bb94d-3af2-42f4-b938-d712c707ace4,7319013d-d511-4aa5-a356-4aa2cccf94f5,Callie Smith,Lea Jansen,womens
+152,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,f91b88a1-7d1e-41ad-9782-200959faf6bd,Lindsey Newman,Olivia McMillan,womens
+153,b1ab7d76-a859-4136-8405-3ed7c9be287a,efe9989b-5864-48c2-806c-06697024e1da,Mari Humberg,Allyce Jones,womens
+154,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,ec4cdfe2-c6f6-4de1-824e-9adcaeb31196,Lina Padegimaite,Judit Castillo,womens
+155,8160ad59-4654-46b1-b229-8d5f2a9a45f9,f86cff72-5f9c-40b1-9f28-f28aafae245f,Hunter Johnson,Wyatt Stone,mens
+156,504e8c08-caf6-4db8-b454-11ffa321261c,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Lucy Kovalova,Milan Rane,womens
+157,574957ae-e8d5-486e-aabc-a1cc6a392f8d,9034d36a-1b11-4c9d-ad75-5c665d87b8c5,Jalina Ingram,Pierina Imparato,womens
+158,1de884f8-7bf7-4b49-9de8-3f1fd74cabd6,52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,Dylan Frazier,Eric Oncins,mens
+159,306da673-de7e-44f5-bc16-0738b44bd089,d8d51930-abf9-468b-9e43-55a9c0728d58,Christopher Crouch,Anouar Braham,mens
+160,581183e8-3d9e-459e-b69f-7337d8b6f3d2,7edb882c-6d17-4129-8208-710e3c82364c,Andrei Daescu,Federico Staksrud,mens
+161,bc7b2475-e580-4734-bc14-814a153bec5d,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Pesa Teoni,Luc Pham,mens
+162,435e466e-22c7-4917-8cb4-ff45bbccde19,76419f3a-712c-4241-8940-6f9bda847ba7,Tamaryn Emmrich,Lauren Stratman,womens
+163,06ba18e0-687b-4aa3-822d-1c86981f576b,6160a7c7-6b90-41f1-96d3-af5fa1623ca5,Rafa Hewett,Collin Johns,mens
+164,b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,dbcb41e9-e983-410b-bc23-d184d034cfc0,Max Freeman,Tyson McGuffin,mens
+165,676b1cbc-766c-4616-bf39-1787ffd8c72a,a3ed7970-35d2-485c-8285-187c298a2d83,Etta Tuionetoa,Lacy Schneemann,womens
+166,87d60b6f-6f2e-4610-ab89-487e8acc097e,ad6e69ff-7913-4b21-86dd-9489f749be01,Mya Bui,Paula Rives,womens
+167,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,461f063e-a587-4638-bad9-421ff33d91d7,Lingwei Kong,Genie Erokhina,womens
+168,6f862c1d-1317-4fe7-bdcd-64caa0dbb088,d50310a6-9378-4228-823f-7fb54f7bd698,Ben Johns,Gabriel Tardio,mens
+169,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,20684550-cb89-4ea2-9e2f-0f44eb920b45,Brooke Buckner,Chao Yi Wang,womens
+170,759ecf95-26a6-4ffe-bb8b-035d3ec05f31,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Matt Wright,Jaume Martinez Vich,mens
+171,ba491f1c-0112-47a8-a348-4695289e958a,ff38654d-daae-4bad-a1a7-690e4e5706eb,Augustus Ge,Connor Garnett,mens
+172,be74032b-1035-4ece-bf4f-773b45da4d58,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Mehvish Safdar,John Lucian Goins,mixed
+173,25a6f570-d617-427a-9fc4-3bf6115a9a84,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,Hannah Blatt,Zane Navratil,mixed
+174,1374dfe9-4573-4ab6-991d-16bed0a6d25c,38fdc174-96d6-459f-a27c-df35eb9f945c,Edward Perez,Ashley Griffith,mixed
+175,0c5b84bb-4c04-4906-86bc-deb533ff4eec,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,Zane Ford,Lindsey Newman,mixed
+176,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,e9849183-4693-4340-abf5-f4b6f3cb226f,Lingwei Kong,Martin Emmrich,mixed
+177,3d9c8684-953f-4008-b355-b6104ee56a5b,a018902f-114c-4519-997c-4fdf52d4a0e1,Connor Mogle,Abbigal Hatton,mixed
+178,76419f3a-712c-4241-8940-6f9bda847ba7,f86cff72-5f9c-40b1-9f28-f28aafae245f,Lauren Stratman,Wyatt Stone,mixed
+179,7464628e-931a-44c9-b0df-749a7cb32eaa,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Adam Harvey,Giovanna Morelli,mixed
+180,2a490031-a7b4-4833-8d61-b9970960d2dc,7b85c35f-6a90-4c61-af0b-565658feeb3c,Monika Wynne,Freddie Powell,mixed
+181,1d701c30-6b5d-485f-ae97-60f3b0c50896,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Zoey Weil,Jaume Martinez Vich,mixed
+182,06ba18e0-687b-4aa3-822d-1c86981f576b,7cf93ef3-86b7-4bb4-937b-5b5dc4c72c32,Rafa Hewett,Valerie R Simon,mixed
+183,614e164a-4197-44eb-855c-586cf79fbfc9,fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae,Ivan Jakovljevic,Anderson Scarpa,mens
+184,8172788a-eec8-4064-90ee-a01dd09e2729,a8256366-d2f9-4787-bf8c-d8e76c55fa86,Jaikin Gomez,Mouaad Alhouni,mens
+185,a3ed7970-35d2-485c-8285-187c298a2d83,b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,Lacy Schneemann,Max Freeman,mixed
+186,99b25b49-2a51-412d-9fbf-e1b6804acce0,ab6386c6-c7e3-422f-9134-e20e92725ee5,Camden Chaffin,Emma Nelson,mixed
+187,1e5d81dc-961d-455a-b80f-d6c30c518cde,53b056f9-095a-40fa-881d-142629905f8a,Caden Nemoff,Luana Stanciu,mixed
+188,925c1306-6b3b-4510-8482-f34168a0842a,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Roscoe Bellamy,Lina Padegimaite,mixed
+189,45e53881-72e4-4de1-9763-c2e7f7f854ba,a9a168ae-7822-4d31-b07b-fba40480c1fc,Andrea Koop,Brandon French,mixed
+190,eb14fc6e-ede1-4999-bec3-e36695e7f94e,ff38654d-daae-4bad-a1a7-690e4e5706eb,Milan Rane,Connor Garnett,mixed
+191,0df3b359-d935-4c79-a16a-ce373f55db07,1607a4f2-2592-4745-ba49-21bbeb199151,Ernesto Fajardo,Sydney Sonday,mixed
+192,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,d8d51930-abf9-468b-9e43-55a9c0728d58,Mota Alhouni,Anouar Braham,mens
+193,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,3d9c8684-953f-4008-b355-b6104ee56a5b,Gabriel Joseph,Connor Mogle,mens
+194,81535c8c-27d9-452c-a72a-61fc9f755b01,f8b6b217-f9f8-4fd3-a71d-ae4dfcbb9c89,Will Mackinnon,Ava Ignatowich,mixed
+195,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Tama Shimabukuro,Luc Pham,mens
+196,b3f6f49d-bc24-44fd-8068-4e5971e9d61a,ea0b7d06-7e9f-4786-a4ed-24da5029559f,Daniel Miron,Dale Kim,mens
+197,0d23964f-d43f-4006-b1e0-13001393216c,1374dfe9-4573-4ab6-991d-16bed0a6d25c,Ross Whittaker,Edward Perez,mens
+198,7b85c35f-6a90-4c61-af0b-565658feeb3c,ce7e7707-c94e-4d33-b34a-37efe3363774,Freddie Powell,Eli Steiner,mens
+199,763b4d27-8140-47cd-86f5-982706cd4ebb,f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1,Michael Loyd,Alex Walker,mixed
+200,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,f91b88a1-7d1e-41ad-9782-200959faf6bd,Donald Young,Olivia McMillan,mixed
+201,4025f403-d676-42ee-97a1-61d9b38c211b,518626d4-2600-4134-8c6a-0ae9315f9625,Allison Phillips,Cason Campbell,mixed
+202,0c1bb94d-3af2-42f4-b938-d712c707ace4,8160ad59-4654-46b1-b229-8d5f2a9a45f9,Callie Smith,Hunter Johnson,mixed
+203,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Ella Cosma,Luc Pham,mixed
+204,b1ab7d76-a859-4136-8405-3ed7c9be287a,ba491f1c-0112-47a8-a348-4695289e958a,Mari Humberg,Augustus Ge,mixed
+205,719e2d3b-d10d-402d-a195-41f072214679,a91e2b68-7357-4518-baf9-f59b0b4c2477,Isabella Dunlap,Christopher Haworth,mixed
+206,ad6e69ff-7913-4b21-86dd-9489f749be01,d45a3391-82f4-45d0-ba66-f1901854a8d0,Paula Rives,Darrian Young,mixed
+207,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,efe9989b-5864-48c2-806c-06697024e1da,Dekel Bar,Allyce Jones,mixed
+208,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,c96f7a83-9cc1-4fbe-a610-126ed8e3a202,James Delgado,Gregory Dow,mens
+209,2bfe44bb-d558-411f-abeb-c8522dd42ce9,e9849183-4693-4340-abf5-f4b6f3cb226f,Julian Arnold,Martin Emmrich,mens
+210,6a87bc44-5190-44db-8a2f-467de4de48c6,719e2d3b-d10d-402d-a195-41f072214679,Christa Gecheva,Isabella Dunlap,womens
+211,38fdc174-96d6-459f-a27c-df35eb9f945c,f8b6b217-f9f8-4fd3-a71d-ae4dfcbb9c89,Ashley Griffith,Ava Ignatowich,womens
+212,4025f403-d676-42ee-97a1-61d9b38c211b,be74032b-1035-4ece-bf4f-773b45da4d58,Allison Phillips,Mehvish Safdar,womens
+213,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,f86cff72-5f9c-40b1-9f28-f28aafae245f,Dekel Bar,Wyatt Stone,mens
+214,571d4503-e073-4580-a555-be3c7f93c59c,ebb2a1e0-7c6c-48a4-b994-e81edd8ddb97,Chuck Taylor,Patrick Smith,mens
+215,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,7edb882c-6d17-4129-8208-710e3c82364c,Alix Truong,Federico Staksrud,mixed
+216,d8d51930-abf9-468b-9e43-55a9c0728d58,ec94501d-8b59-4236-b77d-7238f8925e48,Anouar Braham,Marcela Aguila Ampon,mixed
+217,0ccab93d-398c-40a8-821f-07a2ded79dde,fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae,Zoeya Khan,Anderson Scarpa,mixed
+218,4057f30d-d42a-4189-a158-11576fb5f52a,8160ad59-4654-46b1-b229-8d5f2a9a45f9,Blaine Hovenier,Hunter Johnson,mens
+219,50c2125b-406c-41e7-aad6-5432c7cd8e1c,ce4f0e14-80ea-4ed0-a81c-7341d356d427,AJ Koller,Yuta Funemizu,mens
+220,25a6f570-d617-427a-9fc4-3bf6115a9a84,435e466e-22c7-4917-8cb4-ff45bbccde19,Hannah Blatt,Tamaryn Emmrich,womens
+221,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,ec94501d-8b59-4236-b77d-7238f8925e48,Giovanna Morelli,Marcela Aguila Ampon,womens
+222,0ccab93d-398c-40a8-821f-07a2ded79dde,ad6e69ff-7913-4b21-86dd-9489f749be01,Zoeya Khan,Paula Rives,womens
+223,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,efedfcd1-7638-4c6e-8225-fea7f8d40031,Mota Alhouni,Victoria Simon,mixed
+224,99b25b49-2a51-412d-9fbf-e1b6804acce0,a91e2b68-7357-4518-baf9-f59b0b4c2477,Camden Chaffin,Christopher Haworth,mens
+225,763b4d27-8140-47cd-86f5-982706cd4ebb,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,Michael Loyd,Donald Young,mens
+226,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,55dbee1f-1ee7-464b-9c80-d14cd9e44b8d,Zane Navratil,Carlos Di Laura III,mens
+227,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,469988c9-b401-4c68-9e07-e1b1b104b791,Tom Protzek,Yates Johnson,mens
+228,7edb882c-6d17-4129-8208-710e3c82364c,ead35052-7367-4296-96d4-064f546cc2b9,Federico Staksrud,CJ Klinger,mens
+229,4057f30d-d42a-4189-a158-11576fb5f52a,66a6c35b-33a2-4a23-b5db-fa53c96d643a,Blaine Hovenier,Kaitlyn Christian,mixed
+230,1607a4f2-2592-4745-ba49-21bbeb199151,2a490031-a7b4-4833-8d61-b9970960d2dc,Sydney Sonday,Monika Wynne,womens
+231,1d701c30-6b5d-485f-ae97-60f3b0c50896,45e53881-72e4-4de1-9763-c2e7f7f854ba,Zoey Weil,Andrea Koop,womens
+232,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,a95df9a8-772c-4dbf-8c28-e200b7308584,Nicole Conard,Kiora Kunimoto,womens
+233,581183e8-3d9e-459e-b69f-7337d8b6f3d2,d50310a6-9378-4228-823f-7fb54f7bd698,Andrei Daescu,Gabriel Tardio,mens
+234,1728d016-1f02-4789-be73-63d12d5a5b42,581183e8-3d9e-459e-b69f-7337d8b6f3d2,Parris Todd,Andrei Daescu,mixed
+235,a018902f-114c-4519-997c-4fdf52d4a0e1,ab6386c6-c7e3-422f-9134-e20e92725ee5,Abbigal Hatton,Emma Nelson,womens
+236,9eff9049-c45c-42ee-9a49-e9a797cc2116,f879086b-e0e5-4772-b0a6-4055c265da69,Cailyn Campbell,Tina Pisnik,womens
+237,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Mohaned Alhouni,John Lucian Goins,mens
+238,518626d4-2600-4134-8c6a-0ae9315f9625,7464628e-931a-44c9-b0df-749a7cb32eaa,Cason Campbell,Adam Harvey,mens
+239,8f521dcc-1cb5-4c8d-933c-af6b267bd395,a3ed7970-35d2-485c-8285-187c298a2d83,Meghan Dizon,Lacy Schneemann,womens
+240,295e343a-31a0-4e1d-a286-d62592291435,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,Jay Devilliers,Pablo Tellez,mens
+241,1728d016-1f02-4789-be73-63d12d5a5b42,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Parris Todd,Tyra Hurricane Black,womens
+242,4025f403-d676-42ee-97a1-61d9b38c211b,6794d224-7da3-43d9-8300-e24e731f5dea,Allison Phillips,Samantha Parker,womens
+243,1607a4f2-2592-4745-ba49-21bbeb199151,1d701c30-6b5d-485f-ae97-60f3b0c50896,Sydney Sonday,Zoey Weil,womens
+244,574957ae-e8d5-486e-aabc-a1cc6a392f8d,dba7cf49-9f57-43e3-878d-a63ced26a243,Jalina Ingram,Jaeda Minniefield,womens
+245,49d53a66-df0a-4419-892e-0fe6c788391e,68d3b279-8b2d-4055-8eb3-b28448c1f7d2,Wendy Weston,Katie Neils,womens
+246,1e5d81dc-961d-455a-b80f-d6c30c518cde,8172788a-eec8-4064-90ee-a01dd09e2729,Caden Nemoff,Jaikin Gomez,mens
+247,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,f843b220-41cb-4203-831b-6aac32b8f02a,Tama Shimabukuro,Riley Inn,mens
+248,26898786-4fd1-4dd9-bc18-a5c515a6b0ef,e4bf2cca-f71a-4ded-89fe-39db811423db,Maverick Messinger,Jace Howard,mens
+249,5883c77e-d6e0-4848-9473-866396578248,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,Audrey Adele Brown,Lindsey Newman,womens
+250,89647b43-f3f5-49e6-896f-614f0175a3f5,9a449e9c-69aa-4a48-8f28-217766ab25f7,Jackson Ayotte,Armaan Jiwa Mawji,mens
+251,0517f4a6-2648-470e-a9ff-8cf78eee3421,e8e10ea8-2ff2-4155-9169-cc33ff8c6265,Connor McCartney,Rio Newcombe,mens
+252,7867cc51-11d1-471f-a8bb-9d8370b6a698,e2466ee7-aaa4-4c6a-a288-63e717054640,Nicholas Wade,Bret Berryman,mens
+253,26b13d9f-ccab-497c-8e3a-68299be5ea70,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Daniel Phillips,Braden Jacobson,mens
+254,2c1692a6-0fa2-47b0-9d2b-e12b5c054ef4,9532d3f8-9418-4b59-af95-3cc5e7c2a066,Janet Liu,Kelly Chen,womens
+255,9db29a7a-1fce-4394-a1f0-a5fbd2bc2e7b,ce7e7707-c94e-4d33-b34a-37efe3363774,Jake Anderson,Eli Steiner,mens
+256,3d67b6d0-063e-466c-a475-7679d0764354,3d9c8684-953f-4008-b355-b6104ee56a5b,Austin Bricker,Connor Mogle,mens
+257,5520bc45-676e-45a7-bf34-7d91529fdd63,798294b4-02e6-4c16-b3f6-9337758ae915,Billy Buchhauser,Kendall Kikkawa,mens
+258,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,69633ccf-87be-4975-a578-53d6e166c91b,Andre Mercado,Wil Shaffer,mens
+259,66cb85be-fe8b-402d-a4f7-4a8e6a7c3ad7,80217cca-df99-4019-a90f-385622ca057a,Lucas Pascoe,Zach Gonnering,mens
+260,316a0784-5829-4fad-89a1-438e5aac2504,c3066b2d-fc90-4774-a571-cde5fc5583d4,Jazz Hearn IV,Chloe Diskin,womens
+261,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,e8e10ea8-2ff2-4155-9169-cc33ff8c6265,Lindsey Newman,Rio Newcombe,mixed
+262,b025eccb-868e-4ce6-a4db-c1082a288b59,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Maddy Rasmusen,Braden Jacobson,mixed
+263,1607a4f2-2592-4745-ba49-21bbeb199151,3d67b6d0-063e-466c-a475-7679d0764354,Sydney Sonday,Austin Bricker,mixed
+264,04158680-ebb3-4554-96a1-500cc6d00882,66cb85be-fe8b-402d-a4f7-4a8e6a7c3ad7,Chloe Igleski,Lucas Pascoe,mixed
+265,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,6794d224-7da3-43d9-8300-e24e731f5dea,Tama Shimabukuro,Samantha Parker,mixed
+266,574957ae-e8d5-486e-aabc-a1cc6a392f8d,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Jalina Ingram,Rafael Lenhard,mixed
+267,1d701c30-6b5d-485f-ae97-60f3b0c50896,bc7b2475-e580-4734-bc14-814a153bec5d,Zoey Weil,Pesa Teoni,mixed
+268,26b13d9f-ccab-497c-8e3a-68299be5ea70,4025f403-d676-42ee-97a1-61d9b38c211b,Daniel Phillips,Allison Phillips,mixed
+269,19a1f7fe-1d16-418a-be95-785266ff586e,89647b43-f3f5-49e6-896f-614f0175a3f5,Yolena Carlon,Jackson Ayotte,mixed
+270,3d9c8684-953f-4008-b355-b6104ee56a5b,5883c77e-d6e0-4848-9473-866396578248,Connor Mogle,Audrey Adele Brown,mixed
+271,2c1692a6-0fa2-47b0-9d2b-e12b5c054ef4,c2c74ae6-6b11-4a40-80e6-b7b924d2d83f,Janet Liu,Matthew Finnerty,mixed
+272,c971bb40-090b-4e47-be58-905495e38401,dba7cf49-9f57-43e3-878d-a63ced26a243,Miles Hoover,Jaeda Minniefield,mixed
+273,9a449e9c-69aa-4a48-8f28-217766ab25f7,cd9ee524-11da-4099-805f-1f362f2bc468,Armaan Jiwa Mawji,Stevie Petropouleas,mixed
+274,1e5d81dc-961d-455a-b80f-d6c30c518cde,22989ac3-e778-487a-ba32-a30243acd294,Caden Nemoff,Christine Trifunovic,mixed
+275,d8d51930-abf9-468b-9e43-55a9c0728d58,f13c20c3-1fed-4a9e-abec-f3f3bf1f8f91,Anouar Braham,Anne-Sophie Courteau,mixed
+276,4214dfa2-6d13-43c3-b98b-f36e4556402d,80217cca-df99-4019-a90f-385622ca057a,Kayla Williams,Zach Gonnering,mixed
+277,26898786-4fd1-4dd9-bc18-a5c515a6b0ef,f6e249dc-5bb9-483a-a99f-df364df93341,Maverick Messinger,Kelly Goodnow,mixed
+278,2a490031-a7b4-4833-8d61-b9970960d2dc,cb9ea037-f204-4216-ac56-930a01009166,Monika Wynne,Matt Burkhardt,mixed
+279,49d53a66-df0a-4419-892e-0fe6c788391e,a973d880-71ca-48d1-b127-a7e23afd5a19,Wendy Weston,Matthew Mead,mixed
+280,9db29a7a-1fce-4394-a1f0-a5fbd2bc2e7b,c3012322-e95e-4e38-a0d8-106f9e236869,Jake Anderson,Keilly Ulery,mixed
+281,12c765d0-8384-41d3-a498-de63fd7c37da,dc69fcde-bcda-4441-8b66-a8bafeb12ded,Naomi Nguyen,Joel Poland,mixed
+282,2e858abd-e6cb-4a07-b6ea-fd6ca01556ae,7b85c35f-6a90-4c61-af0b-565658feeb3c,Rachael James,Freddie Powell,mixed
+283,1d36eae4-41f1-4739-b9d2-0783fd371112,b3f6f49d-bc24-44fd-8068-4e5971e9d61a,Samantha Buyckx,Daniel Miron,mixed
+284,b3f6f49d-bc24-44fd-8068-4e5971e9d61a,e2466ee7-aaa4-4c6a-a288-63e717054640,Daniel Miron,Bret Berryman,mens
+285,0d23964f-d43f-4006-b1e0-13001393216c,d69ec633-93c9-4d07-8870-be9f5acd5330,Ross Whittaker,Rachel Rettger,mixed
+286,a018902f-114c-4519-997c-4fdf52d4a0e1,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Abbigal Hatton,Luc Pham,mixed
+287,f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1,fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae,Alex Walker,Anderson Scarpa,mixed
+288,0ccab93d-398c-40a8-821f-07a2ded79dde,d8d51930-abf9-468b-9e43-55a9c0728d58,Zoeya Khan,Anouar Braham,mixed
+289,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,ab6386c6-c7e3-422f-9134-e20e92725ee5,Andre Mercado,Emma Nelson,mixed
+290,03db4060-fcb3-41f7-83d5-7ee732dd8841,81535c8c-27d9-452c-a72a-61fc9f755b01,Jade Rau,Will Mackinnon,mixed
+291,2bfe44bb-d558-411f-abeb-c8522dd42ce9,9034d36a-1b11-4c9d-ad75-5c665d87b8c5,Julian Arnold,Pierina Imparato,mixed
+292,7925aefe-e260-4b83-8bfc-214da1d14fb5,ad6e69ff-7913-4b21-86dd-9489f749be01,Travis Rettenmaier,Paula Rives,mixed
+293,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,7cf93ef3-86b7-4bb4-937b-5b5dc4c72c32,Gabriel Joseph,Valerie R Simon,mixed
+294,34270d82-e968-407d-a918-8aa57f0123a6,88fb0858-b9c3-4620-9408-0dda0eb241ef,Elsie Hendershot,Tyler Loong,mixed
+295,35f81e87-382e-41cc-9bab-687116861954,469988c9-b401-4c68-9e07-e1b1b104b791,Jace Morris,Yates Johnson,mens
+296,62955f38-bdf5-46af-9622-13c7afe90619,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Jonathan Truong,Milan Rane,mixed
+297,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,f4c43443-fdff-4344-b291-274cfd26361e,Lingwei Kong,Juan Benitez,mixed
+298,3d67b6d0-063e-466c-a475-7679d0764354,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Austin Bricker,Giovanna Morelli,mixed
+299,35f81e87-382e-41cc-9bab-687116861954,dba7cf49-9f57-43e3-878d-a63ced26a243,Jace Morris,Jaeda Minniefield,mixed
+300,1d701c30-6b5d-485f-ae97-60f3b0c50896,f86cff72-5f9c-40b1-9f28-f28aafae245f,Zoey Weil,Wyatt Stone,mixed
+301,461f063e-a587-4638-bad9-421ff33d91d7,99b25b49-2a51-412d-9fbf-e1b6804acce0,Genie Erokhina,Camden Chaffin,mixed
+302,0c5b84bb-4c04-4906-86bc-deb533ff4eec,4e73b5b4-d734-4258-91cf-b678d08200a9,Zane Ford,Maria Ford,mixed
+303,1d36eae4-41f1-4739-b9d2-0783fd371112,bf84d952-c6a8-4494-943d-064b223e764f,Samantha Buyckx,Estee Widdershoven,womens
+304,a018902f-114c-4519-997c-4fdf52d4a0e1,fd565e56-6223-4ef0-882e-02346e7e0573,Abbigal Hatton,Brooke Caruso,womens
+305,03db4060-fcb3-41f7-83d5-7ee732dd8841,d69ec633-93c9-4d07-8870-be9f5acd5330,Jade Rau,Rachel Rettger,womens
+306,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,74afd19c-8f82-4ca2-9345-e4d693111033,Andre Mercado,Marshall Brown,mens
+307,6f149538-c6f6-4ad5-9e60-2afc100f97c1,79ee2d66-5ba3-47cc-bc43-f489a09d2d5a,Spartak Rahachou,George Rangelov,mens
+308,38fdc174-96d6-459f-a27c-df35eb9f945c,7464628e-931a-44c9-b0df-749a7cb32eaa,Ashley Griffith,Adam Harvey,mixed
+309,9d7b2972-477c-4cea-977d-f65f86dccac5,c3012322-e95e-4e38-a0d8-106f9e236869,Parth Mody,Keilly Ulery,mixed
+310,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,ec94501d-8b59-4236-b77d-7238f8925e48,Rafael Lenhard,Marcela Aguila Ampon,mixed
+311,14c4c96f-0a49-4d07-b16d-f6cb782491f4,22839b0d-41bf-4830-8f1e-0da170ebc723,Kentaro Hamaguchi,Haley Ferguson,mixed
+312,469988c9-b401-4c68-9e07-e1b1b104b791,76419f3a-712c-4241-8940-6f9bda847ba7,Yates Johnson,Lauren Stratman,mixed
+313,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,8160ad59-4654-46b1-b229-8d5f2a9a45f9,Alix Truong,Hunter Johnson,mixed
+314,518626d4-2600-4134-8c6a-0ae9315f9625,fd565e56-6223-4ef0-882e-02346e7e0573,Cason Campbell,Brooke Caruso,mixed
+315,1e5d81dc-961d-455a-b80f-d6c30c518cde,efedfcd1-7638-4c6e-8225-fea7f8d40031,Caden Nemoff,Victoria Simon,mixed
+316,5a5237bd-64cd-433c-99ba-34badaa2820c,d0a30dc1-a7d7-475c-bfc9-d55e0aa8e7e3,Braylon Ohrel,Ethan Bakalinsky,mens
+317,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,ce4f0e14-80ea-4ed0-a81c-7341d356d427,Tama Shimabukuro,Yuta Funemizu,mens
+318,66cb85be-fe8b-402d-a4f7-4a8e6a7c3ad7,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Lucas Pascoe,Luc Pham,mens
+319,435e466e-22c7-4917-8cb4-ff45bbccde19,55dbee1f-1ee7-464b-9c80-d14cd9e44b8d,Tamaryn Emmrich,Carlos Di Laura III,mixed
+320,581183e8-3d9e-459e-b69f-7337d8b6f3d2,6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,Andrei Daescu,Jade Kawamoto,mixed
+321,5883c77e-d6e0-4848-9473-866396578248,66cb85be-fe8b-402d-a4f7-4a8e6a7c3ad7,Audrey Adele Brown,Lucas Pascoe,mixed
+322,4e73b5b4-d734-4258-91cf-b678d08200a9,cd9ee524-11da-4099-805f-1f362f2bc468,Maria Ford,Stevie Petropouleas,womens
+323,29e8121d-6f86-4192-b7af-ab05b77b89fe,925c1306-6b3b-4510-8482-f34168a0842a,Ting Chieh Wei,Roscoe Bellamy,mixed
+324,763b4d27-8140-47cd-86f5-982706cd4ebb,a95df9a8-772c-4dbf-8c28-e200b7308584,Michael Loyd,Kiora Kunimoto,mixed
+325,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,99b25b49-2a51-412d-9fbf-e1b6804acce0,Mohaned Alhouni,Camden Chaffin,mens
+326,1374dfe9-4573-4ab6-991d-16bed0a6d25c,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,Edward Perez,Gabriel Joseph,mens
+327,5883c77e-d6e0-4848-9473-866396578248,79046b96-4601-4443-ad6a-b1d2451be668,Audrey Adele Brown,Rachel Summers,womens
+328,0c5b84bb-4c04-4906-86bc-deb533ff4eec,f4c43443-fdff-4344-b291-274cfd26361e,Zane Ford,Juan Benitez,mens
+329,14c4c96f-0a49-4d07-b16d-f6cb782491f4,53eadec7-a6b1-4ce3-9825-d76affdc3f4f,Kentaro Hamaguchi,Juan Varon,mens
+330,33292af3-984d-4752-8d18-b3a5c147e9fe,3d67b6d0-063e-466c-a475-7679d0764354,Armaan Bhatia,Austin Bricker,mens
+331,0df3b359-d935-4c79-a16a-ce373f55db07,9db29a7a-1fce-4394-a1f0-a5fbd2bc2e7b,Ernesto Fajardo,Jake Anderson,mens
+332,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Mohaned Alhouni,Tyra Hurricane Black,mixed
+333,306da673-de7e-44f5-bc16-0738b44bd089,87d60b6f-6f2e-4610-ab89-487e8acc097e,Christopher Crouch,Mya Bui,mixed
+334,25a6f570-d617-427a-9fc4-3bf6115a9a84,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,Hannah Blatt,Donald Young,mixed
+335,1728d016-1f02-4789-be73-63d12d5a5b42,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,Parris Todd,Dekel Bar,mixed
+336,3d9c8684-953f-4008-b355-b6104ee56a5b,bc7b2475-e580-4734-bc14-814a153bec5d,Connor Mogle,Pesa Teoni,mens
+337,306da673-de7e-44f5-bc16-0738b44bd089,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Christopher Crouch,Rafael Lenhard,mens
+338,45e53881-72e4-4de1-9763-c2e7f7f854ba,b6fe1237-b049-405c-a641-d57f8170a9a0,Andrea Koop,Albie Huang,womens
+339,070be5dd-2dcf-44b6-b2e7-37d9fbd29aa2,2feffeaa-aca5-4c5d-aad6-62eb0d38a6be,Adalynn Lund,Abigail Okelley,womens
+340,79ee2d66-5ba3-47cc-bc43-f489a09d2d5a,f8b6b217-f9f8-4fd3-a71d-ae4dfcbb9c89,George Rangelov,Ava Ignatowich,mixed
+341,3af01041-5679-400a-87b8-12c01db8cec4,a3ed7970-35d2-485c-8285-187c298a2d83,Kate Fahey,Lacy Schneemann,womens
+342,a95df9a8-772c-4dbf-8c28-e200b7308584,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Kiora Kunimoto,Giovanna Morelli,womens
+343,52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,be33755f-9262-461b-aedd-e9a7a686a82c,Eric Oncins,Jackie Kawamoto,mixed
+344,33292af3-984d-4752-8d18-b3a5c147e9fe,71992955-8b6f-470b-a991-796cfa56a826,Armaan Bhatia,Liz Truluck,mixed
+345,6a87bc44-5190-44db-8a2f-467de4de48c6,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Christa Gecheva,Lina Padegimaite,womens
+346,461f063e-a587-4638-bad9-421ff33d91d7,ec4cdfe2-c6f6-4de1-824e-9adcaeb31196,Genie Erokhina,Judit Castillo,womens
+347,eb14fc6e-ede1-4999-bec3-e36695e7f94e,f879086b-e0e5-4772-b0a6-4055c265da69,Milan Rane,Tina Pisnik,womens
+348,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,574957ae-e8d5-486e-aabc-a1cc6a392f8d,Lingwei Kong,Jalina Ingram,womens
+349,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,Noe Khlif,Pablo Tellez,mens
+350,50908953-a944-4a34-898b-16af312bc814,79a11da1-6aeb-4719-9b1e-9918e0163cec,Rachel Rohrabacher,Christian Alshon,mixed
+351,4025f403-d676-42ee-97a1-61d9b38c211b,ec94501d-8b59-4236-b77d-7238f8925e48,Allison Phillips,Marcela Aguila Ampon,womens
+352,65bcab7c-9c93-4dc8-a847-a34da426b933,71992955-8b6f-470b-a991-796cfa56a826,Martina Frantova,Liz Truluck,womens
+353,25a6f570-d617-427a-9fc4-3bf6115a9a84,f91b88a1-7d1e-41ad-9782-200959faf6bd,Hannah Blatt,Olivia McMillan,womens
+354,1d701c30-6b5d-485f-ae97-60f3b0c50896,76419f3a-712c-4241-8940-6f9bda847ba7,Zoey Weil,Lauren Stratman,womens
+355,62955f38-bdf5-46af-9622-13c7afe90619,f86cff72-5f9c-40b1-9f28-f28aafae245f,Jonathan Truong,Wyatt Stone,mens
+356,7925aefe-e260-4b83-8bfc-214da1d14fb5,a9a168ae-7822-4d31-b07b-fba40480c1fc,Travis Rettenmaier,Brandon French,mens
+357,29e8121d-6f86-4192-b7af-ab05b77b89fe,efe9989b-5864-48c2-806c-06697024e1da,Ting Chieh Wei,Allyce Jones,womens
+358,04158680-ebb3-4554-96a1-500cc6d00882,9eff9049-c45c-42ee-9a49-e9a797cc2116,Chloe Igleski,Cailyn Campbell,womens
+359,1728d016-1f02-4789-be73-63d12d5a5b42,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,Parris Todd,Alix Truong,womens
+360,2c2a2b82-9ec7-4046-97cb-3a199ed507af,42b8527d-b84e-4f50-8e0b-5937664981e3,Oscar Serra,Sanil Jagtiani,mens
+361,6160a7c7-6b90-41f1-96d3-af5fa1623ca5,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Collin Johns,Jaume Martinez Vich,mens
+362,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,Zane Navratil,Donald Young,mens
+363,06ba18e0-687b-4aa3-822d-1c86981f576b,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Rafa Hewett,John Lucian Goins,mens
+364,8160ad59-4654-46b1-b229-8d5f2a9a45f9,925c1306-6b3b-4510-8482-f34168a0842a,Hunter Johnson,Roscoe Bellamy,mens
+365,763b4d27-8140-47cd-86f5-982706cd4ebb,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,Michael Loyd,James Delgado,mens
+366,4057f30d-d42a-4189-a158-11576fb5f52a,d45a3391-82f4-45d0-ba66-f1901854a8d0,Blaine Hovenier,Darrian Young,mens
+367,ab6386c6-c7e3-422f-9134-e20e92725ee5,b1ab7d76-a859-4136-8405-3ed7c9be287a,Emma Nelson,Mari Humberg,womens
+368,0ccab93d-398c-40a8-821f-07a2ded79dde,be74032b-1035-4ece-bf4f-773b45da4d58,Zoeya Khan,Mehvish Safdar,womens
+369,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,88fb0858-b9c3-4620-9408-0dda0eb241ef,Tom Protzek,Tyler Loong,mens
+370,1607a4f2-2592-4745-ba49-21bbeb199151,45596674-36ae-4768-b4ee-c7181d9b2ea7,Sydney Sonday,Sammy Lee,mixed
+371,2c1692a6-0fa2-47b0-9d2b-e12b5c054ef4,cb9ea037-f204-4216-ac56-930a01009166,Janet Liu,Matt Burkhardt,mixed
+372,4fdcaa8b-8ebf-4cba-b759-d7c8e9d55ec0,c85c50d9-eaa4-4581-b6bb-583a808706bf,Elliott Schupp,Kyle Koszuta,mens
+373,80217cca-df99-4019-a90f-385622ca057a,c3066b2d-fc90-4774-a571-cde5fc5583d4,Zach Gonnering,Chloe Diskin,mixed
+374,146dd2f7-7f5d-495d-b2f1-96d433742fec,bbf16648-a08b-4864-ad42-80848523bf44,Eduardo Santini Ayon,Chelsea Purcell,mixed
+375,1ad19b48-ae39-44aa-b2a0-5a40a6b71420,9532d3f8-9418-4b59-af95-3cc5e7c2a066,Daniel Byun,Kelly Chen,mixed
+376,6eb8ea1c-31ca-4c18-ba0c-ab8a75cdc24f,a756ee87-c12d-4264-bc6d-0e2c56fba4ff,William Hsieh,Dan Nguyen,mens
+377,06e87b30-1f70-46e6-a6a8-17a4086d609a,f843b220-41cb-4203-831b-6aac32b8f02a,Kailas Shekar,Riley Inn,mens
+378,135937d9-d132-41c5-9cfd-d2b0112288b2,c971bb40-090b-4e47-be58-905495e38401,Daniel Traxler,Miles Hoover,mens
+379,df443e1a-4508-4b35-917b-2780cf0ff6c8,edca189d-8781-4491-a146-868c85f7cf25,Eddy Kim,Blake Suard,mens
+380,06ba18e0-687b-4aa3-822d-1c86981f576b,66a6c35b-33a2-4a23-b5db-fa53c96d643a,Rafa Hewett,Kaitlyn Christian,mixed
+381,0ccab93d-398c-40a8-821f-07a2ded79dde,f4c43443-fdff-4344-b291-274cfd26361e,Zoeya Khan,Juan Benitez,mixed
+382,50c2125b-406c-41e7-aad6-5432c7cd8e1c,676b1cbc-766c-4616-bf39-1787ffd8c72a,AJ Koller,Etta Tuionetoa,mixed
+383,3a43c56f-b9d8-4e72-ae8a-58fd69291946,a3ed7970-35d2-485c-8285-187c298a2d83,Jack Sock,Lacy Schneemann,mixed
+384,2856d69d-887b-4e89-a5c9-975f581f84a0,ad6e69ff-7913-4b21-86dd-9489f749be01,Len Yang,Paula Rives,mixed
+385,80217cca-df99-4019-a90f-385622ca057a,ce7e7707-c94e-4d33-b34a-37efe3363774,Zach Gonnering,Eli Steiner,mens
+386,30d7759b-93f0-467d-a07a-970ecfac06ba,3270dc72-53b7-4d35-aa4c-7f8b7b6bf905,Cameron Luhring,Matthew Barlow,mens
+387,3d9c8684-953f-4008-b355-b6104ee56a5b,8a71d348-6401-4068-bedd-f4ed30460d2f,Connor Mogle,Andrew Caldarella,mens
+388,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,34270d82-e968-407d-a918-8aa57f0123a6,Gabriel Joseph,Elsie Hendershot,mixed
+389,53b056f9-095a-40fa-881d-142629905f8a,f03d156f-3d8a-4830-a5d1-ae4372ad5009,Luana Stanciu,Wesley Burrows,mixed
+390,4057f30d-d42a-4189-a158-11576fb5f52a,461f063e-a587-4638-bad9-421ff33d91d7,Blaine Hovenier,Genie Erokhina,mixed
+391,a95df9a8-772c-4dbf-8c28-e200b7308584,d8d51930-abf9-468b-9e43-55a9c0728d58,Kiora Kunimoto,Anouar Braham,mixed
+392,1374dfe9-4573-4ab6-991d-16bed0a6d25c,f8b6b217-f9f8-4fd3-a71d-ae4dfcbb9c89,Edward Perez,Ava Ignatowich,mixed
+393,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,ec94501d-8b59-4236-b77d-7238f8925e48,Tama Shimabukuro,Marcela Aguila Ampon,mixed
+394,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Ella Cosma,Braden Jacobson,mixed
+395,29e8121d-6f86-4192-b7af-ab05b77b89fe,763b4d27-8140-47cd-86f5-982706cd4ebb,Ting Chieh Wei,Michael Loyd,mixed
+396,74afd19c-8f82-4ca2-9345-e4d693111033,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Marshall Brown,Lina Padegimaite,mixed
+397,3e6b668a-8d26-4424-9420-3ceb18486b65,99b25b49-2a51-412d-9fbf-e1b6804acce0,Daria Walczak,Camden Chaffin,mixed
+398,0d23964f-d43f-4006-b1e0-13001393216c,a018902f-114c-4519-997c-4fdf52d4a0e1,Ross Whittaker,Abbigal Hatton,mixed
+399,33292af3-984d-4752-8d18-b3a5c147e9fe,d45a3391-82f4-45d0-ba66-f1901854a8d0,Armaan Bhatia,Darrian Young,mens
+400,079cece3-01b2-4dd1-9e95-957b83b14cd7,45596674-36ae-4768-b4ee-c7181d9b2ea7,Victor Rodrigo,Sammy Lee,mens
+401,79046b96-4601-4443-ad6a-b1d2451be668,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Rachel Summers,Luc Pham,mixed
+402,608756f6-bfc7-41b5-9cfd-5e69eacfe513,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Victoria Dimuzio,John Lucian Goins,mixed
+403,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,d69ec633-93c9-4d07-8870-be9f5acd5330,Rafael Lenhard,Rachel Rettger,mixed
+404,03db4060-fcb3-41f7-83d5-7ee732dd8841,306da673-de7e-44f5-bc16-0738b44bd089,Jade Rau,Christopher Crouch,mixed
+405,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,38b1bfb1-576b-4a3e-ab6b-e8bc46031c1d,Lingwei Kong,Eric Roddy,mixed
+406,306da673-de7e-44f5-bc16-0738b44bd089,74afd19c-8f82-4ca2-9345-e4d693111033,Christopher Crouch,Marshall Brown,mens
+407,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Donald Young,Braden Jacobson,mens
+408,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,bc7b2475-e580-4734-bc14-814a153bec5d,Rafael Lenhard,Pesa Teoni,mens
+409,1e5d81dc-961d-455a-b80f-d6c30c518cde,4e39b9bd-436d-495d-99d7-c2818bbea4ab,Caden Nemoff,Camila Zilveti,mixed
+410,4057f30d-d42a-4189-a158-11576fb5f52a,88fb0858-b9c3-4620-9408-0dda0eb241ef,Blaine Hovenier,Tyler Loong,mens
+411,22989ac3-e778-487a-ba32-a30243acd294,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,Christine Trifunovic,Mota Alhouni,mixed
+412,581183e8-3d9e-459e-b69f-7337d8b6f3d2,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Andrei Daescu,Tyra Hurricane Black,mixed
+413,ab6386c6-c7e3-422f-9134-e20e92725ee5,b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,Emma Nelson,Max Freeman,mixed
+414,71992955-8b6f-470b-a991-796cfa56a826,e9849183-4693-4340-abf5-f4b6f3cb226f,Liz Truluck,Martin Emmrich,mixed
+415,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,Mohaned Alhouni,Lindsey Newman,mixed
+416,925c1306-6b3b-4510-8482-f34168a0842a,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Roscoe Bellamy,Milan Rane,mixed
+417,736475dd-7ccd-40d8-8b43-8c2d9ef9e674,81535c8c-27d9-452c-a72a-61fc9f755b01,Maggie Brascia,Will Mackinnon,mixed
+418,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Mota Alhouni,John Lucian Goins,mens
+419,1374dfe9-4573-4ab6-991d-16bed0a6d25c,a0582749-fb23-42cc-98ed-1915464c4814,Edward Perez,Luke Wasson,mens
+420,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,ebb2a1e0-7c6c-48a4-b994-e81edd8ddb97,Tom Protzek,Patrick Smith,mens
+421,574957ae-e8d5-486e-aabc-a1cc6a392f8d,6a87bc44-5190-44db-8a2f-467de4de48c6,Jalina Ingram,Christa Gecheva,womens
+422,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1,Alix Truong,Alex Walker,womens
+423,9034d36a-1b11-4c9d-ad75-5c665d87b8c5,a95df9a8-772c-4dbf-8c28-e200b7308584,Pierina Imparato,Kiora Kunimoto,womens
+424,5f367bee-cf3e-4aad-a6e6-72cca04d97e2,b1ab7d76-a859-4136-8405-3ed7c9be287a,Angie Walker,Mari Humberg,womens
+425,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,Lingwei Kong,Lindsey Newman,womens
+426,71992955-8b6f-470b-a991-796cfa56a826,87d60b6f-6f2e-4610-ab89-487e8acc097e,Liz Truluck,Mya Bui,womens
+427,4e39b9bd-436d-495d-99d7-c2818bbea4ab,fd565e56-6223-4ef0-882e-02346e7e0573,Camila Zilveti,Brooke Caruso,womens
+428,574957ae-e8d5-486e-aabc-a1cc6a392f8d,ead35052-7367-4296-96d4-064f546cc2b9,Jalina Ingram,CJ Klinger,mixed
+429,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,f03d156f-3d8a-4830-a5d1-ae4372ad5009,Gabriel Joseph,Wesley Burrows,mens
+430,925c1306-6b3b-4510-8482-f34168a0842a,a9a168ae-7822-4d31-b07b-fba40480c1fc,Roscoe Bellamy,Brandon French,mens
+431,6160a7c7-6b90-41f1-96d3-af5fa1623ca5,8160ad59-4654-46b1-b229-8d5f2a9a45f9,Collin Johns,Hunter Johnson,mens
+432,469988c9-b401-4c68-9e07-e1b1b104b791,d8d51930-abf9-468b-9e43-55a9c0728d58,Yates Johnson,Anouar Braham,mens
+433,ad6e69ff-7913-4b21-86dd-9489f749be01,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Paula Rives,Giovanna Morelli,womens
+434,03db4060-fcb3-41f7-83d5-7ee732dd8841,53b056f9-095a-40fa-881d-142629905f8a,Jade Rau,Luana Stanciu,womens
+435,06ba18e0-687b-4aa3-822d-1c86981f576b,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,Rafa Hewett,Noe Khlif,mens
+436,0ccab93d-398c-40a8-821f-07a2ded79dde,25104e43-16f9-4ce3-9085-70243d8b350a,Zoeya Khan,Ella Yeh,womens
+437,435e466e-22c7-4917-8cb4-ff45bbccde19,9eff9049-c45c-42ee-9a49-e9a797cc2116,Tamaryn Emmrich,Cailyn Campbell,womens
+438,1d701c30-6b5d-485f-ae97-60f3b0c50896,a9a168ae-7822-4d31-b07b-fba40480c1fc,Zoey Weil,Brandon French,mixed
+439,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,dba7cf49-9f57-43e3-878d-a63ced26a243,Ella Cosma,Jaeda Minniefield,womens
+440,1607a4f2-2592-4745-ba49-21bbeb199151,c3066b2d-fc90-4774-a571-cde5fc5583d4,Sydney Sonday,Chloe Diskin,womens
+441,79046b96-4601-4443-ad6a-b1d2451be668,d69ec633-93c9-4d07-8870-be9f5acd5330,Rachel Summers,Rachel Rettger,womens
+442,12c765d0-8384-41d3-a498-de63fd7c37da,3e6b668a-8d26-4424-9420-3ceb18486b65,Naomi Nguyen,Daria Walczak,womens
+443,2856d69d-887b-4e89-a5c9-975f581f84a0,d3e486f2-7c25-4bcf-b9dd-81c14f644f60,Len Yang,Etienne Blaszkewycz,mens
+444,676b1cbc-766c-4616-bf39-1787ffd8c72a,8f521dcc-1cb5-4c8d-933c-af6b267bd395,Etta Tuionetoa,Meghan Dizon,womens
+445,a3ed7970-35d2-485c-8285-187c298a2d83,f879086b-e0e5-4772-b0a6-4055c265da69,Lacy Schneemann,Tina Pisnik,womens
+446,1728d016-1f02-4789-be73-63d12d5a5b42,3af01041-5679-400a-87b8-12c01db8cec4,Parris Todd,Kate Fahey,womens
+447,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,a018902f-114c-4519-997c-4fdf52d4a0e1,Nicole Conard,Abbigal Hatton,womens
+448,4e39b9bd-436d-495d-99d7-c2818bbea4ab,53b056f9-095a-40fa-881d-142629905f8a,Camila Zilveti,Luana Stanciu,womens
+449,a067b12b-b26b-4a30-aed8-0f707c52beaa,c84377c6-b0ca-42dd-bc1a-2fd3d3c4ef9f,Mark Dancuart,Ryan Torresin,mens
+450,34049405-b415-4f3a-aade-5be0111ac7db,d8d51930-abf9-468b-9e43-55a9c0728d58,Bruno Faletto,Anouar Braham,mens
+451,25104e43-16f9-4ce3-9085-70243d8b350a,4025f403-d676-42ee-97a1-61d9b38c211b,Ella Yeh,Allison Phillips,womens
+452,306da673-de7e-44f5-bc16-0738b44bd089,3d9c8684-953f-4008-b355-b6104ee56a5b,Christopher Crouch,Connor Mogle,mens
+453,55dbee1f-1ee7-464b-9c80-d14cd9e44b8d,e9849183-4693-4340-abf5-f4b6f3cb226f,Carlos Di Laura III,Martin Emmrich,mens
+454,1936f665-e630-462a-bd89-0dcfcf7c9e6b,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Indigo Dagnall,Luc Pham,mens
+455,6a87bc44-5190-44db-8a2f-467de4de48c6,ad6e69ff-7913-4b21-86dd-9489f749be01,Christa Gecheva,Paula Rives,womens
+456,1d701c30-6b5d-485f-ae97-60f3b0c50896,6794d224-7da3-43d9-8300-e24e731f5dea,Zoey Weil,Samantha Parker,womens
+457,79046b96-4601-4443-ad6a-b1d2451be668,cd9ee524-11da-4099-805f-1f362f2bc468,Rachel Summers,Stevie Petropouleas,womens
+458,3fc70f61-f10c-4539-9b5a-82911efc966a,bf84d952-c6a8-4494-943d-064b223e764f,Ava Cavataio,Estee Widdershoven,womens
+459,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,2aa8ced3-d599-4c83-86dd-ecc80196833b,Tom Protzek,Luca Mack,mens
+460,19a1f7fe-1d16-418a-be95-785266ff586e,c3066b2d-fc90-4774-a571-cde5fc5583d4,Yolena Carlon,Chloe Diskin,womens
+461,435e466e-22c7-4917-8cb4-ff45bbccde19,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,Tamaryn Emmrich,Lindsey Newman,womens
+462,70c18684-f615-4d05-9aa9-5cbdbd53ab9f,dcd029fb-2814-401b-a1cb-0c4269d9954b,Carlota Trevino,Allie Reichert,womens
+463,38fdc174-96d6-459f-a27c-df35eb9f945c,9e8ad96a-17a3-48bf-9363-7b35cc96b2b8,Ashley Griffith,Averee Beck,womens
+464,3d67b6d0-063e-466c-a475-7679d0764354,f4c43443-fdff-4344-b291-274cfd26361e,Austin Bricker,Juan Benitez,mens
+465,53cffd68-8c08-4ad7-88fd-a72ee20d716e,f2a996de-50a0-4d1d-b16f-f6450daa4a1e,Marisa Ruiz,Kelsey Laurente,womens
+466,0ccab93d-398c-40a8-821f-07a2ded79dde,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Zoeya Khan,Lina Padegimaite,womens
+467,10397234-6551-4a06-8bc6-aa50d6915731,7867cc51-11d1-471f-a8bb-9d8370b6a698,Liam Duffin,Nicholas Wade,mens
+468,9db29a7a-1fce-4394-a1f0-a5fbd2bc2e7b,e2466ee7-aaa4-4c6a-a288-63e717054640,Jake Anderson,Bret Berryman,mens
+469,4214dfa2-6d13-43c3-b98b-f36e4556402d,dba7cf49-9f57-43e3-878d-a63ced26a243,Kayla Williams,Jaeda Minniefield,womens
+470,1e538b1f-66e9-4166-ac60-3aef311ee0b5,c84377c6-b0ca-42dd-bc1a-2fd3d3c4ef9f,Jada Bui,Ryan Torresin,mixed
+471,6a87bc44-5190-44db-8a2f-467de4de48c6,a067b12b-b26b-4a30-aed8-0f707c52beaa,Christa Gecheva,Mark Dancuart,mixed
+472,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,e9849183-4693-4340-abf5-f4b6f3cb226f,Lindsey Newman,Martin Emmrich,mixed
+473,a018902f-114c-4519-997c-4fdf52d4a0e1,d3e486f2-7c25-4bcf-b9dd-81c14f644f60,Abbigal Hatton,Etienne Blaszkewycz,mixed
+474,614e164a-4197-44eb-855c-586cf79fbfc9,6794d224-7da3-43d9-8300-e24e731f5dea,Ivan Jakovljevic,Samantha Parker,mixed
+475,3fc70f61-f10c-4539-9b5a-82911efc966a,f4c43443-fdff-4344-b291-274cfd26361e,Ava Cavataio,Juan Benitez,mixed
+476,70c18684-f615-4d05-9aa9-5cbdbd53ab9f,d8d51930-abf9-468b-9e43-55a9c0728d58,Carlota Trevino,Anouar Braham,mixed
+477,34049405-b415-4f3a-aade-5be0111ac7db,53cffd68-8c08-4ad7-88fd-a72ee20d716e,Bruno Faletto,Marisa Ruiz,mixed
+478,1d701c30-6b5d-485f-ae97-60f3b0c50896,99b25b49-2a51-412d-9fbf-e1b6804acce0,Zoey Weil,Camden Chaffin,mixed
+479,7867cc51-11d1-471f-a8bb-9d8370b6a698,b025eccb-868e-4ce6-a4db-c1082a288b59,Nicholas Wade,Maddy Rasmusen,mixed
+480,0d23964f-d43f-4006-b1e0-13001393216c,a70be599-8b9f-405d-9e10-f501b0046e74,Ross Whittaker,Shannon Pretorius,mixed
+481,80217cca-df99-4019-a90f-385622ca057a,9e8ad96a-17a3-48bf-9363-7b35cc96b2b8,Zach Gonnering,Averee Beck,mixed
+482,c2c74ae6-6b11-4a40-80e6-b7b924d2d83f,d93f56ce-61cc-477d-a26c-17d04e53b2ff,Matthew Finnerty,Anna Lenhart,mixed
+483,43a35ec2-3d7a-4c6f-b412-cac02d237a46,d5d2a4dc-fb77-4686-8f63-d75694831b5c,Vritti Sethi,Karthik Ganesh,mixed
+484,53b056f9-095a-40fa-881d-142629905f8a,c971bb40-090b-4e47-be58-905495e38401,Luana Stanciu,Miles Hoover,mixed
+485,14c4c96f-0a49-4d07-b16d-f6cb782491f4,4214dfa2-6d13-43c3-b98b-f36e4556402d,Kentaro Hamaguchi,Kayla Williams,mixed
+486,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,25104e43-16f9-4ce3-9085-70243d8b350a,Tom Protzek,Ella Yeh,mixed
+487,a6f57d71-bf90-48fc-b05b-abe66980a132,c3066b2d-fc90-4774-a571-cde5fc5583d4,Mike Radermacher,Chloe Diskin,mixed
+488,8172788a-eec8-4064-90ee-a01dd09e2729,cd9ee524-11da-4099-805f-1f362f2bc468,Jaikin Gomez,Stevie Petropouleas,mixed
+489,e8e10ea8-2ff2-4155-9169-cc33ff8c6265,f6e249dc-5bb9-483a-a99f-df364df93341,Rio Newcombe,Kelly Goodnow,mixed
+490,461f063e-a587-4638-bad9-421ff33d91d7,fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae,Genie Erokhina,Anderson Scarpa,mixed
+491,88fb0858-b9c3-4620-9408-0dda0eb241ef,ec94501d-8b59-4236-b77d-7238f8925e48,Tyler Loong,Marcela Aguila Ampon,mixed
+492,55dbee1f-1ee7-464b-9c80-d14cd9e44b8d,5f367bee-cf3e-4aad-a6e6-72cca04d97e2,Carlos Di Laura III,Angie Walker,mixed
+493,66cb85be-fe8b-402d-a4f7-4a8e6a7c3ad7,a018902f-114c-4519-997c-4fdf52d4a0e1,Lucas Pascoe,Abbigal Hatton,mixed
+494,52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,f879086b-e0e5-4772-b0a6-4055c265da69,Eric Oncins,Tina Pisnik,mixed
+495,2bfe44bb-d558-411f-abeb-c8522dd42ce9,efe9989b-5864-48c2-806c-06697024e1da,Julian Arnold,Allyce Jones,mixed
+496,9034d36a-1b11-4c9d-ad75-5c665d87b8c5,a91e2b68-7357-4518-baf9-f59b0b4c2477,Pierina Imparato,Christopher Haworth,mixed
+497,4057f30d-d42a-4189-a158-11576fb5f52a,9eff9049-c45c-42ee-9a49-e9a797cc2116,Blaine Hovenier,Cailyn Campbell,mixed
+498,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,79a11da1-6aeb-4719-9b1e-9918e0163cec,Alix Truong,Christian Alshon,mixed
+499,53b056f9-095a-40fa-881d-142629905f8a,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Luana Stanciu,Rafael Lenhard,mixed
+500,2856d69d-887b-4e89-a5c9-975f581f84a0,29e8121d-6f86-4192-b7af-ab05b77b89fe,Len Yang,Ting Chieh Wei,mixed
+501,0ccab93d-398c-40a8-821f-07a2ded79dde,33292af3-984d-4752-8d18-b3a5c147e9fe,Zoeya Khan,Armaan Bhatia,mixed
+502,7464628e-931a-44c9-b0df-749a7cb32eaa,fd565e56-6223-4ef0-882e-02346e7e0573,Adam Harvey,Brooke Caruso,mixed
+503,71992955-8b6f-470b-a991-796cfa56a826,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,Liz Truluck,James Delgado,mixed
+504,35f81e87-382e-41cc-9bab-687116861954,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,Jace Morris,Ella Cosma,mixed
+505,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,37a2a373-8d3e-4177-bf1b-e6c9eaa52f5e,Andre Mercado,Natalia Simson,mixed
+506,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,81535c8c-27d9-452c-a72a-61fc9f755b01,Nicole Conard,Will Mackinnon,mixed
+507,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,925c1306-6b3b-4510-8482-f34168a0842a,Brooke Buckner,Roscoe Bellamy,mixed
+508,608756f6-bfc7-41b5-9cfd-5e69eacfe513,6160a7c7-6b90-41f1-96d3-af5fa1623ca5,Victoria Dimuzio,Collin Johns,mixed
+509,80217cca-df99-4019-a90f-385622ca057a,c971bb40-090b-4e47-be58-905495e38401,Zach Gonnering,Miles Hoover,mens
+510,62955f38-bdf5-46af-9622-13c7afe90619,8f521dcc-1cb5-4c8d-933c-af6b267bd395,Jonathan Truong,Meghan Dizon,mixed
+511,12c765d0-8384-41d3-a498-de63fd7c37da,30d7759b-93f0-467d-a07a-970ecfac06ba,Naomi Nguyen,Cameron Luhring,mixed
+512,03db4060-fcb3-41f7-83d5-7ee732dd8841,1374dfe9-4573-4ab6-991d-16bed0a6d25c,Jade Rau,Edward Perez,mixed
+513,6a87bc44-5190-44db-8a2f-467de4de48c6,b68c0204-d9d4-4cba-bf23-46706abd77bf,Christa Gecheva,Clayton Powell,mixed
+514,348255bf-f94e-47cb-ab5d-95969c2bd7b9,f0484f0e-f240-4b6f-9da5-b6dba3fa370e,Aiko Yoshitomi,Kenta Miyoshi,mixed
+515,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,3e6b668a-8d26-4424-9420-3ceb18486b65,Tom Protzek,Daria Walczak,mixed
+516,348255bf-f94e-47cb-ab5d-95969c2bd7b9,b6fe1237-b049-405c-a641-d57f8170a9a0,Aiko Yoshitomi,Albie Huang,womens
+517,72b85855-dcb3-4d14-931f-edd3c0b097a0,bbf16648-a08b-4864-ad42-80848523bf44,Madison Grollman,Chelsea Purcell,womens
+518,06ba18e0-687b-4aa3-822d-1c86981f576b,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,Rafa Hewett,Lingwei Kong,mixed
+519,50908953-a944-4a34-898b-16af312bc814,d50310a6-9378-4228-823f-7fb54f7bd698,Rachel Rohrabacher,Gabriel Tardio,mixed
+520,698c5236-e88f-411c-b44f-e54f16b2d6b5,b6fe1237-b049-405c-a641-d57f8170a9a0,George Wall,Albie Huang,mixed
+521,25a6f570-d617-427a-9fc4-3bf6115a9a84,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Hannah Blatt,Luc Pham,mixed
+522,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,66a6c35b-33a2-4a23-b5db-fa53c96d643a,Pablo Tellez,Kaitlyn Christian,mixed
+523,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,f91b88a1-7d1e-41ad-9782-200959faf6bd,John Lucian Goins,Olivia McMillan,mixed
+524,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Noe Khlif,Tyra Hurricane Black,mixed
+525,1e5d81dc-961d-455a-b80f-d6c30c518cde,79046b96-4601-4443-ad6a-b1d2451be668,Caden Nemoff,Rachel Summers,mixed
+526,12c765d0-8384-41d3-a498-de63fd7c37da,f6e249dc-5bb9-483a-a99f-df364df93341,Naomi Nguyen,Kelly Goodnow,womens
+527,38b1bfb1-576b-4a3e-ab6b-e8bc46031c1d,69633ccf-87be-4975-a578-53d6e166c91b,Eric Roddy,Wil Shaffer,mens
+528,2bfe44bb-d558-411f-abeb-c8522dd42ce9,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,Julian Arnold,James Delgado,mens
+529,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,33292af3-984d-4752-8d18-b3a5c147e9fe,Zane Navratil,Armaan Bhatia,mens
+530,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,c96f7a83-9cc1-4fbe-a610-126ed8e3a202,Tama Shimabukuro,Gregory Dow,mens
+531,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,3d9c8684-953f-4008-b355-b6104ee56a5b,Andre Mercado,Connor Mogle,mens
+532,2856d69d-887b-4e89-a5c9-975f581f84a0,6160a7c7-6b90-41f1-96d3-af5fa1623ca5,Len Yang,Collin Johns,mens
+533,38fdc174-96d6-459f-a27c-df35eb9f945c,be74032b-1035-4ece-bf4f-773b45da4d58,Ashley Griffith,Mehvish Safdar,womens
+534,698c5236-e88f-411c-b44f-e54f16b2d6b5,f0484f0e-f240-4b6f-9da5-b6dba3fa370e,George Wall,Kenta Miyoshi,mens
+535,79ee2d66-5ba3-47cc-bc43-f489a09d2d5a,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,George Rangelov,Mota Alhouni,mens
+536,b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,b1ab7d76-a859-4136-8405-3ed7c9be287a,Max Freeman,Mari Humberg,mixed
+537,03db4060-fcb3-41f7-83d5-7ee732dd8841,fd565e56-6223-4ef0-882e-02346e7e0573,Jade Rau,Brooke Caruso,womens
+538,1728d016-1f02-4789-be73-63d12d5a5b42,50908953-a944-4a34-898b-16af312bc814,Parris Todd,Rachel Rohrabacher,womens
+539,88fb0858-b9c3-4620-9408-0dda0eb241ef,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Tyler Loong,Rafael Lenhard,mens
+540,1374dfe9-4573-4ab6-991d-16bed0a6d25c,306da673-de7e-44f5-bc16-0738b44bd089,Edward Perez,Christopher Crouch,mens
+541,38b1bfb1-576b-4a3e-ab6b-e8bc46031c1d,be74032b-1035-4ece-bf4f-773b45da4d58,Eric Roddy,Mehvish Safdar,mixed
+542,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,50c2125b-406c-41e7-aad6-5432c7cd8e1c,Noe Khlif,AJ Koller,mens
+543,ce7e7707-c94e-4d33-b34a-37efe3363774,f370a1a0-2e1a-463b-a35c-30899131f7d6,Eli Steiner,Troy Akin,mens
+544,3e6b668a-8d26-4424-9420-3ceb18486b65,5f367bee-cf3e-4aad-a6e6-72cca04d97e2,Daria Walczak,Angie Walker,womens
+545,62955f38-bdf5-46af-9622-13c7afe90619,a9a168ae-7822-4d31-b07b-fba40480c1fc,Jonathan Truong,Brandon French,mens
+546,06ba18e0-687b-4aa3-822d-1c86981f576b,d8d51930-abf9-468b-9e43-55a9c0728d58,Rafa Hewett,Anouar Braham,mens
+547,55dbee1f-1ee7-464b-9c80-d14cd9e44b8d,763b4d27-8140-47cd-86f5-982706cd4ebb,Carlos Di Laura III,Michael Loyd,mens
+548,469988c9-b401-4c68-9e07-e1b1b104b791,8160ad59-4654-46b1-b229-8d5f2a9a45f9,Yates Johnson,Hunter Johnson,mens
+549,9eff9049-c45c-42ee-9a49-e9a797cc2116,b1ab7d76-a859-4136-8405-3ed7c9be287a,Cailyn Campbell,Mari Humberg,womens
+550,20684550-cb89-4ea2-9e2f-0f44eb920b45,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Chao Yi Wang,Milan Rane,womens
+551,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,3af01041-5679-400a-87b8-12c01db8cec4,Brooke Buckner,Kate Fahey,womens
+552,04158680-ebb3-4554-96a1-500cc6d00882,a95df9a8-772c-4dbf-8c28-e200b7308584,Chloe Igleski,Kiora Kunimoto,womens
+553,81535c8c-27d9-452c-a72a-61fc9f755b01,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Will Mackinnon,Luc Pham,mens
+554,1d701c30-6b5d-485f-ae97-60f3b0c50896,608756f6-bfc7-41b5-9cfd-5e69eacfe513,Zoey Weil,Victoria Dimuzio,womens
+555,71992955-8b6f-470b-a991-796cfa56a826,9034d36a-1b11-4c9d-ad75-5c665d87b8c5,Liz Truluck,Pierina Imparato,womens
+556,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,ec94501d-8b59-4236-b77d-7238f8925e48,Lindsey Newman,Marcela Aguila Ampon,womens
+557,295e343a-31a0-4e1d-a286-d62592291435,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Jay Devilliers,Jaume Martinez Vich,mens
+558,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,53b056f9-095a-40fa-881d-142629905f8a,Ella Cosma,Luana Stanciu,womens
+559,719e2d3b-d10d-402d-a195-41f072214679,be74032b-1035-4ece-bf4f-773b45da4d58,Isabella Dunlap,Mehvish Safdar,womens
+560,22839b0d-41bf-4830-8f1e-0da170ebc723,c79ef5cd-2d17-4fbf-83a9-34d4aaaaebd8,Haley Ferguson,Masa Grgan,womens
+561,53eadec7-a6b1-4ce3-9825-d76affdc3f4f,ce7e7707-c94e-4d33-b34a-37efe3363774,Juan Varon,Eli Steiner,mens
+562,435e466e-22c7-4917-8cb4-ff45bbccde19,f91b88a1-7d1e-41ad-9782-200959faf6bd,Tamaryn Emmrich,Olivia McMillan,womens
+563,2a490031-a7b4-4833-8d61-b9970960d2dc,a70be599-8b9f-405d-9e10-f501b0046e74,Monika Wynne,Shannon Pretorius,womens
+564,435e466e-22c7-4917-8cb4-ff45bbccde19,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,Tamaryn Emmrich,James Delgado,mixed
+565,719e2d3b-d10d-402d-a195-41f072214679,7b85c35f-6a90-4c61-af0b-565658feeb3c,Isabella Dunlap,Freddie Powell,mixed
+566,ad6e69ff-7913-4b21-86dd-9489f749be01,e9849183-4693-4340-abf5-f4b6f3cb226f,Paula Rives,Martin Emmrich,mixed
+567,3fc70f61-f10c-4539-9b5a-82911efc966a,b68c0204-d9d4-4cba-bf23-46706abd77bf,Ava Cavataio,Clayton Powell,mixed
+568,1e538b1f-66e9-4166-ac60-3aef311ee0b5,cecffdc0-29ee-46c0-9832-2dbe04700307,Jada Bui,Nejc Sitar,mixed
+569,a70be599-8b9f-405d-9e10-f501b0046e74,dcd029fb-2814-401b-a1cb-0c4269d9954b,Shannon Pretorius,Allie Reichert,womens
+570,a973d880-71ca-48d1-b127-a7e23afd5a19,c2c74ae6-6b11-4a40-80e6-b7b924d2d83f,Matthew Mead,Matthew Finnerty,mens
+571,b3f6f49d-bc24-44fd-8068-4e5971e9d61a,eb7c3159-99e3-41d6-988f-71443cda0a75,Daniel Miron,Austin White,mens
+572,7867cc51-11d1-471f-a8bb-9d8370b6a698,eb88338a-8029-4801-9a7f-e4d48c9b5d83,Nicholas Wade,Domenico Geminiani,mens
+573,4214dfa2-6d13-43c3-b98b-f36e4556402d,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Kayla Williams,Braden Jacobson,mixed
+574,80217cca-df99-4019-a90f-385622ca057a,9db29a7a-1fce-4394-a1f0-a5fbd2bc2e7b,Zach Gonnering,Jake Anderson,mens
+575,6f149538-c6f6-4ad5-9e60-2afc100f97c1,a0582749-fb23-42cc-98ed-1915464c4814,Spartak Rahachou,Luke Wasson,mens
+576,b68c0204-d9d4-4cba-bf23-46706abd77bf,c96f7a83-9cc1-4fbe-a610-126ed8e3a202,Clayton Powell,Gregory Dow,mens
+577,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,79ee2d66-5ba3-47cc-bc43-f489a09d2d5a,Gabriel Joseph,George Rangelov,mens
+578,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,87d60b6f-6f2e-4610-ab89-487e8acc097e,Tom Protzek,Mya Bui,mixed
+579,a91e2b68-7357-4518-baf9-f59b0b4c2477,ebb2a1e0-7c6c-48a4-b994-e81edd8ddb97,Christopher Haworth,Patrick Smith,mens
+580,0d23964f-d43f-4006-b1e0-13001393216c,35f81e87-382e-41cc-9bab-687116861954,Ross Whittaker,Jace Morris,mens
+581,0d23964f-d43f-4006-b1e0-13001393216c,53b056f9-095a-40fa-881d-142629905f8a,Ross Whittaker,Luana Stanciu,mixed
+582,3270dc72-53b7-4d35-aa4c-7f8b7b6bf905,ab6386c6-c7e3-422f-9134-e20e92725ee5,Matthew Barlow,Emma Nelson,mixed
+583,37a2a373-8d3e-4177-bf1b-e6c9eaa52f5e,43a35ec2-3d7a-4c6f-b412-cac02d237a46,Natalia Simson,Vritti Sethi,womens
+584,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,Mohaned Alhouni,Lingwei Kong,mixed
+585,06ba18e0-687b-4aa3-822d-1c86981f576b,9034d36a-1b11-4c9d-ad75-5c665d87b8c5,Rafa Hewett,Pierina Imparato,mixed
+586,0c1bb94d-3af2-42f4-b938-d712c707ace4,295e343a-31a0-4e1d-a286-d62592291435,Callie Smith,Jay Devilliers,mixed
+587,43a35ec2-3d7a-4c6f-b412-cac02d237a46,7afc02f4-1e87-45c2-a101-0d48ecc05f8d,Vritti Sethi,Martin Stanchev,mixed
+588,d0a30dc1-a7d7-475c-bfc9-d55e0aa8e7e3,e2466ee7-aaa4-4c6a-a288-63e717054640,Ethan Bakalinsky,Bret Berryman,mens
+589,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,a018902f-114c-4519-997c-4fdf52d4a0e1,Andre Mercado,Abbigal Hatton,mixed
+590,3fc70f61-f10c-4539-9b5a-82911efc966a,698c5236-e88f-411c-b44f-e54f16b2d6b5,Ava Cavataio,George Wall,mixed
+591,29e8121d-6f86-4192-b7af-ab05b77b89fe,33292af3-984d-4752-8d18-b3a5c147e9fe,Ting Chieh Wei,Armaan Bhatia,mixed
+592,66a6c35b-33a2-4a23-b5db-fa53c96d643a,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Kaitlyn Christian,Jaume Martinez Vich,mixed
+593,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,9eff9049-c45c-42ee-9a49-e9a797cc2116,Tama Shimabukuro,Cailyn Campbell,mixed
+594,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Lina Padegimaite,John Lucian Goins,mixed
+595,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,34270d82-e968-407d-a918-8aa57f0123a6,Zane Navratil,Elsie Hendershot,mixed
+596,03db4060-fcb3-41f7-83d5-7ee732dd8841,34270d82-e968-407d-a918-8aa57f0123a6,Jade Rau,Elsie Hendershot,womens
+597,3fc70f61-f10c-4539-9b5a-82911efc966a,5883c77e-d6e0-4848-9473-866396578248,Ava Cavataio,Audrey Adele Brown,womens
+598,bc7b2475-e580-4734-bc14-814a153bec5d,d3e486f2-7c25-4bcf-b9dd-81c14f644f60,Pesa Teoni,Etienne Blaszkewycz,mens
+599,38b1bfb1-576b-4a3e-ab6b-e8bc46031c1d,55dbee1f-1ee7-464b-9c80-d14cd9e44b8d,Eric Roddy,Carlos Di Laura III,mens
+600,25a6f570-d617-427a-9fc4-3bf6115a9a84,2bfe44bb-d558-411f-abeb-c8522dd42ce9,Hannah Blatt,Julian Arnold,mixed
+601,435e466e-22c7-4917-8cb4-ff45bbccde19,74afd19c-8f82-4ca2-9345-e4d693111033,Tamaryn Emmrich,Marshall Brown,mixed
+602,66cb85be-fe8b-402d-a4f7-4a8e6a7c3ad7,b6fe1237-b049-405c-a641-d57f8170a9a0,Lucas Pascoe,Albie Huang,mixed
+603,79a11da1-6aeb-4719-9b1e-9918e0163cec,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,Christian Alshon,Jessie Irvine,mixed
+604,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Rafael Lenhard,Giovanna Morelli,mixed
+605,88fb0858-b9c3-4620-9408-0dda0eb241ef,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,Tyler Loong,Lindsey Newman,mixed
+606,6794d224-7da3-43d9-8300-e24e731f5dea,a9a168ae-7822-4d31-b07b-fba40480c1fc,Samantha Parker,Brandon French,mixed
+607,55dbee1f-1ee7-464b-9c80-d14cd9e44b8d,65bcab7c-9c93-4dc8-a847-a34da426b933,Carlos Di Laura III,Martina Frantova,mixed
+608,461f063e-a587-4638-bad9-421ff33d91d7,ba491f1c-0112-47a8-a348-4695289e958a,Genie Erokhina,Augustus Ge,mixed
+609,25104e43-16f9-4ce3-9085-70243d8b350a,81535c8c-27d9-452c-a72a-61fc9f755b01,Ella Yeh,Will Mackinnon,mixed
+610,22989ac3-e778-487a-ba32-a30243acd294,26b13d9f-ccab-497c-8e3a-68299be5ea70,Christine Trifunovic,Daniel Phillips,mixed
+611,3d67b6d0-063e-466c-a475-7679d0764354,dba7cf49-9f57-43e3-878d-a63ced26a243,Austin Bricker,Jaeda Minniefield,mixed
+612,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,4e39b9bd-436d-495d-99d7-c2818bbea4ab,Gabriel Joseph,Camila Zilveti,mixed
+613,4057f30d-d42a-4189-a158-11576fb5f52a,76419f3a-712c-4241-8940-6f9bda847ba7,Blaine Hovenier,Lauren Stratman,mixed
+614,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,b68c0204-d9d4-4cba-bf23-46706abd77bf,Alix Truong,Clayton Powell,mixed
+615,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,f4c43443-fdff-4344-b291-274cfd26361e,Nicole Conard,Juan Benitez,mixed
+616,719e2d3b-d10d-402d-a195-41f072214679,a018902f-114c-4519-997c-4fdf52d4a0e1,Isabella Dunlap,Abbigal Hatton,womens
+617,2c1692a6-0fa2-47b0-9d2b-e12b5c054ef4,fa7cb18f-9d87-4d49-bb43-5291b7201bd3,Janet Liu,Jessica Ho,womens
+618,9034d36a-1b11-4c9d-ad75-5c665d87b8c5,ec94501d-8b59-4236-b77d-7238f8925e48,Pierina Imparato,Marcela Aguila Ampon,womens
+619,88fb0858-b9c3-4620-9408-0dda0eb241ef,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Tyler Loong,John Lucian Goins,mens
+620,76419f3a-712c-4241-8940-6f9bda847ba7,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,Lauren Stratman,Lindsey Newman,womens
+621,29e8121d-6f86-4192-b7af-ab05b77b89fe,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Ting Chieh Wei,Lina Padegimaite,womens
+622,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,4057f30d-d42a-4189-a158-11576fb5f52a,Noe Khlif,Blaine Hovenier,mens
+623,b1ab7d76-a859-4136-8405-3ed7c9be287a,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Mari Humberg,Milan Rane,womens
+624,608756f6-bfc7-41b5-9cfd-5e69eacfe513,87d60b6f-6f2e-4610-ab89-487e8acc097e,Victoria Dimuzio,Mya Bui,womens
+625,25104e43-16f9-4ce3-9085-70243d8b350a,a95df9a8-772c-4dbf-8c28-e200b7308584,Ella Yeh,Kiora Kunimoto,womens
+626,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,74afd19c-8f82-4ca2-9345-e4d693111033,Mohaned Alhouni,Marshall Brown,mens
+627,50908953-a944-4a34-898b-16af312bc814,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,Rachel Rohrabacher,Dekel Bar,mixed
+628,33292af3-984d-4752-8d18-b3a5c147e9fe,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,Armaan Bhatia,Pablo Tellez,mens
+629,a9a168ae-7822-4d31-b07b-fba40480c1fc,f86cff72-5f9c-40b1-9f28-f28aafae245f,Brandon French,Wyatt Stone,mens
+630,62955f38-bdf5-46af-9622-13c7afe90619,a3ed7970-35d2-485c-8285-187c298a2d83,Jonathan Truong,Lacy Schneemann,mixed
+631,06ba18e0-687b-4aa3-822d-1c86981f576b,62955f38-bdf5-46af-9622-13c7afe90619,Rafa Hewett,Jonathan Truong,mens
+632,d8d51930-abf9-468b-9e43-55a9c0728d58,f4c43443-fdff-4344-b291-274cfd26361e,Anouar Braham,Juan Benitez,mens
+633,5f367bee-cf3e-4aad-a6e6-72cca04d97e2,763b4d27-8140-47cd-86f5-982706cd4ebb,Angie Walker,Michael Loyd,mixed
+634,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,fd565e56-6223-4ef0-882e-02346e7e0573,Giovanna Morelli,Brooke Caruso,womens
+635,20684550-cb89-4ea2-9e2f-0f44eb920b45,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,Chao Yi Wang,Jessie Irvine,womens
+636,66a6c35b-33a2-4a23-b5db-fa53c96d643a,ab6386c6-c7e3-422f-9134-e20e92725ee5,Kaitlyn Christian,Emma Nelson,womens
+637,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,9eff9049-c45c-42ee-9a49-e9a797cc2116,Nicole Conard,Cailyn Campbell,womens
+638,759ecf95-26a6-4ffe-bb8b-035d3ec05f31,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,Matt Wright,Dekel Bar,mens
+639,00333c0f-cfae-404f-a137-0dca5a3d67dd,c263bd93-bd93-4722-bf88-d24529837529,Duncan Mulenga Jr.,Martin Thomas,mens
+640,d0a30dc1-a7d7-475c-bfc9-d55e0aa8e7e3,df443e1a-4508-4b35-917b-2780cf0ff6c8,Ethan Bakalinsky,Eddy Kim,mens
+641,11ed643d-b6df-4198-a0b1-bee4fb905625,ce10eeaa-0854-4c37-ab63-73f16bed85bc,Mihae Kwon,Syed Uzair Sufi,mixed
+642,00333c0f-cfae-404f-a137-0dca5a3d67dd,49d53a66-df0a-4419-892e-0fe6c788391e,Duncan Mulenga Jr.,Wendy Weston,mixed
+643,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,Noe Khlif,Alix Truong,mixed
+644,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,461f063e-a587-4638-bad9-421ff33d91d7,Tom Protzek,Genie Erokhina,mixed
+645,a0582749-fb23-42cc-98ed-1915464c4814,bc7b2475-e580-4734-bc14-814a153bec5d,Luke Wasson,Pesa Teoni,mens
+646,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,a91e2b68-7357-4518-baf9-f59b0b4c2477,Rafael Lenhard,Christopher Haworth,mens
+647,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,Dekel Bar,Jessie Irvine,mixed
+648,34270d82-e968-407d-a918-8aa57f0123a6,99b25b49-2a51-412d-9fbf-e1b6804acce0,Elsie Hendershot,Camden Chaffin,mixed
+649,a0581131-7d36-4424-b7f1-a5a4eaaed30f,e4bf2cca-f71a-4ded-89fe-39db811423db,Cc Eleven Sacca,Jace Howard,mixed
+650,0c5b84bb-4c04-4906-86bc-deb533ff4eec,79ee2d66-5ba3-47cc-bc43-f489a09d2d5a,Zane Ford,George Rangelov,mens
+651,306da673-de7e-44f5-bc16-0738b44bd089,3270dc72-53b7-4d35-aa4c-7f8b7b6bf905,Christopher Crouch,Matthew Barlow,mens
+652,50c2125b-406c-41e7-aad6-5432c7cd8e1c,f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1,AJ Koller,Alex Walker,mixed
+653,719e2d3b-d10d-402d-a195-41f072214679,a9a168ae-7822-4d31-b07b-fba40480c1fc,Isabella Dunlap,Brandon French,mixed
+654,22989ac3-e778-487a-ba32-a30243acd294,74afd19c-8f82-4ca2-9345-e4d693111033,Christine Trifunovic,Marshall Brown,mixed
+655,614e164a-4197-44eb-855c-586cf79fbfc9,ebb2a1e0-7c6c-48a4-b994-e81edd8ddb97,Ivan Jakovljevic,Patrick Smith,mens
+656,66cb85be-fe8b-402d-a4f7-4a8e6a7c3ad7,99b25b49-2a51-412d-9fbf-e1b6804acce0,Lucas Pascoe,Camden Chaffin,mens
+657,69633ccf-87be-4975-a578-53d6e166c91b,8a71d348-6401-4068-bedd-f4ed30460d2f,Wil Shaffer,Andrew Caldarella,mens
+658,3d67b6d0-063e-466c-a475-7679d0764354,ec94501d-8b59-4236-b77d-7238f8925e48,Austin Bricker,Marcela Aguila Ampon,mixed
+659,8a71d348-6401-4068-bedd-f4ed30460d2f,b025eccb-868e-4ce6-a4db-c1082a288b59,Andrew Caldarella,Maddy Rasmusen,mixed
+660,04158680-ebb3-4554-96a1-500cc6d00882,d8d51930-abf9-468b-9e43-55a9c0728d58,Chloe Igleski,Anouar Braham,mixed
+661,a000a067-1bf1-442f-a961-e6c97cb50006,d69ec633-93c9-4d07-8870-be9f5acd5330,Nicolas Acevedo,Rachel Rettger,mixed
+662,3a43c56f-b9d8-4e72-ae8a-58fd69291946,7319013d-d511-4aa5-a356-4aa2cccf94f5,Jack Sock,Lea Jansen,mixed
+663,8f521dcc-1cb5-4c8d-933c-af6b267bd395,d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,Meghan Dizon,Will Howells,mixed
+664,a95df9a8-772c-4dbf-8c28-e200b7308584,d45a3391-82f4-45d0-ba66-f1901854a8d0,Kiora Kunimoto,Darrian Young,mixed
+665,6ecac506-64e3-44ea-b82f-689fad6865e0,df376023-f37c-4348-8c08-ccc1473153b1,Tya Karina,Julian Chow,mixed
+666,763b4d27-8140-47cd-86f5-982706cd4ebb,d45a3391-82f4-45d0-ba66-f1901854a8d0,Michael Loyd,Darrian Young,mens
+667,1de884f8-7bf7-4b49-9de8-3f1fd74cabd6,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Dylan Frazier,Tyra Hurricane Black,mixed
+668,12c765d0-8384-41d3-a498-de63fd7c37da,b68c0204-d9d4-4cba-bf23-46706abd77bf,Naomi Nguyen,Clayton Powell,mixed
+669,435e466e-22c7-4917-8cb4-ff45bbccde19,fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae,Tamaryn Emmrich,Anderson Scarpa,mixed
+670,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,ebb2a1e0-7c6c-48a4-b994-e81edd8ddb97,Lindsey Newman,Patrick Smith,mixed
+671,80217cca-df99-4019-a90f-385622ca057a,cb9ea037-f204-4216-ac56-930a01009166,Zach Gonnering,Matt Burkhardt,mens
+672,74afd19c-8f82-4ca2-9345-e4d693111033,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,Marshall Brown,Mota Alhouni,mens
+673,a7e358b0-517e-4972-89ff-d95f0797e1c7,c3066b2d-fc90-4774-a571-cde5fc5583d4,Jase Edwards,Chloe Diskin,mixed
+674,316a0784-5829-4fad-89a1-438e5aac2504,c971bb40-090b-4e47-be58-905495e38401,Jazz Hearn IV,Miles Hoover,mixed
+675,8160ad59-4654-46b1-b229-8d5f2a9a45f9,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Hunter Johnson,Milan Rane,mixed
+676,69633ccf-87be-4975-a578-53d6e166c91b,f6e249dc-5bb9-483a-a99f-df364df93341,Wil Shaffer,Kelly Goodnow,mixed
+677,88fb0858-b9c3-4620-9408-0dda0eb241ef,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Tyler Loong,Lina Padegimaite,mixed
+678,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,736475dd-7ccd-40d8-8b43-8c2d9ef9e674,Tama Shimabukuro,Maggie Brascia,mixed
+679,a000a067-1bf1-442f-a961-e6c97cb50006,b68c0204-d9d4-4cba-bf23-46706abd77bf,Nicolas Acevedo,Clayton Powell,mens
+680,a91e2b68-7357-4518-baf9-f59b0b4c2477,ab6386c6-c7e3-422f-9134-e20e92725ee5,Christopher Haworth,Emma Nelson,mixed
+681,89647b43-f3f5-49e6-896f-614f0175a3f5,c62c2081-d9ce-4750-93f5-c9163bf46f74,Jackson Ayotte,Yaamunan Venkatesan,mens
+682,1374dfe9-4573-4ab6-991d-16bed0a6d25c,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Edward Perez,Braden Jacobson,mens
+683,a6f57d71-bf90-48fc-b05b-abe66980a132,e2466ee7-aaa4-4c6a-a288-63e717054640,Mike Radermacher,Bret Berryman,mens
+684,03db4060-fcb3-41f7-83d5-7ee732dd8841,f8b6b217-f9f8-4fd3-a71d-ae4dfcbb9c89,Jade Rau,Ava Ignatowich,womens
+685,05b194b3-db88-4f77-a26f-5ef5cfbf6146,33292af3-984d-4752-8d18-b3a5c147e9fe,Riley Newman,Armaan Bhatia,mens
+686,9eff9049-c45c-42ee-9a49-e9a797cc2116,ab6386c6-c7e3-422f-9134-e20e92725ee5,Cailyn Campbell,Emma Nelson,womens
+687,12c765d0-8384-41d3-a498-de63fd7c37da,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Naomi Nguyen,Lina Padegimaite,womens
+688,37a2a373-8d3e-4177-bf1b-e6c9eaa52f5e,d69ec633-93c9-4d07-8870-be9f5acd5330,Natalia Simson,Rachel Rettger,womens
+689,4025f403-d676-42ee-97a1-61d9b38c211b,dba7cf49-9f57-43e3-878d-a63ced26a243,Allison Phillips,Jaeda Minniefield,womens
+690,4f142e8d-9a57-41cb-a89b-5b4c3af752fa,b025eccb-868e-4ce6-a4db-c1082a288b59,Ella Boydston,Maddy Rasmusen,womens
+691,1d701c30-6b5d-485f-ae97-60f3b0c50896,71992955-8b6f-470b-a991-796cfa56a826,Zoey Weil,Liz Truluck,womens
+692,469988c9-b401-4c68-9e07-e1b1b104b791,50c2125b-406c-41e7-aad6-5432c7cd8e1c,Yates Johnson,AJ Koller,mens
+693,11ed643d-b6df-4198-a0b1-bee4fb905625,9b5db00a-b0b7-46a5-815d-56878e28326c,Mihae Kwon,Nok Yiu Tang,womens
+694,20684550-cb89-4ea2-9e2f-0f44eb920b45,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,Chao Yi Wang,Alix Truong,womens
+695,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,f6e249dc-5bb9-483a-a99f-df364df93341,Lindsey Newman,Kelly Goodnow,womens
+696,81535c8c-27d9-452c-a72a-61fc9f755b01,a9a168ae-7822-4d31-b07b-fba40480c1fc,Will Mackinnon,Brandon French,mens
+697,3d9c8684-953f-4008-b355-b6104ee56a5b,d8d51930-abf9-468b-9e43-55a9c0728d58,Connor Mogle,Anouar Braham,mens
+698,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,b1ab7d76-a859-4136-8405-3ed7c9be287a,Brooke Buckner,Mari Humberg,womens
+699,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,34270d82-e968-407d-a918-8aa57f0123a6,Lingwei Kong,Elsie Hendershot,womens
+700,38fdc174-96d6-459f-a27c-df35eb9f945c,ec94501d-8b59-4236-b77d-7238f8925e48,Ashley Griffith,Marcela Aguila Ampon,womens
+701,3270dc72-53b7-4d35-aa4c-7f8b7b6bf905,e8e10ea8-2ff2-4155-9169-cc33ff8c6265,Matthew Barlow,Rio Newcombe,mens
+702,0517f4a6-2648-470e-a9ff-8cf78eee3421,c971bb40-090b-4e47-be58-905495e38401,Connor McCartney,Miles Hoover,mens
+703,12c765d0-8384-41d3-a498-de63fd7c37da,b025eccb-868e-4ce6-a4db-c1082a288b59,Naomi Nguyen,Maddy Rasmusen,womens
+704,66cb85be-fe8b-402d-a4f7-4a8e6a7c3ad7,7b85c35f-6a90-4c61-af0b-565658feeb3c,Lucas Pascoe,Freddie Powell,mens
+705,8a71d348-6401-4068-bedd-f4ed30460d2f,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Andrew Caldarella,Braden Jacobson,mens
+706,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,be74032b-1035-4ece-bf4f-773b45da4d58,Lindsey Newman,Mehvish Safdar,womens
+707,70c18684-f615-4d05-9aa9-5cbdbd53ab9f,a226291c-c48b-408b-a846-f45400d313a9,Carlota Trevino,Alexa Schull,womens
+708,2c1692a6-0fa2-47b0-9d2b-e12b5c054ef4,d0513962-42f2-40e9-904e-b5b615587b98,Janet Liu,Janaye Sakkas,womens
+709,55dbee1f-1ee7-464b-9c80-d14cd9e44b8d,ba491f1c-0112-47a8-a348-4695289e958a,Carlos Di Laura III,Augustus Ge,mens
+710,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,45596674-36ae-4768-b4ee-c7181d9b2ea7,Mohaned Alhouni,Sammy Lee,mens
+711,22839b0d-41bf-4830-8f1e-0da170ebc723,2a490031-a7b4-4833-8d61-b9970960d2dc,Haley Ferguson,Monika Wynne,womens
+712,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,5883c77e-d6e0-4848-9473-866396578248,Ella Cosma,Audrey Adele Brown,womens
+713,6f149538-c6f6-4ad5-9e60-2afc100f97c1,df443e1a-4508-4b35-917b-2780cf0ff6c8,Spartak Rahachou,Eddy Kim,mens
+714,a9a168ae-7822-4d31-b07b-fba40480c1fc,d45a3391-82f4-45d0-ba66-f1901854a8d0,Brandon French,Darrian Young,mens
+715,079cece3-01b2-4dd1-9e95-957b83b14cd7,35f81e87-382e-41cc-9bab-687116861954,Victor Rodrigo,Jace Morris,mens
+716,135937d9-d132-41c5-9cfd-d2b0112288b2,89647b43-f3f5-49e6-896f-614f0175a3f5,Daniel Traxler,Jackson Ayotte,mens
+717,4025f403-d676-42ee-97a1-61d9b38c211b,91846d4e-67fb-4891-87a6-bed8362b8e2c,Allison Phillips,Olivia Phillips,womens
+718,81535c8c-27d9-452c-a72a-61fc9f755b01,be74032b-1035-4ece-bf4f-773b45da4d58,Will Mackinnon,Mehvish Safdar,mixed
+719,88fb0858-b9c3-4620-9408-0dda0eb241ef,c3066b2d-fc90-4774-a571-cde5fc5583d4,Tyler Loong,Chloe Diskin,mixed
+720,a226291c-c48b-408b-a846-f45400d313a9,d45a3391-82f4-45d0-ba66-f1901854a8d0,Alexa Schull,Darrian Young,mixed
+721,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,b025eccb-868e-4ce6-a4db-c1082a288b59,Andre Mercado,Maddy Rasmusen,mixed
+722,3e6b668a-8d26-4424-9420-3ceb18486b65,ba491f1c-0112-47a8-a348-4695289e958a,Daria Walczak,Augustus Ge,mixed
+723,7b85c35f-6a90-4c61-af0b-565658feeb3c,dba7cf49-9f57-43e3-878d-a63ced26a243,Freddie Powell,Jaeda Minniefield,mixed
+724,8a71d348-6401-4068-bedd-f4ed30460d2f,a018902f-114c-4519-997c-4fdf52d4a0e1,Andrew Caldarella,Abbigal Hatton,mixed
+725,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,a95df9a8-772c-4dbf-8c28-e200b7308584,Tom Protzek,Kiora Kunimoto,mixed
+726,5f367bee-cf3e-4aad-a6e6-72cca04d97e2,c85c50d9-eaa4-4581-b6bb-583a808706bf,Angie Walker,Kyle Koszuta,mixed
+727,49d53a66-df0a-4419-892e-0fe6c788391e,9db29a7a-1fce-4394-a1f0-a5fbd2bc2e7b,Wendy Weston,Jake Anderson,mixed
+728,574957ae-e8d5-486e-aabc-a1cc6a392f8d,e8e10ea8-2ff2-4155-9169-cc33ff8c6265,Jalina Ingram,Rio Newcombe,mixed
+729,1936f665-e630-462a-bd89-0dcfcf7c9e6b,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,Indigo Dagnall,Ella Cosma,mixed
+730,6f8c91a7-73ff-426d-b7ee-2f3ab52ecb1f,b65efb9d-3466-4500-986d-ed13e9bb25f5,Antonio Medina,Elise Fortino,mixed
+731,2c1692a6-0fa2-47b0-9d2b-e12b5c054ef4,bc7b2475-e580-4734-bc14-814a153bec5d,Janet Liu,Pesa Teoni,mixed
+732,ecd31a05-120f-4373-b5c1-21136f8f0bf1,f6e249dc-5bb9-483a-a99f-df364df93341,Braden Jacobson,Kelly Goodnow,mixed
+733,22989ac3-e778-487a-ba32-a30243acd294,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,Christine Trifunovic,Gabriel Joseph,mixed
+734,146dd2f7-7f5d-495d-b2f1-96d433742fec,70c18684-f615-4d05-9aa9-5cbdbd53ab9f,Eduardo Santini Ayon,Carlota Trevino,mixed
+735,30d7759b-93f0-467d-a07a-970ecfac06ba,f843b220-41cb-4203-831b-6aac32b8f02a,Cameron Luhring,Riley Inn,mens
+736,5f10ff12-03e8-4384-90a7-a15682ee7edd,6eb8ea1c-31ca-4c18-ba0c-ab8a75cdc24f,Hayden Rand,William Hsieh,mens
+737,a6f57d71-bf90-48fc-b05b-abe66980a132,cb9ea037-f204-4216-ac56-930a01009166,Mike Radermacher,Matt Burkhardt,mens
+738,5520bc45-676e-45a7-bf34-7d91529fdd63,c62c2081-d9ce-4750-93f5-c9163bf46f74,Billy Buchhauser,Yaamunan Venkatesan,mens
+739,80217cca-df99-4019-a90f-385622ca057a,f613fc75-b580-4c2a-87ae-cfe024504205,Zach Gonnering,Melissa Beré,mixed
+740,25139050-f977-4456-9545-7d63b72fa380,f9ae639d-11c5-4336-8b09-71d0fb6f9d9b,David Litvinov,Sienna Hitzeman,mixed
+741,574957ae-e8d5-486e-aabc-a1cc6a392f8d,763b4d27-8140-47cd-86f5-982706cd4ebb,Jalina Ingram,Michael Loyd,mixed
+742,7464628e-931a-44c9-b0df-749a7cb32eaa,c3012322-e95e-4e38-a0d8-106f9e236869,Adam Harvey,Keilly Ulery,mixed
+743,3270dc72-53b7-4d35-aa4c-7f8b7b6bf905,a91e2b68-7357-4518-baf9-f59b0b4c2477,Matthew Barlow,Christopher Haworth,mens
+744,06e87b30-1f70-46e6-a6a8-17a4086d609a,079cece3-01b2-4dd1-9e95-957b83b14cd7,Kailas Shekar,Victor Rodrigo,mens
+745,26b13d9f-ccab-497c-8e3a-68299be5ea70,6f149538-c6f6-4ad5-9e60-2afc100f97c1,Daniel Phillips,Spartak Rahachou,mens
+746,a95df9a8-772c-4dbf-8c28-e200b7308584,ead35052-7367-4296-96d4-064f546cc2b9,Kiora Kunimoto,CJ Klinger,mixed
+747,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,35f81e87-382e-41cc-9bab-687116861954,Andre Mercado,Jace Morris,mens
+748,80217cca-df99-4019-a90f-385622ca057a,bc7b2475-e580-4734-bc14-814a153bec5d,Zach Gonnering,Pesa Teoni,mens
+749,0ccab93d-398c-40a8-821f-07a2ded79dde,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,Zoeya Khan,Zane Navratil,mixed
+750,8160ad59-4654-46b1-b229-8d5f2a9a45f9,a3ed7970-35d2-485c-8285-187c298a2d83,Hunter Johnson,Lacy Schneemann,mixed
+751,35f81e87-382e-41cc-9bab-687116861954,ab6386c6-c7e3-422f-9134-e20e92725ee5,Jace Morris,Emma Nelson,mixed
+752,0c5b84bb-4c04-4906-86bc-deb533ff4eec,135937d9-d132-41c5-9cfd-d2b0112288b2,Zane Ford,Daniel Traxler,mens
+753,04158680-ebb3-4554-96a1-500cc6d00882,2856d69d-887b-4e89-a5c9-975f581f84a0,Chloe Igleski,Len Yang,mixed
+754,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,dba7cf49-9f57-43e3-878d-a63ced26a243,Donald Young,Jaeda Minniefield,mixed
+755,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,8f521dcc-1cb5-4c8d-933c-af6b267bd395,Noe Khlif,Meghan Dizon,mixed
+756,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,ff38654d-daae-4bad-a1a7-690e4e5706eb,Lingwei Kong,Connor Garnett,mixed
+757,22989ac3-e778-487a-ba32-a30243acd294,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Christine Trifunovic,Braden Jacobson,mixed
+758,1e5d81dc-961d-455a-b80f-d6c30c518cde,f6e249dc-5bb9-483a-a99f-df364df93341,Caden Nemoff,Kelly Goodnow,mixed
+759,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Mohaned Alhouni,Lina Padegimaite,mixed
+760,306da673-de7e-44f5-bc16-0738b44bd089,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Christopher Crouch,Giovanna Morelli,mixed
+761,0c1bb94d-3af2-42f4-b938-d712c707ace4,925c1306-6b3b-4510-8482-f34168a0842a,Callie Smith,Roscoe Bellamy,mixed
+762,3d67b6d0-063e-466c-a475-7679d0764354,d69ec633-93c9-4d07-8870-be9f5acd5330,Austin Bricker,Rachel Rettger,mixed
+763,1e5d81dc-961d-455a-b80f-d6c30c518cde,2e0c0227-6e3e-43d5-8037-7f8bd0f9b935,Caden Nemoff,Gabriel Joseph,mens
+764,6794d224-7da3-43d9-8300-e24e731f5dea,f86cff72-5f9c-40b1-9f28-f28aafae245f,Samantha Parker,Wyatt Stone,mixed
+765,34270d82-e968-407d-a918-8aa57f0123a6,d45a3391-82f4-45d0-ba66-f1901854a8d0,Elsie Hendershot,Darrian Young,mixed
+766,1de884f8-7bf7-4b49-9de8-3f1fd74cabd6,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Dylan Frazier,Milan Rane,mixed
+767,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Rafael Lenhard,Luc Pham,mens
+768,1936f665-e630-462a-bd89-0dcfcf7c9e6b,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,Indigo Dagnall,Mota Alhouni,mens
+769,25139050-f977-4456-9545-7d63b72fa380,89647b43-f3f5-49e6-896f-614f0175a3f5,David Litvinov,Jackson Ayotte,mens
+770,9532d3f8-9418-4b59-af95-3cc5e7c2a066,cb9ea037-f204-4216-ac56-930a01009166,Kelly Chen,Matt Burkhardt,mixed
+771,9b97206b-783a-4fab-85e9-45a6240325a5,b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,Catherine Parenteau,Max Freeman,mixed
+772,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,Mohaned Alhouni,Donald Young,mens
+773,3d67b6d0-063e-466c-a475-7679d0764354,7464628e-931a-44c9-b0df-749a7cb32eaa,Austin Bricker,Adam Harvey,mens
+774,50c2125b-406c-41e7-aad6-5432c7cd8e1c,ff38654d-daae-4bad-a1a7-690e4e5706eb,AJ Koller,Connor Garnett,mens
+775,62955f38-bdf5-46af-9622-13c7afe90619,763b4d27-8140-47cd-86f5-982706cd4ebb,Jonathan Truong,Michael Loyd,mens
+776,2bfe44bb-d558-411f-abeb-c8522dd42ce9,614e164a-4197-44eb-855c-586cf79fbfc9,Julian Arnold,Ivan Jakovljevic,mens
+777,ebb2a1e0-7c6c-48a4-b994-e81edd8ddb97,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Patrick Smith,Braden Jacobson,mens
+778,d45a3391-82f4-45d0-ba66-f1901854a8d0,f86cff72-5f9c-40b1-9f28-f28aafae245f,Darrian Young,Wyatt Stone,mens
+779,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,b68c0204-d9d4-4cba-bf23-46706abd77bf,Zane Navratil,Clayton Powell,mens
+780,4057f30d-d42a-4189-a158-11576fb5f52a,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Blaine Hovenier,Jaume Martinez Vich,mens
+781,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,cd7b97fc-d912-4c59-8ab3-c2d70e79d998,Lingwei Kong,Lina Padegimaite,womens
+782,c3012322-e95e-4e38-a0d8-106f9e236869,dba7cf49-9f57-43e3-878d-a63ced26a243,Keilly Ulery,Jaeda Minniefield,womens
+783,4025f403-d676-42ee-97a1-61d9b38c211b,5883c77e-d6e0-4848-9473-866396578248,Allison Phillips,Audrey Adele Brown,womens
+784,03db4060-fcb3-41f7-83d5-7ee732dd8841,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,Jade Rau,Andre Mercado,mixed
+785,52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Eric Oncins,Tyra Hurricane Black,mixed
+786,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,ec4cdfe2-c6f6-4de1-824e-9adcaeb31196,Jessie Irvine,Judit Castillo,womens
+787,03db4060-fcb3-41f7-83d5-7ee732dd8841,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Jade Rau,Giovanna Morelli,womens
+788,62955f38-bdf5-46af-9622-13c7afe90619,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,Jonathan Truong,Jessie Irvine,mixed
+789,469988c9-b401-4c68-9e07-e1b1b104b791,f0484f0e-f240-4b6f-9da5-b6dba3fa370e,Yates Johnson,Kenta Miyoshi,mens
+790,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,f879086b-e0e5-4772-b0a6-4055c265da69,Dekel Bar,Tina Pisnik,mixed
+791,461f063e-a587-4638-bad9-421ff33d91d7,76419f3a-712c-4241-8940-6f9bda847ba7,Genie Erokhina,Lauren Stratman,womens
+792,8f521dcc-1cb5-4c8d-933c-af6b267bd395,9b97206b-783a-4fab-85e9-45a6240325a5,Meghan Dizon,Catherine Parenteau,womens
+793,574957ae-e8d5-486e-aabc-a1cc6a392f8d,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,Jalina Ingram,Nicole Conard,womens
+794,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,ba491f1c-0112-47a8-a348-4695289e958a,Dekel Bar,Augustus Ge,mens
+795,04158680-ebb3-4554-96a1-500cc6d00882,0ccab93d-398c-40a8-821f-07a2ded79dde,Chloe Igleski,Zoeya Khan,womens
+796,34270d82-e968-407d-a918-8aa57f0123a6,f6e249dc-5bb9-483a-a99f-df364df93341,Elsie Hendershot,Kelly Goodnow,womens
+797,06ba18e0-687b-4aa3-822d-1c86981f576b,fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae,Rafa Hewett,Anderson Scarpa,mens
+798,3d67b6d0-063e-466c-a475-7679d0764354,53eadec7-a6b1-4ce3-9825-d76affdc3f4f,Austin Bricker,Juan Varon,mens
+799,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,e9849183-4693-4340-abf5-f4b6f3cb226f,James Delgado,Martin Emmrich,mens
+800,7464628e-931a-44c9-b0df-749a7cb32eaa,7b85c35f-6a90-4c61-af0b-565658feeb3c,Adam Harvey,Freddie Powell,mens
+801,2e858abd-e6cb-4a07-b6ea-fd6ca01556ae,be74032b-1035-4ece-bf4f-773b45da4d58,Rachael James,Mehvish Safdar,womens
+802,80217cca-df99-4019-a90f-385622ca057a,a0582749-fb23-42cc-98ed-1915464c4814,Zach Gonnering,Luke Wasson,mens
+803,1374dfe9-4573-4ab6-991d-16bed0a6d25c,79ee2d66-5ba3-47cc-bc43-f489a09d2d5a,Edward Perez,George Rangelov,mens
+804,03db4060-fcb3-41f7-83d5-7ee732dd8841,38fdc174-96d6-459f-a27c-df35eb9f945c,Jade Rau,Ashley Griffith,womens
+805,2a490031-a7b4-4833-8d61-b9970960d2dc,37a2a373-8d3e-4177-bf1b-e6c9eaa52f5e,Monika Wynne,Natalia Simson,womens
+806,99b25b49-2a51-412d-9fbf-e1b6804acce0,d8d51930-abf9-468b-9e43-55a9c0728d58,Camden Chaffin,Anouar Braham,mens
+807,9d7b2972-477c-4cea-977d-f65f86dccac5,ea0b7d06-7e9f-4786-a4ed-24da5029559f,Parth Mody,Dale Kim,mens
+808,ec94501d-8b59-4236-b77d-7238f8925e48,f91b88a1-7d1e-41ad-9782-200959faf6bd,Marcela Aguila Ampon,Olivia McMillan,womens
+809,71992955-8b6f-470b-a991-796cfa56a826,fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae,Liz Truluck,Anderson Scarpa,mixed
+810,22839b0d-41bf-4830-8f1e-0da170ebc723,4553e8f7-d51d-41cd-bc23-752742441bff,Haley Ferguson,Garrison Eaby,mixed
+811,19a1f7fe-1d16-418a-be95-785266ff586e,3d67b6d0-063e-466c-a475-7679d0764354,Yolena Carlon,Austin Bricker,mixed
+812,b65efb9d-3466-4500-986d-ed13e9bb25f5,c971bb40-090b-4e47-be58-905495e38401,Elise Fortino,Miles Hoover,mixed
+813,06ba18e0-687b-4aa3-822d-1c86981f576b,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,Rafa Hewett,Nicole Conard,mixed
+814,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,ec94501d-8b59-4236-b77d-7238f8925e48,Donald Young,Marcela Aguila Ampon,mixed
+815,87d60b6f-6f2e-4610-ab89-487e8acc097e,d8d51930-abf9-468b-9e43-55a9c0728d58,Mya Bui,Anouar Braham,mixed
+816,b3f6f49d-bc24-44fd-8068-4e5971e9d61a,c3012322-e95e-4e38-a0d8-106f9e236869,Daniel Miron,Keilly Ulery,mixed
+817,2c2a2b82-9ec7-4046-97cb-3a199ed507af,f13c20c3-1fed-4a9e-abec-f3f3bf1f8f91,Oscar Serra,Anne-Sophie Courteau,mixed
+818,99b25b49-2a51-412d-9fbf-e1b6804acce0,ad6e69ff-7913-4b21-86dd-9489f749be01,Camden Chaffin,Paula Rives,mixed
+819,7464628e-931a-44c9-b0df-749a7cb32eaa,be74032b-1035-4ece-bf4f-773b45da4d58,Adam Harvey,Mehvish Safdar,mixed
+820,9d7b2972-477c-4cea-977d-f65f86dccac5,f51d6dfa-5101-49d8-aea5-269e481e1918,Parth Mody,Helen To,mixed
+821,146dd2f7-7f5d-495d-b2f1-96d433742fec,89647b43-f3f5-49e6-896f-614f0175a3f5,Eduardo Santini Ayon,Jackson Ayotte,mens
+822,a6f57d71-bf90-48fc-b05b-abe66980a132,a8256366-d2f9-4787-bf8c-d8e76c55fa86,Mike Radermacher,Mouaad Alhouni,mens
+823,d93f56ce-61cc-477d-a26c-17d04e53b2ff,f13e0c0b-2355-4897-aadf-3ac220a78afa,Anna Lenhart,Ryan Camras,mixed
+824,8b7405b5-f3bc-4e32-bfbc-cc2e14f7454c,9db29a7a-1fce-4394-a1f0-a5fbd2bc2e7b,Jose Martinez,Jake Anderson,mens
+825,79046b96-4601-4443-ad6a-b1d2451be668,80217cca-df99-4019-a90f-385622ca057a,Rachel Summers,Zach Gonnering,mixed
+826,146dd2f7-7f5d-495d-b2f1-96d433742fec,b025eccb-868e-4ce6-a4db-c1082a288b59,Eduardo Santini Ayon,Maddy Rasmusen,mixed
+827,571d4503-e073-4580-a555-be3c7f93c59c,80217cca-df99-4019-a90f-385622ca057a,Chuck Taylor,Zach Gonnering,mens
+828,22839b0d-41bf-4830-8f1e-0da170ebc723,b025eccb-868e-4ce6-a4db-c1082a288b59,Haley Ferguson,Maddy Rasmusen,womens
+829,1d36eae4-41f1-4739-b9d2-0783fd371112,f51d6dfa-5101-49d8-aea5-269e481e1918,Samantha Buyckx,Helen To,womens
+830,3fc70f61-f10c-4539-9b5a-82911efc966a,a226291c-c48b-408b-a846-f45400d313a9,Ava Cavataio,Alexa Schull,womens
+831,03db4060-fcb3-41f7-83d5-7ee732dd8841,69633ccf-87be-4975-a578-53d6e166c91b,Jade Rau,Wil Shaffer,mixed
+832,55ed7e0a-ff2d-4ac2-aad6-b6772ef4f448,608756f6-bfc7-41b5-9cfd-5e69eacfe513,Layne Sleeth,Victoria Dimuzio,womens
+833,4e39b9bd-436d-495d-99d7-c2818bbea4ab,d69ec633-93c9-4d07-8870-be9f5acd5330,Camila Zilveti,Rachel Rettger,womens
+834,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,8a71d348-6401-4068-bedd-f4ed30460d2f,Ella Cosma,Andrew Caldarella,mixed
+835,1d701c30-6b5d-485f-ae97-60f3b0c50896,9034d36a-1b11-4c9d-ad75-5c665d87b8c5,Zoey Weil,Pierina Imparato,womens
+836,925c1306-6b3b-4510-8482-f34168a0842a,a95df9a8-772c-4dbf-8c28-e200b7308584,Roscoe Bellamy,Kiora Kunimoto,mixed
+837,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,81535c8c-27d9-452c-a72a-61fc9f755b01,Zane Navratil,Will Mackinnon,mens
+838,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,1936f665-e630-462a-bd89-0dcfcf7c9e6b,Andre Mercado,Indigo Dagnall,mens
+839,06ba18e0-687b-4aa3-822d-1c86981f576b,a000a067-1bf1-442f-a961-e6c97cb50006,Rafa Hewett,Nicolas Acevedo,mens
+840,20684550-cb89-4ea2-9e2f-0f44eb920b45,33292af3-984d-4752-8d18-b3a5c147e9fe,Chao Yi Wang,Armaan Bhatia,mixed
+841,3fc70f61-f10c-4539-9b5a-82911efc966a,d8d51930-abf9-468b-9e43-55a9c0728d58,Ava Cavataio,Anouar Braham,mixed
+842,53b056f9-095a-40fa-881d-142629905f8a,571d4503-e073-4580-a555-be3c7f93c59c,Luana Stanciu,Chuck Taylor,mixed
+843,29e8121d-6f86-4192-b7af-ab05b77b89fe,99b25b49-2a51-412d-9fbf-e1b6804acce0,Ting Chieh Wei,Camden Chaffin,mixed
+844,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,88fb0858-b9c3-4620-9408-0dda0eb241ef,Lingwei Kong,Tyler Loong,mixed
+845,50c2125b-406c-41e7-aad6-5432c7cd8e1c,e9849183-4693-4340-abf5-f4b6f3cb226f,AJ Koller,Martin Emmrich,mens
+846,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,50c2125b-406c-41e7-aad6-5432c7cd8e1c,Brooke Buckner,AJ Koller,mixed
+847,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,Noe Khlif,Jessie Irvine,mixed
+848,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,Nicole Conard,Mota Alhouni,mixed
+849,348255bf-f94e-47cb-ab5d-95969c2bd7b9,bf84d952-c6a8-4494-943d-064b223e764f,Aiko Yoshitomi,Estee Widdershoven,womens
+850,2bfe44bb-d558-411f-abeb-c8522dd42ce9,66a6c35b-33a2-4a23-b5db-fa53c96d643a,Julian Arnold,Kaitlyn Christian,mixed
+851,81535c8c-27d9-452c-a72a-61fc9f755b01,9eff9049-c45c-42ee-9a49-e9a797cc2116,Will Mackinnon,Cailyn Campbell,mixed
+852,2bfe44bb-d558-411f-abeb-c8522dd42ce9,469988c9-b401-4c68-9e07-e1b1b104b791,Julian Arnold,Yates Johnson,mens
+853,26b13d9f-ccab-497c-8e3a-68299be5ea70,69633ccf-87be-4975-a578-53d6e166c91b,Daniel Phillips,Wil Shaffer,mens
+854,4025f403-d676-42ee-97a1-61d9b38c211b,a018902f-114c-4519-997c-4fdf52d4a0e1,Allison Phillips,Abbigal Hatton,womens
+855,8160ad59-4654-46b1-b229-8d5f2a9a45f9,8f521dcc-1cb5-4c8d-933c-af6b267bd395,Hunter Johnson,Meghan Dizon,mixed
+856,25104e43-16f9-4ce3-9085-70243d8b350a,6160a7c7-6b90-41f1-96d3-af5fa1623ca5,Ella Yeh,Collin Johns,mixed
+857,3270dc72-53b7-4d35-aa4c-7f8b7b6bf905,87d60b6f-6f2e-4610-ab89-487e8acc097e,Matthew Barlow,Mya Bui,mixed
+858,608756f6-bfc7-41b5-9cfd-5e69eacfe513,b68c0204-d9d4-4cba-bf23-46706abd77bf,Victoria Dimuzio,Clayton Powell,mixed
+859,a3ed7970-35d2-485c-8285-187c298a2d83,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Lacy Schneemann,Jaume Martinez Vich,mixed
+860,55dbee1f-1ee7-464b-9c80-d14cd9e44b8d,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,Carlos Di Laura III,James Delgado,mens
+861,4057f30d-d42a-4189-a158-11576fb5f52a,efe9989b-5864-48c2-806c-06697024e1da,Blaine Hovenier,Allyce Jones,mixed
+862,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Pablo Tellez,Giovanna Morelli,mixed
+863,8160ad59-4654-46b1-b229-8d5f2a9a45f9,a91e2b68-7357-4518-baf9-f59b0b4c2477,Hunter Johnson,Christopher Haworth,mens
+864,35f81e87-382e-41cc-9bab-687116861954,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Jace Morris,Braden Jacobson,mens
+865,04158680-ebb3-4554-96a1-500cc6d00882,25104e43-16f9-4ce3-9085-70243d8b350a,Chloe Igleski,Ella Yeh,womens
+866,0ccab93d-398c-40a8-821f-07a2ded79dde,3d67b6d0-063e-466c-a475-7679d0764354,Zoeya Khan,Austin Bricker,mixed
+867,1de884f8-7bf7-4b49-9de8-3f1fd74cabd6,6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,Dylan Frazier,Jade Kawamoto,mixed
+868,f0484f0e-f240-4b6f-9da5-b6dba3fa370e,fd565e56-6223-4ef0-882e-02346e7e0573,Kenta Miyoshi,Brooke Caruso,mixed
+869,05b194b3-db88-4f77-a26f-5ef5cfbf6146,55ed7e0a-ff2d-4ac2-aad6-b6772ef4f448,Riley Newman,Layne Sleeth,mixed
+870,051f5c82-82ce-4ab8-b4f8-36976638a89b,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,Sahra Dennehy,Tama Shimabukuro,mixed
+871,d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Will Howells,Tyra Hurricane Black,mixed
+872,295e343a-31a0-4e1d-a286-d62592291435,676b1cbc-766c-4616-bf39-1787ffd8c72a,Jay Devilliers,Etta Tuionetoa,mixed
+873,2e0acd0d-95a3-49c3-8648-720ed0fbc7d5,45e53881-72e4-4de1-9763-c2e7f7f854ba,Lingwei Kong,Andrea Koop,womens
+874,5883c77e-d6e0-4848-9473-866396578248,f8b6b217-f9f8-4fd3-a71d-ae4dfcbb9c89,Audrey Adele Brown,Ava Ignatowich,womens
+875,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,ebb2a1e0-7c6c-48a4-b994-e81edd8ddb97,Mohaned Alhouni,Patrick Smith,mens
+876,3270dc72-53b7-4d35-aa4c-7f8b7b6bf905,614e164a-4197-44eb-855c-586cf79fbfc9,Matthew Barlow,Ivan Jakovljevic,mens
+877,1936f665-e630-462a-bd89-0dcfcf7c9e6b,4e39b9bd-436d-495d-99d7-c2818bbea4ab,Indigo Dagnall,Camila Zilveti,mixed
+878,574957ae-e8d5-486e-aabc-a1cc6a392f8d,a95df9a8-772c-4dbf-8c28-e200b7308584,Jalina Ingram,Kiora Kunimoto,womens
+879,bc7b2475-e580-4734-bc14-814a153bec5d,ec94501d-8b59-4236-b77d-7238f8925e48,Pesa Teoni,Marcela Aguila Ampon,mixed
+880,5f367bee-cf3e-4aad-a6e6-72cca04d97e2,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,Angie Walker,Donald Young,mixed
+881,3a43c56f-b9d8-4e72-ae8a-58fd69291946,4057f30d-d42a-4189-a158-11576fb5f52a,Jack Sock,Blaine Hovenier,mens
+882,8f521dcc-1cb5-4c8d-933c-af6b267bd395,f879086b-e0e5-4772-b0a6-4055c265da69,Meghan Dizon,Tina Pisnik,womens
+883,38b1bfb1-576b-4a3e-ab6b-e8bc46031c1d,3d67b6d0-063e-466c-a475-7679d0764354,Eric Roddy,Austin Bricker,mens
+884,5a5237bd-64cd-433c-99ba-34badaa2820c,f932a82f-0702-44ac-9a1f-09bb5670b25c,Braylon Ohrel,Christian Lund,mens
+885,051f5c82-82ce-4ab8-b4f8-36976638a89b,2c4de762-88d6-47c3-8b2b-af562c5d1f93,Sahra Dennehy,Danni-Elle Townsend,womens
+886,71992955-8b6f-470b-a991-796cfa56a826,b1ab7d76-a859-4136-8405-3ed7c9be287a,Liz Truluck,Mari Humberg,womens
+887,2c4de762-88d6-47c3-8b2b-af562c5d1f93,ead35052-7367-4296-96d4-064f546cc2b9,Danni-Elle Townsend,CJ Klinger,mixed
+888,0c1bb94d-3af2-42f4-b938-d712c707ace4,b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,Callie Smith,Max Freeman,mixed
+889,504e8c08-caf6-4db8-b454-11ffa321261c,66a6c35b-33a2-4a23-b5db-fa53c96d643a,Lucy Kovalova,Kaitlyn Christian,womens
+890,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,759ecf95-26a6-4ffe-bb8b-035d3ec05f31,Noe Khlif,Matt Wright,mens
+891,5f367bee-cf3e-4aad-a6e6-72cca04d97e2,9eff9049-c45c-42ee-9a49-e9a797cc2116,Angie Walker,Cailyn Campbell,womens
+892,76419f3a-712c-4241-8940-6f9bda847ba7,f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1,Lauren Stratman,Alex Walker,womens
+893,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Brooke Buckner,Milan Rane,womens
+894,34270d82-e968-407d-a918-8aa57f0123a6,461f063e-a587-4638-bad9-421ff33d91d7,Elsie Hendershot,Genie Erokhina,womens
+895,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,f6e249dc-5bb9-483a-a99f-df364df93341,Ella Cosma,Kelly Goodnow,womens
+896,763b4d27-8140-47cd-86f5-982706cd4ebb,99b25b49-2a51-412d-9fbf-e1b6804acce0,Michael Loyd,Camden Chaffin,mens
+897,65bcab7c-9c93-4dc8-a847-a34da426b933,be74032b-1035-4ece-bf4f-773b45da4d58,Martina Frantova,Mehvish Safdar,womens
+898,0c5b84bb-4c04-4906-86bc-deb533ff4eec,8a71d348-6401-4068-bedd-f4ed30460d2f,Zane Ford,Andrew Caldarella,mens
+899,b68c0204-d9d4-4cba-bf23-46706abd77bf,d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,Clayton Powell,Will Howells,mens
+900,62955f38-bdf5-46af-9622-13c7afe90619,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Jonathan Truong,Jaume Martinez Vich,mens
+901,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,Tom Protzek,Donald Young,mens
+902,925c1306-6b3b-4510-8482-f34168a0842a,ff38654d-daae-4bad-a1a7-690e4e5706eb,Roscoe Bellamy,Connor Garnett,mens
+903,9db29a7a-1fce-4394-a1f0-a5fbd2bc2e7b,f13e0c0b-2355-4897-aadf-3ac220a78afa,Jake Anderson,Ryan Camras,mens
+904,18937216-cae1-4075-bda0-2fef0fc6c392,8ece463d-140b-47fa-a002-2e08b9d0140e,Ninh Nguyen,Sunny Krittayaweth,mens
+905,89647b43-f3f5-49e6-896f-614f0175a3f5,8a71d348-6401-4068-bedd-f4ed30460d2f,Jackson Ayotte,Andrew Caldarella,mens
+906,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,c3066b2d-fc90-4774-a571-cde5fc5583d4,Lindsey Newman,Chloe Diskin,womens
+907,22989ac3-e778-487a-ba32-a30243acd294,d93f56ce-61cc-477d-a26c-17d04e53b2ff,Christine Trifunovic,Anna Lenhart,womens
+908,88fb0858-b9c3-4620-9408-0dda0eb241ef,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Tyler Loong,Braden Jacobson,mens
+909,a7e358b0-517e-4972-89ff-d95f0797e1c7,cb9ea037-f204-4216-ac56-930a01009166,Jase Edwards,Matt Burkhardt,mens
+910,45596674-36ae-4768-b4ee-c7181d9b2ea7,a6f57d71-bf90-48fc-b05b-abe66980a132,Sammy Lee,Mike Radermacher,mens
+911,2a490031-a7b4-4833-8d61-b9970960d2dc,4f142e8d-9a57-41cb-a89b-5b4c3af752fa,Monika Wynne,Ella Boydston,womens
+912,34270d82-e968-407d-a918-8aa57f0123a6,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Elsie Hendershot,Braden Jacobson,mixed
+913,30d7759b-93f0-467d-a07a-970ecfac06ba,c3066b2d-fc90-4774-a571-cde5fc5583d4,Cameron Luhring,Chloe Diskin,mixed
+914,719e2d3b-d10d-402d-a195-41f072214679,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Isabella Dunlap,Rafael Lenhard,mixed
+915,8a71d348-6401-4068-bedd-f4ed30460d2f,f6e249dc-5bb9-483a-a99f-df364df93341,Andrew Caldarella,Kelly Goodnow,mixed
+916,571d4503-e073-4580-a555-be3c7f93c59c,f613fc75-b580-4c2a-87ae-cfe024504205,Chuck Taylor,Melissa Beré,mixed
+917,10397234-6551-4a06-8bc6-aa50d6915731,4f142e8d-9a57-41cb-a89b-5b4c3af752fa,Liam Duffin,Ella Boydston,mixed
+918,b025eccb-868e-4ce6-a4db-c1082a288b59,e8e10ea8-2ff2-4155-9169-cc33ff8c6265,Maddy Rasmusen,Rio Newcombe,mixed
+919,481d9fef-ed7a-4fc9-9d19-a4f9b5a57d56,a7e358b0-517e-4972-89ff-d95f0797e1c7,Ella Cosma,Jase Edwards,mixed
+920,68c97127-3873-41f9-a1ec-9bb608a7a74a,91846d4e-67fb-4891-87a6-bed8362b8e2c,Nicolas Almeida,Olivia Phillips,mixed
+921,68d3b279-8b2d-4055-8eb3-b28448c1f7d2,798294b4-02e6-4c16-b3f6-9337758ae915,Katie Neils,Kendall Kikkawa,mixed
+922,30d7759b-93f0-467d-a07a-970ecfac06ba,e8e10ea8-2ff2-4155-9169-cc33ff8c6265,Cameron Luhring,Rio Newcombe,mens
+923,69633ccf-87be-4975-a578-53d6e166c91b,a6f57d71-bf90-48fc-b05b-abe66980a132,Wil Shaffer,Mike Radermacher,mens
+924,c263bd93-bd93-4722-bf88-d24529837529,f613fc75-b580-4c2a-87ae-cfe024504205,Martin Thomas,Melissa Beré,mixed
+925,3fc70f61-f10c-4539-9b5a-82911efc966a,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,Ava Cavataio,Mota Alhouni,mixed
+926,25104e43-16f9-4ce3-9085-70243d8b350a,35f81e87-382e-41cc-9bab-687116861954,Ella Yeh,Jace Morris,mixed
+927,6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,9b97206b-783a-4fab-85e9-45a6240325a5,Jade Kawamoto,Catherine Parenteau,womens
+928,29e8121d-6f86-4192-b7af-ab05b77b89fe,3af01041-5679-400a-87b8-12c01db8cec4,Ting Chieh Wei,Kate Fahey,womens
+929,21ed6c0a-6f07-4e74-afae-9e2218085daf,d0513962-42f2-40e9-904e-b5b615587b98,Levi Daniel,Janaye Sakkas,mixed
+930,52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,Eric Oncins,Jessie Irvine,mixed
+931,6160a7c7-6b90-41f1-96d3-af5fa1623ca5,6a87bc44-5190-44db-8a2f-467de4de48c6,Collin Johns,Christa Gecheva,mixed
+932,81535c8c-27d9-452c-a72a-61fc9f755b01,a95df9a8-772c-4dbf-8c28-e200b7308584,Will Mackinnon,Kiora Kunimoto,mixed
+933,608756f6-bfc7-41b5-9cfd-5e69eacfe513,ce4f0e14-80ea-4ed0-a81c-7341d356d427,Victoria Dimuzio,Yuta Funemizu,mixed
+934,f0484f0e-f240-4b6f-9da5-b6dba3fa370e,f91b88a1-7d1e-41ad-9782-200959faf6bd,Kenta Miyoshi,Olivia McMillan,mixed
+935,35f81e87-382e-41cc-9bab-687116861954,81535c8c-27d9-452c-a72a-61fc9f755b01,Jace Morris,Will Mackinnon,mens
+936,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Nicole Conard,Luc Pham,mixed
+937,12c765d0-8384-41d3-a498-de63fd7c37da,50c2125b-406c-41e7-aad6-5432c7cd8e1c,Naomi Nguyen,AJ Koller,mixed
+938,719e2d3b-d10d-402d-a195-41f072214679,a000a067-1bf1-442f-a961-e6c97cb50006,Isabella Dunlap,Nicolas Acevedo,mixed
+939,55ed7e0a-ff2d-4ac2-aad6-b6772ef4f448,88fb0858-b9c3-4620-9408-0dda0eb241ef,Layne Sleeth,Tyler Loong,mixed
+940,1d701c30-6b5d-485f-ae97-60f3b0c50896,763b4d27-8140-47cd-86f5-982706cd4ebb,Zoey Weil,Michael Loyd,mixed
+941,306da673-de7e-44f5-bc16-0738b44bd089,cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2,Christopher Crouch,Mota Alhouni,mens
+942,461f063e-a587-4638-bad9-421ff33d91d7,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Genie Erokhina,Rafael Lenhard,mixed
+943,167e7a23-c919-460b-8586-a3966f588dcb,348255bf-f94e-47cb-ab5d-95969c2bd7b9,Hong Kit Wong,Aiko Yoshitomi,mixed
+944,25a6f570-d617-427a-9fc4-3bf6115a9a84,469988c9-b401-4c68-9e07-e1b1b104b791,Hannah Blatt,Yates Johnson,mixed
+945,7edb882c-6d17-4129-8208-710e3c82364c,f879086b-e0e5-4772-b0a6-4055c265da69,Federico Staksrud,Tina Pisnik,mixed
+946,2c4de762-88d6-47c3-8b2b-af562c5d1f93,b68c0204-d9d4-4cba-bf23-46706abd77bf,Danni-Elle Townsend,Clayton Powell,mixed
+947,7464628e-931a-44c9-b0df-749a7cb32eaa,ad6e69ff-7913-4b21-86dd-9489f749be01,Adam Harvey,Paula Rives,mixed
+948,518626d4-2600-4134-8c6a-0ae9315f9625,ec94501d-8b59-4236-b77d-7238f8925e48,Cason Campbell,Marcela Aguila Ampon,mixed
+949,05bf7513-7f0a-4f6b-bc11-5d4b14314d91,06ba18e0-687b-4aa3-822d-1c86981f576b,Tom Protzek,Rafa Hewett,mens
+950,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,dbcb41e9-e983-410b-bc23-d184d034cfc0,Noe Khlif,Tyson McGuffin,mens
+951,05b194b3-db88-4f77-a26f-5ef5cfbf6146,ff38654d-daae-4bad-a1a7-690e4e5706eb,Riley Newman,Connor Garnett,mens
+952,55ed7e0a-ff2d-4ac2-aad6-b6772ef4f448,719e2d3b-d10d-402d-a195-41f072214679,Layne Sleeth,Isabella Dunlap,womens
+953,20684550-cb89-4ea2-9e2f-0f44eb920b45,66a6c35b-33a2-4a23-b5db-fa53c96d643a,Chao Yi Wang,Kaitlyn Christian,womens
+954,6a87bc44-5190-44db-8a2f-467de4de48c6,b6fe1237-b049-405c-a641-d57f8170a9a0,Christa Gecheva,Albie Huang,womens
+955,12c765d0-8384-41d3-a498-de63fd7c37da,9eff9049-c45c-42ee-9a49-e9a797cc2116,Naomi Nguyen,Cailyn Campbell,womens
+956,25104e43-16f9-4ce3-9085-70243d8b350a,ec94501d-8b59-4236-b77d-7238f8925e48,Ella Yeh,Marcela Aguila Ampon,womens
+957,ba491f1c-0112-47a8-a348-4695289e958a,d45a3391-82f4-45d0-ba66-f1901854a8d0,Augustus Ge,Darrian Young,mens
+958,763b4d27-8140-47cd-86f5-982706cd4ebb,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Michael Loyd,Luc Pham,mens
+959,4057f30d-d42a-4189-a158-11576fb5f52a,50c2125b-406c-41e7-aad6-5432c7cd8e1c,Blaine Hovenier,AJ Koller,mens
+960,62955f38-bdf5-46af-9622-13c7afe90619,a226291c-c48b-408b-a846-f45400d313a9,Jonathan Truong,Alexa Schull,mixed
+961,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,ba491f1c-0112-47a8-a348-4695289e958a,Brooke Buckner,Augustus Ge,mixed
+962,2856d69d-887b-4e89-a5c9-975f581f84a0,87d60b6f-6f2e-4610-ab89-487e8acc097e,Len Yang,Mya Bui,mixed
+963,676b1cbc-766c-4616-bf39-1787ffd8c72a,efe9989b-5864-48c2-806c-06697024e1da,Etta Tuionetoa,Allyce Jones,womens
+964,7edb882c-6d17-4129-8208-710e3c82364c,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Federico Staksrud,Milan Rane,mixed
+965,52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,55ed7e0a-ff2d-4ac2-aad6-b6772ef4f448,Eric Oncins,Layne Sleeth,mixed
+966,461f063e-a587-4638-bad9-421ff33d91d7,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,Genie Erokhina,Pablo Tellez,mixed
+967,55ed7e0a-ff2d-4ac2-aad6-b6772ef4f448,7319013d-d511-4aa5-a356-4aa2cccf94f5,Layne Sleeth,Lea Jansen,womens
+968,461f063e-a587-4638-bad9-421ff33d91d7,87d60b6f-6f2e-4610-ab89-487e8acc097e,Genie Erokhina,Mya Bui,womens
+969,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,676b1cbc-766c-4616-bf39-1787ffd8c72a,Tama Shimabukuro,Etta Tuionetoa,mixed
+970,6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,6f862c1d-1317-4fe7-bdcd-64caa0dbb088,Jade Kawamoto,Ben Johns,mixed
+971,26b13d9f-ccab-497c-8e3a-68299be5ea70,a9a168ae-7822-4d31-b07b-fba40480c1fc,Daniel Phillips,Brandon French,mens
+972,d50310a6-9378-4228-823f-7fb54f7bd698,fc05556e-3e38-4a38-99c2-f855174a7c28,Gabriel Tardio,Hayden Patriquin,mens
+973,a3ed7970-35d2-485c-8285-187c298a2d83,eb14fc6e-ede1-4999-bec3-e36695e7f94e,Lacy Schneemann,Milan Rane,womens
+974,2c4de762-88d6-47c3-8b2b-af562c5d1f93,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,Danni-Elle Townsend,Alix Truong,womens
+975,581183e8-3d9e-459e-b69f-7337d8b6f3d2,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,Andrei Daescu,Alix Truong,mixed
+976,2856d69d-887b-4e89-a5c9-975f581f84a0,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,Len Yang,Pablo Tellez,mens
+977,ba491f1c-0112-47a8-a348-4695289e958a,bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,Augustus Ge,JW Johnson,mens
+978,99b25b49-2a51-412d-9fbf-e1b6804acce0,ec4cdfe2-c6f6-4de1-824e-9adcaeb31196,Camden Chaffin,Judit Castillo,mixed
+979,bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,fec65f7e-f2c8-482f-ab5b-541cf53b1064,JW Johnson,Tyra Hurricane Black,mixed
+980,a226291c-c48b-408b-a846-f45400d313a9,ec4cdfe2-c6f6-4de1-824e-9adcaeb31196,Alexa Schull,Judit Castillo,womens
+981,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Brooke Buckner,Tyra Hurricane Black,womens
+982,a018902f-114c-4519-997c-4fdf52d4a0e1,a9a168ae-7822-4d31-b07b-fba40480c1fc,Abbigal Hatton,Brandon French,mixed
+983,3af01041-5679-400a-87b8-12c01db8cec4,db5eef5c-99dd-49d9-bbfc-65171a366bda,Kate Fahey,Anna Bright,womens
+984,26b13d9f-ccab-497c-8e3a-68299be5ea70,6794d224-7da3-43d9-8300-e24e731f5dea,Daniel Phillips,Samantha Parker,mixed
+985,3af01041-5679-400a-87b8-12c01db8cec4,d50310a6-9378-4228-823f-7fb54f7bd698,Kate Fahey,Gabriel Tardio,mixed
+986,3a43c56f-b9d8-4e72-ae8a-58fd69291946,7edb882c-6d17-4129-8208-710e3c82364c,Jack Sock,Federico Staksrud,mens
+987,581183e8-3d9e-459e-b69f-7337d8b6f3d2,ead35052-7367-4296-96d4-064f546cc2b9,Andrei Daescu,CJ Klinger,mens
+988,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,ff38654d-daae-4bad-a1a7-690e4e5706eb,Tama Shimabukuro,Connor Garnett,mens
+989,6f862c1d-1317-4fe7-bdcd-64caa0dbb088,b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,Ben Johns,Max Freeman,mens
+990,0ccab93d-398c-40a8-821f-07a2ded79dde,dd2f2fe3-5333-4036-9d88-f108bdcee3fc,Zoeya Khan,Giovanna Morelli,womens
+991,79046b96-4601-4443-ad6a-b1d2451be668,c3012322-e95e-4e38-a0d8-106f9e236869,Rachel Summers,Keilly Ulery,womens
+992,06ba18e0-687b-4aa3-822d-1c86981f576b,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,Rafa Hewett,James Delgado,mens
+993,b68c0204-d9d4-4cba-bf23-46706abd77bf,d8d51930-abf9-468b-9e43-55a9c0728d58,Clayton Powell,Anouar Braham,mens
+994,a000a067-1bf1-442f-a961-e6c97cb50006,ce4f0e14-80ea-4ed0-a81c-7341d356d427,Nicolas Acevedo,Yuta Funemizu,mens
+995,9e8ad96a-17a3-48bf-9363-7b35cc96b2b8,ec94501d-8b59-4236-b77d-7238f8925e48,Averee Beck,Marcela Aguila Ampon,womens
+996,2a490031-a7b4-4833-8d61-b9970960d2dc,2c1692a6-0fa2-47b0-9d2b-e12b5c054ef4,Monika Wynne,Janet Liu,womens
+997,53cffd68-8c08-4ad7-88fd-a72ee20d716e,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,Marisa Ruiz,Nicole Conard,womens
+998,45e53881-72e4-4de1-9763-c2e7f7f854ba,76419f3a-712c-4241-8940-6f9bda847ba7,Andrea Koop,Lauren Stratman,womens
+999,129b2771-34b5-4b7f-9c23-e020a6aa3e6a,b51ea0fb-c243-4427-85f8-b798febb51ff,Anna Leigh Waters,Jorja Johnson,womens
+1000,25104e43-16f9-4ce3-9085-70243d8b350a,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Ella Yeh,Luc Pham,mixed
+1001,6794d224-7da3-43d9-8300-e24e731f5dea,d45a3391-82f4-45d0-ba66-f1901854a8d0,Samantha Parker,Darrian Young,mixed
+1002,25104e43-16f9-4ce3-9085-70243d8b350a,461f063e-a587-4638-bad9-421ff33d91d7,Ella Yeh,Genie Erokhina,womens
+1003,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Pablo Tellez,Luc Pham,mens
+1004,129b2771-34b5-4b7f-9c23-e020a6aa3e6a,1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,Anna Leigh Waters,Noe Khlif,mixed
+1005,b51ea0fb-c243-4427-85f8-b798febb51ff,d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,Jorja Johnson,Will Howells,mixed
+1006,b68c0204-d9d4-4cba-bf23-46706abd77bf,bf84d952-c6a8-4494-943d-064b223e764f,Clayton Powell,Estee Widdershoven,mixed
+1007,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,a067b12b-b26b-4a30-aed8-0f707c52beaa,Nicole Conard,Mark Dancuart,mixed
+1008,be74032b-1035-4ece-bf4f-773b45da4d58,d3e486f2-7c25-4bcf-b9dd-81c14f644f60,Mehvish Safdar,Etienne Blaszkewycz,mixed
+1009,70c18684-f615-4d05-9aa9-5cbdbd53ab9f,7867cc51-11d1-471f-a8bb-9d8370b6a698,Carlota Trevino,Nicholas Wade,mixed
+1010,76419f3a-712c-4241-8940-6f9bda847ba7,a000a067-1bf1-442f-a961-e6c97cb50006,Lauren Stratman,Nicolas Acevedo,mixed
+1011,38b1bfb1-576b-4a3e-ab6b-e8bc46031c1d,9034d36a-1b11-4c9d-ad75-5c665d87b8c5,Eric Roddy,Pierina Imparato,mixed
+1012,2a490031-a7b4-4833-8d61-b9970960d2dc,53eadec7-a6b1-4ce3-9825-d76affdc3f4f,Monika Wynne,Juan Varon,mixed
+1013,1d36eae4-41f1-4739-b9d2-0783fd371112,d8d51930-abf9-468b-9e43-55a9c0728d58,Samantha Buyckx,Anouar Braham,mixed
+1014,0ccab93d-398c-40a8-821f-07a2ded79dde,2bfe44bb-d558-411f-abeb-c8522dd42ce9,Zoeya Khan,Julian Arnold,mixed
+1015,03db4060-fcb3-41f7-83d5-7ee732dd8841,7464628e-931a-44c9-b0df-749a7cb32eaa,Jade Rau,Adam Harvey,mixed
+1016,ba491f1c-0112-47a8-a348-4695289e958a,fec65f7e-f2c8-482f-ab5b-541cf53b1064,Augustus Ge,Tyra Hurricane Black,mixed
+1017,99b25b49-2a51-412d-9fbf-e1b6804acce0,a226291c-c48b-408b-a846-f45400d313a9,Camden Chaffin,Alexa Schull,mixed
+1018,34270d82-e968-407d-a918-8aa57f0123a6,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Elsie Hendershot,John Lucian Goins,mixed
+1019,a226291c-c48b-408b-a846-f45400d313a9,f86cff72-5f9c-40b1-9f28-f28aafae245f,Alexa Schull,Wyatt Stone,mixed
+1020,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,608756f6-bfc7-41b5-9cfd-5e69eacfe513,Tama Shimabukuro,Victoria Dimuzio,mixed
+1021,62955f38-bdf5-46af-9622-13c7afe90619,ec4cdfe2-c6f6-4de1-824e-9adcaeb31196,Jonathan Truong,Judit Castillo,mixed
+1022,26b13d9f-ccab-497c-8e3a-68299be5ea70,d45a3391-82f4-45d0-ba66-f1901854a8d0,Daniel Phillips,Darrian Young,mens
+1023,62955f38-bdf5-46af-9622-13c7afe90619,99b25b49-2a51-412d-9fbf-e1b6804acce0,Jonathan Truong,Camden Chaffin,mens
+1024,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,Brooke Buckner,JW Johnson,mixed
+1025,4025f403-d676-42ee-97a1-61d9b38c211b,d45a3391-82f4-45d0-ba66-f1901854a8d0,Allison Phillips,Darrian Young,mixed
+1026,608756f6-bfc7-41b5-9cfd-5e69eacfe513,efe9989b-5864-48c2-806c-06697024e1da,Victoria Dimuzio,Allyce Jones,womens
+1027,608756f6-bfc7-41b5-9cfd-5e69eacfe513,676b1cbc-766c-4616-bf39-1787ffd8c72a,Victoria Dimuzio,Etta Tuionetoa,womens
+1028,608756f6-bfc7-41b5-9cfd-5e69eacfe513,ff38654d-daae-4bad-a1a7-690e4e5706eb,Victoria Dimuzio,Connor Garnett,mixed
+1029,89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,dbcb41e9-e983-410b-bc23-d184d034cfc0,Dekel Bar,Tyson McGuffin,mens
+1030,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Jessie Irvine,Jaume Martinez Vich,mixed
+1031,719e2d3b-d10d-402d-a195-41f072214679,bf84d952-c6a8-4494-943d-064b223e764f,Isabella Dunlap,Estee Widdershoven,womens
+1032,1728d016-1f02-4789-be73-63d12d5a5b42,2c4de762-88d6-47c3-8b2b-af562c5d1f93,Parris Todd,Danni-Elle Townsend,womens
+1033,4057f30d-d42a-4189-a158-11576fb5f52a,71992955-8b6f-470b-a991-796cfa56a826,Blaine Hovenier,Liz Truluck,mixed
+1034,518626d4-2600-4134-8c6a-0ae9315f9625,65bcab7c-9c93-4dc8-a847-a34da426b933,Cason Campbell,Martina Frantova,mixed
+1035,295e343a-31a0-4e1d-a286-d62592291435,66a6c35b-33a2-4a23-b5db-fa53c96d643a,Jay Devilliers,Kaitlyn Christian,mixed
+1036,051f5c82-82ce-4ab8-b4f8-36976638a89b,d8d51930-abf9-468b-9e43-55a9c0728d58,Sahra Dennehy,Anouar Braham,mixed
+1037,0c1bb94d-3af2-42f4-b938-d712c707ace4,71992955-8b6f-470b-a991-796cfa56a826,Callie Smith,Liz Truluck,womens
+1038,1d701c30-6b5d-485f-ae97-60f3b0c50896,65bcab7c-9c93-4dc8-a847-a34da426b933,Zoey Weil,Martina Frantova,womens
+1039,29e8121d-6f86-4192-b7af-ab05b77b89fe,b1ab7d76-a859-4136-8405-3ed7c9be287a,Ting Chieh Wei,Mari Humberg,womens
+1040,051f5c82-82ce-4ab8-b4f8-36976638a89b,ab6386c6-c7e3-422f-9134-e20e92725ee5,Sahra Dennehy,Emma Nelson,womens
+1041,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,8160ad59-4654-46b1-b229-8d5f2a9a45f9,Zane Navratil,Hunter Johnson,mens
+1042,763b4d27-8140-47cd-86f5-982706cd4ebb,d8d51930-abf9-468b-9e43-55a9c0728d58,Michael Loyd,Anouar Braham,mens
+1043,4057f30d-d42a-4189-a158-11576fb5f52a,925c1306-6b3b-4510-8482-f34168a0842a,Blaine Hovenier,Roscoe Bellamy,mens
+1044,306da673-de7e-44f5-bc16-0738b44bd089,7925aefe-e260-4b83-8bfc-214da1d14fb5,Christopher Crouch,Travis Rettenmaier,mens
+1045,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,b1ab7d76-a859-4136-8405-3ed7c9be287a,Zane Navratil,Mari Humberg,mixed
+1046,b9bacc1e-29b5-4a92-a9c1-24e08ac72215,dbcb41e9-e983-410b-bc23-d184d034cfc0,Sofia Sewing,Tyson McGuffin,mixed
+1047,3d9c8684-953f-4008-b355-b6104ee56a5b,4025f403-d676-42ee-97a1-61d9b38c211b,Connor Mogle,Allison Phillips,mixed
+1048,29e8121d-6f86-4192-b7af-ab05b77b89fe,8160ad59-4654-46b1-b229-8d5f2a9a45f9,Ting Chieh Wei,Hunter Johnson,mixed
+1049,b9bacc1e-29b5-4a92-a9c1-24e08ac72215,f879086b-e0e5-4772-b0a6-4055c265da69,Sofia Sewing,Tina Pisnik,womens
+1050,3d9c8684-953f-4008-b355-b6104ee56a5b,a9a168ae-7822-4d31-b07b-fba40480c1fc,Connor Mogle,Brandon French,mens
+1051,306da673-de7e-44f5-bc16-0738b44bd089,65bcab7c-9c93-4dc8-a847-a34da426b933,Christopher Crouch,Martina Frantova,mixed
+1052,763b4d27-8140-47cd-86f5-982706cd4ebb,ab6386c6-c7e3-422f-9134-e20e92725ee5,Michael Loyd,Emma Nelson,mixed
+1053,1d701c30-6b5d-485f-ae97-60f3b0c50896,518626d4-2600-4134-8c6a-0ae9315f9625,Zoey Weil,Cason Campbell,mixed
+1054,1d701c30-6b5d-485f-ae97-60f3b0c50896,306da673-de7e-44f5-bc16-0738b44bd089,Zoey Weil,Christopher Crouch,mixed
+1055,0c1bb94d-3af2-42f4-b938-d712c707ace4,20684550-cb89-4ea2-9e2f-0f44eb920b45,Callie Smith,Chao Yi Wang,womens
+1056,a018902f-114c-4519-997c-4fdf52d4a0e1,d45a3391-82f4-45d0-ba66-f1901854a8d0,Abbigal Hatton,Darrian Young,mixed
+1057,3d9c8684-953f-4008-b355-b6104ee56a5b,6794d224-7da3-43d9-8300-e24e731f5dea,Connor Mogle,Samantha Parker,mixed
+1058,051f5c82-82ce-4ab8-b4f8-36976638a89b,a95df9a8-772c-4dbf-8c28-e200b7308584,Sahra Dennehy,Kiora Kunimoto,womens
+1059,3d9c8684-953f-4008-b355-b6104ee56a5b,d45a3391-82f4-45d0-ba66-f1901854a8d0,Connor Mogle,Darrian Young,mens
+1060,1d701c30-6b5d-485f-ae97-60f3b0c50896,ad6e69ff-7913-4b21-86dd-9489f749be01,Zoey Weil,Paula Rives,womens
+1061,e8e10ea8-2ff2-4155-9169-cc33ff8c6265,f843b220-41cb-4203-831b-6aac32b8f02a,Rio Newcombe,Riley Inn,mens
+1062,b025eccb-868e-4ce6-a4db-c1082a288b59,dba7cf49-9f57-43e3-878d-a63ced26a243,Maddy Rasmusen,Jaeda Minniefield,womens
+1063,1e5d81dc-961d-455a-b80f-d6c30c518cde,26898786-4fd1-4dd9-bc18-a5c515a6b0ef,Caden Nemoff,Maverick Messinger,mens
+1064,135937d9-d132-41c5-9cfd-d2b0112288b2,8172788a-eec8-4064-90ee-a01dd09e2729,Daniel Traxler,Jaikin Gomez,mens
+1065,c971bb40-090b-4e47-be58-905495e38401,f370a1a0-2e1a-463b-a35c-30899131f7d6,Miles Hoover,Troy Akin,mens
+1066,12c765d0-8384-41d3-a498-de63fd7c37da,1607a4f2-2592-4745-ba49-21bbeb199151,Naomi Nguyen,Sydney Sonday,womens
+1067,25104e43-16f9-4ce3-9085-70243d8b350a,f6e249dc-5bb9-483a-a99f-df364df93341,Ella Yeh,Kelly Goodnow,womens
+1068,12890797-7355-49ca-848e-56d67e33c4de,4f142e8d-9a57-41cb-a89b-5b4c3af752fa,Marianna Petrei,Ella Boydston,womens
+1069,53eadec7-a6b1-4ce3-9825-d76affdc3f4f,8b7405b5-f3bc-4e32-bfbc-cc2e14f7454c,Juan Varon,Jose Martinez,mens
+1070,6f8c91a7-73ff-426d-b7ee-2f3ab52ecb1f,7ea6e46a-c319-4768-9fb3-a286dd5f69ce,Antonio Medina,TJ Rudden,mens
+1071,b68c0204-d9d4-4cba-bf23-46706abd77bf,ce4f0e14-80ea-4ed0-a81c-7341d356d427,Clayton Powell,Yuta Funemizu,mens
+1072,306da673-de7e-44f5-bc16-0738b44bd089,518626d4-2600-4134-8c6a-0ae9315f9625,Christopher Crouch,Cason Campbell,mens
+1073,20684550-cb89-4ea2-9e2f-0f44eb920b45,925c1306-6b3b-4510-8482-f34168a0842a,Chao Yi Wang,Roscoe Bellamy,mixed
+1074,925c1306-6b3b-4510-8482-f34168a0842a,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Roscoe Bellamy,Braden Jacobson,mens
+1075,20684550-cb89-4ea2-9e2f-0f44eb920b45,71992955-8b6f-470b-a991-796cfa56a826,Chao Yi Wang,Liz Truluck,womens
+1076,719e2d3b-d10d-402d-a195-41f072214679,ce4f0e14-80ea-4ed0-a81c-7341d356d427,Isabella Dunlap,Yuta Funemizu,mixed
+1077,051f5c82-82ce-4ab8-b4f8-36976638a89b,763b4d27-8140-47cd-86f5-982706cd4ebb,Sahra Dennehy,Michael Loyd,mixed
+1078,ab6386c6-c7e3-422f-9134-e20e92725ee5,d8d51930-abf9-468b-9e43-55a9c0728d58,Emma Nelson,Anouar Braham,mixed
+1079,1607a4f2-2592-4745-ba49-21bbeb199151,e8e10ea8-2ff2-4155-9169-cc33ff8c6265,Sydney Sonday,Rio Newcombe,mixed
+1080,70c18684-f615-4d05-9aa9-5cbdbd53ab9f,dc69fcde-bcda-4441-8b66-a8bafeb12ded,Carlota Trevino,Joel Poland,mixed
+1081,1abf464c-e8fc-472b-b1c8-f42a5c1fc02a,8b7405b5-f3bc-4e32-bfbc-cc2e14f7454c,Natalie Hur,Jose Martinez,mixed
+1082,12c765d0-8384-41d3-a498-de63fd7c37da,c85c50d9-eaa4-4581-b6bb-583a808706bf,Naomi Nguyen,Kyle Koszuta,mixed
+1083,b65efb9d-3466-4500-986d-ed13e9bb25f5,ce7e7707-c94e-4d33-b34a-37efe3363774,Elise Fortino,Eli Steiner,mixed
+1084,2856d69d-887b-4e89-a5c9-975f581f84a0,461f063e-a587-4638-bad9-421ff33d91d7,Len Yang,Genie Erokhina,mixed
+1085,2856d69d-887b-4e89-a5c9-975f581f84a0,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Len Yang,Luc Pham,mens
+1086,50908953-a944-4a34-898b-16af312bc814,be33755f-9262-461b-aedd-e9a7a686a82c,Rachel Rohrabacher,Jackie Kawamoto,womens
+1087,8f521dcc-1cb5-4c8d-933c-af6b267bd395,9eff9049-c45c-42ee-9a49-e9a797cc2116,Meghan Dizon,Cailyn Campbell,womens
+1088,3e6b668a-8d26-4424-9420-3ceb18486b65,646f7432-e6ad-4ccf-95ee-a0e5d9514d28,Daria Walczak,Alix Truong,womens
+1089,33292af3-984d-4752-8d18-b3a5c147e9fe,8f521dcc-1cb5-4c8d-933c-af6b267bd395,Armaan Bhatia,Meghan Dizon,mixed
+1090,05b194b3-db88-4f77-a26f-5ef5cfbf6146,79a11da1-6aeb-4719-9b1e-9918e0163cec,Riley Newman,Christian Alshon,mens
+1091,33292af3-984d-4752-8d18-b3a5c147e9fe,81535c8c-27d9-452c-a72a-61fc9f755b01,Armaan Bhatia,Will Mackinnon,mens
+1092,05b194b3-db88-4f77-a26f-5ef5cfbf6146,be33755f-9262-461b-aedd-e9a7a686a82c,Riley Newman,Jackie Kawamoto,mixed
+1093,87d60b6f-6f2e-4610-ab89-487e8acc097e,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Mya Bui,Luc Pham,mixed
+1094,a91e2b68-7357-4518-baf9-f59b0b4c2477,be33755f-9262-461b-aedd-e9a7a686a82c,Christopher Haworth,Jackie Kawamoto,mixed
+1095,3e6b668a-8d26-4424-9420-3ceb18486b65,f86cff72-5f9c-40b1-9f28-f28aafae245f,Daria Walczak,Wyatt Stone,mixed
+1096,79a11da1-6aeb-4719-9b1e-9918e0163cec,a91e2b68-7357-4518-baf9-f59b0b4c2477,Christian Alshon,Christopher Haworth,mens
+1097,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,9eff9049-c45c-42ee-9a49-e9a797cc2116,Rafael Lenhard,Cailyn Campbell,mixed
+1098,88fb0858-b9c3-4620-9408-0dda0eb241ef,ff38654d-daae-4bad-a1a7-690e4e5706eb,Tyler Loong,Connor Garnett,mens
+1099,676b1cbc-766c-4616-bf39-1787ffd8c72a,88fb0858-b9c3-4620-9408-0dda0eb241ef,Etta Tuionetoa,Tyler Loong,mixed
+1100,33292af3-984d-4752-8d18-b3a5c147e9fe,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Armaan Bhatia,Rafael Lenhard,mens
+1101,25104e43-16f9-4ce3-9085-70243d8b350a,87d60b6f-6f2e-4610-ab89-487e8acc097e,Ella Yeh,Mya Bui,womens
+1102,3af01041-5679-400a-87b8-12c01db8cec4,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Kate Fahey,John Lucian Goins,mixed
+1103,71992955-8b6f-470b-a991-796cfa56a826,925c1306-6b3b-4510-8482-f34168a0842a,Liz Truluck,Roscoe Bellamy,mixed
+1104,0c1bb94d-3af2-42f4-b938-d712c707ace4,4057f30d-d42a-4189-a158-11576fb5f52a,Callie Smith,Blaine Hovenier,mixed
+1105,469988c9-b401-4c68-9e07-e1b1b104b791,f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1,Yates Johnson,Alex Walker,mixed
+1106,52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,a000a067-1bf1-442f-a961-e6c97cb50006,Eric Oncins,Nicolas Acevedo,mens
+1107,581183e8-3d9e-459e-b69f-7337d8b6f3d2,ec4cdfe2-c6f6-4de1-824e-9adcaeb31196,Andrei Daescu,Judit Castillo,mixed
+1108,c3012322-e95e-4e38-a0d8-106f9e236869,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Keilly Ulery,Jaume Martinez Vich,mixed
+1109,348255bf-f94e-47cb-ab5d-95969c2bd7b9,d45a3391-82f4-45d0-ba66-f1901854a8d0,Aiko Yoshitomi,Darrian Young,mixed
+1110,b6fe1237-b049-405c-a641-d57f8170a9a0,ba491f1c-0112-47a8-a348-4695289e958a,Albie Huang,Augustus Ge,mixed
+1111,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,c3012322-e95e-4e38-a0d8-106f9e236869,Jessie Irvine,Keilly Ulery,womens
+1112,2c4de762-88d6-47c3-8b2b-af562c5d1f93,ec4cdfe2-c6f6-4de1-824e-9adcaeb31196,Danni-Elle Townsend,Judit Castillo,womens
+1113,348255bf-f94e-47cb-ab5d-95969c2bd7b9,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,Aiko Yoshitomi,Nicole Conard,womens
+1114,06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,b6fe1237-b049-405c-a641-d57f8170a9a0,Brooke Buckner,Albie Huang,womens
+1115,1de884f8-7bf7-4b49-9de8-3f1fd74cabd6,b68c0204-d9d4-4cba-bf23-46706abd77bf,Dylan Frazier,Clayton Powell,mens
+1116,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,d8d51930-abf9-468b-9e43-55a9c0728d58,James Delgado,Anouar Braham,mens
+1117,7319013d-d511-4aa5-a356-4aa2cccf94f5,a000a067-1bf1-442f-a961-e6c97cb50006,Lea Jansen,Nicolas Acevedo,mixed
+1118,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,a95df9a8-772c-4dbf-8c28-e200b7308584,James Delgado,Kiora Kunimoto,mixed
+1119,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,87d60b6f-6f2e-4610-ab89-487e8acc097e,Pablo Tellez,Mya Bui,mixed
+1120,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Donald Young,Jaume Martinez Vich,mens
+1121,aec5d8be-9ce0-4cc5-98a4-140fad555fe0,c3012322-e95e-4e38-a0d8-106f9e236869,Donald Young,Keilly Ulery,mixed
+1122,3270dc72-53b7-4d35-aa4c-7f8b7b6bf905,ec94501d-8b59-4236-b77d-7238f8925e48,Matthew Barlow,Marcela Aguila Ampon,mixed
+1123,348255bf-f94e-47cb-ab5d-95969c2bd7b9,a018902f-114c-4519-997c-4fdf52d4a0e1,Aiko Yoshitomi,Abbigal Hatton,womens
+1124,1de884f8-7bf7-4b49-9de8-3f1fd74cabd6,719e2d3b-d10d-402d-a195-41f072214679,Dylan Frazier,Isabella Dunlap,mixed
+1125,461f063e-a587-4638-bad9-421ff33d91d7,dc7f6ac5-f007-4b8f-b343-95e524dc7d0a,Genie Erokhina,Luc Pham,mixed
+1126,763b4d27-8140-47cd-86f5-982706cd4ebb,a018902f-114c-4519-997c-4fdf52d4a0e1,Michael Loyd,Abbigal Hatton,mixed
+1127,7886d6aa-2310-4ae8-9874-f0fc9c3e534f,ab6386c6-c7e3-422f-9134-e20e92725ee5,James Delgado,Emma Nelson,mixed
+1128,25139050-f977-4456-9545-7d63b72fa380,f370a1a0-2e1a-463b-a35c-30899131f7d6,David Litvinov,Troy Akin,mens
+1129,1bab49f1-6891-4d3e-8f77-42aa4fc1d18e,34049405-b415-4f3a-aade-5be0111ac7db,Mohaned Alhouni,Bruno Faletto,mens
+1130,91846d4e-67fb-4891-87a6-bed8362b8e2c,9e8ad96a-17a3-48bf-9363-7b35cc96b2b8,Olivia Phillips,Averee Beck,womens
+1131,e2466ee7-aaa4-4c6a-a288-63e717054640,edca189d-8781-4491-a146-868c85f7cf25,Bret Berryman,Blake Suard,mens
+1132,04158680-ebb3-4554-96a1-500cc6d00882,12890797-7355-49ca-848e-56d67e33c4de,Chloe Igleski,Marianna Petrei,womens
+1133,9a449e9c-69aa-4a48-8f28-217766ab25f7,ce7e7707-c94e-4d33-b34a-37efe3363774,Armaan Jiwa Mawji,Eli Steiner,mens
+1134,574957ae-e8d5-486e-aabc-a1cc6a392f8d,bd7773b4-7b8e-4da2-96ce-98fe3490ee93,Jalina Ingram,Lindsey Newman,womens
+1135,0517f4a6-2648-470e-a9ff-8cf78eee3421,89647b43-f3f5-49e6-896f-614f0175a3f5,Connor McCartney,Jackson Ayotte,mens
+1136,70c18684-f615-4d05-9aa9-5cbdbd53ab9f,f6e249dc-5bb9-483a-a99f-df364df93341,Carlota Trevino,Kelly Goodnow,womens
+1137,763b4d27-8140-47cd-86f5-982706cd4ebb,a9a168ae-7822-4d31-b07b-fba40480c1fc,Michael Loyd,Brandon French,mens
+1138,5925398b-b2a9-4e8f-ae46-5c2b59b1b818,763b4d27-8140-47cd-86f5-982706cd4ebb,Nicole Conard,Michael Loyd,mixed
+1139,12c765d0-8384-41d3-a498-de63fd7c37da,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Naomi Nguyen,Rafael Lenhard,mixed
+1140,34049405-b415-4f3a-aade-5be0111ac7db,70c18684-f615-4d05-9aa9-5cbdbd53ab9f,Bruno Faletto,Carlota Trevino,mixed
+1141,04158680-ebb3-4554-96a1-500cc6d00882,7464628e-931a-44c9-b0df-749a7cb32eaa,Chloe Igleski,Adam Harvey,mixed
+1142,146dd2f7-7f5d-495d-b2f1-96d433742fec,574957ae-e8d5-486e-aabc-a1cc6a392f8d,Eduardo Santini Ayon,Jalina Ingram,mixed
+1143,0b75af4a-8c68-4ff7-a2f1-09bda71b5bed,f6e249dc-5bb9-483a-a99f-df364df93341,Andre Mercado,Kelly Goodnow,mixed
+1144,2a490031-a7b4-4833-8d61-b9970960d2dc,ce7e7707-c94e-4d33-b34a-37efe3363774,Monika Wynne,Eli Steiner,mixed
+1145,4f142e8d-9a57-41cb-a89b-5b4c3af752fa,8a71d348-6401-4068-bedd-f4ed30460d2f,Ella Boydston,Andrew Caldarella,mixed
+1146,571d4503-e073-4580-a555-be3c7f93c59c,91846d4e-67fb-4891-87a6-bed8362b8e2c,Chuck Taylor,Olivia Phillips,mixed
+1147,19a1f7fe-1d16-418a-be95-785266ff586e,7867cc51-11d1-471f-a8bb-9d8370b6a698,Yolena Carlon,Nicholas Wade,mixed
+1148,9d7b2972-477c-4cea-977d-f65f86dccac5,f9ae639d-11c5-4336-8b09-71d0fb6f9d9b,Parth Mody,Sienna Hitzeman,mixed
+1149,d0513962-42f2-40e9-904e-b5b615587b98,ea0b7d06-7e9f-4786-a4ed-24da5029559f,Janaye Sakkas,Dale Kim,mixed
+1150,7b85c35f-6a90-4c61-af0b-565658feeb3c,c3066b2d-fc90-4774-a571-cde5fc5583d4,Freddie Powell,Chloe Diskin,mixed
+1151,81535c8c-27d9-452c-a72a-61fc9f755b01,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Will Mackinnon,Rafael Lenhard,mens
+1152,8f521dcc-1cb5-4c8d-933c-af6b267bd395,9ce32de7-16c9-4786-a7b0-8c1c2c623d69,Meghan Dizon,Rafael Lenhard,mixed
+1153,65bcab7c-9c93-4dc8-a847-a34da426b933,7925aefe-e260-4b83-8bfc-214da1d14fb5,Martina Frantova,Travis Rettenmaier,mixed
+1154,ead35052-7367-4296-96d4-064f546cc2b9,fec65f7e-f2c8-482f-ab5b-541cf53b1064,CJ Klinger,Tyra Hurricane Black,mixed
+1155,dbcb41e9-e983-410b-bc23-d184d034cfc0,f879086b-e0e5-4772-b0a6-4055c265da69,Tyson McGuffin,Tina Pisnik,mixed
+1156,4af4d4d1-9f87-4dc7-95f2-b10751d44c15,88fb0858-b9c3-4620-9408-0dda0eb241ef,Tama Shimabukuro,Tyler Loong,mens
+1157,518626d4-2600-4134-8c6a-0ae9315f9625,7925aefe-e260-4b83-8bfc-214da1d14fb5,Cason Campbell,Travis Rettenmaier,mens
+1158,7319013d-d511-4aa5-a356-4aa2cccf94f5,ec94501d-8b59-4236-b77d-7238f8925e48,Lea Jansen,Marcela Aguila Ampon,womens
+1159,52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,ec94501d-8b59-4236-b77d-7238f8925e48,Eric Oncins,Marcela Aguila Ampon,mixed
+1160,3270dc72-53b7-4d35-aa4c-7f8b7b6bf905,7319013d-d511-4aa5-a356-4aa2cccf94f5,Matthew Barlow,Lea Jansen,mixed
+1161,66a6c35b-33a2-4a23-b5db-fa53c96d643a,a000a067-1bf1-442f-a961-e6c97cb50006,Kaitlyn Christian,Nicolas Acevedo,mixed
+1162,52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,7319013d-d511-4aa5-a356-4aa2cccf94f5,Eric Oncins,Lea Jansen,mixed
+1163,71992955-8b6f-470b-a991-796cfa56a826,b68c0204-d9d4-4cba-bf23-46706abd77bf,Liz Truluck,Clayton Powell,mixed
+1164,763b4d27-8140-47cd-86f5-982706cd4ebb,f6e249dc-5bb9-483a-a99f-df364df93341,Michael Loyd,Kelly Goodnow,mixed
+1165,12c765d0-8384-41d3-a498-de63fd7c37da,33292af3-984d-4752-8d18-b3a5c147e9fe,Naomi Nguyen,Armaan Bhatia,mixed
+1166,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Zane Navratil,John Lucian Goins,mens
+1167,29e8121d-6f86-4192-b7af-ab05b77b89fe,50c2125b-406c-41e7-aad6-5432c7cd8e1c,Ting Chieh Wei,AJ Koller,mixed
+1168,2856d69d-887b-4e89-a5c9-975f581f84a0,4057f30d-d42a-4189-a158-11576fb5f52a,Len Yang,Blaine Hovenier,mens
+1169,a018902f-114c-4519-997c-4fdf52d4a0e1,f6e249dc-5bb9-483a-a99f-df364df93341,Abbigal Hatton,Kelly Goodnow,womens
+1170,925c1306-6b3b-4510-8482-f34168a0842a,b68c0204-d9d4-4cba-bf23-46706abd77bf,Roscoe Bellamy,Clayton Powell,mens
+1171,66a6c35b-33a2-4a23-b5db-fa53c96d643a,7319013d-d511-4aa5-a356-4aa2cccf94f5,Kaitlyn Christian,Lea Jansen,womens
+1172,2c4de762-88d6-47c3-8b2b-af562c5d1f93,ba491f1c-0112-47a8-a348-4695289e958a,Danni-Elle Townsend,Augustus Ge,mixed
+1173,29e8121d-6f86-4192-b7af-ab05b77b89fe,34270d82-e968-407d-a918-8aa57f0123a6,Ting Chieh Wei,Elsie Hendershot,womens
+1174,25a6f570-d617-427a-9fc4-3bf6115a9a84,be33755f-9262-461b-aedd-e9a7a686a82c,Hannah Blatt,Jackie Kawamoto,womens
+1175,25a6f570-d617-427a-9fc4-3bf6115a9a84,79a11da1-6aeb-4719-9b1e-9918e0163cec,Hannah Blatt,Christian Alshon,mixed
+1176,4057f30d-d42a-4189-a158-11576fb5f52a,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,Blaine Hovenier,Pablo Tellez,mens
+1177,20684550-cb89-4ea2-9e2f-0f44eb920b45,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Chao Yi Wang,Braden Jacobson,mixed
+1178,29e8121d-6f86-4192-b7af-ab05b77b89fe,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,Ting Chieh Wei,John Lucian Goins,mixed
+1179,29e8121d-6f86-4192-b7af-ab05b77b89fe,574957ae-e8d5-486e-aabc-a1cc6a392f8d,Ting Chieh Wei,Jalina Ingram,womens
+1180,50c2125b-406c-41e7-aad6-5432c7cd8e1c,e96d9339-cfb6-473d-bcb3-23f2887a3e0f,AJ Koller,John Lucian Goins,mens
+1181,1d701c30-6b5d-485f-ae97-60f3b0c50896,3d9c8684-953f-4008-b355-b6104ee56a5b,Zoey Weil,Connor Mogle,mixed
+1182,b68c0204-d9d4-4cba-bf23-46706abd77bf,ecd31a05-120f-4373-b5c1-21136f8f0bf1,Clayton Powell,Braden Jacobson,mens
+1183,2c4de762-88d6-47c3-8b2b-af562c5d1f93,614e164a-4197-44eb-855c-586cf79fbfc9,Danni-Elle Townsend,Ivan Jakovljevic,mixed
+1184,2feffeaa-aca5-4c5d-aad6-62eb0d38a6be,dba7cf49-9f57-43e3-878d-a63ced26a243,Abigail Okelley,Jaeda Minniefield,womens
+1185,2a490031-a7b4-4833-8d61-b9970960d2dc,d93f56ce-61cc-477d-a26c-17d04e53b2ff,Monika Wynne,Anna Lenhart,womens
+1186,d0a30dc1-a7d7-475c-bfc9-d55e0aa8e7e3,ea0b7d06-7e9f-4786-a4ed-24da5029559f,Ethan Bakalinsky,Dale Kim,mens
+1187,4fdcaa8b-8ebf-4cba-b759-d7c8e9d55ec0,fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae,Elliott Schupp,Anderson Scarpa,mens
+1188,03db4060-fcb3-41f7-83d5-7ee732dd8841,cd9ee524-11da-4099-805f-1f362f2bc468,Jade Rau,Stevie Petropouleas,womens
+1189,aa45af3b-41b0-4e03-9a17-4ca16a108df3,e2466ee7-aaa4-4c6a-a288-63e717054640,Vincent Rettke,Bret Berryman,mens
+1190,79ee2d66-5ba3-47cc-bc43-f489a09d2d5a,b3f6f49d-bc24-44fd-8068-4e5971e9d61a,George Rangelov,Daniel Miron,mens
+1191,4553e8f7-d51d-41cd-bc23-752742441bff,c844b814-8025-407b-becf-3c96ea4b19a6,Garrison Eaby,Preston Gordon,mens
+1192,1374dfe9-4573-4ab6-991d-16bed0a6d25c,7464628e-931a-44c9-b0df-749a7cb32eaa,Edward Perez,Adam Harvey,mens
+1193,a6f57d71-bf90-48fc-b05b-abe66980a132,bb4de7dc-9f25-4218-a601-318492e0884c,Mike Radermacher,Usama Khalid,mens
+1194,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,50c2125b-406c-41e7-aad6-5432c7cd8e1c,Zane Navratil,AJ Koller,mens
+1195,25104e43-16f9-4ce3-9085-70243d8b350a,2856d69d-887b-4e89-a5c9-975f581f84a0,Ella Yeh,Len Yang,mixed
+1196,1374dfe9-4573-4ab6-991d-16bed0a6d25c,dba7cf49-9f57-43e3-878d-a63ced26a243,Edward Perez,Jaeda Minniefield,mixed
+1197,2feffeaa-aca5-4c5d-aad6-62eb0d38a6be,ea0b7d06-7e9f-4786-a4ed-24da5029559f,Abigail Okelley,Dale Kim,mixed
+1198,3cab1673-2522-4dd5-ba07-2a1b88749d86,45e53881-72e4-4de1-9763-c2e7f7f854ba,Tristan Dussault,Andrea Koop,mixed
+1199,4fdcaa8b-8ebf-4cba-b759-d7c8e9d55ec0,5883c77e-d6e0-4848-9473-866396578248,Elliott Schupp,Audrey Adele Brown,mixed
+1200,b1ab7d76-a859-4136-8405-3ed7c9be287a,cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,Mari Humberg,Jaume Martinez Vich,mixed
+1201,8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,b1ab7d76-a859-4136-8405-3ed7c9be287a,Jessie Irvine,Mari Humberg,womens
+1202,3e6b668a-8d26-4424-9420-3ceb18486b65,a226291c-c48b-408b-a846-f45400d313a9,Daria Walczak,Alexa Schull,womens
+1203,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,ab6386c6-c7e3-422f-9134-e20e92725ee5,Pablo Tellez,Emma Nelson,mixed
+1204,29e8121d-6f86-4192-b7af-ab05b77b89fe,30eb9a2b-1570-473f-8cf1-0f7c9d21b303,Ting Chieh Wei,Zane Navratil,mixed
+1205,52726ab1-2ac9-46c0-be90-6b0e7a2d56eb,d8d51930-abf9-468b-9e43-55a9c0728d58,Pablo Tellez,Anouar Braham,mens
+1206,1de884f8-7bf7-4b49-9de8-3f1fd74cabd6,ce4f0e14-80ea-4ed0-a81c-7341d356d427,Dylan Frazier,Yuta Funemizu,mens
+1207,3e6b668a-8d26-4424-9420-3ceb18486b65,62955f38-bdf5-46af-9622-13c7afe90619,Daria Walczak,Jonathan Truong,mixed
+1208,eb14fc6e-ede1-4999-bec3-e36695e7f94e,f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1,Milan Rane,Alex Walker,womens
+1209,a91e2b68-7357-4518-baf9-f59b0b4c2477,bc7b2475-e580-4734-bc14-814a153bec5d,Christopher Haworth,Pesa Teoni,mens
+1210,25a6f570-d617-427a-9fc4-3bf6115a9a84,bc7b2475-e580-4734-bc14-814a153bec5d,Hannah Blatt,Pesa Teoni,mixed
+1211,469988c9-b401-4c68-9e07-e1b1b104b791,7edb882c-6d17-4129-8208-710e3c82364c,Yates Johnson,Federico Staksrud,mens
+1212,0c5b84bb-4c04-4906-86bc-deb533ff4eec,bf84d952-c6a8-4494-943d-064b223e764f,Zane Ford,Estee Widdershoven,mixed
