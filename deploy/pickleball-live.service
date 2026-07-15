@@ -1,0 +1,10 @@
+[Unit]
+Description=Tier-1 MLP/PPA live score poller (see scraper/live_poller.py)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=exec
+ExecStart=@REPO@/deploy/run_poller.sh
+Restart=on-failure
+RestartSec=60

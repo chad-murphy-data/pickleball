@@ -91,7 +91,9 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 ## Live win probability (in progress)
 
 - `scraper/live_poller.py` = Tier 1 (poll BFF during events → live/*.jsonl).
-  Needs a persistent machine, not an ephemeral session.
+  Needs a persistent machine, not an ephemeral session. `deploy/` has the
+  VPS kit: user-level systemd timer (daily 09:15 PT, no-op on quiet days),
+  wrapper pins TZ and pushes the day's JSONL.
 - Tier 2 undiscovered: SSE stream at rte.pbgql.co (client subscribes with
   Accept: text/event-stream; match records carry rteMetaUuid). Discovery
   requires dumping the stream DURING a live match.

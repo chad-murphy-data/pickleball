@@ -54,7 +54,8 @@ All pages regenerate from existing CSVs on a nightly pipeline run.
 
 ## Phase 3 — Live layer (M; needs a persistent $5 VPS)
 
-- ⬜ Deploy Tier-1 poller as a systemd service, schedule-aware
+- 🔜 Deploy Tier-1 poller as a systemd service, schedule-aware — kit ready
+  in `deploy/` (install.sh + user units), just needs a box
 - ⬜ ★ PILLAR 5 — **Live win-probability charts**: pre-match lookup tables (score × 4
   serve states) shipped as JSON; browser indexes as events arrive; step
   chart with annotations + uncertainty ribbon

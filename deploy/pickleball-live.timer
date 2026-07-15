@@ -1,0 +1,12 @@
+[Unit]
+Description=Start the live poller each morning (no-op on non-event days)
+
+[Timer]
+# 45 min before the usual 10:00 PT first ball. The poller itself decides
+# whether today matters: on non-event days it exits within seconds.
+OnCalendar=*-*-* 09:15:00 America/Los_Angeles
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target
