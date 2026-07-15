@@ -134,3 +134,38 @@ python scraper/diagnostics.py      # data/ → diagnostics.md
   from all diagnostics and intended to be excluded from the model).
 - A few "completed" matches have all-zero scores (walkover shells) — dropped
   with reason `no played games`.
+
+## Tier-2 live SSE feed (rte.pbgql.co) — DECODED 2026-07-15
+
+The live win-probability plan's "Tier 2" is no longer undiscovered. The
+client's SSE machinery lives in webpack chunk `1444-*.js` (the `O` class,
+an XHR-based EventSource polyfill) and its React wiring in `7742-*.js`
+(`RTEProvider`). Decoded from a static bundle pull — no live match needed
+for the protocol, though real event *shapes* still need a live capture.
+
+**Endpoint & environments** (from the bundle's config object):
+- prod `https://rte.pbgql.co`, dev `rte-dev.pbgql.co`, uat `rte-train.pbgql.co`,
+  local `:6969`. Path is `/live-scoring`; query `?opts=slice,karma`
+  (prepend `withLogs` only when subscribing to a single match).
+
+**Auth is not a credential.** Header `PB-RTE-TOKEN` =
+`base64(JSON{ua, origin, fingerprint})`. The browser computes `fingerprint`
+via FingerprintJS, but the server accepts any well-formed token — a random
+32-hex fingerprint returns `200 text/event-stream`. Same unauthenticated-
+public-feed posture as the BFF; we synthesize the token like the client does.
+
+**Subscription headers** (base64 of comma-joined UUIDs):
+`X-Request-Matches`, `X-Request-Matchups`, `X-Request-Tiebreaker-Matches`.
+Events are SSE blocks named by the match UUID (score updates) or
+`matchup_<uuid>` (matchup/DreamBreaker state); payload is JSON in `data:`.
+With `withLogs`, per-rally events carrying `log_index` also arrive — the
+rally-resolution feed the Tier-1 poller structurally cannot see.
+
+**Verified from this environment** (2026-07-15, a no-event day): handshake
+returns `200 text/event-stream` and holds the connection open; subscribing
+to a *completed* match yields zero events (correct — nothing live). Real
+event payloads must be captured during a live match. Tool: `scraper/sse_probe.py`
+(`--matches`, or auto-discovers today's live UUIDs via the Tier-1 discovery;
+`--duration` bounds the run; `--with-logs` for single-match rally logs).
+Next step: run it during an MLP San Diego / PPA Macon match this weekend,
+dump `live/sse-YYYYMMDD.jsonl`, then fold the parser into live_poller as Tier 2.

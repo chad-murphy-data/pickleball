@@ -94,9 +94,13 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   Needs a persistent machine, not an ephemeral session. `deploy/` has the
   VPS kit: user-level systemd timer (daily 09:15 PT, no-op on quiet days),
   wrapper pins TZ and pushes the day's JSONL.
-- Tier 2 undiscovered: SSE stream at rte.pbgql.co (client subscribes with
-  Accept: text/event-stream; match records carry rteMetaUuid). Discovery
-  requires dumping the stream DURING a live match.
+- Tier 2 protocol DECODED (2026-07-15, recon.md): SSE at
+  rte.pbgql.co/live-scoring, PB-RTE-TOKEN = base64(JSON{ua,origin,fingerprint})
+  (non-secret; server takes any well-formed token), subscribe via base64
+  X-Request-Matches/-Matchups headers. `scraper/sse_probe.py` captures it
+  (auto-discovers today's live UUIDs; --with-logs = per-rally feed). Handshake
+  verified from here; real event SHAPES still need a live-match capture, then
+  fold the parser into live_poller as Tier 2.
 - Win-prob math: per-point p from v2 → exact race-to-T DP. Serve-aware
   version: point-share pins the skill gap exactly (p = σ(2d)); a league
   serve-rally baseline k (~0.35–0.45, currently assumed) sets streakiness;

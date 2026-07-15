@@ -26,9 +26,10 @@ of evenings · **XL** = a season-long side quest. Status: ✅ built, 🔜 next,
   public receipts ledger
 - 🔜 **Run the poller for real** during MLP San Diego (Jul 16–19) — shakes
   out Tier 1 and starts accumulating live JSONL
-- ⬜ **SSE discovery session** (Tier 2): during any live match, stream
-  rte.pbgql.co with httpx, dump events, write the parser (S–M). Unlocks
-  rally-resolution live data + serve/return estimation
+- 🔜 **SSE discovery session** (Tier 2): protocol decoded + handshake
+  verified (recon.md); `scraper/sse_probe.py` ready. Remaining: run it
+  during a live match this weekend to capture real event shapes, then fold
+  the parser into live_poller. Unlocks rally-resolution + serve/return est.
 - ⬜ **September obligations** (scheduled in CLAUDE.md): score the
   preregistered chemistry predictions on post-July-12 games; season-end
   re-harvest + v2 refit + refreshed leaderboards/trajectories
