@@ -21,9 +21,9 @@ of evenings · **XL** = a season-long side quest. Status: ✅ built, 🔜 next,
 
 ## Phase 1 — Receipts operations (now → September; S each; no new infra)
 
-- 🔜 **Grade the Gold final forecast** once the API finalizes it (WD 88%
-  call vs reported Waters losses; STL 61% match call) — first entry in the
-  public receipts ledger
+- ✅ **Grade the Gold final forecast** — STL swept NJ 3–0; overall STL call
+  HIT (Brier v2 0.154), but the 88%-NJ women's-doubles call MISSED (Waters
+  lost twice). Logged as entry 1 in `model/receipts.md`
 - 🔜 **Run the poller for real** during MLP San Diego (Jul 16–19) — shakes
   out Tier 1 and starts accumulating live JSONL
 - 🔜 **SSE discovery session** (Tier 2): protocol decoded + handshake
