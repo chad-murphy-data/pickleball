@@ -5,6 +5,9 @@ Bayesian rating models, publish predictions with receipts. Hobby project,
 honesty-first. Read EXPLAINER.md for the plain-language story, analysis.md
 for full technical results, design_handoff.md for the content/social plan.
 
+**If active live-listener/receipts work is in flight, HANDOFF.md is the dated
+status snapshot + next-thread to-do (check its date; stale ones defer to here).**
+
 ## Pipeline (run in this order; everything is idempotent & cached)
 
 ```bash
