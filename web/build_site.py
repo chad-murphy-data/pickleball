@@ -107,7 +107,51 @@ def rank_probs(pool, n_draws=100_000, top=12):
     return [(p, wins[i] / n_draws, top3[i] / n_draws) for i, p in enumerate(pool)]
 
 
-def build_rankings(players, updated, n_games):
+NUMWORDS = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven",
+            8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"}
+
+
+def p1_verdict(probs, label):
+    """One-line verdict over the P(#1) rows, in the house voice.  probs is
+    sorted by P(#1) descending; label is "men"/"women"."""
+    p, lead, _ = probs[0]
+    if lead > 0.995:
+        return f"It's {esc(p.name)}. It is not close."
+    if lead >= 0.5:
+        return (f"{esc(p.name)} is the favorite at {pct_floor(lead)} — "
+                f"with live challengers behind.")
+    n = sum(1 for _, p1, _ in probs if p1 >= 0.05)
+    word = NUMWORDS.get(n, str(n))
+    return (f"Nobody clears {pct_floor(lead)}. The {label}'s crown is a "
+            f"{word}-way pile-up.")
+
+
+def p1_bar_width(p1):
+    """Bar width that never renders empty or overfull (house rule cousin)."""
+    w = 100 * p1
+    return "99.5" if w > 99 else ("0.5" if w < 1 else f"{w:.0f}")
+
+
+def p1_panel(probs, label, first):
+    head_note = ("posterior probability of being the true best — not the "
+                 "point-estimate leader.") if first else "same question, briefer answer."
+    rows = []
+    for p, p1, p3 in probs:
+        rows.append(
+            f'<div class="p1row"><span class="p1name">{plink(p)}</span>'
+            f'<span class="p1bar"><span class="p1fill" style="width:{p1_bar_width(p1)}%">'
+            f'</span></span><span class="p1pct">{pct_floor(p1)}</span>'
+            f'<span class="p1meta">top-3 {pct_floor(p3)} · {p.games} g</span></div>')
+    return (f'<div class="card p1card"><div class="p1head"><strong>Who is actually '
+            f'#1?</strong> <span class="note">{head_note}</span></div>\n'
+            f'<p class="p1kick">{p1_verdict(probs, label)}</p>\n'
+            + "\n".join(rows) +
+            '\n<p class="note" style="margin:10px 0 2px">Monte Carlo over posterior '
+            'marginals (correlations ignored); wide-interval players earn real '
+            'probability — that is the point.</p></div>')
+
+
+def build_rankings(players, updated, n_games, val):
     def table(pool):
         if not pool:
             return "<p>none</p>"
@@ -133,50 +177,48 @@ def build_rankings(players, updated, n_games):
                 '<th class="num">last seen</th></tr>'
                 + "".join(rows) + "</table></div>")
 
+    n_dyn = sum(1 for p in players.values() if p.dynamic)
     sections = []
-    for gender, label in (("M", "Men"), ("F", "Women")):
+    for sec, gender, label, low in (("A", "M", "Men", "men"),
+                                    ("B", "F", "Women", "women")):
         pool = [p for p in players.values() if p.dynamic and p.gender == gender]
         active = sorted((p for p in pool if D.is_active(p)),
                         key=lambda p: p.rank)[:75]
         inactive = sorted((p for p in pool if not D.is_active(p)),
                           key=lambda p: -p.value)
-        probs = [(p, p1, p3) for p, p1, p3 in rank_probs(active) if p1 >= 0.01]
-        prob_bits = " · ".join(
-            f'{plink(p)} <strong>{pct_floor(p1)}</strong>'
-            f'<span class="gray"> (top-3 {pct_floor(p3)}, {p.games} g)</span>'
-            for p, p1, p3 in probs)
-        panel = (f'<div class="card"><strong>Who is actually #1?</strong> '
-                 f'Posterior probability each player is the true best, not just '
-                 f'the current point-estimate leader: {prob_bits}. '
-                 f'<span class="note">Monte Carlo over posterior marginals '
-                 f'(correlations ignored); wide-interval players earn real '
-                 f'probability — that is the point.</span></div>')
-        sections.append(f"<h2>{label}</h2>" + panel + table(active))
+        probs = sorted(((p, p1, p3) for p, p1, p3 in rank_probs(active)
+                        if p1 >= 0.01), key=lambda t: -t[1])
+        panel = p1_panel(probs, low, first=(sec == "A"))
+        sections.append(f'<h2><span class="secno">SEC. {sec}</span>{label}</h2>'
+                        + panel + table(active))
         if inactive:
             sections.append(
                 f'<details><summary class="note">{len(inactive)} rated players '
                 f'without a 2026 game (hidden, unranked)</summary>{table(inactive)}</details>')
 
+    dupr_acc = val["dupr_reference"]["accuracy"]
     body = f"""
-<h1>Current-form power rankings</h1>
+<h1 class="runtitle">Power rankings</h1>
+<div class="runmeta">RUN {updated} :: DYNAMIC BAYESIAN POSTERIOR :: MLP + PPA DOUBLES 2024–26</div>
 <p class="sub">Every player with ≥60 pro doubles games since 2024, rated by a
 dynamic Bayesian model of all {n_games:,} games. <strong>pts</strong> = expected
 margin (with an average partner, vs an average pair, race to 11) — median
 regular ≈ +2, star ≈ +5. The interval is the point, not fine print.</p>
-<div class="tiles">
- <div class="tile"><div class="v">{n_games:,}</div><div class="k">games in the model (2024–26, MLP + PPA)</div></div>
- <div class="tile"><div class="v">77.4%</div><div class="k">winner accuracy on 884 unseen games (DUPR: 64.7%)</div></div>
- <div class="tile"><div class="v">499</div><div class="k">players with monthly skill tracking</div></div>
- <div class="tile"><div class="v">{updated}</div><div class="k">data through</div></div>
+<div class="syscheck">
+ <div class="lrow"><span class="lk">GAMES IN THE MODEL (2024–26, MLP + PPA)</span><span class="ldot"></span><span class="lv">{n_games:,}</span></div>
+ <div class="lrow"><span class="lk">WINNER ACCURACY · {val['n_games']} UNSEEN GAMES</span><span class="ldot"></span><span class="lv">{pct(val['accuracy'], 1)} <span class="lcmp">vs DUPR {pct(dupr_acc, 1)}</span></span></div>
+ <div class="lrow"><span class="lk">PLAYERS WITH MONTHLY SKILL TRACKING</span><span class="ldot"></span><span class="lv">{n_dyn}</span></div>
+ <div class="lrow"><span class="lk">DATA THROUGH</span><span class="ldot"></span><span class="lv">{updated}</span></div>
+ <div class="lrow"><span class="lk">PREDICTIONS COMMITTED PRE-MATCH</span><span class="ldot"></span><span class="lv"><a href="receipts.html">[OK] → receipts</a></span></div>
 </div>
-<p class="note">Men's and women's lists are separate on purpose: the tours never
+<div class="houserule"><span class="hrtag">HOUSE RULE</span>Men's and women's lists are separate on purpose: the tours never
 play cross-gender games, so no data links the two scales
 (<a href="methods.html">methods</a>). Rankings use current-month posterior
-values; ▲/▼ = 6-month form change beyond ±0.25 pts.</p>
+values; ▲/▼ = 6-month form change beyond ±0.25 pts.</div>
 {''.join(sections)}
 """
-    write("index.html", style.page("Power rankings — Pickleball, Priced",
-                                   body, "index.html", "", updated))
+    write("rankings.html", style.page("Power rankings — PICKLES",
+                                      body, "rankings.html", "", updated))
 
 
 # ---------------------------------------------------------------- players
@@ -186,7 +228,7 @@ def build_player_index(players, updated):
                   key=lambda p: p.name.split()[-1])
     rows = "".join(
         f'<tr class="prow" data-name="{esc(p.name.lower())}">'
-        f'<td>{plink(p)}</td><td>{p.gender}</td>'
+        f'<td>{plink(p, "../")}</td><td>{p.gender}</td>'
         f'<td class="num">{p.pts:+.1f}</td><td class="num">{f"#{p.rank}" if p.rank else "—"}</td>'
         f'<td class="num">{p.games}</td>'
         f'<td class="num gray">{(p.last_date or "—")[:7]}</td></tr>'
@@ -203,7 +245,7 @@ since 2024). Rank is within gender.</p>
 {rows}</table></div>
 """
     write("players/index.html",
-          style.page("Players — Pickleball, Priced", body, "players/index.html",
+          style.page("Players — PICKLES", body, "players/index.html",
                      "../", updated))
 
 
@@ -334,7 +376,7 @@ sport clears statistical significance (<a href="{root}methods.html">why</a>).</p
 <p class="note"><a href="{root}simulator.html?a={p.pid}">Put {esc(p.name.split()[0])} in the simulator →</a></p>
 """
     write(f"players/{p.pid}.html",
-          style.page(f"{p.name} — Pickleball, Priced", body, "", root, updated))
+          style.page(f"{p.name} — PICKLES", body, "", root, updated))
 
 
 # ---------------------------------------------------------------- simulator
@@ -408,6 +450,9 @@ for (const p of P) {{
   dl.appendChild(o);
 }}
 const sig = x => 1 / (1 + Math.exp(-x));
+// house rule: no probability ever displays as 0% or 100%
+const fp = p => p < 0.005 ? '&lt;1' : p > 0.995 ? '&gt;99' : (100 * p).toFixed(0);
+const fp1 = p => p < 0.0005 ? '&lt;0.1' : p > 0.9995 ? '&gt;99.9' : (100 * p).toFixed(1);
 function comb(n, k) {{ let r = 1; for (let i = 0; i < k; i++) r = r * (n - i) / (i + 1); return r; }}
 function raceDist(p, T) {{
   p = Math.min(Math.max(p, 1e-9), 1 - 1e-9);
@@ -461,7 +506,7 @@ function bars(dist, T, names) {{
   return '<h3>Score distribution (' + names + ')</h3><table>' + rows.map(([s, pr, side]) =>
     `<tr><td class="num" style="width:70px">${{s}}</td><td><div style="height:12px;border-radius:3px;` +
     `width:${{Math.max(0.5, 100 * pr / mx)}}%;background:var(--${{side === 'a' ? 's1' : 'loss'}})"></div></td>` +
-    `<td class="num" style="width:60px">${{(100 * pr).toFixed(1)}}%</td></tr>`).join('') + '</table>';
+    `<td class="num" style="width:60px">${{fp1(pr)}}%</td></tr>`).join('') + '</table>';
 }}
 function update(push) {{
   const a1 = pick('a1'), a2 = pick('a2'), b1 = pick('b1'), b2 = pick('b2');
@@ -478,12 +523,12 @@ function update(push) {{
   const aN = `${{a1.n.split(' ').pop()}}/${{a2.n.split(' ').pop()}}`;
   const bN = `${{b1.n.split(' ').pop()}}/${{b2.n.split(' ').pop()}}`;
   const genderMix = [a1, a2].map(p => p.g).sort().join('') !== [b1, b2].map(p => p.g).sort().join('');
-  let html = `<div class="card"><div class="big">${{aN}} ${{(100 * m.p).toFixed(0)}}%` +
-    ` <span class="note" style="font-size:15px">(90% range ${{(100 * mLo).toFixed(0)}}–${{(100 * mHi).toFixed(0)}}%)</span></div>` +
+  let html = `<div class="card"><div class="big">${{aN}} ${{fp(m.p)}}%` +
+    ` <span class="note" style="font-size:15px">(90% range ${{fp(mLo)}}–${{fp(mHi)}}%)</span></div>` +
     `<div class="pmbar"><div class="a" style="width:${{100 * m.p}}%"></div><div class="b" style="flex:1"></div></div>` +
     `<p class="note">${{aN}} vs ${{bN}} · per-point share ${{(100 * sig(mu)).toFixed(1)}}% · ` +
     `expected margin ${{fmtPts(dist.margin)}} per game (to ${{T}})</p>` +
-    (m.scores ? '<p>' + m.scores.map(([s, pr]) => `${{s}}: <strong>${{(100 * pr).toFixed(0)}}%</strong>`).join(' · ') + '</p>' : '') +
+    (m.scores ? '<p>' + m.scores.map(([s, pr]) => `${{s}}: <strong>${{fp(pr)}}%</strong>`).join(' · ') + '</p>' : '') +
     (genderMix ? '<p class="note">⚠ The two sides have different gender mixes — this number rests on a prior convention, not data (<a href="methods.html">methods</a>).</p>' : '') +
     `</div><div class="cols">${{teamCard(a1, a2, newa)}}${{teamCard(b1, b2, newb)}}</div>` +
     bars(dist, T, aN + ' perspective, single game');
@@ -520,7 +565,7 @@ document.getElementById('share').onclick = async () => {{
 }})();
 </script>
 """
-    write("simulator.html", style.page("Matchup simulator — Pickleball, Priced",
+    write("simulator.html", style.page("Matchup simulator — PICKLES",
                                        body, "simulator.html", "", updated))
 
 
@@ -603,7 +648,7 @@ before first serve (<code>make_forecast.py --commit</code>) — this page alone
 is a living view, not a commitment.</p>
 {body_mid}
 """
-    write("forecast.html", style.page("Forecasts — Pickleball, Priced",
+    write("forecast.html", style.page("Forecasts — PICKLES",
                                       body, "forecast.html", "", updated))
 
 
@@ -660,7 +705,7 @@ Winners listed first. {n_upsets} upsets (winner priced under 25%).</p>
 <th>over</th><th class="num">score</th><th class="num">winner was priced</th></tr>
 {''.join(rows)}</table></div>
 """
-    write("results.html", style.page("Results — Pickleball, Priced",
+    write("results.html", style.page("Results — PICKLES",
                                      body, "results.html", "", updated))
 
 
@@ -701,7 +746,7 @@ def build_downloads(games, updated):
     body = f"""
 <h1>Open data</h1>
 <p class="sub">The CSVs behind every page, free to use with attribution
-("based on public results data via Pickleball, Priced"). Player identity is
+("based on public results data via PICKLES"). Player identity is
 by UUID — names collide (there are three Kawamotos; two are twins).</p>
 <div class="tblwrap"><table><tr><th>file</th><th class="num">rows</th>
 <th class="num">size</th><th>contents</th></tr>{''.join(rows)}</table></div>
@@ -711,7 +756,7 @@ displays them as expected margin vs an average pairing via the race DP
 excluded from games.csv-derived stats. Refreshed with the nightly build;
 data through {updated}.</p>
 """
-    write("data.html", style.page("Open data — Pickleball, Priced",
+    write("data.html", style.page("Open data — PICKLES",
                                   body, "data.html", "", updated))
 
 
@@ -788,7 +833,7 @@ nothing is ever 0% or 100%. Frozen predictions in the ledger above are
 graded exactly as committed, never re-calibrated after the fact.</p>
 {charts.calibration_chart(cal)}
 """
-    write("receipts.html", style.page("Receipts — Pickleball, Priced",
+    write("receipts.html", style.page("Receipts — PICKLES",
                                       body, "receipts.html", "", updated))
 
 
@@ -884,7 +929,7 @@ data quirks rather than miracles.</p>
 <table><tr><th>player</th><th class="num">blowout wins</th>
 <th class="num">share of all wins</th></tr>{blow_rows}</table>
 """
-    write("records.html", style.page("Record book — Pickleball, Priced",
+    write("records.html", style.page("Record book — PICKLES",
                                      body, "records.html", "", updated))
 
 
@@ -959,7 +1004,7 @@ show a newer or different number. Correlation between the systems is
 r ≈ 0.65 (men) / 0.53 (women) — they mostly agree; the divergences are
 the story.</p>
 """
-    write("dupr.html", style.page("DUPR × model — Pickleball, Priced",
+    write("dupr.html", style.page("DUPR × model — PICKLES",
                                   body, "dupr.html", "", updated))
 
 
@@ -1010,6 +1055,61 @@ def inline(s: str) -> str:
     return s
 
 
+def build_404(updated):
+    """GitHub Pages serves this file for ANY missing path, so relative URLs
+    would resolve against the requested directory — the page is fully
+    self-contained (inline styles, no shell) and its one link is absolute
+    under the project base path.  If a custom domain is ever pointed at the
+    site root, change `base` to "/"."""
+    base = "/" + REPO.rsplit("/", 1)[1] + "/"
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>404 — PICKLES</title>
+<link rel="icon" href="{style.FAVICON}">
+<style>
+:root {{ --page:#f2f7e5; --ink:#16321e; --ink2:#46603a; --surface:#fbfdf3;
+  --baseline:#a9bc8c; --border:rgba(22,50,30,0.18); --s1:#1e7a3c;
+  --hl:#d9f154; --hl-ink:#16321e; }}
+@media (prefers-color-scheme: dark) {{
+  :root {{ --page:#0e1410; --ink:#edf4e0; --ink2:#c2d3a8; --surface:#17211a;
+    --baseline:#3a4a3c; --border:rgba(237,244,224,0.14); --s1:#cfe94f; }}
+}}
+body {{ margin:0; background:var(--page); color:var(--ink);
+  font:15px/1.55 "Space Grotesk", system-ui, sans-serif; }}
+.wrap {{ max-width:720px; margin:0 auto; padding:48px 24px; }}
+.chip {{ font:700 17px ui-monospace,monospace; background:var(--hl);
+  color:var(--hl-ink); padding:3px 10px; display:inline-block; }}
+h1 {{ font:400 23px ui-monospace,monospace; margin:28px 0 4px; }}
+h1::before {{ content:"> "; color:var(--s1); }}
+p {{ color:var(--ink2); }}
+.ledger {{ background:var(--surface); border:1.5px solid var(--border);
+  padding:12px 16px; margin:16px 0; font-family:ui-monospace,monospace; }}
+.lrow {{ display:flex; align-items:baseline; gap:10px; padding:3px 0; }}
+.lk {{ font-size:12.5px; letter-spacing:0.04em; color:var(--ink2); }}
+.ldot {{ flex:1; border-bottom:2px dotted var(--baseline);
+  transform:translateY(-4px); min-width:24px; }}
+.lv {{ font-size:14px; font-weight:700; white-space:nowrap; }}
+a {{ color:var(--s1); text-decoration:none; }}
+a:hover {{ text-decoration:underline 2px var(--hl); }}
+</style>
+<div class="wrap">
+<span class="chip">PICKLES</span>
+<h1>404 — not in the ledger</h1>
+<p>No page at this address. If a player link brought you here, the player
+may not have enough games for monthly tracking (≥60 since 2024).</p>
+<div class="ledger">
+ <div class="lrow"><span class="lk">REQUESTED PAGE</span><span class="ldot"></span><span class="lv">NOT FOUND</span></div>
+ <div class="lrow"><span class="lk">PROBABILITY IT EXISTS</span><span class="ldot"></span><span class="lv">&lt;1%</span></div>
+ <div class="lrow"><span class="lk">SUGGESTED ROUTE</span><span class="ldot"></span><span class="lv"><a href="{base}">[OK] → front page</a></span></div>
+</div>
+</div>
+"""
+    write("404.html", html)
+
+
 def build_methods(updated):
     md = (ROOT / "EXPLAINER.md").read_text()
     body = f"""
@@ -1052,8 +1152,365 @@ inseparable.</li>
 their (wide) error bars instead.</li>
 </ul></div>
 """
-    write("methods.html", style.page("Methods — Pickleball, Priced",
+    write("methods.html", style.page("Methods — PICKLES",
                                      body, "methods.html", "", updated))
+
+
+# ---------------------------------------------------------------- landing
+
+# Threads/IG handle for the manifesto footer — set once the account exists;
+# empty renders the archive line alone (no fake placeholder ships).
+HANDLE = ""
+
+# Editorial, hand-maintained (design mock DATA block) — not generated.
+FIELD_NOTES = [
+    ("F-01", "Chemistry is (mostly) a myth", "quality ≈ 5× pair fit"),
+    ("F-02", "It's a weakest-link game", "gap costs ½ pt/game"),
+    ("F-03", "Ben Johns never declined", "the field arrived"),
+    ("F-04", "Waters' lead over #2", "= men's entire top 25"),
+    ("F-05", "Mixed targeting is gender-blind", "attack the weaker player"),
+    ("F-06", "Pros don't sandbag MLP", "same pts-per-skill rate"),
+]
+
+# MLP team display forms: full name -> (city line, ticker-style short code).
+MLP_TEAMS = {
+    "Atlanta Bouncers": ("Atlanta", "ATL"),
+    "Bay Area Breakers": ("Bay Area", "BAY"),
+    "Brooklyn Pickleball Team": ("Brooklyn", "BKN"),
+    "California Black Bears": ("California", "CAL"),
+    "Carolina Pickleball Club": ("Carolina", "CAR"),
+    "Chicago Slice": ("Chicago", "CHI"),
+    "Columbus Sliders": ("Columbus", "CLB"),
+    "Dallas Flash": ("Dallas", "DAL"),
+    "D.C. Pickleball Team": ("D.C.", "DC"),
+    "Florida Smash": ("Florida", "FLA"),
+    "Los Angeles Mad Drops": ("Los Angeles", "LA"),
+    "Miami Pickleball Club": ("Miami", "MIA"),
+    "New Jersey 5s": ("New Jersey", "NJ"),
+    "New York Hustlers": ("NY", "NY"),
+    "Orlando Squeeze": ("Orlando", "ORL"),
+    "Phoenix Flames": ("Phoenix", "PHX"),
+    "SoCal Hard Eights": ("SoCal", "SOC"),
+    "St. Louis Shock": ("St. Louis", "STL"),
+    "Texas Ranchers": ("Texas", "TEX"),
+    "Utah Black Diamonds": ("Utah", "UTA"),
+}
+
+
+def team_city(name):
+    if name in MLP_TEAMS:
+        return MLP_TEAMS[name][0]
+    ws = name.split()
+    return " ".join(ws[:-1]) if len(ws) > 1 else name
+
+
+def team_short(name):
+    if name in MLP_TEAMS:
+        return MLP_TEAMS[name][1]
+    city = team_city(name)
+    ws = city.split()
+    return "".join(w[0] for w in ws).upper() if len(ws) > 1 else city[:3].upper()
+
+
+SLOT_WORD = {"WD": "women's", "MD": "men's", "MXD1": "mixed", "MXD2": "mixed"}
+
+
+def load_forecasts():
+    fj = D.DATA / "forecasts.json"
+    return json.loads(fj.read_text()) if fj.exists() else None
+
+
+def pick_featured(F, today):
+    """(featured forecast, tonight?) — the most contested fully-priced matchup
+    of the nearest forecast day.  `tonight` is True only when that day falls
+    inside the tonight-band window (build day .. +2), which is what gates the
+    dark band; teasers may still use a recent-past matchup so the doorway
+    cards never show placeholder data."""
+    if not F:
+        return None, False
+    cands = [f for f in F.get("forecasts", []) if f.get("tree")]
+    if not cands:
+        return None, False
+    from datetime import date
+    upcoming = sorted({f["date"] for f in cands if f["date"] >= today})
+    day = upcoming[0] if upcoming else max(f["date"] for f in cands)
+    tonight = bool(upcoming) and \
+        (date.fromisoformat(day) - date.fromisoformat(today)).days <= 2
+    night = [f for f in cands if f["date"] == day]
+    full = [f for f in night if len([g for g in f["games"] if g]) >= 4] or night
+    feat = min(full, key=lambda f: abs(f["tree"]["p_win"] - 0.5))
+    return feat, tonight
+
+
+def featured_game_rows(feat):
+    """(slot, FAV/PAIR, FAVSHORT, pct) per priced game, favored side."""
+    rows = []
+    t1s, t2s = team_short(feat["team1"]), team_short(feat["team2"])
+    for g in feat["games"]:
+        if not g:
+            continue
+        fav1 = g["p"] >= 0.5
+        pair = g["t1_pair"] if fav1 else g["t2_pair"]
+        pnm = "/".join(esc(n.split()[-1].upper()) for n in pair)
+        rows.append((g["slot"].replace("MXD", "MX"), pnm,
+                     t1s if fav1 else t2s,
+                     pct_floor(max(g["p"], 1 - g["p"]))))
+    return rows[:4]
+
+
+def tonight_blurb(feat):
+    """Formulaic one-liner in the mock's shape: favorite + up to two
+    qualifiers (coin-flip slot, DreamBreaker exposure)."""
+    tree = feat["tree"]
+    fav1 = tree["p_win"] >= 0.5
+    fav = team_city(feat["team1"] if fav1 else feat["team2"])
+    favp = max(tree["p_win"], 1 - tree["p_win"])
+    base = f"{esc(fav)} take the night in {pct_floor(favp)} of simulations"
+    clauses = []
+    games = [g for g in feat["games"] if g]
+    if games:
+        tight = min(games, key=lambda g: abs(g["p"] - 0.5))
+        if abs(tight["p"] - 0.5) <= 0.05:
+            clauses.append(f"the {SLOT_WORD.get(tight['slot'], tight['slot'])} "
+                           f"slot is a genuine coin flip")
+    if tree["p_db"] >= 0.45:
+        clauses.append("almost half of all paths run through a DreamBreaker")
+    elif tree["p_db"] >= 0.30:
+        clauses.append(f"a DreamBreaker is live in {pct_floor(tree['p_db'])} of paths")
+    if clauses:
+        return base + " — but " + ", and ".join(clauses) + "."
+    return base + "."
+
+
+def receipt_teaser_rows(R, n=3):
+    """Most recent graded calls, compact: ("WD 88%", "MISS")."""
+    rows = []
+    for e in reversed(R["entries"]):
+        if e["status"] != "graded":
+            continue
+        for i in e["items"]:
+            if i["grade"] not in ("HIT", "MISS") or i["prob"] is None:
+                continue
+            pre = i["label"].split(":")[0] if ":" in i["label"] else i["label"]
+            if pre == "Overall":
+                pre = "MATCH"
+            elif pre.startswith("Match reaches"):
+                pre = "DB"
+            rows.append((f'{esc(pre.upper())} {pct_floor(i["prob"])}', i["grade"]))
+            if len(rows) >= n:
+                return rows
+    return rows
+
+
+def build_landing(players, updated, n_games, R):
+    from datetime import date
+    val = R["validation"]
+    acc = pct(val["accuracy"], 1)
+    dupr = pct(val["dupr_reference"]["accuracy"], 1)
+    gap = f'{100 * (val["accuracy"] - val["dupr_reference"]["accuracy"]):.1f}'
+    holdout = val["n_games"]
+    n_dyn = sum(1 for p in players.values() if p.dynamic)
+    hero_games = f"{round(n_games / 1000) * 1000:,}"
+
+    # -- doorway teasers, all from the same sources as their target pages
+    def active_pool(gender):
+        return sorted((p for p in players.values()
+                       if p.dynamic and p.gender == gender and D.is_active(p)),
+                      key=lambda p: p.rank)[:75]
+
+    mprobs = sorted(rank_probs(active_pool("M")), key=lambda t: -t[1])
+    wprobs = sorted(rank_probs(active_pool("F")), key=lambda t: -t[1])
+    bars = []
+    for p, p1, _ in mprobs[:5]:
+        pv = min(max(round(100 * p1), 1), 99)
+        bars.append(f'<div class="t-bar"><span class="nm">'
+                    f'{esc(p.name.split()[-1].upper())}</span>'
+                    f'<span class="track"><span class="fill" '
+                    f'style="width:{min(round(pv * 2.6), 100)}%"></span></span>'
+                    f'<span class="pv">{pv}%</span></div>')
+    n_cont = sum(1 for _, p1, _ in mprobs if p1 >= 0.05)
+    men_clause = (f"The men's #1 is a {NUMWORDS.get(n_cont, str(n_cont))}-way "
+                  f"statistical tie." if n_cont >= 2
+                  else "The men's #1 is settled for now.")
+    women_clause = ("The women's isn't close." if wprobs[0][1] > 0.995
+                    else "The women's race is live too.")
+    rankings_blurb = f"{men_clause} {women_clause} Error bars included, always."
+
+    F = load_forecasts()
+    feat, tonight = pick_featured(F, date.today().isoformat())
+    frows = "".join(
+        f'<div class="t-row"><span class="call"><strong>{slot} {pnm}</strong></span>'
+        f'<span class="lead"></span><span class="res">{fav} {pv}</span></div>'
+        for slot, pnm, fav, pv in (featured_game_rows(feat) if feat else []))
+    if not frows:
+        frows = ('<div class="t-row"><span class="call">NEXT EVENT</span>'
+                 '<span class="lead"></span><span class="res">PRICING SOON</span></div>')
+
+    rrows = "".join(
+        f'<div class="t-row"><span class="call">{call}</span><span class="lead"></span>'
+        f'<span class="res {"hitv" if g == "HIT" else "missv"}">'
+        f'{"✓ HIT" if g == "HIT" else "✗ MISS"}</span></div>'
+        for call, g in receipt_teaser_rows(R))
+
+    term = ("&gt; PICK ANY FOUR PROS<br>\n&gt; ANY PAIRING, ANY FORMAT<br>\n"
+            "&gt; RUNNING 100,000 SIMS_<br>\n"
+            '<span class="result">→ PRICED, WITH ERROR BARS</span>')
+    if feat:
+        best = max((g for g in feat["games"] if g),
+                   key=lambda g: max(g["p"], 1 - g["p"]), default=None)
+        if best:
+            fav1 = best["p"] >= 0.5
+            favpair = "/".join(esc(n.split()[-1].upper()) for n in
+                               (best["t1_pair"] if fav1 else best["t2_pair"]))
+            dogpair = "/".join(esc(n.split()[-1].upper()) for n in
+                               (best["t2_pair"] if fav1 else best["t1_pair"]))
+            modal = best["modal"] if fav1 else "-".join(reversed(best["modal"].split("-")))
+            term = (f"&gt; PICK ANY FOUR PROS<br>\n&gt; {favpair}<br>\n"
+                    f"&nbsp;&nbsp;vs {dogpair}<br>\n&gt; RUNNING 100,000 SIMS_<br>\n"
+                    f'<span class="result">→ {pct_floor(max(best["p"], 1 - best["p"]))}'
+                    f" · LIKELY {modal}</span>")
+
+    # -- tonight band (omitted entirely when no imminent priced matchup)
+    band = ""
+    if feat and tonight:
+        tree = feat["tree"]
+        fav1 = tree["p_win"] >= 0.5
+        fav, dog = (feat["team1"], feat["team2"]) if fav1 else (feat["team2"], feat["team1"])
+        favp = max(tree["p_win"], 1 - tree["p_win"])
+        trows = "".join(
+            f'<div class="trow"><span class="g">{slot} {pnm}</span>'
+            f'<span class="lead"></span><span class="p">{favshort} {pv}</span></div>'
+            for slot, pnm, favshort, pv in featured_game_rows(feat))
+        band = f"""
+<section class="tonight">
+ <div class="inner">
+  <div class="copy">
+   <div class="kicker">FRESH OFF THE PRINTER</div>
+   <h2>{esc(team_city(fav))} vs {esc(team_city(dog))}</h2>
+   <p class="blurb">{tonight_blurb(feat)}</p>
+   <div class="dbrow"><span class="k">DREAMBREAKER RISK</span><span class="lead"></span><span class="v">{pct_floor(tree["p_db"])}</span></div>
+   <a class="cta bright" href="forecast.html">FULL FORECAST →</a>
+  </div>
+  <div class="ticketwrap">
+   <div class="tractor"></div>
+   <div class="ticket">
+    <div class="th">PICKLES/2.1 :: PRE-MATCH</div>
+    <div class="trun">RUN {esc(F["generated"])} :: {esc((feat.get("event") or "MLP").upper())}</div>
+    <div class="tok">ALL 4 GAMES + DREAMBREAKER ..... [OK]</div>
+    <div class="trule"></div>
+    <div class="rows">{trows}</div>
+    <div class="trule"></div>
+    <div class="ttotal"><span class="k">TOTAL: {esc(team_city(fav).upper())}</span><span class="lead"></span><span class="v">{pct_floor(favp)}</span></div>
+    <div class="tdog">({esc(team_city(dog).upper())}: {pct_floor(1 - favp)} — KEEP RECEIPT)</div>
+   </div>
+  </div>
+ </div>
+</section>"""
+
+    fnotes = "".join(
+        f'<div class="fnote"><span class="no">{no}</span>'
+        f'<span class="claim">{esc(claim)}</span><span class="lead"></span>'
+        f'<span class="ev">{esc(ev)}</span></div>'
+        for no, claim, ev in FIELD_NOTES)
+
+    handle_bit = f"{esc(HANDLE)} · " if HANDLE else ""
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>PICKLES — pro pickleball, probabilistically</title>
+<meta name="description" content="Win probabilities, current-form power rankings and a matchup simulator for pro pickleball (MLP + PPA), from a Bayesian model of {hero_games} games — every forecast timestamped and graded in public.">
+{style.FONTS_PRECONNECT}
+<link rel="stylesheet" href="assets/style.css">
+<link rel="icon" href="{style.FAVICON}">
+<header class="landing"><div class="bar">
+ <span class="brandchip">PICKLES</span>
+ <span class="brandsub">Probabilistic Inference of Competitive Kitchen-Line Expected Scores</span>
+ <nav><a href="rankings.html">RANKINGS</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="methods.html">METHODS</a></nav>
+</div></header>
+
+<section class="lsec hero">
+ <div class="copy">
+  <div class="kicker">PRO PICKLEBALL, PROBABILISTICALLY</div>
+  <h1>Who wins?<br>Ask {hero_games} games.</h1>
+  <p class="lede">Current-form power rankings, win probabilities for every MLP
+night and PPA bracket, a simulator for any four pros — and the full archive
+of past forecasts, hits and misses.</p>
+  <div class="ctas">
+   <a class="cta solid" href="forecast.html">TONIGHT'S CARD →</a>
+   <a class="cta outline" href="receipts.html">PAST FORECASTS</a>
+  </div>
+ </div>
+ <div class="printout">
+  <div class="plabel">&gt; P(WINNER CALLED CORRECTLY)</div>
+  <div class="headline">
+   <span class="hlnum"><span class="swipe"></span><span class="val">{acc}</span></span>
+   <span class="whose">THIS MODEL</span>
+  </div>
+  <div class="cmprow"><span>DUPR, SAME {holdout} GAMES</span><span class="lead"></span><span class="v">{dupr}</span></div>
+  <div class="prule"></div>
+  <div class="pnote">Held-out games neither system saw. Our model was frozen;
+DUPR kept updating. It still lost by {gap} points.</div>
+ </div>
+</section>
+
+<section class="lsec inside">
+ <h2 class="lh2">What the model keeps track of</h2>
+ <div class="doorgrid">
+  <a class="door" href="rankings.html">
+   <span class="doortag">POWER RANKINGS</span>
+   <div class="t-bars">{"".join(bars)}</div>
+   <p class="doorblurb">{rankings_blurb}</p>
+  </a>
+  <a class="door" href="forecast.html">
+   <span class="doortag">MATCH FORECASTS</span>
+   <div class="t-rows">{frows}</div>
+   <p class="doorblurb">Every MLP team night and PPA championship Sunday —
+win probability, most-likely score, DreamBreaker odds.</p>
+  </a>
+  <a class="door" href="receipts.html">
+   <span class="doortag">TRACK RECORD</span>
+   <div class="t-rows wide">{rrows}</div>
+   <p class="doorblurb">The full archive of past forecasts, scored: {acc} of
+winners called on {holdout} games the model never saw. Misses kept too.</p>
+  </a>
+  <a class="door" href="simulator.html">
+   <span class="doortag">SIMULATOR</span>
+   <div class="t-term">{term}</div>
+   <p class="doorblurb">Any hypothetical pairing, weakest-link penalty
+included. Superstar + passenger ≠ two solids.</p>
+  </a>
+ </div>
+</section>
+{band}
+<section class="lsec check">
+ <div class="syscheck">
+  <div class="lrow"><span class="lk">GAMES IN THE MODEL (2024–26, MLP + PPA)</span><span class="ldot"></span><span class="lv">{n_games:,}</span></div>
+  <div class="lrow"><span class="lk">PLAYERS WITH MONTHLY SKILL TRACKING</span><span class="ldot"></span><span class="lv">{n_dyn}</span></div>
+  <div class="lrow"><span class="lk">DATA THROUGH</span><span class="ldot"></span><span class="lv">{updated}</span></div>
+  <div class="lrow"><span class="lk">TOURS COVERED</span><span class="ldot"></span><span class="lv">MLP + PPA</span></div>
+ </div>
+</section>
+
+<section class="lsec notes">
+ <h2 class="lh2">Field notes — what {hero_games} games actually say</h2>
+ <div class="fnotes">{fnotes}</div>
+</section>
+
+<footer class="manifesto"><div class="inner">
+ <div class="credo">
+  <div class="slogan">Error bars are a <span class="hl">flex.</span></div>
+  <div class="lines">Scored in public — hits and misses.<br>"We can't know
+that" — said out loud, when true.</div>
+ </div>
+ <div class="baseline">
+  <span>PICKLES · model output · not betting advice</span>
+  <span>{handle_bit}full forecast archive on file</span>
+ </div>
+</div></footer>
+"""
+    write("index.html", html)
 
 
 # ---------------------------------------------------------------- main
@@ -1075,8 +1532,10 @@ def main():
     (SITE / "assets" / "style.css").write_text(style.CSS)
     (SITE / ".nojekyll").write_text("")
 
-    print("pages: rankings, forecasts, results, simulator, receipts, records, dupr, methods, data …")
-    build_rankings(players, updated, len(games))
+    R = D.load_receipts()
+    print("pages: landing, rankings, forecasts, results, simulator, receipts, records, dupr, methods, data …")
+    build_landing(players, updated, len(games), R)
+    build_rankings(players, updated, len(games), R["validation"])
     build_player_index(players, updated)
     build_forecast(players, updated)
     build_results(players, games, updated)
@@ -1085,6 +1544,7 @@ def main():
     build_records(players, agg, games, updated)
     build_dupr(players, updated)
     build_methods(updated)
+    build_404(updated)
     build_downloads(games, updated)
 
     dyn = [p for p in players.values() if p.dynamic and p.stats]
