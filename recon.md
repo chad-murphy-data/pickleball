@@ -202,8 +202,11 @@ referee-log entry per action, 1:1 interleaved with state pushes:
  log_index}                                # dense, sequential per match
 ```
 
-Score strings are serving-team-first: `"5-4-2"` = server team 5,
-receiver team 4, server #2. `log_type` enum observed so far (n = 14):
+`PointLog` payload: `{time_started/time_ended: {seconds}, team_uuid
+(the MLP FRANCHISE uuid — logs carry team identity), start_score,
+end_score}`. Score strings are serving-team-first: `"5-4-2"` = server
+team 5, receiver team 4, server #2. `log_type` enum observed so far
+(45 logs across two matches):
 
 | type | meaning (observed)                             | LogData            |
 |------|------------------------------------------------|--------------------|
@@ -217,7 +220,26 @@ receiver team 4, server #2. `log_type` enum observed so far (n = 14):
 Unseen so far (expect on volume): game/match end, timeouts, faults,
 injury/medical, DreamBreaker-specific types. The 16/23 rows appear to
 carry the POST-transition server's perspective — verify on a full game
-before hard-coding.
+before hard-coding. No `matchup_<uuid>` events arrived during two
+windows of mid-game play despite subscribing — they presumably fire
+only on matchup-level transitions (match completed, DreamBreaker
+created, lineup lock); still uncaptured, as is the
+`X-Request-Tiebreaker-Matches` DreamBreaker feed and any PPA match
+(test during Macon, Fri 7/17+).
+
+Other state-event fields worth knowing: `localDateMatchPlannedStart` vs
+`localDateMatchStart` (this match ran 39 min AHEAD of schedule —
+delay/schedule analytics, "when to tune in"), `matchupUuid` (in-stream
+join key), player countries + photo URLs, seeds (0 in MLP; presumably
+bracket seeds in PPA), `logCreatedAt` (server-side ns timestamp),
+lifecycle timestamps (confirm/dispute/auto-complete), and
+`tieBreakerIsDirectFinalScore`.
+
+**Early empirics — serve-rally win rate** (the DP's assumed k):
+across the 20 fully-logged rallies, the serving side won 5
+(k̂ ≈ 0.25, Wilson 95% ≈ 0.11–0.47, vs the ASSUMED 0.35–0.45).
+Far too little data to conclude — but it leans low, and if volume
+confirms it, live win-prob streakiness shifts. Pin it Saturday.
 
 **This confirms side-out scoring in 2026 MLP pro games** (score moves only
 on `PointLog`, serve rotates 1→2→side-out) — matching the win-prob DP's
