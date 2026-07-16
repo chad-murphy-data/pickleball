@@ -5,6 +5,18 @@ Bayesian rating models, publish predictions with receipts. Hobby project,
 honesty-first. Read EXPLAINER.md for the plain-language story, analysis.md
 for full technical results, design_handoff.md for the content/social plan.
 
+## Working rules (user-set)
+
+- **Given an easy way and a hard way, pick the best way.** Difficulty is
+  never a blocker and never a virtue — choose on merit, then do it.
+  (Example of the standard: when asked "is the model underconfident?",
+  the answer was to fit the recalibration out-of-sample on the frozen
+  _train values, not to eyeball the old v1 curve.)
+- **No probability is ever displayed as 0% or 100%.** Empirical basis:
+  ~1% of ≥99% favorites lose (44/4,248 across all games). The calibration
+  layer (web/calibration.json, refit via web/fit_calibration.py) encodes
+  this as a mixture floor eps ≈ 0.021.
+
 ## Pipeline (run in this order; everything is idempotent & cached)
 
 ```bash
@@ -14,8 +26,19 @@ python scraper/parse.py                      # raw/ → data/games.csv etc.
 python scraper/build_model_data.py           # games → model tables (env-configurable)
 python model/fit_v2.py                       # THE model (dynamic + race likelihood)
 python model/report.py                       # regenerate analysis.md (v1 sections)
+python scraper/parse_singles.py              # raw/ → data/singles_games.csv (26k games)
+python model/fit_singles.py                  # singles MAP ratings (pure python, ~10 s)
+python scraper/extract_ratings.py            # raw/ → per-match + latest DUPR (merges)
 python scraper/live_poller.py                # live score JSONL during event days
+python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
+                                             #   --commit freezes into receipts.json
+python web/build_site.py                     # data/*.csv → site/ static website (~4 s)
 ```
+
+Deploy: .github/workflows/site.yml → GitHub Pages on push to main +
+nightly data refresh (raw/ cached in Actions; guard restores committed
+CSVs if a partial parse shrinks games.csv). Setup once: Settings → Pages
+→ Source "GitHub Actions".
 
 `harvest.py` accepts `--start/--end`; re-runs only fetch new/recent dates
 (last 3 days are "volatile" and refetched). Data source: pickleball.com's
@@ -54,6 +77,19 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    Tardio's rise is smooth and real.
 5. New pairings OVERperform first ~6 games (beta_new > 0) — window-edge
    caveat only partially resolved; treat gently.
+6. DreamBreakers are NOT 50/50: mean roster SINGLES value predicts them
+   (k = 0.42, CI [0.20, 0.65], n = 101; beats the doubles proxy by 3.1
+   nll; stronger-singles roster wins 60%; model/db_model.md). Singles
+   ratings: 26k PPA singles games, fit_singles.py; singles~doubles
+   r = 0.74; imputation for never-plays-singles rosters ≈ 0.28+1.14·d.
+   Waters +2.27 / Fahey +1.80 are the top two women's singles values.
+   Wired into make_forecast (K_DB_SINGLES).
+7. Cross-gender offset: the γ|gap| term is the ONLY identification channel
+   and it's stable in-form (c* ≈ +0.08 logit, scales ~1:1) but the nominal
+   precision is fake (values held fixed; form-borne). House rule stands —
+   never publish as fact. A single 2W-vs-2M exhibition game carries ~se
+   0.24 logit of DIRECT offset info; a weekend of them beats 14k mixed
+   games. (Session analysis 2026-07-13; not on the site.)
 
 ## House rules (hard-won; violating these produces silently wrong results)
 
@@ -86,6 +122,12 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 - The embedded per-match "rating" IS the player's synced DUPR doubles
   rating (verified: singles is a separate ledger; scale 2–8; compresses
   hard at the top and has data glitches — see analysis.md benchmark).
+  Known artifacts, re-verified 2026-07-13 against a fresh refetch:
+  Jackie Kawamoto = 3.50021 since 2026-06-04 (was 6.13 in Feb; 3.5 is
+  DUPR's reset default — the platform still serves it, treat as glitch,
+  site nulls it via data.finalize_dupr); tour-wide recalibration dropped
+  everyone ~0.3–0.7 on 2026-05-22 (Truong 5.83→5.137 and Jade Kawamoto
+  6.1→5.819 are CORRECT post-recal values, confirmed in fresh records).
 - Be polite: ~1 req/s harvest, ≥15 s live-poll interval.
 
 ## Live win probability (in progress)
@@ -111,17 +153,33 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 
 - **September 2026**: score `model/registered_predictions.md` (frozen
   2026-07-12) against games dated AFTER 2026-07-12 only, using the method
-  written in that file. Also grade `model/prediction_midseason_final.md`
-  vs the actual Gold final result (user reports Waters lost twice —
-  verify once the API finalizes the matchup; our 61% STL call likely HIT
-  while the 88% WD call missed — both go in the receipts ledger).
+  written in that file; update the pending entry in `model/receipts.json`.
 - Season end (~Sept): full re-harvest + v2 refit + refresh analysis.md,
-  trajectories, leaderboards.
+  trajectories, leaderboards; rebuild the site.
+- ~~Grade the Gold final~~ DONE 2026-07-13, verified from the API matchup
+  record: STL won 3-0 (WD Bright/Fahey 11-6, MD Tardio/Patriquin 11-3,
+  MXD1 Bright/Patriquin 11-8; MXD2 skipped, no DB — Waters did lose twice).
+  Overall 61% STL HIT, headline WD 88% MISS. Graded table appended to
+  model/prediction_midseason_final.md; ledger entries in model/receipts.json.
+
+## Website (Phase 2 MVP — BUILT; see ROADMAP Phase 2)
+
+`python web/build_site.py` regenerates `site/` (gitignored, ~506 pages) from
+data/*.csv + model/receipts.json in ~4 s, stdlib-only (no pandas). Pages:
+power rankings, 499 player pages (trajectory + game-log-vs-expectation
+SVGs), client-side matchup simulator (race DP + weakest link + uncertainty
+in embedded JS, shareable permalinks), receipts ledger + calibration,
+record book, DUPR×model, methods. Conventions: values are displayed as
+"expected margin vs an average pairing" via web/sitelib/race.py:value_points;
+the race DP there mirrors model/v2_holdout.py AND the JS inside
+build_simulator — keep all three in sync. Rankings rank 2026-active players
+only; men/women always separate. `model/receipts.json` is the receipts
+source of truth — commit predictions there BEFORE matches, grade after.
 
 ## Open threads (specced, unbuilt)
 
-Website (design_handoff.md §A–E + session notes): static site off the CSVs,
-client-side matchup simulator (values JSON + race DP in JS), receipts
-ledger, live win-prob charts (needs Tier 1/2 listener on a VPS). Scorebug
-OCR of YouTube broadcasts could backfill point-by-point history (Tier 0 of
-the vision pipeline; championship-court sample bias noted).
+Website extras: open-CSV downloads page, deploy target + nightly rebuild
+(Pages action or VPS cron), live win-prob charts (needs Tier 1/2 listener
+on a VPS). Scorebug OCR of YouTube broadcasts could backfill point-by-point
+history (Tier 0 of the vision pipeline; championship-court sample bias
+noted).

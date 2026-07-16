@@ -1,0 +1,53 @@
+{
+  "updated": "2026-07-13",
+  "note": "Public receipts ledger. Every entry is committed before the outcome is known; graded entries record the pre-registered probability, the outcome, hit/miss on the modal call, and the Brier score (lower is better; 0.25 = coin flip). This file is the source of truth for the website receipts page.",
+  "validation": {
+    "description": "v2 model frozen on pre-June data, scored on 884 unseen games (2026-06-01 through 2026-07-11).",
+    "n_games": 884,
+    "accuracy": 0.7738,
+    "brier": 0.1653,
+    "log_loss": 0.5058,
+    "dupr_reference": {"accuracy": 0.6467, "brier": 0.2289, "n_games": 518},
+    "v1_reference": {"accuracy": 0.752, "brier": 0.178},
+    "source": "model/v2_holdout_summary.json"
+  },
+  "entries": [
+    {
+      "id": "2026-midseason-gold-final",
+      "title": "MLP Mid-Season Tournament Gold Final — New Jersey 5s vs St. Louis Shock",
+      "committed": "2026-07-12",
+      "graded": "2026-07-13",
+      "status": "graded",
+      "source": "model/prediction_midseason_final.md",
+      "model": "v2 (posterior simulation), DreamBreaker treated as 50/50",
+      "outcome_summary": "St. Louis Shock won 3-0. MXD2 skipped as a dead game; no DreamBreaker. Anna Leigh Waters lost both her games (6-11 WD, 8-11 MXD1).",
+      "items": [
+        {"label": "Overall: St. Louis Shock wins the final", "prob": 0.607, "outcome": "STL won 3-0", "result": 1, "grade": "HIT", "brier": 0.1544},
+        {"label": "WD: Waters/Johnson over Bright/Fahey", "prob": 0.88, "outcome": "Bright/Fahey won 11-6", "result": 0, "grade": "MISS", "brier": 0.7744},
+        {"label": "MD: Tardio/Patriquin over Khlif/Howells", "prob": 0.92, "outcome": "Tardio/Patriquin won 11-3", "result": 1, "grade": "HIT", "brier": 0.0064},
+        {"label": "MXD1: Waters/Khlif over Bright/Patriquin", "prob": 0.54, "outcome": "Bright/Patriquin won 11-8", "result": 0, "grade": "MISS", "brier": 0.2916},
+        {"label": "MXD2: Fahey/Tardio over Johnson/Howells", "prob": 0.75, "outcome": "not played (match decided 3-0)", "result": null, "grade": "VOID", "brier": null},
+        {"label": "Match reaches a DreamBreaker", "prob": 0.465, "outcome": "no DreamBreaker", "result": 0, "grade": "HIT", "brier": 0.2162}
+      ],
+      "footnote": "The earlier v1 forecast (same file, committed hours before) grades identically in direction: overall STL 57.0% HIT, WD 69.5% MISS, MD 79.1% HIT, MXD1 52.9% MISS. Both models called the match and missed the headline WD game."
+    },
+    {
+      "id": "2026-registered-chemistry",
+      "title": "Preregistered chemistry predictions (second half of 2026 season)",
+      "committed": "2026-07-12",
+      "graded": null,
+      "status": "pending",
+      "grade_after": "2026-09-01",
+      "source": "model/registered_predictions.md",
+      "model": "v1 dyad chemistry + fixed-effects regression scoring (method frozen in the source file)",
+      "outcome_summary": null,
+      "items": [
+        {"label": "Waters + Bright (womens, PPA) underperform sum-of-parts in remaining 2026 games", "prob": null, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
+        {"label": "Alshon + Patriquin (mens, PPA) underperform sum-of-parts in remaining 2026 games", "prob": null, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
+        {"label": "Bright + Patriquin (mixed) chemistry stays small: |chem| < 1 point/game unshrunk", "prob": null, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
+        {"label": "League-wide dyad-chemistry scale (sd_d) refit on H2-only games stays under 1.0 point/game", "prob": null, "outcome": null, "result": null, "grade": "PENDING", "brier": null}
+      ],
+      "footnote": "Scored in September against games dated after 2026-07-12 only, using the method written into the frozen file."
+    }
+  ]
+}

@@ -1,0 +1,65 @@
+{
+ "note": "Display calibration for site win probabilities: p_cal = (1-eps)*sigmoid(a + b*logit(p_raw)) + eps/2. Fit out-of-sample on post-2026-06-01 games priced by the frozen _train fit; eps from the observed loss rate of >=99% favorites across all games (Laplace-smoothed). Regenerate with web/fit_calibration.py after each refit.",
+ "a": 0.06,
+ "b": 0.9,
+ "eps": 0.02118,
+ "fit_on": {
+  "split": "2026-06-01",
+  "n_games": 885,
+  "accuracy": 0.7729,
+  "log_loss_raw": 0.5041,
+  "log_loss_cal": 0.503,
+  "brier_raw": 0.1656,
+  "brier_cal": 0.1656
+ },
+ "tail": {
+  "n_extreme": 4248,
+  "losses": 44,
+  "loss_rate": 0.01059,
+  "eps": 0.02118
+ },
+ "buckets_calibrated": {
+  "0.5": {
+   "n": 178,
+   "actual": 0.5618
+  },
+  "0.6": {
+   "n": 191,
+   "actual": 0.7225
+  },
+  "0.7": {
+   "n": 161,
+   "actual": 0.7453
+  },
+  "0.8": {
+   "n": 163,
+   "actual": 0.8896
+  },
+  "0.9": {
+   "n": 192,
+   "actual": 0.9062
+  }
+ },
+ "buckets_raw": {
+  "0.5": {
+   "n": 163,
+   "actual": 0.6012
+  },
+  "0.6": {
+   "n": 176,
+   "actual": 0.7045
+  },
+  "0.7": {
+   "n": 150,
+   "actual": 0.76
+  },
+  "0.8": {
+   "n": 166,
+   "actual": 0.8253
+  },
+  "0.9": {
+   "n": 230,
+   "actual": 0.9174
+  }
+ }
+}

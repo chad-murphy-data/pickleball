@@ -7,3 +7,4 @@ enrich.log
 scraper/discovery/
 harvest*.log
 model/*.npz
+site/

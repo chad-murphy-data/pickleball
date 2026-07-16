@@ -1,0 +1,84 @@
+# Build and deploy the static site to GitHub Pages.
+#
+# Runs on every push to main and nightly. The nightly run also refreshes
+# game data from the public API (polite, cached via actions/cache on raw/;
+# the first cold run sweeps the whole season, ~30 min at ~1 req/s, then
+# incremental). Model values (v2_*.csv) only change when a refit is
+# committed — the nightly refresh updates games, ratings, forecasts and
+# every stats page.
+#
+# One-time setup: repo Settings → Pages → Source = "GitHub Actions".
+name: site
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "20 9 * * *"   # nightly, 09:20 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cache raw API responses
+        id: rawcache
+        uses: actions/cache@v4
+        with:
+          path: raw
+          key: raw-${{ github.run_id }}
+          restore-keys: raw-
+
+      - name: Refresh data from the public API (nightly + manual only)
+        if: github.event_name != 'push'
+        continue-on-error: true
+        run: |
+          pip install httpx
+          python scraper/harvest.py
+          python scraper/enrich_formats.py
+          python scraper/parse.py
+          python scraper/parse_singles.py
+          python scraper/extract_ratings.py
+          python web/make_forecast.py --days 7
+        timeout-minutes: 90
+
+      - name: Guard against partial data (restore committed CSVs if parse shrank)
+        run: |
+          lines=$(wc -l < data/games.csv)
+          echo "games.csv rows: $lines"
+          if [ "$lines" -lt 30000 ]; then
+            echo "::warning::games.csv suspiciously small — restoring committed data"
+            git checkout -- data/
+          fi
+
+      - name: Build site
+        run: python web/build_site.py
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

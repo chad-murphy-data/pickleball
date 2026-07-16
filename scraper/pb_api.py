@@ -136,6 +136,19 @@ class PBClient:
         )
         return body.get("data") or []
 
+    def match_infos_short_singles(self, tournament_id: str, event_ids: list[str], d: date) -> list[dict]:
+        """Same endpoint, separate cache dir: singles events were added later
+        and the doubles cache is keyed by (tournament, date) only — mixing
+        them would silently mask doubles refetches."""
+        p = RAW / "match_infos_short_singles" / tournament_id / f"{d}.json"
+        ids = ",".join(event_ids)
+        body = self._cached(
+            p,
+            f"/api/v1/results/getMatchInfosShort?eventIds={ids}&date={d}",
+            volatile=self._is_volatile(d),
+        )
+        return body.get("data") or []
+
     def tl_matchups_short(self, tl: dict, division: dict, d: date) -> list[dict]:
         p = RAW / "tl_matchups_short" / tl["uuid"] / f"{d}.json"
         q = (

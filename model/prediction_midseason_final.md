@@ -29,3 +29,26 @@ WD NJ 88% (11-5/11-6) | MD STL 92% (11-5/11-4) | MXD1 NJ 54% (11-9) |
 MXD2 STL 75% (11-7). Paths: NJ 3-1/4-0 16.0%, DreamBreaker 46.5%,
 STL 3-1/4-0 37.5%. Overall: STL 60.7% at DB=50/50; STL 53.8% if
 Waters' singles makes the DB 65% NJ. The match hinges on the DB.
+
+## GRADED 2026-07-13 (result verified from the API matchup record)
+
+**St. Louis Shock won 3-0** (MXD2 skipped as a dead game; no DreamBreaker).
+Per game: WDG Bright/Fahey d. Waters/Johnson **11-6**; MDG Tardio/Patriquin
+d. Khlif/Howells **11-3**; MXD1 Bright/Patriquin d. Waters/Khlif **11-8**.
+
+| call (v2 addendum) | prob | outcome | grade | Brier |
+|:--|--:|:--|:--|--:|
+| Overall: STL wins | 60.7% | STL won 3-0 | **HIT** | 0.154 |
+| WD: Waters/Johnson | 88% | lost 6-11 | **MISS** | 0.774 |
+| MD: Tardio/Patriquin | 92% | won 11-3 | **HIT** | 0.006 |
+| MXD1: Waters/Khlif | 54% | lost 8-11 | **MISS** | 0.292 |
+| MXD2: Fahey/Tardio | 75% | not played | — | — |
+| Reaches DreamBreaker | 46.5% | no DB | HIT (modal) | 0.216 |
+
+The v1 forecast (top of file) graded the same way: overall STL 57.0% HIT;
+WD 69.5% MISS; MD 79.1% HIT; MXD1 52.9% MISS. Both models called the match
+right and the headline WD game wrong — the 88% miss goes in the ledger next
+to the win, per house rules. Anna Leigh Waters lost both her games in the
+final (6-11, 8-11). The "match hinges on the DB" line was moot: STL never
+let it get there — the 37.5% "STL without a DreamBreaker" path is the one
+that landed.

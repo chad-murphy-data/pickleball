@@ -85,20 +85,30 @@ def harvest_ppa_day(c: PBClient, d: date, manifest: dict):
             log.warning("events_short denied for %s (%s): %s", title, d, e)
             continue
         doubles = [e for e in events if "doubles" in e["title"].lower()]
-        if not doubles:
+        singles = [e for e in events if "singles" in e["title"].lower()]
+        if not doubles and not singles:
             continue
-        try:
-            matches = c.match_infos_short(tid, [e["uuid"] for e in doubles], d)
-        except PermissionError as e:
-            log.warning("match_infos denied for %s (%s): %s", title, d, e)
-            continue
+        matches = []
+        if doubles:
+            try:
+                matches = c.match_infos_short(tid, [e["uuid"] for e in doubles], d)
+            except PermissionError as e:
+                log.warning("match_infos denied for %s (%s): %s", title, d, e)
+        n_singles = 0
+        if singles:
+            try:
+                n_singles = len(c.match_infos_short_singles(
+                    tid, [e["uuid"] for e in singles], d))
+            except PermissionError as e:
+                log.warning("singles match_infos denied for %s (%s): %s", title, d, e)
         manifest["ppa"].setdefault(tid, {"title": title, "days": {}})
         manifest["ppa"][tid]["days"][str(d)] = {
-            "events": {e["uuid"]: e["title"] for e in doubles},
-            "n_matches": len(matches),
+            "events": {e["uuid"]: e["title"] for e in doubles + singles},
+            "n_matches": len(matches), "n_singles_matches": n_singles,
         }
-        log.info("PPA %s %s: %d doubles-pro matches (%s)",
-                 d, title, len(matches), ", ".join(e["title"] for e in doubles))
+        log.info("PPA %s %s: %d doubles + %d singles pro matches (%s)",
+                 d, title, len(matches), n_singles,
+                 ", ".join(e["title"] for e in doubles + singles))
 
 
 def harvest_mlp_day(c: PBClient, d: date, manifest: dict):
