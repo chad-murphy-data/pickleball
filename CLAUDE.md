@@ -156,22 +156,16 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 
 - **September 2026**: score `model/registered_predictions.md` (frozen
   2026-07-12) against games dated AFTER 2026-07-12 only, using the method
-<<<<<<< HEAD
   written in that file; update the pending entry in `model/receipts.json`.
-=======
-  written in that file.
-- ✅ **DONE (2026-07-16)**: graded `model/prediction_midseason_final.md` vs
-  the Gold final — STL swept NJ 3–0 (WD 11-6, MD 11-3, MXD1 11-8; MXD2/DB
-  unplayed). Overall STL call HIT (Brier v2 0.154); 88% WD call MISSED,
-  Waters lost both her lines. Receipt: `model/receipts.md` entry 1.
->>>>>>> origin/main
 - Season end (~Sept): full re-harvest + v2 refit + refresh analysis.md,
   trajectories, leaderboards; rebuild the site.
-- ~~Grade the Gold final~~ DONE 2026-07-13, verified from the API matchup
-  record: STL won 3-0 (WD Bright/Fahey 11-6, MD Tardio/Patriquin 11-3,
-  MXD1 Bright/Patriquin 11-8; MXD2 skipped, no DB — Waters did lose twice).
-  Overall 61% STL HIT, headline WD 88% MISS. Graded table appended to
-  model/prediction_midseason_final.md; ledger entries in model/receipts.json.
+- ~~Grade the Gold final~~ DONE — graded independently twice with identical
+  calls (2026-07-13 from the API matchup record → `model/receipts.json`,
+  which the site renders; 2026-07-16 narrative → `model/receipts.md`):
+  STL won 3-0 (WD Bright/Fahey 11-6, MD Tardio/Patriquin 11-3, MXD1
+  Bright/Patriquin 11-8; MXD2 skipped, no DB — Waters did lose twice).
+  Overall 61% STL HIT, headline WD 88% MISS. Graded tables in
+  model/prediction_midseason_final.md.
 
 ## Website (Phase 2 MVP — BUILT; see ROADMAP Phase 2)
 
