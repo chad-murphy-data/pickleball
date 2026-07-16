@@ -301,11 +301,13 @@ wild; `harvest_logs.py:tally` implements these rules):
   the log's own normal points (scoring team = serving team in side-out),
   then apply to corrections.
 
-(12/14/16/17/23/37 as in the SSE table.) Games open at `0-0-2` —
-first service turn has a single server, confirmed in-data. The four
-type-45 rows before scoring start look like challenge-budget init, all
-stamped OVERRULED_CHALLENGE_SUCCESS_STATUS — don't count them as real
-challenges without checking timestamps.
+(12/14/16/17/23/37 as in the SSE table.) Games open at `0-0-2` — the
+STANDARD pickleball first-server exception (opening team serves with
+its second server only), not an app artifact; the strings encode the
+rule as expected, and the opening turn side-outs directly (type 16, no
+type 23 first). The four type-45 rows before scoring start look like
+challenge-budget init, all stamped OVERRULED_CHALLENGE_SUCCESS_STATUS —
+don't count them as real challenges without checking timestamps.
 
 **Implications**: empirical k (serve-rally win rate) per tour/gender/
 format from ~a million archived rallies; per-player serve/return splits
