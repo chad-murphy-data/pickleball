@@ -48,7 +48,7 @@ import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pb_api import UA
-from live_poller import Poller, ACTIVE, mlp_match_state, ppa_match_state
+from live_poller import Poller, ACTIVE, mlp_match_state, ppa_match_state, TOUR_TZ
 
 log = logging.getLogger("sse")
 ROOT = Path(__file__).resolve().parent.parent
@@ -145,7 +145,7 @@ def stream(match_uuids, matchup_uuids, duration, with_logs):
     if matchup_uuids:
         headers["X-Request-Matchups"] = b64_csv(matchup_uuids)
     url = f"{RTE_URL}?opts={','.join(opts)}"
-    day = dt.date.today().strftime("%Y%m%d")
+    day = dt.datetime.now(TOUR_TZ).strftime("%Y%m%d")
     out_path = OUT / f"sse-{day}.jsonl"
     log.info("subscribing: %d matches, %d matchups → %s",
              len(match_uuids), len(matchup_uuids), out_path)
@@ -196,7 +196,7 @@ def main():
         match_uuids = [u.strip().lower() for u in args.matches.split(",") if u.strip()]
         matchup_uuids = [u.strip().lower() for u in (args.matchups or "").split(",") if u.strip()]
     else:
-        today = dt.date.today().isoformat()
+        today = dt.datetime.now(TOUR_TZ).date().isoformat()
         match_uuids, matchup_uuids = collect_live_uuids(today)
         if not match_uuids and not matchup_uuids:
             log.info("no live-relevant matches today — nothing to subscribe to")
