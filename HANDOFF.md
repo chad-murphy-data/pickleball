@@ -55,11 +55,13 @@ python scraper/sse_probe.py --with-logs --matches <uuid>     # rally logs, one c
 ```
 **SECOND UPDATE, same day: k does NOT need live capture.**
 `/api/v1/results/getListLogs?id=<match_uuid>` (open BFF) serves the full
-referee log for COMPLETED matches — 15/15 coverage in a 2024–26 MLP+PPA
-sample. Rally history is backfillable; build `scraper/harvest_logs.py`
-(~1 req/s, immutable → cache forever) and estimate k + per-player
-serve/return splits from the archive. recon.md "getListLogs" section has
-schemas + the politeness math. The weekend LIVE capture is still worth an
+referee log for COMPLETED matches — coverage is event-dependent (recon.md).
+Rally history is backfillable; `scraper/harvest_logs.py` is BUILT and
+validated (56/58 logged matches score-reconcile exactly; early k:
+MLP doubles 0.430, PPA doubles 0.439, PPA singles 0.538 — n≈3.5k
+rallies). Run the ~9.5 h backfill on the droplet per deploy/README.md
+"Backfill", then `--summarize` → commit data/match_rally_summary.csv +
+data/player_serve_rallies.csv. The weekend LIVE capture is still worth an
 attended hour for what the archive can't give: `matchup_<uuid>` event
 shapes (fire on transitions only), the `X-Request-Tiebreaker-Matches`
 DreamBreaker feed, PPA coverage check (Macon), and a live win-prob chart

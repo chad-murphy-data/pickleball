@@ -171,3 +171,30 @@ class PBClient:
             volatile=volatile,
         )
         return body.get("data") or {}
+
+    def match_logs(self, match_id: str):
+        """Full referee log for a COMPLETED match (getListLogs; see recon.md).
+
+        Completed-match logs are immutable, so the cache never expires;
+        files are sharded by uuid prefix (raw/match_logs/ab/<uuid>.json,
+        compact JSON — ~30k matches would be bulky pretty-printed).
+        Returns the log list, [] when the API answered with no logs, or
+        None when it answered 404 (cached as a sentinel so re-runs skip;
+        delete the file to force a retry). Transient errors raise —
+        nothing is cached, so the next run retries.
+        """
+        mid = match_id.lower()
+        p = RAW / "match_logs" / mid[:2] / f"{mid}.json"
+        if p.exists():
+            self.cache_hits += 1
+            body = json.loads(p.read_text())
+        else:
+            try:
+                body = self._get_json(f"/api/v1/results/getListLogs?id={mid}")
+            except PermissionError as e:
+                body = {"data": None, "_error": str(e)[:80]}
+            p.parent.mkdir(parents=True, exist_ok=True)
+            tmp = p.with_suffix(".tmp")
+            tmp.write_text(json.dumps(body, separators=(",", ":")))
+            tmp.replace(p)
+        return body.get("data") if isinstance(body, dict) else body

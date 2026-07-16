@@ -50,6 +50,39 @@ journalctl --user -u pickleball-live -e              # today's log
 systemctl --user start pickleball-live.service       # manual start now
 ```
 
+## Backfill: historical referee logs (one-time, ~9.5 h)
+
+`scraper/harvest_logs.py` walks every archived match and caches its full
+referee log (rally-by-rally; see recon.md "getListLogs") to
+`raw/match_logs/` — ~30.5k requests at 1.1 s. Fully resumable; safe to
+interrupt and re-run. Kick it off on the droplet as a transient unit so
+it survives logout and shows up in journalctl:
+
+```bash
+cd ~/pickleball && git pull
+systemd-run --user --unit=pickleball-logs-backfill \
+  --working-directory="$HOME/pickleball" \
+  "$HOME/pickleball/.venv/bin/python" scraper/harvest_logs.py
+journalctl --user -u pickleball-logs-backfill -f    # watch (progress every 100)
+```
+
+Prefer starting it in the evening after live play — it shares the same
+polite request budget as the live poller. When it finishes (or any time
+mid-run), derive the committed summary tables and push them:
+
+```bash
+cd ~/pickleball
+.venv/bin/python scraper/harvest_logs.py --summarize
+git add data/match_rally_summary.csv data/player_serve_rallies.csv
+git commit -m "rally logs: summary tables ($(date +%F))" && git push
+```
+
+`--summarize` needs no network, prints the empirical serve-rally win
+rate k by tour, and score-validates every match against games.csv
+(`score_check` column; ~97% of logged matches reconcile exactly, the
+rest are flagged). Raw logs stay on the box (gitignored, ~1 GB); the
+two CSVs are small and belong in the repo.
+
 Upcoming windows this summer (see ROADMAP Phase 1): MLP San Diego
 Jul 16–19, PPA Macon Challenger Jul 17–19, MLP Chicago Jul 23–25,
 Amway MLP Orlando Jul 30–Aug 1.

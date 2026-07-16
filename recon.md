@@ -248,10 +248,18 @@ returns the COMPLETE referee log for a completed match — same log stream
 the SSE feed delivers live, so rally-level data is BACKFILLABLE without
 having listened. Found by pulling `/results` chunks and grepping
 `"/api/` (the enum strings PointLog etc. are NOT in the /results chunks;
-the endpoint was). Coverage sample: **15/15 matches had full logs**
-across 2024/2025/2026 × MLP/PPA, including a PPA Asia event (59–379
-logs per match). Corpus-wide coverage % unknown but evidently deep;
-singles (26k games) untested — same endpoint should apply.
+the endpoint was). Works for doubles AND singles match uuids.
+
+**Coverage is EVENT-dependent, not universal** (the first 15/15 random
+sample was misleading): a 92-match validation batch found PPA Gold Coast
+Open 2024 with 0/30 logged and a Challenger with partial coverage —
+events/courts without digital refereeing simply have no logs. Empty
+responses are cached and flagged; the full harvest measures true
+coverage. Where logs exist they are rich (59–379 rows/match) and
+**~97% score-reconcile exactly against games.csv** via
+`scraper/harvest_logs.py --summarize` (the rest are flagged `mismatch`
+— observed causes: log ends before the final point was entered, or the
+platform score was edited after the fact).
 
 REST shape differs slightly from SSE: typed payloads are inline
 snake_case keys (`point_log`, `match_over_log`, …) instead of the
@@ -265,11 +273,33 @@ from one full game (WD Todd/Black 11-2, 59 rows, arithmetic validates —
 | 38 | match setup (log_index 1) | — |
 | 46 | pre-start, unknown | — |
 | 10 | player court arrival (timestamped) | court_arrival_log {player_uuid} |
-| 15, 3 | pre-start pairs, unknown (warmup/toss?) | — |
+| 15, 3, 31 | pre/mid, unknown, score-neutral | — |
+| 20 | warm-up begins | warming_up_log |
 | 22 | scoring starts | start_scoring_log {left/right_of_umpire_team_uuid, serving_team_uuid} |
+| 2 | challenge (referee call) | challenge_log {team_uuid, referee_call} |
 | 45 | line review | line_review_log {team_uuid, line_review_success_status} |
+| 18 | timeout (start + start/end pair) | timeout_log {team_uuid, time_started/ended} |
+| 35 | additional timeout | additional_timeout_log {team_uuid} |
 | 4 | game over | game_over_log {team_uuid} |
 | 6 | match over | match_over_log {team_uuid} |
+
+**Log-quality quirks the tally logic must handle** (all observed in the
+wild; `harvest_logs.py:tally` implements these rules):
+- Corrections are type-14 rows with NEGATIVE payload deltas (successful
+  challenge → point removed); on rewind rows the score STRINGS are
+  garbled (mixed perspectives) while the payload stays clean.
+- Phantom double-entries: payload repeats `+1` (start None) but the
+  string doesn't move. Real points with a merely STALE string also
+  exist — disambiguate by whether the next row carries the score
+  forward incremented (side-outs flip the string perspective).
+- When string and payload deltas disagree, the smaller-|delta| one has
+  been correct in every observed case.
+- Scoring sometimes opens LATE: the first point row's string starts at
+  0-0 while its payload starts higher — the gap is real score with no
+  logged rallies (credit to the side, exclude from k).
+- The payload team_uuid is a FRANCHISE/side uuid: learn team→side from
+  the log's own normal points (scoring team = serving team in side-out),
+  then apply to corrections.
 
 (12/14/16/17/23/37 as in the SSE table.) Games open at `0-0-2` —
 first service turn has a single server, confirmed in-data. The four
