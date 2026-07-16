@@ -167,5 +167,70 @@ to a *completed* match yields zero events (correct — nothing live). Real
 event payloads must be captured during a live match. Tool: `scraper/sse_probe.py`
 (`--matches`, or auto-discovers today's live UUIDs via the Tier-1 discovery;
 `--duration` bounds the run; `--with-logs` for single-match rally logs).
-Next step: run it during an MLP San Diego / PPA Macon match this weekend,
-dump `live/sse-YYYYMMDD.jsonl`, then fold the parser into live_poller as Tier 2.
+~~Next step: run it during an MLP San Diego / PPA Macon match this weekend~~
+DONE 2026-07-16 — real payloads captured during live play; see next section.
+
+## Tier-2 event shapes — CAPTURED LIVE 2026-07-16 (MLP San Diego)
+
+Two probe windows (~8 min total, `live/sse-20260716.jsonl`, 48 events)
+during MXD2 Todd/Daescu vs Rane/Staksrud on the championship court
+(`courtTitle: "CC"`). Both subscription modes verified end-to-end from
+this environment via httpx.
+
+**Match-state events** (named by bare match UUID; also what the broad
+no-`withLogs` subscription delivers): the payload is a full camelCase
+match object — the same shape as the BFF's MLP match records. Notable
+fields: complete serve state (`server`, `serverFromTeam`,
+`currentServingNumber`), per-game scores + `game*Status`, `matchStatus` /
+`winner` / `matchCompletedType`, all four player UUIDs + names, court
+UUID/title, `isConsumedByRefereeApp: true`, and timestamps. CAUTION: the
+`localDateMatch*` fields carry a `Z` suffix but are venue-LOCAL times
+(observed `localDateMatchStart: ...T10:51:13Z` for a match that started
+10:51 PDT). Events usually arrive in pairs ~0.2–0.4 s apart (referee-app
+score entry + serve-state update); occasional unchanged re-pushes occur —
+dedupe downstream, same rule as Tier 1.
+
+**Rally log events** (`reflog_<match_uuid>`; only with `withLogs`, which
+the client only uses on single-match subscriptions): one structured
+referee-log entry per action, 1:1 interleaved with state pushes:
+
+```
+{id, referee_uuid, match_uuid, server_uuid, receiver_uuid, server_index,
+ date_created: {seconds}, log_type, LogData: {<TypedLog>} | {},
+ game_number, group_uuid,
+ start_score_current_game_string, end_score_current_game_string,  # "5-4-2"
+ log_index}                                # dense, sequential per match
+```
+
+Score strings are serving-team-first: `"5-4-2"` = server team 5,
+receiver team 4, server #2. `log_type` enum observed so far (n = 14):
+
+| type | meaning (observed)                             | LogData            |
+|------|------------------------------------------------|--------------------|
+| 12   | rally underway (start marker; score unchanged) | {}                 |
+| 14   | serving team wins the rally → point            | PointLog           |
+| 16   | side-out — serve crosses to the other team     | {} (string flips perspective) |
+| 17   | court-side switch (at 6 in a game to 11)       | SwitchCourtSideLog |
+| 23   | serve passes to the second server (partner)    | {}                 |
+| 37   | video challenge                                | VideoChallengeLog {team_uuid, challenge_referee_call} |
+
+Unseen so far (expect on volume): game/match end, timeouts, faults,
+injury/medical, DreamBreaker-specific types. The 16/23 rows appear to
+carry the POST-transition server's perspective — verify on a full game
+before hard-coding.
+
+**This confirms side-out scoring in 2026 MLP pro games** (score moves only
+on `PointLog`, serve rotates 1→2→side-out) — matching the win-prob DP's
+4-serve-state design with the algebraic no-score cycle.
+
+**What rally logs unlock** (none of this is visible to Tier-1 polling):
+- Empirical serve-rally win rate k — the DP's streakiness input, currently
+  ASSUMED 0.35–0.45. Estimator: `#(type 14) / #(types 14+16+23)`. The tiny
+  first sample gave 1/5; a weekend of matches gives thousands of rallies,
+  splittable per league / per player.
+- Per-PLAYER serve/return splits (`server_uuid`/`receiver_uuid` on every
+  rally) — a new modeling axis no scraped box score contains.
+- Per-rally timestamps (`date_created.seconds`) → rally cadence, momentum,
+  broadcast-sync for annotated win-prob charts.
+- Full point-by-point reconstruction of covered matches — scorebug OCR
+  (ROADMAP Tier 0) becomes unnecessary wherever RTE coverage exists.

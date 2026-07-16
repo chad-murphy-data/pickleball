@@ -42,15 +42,23 @@ Confirm the unattended poller actually captured real live data:
 
 ## ► Weekend task — Tier-2 SSE capture (Sat 7/18 or Sun 7/19, ATTENDED)
 
-The user monitors Sat/Sun (not Thu/Fri). During any LIVE match, run on the VPS or any box:
+**UPDATE 2026-07-16: discovery is DONE.** Real payloads were captured live
+during San Diego day 1 (session probe, ~8 min, `live/sse-20260716.jsonl`):
+match-state events are full BFF-shaped match objects (serve state included);
+`withLogs` adds `reflog_<uuid>` referee-log events — per-rally server/receiver
+UUIDs, timestamps, typed logs. **2026 MLP pro games are side-out scoring**,
+confirming the DP's 4-serve-state design. Full schemas + log_type enum:
+recon.md "Tier-2 event shapes". The weekend job is now VOLUME, not discovery:
 ```
-python scraper/sse_probe.py                                  # auto-discovers today's live matches
-python scraper/sse_probe.py --with-logs --matches <uuid>     # per-rally feed, single match
+python scraper/sse_probe.py --duration 14400                 # broad: all matches, state stream
+python scraper/sse_probe.py --with-logs --matches <uuid>     # rally logs, one court at a time
 ```
-→ captures real events to `live/sse-YYYYMMDD.jsonl`. This is the LAST step of Tier-2 discovery.
-Caveat: the parser is verified against the handshake only, not real payloads — expect to iterate
-on the event shape (it dumps raw blocks, so nothing is lost). Once real payloads are in hand,
-fold the parser into `live_poller.py` as Tier 2 (unlocks rally resolution → serve/return est.).
+Rally-log volume feeds the empirical serve-rally win rate k (currently
+assumed 0.35–0.45 in the win-prob math) and per-player serve/return splits.
+Then fold the parser into `live_poller.py` as Tier 2. Note `--with-logs`
+takes ONE match — for a full day, re-run per championship-court match
+(match UUIDs are in the Tier-1 events file), or check whether the server
+honors multi-match withLogs despite the client never asking for it.
 
 Weekend schedule (from the BFF): **Sat 7/18** MLP San Diego (10 matchups) **+** PPA Macon
 Challenger (49 matches) — double-header; **Sun 7/19** PPA Macon finals (32). Next windows:
