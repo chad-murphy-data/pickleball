@@ -151,6 +151,14 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   serve-rally baseline k (~0.35–0.45, currently assumed) sets streakiness;
   4 serve states per score; the no-score side-out cycle must be solved
   algebraically (see session history — naive recursion loops forever).
+- **Rally-level history is backfillable** (found 2026-07-16):
+  `/api/v1/results/getListLogs?id=<match_uuid>` (open BFF) returns the
+  full referee log for completed matches — per-rally server/receiver
+  UUIDs, points, side-outs, timestamps. 15/15 coverage in a 2024–26
+  MLP+PPA sample. Estimate k and serve/return splits from the archive
+  (build scraper/harvest_logs.py); live SSE is only needed for real-time.
+  Schemas + log_type enum: recon.md. No shot-level data exists anywhere
+  in this stack (ceiling: vision pipeline on broadcasts).
 
 ## Scheduled obligations
 

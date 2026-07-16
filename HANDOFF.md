@@ -53,12 +53,19 @@ recon.md "Tier-2 event shapes". The weekend job is now VOLUME, not discovery:
 python scraper/sse_probe.py --duration 14400                 # broad: all matches, state stream
 python scraper/sse_probe.py --with-logs --matches <uuid>     # rally logs, one court at a time
 ```
-Rally-log volume feeds the empirical serve-rally win rate k (currently
-assumed 0.35–0.45 in the win-prob math) and per-player serve/return splits.
-Then fold the parser into `live_poller.py` as Tier 2. Note `--with-logs`
-takes ONE match — for a full day, re-run per championship-court match
-(match UUIDs are in the Tier-1 events file), or check whether the server
-honors multi-match withLogs despite the client never asking for it.
+**SECOND UPDATE, same day: k does NOT need live capture.**
+`/api/v1/results/getListLogs?id=<match_uuid>` (open BFF) serves the full
+referee log for COMPLETED matches — 15/15 coverage in a 2024–26 MLP+PPA
+sample. Rally history is backfillable; build `scraper/harvest_logs.py`
+(~1 req/s, immutable → cache forever) and estimate k + per-player
+serve/return splits from the archive. recon.md "getListLogs" section has
+schemas + the politeness math. The weekend LIVE capture is still worth an
+attended hour for what the archive can't give: `matchup_<uuid>` event
+shapes (fire on transitions only), the `X-Request-Tiebreaker-Matches`
+DreamBreaker feed, PPA coverage check (Macon), and a live win-prob chart
+rehearsal against real-time reflogs. Note `--with-logs` takes ONE match —
+re-run per championship-court match, or test whether the server honors
+multi-match withLogs despite the client never asking for it.
 
 Weekend schedule (from the BFF): **Sat 7/18** MLP San Diego (10 matchups) **+** PPA Macon
 Challenger (49 matches) — double-header; **Sun 7/19** PPA Macon finals (32). Next windows:

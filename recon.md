@@ -238,8 +238,59 @@ lifecycle timestamps (confirm/dispute/auto-complete), and
 **Early empirics — serve-rally win rate** (the DP's assumed k):
 across the 20 fully-logged rallies, the serving side won 5
 (k̂ ≈ 0.25, Wilson 95% ≈ 0.11–0.47, vs the ASSUMED 0.35–0.45).
-Far too little data to conclude — but it leans low, and if volume
-confirms it, live win-prob streakiness shifts. Pin it Saturday.
+Far too little data to conclude — but it leans low. (Superseded within
+the hour: estimate k from the HISTORICAL logs below instead.)
+
+## getListLogs — the archive has rally-level history (found 2026-07-16)
+
+**`GET /api/v1/results/getListLogs?id=<match_uuid>`** (open BFF, no auth)
+returns the COMPLETE referee log for a completed match — same log stream
+the SSE feed delivers live, so rally-level data is BACKFILLABLE without
+having listened. Found by pulling `/results` chunks and grepping
+`"/api/` (the enum strings PointLog etc. are NOT in the /results chunks;
+the endpoint was). Coverage sample: **15/15 matches had full logs**
+across 2024/2025/2026 × MLP/PPA, including a PPA Asia event (59–379
+logs per match). Corpus-wide coverage % unknown but evidently deep;
+singles (26k games) untested — same endpoint should apply.
+
+REST shape differs slightly from SSE: typed payloads are inline
+snake_case keys (`point_log`, `match_over_log`, …) instead of the
+`LogData` wrapper, timestamps are ISO strings instead of proto seconds,
+and pre-rally admin rows appear that SSE mid-game never showed. Decoded
+from one full game (WD Todd/Black 11-2, 59 rows, arithmetic validates —
+13 points + 4 side-outs + 3 second-server passes = 20 rally markers):
+
+| type | meaning | payload |
+|---|---|---|
+| 38 | match setup (log_index 1) | — |
+| 46 | pre-start, unknown | — |
+| 10 | player court arrival (timestamped) | court_arrival_log {player_uuid} |
+| 15, 3 | pre-start pairs, unknown (warmup/toss?) | — |
+| 22 | scoring starts | start_scoring_log {left/right_of_umpire_team_uuid, serving_team_uuid} |
+| 45 | line review | line_review_log {team_uuid, line_review_success_status} |
+| 4 | game over | game_over_log {team_uuid} |
+| 6 | match over | match_over_log {team_uuid} |
+
+(12/14/16/17/23/37 as in the SSE table.) Games open at `0-0-2` —
+first service turn has a single server, confirmed in-data. The four
+type-45 rows before scoring start look like challenge-budget init, all
+stamped OVERRULED_CHALLENGE_SUCCESS_STATUS — don't count them as real
+challenges without checking timestamps.
+
+**Implications**: empirical k (serve-rally win rate) per tour/gender/
+format from ~a million archived rallies; per-player serve/return splits
+historically; rally timestamps for pacing; court-side assignments;
+challenge analytics; player arrival times. Live SSE remains necessary
+ONLY for real-time win-prob. Backfill politeness math: ~36k doubles
+games (fewer unique matches) + 26k singles at ~1 req/s ≈ a long
+weekend of nightly chunks on the droplet; completed-match logs are
+immutable → cache forever, harvest incrementally.
+
+Shot-level data does NOT exist anywhere in this stack — the referee app
+logs outcomes and administration, not strokes. Rally-end shot/reason is
+likewise absent (no fault-type rows observed in a full game; the rally
+either ends in a point or a serve change). Ceiling confirmed: for shot
+detail, the only route is the Phase-6 vision pipeline on broadcasts.
 
 **This confirms side-out scoring in 2026 MLP pro games** (score moves only
 on `PointLog`, serve rotates 1→2→side-out) — matching the win-prob DP's
