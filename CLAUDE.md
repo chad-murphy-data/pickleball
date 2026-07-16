@@ -5,6 +5,9 @@ Bayesian rating models, publish predictions with receipts. Hobby project,
 honesty-first. Read EXPLAINER.md for the plain-language story, analysis.md
 for full technical results, design_handoff.md for the content/social plan.
 
+**If active live-listener/receipts work is in flight, HANDOFF.md is the dated
+status snapshot + next-thread to-do (check its date; stale ones defer to here).**
+
 ## Pipeline (run in this order; everything is idempotent & cached)
 
 ```bash
@@ -111,10 +114,11 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 
 - **September 2026**: score `model/registered_predictions.md` (frozen
   2026-07-12) against games dated AFTER 2026-07-12 only, using the method
-  written in that file. Also grade `model/prediction_midseason_final.md`
-  vs the actual Gold final result (user reports Waters lost twice —
-  verify once the API finalizes the matchup; our 61% STL call likely HIT
-  while the 88% WD call missed — both go in the receipts ledger).
+  written in that file.
+- ✅ **DONE (2026-07-16)**: graded `model/prediction_midseason_final.md` vs
+  the Gold final — STL swept NJ 3–0 (WD 11-6, MD 11-3, MXD1 11-8; MXD2/DB
+  unplayed). Overall STL call HIT (Brier v2 0.154); 88% WD call MISSED,
+  Waters lost both her lines. Receipt: `model/receipts.md` entry 1.
 - Season end (~Sept): full re-harvest + v2 refit + refresh analysis.md,
   trajectories, leaderboards.
 
