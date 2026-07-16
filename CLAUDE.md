@@ -164,12 +164,16 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 
 ## Website (Phase 2 MVP — BUILT; see ROADMAP Phase 2)
 
-`python web/build_site.py` regenerates `site/` (gitignored, ~506 pages) from
+`python web/build_site.py` regenerates `site/` (gitignored, ~511 pages) from
 data/*.csv + model/receipts.json in ~4 s, stdlib-only (no pandas). Pages:
-power rankings, 499 player pages (trajectory + game-log-vs-expectation
-SVGs), client-side matchup simulator (race DP + weakest link + uncertainty
-in embedded JS, shareable permalinks), receipts ledger + calibration,
-record book, DUPR×model, methods. Conventions: values are displayed as
+PICKLES landing page (index.html — live doorway teasers + conditional
+"tonight" band off data/forecasts.json), power rankings (rankings.html),
+499 player pages (trajectory + game-log-vs-expectation SVGs), client-side
+matchup simulator (race DP + weakest link + uncertainty in embedded JS,
+shareable permalinks), receipts ledger + calibration, record book,
+DUPR×model, methods, 404. The look is the PICKLES design handoff: master
+stylesheet = CSS string in web/sitelib/style.py (design port verbatim +
+landing additions; light AND dark). Conventions: values are displayed as
 "expected margin vs an average pairing" via web/sitelib/race.py:value_points;
 the race DP there mirrors model/v2_holdout.py AND the JS inside
 build_simulator — keep all three in sync. Rankings rank 2026-active players
@@ -178,8 +182,10 @@ source of truth — commit predictions there BEFORE matches, grade after.
 
 ## Open threads (specced, unbuilt)
 
-Website extras: open-CSV downloads page, deploy target + nightly rebuild
-(Pages action or VPS cron), live win-prob charts (needs Tier 1/2 listener
-on a VPS). Scorebug OCR of YouTube broadcasts could backfill point-by-point
-history (Tier 0 of the vision pipeline; championship-court sample bias
-noted).
+Website extras: live win-prob charts (needs Tier 1/2 listener on a VPS);
+social prediction-card renders (design bundle `Prediction Cards.dc.html`,
+port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
+push to main, nightly data refresh); one-time setup = repo Settings →
+Pages → Source "GitHub Actions". Scorebug OCR of YouTube broadcasts could
+backfill point-by-point history (Tier 0 of the vision pipeline;
+championship-court sample bias noted).

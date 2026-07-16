@@ -41,7 +41,7 @@ of evenings · **XL** = a season-long side quest. Status: ✅ built, 🔜 next,
 ## Phase 2 — Website MVP (M–L total; static site, no backend)
 
 All pages regenerate from existing CSVs in ~4 s: `python web/build_site.py`
-→ `site/` (gitignored build artifact; 506 pages). Host anywhere static.
+→ `site/` (gitignored build artifact; 511 pages). Host anywhere static.
 
 - ✅ ★ PILLAR 1 — Power rankings page (men/women, uncertainty bars, form arrows)
 - ✅ ★ PILLAR 2 — Player pages: trajectory curve + band, W/L splits, clutch stats
@@ -63,6 +63,10 @@ All pages regenerate from existing CSVs in ~4 s: `python web/build_site.py`
   lineups → forecast.html; `--commit` freezes them into receipts.json
 - ✅ **Recent-results page**: last 14 days, every game with the winner's
   pre-game price + upset chips
+- ✅ **PICKLES design system** (design handoff implemented): green-bar
+  printout stylesheet, redesigned rankings page (system-check ledger,
+  P(#1) probability panels), new landing page at the site root with live
+  teasers + conditional "tonight" band; rankings now at rankings.html
 - ⬜ Custom domain
 
 ## Phase 3 — Live layer (M; needs a persistent $5 VPS)
