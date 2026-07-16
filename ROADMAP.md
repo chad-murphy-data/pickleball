@@ -21,10 +21,11 @@ of evenings · **XL** = a season-long side quest. Status: ✅ built, 🔜 next,
 
 ## Phase 1 — Receipts operations (now → September; S each; no new infra)
 
-- ✅ **Grade the Gold final forecast** — graded 2026-07-13 from the API
-  matchup record: STL won 3-0; overall 61% call HIT, headline WD 88% call
-  MISS (full table in model/prediction_midseason_final.md). First entries
-  live in `model/receipts.json`, the machine-readable public ledger.
+- ✅ **Grade the Gold final forecast** — STL swept NJ 3–0; overall STL call
+  HIT (Brier v2 0.154), but the 88%-NJ women's-doubles call MISSED (Waters
+  lost twice). Entry 1 in both ledgers: `model/receipts.json` (machine-
+  readable — feeds the site receipts page) and `model/receipts.md`
+  (narrative); full graded tables in model/prediction_midseason_final.md
 - 🔜 **Run the poller for real** during MLP San Diego (Jul 16–19) — shakes
   out Tier 1 and starts accumulating live JSONL
 - 🔜 **SSE discovery session** (Tier 2): protocol decoded + handshake
