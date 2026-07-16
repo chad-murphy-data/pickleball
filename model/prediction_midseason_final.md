@@ -66,3 +66,9 @@ twice" is confirmed: WD 6–11 and MXD1 8–11.
   DreamBreaker path, consistent with the pre-registered "favorites underconfident" caveat —
   yet one high-confidence line went hard the wrong way. Both lessons logged to
   `model/receipts.md` (entry 1).
+
+Ledger note: an independent same-day grading (2026-07-13, from the API
+matchup record) reached identical calls and Briers on every line; its
+machine-readable entries live in `model/receipts.json`, which is what the
+site's receipts page renders. The DreamBreaker line is graded there as a
+modal HIT (46.5% → no DB, Brier 0.216).
