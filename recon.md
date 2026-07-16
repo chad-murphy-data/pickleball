@@ -274,6 +274,7 @@ from one full game (WD Todd/Black 11-2, 59 rows, arithmetic validates —
 | 46 | pre-start, unknown | — |
 | 10 | player court arrival (timestamped) | court_arrival_log {player_uuid} |
 | 15, 3, 31 | pre/mid, unknown, score-neutral | — |
+| 32, 41 | DreamBreaker-specific (32 ≈ server rotation, 16× in a 35-rally DB; DB score strings have NO server number — "14-21" not "14-21-1") | — |
 | 20 | warm-up begins | warming_up_log |
 | 22 | scoring starts | start_scoring_log {left/right_of_umpire_team_uuid, serving_team_uuid} |
 | 2 | challenge (referee call) | challenge_log {team_uuid, referee_call} |
