@@ -196,6 +196,24 @@ h1.runtitle { font-family: Anton, "Space Mono", sans-serif; font-weight: 400;
   .p1bar { grid-column: 1 / -1; }
   .p1meta { grid-column: 1 / -1; padding-bottom: 4px; }
 }
+/* Rankings gender tabs.  Sticky so the switch is reachable from anywhere
+   in a 75-row table.  html.tabbed (set by JS during parse) collapses the
+   page to the ".on" panel; no JS = both panels stacked, tabs = anchors. */
+.gtabs { display: flex; gap: 10px; position: sticky; top: 0; z-index: 5;
+  background: var(--page); margin: 20px 0 0; padding: 10px 0;
+  border-bottom: 3px double var(--baseline); }
+.gtab { font-family: "Space Mono", ui-monospace, monospace; font-weight: 700;
+  font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--ink2); background: var(--surface);
+  border: 2px solid var(--baseline); padding: 8px 26px; }
+.gtab:hover { text-decoration: none; color: var(--ink); border-color: var(--ink); }
+.gtab.on { background: var(--hl); color: var(--hl-ink); border-color: var(--ink); }
+html.tabbed .gsec { display: none; }
+html.tabbed .gsec.on { display: block; }
+@media print {
+  .gtabs { display: none; }
+  html.tabbed .gsec { display: block; }
+}
 
 /* ============================================================
    Landing page (index.html) — generator-side additions.

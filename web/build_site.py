@@ -132,9 +132,9 @@ def p1_bar_width(p1):
     return "99.5" if w > 99 else ("0.5" if w < 1 else f"{w:.0f}")
 
 
-def p1_panel(probs, label, first):
+def p1_panel(probs, label):
     head_note = ("posterior probability of being the true best — not the "
-                 "point-estimate leader.") if first else "same question, briefer answer."
+                 "point-estimate leader.")
     rows = []
     for p, p1, p3 in probs:
         rows.append(
@@ -149,6 +149,47 @@ def p1_panel(probs, label, first):
             '\n<p class="note" style="margin:10px 0 2px">Monte Carlo over posterior '
             'marginals (correlations ignored); wide-interval players earn real '
             'probability — that is the point.</p></div>')
+
+
+# Rankings gender tabs: the page ships with the women's panel visible
+# (class "on"), so it is correct even before/without JS.  TABS_BOOT runs
+# during parse and flags JS-capable browsers, which collapses the page to
+# one panel at a time; without JS both panels stay stacked (women first).
+# TABS_JS wires clicks and deep links (#men / #women) — replaceState so
+# tab flips don't pile up in browser history.  Panel ids carry a "sec-"
+# prefix so the tab hashes never name a real fragment target: the browser
+# has nothing to anchor-scroll to, and deep links land at the top of the
+# page with the right tab selected instead of jumped mid-page.
+TABS_BOOT = '<script>document.documentElement.classList.add("tabbed")</script>'
+
+TABS_JS = """
+<script>
+const tabs = [...document.querySelectorAll(".gtab")];
+const secs = [...document.querySelectorAll(".gsec")];
+const bar = document.querySelector(".gtabs");
+function show(id, setHash) {
+  if (!secs.some(s => s.id === "sec-" + id)) id = "women";
+  for (const s of secs) s.classList.toggle("on", s.id === "sec-" + id);
+  for (const t of tabs) {
+    const cur = t.getAttribute("href") === "#" + id;
+    t.classList.toggle("on", cur);
+    t.setAttribute("aria-current", cur ? "true" : "false");
+  }
+  if (setHash) history.replaceState(null, "", "#" + id);
+}
+for (const t of tabs)
+  t.addEventListener("click", e => {
+    e.preventDefault();
+    show(t.getAttribute("href").slice(1), true);
+    // Fresh panel from the top: snap so the (sticky) tab bar sits at the
+    // viewport top.  Measured off the panel, not the bar — a stuck bar's
+    // offsetTop reports its pinned, not natural, position.
+    const y = document.querySelector(".gsec.on").offsetTop - bar.offsetHeight - 14;
+    if (scrollY > y) scrollTo({top: y});
+  });
+addEventListener("hashchange", () => show(location.hash.slice(1) || "women", false));
+show(location.hash.slice(1) || "women", false);
+</script>"""
 
 
 def build_rankings(players, updated, n_games, val):
@@ -178,9 +219,9 @@ def build_rankings(players, updated, n_games, val):
                 + "".join(rows) + "</table></div>")
 
     n_dyn = sum(1 for p in players.values() if p.dynamic)
-    sections = []
-    for sec, gender, label, low in (("A", "M", "Men", "men"),
-                                    ("B", "F", "Women", "women")):
+    tabs, panels = [], []
+    for sec, gender, label, low in (("A", "F", "Women", "women"),
+                                    ("B", "M", "Men", "men")):
         pool = [p for p in players.values() if p.dynamic and p.gender == gender]
         active = sorted((p for p in pool if D.is_active(p)),
                         key=lambda p: p.rank)[:75]
@@ -188,13 +229,18 @@ def build_rankings(players, updated, n_games, val):
                           key=lambda p: -p.value)
         probs = sorted(((p, p1, p3) for p, p1, p3 in rank_probs(active)
                         if p1 >= 0.01), key=lambda t: -t[1])
-        panel = p1_panel(probs, low, first=(sec == "A"))
-        sections.append(f'<h2><span class="secno">SEC. {sec}</span>{label}</h2>'
-                        + panel + table(active))
+        inner = (f'<h2><span class="secno">SEC. {sec}</span>{label}</h2>'
+                 + p1_panel(probs, low) + table(active))
         if inactive:
-            sections.append(
+            inner += (
                 f'<details><summary class="note">{len(inactive)} rated players '
                 f'without a 2026 game (hidden, unranked)</summary>{table(inactive)}</details>')
+        default = sec == "A"
+        tabs.append(f'<a class="gtab{" on" if default else ""}" href="#{low}"'
+                    + (' aria-current="true"' if default else "")
+                    + f'>{label}</a>')
+        panels.append(
+            f'<section class="gsec{" on" if default else ""}" id="sec-{low}">{inner}</section>')
 
     dupr_acc = val["dupr_reference"]["accuracy"]
     body = f"""
@@ -211,12 +257,14 @@ regular ≈ +2, star ≈ +5. The interval is the point, not fine print.</p>
  <div class="lrow"><span class="lk">DATA THROUGH</span><span class="ldot"></span><span class="lv">{updated}</span></div>
  <div class="lrow"><span class="lk">PREDICTIONS COMMITTED PRE-MATCH</span><span class="ldot"></span><span class="lv"><a href="receipts.html">[OK] → receipts</a></span></div>
 </div>
-<div class="houserule"><span class="hrtag">HOUSE RULE</span>Men's and women's lists are separate on purpose: the tours never
+<div class="houserule"><span class="hrtag">HOUSE RULE</span>Women's and men's lists are separate on purpose: the tours never
 play cross-gender games, so no data links the two scales
 (<a href="methods.html">methods</a>). Rankings use current-month posterior
 values; ▲/▼ = 6-month form change beyond ±0.25 pts.</div>
-{''.join(sections)}
-"""
+{TABS_BOOT}
+<nav class="gtabs" aria-label="Choose a rankings list">{''.join(tabs)}</nav>
+{''.join(panels)}
+""" + TABS_JS
     write("rankings.html", style.page("Power rankings — PICKLES",
                                       body, "rankings.html", "", updated))
 
@@ -948,7 +996,7 @@ def build_dupr(players, updated):
                          f'{names}. A rating that collapses to DUPR\'s reset '
                          f'default while the player keeps winning pro games is '
                          f'a recording artifact, not a measurement.</p>')
-    for gender, label in (("M", "Men"), ("F", "Women")):
+    for gender, label in (("F", "Women"), ("M", "Men")):
         pool = [p for p in players.values()
                 if p.dynamic and p.gender == gender and p.dupr
                 and (p.last_date or "") >= "2026-01-01"]
@@ -1415,7 +1463,7 @@ def build_landing(players, games, updated, n_games, R):
     mprobs = sorted(rank_probs(active_pool("M")), key=lambda t: -t[1])
     wprobs = sorted(rank_probs(active_pool("F")), key=lambda t: -t[1])
     bars = []
-    for p, p1, _ in mprobs[:5]:
+    for p, p1, _ in wprobs[:5]:
         pv = min(max(round(100 * p1), 1), 99)
         bars.append(f'<div class="t-bar"><span class="nm">'
                     f'{esc(p.name.split()[-1].upper())}</span>'
@@ -1423,12 +1471,12 @@ def build_landing(players, games, updated, n_games, R):
                     f'style="width:{min(round(pv * 2.6), 100)}%"></span></span>'
                     f'<span class="pv">{pv}%</span></div>')
     n_cont = sum(1 for _, p1, _ in mprobs if p1 >= 0.05)
-    men_clause = (f"The men's #1 is a {NUMWORDS.get(n_cont, str(n_cont))}-way "
+    women_clause = ("The women's #1 isn't close." if wprobs[0][1] > 0.995
+                    else "The women's #1 is a live race.")
+    men_clause = (f"The men's is a {NUMWORDS.get(n_cont, str(n_cont))}-way "
                   f"statistical tie." if n_cont >= 2
-                  else "The men's #1 is settled for now.")
-    women_clause = ("The women's isn't close." if wprobs[0][1] > 0.995
-                    else "The women's race is live too.")
-    rankings_blurb = f"{men_clause} {women_clause} Error bars included, always."
+                  else "The men's is settled for now.")
+    rankings_blurb = f"{women_clause} {men_clause} Error bars included, always."
 
     today = date.today().isoformat()
     F = load_forecasts()
