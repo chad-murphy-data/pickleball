@@ -1564,6 +1564,7 @@ def build_404(updated):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>404 — PICKLES</title>
+{style.THEME_HEAD}
 <link rel="icon" href="{style.FAVICON}">
 <style>
 :root {{ --page:#f2f7e5; --ink:#16321e; --ink2:#46603a; --surface:#fbfdf3;
@@ -1573,6 +1574,12 @@ def build_404(updated):
   :root {{ --page:#0e1410; --ink:#edf4e0; --ink2:#c2d3a8; --surface:#17211a;
     --baseline:#3a4a3c; --border:rgba(237,244,224,0.14); --s1:#cfe94f; }}
 }}
+:root[data-theme="light"] {{ --page:#f2f7e5; --ink:#16321e; --ink2:#46603a;
+  --surface:#fbfdf3; --baseline:#a9bc8c; --border:rgba(22,50,30,0.18);
+  --s1:#1e7a3c; color-scheme: light; }}
+:root[data-theme="dark"] {{ --page:#0e1410; --ink:#edf4e0; --ink2:#c2d3a8;
+  --surface:#17211a; --baseline:#3a4a3c; --border:rgba(237,244,224,0.14);
+  --s1:#cfe94f; color-scheme: dark; }}
 body {{ margin:0; background:var(--page); color:var(--ink);
   font:15px/1.55 "Space Grotesk", system-ui, sans-serif; }}
 .wrap {{ max-width:720px; margin:0 auto; padding:48px 24px; }}
@@ -2040,6 +2047,7 @@ def build_landing(players, games, updated, n_games, R):
 <meta name="color-scheme" content="light dark">
 <title>PICKLES — pro pickleball, probabilistically</title>
 <meta name="description" content="Win probabilities, current-form power rankings and a matchup simulator for pro pickleball (MLP + PPA), from a Bayesian model of {hero_games} games — every forecast timestamped and graded in public.">
+{style.THEME_HEAD}
 {style.FONTS_PRECONNECT}
 <link rel="stylesheet" href="assets/style.css">
 <link rel="icon" href="{style.FAVICON}">
@@ -2047,6 +2055,7 @@ def build_landing(players, games, updated, n_games, R):
  <span class="brandchip">PICKLES</span>
  <span class="brandsub">Probabilistic Inference of Competitive Kitchen-Line Expected Scores</span>
  <nav><a href="live.html" id="nav-live">LIVE</a><a href="rankings.html">RANKINGS</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="methods.html">METHODS</a></nav>
+ <button class="themetog" type="button" title="toggle light/dark">◐</button>
 </div></header>
 {slate}
 <section class="lsec hero">
@@ -2141,6 +2150,7 @@ that" — said out loud, when true.</div>
  </div>
 </div></footer>
 {live_badge}
+{style.THEME_TOGGLE_JS}
 """
     write("index.html", html)
 

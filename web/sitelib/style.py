@@ -19,28 +19,7 @@ CSS = """
    All original selectors kept; light + dark both defined.
    ============================================================ */
 
-:root {
-  --page: #f2f7e5; --surface: #fbfdf3; --ink: #16321e; --ink2: #46603a;
-  --muted: #7c8f6d; --grid: #dbe7c2; --baseline: #a9bc8c;
-  --border: rgba(22,50,30,0.18);
-  --s1: #1e7a3c; --s2: #c05621; --loss: #e03a2f;
-  --good: #1e7a3c; --bad: #d03b3b; --warn: #a36b00;
-  --band: rgba(30,122,60,0.16); --wash: rgba(22,50,30,0.05);
-  --stripe: rgba(30,122,60,0.055);
-  --hl: #d9f154; --hl-ink: #16321e;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --page: #0e1410; --surface: #17211a; --ink: #edf4e0; --ink2: #c2d3a8;
-    --muted: #8aa07a; --grid: #26332a; --baseline: #3a4a3c;
-    --border: rgba(237,244,224,0.14);
-    --s1: #cfe94f; --s2: #e8935a; --loss: #e66767;
-    --good: #7fc24a; --bad: #e66767; --warn: #d9a03f;
-    --band: rgba(217,241,84,0.16); --wash: rgba(237,244,224,0.06);
-    --stripe: rgba(217,241,84,0.05);
-    --hl: #d9f154; --hl-ink: #16321e;
-  }
-}
+/*__THEME_ROOT__*/
 * { box-sizing: border-box; }
 ::selection { background: var(--hl); color: var(--hl-ink); }
 body { margin: 0; background: var(--page); color: var(--ink);
@@ -62,6 +41,11 @@ header.site nav a { color: var(--ink2); font-family: "Space Mono", ui-monospace,
 header.site nav a:hover { text-decoration: none; color: var(--ink); }
 header.site nav a.here { color: var(--ink); font-weight: 700;
   border-bottom: 3px solid var(--hl); }
+.themetog { background: none; border: 1.5px solid var(--border); color: var(--ink2);
+  font-family: "Space Mono", ui-monospace, monospace; font-size: 12px;
+  line-height: 1.4; padding: 1px 8px; cursor: pointer; }
+.themetog:hover { color: var(--ink); border-color: var(--ink2); }
+header.site .wrap .themetog { margin-left: auto; }
 h1 { font-family: "Space Mono", ui-monospace, monospace; font-size: 23px;
   letter-spacing: 0.01em; margin: 28px 0 4px; }
 h1::before { content: "> "; color: var(--s1); }
@@ -221,10 +205,7 @@ html.tabbed .gsec.on { display: block; }
    Only the CTA colors need theme-specific tokens; printout
    artifacts keep literal paper colors in both themes.
    ============================================================ */
-:root { --cta-bg: #16321e; --cta-ink: #d9f154; --cta-hbg: #1e7a3c; --cta-hink: #f2f7e5; }
-@media (prefers-color-scheme: dark) {
-  :root { --cta-bg: #d9f154; --cta-ink: #16321e; --cta-hbg: #edf4e0; --cta-hink: #16321e; }
-}
+/*__THEME_CTA__*/
 .lsec { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
 .lsec.inside { padding-top: 40px; padding-bottom: 56px; }
 .lsec.check { padding-top: 48px; }
@@ -432,6 +413,55 @@ FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' "
 FONTS_PRECONNECT = """<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>"""
 
+# ---- theme plumbing ------------------------------------------------------
+# One payload per scheme, composed four ways: base (light), the OS media
+# query (auto dark), and explicit [data-theme] overrides that beat the media
+# query in both directions — that's what makes the manual toggle stick.
+_VARS_LIGHT = """--page: #f2f7e5; --surface: #fbfdf3; --ink: #16321e; --ink2: #46603a;
+  --muted: #7c8f6d; --grid: #dbe7c2; --baseline: #a9bc8c;
+  --border: rgba(22,50,30,0.18);
+  --s1: #1e7a3c; --s2: #c05621; --loss: #e03a2f;
+  --good: #1e7a3c; --bad: #d03b3b; --warn: #a36b00;
+  --band: rgba(30,122,60,0.16); --wash: rgba(22,50,30,0.05);
+  --stripe: rgba(30,122,60,0.055);
+  --hl: #d9f154; --hl-ink: #16321e;"""
+_VARS_DARK = """--page: #0e1410; --surface: #17211a; --ink: #edf4e0; --ink2: #c2d3a8;
+  --muted: #8aa07a; --grid: #26332a; --baseline: #3a4a3c;
+  --border: rgba(237,244,224,0.14);
+  --s1: #cfe94f; --s2: #e8935a; --loss: #e66767;
+  --good: #7fc24a; --bad: #e66767; --warn: #d9a03f;
+  --band: rgba(217,241,84,0.16); --wash: rgba(237,244,224,0.06);
+  --stripe: rgba(217,241,84,0.05);
+  --hl: #d9f154; --hl-ink: #16321e;"""
+_CTA_LIGHT = "--cta-bg: #16321e; --cta-ink: #d9f154; --cta-hbg: #1e7a3c; --cta-hink: #f2f7e5;"
+_CTA_DARK = "--cta-bg: #d9f154; --cta-ink: #16321e; --cta-hbg: #edf4e0; --cta-hink: #16321e;"
+
+
+def _theme_blocks(light, dark):
+    return (f":root {{ {light} }}\n"
+            f"@media (prefers-color-scheme: dark) {{ :root {{ {dark} }} }}\n"
+            f':root[data-theme="light"] {{ {light} color-scheme: light; }}\n'
+            f':root[data-theme="dark"] {{ {dark} color-scheme: dark; }}')
+
+
+CSS = (CSS.replace("/*__THEME_ROOT__*/", _theme_blocks(_VARS_LIGHT, _VARS_DARK))
+          .replace("/*__THEME_CTA__*/", _theme_blocks(_CTA_LIGHT, _CTA_DARK)))
+
+# Runs before first paint so a stored choice never flashes the other theme.
+THEME_HEAD = ("<script>(function(){try{var t=localStorage.getItem('pklTheme');"
+              "if(t)document.documentElement.dataset.theme=t}catch(e){}})()</script>")
+# The ◐ button: flips light/dark from wherever the page currently is.
+THEME_TOGGLE_JS = """<script>(function(){
+for (const b of document.querySelectorAll('.themetog')) {
+  b.addEventListener('click', function(){
+    var cur = document.documentElement.dataset.theme ||
+      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem('pklTheme', next); } catch (e) {}
+  });
+}})()</script>"""
+
 NAV = [("rankings.html", "Rankings"), ("players/index.html", "Players"),
        ("live.html", "Live"),
        ("forecast.html", "Forecasts"), ("titlerace.html", "Title race"),
@@ -452,12 +482,14 @@ def page(title, body, here="", root="", updated=""):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>{title}</title>
+{THEME_HEAD}
 {FONTS_PRECONNECT}
 <link rel="stylesheet" href="{root}assets/style.css">
 <link rel="icon" href="{FAVICON}">
 <header class="site"><div class="wrap">
   <span class="brand"><a href="{root}index.html">PICKLES</a></span>
   <nav>{nav}</nav>
+  <button class="themetog" type="button" title="toggle light/dark">◐</button>
 </div></header>
 <div class="wrap">
 {body}
@@ -467,4 +499,5 @@ cross-gender rankings are never published as fact (<a href="{root}methods.html">
 Model: Bayesian, 36k games, validated 77.4% winner accuracy on 884 unseen
 games{foot_updated}.</footer>
 </div>
+{THEME_TOGGLE_JS}
 """
