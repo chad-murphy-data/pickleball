@@ -334,7 +334,7 @@ function matchupCard(mu) {
     <div class="lp-head">${chip}<span class="lp-teams">${esc(mu.t1)} <b>${mu.s1}</b>–<b>${mu.s2}</b> ${esc(mu.t2)}</span>${headline}</div>
     <div class="lp-track" data-track="${mu.uuid}"></div>
     <table class="lp-games"><tr><th></th><th>pairing</th><th>score</th><th>live</th><th>pre</th></tr>${rows}</table>
-    <p class="note lp-dbnote">DreamBreaker priced ${fpF(pDb)}% for ${esc(teamShort(mu.t1))} (singles model — rough by design).</p>
+    <p class="note lp-dbnote">DreamBreaker rated ${fpF(pDb)}% for ${esc(teamShort(mu.t1))} (singles model — rough by design).</p>
   </div>`;
 }
 
