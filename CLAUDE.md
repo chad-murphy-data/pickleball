@@ -19,6 +19,24 @@ status snapshot + next-thread to-do (check its date; stale ones defer to here).*
   ~1% of ≥99% favorites lose (44/4,248 across all games). The calibration
   layer (web/calibration.json, refit via web/fit_calibration.py) encodes
   this as a mixture floor eps ≈ 0.021.
+- **Explore freely; the sin is never curiosity, only misstating the
+  denominator.** Poking at the data is costless, fun, and how we learn —
+  scan windows, slice subgroups, chase hunches without asking permission.
+  Two tiers keep it honest. (1) EXPLORATION is free under one rule: always
+  log what you tried, not just what pinged. "We tried 40 things and 3
+  crossed p<.05" is honest; presenting those 3 as findings is the lie,
+  even though the work is identical. (2) The RECEIPTS LEDGER
+  (model/receipts.json) is confirmatory only — frozen spec, one run,
+  graded in public — and nothing crosses from exploration into an
+  asserted/site-facing claim without one clean shot on FRESH, disjoint
+  data. An exploratory p=.045 is real weak evidence: it should nudge a
+  prior and earn a pre-registered replication, never a headline. We have
+  no excuse to skip that step — the log archive is ~10k matches deep and
+  renews weekly, so confirmation costs an afternoon, not a new trial.
+  (Worked example, 2026-07-17: a lone 3-rally timeout ping among ~10
+  estimands was reported WITH its denominator, disbelieved, and routed to
+  a powered fresh-pool window-profile test — H3d — rather than published.
+  See model/momentum_prereg.md for the exploration→confirmation pattern.)
 
 ## Pipeline (run in this order; everything is idempotent & cached)
 
