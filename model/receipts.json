@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-16",
+  "updated": "2026-07-17",
   "note": "Public receipts ledger. Every entry is committed before the outcome is known; graded entries record the pre-registered probability, the outcome, hit/miss on the modal call, and the Brier score (lower is better; 0.25 = coin flip). This file is the source of truth for the website receipts page.",
   "validation": {
     "description": "v2 model frozen on pre-June data, scored on 884 unseen games (2026-06-01 through 2026-07-11).",
@@ -71,18 +71,18 @@
       "id": "2026-momentum-prereg",
       "title": "Pre-registered momentum tests on 2,500 matches of rally logs",
       "committed": "2026-07-17",
-      "graded": null,
-      "status": "pending",
-      "source": "model/momentum_prereg.md (hypotheses, estimators, decision criteria, and analysis code model/momentum_test.py frozen before any sequential statistic was computed)",
-      "model": "cluster-robust logistic regressions on ~120k resolved rallies; serve state + v2 strength controls; alpha .01 + practical thresholds",
-      "outcome_summary": null,
+      "graded": "2026-07-17",
+      "status": "graded",
+      "source": "model/momentum_prereg.md (hypotheses, estimators, decision criteria, and analysis code model/momentum_test.py frozen before any sequential statistic was computed); results in model/momentum_results.md",
+      "model": "cluster-robust logistic regressions on 191,500 resolved rallies (2,500 matches, 0 dropped); serve state + v2 strength controls; alpha .01 + practical thresholds",
+      "outcome_summary": "Momentum is not detectable in pro pickleball rallies. Within-possession streaks +0.11pp (99% CI [-0.72, +0.94], bounded null), trailing-5-rally momentum +0.17pp ([-0.19, +0.52], bounded null), game-point pressure -0.01pp ([-1.31, +1.29], bounded null). Timeouts: inconclusive, direction mildly AGAINST the caller (+1.53pp for the opponent's next serve rally, p=.014, CI reaches +3.1pp).",
       "items": [
-        {"label": "H1: no meaningful within-possession momentum (|APE| < 1pp or p >= .01)", "prob": 0.85, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
-        {"label": "H2: no meaningful cross-possession momentum (trailing-5 window)", "prob": 0.85, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
-        {"label": "H3: no meaningful receiving-side timeout effect (|APE| < 2pp)", "prob": 0.8, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
-        {"label": "H4: no meaningful game-point pressure effect (|APE| < 2pp)", "prob": 0.7, "outcome": null, "result": null, "grade": "PENDING", "brier": null}
+        {"label": "H1: no meaningful within-possession momentum (|APE| < 1pp or p >= .01)", "prob": 0.85, "outcome": "+0.11pp, 99% CI [-0.72, +0.94] — no meaningful effect, BOUNDED", "result": 1, "grade": "HIT", "brier": 0.0225},
+        {"label": "H2: no meaningful cross-possession momentum (trailing-5 window)", "prob": 0.85, "outcome": "+0.17pp, 99% CI [-0.19, +0.52] — no meaningful effect, BOUNDED", "result": 1, "grade": "HIT", "brier": 0.0225},
+        {"label": "H3: no meaningful receiving-side timeout effect (|APE| < 2pp)", "prob": 0.8, "outcome": "+1.53pp, p=.014 (not sig at .01); CI [-0.07, +3.12] exceeds +2pp so not bounded — no effect established, formally inconclusive", "result": 1, "grade": "HIT", "brier": 0.04},
+        {"label": "H4: no meaningful game-point pressure effect (|APE| < 2pp)", "prob": 0.7, "outcome": "-0.01pp, 99% CI [-1.31, +1.29] — servers convert game points at exactly their usual rate, BOUNDED", "result": 1, "grade": "HIT", "brier": 0.09}
       ],
-      "footnote": "Graded the same day from a single frozen analysis run on the seeded 2,500-match sample; all four primaries reported regardless of outcome."
+      "footnote": "4/4 registered predictions hit, mean Brier 0.044. Secondaries: lag-1 rally -0.18pp (ns); serving-side timeouts -3.24pp on only 512 events (ns, CI +/-5.5pp). Descriptive bonus: timeouts are called by the RECEIVING side 12.5x as often as the serving side (6,417 vs 512) - they are momentum-stopping attempts by the team being scored on, and the next-rally evidence says they do not detectably work. Caveats as registered: logged matches are not a random sample of events, and the timeout estimate admits a selection interpretation; under the iid null the tests remain exact."
     }
   ]
 }
