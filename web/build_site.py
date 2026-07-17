@@ -806,6 +806,320 @@ Winners listed first. {n_upsets} upsets (winner priced under 25%).</p>
                                      body, "results.html", "", updated))
 
 
+# ---------------------------------------------------------------- title race
+
+ROUND_DEPTH = {"Finals": 0, "Semi-Finals": 1, "Quarter Finals": 2,
+               "Round 16": 3, "Round 32": 4, "Round 64": 5}
+
+
+def bracket_seed_order(n):
+    """Seed at each slot of a standard 1-vs-N template, e.g. 8 ->
+    [1, 8, 4, 5, 2, 7, 3, 6].  Verified against the 2026 Portland draw
+    (semis = 1-quarter vs 4-quarter, 2-quarter vs 3-quarter)."""
+    order = [1]
+    while len(order) < n:
+        m = 2 * len(order)
+        order = [s for a in order for s in (a, m + 1 - a)]
+    return order
+
+
+def bo_win(p, best_of):
+    """Match win prob from a single-game win prob."""
+    if best_of == 3:
+        return p * p * (3 - 2 * p)
+    if best_of == 5:
+        return p ** 3 * (10 - 15 * p + 6 * p * p)
+    return p
+
+
+def mlp_race_panel(state, F, rng):
+    """Standings + Monte Carlo P(top of the round robin) for the live event."""
+    from collections import defaultdict
+    teams = {}
+
+    def team(title):
+        return teams.setdefault(title, {
+            "title": title, "mw": 0, "ml": 0, "gw": 0, "gl": 0, "pd": 0})
+
+    for r in state["completed"]:
+        t1, t2 = team(r["team1"]), team(r["team2"])
+        g1, g2 = r["games1"] or 0, r["games2"] or 0
+        t1["gw"] += g1; t1["gl"] += g2; t2["gw"] += g2; t2["gl"] += g1
+        pd = (r["pts1"] or 0) - (r["pts2"] or 0)
+        t1["pd"] += pd; t2["pd"] -= pd
+        if r["winner"] == 1:
+            t1["mw"] += 1; t2["ml"] += 1
+        elif r["winner"] == 2:
+            t2["mw"] += 1; t1["ml"] += 1
+    for r in state["remaining"]:
+        team(r["team1"]); team(r["team2"])
+
+    fmap = {}
+    for f in (F or {}).get("forecasts", []):
+        if f.get("tree"):
+            fmap[(f["date"], f["team1"], f["team2"])] = f["tree"]
+    slate = []
+    for r in state["remaining"]:
+        tree = fmap.get((r["date"], r["team1"], r["team2"]))
+        flip = False
+        if tree is None:
+            tree = fmap.get((r["date"], r["team2"], r["team1"]))
+            flip = tree is not None
+        slate.append((r, tree, flip))
+
+    # Monte Carlo the rest of the round robin.  Game-score outcome sampled
+    # from the forecast tree (4 games + DreamBreaker at 2-2); unpriced
+    # matchups fall back to a coin flip, counted and disclosed.
+    N = 20000
+    n_unpriced = sum(1 for _, t, _ in slate if t is None)
+    tops = defaultdict(int)
+    for _ in range(N):
+        mw = {t: v["mw"] for t, v in teams.items()}
+        gw = {t: v["gw"] for t, v in teams.items()}
+        for r, tree, flip in slate:
+            a, b = r["team1"], r["team2"]
+            if tree is None:
+                w, ga, gb = (a, 3, 1) if rng.random() < 0.5 else (b, 1, 3)
+            else:
+                p40, p31 = tree["p_40"], tree["p_31"]
+                pdb, p13, p04 = tree["p_db"], tree["p_13"], tree["p_04"]
+                if flip:
+                    p40, p31, p13, p04 = p04, p13, p31, p40
+                u = rng.random() * (p40 + p31 + pdb + p13 + p04)
+                pdbw = tree.get("p_db_win", 0.5)
+                if flip:
+                    pdbw = 1 - pdbw
+                if u < p40:            w, ga, gb = a, 4, 0
+                elif u < p40 + p31:    w, ga, gb = a, 3, 1
+                elif u < p40 + p31 + pdb:
+                    if rng.random() < pdbw:
+                        w, ga, gb = a, 3, 2
+                    else:
+                        w, ga, gb = b, 2, 3
+                elif u < p40 + p31 + pdb + p13:
+                    w, ga, gb = b, 1, 3
+                else:                  w, ga, gb = b, 0, 4
+            mw[w] += 1
+            gw[a] += ga; gw[b] += gb
+        best = max(teams, key=lambda t: (mw[t], gw[t], teams[t]["pd"],
+                                         rng.random()))
+        tops[best] += 1
+
+    order = sorted(teams.values(),
+                   key=lambda v: (-v["mw"], -(v["gw"] - v["gl"]), -v["pd"]))
+    rows = []
+    for v in order:
+        p_top = tops[v["title"]] / N
+        rows.append(
+            f'<div class="p1row"><span class="p1name">{esc(v["title"])}</span>'
+            f'<span class="p1bar"><span class="p1fill" '
+            f'style="width:{p1_bar_width(p_top)}%"></span></span>'
+            f'<span class="p1pct">{pct_floor(p_top)}</span>'
+            f'<span class="p1meta">{v["mw"]}–{v["ml"]} · games '
+            f'{v["gw"]}–{v["gl"]} · rally {v["pd"]:+d}</span></div>')
+
+    srows = []
+    for r, tree, flip in slate:
+        if tree is None:
+            price = '<span class="gray">not priced</span>'
+        else:
+            p1 = 1 - tree["p_win"] if flip else tree["p_win"]
+            fav, pf = (r["team1"], p1) if p1 >= 0.5 else (r["team2"], 1 - p1)
+            price = f"<strong>{team_short(fav)} {pct_floor(pf)}</strong>"
+        srows.append(
+            f'<tr><td class="num gray">{r["date"][5:]}</td>'
+            f'<td class="num gray">{start_et(r.get("start") or "")}</td>'
+            f'<td>{team_short(r["team1"])} v {team_short(r["team2"])}</td>'
+            f'<td class="num">{price}</td></tr>')
+    unpriced_note = (f" {n_unpriced} matchup{'s' if n_unpriced != 1 else ''} "
+                     f"not yet priced (no projected lineup) — simulated as "
+                     f"coin flips." if n_unpriced else "")
+    return f"""
+<h2><span class="secno">MLP</span>{esc(state["event"])}</h2>
+<div class="card p1card">
+<div class="p1head"><strong>Who tops the table?</strong> <span class="note">
+{N:,} simulations of the remaining round robin, priced with the same
+projected-lineup forecasts as the cards page.</span></div>
+{''.join(rows)}
+<p class="note" style="margin:10px 0 2px">Standings rank: matchup wins, then
+game wins, then actual rally-point differential. Simulated ties broken the
+same way (rally points frozen at today's actuals — the one approximation
+here).{unpriced_note}</p>
+</div>
+<h3>Remaining slate</h3>
+<div class="tblwrap"><table><tr><th class="num">date</th><th class="num">start</th>
+<th>matchup</th><th class="num">favorite</th></tr>{''.join(srows)}</table></div>
+"""
+
+
+def ppa_pair_value(pair, players, floor_value):
+    vs = []
+    for u in pair:
+        p = players.get(u)
+        vs.append(p.value if p else floor_value)
+    return vs
+
+
+def ppa_bracket_panel(t, players, floor_value):
+    """One PPA tournament: per-division seeded-bracket DP for P(title)."""
+    from sitelib.race import race_dist as rd, sigmoid as sg, team_eta as te, \
+        calibrate as cal
+    panels = []
+    for div in t["divisions"]:
+        ms = div["matches"]
+        entrants = {}                      # seed -> {"pair": [u,u], "names": []}
+        best_of = 3
+        for m in ms:
+            for sd, pk, nk in ((m["seed1"], "p1", "n1"), (m["seed2"], "p2", "n2")):
+                if sd and all(m[pk]):
+                    entrants.setdefault(sd, {"pair": m[pk], "names": m[nk]})
+            if m.get("best_of"):
+                best_of = m["best_of"]
+        if len(entrants) < 4:
+            continue
+        size = 1
+        while size < max(len(entrants), max(entrants)):
+            size *= 2
+        slots = bracket_seed_order(size)
+
+        # Pin by each seed's KNOWN result at a depth (won -> advances,
+        # lost -> out), not by exact opponent sets: real draws shuffle
+        # low-seed slots after withdrawals (Portland's play-in was 32 v 29
+        # where the template says 32 v 33), and per-seed fate is immune.
+        won_at, lost_at = set(), set()
+        n_done = 0
+        latest_round = ""
+        for m in ms:
+            depth = ROUND_DEPTH.get(m["round_text"])
+            if depth is None or not m["winner"] or m["completed_type"] != 5:
+                continue
+            if m["seed1"] and m["seed2"]:
+                w, l = ((m["seed1"], m["seed2"]) if m["winner"] == 1
+                        else (m["seed2"], m["seed1"]))
+                won_at.add((depth, w))
+                lost_at.add((depth, l))
+                n_done += 1
+                latest_round = latest_round or m["round_text"]
+
+        def p_beat(sa, sb):
+            va = ppa_pair_value(entrants[sa]["pair"], players, floor_value)
+            vb = ppa_pair_value(entrants[sb]["pair"], players, floor_value)
+            eta = te(va[0], va[1], vb[0], vb[1])
+            T = 11 if best_of > 1 else 15
+            return bo_win(cal(rd(round(sg(eta), 4), T)["p_win"]), best_of)
+
+        max_depth = 0
+        while 2 ** max_depth < size:
+            max_depth += 1
+
+        def dist_at(depth, idx):
+            """{seed: prob} of who emerges from this node of the template."""
+            if depth == max_depth:
+                s = slots[idx]
+                return {s: 1.0} if s in entrants else {}
+            left = dist_at(depth + 1, 2 * idx)
+            right = dist_at(depth + 1, 2 * idx + 1)
+            if not left or not right:
+                return left or right       # bye: free pass
+            out = {}
+            for sa, pa in left.items():
+                for sb, pb in right.items():
+                    a_won, b_won = (depth, sa) in won_at, (depth, sb) in won_at
+                    a_lost, b_lost = (depth, sa) in lost_at, (depth, sb) in lost_at
+                    if a_won and not b_won:
+                        w = 1.0
+                    elif b_won and not a_won:
+                        w = 0.0
+                    elif a_lost and not b_lost:
+                        w = 0.0
+                    elif b_lost and not a_lost:
+                        w = 1.0
+                    else:
+                        w = p_beat(sa, sb)
+                    out[sa] = out.get(sa, 0) + pa * pb * w
+                    out[sb] = out.get(sb, 0) + pa * pb * (1 - w)
+            return out
+
+        title_p = dist_at(0, 0)
+        board = sorted(title_p.items(), key=lambda kv: -kv[1])[:8]
+        rows = []
+        for sd, p in board:
+            e = entrants[sd]
+            names = " / ".join(esc(n) for n in e["names"] if n) or f"seed {sd}"
+            unrated = any(u not in players for u in e["pair"])
+            rows.append(
+                f'<div class="p1row"><span class="p1name">{names}'
+                f'{" *" if unrated else ""}</span>'
+                f'<span class="p1bar"><span class="p1fill" '
+                f'style="width:{p1_bar_width(p)}%"></span></span>'
+                f'<span class="p1pct">{pct_floor(p)}</span>'
+                f'<span class="p1meta">seed {sd}</span></div>')
+        stage = (f"{n_done} main-draw matches played; latest round: "
+                 f"{latest_round}." if n_done else "Draw set; play pending.")
+        panels.append(
+            f'<h3>{esc(div["title"])}</h3>'
+            f'<div class="card p1card"><div class="p1head"><strong>P(title)'
+            f'</strong> <span class="note">{stage} Seeded-bracket DP over the '
+            f'actual draw; per-game probs from current model values.</span></div>'
+            + "".join(rows) + '</div>')
+    if not panels:
+        return ""
+    note = ("* pair includes a player without a model rating (fewer than 60 "
+            "pro games) — filled with the field's 25th-percentile value.")
+    return (f'<h2><span class="secno">PPA</span>{esc(t["tournament"])}</h2>'
+            + "".join(panels) + f'<p class="note">{note}</p>')
+
+
+def build_titlerace(players, updated):
+    state = None
+    p = D.DATA / "tournament_state.json"
+    if p.exists():
+        try:
+            state = json.loads(p.read_text())
+        except (json.JSONDecodeError, OSError):
+            state = None
+    import random
+    rng = random.Random(20260717)
+    F = load_forecasts()
+    by_uuid = {p.pid: p for p in players.values()}
+    rated = sorted(p.value for p in players.values() if p.dynamic)
+    floor_value = rated[len(rated) // 4] if rated else 0.0
+
+    sections = []
+    if state and state.get("mlp"):
+        sections.append(mlp_race_panel(state["mlp"], F, rng))
+    for t in (state or {}).get("ppa") or []:
+        sections.append(ppa_bracket_panel(t, by_uuid, floor_value))
+    sections = [s for s in sections if s]
+
+    if sections:
+        body_main = "".join(sections)
+    else:
+        body_main = ('<div class="card"><p>No MLP event or PPA pro doubles '
+                     'draw is live this week. This page wakes up with the '
+                     'next event — it refreshes with every nightly data '
+                     'build.</p></div>')
+    gen = (state or {}).get("generated", updated)
+    body = f"""
+<h1 class="runtitle">Title race</h1>
+<div class="runmeta">RUN {gen} :: WHO WINS THE WEEKEND :: UPDATES NIGHTLY WITH RESULTS</div>
+<p class="sub">The live event, simulated to the end from the current state:
+MLP standings use <strong>actual results and rally points</strong>, with the
+rest of the round robin priced by the model; PPA uses the <strong>actual
+seeded draw</strong>, with every remaining bracket path simulated from
+current form values. Assumptions printed where they live.</p>
+{body_main}
+<p class="note">MLP matchup prices come from the same projected-lineup
+forecasts as the <a href="forecast.html">cards page</a> (lineups are
+projections until posted). PPA games are priced as rally races to 11
+(best-of-3) from current values; single-game Challenger rounds are priced
+as races to 15 — side-out scoring makes that an approximation
+(<a href="methods.html">methods</a>).</p>
+"""
+    write("titlerace.html", style.page("Title race — PICKLES",
+                                       body, "titlerace.html", "", updated))
+
+
 # ---------------------------------------------------------------- downloads
 
 DOWNLOADS = [
@@ -1738,6 +2052,7 @@ def main():
     build_player_index(players, updated)
     build_forecast(players, updated)
     build_results(players, games, updated)
+    build_titlerace(players, updated)
     build_simulator(players, updated)
     n_live = livepage.build_live(players, CAL, updated, SITE, write)
     print(f"live page: {n_live} player values shipped")

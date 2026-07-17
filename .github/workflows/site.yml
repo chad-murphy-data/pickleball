@@ -58,6 +58,7 @@ jobs:
           python scraper/parse_singles.py
           python scraper/extract_ratings.py
           python web/make_forecast.py --days 7
+          python scraper/tournament_state.py
         timeout-minutes: 210
 
       - name: Guard against partial data (restore committed CSVs if parse shrank)

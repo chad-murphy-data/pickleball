@@ -1,0 +1,222 @@
+{
+ "generated": "2026-07-17",
+ "mlp": {
+  "group": "8d989cbc-a16a-458d-83b5-1ce0490145fd",
+  "event": "MLP San Diego",
+  "completed": [
+   {
+    "uuid": "e2e7050d-1ddd-453d-8095-ad671f410026",
+    "date": "2026-07-16",
+    "start": "2026-07-16T17:00:00Z",
+    "team1": "Columbus Sliders",
+    "team2": "Orlando Squeeze",
+    "abbr1": "COL",
+    "abbr2": "ORL",
+    "games1": 4,
+    "games2": 0,
+    "pts1": 44,
+    "pts2": 15,
+    "winner": 1
+   },
+   {
+    "uuid": "864bbc05-b575-45c8-a8b0-9a7ea32d1bcc",
+    "date": "2026-07-16",
+    "start": "2026-07-16T18:30:00Z",
+    "team1": "SoCal Hard Eights",
+    "team2": "Florida Smash",
+    "abbr1": "SoCal",
+    "abbr2": "FLA",
+    "games1": 4,
+    "games2": 0,
+    "pts1": 47,
+    "pts2": 36,
+    "winner": 1
+   },
+   {
+    "uuid": "8ebcadd8-e562-4775-9a7c-cd882b72769f",
+    "date": "2026-07-16",
+    "start": "2026-07-16T20:00:00Z",
+    "team1": "Phoenix Flames",
+    "team2": "Orlando Squeeze",
+    "abbr1": "PHX",
+    "abbr2": "ORL",
+    "games1": 2,
+    "games2": 3,
+    "pts1": 41,
+    "pts2": 59,
+    "winner": 2
+   },
+   {
+    "uuid": "12450aa0-b761-44f5-8d58-f02cd16ecc6b",
+    "date": "2026-07-16",
+    "start": "2026-07-16T21:30:00Z",
+    "team1": "California Black Bears",
+    "team2": "Columbus Sliders",
+    "abbr1": "CAL",
+    "abbr2": "COL",
+    "games1": 0,
+    "games2": 4,
+    "pts1": 8,
+    "pts2": 44,
+    "winner": 2
+   },
+   {
+    "uuid": "2da6b1a0-681c-4f89-8ccf-b4825c74223e",
+    "date": "2026-07-16",
+    "start": "2026-07-16T23:00:00Z",
+    "team1": "Florida Smash",
+    "team2": "Phoenix Flames",
+    "abbr1": "FLA",
+    "abbr2": "PHX",
+    "games1": 1,
+    "games2": 3,
+    "pts1": 25,
+    "pts2": 34,
+    "winner": 2
+   }
+  ],
+  "remaining": [
+   {
+    "uuid": "9d4ba482-256c-4fa2-b4d7-1f56023a19a7",
+    "date": "2026-07-17",
+    "start": "2026-07-17T16:30:00Z",
+    "team1": "Atlanta Bouncers",
+    "team2": "Dallas Flash"
+   },
+   {
+    "uuid": "3aa5ab79-ebd3-42a6-a760-e7109d7f3c32",
+    "date": "2026-07-17",
+    "start": "2026-07-17T17:00:00Z",
+    "team1": "California Black Bears",
+    "team2": "Orlando Squeeze"
+   },
+   {
+    "uuid": "db289819-861f-435d-a6e9-8c47e1615389",
+    "date": "2026-07-17",
+    "start": "2026-07-17T18:00:00Z",
+    "team1": "Florida Smash",
+    "team2": "Columbus Sliders"
+   },
+   {
+    "uuid": "e7bd2277-5bb6-409d-816b-f1be98e17e8e",
+    "date": "2026-07-17",
+    "start": "2026-07-17T18:30:00Z",
+    "team1": "SoCal Hard Eights",
+    "team2": "Phoenix Flames"
+   },
+   {
+    "uuid": "50ca1c94-0f88-4447-8f81-3bf3c216a97e",
+    "date": "2026-07-17",
+    "start": "2026-07-17T19:30:00Z",
+    "team1": "Utah Black Diamonds",
+    "team2": "Bay Area Breakers"
+   },
+   {
+    "uuid": "fc7254f1-4037-4def-9516-9eee9e42efdc",
+    "date": "2026-07-17",
+    "start": "2026-07-17T20:00:00Z",
+    "team1": "Los Angeles Mad Drops",
+    "team2": "Atlanta Bouncers"
+   },
+   {
+    "uuid": "f05daaea-4882-408f-934f-0c7eede1d748",
+    "date": "2026-07-17",
+    "start": "2026-07-17T21:00:00Z",
+    "team1": "Florida Smash",
+    "team2": "California Black Bears"
+   },
+   {
+    "uuid": "9c3f5206-41ad-44d7-8849-709fa303b1f3",
+    "date": "2026-07-17",
+    "start": "2026-07-17T21:30:00Z",
+    "team1": "Orlando Squeeze",
+    "team2": "SoCal Hard Eights"
+   },
+   {
+    "uuid": "880abf00-261f-4d10-8be1-ac9411215d4b",
+    "date": "2026-07-17",
+    "start": "2026-07-17T22:30:00Z",
+    "team1": "Dallas Flash",
+    "team2": "Bay Area Breakers"
+   },
+   {
+    "uuid": "cd0d645f-0932-456b-94cd-c0f722e4f581",
+    "date": "2026-07-17",
+    "start": "2026-07-17T23:00:00Z",
+    "team1": "Utah Black Diamonds",
+    "team2": "Los Angeles Mad Drops"
+   },
+   {
+    "uuid": "bbf77f48-c7ff-4ed7-8e16-51febc4dde8d",
+    "date": "2026-07-18",
+    "start": "2026-07-18T16:30:00Z",
+    "team1": "California Black Bears",
+    "team2": "SoCal Hard Eights"
+   },
+   {
+    "uuid": "10c103d9-30bd-4a77-bca0-12f0430b2746",
+    "date": "2026-07-18",
+    "start": "2026-07-18T17:00:00Z",
+    "team1": "Dallas Flash",
+    "team2": "Utah Black Diamonds"
+   },
+   {
+    "uuid": "2e439a6d-f906-4528-b758-8b9a4a251426",
+    "date": "2026-07-18",
+    "start": "2026-07-18T18:00:00Z",
+    "team1": "Orlando Squeeze",
+    "team2": "Florida Smash"
+   },
+   {
+    "uuid": "9771fb2d-15b2-480a-9562-3814cccd1f5f",
+    "date": "2026-07-18",
+    "start": "2026-07-18T18:30:00Z",
+    "team1": "Phoenix Flames",
+    "team2": "Columbus Sliders"
+   },
+   {
+    "uuid": "647efd96-1e15-4d3b-811b-cf018060af66",
+    "date": "2026-07-18",
+    "start": "2026-07-18T19:30:00Z",
+    "team1": "Atlanta Bouncers",
+    "team2": "Utah Black Diamonds"
+   },
+   {
+    "uuid": "9f021399-c1e7-476f-bb2c-5fd8e04d3f6b",
+    "date": "2026-07-18",
+    "start": "2026-07-18T20:00:00Z",
+    "team1": "Bay Area Breakers",
+    "team2": "Los Angeles Mad Drops"
+   },
+   {
+    "uuid": "40569680-6a95-4002-b0a8-c497ca86ca31",
+    "date": "2026-07-18",
+    "start": "2026-07-18T21:00:00Z",
+    "team1": "Phoenix Flames",
+    "team2": "California Black Bears"
+   },
+   {
+    "uuid": "0227ffc2-dff1-4afa-8726-954a281b2f60",
+    "date": "2026-07-18",
+    "start": "2026-07-18T21:30:00Z",
+    "team1": "Columbus Sliders",
+    "team2": "SoCal Hard Eights"
+   },
+   {
+    "uuid": "6cfb145c-5e7c-4f7d-a51e-429dd5a2bc8a",
+    "date": "2026-07-18",
+    "start": "2026-07-18T22:30:00Z",
+    "team1": "Bay Area Breakers",
+    "team2": "Atlanta Bouncers"
+   },
+   {
+    "uuid": "96f23830-6717-4a6d-824b-31f395d4809d",
+    "date": "2026-07-18",
+    "start": "2026-07-18T23:00:00Z",
+    "team1": "Los Angeles Mad Drops",
+    "team2": "Dallas Flash"
+   }
+  ]
+ },
+ "ppa": []
+}
