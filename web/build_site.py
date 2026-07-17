@@ -291,7 +291,7 @@ def build_rankings(players, updated, n_games, val):
         panels.append(
             f'<section class="gsec{" on" if default else ""}" id="sec-{low}">{inner}</section>')
 
-    dupr_acc = val["dupr_reference"]["accuracy"]
+    dc = val["dupr_comparison"]
     body = f"""
 <h1 class="runtitle">Power rankings</h1>
 <div class="runmeta">RUN {updated} :: DYNAMIC BAYESIAN POSTERIOR :: MLP + PPA DOUBLES 2024–26</div>
@@ -301,7 +301,8 @@ margin (with an average partner, vs an average pair, race to 11) — median
 regular ≈ +2, star ≈ +5. The interval is the point, not fine print.</p>
 <div class="syscheck">
  <div class="lrow"><span class="lk">GAMES IN THE MODEL (2024–26, MLP + PPA)</span><span class="ldot"></span><span class="lv">{n_games:,}</span></div>
- <div class="lrow"><span class="lk">WINNER ACCURACY · {val['n_games']} UNSEEN GAMES</span><span class="ldot"></span><span class="lv">{pct(val['accuracy'], 1)} <span class="lcmp">vs DUPR {pct(dupr_acc, 1)}</span></span></div>
+ <div class="lrow"><span class="lk">WINNER ACCURACY · {val['n_games']} UNSEEN GAMES</span><span class="ldot"></span><span class="lv">{pct(val['accuracy'], 1)}</span></div>
+ <div class="lrow"><span class="lk">SAME-GAMES HEAD-TO-HEAD · {dc['n_games']} SHARED</span><span class="ldot"></span><span class="lv">{pct(dc['model']['accuracy'], 1)} <span class="lcmp">vs DUPR {pct(dc['dupr']['accuracy'], 1)}</span></span></div>
  <div class="lrow"><span class="lk">PLAYERS WITH MONTHLY SKILL TRACKING</span><span class="ldot"></span><span class="lv">{n_dyn}</span></div>
  <div class="lrow"><span class="lk">DATA THROUGH</span><span class="ldot"></span><span class="lv">{updated}</span></div>
  <div class="lrow"><span class="lk">PREDICTIONS COMMITTED PRE-MATCH</span><span class="ldot"></span><span class="lv"><a href="receipts.html">[OK] → receipts</a></span></div>
@@ -1210,6 +1211,7 @@ as races to 15 — side-out scoring makes that an approximation
 def build_receipts(updated):
     R = D.load_receipts()
     val = R["validation"]
+    dc = val["dupr_comparison"]
     cal = CAL["buckets_raw"]
 
     graded_items = [i for e in R["entries"] if e["status"] == "graded"
@@ -1257,10 +1259,10 @@ publicly wrong is part of the product.</p>
 <div class="tiles">
  <div class="tile"><div class="v">{pct(val['accuracy'], 1)}</div>
   <div class="k">winners called on {val['n_games']} unseen games (frozen 6 weeks)</div></div>
- <div class="tile"><div class="v">{pct(val['dupr_reference']['accuracy'], 1)}</div>
-  <div class="k">DUPR on the same games — while its ratings kept updating</div></div>
+ <div class="tile"><div class="v">{pct(dc['dupr']['accuracy'], 1)}</div>
+  <div class="k">DUPR on {dc['n_games']} identical games (model {pct(dc['model']['accuracy'], 1)} on the same set) — while its ratings kept updating</div></div>
  <div class="tile"><div class="v">{val['brier']:.3f}</div>
-  <div class="k">holdout Brier (DUPR {val['dupr_reference']['brier']:.3f})</div></div>
+  <div class="k">holdout Brier · same {dc['n_games']} games: model {dc['model']['brier']:.3f} vs DUPR {dc['dupr']['brier']:.3f}</div></div>
  <div class="tile"><div class="v">{hits}/{len(graded_items)}</div>
   <div class="k">public registered calls hit so far{f" · mean Brier {mean_brier:.3f}" if mean_brier is not None else ""}</div></div>
 </div>
@@ -1380,7 +1382,7 @@ data quirks rather than miracles.</p>
 
 # ---------------------------------------------------------------- dupr page
 
-def build_dupr(players, updated):
+def build_dupr(players, updated, dc):
     panels, tables = [], []
     glitched = [p for p in players.values()
                 if p.dynamic and p.dupr_glitch and not p.dupr]
@@ -1425,17 +1427,36 @@ def build_dupr(players, updated):
 <table><tr><th>player</th><th class="num">model rank</th>
 <th class="num">DUPR rank</th><th class="num">Δ</th></tr>{''.join(rows)}</table></div>""")
 
+    m_acc = pct(dc["model"]["accuracy"], 1)
+    d_acc = pct(dc["dupr"]["accuracy"], 1)
+    ds_acc = pct(dc["dupr_steelman"]["accuracy"], 1)
+    edge = f'{100 * (dc["model"]["accuracy"] - dc["dupr"]["accuracy"]):.1f}'
     body = f"""
 <h1>DUPR × model</h1>
-<p class="sub">DUPR is the sport's official rating. On 518 identical unseen
-games the frozen model called 73.7% of winners; DUPR — whose ratings kept
-updating all summer — called 64.7%. Below: where the two disagree, per
-gender, among 2026-active tracked players.</p>
-<div class="tiles">
- <div class="tile"><div class="v">77.4%</div><div class="k">model, 884 unseen games</div></div>
- <div class="tile"><div class="v">64.7%</div><div class="k">DUPR, same games where both rate all four players</div></div>
- <div class="tile"><div class="v">+Δ</div><div class="k">= model ranks the player higher than DUPR does</div></div>
-</div>
+<p class="sub">DUPR is the sport's official rating. To keep the comparison
+honest we score both systems on the <strong>same {dc['n_games']} unseen
+games</strong> — every one rated by both, with DUPR's known reset artifacts
+screened out of its inputs ({dc['n_dropped_dupr_glitch']} games dropped) — and
+we hand DUPR our own machinery to make sure we're not just beating it on
+pipeline tricks. It isn't the pipeline: it's the ratings.</p>
+<table class="steelman"><tr><th></th>
+<th class="num">winner accuracy</th><th class="num">Brier</th></tr>
+<tr><td>Our model <span class="gray">(our ratings, our machinery)</span></td>
+<td class="num">{m_acc}</td><td class="num">{dc['model']['brier']:.3f}</td></tr>
+<tr><td>DUPR + our machinery <span class="gray">(race-DP + weakest link)</span></td>
+<td class="num">{ds_acc}</td><td class="num">{dc['dupr_steelman']['brier']:.3f}</td></tr>
+<tr><td>DUPR, as published <span class="gray">(rating sum → probit)</span></td>
+<td class="num">{d_acc}</td><td class="num">{dc['dupr']['brier']:.3f}</td></tr>
+</table>
+<p class="note">Reading it: swapping DUPR into our exact race-DP + weakest-link
+machinery moves it barely at all ({d_acc} → {ds_acc}) — the machinery is a
+near-wash, so our ~{edge}-point edge is the <em>ratings</em>, not the model
+plumbing. (Our own ratings gain almost nothing from the machinery either.)
+Note giving DUPR fair inputs actually <em>helps</em> it: screening out the
+reset-glitch games lifts its score, because those were games its own bad
+input was getting wrong. The frozen model still leads a live-updating DUPR.
+The 77.4% headline elsewhere is the full draws-integrated fit on all 884
+holdout games; {m_acc} is the plug-in model on this shared subset.</p>
 <div class="cols">{''.join(panels)}</div>
 <div class="cols">{''.join(tables)}</div>
 {excluded_note}
@@ -1562,7 +1583,7 @@ may not have enough games for monthly tracking (≥60 since 2024).</p>
     write("404.html", html)
 
 
-def build_methods(updated):
+def build_methods(updated, dc):
     md = (ROOT / "EXPLAINER.md").read_text()
     body = f"""
 {md_to_html(md)}
@@ -1579,8 +1600,13 @@ scale).</li>
 Gaussian random walk (2024-01 → now); everyone else is static with
 shrinkage.</li>
 <li><strong>Validation:</strong> frozen on pre-June-2026 data, scored on the
-next six weeks: 77.4% winners, Brier 0.165 (DUPR: 64.7% / 0.229 on the same
-games).</li>
+next six weeks: 77.4% winners, Brier 0.165 on 884 holdout games. On the
+{dc['n_games']} of those where DUPR also rates all four players (its reset
+artifacts screened out), the model calls {pct(dc['model']['accuracy'], 1)} to
+DUPR's {pct(dc['dupr']['accuracy'], 1)} — and DUPR gains almost nothing
+({pct(dc['dupr_steelman']['accuracy'], 1)}) even when handed our own
+race-DP + weakest-link machinery, so the edge is the ratings, not the
+pipeline (<a href="dupr.html">DUPR × model</a>).</li>
 <li><strong>Display scale:</strong> the site converts per-point logits to
 "expected margin vs an average pairing in a race to 11" — median regular
 ≈ +2 pts, superstar ≈ +7.</li>
@@ -1880,9 +1906,12 @@ def receipt_teaser_rows(R, n=3):
 def build_landing(players, games, updated, n_games, R):
     from datetime import date
     val = R["validation"]
+    dc = val["dupr_comparison"]
     acc = pct(val["accuracy"], 1)
-    dupr = pct(val["dupr_reference"]["accuracy"], 1)
-    gap = f'{100 * (val["accuracy"] - val["dupr_reference"]["accuracy"]):.1f}'
+    dupr = pct(dc["dupr"]["accuracy"], 1)
+    model_sg = pct(dc["model"]["accuracy"], 1)
+    gap = f'{100 * (dc["model"]["accuracy"] - dc["dupr"]["accuracy"]):.1f}'
+    shared = dc["n_games"]
     holdout = val["n_games"]
     n_dyn = sum(1 for p in players.values() if p.dynamic)
     hero_games = f"{round(n_games / 1000) * 1000:,}"
@@ -2053,10 +2082,12 @@ of past forecasts, hits and misses.</p>
    <span class="hlnum"><span class="swipe"></span><span class="val">{acc}</span></span>
    <span class="whose">THIS MODEL</span>
   </div>
-  <div class="cmprow"><span>DUPR, SAME {holdout} GAMES</span><span class="lead"></span><span class="v">{dupr}</span></div>
+  <div class="cmprow"><span>DUPR, {shared} IDENTICAL GAMES</span><span class="lead"></span><span class="v">{dupr}</span></div>
   <div class="prule"></div>
-  <div class="pnote">Held-out games neither system saw. Our model was frozen;
-DUPR kept updating. It still lost by {gap} points.</div>
+  <div class="pnote">Held-out games neither system saw. On the {shared} games both
+systems rate all four players, our model called {model_sg} to DUPR's {dupr} —
+a {gap}-point edge, and it holds even when DUPR is handed our exact machinery.
+Our model was frozen; DUPR kept updating.</div>
  </div>
 </section>
 
@@ -2169,8 +2200,8 @@ def main():
     print(f"live page: {n_live} player values shipped")
     build_receipts(updated)
     build_records(players, agg, games, updated)
-    build_dupr(players, updated)
-    build_methods(updated)
+    build_dupr(players, updated, R["validation"]["dupr_comparison"])
+    build_methods(updated, R["validation"]["dupr_comparison"])
     build_404(updated)
 
     dyn = [p for p in players.values() if p.dynamic and p.stats]

@@ -32,6 +32,9 @@ python model/report.py                       # regenerate analysis.md (v1 sectio
 python scraper/parse_singles.py              # raw/ → data/singles_games.csv (26k games)
 python model/fit_singles.py                  # singles MAP ratings (pure python, ~10 s)
 python scraper/extract_ratings.py            # raw/ → per-match + latest DUPR (merges)
+python model/dupr_steelman.py                # steelmanned DUPR head-to-head →
+                                             #   model/dupr_steelman.json (same-games,
+                                             #   glitch-screened, our machinery too)
 python scraper/live_poller.py                # live score JSONL during event days
 python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
                                              #   --commit freezes into receipts.json
@@ -69,9 +72,20 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   SRM_MIXTEST, SRM_SAVE_DRAWS). Suffix convention: `_2026`, `_2026core`,
   `_train`, `_2026mm`, etc. map to data/model_*{suffix}.csv inputs.
 - Validation: v2 = 77.4% winner accuracy / 0.165 Brier on 884 post-June-1
-  holdout games (v1 75.2%/0.178; DUPR 64.7%/0.229). Gate any model change
-  on beating this (`model/v2_holdout.py`; needs a `_train`-suffixed fit
-  with SRM2_DATE_BEFORE=2026-06-01).
+  holdout games (v1 75.2%/0.178). Gate any model change on beating this
+  (`model/v2_holdout.py`; needs a `_train`-suffixed fit with
+  SRM2_DATE_BEFORE=2026-06-01).
+- **DUPR baseline is steelmanned** (`model/dupr_steelman.py` → dupr_steelman.json,
+  the site's source of truth for the DUPR head-to-head). ALL predictors scored
+  on ONE identical game set (both systems rate all four), DUPR reset artifacts
+  (≤3.65 after a ≥5.0 peak) screened out of its inputs, and DUPR handed our own
+  race-DP + weakest-link machinery. Result on the 659 shared games: model 76.3%,
+  DUPR-as-published 67.4%, DUPR-with-our-machinery 67.5% — the machinery is a
+  near-wash for BOTH sides, so the edge is the ratings, not the pipeline. The
+  old naive number (64.7%/518, sideout_11-only, glitch games included) is
+  superseded; glitch-repair actually *raises* DUPR's score because those were
+  games its own bad input was losing. `model/rating_comparison.py` (v1 probit)
+  is the older, narrower version — kept for the value↔rating correlations.
 
 ## Established findings (don't re-derive; analysis.md has details)
 
