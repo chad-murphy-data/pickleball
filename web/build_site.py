@@ -525,7 +525,7 @@ effects are almost all within ±0.1 pts and none is statistically certifiable.
 Values come from a joint Bayesian fit of ~36k games; the win-probability
 interval is the 90% posterior range from player-value uncertainty.
 Probabilities are calibrated against out-of-sample games and never reach
-0% or 100% — across 36k games, favorites we price above 99% still lost about
+0% or 100% — across 36k games, favorites we rate above 99% still lost about
 1 time in 100, so that's the ceiling (<a href="methods.html">methods</a>).
 If the two sides' gender mix differs, the number rests on a modeling
 convention that no game data can test.</p>
@@ -695,11 +695,11 @@ def build_forecast(players, updated):
                         f'<p class="note">paths: 4–0 {pct_floor(t["p_40"])} · 3–1 {pct_floor(t["p_31"])} · '
                         f'DreamBreaker {pct_floor(t["p_db"])}'
                         + (f' ({esc(f["team1"].split()[-1])} {pct_floor(t["p_db_win"])} if played)'
-                           if t.get("p_db_win") is not None else ' (priced 50/50)')
+                           if t.get("p_db_win") is not None else ' (rated 50/50)')
                         + f' · 1–3 {pct_floor(t["p_13"])} · 0–4 {pct_floor(t["p_04"])}</p>')
             else:
                 head = (f'<div class="big">{esc(f["team1"])} <span class="gray">vs</span> '
-                        f'{esc(f["team2"])}</div><p class="note">not priceable yet '
+                        f'{esc(f["team2"])}</div><p class="note">not rateable yet '
                         f'(missing recent lineups or untracked players)</p>')
             rows = []
             for g in f["games"]:
@@ -725,18 +725,18 @@ close to match time and can differ.</p></div>""")
         stale = ' <strong>(stale — regenerate with web/make_forecast.py)</strong>' \
             if gen < updated else ""
         body_mid = (f'<p class="note">generated {gen}{stale} · '
-                    f'{len(F["forecasts"])} scheduled matchups priced</p>'
+                    f'{len(F["forecasts"])} scheduled matchups rated</p>'
                     + "".join(cards))
     else:
         body_mid = ('<p class="note">No forecast snapshot yet — run '
-                    '<code>python web/make_forecast.py</code> (network) to price '
+                    '<code>python web/make_forecast.py</code> (network) to rate '
                     'the next week of scheduled MLP matchups.</p>')
     body = f"""
 <h1>Upcoming matchup forecasts</h1>
-<p class="sub">Every scheduled MLP matchup in the next week, priced before it
+<p class="sub">Every scheduled MLP matchup in the next week, rated before it
 happens. Lineups are <strong>projected</strong> from each team's most recent
 completed matchup; per-game probabilities use current player values, the
-weakest-link penalty and display calibration; the DreamBreaker is priced by
+weakest-link penalty and display calibration; the DreamBreaker is rated by
 a rally-level model fit on all 101 historical DreamBreakers — doubles skill
 transfers to DB rallies at roughly half strength, so the stronger roster is
 a mild (not heavy) DB favorite. To make a forecast part of the permanent
@@ -792,14 +792,14 @@ def build_results(players, games, updated, days=14):
             f'{" OT" if ot else ""}</td>'
             f'<td class="num">{price}{upset}</td></tr>')
     body = f"""
-<h1>Recent results, priced</h1>
+<h1>Recent results, rated</h1>
 <p class="sub">Every pro doubles game of the last {days} days with the win
 probability the model would have quoted for the eventual winners before the
 game (current monthly values — a living retrospective, not a frozen
 commitment; the <a href="receipts.html">receipts page</a> holds those).
-Winners listed first. {n_upsets} upsets (winner priced under 25%).</p>
+Winners listed first. {n_upsets} upsets (winner rated under 25%).</p>
 <div class="tblwrap"><table><tr><th>event</th><th></th><th>winners</th>
-<th>over</th><th class="num">score</th><th class="num">winner was priced</th></tr>
+<th>over</th><th class="num">score</th><th class="num">winner was rated</th></tr>
 {''.join(rows)}</table></div>
 """
     write("results.html", style.page("Results — PICKLES",
@@ -999,7 +999,7 @@ def mlp_race_panel(state, F, rng):
     srows = []
     for r, tree, flip in slate:
         if tree is None:
-            price = '<span class="gray">not priced</span>'
+            price = '<span class="gray">not rated</span>'
         else:
             p1 = 1 - tree["p_win"] if flip else tree["p_win"]
             fav, pf = (r["team1"], p1) if p1 >= 0.5 else (r["team2"], 1 - p1)
@@ -1011,7 +1011,7 @@ def mlp_race_panel(state, F, rng):
             f'<td>{team_short(r["team1"])} v {team_short(r["team2"])}{tag}</td>'
             f'<td class="num">{price}</td></tr>')
     unpriced_note = (f" {n_unpriced} round-robin matchup"
-                     f"{'s' if n_unpriced != 1 else ''} unpriced — simulated "
+                     f"{'s' if n_unpriced != 1 else ''} unrated — simulated "
                      f"as coin flips." if n_unpriced else "")
     return f"""
 <h2><span class="secno">MLP</span>{esc(state["event"])}</h2>
@@ -1022,7 +1022,7 @@ matchup. {N:,} simulations from the actual standings.</span></div>
 {''.join(bar_rows)}
 <p class="note" style="margin:10px 0 2px">Group rank: matchup wins, then game
 wins, then actual rally-point differential (simulated ties broken the same
-way; rally points frozen at actuals). Round-robin matchups use the cards-page
+way; rally points frozen at actuals). Round-robin matchups use the slate-page
 forecasts; simulated title matchups use the same model on projected
 lineups.{unpriced_note}</p>
 </div>
@@ -1190,14 +1190,14 @@ def build_titlerace(players, updated):
 <div class="runmeta">RUN {gen} :: WHO WINS THE WEEKEND :: UPDATES NIGHTLY WITH RESULTS</div>
 <p class="sub">The live event, simulated to the end from the current state:
 MLP standings use <strong>actual results and rally points</strong>, with the
-rest of the round robin priced by the model; PPA uses the <strong>actual
+rest of the round robin rated by the model; PPA uses the <strong>actual
 seeded draw</strong>, with every remaining bracket path simulated from
 current form values. Assumptions printed where they live.</p>
 {body_main}
-<p class="note">MLP matchup prices come from the same projected-lineup
-forecasts as the <a href="forecast.html">cards page</a> (lineups are
-projections until posted). PPA games are priced as rally races to 11
-(best-of-3) from current values; single-game Challenger rounds are priced
+<p class="note">MLP matchup ratings come from the same projected-lineup
+forecasts as the <a href="forecast.html">slate page</a> (lineups are
+projections until posted). PPA games are modeled as rally races to 11
+(best-of-3) from current values; single-game Challenger rounds are modeled
 as races to 15 — side-out scoring makes that an approximation
 (<a href="methods.html">methods</a>).</p>
 """
@@ -1319,11 +1319,11 @@ publicly wrong is part of the product.</p>
 <h2>Calibration</h2>
 <p class="note">When the frozen model said a team should win X% of the time,
 how often did they actually win? Dots on the diagonal = honest probabilities.
-Curve measured out-of-sample: every post-June-2026 game priced by the frozen
+Curve measured out-of-sample: every post-June-2026 game rated by the frozen
 pre-June fit ({CAL["fit_on"]["n_games"]} games). The fitted correction is
 nearly the identity (slope {CAL["b"]:.2f}) — the earlier v1 model ran
 underconfident, this one doesn't. What the data does insist on: across all
-36k games, favorites priced above 99% still lost {CAL["tail"]["losses"]} of
+36k games, favorites rated above 99% still lost {CAL["tail"]["losses"]} of
 {CAL["tail"]["n_extreme"]} games (~1%), so site probabilities are floored —
 nothing is ever 0% or 100%. Frozen predictions in the ledger above are
 graded exactly as committed, never re-calibrated after the fact.</p>
@@ -1402,11 +1402,11 @@ DreamBreakers and forfeits excluded).</p>
 <table><tr><th>player</th><th class="num">streak</th><th class="num">career W–L</th></tr>{streak_rows}</table></div>
 </div>
 <h2>Biggest upsets</h2>
-<p class="note">Games the model prices lowest for the eventual winners, using
-each month's values (retrospective pricing, all four players tracked;
-calibrated probabilities — no price ever reaches 0%, because across 36k
+<p class="note">Games the model rates lowest for the eventual winners, using
+each month's values (retrospective rating, all four players tracked;
+calibrated probabilities — no probability ever reaches 0%, because across 36k
 games about 1 in 100 "sure things" lost anyway). Games with recorded
-mid-match player swaps and raw prices under 0.2% are excluded as probable
+mid-match player swaps and raw probabilities under 0.2% are excluded as probable
 data quirks rather than miracles.</p>
 <div class="tblwrap"><table><tr><th>date</th><th>winners</th><th>over</th>
 <th class="num">score</th><th class="num">model gave them</th></tr>{''.join(upset_rows)}</table></div>
@@ -1798,10 +1798,10 @@ def slate_day_label(day, today):
     from datetime import date, timedelta
     d, t = date.fromisoformat(day), date.fromisoformat(today)
     if d == t:
-        return "TODAY'S CARD"
+        return "TODAY'S SLATE"
     if d == t + timedelta(days=1):
-        return "TOMORROW'S CARD"
-    return f"NEXT CARD · {d.strftime('%b %d').upper()}"
+        return "TOMORROW'S SLATE"
+    return f"NEXT SLATE · {d.strftime('%b %d').upper()}"
 
 
 def results_day_summary(players, games, day):
@@ -1841,7 +1841,7 @@ def build_slate(F, players, games, updated, today):
             head = (f'<div class="slatehead"><span class="doortag">'
                     f'{slate_day_label(day, today)}</span>'
                     f'<span class="slateevent">{esc(event)} :: {len(night)} '
-                    f'MATCHUP{"S" if len(night) != 1 else ""} PRICED</span>'
+                    f'MATCHUP{"S" if len(night) != 1 else ""} RATED</span>'
                     f'<span class="fill"></span>'
                     f'<a class="slatelink" href="forecast.html">FULL FORECAST →</a></div>')
             bits = []
@@ -1852,7 +1852,7 @@ def build_slate(F, players, games, updated, today):
                     fav = team_short(f["team1"] if fav1 else f["team2"])
                     val = f'{fav} {pct_floor(max(t["p_win"], 1 - t["p_win"]))}'
                 else:
-                    val = "NOT PRICED"
+                    val = "NOT RATED"
                 bits.append(
                     f'<a class="srow" href="forecast.html">'
                     f'<span class="st">{start_et(f.get("start") or "")}</span>'
@@ -1942,7 +1942,7 @@ def build_landing(players, games, updated, n_games, R):
         for slot, pnm, fav, pv in (featured_game_rows(feat) if feat else []))
     if not frows:
         frows = ('<div class="t-row"><span class="call">NEXT EVENT</span>'
-                 '<span class="lead"></span><span class="res">PRICING SOON</span></div>')
+                 '<span class="lead"></span><span class="res">FORECAST SOON</span></div>')
 
     rrows = "".join(
         f'<div class="t-row"><span class="call">{call}</span><span class="lead"></span>'
@@ -1952,7 +1952,7 @@ def build_landing(players, games, updated, n_games, R):
 
     term = ("&gt; PICK ANY FOUR PROS<br>\n&gt; ANY PAIRING, ANY FORMAT<br>\n"
             "&gt; RUNNING 100,000 SIMS_<br>\n"
-            '<span class="result">→ PRICED, WITH ERROR BARS</span>')
+            '<span class="result">→ RATED, WITH ERROR BARS</span>')
     if feat:
         best = max((g for g in feat["games"] if g),
                    key=lambda g: max(g["p"], 1 - g["p"]), default=None)
@@ -2036,7 +2036,7 @@ def build_landing(players, games, updated, n_games, R):
 night and PPA bracket, a simulator for any four pros — and the full archive
 of past forecasts, hits and misses.</p>
   <div class="ctas">
-   <a class="cta solid" href="forecast.html">TONIGHT'S CARD →</a>
+   <a class="cta solid" href="forecast.html">TONIGHT'S SLATE →</a>
    <a class="cta outline" href="receipts.html">PAST FORECASTS</a>
   </div>
  </div>
@@ -2065,7 +2065,7 @@ DUPR kept updating. It still lost by {gap} points.</div>
    <span class="doortag">MATCH FORECASTS</span>
    <div class="t-rows">{frows}</div>
    <p class="doorblurb">Every MLP team night and PPA championship Sunday —
-win probability, most-likely score, DreamBreaker odds.</p>
+win probability, most-likely score, DreamBreaker chances.</p>
   </a>
   <a class="door" href="receipts.html">
    <span class="doortag">TRACK RECORD</span>
@@ -2103,7 +2103,7 @@ included. Superstar + passenger ≠ two solids.</p>
 that" — said out loud, when true.</div>
  </div>
  <div class="baseline">
-  <span>PICKLES · model output · not betting advice</span>
+  <span>PICKLES · model output</span>
   <span>{handle_bit}full forecast archive on file</span>
  </div>
 </div></footer>
