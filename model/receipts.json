@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-13",
+  "updated": "2026-07-16",
   "note": "Public receipts ledger. Every entry is committed before the outcome is known; graded entries record the pre-registered probability, the outcome, hit/miss on the modal call, and the Brier score (lower is better; 0.25 = coin flip). This file is the source of truth for the website receipts page.",
   "validation": {
     "description": "v2 model frozen on pre-June data, scored on 884 unseen games (2026-06-01 through 2026-07-11).",
@@ -48,6 +48,24 @@
         {"label": "League-wide dyad-chemistry scale (sd_d) refit on H2-only games stays under 1.0 point/game", "prob": null, "outcome": null, "result": null, "grade": "PENDING", "brier": null}
       ],
       "footnote": "Scored in September against games dated after 2026-07-12 only, using the method written into the frozen file."
+    },
+    {
+      "id": "2026-mlp-san-diego-day1",
+      "title": "MLP San Diego day 1 — five-matchup slate vs the frozen site forecasts",
+      "committed": "2026-07-14",
+      "graded": "2026-07-16",
+      "status": "graded",
+      "source": "data/forecasts.json (generated 2026-07-14, committed to main before the event)",
+      "model": "v2 current values, projected lineups, singles-model DreamBreakers, calibrated",
+      "outcome_summary": "Favorites went 4/5. Columbus swept both its matchups 4-0; SoCal and Phoenix won as modest favorites; the miss was Phoenix-Orlando, where 61% Phoenix lost 2-3 on a DreamBreaker the model had priced at 37%. Jack Sock (in for the projected Yates Johnson) played both Orlando matchups.",
+      "items": [
+        {"label": "Matchup 1: Columbus Sliders over Orlando Squeeze", "prob": 0.9894, "outcome": "Columbus won 4-0", "result": 1, "grade": "HIT", "brier": 0.0001},
+        {"label": "Matchup 2: SoCal Hard Eights over Florida Smash", "prob": 0.6334, "outcome": "SoCal won 4-0", "result": 1, "grade": "HIT", "brier": 0.1344},
+        {"label": "Matchup 3: Phoenix Flames over Orlando Squeeze", "prob": 0.6143, "outcome": "Orlando won 3-2 (DreamBreaker 21-14)", "result": 0, "grade": "MISS", "brier": 0.3774},
+        {"label": "Matchup 4: Columbus Sliders over California Black Bears", "prob": 0.9868, "outcome": "Columbus won 4-0", "result": 1, "grade": "HIT", "brier": 0.0002},
+        {"label": "Matchup 5: Phoenix Flames over Florida Smash", "prob": 0.6281, "outcome": "Phoenix won 3-1", "result": 1, "grade": "HIT", "brier": 0.1383}
+      ],
+      "footnote": "Matchup mean Brier 0.130 (coin flip = 0.25). Game level, matched on the forecast's own team-one pairing: 12/13 hits, mean Brier 0.092, two modal scores exact (both 11-6 mixed calls); 7 games VOID where the projected pairing never took the court, and opponent-side substitutions (Sock for Johnson, twice) graded through as lineup risk. Reaches-a-DreamBreaker graded 4/5 on the modal call, mean Brier 0.136 — the miss was the 37.4% DB that decided Phoenix-Orlando."
     }
   ]
 }
