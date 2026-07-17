@@ -1205,57 +1205,6 @@ as races to 15 — side-out scoring makes that an approximation
                                        body, "titlerace.html", "", updated))
 
 
-# ---------------------------------------------------------------- downloads
-
-DOWNLOADS = [
-    ("games.csv", "every game 2024–26: both pairs (player UUIDs), score, "
-                  "date, tour, format, stage; the modeling unit"),
-    ("players.csv", "canonical player registry: UUID, name, gender, name variants"),
-    ("v2_players.csv", "current-form model values (per-point logit) ± sd per player"),
-    ("v2_trajectories.csv", "monthly skill curve for every ≥60-game player"),
-    ("v2_dyads.csv", "pair-chemistry posteriors (small and honest)"),
-    ("yearly_values.csv", "season-by-season v1 values (points scale) + gender ranks"),
-    ("platform_ratings.csv", "latest synced DUPR per player + snapshot count"),
-    ("singles_games.csv", "every PPA pro singles game 2024–26 (26k games)"),
-    ("singles_players.csv", "singles rating per player (MAP fit, recency-weighted)"),
-]
-
-
-def build_downloads(games, updated):
-    import shutil
-    (SITE / "data").mkdir(parents=True, exist_ok=True)
-    rows = []
-    for fname, desc in DOWNLOADS:
-        src = D.DATA / fname
-        if not src.exists():
-            continue
-        shutil.copy(src, SITE / "data" / fname)
-        n = sum(1 for _ in src.open()) - 1
-        mb = src.stat().st_size / 1e6
-        rows.append(f'<tr><td><a href="data/{fname}" download>{fname}</a></td>'
-                    f'<td class="num">{n:,}</td><td class="num">{mb:.1f} MB</td>'
-                    f'<td>{desc}</td></tr>')
-    shutil.copy(D.MODEL / "receipts.json", SITE / "data" / "receipts.json")
-    rows.append('<tr><td><a href="data/receipts.json" download>receipts.json</a></td>'
-                '<td class="num">—</td><td class="num">&lt;0.1 MB</td>'
-                '<td>the public prediction ledger, machine-readable</td></tr>')
-    body = f"""
-<h1>Open data</h1>
-<p class="sub">The CSVs behind every page, free to use with attribution
-("based on public results data via PICKLES"). Player identity is
-by UUID — names collide (there are three Kawamotos; two are twins).</p>
-<div class="tblwrap"><table><tr><th>file</th><th class="num">rows</th>
-<th class="num">size</th><th>contents</th></tr>{''.join(rows)}</table></div>
-<p class="note">Model values are on a per-point logit scale; the site
-displays them as expected margin vs an average pairing via the race DP
-(<a href="methods.html">methods</a>). DreamBreakers and forfeits are
-excluded from games.csv-derived stats. Refreshed with the nightly build;
-data through {updated}.</p>
-"""
-    write("data.html", style.page("Open data — PICKLES",
-                                  body, "data.html", "", updated))
-
-
 # ---------------------------------------------------------------- receipts
 
 def build_receipts(updated):
@@ -1654,6 +1603,34 @@ inseparable.</li>
 ~1,000 games together; the record is 138. We publish the estimates with
 their (wide) error bars instead.</li>
 </ul></div>
+<div class="card" id="data-practices"><h2 style="margin-top:0">Where the data
+comes from</h2>
+<p>Everything on this site derives from public, unauthenticated results
+endpoints — the same responses any visitor's browser receives when viewing
+scores. How collection behaves, in full:</p>
+<ul>
+<li><strong>Politeness is enforced in code.</strong> Historical harvests run
+at ~1 request/second; live polling never exceeds one sweep per 15 seconds
+(the tools refuse to run faster); every response is cached so nothing is
+fetched twice; and the live board's backend coalesces all viewers into a
+single shared sweep — more readers never means more load on the source.</li>
+<li><strong>Honest identity.</strong> Automated requests identify themselves
+as <code>pickles-bot</code> with a link to this page, so the source operator
+always knows who is asking and can reach us or block us.</li>
+<li><strong>No circumvention.</strong> No logins, paywalls or access
+controls are bypassed; endpoints that decline access are left alone;
+robots.txt is honored.</li>
+<li><strong>Derived stats only.</strong> The site publishes analysis —
+ratings, probabilities, graded forecasts — not bulk copies of source
+data.</li>
+<li><strong>Non-commercial and unaffiliated.</strong> A hobby project with
+no ads, no fees, and no betting content; not associated with any tour or
+rating platform.</li>
+</ul>
+<p class="note">If you operate a source service and would like anything
+here changed or stopped, open an issue on
+<a href="{REPO}">the GitHub repository</a> — it will be honored
+promptly.</p></div>
 """
     write("methods.html", style.page("Methods — PICKLES",
                                      body, "methods.html", "", updated))
@@ -2170,6 +2147,11 @@ def main():
     D.rank_players(players)
     chem = D.load_dyads()
 
+    # clean output dir so removed pages/files can never linger in a stale
+    # build (e.g. the retired open-data downloads)
+    if SITE.exists():
+        import shutil
+        shutil.rmtree(SITE)
     (SITE / "assets").mkdir(parents=True, exist_ok=True)
     (SITE / "assets" / "style.css").write_text(style.CSS)
     (SITE / ".nojekyll").write_text("")
@@ -2190,7 +2172,6 @@ def main():
     build_dupr(players, updated)
     build_methods(updated)
     build_404(updated)
-    build_downloads(games, updated)
 
     dyn = [p for p in players.values() if p.dynamic and p.stats]
     print(f"player pages: {len(dyn)} …")
