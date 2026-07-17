@@ -40,6 +40,40 @@ LOOKAHEAD = 4         # days ahead: rest of the current weekend
 FINAL = {"COMPLETED_MATCHUP_STATUS", "BYE_MATCHUP_STATUS"}
 
 
+def mlp_pair_matrix(teams, today, c):
+    """Model-priced matchup tree for every unordered team pair, keyed
+    "A|B" (sorted titles), tree oriented to the first title.  Reuses the
+    forecast machinery (projected lineups from each team's most recent
+    completed matchup) so simulated playoff pairings — which can be any
+    cross-pool combination — carry real probabilities, not coin flips."""
+    sys.path.insert(0, str(ROOT / "web"))
+    import make_forecast as mf
+    vals, singles = mf.load_values(), mf.load_singles()
+    cache, lineups = {}, {}
+    for t in teams:
+        lineups[t] = mf.recent_lineup_for_team(c, t, today, cache)[0]
+    matrix = {}
+    for i, a in enumerate(sorted(teams)):
+        for b in sorted(teams)[i + 1:]:
+            la, lb = lineups.get(a), lineups.get(b)
+            if not la or not lb:
+                continue
+            ps = []
+            for slot in mf.SLOTS:
+                g = mf.price_game(la.get(slot), lb.get(slot), vals)
+                if g:
+                    ps.append(g["p"])
+            if len(ps) != 4:
+                continue
+            r1 = {u for pr in la.values() for u in pr}
+            r2 = {u for pr in lb.values() for u in pr}
+            p_db = mf.db_win_prob(r1, r2, vals, singles)
+            tree = mf.matchup_tree(ps, p_db)
+            tree["p_db_win"] = p_db
+            matrix[f"{a}|{b}"] = {k: round(v, 4) for k, v in tree.items()}
+    return matrix
+
+
 def mlp_state(c: PBClient, today: date):
     """The active MLP event, or None on a quiet week.  Each event weekend
     surfaces as its own "team league" (title "MLP San Diego"); the matchup
@@ -76,19 +110,25 @@ def mlp_state(c: PBClient, today: date):
         status = mu.get("matchupStatus") or ""
         if status == "BYE_MATCHUP_STATUS":
             continue
+        # detail carries what the short rows lack: pool, bracket stage,
+        # matchup number, abbreviations, rally points (volatile until final)
+        md = c.matchup_data(muid, volatile=status not in FINAL)
         row = {
             "uuid": muid,
             "date": rec["date"],
             "start": mu.get("plannedStartDate"),
             "team1": mu.get("teamOneTitle"), "team2": mu.get("teamTwoTitle"),
+            "abbr1": md.get("teamOneAbbreviation"),
+            "abbr2": md.get("teamTwoAbbreviation"),
+            "pool": (md.get("poolUuid") or "")[:8],
+            "bracket": md.get("inBracketType"),
+            "round": md.get("roundText"),
+            "mnum": md.get("matchupNumber"),
         }
         if status == "COMPLETED_MATCHUP_STATUS":
-            md = c.matchup_data(muid, volatile=False)
             if md.get("matchupCompletedType") != "PLAYED_MATCHUP_COMPLETION_TYPE":
                 continue                     # walkover/cancelled: not a result
             row.update({
-                "abbr1": md.get("teamOneAbbreviation"),
-                "abbr2": md.get("teamTwoAbbreviation"),
                 "games1": md.get("teamOneScore"), "games2": md.get("teamTwoScore"),
                 "pts1": md.get("teamOnePointsEarned"),
                 "pts2": md.get("teamTwoPointsEarned"),
@@ -99,8 +139,11 @@ def mlp_state(c: PBClient, today: date):
             remaining.append(row)
     if not completed and not remaining:
         return None
+    teams = sorted({r[k] for r in completed + remaining
+                    for k in ("team1", "team2") if r[k]})
     return {"group": guid, "event": g["title"],
-            "completed": completed, "remaining": remaining}
+            "completed": completed, "remaining": remaining,
+            "matrix": mlp_pair_matrix(teams, today, c)}
 
 
 def ppa_state(c: PBClient, today: date):
