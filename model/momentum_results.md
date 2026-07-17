@@ -23,3 +23,9 @@ Registered predictions: 4/4 HIT, mean Brier 0.044. Descriptive bonus: timeouts
 are called by the receiving side 12.5× as often as the serving side (6,417 vs
 512) — momentum-stopping attempts by the team being scored on, with no
 detectable next-rally payoff.
+
+## ADDENDUM H3b — windowed timeout effect (single frozen run)
+
+H3b W=10 (primary): theta +0.060 pts (se 0.037, 99% CI [-0.034, +0.155], z=+1.64, p=0.1) | n_treat 3400, n_ctrl 91957 | trigger profile: mean prew -2.61 (treat) vs -0.25 (ctrl) | NAIVE after-minus-before +2.30
+
+H3b W=5 (secondary): theta +0.044 pts (se 0.024, 99% CI [-0.017, +0.105], z=+1.87, p=0.062) | n_treat 5213, n_ctrl 140273 | trigger profile: mean prew -2.48 (treat) vs -0.23 (ctrl) | NAIVE after-minus-before +2.09

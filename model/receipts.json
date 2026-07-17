@@ -228,19 +228,19 @@
       "id": "2026-momentum-h3b-timeout-window",
       "title": "ADDENDUM H3b: windowed timeout effect (next-10-rally differential)",
       "committed": "2026-07-17",
-      "graded": null,
-      "status": "pending",
+      "graded": "2026-07-17",
+      "status": "graded",
       "source": "model/momentum_prereg.md ADDENDUM H3b + model/momentum_h3b.py (frozen before any windowed post-timeout statistic was computed)",
       "model": "OLS with cluster-robust SEs: next-10-rally point differential, receiving-side timeout vs untreated moments, adjusted for pre-window differential, margin, server number, strength",
-      "outcome_summary": null,
+      "outcome_summary": "No meaningful windowed timeout effect: theta = +0.060 points per 10-rally window (99% CI [-0.034, +0.155], p=0.10) - BOUNDED under the 0.5-point threshold. Secondary 5-rally window +0.044 [-0.017, +0.105]. The trigger profile confirms the intuition about WHEN timeouts happen (called after an average -2.6-point run vs -0.25 at ordinary moments), and the naive after-minus-before comparison shows +2.30 points of apparent improvement - almost exactly the +2.06 a zero-effect simulation with endogenous calling produces. The perceived timeout turnaround is regression to the mean.",
       "items": [
         {
           "label": "H3b: no meaningful windowed timeout effect (|theta| < 0.5 pts per 10 rallies or p >= .01)",
           "prob": 0.75,
-          "outcome": null,
-          "result": null,
-          "grade": "PENDING",
-          "brier": null
+          "outcome": "+0.060 pts/10 rallies, 99% CI [-0.034, +0.155] - no meaningful effect, BOUNDED",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.0625
         }
       ],
       "footnote": "User-motivated refinement of H3 (strategic adjustments may express over several rallies, not one). The naive before-vs-after comparison is demonstrated to be biased under the null by the endogenous-timeout selftest; the registered comparison is treated vs untreated moments of the same kind."
