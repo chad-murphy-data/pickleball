@@ -215,28 +215,106 @@ async function ensureLogs(uuid, inProgress) {
   }
 }
 
-// ---- charts (replay_winprob.svg_step, PICKLES-skinned) -----------------
+// ---- charts (replay_winprob.svg_step, redesigned for legibility) -------
+// Position is the message: the line lives between two labeled poles
+// (top = team 1 wins, bottom = team 2 wins), the halves are tinted in the
+// two side colors (CVD-validated green/blue pair), a badge at the line's
+// end names the current favorite, and a crosshair readout gives the exact
+// score + number at any rally. Color never carries the side alone.
+let chartReg = new Map(), chartSeq = 0;
 function svgStep(series, opts) {
   const { pts, marks } = series;
-  const W = 760, H = opts && opts.h || 150;
+  opts = opts || {};
+  const W = 760, H = opts.h || 150;
   if (!pts.length) return '<p class="note lp-nolog">no rally log on this court yet</p>';
+  const id = `wp${++chartSeq}`;
+  const L = 45, R = W - 15, TOP = 12, BOT = H - 20;
   const n = Math.max(pts[pts.length - 1].x, 1);
-  const X = i => 45 + (W - 60) * i / n, Y = p => 12 + (H - 30) * (1 - p);
+  const X = i => L + (R - L) * i / n, Y = p => TOP + (BOT - TOP) * (1 - p);
+  const midY = Y(0.5);
   const disp = pts.map(q => [q.x, PKL.displayFloor(q.p)]);
   let d = `M ${X(disp[0][0]).toFixed(1)} ${Y(disp[0][1]).toFixed(1)} `;
   for (let i = 1; i < disp.length; i++) d += `H ${X(disp[i][0]).toFixed(1)} V ${Y(disp[i][1]).toFixed(1)} `;
-  const grid = [0.1, 0.5, 0.9].map(v =>
-    `<line x1="45" y1="${Y(v)}" x2="${W - 15}" y2="${Y(v)}" stroke="var(--grid)" stroke-width="${v === 0.5 ? 1.6 : 0.8}"/>` +
-    `<text x="40" y="${Y(v) + 3}" font-size="9" fill="var(--muted)" text-anchor="end">${v * 100}%</text>`).join('');
+  // side fills: the step area closed along the 50/50 line, clipped to each half
+  const area = d + `L ${X(disp[disp.length - 1][0]).toFixed(1)} ${midY.toFixed(1)} L ${X(disp[0][0]).toFixed(1)} ${midY.toFixed(1)} Z`;
+  const fills =
+    `<clipPath id="${id}t"><rect x="0" y="0" width="${W}" height="${midY}"/></clipPath>` +
+    `<clipPath id="${id}b"><rect x="0" y="${midY}" width="${W}" height="${H - midY}"/></clipPath>` +
+    `<path d="${area}" fill="var(--wp1)" opacity=".16" clip-path="url(#${id}t)"/>` +
+    `<path d="${area}" fill="var(--wp2)" opacity=".16" clip-path="url(#${id}b)"/>`;
+  const grid = [0.1, 0.9].map(v =>
+    `<line x1="${L}" y1="${Y(v)}" x2="${R}" y2="${Y(v)}" stroke="var(--grid)" stroke-width="0.8"/>` +
+    `<text x="${L - 5}" y="${Y(v) + 3}" font-size="9" fill="var(--muted)" text-anchor="end">${v * 100}%</text>`).join('') +
+    `<line x1="${L}" y1="${midY}" x2="${R}" y2="${midY}" stroke="var(--baseline)" stroke-width="1.6"/>` +
+    `<text x="${L - 5}" y="${midY + 3}" font-size="9" fill="var(--muted)" text-anchor="end">50/50</text>`;
+  // game dividers on the composed track (label every segment, rule between)
+  const bounds = (opts.bounds || []).filter(b => b.x > 0).map(b =>
+    `<line x1="${X(b.x).toFixed(1)}" y1="${TOP - 2}" x2="${X(b.x).toFixed(1)}" y2="${BOT}" stroke="var(--baseline)" stroke-width="1" stroke-dasharray="3 3"/>` +
+    `<text x="${(X(b.x) + 4).toFixed(1)}" y="${BOT - 4}" font-size="8.5" fill="var(--muted)" font-family="Space Mono,monospace">${b.label}</text>`).join('');
   const ticks = (marks || []).map(([i, lab]) =>
-    `<line x1="${X(i).toFixed(1)}" y1="${H - 18}" x2="${X(i).toFixed(1)}" y2="${H - 8}" stroke="var(--muted)" stroke-width="1.5"/>` +
+    `<line x1="${X(i).toFixed(1)}" y1="${BOT + 2}" x2="${X(i).toFixed(1)}" y2="${BOT + 9}" stroke="var(--muted)" stroke-width="1.5"/>` +
     `<text x="${X(i).toFixed(1)}" y="${H - 2}" font-size="8" fill="var(--muted)" text-anchor="middle">${lab}</text>`).join('');
-  const color = opts && opts.color || 'var(--s1)';
-  const live = opts && opts.live
-    ? `<circle cx="${X(disp[disp.length - 1][0]).toFixed(1)}" cy="${Y(disp[disp.length - 1][1]).toFixed(1)}" r="3.4" fill="${color}"><animate attributeName="opacity" values="1;.25;1" dur="1.6s" repeatCount="indefinite"/></circle>` : '';
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">${grid}` +
-    `<path d="${d}" fill="none" stroke="${color}" stroke-width="2"/>${ticks}${live}</svg>` +
+  // labeled poles: the answer to "who is winning" is the line's position
+  const t = opts.teams || null;
+  const poleChip = (y, cls, label) => {
+    const w = 24 + label.length * 6.2;
+    return `<rect x="${L + 4}" y="${y}" width="${w.toFixed(0)}" height="14" fill="var(--surface)" opacity=".88"/>` +
+      `<rect x="${L + 8}" y="${y + 3.5}" width="7" height="7" fill="var(--${cls})"/>` +
+      `<text x="${L + 19}" y="${y + 10.5}" font-size="9.5" font-weight="700" fill="var(--ink2)" font-family="Space Mono,monospace">${label}</text>`;
+  };
+  const poles = t
+    ? poleChip(TOP + 2, 'wp1', `▲ ${esc(t[0]).toUpperCase()} WINS`) +
+      poleChip(BOT - 16, 'wp2', `▼ ${esc(t[1]).toUpperCase()} WINS`)
+    : '';
+  // favorite badge pinned to the line's end
+  const lastP = disp[disp.length - 1][1], fav1 = lastP >= 0.5;
+  const favTxt = t ? `${esc(t[fav1 ? 0 : 1]).toUpperCase()} ${PKL.fp(fav1 ? lastP : 1 - lastP)}%` : `${PKL.fp(lastP)}%`;
+  const ex = X(disp[disp.length - 1][0]), ey = Y(lastP);
+  const bw = 8 + favTxt.length * 6.6;
+  const bx = Math.min(ex + 6, R - bw), by = Math.max(TOP + 2, Math.min(ey - 8, BOT - 18));
+  const badge =
+    `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw.toFixed(0)}" height="15" fill="var(--surface)" stroke="var(--wp${fav1 ? 1 : 2})" stroke-width="1.5"/>` +
+    `<text x="${(bx + bw / 2).toFixed(1)}" y="${(by + 11).toFixed(1)}" font-size="10" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="Space Mono,monospace">${favTxt}</text>`;
+  const live = opts.live
+    ? `<circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="3.4" fill="var(--ink)"><animate attributeName="opacity" values="1;.25;1" dur="1.6s" repeatCount="indefinite"/></circle>` : '';
+  chartReg.set(id, { pts, teams: t, L, R, TOP, BOT, n, W, H });
+  const hover =
+    `<line data-cross="1" x1="0" y1="${TOP}" x2="0" y2="${BOT}" stroke="var(--ink2)" stroke-width="1" visibility="hidden"/>` +
+    `<rect data-catch="1" x="${L}" y="${TOP}" width="${R - L}" height="${BOT - TOP}" fill="transparent"/>`;
+  return `<div class="lp-chart" data-wp="${id}"><svg viewBox="0 0 ${W} ${H}" width="100%" role="img">${fills}${grid}${bounds}` +
+    `<path d="${d}" fill="none" stroke="var(--ink)" stroke-width="2"/>${ticks}${poles}${badge}${live}${hover}</svg>` +
+    `<div class="lp-wptip" hidden></div></div>` +
     (series.sampled ? '<p class="note lp-sampled">no rally log on this court — sampled every ~20 s from the scoreboard</p>' : '');
+}
+
+// crosshair + readout: nearest rally under the pointer
+function wireCharts(root) {
+  for (const box of root.querySelectorAll('[data-wp]')) {
+    const reg = chartReg.get(box.dataset.wp);
+    if (!reg || box.dataset.wired) continue;
+    box.dataset.wired = '1';
+    const svg = box.querySelector('svg'), tip = box.querySelector('.lp-wptip');
+    const cross = svg.querySelector('[data-cross]');
+    const show = (ev) => {
+      const r = svg.getBoundingClientRect();
+      const fx = (ev.clientX - r.left) / r.width * reg.W;
+      const xi = Math.round((fx - reg.L) / (reg.R - reg.L) * reg.n);
+      let best = reg.pts[0];
+      for (const q of reg.pts) if (Math.abs(q.x - xi) < Math.abs(best.x - xi)) best = q;
+      const px = reg.L + (reg.R - reg.L) * best.x / reg.n;
+      cross.setAttribute('x1', px); cross.setAttribute('x2', px);
+      cross.setAttribute('visibility', 'visible');
+      const p = PKL.displayFloor(best.p), fav1 = p >= 0.5;
+      const who = reg.teams ? `${esc(reg.teams[fav1 ? 0 : 1]).toUpperCase()} ${PKL.fp(fav1 ? p : 1 - p)}%` : `${PKL.fp(p)}%`;
+      const score = best.a !== undefined ? ` · ${best.a}–${best.b}` : '';
+      tip.innerHTML = `rally ${best.x}${score} · <strong>${who}</strong>`;
+      tip.hidden = false;
+      const tx = (px / reg.W) * r.width;
+      tip.style.left = `${Math.min(Math.max(tx - 60, 0), r.width - 130)}px`;
+    };
+    box.addEventListener('pointermove', show);
+    box.addEventListener('pointerleave', () => { cross.setAttribute('visibility', 'hidden'); tip.hidden = true; });
+  }
 }
 
 // ---- MLP matchup card ---------------------------------------------------
@@ -323,7 +401,7 @@ function matchupCard(mu) {
     ? `<span class="note">${headNote || 'unpriced'}</span>`
     : isDone
       ? `<strong>${mu.s1 > mu.s2 ? esc(mu.t1) : esc(mu.t2)} won ${Math.max(mu.s1, mu.s2)}–${Math.min(mu.s1, mu.s2)}</strong>`
-      : `<strong class="lp-big">${esc(teamShort(mu.t1))} ${fpF(head)}%</strong>`;
+      : `<strong class="lp-big"><span class="lp-sw ${head >= 0.5 ? 'lp-sw1' : 'lp-sw2'}"></span>${esc(teamShort(head >= 0.5 ? mu.t1 : mu.t2))} ${fpF(head >= 0.5 ? head : 1 - head)}%</strong>`;
 
   const dbPre = `<span class="note">${fpF(pDb)}%</span>`;
   const rows = games.map((m, i) => gameRow(m, infos[i], liveGameP(m, infos[i]))).join('') +
@@ -331,7 +409,7 @@ function matchupCard(mu) {
         : (mu.matches.some(m => m.tb) ? gameRow(mu.matches.find(m => m.tb), null, null, '') : ''));
 
   return `<div class="card lp-card" data-mu="${mu.uuid}">
-    <div class="lp-head">${chip}<span class="lp-teams">${esc(mu.t1)} <b>${mu.s1}</b>–<b>${mu.s2}</b> ${esc(mu.t2)}</span>${headline}</div>
+    <div class="lp-head">${chip}<span class="lp-teams"><span class="lp-sw lp-sw1"></span>${esc(mu.t1)} <b>${mu.s1}</b>–<b>${mu.s2}</b> <span class="lp-sw lp-sw2"></span>${esc(mu.t2)}</span>${headline}</div>
     <div class="lp-track" data-track="${mu.uuid}"></div>
     <table class="lp-games"><tr><th></th><th>pairing</th><th>score</th><th>live</th><th>pre</th></tr>${rows}</table>
     <p class="note lp-dbnote">DreamBreaker rated ${fpF(pDb)}% for ${esc(teamShort(mu.t1))} (singles model — rough by design).</p>
@@ -387,6 +465,8 @@ async function fillTrack(mu) {
   // compose the matchup-level track
   let w1 = 0, w2 = 0, x = 0;
   const track = { pts: [], marks: [] };
+  const bounds = [];
+  const teams = [teamShort(mu.t1), teamShort(mu.t2)];
   let sampledAny = false;
   for (const item of seq) {
     // the future AS OF this game: every later non-skipped game at its
@@ -397,10 +477,11 @@ async function fillTrack(mu) {
       if (skipped(games[j])) continue;
       fut.push(infos[j] ? infos[j].p0 : 0.5);
     }
+    bounds.push({ x, label: item.db ? 'DB' : SLOT_LABEL(item.m) });
     for (const q of item.s.pts) {
       const live = item.db ? q.p
         : q.p * PKL.matchupProb(w1 + 1, w2, fut, pDb) + (1 - q.p) * PKL.matchupProb(w1, w2 + 1, fut, pDb);
-      track.pts.push({ x: x + q.x, p: live });
+      track.pts.push({ x: x + q.x, p: live, a: q.a, b: q.b });
     }
     for (const [mi, lab] of item.s.marks || []) track.marks.push([x + mi, lab]);
     x += item.s.pts.length ? item.s.pts[item.s.pts.length - 1].x : 0;
@@ -410,17 +491,19 @@ async function fillTrack(mu) {
   }
   track.sampled = sampledAny;
   const anyLive = mu.matches.some(m => m.st === 2);
-  el.innerHTML = `<p class="note lp-tracklab">P(${esc(mu.t1)} wins the matchup), rally by rally</p>` +
-    svgStep(track, { h: 170, color: 'var(--ink)', live: anyLive });
+  let html = `<p class="note lp-tracklab">Matchup win probability, rally by rally — line toward a team = that team winning</p>` +
+    svgStep(track, { h: 175, teams, live: anyLive, bounds });
   // per-game mini charts for games with real rally logs
   const minis = [];
   for (const item of seq) {
     if (!item.s.pts.length || item.s.sampled) continue;
     const label = item.db ? 'DB' : SLOT_LABEL(item.m);
     minis.push(`<div class="lp-mini"><span class="note">${label}</span>` +
-      svgStep(item.s, { h: 96, color: item.db ? 'var(--s2)' : 'var(--s1)', live: item.m.st === 2 }) + '</div>');
+      svgStep(item.s, { h: 96, teams, live: item.m.st === 2 }) + '</div>');
   }
-  if (minis.length) el.innerHTML += `<details class="lp-minis"><summary class="note">per-game curves (${minis.length})</summary>${minis.join('')}</details>`;
+  if (minis.length) html += `<details class="lp-minis"><summary class="note">per-game curves (${minis.length})</summary>${minis.join('')}</details>`;
+  el.innerHTML = html;
+  wireCharts(el);
 }
 
 // ---- PPA cards ----------------------------------------------------------
@@ -510,6 +593,7 @@ async function fetchLive() {
 let snapsLoaded = false;
 function render(state) {
   CFG.today = state.date;
+  chartReg = new Map(); chartSeq = 0;
   if (!snapsLoaded) { snapsLoaded = true; loadSnaps(); }
   const anyLive = state.mlp.some(mu => mu.matches.some(m => m.st === 2)) ||
     state.ppa.some(t => t.matches.some(m => m.st === 2));
@@ -566,6 +650,19 @@ document.addEventListener('visibilitychange', () => {
 """
 
 LIVE_CSS = """
+/* chart side colors — CVD-validated green/blue pair (light + dark steps
+   checked with the palette validator against each surface) */
+:root { --wp1: #1e7a3c; --wp2: #1d6fa5; }
+@media (prefers-color-scheme: dark) { :root { --wp1: #65a82c; --wp2: #3a8fd4; } }
+.lp-sw { display:inline-block; width:9px; height:9px; margin:0 5px 0 2px; vertical-align:baseline; }
+.lp-sw1 { background: var(--wp1); }
+.lp-sw2 { background: var(--wp2); margin-left:5px; }
+.lp-chart { position:relative; }
+.lp-chart [data-catch] { cursor: crosshair; }
+.lp-wptip { position:absolute; top:2px; pointer-events:none;
+  background: var(--surface); border:1.5px solid var(--baseline);
+  padding:2px 8px; font-family:"Space Mono",ui-monospace,monospace;
+  font-size:11.5px; white-space:nowrap; }
 .lp-head { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
 .lp-teams { font-weight:600; font-size:17px; }
 .lp-big { font-size:22px; }
