@@ -66,6 +66,23 @@
         {"label": "Matchup 5: Phoenix Flames over Florida Smash", "prob": 0.6281, "outcome": "Phoenix won 3-1", "result": 1, "grade": "HIT", "brier": 0.1383}
       ],
       "footnote": "Matchup mean Brier 0.130 (coin flip = 0.25). Game level, matched on the forecast's own team-one pairing: 12/13 hits, mean Brier 0.092, two modal scores exact (both 11-6 mixed calls); 7 games VOID where the projected pairing never took the court, and opponent-side substitutions (Sock for Johnson, twice) graded through as lineup risk. Reaches-a-DreamBreaker graded 4/5 on the modal call, mean Brier 0.136 — the miss was the 37.4% DB that decided Phoenix-Orlando. POST-HOC COUNTERFACTUAL (not a regrade; committed grades stand): repricing the four Sock-affected games with actual lineups (Sock 0.837 vs Johnson 0.369 on 448/303 games) flips the matchup-3 call to Orlando 68% (Brier 0.377 → 0.102) and dissolves the MD game miss (0.316 → 0.023) — the day's headline miss was lineup information, not skill values. It cuts the other way too: Columbus's wins over the Sock-priced pairs (11-6, 11-1) become 48% and 90% calls, so the affected games' Brier sum rises 0.362 → 0.507. The model can't take credit both ways; the ledger keeps the frozen numbers."
+    },
+    {
+      "id": "2026-momentum-prereg",
+      "title": "Pre-registered momentum tests on 2,500 matches of rally logs",
+      "committed": "2026-07-17",
+      "graded": null,
+      "status": "pending",
+      "source": "model/momentum_prereg.md (hypotheses, estimators, decision criteria, and analysis code model/momentum_test.py frozen before any sequential statistic was computed)",
+      "model": "cluster-robust logistic regressions on ~120k resolved rallies; serve state + v2 strength controls; alpha .01 + practical thresholds",
+      "outcome_summary": null,
+      "items": [
+        {"label": "H1: no meaningful within-possession momentum (|APE| < 1pp or p >= .01)", "prob": 0.85, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
+        {"label": "H2: no meaningful cross-possession momentum (trailing-5 window)", "prob": 0.85, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
+        {"label": "H3: no meaningful receiving-side timeout effect (|APE| < 2pp)", "prob": 0.8, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
+        {"label": "H4: no meaningful game-point pressure effect (|APE| < 2pp)", "prob": 0.7, "outcome": null, "result": null, "grade": "PENDING", "brier": null}
+      ],
+      "footnote": "Graded the same day from a single frozen analysis run on the seeded 2,500-match sample; all four primaries reported regardless of outcome."
     }
   ]
 }
