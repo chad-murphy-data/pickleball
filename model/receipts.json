@@ -1,5 +1,5 @@
 {
-  "updated": "2026-07-16",
+  "updated": "2026-07-17",
   "note": "Public receipts ledger. Every entry is committed before the outcome is known; graded entries record the pre-registered probability, the outcome, hit/miss on the modal call, and the Brier score (lower is better; 0.25 = coin flip). This file is the source of truth for the website receipts page.",
   "validation": {
     "description": "v2 model frozen on pre-June data, scored on 884 unseen games (2026-06-01 through 2026-07-11).",
@@ -7,8 +7,15 @@
     "accuracy": 0.7738,
     "brier": 0.1653,
     "log_loss": 0.5058,
-    "dupr_reference": {"accuracy": 0.6467, "brier": 0.2289, "n_games": 518},
-    "v1_reference": {"accuracy": 0.752, "brier": 0.178},
+    "dupr_reference": {
+      "accuracy": 0.6467,
+      "brier": 0.2289,
+      "n_games": 518
+    },
+    "v1_reference": {
+      "accuracy": 0.752,
+      "brier": 0.178
+    },
     "source": "model/v2_holdout_summary.json"
   },
   "entries": [
@@ -22,12 +29,54 @@
       "model": "v2 (posterior simulation), DreamBreaker treated as 50/50",
       "outcome_summary": "St. Louis Shock won 3-0. MXD2 skipped as a dead game; no DreamBreaker. Anna Leigh Waters lost both her games (6-11 WD, 8-11 MXD1).",
       "items": [
-        {"label": "Overall: St. Louis Shock wins the final", "prob": 0.607, "outcome": "STL won 3-0", "result": 1, "grade": "HIT", "brier": 0.1544},
-        {"label": "WD: Waters/Johnson over Bright/Fahey", "prob": 0.88, "outcome": "Bright/Fahey won 11-6", "result": 0, "grade": "MISS", "brier": 0.7744},
-        {"label": "MD: Tardio/Patriquin over Khlif/Howells", "prob": 0.92, "outcome": "Tardio/Patriquin won 11-3", "result": 1, "grade": "HIT", "brier": 0.0064},
-        {"label": "MXD1: Waters/Khlif over Bright/Patriquin", "prob": 0.54, "outcome": "Bright/Patriquin won 11-8", "result": 0, "grade": "MISS", "brier": 0.2916},
-        {"label": "MXD2: Fahey/Tardio over Johnson/Howells", "prob": 0.75, "outcome": "not played (match decided 3-0)", "result": null, "grade": "VOID", "brier": null},
-        {"label": "Match reaches a DreamBreaker", "prob": 0.465, "outcome": "no DreamBreaker", "result": 0, "grade": "HIT", "brier": 0.2162}
+        {
+          "label": "Overall: St. Louis Shock wins the final",
+          "prob": 0.607,
+          "outcome": "STL won 3-0",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.1544
+        },
+        {
+          "label": "WD: Waters/Johnson over Bright/Fahey",
+          "prob": 0.88,
+          "outcome": "Bright/Fahey won 11-6",
+          "result": 0,
+          "grade": "MISS",
+          "brier": 0.7744
+        },
+        {
+          "label": "MD: Tardio/Patriquin over Khlif/Howells",
+          "prob": 0.92,
+          "outcome": "Tardio/Patriquin won 11-3",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.0064
+        },
+        {
+          "label": "MXD1: Waters/Khlif over Bright/Patriquin",
+          "prob": 0.54,
+          "outcome": "Bright/Patriquin won 11-8",
+          "result": 0,
+          "grade": "MISS",
+          "brier": 0.2916
+        },
+        {
+          "label": "MXD2: Fahey/Tardio over Johnson/Howells",
+          "prob": 0.75,
+          "outcome": "not played (match decided 3-0)",
+          "result": null,
+          "grade": "VOID",
+          "brier": null
+        },
+        {
+          "label": "Match reaches a DreamBreaker",
+          "prob": 0.465,
+          "outcome": "no DreamBreaker",
+          "result": 0,
+          "grade": "HIT",
+          "brier": 0.2162
+        }
       ],
       "footnote": "The earlier v1 forecast (same file, committed hours before) grades identically in direction: overall STL 57.0% HIT, WD 69.5% MISS, MD 79.1% HIT, MXD1 52.9% MISS. Both models called the match and missed the headline WD game."
     },
@@ -42,10 +91,38 @@
       "model": "v1 dyad chemistry + fixed-effects regression scoring (method frozen in the source file)",
       "outcome_summary": null,
       "items": [
-        {"label": "Waters + Bright (womens, PPA) underperform sum-of-parts in remaining 2026 games", "prob": null, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
-        {"label": "Alshon + Patriquin (mens, PPA) underperform sum-of-parts in remaining 2026 games", "prob": null, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
-        {"label": "Bright + Patriquin (mixed) chemistry stays small: |chem| < 1 point/game unshrunk", "prob": null, "outcome": null, "result": null, "grade": "PENDING", "brier": null},
-        {"label": "League-wide dyad-chemistry scale (sd_d) refit on H2-only games stays under 1.0 point/game", "prob": null, "outcome": null, "result": null, "grade": "PENDING", "brier": null}
+        {
+          "label": "Waters + Bright (womens, PPA) underperform sum-of-parts in remaining 2026 games",
+          "prob": null,
+          "outcome": null,
+          "result": null,
+          "grade": "PENDING",
+          "brier": null
+        },
+        {
+          "label": "Alshon + Patriquin (mens, PPA) underperform sum-of-parts in remaining 2026 games",
+          "prob": null,
+          "outcome": null,
+          "result": null,
+          "grade": "PENDING",
+          "brier": null
+        },
+        {
+          "label": "Bright + Patriquin (mixed) chemistry stays small: |chem| < 1 point/game unshrunk",
+          "prob": null,
+          "outcome": null,
+          "result": null,
+          "grade": "PENDING",
+          "brier": null
+        },
+        {
+          "label": "League-wide dyad-chemistry scale (sd_d) refit on H2-only games stays under 1.0 point/game",
+          "prob": null,
+          "outcome": null,
+          "result": null,
+          "grade": "PENDING",
+          "brier": null
+        }
       ],
       "footnote": "Scored in September against games dated after 2026-07-12 only, using the method written into the frozen file."
     },
@@ -59,13 +136,164 @@
       "model": "v2 current values, projected lineups, singles-model DreamBreakers, calibrated",
       "outcome_summary": "Favorites went 4/5. Columbus swept both its matchups 4-0; SoCal and Phoenix won as modest favorites; the miss was Phoenix-Orlando, where 61% Phoenix lost 2-3 on a DreamBreaker the model had priced at 37%. Jack Sock (in for the projected Yates Johnson) played both Orlando matchups.",
       "items": [
-        {"label": "Matchup 1: Columbus Sliders over Orlando Squeeze", "prob": 0.9894, "outcome": "Columbus won 4-0", "result": 1, "grade": "HIT", "brier": 0.0001},
-        {"label": "Matchup 2: SoCal Hard Eights over Florida Smash", "prob": 0.6334, "outcome": "SoCal won 4-0", "result": 1, "grade": "HIT", "brier": 0.1344},
-        {"label": "Matchup 3: Phoenix Flames over Orlando Squeeze", "prob": 0.6143, "outcome": "Orlando won 3-2 (DreamBreaker 21-14)", "result": 0, "grade": "MISS", "brier": 0.3774},
-        {"label": "Matchup 4: Columbus Sliders over California Black Bears", "prob": 0.9868, "outcome": "Columbus won 4-0", "result": 1, "grade": "HIT", "brier": 0.0002},
-        {"label": "Matchup 5: Phoenix Flames over Florida Smash", "prob": 0.6281, "outcome": "Phoenix won 3-1", "result": 1, "grade": "HIT", "brier": 0.1383}
+        {
+          "label": "Matchup 1: Columbus Sliders over Orlando Squeeze",
+          "prob": 0.9894,
+          "outcome": "Columbus won 4-0",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.0001
+        },
+        {
+          "label": "Matchup 2: SoCal Hard Eights over Florida Smash",
+          "prob": 0.6334,
+          "outcome": "SoCal won 4-0",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.1344
+        },
+        {
+          "label": "Matchup 3: Phoenix Flames over Orlando Squeeze",
+          "prob": 0.6143,
+          "outcome": "Orlando won 3-2 (DreamBreaker 21-14)",
+          "result": 0,
+          "grade": "MISS",
+          "brier": 0.3774
+        },
+        {
+          "label": "Matchup 4: Columbus Sliders over California Black Bears",
+          "prob": 0.9868,
+          "outcome": "Columbus won 4-0",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.0002
+        },
+        {
+          "label": "Matchup 5: Phoenix Flames over Florida Smash",
+          "prob": 0.6281,
+          "outcome": "Phoenix won 3-1",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.1383
+        }
       ],
       "footnote": "Matchup mean Brier 0.130 (coin flip = 0.25). Game level, matched on the forecast's own team-one pairing: 12/13 hits, mean Brier 0.092, two modal scores exact (both 11-6 mixed calls); 7 games VOID where the projected pairing never took the court, and opponent-side substitutions (Sock for Johnson, twice) graded through as lineup risk. Reaches-a-DreamBreaker graded 4/5 on the modal call, mean Brier 0.136 — the miss was the 37.4% DB that decided Phoenix-Orlando. POST-HOC COUNTERFACTUAL (not a regrade; committed grades stand): repricing the four Sock-affected games with actual lineups (Sock 0.837 vs Johnson 0.369 on 448/303 games) flips the matchup-3 call to Orlando 68% (Brier 0.377 → 0.102) and dissolves the MD game miss (0.316 → 0.023) — the day's headline miss was lineup information, not skill values. It cuts the other way too: Columbus's wins over the Sock-priced pairs (11-6, 11-1) become 48% and 90% calls, so the affected games' Brier sum rises 0.362 → 0.507. The model can't take credit both ways; the ledger keeps the frozen numbers."
+    },
+    {
+      "id": "2026-momentum-prereg",
+      "title": "Pre-registered momentum tests on 2,500 matches of rally logs",
+      "committed": "2026-07-17",
+      "graded": "2026-07-17",
+      "status": "graded",
+      "source": "model/momentum_prereg.md (hypotheses, estimators, decision criteria, and analysis code model/momentum_test.py frozen before any sequential statistic was computed); results in model/momentum_results.md",
+      "model": "cluster-robust logistic regressions on 191,500 resolved rallies (2,500 matches, 0 dropped); serve state + v2 strength controls; alpha .01 + practical thresholds",
+      "outcome_summary": "Momentum is not detectable in pro pickleball rallies. Within-possession streaks +0.11pp (99% CI [-0.72, +0.94], bounded null), trailing-5-rally momentum +0.17pp ([-0.19, +0.52], bounded null), game-point pressure -0.01pp ([-1.31, +1.29], bounded null). Timeouts: inconclusive, direction mildly AGAINST the caller (+1.53pp for the opponent's next serve rally, p=.014, CI reaches +3.1pp).",
+      "items": [
+        {
+          "label": "H1: no meaningful within-possession momentum (|APE| < 1pp or p >= .01)",
+          "prob": 0.85,
+          "outcome": "+0.11pp, 99% CI [-0.72, +0.94] — no meaningful effect, BOUNDED",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.0225
+        },
+        {
+          "label": "H2: no meaningful cross-possession momentum (trailing-5 window)",
+          "prob": 0.85,
+          "outcome": "+0.17pp, 99% CI [-0.19, +0.52] — no meaningful effect, BOUNDED",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.0225
+        },
+        {
+          "label": "H3: no meaningful receiving-side timeout effect (|APE| < 2pp)",
+          "prob": 0.8,
+          "outcome": "+1.53pp, p=.014 (not sig at .01); CI [-0.07, +3.12] exceeds +2pp so not bounded — no effect established, formally inconclusive",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.04
+        },
+        {
+          "label": "H4: no meaningful game-point pressure effect (|APE| < 2pp)",
+          "prob": 0.7,
+          "outcome": "-0.01pp, 99% CI [-1.31, +1.29] — servers convert game points at exactly their usual rate, BOUNDED",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.09
+        }
+      ],
+      "footnote": "4/4 registered predictions hit, mean Brier 0.044. Secondaries: lag-1 rally -0.18pp (ns); serving-side timeouts -3.24pp on only 512 events (ns, CI +/-5.5pp). Descriptive bonus: timeouts are called by the RECEIVING side 12.5x as often as the serving side (6,417 vs 512) - they are momentum-stopping attempts by the team being scored on, and the next-rally evidence says they do not detectably work. Caveats as registered: logged matches are not a random sample of events, and the timeout estimate admits a selection interpretation; under the iid null the tests remain exact."
+    },
+    {
+      "id": "2026-momentum-h3b-timeout-window",
+      "title": "ADDENDUM H3b: windowed timeout effect (next-10-rally differential)",
+      "committed": "2026-07-17",
+      "graded": "2026-07-17",
+      "status": "graded",
+      "source": "model/momentum_prereg.md ADDENDUM H3b + model/momentum_h3b.py (frozen before any windowed post-timeout statistic was computed)",
+      "model": "OLS with cluster-robust SEs: next-10-rally point differential, receiving-side timeout vs untreated moments, adjusted for pre-window differential, margin, server number, strength",
+      "outcome_summary": "No meaningful windowed timeout effect: theta = +0.060 points per 10-rally window (99% CI [-0.034, +0.155], p=0.10) - BOUNDED under the 0.5-point threshold. Secondary 5-rally window +0.044 [-0.017, +0.105]. The trigger profile confirms the intuition about WHEN timeouts happen (called after an average -2.6-point run vs -0.25 at ordinary moments), and the naive after-minus-before comparison shows +2.30 points of apparent improvement - almost exactly the +2.06 a zero-effect simulation with endogenous calling produces. The perceived timeout turnaround is regression to the mean.",
+      "items": [
+        {
+          "label": "H3b: no meaningful windowed timeout effect (|theta| < 0.5 pts per 10 rallies or p >= .01)",
+          "prob": 0.75,
+          "outcome": "+0.060 pts/10 rallies, 99% CI [-0.034, +0.155] - no meaningful effect, BOUNDED",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.0625
+        }
+      ],
+      "footnote": "User-motivated refinement of H3 (strategic adjustments may express over several rallies, not one). The naive before-vs-after comparison is demonstrated to be biased under the null by the endogenous-timeout selftest; the registered comparison is treated vs untreated moments of the same kind."
+    },
+    {
+      "id": "2026-momentum-h3c-steelman",
+      "title": "ADDENDUM H3c: the rally-share steelman (final timeout test on this sample)",
+      "committed": "2026-07-17",
+      "graded": "2026-07-17",
+      "status": "graded",
+      "source": "model/momentum_prereg.md ADDENDUM H3c + model/momentum_h3c.py (frozen before any rally-share post-timeout statistic was computed)",
+      "model": "Same matched-moment design as H3b; outcome = receiver's share of next 10 rallies won. Secondaries: 3-rally share, possession-killer, severe-trigger subset. Any positive requires disjoint-sample replication before any claim.",
+      "outcome_summary": "Bounded null at the steelman's strongest: receiving side wins +0.20pp more of the next 10 rallies after its timeout (99% CI [-0.30, +0.71], p=.31; threshold was 2.5pp). Possession-killer dead null (-0.05pp); severe-trigger subset -0.11pp; 3-rally share +0.86pp at p=.045 (lone sub-threshold secondary; noise per the registered language). The naive before/after illusion SCALES with desperation - +16.4pp overall, +25.5pp for severe triggers - while the adjusted effect stays at zero: the more the timeout was needed, the bigger the regression-to-the-mean mirage. Timeout program closed on this sample; replication pool reserved but nothing to replicate.",
+      "items": [
+        {
+          "label": "H3c: no meaningful rally-share timeout effect (|theta| < 2.5pp or p >= .01)",
+          "prob": 0.75,
+          "outcome": "+0.20pp of next-10-rally share, 99% CI [-0.30, +0.71] - no meaningful effect, BOUNDED",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.0625
+        }
+      ],
+      "footnote": "User-proposed steelman: rallies are the proximal outcome (killing the server's possession precedes scoring, which point differentials cannot see until converted). Declared the FINAL timeout estimand on this sample; replication pool (untouched ~10k eligible matches, seed 20260718) reserved for any positive."
+    },
+    {
+      "id": "2026-momentum-h3d-replication",
+      "title": "ADDENDUM H3d (amended): window-profile confirmation of the timeout question",
+      "committed": "2026-07-17",
+      "graded": null,
+      "status": "pending",
+      "source": "model/momentum_prereg.md ADDENDUM H3d + model/momentum_h3d.py (frozen before any statistic touched the replication pool)",
+      "model": "Window profile theta_W for W in {1,2,3,4,5,7,10} on the full untouched 9,426-match pool, identical moments/controls. Primary: theta_3 > 0 one-sided alpha .01. Family: other windows at Bonferroni |z|>=2.69. Bounding: all seven 99% CIs vs +/-2.5pp. Amended pre-unblinding (user's argument: one cell cannot close a family for a skeptical reader in either direction).",
+      "outcome_summary": null,
+      "items": [
+        {
+          "label": "H3d primary: the 3-rally hint FAILS to replicate (one-sided p >= .01)",
+          "prob": 0.8,
+          "outcome": null,
+          "result": null,
+          "grade": "PENDING",
+          "brier": null
+        },
+        {
+          "label": "H3d family: no window in {1,2,4,5,7,10} clears Bonferroni |z|>=2.69",
+          "prob": 0.8,
+          "outcome": null,
+          "result": null,
+          "grade": "PENDING",
+          "brier": null
+        }
+      ],
+      "footnote": "Hypothesis generated on sample A (lone p=.045 secondary among ~10 estimands), tested once on disjoint data. Even a successful replication claims only a real-but-tiny sub-1pp huddle effect, far below the 2.5pp meaningful bar."
     }
   ]
 }
