@@ -244,6 +244,27 @@
         }
       ],
       "footnote": "User-motivated refinement of H3 (strategic adjustments may express over several rallies, not one). The naive before-vs-after comparison is demonstrated to be biased under the null by the endogenous-timeout selftest; the registered comparison is treated vs untreated moments of the same kind."
+    },
+    {
+      "id": "2026-momentum-h3c-steelman",
+      "title": "ADDENDUM H3c: the rally-share steelman (final timeout test on this sample)",
+      "committed": "2026-07-17",
+      "graded": null,
+      "status": "pending",
+      "source": "model/momentum_prereg.md ADDENDUM H3c + model/momentum_h3c.py (frozen before any rally-share post-timeout statistic was computed)",
+      "model": "Same matched-moment design as H3b; outcome = receiver's share of next 10 rallies won. Secondaries: 3-rally share, possession-killer, severe-trigger subset. Any positive requires disjoint-sample replication before any claim.",
+      "outcome_summary": null,
+      "items": [
+        {
+          "label": "H3c: no meaningful rally-share timeout effect (|theta| < 2.5pp or p >= .01)",
+          "prob": 0.75,
+          "outcome": null,
+          "result": null,
+          "grade": "PENDING",
+          "brier": null
+        }
+      ],
+      "footnote": "User-proposed steelman: rallies are the proximal outcome (killing the server's possession precedes scoring, which point differentials cannot see until converted). Declared the FINAL timeout estimand on this sample; replication pool (untouched ~10k eligible matches, seed 20260718) reserved for any positive."
     }
   ]
 }

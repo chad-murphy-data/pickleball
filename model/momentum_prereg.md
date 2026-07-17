@@ -168,3 +168,46 @@ simulates iid play with ENDOGENOUS timeout calling (hazard increasing in
 the caller's recent deficit, zero true effect) and must show (a) the
 naive after-minus-before difference is strongly positive (the trap), and
 (b) θ statistically indistinguishable from zero.
+
+---
+
+# ADDENDUM H3c — the steelman: rallies, not points (frozen 2026-07-17)
+
+Registered after H3b's bounded null, BEFORE any rally-share post-timeout
+statistic was computed. Rationale (user's steelman): in side-out scoring
+the receiving side's first win is killing the server's possession —
+rallies won — which a point differential cannot see until converted.
+H3 tested rallies at window 1; H3b points at window 10; this tests the
+strongest cell, rally share at window 10.
+
+**Discipline:** this is the THIRD timeout test on the same sample. It is
+hereby the FINAL one on this sample: no further timeout estimands will be
+computed on these 2,500 matches. If any registered cell below crosses its
+bar, the claim is made ONLY after replication on a freshly drawn,
+disjoint 2,500-match sample from the untouched remainder of the eligible
+pool (seed to be drawn as `random.Random(20260718)`).
+
+**Moments, treatment, controls, adjustment:** identical to H3b (same
+sample, same moment construction, same regression controls with the
+pre-window measured in the SAME units as each outcome).
+
+**Primary:** Y = receiver's share of the next 10 rallies won (a rally is
+won by a side if it wins serving, or its opponent loses serving).
+θ_share = adjusted treatment coefficient. Effect iff p < .01 AND
+|θ_share| ≥ 2.5pp. 99% CI inside ±2.5pp → bounded null.
+
+**Secondary steelman cells (reported, never promoted to headline):**
+- S1: 3-rally share — "right out of the huddle".
+- S2: possession-killer — P(the interrupted server possession yields no
+  further point), same controls.
+- S3: severe triggers only — primary model restricted to moments with
+  point pre-window ≤ −4 (the timeout at its most desperate/most needed).
+
+**Registered predictions:** primary null 0.75; P(at least one of the
+four cells nominally crosses p<.01) ≈ 0.15 under honest multiplicity —
+a lone secondary ping without primary support will be reported as noise
+pending replication, not as an effect.
+
+**Validation:** `model/momentum_h3c.py --selftest` — same endogenous
+zero-effect simulation; the rally-share estimator must recover θ ≈ 0
+while the naive rally-share before/after shows the selection artifact.
