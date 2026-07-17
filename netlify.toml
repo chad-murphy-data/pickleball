@@ -1,0 +1,8 @@
+# pickles-live: serverless data proxy for the PICKLES live page.
+# The static site itself lives on GitHub Pages; this Netlify site only
+# hosts the two /api functions (netlify/functions/) plus a stub index.
+[build]
+  publish = "netlify/public"
+
+[functions]
+  node_bundler = "esbuild"

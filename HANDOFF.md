@@ -1,5 +1,18 @@
 # HANDOFF — live-listener launch & receipts
 
+## ► ADDENDUM 2026-07-16 late PT — live page built; check it Friday morning
+
+`site/live.html` (Pillar 5) ships on the `claude/live-match-progress-page-*`
+branch: rally-by-rally win prob for MLP + PPA, backed by Supabase Edge
+Functions (`live`/`logs` on project nwgxyytowbluuykbdcfc — deployed and
+verified against day-1 data). First thing on Friday (MLP San Diego day 2 +
+PPA Macon day 1, first ball ~10:00 PT): open the page during play and check
+(a) LIVE cards update every ~20 s, (b) whether getListLogs serves rows
+MID-match (verified only for completed matches so far — if not, charts use
+the snapshot fallback until courts finish), (c) PPA Macon payloads carry
+player uuids + fmt (single-15 Challenger vs Bo3-11) so PPA rows price.
+Engine sync check: `node web/test_live_engine.mjs`.
+
 *Written 2026-07-15 (Pacific) for the next thread. Canonical docs remain
 CLAUDE.md (house rules), ROADMAP.md (build order), recon.md (data + SSE protocol).
 This file is a dated status snapshot — if it's more than a week old, trust the

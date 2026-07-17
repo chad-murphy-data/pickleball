@@ -2,9 +2,9 @@ __pycache__/
 *.pyc
 .venv/
 raw/
-harvest.log
-enrich.log
+*.log
 scraper/discovery/
-harvest*.log
 model/*.npz
+.netlify/
+node_modules/
 site/
