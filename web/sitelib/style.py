@@ -211,6 +211,30 @@ h1.runtitle { font-family: Anton, "Space Mono", sans-serif; font-weight: 400;
 .lsec.inside { padding-top: 40px; padding-bottom: 56px; }
 .lsec.check { padding-top: 48px; }
 .lsec.notes { padding-top: 24px; padding-bottom: 56px; }
+.lsec.slate { padding-top: 18px; }
+.slatebox { background: var(--surface); border: 1.5px solid var(--border);
+  padding: 12px 16px 10px; }
+.slatehead { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 8px; }
+.slateevent { font-family: "Space Mono", ui-monospace, monospace; font-weight: 700;
+  font-size: 12.5px; letter-spacing: 0.06em; color: var(--ink2); }
+.slatehead .fill { flex: 1; }
+.slatelink { font-family: "Space Mono", ui-monospace, monospace; font-weight: 700;
+  font-size: 12px; letter-spacing: 0.05em; white-space: nowrap; }
+.slaterows { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 4px 28px; }
+a.srow { display: flex; align-items: baseline; gap: 8px; padding: 2px 0;
+  font-family: "Space Mono", ui-monospace, monospace; font-size: 12.5px;
+  color: var(--ink); }
+a.srow .st { color: var(--muted); font-size: 11.5px; white-space: nowrap; }
+a.srow .sm { font-weight: 700; white-space: nowrap; }
+a.srow .lead { flex: 1; border-bottom: 2px dotted var(--baseline);
+  transform: translateY(-3px); min-width: 12px; }
+a.srow .sp { font-weight: 700; white-space: nowrap; }
+.slatefoot { border-top: 1px solid var(--grid); margin-top: 8px; padding-top: 7px;
+  display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap;
+  font-family: "Space Mono", ui-monospace, monospace; font-size: 12px;
+  letter-spacing: 0.04em; color: var(--ink2); }
 header.landing { border-bottom: 3px double var(--ink); background: var(--surface); }
 header.landing .bar { max-width: 1080px; margin: 0 auto; padding: 14px 24px;
   display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; }
