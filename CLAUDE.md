@@ -163,6 +163,19 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   all deciles track observed within noise, top decile ~88% obs vs ~95%
   pred — refit in-game calibration after the log backfill. Live mode =
   same engine fed by Tier-1/Tier-2 on the droplet (unbuilt).
+- **LIVE PAGE SHIPPED 2026-07-16** (`site/live.html`, Pillar 5): today's
+  MLP matchups + PPA pro doubles with rally-by-rally win prob. Engine =
+  `web/sitelib/live_engine.js`, the validated JS twin of race.py+winprob.py
+  (`node web/test_live_engine.mjs` cross-checks vs Python at 1e-9 — run it
+  after touching either side). Data path: browser → Supabase Edge Functions
+  `live`/`logs` (source `supabase/functions/`; same code as the alternate
+  `netlify/functions/` backend — BFF/SSE send no CORS so a proxy is
+  mandatory; responses memo-coalesced so upstream sees ≤1 sweep/15 s
+  regardless of viewers). Config via env LIVE_API_BASE / LIVE_API_KEY at
+  build. Mid-match joins backfill from getListLogs; no-log courts fall back
+  to ~20 s scoreboard snapshots (localStorage). Pre-match numbers anchor to
+  the calibrated race DP, so live curves agree with graded receipts at
+  rally zero; DB panel uses the singles model.
 - **Rally-level history is backfillable** (found 2026-07-16):
   `/api/v1/results/getListLogs?id=<match_uuid>` (open BFF) returns the
   full referee log for completed matches — per-rally server/receiver
@@ -192,7 +205,8 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 `python web/build_site.py` regenerates `site/` (gitignored, ~511 pages) from
 data/*.csv + model/receipts.json in ~4 s, stdlib-only (no pandas). Pages:
 PICKLES landing page (index.html — live doorway teasers + conditional
-"tonight" band off data/forecasts.json), power rankings (rankings.html),
+"tonight" band off data/forecasts.json), live board (live.html — see the
+live-page bullet above), power rankings (rankings.html),
 499 player pages (trajectory + game-log-vs-expectation SVGs), client-side
 matchup simulator (race DP + weakest link + uncertainty in embedded JS,
 shareable permalinks), receipts ledger + calibration, record book,

@@ -72,12 +72,17 @@ All pages regenerate from existing CSVs in ~4 s: `python web/build_site.py`
 
 ## Phase 3 — Live layer (M; needs a persistent $5 VPS)
 
-- 🔜 Deploy Tier-1 poller as a systemd service, schedule-aware — kit ready
-  in `deploy/` (install.sh + user units), just needs a box
-- ⬜ ★ PILLAR 5 — **Live win-probability charts**: pre-match lookup tables (score × 4
-  serve states) shipped as JSON; browser indexes as events arrive; step
-  chart with annotations + uncertainty ribbon
-- ⬜ Layer Tier-2 SSE feed on top when discovered (rally resolution)
+- ✅ Deploy Tier-1 poller as a systemd service, schedule-aware (droplet,
+  daily 09:15 PT timer; archives live/*.jsonl to main — 2026-07-15)
+- ✅ ★ PILLAR 5 — **Live win-probability charts** (`site/live.html`,
+  2026-07-16): client-side serve-aware DP (JS twin of winprob.py) fed by a
+  serverless BFF proxy (supabase/functions/, alt netlify/functions/;
+  CDN/memo-coalesced to ≥15 s per upstream sweep) + rally-log backfill via
+  getListLogs, so mid-match joins get the full curve. Matchup track +
+  per-game curves + DreamBreaker panel. Not yet from the spec: uncertainty
+  ribbon; in-game calibration refit pending the rally-log backfill.
+- ⬜ Layer Tier-2 SSE feed on top (protocol decoded; would replace 20 s
+  polling with per-rally push)
 - ⬜ Auto-generated post-match win-prob chart images → biggest-swing posts
 
 ## Phase 4 — Tools only this model can power (M each)
