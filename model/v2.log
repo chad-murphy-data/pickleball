@@ -1,9 +1,0 @@
-=== v2 full fit ===
- }
-}
-divergences: 0 | max rhat v0: 1.0190051794052124
-=== v2 train fit (holdout) ===
- }
-}
-divergences: 0 | max rhat v0: 1.0096895694732666
-V2_DONE
