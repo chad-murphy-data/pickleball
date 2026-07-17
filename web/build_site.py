@@ -1843,6 +1843,7 @@ def build_slate(F, players, games, updated, today):
                     f'<span class="slateevent">{esc(event)} :: {len(night)} '
                     f'MATCHUP{"S" if len(night) != 1 else ""} RATED</span>'
                     f'<span class="fill"></span>'
+                    f'<a class="slatelink" id="slate-live" href="live.html">LIVE BOARD →</a>'
                     f'<a class="slatelink" href="forecast.html">FULL FORECAST →</a></div>')
             bits = []
             for f in night:
@@ -1935,6 +1936,26 @@ def build_landing(players, games, updated, n_games, R):
     today = date.today().isoformat()
     F = load_forecasts()
     slate = build_slate(F, players, games, updated, today)
+    # one cheap live-state check per pageview: lights the LIVE NOW badges
+    # when any match is actually in progress (CDN-coalesced upstream, no
+    # polling — the live page itself does the real polling)
+    hdrs = ({"Authorization": f"Bearer {livepage.API_KEY}",
+             "apikey": livepage.API_KEY} if livepage.API_KEY else {})
+    live_badge = ("""<script>(async () => { try {
+  const r = await fetch(__URL__, { headers: __HDRS__ });
+  const d = await r.json();
+  const on = (d.mlp || []).some(mu => (mu.matches || []).some(m => m.st === 2)) ||
+             (d.ppa || []).some(t => (t.matches || []).some(m => m.st === 2));
+  if (!on) return;
+  const s = document.getElementById('slate-live');
+  if (s) { s.classList.add('live-on'); s.innerHTML = '<span class="ldot2"></span> LIVE NOW →'; }
+  const n = document.getElementById('nav-live');
+  if (n) n.classList.add('live-on');
+  const c = document.querySelector('#door-live .livechip');
+  if (c) c.hidden = false;
+} catch (e) {} })();</script>"""
+        .replace("__URL__", json.dumps(livepage.API_BASE + "/live"))
+        .replace("__HDRS__", json.dumps(hdrs)))
     feat, tonight = pick_featured(F, today)
     frows = "".join(
         f'<div class="t-row"><span class="call"><strong>{slot} {pnm}</strong></span>'
@@ -2025,7 +2046,7 @@ def build_landing(players, games, updated, n_games, R):
 <header class="landing"><div class="bar">
  <span class="brandchip">PICKLES</span>
  <span class="brandsub">Probabilistic Inference of Competitive Kitchen-Line Expected Scores</span>
- <nav><a href="rankings.html">RANKINGS</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="methods.html">METHODS</a></nav>
+ <nav><a href="live.html" id="nav-live">LIVE</a><a href="rankings.html">RANKINGS</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="methods.html">METHODS</a></nav>
 </div></header>
 {slate}
 <section class="lsec hero">
@@ -2056,6 +2077,18 @@ DUPR kept updating. It still lost by {gap} points.</div>
 <section class="lsec inside">
  <h2 class="lh2">What the model keeps track of</h2>
  <div class="doorgrid">
+  <a class="door" href="live.html" id="door-live">
+   <span class="doortag">LIVE WIN PROBABILITY <span class="livechip" hidden>● LIVE NOW</span></span>
+   <div class="t-spark"><svg viewBox="0 0 260 56" aria-hidden="true">
+    <line x1="0" y1="28" x2="260" y2="28" stroke="var(--grid)" stroke-width="1"/>
+    <path d="M 4 34 H 28 V 26 H 52 V 38 H 76 V 30 H 96 V 44 H 120 V 36 H 142 V 20 H 168 V 26 H 192 V 12 H 222 V 16 H 248"
+          fill="none" stroke="var(--s1)" stroke-width="2.5"/>
+    <circle cx="248" cy="16" r="4" fill="var(--s1)"><animate attributeName="opacity" values="1;.25;1" dur="1.6s" repeatCount="indefinite"/></circle>
+   </svg></div>
+   <p class="doorblurb">Rally-by-rally win probability while matches are on —
+serve-aware, updating every ~20 seconds, anchored to the same pre-match
+numbers the receipts page grades.</p>
+  </a>
   <a class="door" href="rankings.html">
    <span class="doortag">POWER RANKINGS</span>
    <div class="t-bars">{"".join(bars)}</div>
@@ -2107,6 +2140,7 @@ that" — said out loud, when true.</div>
   <span>{handle_bit}full forecast archive on file</span>
  </div>
 </div></footer>
+{live_badge}
 """
     write("index.html", html)
 
