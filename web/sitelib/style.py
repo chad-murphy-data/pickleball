@@ -421,7 +421,8 @@ FONTS_PRECONNECT = """<link rel="preconnect" href="https://fonts.googleapis.com"
 
 NAV = [("rankings.html", "Rankings"), ("players/index.html", "Players"),
        ("live.html", "Live"),
-       ("forecast.html", "Forecasts"), ("results.html", "Results"),
+       ("forecast.html", "Forecasts"), ("titlerace.html", "Title race"),
+       ("results.html", "Results"),
        ("simulator.html", "Simulator"), ("receipts.html", "Receipts"),
        ("records.html", "Record book"), ("dupr.html", "DUPR × model"),
        ("methods.html", "Methods"), ("data.html", "Data")]

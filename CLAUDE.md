@@ -35,6 +35,8 @@ python scraper/extract_ratings.py            # raw/ → per-match + latest DUPR 
 python scraper/live_poller.py                # live score JSONL during event days
 python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
                                              #   --commit freezes into receipts.json
+python scraper/tournament_state.py           # live-event state (MLP standings/slate,
+                                             #   PPA seeded draws) → data/tournament_state.json
 python web/build_site.py                     # data/*.csv → site/ static website (~4 s)
 ```
 
