@@ -211,3 +211,43 @@ pending replication, not as an effect.
 **Validation:** `model/momentum_h3c.py --selftest` — same endogenous
 zero-effect simulation; the rally-share estimator must recover θ ≈ 0
 while the naive rally-share before/after shows the selection artifact.
+
+---
+
+# ADDENDUM H3d — fresh-sample confirmation of the 3-rally hint (frozen 2026-07-17)
+
+H3c's lone secondary lean (3-rally share +0.86pp, p=.045 two-sided — one
+nominal ping across ~10 timeout estimands, i.e. the expected yield of
+pure noise) is treated per the registered language as noise. This
+addendum gives it the one clean shot science allows: **hypothesis
+generated on sample A, tested once, confirmatorily, on disjoint data.**
+Frozen before any statistic touches the replication pool.
+
+**Sample:** ALL 9,426 eligible matches NOT in the seed-20260717 sample
+(the full untouched remainder — superseding the earlier sketch of a
+fresh 2,500, decided before unblinding for power).
+
+**Design:** moments, treatment, controls, and construction identical to
+H3c. **A single estimand**: θ3 = adjusted treatment effect on the
+receiver's share of the next 3 rallies. Nothing else is computed on this
+pool.
+
+**Test:** one-sided (direction fixed positive by sample A), α = .01.
+Power, registered up front: se ≈ 0.22pp (scaling sample A's 0.43pp by
+√(2500/9426)); one-sided .01 needs θ̂ ≥ ~0.51pp; power ≈ 94% if the true
+effect is sample A's +0.86pp. A decisive test either way.
+
+**Claim ladder (frozen):**
+- Significant → "a REAL but TINY short-window effect: the huddle buys
+  under one percentage point of the next three rallies — far below the
+  2.5pp meaningful bar. Timeouts still don't 'work'; they're just not
+  literally nothing."
+- Not significant → the 3-rally hint is retired as noise; the timeout
+  program is closed everywhere.
+- Either way, the 99% CI is reported, with bounded-null language if it
+  sits inside ±2.5pp.
+
+**Registered prediction:** fails to replicate (null), **prob 0.80**.
+
+**Validation:** `model/momentum_h3d.py --selftest` — endogenous
+zero-effect simulation fit on the 3-rally share must recover θ3 ≈ 0.

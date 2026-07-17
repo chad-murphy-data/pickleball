@@ -265,6 +265,27 @@
         }
       ],
       "footnote": "User-proposed steelman: rallies are the proximal outcome (killing the server's possession precedes scoring, which point differentials cannot see until converted). Declared the FINAL timeout estimand on this sample; replication pool (untouched ~10k eligible matches, seed 20260718) reserved for any positive."
+    },
+    {
+      "id": "2026-momentum-h3d-replication",
+      "title": "ADDENDUM H3d: fresh-sample confirmation of the 3-rally timeout hint",
+      "committed": "2026-07-17",
+      "graded": null,
+      "status": "pending",
+      "source": "model/momentum_prereg.md ADDENDUM H3d + model/momentum_h3d.py (frozen before any statistic touched the replication pool)",
+      "model": "Single estimand: 3-rally share effect on the full untouched 9,426-match pool, one-sided alpha .01; ~94% power against sample A's +0.86pp. Claim ladder frozen either way.",
+      "outcome_summary": null,
+      "items": [
+        {
+          "label": "H3d: the 3-rally hint FAILS to replicate (one-sided p >= .01)",
+          "prob": 0.8,
+          "outcome": null,
+          "result": null,
+          "grade": "PENDING",
+          "brier": null
+        }
+      ],
+      "footnote": "Hypothesis generated on sample A (lone p=.045 secondary among ~10 estimands), tested once on disjoint data. Even a successful replication claims only a real-but-tiny sub-1pp huddle effect, far below the 2.5pp meaningful bar."
     }
   ]
 }
