@@ -39,9 +39,12 @@ python web/build_site.py                     # data/*.csv → site/ static websi
 ```
 
 Deploy: .github/workflows/site.yml → GitHub Pages on push to main +
-nightly data refresh (raw/ cached in Actions; guard restores committed
-CSVs if a partial parse shrinks games.csv). Setup once: Settings → Pages
-→ Source "GitHub Actions".
+nightly data refresh. The nightly harvests --start 2024-01-01 (raw/ is
+cached in Actions; parse.py rebuilds games.csv from raw/ ALONE, so the
+sweep must cover the full history or the shrink guard fires), then
+commits the refreshed data/ back to the branch so push builds never
+regress to stale CSVs. Guard: restore committed data/ if games.csv drops
+under 30k rows. Setup once: Settings → Pages → Source "GitHub Actions".
 
 `harvest.py` accepts `--start/--end`; re-runs only fetch new/recent dates
 (last 3 days are "volatile" and refetched). Data source: pickleball.com's

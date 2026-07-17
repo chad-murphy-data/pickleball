@@ -1,11 +1,14 @@
 # Build and deploy the static site to GitHub Pages.
 #
-# Runs on every push to main and nightly. The nightly run also refreshes
-# game data from the public API (polite, cached via actions/cache on raw/;
-# the first cold run sweeps the whole season, ~30 min at ~1 req/s, then
-# incremental). Model values (v2_*.csv) only change when a refit is
-# committed — the nightly refresh updates games, ratings, forecasts and
-# every stats page.
+# Runs on every push to main and nightly. The nightly run refreshes game
+# data from the public API (polite, ~1 req/s; per-request responses are
+# cached in raw/ via actions/cache, so the first cold run sweeps the full
+# 2024– history in an hour or two and later runs only fetch new/recent
+# dates), then COMMITS the refreshed data/ CSVs back to the branch — so
+# push builds, which skip the network entirely, always build from the
+# last refresh instead of regressing to week-old data. The shrink guard
+# keeps a failed/partial parse from ever reaching the site or the repo.
+# Model values (v2_*.csv) only change when a refit is committed.
 #
 # One-time setup: repo Settings → Pages → Source = "GitHub Actions".
 name: site
@@ -18,7 +21,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -49,13 +52,13 @@ jobs:
         continue-on-error: true
         run: |
           pip install httpx
-          python scraper/harvest.py
+          python scraper/harvest.py --start 2024-01-01
           python scraper/enrich_formats.py
           python scraper/parse.py
           python scraper/parse_singles.py
           python scraper/extract_ratings.py
           python web/make_forecast.py --days 7
-        timeout-minutes: 90
+        timeout-minutes: 210
 
       - name: Guard against partial data (restore committed CSVs if parse shrank)
         run: |
@@ -72,6 +75,22 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
+
+      - name: Commit refreshed data (nightly + manual only)
+        if: github.event_name != 'push'
+        continue-on-error: true
+        run: |
+          git add -A data/
+          if git diff --cached --quiet; then
+            echo "data unchanged — nothing to commit"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "data: nightly refresh ($(date -u +%F))"
+            git push origin "HEAD:${{ github.ref_name }}" \
+              || (git pull --rebase origin "${{ github.ref_name }}" \
+                  && git push origin "HEAD:${{ github.ref_name }}")
+          fi
 
   deploy:
     needs: build
