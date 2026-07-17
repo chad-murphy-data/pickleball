@@ -22,10 +22,11 @@ done
 
 systemctl --user daemon-reload
 systemctl --user enable --now pickleball-live.timer
-# The nightly log-harvest timer is OPT-IN: the GitHub Action
-# (.github/workflows/rally-logs.yml) is the default collector — never run
-# both, they'd double-hit the API for the same files.
-if [[ "${WITH_LOGS_TIMER:-0}" == "1" ]]; then
+# Nightly log harvest runs here by default. The GitHub Action variant
+# (.github/workflows/rally-logs.yml) has its schedule commented out —
+# never run both collectors, they'd double-hit the API for the same
+# files. Skip with WITH_LOGS_TIMER=0.
+if [[ "${WITH_LOGS_TIMER:-1}" == "1" ]]; then
     systemctl --user enable --now pickleball-logs.timer
 fi
 # Keep user services alive after you log out of the box.

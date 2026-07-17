@@ -59,26 +59,29 @@ is ~30k matches ≈ 9.5 h at 1.1 s/request; after that, nightly runs are
 minutes of incremental top-up. Interrupting is always safe — the cache
 resumes for free.
 
-**Default collector: the GitHub Action** (`.github/workflows/rally-logs.yml`)
-— zero VPS involvement. Fires 03:00 + 10:00 UTC (evening + small-hours
-PT, 5 h cap each; the archive completes across the first night's two
-bites), caches `raw/match_logs` in Actions, commits the summary tables.
-Requirements: the repo's DEFAULT branch must be the one carrying the
-workflow (scheduled workflows only fire from the default branch), and a
-public repo (private would burn ~300 paid minutes/night). Kick a run
-manually anytime: Actions tab → rally-logs → Run workflow.
-
-**Droplet alternative** (`pickleball-logs.timer`, 20:00 PT nightly, 11 h
-cap, summaries committed+pushed by `run_logs_backfill.sh`) for running
-off GitHub infra instead. NEVER run both collectors — they'd double-hit
-the API for the same files:
+**Active collector: the droplet timer** — `pickleball-logs.timer`
+(20:00 PT nightly, 11 h cap so it's done well before the 09:15 poller
+and first ball; summaries committed+pushed by `run_logs_backfill.sh`
+using the same git identity/PAT the live poller already pushes with).
+One-time enable:
 
 ```bash
 cd ~/pickleball && git pull
-WITH_LOGS_TIMER=1 ./deploy/install.sh            # opt in (Action is default)
-systemctl --user start pickleball-logs.service    # or: start tonight NOW
+./deploy/install.sh                               # (re)installs + enables both timers
+systemctl --user list-timers 'pickleball-*'       # verify
+systemctl --user start pickleball-logs.service    # optional: start tonight NOW
 journalctl --user -u pickleball-logs -f           # watch (progress every 100)
 ```
+
+**Dormant alternative: the GitHub Action**
+(`.github/workflows/rally-logs.yml`) — same job on GitHub infra, zero
+VPS. Its schedule is COMMENTED OUT while the droplet timer is active;
+manual runs remain available (Actions tab → rally-logs → Run workflow).
+To switch collectors, uncomment the schedule AND
+`systemctl --user disable --now pickleball-logs.timer`. NEVER run both —
+they'd double-hit the API for the same files. (Action requirements:
+workflow on the default branch, public repo — private burns ~300 paid
+minutes/night.)
 
 Knobs (systemd drop-in or environment): `LOGS_MAX_HOURS` (default 11),
 `LOGS_INTERVAL` (seconds/request, default 1.1, refuses <1.0).

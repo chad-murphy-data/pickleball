@@ -11,10 +11,14 @@
 # NOTE: scheduled workflows only fire from the repo's DEFAULT branch.
 name: rally-logs
 
+# SCHEDULE DISABLED: the droplet timer (deploy/pickleball-logs.timer) is
+# the active collector. To switch collection to GitHub, uncomment the
+# schedule block AND disable the droplet timer
+# (systemctl --user disable --now pickleball-logs.timer) — never both.
 on:
-  schedule:
-    - cron: "0 3 * * *"    # 03:00 UTC = 20:00 PT — evening window
-    - cron: "0 10 * * *"   # 10:00 UTC = 03:00 PT — second bite, no-op once filled
+  # schedule:
+  #   - cron: "0 3 * * *"    # 03:00 UTC = 20:00 PT — evening window
+  #   - cron: "0 10 * * *"   # 10:00 UTC = 03:00 PT — second bite, no-op once filled
   workflow_dispatch:
 
 permissions:
