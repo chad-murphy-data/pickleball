@@ -12,6 +12,7 @@ book / DUPR-vs-model pages.
 from __future__ import annotations
 
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -111,12 +112,60 @@ NUMWORDS = {2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven",
             8: "eight", 9: "nine", 10: "ten", 11: "eleven", 12: "twelve"}
 
 
-def p1_verdict(probs, label):
+def lead_growth(pool):
+    """(gap_then, gap_now, since_year): the #1-vs-#2 gap in display pts at
+    the first and last months both trajectories cover.  None when either
+    trajectory is missing."""
+    if len(pool) < 2 or not pool[0].traj or not pool[1].traj:
+        return None
+    one, two = pool[0], pool[1]
+
+    def at(pl, m):
+        for mo, v, _ in reversed(pl.traj):
+            if mo <= m:
+                return v
+        return pl.traj[0][1]
+
+    m0 = max(one.traj[0][0], two.traj[0][0])
+    m1 = min(one.traj[-1][0], two.traj[-1][0])
+    return (value_points(at(one, m0)) - value_points(at(two, m0)),
+            value_points(at(one, m1)) - value_points(at(two, m1)), m0[:4])
+
+
+def second_seat(pool):
+    """(runner_up, P(truly better than #3), margin_pts) when the #2 seat is
+    clearly claimed (≥85% by posterior marginals); else None."""
+    if len(pool) < 3:
+        return None
+    two, three = pool[1], pool[2]
+    z = (two.value - three.value) / math.hypot(two.sd, three.sd)
+    p23 = 0.5 * (1 + math.erf(z / math.sqrt(2)))
+    return (two, p23, two.pts - three.pts) if p23 >= 0.85 else None
+
+
+def p1_verdict(probs, label, pool):
     """One-line verdict over the P(#1) rows, in the house voice.  probs is
-    sorted by P(#1) descending; label is "men"/"women"."""
+    sorted by P(#1) descending; label is "men"/"women"; pool is the active
+    list sorted by rank, for the career-high / runner-up receipts."""
     p, lead, _ = probs[0]
     if lead > 0.995:
-        return f"It's {esc(p.name)}. It is not close."
+        head = f"It's {esc(p.name)}. It is not close"
+        career = p.traj and p.value >= max(v for _, v, _ in p.traj) - 1e-9
+        gr = lead_growth(pool)
+        if career and gr and gr[1] - gr[0] >= 0.25:
+            head += (f" — a career-best rating, and the lead over #2 has grown "
+                     f"from {gr[0]:+.1f} to {gr[1]:+.1f} pts since {gr[2]}")
+        elif career:
+            head += " — and the rating is a career best"
+        head += "."
+        sec = second_seat(pool)
+        if sec:
+            two, p23, margin = sec
+            head += (f" Second is settled too: {esc(two.name)}, {margin:+.1f} pts "
+                     f"clear of the chase pack ({pct_floor(p23)} sure). If the "
+                     f"crown gets a rival, it starts with "
+                     f"{esc(two.name.split()[-1])}.")
+        return head
     if lead >= 0.5:
         return (f"{esc(p.name)} is the favorite at {pct_floor(lead)} — "
                 f"with live challengers behind.")
@@ -132,7 +181,7 @@ def p1_bar_width(p1):
     return "99.5" if w > 99 else ("0.5" if w < 1 else f"{w:.0f}")
 
 
-def p1_panel(probs, label):
+def p1_panel(probs, label, pool):
     head_note = ("posterior probability of being the true best — not the "
                  "point-estimate leader.")
     rows = []
@@ -144,7 +193,7 @@ def p1_panel(probs, label):
             f'<span class="p1meta">top-3 {pct_floor(p3)} · {p.games} g</span></div>')
     return (f'<div class="card p1card"><div class="p1head"><strong>Who is actually '
             f'#1?</strong> <span class="note">{head_note}</span></div>\n'
-            f'<p class="p1kick">{p1_verdict(probs, label)}</p>\n'
+            f'<p class="p1kick">{p1_verdict(probs, label, pool)}</p>\n'
             + "\n".join(rows) +
             '\n<p class="note" style="margin:10px 0 2px">Monte Carlo over posterior '
             'marginals (correlations ignored); wide-interval players earn real '
@@ -230,7 +279,7 @@ def build_rankings(players, updated, n_games, val):
         probs = sorted(((p, p1, p3) for p, p1, p3 in rank_probs(active)
                         if p1 >= 0.01), key=lambda t: -t[1])
         inner = (f'<h2><span class="secno">SEC. {sec}</span>{label}</h2>'
-                 + p1_panel(probs, low) + table(active))
+                 + p1_panel(probs, low, active) + table(active))
         if inactive:
             inner += (
                 f'<details><summary class="note">{len(inactive)} rated players '
@@ -1471,8 +1520,14 @@ def build_landing(players, games, updated, n_games, R):
                     f'style="width:{min(round(pv * 2.6), 100)}%"></span></span>'
                     f'<span class="pv">{pv}%</span></div>')
     n_cont = sum(1 for _, p1, _ in mprobs if p1 >= 0.05)
-    women_clause = ("The women's #1 isn't close." if wprobs[0][1] > 0.995
-                    else "The women's #1 is a live race.")
+    wsec = second_seat(active_pool("F"))
+    if wprobs[0][1] > 0.995 and wsec:
+        women_clause = (f"{esc(wprobs[0][0].name.split()[-1])} isn't being "
+                        f"caught; {esc(wsec[0].name.split()[-1])} owns second.")
+    elif wprobs[0][1] > 0.995:
+        women_clause = "The women's #1 isn't close."
+    else:
+        women_clause = "The women's #1 is a live race."
     men_clause = (f"The men's is a {NUMWORDS.get(n_cont, str(n_cont))}-way "
                   f"statistical tie." if n_cont >= 2
                   else "The men's is settled for now.")
