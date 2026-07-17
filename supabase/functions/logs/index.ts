@@ -5,7 +5,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const BASE = "https://pickleball.com";
-const UA = "pickles-live/1.0 (unofficial fan analytics; hobby project)";
+const UA = "Mozilla/5.0 (compatible; pickles-bot/1.0; +https://chad-murphy-data.github.io/pickleball/methods.html)";
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 const CORS = {

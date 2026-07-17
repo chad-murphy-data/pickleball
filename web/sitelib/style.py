@@ -468,7 +468,7 @@ NAV = [("rankings.html", "Rankings"), ("players/index.html", "Players"),
        ("results.html", "Results"),
        ("simulator.html", "Simulator"), ("receipts.html", "Receipts"),
        ("records.html", "Record book"), ("dupr.html", "DUPR × model"),
-       ("methods.html", "Methods"), ("data.html", "Data")]
+       ("methods.html", "Methods")]
 
 
 def page(title, body, here="", root="", updated=""):

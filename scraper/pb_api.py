@@ -20,9 +20,12 @@ import httpx
 log = logging.getLogger("pb_api")
 
 BASE = "https://pickleball.com"
+# Honest bot identity (standard crawler convention): who we are, where to
+# read about the project, and implicitly how to reach us (GitHub issues via
+# the linked page). Verified 2026-07-17 that all endpoints serve this UA.
 UA = (
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-    "(KHTML, like Gecko) Chrome/125.0 Safari/537.36"
+    "Mozilla/5.0 (compatible; pickles-bot/1.0; "
+    "+https://chad-murphy-data.github.io/pickleball/methods.html)"
 )
 RAW = Path(__file__).resolve().parent.parent / "raw"
 

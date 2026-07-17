@@ -55,7 +55,9 @@ All pages regenerate from existing CSVs in ~4 s: `python web/build_site.py`
 - ✅ Methods page (EXPLAINER rendered + technical appendix), record book
   (streaks/upsets/marathons mined from games.csv)
 - ✅ DUPR-vs-model scoreboard page (scatter + biggest-disagreement tables)
-- ✅ Open CSV downloads page (site/data/ + schema notes)
+- ✅ ~~Open CSV downloads page~~ — removed 2026-07-17 (owner call: don't
+  redistribute raw source data; the site serves derived stats only, and
+  methods.html now documents collection practices)
 - ✅ Deploy + nightly rebuild: .github/workflows/site.yml (GitHub Pages;
   nightly run refreshes games/ratings/forecasts from the API with a cached
   raw/). One-time setup: Settings → Pages → Source = "GitHub Actions"
