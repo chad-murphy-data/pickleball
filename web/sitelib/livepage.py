@@ -254,19 +254,9 @@ function svgStep(series, opts) {
   const ticks = (marks || []).map(([i, lab]) =>
     `<line x1="${X(i).toFixed(1)}" y1="${BOT + 2}" x2="${X(i).toFixed(1)}" y2="${BOT + 9}" stroke="var(--muted)" stroke-width="1.5"/>` +
     `<text x="${X(i).toFixed(1)}" y="${H - 2}" font-size="8" fill="var(--muted)" text-anchor="middle">${lab}</text>`).join('');
-  // labeled poles: the answer to "who is winning" is the line's position
+  // favorite badge pinned to the line's end (computed first so the pole
+  // labels can dodge it)
   const t = opts.teams || null;
-  const poleChip = (y, cls, label) => {
-    const w = 24 + label.length * 6.2;
-    return `<rect x="${L + 4}" y="${y}" width="${w.toFixed(0)}" height="14" fill="var(--surface)" opacity=".88"/>` +
-      `<rect x="${L + 8}" y="${y + 3.5}" width="7" height="7" fill="var(--${cls})"/>` +
-      `<text x="${L + 19}" y="${y + 10.5}" font-size="9.5" font-weight="700" fill="var(--ink2)" font-family="Space Mono,monospace">${label}</text>`;
-  };
-  const poles = t
-    ? poleChip(TOP + 2, 'wp1', `▲ ${esc(t[0]).toUpperCase()} WINS`) +
-      poleChip(BOT - 16, 'wp2', `▼ ${esc(t[1]).toUpperCase()} WINS`)
-    : '';
-  // favorite badge pinned to the line's end
   const lastP = disp[disp.length - 1][1], fav1 = lastP >= 0.5;
   const favTxt = t ? `${esc(t[fav1 ? 0 : 1]).toUpperCase()} ${PKL.fp(fav1 ? lastP : 1 - lastP)}%` : `${PKL.fp(lastP)}%`;
   const ex = X(disp[disp.length - 1][0]), ey = Y(lastP);
@@ -275,6 +265,28 @@ function svgStep(series, opts) {
   const badge =
     `<rect x="${bx.toFixed(1)}" y="${by.toFixed(1)}" width="${bw.toFixed(0)}" height="15" fill="var(--surface)" stroke="var(--wp${fav1 ? 1 : 2})" stroke-width="1.5"/>` +
     `<text x="${(bx + bw / 2).toFixed(1)}" y="${(by + 11).toFixed(1)}" font-size="10" font-weight="700" fill="var(--ink)" text-anchor="middle" font-family="Space Mono,monospace">${favTxt}</text>`;
+  // labeled poles: the answer to "who is winning" is the line's position.
+  // Opaque backing, and each label flips to the empty end of the chart when
+  // the curve (or the badge) sits on top of its default spot.
+  const curveIn = (x0, x1, y0, y1) =>
+    disp.some(([qx, qp]) => { const px = X(qx), py = Y(qp); return px >= x0 && px <= x1 && py >= y0 && py <= y1; });
+  const rectsHit = (ax, aw, ay) => ax < bx + bw && ax + aw > bx && ay < by + 15 && ay + 14 > by;
+  const poleChip = (y, cls, label) => {
+    const w = 24 + label.length * 6.2;
+    let x = L + 4;
+    const busyLeft = curveIn(x - 2, x + w + 8, y - 2, y + 16) || rectsHit(x, w, y);
+    if (busyLeft) {
+      const xr = R - w - 4;
+      if (!curveIn(xr - 8, R, y - 2, y + 16) && !rectsHit(xr, w, y)) x = xr;
+    }
+    return `<rect x="${x.toFixed(1)}" y="${y}" width="${w.toFixed(0)}" height="14" fill="var(--surface)"/>` +
+      `<rect x="${(x + 4).toFixed(1)}" y="${y + 3.5}" width="7" height="7" fill="var(--${cls})"/>` +
+      `<text x="${(x + 15).toFixed(1)}" y="${y + 10.5}" font-size="9.5" font-weight="700" fill="var(--ink2)" font-family="Space Mono,monospace">${label}</text>`;
+  };
+  const poles = t
+    ? poleChip(TOP + 2, 'wp1', `▲ ${esc(t[0]).toUpperCase()} WINS`) +
+      poleChip(BOT - 16, 'wp2', `▼ ${esc(t[1]).toUpperCase()} WINS`)
+    : '';
   const live = opts.live
     ? `<circle cx="${ex.toFixed(1)}" cy="${ey.toFixed(1)}" r="3.4" fill="var(--ink)"><animate attributeName="opacity" values="1;.25;1" dur="1.6s" repeatCount="indefinite"/></circle>` : '';
   chartReg.set(id, { pts, teams: t, L, R, TOP, BOT, n, W, H });
@@ -654,6 +666,8 @@ LIVE_CSS = """
    checked with the palette validator against each surface) */
 :root { --wp1: #1e7a3c; --wp2: #1d6fa5; }
 @media (prefers-color-scheme: dark) { :root { --wp1: #65a82c; --wp2: #3a8fd4; } }
+:root[data-theme="light"] { --wp1: #1e7a3c; --wp2: #1d6fa5; }
+:root[data-theme="dark"] { --wp1: #65a82c; --wp2: #3a8fd4; }
 .lp-sw { display:inline-block; width:9px; height:9px; margin:0 5px 0 2px; vertical-align:baseline; }
 .lp-sw1 { background: var(--wp1); }
 .lp-sw2 { background: var(--wp2); margin-left:5px; }
