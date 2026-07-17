@@ -117,3 +117,54 @@ rallies), and the honest caveats: logged matches are not a random sample
 of pro pickleball (digital-refereeing coverage is event-dependent), and a
 significant τ_recv admits a selection interpretation (timeouts are called
 at non-random moments) — under the iid null the test is still exact.
+
+---
+
+# ADDENDUM H3b — windowed timeout effect (frozen 2026-07-17, later the same day)
+
+Registered AFTER the main results were unblinded, BEFORE any **windowed**
+post-timeout statistic was computed (none has been). Motivated by the
+user's hypothesis that a timeout's value is a strategic adjustment that
+expresses over several rallies, not the single next rally H3 tested.
+Explicitly NOT the naive before-vs-after comparison: conditioning on the
+timeout's trigger (a bad run) makes "after minus before" positive under a
+pure null by regression to the mean — the self-test demonstrates this
+numerically. The comparison is treated vs UNTREATED MOMENTS OF THE SAME
+KIND.
+
+**Sample:** the same frozen 2,500-match sample and rally construction.
+
+**Moments:** every resolved rally t with ≥10 resolved rallies before it
+in the same game (full pre-window) and ≥10 from t onward (full post-
+window). Perspective P = the RECEIVING side of rally t. Moments where the
+serving side called a timeout are excluded from both arms.
+
+**Treatment:** `to_recv = 1` at rally t (receiving side called timeout in
+the preceding break). **Control:** no timeout in the preceding break.
+
+**Outcome:** Y = point differential from P's perspective over rallies
+t..t+9 (server scores +1 to its side on a rally win; side-outs score 0).
+
+**Model:** OLS, cluster-robust (CR0) by match:
+`Y ~ 1 + treat + prew10 + margin + srv2 + eta_recv`, where `prew10` is
+P's point differential over rallies t−10..t−1, `margin` is P's score
+minus opponent's (clipped ±7), `srv2` the opponent's server number,
+`eta_recv` P's v2 eta. **θ = coefficient on `treat`.**
+
+**Secondary:** same with 5-rally windows (pre and post).
+
+**Criteria (frozen):** effect iff p < .01 AND |θ| ≥ 0.5 points per
+10-rally window. 99% CI inside ±0.5 → "no meaningful effect (bounded)".
+Otherwise inconclusive.
+
+**Registered prediction:** no meaningful effect, **prob 0.75** (if an
+effect exists: positive/helps the caller 0.15, negative 0.10).
+
+**Also reported, descriptive only:** the trigger profile — the
+distribution of `prew10` at treatment vs control moments.
+
+**Validation before unblinding:** `model/momentum_h3b.py --selftest`
+simulates iid play with ENDOGENOUS timeout calling (hazard increasing in
+the caller's recent deficit, zero true effect) and must show (a) the
+naive after-minus-before difference is strongly positive (the trap), and
+(b) θ statistically indistinguishable from zero.
