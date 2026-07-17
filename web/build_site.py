@@ -1282,6 +1282,100 @@ def tonight_blurb(feat):
     return base + "."
 
 
+def start_et(iso):
+    """'2026-07-16T17:00:00Z' -> '1:00P' Eastern (event-local) time."""
+    from datetime import datetime, timedelta, timezone
+    try:
+        dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        return ""
+    try:
+        from zoneinfo import ZoneInfo
+        loc = dt.astimezone(ZoneInfo("America/New_York"))
+    except Exception:                       # no tzdata: EDT is close enough Mar-Nov
+        loc = dt.astimezone(timezone(timedelta(hours=-4)))
+    h = loc.hour % 12 or 12
+    return f"{h}:{loc.minute:02d}{'A' if loc.hour < 12 else 'P'}"
+
+
+def slate_day_label(day, today):
+    from datetime import date, timedelta
+    d, t = date.fromisoformat(day), date.fromisoformat(today)
+    if d == t:
+        return "TODAY'S CARD"
+    if d == t + timedelta(days=1):
+        return "TOMORROW'S CARD"
+    return f"NEXT CARD · {d.strftime('%b %d').upper()}"
+
+
+def results_day_summary(players, games, day):
+    """(n graded games, n upsets) on a date — same pricing as results.html."""
+    mv = D.month_values(players)
+    graded = upsets = 0
+    for g in games:
+        if g["date"] != day:
+            continue
+        s1, s2 = int(g["t1_score"]), int(g["t2_score"])
+        if s1 == s2:
+            continue
+        graded += 1
+        exp = D.expected_share(players, mv, g)
+        if exp is not None:
+            w_exp = exp if s1 > s2 else 1 - exp
+            T = 15 if g["scoring_format"].endswith("15") else 11
+            if calibrate(race_dist(round(w_exp, 4), T)["p_win"]) < 0.25:
+                upsets += 1
+    return graded, upsets
+
+
+def build_slate(F, players, games, updated, today):
+    """Owner-requested top strip (post-handoff addition, same design
+    vocabulary): the day's full card of priced matchups + a latest-results
+    line, so the newest numbers are the first thing on the page.  Omitted
+    entirely when there is neither an upcoming card nor a graded day."""
+    rows, head = "", ""
+    if F:
+        cands = [f for f in F.get("forecasts", []) if f.get("date")]
+        upcoming = sorted({f["date"] for f in cands if f["date"] >= today})
+        if upcoming:
+            day = upcoming[0]
+            night = sorted((f for f in cands if f["date"] == day),
+                           key=lambda f: f.get("start") or "")
+            event = (night[0].get("event") or "MLP").upper()
+            head = (f'<div class="slatehead"><span class="doortag">'
+                    f'{slate_day_label(day, today)}</span>'
+                    f'<span class="slateevent">{esc(event)} :: {len(night)} '
+                    f'MATCHUP{"S" if len(night) != 1 else ""} PRICED</span>'
+                    f'<span class="fill"></span>'
+                    f'<a class="slatelink" href="forecast.html">FULL FORECAST →</a></div>')
+            bits = []
+            for f in night:
+                t = f.get("tree")
+                if t:
+                    fav1 = t["p_win"] >= 0.5
+                    fav = team_short(f["team1"] if fav1 else f["team2"])
+                    val = f'{fav} {pct_floor(max(t["p_win"], 1 - t["p_win"]))}'
+                else:
+                    val = "NOT PRICED"
+                bits.append(
+                    f'<a class="srow" href="forecast.html">'
+                    f'<span class="st">{start_et(f.get("start") or "")}</span>'
+                    f'<span class="sm">{team_short(f["team1"])} v {team_short(f["team2"])}</span>'
+                    f'<span class="lead"></span><span class="sp">{val}</span></a>')
+            rows = f'<div class="slaterows">{"".join(bits)}</div>'
+    graded, upsets = results_day_summary(players, games, updated)
+    foot = ""
+    if graded:
+        foot = (f'<div class="slatefoot"><span>LATEST RESULTS :: {updated} — '
+                f'{graded} GAME{"S" if graded != 1 else ""} GRADED · '
+                f'{upsets} UPSET{"S" if upsets != 1 else ""}'
+                f'</span><span><a href="results.html">→ RESULTS</a></span></div>')
+    if not head and not foot:
+        return ""
+    return (f'<section class="lsec slate"><div class="slatebox">'
+            f'{head}{rows}{foot}</div></section>')
+
+
 def receipt_teaser_rows(R, n=3):
     """Most recent graded calls, compact: ("WD 88%", "MISS")."""
     rows = []
@@ -1302,7 +1396,7 @@ def receipt_teaser_rows(R, n=3):
     return rows
 
 
-def build_landing(players, updated, n_games, R):
+def build_landing(players, games, updated, n_games, R):
     from datetime import date
     val = R["validation"]
     acc = pct(val["accuracy"], 1)
@@ -1336,8 +1430,10 @@ def build_landing(players, updated, n_games, R):
                     else "The women's race is live too.")
     rankings_blurb = f"{men_clause} {women_clause} Error bars included, always."
 
+    today = date.today().isoformat()
     F = load_forecasts()
-    feat, tonight = pick_featured(F, date.today().isoformat())
+    slate = build_slate(F, players, games, updated, today)
+    feat, tonight = pick_featured(F, today)
     frows = "".join(
         f'<div class="t-row"><span class="call"><strong>{slot} {pnm}</strong></span>'
         f'<span class="lead"></span><span class="res">{fav} {pv}</span></div>'
@@ -1429,7 +1525,7 @@ def build_landing(players, updated, n_games, R):
  <span class="brandsub">Probabilistic Inference of Competitive Kitchen-Line Expected Scores</span>
  <nav><a href="rankings.html">RANKINGS</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="methods.html">METHODS</a></nav>
 </div></header>
-
+{slate}
 <section class="lsec hero">
  <div class="copy">
   <div class="kicker">PRO PICKLEBALL, PROBABILISTICALLY</div>
@@ -1534,7 +1630,7 @@ def main():
 
     R = D.load_receipts()
     print("pages: landing, rankings, forecasts, results, simulator, receipts, records, dupr, methods, data …")
-    build_landing(players, updated, len(games), R)
+    build_landing(players, games, updated, len(games), R)
     build_rankings(players, updated, len(games), R["validation"])
     build_player_index(players, updated)
     build_forecast(players, updated)
