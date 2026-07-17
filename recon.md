@@ -167,5 +167,176 @@ to a *completed* match yields zero events (correct — nothing live). Real
 event payloads must be captured during a live match. Tool: `scraper/sse_probe.py`
 (`--matches`, or auto-discovers today's live UUIDs via the Tier-1 discovery;
 `--duration` bounds the run; `--with-logs` for single-match rally logs).
-Next step: run it during an MLP San Diego / PPA Macon match this weekend,
-dump `live/sse-YYYYMMDD.jsonl`, then fold the parser into live_poller as Tier 2.
+~~Next step: run it during an MLP San Diego / PPA Macon match this weekend~~
+DONE 2026-07-16 — real payloads captured during live play; see next section.
+
+## Tier-2 event shapes — CAPTURED LIVE 2026-07-16 (MLP San Diego)
+
+Two probe windows (~8 min total, `live/sse-20260716.jsonl`, 48 events)
+during MXD2 Todd/Daescu vs Rane/Staksrud on the championship court
+(`courtTitle: "CC"`). Both subscription modes verified end-to-end from
+this environment via httpx.
+
+**Match-state events** (named by bare match UUID; also what the broad
+no-`withLogs` subscription delivers): the payload is a full camelCase
+match object — the same shape as the BFF's MLP match records. Notable
+fields: complete serve state (`server`, `serverFromTeam`,
+`currentServingNumber`), per-game scores + `game*Status`, `matchStatus` /
+`winner` / `matchCompletedType`, all four player UUIDs + names, court
+UUID/title, `isConsumedByRefereeApp: true`, and timestamps. CAUTION: the
+`localDateMatch*` fields carry a `Z` suffix but are venue-LOCAL times
+(observed `localDateMatchStart: ...T10:51:13Z` for a match that started
+10:51 PDT). Events usually arrive in pairs ~0.2–0.4 s apart (referee-app
+score entry + serve-state update); occasional unchanged re-pushes occur —
+dedupe downstream, same rule as Tier 1.
+
+**Rally log events** (`reflog_<match_uuid>`; only with `withLogs`, which
+the client only uses on single-match subscriptions): one structured
+referee-log entry per action, 1:1 interleaved with state pushes:
+
+```
+{id, referee_uuid, match_uuid, server_uuid, receiver_uuid, server_index,
+ date_created: {seconds}, log_type, LogData: {<TypedLog>} | {},
+ game_number, group_uuid,
+ start_score_current_game_string, end_score_current_game_string,  # "5-4-2"
+ log_index}                                # dense, sequential per match
+```
+
+`PointLog` payload: `{time_started/time_ended: {seconds}, team_uuid
+(the MLP FRANCHISE uuid — logs carry team identity), start_score,
+end_score}`. Score strings are serving-team-first: `"5-4-2"` = server
+team 5, receiver team 4, server #2. `log_type` enum observed so far
+(45 logs across two matches):
+
+| type | meaning (observed)                             | LogData            |
+|------|------------------------------------------------|--------------------|
+| 12   | rally underway (start marker; score unchanged) | {}                 |
+| 14   | serving team wins the rally → point            | PointLog           |
+| 16   | side-out — serve crosses to the other team     | {} (string flips perspective) |
+| 17   | court-side switch (at 6 in a game to 11)       | SwitchCourtSideLog |
+| 23   | serve passes to the second server (partner)    | {}                 |
+| 37   | video challenge                                | VideoChallengeLog {team_uuid, challenge_referee_call} |
+
+Unseen so far (expect on volume): game/match end, timeouts, faults,
+injury/medical, DreamBreaker-specific types. The 16/23 rows appear to
+carry the POST-transition server's perspective — verify on a full game
+before hard-coding. No `matchup_<uuid>` events arrived during two
+windows of mid-game play despite subscribing — they presumably fire
+only on matchup-level transitions (match completed, DreamBreaker
+created, lineup lock); still uncaptured, as is the
+`X-Request-Tiebreaker-Matches` DreamBreaker feed and any PPA match
+(test during Macon, Fri 7/17+).
+
+Other state-event fields worth knowing: `localDateMatchPlannedStart` vs
+`localDateMatchStart` (this match ran 39 min AHEAD of schedule —
+delay/schedule analytics, "when to tune in"), `matchupUuid` (in-stream
+join key), player countries + photo URLs, seeds (0 in MLP; presumably
+bracket seeds in PPA), `logCreatedAt` (server-side ns timestamp),
+lifecycle timestamps (confirm/dispute/auto-complete), and
+`tieBreakerIsDirectFinalScore`.
+
+**Early empirics — serve-rally win rate** (the DP's assumed k):
+across the 20 fully-logged rallies, the serving side won 5
+(k̂ ≈ 0.25, Wilson 95% ≈ 0.11–0.47, vs the ASSUMED 0.35–0.45).
+Far too little data to conclude — but it leans low. (Superseded within
+the hour: estimate k from the HISTORICAL logs below instead.)
+
+## getListLogs — the archive has rally-level history (found 2026-07-16)
+
+**`GET /api/v1/results/getListLogs?id=<match_uuid>`** (open BFF, no auth)
+returns the COMPLETE referee log for a completed match — same log stream
+the SSE feed delivers live, so rally-level data is BACKFILLABLE without
+having listened. Found by pulling `/results` chunks and grepping
+`"/api/` (the enum strings PointLog etc. are NOT in the /results chunks;
+the endpoint was). Works for doubles AND singles match uuids.
+
+**Coverage is EVENT-dependent, not universal** (the first 15/15 random
+sample was misleading): a 92-match validation batch found PPA Gold Coast
+Open 2024 with 0/30 logged and a Challenger with partial coverage —
+events/courts without digital refereeing simply have no logs. Empty
+responses are cached and flagged; the full harvest measures true
+coverage. Where logs exist they are rich (59–379 rows/match) and
+**~97% score-reconcile exactly against games.csv** via
+`scraper/harvest_logs.py --summarize` (the rest are flagged `mismatch`
+— observed causes: log ends before the final point was entered, or the
+platform score was edited after the fact).
+
+REST shape differs slightly from SSE: typed payloads are inline
+snake_case keys (`point_log`, `match_over_log`, …) instead of the
+`LogData` wrapper, timestamps are ISO strings instead of proto seconds,
+and pre-rally admin rows appear that SSE mid-game never showed. Decoded
+from one full game (WD Todd/Black 11-2, 59 rows, arithmetic validates —
+13 points + 4 side-outs + 3 second-server passes = 20 rally markers):
+
+| type | meaning | payload |
+|---|---|---|
+| 38 | match setup (log_index 1) | — |
+| 46 | pre-start, unknown | — |
+| 10 | player court arrival (timestamped) | court_arrival_log {player_uuid} |
+| 15, 3, 31 | pre/mid, unknown, score-neutral | — |
+| 32, 41 | DreamBreaker-specific (32 ≈ server rotation, 16× in a 35-rally DB; DB score strings have NO server number — "14-21" not "14-21-1") | — |
+| 20 | warm-up begins | warming_up_log |
+| 22 | scoring starts | start_scoring_log {left/right_of_umpire_team_uuid, serving_team_uuid} |
+| 2 | challenge (referee call) | challenge_log {team_uuid, referee_call} |
+| 45 | line review | line_review_log {team_uuid, line_review_success_status} |
+| 18 | timeout (start + start/end pair) | timeout_log {team_uuid, time_started/ended} |
+| 35 | additional timeout | additional_timeout_log {team_uuid} |
+| 4 | game over | game_over_log {team_uuid} |
+| 6 | match over | match_over_log {team_uuid} |
+
+**Log-quality quirks the tally logic must handle** (all observed in the
+wild; `harvest_logs.py:tally` implements these rules):
+- Corrections are type-14 rows with NEGATIVE payload deltas (successful
+  challenge → point removed); on rewind rows the score STRINGS are
+  garbled (mixed perspectives) while the payload stays clean.
+- Phantom double-entries: payload repeats `+1` (start None) but the
+  string doesn't move. Real points with a merely STALE string also
+  exist — disambiguate by whether the next row carries the score
+  forward incremented (side-outs flip the string perspective).
+- When string and payload deltas disagree, the smaller-|delta| one has
+  been correct in every observed case.
+- Scoring sometimes opens LATE: the first point row's string starts at
+  0-0 while its payload starts higher — the gap is real score with no
+  logged rallies (credit to the side, exclude from k).
+- The payload team_uuid is a FRANCHISE/side uuid: learn team→side from
+  the log's own normal points (scoring team = serving team in side-out),
+  then apply to corrections.
+
+(12/14/16/17/23/37 as in the SSE table.) Games open at `0-0-2` — the
+STANDARD pickleball first-server exception (opening team serves with
+its second server only), not an app artifact; the strings encode the
+rule as expected, and the opening turn side-outs directly (type 16, no
+type 23 first). The four type-45 rows before scoring start look like
+challenge-budget init, all stamped OVERRULED_CHALLENGE_SUCCESS_STATUS —
+don't count them as real challenges without checking timestamps.
+
+**Implications**: empirical k (serve-rally win rate) per tour/gender/
+format from ~a million archived rallies; per-player serve/return splits
+historically; rally timestamps for pacing; court-side assignments;
+challenge analytics; player arrival times. Live SSE remains necessary
+ONLY for real-time win-prob. Backfill politeness math: ~36k doubles
+games (fewer unique matches) + 26k singles at ~1 req/s ≈ a long
+weekend of nightly chunks on the droplet; completed-match logs are
+immutable → cache forever, harvest incrementally.
+
+Shot-level data does NOT exist anywhere in this stack — the referee app
+logs outcomes and administration, not strokes. Rally-end shot/reason is
+likewise absent (no fault-type rows observed in a full game; the rally
+either ends in a point or a serve change). Ceiling confirmed: for shot
+detail, the only route is the Phase-6 vision pipeline on broadcasts.
+
+**This confirms side-out scoring in 2026 MLP pro games** (score moves only
+on `PointLog`, serve rotates 1→2→side-out) — matching the win-prob DP's
+4-serve-state design with the algebraic no-score cycle.
+
+**What rally logs unlock** (none of this is visible to Tier-1 polling):
+- Empirical serve-rally win rate k — the DP's streakiness input, currently
+  ASSUMED 0.35–0.45. Estimator: `#(type 14) / #(types 14+16+23)`. The tiny
+  first sample gave 1/5; a weekend of matches gives thousands of rallies,
+  splittable per league / per player.
+- Per-PLAYER serve/return splits (`server_uuid`/`receiver_uuid` on every
+  rally) — a new modeling axis no scraped box score contains.
+- Per-rally timestamps (`date_created.seconds`) → rally cadence, momentum,
+  broadcast-sync for annotated win-prob charts.
+- Full point-by-point reconstruction of covered matches — scorebug OCR
+  (ROADMAP Tier 0) becomes unnecessary wherever RTE coverage exists.

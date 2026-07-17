@@ -50,6 +50,48 @@ journalctl --user -u pickleball-live -e              # today's log
 systemctl --user start pickleball-live.service       # manual start now
 ```
 
+## Backfill: historical referee logs (nightly, self-limiting)
+
+`scraper/harvest_logs.py` walks every archived match and caches its full
+referee log (rally-by-rally; see recon.md "getListLogs"), then
+`--summarize` refreshes the two committed summary CSVs. The first fill
+is ~30k matches ≈ 9.5 h at 1.1 s/request; after that, nightly runs are
+minutes of incremental top-up. Interrupting is always safe — the cache
+resumes for free.
+
+**Active collector: the droplet timer** — `pickleball-logs.timer`
+(20:00 PT nightly, 11 h cap so it's done well before the 09:15 poller
+and first ball; summaries committed+pushed by `run_logs_backfill.sh`
+using the same git identity/PAT the live poller already pushes with).
+One-time enable:
+
+```bash
+cd ~/pickleball && git pull
+./deploy/install.sh                               # (re)installs + enables both timers
+systemctl --user list-timers 'pickleball-*'       # verify
+systemctl --user start pickleball-logs.service    # optional: start tonight NOW
+journalctl --user -u pickleball-logs -f           # watch (progress every 100)
+```
+
+**Dormant alternative: the GitHub Action**
+(`.github/workflows/rally-logs.yml`) — same job on GitHub infra, zero
+VPS. Its schedule is COMMENTED OUT while the droplet timer is active;
+manual runs remain available (Actions tab → rally-logs → Run workflow).
+To switch collectors, uncomment the schedule AND
+`systemctl --user disable --now pickleball-logs.timer`. NEVER run both —
+they'd double-hit the API for the same files. (Action requirements:
+workflow on the default branch, public repo — private burns ~300 paid
+minutes/night.)
+
+Knobs (systemd drop-in or environment): `LOGS_MAX_HOURS` (default 11),
+`LOGS_INTERVAL` (seconds/request, default 1.1, refuses <1.0).
+
+`--summarize` needs no network, prints the empirical serve-rally win
+rate k by tour, and score-validates every match against games.csv
+(`score_check` column; ~97% of logged matches reconcile exactly, the
+rest are flagged). Raw logs stay on the box (gitignored, ~1 GB); the
+two CSVs are small and live in the repo, refreshed by the nightly run.
+
 Upcoming windows this summer (see ROADMAP Phase 1): MLP San Diego
 Jul 16–19, PPA Macon Challenger Jul 17–19, MLP Chicago Jul 23–25,
 Amway MLP Orlando Jul 30–Aug 1.

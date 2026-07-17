@@ -151,6 +151,26 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   serve-rally baseline k (~0.35–0.45, currently assumed) sets streakiness;
   4 serve states per score; the no-score side-out cycle must be solved
   algebraically (see session history — naive recursion loops forever).
+- **Serve-aware DP BUILT 2026-07-16** (`web/sitelib/winprob.py`): exact
+  4-state cell algebra, k measured = 0.43 (doubles). Each game's eta is
+  ANCHORED so the DP's start-of-game prob equals the calibrated race
+  prob — points cluster on serve possessions, so raw etas make the DP
+  underprice favorites vs the validated pre-match numbers; anchoring
+  keeps receipts consistent and k shapes only within-game dynamics.
+  `web/replay_winprob.py --matchup <uuid>` renders any completed
+  matchup's rally logs into charts (matchup track + per-game + DB
+  rally-race panel). Smoke calibration (52 matches, 2.9k rally-states):
+  all deciles track observed within noise, top decile ~88% obs vs ~95%
+  pred — refit in-game calibration after the log backfill. Live mode =
+  same engine fed by Tier-1/Tier-2 on the droplet (unbuilt).
+- **Rally-level history is backfillable** (found 2026-07-16):
+  `/api/v1/results/getListLogs?id=<match_uuid>` (open BFF) returns the
+  full referee log for completed matches — per-rally server/receiver
+  UUIDs, points, side-outs, timestamps. 15/15 coverage in a 2024–26
+  MLP+PPA sample. Estimate k and serve/return splits from the archive
+  (build scraper/harvest_logs.py); live SSE is only needed for real-time.
+  Schemas + log_type enum: recon.md. No shot-level data exists anywhere
+  in this stack (ceiling: vision pipeline on broadcasts).
 
 ## Scheduled obligations
 

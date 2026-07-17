@@ -10,6 +10,7 @@ Usage:
     python scraper/live_poller.py                # poll until day's play ends
     python scraper/live_poller.py --once         # one sweep, print, exit
     python scraper/live_poller.py --interval 20  # seconds between sweeps
+    python scraper/live_poller.py --date 2026-07-16  # override event date
 
 Output: live/events-YYYYMMDD.jsonl, one line per observed state change:
     {"ts": "...", "tour": "MLP"|"PPA", "match_uuid": ..., "matchup_uuid": ...,
@@ -18,11 +19,17 @@ Output: live/events-YYYYMMDD.jsonl, one line per observed state change:
 
 Notes:
   - Must run on a persistent machine during event windows (a VPS, a Pi —
-    not an ephemeral CI container).
+    not an ephemeral CI container). deploy/ has the systemd kit that runs
+    this unattended (daily 09:15 PT timer + end-of-day commit & push).
   - Read-only, polite: one sweep hits a handful of endpoints; default 25 s
     interval. Do not lower the interval below ~15 s.
   - State diffing is in-memory; restarting mid-day re-emits current state
     once (downstream consumers should dedupe on (match_uuid, scores)).
+  - The API's date params are event-local dates. Default "today" is taken
+    in US/Pacific (westernmost tour venue), so the date never rolls over
+    while any US venue still has live play — a UTC machine clock flips at
+    5 PM Pacific, mid-evening, and would discover the wrong day's matchups.
+    Use --date to override.
 """
 from __future__ import annotations
 
@@ -33,6 +40,7 @@ import logging
 import sys
 import time
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from pb_api import PBClient
@@ -41,6 +49,7 @@ from harvest import is_mlp_league, is_ppa_tournament
 log = logging.getLogger("live")
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "live"
+TOUR_TZ = ZoneInfo("America/Los_Angeles")
 
 GAME_ORDINALS = ["One", "Two", "Three", "Four", "Five"]
 SNAKE_ORDINALS = ["one", "two", "three", "four", "five"]
@@ -179,13 +188,14 @@ class Poller:
         self.state[muid] = key
         ev = {"ts": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
               "tour": tour, "match_uuid": muid, "matchup_uuid": matchup_uuid, **st}
-        day = dt.date.today().strftime("%Y%m%d")
+        day = self.today.replace("-", "")
         with (OUT / f"events-{day}.jsonl").open("a") as fh:
             fh.write(json.dumps(ev) + "\n")
         return [ev]
 
-    def run(self, interval, once=False):
-        today = dt.date.today().isoformat()
+    def run(self, interval, once=False, date=None):
+        today = date or dt.datetime.now(TOUR_TZ).date().isoformat()
+        self.today = today
         self.targets = self.discover(today)
         if not self.targets["mlp"] and not self.targets["ppa"]:
             log.info("no live-relevant events today — exiting")
@@ -213,11 +223,14 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--interval", type=int, default=25)
     ap.add_argument("--once", action="store_true")
+    ap.add_argument("--date", help="event date YYYY-MM-DD (default: today in US/Pacific)")
     args = ap.parse_args()
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     if args.interval < 15:
         raise SystemExit("interval below 15s is impolite; refusing")
-    Poller().run(args.interval, once=args.once)
+    if args.date:
+        dt.date.fromisoformat(args.date)
+    Poller().run(args.interval, once=args.once, date=args.date)
 
 
 if __name__ == "__main__":

@@ -14,12 +14,21 @@ python3 -m venv "$REPO/.venv"
 
 UNIT_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
 mkdir -p "$UNIT_DIR"
-sed "s|@REPO@|$REPO|g" "$REPO/deploy/pickleball-live.service" \
-    > "$UNIT_DIR/pickleball-live.service"
-cp "$REPO/deploy/pickleball-live.timer" "$UNIT_DIR/pickleball-live.timer"
+for unit in pickleball-live pickleball-logs; do
+    sed "s|@REPO@|$REPO|g" "$REPO/deploy/$unit.service" \
+        > "$UNIT_DIR/$unit.service"
+    cp "$REPO/deploy/$unit.timer" "$UNIT_DIR/$unit.timer"
+done
 
 systemctl --user daemon-reload
 systemctl --user enable --now pickleball-live.timer
+# Nightly log harvest runs here by default. The GitHub Action variant
+# (.github/workflows/rally-logs.yml) has its schedule commented out —
+# never run both collectors, they'd double-hit the API for the same
+# files. Skip with WITH_LOGS_TIMER=0.
+if [[ "${WITH_LOGS_TIMER:-1}" == "1" ]]; then
+    systemctl --user enable --now pickleball-logs.timer
+fi
 # Keep user services alive after you log out of the box.
 loginctl enable-linger "$(whoami)"
 

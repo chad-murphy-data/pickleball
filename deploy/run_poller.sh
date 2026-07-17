@@ -7,9 +7,9 @@ set -euo pipefail
 REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO"
 
-# The poller keys "today" off the machine-local date. Pin it to the tour's
-# home timezone so a UTC/European box never rolls the date over while late
-# Pacific-evening matches are still in play.
+# The poller/probe now default "today" to US/Pacific internally; keep the
+# pin so the commit-message date(1) below matches the event date on a UTC
+# box, and as belt-and-suspenders for older checkouts.
 export TZ="${POLLER_TZ:-America/Los_Angeles}"
 
 PY="$REPO/.venv/bin/python"

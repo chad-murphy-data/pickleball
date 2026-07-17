@@ -1,0 +1,12 @@
+[Unit]
+Description=Start the nightly referee-log harvest window
+
+[Timer]
+# Evening PT, after event days wind down; the run self-caps (default 11 h)
+# so it is finished well before the 09:15 poller timer and first ball.
+OnCalendar=*-*-* 20:00:00 America/Los_Angeles
+Persistent=true
+AccuracySec=5min
+
+[Install]
+WantedBy=timers.target

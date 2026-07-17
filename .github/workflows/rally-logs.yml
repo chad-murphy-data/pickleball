@@ -1,0 +1,72 @@
+# Nightly referee-log harvest (rally-by-rally history; recon.md "getListLogs").
+#
+# Fully hands-off alternative to the droplet timer (deploy/pickleball-logs.*)
+# — run ONE of the two, not both. Each night: restore the raw/match_logs
+# cache, harvest whatever is missing at ~1 req/s, refresh the committed
+# summary tables, push. Jobs cap at 5 h (GitHub's limit is 6): the initial
+# archive fill (~9.5 h) completes across the first two bites — the 03:00 and
+# 10:00 UTC runs the same night — after which every run is a few minutes of
+# incremental top-up.
+#
+# NOTE: scheduled workflows only fire from the repo's DEFAULT branch.
+name: rally-logs
+
+# SCHEDULE DISABLED: the droplet timer (deploy/pickleball-logs.timer) is
+# the active collector. To switch collection to GitHub, uncomment the
+# schedule block AND disable the droplet timer
+# (systemctl --user disable --now pickleball-logs.timer) — never both.
+on:
+  # schedule:
+  #   - cron: "0 3 * * *"    # 03:00 UTC = 20:00 PT — evening window
+  #   - cron: "0 10 * * *"   # 10:00 UTC = 03:00 PT — second bite, no-op once filled
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rally-logs
+  cancel-in-progress: false
+
+jobs:
+  harvest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cache match logs
+        uses: actions/cache@v4
+        with:
+          path: raw/match_logs
+          key: rawlogs-${{ github.run_id }}
+          restore-keys: rawlogs-
+
+      - name: Harvest missing referee logs (polite, resumable)
+        run: |
+          pip install httpx
+          python scraper/harvest_logs.py --max-hours 5
+
+      - name: Summarize into committed tables
+        run: python scraper/harvest_logs.py --summarize
+
+      - name: Commit and push summary tables
+        run: |
+          git config user.name "rally-logs-bot"
+          git config user.email "actions@users.noreply.github.com"
+          if [ -n "$(git status --porcelain -- data/match_rally_summary.csv data/player_serve_rallies.csv)" ]; then
+            git add data/match_rally_summary.csv data/player_serve_rallies.csv
+            git commit -m "rally logs: nightly summary refresh ($(date -u +%F))"
+            for i in 1 2 3; do
+              git pull --rebase --autostash && git push origin HEAD:main && break
+              sleep $((i * 5))
+            done
+          else
+            echo "no summary changes"
+          fi
