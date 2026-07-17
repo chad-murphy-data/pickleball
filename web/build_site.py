@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from sitelib import charts, data as D, style
+from sitelib import charts, data as D, livepage, style
 from sitelib.charts import esc
 from sitelib.race import (GAMMA, calibrate, race_dist, set_calibration,
                           sigmoid, value_points)
@@ -1540,6 +1540,8 @@ def main():
     build_forecast(players, updated)
     build_results(players, games, updated)
     build_simulator(players, updated)
+    n_live = livepage.build_live(players, CAL, updated, SITE, write)
+    print(f"live page: {n_live} player values shipped")
     build_receipts(updated)
     build_records(players, agg, games, updated)
     build_dupr(players, updated)
