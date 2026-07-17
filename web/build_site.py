@@ -833,16 +833,29 @@ def bo_win(p, best_of):
 
 
 def mlp_race_panel(state, F, rng):
-    """Standings + Monte Carlo P(top of the round robin) for the live event."""
+    """Groups + playoff for the live MLP event.  Format (decoded from the
+    completed MLP Dallas 2026 weekend): two round-robin groups, then
+    cross-group "One and Done" placement matchups — the two GROUP WINNERS
+    meet in the title matchup.  P(champion) = simulate the remaining round
+    robin, then the title matchup between the simulated group winners."""
     from collections import defaultdict
     teams = {}
 
     def team(title):
         return teams.setdefault(title, {
-            "title": title, "mw": 0, "ml": 0, "gw": 0, "gl": 0, "pd": 0})
+            "title": title, "pool": None,
+            "mw": 0, "ml": 0, "gw": 0, "gl": 0, "pd": 0})
 
-    for r in state["completed"]:
+    is_rr = lambda r: (r.get("bracket") or "RR") == "RR"
+    rr_done = [r for r in state["completed"] if is_rr(r)]
+    rr_left = [r for r in state["remaining"] if is_rr(r)]
+    po_done = [r for r in state["completed"] if not is_rr(r)]
+    po_left = [r for r in state["remaining"] if not is_rr(r)]
+
+    for r in rr_done:
         t1, t2 = team(r["team1"]), team(r["team2"])
+        t1["pool"] = r.get("pool") or t1["pool"]
+        t2["pool"] = r.get("pool") or t2["pool"]
         g1, g2 = r["games1"] or 0, r["games2"] or 0
         t1["gw"] += g1; t1["gl"] += g2; t2["gw"] += g2; t2["gl"] += g1
         pd = (r["pts1"] or 0) - (r["pts2"] or 0)
@@ -851,72 +864,137 @@ def mlp_race_panel(state, F, rng):
             t1["mw"] += 1; t2["ml"] += 1
         elif r["winner"] == 2:
             t2["mw"] += 1; t1["ml"] += 1
-    for r in state["remaining"]:
-        team(r["team1"]); team(r["team2"])
+    for r in rr_left:
+        for k in ("team1", "team2"):
+            t = team(r[k])
+            t["pool"] = r.get("pool") or t["pool"]
+
+    pools = defaultdict(list)
+    for v in teams.values():
+        pools[v["pool"] or "?"].append(v["title"])
+    pool_ids = sorted(pools, key=lambda p: (-len(pools[p]), p))
+    pool_label = {p: chr(ord("A") + i) for i, p in enumerate(pool_ids)}
+
+    matrix = state.get("matrix") or {}
+
+    def matrix_tree(a, b):
+        """(tree, flip): tree oriented to `a`.  Stored oriented to the
+        alphabetically-first title."""
+        first, flip = (a, False) if a <= b else (b, True)
+        second = b if not flip else a
+        t = matrix.get(f"{first}|{second}")
+        return (t, flip) if t else (None, False)
 
     fmap = {}
     for f in (F or {}).get("forecasts", []):
         if f.get("tree"):
             fmap[(f["date"], f["team1"], f["team2"])] = f["tree"]
+
     slate = []
-    for r in state["remaining"]:
+    for r in rr_left + po_left:
         tree = fmap.get((r["date"], r["team1"], r["team2"]))
         flip = False
         if tree is None:
             tree = fmap.get((r["date"], r["team2"], r["team1"]))
             flip = tree is not None
+        if tree is None:
+            tree, flip = matrix_tree(r["team1"], r["team2"])
         slate.append((r, tree, flip))
 
-    # Monte Carlo the rest of the round robin.  Game-score outcome sampled
-    # from the forecast tree (4 games + DreamBreaker at 2-2); unpriced
-    # matchups fall back to a coin flip, counted and disclosed.
+    def sample_score(tree, flip):
+        """(team1_won, games1, games2) sampled from a matchup tree."""
+        p40, p31 = tree["p_40"], tree["p_31"]
+        pdb, p13, p04 = tree["p_db"], tree["p_13"], tree["p_04"]
+        pdbw = tree.get("p_db_win", 0.5)
+        if flip:
+            p40, p31, p13, p04, pdbw = p04, p13, p31, p40, 1 - pdbw
+        u = rng.random() * (p40 + p31 + pdb + p13 + p04)
+        if u < p40:
+            return True, 4, 0
+        if u < p40 + p31:
+            return True, 3, 1
+        if u < p40 + p31 + pdb:
+            return (True, 3, 2) if rng.random() < pdbw else (False, 2, 3)
+        if u < p40 + p31 + pdb + p13:
+            return False, 1, 3
+        return False, 0, 4
+
+    # completed playoff results pin the sim (once the title matchup is
+    # played, P(champion) collapses to fact)
+    po_result = {frozenset((r["team1"], r["team2"])):
+                 (r["team1"] if r["winner"] == 1 else r["team2"])
+                 for r in po_done if r.get("winner")}
+
     N = 20000
-    n_unpriced = sum(1 for _, t, _ in slate if t is None)
-    tops = defaultdict(int)
+    n_unpriced = sum(1 for r, t, _ in slate if t is None and is_rr(r))
+    tops, poolw = defaultdict(int), defaultdict(int)
+    rr_slate = [(r, t, f) for r, t, f in slate if is_rr(r)]
     for _ in range(N):
         mw = {t: v["mw"] for t, v in teams.items()}
         gw = {t: v["gw"] for t, v in teams.items()}
-        for r, tree, flip in slate:
+        for r, tree, flip in rr_slate:
             a, b = r["team1"], r["team2"]
             if tree is None:
-                w, ga, gb = (a, 3, 1) if rng.random() < 0.5 else (b, 1, 3)
+                won1, ga, gb = (rng.random() < 0.5), 3, 1
+                if not won1:
+                    ga, gb = gb, ga
             else:
-                p40, p31 = tree["p_40"], tree["p_31"]
-                pdb, p13, p04 = tree["p_db"], tree["p_13"], tree["p_04"]
-                if flip:
-                    p40, p31, p13, p04 = p04, p13, p31, p40
-                u = rng.random() * (p40 + p31 + pdb + p13 + p04)
-                pdbw = tree.get("p_db_win", 0.5)
-                if flip:
-                    pdbw = 1 - pdbw
-                if u < p40:            w, ga, gb = a, 4, 0
-                elif u < p40 + p31:    w, ga, gb = a, 3, 1
-                elif u < p40 + p31 + pdb:
-                    if rng.random() < pdbw:
-                        w, ga, gb = a, 3, 2
-                    else:
-                        w, ga, gb = b, 2, 3
-                elif u < p40 + p31 + pdb + p13:
-                    w, ga, gb = b, 1, 3
-                else:                  w, ga, gb = b, 0, 4
-            mw[w] += 1
+                won1, ga, gb = sample_score(tree, flip)
+            mw[a if won1 else b] += 1
             gw[a] += ga; gw[b] += gb
-        best = max(teams, key=lambda t: (mw[t], gw[t], teams[t]["pd"],
-                                         rng.random()))
-        tops[best] += 1
+        winners = []
+        for p in pool_ids:
+            if p == "?":
+                continue
+            winners.append(max(pools[p],
+                               key=lambda t: (mw[t], gw[t], teams[t]["pd"],
+                                              rng.random())))
+        for w in winners:
+            poolw[w] += 1
+        if len(winners) == 2:
+            wa, wb = winners
+            pinned = po_result.get(frozenset((wa, wb)))
+            if pinned:
+                champ = pinned
+            else:
+                tree, flip = matrix_tree(wa, wb)
+                p = (1 - tree["p_win"] if flip else tree["p_win"]) if tree else 0.5
+                champ = wa if rng.random() < p else wb
+        elif winners:
+            champ = winners[0]
+        else:
+            continue
+        tops[champ] += 1
 
-    order = sorted(teams.values(),
-                   key=lambda v: (-v["mw"], -(v["gw"] - v["gl"]), -v["pd"]))
-    rows = []
-    for v in order:
-        p_top = tops[v["title"]] / N
-        rows.append(
+    bar_rows = []
+    for v in sorted(teams.values(), key=lambda v: -tops[v["title"]]):
+        p_c = tops[v["title"]] / N
+        bar_rows.append(
             f'<div class="p1row"><span class="p1name">{esc(v["title"])}</span>'
             f'<span class="p1bar"><span class="p1fill" '
-            f'style="width:{p1_bar_width(p_top)}%"></span></span>'
-            f'<span class="p1pct">{pct_floor(p_top)}</span>'
-            f'<span class="p1meta">{v["mw"]}–{v["ml"]} · games '
-            f'{v["gw"]}–{v["gl"]} · rally {v["pd"]:+d}</span></div>')
+            f'style="width:{p1_bar_width(p_c)}%"></span></span>'
+            f'<span class="p1pct">{pct_floor(p_c)}</span>'
+            f'<span class="p1meta">group {pool_label.get(v["pool"] or "?", "?")} '
+            f'· win group {pct_floor(poolw[v["title"]] / N)}</span></div>')
+
+    group_tables = []
+    for p in pool_ids:
+        if p == "?" and len(pool_ids) > 1:
+            continue
+        rows = []
+        for t in sorted(pools[p], key=lambda t: (-teams[t]["mw"],
+                                                 -(teams[t]["gw"] - teams[t]["gl"]),
+                                                 -teams[t]["pd"])):
+            v = teams[t]
+            rows.append(f'<tr><td>{esc(t)}</td>'
+                        f'<td class="num">{v["mw"]}–{v["ml"]}</td>'
+                        f'<td class="num">{v["gw"]}–{v["gl"]}</td>'
+                        f'<td class="num">{v["pd"]:+d}</td></tr>')
+        group_tables.append(
+            f'<div><h3>Group {pool_label[p]}</h3>'
+            f'<table><tr><th>team</th><th class="num">matchups</th>'
+            f'<th class="num">games</th><th class="num">rally ±</th></tr>'
+            + "".join(rows) + "</table></div>")
 
     srows = []
     for r, tree, flip in slate:
@@ -926,26 +1004,29 @@ def mlp_race_panel(state, F, rng):
             p1 = 1 - tree["p_win"] if flip else tree["p_win"]
             fav, pf = (r["team1"], p1) if p1 >= 0.5 else (r["team2"], 1 - p1)
             price = f"<strong>{team_short(fav)} {pct_floor(pf)}</strong>"
+        tag = "" if is_rr(r) else ' <span class="chip">PLAYOFF</span>'
         srows.append(
             f'<tr><td class="num gray">{r["date"][5:]}</td>'
             f'<td class="num gray">{start_et(r.get("start") or "")}</td>'
-            f'<td>{team_short(r["team1"])} v {team_short(r["team2"])}</td>'
+            f'<td>{team_short(r["team1"])} v {team_short(r["team2"])}{tag}</td>'
             f'<td class="num">{price}</td></tr>')
-    unpriced_note = (f" {n_unpriced} matchup{'s' if n_unpriced != 1 else ''} "
-                     f"not yet priced (no projected lineup) — simulated as "
-                     f"coin flips." if n_unpriced else "")
+    unpriced_note = (f" {n_unpriced} round-robin matchup"
+                     f"{'s' if n_unpriced != 1 else ''} unpriced — simulated "
+                     f"as coin flips." if n_unpriced else "")
     return f"""
 <h2><span class="secno">MLP</span>{esc(state["event"])}</h2>
 <div class="card p1card">
-<div class="p1head"><strong>Who tops the table?</strong> <span class="note">
-{N:,} simulations of the remaining round robin, priced with the same
-projected-lineup forecasts as the cards page.</span></div>
-{''.join(rows)}
-<p class="note" style="margin:10px 0 2px">Standings rank: matchup wins, then
-game wins, then actual rally-point differential. Simulated ties broken the
-same way (rally points frozen at today's actuals — the one approximation
-here).{unpriced_note}</p>
+<div class="p1head"><strong>Who wins the weekend?</strong> <span class="note">
+two round-robin groups; the group winners meet in the One-and-Done title
+matchup. {N:,} simulations from the actual standings.</span></div>
+{''.join(bar_rows)}
+<p class="note" style="margin:10px 0 2px">Group rank: matchup wins, then game
+wins, then actual rally-point differential (simulated ties broken the same
+way; rally points frozen at actuals). Round-robin matchups use the cards-page
+forecasts; simulated title matchups use the same model on projected
+lineups.{unpriced_note}</p>
 </div>
+<div class="cols">{''.join(group_tables)}</div>
 <h3>Remaining slate</h3>
 <div class="tblwrap"><table><tr><th class="num">date</th><th class="num">start</th>
 <th>matchup</th><th class="num">favorite</th></tr>{''.join(srows)}</table></div>
@@ -977,6 +1058,10 @@ def ppa_bracket_panel(t, players, floor_value):
                 best_of = m["best_of"]
         if len(entrants) < 4:
             continue
+        known = sum(1 for m in ms if m["round_text"] in ROUND_DEPTH)
+        if known < len(ms) / 2:
+            continue      # group-stage format (e.g. PPA Finals Top 8) — the
+                          # knockout template does not apply; skip honestly
         size = 1
         while size < max(len(entrants), max(entrants)):
             size *= 2
