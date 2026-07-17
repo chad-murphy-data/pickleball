@@ -249,19 +249,19 @@
       "id": "2026-momentum-h3c-steelman",
       "title": "ADDENDUM H3c: the rally-share steelman (final timeout test on this sample)",
       "committed": "2026-07-17",
-      "graded": null,
-      "status": "pending",
+      "graded": "2026-07-17",
+      "status": "graded",
       "source": "model/momentum_prereg.md ADDENDUM H3c + model/momentum_h3c.py (frozen before any rally-share post-timeout statistic was computed)",
       "model": "Same matched-moment design as H3b; outcome = receiver's share of next 10 rallies won. Secondaries: 3-rally share, possession-killer, severe-trigger subset. Any positive requires disjoint-sample replication before any claim.",
-      "outcome_summary": null,
+      "outcome_summary": "Bounded null at the steelman's strongest: receiving side wins +0.20pp more of the next 10 rallies after its timeout (99% CI [-0.30, +0.71], p=.31; threshold was 2.5pp). Possession-killer dead null (-0.05pp); severe-trigger subset -0.11pp; 3-rally share +0.86pp at p=.045 (lone sub-threshold secondary; noise per the registered language). The naive before/after illusion SCALES with desperation - +16.4pp overall, +25.5pp for severe triggers - while the adjusted effect stays at zero: the more the timeout was needed, the bigger the regression-to-the-mean mirage. Timeout program closed on this sample; replication pool reserved but nothing to replicate.",
       "items": [
         {
           "label": "H3c: no meaningful rally-share timeout effect (|theta| < 2.5pp or p >= .01)",
           "prob": 0.75,
-          "outcome": null,
-          "result": null,
-          "grade": "PENDING",
-          "brier": null
+          "outcome": "+0.20pp of next-10-rally share, 99% CI [-0.30, +0.71] - no meaningful effect, BOUNDED",
+          "result": 1,
+          "grade": "HIT",
+          "brier": 0.0625
         }
       ],
       "footnote": "User-proposed steelman: rallies are the proximal outcome (killing the server's possession precedes scoring, which point differentials cannot see until converted). Declared the FINAL timeout estimand on this sample; replication pool (untouched ~10k eligible matches, seed 20260718) reserved for any positive."
