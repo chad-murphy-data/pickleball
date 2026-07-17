@@ -1,5 +1,6 @@
 match_id,matchup_id,event_name,date,t1_score,t2_score,scoring_format,stage
 853f1835-44ef-422d-8476-e65e7fe74846,007a1952-4d7f-45bf-a792-ac9b04d1fd7c,Edward Jones Mid-Season Tournament,2026-07-11,21,18,rally_21,Round 3 L1
+8c8d25c4-6bda-4ca7-a036-0143ffa636d2,00f0a598-8cd9-4808-aa6d-f58b1fcab8cc,Edward Jones Mid-Season Tournament,2026-07-12,17,21,rally_21,Round 4 L1
 4353fe02-8197-4bea-9d24-f2a223aadee6,048c5923-7b45-4ac5-af5d-4252d198605a,MLP Phoenix,2025-05-30,21,19,rally_21,RR
 f565b1ff-9de2-4ea6-8607-7f9ed462426c,0b5ace97-1ebc-4b72-a338-2725663a14f5,MLP Columbus,2025-05-01,13,21,rally_21,RR
 8f1c520b-ac91-4d89-a96b-73f4612e98a0,0c5aca9b-9399-4f05-a751-6ba94f90a0fc,MLP Phoenix,2025-05-31,21,16,rally_21,RR
@@ -52,6 +53,7 @@ f9f2200e-d218-4dc2-90f6-7396fa2a40bf,80bf7078-39e2-4198-a455-864b52ecdb45,Edward
 7a1c44d8-e1b5-406b-b4fc-270b731f2885,8425b668-e06a-4f83-9272-33bdbdd01078,MLP Austin,2026-06-13,17,21,rally_21,Round 3 RR
 c7393d09-fac8-4e38-9b13-d1744e18a7aa,885485c7-a21a-4433-9e73-66293ec5249e,MLP Salt Lake City,2025-07-31,21,18,rally_21,RR
 7a76e0d3-0c7d-445f-b66e-e6bbff83556a,8ba88624-2388-439c-b2cd-b232cbc9543e,Toray MLP Playoffs - San Diego,2025-08-16,21,18,rally_21,RR
+a73df238-f37a-4338-b8dc-eb9122b4e8e9,8ebcadd8-e562-4775-9a7c-cd882b72769f,MLP San Diego,2026-07-16,14,21,rally_21,Round 1 RR
 3f5f1be1-da5c-4913-9e12-fc2d94f14a6a,90751f3e-d967-4201-9277-17bc89657915,MLP Austin,2026-06-11,21,11,rally_21,Round 2 RR
 b0572402-2c31-41d3-8b63-2db8fe46795b,90a298b3-525e-4b71-85aa-a10cdb66468b,MLP Dallas,2026-05-25,21,15,rally_21,One and Done - Playoff W
 5550b767-49c2-4501-901d-840938457b5e,9335634b-575d-4bcb-bed0-8d415f4dd147,Edward Jones Mid-Season Tournament,2026-07-08,21,11,rally_21,Round 32 W
