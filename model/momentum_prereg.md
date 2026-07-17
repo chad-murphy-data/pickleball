@@ -251,3 +251,37 @@ effect is sample A's +0.86pp. A decisive test either way.
 
 **Validation:** `model/momentum_h3d.py --selftest` — endogenous
 zero-effect simulation fit on the 3-rally share must recover θ3 ≈ 0.
+
+## AMENDMENT (2026-07-17, pre-unblinding — no statistic has touched the pool)
+
+User's argument, accepted: a null at exactly window 3 would not satisfy
+a skeptical reader in EITHER direction — a believer would say the effect
+might live at a neighboring window; a debunker would say one cell can't
+close a family. Testing one keyhole was my design flaw, not a virtue.
+Amended design, still one single run on the pool:
+
+**Window profile:** θ_W for W ∈ {1, 2, 3, 4, 5, 7, 10} — the receiver's
+share of the next W rallies, all on the IDENTICAL moment set (moments
+still require full 10-rally pre and post windows, so the outcomes are
+nested and comparable) with the identical controls (10-rally pre-share).
+Window 1 is H3's next-rally test, now re-run on fresh data; window 10 is
+H3c's primary, ditto.
+
+**Frozen inference structure:**
+1. PRIMARY (unchanged): θ_3 > 0, one-sided α = .01 — the specific
+   sample-A-generated hypothesis. Prediction unchanged: null, 0.80.
+2. FAMILY sweep: any OTHER window counts as a discovery only at
+   Bonferroni-corrected two-sided α = .05/7 (|z| ≥ 2.69). Conservative
+   under the windows' strong correlation — acceptable, since the family
+   test protects the null claim. Prediction: no window clears, 0.80.
+3. BOUNDING for the skeptical reader: per-window 99% CIs, all reported;
+   if every CI lies inside ±2.5pp, the registered conclusion is "no
+   window from 1 to 10 rallies hides a meaningful timeout effect."
+4. SHAPE, descriptive only: a real huddle effect predicts a decaying
+   profile (largest at W=1–3, shrinking toward 10, where sample A is
+   already bounded); noise predicts a flat or incoherent profile.
+
+The 1–10 window family is the mechanistically motivated space (a
+huddle's effect on play must begin immediately after it); effects that
+skip the first ten rallies are not part of any hypothesis under test.
+Nothing beyond this profile is computed on the pool.

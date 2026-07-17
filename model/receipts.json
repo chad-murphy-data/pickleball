@@ -268,16 +268,24 @@
     },
     {
       "id": "2026-momentum-h3d-replication",
-      "title": "ADDENDUM H3d: fresh-sample confirmation of the 3-rally timeout hint",
+      "title": "ADDENDUM H3d (amended): window-profile confirmation of the timeout question",
       "committed": "2026-07-17",
       "graded": null,
       "status": "pending",
       "source": "model/momentum_prereg.md ADDENDUM H3d + model/momentum_h3d.py (frozen before any statistic touched the replication pool)",
-      "model": "Single estimand: 3-rally share effect on the full untouched 9,426-match pool, one-sided alpha .01; ~94% power against sample A's +0.86pp. Claim ladder frozen either way.",
+      "model": "Window profile theta_W for W in {1,2,3,4,5,7,10} on the full untouched 9,426-match pool, identical moments/controls. Primary: theta_3 > 0 one-sided alpha .01. Family: other windows at Bonferroni |z|>=2.69. Bounding: all seven 99% CIs vs +/-2.5pp. Amended pre-unblinding (user's argument: one cell cannot close a family for a skeptical reader in either direction).",
       "outcome_summary": null,
       "items": [
         {
-          "label": "H3d: the 3-rally hint FAILS to replicate (one-sided p >= .01)",
+          "label": "H3d primary: the 3-rally hint FAILS to replicate (one-sided p >= .01)",
+          "prob": 0.8,
+          "outcome": null,
+          "result": null,
+          "grade": "PENDING",
+          "brier": null
+        },
+        {
+          "label": "H3d family: no window in {1,2,4,5,7,10} clears Bonferroni |z|>=2.69",
           "prob": 0.8,
           "outcome": null,
           "result": null,

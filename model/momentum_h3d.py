@@ -1,9 +1,12 @@
-"""Frozen analysis for ADDENDUM H3d — fresh-sample confirmation of the
-3-rally timeout hint (see model/momentum_prereg.md). One estimand, one
-run, on the full untouched replication pool.
+"""Frozen analysis for ADDENDUM H3d as AMENDED (pre-unblinding) — the
+window-profile confirmation on the untouched pool. One single run.
 
     python model/momentum_h3d.py --selftest
     python model/momentum_h3d.py
+
+Primary: theta_3 > 0 one-sided at .01 (the sample-A-generated cell).
+Family: windows {1,2,4,5,7,10} at Bonferroni two-sided .05/7 (|z|>=2.69).
+Bounding: all seven 99% CIs reported; inside +/-2.5pp => family bounded.
 """
 from __future__ import annotations
 
@@ -11,6 +14,7 @@ import argparse
 import csv
 import json
 import math
+import random
 import sys
 from pathlib import Path
 
@@ -20,45 +24,68 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "model"))
 from momentum_test import RAW, match_rallies, sample_matches, team_eta  # noqa: E402
 from momentum_h3b import ols_cr0                                        # noqa: E402
-from momentum_h3c import build, split_games                             # noqa: E402
+from momentum_h3c import rally_win, point_delta, split_games            # noqa: E402
+
+WINDOWS = (1, 2, 3, 4, 5, 7, 10)
+PRE = 10
 
 
-def pool_matches():
-    sample, pairs, fmts, vals = sample_matches()
-    used = set(sample)
-    vset = set(vals)
-    pop = []
-    for r in csv.DictReader(open(ROOT / "data" / "match_rally_summary.csv")):
-        if r["discipline"] == "doubles" and r["score_check"] == "ok":
-            m = r["match_id"]
-            if m in pairs and set(pairs[m][0] + pairs[m][1]) <= vset:
-                pop.append(m)
-    return sorted(set(pop) - used), pairs, fmts, vals
+def build_profile(gl, eta_m):
+    """Moment rows: [treat, share_1..share_10 (7 cols), pre_share10,
+    margin_recv, srv2, eta_recv] — H3b/H3c moment rules."""
+    out = []
+    for game in gl:
+        n = len(game)
+        for t in range(PRE, n - PRE + 1):
+            r = game[t]
+            if r["to_srv"]:
+                continue
+            P = 1 - r["side"]
+            wins = [rally_win(x, P) for x in game[t:t + PRE]]
+            shares = [sum(wins[:w]) / w for w in WINDOWS]
+            prew = sum(rally_win(x, P) for x in game[t - PRE:t]) / PRE
+            out.append([r["to_recv"], *shares, prew,
+                        -r["margin"], r["srv2"],
+                        eta_m if P == 0 else -eta_m])
+    return out
 
 
-def fit_share3(rows, cl, label):
+def fit_profile(rows, cl):
     m = np.asarray(rows, float)
     cl = np.asarray(cl)
-    X = np.column_stack([np.ones(len(m)), m[:, 0], m[:, 4], m[:, 6],
-                         m[:, 7], m[:, 8]])
-    beta, V = ols_cr0(X, m[:, 2], cl)          # col 2 = share3
-    th, se = beta[1], math.sqrt(V[1, 1])
-    z = th / se if se > 0 else 0.0
-    p_one = 1 - 0.5 * (1 + math.erf(z / math.sqrt(2)))   # H1: theta > 0
-    tr = m[:, 0] == 1
-    line = (f"{label}: theta3 {th*100:+.2f}pp (se {se*100:.2f}, 99% CI "
-            f"[{(th-2.576*se)*100:+.2f}, {(th+2.576*se)*100:+.2f}], "
-            f"z={z:+.2f}, one-sided p={p_one:.3g}) | n_treat {int(tr.sum())}, "
-            f"n_ctrl {int((~tr).sum())}")
-    print(line)
-    return line, th, se, z, p_one
+    nW = len(WINDOWS)
+    X = np.column_stack([np.ones(len(m)), m[:, 0], m[:, 1 + nW],
+                         m[:, 2 + nW], m[:, 3 + nW], m[:, 4 + nW]])
+    res = []
+    for i, w in enumerate(WINDOWS):
+        beta, V = ols_cr0(X, m[:, 1 + i], cl)
+        th, se = beta[1], math.sqrt(V[1, 1])
+        z = th / se if se > 0 else 0.0
+        res.append((w, th, se, z))
+    return res
+
+
+def report(res, n_treat, n_ctrl):
+    lines = [f"moments: {n_treat} treated / {n_ctrl} control",
+             "| W | theta_W | 99% CI | z | test |", "|---|---|---|---|---|"]
+    for w, th, se, z in res:
+        ci = f"[{(th-2.576*se)*100:+.2f}, {(th+2.576*se)*100:+.2f}]"
+        if w == 3:
+            p1 = 1 - 0.5 * (1 + math.erf(z / math.sqrt(2)))
+            tag = f"PRIMARY one-sided p={p1:.3g} (alpha .01)"
+        else:
+            tag = f"family: {'DISCOVERY' if abs(z) >= 2.69 else 'ns'} (|z|>=2.69)"
+        lines.append(f"| {w} | {th*100:+.2f}pp | {ci} | {z:+.2f} | {tag} |")
+    bounded = all(abs(th) + 2.576 * se <= 0.025 for _, th, se, _ in res)
+    lines.append("")
+    lines.append("All seven 99% CIs inside ±2.5pp: "
+                 + ("YES — the 1–10 rally window family is BOUNDED"
+                    if bounded else "no"))
+    return lines
 
 
 def selftest():
-    # reuse H3c's endogenous zero-effect world, fit the 3-rally estimand
-    import momentum_h3c as h3c
-    import random
-    rng = random.Random(31)
+    rng = random.Random(37)
     rows, cl = [], []
     k = 0.445
     for mi in range(1200):
@@ -71,7 +98,7 @@ def selftest():
         game, tos = [], {0: 0, 1: 0}
         while not ((a >= 11 and a - b >= 2) or (b >= 11 and b - a >= 2)):
             recv = 1 - side
-            prew5 = sum(h3c.point_delta(x, recv) for x in game[-5:])
+            prew5 = sum(point_delta(x, recv) for x in game[-5:])
             to_recv = 0
             if tos[recv] < 2 and rng.random() < 1 / (1 + math.exp(4 + 0.9 * prew5)):
                 to_recv = 1
@@ -92,13 +119,30 @@ def selftest():
                     num = 2
                 else:
                     side, num = 1 - side, 1
-        ms = build([game], eta)
+        ms = build_profile([game], eta)
         rows += ms
         cl += [mi] * len(ms)
-    _, th, se, z, p = fit_share3(rows, cl, "selftest share3 (true 0)")
-    ok = abs(z) < 3.29
-    print(f"SELFTEST {'PASS' if ok else 'FAIL'}")
+    res = fit_profile(rows, cl)
+    mx = max(abs(z) for _, _, _, z in res)
+    for w, th, se, z in res:
+        print(f"  selftest W={w:2d}: {th*100:+.2f}pp z={z:+.2f}")
+    ok = mx < 3.29
+    print(f"max |z| = {mx:.2f} on true-null profile → SELFTEST "
+          f"{'PASS' if ok else 'FAIL'}")
     return ok
+
+
+def pool_matches():
+    sample, pairs, fmts, vals = sample_matches()
+    used = set(sample)
+    vset = set(vals)
+    pop = []
+    for r in csv.DictReader(open(ROOT / "data" / "match_rally_summary.csv")):
+        if r["discipline"] == "doubles" and r["score_check"] == "ok":
+            m = r["match_id"]
+            if m in pairs and set(pairs[m][0] + pairs[m][1]) <= vset:
+                pop.append(m)
+    return sorted(set(pop) - used), pairs, fmts, vals
 
 
 def main():
@@ -120,16 +164,19 @@ def main():
         s1, s2 = pairs[mid]
         eta = team_eta(vals[s1[0]], vals[s1[1]], vals[s2[0]], vals[s2[1]])
         gl = split_games(match_rallies(logs, s1, s2, eta, fmts.get(mid, {})))
-        ms = build(gl, eta)
+        ms = build_profile(gl, eta)
         rows += ms
         cl += [mid] * len(ms)
-    print(f"pool: {len(pool)} matches ({missing} missing), "
-          f"{len(rows)} moments")
-    line, th, se, z, p_one = fit_share3(rows, cl, "H3d CONFIRMATORY share3")
+    m = np.asarray(rows, float)
+    n_treat, n_ctrl = int((m[:, 0] == 1).sum()), int((m[:, 0] == 0).sum())
+    print(f"pool: {len(pool)} matches ({missing} missing)")
+    res = fit_profile(rows, cl)
+    lines = report(res, n_treat, n_ctrl)
+    print("\n".join(lines))
     with (ROOT / "model" / "momentum_results.md").open("a") as fh:
-        fh.write("\n## ADDENDUM H3d — fresh-sample confirmation "
-                 "(single frozen run on the untouched pool)\n\n"
-                 f"{line}\n")
+        fh.write("\n## ADDENDUM H3d (amended): window-profile confirmation "
+                 "on the untouched pool (single frozen run)\n\n"
+                 + "\n".join(lines) + "\n")
     print("appended to model/momentum_results.md")
 
 
