@@ -1,0 +1,35 @@
+{
+ "split": "2026-06-01",
+ "note": "All four predictors scored on ONE identical holdout game set: every game rates all four players under BOTH systems, with DUPR reset artifacts screened out. Rows = ratings, columns = machinery.",
+ "n_holdout_games": 659,
+ "n_pre_calibration_games": 2357,
+ "n_dropped_dupr_glitch": 114,
+ "formats": "sideout_11 + sideout_15",
+ "gamma_weakest_link": -0.183,
+ "fitted": {
+  "dupr_bare_slope": 0.6500000000000001,
+  "model_bare_slope": 1.8,
+  "dupr_steel_k": 0.25,
+  "dupr_steel_gap": 0.1000000000000012
+ },
+ "model": {
+  "accuracy": 0.7632776934749621,
+  "brier": 0.17421292882124675,
+  "log_loss": 0.5384329049308575
+ },
+ "model_bare": {
+  "accuracy": 0.7617602427921093,
+  "brier": 0.17323974104767267,
+  "log_loss": 0.5236527177032002
+ },
+ "dupr_steelman": {
+  "accuracy": 0.6752655538694993,
+  "brier": 0.20993183332240847,
+  "log_loss": 0.6095642623942616
+ },
+ "dupr_bare": {
+  "accuracy": 0.6737481031866465,
+  "brier": 0.20982124523564127,
+  "log_loss": 0.6114055044301544
+ }
+}

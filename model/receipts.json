@@ -7,7 +7,15 @@
     "accuracy": 0.7738,
     "brier": 0.1653,
     "log_loss": 0.5058,
-    "dupr_reference": {"accuracy": 0.6467, "brier": 0.2289, "n_games": 518},
+    "dupr_comparison": {
+      "note": "Steelmanned head-to-head on ONE identical, glitch-repaired game set: every game rates all four players under both systems, DUPR reset artifacts screened out of its inputs, and DUPR handed our exact race-DP + weakest-link machinery (dupr_steelman) alongside its published probit form (dupr). Model here is the plug-in v2 on the same set; the 0.7738/884 headline above is the draws-integrated fit on its full holdout.",
+      "n_games": 659,
+      "n_dropped_dupr_glitch": 114,
+      "model": {"accuracy": 0.7633, "brier": 0.1742},
+      "dupr": {"accuracy": 0.6737, "brier": 0.2098},
+      "dupr_steelman": {"accuracy": 0.6753, "brier": 0.2099},
+      "source": "model/dupr_steelman.json"
+    },
     "v1_reference": {"accuracy": 0.752, "brier": 0.178},
     "source": "model/v2_holdout_summary.json"
   },
