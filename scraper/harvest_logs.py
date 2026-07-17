@@ -89,7 +89,7 @@ def load_matches(doubles=True, singles=True):
 
 # ---------- harvest ----------
 
-def harvest(matches, interval, limit, dry_run):
+def harvest(matches, interval, limit, dry_run, max_hours=None):
     cutoff = (dt.date.today() - dt.timedelta(days=VOLATILE_DAYS)).isoformat()
     todo = []
     for m in matches:
@@ -115,8 +115,13 @@ def harvest(matches, interval, limit, dry_run):
 
     c = PBClient()
     t0, done, empty, errs = time.monotonic(), 0, 0, 0
+    deadline = t0 + max_hours * 3600 if max_hours else None
     for m in todo:
         if stop["flag"]:
+            break
+        if deadline and time.monotonic() > deadline:
+            log.info("runtime cap (%.1f h) reached — exiting cleanly; "
+                     "re-run resumes where this left off", max_hours)
             break
         tick = time.monotonic()
         try:
@@ -354,6 +359,8 @@ def main():
     ap.add_argument("--doubles-only", action="store_true")
     ap.add_argument("--singles-only", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--max-hours", type=float,
+                    help="stop cleanly after this many hours (resumable)")
     ap.add_argument("--summarize", action="store_true",
                     help="no network: tally raw/match_logs → data/*.csv")
     ap.add_argument("--out", default=str(DATA),
@@ -372,7 +379,8 @@ def main():
     if args.summarize:
         summarize(matches, Path(args.out))
     else:
-        harvest(matches, args.interval, args.limit, args.dry_run)
+        harvest(matches, args.interval, args.limit, args.dry_run,
+                max_hours=args.max_hours)
 
 
 if __name__ == "__main__":

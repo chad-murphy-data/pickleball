@@ -50,38 +50,44 @@ journalctl --user -u pickleball-live -e              # today's log
 systemctl --user start pickleball-live.service       # manual start now
 ```
 
-## Backfill: historical referee logs (one-time, ~9.5 h)
+## Backfill: historical referee logs (nightly, self-limiting)
 
 `scraper/harvest_logs.py` walks every archived match and caches its full
-referee log (rally-by-rally; see recon.md "getListLogs") to
-`raw/match_logs/` — ~30.5k requests at 1.1 s. Fully resumable; safe to
-interrupt and re-run. Kick it off on the droplet as a transient unit so
-it survives logout and shows up in journalctl:
+referee log (rally-by-rally; see recon.md "getListLogs"), then
+`--summarize` refreshes the two committed summary CSVs. The first fill
+is ~30k matches ≈ 9.5 h at 1.1 s/request; after that, nightly runs are
+minutes of incremental top-up. Interrupting is always safe — the cache
+resumes for free.
+
+**Default collector: the GitHub Action** (`.github/workflows/rally-logs.yml`)
+— zero VPS involvement. Fires 03:00 + 10:00 UTC (evening + small-hours
+PT, 5 h cap each; the archive completes across the first night's two
+bites), caches `raw/match_logs` in Actions, commits the summary tables.
+Requirements: the repo's DEFAULT branch must be the one carrying the
+workflow (scheduled workflows only fire from the default branch), and a
+public repo (private would burn ~300 paid minutes/night). Kick a run
+manually anytime: Actions tab → rally-logs → Run workflow.
+
+**Droplet alternative** (`pickleball-logs.timer`, 20:00 PT nightly, 11 h
+cap, summaries committed+pushed by `run_logs_backfill.sh`) for running
+off GitHub infra instead. NEVER run both collectors — they'd double-hit
+the API for the same files:
 
 ```bash
 cd ~/pickleball && git pull
-systemd-run --user --unit=pickleball-logs-backfill \
-  --working-directory="$HOME/pickleball" \
-  "$HOME/pickleball/.venv/bin/python" scraper/harvest_logs.py
-journalctl --user -u pickleball-logs-backfill -f    # watch (progress every 100)
+WITH_LOGS_TIMER=1 ./deploy/install.sh            # opt in (Action is default)
+systemctl --user start pickleball-logs.service    # or: start tonight NOW
+journalctl --user -u pickleball-logs -f           # watch (progress every 100)
 ```
 
-Prefer starting it in the evening after live play — it shares the same
-polite request budget as the live poller. When it finishes (or any time
-mid-run), derive the committed summary tables and push them:
-
-```bash
-cd ~/pickleball
-.venv/bin/python scraper/harvest_logs.py --summarize
-git add data/match_rally_summary.csv data/player_serve_rallies.csv
-git commit -m "rally logs: summary tables ($(date +%F))" && git push
-```
+Knobs (systemd drop-in or environment): `LOGS_MAX_HOURS` (default 11),
+`LOGS_INTERVAL` (seconds/request, default 1.1, refuses <1.0).
 
 `--summarize` needs no network, prints the empirical serve-rally win
 rate k by tour, and score-validates every match against games.csv
 (`score_check` column; ~97% of logged matches reconcile exactly, the
 rest are flagged). Raw logs stay on the box (gitignored, ~1 GB); the
-two CSVs are small and belong in the repo.
+two CSVs are small and live in the repo, refreshed by the nightly run.
 
 Upcoming windows this summer (see ROADMAP Phase 1): MLP San Diego
 Jul 16–19, PPA Macon Challenger Jul 17–19, MLP Chicago Jul 23–25,

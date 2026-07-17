@@ -1,0 +1,9 @@
+[Unit]
+Description=Nightly referee-log backfill (see scraper/harvest_logs.py)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=exec
+ExecStart=@REPO@/deploy/run_logs_backfill.sh
+# No Restart: the harvest is resumable and re-fires tomorrow night anyway.
