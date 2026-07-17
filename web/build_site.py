@@ -794,7 +794,7 @@ def build_results(players, games, updated, days=14):
     body = f"""
 <h1>Recent results, rated</h1>
 <p class="sub">Every pro doubles game of the last {days} days with the win
-probability the model would have quoted for the eventual winners before the
+probability the model would have shown for the eventual winners before the
 game (current monthly values — a living retrospective, not a frozen
 commitment; the <a href="receipts.html">receipts page</a> holds those).
 Winners listed first. {n_upsets} upsets (winner rated under 25%).</p>
