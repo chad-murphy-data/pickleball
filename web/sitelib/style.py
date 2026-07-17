@@ -253,6 +253,19 @@ a.srow .sp { font-weight: 700; white-space: nowrap; }
   display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap;
   font-family: "Space Mono", ui-monospace, monospace; font-size: 12px;
   letter-spacing: 0.04em; color: var(--ink2); }
+/* live-now badges (lit by the landing's one-shot live-state check) */
+.slatelink.live-on, header.landing nav a#nav-live.live-on {
+  background: var(--hl); color: var(--hl-ink); padding: 1px 8px; }
+.ldot2 { display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--loss); animation: land-pulse 1.4s ease-in-out infinite;
+  vertical-align: baseline; }
+@keyframes land-pulse { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+.door .livechip { font-family: "Space Mono", ui-monospace, monospace;
+  font-size: 10.5px; font-weight: 700; background: var(--hl);
+  color: var(--hl-ink); padding: 1px 6px; margin-left: 8px;
+  letter-spacing: 0.04em; }
+.t-spark { margin: 10px 0 6px; }
+.t-spark svg { width: 100%; height: auto; display: block; }
 header.landing { border-bottom: 3px double var(--ink); background: var(--surface); }
 header.landing .bar { max-width: 1080px; margin: 0 auto; padding: 14px 24px;
   display: flex; align-items: baseline; gap: 20px; flex-wrap: wrap; }
