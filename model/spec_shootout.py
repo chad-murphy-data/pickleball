@@ -69,6 +69,7 @@ def load_games():
             T=11 if g["scoring_format"] == "sideout_11" else 15,
             us=(g["t1_p1"], g["t1_p2"], g["t2_p1"], g["t2_p2"]),
             s1=int(g["t1_score"]), s2=int(g["t2_score"]),
+            gn=int(g["game_number"]),
             won=int(g["margin"]) > 0))
     rows.sort(key=lambda r: (r["date"], r["match"]))
     return rows
