@@ -1,0 +1,12 @@
+[Unit]
+Description=Start the lineup freezer each morning (no-op on non-event days)
+
+[Timer]
+# Same window as the poller: lineups for the first ~10:00 PT matchups tend
+# to land 30-60 min ahead. On non-event days the watcher idles out fast.
+OnCalendar=*-*-* 09:15:00 America/Los_Angeles
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target

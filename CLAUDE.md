@@ -181,6 +181,15 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   to ~20 s scoreboard snapshots (localStorage). Pre-match numbers anchor to
   the calibrated race DP, so live curves agree with graded receipts at
   rally zero; DB panel uses the singles model.
+- **Lineups (2026-07-17)**: forecast.html reprices client-side the moment
+  actual lineups publish (projected vs LINEUPS OFFICIAL, same engine + a
+  differs-from-projection flag; day-2 evidence: 9/10 matchups ran pairings
+  that differed from projection). `scraper/lineup_freeze.py` (droplet
+  timer 09:15 PT via deploy/run_freeze.sh) auto-freezes at-announcement
+  forecasts to live/lineup_freezes-*.jsonl — timestamped, strictly
+  pre-match, the "official lineups" tier to compare against the
+  projected-lineup ledger. Kept deliberately light: the machine records,
+  humans grade.
 - **Rally-level history is backfillable** (found 2026-07-16):
   `/api/v1/results/getListLogs?id=<match_uuid>` (open BFF) returns the
   full referee log for completed matches — per-rally server/receiver

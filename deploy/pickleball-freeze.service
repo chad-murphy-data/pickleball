@@ -1,0 +1,10 @@
+[Unit]
+Description=Lineup-announcement forecast freezer (see scraper/lineup_freeze.py)
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=exec
+ExecStart=@REPO@/deploy/run_freeze.sh
+Restart=on-failure
+RestartSec=60
