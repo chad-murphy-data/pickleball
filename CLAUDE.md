@@ -92,7 +92,21 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    r = 0.74; imputation for never-plays-singles rosters ≈ 0.28+1.14·d.
    Waters +2.27 / Fahey +1.80 are the top two women's singles values.
    Wired into make_forecast (K_DB_SINGLES).
-7. Cross-gender offset: the γ|gap| term is the ONLY identification channel
+7. **Specification shootout (2026-07-18; model/spec_shootout.md +
+   spec_shootout.py, big_points.py)**: v2 survived ~35 challengers on the
+   frozen June+ holdout (n=926). Min-only/max-only/men-only/chem-boost/
+   momentum/experience/seed-order: worse or null. Level ladder:
+   match < game < margin ≈ points. Rally-level serve/return split TIES
+   plain points pre-match (live-only asset); winprob.py's odds-split
+   assumption VALIDATED on 216k harvested rallies (slope 1.03). Women
+   carry mixed predictively (74% women-only vs 65% men-only — equal
+   loadings, women's spread 1.5×; offset-safe). Clutch & durability
+   exist but are faint beyond skill (split-half r ≈ 0.15/0.13;
+   ALW+Johns top BOTH lists; biggest rally = 9-10 on #2 server, 0.47
+   swing). Lone P≥0.95 challenger: equal-weight v2+margin+Elo ensemble
+   (0.1638 vs 0.1665 Brier) — shadow-ledger it before ever adopting.
+   Rally logs cache: raw/match_logs/ (gitignored; harvest_logs.py).
+8. Cross-gender offset: the γ|gap| term is the ONLY identification channel
    and it's stable in-form (c* ≈ +0.08 logit, scales ~1:1) but the nominal
    precision is fake (values held fixed; form-borne). House rule stands —
    never publish as fact. A single 2W-vs-2M exhibition game carries ~se

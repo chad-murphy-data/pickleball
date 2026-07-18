@@ -46,6 +46,8 @@ negative favors the challenger.
 | A_weak_gamma | 926 | 76.9% | 0.1662 | 0.5058 | −0.0003 | [−0.0021, +0.0014] | 0.64 |
 | A_sum | 926 | 76.7% | 0.1663 | 0.5064 | −0.0002 | [−0.0025, +0.0019] | 0.58 |
 | **v2_plugin (reference)** | 926 | 77.1% | 0.1665 | 0.5144 | — | — | — |
+| A_durability | 926 | 77.0% | 0.1667 | 0.5073 | +0.0001 | [−0.0020, +0.0021] | 0.45 |
+| D_v2_serveDP | 926 | 77.0% | 0.1668 | 0.5054 | +0.0002 | [−0.0025, +0.0029] | 0.42 |
 | A_experience | 926 | 76.6% | 0.1670 | 0.5071 | +0.0005 | [−0.0018, +0.0026] | 0.34 |
 | C_margin_level | 926 | 75.9% | 0.1683 | 0.5096 | +0.0017 | [−0.0033, +0.0066] | 0.24 |
 | A_chem | 926 | 75.2% | 0.1696 | 0.5181 | +0.0031 | [−0.0008, +0.0072] | 0.06 |
@@ -298,7 +300,131 @@ side-out scoring, so "win rally while serving" (scores a point) and
 "win rally while returning" (wins back the serve) are different skills
 with different consequences. That version needs rally-level data.
 
-RALLY_SECTION_PENDING
+So we harvested it: referee logs for every 2026 doubles match
+(`scraper/harvest_logs.py`, 4,524 matches swept for the train window;
+2,738 carry real logs — qualifiers and some Challenger courts go
+unlogged — yielding **216,333 attributed rallies**).
+
+| strategy | n | acc | Brier | ΔBrier vs v2 | 95% CI | P(better) |
+|---|---|---|---|---|---|---|
+| D_rally_srvret | 809 | 74.8% | 0.1722 | +0.0047 | [−0.0033, +0.0128] | 0.12 |
+| D_rally_raw (no calib.) | 809 | 74.5% | 0.1725 | +0.0050 | [−0.0030, +0.0132] | 0.11 |
+| D_points_2026only (control) | 823 | 74.6% | 0.1710 | +0.0050 | [+0.0001, +0.0098] | 0.02 |
+| D_v2_serveDP | 926 | 77.0% | 0.1668 | +0.0002 | [−0.0025, +0.0029] | 0.42 |
+
+**D_rally_srvret** is the real serve/return tug of war: every player gets
+a *serve* value and a *return* value (rally-level Bernoulli MAP on the
+2026-H1 logs — P(serving side wins) = σ(α + serve pair − return pair),
+α = −0.245 ⇒ baseline serve-rally win 44%, matching the measured
+k = 0.444), and each holdout game is priced by the exact 4-state
+serve-aware DP with each side's own kA, kB — no anchoring, no shared p.
+It scores 74.8%/0.1722 — clearly a competent model (it beats shipped v1
+using five months of data) — but it does NOT beat the window-matched
+control (**D_points_2026only**: the ordinary point-binomial refit on the
+same 2026-H1 games, 0.1710). Both trail full v2 by ~0.005, which is the
+cost of the short window, not of the rally structure. Verdict: for
+PRE-match pricing, splitting point share into serve-share and
+return-share adds nothing — a team's two numbers collapse into one
+without predictive loss. The split is a *live* asset (state-dependent
+win prob mid-game), not a forecasting one — exactly the bet the live
+engine's anchoring design made, and **D_v2_serveDP** confirms it from
+the other direction: pushing v2's etas through the serve DP *without*
+anchoring moves pre-match Brier by +0.0002, i.e., nothing.
+
+The harvest also paid off the open assumption in `winprob.py` (its
+docstring TODO): the odds-split mapping from eta to (kA, kB). Weighted
+regression of observed serve-rally win-rate logits on predicted, across
+**5,197 match-sides**: slope **1.032**, intercept **−0.030** (ideal:
+1, 0). The live engine's one guessed equation turns out to be almost
+exactly right, and the "validate against rally logs once the backfill
+lands" caveat can be retired.
+
+## Big points and big games — the out-of-the-box corner
+
+*Two skills folklore swears by, measured properly (we believe for the
+first time) in pro pickleball. Code: `model/big_points.py`, results in
+`model/big_points_summary.json`. Method for both: a per-player metric, a
+permutation null (does the trait exist beyond noise?), an odd/even
+split-half (does it persist within players?), a value-trend control (is
+it just "being good" in disguise?), and a predictive shootout row.*
+
+### "Wins big points" — clutch, with exact leverage
+
+Every reconstructed rally gets a leverage number nobody has to argue
+about: rebuild the full state — score AND serve state (A#1/A#2/B#1/B#2)
+— from the referee log, then ask the serve-aware DP how far that rally
+swings the game's win probability. Reconstruction is validated
+end-to-end: a game only counts if replaying its log reproduces the
+archived final score exactly (2,402 of 2,738 logged matches pass — 88%;
+the rest are referee-tablet garbles, discarded). That yields **162,942
+server-attributed rallies** with exact leverage. A server's *clutch* is
+the covariance between their rally outcomes (vs the matchup's expected
+serve-win rate) and within-game leverage z-scores: positive = delivers
+the big ones specifically.
+
+For flavor, the DP's own answer to "what is the biggest point in
+pickleball?" between equal teams (k = 0.443, to 11): **game point
+against you, on the opponent's second server, 9-10 — a 0.467 swing in
+win probability** (10-9 on your own #2 is its mirror), ahead of even
+9-9. Nearly half the game turns on one rally.
+
+Results, n = 182 servers with ≥300 rallies:
+
+* **The trait exists**: cross-player variance is 2.94× the permutation
+  null. The field-wide mean is 0.01 null-sds — no global artifact; the
+  coupling lives in specific players.
+* **It's mostly a shadow of being good**: clutch correlates **0.58**
+  with the player's v2 rating. The top of the list is the top of the
+  sport — Anna Leigh Waters (z = +7.9), Ben Johns (+6.8), Anna Bright
+  (+6.7), Gabriel Tardio (+5.5). And note this metric *cannot* be faked
+  by a constant "the model underrates elites" bias — leverage z-scores
+  are mean-zero within every game, so a flat overperformance contributes
+  nothing. The stars genuinely concentrate their overdelivery in the
+  high-leverage moments (their nerve, or the field tightening against
+  them — the data can't split those, and competitively it doesn't
+  matter).
+* **As a hidden trait beyond skill, it's faint**: residualizing on
+  rating drops the excess variance to 1.45× null, and split-half
+  reliability is r = 0.15. Same verdict the tennis big-points
+  literature reached, now with an exact side-out-structure leverage
+  measure: "clutch" as a separate personality trait barely exists —
+  the big-point winners are overwhelmingly just the better players.
+
+### "More durable against stronger opposition" — big games
+
+Per player (≥60 train games, n = 492): the slope of their team's
+per-game residual (observed minus v2-expected point share) on opponent
+pairing strength. Positive = raises their level against the strong;
+negative = flat-track bully.
+
+* **Exists, faintly**: slope variance 1.19× the permutation null;
+  split-half r = 0.13. (The population-*mean* slope is slightly
+  negative — that's the same global mild overconfidence the calibration
+  layer corrects, not a trait; the analysis is about dispersion around
+  it.)
+* **Survives its confound**: better players could get positive slopes
+  mechanically (more residual headroom against strong opponents), and
+  slope does correlate 0.24 with own rating — but residualizing barely
+  moves the dispersion (1.19 → 1.17) or the reliability (0.13 → 0.11).
+  Something idiosyncratic is really there. It is just small.
+* **The names are perfect**: the big-game list is led by **Ben Johns
+  (z = +3.2) and Anna Leigh Waters (+2.2)** — the two most decorated
+  players alive over-deliver *specifically against the strongest
+  opposition*, on top of already-highest ratings. The flat-track side is
+  led by Hargreaves (−4.8), Ignatowich (−4.1), Huynh (−4.0), Loong
+  (−3.6).
+* **Predictively worthless, honestly**: A_durability (weak_gamma + the
+  slope-based adjustment) lands at 0.1667 vs 0.1665 — ΔBrier +0.0001
+  [−0.0020, +0.0021]. The trait is too small and the ratings already
+  absorb most of it. Same for clutch by construction (r = 0.58 with the
+  rating that's already in the model).
+
+The out-of-the-box scoreboard, then: two new player traits measured with
+exact machinery, both real, both tiny, both predictively nil — and one
+genuinely quotable fact (the 9-10-second-server rally is worth 47% of a
+game). That is exactly the kind of thing the receipts culture is for:
+now when a broadcast says "so-and-so is clutch," we have a number, and
+the number mostly says "they're just better."
 
 ## Verdicts
 
@@ -323,6 +449,17 @@ RALLY_SECTION_PENDING
    few windows, adopt only if the edge survives contact with new data.
 5. **γ-by-context** (stronger weak-link in mixed) is a hypothesis for
    the season-end refit, not a change today.
+6. **Rally-level structure is a live asset, not a forecasting one.** The
+   serve/return tug of war ties its own point-level control pre-match;
+   the odds-split assumption in the live engine is now empirically
+   validated (slope 1.032, n = 5,197 match-sides) — retire the caveat in
+   `winprob.py`'s docstring, keep the anchoring design.
+7. **Clutch and durability are content, not model inputs.** Both exist
+   (2.9× and 1.2× null variance), both are faint as traits beyond skill
+   (split-half r ≈ 0.15 and 0.13), neither predicts. But "ALW and Ben
+   Johns top both the clutch AND the big-game lists" and "the biggest
+   rally in pickleball is 9-10 on the second server: a 47% win-prob
+   swing" are EXPLAINER/social material with receipts attached.
 
 ## Fine print
 
@@ -338,4 +475,16 @@ prequential with K from {0.02…0.3} by sequential train log loss
 strictly-before-game-date snapshots from `data/per_match_ratings.json`.
 Bootstrap: 4,000 paired resamples, seed 20260718. All rows deterministic;
 rerun with `python model/spec_shootout.py` (add `--rally` for family D,
-which needs `raw/match_logs/` from `scraper/harvest_logs.py`).
+which needs `raw/match_logs/` from `scraper/harvest_logs.py`). Rally fit:
+per-player serve/return values, ridge N(0, 0.25) each, α free; games
+priced by `winprob._table` with per-side (kA, kB), start states averaged
+over the opening coin flip; output scale 1.06 fit on a 1,200-game train
+subsample (i.e., the serve DP needed almost no calibration — its
+possession structure already softens favorites the way the mixture
+does). Clutch/durability: `model/big_points.py`; leverage from the same
+DP at `serve_probs(eta_v2, k=0.443)`; permutation nulls with 200 draws;
+clutch splits matches odd/even, durability splits by date; ≥300 rallies /
+≥60 games per player. One scope note: clutch is measured on the *named
+server* only — it is really "clutch on your own serve"; returning-side
+clutch is unattributable to individuals in doubles (all four play every
+rally).

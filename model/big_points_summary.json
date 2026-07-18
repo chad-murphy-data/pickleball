@@ -135,111 +135,113 @@
  },
  "clutch": {
   "summary": {
-   "n_matches_ok": 780,
-   "n_discarded": 131,
-   "n_server_rallies": 50070,
-   "n_players": 33,
-   "z_var": 2.335481203646372,
-   "z_mean": 0.6936809465096758,
-   "split_half_r": 0.013472676384300558,
+   "clutch_vs_value_corr": 0.5806178779179354,
+   "z_var_residual": 1.4464901401047252,
+   "n_matches_ok": 2402,
+   "n_discarded": 336,
+   "n_server_rallies": 162942,
+   "n_players": 182,
+   "z_var": 2.944312088836653,
+   "z_mean": 0.012429601177168056,
+   "split_half_r": 0.1483652701413494,
    "top_clutch": [
     {
      "name": "Anna Leigh Waters",
-     "clutch": 0.0566,
-     "z": 3.72,
-     "n": 536
-    },
-    {
-     "name": "Yuta Funemizu",
-     "clutch": 0.0686,
-     "z": 3.0,
-     "n": 399
-    },
-    {
-     "name": "Gabriel Tardio",
-     "clutch": 0.0491,
-     "z": 2.92,
-     "n": 654
-    },
-    {
-     "name": "Jorja Johnson",
-     "clutch": 0.0519,
-     "z": 2.82,
-     "n": 639
+     "clutch": 0.0564,
+     "z": 7.9,
+     "n": 1695
     },
     {
      "name": "Ben Johns",
-     "clutch": 0.0475,
-     "z": 2.75,
-     "n": 583
-    },
-    {
-     "name": "JW Johnson",
-     "clutch": 0.0491,
-     "z": 2.73,
-     "n": 472
+     "clutch": 0.0658,
+     "z": 6.79,
+     "n": 1772
     },
     {
      "name": "Anna Bright",
-     "clutch": 0.0342,
-     "z": 2.31,
-     "n": 581
+     "clutch": 0.0623,
+     "z": 6.7,
+     "n": 1909
     },
     {
-     "name": "Federico Staksrud",
-     "clutch": 0.0501,
-     "z": 2.19,
-     "n": 483
+     "name": "Gabriel Tardio",
+     "clutch": 0.0578,
+     "z": 5.45,
+     "n": 1821
+    },
+    {
+     "name": "Christian Alshon",
+     "clutch": 0.0475,
+     "z": 4.2,
+     "n": 1400
+    },
+    {
+     "name": "Jorja Johnson",
+     "clutch": 0.0426,
+     "z": 4.07,
+     "n": 1697
+    },
+    {
+     "name": "JW Johnson",
+     "clutch": 0.0393,
+     "z": 3.33,
+     "n": 1480
+    },
+    {
+     "name": "Andrei Daescu",
+     "clutch": 0.0294,
+     "z": 2.83,
+     "n": 1690
     }
    ],
    "top_anticlutch": [
     {
-     "name": "Tyler Loong",
-     "clutch": -0.0461,
-     "z": -1.75,
-     "n": 371
+     "name": "Caden Nemoff",
+     "clutch": -0.1052,
+     "z": -3.67,
+     "n": 316
     },
     {
-     "name": "Michael Loyd",
-     "clutch": -0.0408,
-     "z": -1.66,
-     "n": 335
+     "name": "Zoeya Khan",
+     "clutch": -0.0906,
+     "z": -3.65,
+     "n": 461
     },
     {
-     "name": "Maddy Rasmusen",
-     "clutch": -0.0381,
-     "z": -1.45,
-     "n": 334
+     "name": "Adam Harvey",
+     "clutch": -0.0608,
+     "z": -3.54,
+     "n": 756
     },
     {
-     "name": "Catherine Parenteau",
-     "clutch": -0.0258,
-     "z": -1.21,
-     "n": 472
+     "name": "Olivia McMillan",
+     "clutch": -0.0794,
+     "z": -3.03,
+     "n": 394
     },
     {
-     "name": "Anouar Braham",
-     "clutch": -0.023,
-     "z": -1.02,
-     "n": 386
+     "name": "Braden Jacobson",
+     "clutch": -0.0808,
+     "z": -2.84,
+     "n": 312
     },
     {
-     "name": "CJ Klinger",
-     "clutch": -0.0184,
-     "z": -0.82,
-     "n": 427
+     "name": "Zach Gonnering",
+     "clutch": -0.058,
+     "z": -2.83,
+     "n": 629
     },
     {
-     "name": "Tina Pisnik",
-     "clutch": -0.0167,
-     "z": -0.73,
-     "n": 369
+     "name": "Yates Johnson",
+     "clutch": -0.0623,
+     "z": -2.61,
+     "n": 391
     },
     {
-     "name": "Eric Oncins",
-     "clutch": -0.0164,
-     "z": -0.72,
-     "n": 359
+     "name": "George Rangelov",
+     "clutch": -0.0706,
+     "z": -2.55,
+     "n": 443
     }
    ]
   }

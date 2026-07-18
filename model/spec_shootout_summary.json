@@ -626,6 +626,88 @@
     ],
     "p_better": 0.94525
    }
+  },
+  "D_rally_srvret": {
+   "n": 809,
+   "accuracy": 0.7478368355995055,
+   "brier": 0.1721699375657788,
+   "log_loss": 0.5191978072902833,
+   "family": "D",
+   "k_league": 0.444,
+   "alpha": -0.2451,
+   "scale": 1.06,
+   "n_rallies": 216333,
+   "oddssplit": {
+    "slope": 1.032,
+    "intercept": -0.03,
+    "n_sides": 5197
+   },
+   "desc": "per-player serve+return values fit on 2026H1 rallies; serve-aware DP (calibrated)",
+   "vs_ref": {
+    "d_brier": 0.004719628291845795,
+    "ci": [
+     -0.0033131104245079706,
+     0.012752389788044417
+    ],
+    "p_better": 0.1245
+   }
+  },
+  "D_rally_raw": {
+   "n": 809,
+   "accuracy": 0.7453646477132262,
+   "brier": 0.17248585519923262,
+   "log_loss": 0.5194666091292498,
+   "family": "D",
+   "k_league": 0.444,
+   "alpha": -0.2451,
+   "scale": 1.0,
+   "n_rallies": 216333,
+   "oddssplit": {
+    "slope": 1.032,
+    "intercept": -0.03,
+    "n_sides": 5197
+   },
+   "desc": "per-player serve+return values fit on 2026H1 rallies; serve-aware DP (no calibration)",
+   "vs_ref": {
+    "d_brier": 0.005035545925299607,
+    "ci": [
+     -0.0029546343360680656,
+     0.013155581127074755
+    ],
+    "p_better": 0.1105
+   }
+  },
+  "D_points_2026only": {
+   "n": 823,
+   "accuracy": 0.7460510328068044,
+   "brier": 0.17103912843349212,
+   "log_loss": 0.5196000474250523,
+   "family": "D",
+   "desc": "point-binomial refit on 2026H1 games only \u2014 window control for the rally model",
+   "vs_ref": {
+    "d_brier": 0.004996138312560336,
+    "ci": [
+     9.177087627303235e-05,
+     0.009801172659023607
+    ],
+    "p_better": 0.0225
+   }
+  },
+  "D_v2_serveDP": {
+   "n": 926,
+   "accuracy": 0.7699784017278618,
+   "brier": 0.16677657452139907,
+   "log_loss": 0.5053534572555575,
+   "family": "D",
+   "desc": "v2 eta through the serve-aware DP (k=0.43) with NO anchoring",
+   "vs_ref": {
+    "d_brier": 0.00024121303953677595,
+    "ci": [
+     -0.0024781784692968034,
+     0.002865281059279426
+    ],
+    "p_better": 0.4225
+   }
   }
  }
 }
