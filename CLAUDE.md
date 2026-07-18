@@ -36,8 +36,10 @@ python model/dupr_steelman.py                # steelmanned DUPR head-to-head →
                                              #   model/dupr_steelman.json (same-games,
                                              #   glitch-screened, our machinery too)
 python scraper/live_poller.py                # live score JSONL during event days
-python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
-                                             #   --commit freezes into receipts.json
+python web/make_forecast.py [--commit]       # price scheduled MLP matchups + unplayed
+                                             #   PPA pro-doubles matches (network) →
+                                             #   forecasts.json {forecasts, ppa_forecasts};
+                                             #   --commit freezes MLP into receipts.json
 python scraper/tournament_state.py           # live-event state (MLP standings/slate,
                                              #   PPA seeded draws) → data/tournament_state.json
 python web/build_site.py                     # data/*.csv → site/ static website (~4 s)

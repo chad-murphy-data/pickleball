@@ -32,6 +32,7 @@ sys.path.insert(0, str(ROOT / "scraper"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from harvest import is_mlp_league                          # noqa: E402
 from pb_api import PBClient                                # noqa: E402
+from tournament_state import ppa_state                     # noqa: E402
 from sitelib.race import (calibrate, race_dist, set_calibration, sigmoid,
                           team_eta)                        # noqa: E402
 
@@ -79,10 +80,68 @@ def db_win_prob(roster1, roster2, vals, singles):
 
 
 def load_values():
-    vals = {}
+    """(uuid -> (name, per-point-logit value), field 25th-pct floor value).
+
+    The floor mirrors ppa_bracket_panel: PPA Challenger draws are full of
+    players below the model's 60-game threshold, so a missing player is filled
+    with the field's 25th-percentile value (and the match flagged) rather than
+    dropped — otherwise most Challenger matches would show NOT RATED."""
+    vals, dyn = {}, []
     for r in csv.DictReader((DATA / "v2_players.csv").open()):
         vals[r["player_id"]] = (r["full_name"], float(r["value_now_mean"]))
-    return vals
+        if r.get("dynamic") in ("1", "True", "true"):
+            dyn.append(float(r["value_now_mean"]))
+    dyn.sort()
+    floor = dyn[len(dyn) // 4] if dyn else 0.0
+    return vals, floor
+
+
+def bo_win(p, best_of):
+    """Match win prob from a single-game win prob (mirrors build_site.bo_win)."""
+    if best_of == 3:
+        return p * p * (3 - 2 * p)
+    if best_of == 5:
+        return p ** 3 * (10 - 15 * p + 6 * p * p)
+    return p
+
+
+def price_ppa_match(m, vals, floor_value):
+    """Price a single upcoming PPA doubles match (pair vs pair).  Returns None
+    for byes, TBD opponents, or matches already played."""
+    if m.get("winner"):                       # already decided
+        return None
+    p1, p2 = m.get("p1") or [], m.get("p2") or []
+    if not (len(p1) == 2 and len(p2) == 2 and all(p1) and all(p2)):
+        return None                           # bye / opponent not yet determined
+    best_of = m.get("best_of") or 3
+
+    def pair_vals(pair):
+        out, unrated = [], False
+        for u in pair:
+            if u in vals:
+                out.append(vals[u][1])
+            else:
+                out.append(floor_value); unrated = True
+        return out, unrated
+
+    va, u1 = pair_vals(p1)
+    vb, u2 = pair_vals(p2)
+    eta = team_eta(va[0], va[1], vb[0], vb[1])
+    T = 11 if best_of > 1 else 15             # Challenger single games go to 15
+    dist = race_dist(round(sigmoid(eta), 4), T)
+    p_game = calibrate(dist["p_win"])
+    eps = CAL["eps"]
+    p_match = min(max(bo_win(p_game, best_of), eps / 2), 1 - eps / 2)
+    scores = ([(T, b, pr) for _, b, pr in dist["win_scores"]]
+              + [(a, T, pr) for a, _, pr in dist["lose_scores"]])
+    modal = max(scores, key=lambda s: s[2])
+    return {
+        "round": m.get("round_text"),
+        "t1_pair": [n for n in (m.get("n1") or []) if n],
+        "t2_pair": [n for n in (m.get("n2") or []) if n],
+        "p": round(p_match, 4), "modal": f"{modal[0]}-{modal[1]}",
+        "best_of": best_of, "unrated": u1 or u2,
+    }
 
 
 def match_slot(m):
@@ -194,7 +253,7 @@ def main():
                     help="append pending forecast entries to model/receipts.json")
     args = ap.parse_args()
 
-    vals = load_values()
+    vals, floor_value = load_values()
     singles = load_singles()
     c = PBClient()
     today = date.today()
@@ -252,14 +311,39 @@ def main():
                     print(f"{d} {t1} vs {t2}: "
                           + (f"{tree['p_win']:.0%}" if tree else "unpriceable"))
 
+    # ---- PPA pro-doubles: price the unplayed matches in each live draw ----
+    # ppa_state only returns a tournament's matches once its day is underway
+    # (the BFF publishes the draw then), so these appear when play starts.
+    ppa_forecasts = []
+    try:
+        for t in ppa_state(c, today):
+            for div in t["divisions"]:
+                for m in div["matches"]:
+                    pj = price_ppa_match(m, vals, floor_value)
+                    if not pj:
+                        continue
+                    pj.update(date=str(today), start=None,
+                              event=t["tournament"], division=div["title"])
+                    ppa_forecasts.append(pj)
+        for f in ppa_forecasts:
+            print(f"PPA {f['event']} {f['round']}: "
+                  f"{'/'.join(n.split()[-1] for n in f['t1_pair'])} vs "
+                  f"{'/'.join(n.split()[-1] for n in f['t2_pair'])}: {f['p']:.0%}")
+    except Exception as e:                          # network/parse hiccup: MLP still ships
+        print(f"PPA pricing skipped: {e}")
+
     out = {
         "generated": str(today),
-        "note": "Projected lineups (each team's most recent completed matchup); "
-                "DreamBreaker 50/50 by convention; calibrated probabilities.",
+        "note": "MLP: projected lineups (each team's most recent completed "
+                "matchup), DreamBreaker 50/50 by convention. PPA: unplayed "
+                "matches in each live pro-doubles draw (pairs are known once the "
+                "day is underway). Calibrated probabilities throughout.",
         "forecasts": forecasts,
+        "ppa_forecasts": ppa_forecasts,
     }
     (DATA / "forecasts.json").write_text(json.dumps(out, indent=1))
-    print(f"wrote data/forecasts.json ({len(forecasts)} matchups)")
+    print(f"wrote data/forecasts.json ({len(forecasts)} MLP matchups, "
+          f"{len(ppa_forecasts)} PPA matches)")
 
     if args.commit and forecasts:
         rj = json.loads((ROOT / "model" / "receipts.json").read_text())

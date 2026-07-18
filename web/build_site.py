@@ -732,6 +732,45 @@ close to match time and can differ.</p></div>""")
         body_mid = ('<p class="note">No forecast snapshot yet — run '
                     '<code>python web/make_forecast.py</code> (network) to rate '
                     'the next week of scheduled MLP matchups.</p>')
+
+    # -- PPA pro-doubles section (single pair-vs-pair matches in live draws) --
+    ppa_section = ""
+    if fj.exists():
+        pf = json.loads(fj.read_text()).get("ppa_forecasts") or []
+        if pf:
+            by_div = {}
+            for f in pf:
+                by_div.setdefault((f.get("event"), f.get("division")), []).append(f)
+            blocks = []
+            for (ev, div), fs in by_div.items():
+                fs.sort(key=lambda f: (-f["p"]))
+                trows = []
+                for f in fs:
+                    fav1 = f["p"] >= 0.5
+                    p1 = f["p"] if fav1 else 1 - f["p"]
+                    trows.append(
+                        f'<tr><td class="gray">{esc(f.get("round") or "")}</td>'
+                        f'<td>{esc(" / ".join(n.split()[-1] for n in f["t1_pair"]))}'
+                        f'{" *" if f.get("unrated") else ""}</td>'
+                        f'<td>{esc(" / ".join(n.split()[-1] for n in f["t2_pair"]))}</td>'
+                        f'<td class="num"><strong>{pct_floor(f["p"])}</strong></td>'
+                        f'<td class="num">{esc(f.get("modal") or "")}</td></tr>')
+                blocks.append(
+                    f'<div class="card"><h3>{esc(div or "")}</h3>'
+                    f'<div class="tblwrap"><table><tr><th>round</th>'
+                    f'<th>pair 1</th><th>pair 2</th>'
+                    f'<th class="num">P(pair 1)</th><th class="num">modal</th></tr>'
+                    f'{"".join(trows)}</table></div></div>')
+            events = sorted({f.get("event") for f in pf})
+            ppa_section = (
+                f'<h2>PPA pro doubles — {esc(", ".join(e for e in events if e))}</h2>'
+                f'<p class="sub">Every unplayed match in the live pro-doubles draw, '
+                f'priced pair-vs-pair (best-of-3 to 11 unless noted). Pairs are known '
+                f'once the tournament day is underway; later-round opponents fill in '
+                f'as results come. <span class="gray">*</span> = a pair includes a '
+                f'player below the 60-game model threshold, filled with the field\'s '
+                f'25th-percentile value.</p>' + "".join(blocks))
+
     body = f"""
 <h1>Upcoming matchup forecasts</h1>
 <p class="sub">Every scheduled MLP matchup in the next week, rated before it
@@ -745,6 +784,7 @@ record, it must be frozen into the <a href="receipts.html">receipts ledger</a>
 before first serve (<code>make_forecast.py --commit</code>) — this page alone
 is a living view, not a commitment.</p>
 {body_mid}
+{ppa_section}
 """
     write("forecast.html", style.page("Forecasts — PICKLES",
                                       body, "forecast.html", "", updated))
@@ -1870,6 +1910,35 @@ def build_slate(F, players, games, updated, today):
                     f'<span class="sm">{team_short(f["team1"])} v {team_short(f["team2"])}</span>'
                     f'<span class="lead"></span><span class="sp">{val}</span></a>')
             rows = f'<div class="slaterows">{"".join(bits)}</div>'
+    # -- PPA strip: unplayed matches in each live pro-doubles draw --
+    ppa_head = ppa_rows = ""
+    pf = (F or {}).get("ppa_forecasts") or []
+    if pf:
+        def pair_short(names):
+            return " / ".join(n.split()[-1] for n in names) or "?"
+        ev = (pf[0].get("event") or "PPA").upper()
+        # most competitive first (closest to a coin flip), cap the teaser
+        shown = sorted(pf, key=lambda f: abs(f["p"] - 0.5))[:6]
+        ppa_head = (f'<div class="slatehead"><span class="doortag">'
+                    f'{slate_day_label(pf[0]["date"], today)} · PPA</span>'
+                    f'<span class="slateevent">{esc(ev)} :: {len(pf)} '
+                    f'PRO DOUBLES MATCH{"ES" if len(pf) != 1 else ""}</span>'
+                    f'<span class="fill"></span>'
+                    f'<a class="slatelink" id="slate-live-ppa" href="live.html">LIVE BOARD →</a>'
+                    f'<a class="slatelink" href="forecast.html">FULL FORECAST →</a></div>')
+        bits = []
+        for f in shown:
+            fav1 = f["p"] >= 0.5
+            fav = pair_short(f["t1_pair"] if fav1 else f["t2_pair"])
+            val = f'{fav} {pct_floor(max(f["p"], 1 - f["p"]))}'
+            bits.append(
+                f'<a class="srow" href="forecast.html">'
+                f'<span class="st">{esc((f.get("round") or "")[:8])}</span>'
+                f'<span class="sm">{esc(pair_short(f["t1_pair"]))} v '
+                f'{esc(pair_short(f["t2_pair"]))}</span>'
+                f'<span class="lead"></span><span class="sp">{val}</span></a>')
+        ppa_rows = f'<div class="slaterows">{"".join(bits)}</div>'
+
     graded, upsets = results_day_summary(players, games, updated)
     foot = ""
     if graded:
@@ -1877,10 +1946,10 @@ def build_slate(F, players, games, updated, today):
                 f'{graded} GAME{"S" if graded != 1 else ""} GRADED · '
                 f'{upsets} UPSET{"S" if upsets != 1 else ""}'
                 f'</span><span><a href="results.html">→ RESULTS</a></span></div>')
-    if not head and not foot:
+    if not head and not ppa_head and not foot:
         return ""
     return (f'<section class="lsec slate"><div class="slatebox">'
-            f'{head}{rows}{foot}</div></section>')
+            f'{head}{rows}{ppa_head}{ppa_rows}{foot}</div></section>')
 
 
 def receipt_teaser_rows(R, n=3):
