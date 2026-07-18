@@ -637,14 +637,23 @@ class RallyFit:
         return self
 
 
+_SDP_MEMO = {}
+
+
 def serve_dp_win(kA, kB, T):
     """Pre-match win prob from the serve-aware DP, averaging the coin flip
-    over which side opens (on its #2 server, per the standard exception)."""
+    over which side opens (on its #2 server, per the standard exception).
+    Memoized at 3dp — plenty for pre-match pricing, keeps refits fast."""
+    key = (round(kA, 3), round(kB, 3), T)
+    if key in _SDP_MEMO:
+        return _SDP_MEMO[key]
     import sys
     sys.path.insert(0, str(ROOT / "web"))
     from sitelib.winprob import _table, A2, B2
-    V = _table(round(kA, 6), round(kB, 6), T, T + 40)
-    return 0.5 * (V[(0, 0, A2)] + V[(0, 0, B2)])
+    V = _table(key[0], key[1], T, T + 40)
+    p = 0.5 * (V[(0, 0, A2)] + V[(0, 0, B2)])
+    _SDP_MEMO[key] = p
+    return p
 
 
 # ---------------------------------------------------------------- main --
@@ -1025,7 +1034,53 @@ def rally_family(games, train, recent, hold, players, chem, racer,
     rf = RallyFit(rallies, sides).fit()
     k_league = float(np.mean([r[3] for r in rallies]))
 
-    def game_ks(g):
+    # odds-split validation (the TODO in winprob.py's docstring): does the
+    # live engine's assumed eta -> (kA, kB) mapping match observed
+    # serve-rally win rates?  Weighted fit of empirical serve-rate logits
+    # on predicted; slope 1 / intercept 0 = assumption holds.
+    import sys as _sys
+    _sys.path.insert(0, str(ROOT / "web"))
+    from sitelib.winprob import serve_probs
+
+    def eta_of(g):
+        if any(u not in players for u in g["us"]):
+            return None
+        v = [players[u]["v"] for u in g["us"]]
+        c1 = chem.get(frozenset((players[g["us"][0]]["name"],
+                                 players[g["us"][1]]["name"])), 0.0)
+        c2 = chem.get(frozenset((players[g["us"][2]]["name"],
+                                 players[g["us"][3]]["name"])), 0.0)
+        return (v[0] + v[1] + GAMMA_V2 * abs(v[0] - v[1])
+                - v[2] - v[3] - GAMMA_V2 * abs(v[2] - v[3]) + c1 - c2)
+
+    tal = defaultdict(lambda: [0, 0])
+    for m, su, side, w in rallies:
+        tal[(m, side)][0] += 1
+        tal[(m, side)][1] += w
+    mgame = {}
+    for g in train:
+        mgame.setdefault(g["match"], g)
+    xs, ys, ws = [], [], []
+    for (m, side), (n, w) in tal.items():
+        g = mgame.get(m)
+        if g is None or n < 15:
+            continue
+        e = eta_of(g)
+        if e is None:
+            continue
+        kp = serve_probs(e if side == 0 else -e, k_league)[0]
+        ko = (w + 0.5) / (n + 1.0)
+        xs.append(math.log(kp / (1 - kp)))
+        ys.append(math.log(ko / (1 - ko)))
+        ws.append(n)
+    slope, inter = np.polyfit(np.array(xs), np.array(ys), 1,
+                              w=np.sqrt(np.array(ws)))
+    oddssplit = dict(slope=round(float(slope), 3),
+                     intercept=round(float(inter), 3), n_sides=len(xs))
+    print(f"odds-split check: slope={slope:.3f} intercept={inter:.3f} "
+          f"(n={len(xs)} match-sides; 1.0/0.0 = assumption holds)")
+
+    def game_deltas(g):
         us = [u.lower() for u in g["us"]]
         if any(u not in rf.serve for u in us):
             return None
@@ -1033,20 +1088,45 @@ def rally_family(games, train, recent, hold, players, chem, racer,
         sB = rf.serve[us[2]] + rf.serve[us[3]]
         rA = rf.ret[us[0]] + rf.ret[us[1]]
         rB = rf.ret[us[2]] + rf.ret[us[3]]
-        kA = 1 / (1 + math.exp(-(rf.alpha + sA - rB)))
-        kB = 1 / (1 + math.exp(-(rf.alpha + sB - rA)))
-        return kA, kB
+        return sA - rB, sB - rA
 
-    ok = np.array([game_ks(g) is not None for g in hold])
-    pw = np.array([serve_dp_win(*game_ks(g), g["T"])
-                   for g, o in zip(hold, ok) if o])
+    def game_pw(g, s):
+        d = game_deltas(g)
+        kA = 1 / (1 + math.exp(-(rf.alpha + s * d[0])))
+        kB = 1 / (1 + math.exp(-(rf.alpha + s * d[1])))
+        return serve_dp_win(kA, kB, g["T"])
+
+    # output calibration on train (protocol-consistent with every other
+    # family: static fits run hot; one scalar, fit through the serve DP)
+    ctrain = [g for g in train if g["date"] >= "2026-01-01"
+              and game_deltas(g) is not None]
+    rng = np.random.default_rng(SEED)
+    samp = [ctrain[i] for i in
+            rng.choice(len(ctrain), min(1200, len(ctrain)), replace=False)]
+
+    def nll_s(x):
+        tot = 0.0
+        for g in samp:
+            pw = min(max(game_pw(g, abs(x[0])), 1e-9), 1 - 1e-9)
+            tot -= math.log(pw if g["won"] else 1 - pw)
+        return tot / len(samp)
+
+    s_cal = abs(float(minimize(nll_s, [0.8], method="Nelder-Mead",
+                               options=dict(xatol=1e-3)).x[0]))
+
+    ok = np.array([game_deltas(g) is not None for g in hold])
     fr = F_hold.sub(ok)
-    record("D_rally_srvret", pw, frame=fr,
-           extra=dict(family="D", k_league=round(k_league, 4),
-                      alpha=round(rf.alpha, 4),
-                      desc="per-player serve+return values fit on 2026H1 "
-                           "rallies; serve-aware DP, no anchoring"),
-           ref=racer.win(fr.eta_v2(), fr.T))
+    ref_sub = racer.win(fr.eta_v2(), fr.T)
+    for nm, s_use, note in (("D_rally_srvret", s_cal, "calibrated"),
+                            ("D_rally_raw", 1.0, "no calibration")):
+        pw = np.array([game_pw(g, s_use) for g, o in zip(hold, ok) if o])
+        record(nm, pw, frame=fr,
+               extra=dict(family="D", k_league=round(k_league, 4),
+                          alpha=round(rf.alpha, 4), scale=round(s_use, 3),
+                          n_rallies=len(rallies), oddssplit=oddssplit,
+                          desc="per-player serve+return values fit on 2026H1 "
+                               f"rallies; serve-aware DP ({note})"),
+               ref=ref_sub)
 
     # window-matched control: point-binomial refit on the SAME games
     ctl_games = [g for g in train if g["date"] >= "2026-01-01"]
