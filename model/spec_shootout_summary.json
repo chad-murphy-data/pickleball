@@ -1,0 +1,631 @@
+{
+ "split": "2026-06-01",
+ "generated": "2026-07-18",
+ "reference": "v2_plugin",
+ "results": {
+  "v2_plugin": {
+   "n": 926,
+   "accuracy": 0.7710583153347732,
+   "brier": 0.1665353614818623,
+   "log_loss": 0.5144005456269365,
+   "family": "ref",
+   "desc": "v2 as shipped: sum + gamma|gap| + chem, posterior-mean plugin"
+  },
+  "v2_mixture": {
+   "n": 926,
+   "accuracy": 0.7710583153347732,
+   "brier": 0.16575845139821305,
+   "log_loss": 0.5067869876626103,
+   "family": "ref",
+   "desc": "same eta, integrated over N(eta, sum sd_i^2) \u2014 plugin->draws approximation",
+   "vs_ref": {
+    "d_brier": -0.0007769100836492875,
+    "ci": [
+     -0.0018676436042195511,
+     0.00023264641671462234
+    ],
+    "p_better": 0.931
+   }
+  },
+  "A_v2_rescaled": {
+   "n": 926,
+   "accuracy": 0.7710583153347732,
+   "brier": 0.16609883928072677,
+   "log_loss": 0.5058391132480975,
+   "family": "A",
+   "params": [
+    0.8427
+   ],
+   "desc": "free overall scale on the v2 eta (calibration check)",
+   "vs_ref": {
+    "d_brier": -0.0004365222011355193,
+    "ci": [
+     -0.002000715775292538,
+     0.0010645266286212112
+    ],
+    "p_better": 0.7115
+   }
+  },
+  "A_sum": {
+   "n": 926,
+   "accuracy": 0.7667386609071274,
+   "brier": 0.1662890602170138,
+   "log_loss": 0.5064172831911413,
+   "family": "A",
+   "params": [
+    0.8268
+   ],
+   "desc": "team = sum of the two ratings; no weakest-link, no chem",
+   "vs_ref": {
+    "d_brier": -0.0002463012648484729,
+    "ci": [
+     -0.0025284868900584704,
+     0.001940090070377787
+    ],
+    "p_better": 0.57875
+   }
+  },
+  "A_weak_gamma": {
+   "n": 926,
+   "accuracy": 0.7688984881209503,
+   "brier": 0.1662214235163927,
+   "log_loss": 0.5057941245851186,
+   "family": "A",
+   "params": [
+    0.8276,
+    -0.1574
+   ],
+   "desc": "sum + free gamma|gap| == free weights on (min, max)",
+   "vs_ref": {
+    "d_brier": -0.000313937965469572,
+    "ci": [
+     -0.0021051748022444475,
+     0.001389312914773528
+    ],
+    "p_better": 0.63625
+   }
+  },
+  "A_gamma_by_ctx": {
+   "n": 926,
+   "accuracy": 0.7667386609071274,
+   "brier": 0.1660032928121637,
+   "log_loss": 0.505248267774514,
+   "family": "A",
+   "params": [
+    0.8276,
+    -0.191,
+    -0.1188
+   ],
+   "desc": "separate weakest-link gamma for mixed vs same-gender games",
+   "vs_ref": {
+    "d_brier": -0.0005320686696986271,
+    "ci": [
+     -0.0023484734453657874,
+     0.0011846107337637394
+    ],
+    "p_better": 0.71675
+   }
+  },
+  "A_min_only": {
+   "n": 926,
+   "accuracy": 0.7267818574514039,
+   "brier": 0.17811112815121805,
+   "log_loss": 0.5318673050404863,
+   "family": "A",
+   "params": [
+    0.7025
+   ],
+   "desc": "weaker player only (gamma = -1)",
+   "vs_ref": {
+    "d_brier": 0.011575766669355754,
+    "ci": [
+     0.005363011036704279,
+     0.01756780502624963
+    ],
+    "p_better": 0.00025
+   }
+  },
+  "A_max_only": {
+   "n": 926,
+   "accuracy": 0.7311015118790497,
+   "brier": 0.1824145542230082,
+   "log_loss": 0.5449798521742699,
+   "family": "A",
+   "params": [
+    0.6446
+   ],
+   "desc": "stronger player only (gamma = +1)",
+   "vs_ref": {
+    "d_brier": 0.015879192741145888,
+    "ci": [
+     0.0074267806360280445,
+     0.024406768024652418
+    ],
+    "p_better": 0.00075
+   }
+  },
+  "A_chem": {
+   "n": 926,
+   "accuracy": 0.7516198704103672,
+   "brier": 0.16961855584011357,
+   "log_loss": 0.5180983239566764,
+   "family": "A",
+   "params": [
+    0.8847,
+    -0.1394,
+    7.9065
+   ],
+   "desc": "weak_gamma + free loading on the dyad chemistry term",
+   "vs_ref": {
+    "d_brier": 0.0030831943582512846,
+    "ci": [
+     -0.0008171662932325337,
+     0.007227345208038855
+    ],
+    "p_better": 0.06375
+   }
+  },
+  "A_seed_order": {
+   "n": 926,
+   "accuracy": 0.7634989200863931,
+   "brier": 0.1661060161237064,
+   "log_loss": 0.5050960489055779,
+   "family": "A",
+   "params": [
+    0.811,
+    -0.1614,
+    -0.0112,
+    0.0163
+   ],
+   "desc": "weak_gamma + team-listed-first intercept per tour (seeding info)",
+   "vs_ref": {
+    "d_brier": -0.0004293453581558758,
+    "ci": [
+     -0.002478444144413436,
+     0.0015370286249568378
+    ],
+    "p_better": 0.655
+   }
+  },
+  "A_experience": {
+   "n": 926,
+   "accuracy": 0.765658747300216,
+   "brier": 0.16700973141373374,
+   "log_loss": 0.5071292658800385,
+   "family": "A",
+   "params": [
+    0.7779,
+    -0.1655,
+    0.0194
+   ],
+   "desc": "weak_gamma + log career-games differential",
+   "vs_ref": {
+    "d_brier": 0.00047436993187142674,
+    "ci": [
+     -0.0017703392483293223,
+     0.002649020390830845
+    ],
+    "p_better": 0.33825
+   }
+  },
+  "A_momentum": {
+   "n": 926,
+   "accuracy": 0.755939524838013,
+   "brier": 0.17000592258788297,
+   "log_loss": 0.5156797902341528,
+   "family": "A",
+   "params": [
+    0.8462,
+    -0.1632,
+    -0.0281
+   ],
+   "desc": "weak_gamma + EWMA of recent over/under-performance (45d half-life)",
+   "vs_ref": {
+    "d_brier": 0.003470561106020673,
+    "ci": [
+     0.0009162073971414582,
+     0.005897859671007105
+    ],
+    "p_better": 0.0025
+   }
+  },
+  "A_uncert_shrink": {
+   "n": 926,
+   "accuracy": 0.7710583153347732,
+   "brier": 0.16601916749584608,
+   "log_loss": 0.509525096402686,
+   "family": "A",
+   "params": [
+    0.719
+   ],
+   "desc": "v2 eta integrated over value uncertainty, width fit on 2026 train",
+   "vs_ref": {
+    "d_brier": -0.0005161939860162075,
+    "ci": [
+     -0.0011243503909986285,
+     4.014448875703747e-05
+    ],
+    "p_better": 0.96475
+   }
+  },
+  "MX_v2": {
+   "n": 438,
+   "accuracy": 0.7671232876712328,
+   "brier": 0.17034489167036018,
+   "log_loss": 0.5353619477672831,
+   "family": "mixed-arena",
+   "desc": "v2 plugin on mixed games only"
+  },
+  "MX_men_only": {
+   "n": 438,
+   "accuracy": 0.6506849315068494,
+   "brier": 0.2178461523305002,
+   "log_loss": 0.62575517367829,
+   "family": "A",
+   "params": [
+    1.0498
+   ],
+   "desc": "mixed priced from the two men alone",
+   "vs_ref": {
+    "d_brier": 0.047501260660139974,
+    "ci": [
+     0.029485700817341306,
+     0.06438519457448436
+    ],
+    "p_better": 0.0
+   }
+  },
+  "MX_women_only": {
+   "n": 438,
+   "accuracy": 0.7397260273972602,
+   "brier": 0.18277018041809037,
+   "log_loss": 0.5515593137575545,
+   "family": "A",
+   "params": [
+    0.93
+   ],
+   "desc": "mixed priced from the two women alone",
+   "vs_ref": {
+    "d_brier": 0.012425288747730162,
+    "ci": [
+     0.00037086913638717484,
+     0.02433688354816167
+    ],
+    "p_better": 0.021
+   }
+  },
+  "MX_gender_free": {
+   "n": 438,
+   "accuracy": 0.7534246575342466,
+   "brier": 0.17170826352474555,
+   "log_loss": 0.5244668223325867,
+   "family": "A",
+   "params": [
+    0.7452,
+    0.7726
+   ],
+   "desc": "free loadings per gender slot (the mixed 'SEM')",
+   "vs_ref": {
+    "d_brier": 0.001363371854385324,
+    "ci": [
+     -0.0025962942628005446,
+     0.004983685839284776
+    ],
+    "p_better": 0.2445
+   }
+  },
+  "MX_weaker_gender": {
+   "n": 438,
+   "accuracy": 0.7328767123287672,
+   "brier": 0.17925094466613525,
+   "log_loss": 0.5387161691393911,
+   "family": "A",
+   "params": [
+    1.2836
+   ],
+   "desc": "mixed priced from each team's weaker member (offset-dependent!)",
+   "vs_ref": {
+    "d_brier": 0.008906052995775047,
+    "ci": [
+     -0.001076832865377954,
+     0.017991318309448077
+    ],
+    "p_better": 0.03725
+   }
+  },
+  "B_refit_sum": {
+   "n": 926,
+   "accuracy": 0.7624190064794817,
+   "brier": 0.16969044949088244,
+   "log_loss": 0.5157556634544161,
+   "family": "B",
+   "scale": 0.8198,
+   "desc": "values refit under team=sum (static MAP)",
+   "vs_ref": {
+    "d_brier": 0.0031550880090201673,
+    "ci": [
+     -0.0018956093090329508,
+     0.00802005496717765
+    ],
+    "p_better": 0.1055
+   }
+  },
+  "B_refit_gamma": {
+   "n": 926,
+   "accuracy": 0.765658747300216,
+   "brier": 0.1702815898684204,
+   "log_loss": 0.5186653508705688,
+   "family": "B",
+   "scale": 0.8207,
+   "desc": "values refit under sum+gamma|gap| \u2014 static v2 twin",
+   "gamma": -0.2601,
+   "vs_ref": {
+    "d_brier": 0.003746228386558107,
+    "ci": [
+     -0.0011445519963963933,
+     0.00847691176737312
+    ],
+    "p_better": 0.06375
+   }
+  },
+  "B_refit_min": {
+   "n": 926,
+   "accuracy": 0.7332613390928726,
+   "brier": 0.18272051797581332,
+   "log_loss": 0.5489756571962751,
+   "family": "B",
+   "scale": 0.801,
+   "desc": "values refit under team=2*min (weakest link only)",
+   "vs_ref": {
+    "d_brier": 0.016185156493951032,
+    "ci": [
+     0.008310064440800768,
+     0.023960808377374635
+    ],
+    "p_better": 0.0
+   }
+  },
+  "B_refit_max": {
+   "n": 926,
+   "accuracy": 0.7116630669546437,
+   "brier": 0.18526453861668027,
+   "log_loss": 0.5497493647463725,
+   "family": "B",
+   "scale": 0.7685,
+   "desc": "values refit under team=2*max (strongest only)",
+   "vs_ref": {
+    "d_brier": 0.018729177134817993,
+    "ci": [
+     0.00837964992522281,
+     0.028896588864164907
+    ],
+    "p_better": 0.00025
+   }
+  },
+  "B_refit_decay": {
+   "n": 926,
+   "accuracy": 0.7624190064794817,
+   "brier": 0.16959029648775356,
+   "log_loss": 0.5182718574502752,
+   "family": "B",
+   "scale": 0.8674,
+   "desc": "sum+gamma with 12-month-half-life game weights",
+   "gamma": -0.321,
+   "vs_ref": {
+    "d_brier": 0.003054935005891245,
+    "ci": [
+     -0.0008974538284255275,
+     0.007061858486373849
+    ],
+    "p_better": 0.06575
+   }
+  },
+  "C_match_level": {
+   "n": 926,
+   "accuracy": 0.6965442764578834,
+   "brier": 0.20752378733175242,
+   "log_loss": 0.6287632448984725,
+   "family": "C",
+   "scale": 0.3157,
+   "desc": "Bernoulli on match winners only (best-of collapsed)",
+   "gamma": 1.9158,
+   "vs_ref": {
+    "d_brier": 0.040988425849890105,
+    "ci": [
+     0.026079205049353148,
+     0.05538843217411772
+    ],
+    "p_better": 0.0
+   }
+  },
+  "C_game_level": {
+   "n": 926,
+   "accuracy": 0.7008639308855291,
+   "brier": 0.19364305942995932,
+   "log_loss": 0.5826888154830233,
+   "family": "C",
+   "scale": 0.3719,
+   "desc": "Bernoulli on game winners only (margin-blind)",
+   "gamma": 1.0586,
+   "vs_ref": {
+    "d_brier": 0.02710769794809701,
+    "ci": [
+     0.015132627966116929,
+     0.03912283241018148
+    ],
+    "p_better": 0.0
+   }
+  },
+  "C_margin_level": {
+   "n": 926,
+   "accuracy": 0.7591792656587473,
+   "brier": 0.16827717613599544,
+   "log_loss": 0.5095549775370024,
+   "family": "C",
+   "scale": 0.1169,
+   "desc": "Gaussian on point margin (v1's likelihood, static twin)",
+   "gamma": 0.0172,
+   "sigma": 4.681,
+   "vs_ref": {
+    "d_brier": 0.0017418146541331484,
+    "ci": [
+     -0.0032896770161327787,
+     0.006558261484559467
+    ],
+    "p_better": 0.24125
+   }
+  },
+  "C_v1_published": {
+   "n": 823,
+   "accuracy": 0.74726609963548,
+   "brier": 0.18073543723647453,
+   "log_loss": 0.5408406997470717,
+   "family": "C",
+   "desc": "v1 Gaussian margin model as shipped (per-season fit, sd=4.70)",
+   "vs_ref": {
+    "d_brier": 0.014692447115542821,
+    "ci": [
+     0.0062533781871779905,
+     0.02267011624645363
+    ],
+    "p_better": 0.00025
+   }
+  },
+  "E_elo_game": {
+   "n": 926,
+   "accuracy": 0.7462203023758099,
+   "brier": 0.17484288457479738,
+   "log_loss": 0.5255306778353721,
+   "family": "E",
+   "params": [
+    0.2
+   ],
+   "desc": "prequential Elo on game winners (K=0.2)",
+   "vs_ref": {
+    "d_brier": 0.00830752309293508,
+    "ci": [
+     -0.00010679008122367736,
+     0.016731520524652817
+    ],
+    "p_better": 0.0275
+   }
+  },
+  "E_elo_point": {
+   "n": 926,
+   "accuracy": 0.7116630669546437,
+   "brier": 0.1855114888795875,
+   "log_loss": 0.5496049502073435,
+   "family": "E",
+   "params": [
+    0.5,
+    0.424
+   ],
+   "desc": "prequential Elo on point shares (K=0.5), race-DP priced",
+   "vs_ref": {
+    "d_brier": 0.018976127397725202,
+    "ci": [
+     0.007974810652138307,
+     0.029965923448614377
+    ],
+    "p_better": 0.00025
+   }
+  },
+  "E_coin": {
+   "n": 926,
+   "accuracy": 0.4222462203023758,
+   "brier": 0.25,
+   "log_loss": 0.6931471805599452,
+   "family": "E",
+   "desc": "coin flip floor",
+   "vs_ref": {
+    "d_brier": 0.0834646385181377,
+    "ci": [
+     0.06836621012904627,
+     0.09786303856744595
+    ],
+    "p_better": 0.0
+   }
+  },
+  "PL_v2": {
+   "n": 824,
+   "accuracy": 0.7682038834951457,
+   "brier": 0.16675158183318162,
+   "log_loss": 0.5154714460471077,
+   "family": "platform-arena",
+   "desc": "v2 plugin on the platform-rated subset"
+  },
+  "PL_sum": {
+   "n": 824,
+   "accuracy": 0.6699029126213593,
+   "brier": 0.21241531960900858,
+   "log_loss": 0.6199575518286528,
+   "family": "platform-arena",
+   "params": [
+    0.305
+   ],
+   "desc": "platform (DUPR-synced) rating sums, as-of-match",
+   "vs_ref": {
+    "d_brier": 0.04566373777582698,
+    "ci": [
+     0.031586613117952106,
+     0.06069025622458866
+    ],
+    "p_better": 0.0
+   }
+  },
+  "PL_min": {
+   "n": 824,
+   "accuracy": 0.6601941747572816,
+   "brier": 0.22404402768849768,
+   "log_loss": 0.6589288423994701,
+   "family": "platform-arena",
+   "params": [
+    0.192
+   ],
+   "desc": "platform rating, weaker player only",
+   "vs_ref": {
+    "d_brier": 0.05729244585531611,
+    "ci": [
+     0.04185991439762098,
+     0.07372119279599515
+    ],
+    "p_better": 0.0
+   }
+  },
+  "PL_max": {
+   "n": 824,
+   "accuracy": 0.6310679611650486,
+   "brier": 0.2185172284819606,
+   "log_loss": 0.6249810102291719,
+   "family": "platform-arena",
+   "params": [
+    0.282
+   ],
+   "desc": "platform rating, stronger player only",
+   "vs_ref": {
+    "d_brier": 0.051765646648779,
+    "ci": [
+     0.03731748060786041,
+     0.06604277253832615
+    ],
+    "p_better": 0.0
+   }
+  },
+  "X_ensemble": {
+   "n": 926,
+   "accuracy": 0.7742980561555075,
+   "brier": 0.1637952434660905,
+   "log_loss": 0.49910960818909506,
+   "family": "X",
+   "desc": "equal-weight logit average of v2 + margin refit + Elo (no fitted weights)",
+   "vs_ref": {
+    "d_brier": -0.002740118015771779,
+    "ci": [
+     -0.006037186519230548,
+     0.000532276303176418
+    ],
+    "p_better": 0.94525
+   }
+  }
+ }
+}
