@@ -1414,9 +1414,10 @@
   "needs_review": false
  },
  "0f82379d-f256-469b-b5d2-26e86409f1a3": {
-  "canonical": "Andy Van der Vyver",
+  "canonical": "Andy van der Vyver",
   "variants": {
-   "Andy Van der Vyver": 2
+   "Andy van der Vyver": 1,
+   "Andy Van der Vyver": 1
   },
   "needs_review": true
  },
@@ -9635,9 +9636,10 @@
  "5f23308c-2443-4583-aa04-254e664a328c": {
   "canonical": "HO Tam",
   "variants": {
-   "HO Tam": 37
+   "HO Tam": 31,
+   "Ho Tam": 6
   },
-  "needs_review": false
+  "needs_review": true
  },
  "5f367bee-cf3e-4aad-a6e6-72cca04d97e2": {
   "canonical": "Angie Walker",
@@ -11929,12 +11931,11 @@
   "needs_review": true
  },
  "762638fa-47d4-4763-b313-10674edd62f7": {
-  "canonical": "Kleyton Martins da silva",
+  "canonical": "Kleyton Martins da Silva",
   "variants": {
-   "Kleyton Martins da silva": 2,
-   "Kleyton Martins da Silva": 2
+   "Kleyton Martins da Silva": 4
   },
-  "needs_review": true
+  "needs_review": false
  },
  "7637258c-90a0-4252-a447-278492177e9e": {
   "canonical": "Brendon Long",
@@ -18085,10 +18086,9 @@
  "b42c35ce-0f52-450b-8a56-30c24c4ce7d1": {
   "canonical": "Cade Lindgren",
   "variants": {
-   "Cade Lindgren": 2,
-   "cade lindgren": 1
+   "Cade Lindgren": 3
   },
-  "needs_review": true
+  "needs_review": false
  },
  "b43c46a3-0b98-4fdb-aa93-6c3982761aeb": {
   "canonical": "Rob Hutchins",
@@ -20620,10 +20620,9 @@
  "ce10eeaa-0854-4c37-ab63-73f16bed85bc": {
   "canonical": "Syed Uzair Sufi",
   "variants": {
-   "Syed Uzair Sufi": 21,
-   "Syed uzair sufi": 11
+   "Syed Uzair Sufi": 32
   },
-  "needs_review": true
+  "needs_review": false
  },
  "ce1cc22b-09f4-4ecd-bae4-76615b53ec97": {
   "canonical": "Yaxuann Miao",
@@ -24555,10 +24554,9 @@
  "f809c1c0-fbca-4d67-9c59-23b02cbf0128": {
   "canonical": "Anni Xie",
   "variants": {
-   "Anni Xie": 14,
-   "anni XIE": 4
+   "Anni Xie": 18
   },
-  "needs_review": true
+  "needs_review": false
  },
  "f8291aa5-c7e5-4514-8bcd-ae67b8950fc1": {
   "canonical": "Mario Figueredo",
