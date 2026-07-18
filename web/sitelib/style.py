@@ -41,6 +41,8 @@ header.site nav a { color: var(--ink2); font-family: "Space Mono", ui-monospace,
 header.site nav a:hover { text-decoration: none; color: var(--ink); }
 header.site nav a.here { color: var(--ink); font-weight: 700;
   border-bottom: 3px solid var(--hl); }
+.fx-official { margin: 8px 0 2px; padding: 6px 10px; background: var(--band);
+  border-left: 3px solid var(--hl); font-size: 13.5px; }
 .themetog { background: none; border: 1.5px solid var(--border); color: var(--ink2);
   font-family: "Space Mono", ui-monospace, monospace; font-size: 12px;
   line-height: 1.4; padding: 1px 8px; cursor: pointer; }

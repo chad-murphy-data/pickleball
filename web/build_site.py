@@ -717,10 +717,19 @@ def build_forecast(players, updated):
                    f'<th class="num">modal</th></tr>{"".join(rows)}</table></div>'
                    if rows else "")
             src = f["lineups_from"]
-            cards.append(f"""<div class="card">{head}{tbl}
+            fx = {
+                "d": f["date"], "t1": f["team1"], "t2": f["team2"],
+                "p": (t or {}).get("p_win"),
+                "games": [{"slot": g["slot"], "t1": g["t1_pair"],
+                           "t2": g["t2_pair"], "p": g["p"]}
+                          for g in f["games"] if g],
+            }
+            cards.append(f"""<div class="card fxcard" data-fx='{esc(json.dumps(fx))}'>{head}{tbl}
+<div class="fx-official" hidden></div>
 <p class="note">projected lineups from each team's last completed matchup
 ({src["team1"] or "?"} / {src["team2"] or "?"}) — actual lineups are announced
-close to match time and can differ.</p></div>""")
+close to match time and can differ; announced lineups reprice here
+automatically.</p></div>""")
         gen = F["generated"]
         stale = ' <strong>(stale — regenerate with web/make_forecast.py)</strong>' \
             if gen < updated else ""
@@ -744,6 +753,7 @@ record, it must be frozen into the <a href="receipts.html">receipts ledger</a>
 before first serve (<code>make_forecast.py --commit</code>) — this page alone
 is a living view, not a commitment.</p>
 {body_mid}
+{livepage.forecast_script()}
 """
     write("forecast.html", style.page("Forecasts — PICKLES",
                                       body, "forecast.html", "", updated))

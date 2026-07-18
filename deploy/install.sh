@@ -14,7 +14,7 @@ python3 -m venv "$REPO/.venv"
 
 UNIT_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/systemd/user"
 mkdir -p "$UNIT_DIR"
-for unit in pickleball-live pickleball-logs; do
+for unit in pickleball-live pickleball-logs pickleball-freeze; do
     sed "s|@REPO@|$REPO|g" "$REPO/deploy/$unit.service" \
         > "$UNIT_DIR/$unit.service"
     cp "$REPO/deploy/$unit.timer" "$UNIT_DIR/$unit.timer"
@@ -22,6 +22,7 @@ done
 
 systemctl --user daemon-reload
 systemctl --user enable --now pickleball-live.timer
+systemctl --user enable --now pickleball-freeze.timer
 # Nightly log harvest runs here by default. The GitHub Action variant
 # (.github/workflows/rally-logs.yml) has its schedule commented out —
 # never run both collectors, they'd double-hit the API for the same

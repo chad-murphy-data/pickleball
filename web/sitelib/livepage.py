@@ -661,6 +661,121 @@ document.addEventListener('visibilitychange', () => {
 })();
 """
 
+# ---------------------------------------------------------------- forecast
+# Client-side "lineups official" repricing for forecast.html (Tier 1 of the
+# lineup work): when the BFF publishes actual lineups for a forecasted
+# matchup, the card reprices in the browser with the same engine the live
+# board uses, and shows the projected-vs-official delta. Plain string,
+# __CFG__ substituted at build.
+FORECAST_JS = r"""
+'use strict';
+const CFG = __CFG__;
+PKL.configure({ gamma: CFG.gamma, kDoubles: CFG.k, kDbSingles: CFG.kDbSingles,
+                singlesImpute: CFG.singlesImpute, cal: CFG.cal, epsFloor: CFG.cal.eps });
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cards = [...document.querySelectorAll('.fxcard')].map(el => ({
+  el, fx: JSON.parse(el.dataset.fx), out: el.querySelector('.fx-official') }));
+let VALUES = null, timer = null;
+const fpF = p => PKL.fp(PKL.displayFloor(p));
+function slotOf(ab) { ab = (ab || '').toUpperCase();
+  for (const s of ['MXD1', 'MXD2', 'WD', 'MD']) if (ab.startsWith(s)) return s;
+  return null; }
+function priceIds(ids) {
+  if (ids.length !== 4 || ids.some(id => !VALUES[id])) return null;
+  const v = ids.map(id => VALUES[id][2]);
+  return PKL.calibrate(PKL.raceDist(PKL.sig(PKL.teamEta(v[0], v[1], v[2], v[3])), 11).pw);
+}
+function schedule(ms) { clearTimeout(timer); timer = setTimeout(tick, ms); }
+async function tick() {
+  if (!cards.length || !VALUES) return;
+  let pending = false;
+  try {
+    const r = await fetch(`${CFG.api}/live`, { headers: CFG.headers });
+    const st = await r.json();
+    for (const c of cards) {
+      if (c.fx.d !== st.date) continue;
+      const mu = (st.mlp || []).find(m => m.t1 === c.fx.t1 && m.t2 === c.fx.t2);
+      if (!mu) { pending = true; continue; }
+      const status = mu.status.replace('_MATCHUP_STATUS', '');
+      const info = {};
+      for (const m of mu.matches) {
+        if (m.tb) continue;
+        const s = slotOf(m.ab); if (!s) continue;
+        const i1 = m.t1.map(p => p.id).filter(Boolean), i2 = m.t2.map(p => p.id).filter(Boolean);
+        if (i1.length === 2 && i2.length === 2)
+          info[s] = { ids: [...i1, ...i2], n1: m.t1.map(p => p.n), n2: m.t2.map(p => p.n) };
+      }
+      const nIn = Object.keys(info).length;
+      if (!nIn) { if (status.startsWith('SCHEDULED')) pending = true; continue; }
+      const proj = {}; for (const g of c.fx.games) proj[g.slot] = g;
+      const diffs = [], ps = [];
+      let allRated = true;
+      for (const slot of ['WD', 'MD', 'MXD1', 'MXD2']) {
+        const a = info[slot];
+        if (!a) { allRated = false; continue; }
+        const p = priceIds(a.ids);
+        if (p === null) allRated = false; else ps.push(p);
+        const pj = proj[slot];
+        if (pj) {
+          const norm = x => x.map(s => s.toLowerCase()).sort().join('|');
+          if (norm(a.n1) !== norm(pj.t1) || norm(a.n2) !== norm(pj.t2)) diffs.push(slot);
+        }
+      }
+      let html = '';
+      if (nIn === 4 && allRated && ps.length === 4) {
+        const roster = i => { const s = new Set();
+          for (const slot of Object.keys(info))
+            info[slot].ids.slice(i === 1 ? 0 : 2, i === 1 ? 2 : 4).forEach(id => s.add(id));
+          return [...s].map(id => ({ sv: VALUES[id][4], v: VALUES[id][2] })); };
+        const pDb = PKL.dbWinProb(roster(1), roster(2));
+        const off = PKL.matchupProb(0, 0, ps, pDb);
+        const fav1 = off >= 0.5;
+        let was = '';
+        if (c.fx.p != null) {
+          const pf1 = c.fx.p >= 0.5;
+          was = ` <span class="note">— projected had ${esc((pf1 ? c.fx.t1 : c.fx.t2).split(' ').pop())} ${fpF(pf1 ? c.fx.p : 1 - c.fx.p)}%</span>`;
+        }
+        html = `<strong>LINEUPS OFFICIAL:</strong> ${esc(fav1 ? c.fx.t1 : c.fx.t2)} <strong>${fpF(fav1 ? off : 1 - off)}%</strong>${was}`;
+        if (diffs.length) html += `<br><span class="note">pairings differ from projection: ${diffs.join(', ')}</span>`;
+        if (status === 'IN_PROGRESS') html += ' · <a href="live.html"><strong>LIVE now →</strong></a>';
+        else if (status === 'COMPLETED') html += ` · <span class="note">final ${mu.s1}–${mu.s2}</span> · <a href="live.html">charts →</a>`;
+        else pending = true;   // lineups can still change until first serve
+      } else {
+        html = `<span class="note">lineups announced for ${nIn}/4 games — full repricing when all four are in</span>`;
+        pending = true;
+      }
+      c.out.innerHTML = html;
+      c.out.hidden = false;
+    }
+  } catch (e) { pending = true; }
+  if (pending && !document.hidden) schedule(60000);
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) schedule(500); });
+(async () => {
+  try {
+    const vr = await fetch(CFG.values);
+    VALUES = (await vr.json()).players;
+    tick();
+  } catch (e) {}
+})();
+"""
+
+
+def forecast_script():
+    """The <script> block build_forecast appends: engine + repricer."""
+    engine = (Path(__file__).parent / "live_engine.js").read_text()
+    cal = json.loads((ROOT / "web" / "calibration.json").read_text())
+    cfg = json.dumps({
+        "api": API_BASE, "values": "data/live_values.json",
+        "headers": ({"Authorization": f"Bearer {API_KEY}", "apikey": API_KEY}
+                    if API_KEY else {}),
+        "gamma": GAMMA, "k": K_DOUBLES, "kDbSingles": K_DB_SINGLES,
+        "singlesImpute": list(SINGLES_IMPUTE),
+        "cal": {"a": cal["a"], "b": cal["b"], "eps": cal["eps"]},
+    })
+    return f"<script>\n{engine}\n{FORECAST_JS.replace('__CFG__', cfg)}\n</script>"
+
+
 LIVE_CSS = """
 /* chart side colors — CVD-validated green/blue pair (light + dark steps
    checked with the palette validator against each surface) */
