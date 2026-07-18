@@ -159,7 +159,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 06c7c97f-1bf7-4d1f-bafc-3f61392c678c,doubles,PPA,2024,23,4
 06c7c97f-1bf7-4d1f-bafc-3f61392c678c,singles,PPA,2024,73,32
 06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,doubles,MLP,2025,146,62
-06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,doubles,MLP,2026,268,115
+06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,doubles,MLP,2026,294,132
 06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,doubles,PPA,2024,1726,774
 06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,doubles,PPA,2025,1508,657
 06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf,doubles,PPA,2026,724,318
@@ -456,7 +456,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 12890797-7355-49ca-848e-56d67e33c4de,singles,PPA,2025,118,61
 12890797-7355-49ca-848e-56d67e33c4de,singles,PPA,2026,201,120
 129b2771-34b5-4b7f-9c23-e020a6aa3e6a,doubles,MLP,2025,662,347
-129b2771-34b5-4b7f-9c23-e020a6aa3e6a,doubles,MLP,2026,490,269
+129b2771-34b5-4b7f-9c23-e020a6aa3e6a,doubles,MLP,2026,507,275
 129b2771-34b5-4b7f-9c23-e020a6aa3e6a,doubles,PPA,2024,4089,2100
 129b2771-34b5-4b7f-9c23-e020a6aa3e6a,doubles,PPA,2025,3671,1973
 129b2771-34b5-4b7f-9c23-e020a6aa3e6a,doubles,PPA,2026,1935,1021
@@ -605,7 +605,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 1725729f-f44e-4ff1-bd1c-fc1017ee96c2,doubles,PPA,2025,10,5
 1725729f-f44e-4ff1-bd1c-fc1017ee96c2,singles,PPA,2025,47,28
 1728d016-1f02-4789-be73-63d12d5a5b42,doubles,MLP,2025,840,387
-1728d016-1f02-4789-be73-63d12d5a5b42,doubles,MLP,2026,346,158
+1728d016-1f02-4789-be73-63d12d5a5b42,doubles,MLP,2026,395,182
 1728d016-1f02-4789-be73-63d12d5a5b42,doubles,PPA,2024,2009,923
 1728d016-1f02-4789-be73-63d12d5a5b42,doubles,PPA,2025,2294,1112
 1728d016-1f02-4789-be73-63d12d5a5b42,doubles,PPA,2026,1645,807
@@ -716,7 +716,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 1bb4e304-37c1-43eb-b223-6eb45ab3b78a,singles,PPA,2024,619,294
 1bb5daf7-4380-4bd6-97b6-394f6b49d5b3,doubles,PPA,2025,12,5
 1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,doubles,MLP,2025,812,369
-1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,doubles,MLP,2026,469,218
+1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,doubles,MLP,2026,486,225
 1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,doubles,PPA,2024,1096,517
 1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,doubles,PPA,2025,2062,961
 1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4,doubles,PPA,2026,1210,575
@@ -1103,7 +1103,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 294a1d5b-b251-45b3-adb7-9936c9ff0c5c,doubles,PPA,2024,33,14
 294a1d5b-b251-45b3-adb7-9936c9ff0c5c,singles,PPA,2024,45,15
 295e343a-31a0-4e1d-a286-d62592291435,doubles,MLP,2025,418,167
-295e343a-31a0-4e1d-a286-d62592291435,doubles,MLP,2026,334,150
+295e343a-31a0-4e1d-a286-d62592291435,doubles,MLP,2026,353,161
 295e343a-31a0-4e1d-a286-d62592291435,doubles,PPA,2024,1503,608
 295e343a-31a0-4e1d-a286-d62592291435,doubles,PPA,2025,2114,936
 295e343a-31a0-4e1d-a286-d62592291435,doubles,PPA,2026,1044,469
@@ -1187,7 +1187,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 2c2a2b82-9ec7-4046-97cb-3a199ed507af,singles,PPA,2026,108,72
 2c3cab78-6beb-4599-9945-542f8d03dfa2,doubles,PPA,2024,10,3
 2c3cab78-6beb-4599-9945-542f8d03dfa2,doubles,PPA,2025,21,4
-2c4de762-88d6-47c3-8b2b-af562c5d1f93,doubles,MLP,2026,480,219
+2c4de762-88d6-47c3-8b2b-af562c5d1f93,doubles,MLP,2026,504,226
 2c4de762-88d6-47c3-8b2b-af562c5d1f93,doubles,PPA,2025,712,336
 2c4de762-88d6-47c3-8b2b-af562c5d1f93,doubles,PPA,2026,260,136
 2c4de762-88d6-47c3-8b2b-af562c5d1f93,singles,PPA,2025,189,94
@@ -1577,7 +1577,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 3ad652aa-3fdd-4e53-8f34-dfdedc3c1901,singles,PPA,2024,832,451
 3ad73844-19f8-4010-bedc-109fa57a165b,doubles,PPA,2025,53,24
 3af01041-5679-400a-87b8-12c01db8cec4,doubles,MLP,2025,786,370
-3af01041-5679-400a-87b8-12c01db8cec4,doubles,MLP,2026,449,235
+3af01041-5679-400a-87b8-12c01db8cec4,doubles,MLP,2026,460,242
 3af01041-5679-400a-87b8-12c01db8cec4,doubles,PPA,2024,1332,609
 3af01041-5679-400a-87b8-12c01db8cec4,doubles,PPA,2025,1725,802
 3af01041-5679-400a-87b8-12c01db8cec4,doubles,PPA,2026,1371,662
@@ -2208,7 +2208,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 525bfe63-4047-4100-9289-b4af47a25f98,singles,PPA,2025,249,133
 525bfe63-4047-4100-9289-b4af47a25f98,singles,PPA,2026,38,18
 52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,doubles,MLP,2025,673,306
-52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,doubles,MLP,2026,470,226
+52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,doubles,MLP,2026,515,247
 52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,doubles,PPA,2024,774,366
 52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,doubles,PPA,2025,2210,1034
 52690a0c-ed4a-4e0b-bf69-4ef416cf7d55,doubles,PPA,2026,1384,656
@@ -2385,7 +2385,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 57fe201c-1380-4752-93f4-99c32cf73422,singles,PPA,2024,42,20
 580e9d18-7cb2-40ac-9dda-c2e87cefa31d,doubles,PPA,2024,69,25
 581183e8-3d9e-459e-b69f-7337d8b6f3d2,doubles,MLP,2025,796,379
-581183e8-3d9e-459e-b69f-7337d8b6f3d2,doubles,MLP,2026,538,248
+581183e8-3d9e-459e-b69f-7337d8b6f3d2,doubles,MLP,2026,577,265
 581183e8-3d9e-459e-b69f-7337d8b6f3d2,doubles,PPA,2024,2643,1230
 581183e8-3d9e-459e-b69f-7337d8b6f3d2,doubles,PPA,2025,3500,1677
 581183e8-3d9e-459e-b69f-7337d8b6f3d2,doubles,PPA,2026,2005,915
@@ -2653,7 +2653,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 64698ef9-a6f7-409d-b416-4892308af978,singles,PPA,2024,891,407
 64698ef9-a6f7-409d-b416-4892308af978,singles,PPA,2025,224,110
 646f7432-e6ad-4ccf-95ee-a0e5d9514d28,doubles,MLP,2025,61,33
-646f7432-e6ad-4ccf-95ee-a0e5d9514d28,doubles,MLP,2026,308,134
+646f7432-e6ad-4ccf-95ee-a0e5d9514d28,doubles,MLP,2026,315,134
 646f7432-e6ad-4ccf-95ee-a0e5d9514d28,doubles,PPA,2024,1447,635
 646f7432-e6ad-4ccf-95ee-a0e5d9514d28,doubles,PPA,2025,2155,968
 646f7432-e6ad-4ccf-95ee-a0e5d9514d28,doubles,PPA,2026,847,391
@@ -2727,7 +2727,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 6679adb1-859f-4e6e-a2fa-9a800f5c95a3,doubles,PPA,2025,17,4
 6687eba3-01dd-4fcf-9b13-f1ea3a55c524,doubles,PPA,2024,53,17
 66a6c35b-33a2-4a23-b5db-fa53c96d643a,doubles,MLP,2025,567,257
-66a6c35b-33a2-4a23-b5db-fa53c96d643a,doubles,MLP,2026,323,115
+66a6c35b-33a2-4a23-b5db-fa53c96d643a,doubles,MLP,2026,356,124
 66a6c35b-33a2-4a23-b5db-fa53c96d643a,doubles,PPA,2024,1408,604
 66a6c35b-33a2-4a23-b5db-fa53c96d643a,doubles,PPA,2025,1557,669
 66a6c35b-33a2-4a23-b5db-fa53c96d643a,doubles,PPA,2026,812,359
@@ -2900,7 +2900,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 6c554dd1-9ba8-499d-bb63-c74971d7cec6,singles,PPA,2025,61,24
 6ca40dc0-4ab3-46ae-812f-8fed6c72643b,doubles,PPA,2025,106,43
 6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,doubles,MLP,2025,684,314
-6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,doubles,MLP,2026,399,195
+6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,doubles,MLP,2026,444,214
 6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,doubles,PPA,2024,1346,579
 6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,doubles,PPA,2025,1850,860
 6cae3a50-eee6-45ea-8b28-85ef9c50e3c4,doubles,PPA,2026,502,243
@@ -2966,7 +2966,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 6f41369d-f89f-4d0a-a62a-f42de227a661,singles,PPA,2024,23,6
 6f6fdd3b-dafa-4664-a818-f0e16b96a6ea,singles,PPA,2024,7,2
 6f862c1d-1317-4fe7-bdcd-64caa0dbb088,doubles,MLP,2025,566,247
-6f862c1d-1317-4fe7-bdcd-64caa0dbb088,doubles,MLP,2026,384,197
+6f862c1d-1317-4fe7-bdcd-64caa0dbb088,doubles,MLP,2026,423,214
 6f862c1d-1317-4fe7-bdcd-64caa0dbb088,doubles,PPA,2024,4173,2161
 6f862c1d-1317-4fe7-bdcd-64caa0dbb088,doubles,PPA,2025,4181,2119
 6f862c1d-1317-4fe7-bdcd-64caa0dbb088,doubles,PPA,2026,2205,1104
@@ -3050,7 +3050,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 73059c6e-2fdb-4d82-90da-3c3c524a9c50,doubles,PPA,2024,64,34
 73059c6e-2fdb-4d82-90da-3c3c524a9c50,doubles,PPA,2025,116,64
 7319013d-d511-4aa5-a356-4aa2cccf94f5,doubles,MLP,2025,724,321
-7319013d-d511-4aa5-a356-4aa2cccf94f5,doubles,MLP,2026,517,230
+7319013d-d511-4aa5-a356-4aa2cccf94f5,doubles,MLP,2026,562,247
 7319013d-d511-4aa5-a356-4aa2cccf94f5,doubles,PPA,2024,2999,1400
 7319013d-d511-4aa5-a356-4aa2cccf94f5,doubles,PPA,2025,2083,953
 7319013d-d511-4aa5-a356-4aa2cccf94f5,doubles,PPA,2026,988,470
@@ -3650,7 +3650,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 8983be9d-1de3-4ae2-a6ed-1584a478bc33,doubles,PPA,2025,31,13
 8983be9d-1de3-4ae2-a6ed-1584a478bc33,doubles,PPA,2026,91,34
 89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,doubles,MLP,2025,309,130
-89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,doubles,MLP,2026,321,145
+89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,doubles,MLP,2026,349,158
 89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,doubles,PPA,2024,3300,1515
 89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,doubles,PPA,2025,1774,820
 89843e44-48fd-4a3f-b8c0-5f5aa6ae5741,doubles,PPA,2026,883,444
@@ -3769,7 +3769,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 8df7caa9-af2f-4381-833a-f56776546f88,singles,PPA,2025,68,36
 8df7caa9-af2f-4381-833a-f56776546f88,singles,PPA,2026,51,24
 8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,doubles,MLP,2025,471,186
-8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,doubles,MLP,2026,403,163
+8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,doubles,MLP,2026,406,163
 8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,doubles,PPA,2024,2391,1082
 8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,doubles,PPA,2025,2581,1160
 8e2f9629-19d0-409d-81dc-b64fe2f3d3ff,doubles,PPA,2026,1159,525
@@ -4086,7 +4086,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 9b8928b2-2ff4-4ae4-95dc-d1fb8e6922d9,doubles,PPA,2025,19,8
 9b90fac4-19e9-4e99-a239-4caf8d3f8a48,doubles,PPA,2026,27,8
 9b97206b-783a-4fab-85e9-45a6240325a5,doubles,MLP,2025,637,303
-9b97206b-783a-4fab-85e9-45a6240325a5,doubles,MLP,2026,365,162
+9b97206b-783a-4fab-85e9-45a6240325a5,doubles,MLP,2026,392,173
 9b97206b-783a-4fab-85e9-45a6240325a5,doubles,PPA,2024,3284,1607
 9b97206b-783a-4fab-85e9-45a6240325a5,doubles,PPA,2025,3099,1508
 9b97206b-783a-4fab-85e9-45a6240325a5,doubles,PPA,2026,1547,759
@@ -4190,7 +4190,7 @@ player_uuid,discipline,tour,year,serve_rallies,serve_wins
 9fa6a300-42c2-4a96-b7c0-9afbe1342e59,doubles,PPA,2025,553,216
 9fa6a300-42c2-4a96-b7c0-9afbe1342e59,doubles,PPA,2026,115,46
 9fd13616-6d79-441d-8bd1-be3534a8cc88,doubles,PPA,2025,40,10
-a000a067-1bf1-442f-a961-e6c97cb50006,doubles,MLP,2026,418,166
+a000a067-1bf1-442f-a961-e6c97cb50006,doubles,MLP,2026,452,179
 a000a067-1bf1-442f-a961-e6c97cb50006,doubles,PPA,2025,54,20
 a000a067-1bf1-442f-a961-e6c97cb50006,doubles,PPA,2026,538,279
 a0143dc5-489f-4e96-8357-f8960a3d43b6,doubles,PPA,2026,72,26
@@ -4638,7 +4638,7 @@ b025eccb-868e-4ce6-a4db-c1082a288b59,singles,PPA,2024,91,47
 b025eccb-868e-4ce6-a4db-c1082a288b59,singles,PPA,2025,151,86
 b032c581-0cfa-4263-ae43-b094d2946af3,doubles,PPA,2026,25,11
 b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,doubles,MLP,2025,607,223
-b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,doubles,MLP,2026,421,180
+b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,doubles,MLP,2026,455,194
 b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,doubles,PPA,2024,815,393
 b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,doubles,PPA,2025,1192,498
 b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9,doubles,PPA,2026,786,363
@@ -4675,7 +4675,7 @@ b191bf5b-58d6-4232-ba55-1defadd14f79,doubles,PPA,2026,30,13
 b1a06222-eedd-47a7-a3e6-935dcc12a187,singles,PPA,2024,69,27
 b1a77e6b-6663-4270-b2d3-250d9128a500,doubles,PPA,2026,15,6
 b1ab7d76-a859-4136-8405-3ed7c9be287a,doubles,MLP,2025,170,81
-b1ab7d76-a859-4136-8405-3ed7c9be287a,doubles,MLP,2026,315,132
+b1ab7d76-a859-4136-8405-3ed7c9be287a,doubles,MLP,2026,332,139
 b1ab7d76-a859-4136-8405-3ed7c9be287a,doubles,PPA,2024,1418,634
 b1ab7d76-a859-4136-8405-3ed7c9be287a,doubles,PPA,2025,1606,742
 b1ab7d76-a859-4136-8405-3ed7c9be287a,doubles,PPA,2026,1093,491
@@ -4751,7 +4751,7 @@ b4d53958-c030-4f71-83e5-409a096ae3d4,doubles,PPA,2024,28,12
 b4ea6db3-6932-4ba0-b0fd-a203f9dbd55a,doubles,PPA,2025,43,18
 b4ea6db3-6932-4ba0-b0fd-a203f9dbd55a,singles,PPA,2025,117,53
 b51ea0fb-c243-4427-85f8-b798febb51ff,doubles,MLP,2025,751,394
-b51ea0fb-c243-4427-85f8-b798febb51ff,doubles,MLP,2026,460,246
+b51ea0fb-c243-4427-85f8-b798febb51ff,doubles,MLP,2026,468,249
 b51ea0fb-c243-4427-85f8-b798febb51ff,doubles,PPA,2024,3232,1486
 b51ea0fb-c243-4427-85f8-b798febb51ff,doubles,PPA,2025,3810,1830
 b51ea0fb-c243-4427-85f8-b798febb51ff,doubles,PPA,2026,1877,920
@@ -4855,7 +4855,7 @@ b924b201-a7b1-4af5-83ef-d132c2d27008,singles,PPA,2025,1830,983
 b92fe07a-11bc-4bdf-bfa9-8b26cdd3876e,doubles,PPA,2025,9,1
 b9665aab-e3fc-413f-b183-c620dc22c8a5,doubles,PPA,2024,58,15
 b9787f83-f0ee-4fae-94ee-0f88cbcecb00,doubles,PPA,2025,16,5
-b9bacc1e-29b5-4a92-a9c1-24e08ac72215,doubles,MLP,2026,519,246
+b9bacc1e-29b5-4a92-a9c1-24e08ac72215,doubles,MLP,2026,540,255
 b9bacc1e-29b5-4a92-a9c1-24e08ac72215,doubles,PPA,2024,405,197
 b9bacc1e-29b5-4a92-a9c1-24e08ac72215,singles,PPA,2024,39,19
 b9c9c1c3-5dbe-4230-8907-2873c8f74444,doubles,PPA,2024,48,25
@@ -4872,7 +4872,7 @@ ba2a2f06-613a-4ebc-88bf-c4694d31998b,doubles,PPA,2026,12,4
 ba2a2f06-613a-4ebc-88bf-c4694d31998b,singles,PPA,2026,10,1
 ba454533-a964-46e4-9b5e-ee6c8aacbf37,doubles,PPA,2024,30,13
 ba491f1c-0112-47a8-a348-4695289e958a,doubles,MLP,2025,768,369
-ba491f1c-0112-47a8-a348-4695289e958a,doubles,MLP,2026,365,171
+ba491f1c-0112-47a8-a348-4695289e958a,doubles,MLP,2026,415,195
 ba491f1c-0112-47a8-a348-4695289e958a,doubles,PPA,2024,1692,723
 ba491f1c-0112-47a8-a348-4695289e958a,doubles,PPA,2025,1775,727
 ba491f1c-0112-47a8-a348-4695289e958a,doubles,PPA,2026,1137,530
@@ -4945,7 +4945,7 @@ bcf208d8-c350-4fdf-85ad-b37bef113840,doubles,PPA,2024,88,39
 bcff0807-8dc8-4322-b1dc-a713b611cd4f,doubles,PPA,2025,27,11
 bcff0807-8dc8-4322-b1dc-a713b611cd4f,singles,PPA,2025,270,150
 bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,doubles,MLP,2025,699,324
-bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,doubles,MLP,2026,352,158
+bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,doubles,MLP,2026,380,162
 bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,doubles,PPA,2024,3079,1467
 bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,doubles,PPA,2025,3945,1934
 bd061b42-2f82-4bbe-82be-d8bcfb37f9e1,doubles,PPA,2026,1697,813
@@ -5305,7 +5305,7 @@ cc5b5eb2-af6c-45c1-a4e7-9420e23a35d2,doubles,PPA,2025,11,4
 cc5b5eb2-af6c-45c1-a4e7-9420e23a35d2,singles,PPA,2025,19,8
 cc5d513b-cd0e-43e3-8f1d-8dd5b2c6d879,doubles,PPA,2025,44,21
 cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,doubles,MLP,2025,486,175
-cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,doubles,MLP,2026,420,179
+cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,doubles,MLP,2026,443,184
 cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,doubles,PPA,2024,2287,1065
 cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,doubles,PPA,2025,1865,900
 cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a,doubles,PPA,2026,854,375
@@ -5320,7 +5320,7 @@ cc994f98-879e-4ef1-a4e6-bfe46cdaea7a,doubles,PPA,2026,8,1
 cc994f98-879e-4ef1-a4e6-bfe46cdaea7a,singles,PPA,2024,62,33
 cccba1bc-174a-472f-9049-361a9520b1e8,doubles,PPA,2025,71,25
 cccba1bc-174a-472f-9049-361a9520b1e8,doubles,PPA,2026,24,12
-cd1bf109-4907-4208-bca1-4d12f9494a4c,doubles,MLP,2026,199,77
+cd1bf109-4907-4208-bca1-4d12f9494a4c,doubles,MLP,2026,212,82
 cd1bf109-4907-4208-bca1-4d12f9494a4c,doubles,PPA,2024,949,413
 cd1bf109-4907-4208-bca1-4d12f9494a4c,singles,PPA,2024,252,139
 cd6e0ef8-ec98-4c1c-869e-32dd38ff2b9d,doubles,PPA,2025,9,2
@@ -5434,7 +5434,7 @@ d0da5b36-d39d-4c37-b1dc-70f0fc091b26,singles,PPA,2026,66,30
 d0ddd8d3-dbd6-49d4-9afd-6f9524135abe,doubles,PPA,2024,5,0
 d0ddd8d3-dbd6-49d4-9afd-6f9524135abe,singles,PPA,2024,58,28
 d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,doubles,MLP,2025,776,374
-d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,doubles,MLP,2026,462,223
+d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,doubles,MLP,2026,469,224
 d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,doubles,PPA,2024,268,120
 d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,doubles,PPA,2026,370,164
 d0f19d1e-2a6e-4eb3-b10c-1311edd599a8,singles,PPA,2024,21,5
@@ -5516,7 +5516,7 @@ d4cc150e-c121-43aa-9ab6-6d36be5bcaaf,singles,PPA,2026,22,9
 d4fa4b1d-2228-4620-8e8c-f4b182524e86,doubles,PPA,2024,170,73
 d4fa4b1d-2228-4620-8e8c-f4b182524e86,singles,PPA,2024,26,3
 d50310a6-9378-4228-823f-7fb54f7bd698,doubles,MLP,2025,824,431
-d50310a6-9378-4228-823f-7fb54f7bd698,doubles,MLP,2026,464,246
+d50310a6-9378-4228-823f-7fb54f7bd698,doubles,MLP,2026,474,252
 d50310a6-9378-4228-823f-7fb54f7bd698,doubles,PPA,2024,2721,1259
 d50310a6-9378-4228-823f-7fb54f7bd698,doubles,PPA,2025,3638,1754
 d50310a6-9378-4228-823f-7fb54f7bd698,doubles,PPA,2026,2318,1118
@@ -5652,7 +5652,7 @@ db48f424-e38b-492f-bb59-9e17948e42aa,doubles,PPA,2025,8,1
 db4cdd43-769d-42ea-8a72-81eb9214d1ca,doubles,PPA,2025,7,3
 db4cdd43-769d-42ea-8a72-81eb9214d1ca,singles,PPA,2025,10,2
 db5eef5c-99dd-49d9-bbfc-65171a366bda,doubles,MLP,2025,771,403
-db5eef5c-99dd-49d9-bbfc-65171a366bda,doubles,MLP,2026,467,235
+db5eef5c-99dd-49d9-bbfc-65171a366bda,doubles,MLP,2026,487,245
 db5eef5c-99dd-49d9-bbfc-65171a366bda,doubles,PPA,2024,4277,2033
 db5eef5c-99dd-49d9-bbfc-65171a366bda,doubles,PPA,2025,3437,1760
 db5eef5c-99dd-49d9-bbfc-65171a366bda,doubles,PPA,2026,2234,1226
@@ -5671,7 +5671,7 @@ dba7cf49-9f57-43e3-878d-a63ced26a243,singles,PPA,2025,60,36
 dba7cf49-9f57-43e3-878d-a63ced26a243,singles,PPA,2026,16,6
 dbaf6478-789c-48ef-b916-a52def5802cb,doubles,PPA,2025,58,19
 dbcb41e9-e983-410b-bc23-d184d034cfc0,doubles,MLP,2025,585,237
-dbcb41e9-e983-410b-bc23-d184d034cfc0,doubles,MLP,2026,364,141
+dbcb41e9-e983-410b-bc23-d184d034cfc0,doubles,MLP,2026,373,142
 dbcb41e9-e983-410b-bc23-d184d034cfc0,doubles,PPA,2024,2424,1140
 dbcb41e9-e983-410b-bc23-d184d034cfc0,doubles,PPA,2025,2044,961
 dbcb41e9-e983-410b-bc23-d184d034cfc0,doubles,PPA,2026,672,317
@@ -6017,7 +6017,7 @@ ea90bdd7-53bf-4892-8bc9-802c55feee1e,singles,PPA,2024,401,188
 ea9ff71c-b00a-49ee-bcf8-63c1e4855962,doubles,PPA,2024,49,16
 ea9ff71c-b00a-49ee-bcf8-63c1e4855962,doubles,PPA,2025,8,2
 ead35052-7367-4296-96d4-064f546cc2b9,doubles,MLP,2025,681,319
-ead35052-7367-4296-96d4-064f546cc2b9,doubles,MLP,2026,465,197
+ead35052-7367-4296-96d4-064f546cc2b9,doubles,MLP,2026,493,209
 ead35052-7367-4296-96d4-064f546cc2b9,doubles,PPA,2024,1444,652
 ead35052-7367-4296-96d4-064f546cc2b9,doubles,PPA,2025,2447,1115
 ead35052-7367-4296-96d4-064f546cc2b9,doubles,PPA,2026,1344,646
@@ -6374,7 +6374,7 @@ f86f33bd-4898-4687-a8d7-b77dd157651c,doubles,PPA,2024,57,24
 f86f33bd-4898-4687-a8d7-b77dd157651c,singles,PPA,2024,36,22
 f872c26f-1477-4b0f-8a4d-42390444234d,doubles,PPA,2024,45,12
 f879086b-e0e5-4772-b0a6-4055c265da69,doubles,MLP,2025,716,328
-f879086b-e0e5-4772-b0a6-4055c265da69,doubles,MLP,2026,469,212
+f879086b-e0e5-4772-b0a6-4055c265da69,doubles,MLP,2026,491,221
 f879086b-e0e5-4772-b0a6-4055c265da69,doubles,PPA,2024,3061,1383
 f879086b-e0e5-4772-b0a6-4055c265da69,doubles,PPA,2025,2112,980
 f879086b-e0e5-4772-b0a6-4055c265da69,doubles,PPA,2026,1644,798
@@ -6466,7 +6466,7 @@ fbdf1ac9-91bb-4e08-9968-eb41344fd08a,singles,PPA,2025,129,63
 fbf3193d-c3ca-4021-9eff-699295789fb2,doubles,PPA,2025,25,7
 fbf70056-439a-41f7-a184-17daa86da947,doubles,PPA,2025,10,2
 fc05556e-3e38-4a38-99c2-f855174a7c28,doubles,MLP,2025,661,319
-fc05556e-3e38-4a38-99c2-f855174a7c28,doubles,MLP,2026,468,238
+fc05556e-3e38-4a38-99c2-f855174a7c28,doubles,MLP,2026,488,248
 fc05556e-3e38-4a38-99c2-f855174a7c28,doubles,PPA,2024,3536,1632
 fc05556e-3e38-4a38-99c2-f855174a7c28,doubles,PPA,2025,3173,1502
 fc05556e-3e38-4a38-99c2-f855174a7c28,doubles,PPA,2026,2013,978
@@ -6518,7 +6518,7 @@ fe63e706-25ac-4774-a8c3-99535fd9d5f8,doubles,PPA,2025,8,0
 fe88195a-860e-4094-ad50-96a6fcebd55f,doubles,PPA,2025,64,28
 fe88195a-860e-4094-ad50-96a6fcebd55f,singles,PPA,2025,110,54
 fec65f7e-f2c8-482f-ab5b-541cf53b1064,doubles,MLP,2025,663,337
-fec65f7e-f2c8-482f-ab5b-541cf53b1064,doubles,MLP,2026,223,92
+fec65f7e-f2c8-482f-ab5b-541cf53b1064,doubles,MLP,2026,262,111
 fec65f7e-f2c8-482f-ab5b-541cf53b1064,doubles,PPA,2024,2851,1256
 fec65f7e-f2c8-482f-ab5b-541cf53b1064,doubles,PPA,2025,3032,1467
 fec65f7e-f2c8-482f-ab5b-541cf53b1064,doubles,PPA,2026,1762,846
