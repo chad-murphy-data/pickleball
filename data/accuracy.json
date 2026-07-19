@@ -1,0 +1,149 @@
+{
+ "generated_from": "raw/ + data/tournament_state.json",
+ "calibration": {
+  "a": 0.06,
+  "b": 0.9,
+  "eps": 0.02118
+ },
+ "mlp": {
+  "event": "MLP San Diego",
+  "date": "2026-07-18",
+  "level": "matchup+game",
+  "matchups": {
+   "n": 10,
+   "pickles_correct": 8,
+   "dupr_correct": 6,
+   "dupr_decided": 8
+  },
+  "games": {
+   "pickles": "27/40",
+   "dupr": "25/40",
+   "pickles_correct": 27,
+   "pickles_n": 40,
+   "dupr_correct": 25,
+   "dupr_n": 40
+  },
+  "brier": 0.208,
+  "rows": [
+   {
+    "actual": "CAL 3-2 SoCal",
+    "winner": "CAL",
+    "pickles": "CAL 62%",
+    "pickles_ok": true,
+    "dupr": "CAL",
+    "dupr_ok": true
+   },
+   {
+    "actual": "DAL 3-2 UTA",
+    "winner": "DAL",
+    "pickles": "DAL 81%",
+    "pickles_ok": true,
+    "dupr": "toss-up",
+    "dupr_ok": null
+   },
+   {
+    "actual": "ORL 3-1 FLA",
+    "winner": "ORL",
+    "pickles": "ORL 89%",
+    "pickles_ok": true,
+    "dupr": "ORL",
+    "dupr_ok": true
+   },
+   {
+    "actual": "PHX 0-4 COL",
+    "winner": "COL",
+    "pickles": "COL 98%",
+    "pickles_ok": true,
+    "dupr": "COL",
+    "dupr_ok": true
+   },
+   {
+    "actual": "ATL 1-3 UTA",
+    "winner": "UTA",
+    "pickles": "ATL 75%",
+    "pickles_ok": false,
+    "dupr": "UTA",
+    "dupr_ok": true
+   },
+   {
+    "actual": "BAY 0-4 LA",
+    "winner": "LA",
+    "pickles": "LA 98%",
+    "pickles_ok": true,
+    "dupr": "LA",
+    "dupr_ok": true
+   },
+   {
+    "actual": "PHX 2-3 CAL",
+    "winner": "CAL",
+    "pickles": "CAL 69%",
+    "pickles_ok": true,
+    "dupr": "PHX",
+    "dupr_ok": false
+   },
+   {
+    "actual": "COL 4-0 SoCal",
+    "winner": "COL",
+    "pickles": "COL 92%",
+    "pickles_ok": true,
+    "dupr": "COL",
+    "dupr_ok": true
+   },
+   {
+    "actual": "BAY 0-4 ATL",
+    "winner": "ATL",
+    "pickles": "ATL 95%",
+    "pickles_ok": true,
+    "dupr": "toss-up",
+    "dupr_ok": null
+   },
+   {
+    "actual": "LA 2-3 DAL",
+    "winner": "DAL",
+    "pickles": "LA 67%",
+    "pickles_ok": false,
+    "dupr": "LA",
+    "dupr_ok": false
+   }
+  ]
+ },
+ "ppa": {
+  "event": "2026 Macon PPA Challenger",
+  "level": "match",
+  "divisions": [
+   {
+    "division": "Mens Doubles Pro Main Draw",
+    "pickles": "31/46",
+    "pickles_correct": 31,
+    "pickles_n": 46,
+    "dupr": "26/37",
+    "dupr_correct": 26,
+    "dupr_n": 37,
+    "brier": 0.211,
+    "unrated_by_model": 10
+   },
+   {
+    "division": "Mixed Doubles Pro Main Draw",
+    "pickles": "0/0",
+    "pickles_correct": 0,
+    "pickles_n": 0,
+    "dupr": "0/0",
+    "dupr_correct": 0,
+    "dupr_n": 0,
+    "brier": null,
+    "unrated_by_model": 0
+   },
+   {
+    "division": "Womens Doubles Pro Main Draw",
+    "pickles": "23/28",
+    "pickles_correct": 23,
+    "pickles_n": 28,
+    "dupr": "21/22",
+    "dupr_correct": 21,
+    "dupr_n": 22,
+    "brier": 0.107,
+    "unrated_by_model": 3
+   }
+  ]
+ }
+}
