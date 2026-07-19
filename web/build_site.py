@@ -1510,6 +1510,84 @@ def inline(s: str) -> str:
     return s
 
 
+def build_accuracy(updated):
+    """Unlisted internal scorecard (PICKLES vs DUPR). Built from
+    data/accuracy.json but deliberately NOT in NAV and linked from nowhere;
+    reachable only by direct URL, and marked noindex so search skips it."""
+    src = ROOT / "data" / "accuracy.json"
+    if not src.exists():
+        return
+    A = json.loads(src.read_text())
+
+    def acc(c, n):
+        return f"{100 * c / n:.0f}%" if n else "—"
+
+    sec = []
+    mlp = A.get("mlp")
+    if mlp:
+        m, g = mlp["matchups"], mlp["games"]
+        span = f" · {mlp['dates'][0]} → {mlp['dates'][1]}" if mlp.get("dates") else ""
+        rows = []
+        for r in mlp["rows"]:
+            pk = "✓" if r["pickles_ok"] else "✗"
+            du = "—" if r["dupr_ok"] is None else ("✓" if r["dupr_ok"] else "✗")
+            pkc = "up" if r["pickles_ok"] else "down"
+            duc = "" if r["dupr_ok"] is None else ("up" if r["dupr_ok"] else "down")
+            rows.append(
+                f'<tr><td>{esc(r["actual"])}</td><td>{esc(r["pickles"])}</td>'
+                f'<td class="num {pkc}">{pk}</td><td>{esc(r["dupr"])}</td>'
+                f'<td class="num {duc}">{du}</td></tr>')
+        sec.append(f"""<h2>{esc(mlp['event'])} <span class="gray">(MLP{esc(span)})</span></h2>
+<div class="tiles">
+ <div class="tile"><div class="v">{m['pickles_correct']}/{m['n']}</div><div class="k">PICKLES matchup winners ({acc(m['pickles_correct'], m['n'])})</div></div>
+ <div class="tile"><div class="v">{m['dupr_correct']}/{m['dupr_decided']}</div><div class="k">DUPR matchups ({m['n'] - m['dupr_decided']} toss-ups)</div></div>
+ <div class="tile"><div class="v">{acc(g['pickles_correct'], g['pickles_n'])}</div><div class="k">PICKLES games {g['pickles']} · Brier {mlp['brier']}</div></div>
+ <div class="tile"><div class="v">{acc(g['dupr_correct'], g['dupr_n'])}</div><div class="k">DUPR games {g['dupr']}</div></div>
+</div>
+<table><tr><th>actual</th><th>PICKLES</th><th class="num">✓</th><th>DUPR</th><th class="num">✓</th></tr>{''.join(rows)}</table>""")
+
+    for ppa in A.get("ppa", []):
+        rows = []
+        tpc = tpn = tdc = tdn = 0
+        for d in ppa["divisions"]:
+            rows.append(
+                f'<tr><td>{esc(d["division"])}</td>'
+                f'<td class="num">{d["pickles"]} ({acc(d["pickles_correct"], d["pickles_n"])})</td>'
+                f'<td class="num">{d["dupr"]} ({acc(d["dupr_correct"], d["dupr_n"])})</td>'
+                f'<td class="num">{d["brier"]}</td>'
+                f'<td class="num gray">{d["unrated_by_model"]}</td></tr>')
+            tpc += d["pickles_correct"]; tpn += d["pickles_n"]
+            tdc += d["dupr_correct"]; tdn += d["dupr_n"]
+        rows.append(
+            f'<tr><td><b>all divisions</b></td>'
+            f'<td class="num"><b>{tpc}/{tpn} ({acc(tpc, tpn)})</b></td>'
+            f'<td class="num"><b>{tdc}/{tdn} ({acc(tdc, tdn)})</b></td>'
+            f'<td class="num"></td><td class="num"></td></tr>')
+        sec.append(f"""<h2>{esc(ppa['event'])} <span class="gray">(PPA)</span></h2>
+<table><tr><th>division</th><th class="num">PICKLES</th><th class="num">DUPR</th>
+<th class="num">Brier</th><th class="num">model-unrated</th></tr>{''.join(rows)}</table>""")
+
+    gen = A.get("generated_from") or updated
+    body = f"""
+<h1>Accuracy — internal scorecard</h1>
+<p class="sub">PICKLES model vs DUPR on completed pro doubles. Unlisted:
+this page isn't linked anywhere on the site. Model values are from the last
+v2 fit (out-of-sample for the current event); DUPR is each player's latest
+synced rating and gets winner accuracy only (it's a rating, not a
+probability). Uses each match's <b>actual</b> lineups — a reproducible
+retrodiction, distinct from the frozen pre-match ledger on the
+<a href="receipts.html">receipts</a> page. Regenerated nightly.</p>
+{''.join(sec) if sec else '<p class="note">No completed events to grade yet.</p>'}
+<p class="note">Snapshot generated from tournament state dated {esc(str(gen))}.
+Where the model has no game history on a player its pair is skipped
+(shown as “model-unrated”); for those matches it has no independent signal,
+so no model-vs-DUPR edge is claimed.</p>
+"""
+    write("accuracy.html", style.page(
+        "Accuracy (internal) — PICKLES", body, "", "", updated,
+        head_extra='<meta name="robots" content="noindex, nofollow">\n'))
+
+
 def build_404(updated):
     """GitHub Pages serves this file for ANY missing path, so relative URLs
     would resolve against the requested directory — the page is fully
@@ -2181,6 +2259,7 @@ def main():
     build_records(players, agg, games, updated)
     build_dupr(players, updated)
     build_methods(updated)
+    build_accuracy(updated)   # unlisted: built but not in NAV / linked anywhere
     build_404(updated)
 
     dyn = [p for p in players.values() if p.dynamic and p.stats]

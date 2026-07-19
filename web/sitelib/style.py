@@ -473,7 +473,7 @@ NAV = [("rankings.html", "Rankings"), ("players/index.html", "Players"),
        ("methods.html", "Methods")]
 
 
-def page(title, body, here="", root="", updated=""):
+def page(title, body, here="", root="", updated="", head_extra=""):
     nav = "".join(
         '<a href="%s%s"%s>%s</a>' % (root, h, ' class="here"' if h == here else "", t)
         for h, t in NAV)
@@ -483,7 +483,7 @@ def page(title, body, here="", root="", updated=""):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>{title}</title>
+{head_extra}<title>{title}</title>
 {THEME_HEAD}
 {FONTS_PRECONNECT}
 <link rel="stylesheet" href="{root}assets/style.css">

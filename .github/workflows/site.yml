@@ -59,6 +59,7 @@ jobs:
           python scraper/extract_ratings.py
           python web/make_forecast.py --days 7
           python scraper/tournament_state.py
+          python model/grade_event.py
         timeout-minutes: 210
 
       - name: Guard against partial data (restore committed CSVs if parse shrank)
@@ -81,7 +82,7 @@ jobs:
         if: github.event_name != 'push'
         continue-on-error: true
         run: |
-          git add -A data/
+          git add -A data/ model/accuracy.md
           if git diff --cached --quiet; then
             echo "data unchanged — nothing to commit"
           else
