@@ -2,36 +2,42 @@
 
 Case study: the 2026-07-12 MLP Mid-Season women's-doubles final game,
 Anna Leigh Waters / Jorja Johnson LOST 6-11 to Anna Bright / Kate Fahey —
-the headline upset of the weekend, and a graded 88%-favorite MISS on the
-site's receipts.
+the weekend's headline upset and a graded 88%-favorite MISS on the site's
+receipts.
 
-The general question this tool answers, for ANY four players + an
-observed result: given the ratings we had, how surprised should the model
-have been, and WHERE does the surprise come from?  It separates four
-sources and lets you turn each dial:
+The general question, for ANY four players + an observed result: given
+the ratings we had, how surprised should the model have been, and which
+source explains it?  Four candidate sources:
 
-  1. race variance   — even at a fixed skill gap, a first-to-11 sprint is
-                        noisy; a favorite loses a fixed fraction outright.
-  2. skill error     — our value estimates have posterior SDs; maybe the
-                        favorites were overrated / underdogs underrated.
-  3. structure (γ)   — the weakest-link dial: how much a team is dragged
-                        toward its weaker player (targeting / freeze-out).
-  4. match shock     — v2's fitted per-match random effect sd_m ≈ 0.35
-                        logit: game-to-game variation beyond skill (off
-                        days, tactics, adrenaline).  Already IN the model;
-                        collapsed when we quote a point estimate.
+  1. race variance   — even at a fixed, known gap, a first-to-11 sprint is
+                        noisy; a favorite loses some fixed fraction.
+  2. skill error     — value estimates have posterior SDs (favorites maybe
+                        overrated / underdogs underrated).
+  3. structure (γ)   — the weakest-link dial (targeting / freeze-out).
+  4. match shock     — v2's fitted per-match random effect sd_m ≈ 0.35.
 
-The lesson that generalizes: for well-observed players, dials 2 and 3 are
-stiff (tight SDs; γ can't honestly leave the data-supported range), so a
-lone upset is overwhelmingly dial 1 + dial 4 — "the Tuesday the model
-budgets for" — NOT evidence the ratings were wrong.  To indict the
-ratings you need many games (the convex-gap test in spec_shootout), not
-one.
+IMPORTANT (learned the hard way, this script's own history): sources 1-2
+are the honest predictive correction — integrating VALUE uncertainty is
+what the holdout validates (it improves Brier) and is roughly what the
+site's calibration layer already does.  Source 4 is a TRAP for
+prediction: adding the per-match random effect at predict time
+DOUBLE-COUNTS noise and OVER-disperses — holdout_calibration_test() below
+shows Brier gets WORSE (0.1668 vs 0.1658), and the calibration buckets
+show 90%-predicted favorites actually won 91.7%.  So the honest "how
+surprised" number uses sources 1-3, not 4.  The match-shock row is kept
+only to show what over-dispersion looks like and why we don't ship it.
 
-Run:  python model/iceout_waters.py            # prints tables
-      python model/iceout_waters.py --json      # + model/iceout_waters_summary.json
+The lesson that generalizes: for well-observed players a lone upset is
+race variance + tight skill uncertainty — "the Tuesday the model budgets
+for" — NOT evidence the ratings were wrong.  Indicting the ratings needs
+many games (the convex-gap test in spec_shootout.md), never one.  For a
+LOW-game player, source 2 widens and the story can differ — which is why
+separating them is worth a script.
 
-Reusable: edit MATCHUP / OBSERVED at the top to point at another game.
+Run:  python model/iceout_waters.py            # tables + holdout validation
+      python model/iceout_waters.py --json      # + iceout_waters_summary.json
+
+Reusable: edit MATCHUP / OBSERVED / LOPSIDED_PTS to point at another game.
 """
 from __future__ import annotations
 
@@ -39,7 +45,6 @@ import argparse
 import csv
 import json
 import math
-from functools import lru_cache
 from math import comb
 from pathlib import Path
 
@@ -58,102 +63,169 @@ OBSERVED = (6, 11)                          # team1 - team2 final
 LOPSIDED_PTS = 7                            # the "11-7 or worse" question
 # v2 posterior scalars (model/v2_fit_summary.json)
 GAMMA, SD_G, SD_M = -0.1829, 0.0474, 0.3523
+SPLIT, MIN_TRAIN_GAMES = "2026-06-01", 10
 SEED, N_MC = 20260712, 60000
 
-
-def load_values():
-    want = set(MATCHUP["team1"]) | set(MATCHUP["team2"])
-    V, SD = {}, {}
-    for r in csv.DictReader((DATA / "v2_players.csv").open()):
-        if r["full_name"] in want:
-            V[r["full_name"]] = float(r["value_now_mean"])
-            SD[r["full_name"]] = float(r["value_now_sd"])
-    return V, SD
+# ---- race math: side-out to T, win by 2 (grid table = v2_holdout DP) ---
+_GRID = np.linspace(0.01, 0.99, 981)
 
 
-# ---- race math: side-out to T, win by 2 -------------------------------
+def _race_table(T):
+    out = np.zeros_like(_GRID)
+    for gi, p in enumerate(_GRID):
+        q = 1 - p
+        dp = np.zeros((T + 1, T + 1))
+        dp[0, 0] = 1.0
+        win = deuce = 0.0
+        for a in range(T + 1):
+            for b in range(T + 1):
+                if dp[a, b] == 0:
+                    continue
+                if a == T - 1 and b == T - 1:
+                    deuce += dp[a, b]
+                    continue
+                if a == T:
+                    win += dp[a, b]
+                    continue
+                if b == T:
+                    continue
+                if a + 1 == T and b <= T - 2:
+                    win += dp[a, b] * p
+                else:
+                    dp[a + 1, b] += dp[a, b] * p
+                dp[a, b + 1] += dp[a, b] * q
+        out[gi] = win + deuce * (p * p / (p * p + q * q + 1e-12))
+    return out
+
+
+_TAB = {11: _race_table(11), 15: _race_table(15)}
+
 
 def sigmoid(x):
     return 1.0 / (1.0 + math.exp(-x))
+
+
+def race_win(eta, T=11):
+    return float(np.interp(sigmoid(eta), _GRID, _TAB[T]))
+
+
+def race_win_mix(eta, sd, T=11, nodes=21):
+    if sd <= 0:
+        return race_win(eta, T)
+    zs = np.linspace(-3, 3, nodes)
+    ws = np.exp(-0.5 * zs ** 2)
+    ws /= ws.sum()
+    return float(sum(w * race_win(eta + z * sd, T) for z, w in zip(zs, ws)))
 
 
 def team_value(a, b, gamma):
     return a + b + gamma * abs(a - b)
 
 
-def eta(V, gamma):
+def eta_of(V, gamma):
     t1 = team_value(V[MATCHUP["team1"][0]], V[MATCHUP["team1"][1]], gamma) + MATCHUP["chem1"]
     t2 = team_value(V[MATCHUP["team2"][0]], V[MATCHUP["team2"][1]], gamma) + MATCHUP["chem2"]
     return t1 - t2
 
 
 def p_exact(a, b, p, T):
-    """P(final score team1=a, team2=b) given per-point p=P(team1 point)."""
     q = 1 - p
     if a == T and b <= T - 2:
         return comb(T - 1 + b, b) * p ** T * q ** b
     if b == T and a <= T - 2:
         return comb(T - 1 + a, a) * q ** T * p ** a
-    if a >= T - 1 and b >= T - 1:              # deuce region
-        base = comb(2 * T - 2, T - 1) * (p * q) ** (T - 1)
-        m = min(a, b) - (T - 1)                 # extra exchanged pairs
-        pair = 2 * p * q
-        lead = a - b
-        if abs(lead) != 2:
-            return 0.0
-        return base * pair ** m * (p * p if lead == 2 else q * q)
-    return 0.0
+    return 0.0                              # deuce region handled elsewhere
 
 
-@lru_cache(maxsize=None)
-def _loss_prob(p, T):
-    q = 1 - p
-
-    @lru_cache(maxsize=None)
-    def f(a, b):
-        if a >= T and a - b >= 2:
-            return 1.0
-        if b >= T and b - a >= 2:
-            return 0.0
-        if a >= T + 30 or b >= T + 30:
-            return 0.5
-        return p * f(a + 1, b) + q * f(a, b + 1)
-    r = 1 - f(0, 0)
-    f.cache_clear()
-    return r
-
-
-def p_loss(p, T=11):
-    return _loss_prob(round(p, 5), T)
-
-
-def p_loss_at_least(pts, p, T=11):
-    """P(team1 loses with <= `pts` points) i.e. '11-pts or worse'."""
+def p_loss_at_least(pts, p, T):
+    """P(team1 loses with <= pts points) i.e. '11-pts or worse'."""
     q = 1 - p
     return sum(comb(T - 1 + a, a) * q ** T * p ** a for a in range(pts + 1))
 
 
-def score_dist(p, T=11):
-    """Full outcome distribution, team1 perspective."""
-    d = {}
-    for a in range(T + 1):
-        for b in range(T + 1):
-            pr = p_exact(a, b, p, T)
-            if pr > 1e-12:
-                d[(a, b)] = pr
-    # deuce tail beyond T,T-? folded approximately into T+k scores omitted
-    return d
+# ---- data loaders -----------------------------------------------------
+
+def load_values(path="v2_players.csv"):
+    want = set(MATCHUP["team1"]) | set(MATCHUP["team2"])
+    V, SD = {}, {}
+    for r in csv.DictReader((DATA / path).open()):
+        if r["full_name"] in want:
+            V[r["full_name"]] = float(r["value_now_mean"])
+            SD[r["full_name"]] = float(r["value_now_sd"])
+    return V, SD
+
+
+# ---- the decisive test: does the match shock help or hurt? ------------
+
+def holdout_calibration_test():
+    """On the frozen June+ holdout, compare prediction methods by Brier /
+    log-loss.  This is what tells us the match shock over-disperses and the
+    ~11% (value-uncertainty) number is the honest one — not 17%."""
+    pl = {r["player_id"]: r for r in csv.DictReader((DATA / "v2_players_train.csv").open())}
+    chem = {frozenset((r["p1_name"], r["p2_name"])): float(r["chem_logit_mean"])
+            for r in csv.DictReader((DATA / "v2_dyads_train.csv").open())}
+    names = {r["player_id"]: r["full_name"] for r in csv.DictReader((DATA / "players.csv").open())}
+    rows = []
+    for g in csv.DictReader((DATA / "games.csv").open()):
+        if g["is_forfeit"] != "False" or g["scoring_format"] not in ("sideout_11", "sideout_15"):
+            continue
+        if g["date"] < SPLIT:
+            continue
+        us = [g["t1_p1"], g["t1_p2"], g["t2_p1"], g["t2_p2"]]
+        if any(u not in pl or int(pl[u]["games"]) < MIN_TRAIN_GAMES for u in us):
+            continue
+        v = [float(pl[u]["value_now_mean"]) for u in us]
+        sd = [float(pl[u]["value_now_sd"]) for u in us]
+        c1 = chem.get(frozenset((names.get(us[0], ""), names.get(us[1], ""))), 0.0)
+        c2 = chem.get(frozenset((names.get(us[2], ""), names.get(us[3], ""))), 0.0)
+        eta = (v[0] + v[1] + GAMMA * abs(v[0] - v[1])
+               - v[2] - v[3] - GAMMA * abs(v[2] - v[3]) + c1 - c2)
+        T = 11 if g["scoring_format"] == "sideout_11" else 15
+        rows.append((eta, math.sqrt(sum(x * x for x in sd)), T, int(g["margin"]) > 0))
+
+    def score(fn):
+        n = len(rows)
+        acc = br = ll = 0.0
+        for eta, sv, T, won in rows:
+            p = min(max(fn(eta, sv, T), 1e-9), 1 - 1e-9)
+            acc += (p > 0.5) == won
+            br += (p - won) ** 2
+            ll += -(math.log(p) if won else math.log(1 - p))
+        return dict(brier=br / n, log_loss=ll / n, accuracy=acc / n)
+
+    methods = {
+        "plug-in (no uncertainty)": lambda e, s, T: race_win(e, T),
+        "+ value uncertainty [VALIDATED]": lambda e, s, T: race_win_mix(e, s, T),
+        "+ value + match shock (sd_m)": lambda e, s, T: race_win_mix(e, math.sqrt(s * s + SD_M ** 2), T),
+        "+ match shock only": lambda e, s, T: race_win_mix(e, SD_M, T)}
+    res = {k: score(f) for k, f in methods.items()}
+    print(f"\nHOLDOUT CALIBRATION TEST (n={len(rows)}) — which method is honest?")
+    for k, m in res.items():
+        flag = "  <- best Brier" if k.startswith("+ value uncertainty") else \
+               "  <- OVER-disperses" if "match shock (sd_m)" in k else ""
+        print(f"  {k:36s} Brier={m['brier']:.4f}  logloss={m['log_loss']:.4f}{flag}")
+    return res
+
+
+def conditional_loss_dist(p, T):
+    """Among losing outcomes, the distribution of team1's point total.
+    Includes an approximate deuce-loss mass (all 'close') in the base."""
+    win = race_win(math.log(p / (1 - p)), T) if 0 < p < 1 else 0.0
+    total_loss = 1 - win
+    clean = {a: p_exact(a, T, p, T) for a in range(T - 1)}   # 11-a, a<=9
+    clean_sum = sum(clean.values())
+    deuce_mass = max(total_loss - clean_sum, 0.0)            # 10-12,11-13,... all 'close'
+    return clean, clean_sum, deuce_mass, total_loss
 
 
 # ---- Monte-Carlo posterior predictive ---------------------------------
 
 def mc_bucket(V, SD, draw_vals, gdraw, match_eff, bucket_fn, rng, n=N_MC):
-    """E[bucket probability] over selected uncertainty sources."""
     acc = 0.0
     for _ in range(n):
         vv = {k: rng.normal(V[k], SD[k]) for k in V} if draw_vals else V
         g = rng.normal(GAMMA, SD_G) if gdraw else GAMMA
-        e = eta(vv, g) + (rng.normal(0, SD_M) if match_eff else 0.0)
+        e = eta_of(vv, g) + (rng.normal(0, SD_M) if match_eff else 0.0)
         acc += bucket_fn(sigmoid(e))
     return acc / n
 
@@ -167,86 +239,79 @@ def main():
     V, SD = load_values()
     T = MATCHUP["T"]
     t1n = " / ".join(MATCHUP["team1"])
-    obs_pts = min(OBSERVED)                 # team1's points in the actual loss
-    lop = LOPSIDED_PTS                      # the "11-lop or worse" threshold
-    rng = np.random.default_rng(SEED)
+    obs_pts = min(OBSERVED)
+    lop = LOPSIDED_PTS
     out = {"matchup": t1n + " vs " + " / ".join(MATCHUP["team2"]),
            "observed": f"{OBSERVED[0]}-{OBSERVED[1]}"}
 
     print("values:  " + "   ".join(f"{k} {V[k]:.2f}±{SD[k]:.2f}" for k in
                                     list(MATCHUP["team1"]) + list(MATCHUP["team2"])))
-    p0 = sigmoid(eta(V, GAMMA))
-    print(f"\nplug-in per-point p({t1n})={p0:.3f}  eta={eta(V,GAMMA):.3f}")
-
-    # outcome buckets, plug-in (P(win) from the exact DP; modal from the dist)
-    d = score_dist(p0, T)
-    modal = max(d, key=d.get)
-    win = 1 - p_loss(p0, T)
-    print(f"  P(win)                = {win*100:.1f}%   modal score {modal[0]}-{modal[1]} "
-          f"({d[modal]*100:.1f}%)")
-    print(f"  P(lose, any)          = {p_loss(p0,T)*100:.1f}%")
+    e0 = eta_of(V, GAMMA)
+    p0 = sigmoid(e0)
+    win = race_win(e0, T)
+    print(f"\nplug-in per-point p({t1n})={p0:.3f}  eta={e0:.3f}")
+    print(f"  P(win)                = {win*100:.1f}%")
+    print(f"  P(lose, any)          = {(1-win)*100:.1f}%")
     print(f"  P(lose 11-{lop} or worse)   = {p_loss_at_least(lop,p0,T)*100:.1f}%   "
-          f"<-- the question (team1 scores <= {lop})")
-    print(f"  P(this exact {OBSERVED[0]}-{OBSERVED[1]})       = {p_exact(*OBSERVED,p0,T)*100:.2f}%   "
-          f"(P(11-{obs_pts} or worse)={p_loss_at_least(obs_pts,p0,T)*100:.1f}%)")
+          f"<-- 'or worse' question (team1 scores <= {lop})")
+    print(f"  P(this exact {OBSERVED[0]}-{OBSERVED[1]})       = {p_exact(*sorted(OBSERVED),p0,T)*100:.2f}%")
 
-    # --- posterior predictive ladder for the '11-lop or worse' bucket ---
-    print(f"\nPOSTERIOR PREDICTIVE — P(lose 11-{lop} or worse):")
-    bf = lambda p: p_loss_at_least(lop, p, T)
+    # conditional losing-score distribution (your point: mass is on close losses)
+    clean, clean_sum, deuce_mass, tot = conditional_loss_dist(p0, T)
+    print(f"\nGIVEN A LOSS — distribution of {t1n}'s point total "
+          f"(close losses dominate):")
+    for a in range(T - 2, -1, -1):
+        if clean[a] / tot < 0.005 and a < obs_pts:
+            continue
+        mark = "  <- actual" if a == obs_pts else ""
+        print(f"  11-{a:<2d}  {clean[a]/tot*100:5.1f}% of losses{mark}")
+    print(f"  (10-12 / 11-13 deuce losses, all 'close'): {deuce_mass/tot*100:.0f}% of losses")
+    print(f"  --> P(11-{lop} or worse | loss) = {p_loss_at_least(lop,p0,T)/tot*100:.0f}%   "
+          f"P(11-{obs_pts} or worse | loss) = {p_loss_at_least(obs_pts,p0,T)/tot*100:.0f}%")
+
+    # --- honest posterior predictive (sources 1-3; source 4 shown as trap) ---
+    print(f"\nPOSTERIOR PREDICTIVE — P(loss)  [P(11-{lop} or worse)]:")
+    bloss = lambda p: 1 - race_win(math.log(p / (1 - p)), T)
+    blop = lambda p: p_loss_at_least(lop, p, T)
     ladder = [
         ("plug-in", False, False, False),
-        ("+ skill-estimation error", True, False, False),
+        ("+ skill-estimation error (VALIDATED honest number)", True, False, False),
         ("+ gamma uncertainty", True, True, False),
-        ("+ match shock (sd_m, the model's own)", True, True, True)]
+        ("+ match shock  [OVER-disperses OOS — do not ship]", True, True, True)]
     lad = {}
     for name, dv, gd, me in ladder:
-        v = mc_bucket(V, SD, dv, gd, me, bf, np.random.default_rng(SEED))
-        lv = mc_bucket(V, SD, dv, gd, me, lambda p: p_loss(p, T), np.random.default_rng(SEED))
-        lad[name] = dict(loss=lv, lopsided=v)
-        print(f"  {name:42s} P(loss)={lv*100:4.1f}%   P(11-{lop} or worse)={v*100:4.1f}%")
+        lv = mc_bucket(V, SD, dv, gd, me, bloss, np.random.default_rng(SEED))
+        lp = mc_bucket(V, SD, dv, gd, me, blop, np.random.default_rng(SEED))
+        lad[name] = dict(loss=lv, lopsided=lp)
+        print(f"  {name:52s} P(loss)={lv*100:4.1f}%  [{lp*100:4.1f}%]")
 
-    # conditional: given they lost, how likely was it at least this lopsided?
-    cond = p_loss_at_least(lop, p0, T) / p_loss(p0, T)
-    print(f"\ngiven a loss, P(it's 11-{lop} or worse) = {cond*100:.0f}%  (plug-in)")
-
-    # --- BOTH DIALS AT ONCE ---
-    print(f"\nBOTH DIALS — P(lose 11-{lop} or worse) as a grid.")
-    print("  rows: skill shift k (team1 down k·SD, team2 up k·SD)")
-    print("  cols: weak-link gamma\n")
+    # --- BOTH DIALS AT ONCE (skill shift x weak-link gamma) ---
+    print(f"\nBOTH DIALS — P(lose 11-{lop} or worse):  rows k = team1 down /"
+          f" team2 up k·SD;  cols = gamma")
     gammas = [-0.183, -0.35, -0.50, -1.00]
     ks = [0.0, 0.5, 1.0, 1.5, 2.0]
-    hdr = "   k\\γ  " + "".join(f"{g:>9.2f}" for g in gammas)
-    print(hdr)
+    print("   k\\γ  " + "".join(f"{g:>9.2f}" for g in gammas))
     grid = {}
     for k in ks:
         vv = {MATCHUP["team1"][0]: V[MATCHUP["team1"][0]] - k * SD[MATCHUP["team1"][0]],
               MATCHUP["team1"][1]: V[MATCHUP["team1"][1]] - k * SD[MATCHUP["team1"][1]],
               MATCHUP["team2"][0]: V[MATCHUP["team2"][0]] + k * SD[MATCHUP["team2"][0]],
               MATCHUP["team2"][1]: V[MATCHUP["team2"][1]] + k * SD[MATCHUP["team2"][1]]}
-        row = []
-        for g in gammas:
-            p = sigmoid(eta(vv, g))
-            row.append(p_loss_at_least(lop, p, T))
-        grid[k] = row
-        print(f"  {k:4.1f}   " + "".join(f"{x*100:8.1f}%" for x in row))
+        grid[k] = [p_loss_at_least(lop, sigmoid(eta_of(vv, g)), T) for g in gammas]
+        print(f"  {k:4.1f}   " + "".join(f"{x*100:8.1f}%" for x in grid[k]))
 
-    # for context: same grid but P(loss) at the corner
-    pcorner = sigmoid(eta({MATCHUP["team1"][0]: V[MATCHUP["team1"][0]] - 2 * SD[MATCHUP["team1"][0]],
-                           MATCHUP["team1"][1]: V[MATCHUP["team1"][1]] - 2 * SD[MATCHUP["team1"][1]],
-                           MATCHUP["team2"][0]: V[MATCHUP["team2"][0]] + 2 * SD[MATCHUP["team2"][0]],
-                           MATCHUP["team2"][1]: V[MATCHUP["team2"][1]] + 2 * SD[MATCHUP["team2"][1]]}, -0.5))
-    print(f"\n  corner (k=2, γ=-0.5): p({t1n})={pcorner:.3f}, "
-          f"P(loss)={p_loss(pcorner,T)*100:.0f}% — even here, still <coin-flip-ish")
+    cal = holdout_calibration_test()
 
     if args.json:
         out.update(lopsided_threshold_pts=lop,
-                   plugin=dict(p_point=p0, p_win=win, p_loss=p_loss(p0, T),
+                   plugin=dict(p_point=p0, p_win=win, p_loss=1 - win,
                                p_lopsided=p_loss_at_least(lop, p0, T),
-                               p_exact_observed=p_exact(*OBSERVED, p0, T),
-                               modal=f"{modal[0]}-{modal[1]}"),
-                   ladder=lad, cond_lopsided_given_loss=cond,
+                               p_exact_observed=p_exact(*sorted(OBSERVED), p0, T)),
+                   cond_loss={f"11-{a}": clean[a] / tot for a in range(T - 1)},
+                   ladder=lad,
                    both_dials_grid={f"k={k}": {f"g={g}": grid[k][i]
-                                    for i, g in enumerate(gammas)} for k in ks})
+                                    for i, g in enumerate(gammas)} for k in ks},
+                   holdout_calibration_test=cal)
         (ROOT / "model" / "iceout_waters_summary.json").write_text(json.dumps(out, indent=1))
         print("\nwrote model/iceout_waters_summary.json")
 
