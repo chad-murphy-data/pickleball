@@ -8,3 +8,6 @@ model/*.npz
 .netlify/
 node_modules/
 site/
+
+# social preview renders (regenerable from the HTML)
+content/**/*.png

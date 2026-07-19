@@ -1,0 +1,168 @@
+<title>The Ice-Out — PICKLES</title>
+<style>
+  :root{
+    --ground:#16321e; --panel:#0f2617; --ink:#edf4e0; --cream:#fbfdf3;
+    --lime:#d9f154; --sage:#a9bc8c; --sage-dim:#7c8f6d; --loss:#e66767;
+    --line:#2b4a34;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#0a1610;
+    display:flex;justify-content:center;align-items:flex-start;
+    padding:min(4vw,40px);
+    font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .card{
+    width:min(1080px,96vw);
+    container-type:inline-size;
+    background:
+      radial-gradient(120% 80% at 82% -8%, #1d4128 0%, rgba(29,65,40,0) 46%),
+      linear-gradient(168deg,#173420 0%, #12291a 62%, #0f2416 100%);
+    color:var(--ink);
+    border:1px solid #244a30;
+    border-radius:3.2cqi;
+    overflow:hidden;
+    box-shadow:0 2cqi 6cqi rgba(0,0,0,.45);
+  }
+  .pad{padding:6cqi 6.4cqi 5cqi}
+  /* header */
+  .eyebrow{display:flex;align-items:center;gap:1.4cqi;
+    font-size:1.55cqi;font-weight:700;letter-spacing:.34cqi;text-transform:uppercase;
+    color:var(--lime)}
+  .eyebrow .dot{width:1.5cqi;height:1.5cqi;border-radius:50%;background:var(--lime);
+    box-shadow:0 0 0 .5cqi rgba(217,241,84,.22)}
+  .eyebrow .thin{color:var(--sage);font-weight:600;letter-spacing:.24cqi}
+  h1{margin-top:3.4cqi;font-size:7.1cqi;line-height:.98;font-weight:800;
+    letter-spacing:-.12cqi;text-wrap:balance;color:var(--cream)}
+  h1 em{font-style:normal;color:var(--lime)}
+  .deck{margin-top:2.6cqi;font-size:2.35cqi;line-height:1.4;color:var(--sage);
+    max-width:82%;font-weight:500}
+  .deck b{color:var(--ink);font-weight:700}
+  .deck .score{color:var(--loss);font-weight:800;white-space:nowrap}
+  /* headline stat row */
+  .statrow{margin-top:5cqi;display:flex;align-items:flex-end;gap:5cqi}
+  .bigstat{display:flex;flex-direction:column;gap:.4cqi}
+  .bigstat .n{font-size:12.5cqi;line-height:.82;font-weight:800;letter-spacing:-.35cqi;
+    font-variant-numeric:tabular-nums}
+  .bigstat .n.fav{color:var(--cream)}
+  .bigstat .n.los{color:var(--loss)}
+  .bigstat .k{font-size:1.7cqi;font-weight:700;letter-spacing:.16cqi;text-transform:uppercase;
+    color:var(--sage)}
+  .arrow{font-size:6cqi;color:var(--sage-dim);font-weight:300;padding-bottom:2.4cqi}
+  /* chart */
+  .chartwrap{margin-top:5.2cqi;background:rgba(4,14,8,.4);border:1px solid var(--line);
+    border-radius:2.4cqi;padding:3.4cqi 3.4cqi 2.6cqi}
+  .chartttl{font-size:2.05cqi;font-weight:700;color:var(--cream);margin-bottom:.4cqi}
+  .chartsub{font-size:1.55cqi;color:var(--sage);margin-bottom:2cqi;font-weight:500}
+  svg{width:100%;height:auto;display:block;overflow:visible}
+  .gl{stroke:var(--line);stroke-width:1}
+  .gtxt{fill:var(--sage-dim);font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+  .area{fill:url(#g);opacity:.9}
+  .curve{fill:none;stroke:var(--lime);stroke-width:5.5;stroke-linecap:round;stroke-linejoin:round}
+  .mk{fill:var(--ground);stroke-width:5}
+  .mk.norm{stroke:var(--cream)}
+  .mk.iced{stroke:var(--loss)}
+  .mlab{font-weight:800;font-variant-numeric:tabular-nums}
+  .mlab .big{font-size:30px}
+  .mlab .sm{font-size:15px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+  .xlab{fill:var(--sage);font-size:15.5px;font-weight:600}
+  .xcap{fill:var(--sage-dim);font-size:15px;font-weight:600;letter-spacing:.02em}
+  /* mechanism */
+  .mech{margin-top:5cqi;display:grid;grid-template-columns:1fr 1fr;gap:2.6cqi}
+  .mcard{background:linear-gradient(160deg,#1b3c25,#14301d);border:1px solid #2c5537;
+    border-radius:2.2cqi;padding:3cqi 3cqi}
+  .mcard .lead{font-size:5.6cqi;font-weight:800;color:var(--lime);line-height:.95;
+    font-variant-numeric:tabular-nums;letter-spacing:-.1cqi}
+  .mcard .lead.split{color:var(--cream)}
+  .mcard .cap{margin-top:1.4cqi;font-size:1.7cqi;line-height:1.32;color:var(--ink);font-weight:500}
+  .mcard .cap b{color:var(--lime);font-weight:700}
+  /* footer / honesty */
+  .honest{margin-top:4.4cqi;border-top:1px solid var(--line);padding-top:3.2cqi;
+    display:flex;gap:2.6cqi;align-items:flex-start}
+  .honest .flag{font-size:2.4cqi;line-height:1;padding-top:.2cqi}
+  .honest p{font-size:1.72cqi;line-height:1.5;color:var(--sage);font-weight:500}
+  .honest p b{color:var(--ink);font-weight:700}
+  .sig{margin-top:3.4cqi;display:flex;justify-content:space-between;align-items:center}
+  .sig .brand{font-size:1.9cqi;font-weight:800;letter-spacing:.1cqi;color:var(--cream)}
+  .sig .brand span{color:var(--lime)}
+  .sig .meta{font-size:1.5cqi;color:var(--sage-dim);font-weight:600;text-align:right;line-height:1.4}
+</style>
+
+<div class="card">
+  <div class="pad">
+
+    <div class="eyebrow">
+      <span class="dot"></span> PICKLES
+      <span class="thin">— pro pickleball, with receipts</span>
+    </div>
+
+    <h1>How to beat the GOAT:<br><em>ice her out.</em></h1>
+
+    <p class="deck">At MLP Mid-Season, <b>Anna Leigh Waters &amp; Jorja Johnson</b> were
+      <b>88% favorites</b> — and lost <span class="score">6–11</span> to Bright &amp; Fahey.
+      The model's headline miss of the weekend. So we asked it why.</p>
+
+    <div class="statrow">
+      <div class="bigstat"><span class="n fav">88%</span><span class="k">Model favorite</span></div>
+      <div class="arrow">→</div>
+      <div class="bigstat"><span class="n los">6–11</span><span class="k">Final · a loss</span></div>
+    </div>
+
+    <div class="chartwrap">
+      <div class="chartttl">Win probability as Anna Leigh gets iced out</div>
+      <div class="chartsub">Freeze the star → her share of the court falls → the team slides toward a coin flip</div>
+      <svg viewBox="0 0 1000 470" role="img" aria-label="Line chart: Waters/Johnson win probability drops from 88% at normal coverage to 48% when Waters is fully iced out.">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#d9f154" stop-opacity=".28"/>
+            <stop offset="1" stop-color="#d9f154" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <!-- gridlines + y labels (win %) -->
+        <line class="gl" x1="90" y1="40"  x2="950" y2="40"/>
+        <line class="gl" x1="90" y1="190" x2="950" y2="190"/>
+        <line class="gl" x1="90" y1="340" x2="950" y2="340"/>
+        <text class="gtxt" x="78" y="45"  text-anchor="end">100%</text>
+        <text class="gtxt" x="78" y="195" text-anchor="end">75%</text>
+        <text class="gtxt" x="78" y="345" text-anchor="end">50%</text>
+        <!-- area + curve -->
+        <path class="area" d="M90,349.6 L176,313 L262,277.6 L348,243.4 L434,211 L520,181.6 L606,155.2 L692,132.4 L778,112.6 L864,96.4 L950,82.6 L950,400 L90,400 Z"/>
+        <path class="curve" d="M90,349.6 L176,313 L262,277.6 L348,243.4 L434,211 L520,181.6 L606,155.2 L692,132.4 L778,112.6 L864,96.4 L950,82.6"/>
+        <!-- markers -->
+        <circle class="mk iced" cx="90" cy="349.6" r="10"/>
+        <text class="mlab" x="104" y="352" fill="#e66767"><tspan class="sm">Fully iced</tspan><tspan class="big" dx="8" dy="1">48%</tspan></text>
+        <circle class="mk norm" cx="795" cy="112" r="10"/>
+        <text class="mlab" x="795" y="70" text-anchor="middle" fill="#fbfdf3"><tspan class="big">88%</tspan></text>
+        <text class="mlab" x="795" y="90" text-anchor="middle" fill="#a9bc8c"><tspan class="sm">Normal game</tspan></text>
+        <!-- x axis -->
+        <text class="xlab" x="90"  y="428" text-anchor="start">0%</text>
+        <text class="xlab" x="795" y="428" text-anchor="middle">41%</text>
+        <text class="xlab" x="950" y="428" text-anchor="end">50%</text>
+        <text class="xcap" x="520" y="458" text-anchor="middle">← MORE ICED&nbsp;&nbsp;·&nbsp;&nbsp;Anna Leigh's share of the court&nbsp;&nbsp;·&nbsp;&nbsp;EQUAL →</text>
+      </svg>
+    </div>
+
+    <div class="mech">
+      <div class="mcard">
+        <div class="lead">59%</div>
+        <div class="cap">Pro doubles teams are <b>59% their weaker player</b> — opponents choose who to hit, and they hit the weak link.</div>
+      </div>
+      <div class="mcard">
+        <div class="lead split">2 × Jorja</div>
+        <div class="cap">Freeze Waters and the team plays like <b>two Jorja Johnsons</b> — and that's a <b>coin flip</b> vs Bright/Fahey.</div>
+      </div>
+    </div>
+
+    <div class="honest">
+      <div class="flag">🥒</div>
+      <p><b>The freeze alone — no luck — turns 88% into a coin flip.</b> But we can't prove they did it (no one tracks mid-rally ball placement), and 88% favorites still lose about <b>1 in 8</b>. It's one game. The <em>ceiling</em> of the tactic is exactly what we watched.</p>
+    </div>
+
+    <div class="sig">
+      <div class="brand">PICKLES<span>.</span> analytics</div>
+      <div class="meta">v2 model · every MLP + PPA pro game<br>77% accuracy · DUPR 65%</div>
+    </div>
+
+  </div>
+</div>
