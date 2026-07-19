@@ -41,6 +41,10 @@ OUT = Path(__file__).resolve().parent
 SEED = 20260712
 SUFFIX = os.environ.get("SRM2_SUFFIX", "")
 DATE_BEFORE = os.environ.get("SRM2_DATE_BEFORE", "")
+# Opt-in DUPR-informed prior means (data/dupr_prior.json). Default OFF: the
+# live model is unchanged until this beats the holdout gate (see module note
+# in model/dupr_prior.py). Enable with SRM2_DUPR_PRIOR=1 to fit/validate.
+DUPR_PRIOR = os.environ.get("SRM2_DUPR_PRIOR", "") == "1"
 N_WARMUP = int(os.environ.get("SRM2_WARMUP", 600))
 N_SAMPLES = int(os.environ.get("SRM2_SAMPLES", 600))
 DYN_MIN = 60          # career games to earn a dynamic value
@@ -107,6 +111,17 @@ def prep():
           f"matches={len(midx)} months={n_months}")
     dat = dict(A=A, D1=D1, D2=D2, M=M, T=T, MO=MO, S1=S1, S2=S2, XN=XN,
                is_dyn=is_dyn, dyn_id=np.maximum(dyn_id, 0), n_months=n_months)
+    if DUPR_PRIOR:
+        pr = json.loads((DATA / "dupr_prior.json").read_text())["mu"]
+        MU = np.zeros(len(pidx), np.float32)
+        hit = 0
+        for u, i in pidx.items():
+            v = pr.get(u.lower())
+            if v is not None:
+                MU[i] = v
+                hit += 1
+        dat["MU"] = MU
+        print(f"DUPR prior: seeded {hit}/{len(pidx)} players' base value")
     return dat, pidx, didx, len(midx), k
 
 
@@ -120,6 +135,8 @@ def model(dat, n_players, n_dyads, n_matches, n_dyn):
     b_tour = numpyro.sample("b_tour", dist.Normal(0, 0.3).expand([2]))
 
     v0 = numpyro.sample("v0_raw", dist.Normal(0, 1).expand([n_players])) * sd_v
+    if "MU" in dat:                       # DUPR-informed prior mean (opt-in)
+        v0 = v0 + jnp.asarray(dat["MU"])  # v0 ~ Normal(mu_dupr, sd_v)
     d = numpyro.sample("d_raw", dist.Normal(0, 1).expand([n_dyads])) * sd_d
     m = numpyro.sample("m_raw", dist.Normal(0, 1).expand([n_matches])) * sd_m
     innov = numpyro.sample("innov", dist.Normal(0, 1).expand([n_dyn, dat["n_months"]]))
