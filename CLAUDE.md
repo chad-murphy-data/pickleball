@@ -141,15 +141,22 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 - **Browsers cannot reach the network from this environment** (egress
   gateway TLS-fingerprints and resets Chromium; curl/httpx fine). Don't
   waste time on Playwright; recon.md documents the diagnosis.
-- The embedded per-match "rating" IS the player's synced DUPR doubles
-  rating (verified: singles is a separate ledger; scale 2–8; compresses
-  hard at the top and has data glitches — see analysis.md benchmark).
-  Known artifacts, re-verified 2026-07-13 against a fresh refetch:
-  Jackie Kawamoto = 3.50021 since 2026-06-04 (was 6.13 in Feb; 3.5 is
-  DUPR's reset default — the platform still serves it, treat as glitch,
-  site nulls it via data.finalize_dupr); tour-wide recalibration dropped
-  everyone ~0.3–0.7 on 2026-05-22 (Truong 5.83→5.137 and Jade Kawamoto
-  6.1→5.819 are CORRECT post-recal values, confirmed in fresh records).
+- **The embedded per-match "rating" is NO LONGER a trustworthy DUPR copy
+  (corrected 2026-07-20).** It once tracked the synced DUPR doubles rating
+  (singles is a separate ledger; scale 2–8), but it DIVERGED from real
+  DUPR around 2026-05-22 and stuck ~0.3–0.7 LOW. The "tour-wide
+  recalibration" previously noted here was a pickleball.com sync artifact,
+  NOT a real DUPR change — DUPR.com never dropped. Proof: Ben Johns is
+  frozen at 6.56772 in this field (identical value across 2025 AND
+  post-May-2026) while DUPR.com shows 7.121 / #1; every checked pro is
+  ~0.5 low, ordering scrambled (our data coughed up "Johns #10"). The old
+  "CORRECT post-recal, confirmed in fresh records" claim was wrong — those
+  "fresh records" were this broken field. **For real current DUPR use
+  `scraper/fetch_dupr.py`** → data/dupr_doubles.csv (scrapes dupr.com's
+  public Webflow rankings; top-50 per discipline, no auth; full list +
+  history need the login-gated api.dupr.gg, no key available). Separately,
+  Jackie Kawamoto 3.50021 is DUPR's reset default (site nulls it via
+  data.finalize_dupr).
 - Be polite: ~1 req/s harvest, ≥15 s live-poll interval.
 
 ## Live win probability (in progress)

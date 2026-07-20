@@ -1,7 +1,10 @@
 """Scatter: clutch (y) vs skill rating (x) — DUPR and our PICKLE rating.
 
-Shows clutch is largely explained by skill (positive trend), AND that our
-rating explains it far better than DUPR does (r 0.66 vs 0.27).
+Shows clutch tracks skill (positive trend) for both DUPR and our rating.
+Uses REAL DUPR (data/dupr_doubles.csv, dupr.com public top-50 doubles) —
+the old embedded platform_ratings.csv had diverged ~0.5 low and is NOT
+used. Both panels are restricted to the same elite set: the clutch
+players who appear in DUPR's published top-50.
 
 Run: python content/clutch/plot_clutch_vs_rating.py -> content/clutch/clutch_vs_rating.png
 """
@@ -14,22 +17,17 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent.parent
 clu = list(csv.DictReader((ROOT / "data" / "clutch_players.csv").open()))
-v2 = [(r["full_name"], float(r["value_now_mean"]), r["player_id"])
-      for r in csv.DictReader((ROOT / "data" / "v2_players.csv").open())]
-dupr = {r["player_id"]: float(r["platform_rating_latest"])
-        for r in csv.DictReader((ROOT / "data" / "platform_ratings.csv").open())}
-
-
-def uuid_for(name, val):
-    c = [(abs(v - val), pid) for nm, v, pid in v2 if nm == name]
-    return min(c)[1] if c else None
-
+# REAL current DUPR doubles (scraper/fetch_dupr.py). Keyed by name-token-set
+# to bridge variants ("Hurricane Tyra Black" == "Tyra Hurricane Black").
+realdupr = {frozenset(r["name"].lower().split()): float(r["dupr"])
+            for r in csv.DictReader((ROOT / "data" / "dupr_doubles.csv").open())}
 
 P = []
 for r in clu:
-    pid = uuid_for(r["name"], float(r["value"]))
-    P.append(dict(name=r["name"], z=float(r["z"]), val=float(r["value"]),
-                  dupr=dupr.get(pid)))
+    d = realdupr.get(frozenset(r["name"].lower().split()))
+    if d is None:
+        continue                    # DUPR only publishes its top-50 per discipline
+    P.append(dict(name=r["name"], z=float(r["z"]), val=float(r["value"]), dupr=d))
 
 INK = "#16321e"; DOT = "#3f6b45"; LIME = "#5a8f1f"; SAGE = "#6f8560"
 CREAM = "#fbfdf3"; GRID = "#dbe7c8"
@@ -68,14 +66,15 @@ def panel(ax, xget, xfilter, xlabel, title):
     ax.tick_params(length=0); ax.grid(color=GRID, lw=0.7, zorder=0)
 
 
-panel(axL, lambda p: p["dupr"], lambda v: 4.0 < v < 8.5, "DUPR rating", "Clutch vs. DUPR")
+panel(axL, lambda p: p["dupr"], lambda v: True, "DUPR rating", "Clutch vs. DUPR (their top 50)")
 panel(axR, lambda p: p["val"], lambda v: True, "PICKLE rating (mine)", "Clutch vs. my PICKLE rating")
 axL.set_ylabel("CLUTCH  —  wins the big points\nvs. their own baseline", fontsize=12.5, fontweight="bold")
 
 fig.suptitle("Clutch skill is more than overall skill, and loosely correlates with player skill",
              x=0.012, ha="left", fontsize=17, fontweight="bold", color=INK, y=0.985)
-fig.text(0.012, 0.02, "PICKLES · by Chad Murphy · chad-murphy-data.github.io/pickleball · 182 pros · "
-         "each dot = one player · clutch on 162,942 rallies", fontsize=9.5, color=SAGE)
+fig.text(0.012, 0.02, f"PICKLES · by Chad Murphy · chad-murphy-data.github.io/pickleball · "
+         f"real DUPR from dupr.com (their published top-50 doubles, {len(P)} shared players) · "
+         "clutch on 162,942 rallies", fontsize=9.5, color=SAGE)
 fig.subplots_adjust(left=0.075, right=0.98, top=0.86, bottom=0.16, wspace=0.06)
 out = ROOT / "content" / "clutch" / "clutch_vs_rating.png"
 fig.savefig(out, facecolor=CREAM)
