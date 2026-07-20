@@ -473,6 +473,13 @@ NAV = [("rankings.html", "Rankings"), ("players/index.html", "Players"),
        ("methods.html", "Methods")]
 
 
+# Populated once by build_site.py from the live validation numbers so the
+# site-wide footer never carries a hardcoded (and silently staleable) stat.
+# Default is deliberately non-numeric: if a build forgets to set it, the
+# footer states the method without asserting an unsourced figure.
+FOOT_STATS = "Model: Bayesian dynamic ratings on public results"
+
+
 def page(title, body, here="", root="", updated=""):
     nav = "".join(
         '<a href="%s%s"%s>%s</a>' % (root, h, ' class="here"' if h == here else "", t)
@@ -498,8 +505,7 @@ def page(title, body, here="", root="", updated=""):
 <footer class="site">Unofficial fan analytics based on public results data —
 not affiliated with any tour. Every number that has an error bar shows it;
 cross-gender rankings are never published as fact (<a href="{root}methods.html">why</a>).
-Model: Bayesian, 36k games, validated 77.4% winner accuracy on 884 unseen
-games{foot_updated}.</footer>
+{FOOT_STATS}{foot_updated}.</footer>
 </div>
 {THEME_TOGGLE_JS}
 """

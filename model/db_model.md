@@ -1,3 +1,17 @@
+> **Audit note (2026-07): the numbers below are PROVISIONAL and partly
+> pseudoreplicated.** The rally-level CIs (k=0.55 [0.15,0.95] doubles; the
+> k=0.42 singles figure once wired into make_forecast) treat correlated
+> within-DreamBreaker rallies as independent, so they are far too narrow. On
+> the honest unit of analysis — one DreamBreaker, n≈101 — the effect is only
+> marginal (stronger-singles roster wins ~61/101, exact p≈0.05, and that is
+> the better of two proxies). `model/db_model.py` now fits this correctly
+> (per-DB logistic + nonparametric bootstrap over DreamBreakers, with a
+> synthetic self-test); it needs the roster1/roster2 columns that
+> `scraper/parse.py` now emits into dreambreakers.csv. Re-run parse.py against
+> the raw cache, then `python model/db_model.py`, and if the per-DB CI
+> includes zero, drop the "not 50/50" claim. Do not publish these first-pass
+> numbers as established.
+
 # DreamBreaker model — first pass (2026-07-13)
 
 Question: our matchup forecasts priced every DreamBreaker 50/50 ("singles

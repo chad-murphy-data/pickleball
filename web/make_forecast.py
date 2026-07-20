@@ -10,8 +10,8 @@ Lineups are PROJECTED: each team's most recent completed matchup supplies
 its WD/MD/MXD1/MXD2 pairings (the page says so loudly).  Pricing mirrors the
 graded Mid-Season methodology: per-game win prob from current v2 values +
 weakest link, race-to-11 DP, display calibration applied; the DreamBreaker
-is 50/50 by documented convention (singles is outside the doubles model).
-P(win matchup) = P(win >=3 of 4 games) + P(2-2) * 0.5.
+is priced from a provisional roster-singles-gap model (model/db_model.py),
+not 50/50.  P(win matchup) = P(win >=3 of 4 games) + P(2-2) * P(win DB).
 
 Network use: same polite cached client as the harvester.  CI runs this
 nightly for the page; --commit is reserved for a human deciding to put a
@@ -42,13 +42,26 @@ set_calibration(CAL["a"], CAL["b"], CAL["eps"])
 SLOTS = ("WD", "MD", "MXD1", "MXD2")
 LOOKBACK_DAYS = 60
 
-# DreamBreaker model v2 (fit on all 101 historical DBs, model/db_model.md):
-# per-rally logit = K_DB_SINGLES * (mean roster SINGLES value gap). Singles
-# values from model/fit_singles.py; players with <10 singles games are
-# imputed from doubles via the fitted regression (singles ≈ 0.28 + 1.14*d).
-# Singles-gap model beats the doubles proxy by 3.1 nll on the 101 DBs.
-K_DB_SINGLES = 0.42
+# DreamBreaker pricing (winner-level): P(team1 wins the DB) = sigmoid(
+# K_DB_SINGLES * mean-roster-SINGLES-value gap).  K_DB_SINGLES is the
+# winner-level logit coefficient from the reproducible per-DreamBreaker fit
+# (model/db_model.py -> model/db_model_summary.json), same parameterization
+# db_model.py estimates — so no rally-race amplification here.  It is None
+# until that verified fit exists; without it we price the DB as a coin flip
+# (0.5) rather than guess.  SINGLES_IMPUTE (intercept, slope) fills in players
+# who never play singles from their doubles value; also taken from the fit
+# when available, else a documented fallback.
+K_DB_SINGLES = None
 SINGLES_IMPUTE = (0.28, 1.14)
+_db_summary = ROOT / "model" / "db_model_summary.json"
+if _db_summary.exists():
+    _j = json.loads(_db_summary.read_text())
+    _k = _j.get("singles", {}).get("k")
+    if _k is not None:
+        K_DB_SINGLES = float(_k)
+    _imp = _j.get("singles_impute")
+    if _imp:
+        SINGLES_IMPUTE = (float(_imp["intercept"]), float(_imp["slope"]))
 
 
 def load_singles():
@@ -60,7 +73,12 @@ def load_singles():
 
 
 def db_win_prob(roster1, roster2, vals, singles):
-    """P(team1 wins DreamBreaker) from mean roster singles strength."""
+    """P(team1 wins the DreamBreaker) from the mean roster SINGLES-value gap,
+    via the winner-level logistic fit (sigmoid(k*gap) IS the game-win prob —
+    no rally-race amplification).  Returns 0.5 when no verified fit is loaded
+    or a roster player has no usable value."""
+    if K_DB_SINGLES is None:
+        return 0.5
     def s_of(u):
         if u in singles and singles[u][1] >= 10:
             return singles[u][0]
@@ -73,7 +91,7 @@ def db_win_prob(roster1, roster2, vals, singles):
     if not s1 or not s2 or any(v is None for v in s1 + s2):
         return 0.5
     gap = sum(s1) / len(s1) - sum(s2) / len(s2)
-    p = race_dist(round(sigmoid(K_DB_SINGLES * gap), 4), 21)["p_win"]
+    p = sigmoid(K_DB_SINGLES * gap)     # winner-level: directly P(team1 wins DB)
     eps = CAL["eps"]
     return min(max(p, eps / 2), 1 - eps / 2)
 
@@ -169,7 +187,9 @@ def price_game(pair_a, pair_b, vals):
 
 
 def matchup_tree(game_ps, p_db=0.5):
-    """Outcome distribution over 4 independent games + 50/50 DreamBreaker."""
+    """Outcome distribution over 4 independent games; the 2-2 branch is
+    decided by the DreamBreaker win prob p_db (roster-singles-gap model,
+    0.5 fallback when rosters/singles values are unavailable)."""
     dist = [1.0]
     for p in game_ps:
         nxt = [0.0] * (len(dist) + 1)
@@ -255,7 +275,8 @@ def main():
     out = {
         "generated": str(today),
         "note": "Projected lineups (each team's most recent completed matchup); "
-                "DreamBreaker 50/50 by convention; calibrated probabilities.",
+                "DreamBreaker priced from a provisional roster-singles-gap model "
+                "(0.5 fallback if unavailable); calibrated probabilities.",
         "forecasts": forecasts,
     }
     (DATA / "forecasts.json").write_text(json.dumps(out, indent=1))
@@ -279,7 +300,8 @@ def main():
             "committed": stamp, "graded": None, "status": "pending",
             "grade_after": None,
             "source": "web/make_forecast.py (data/forecasts.json snapshot)",
-            "model": "v2 current values, projected lineups, DB 50/50, calibrated",
+            "model": "v2 current values, projected lineups, provisional "
+                     "singles-model DreamBreaker, calibrated",
             "outcome_summary": None, "items": items,
             "footnote": "Committed via make_forecast --commit before the matches; "
                         "grade against final matchup results.",

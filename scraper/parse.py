@@ -281,7 +281,27 @@ def parse_mlp(book: PlayerBook, dropped: list, flags: list):
         event_name = (mu.get("matchupGroupTitle") or mu.get("teamLeagueTitle") or "").strip()
         stage_bits = [mu.get("roundText") or "", mu.get("inBracketType") or ""]
         stage = " ".join(b for b in stage_bits if b).strip() or "RR"
-        for m in mu.get("matches") or []:
+        matches = mu.get("matches") or []
+        # DreamBreaker rosters: the DB is 1v1, so the full MLP squads are not
+        # on the DB match — they are the union of players across the matchup's
+        # doubles matches (teamOne/teamTwo are consistent within a matchup).
+        # Emitted so the DreamBreaker model can be fit reproducibly from
+        # committed data (mean roster SINGLES value per side) instead of a
+        # hardcoded coefficient.
+        roster1, roster2 = set(), set()
+        for m in matches:
+            if bool(m.get("isTieBreaker")) or \
+                    (m.get("matchAbbreviation") or "").upper() in ("DB", "TB"):
+                continue
+            for k in ("teamOnePlayerOneUuid", "teamOnePlayerTwoUuid"):
+                u = (m.get(k) or "").lower()
+                if u:
+                    roster1.add(u)
+            for k in ("teamTwoPlayerOneUuid", "teamTwoPlayerTwoUuid"):
+                u = (m.get(k) or "").lower()
+                if u:
+                    roster2.add(u)
+        for m in matches:
             abbrev = (m.get("matchAbbreviation") or "").upper()
             is_db = bool(m.get("isTieBreaker")) or abbrev in ("DB", "TB")
             date_str = (m.get("matchStart") or m.get("matchPlannedStart") or "")[:10]
@@ -321,6 +341,8 @@ def parse_mlp(book: PlayerBook, dropped: list, flags: list):
                     "t1_score": s1, "t2_score": s2,
                     "scoring_format": meta["scoring_format"],
                     "stage": stage,
+                    "roster1": "|".join(sorted(roster1)),
+                    "roster2": "|".join(sorted(roster2)),
                 })
                 continue
             rows = game_rows_from_match(m, keys=MLP_KEYS, meta=meta, fmt=fmt,

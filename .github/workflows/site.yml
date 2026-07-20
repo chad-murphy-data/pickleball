@@ -56,6 +56,10 @@ jobs:
           python scraper/enrich_formats.py
           python scraper/parse.py
           python scraper/parse_singles.py
+          # parse.py now writes DreamBreaker rosters into dreambreakers.csv, so
+          # the DB model refits from committed data (no raw/ needed after this);
+          # run it before make_forecast so forecasts pick up the fresh k.
+          python model/db_model.py || echo "db_model skipped (see log)"
           python web/make_forecast.py --days 7
           python scraper/tournament_state.py
         timeout-minutes: 210
@@ -81,6 +85,7 @@ jobs:
         continue-on-error: true
         run: |
           git add -A data/
+          [ -f model/db_model_summary.json ] && git add model/db_model_summary.json
           if git diff --cached --quiet; then
             echo "data unchanged — nothing to commit"
           else

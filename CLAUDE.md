@@ -31,6 +31,8 @@ python model/fit_v2.py                       # THE model (dynamic + race likelih
 python model/report.py                       # regenerate analysis.md (v1 sections)
 python scraper/parse_singles.py              # raw/ → data/singles_games.csv (26k games)
 python model/fit_singles.py                  # singles MAP ratings (pure python, ~10 s)
+python model/db_model.py                      # DreamBreaker fit (per-DB, bootstrap CI;
+                                             #   needs rosters in dreambreakers.csv)
 python scraper/live_poller.py                # live score JSONL during event days
 python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
                                              #   --commit freezes into receipts.json
@@ -77,20 +79,31 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 1. Weakest-link: team = sum + γ|gap|, γ = −0.47 pts (Gaussian) / −0.18
    logit (race model — the truncation-free estimate). Gender-blind in mixed.
 2. Chemistry is small: sd ≈ 0.3–0.5 pts, prior-insensitive; no single pair
-   certifiable (need ~1,000 games; max on record 138).
+   certifiable (need ~1,000 games; the most any pair has played together is
+   523 — Waters/Johns. NB: the "138" this once cited is Bright+Patriquin's
+   pair count, not the record; the methods page now computes the true max
+   live from games.csv).
 3. Skill transfers across contexts (sd_w ≈ 0.13) and tours (no MLP
    sandbagging; slope test + player-tour effects both null).
 4. Johns never declined in absolute terms (dynamic model); the field rose.
    Tardio's rise is smooth and real.
 5. New pairings OVERperform first ~6 games (beta_new > 0) — window-edge
    caveat only partially resolved; treat gently.
-6. DreamBreakers are NOT 50/50: mean roster SINGLES value predicts them
-   (k = 0.42, CI [0.20, 0.65], n = 101; beats the doubles proxy by 3.1
-   nll; stronger-singles roster wins 60%; model/db_model.md). Singles
-   ratings: 26k PPA singles games, fit_singles.py; singles~doubles
-   r = 0.74; imputation for never-plays-singles rosters ≈ 0.28+1.14·d.
-   Waters +2.27 / Fahey +1.80 are the top two women's singles values.
-   Wired into make_forecast (K_DB_SINGLES).
+6. DreamBreakers *may* tilt toward the stronger-singles roster — PROVISIONAL,
+   do not publish as established. Roster mean SINGLES value predicts the DB
+   winner, but on the honest per-DB unit (n≈101) the edge is only marginal
+   (stronger-singles roster wins ~61/101, exact p≈0.05); the tight CI the
+   earlier note cited (k=0.42, CI [0.20,0.65]) came from a PSEUDOREPLICATED
+   rally-level fit (treats correlated within-DB rallies as independent → CI
+   far too narrow). model/db_model.py now fits it correctly (per-DB logistic
+   + bootstrap CI, self-tested) and writes model/db_model_summary.json, which
+   make_forecast reads for K_DB_SINGLES; but it needs roster1/roster2 in
+   dreambreakers.csv (emitted by parse.py) — re-run parse.py against raw/ then
+   db_model.py to get a real number, and DROP the claim if the per-DB CI
+   includes zero. Singles ratings (used for imputation, and honest): 26k PPA
+   singles games, fit_singles.py (standard to-11 only; single-game-to-15
+   rounds excluded); singles~doubles r ≈ 0.73; imputation ≈ 0.28+1.14·d.
+   Waters +2.27 / Fahey +1.81 are the top two women's singles values.
 7. Cross-gender offset: the γ|gap| term is the ONLY identification channel
    and it's stable in-form (c* ≈ +0.08 logit, scales ~1:1) but the nominal
    precision is fake (values held fixed; form-borne). House rule stands —

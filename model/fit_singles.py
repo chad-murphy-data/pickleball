@@ -10,9 +10,10 @@ is ~10x smaller than doubles, so a dynamic model would be mostly prior.
 Pure Python MAP by full-batch gradient ascent (no jax needed; converges in
 seconds at this size).
 
-Also reports: singles<->doubles value correlation, and a DreamBreaker
-check — does mean roster SINGLES value predict DB outcomes better than the
-doubles proxy (model/db_model.md)?
+Only standard race-to-11 games (best-of-3/5) enter the fit; single-game
+side-out rounds to 15/21 are excluded (see is_standard_11) so the
+final-points Binomial isn't mixing scoring targets.  Also reports the
+singles<->doubles value correlation.
 """
 from __future__ import annotations
 
@@ -38,13 +39,33 @@ def sigmoid(x):
     return e / (1 + e)
 
 
+def is_standard_11(r):
+    """Standard PPA singles game = race-to-11, best-of-3/5.  The Binomial-on-
+    final-points likelihood below assumes one target; the Challenger/qualifier
+    single-game-to-15 side-out rounds (best_of==1, winner clusters at 15) and
+    a few to-21 leaks (winner>15) use a different target and would bias the
+    point-share signal, so they are excluded here — mirroring the doubles
+    pipeline, which drops sideout_15 from the model.  Prefers an explicit
+    scoring_format column when present (parse_singles now emits one); falls
+    back to best_of / winner-score for CSVs parsed before that."""
+    fmt = (r.get("scoring_format") or "").strip()
+    if fmt:
+        return fmt == "std_11"
+    return r.get("best_of") != "1" and max(int(r["s1"]), int(r["s2"])) <= 15
+
+
 def load_games():
-    games = []
+    games, skipped = [], 0
     for r in csv.DictReader((DATA / "singles_games.csv").open()):
         if r["is_forfeit"] != "False":
             continue
+        if not is_standard_11(r):
+            skipped += 1
+            continue
         games.append((r["p1"], r["p2"], int(r["s1"]), int(r["s2"]),
                       r["date"], r["context"], r["p1_name"], r["p2_name"]))
+    if skipped:
+        print(f"  excluded {skipped} non-to-11 games (single-game-to-15/21 formats)")
     return games
 
 
