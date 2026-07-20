@@ -69,13 +69,13 @@ def panel(ax, xget, xfilter, xlabel, title):
 
 
 panel(axL, lambda p: p["dupr"], lambda v: 4.0 < v < 8.5, "DUPR rating", "Clutch vs. DUPR")
-panel(axR, lambda p: p["val"], lambda v: True, "PICKLE rating (ours)", "Clutch vs. our PICKLE rating")
+panel(axR, lambda p: p["val"], lambda v: True, "PICKLE rating (mine)", "Clutch vs. my PICKLE rating")
 axL.set_ylabel("CLUTCH  —  wins the big points\nvs. their own baseline", fontsize=12.5, fontweight="bold")
 
-fig.suptitle("Is “clutch” just skill? Both ratings say yes — ours captures it far better.",
-             x=0.012, ha="left", fontsize=18, fontweight="bold", color=INK, y=0.985)
-fig.text(0.012, 0.02, "PICKLES · 182 pros · each dot = one player · clutch measured on 162,942 rallies · "
-         "DUPR filtered to 4.0–8.5 (drops reset glitches)", fontsize=9.5, color=SAGE)
+fig.suptitle("Clutch skill is more than overall skill, and loosely correlates with player skill",
+             x=0.012, ha="left", fontsize=17, fontweight="bold", color=INK, y=0.985)
+fig.text(0.012, 0.02, "PICKLES · by Chad Murphy · SITE_URL · 182 pros · each dot = one player · "
+         "clutch on 162,942 rallies · DUPR filtered to 4.0–8.5", fontsize=9.5, color=SAGE)
 fig.subplots_adjust(left=0.075, right=0.98, top=0.86, bottom=0.16, wspace=0.06)
 out = ROOT / "content" / "clutch" / "clutch_vs_rating.png"
 fig.savefig(out, facecolor=CREAM)
