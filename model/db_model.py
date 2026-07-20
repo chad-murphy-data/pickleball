@@ -178,9 +178,16 @@ def main():
         return
     singles_rows = build_rows(use_doubles=False)
     doubles_rows = build_rows(use_doubles=True)
+    if len(singles_rows) < 20 or len(doubles_rows) < 20:
+        print(f"only {len(singles_rows)} fittable DreamBreakers — too few to "
+              f"fit; leaving db_model_summary.json unchanged.")
+        return
+    _, _, (slope, intercept) = load_values()
     out = {
         "n_dreambreakers": len(singles_rows),
         "unit_of_analysis": "one DreamBreaker (not per-rally)",
+        "parameterization": "winner-level logit: P(team1 wins DB) = sigmoid(k * gap)",
+        "singles_impute": {"intercept": round(intercept, 4), "slope": round(slope, 4)},
         "singles": summarize(singles_rows, "mean roster singles value"),
         "doubles": summarize(doubles_rows, "mean roster doubles value"),
     }
