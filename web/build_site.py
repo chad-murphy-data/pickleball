@@ -7,7 +7,7 @@ Everything regenerates from data/*.csv + model/receipts.json; no backend,
 no network.  Output (site/) is gitignored — it rebuilds in ~seconds on a
 nightly pipeline run.  Pillars covered (ROADMAP Phase 2): power rankings,
 player pages, matchup simulator, receipts ledger, plus methods / record
-book / DUPR-vs-model pages.
+book pages.
 """
 from __future__ import annotations
 
@@ -74,17 +74,6 @@ def chem_lookup(chem, name_a, name_b):
 
 def chem_pts(logit):
     return race_dist(round(sigmoid(logit), 4))["exp_margin"]
-
-
-def dupr_cell(p):
-    if p.dupr:
-        asof = f' title="synced from the player&#39;s latest match ({p.dupr_asof})"' \
-            if p.dupr_asof else ""
-        return f'<span{asof}>{p.dupr:.2f}</span>'
-    if p.dupr_glitch:
-        return (f'<span class="gray" title="platform currently shows a ~3.5 reset '
-                f'artifact; last credible value {p.dupr_glitch:.2f} — excluded">—⚠</span>')
-    return '<span class="gray">—</span>'
 
 
 # ---------------------------------------------------------------- rankings
@@ -251,7 +240,6 @@ def build_rankings(players, updated, n_games, val):
         for p in pool:
             st = p.stats
             rec = wl(st.w, st.l) if st else "—"
-            dupr = dupr_cell(p)
             last = p.last_date[:7] if p.last_date else "—"
             rows.append(
                 f'<tr><td class="num">{p.rank or "—"}</td><td>{plink(p)}</td>'
@@ -259,11 +247,11 @@ def build_rankings(players, updated, n_games, val):
                 f'<td>{charts.interval_cell(p.pts_lo, p.pts, p.pts_hi, xmin, xmax)}</td>'
                 f'<td>{trend_arrow(p)}</td>'
                 f'<td class="num">{p.games}</td><td class="num">{rec}</td>'
-                f'<td class="num">{dupr}</td><td class="num gray">{last}</td></tr>')
+                f'<td class="num gray">{last}</td></tr>')
         return ('<div class="tblwrap"><table><tr><th class="num">#</th><th>player</th>'
                 '<th class="num">pts</th><th>90% interval (pts vs avg pairing)</th>'
                 '<th title="6-month form change">form</th><th class="num">games</th>'
-                '<th class="num">W–L</th><th class="num">DUPR</th>'
+                '<th class="num">W–L</th>'
                 '<th class="num">last seen</th></tr>'
                 + "".join(rows) + "</table></div>")
 
@@ -291,7 +279,6 @@ def build_rankings(players, updated, n_games, val):
         panels.append(
             f'<section class="gsec{" on" if default else ""}" id="sec-{low}">{inner}</section>')
 
-    dupr_acc = val["dupr_reference"]["accuracy"]
     body = f"""
 <h1 class="runtitle">Power rankings</h1>
 <div class="runmeta">RUN {updated} :: DYNAMIC BAYESIAN POSTERIOR :: MLP + PPA DOUBLES 2024–26</div>
@@ -301,7 +288,7 @@ margin (with an average partner, vs an average pair, race to 11) — median
 regular ≈ +2, star ≈ +5. The interval is the point, not fine print.</p>
 <div class="syscheck">
  <div class="lrow"><span class="lk">GAMES IN THE MODEL (2024–26, MLP + PPA)</span><span class="ldot"></span><span class="lv">{n_games:,}</span></div>
- <div class="lrow"><span class="lk">WINNER ACCURACY · {val['n_games']} UNSEEN GAMES</span><span class="ldot"></span><span class="lv">{pct(val['accuracy'], 1)} <span class="lcmp">vs DUPR {pct(dupr_acc, 1)}</span></span></div>
+ <div class="lrow"><span class="lk">WINNER ACCURACY · {val['n_games']} UNSEEN GAMES</span><span class="ldot"></span><span class="lv">{pct(val['accuracy'], 1)}</span></div>
  <div class="lrow"><span class="lk">PLAYERS WITH MONTHLY SKILL TRACKING</span><span class="ldot"></span><span class="lv">{n_dyn}</span></div>
  <div class="lrow"><span class="lk">DATA THROUGH</span><span class="ldot"></span><span class="lv">{updated}</span></div>
  <div class="lrow"><span class="lk">PREDICTIONS COMMITTED PRE-MATCH</span><span class="ldot"></span><span class="lv"><a href="receipts.html">[OK] → receipts</a></span></div>
@@ -357,16 +344,6 @@ def build_player_page(p, players, chem, updated):
             (players[o].name.split()[-1] if o in players else "?") for o in e["opp"])
 
     share = st.pf / max(st.pf + st.pa, 1)
-    if p.dupr:
-        dupr_txt, dupr_k = f"{p.dupr:.2f}", \
-            f"official DUPR (own scale{', as of ' + p.dupr_asof if p.dupr_asof else ''})"
-    elif p.dupr_glitch:
-        dupr_txt = "—"
-        dupr_k = (f"official DUPR — the platform currently shows a ~3.5 reset "
-                  f"artifact (last credible value {p.dupr_glitch:.2f}); excluded "
-                  f"from comparisons")
-    else:
-        dupr_txt, dupr_k = "—", "official DUPR (none synced)"
     tiles = f"""
 <div class="tiles">
  <div class="tile"><div class="v">{p.pts:+.1f} <span class="note">({p.pts_lo:+.1f}…{p.pts_hi:+.1f})</span></div>
@@ -374,11 +351,9 @@ def build_player_page(p, players, chem, updated):
  <div class="tile"><div class="v">{f"#{p.rank}" if p.rank else "—"}</div><div class="k">of {sum(1 for q in players.values() if q.dynamic and q.gender == p.gender and q.rank)} active {'men' if p.gender == 'M' else 'women'} (within gender only{'' if p.rank else '; no 2026 games'})</div></div>
  <div class="tile"><div class="v">{wl(st.w, st.l)}</div><div class="k">career record · {pct(st.w / max(st.w + st.l, 1))} wins, {pct(share)} of points</div></div>
  <div class="tile"><div class="v">{trend_arrow(p)}</div><div class="k">6-month form</div></div>
- <div class="tile"><div class="v">{dupr_txt}</div><div class="k">{dupr_k}</div></div>
 </div>"""
 
     traj_html = charts.trajectory_chart(p.traj)
-    spark = charts.dupr_spark(p.dupr_hist)
     glog = charts.gamelog_chart(st.log)
 
     years = sorted({k[0] for k in st.by_year_tour})
@@ -446,7 +421,6 @@ def build_player_page(p, players, chem, updated):
 pairing) with a 90% credible band. Flat months = little evidence, not zero
 games.</p>
 {traj_html}
-{f'<p class="note">Official DUPR over the same period — separate chart because the scales are not comparable:</p>{spark}' if spark else ''}
 <h2>Game log vs expectation</h2>
 <p class="note">Dots = share of points actually won in each game; line = what
 the model expected given both pairings that month (weakest-link included;
@@ -1267,10 +1241,8 @@ publicly wrong is part of the product.</p>
 <div class="tiles">
  <div class="tile"><div class="v">{pct(val['accuracy'], 1)}</div>
   <div class="k">winners called on {val['n_games']} unseen games (frozen 6 weeks)</div></div>
- <div class="tile"><div class="v">{pct(val['dupr_reference']['accuracy'], 1)}</div>
-  <div class="k">DUPR on the same games — while its ratings kept updating</div></div>
  <div class="tile"><div class="v">{val['brier']:.3f}</div>
-  <div class="k">holdout Brier (DUPR {val['dupr_reference']['brier']:.3f})</div></div>
+  <div class="k">holdout Brier (0.25 = coin flip)</div></div>
  <div class="tile"><div class="v">{hits}/{len(graded_items)}</div>
   <div class="k">public registered calls hit so far{f" · mean Brier {mean_brier:.3f}" if mean_brier is not None else ""}</div></div>
 </div>
@@ -1386,81 +1358,6 @@ data quirks rather than miracles.</p>
 """
     write("records.html", style.page("Record book — PICKLES",
                                      body, "records.html", "", updated))
-
-
-# ---------------------------------------------------------------- dupr page
-
-def build_dupr(players, updated):
-    panels, tables = [], []
-    glitched = [p for p in players.values()
-                if p.dynamic and p.dupr_glitch and not p.dupr]
-    excluded_note = ""
-    if glitched:
-        names = ", ".join(
-            f"{plink(p)} (platform shows a ~3.5 reset artifact; last credible "
-            f"value {p.dupr_glitch:.2f})" for p in glitched)
-        excluded_note = (f'<p class="note">Excluded from the comparison: '
-                         f'{names}. A rating that collapses to DUPR\'s reset '
-                         f'default while the player keeps winning pro games is '
-                         f'a recording artifact, not a measurement.</p>')
-    for gender, label in (("F", "Women"), ("M", "Men")):
-        pool = [p for p in players.values()
-                if p.dynamic and p.gender == gender and p.dupr
-                and (p.last_date or "") >= "2026-01-01"]
-        if len(pool) < 10:
-            continue
-        n = len(pool)
-        mx = sum(p.dupr for p in pool) / n
-        my = sum(p.pts for p in pool) / n
-        sxy = sum((p.dupr - mx) * (p.pts - my) for p in pool)
-        sxx = sum((p.dupr - mx) ** 2 for p in pool) or 1
-        slope = sxy / sxx
-        pts = [(p.name, f"players/{p.pid}.html", p.dupr, p.pts,
-                p.pts - (my + slope * (p.dupr - mx))) for p in pool]
-        panels.append(f"<div><h3>{label}</h3>{charts.dupr_scatter(pts)}</div>")
-
-        ranked_dupr = sorted(pool, key=lambda p: -p.dupr)
-        dr = {p.pid: i + 1 for i, p in enumerate(ranked_dupr)}
-        ranked_model = sorted(pool, key=lambda p: -p.value)
-        mr = {p.pid: i + 1 for i, p in enumerate(ranked_model)}
-        div = sorted(pool, key=lambda p: dr[p.pid] - mr[p.pid])
-        rows = []
-        for p in div[-5:][::-1] + div[:5]:
-            d = dr[p.pid] - mr[p.pid]
-            cls = "up" if d > 0 else "down"
-            rows.append(f'<tr><td>{plink(p)}</td>'
-                        f'<td class="num">#{mr[p.pid]}</td><td class="num">#{dr[p.pid]}</td>'
-                        f'<td class="num {cls}">{d:+d}</td></tr>')
-        tables.append(f"""<div><h3>{label}: biggest disagreements</h3>
-<table><tr><th>player</th><th class="num">model rank</th>
-<th class="num">DUPR rank</th><th class="num">Δ</th></tr>{''.join(rows)}</table></div>""")
-
-    body = f"""
-<h1>DUPR × model</h1>
-<p class="sub">DUPR is the sport's official rating. On 518 identical unseen
-games the frozen model called 73.7% of winners; DUPR — whose ratings kept
-updating all summer — called 64.7%. Below: where the two disagree, per
-gender, among 2026-active tracked players.</p>
-<div class="tiles">
- <div class="tile"><div class="v">77.4%</div><div class="k">model, 884 unseen games</div></div>
- <div class="tile"><div class="v">64.7%</div><div class="k">DUPR, same games where both rate all four players</div></div>
- <div class="tile"><div class="v">+Δ</div><div class="k">= model ranks the player higher than DUPR does</div></div>
-</div>
-<div class="cols">{''.join(panels)}</div>
-<div class="cols">{''.join(tables)}</div>
-{excluded_note}
-<p class="note">Caveats we insist on: the DUPR scale compresses hard at the
-top and its history contains recorded data glitches (a pro dropping 6.13 →
-3.50 mid-season; a tour-wide ~0.5 overnight recalibration on 2026-05-22 —
-both visible in our per-match snapshots), so treat rank gaps as
-directional. Ratings shown are the value synced at each player's most
-recent match, with the as-of date in the tooltip; DUPR's own site may
-show a newer or different number. Correlation between the systems is
-r ≈ 0.65 (men) / 0.53 (women) — they mostly agree; the divergences are
-the story.</p>
-"""
-    write("dupr.html", style.page("DUPR × model — PICKLES",
-                                  body, "dupr.html", "", updated))
 
 
 # ---------------------------------------------------------------- methods
@@ -1589,8 +1486,7 @@ scale).</li>
 Gaussian random walk (2024-01 → now); everyone else is static with
 shrinkage.</li>
 <li><strong>Validation:</strong> frozen on pre-June-2026 data, scored on the
-next six weeks: 77.4% winners, Brier 0.165 (DUPR: 64.7% / 0.229 on the same
-games).</li>
+next six weeks: 77.4% winners, Brier 0.165.</li>
 <li><strong>Display scale:</strong> the site converts per-point logits to
 "expected margin vs an average pairing in a race to 11" — median regular
 ≈ +2 pts, superstar ≈ +7.</li>
@@ -1891,8 +1787,6 @@ def build_landing(players, games, updated, n_games, R):
     from datetime import date
     val = R["validation"]
     acc = pct(val["accuracy"], 1)
-    dupr = pct(val["dupr_reference"]["accuracy"], 1)
-    gap = f'{100 * (val["accuracy"] - val["dupr_reference"]["accuracy"]):.1f}'
     holdout = val["n_games"]
     n_dyn = sum(1 for p in players.values() if p.dynamic)
     hero_games = f"{round(n_games / 1000) * 1000:,}"
@@ -2063,10 +1957,10 @@ of past forecasts, hits and misses.</p>
    <span class="hlnum"><span class="swipe"></span><span class="val">{acc}</span></span>
    <span class="whose">THIS MODEL</span>
   </div>
-  <div class="cmprow"><span>DUPR, SAME {holdout} GAMES</span><span class="lead"></span><span class="v">{dupr}</span></div>
+  <div class="cmprow"><span>HELD-OUT GAMES</span><span class="lead"></span><span class="v">{holdout}</span></div>
   <div class="prule"></div>
-  <div class="pnote">Held-out games neither system saw. Our model was frozen;
-DUPR kept updating. It still lost by {gap} points.</div>
+  <div class="pnote">Frozen on pre-June data, then scored on {holdout} games it
+never saw. The number is out-of-sample, not a backtest.</div>
  </div>
 </section>
 
@@ -2152,7 +2046,6 @@ def main():
     updated = max(g["date"] for g in games)
     print(f"aggregating {len(games):,} games …")
     agg = D.aggregate(players, games)
-    D.finalize_dupr(players)
     D.infer_missing_genders(players)
     D.rank_players(players)
     chem = D.load_dyads()
@@ -2167,7 +2060,7 @@ def main():
     (SITE / ".nojekyll").write_text("")
 
     R = D.load_receipts()
-    print("pages: landing, rankings, forecasts, results, simulator, receipts, records, dupr, methods, data …")
+    print("pages: landing, rankings, forecasts, results, simulator, receipts, records, methods, data …")
     build_landing(players, games, updated, len(games), R)
     build_rankings(players, updated, len(games), R["validation"])
     build_player_index(players, updated)
@@ -2179,7 +2072,6 @@ def main():
     print(f"live page: {n_live} player values shipped")
     build_receipts(updated)
     build_records(players, agg, games, updated)
-    build_dupr(players, updated)
     build_methods(updated)
     build_404(updated)
 

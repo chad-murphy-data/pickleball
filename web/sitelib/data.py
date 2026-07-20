@@ -27,8 +27,8 @@ def month_key(date: str) -> str:
 
 class Player:
     __slots__ = ("pid", "name", "gender", "games", "value", "sd", "dynamic",
-                 "pts", "pts_lo", "pts_hi", "rank", "traj", "dupr", "dupr_hist",
-                 "stats", "form_delta", "last_date", "dupr_asof", "dupr_glitch")
+                 "pts", "pts_lo", "pts_hi", "rank", "traj",
+                 "stats", "form_delta", "last_date")
 
     def __init__(self, pid, name, gender, games, value, sd, dynamic):
         self.pid, self.name, self.gender = pid, name, gender
@@ -38,13 +38,9 @@ class Player:
         self.pts_hi = value_points(value + 1.645 * sd)
         self.rank = None
         self.traj = []          # [(month, mean, sd)]
-        self.dupr = None
-        self.dupr_hist = []     # [(date, rating)]
         self.stats = None
         self.form_delta = None  # 6-month value change (logit)
         self.last_date = None
-        self.dupr_asof = None   # date of the latest synced rating snapshot
-        self.dupr_glitch = None # last credible value when latest is an artifact
 
 
 class PStats:
@@ -66,7 +62,7 @@ class PStats:
 
 
 def load_players():
-    """v2_players.csv + platform ratings; returns {pid: Player}."""
+    """v2_players.csv + trajectories; returns {pid: Player}."""
     players = {}
     for r in csv.DictReader((DATA / "v2_players.csv").open()):
         players[r["player_id"]] = Player(
@@ -74,9 +70,6 @@ def load_players():
             r["gender"], int(r["games"]),
             float(r["value_now_mean"]), float(r["value_now_sd"]),
             r["dynamic"] == "1")
-    for r in csv.DictReader((DATA / "platform_ratings.csv").open()):
-        if r["player_id"] in players:
-            players[r["player_id"]].dupr = float(r["platform_rating_latest"])
     for r in csv.DictReader((DATA / "v2_trajectories.csv").open()):
         p = players.get(r["player_id"])
         if p is not None:
@@ -145,9 +138,6 @@ def aggregate(players, games):
             if "swap" in (r.get("reason") or ""):
                 flagged.add(r.get("game_id") or "")
     marathons = []                               # (total_points, game)
-    ratings = json.load((DATA / "per_match_ratings.json").open()) \
-        if (DATA / "per_match_ratings.json").exists() else {}
-    seen_rating_date = set()
 
     for g in games:
         t = _target(g["scoring_format"])
@@ -189,9 +179,6 @@ def aggregate(players, games):
             else:
                 h[2] = 0
 
-        # per-match DUPR snapshots -> per-player rating history
-        mr = ratings.get(g["match_id"])
-
         for side, mine, theirs, won, my_pair, opp_pair in (
                 (1, s1, s2, t1_won, team1, team2),
                 (2, s2, s1, not t1_won, team2, team1)):
@@ -228,15 +215,10 @@ def aggregate(players, games):
                     "share": mine / total, "exp": e, "won": won, "ot": ot,
                 })
                 players[pid].last_date = g["date"]
-                if mr and pid in mr and (pid, g["date"]) not in seen_rating_date:
-                    seen_rating_date.add((pid, g["date"]))
-                    players[pid].dupr_hist.append((g["date"], mr[pid]))
 
     for pid, st in stats.items():
         if pid in players:
             players[pid].stats = st
-    for p in players.values():
-        p.dupr_hist.sort()
 
     upsets.sort(key=lambda x: x[0])
     marathons.sort(key=lambda x: -x[0])
@@ -246,24 +228,6 @@ def aggregate(players, games):
         "upsets": upsets[:15],
         "marathons": marathons[:12],
     }
-
-
-def finalize_dupr(players):
-    """Latest synced rating per player, with an as-of date and a reset-
-    artifact screen: a rating that falls to DUPR's ~3.5 reset default after
-    a >=5.0 history is a recording artifact, not a skill measurement (one
-    known case: a 6.13 player re-appearing at 3.50021 mid-season).  Artifact
-    ratings are nulled for comparisons; the last credible value is kept for
-    the footnote."""
-    for p in players.values():
-        if not p.dupr_hist:
-            continue
-        p.dupr_asof, p.dupr = p.dupr_hist[-1]
-        peak = max(r for _, r in p.dupr_hist)
-        if p.dupr <= 3.65 and peak >= 5.0:
-            credible = [r for _, r in p.dupr_hist if r > 3.65]
-            p.dupr_glitch = credible[-1] if credible else None
-            p.dupr = None
 
 
 def infer_missing_genders(players):
