@@ -6,9 +6,11 @@ Singles were added to the harvest later than doubles and live in their own
 cache dir (see pb_api.match_infos_short_singles). Same payload shape as
 doubles match_infos_short, with one player per side. Rules mirror parse.py:
 match_status 4 = completed, match_completed_type != 5 = forfeit, UUIDs
-lowercased, sanity floor winner >= 11 & win-by-2 when the format is unknown
-(PPA singles main draws are best-of-3/5 to 11; Challenger to-15 leaks get
-flagged, not silently kept).
+lowercased, sanity floor winner >= 11 & win-by-2.  PPA singles main draws
+are best-of-3/5 to 11; the Challenger/qualifier single-game rounds (best_of
+== 1) are side-out to 15 (occasionally to 21).  Every game gets a
+scoring_format label (std_11 / single_15 / single_21) so the rating model
+can exclude the non-to-11 targets instead of silently mixing them.
 """
 from __future__ import annotations
 
@@ -74,7 +76,7 @@ def main():
                     continue
                 n1 = clean_name(m.get("team_one_player_one_name"))
                 n2 = clean_name(m.get("team_two_player_one_name"))
-                best_of = m.get("score_format_game_best_out_of") or 3
+                best_of = int(m.get("score_format_game_best_out_of") or 3)
                 draw = title.replace("Singles Pro", "").strip()
                 stage = (m.get("round_text") or "").strip()
                 for i, o in enumerate(GAME_ORDINALS, start=1):
@@ -84,12 +86,20 @@ def main():
                         continue
                     winner, margin = max(s1, s2), abs(s1 - s2)
                     flag = ""
+                    # standard PPA singles = race-to-11 (best-of-3/5); a single
+                    # game (best_of==1) is the Challenger side-out format, to 15
+                    # or occasionally 21.  Label the target so the rating model
+                    # can exclude non-to-11 rounds instead of mixing them.
+                    if best_of == 1:
+                        scoring_format = "single_21" if winner > 15 else "single_15"
+                    else:
+                        scoring_format = "std_11"
                     if not is_forfeit:
                         if winner < 11 or margin < 2:
                             dropped += 1
                             continue
-                        if winner > 15:
-                            flag = "score>15 — possible to-21/format leak"
+                        if best_of != 1 and winner > 15:
+                            flag = "score>15 in best-of-N — possible to-21/format leak"
                     rows.append({
                         "game_id": f"{muid}:g{i}",
                         "match_id": muid,
@@ -104,6 +114,7 @@ def main():
                         "margin": s1 - s2,
                         "game_number": i,
                         "best_of": best_of,
+                        "scoring_format": scoring_format,
                         "is_forfeit": is_forfeit,
                         "flag": flag,
                     })
