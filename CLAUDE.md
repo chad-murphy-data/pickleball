@@ -31,7 +31,6 @@ python model/fit_v2.py                       # THE model (dynamic + race likelih
 python model/report.py                       # regenerate analysis.md (v1 sections)
 python scraper/parse_singles.py              # raw/ → data/singles_games.csv (26k games)
 python model/fit_singles.py                  # singles MAP ratings (pure python, ~10 s)
-python scraper/extract_ratings.py            # raw/ → per-match + latest DUPR (merges)
 python scraper/live_poller.py                # live score JSONL during event days
 python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
                                              #   --commit freezes into receipts.json
@@ -69,7 +68,7 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   SRM_MIXTEST, SRM_SAVE_DRAWS). Suffix convention: `_2026`, `_2026core`,
   `_train`, `_2026mm`, etc. map to data/model_*{suffix}.csv inputs.
 - Validation: v2 = 77.4% winner accuracy / 0.165 Brier on 884 post-June-1
-  holdout games (v1 75.2%/0.178; DUPR 64.7%/0.229). Gate any model change
+  holdout games (v1 75.2%/0.178). Gate any model change
   on beating this (`model/v2_holdout.py`; needs a `_train`-suffixed fit
   with SRM2_DATE_BEFORE=2026-06-01).
 
@@ -127,15 +126,12 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 - **Browsers cannot reach the network from this environment** (egress
   gateway TLS-fingerprints and resets Chromium; curl/httpx fine). Don't
   waste time on Playwright; recon.md documents the diagnosis.
-- The embedded per-match "rating" IS the player's synced DUPR doubles
-  rating (verified: singles is a separate ledger; scale 2–8; compresses
-  hard at the top and has data glitches — see analysis.md benchmark).
-  Known artifacts, re-verified 2026-07-13 against a fresh refetch:
-  Jackie Kawamoto = 3.50021 since 2026-06-04 (was 6.13 in Feb; 3.5 is
-  DUPR's reset default — the platform still serves it, treat as glitch,
-  site nulls it via data.finalize_dupr); tour-wide recalibration dropped
-  everyone ~0.3–0.7 on 2026-05-22 (Truong 5.83→5.137 and Jade Kawamoto
-  6.1→5.819 are CORRECT post-recal values, confirmed in fresh records).
+- **DUPR was deliberately removed from this project** (2026-07, user call:
+  no interest in a "we beat DUPR" scoreboard). The embedded per-match
+  "rating" field in the raw payloads IS the player's synced DUPR doubles
+  rating and is still present in raw/, but we no longer extract, store,
+  display, or benchmark against it — don't re-add it without asking. It
+  was never a model input; nothing in v1/v2/singles depends on it.
 - Be polite: ~1 req/s harvest, ≥15 s live-poll interval.
 
 ## Live win probability (in progress)
@@ -224,7 +220,7 @@ live-page bullet above), power rankings (rankings.html),
 499 player pages (trajectory + game-log-vs-expectation SVGs), client-side
 matchup simulator (race DP + weakest link + uncertainty in embedded JS,
 shareable permalinks), receipts ledger + calibration, record book,
-DUPR×model, methods, 404. The look is the PICKLES design handoff: master
+methods, 404. The look is the PICKLES design handoff: master
 stylesheet = CSS string in web/sitelib/style.py (design port verbatim +
 landing additions; light AND dark). Conventions: values are displayed as
 "expected margin vs an average pairing" via web/sitelib/race.py:value_points;

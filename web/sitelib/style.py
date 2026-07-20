@@ -469,7 +469,7 @@ NAV = [("rankings.html", "Rankings"), ("players/index.html", "Players"),
        ("forecast.html", "Forecasts"), ("titlerace.html", "Title race"),
        ("results.html", "Results"),
        ("simulator.html", "Simulator"), ("receipts.html", "Receipts"),
-       ("records.html", "Record book"), ("dupr.html", "DUPR × model"),
+       ("records.html", "Record book"),
        ("methods.html", "Methods")]
 
 

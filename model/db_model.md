@@ -58,9 +58,8 @@ With the full singles corpus harvested (26,048 PPA pro singles games,
   plausibly below their imputation.
 - Cross-check that fell out for free: the biggest singles OVERperformers
   vs their doubles-implied value (Haworth, Crum, Z. Ford, G. Joseph,
-  Bouchard) largely coincide with the "DUPR ranks them far above our
-  doubles model" disagreement list — that divergence was singles skill,
-  not noise.
+  Bouchard) are exactly the players whose singles skill outruns their
+  doubles rating — that gap was singles ability, not noise.
 - Worked example (the Gold final rosters): NJ's DreamBreaker roster
   (Waters +2.27 singles, Khlif +1.48, Howells +1.32, Johnson +1.20)
   prices at 57.2% over STL-with-Fahey — milder than the 65% the pre-match

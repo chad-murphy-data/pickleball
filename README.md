@@ -35,7 +35,7 @@ the discovered BFF endpoints made it unnecessary (see recon.md).
 
 A fully static site (power rankings, player pages with skill trajectories,
 a client-side matchup simulator, the public receipts ledger, record book,
-DUPR-vs-model comparison, methods) regenerates from the CSVs in seconds:
+methods) regenerates from the CSVs in seconds:
 
 ```bash
 python web/build_site.py           # data/*.csv + model/receipts.json → site/

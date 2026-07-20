@@ -3,8 +3,8 @@
 
 Context for the designer: this repo scrapes every pro pickleball doubles game
 (MLP + PPA, 2024–2026, ~36,000 games), fits a Bayesian rating model, and
-validates it by prediction (77% winner accuracy on unseen games vs 65% for
-DUPR, the sport's official rating). The brand is **receipts and honesty**:
+validates it by prediction (77% winner accuracy on unseen games). The brand
+is **receipts and honesty**:
 every prediction is committed with a timestamp before the match, every number
 carries uncertainty, and we say "we can't know that" out loud. The design
 system should make error bars and probabilities feel like a flex, not a hedge.
@@ -51,9 +51,6 @@ with the pre-game number. Pairs with A2 for the honesty brand.
 expectation, with the honest error bar. Almost always lands on "it's the
 players, not the pairing" — that IS the content.
 
-**A8. DUPR divergence.** Where the official rating and the model disagree
-most. Evergreen ammunition: Tardio ranked ~#30 by DUPR while #1 here.
-
 ## B. One-off finding posts (evergreen, each is one strong visual)
 
 1. **The Waters chasm.** Her lead over the #2 woman (1.65 pts/game) equals
@@ -71,16 +68,11 @@ most. Evergreen ammunition: Tardio ranked ~#30 by DUPR while #1 here.
    curve, rising field. The most counterintuitive trajectory result.
 6. **The men's #1 is a five-way statistical tie** (Tardio, Johns, Patriquin,
    JW Johnson, Alshon within error bars). Great overlapping-intervals visual.
-7. **Model vs DUPR: 77% vs 65%** winner accuracy on identical unseen games —
-   while DUPR got to keep updating and the model was frozen. Credentials post.
-8. **DUPR's greatest hits (data-quality horror):** a pro's rating collapsing
-   6.13 → 3.50 mid-season; Tardio's rating FALLING through his breakout;
-   the entire tour dropping ~0.5 overnight in a recalibration.
-9. **No, the pros don't sandbag MLP.** Skill gaps convert to points at the
+7. **No, the pros don't sandbag MLP.** Skill gaps convert to points at the
    same rate in both tours; if anything stars tick UP in MLP.
-10. **New-pairing honeymoon (asterisked).** New partnerships overperform
-    their first ~6 games together. Fun, but carries a data caveat — post as
-    a question, not a claim.
+8. **New-pairing honeymoon (asterisked).** New partnerships overperform
+   their first ~6 games together. Fun, but carries a data caveat — post as
+   a question, not a claim.
 11. **The Kawamoto twins problem.** Why player IDs beat names: three
     Kawamotos, two of them twins who partner each other, and the official
     rating system apparently lost one mid-season. Data-nerd catnip.
@@ -99,7 +91,6 @@ most. Evergreen ammunition: Tardio ranked ~#30 by DUPR while #1 here.
 | `data/v2_dyads.csv` | pair chemistry (small, honest) | same |
 | `data/yearly_values.csv` | season-by-season values + gender ranks | same |
 | `data/games.csv` | every game, score, players, date (36k rows) | same |
-| `data/platform_ratings.csv` | DUPR snapshots for 1,142 players | same |
 | forecast machinery | any matchup → win probs, score distributions, outcome trees | on demand |
 
 ## D. Voice & non-negotiables
@@ -134,13 +125,13 @@ new-pairing badge; exact-pairing head-to-head with scores.
 
 Tier 4 per player: season W-L%; avg score for/against; value ± sd + gender
 rank; 3-month form arrow; deciding-game record; overtime record (games past
-11); blowout rate (wins allowing <=5); DUPR + divergence flag.
+11); blowout rate (wins allowing <=5).
 
 Tier 5 context (MLP): season series; rematch/history flags; prior meetings
 of the same four pairings; DreamBreaker sensitivity line; best player on
 court; star-collision callout.
 
-Tier 6 trust strip: model record (77% on 884 unseen games vs DUPR 65%);
+Tier 6 trust strip: model record (77% on 884 unseen games);
 uncertainty shown wherever it exists; "public results data, unofficial."
 
 All fields regenerate from games.csv + v2_players.csv + v2_draws.npz +

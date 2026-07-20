@@ -12,7 +12,6 @@ Frozen before 2026-06-01, predicting all later games (n=884, more than v1's
 |:--|--:|--:|--:|
 | v2 | **77.4%** | **0.165** | 0.506 |
 | v1 (Gaussian, static, 2026-only) | 75.2% | 0.178 | 0.536 |
-| DUPR (as-of-match) | 64.7% | 0.229 | — |
 
 ## Headline scalar results (per-point logit scale)
 - gamma (weakest link) = -0.183 ± 0.047: survives removal of scoreboard
