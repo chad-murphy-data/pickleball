@@ -77,7 +77,10 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 1. Weakest-link: team = sum + γ|gap|, γ = −0.47 pts (Gaussian) / −0.18
    logit (race model — the truncation-free estimate). Gender-blind in mixed.
 2. Chemistry is small: sd ≈ 0.3–0.5 pts, prior-insensitive; no single pair
-   certifiable (need ~1,000 games; max on record 138).
+   certifiable (need ~1,000 games; the most any pair has played together is
+   523 — Waters/Johns. NB: the "138" this once cited is Bright+Patriquin's
+   pair count, not the record; the methods page now computes the true max
+   live from games.csv).
 3. Skill transfers across contexts (sd_w ≈ 0.13) and tours (no MLP
    sandbagging; slope test + player-tour effects both null).
 4. Johns never declined in absolute terms (dynamic model); the field rose.

@@ -1469,7 +1469,7 @@ may not have enough games for monthly tracking (≥60 since 2024).</p>
     write("404.html", html)
 
 
-def build_methods(updated):
+def build_methods(updated, val, n_games, max_pair):
     md = (ROOT / "EXPLAINER.md").read_text()
     body = f"""
 {md_to_html(md)}
@@ -1480,19 +1480,20 @@ points won ~ Binomial(total points, σ(η)) — so games to 11 and to 15 enter
 one model natively.</li>
 <li><strong>η</strong> = (team 1 skill − team 2 skill) + pair-chemistry
 deviations + a per-match random effect; team skill = sum of player values
-+ γ·|partner gap| (the weakest link, γ ≈ −0.18 on the per-point logit
++ γ·|partner gap| (the weakest link, γ ≈ {GAMMA:.2f} on the per-point logit
 scale).</li>
 <li><strong>Dynamics:</strong> each ≥60-game player's value follows a monthly
 Gaussian random walk (2024-01 → now); everyone else is static with
 shrinkage.</li>
 <li><strong>Validation:</strong> frozen on pre-June-2026 data, scored on the
-next six weeks: 77.4% winners, Brier 0.165.</li>
+next six weeks: {pct(val['accuracy'], 1)} winners, Brier {val['brier']:.3f}
+on {val['n_games']} unseen games.</li>
 <li><strong>Display scale:</strong> the site converts per-point logits to
 "expected margin vs an average pairing in a race to 11" — median regular
 ≈ +2 pts, superstar ≈ +7.</li>
 <li><strong>Calibrated, floored probabilities:</strong> win probabilities are
 passed through a map fitted on out-of-sample games (near-identity: slope
-0.90) with an empirical tail floor — ~1% of ≥99% favorites lose, so no
+{CAL['b']:.2f}) with an empirical tail floor — ~1% of ≥99% favorites lose, so no
 probability is ever shown as 0% or 100%. There is always a chance.</li>
 </ul>
 <p class="note">Full writeups, code, data and diagnostics:
@@ -1501,12 +1502,12 @@ robustness check.</p></div>
 <div class="card"><h2 style="margin-top:0">Things we refuse to publish</h2>
 <ul>
 <li><strong>Cross-gender rankings as fact.</strong> Every game has equal women
-per side, so nothing in 36,000 games links the men's and women's scales.</li>
+per side, so nothing in {n_games:,} games links the men's and women's scales.</li>
 <li><strong>"Great partner" awards.</strong> A game score credits the team;
 a player's own skill and their boost to a partner are mathematically
 inseparable.</li>
 <li><strong>Certified chemistry.</strong> Proving a typical pair effect takes
-~1,000 games together; the record is 138. We publish the estimates with
+~1,000 games together; the record is {max_pair}. We publish the estimates with
 their (wide) error bars instead.</li>
 </ul></div>
 <div class="card" id="data-practices"><h2 style="margin-top:0">Where the data
@@ -2060,6 +2061,13 @@ def main():
     (SITE / ".nojekyll").write_text("")
 
     R = D.load_receipts()
+    val = R["validation"]
+    # source the site-wide footer stat from the live validation numbers so it
+    # can never silently go stale after a refit (was a hardcoded literal)
+    style.FOOT_STATS = (f"Model: Bayesian, {len(games) // 1000}k games, "
+                        f"validated {pct(val['accuracy'], 1)} winner accuracy "
+                        f"on {val['n_games']} unseen games")
+    max_pair = max((g for g, _w in agg["pair_games"].values()), default=0)
     print("pages: landing, rankings, forecasts, results, simulator, receipts, records, methods, data …")
     build_landing(players, games, updated, len(games), R)
     build_rankings(players, updated, len(games), R["validation"])
@@ -2072,7 +2080,7 @@ def main():
     print(f"live page: {n_live} player values shipped")
     build_receipts(updated)
     build_records(players, agg, games, updated)
-    build_methods(updated)
+    build_methods(updated, val, len(games), max_pair)
     build_404(updated)
 
     dyn = [p for p in players.values() if p.dynamic and p.stats]
