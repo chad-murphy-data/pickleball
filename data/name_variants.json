@@ -121,7 +121,7 @@
  "0142557a-6231-455b-8eee-daf5f67fc1ff": {
   "canonical": "James Seagraves",
   "variants": {
-   "James Seagraves": 58
+   "James Seagraves": 61
   },
   "needs_review": false
  },
@@ -387,7 +387,7 @@
  "03db4060-fcb3-41f7-83d5-7ee732dd8841": {
   "canonical": "Jade Rau",
   "variants": {
-   "Jade Rau": 93
+   "Jade Rau": 98
   },
   "needs_review": false
  },
@@ -639,7 +639,7 @@
  "06ba18e0-687b-4aa3-822d-1c86981f576b": {
   "canonical": "Rafa Hewett",
   "variants": {
-   "Rafa Hewett": 242
+   "Rafa Hewett": 248
   },
   "needs_review": false
  },
@@ -863,7 +863,7 @@
  "086c9ee0-0aa3-4d2e-bc64-22a683f44d73": {
   "canonical": "Ahmad El-Zarif",
   "variants": {
-   "Ahmad El-Zarif": 32
+   "Ahmad El-Zarif": 36
   },
   "needs_review": false
  },
@@ -1395,7 +1395,7 @@
  "0f2bcb8e-7a61-420c-ac30-b9626b8049a6": {
   "canonical": "Caitlin Klaassen",
   "variants": {
-   "Caitlin Klaassen": 89
+   "Caitlin Klaassen": 95
   },
   "needs_review": false
  },
@@ -1438,7 +1438,7 @@
  "0f8523aa-0279-4dec-8697-0261e6a1f97a": {
   "canonical": "Madelyn Porter",
   "variants": {
-   "Madelyn Porter": 12
+   "Madelyn Porter": 14
   },
   "needs_review": false
  },
@@ -1508,7 +1508,7 @@
  "10397234-6551-4a06-8bc6-aa50d6915731": {
   "canonical": "Liam Duffin",
   "variants": {
-   "Liam Duffin": 72
+   "Liam Duffin": 75
   },
   "needs_review": false
  },
@@ -1788,9 +1788,9 @@
  "13407362-97b9-4bcf-ae7a-75c3576bb99a": {
   "canonical": "Abbie Monski",
   "variants": {
-   "Abbie Monski": 2
+   "Abbie Monski": 4
   },
-  "needs_review": true
+  "needs_review": false
  },
  "134733d8-255c-47f3-8fd1-e64b3d6194c6": {
   "canonical": "Alexei Chernikov",
@@ -1823,7 +1823,7 @@
  "1374dfe9-4573-4ab6-991d-16bed0a6d25c": {
   "canonical": "Edward Perez",
   "variants": {
-   "Edward Perez": 152
+   "Edward Perez": 161
   },
   "needs_review": false
  },
@@ -2005,7 +2005,7 @@
  "14f68da3-a855-4656-a618-81b5d8ff6bec": {
   "canonical": "Jarryd Woog",
   "variants": {
-   "Jarryd Woog": 50
+   "Jarryd Woog": 56
   },
   "needs_review": false
  },
@@ -2145,7 +2145,7 @@
  "1676f986-1e57-4e92-9ed4-5e10656c5164": {
   "canonical": "Jonas Daehler",
   "variants": {
-   "Jonas Daehler": 8
+   "Jonas Daehler": 10
   },
   "needs_review": false
  },
@@ -2425,7 +2425,7 @@
  "19a1f7fe-1d16-418a-be95-785266ff586e": {
   "canonical": "Yolena Carlon",
   "variants": {
-   "Yolena Carlon": 61
+   "Yolena Carlon": 64
   },
   "needs_review": false
  },
@@ -2985,7 +2985,7 @@
  "1f281337-8943-4c9b-8ee0-82b3c10cbeb1": {
   "canonical": "Ashley Lu",
   "variants": {
-   "Ashley Lu": 14
+   "Ashley Lu": 18
   },
   "needs_review": false
  },
@@ -3300,7 +3300,7 @@
  "220e3821-0cac-4fce-a722-a079a5359262": {
   "canonical": "Casey Garretson",
   "variants": {
-   "Casey Garretson": 49
+   "Casey Garretson": 51
   },
   "needs_review": false
  },
@@ -3370,7 +3370,7 @@
  "22839b0d-41bf-4830-8f1e-0da170ebc723": {
   "canonical": "Haley Ferguson",
   "variants": {
-   "Haley Ferguson": 80
+   "Haley Ferguson": 84
   },
   "needs_review": false
  },
@@ -3503,7 +3503,7 @@
  "23a8af5a-fed3-445d-99aa-1a5f69a05ff6": {
   "canonical": "Brie Aldridge",
   "variants": {
-   "Brie Aldridge": 74
+   "Brie Aldridge": 77
   },
   "needs_review": false
  },
@@ -3937,7 +3937,7 @@
  "28084fc7-8653-4ff0-bc3b-1bf582d03a75": {
   "canonical": "Jay Evans",
   "variants": {
-   "Jay Evans": 67
+   "Jay Evans": 69
   },
   "needs_review": false
  },
@@ -4329,7 +4329,7 @@
  "2bfe44bb-d558-411f-abeb-c8522dd42ce9": {
   "canonical": "Julian Arnold",
   "variants": {
-   "Julian Arnold": 211
+   "Julian Arnold": 215
   },
   "needs_review": false
  },
@@ -4374,6 +4374,13 @@
    "Jason Gregory": 3
   },
   "needs_review": false
+ },
+ "2c44f17e-ec2e-409f-ac80-8e7d171a037a": {
+  "canonical": "Jessica Brock",
+  "variants": {
+   "Jessica Brock": 2
+  },
+  "needs_review": true
  },
  "2c4de762-88d6-47c3-8b2b-af562c5d1f93": {
   "canonical": "Danni-Elle Townsend",
@@ -4420,7 +4427,7 @@
  "2cb697da-8f48-4208-95ff-7e419fbc0013": {
   "canonical": "Rachael Fitzgerald",
   "variants": {
-   "Rachael Fitzgerald": 24
+   "Rachael Fitzgerald": 30
   },
   "needs_review": false
  },
@@ -4679,7 +4686,7 @@
  "2f28b85f-2645-4f75-8571-67335413387b": {
   "canonical": "Morgan Downing",
   "variants": {
-   "Morgan Downing": 27
+   "Morgan Downing": 30
   },
   "needs_review": false
  },
@@ -4693,7 +4700,7 @@
  "2f501a7d-c1f6-48ca-9e0f-8335475e7599": {
   "canonical": "Eliana Ling",
   "variants": {
-   "Eliana Ling": 12
+   "Eliana Ling": 16
   },
   "needs_review": false
  },
@@ -5005,6 +5012,13 @@
   },
   "needs_review": false
  },
+ "327d9a97-a00f-4b28-b8dd-c91b6f8296ef": {
+  "canonical": "Jenna Vlach",
+  "variants": {
+   "Jenna Vlach": 2
+  },
+  "needs_review": true
+ },
  "328249d8-eee2-45fb-84ce-4cbb8331d8c7": {
   "canonical": "Arjun Thyagarajan",
   "variants": {
@@ -5085,7 +5099,7 @@
  "336f3c17-4fbf-4d27-a66e-e2631f1729c8": {
   "canonical": "Sofia Manzanares",
   "variants": {
-   "Sofia Manzanares": 8
+   "Sofia Manzanares": 11
   },
   "needs_review": false
  },
@@ -5162,7 +5176,7 @@
  "33fcb3fe-f32a-4b52-9f31-4d2225c9b126": {
   "canonical": "Jemere Plummer",
   "variants": {
-   "Jemere Plummer": 30
+   "Jemere Plummer": 34
   },
   "needs_review": false
  },
@@ -5645,7 +5659,7 @@
  "38fdc174-96d6-459f-a27c-df35eb9f945c": {
   "canonical": "Ashley Griffith",
   "variants": {
-   "Ashley Griffith": 194
+   "Ashley Griffith": 200
   },
   "needs_review": false
  },
@@ -6016,7 +6030,7 @@
  "3d67b6d0-063e-466c-a475-7679d0764354": {
   "canonical": "Austin Bricker",
   "variants": {
-   "Austin Bricker": 184
+   "Austin Bricker": 188
   },
   "needs_review": false
  },
@@ -6646,7 +6660,7 @@
  "42b8527d-b84e-4f50-8e0b-5937664981e3": {
   "canonical": "Sanil Jagtiani",
   "variants": {
-   "Sanil Jagtiani": 102
+   "Sanil Jagtiani": 105
   },
   "needs_review": false
  },
@@ -6695,7 +6709,7 @@
  "42f60d5d-b964-45d5-9bf4-5e7947300edd": {
   "canonical": "Matvey Radionov",
   "variants": {
-   "Matvey Radionov": 14
+   "Matvey Radionov": 19
   },
   "needs_review": false
  },
@@ -6933,7 +6947,7 @@
  "4553e8f7-d51d-41cd-bc23-752742441bff": {
   "canonical": "Garrison Eaby",
   "variants": {
-   "Garrison Eaby": 91
+   "Garrison Eaby": 96
   },
   "needs_review": false
  },
@@ -6961,7 +6975,7 @@
  "456ccd39-e6fb-4c58-a7ae-dd059b022365": {
   "canonical": "Natalie Araya",
   "variants": {
-   "Natalie Araya": 7
+   "Natalie Araya": 9
   },
   "needs_review": false
  },
@@ -7150,7 +7164,7 @@
  "47c3107f-c90a-473a-b1a8-900fcf13e984": {
   "canonical": "MJ Greiner",
   "variants": {
-   "MJ Greiner": 13
+   "MJ Greiner": 15
   },
   "needs_review": false
  },
@@ -7206,7 +7220,7 @@
  "482a2a18-5d10-4958-98a4-25da4fddc9a7": {
   "canonical": "Lina Romero Alarcon",
   "variants": {
-   "Lina Romero Alarcon": 9
+   "Lina Romero Alarcon": 11
   },
   "needs_review": false
  },
@@ -7283,7 +7297,7 @@
  "491edcb0-c087-475d-a48b-279d14e27f3a": {
   "canonical": "Alexa Brent",
   "variants": {
-   "Alexa Brent": 6
+   "Alexa Brent": 9
   },
   "needs_review": false
  },
@@ -7304,7 +7318,7 @@
  "4939ccf3-b9d0-42c6-8254-7c220a8028aa": {
   "canonical": "Beatriz Lopez",
   "variants": {
-   "Beatriz Lopez": 10
+   "Beatriz Lopez": 13
   },
   "needs_review": false
  },
@@ -7332,7 +7346,7 @@
  "49584147-f7e8-48c5-a789-8bc479a9251e": {
   "canonical": "Emma Cook",
   "variants": {
-   "Emma Cook": 29
+   "Emma Cook": 32
   },
   "needs_review": false
  },
@@ -7724,7 +7738,7 @@
  "4d673453-a554-41b9-ad7c-c588058af347": {
   "canonical": "Tammy Kim",
   "variants": {
-   "Tammy Kim": 3
+   "Tammy Kim": 5
   },
   "needs_review": false
  },
@@ -8389,7 +8403,7 @@
  "53b056f9-095a-40fa-881d-142629905f8a": {
   "canonical": "Luana Stanciu",
   "variants": {
-   "Luana Stanciu": 105
+   "Luana Stanciu": 108
   },
   "needs_review": false
  },
@@ -8438,7 +8452,7 @@
  "53eadec7-a6b1-4ce3-9825-d76affdc3f4f": {
   "canonical": "Juan Varon",
   "variants": {
-   "Juan Varon": 78
+   "Juan Varon": 84
   },
   "needs_review": false
  },
@@ -8627,7 +8641,7 @@
  "55b78314-2f02-4a0c-83c2-b7cbfd8b4329": {
   "canonical": "Madalina Grigoriu",
   "variants": {
-   "Madalina Grigoriu": 95
+   "Madalina Grigoriu": 99
   },
   "needs_review": false
  },
@@ -8740,7 +8754,7 @@
  "56f0b269-240a-42cb-b404-0b0bf747ad98": {
   "canonical": "Dylan Lewis",
   "variants": {
-   "Dylan Lewis": 32
+   "Dylan Lewis": 35
   },
   "needs_review": false
  },
@@ -8754,7 +8768,7 @@
  "5714d0c4-4431-4afa-9e95-11817e9d27d9": {
   "canonical": "Teresa Romero",
   "variants": {
-   "Teresa Romero": 3
+   "Teresa Romero": 5
   },
   "needs_review": false
  },
@@ -9034,7 +9048,7 @@
  "5925398b-b2a9-4e8f-ae46-5c2b59b1b818": {
   "canonical": "Nicole Conard",
   "variants": {
-   "Nicole Conard": 218
+   "Nicole Conard": 222
   },
   "needs_review": false
  },
@@ -9174,7 +9188,7 @@
  "5a5237bd-64cd-433c-99ba-34badaa2820c": {
   "canonical": "Braylon Ohrel",
   "variants": {
-   "Braylon Ohrel": 28
+   "Braylon Ohrel": 33
   },
   "needs_review": false
  },
@@ -9492,6 +9506,13 @@
    "Nasa Hatakeyama": 15
   },
   "needs_review": false
+ },
+ "5d724580-6f68-4953-b9ac-64845d7e4930": {
+  "canonical": "Rubelle Yoo",
+  "variants": {
+   "Rubelle Yoo": 2
+  },
+  "needs_review": true
  },
  "5d725a64-12bf-4b72-a688-9fd9c251e4e5": {
   "canonical": "AJ De Castro",
@@ -10211,7 +10232,7 @@
  "6518ca38-f4c7-4fd8-84e1-38a7904132c2": {
   "canonical": "Sharienne Ricardo",
   "variants": {
-   "Sharienne Ricardo": 33
+   "Sharienne Ricardo": 37
   },
   "needs_review": false
  },
@@ -10582,7 +10603,7 @@
  "684de940-3788-41f6-9d4b-b843da242dae": {
   "canonical": "Wesley Hanson",
   "variants": {
-   "Wesley Hanson": 40
+   "Wesley Hanson": 44
   },
   "needs_review": false
  },
@@ -10638,9 +10659,9 @@
  "68d03cc0-643e-40fe-8db2-43e08d36e21b": {
   "canonical": "Josh Oakman",
   "variants": {
-   "Josh Oakman": 2
+   "Josh Oakman": 4
   },
-  "needs_review": true
+  "needs_review": false
  },
  "68d3b279-8b2d-4055-8eb3-b28448c1f7d2": {
   "canonical": "Katie Neils",
@@ -10869,7 +10890,7 @@
  "6b432472-f73b-4f2b-b65d-5848657d117b": {
   "canonical": "Amber Policare",
   "variants": {
-   "Amber Policare": 38
+   "Amber Policare": 44
   },
   "needs_review": false
  },
@@ -11030,7 +11051,7 @@
  "6cea98b2-6f2a-4759-9e98-5f878e2e3bf4": {
   "canonical": "Thomas Provost",
   "variants": {
-   "Thomas Provost": 14
+   "Thomas Provost": 16
   },
   "needs_review": false
  },
@@ -11282,7 +11303,7 @@
  "6f8c91a7-73ff-426d-b7ee-2f3ab52ecb1f": {
   "canonical": "Antonio Medina",
   "variants": {
-   "Antonio Medina": 37
+   "Antonio Medina": 40
   },
   "needs_review": false
  },
@@ -11415,7 +11436,7 @@
  "70c18684-f615-4d05-9aa9-5cbdbd53ab9f": {
   "canonical": "Carlota Trevino",
   "variants": {
-   "Carlota Trevino": 100
+   "Carlota Trevino": 107
   },
   "needs_review": false
  },
@@ -11478,14 +11499,14 @@
  "71992955-8b6f-470b-a991-796cfa56a826": {
   "canonical": "Liz Truluck",
   "variants": {
-   "Liz Truluck": 257
+   "Liz Truluck": 263
   },
   "needs_review": false
  },
  "719e2d3b-d10d-402d-a195-41f072214679": {
   "canonical": "Isabella Dunlap",
   "variants": {
-   "Isabella Dunlap": 190
+   "Isabella Dunlap": 196
   },
   "needs_review": false
  },
@@ -11828,7 +11849,7 @@
  "74afd19c-8f82-4ca2-9345-e4d693111033": {
   "canonical": "Marshall Brown",
   "variants": {
-   "Marshall Brown": 160
+   "Marshall Brown": 165
   },
   "needs_review": false
  },
@@ -12031,7 +12052,7 @@
  "76419f3a-712c-4241-8940-6f9bda847ba7": {
   "canonical": "Lauren Stratman",
   "variants": {
-   "Lauren Stratman": 201
+   "Lauren Stratman": 207
   },
   "needs_review": false
  },
@@ -12213,7 +12234,7 @@
  "7867cc51-11d1-471f-a8bb-9d8370b6a698": {
   "canonical": "Nicholas Wade",
   "variants": {
-   "Nicholas Wade": 90
+   "Nicholas Wade": 93
   },
   "needs_review": false
  },
@@ -12388,7 +12409,7 @@
  "79ee2d66-5ba3-47cc-bc43-f489a09d2d5a": {
   "canonical": "George Rangelov",
   "variants": {
-   "George Rangelov": 188
+   "George Rangelov": 194
   },
   "needs_review": false
  },
@@ -12493,7 +12514,7 @@
  "7b0ada81-4724-4b79-865e-e394e9358de4": {
   "canonical": "Caraline Cox",
   "variants": {
-   "Caraline Cox": 21
+   "Caraline Cox": 23
   },
   "needs_review": false
  },
@@ -12542,7 +12563,7 @@
  "7b85c35f-6a90-4c61-af0b-565658feeb3c": {
   "canonical": "Freddie Powell",
   "variants": {
-   "Freddie Powell": 107
+   "Freddie Powell": 116
   },
   "needs_review": false
  },
@@ -12717,7 +12738,7 @@
  "7cf93ef3-86b7-4bb4-937b-5b5dc4c72c32": {
   "canonical": "Valerie R Simon",
   "variants": {
-   "Valerie R Simon": 89
+   "Valerie R Simon": 98
   },
   "needs_review": false
  },
@@ -12787,9 +12808,9 @@
  "7d860749-a84e-47fc-9883-e92ca40f5777": {
   "canonical": "Kolton Youngblood",
   "variants": {
-   "Kolton Youngblood": 1
+   "Kolton Youngblood": 4
   },
-  "needs_review": true
+  "needs_review": false
  },
  "7d885831-f13b-4fc2-bfb8-f2224e797228": {
   "canonical": "Birlinda Akinaka",
@@ -12857,7 +12878,7 @@
  "7ea6e46a-c319-4768-9fb3-a286dd5f69ce": {
   "canonical": "TJ Rudden",
   "variants": {
-   "TJ Rudden": 35
+   "TJ Rudden": 37
   },
   "needs_review": false
  },
@@ -13102,7 +13123,7 @@
  "81623427-b2f0-49f0-ab5e-57d470560981": {
   "canonical": "Courtenay Leonard",
   "variants": {
-   "Courtenay Leonard": 25
+   "Courtenay Leonard": 27
   },
   "needs_review": false
  },
@@ -13256,7 +13277,7 @@
  "8286d612-dd01-491f-8229-457170029b56": {
   "canonical": "Karen Lu",
   "variants": {
-   "Karen Lu": 16
+   "Karen Lu": 19
   },
   "needs_review": false
  },
@@ -13641,7 +13662,7 @@
  "86e1b9d3-15ea-4b76-b488-d3135e78aa7c": {
   "canonical": "Wade Heerboth",
   "variants": {
-   "Wade Heerboth": 44
+   "Wade Heerboth": 50
   },
   "needs_review": false
  },
@@ -13802,7 +13823,7 @@
  "88638eb7-8dc0-4c0a-bb9e-64480aeffd0c": {
   "canonical": "Keri Lu",
   "variants": {
-   "Keri Lu": 16
+   "Keri Lu": 18
   },
   "needs_review": false
  },
@@ -14222,7 +14243,7 @@
  "8bfb2660-cdda-43fb-81cb-5ff420c9f86e": {
   "canonical": "Jae Centonze",
   "variants": {
-   "Jae Centonze": 39
+   "Jae Centonze": 44
   },
   "needs_review": false
  },
@@ -14726,7 +14747,7 @@
  "912adc0f-c751-4fa2-adeb-b08d588e1b24": {
   "canonical": "Eli Curls",
   "variants": {
-   "Eli Curls": 3
+   "Eli Curls": 5
   },
   "needs_review": false
  },
@@ -15069,14 +15090,14 @@
  "94cfb7cf-9142-4b9e-b6ec-1646e4711f29": {
   "canonical": "Mya Barron",
   "variants": {
-   "Mya Barron": 12
+   "Mya Barron": 15
   },
   "needs_review": false
  },
  "94d555fb-0678-4544-b959-ac56c3e04579": {
   "canonical": "Lova Metor",
   "variants": {
-   "Lova Metor": 18
+   "Lova Metor": 21
   },
   "needs_review": false
  },
@@ -15090,7 +15111,7 @@
  "95015a41-423e-4439-94ee-84e275c45787": {
   "canonical": "Stephen Preissler",
   "variants": {
-   "Stephen Preissler": 26
+   "Stephen Preissler": 30
   },
   "needs_review": false
  },
@@ -15741,7 +15762,7 @@
  "9b8928b2-2ff4-4ae4-95dc-d1fb8e6922d9": {
   "canonical": "Sable Yrjanson",
   "variants": {
-   "Sable Yrjanson": 4
+   "Sable Yrjanson": 7
   },
   "needs_review": false
  },
@@ -15846,7 +15867,7 @@
  "9c9c45e5-6fb8-4f4f-a85e-16cebb11972d": {
   "canonical": "Andi Godwin",
   "variants": {
-   "Andi Godwin": 64
+   "Andi Godwin": 69
   },
   "needs_review": false
  },
@@ -15909,7 +15930,7 @@
  "9d7b2972-477c-4cea-977d-f65f86dccac5": {
   "canonical": "Parth Mody",
   "variants": {
-   "Parth Mody": 92
+   "Parth Mody": 95
   },
   "needs_review": false
  },
@@ -15944,7 +15965,7 @@
  "9db29a7a-1fce-4394-a1f0-a5fbd2bc2e7b": {
   "canonical": "Jake Anderson",
   "variants": {
-   "Jake Anderson": 150
+   "Jake Anderson": 153
   },
   "needs_review": false
  },
@@ -16084,7 +16105,7 @@
  "9fa6a300-42c2-4a96-b7c0-9afbe1342e59": {
   "canonical": "Adair Garcia",
   "variants": {
-   "Adair Garcia": 88
+   "Adair Garcia": 90
   },
   "needs_review": false
  },
@@ -16147,7 +16168,7 @@
  "a0581131-7d36-4424-b7f1-a5a4eaaed30f": {
   "canonical": "Cc Eleven Sacca",
   "variants": {
-   "Cc Eleven Sacca": 29
+   "Cc Eleven Sacca": 33
   },
   "needs_review": false
  },
@@ -16161,7 +16182,7 @@
  "a067b12b-b26b-4a30-aed8-0f707c52beaa": {
   "canonical": "Mark Dancuart",
   "variants": {
-   "Mark Dancuart": 43
+   "Mark Dancuart": 49
   },
   "needs_review": false
  },
@@ -16553,7 +16574,7 @@
  "a4ae7ae8-87b6-4649-a11b-20a0ca2aef50": {
   "canonical": "Logan Thompson",
   "variants": {
-   "Logan Thompson": 20
+   "Logan Thompson": 22
   },
   "needs_review": false
  },
@@ -16784,7 +16805,7 @@
  "a70be599-8b9f-405d-9e10-f501b0046e74": {
   "canonical": "Shannon Pretorius",
   "variants": {
-   "Shannon Pretorius": 43
+   "Shannon Pretorius": 49
   },
   "needs_review": false
  },
@@ -17113,7 +17134,7 @@
  "aa45af3b-41b0-4e03-9a17-4ca16a108df3": {
   "canonical": "Vincent Rettke",
   "variants": {
-   "Vincent Rettke": 82
+   "Vincent Rettke": 85
   },
   "needs_review": false
  },
@@ -17799,7 +17820,7 @@
  "af94be9e-b2f9-413a-aa9c-450cf6021c10": {
   "canonical": "Michael Vallejo",
   "variants": {
-   "Michael Vallejo": 31
+   "Michael Vallejo": 34
   },
   "needs_review": false
  },
@@ -17834,7 +17855,7 @@
  "b025eccb-868e-4ce6-a4db-c1082a288b59": {
   "canonical": "Maddy Rasmusen",
   "variants": {
-   "Maddy Rasmusen": 151
+   "Maddy Rasmusen": 155
   },
   "needs_review": false
  },
@@ -17890,9 +17911,10 @@
  "b097dd8f-ea66-4a3a-80c0-abb960e1ee33": {
   "canonical": "Marygrace Rudd",
   "variants": {
-   "Marygrace Rudd": 5
+   "Marygrace Rudd": 3,
+   "MaryGrace Rudd": 2
   },
-  "needs_review": false
+  "needs_review": true
  },
  "b0e3a616-e7e3-4dbf-aef2-90197442f159": {
   "canonical": "Jimmy Daher",
@@ -17911,7 +17933,7 @@
  "b0f3ebeb-9266-4c1d-a9c9-4df7be38e048": {
   "canonical": "Preston Ducrest",
   "variants": {
-   "Preston Ducrest": 10
+   "Preston Ducrest": 13
   },
   "needs_review": false
  },
@@ -17981,9 +18003,9 @@
  "b1a0b8eb-78f8-4278-bda0-5d9397c6a7d5": {
   "canonical": "Liza Klyachkin",
   "variants": {
-   "Liza Klyachkin": 2
+   "Liza Klyachkin": 4
   },
-  "needs_review": true
+  "needs_review": false
  },
  "b1a77e6b-6663-4270-b2d3-250d9128a500": {
   "canonical": "James Ngo",
@@ -18065,7 +18087,7 @@
  "b250b70a-6e41-48e1-aa6f-4b07d606bfb5": {
   "canonical": "Patara Tezduyar",
   "variants": {
-   "Patara Tezduyar": 10
+   "Patara Tezduyar": 13
   },
   "needs_review": false
  },
@@ -18394,7 +18416,7 @@
  "b65efb9d-3466-4500-986d-ed13e9bb25f5": {
   "canonical": "Elise Fortino",
   "variants": {
-   "Elise Fortino": 34
+   "Elise Fortino": 37
   },
   "needs_review": false
  },
@@ -19094,7 +19116,7 @@
  "bd8e1ad4-5402-4c55-a95b-1d39c1de2344": {
   "canonical": "Spencer Liang",
   "variants": {
-   "Spencer Liang": 38
+   "Spencer Liang": 41
   },
   "needs_review": false
  },
@@ -19164,7 +19186,7 @@
  "be74032b-1035-4ece-bf4f-773b45da4d58": {
   "canonical": "Mehvish Safdar",
   "variants": {
-   "Mehvish Safdar": 144
+   "Mehvish Safdar": 149
   },
   "needs_review": false
  },
@@ -19269,7 +19291,7 @@
  "bf84d952-c6a8-4494-943d-064b223e764f": {
   "canonical": "Estee Widdershoven",
   "variants": {
-   "Estee Widdershoven": 131
+   "Estee Widdershoven": 137
   },
   "needs_review": false
  },
@@ -19493,7 +19515,7 @@
  "c18102fc-52d5-4d42-bd1c-303ce00ae085": {
   "canonical": "Scott McRee",
   "variants": {
-   "Scott McRee": 14
+   "Scott McRee": 20
   },
   "needs_review": false
  },
@@ -19521,7 +19543,7 @@
  "c1a46ce0-a228-4959-bea7-c365b285551e": {
   "canonical": "Brittany Yang",
   "variants": {
-   "Brittany Yang": 17
+   "Brittany Yang": 20
   },
   "needs_review": false
  },
@@ -19847,6 +19869,13 @@
   },
   "needs_review": false
  },
+ "c4f17333-3ce8-4d94-9ff3-389bc1f8c0dd": {
+  "canonical": "Dallas Fahr",
+  "variants": {
+   "Dallas Fahr": 4
+  },
+  "needs_review": false
+ },
  "c5139cbf-a3b4-400c-b699-5f5a1a585b61": {
   "canonical": "Dan Moore",
   "variants": {
@@ -20081,7 +20110,7 @@
  "c79ef5cd-2d17-4fbf-83a9-34d4aaaaebd8": {
   "canonical": "Masa Grgan",
   "variants": {
-   "Masa Grgan": 43
+   "Masa Grgan": 49
   },
   "needs_review": false
  },
@@ -20158,7 +20187,7 @@
  "c84377c6-b0ca-42dd-bc1a-2fd3d3c4ef9f": {
   "canonical": "Ryan Torresin",
   "variants": {
-   "Ryan Torresin": 67
+   "Ryan Torresin": 74
   },
   "needs_review": false
  },
@@ -20347,7 +20376,7 @@
  "ca3c21b0-a715-40fd-bf00-c81e22d7da11": {
   "canonical": "Daniel De la Rosa",
   "variants": {
-   "Daniel De la Rosa": 123
+   "Daniel De la Rosa": 129
   },
   "needs_review": false
  },
@@ -20697,7 +20726,7 @@
  "cdb01e3a-b0e0-449b-a7c5-278127f2cd61": {
   "canonical": "Mary McGowan",
   "variants": {
-   "Mary McGowan": 75
+   "Mary McGowan": 78
   },
   "needs_review": false
  },
@@ -20928,7 +20957,7 @@
  "d02f0502-9093-475f-a9f6-772cf0e3721f": {
   "canonical": "Mikaela Smith",
   "variants": {
-   "Mikaela Smith": 10
+   "Mikaela Smith": 15
   },
   "needs_review": false
  },
@@ -20984,7 +21013,7 @@
  "d0a30dc1-a7d7-475c-bfc9-d55e0aa8e7e3": {
   "canonical": "Ethan Bakalinsky",
   "variants": {
-   "Ethan Bakalinsky": 58
+   "Ethan Bakalinsky": 62
   },
   "needs_review": false
  },
@@ -21047,7 +21076,7 @@
  "d1045e15-2ae2-4e2c-b7ba-21a326affe05": {
   "canonical": "Alexa Quintanilla",
   "variants": {
-   "Alexa Quintanilla": 30
+   "Alexa Quintanilla": 35
   },
   "needs_review": false
  },
@@ -21103,14 +21132,14 @@
  "d1ca938d-f130-4aa7-a753-1004bd0661e6": {
   "canonical": "Caroline Maguire",
   "variants": {
-   "Caroline Maguire": 20
+   "Caroline Maguire": 25
   },
   "needs_review": false
  },
  "d1cae50a-fc6e-4fcd-a968-e26048c36c67": {
   "canonical": "Xavier Richard",
   "variants": {
-   "Xavier Richard": 4
+   "Xavier Richard": 8
   },
   "needs_review": false
  },
@@ -21271,7 +21300,7 @@
  "d3e486f2-7c25-4bcf-b9dd-81c14f644f60": {
   "canonical": "Etienne Blaszkewycz",
   "variants": {
-   "Etienne Blaszkewycz": 120
+   "Etienne Blaszkewycz": 126
   },
   "needs_review": false
  },
@@ -21740,7 +21769,7 @@
  "d8d51930-abf9-468b-9e43-55a9c0728d58": {
   "canonical": "Anouar Braham",
   "variants": {
-   "Anouar Braham": 256
+   "Anouar Braham": 262
   },
   "needs_review": false
  },
@@ -21761,7 +21790,7 @@
  "d93f56ce-61cc-477d-a26c-17d04e53b2ff": {
   "canonical": "Anna Lenhart",
   "variants": {
-   "Anna Lenhart": 48
+   "Anna Lenhart": 52
   },
   "needs_review": false
  },
@@ -22101,6 +22130,13 @@
   },
   "needs_review": false
  },
+ "dcf2ff1c-c9e8-4d61-b5f7-a6e8df0dfa5d": {
+  "canonical": "Jacob Bradshaw",
+  "variants": {
+   "Jacob Bradshaw": 2
+  },
+  "needs_review": true
+ },
  "dcfe3d80-6d5a-473a-b7b0-46f35e110aa5": {
   "canonical": "Zachary Yusuf",
   "variants": {
@@ -22118,7 +22154,7 @@
  "dd2f2fe3-5333-4036-9d88-f108bdcee3fc": {
   "canonical": "Giovanna Morelli",
   "variants": {
-   "Giovanna Morelli": 92
+   "Giovanna Morelli": 101
   },
   "needs_review": false
  },
@@ -22216,7 +22252,7 @@
  "deb34ab5-bc2e-4fda-894e-600a62ca0fa7": {
   "canonical": "Michael Shaw",
   "variants": {
-   "Michael Shaw": 23
+   "Michael Shaw": 26
   },
   "needs_review": false
  },
@@ -22650,9 +22686,9 @@
  "e32bc591-7691-47a7-84d6-ce2077167296": {
   "canonical": "Joshua Cornett",
   "variants": {
-   "Joshua Cornett": 2
+   "Joshua Cornett": 4
   },
-  "needs_review": true
+  "needs_review": false
  },
  "e3845e96-0d47-4f20-aa71-97bf36742bd0": {
   "canonical": "Jayann Steffins",
@@ -22755,7 +22791,7 @@
  "e468331d-9060-4b41-a570-90c36934a38b": {
   "canonical": "Alvaro Regalado",
   "variants": {
-   "Alvaro Regalado": 12
+   "Alvaro Regalado": 15
   },
   "needs_review": false
  },
@@ -22776,7 +22812,7 @@
  "e4aa3932-f0b8-4cc0-aa3b-e926f3f5075a": {
   "canonical": "Colby Hill",
   "variants": {
-   "Colby Hill": 27
+   "Colby Hill": 33
   },
   "needs_review": false
  },
@@ -22902,7 +22938,7 @@
  "e6129a52-f99b-4c66-be30-8f96d7635250": {
   "canonical": "Andrew Angulo",
   "variants": {
-   "Andrew Angulo": 25
+   "Andrew Angulo": 29
   },
   "needs_review": false
  },
@@ -23028,7 +23064,7 @@
  "e75f0b5e-f10a-4b83-989c-d33f9b723ca5": {
   "canonical": "Tyler Kane",
   "variants": {
-   "Tyler Kane": 7
+   "Tyler Kane": 9
   },
   "needs_review": false
  },
@@ -23043,6 +23079,13 @@
   "canonical": "Ansh Bassan",
   "variants": {
    "Ansh Bassan": 1
+  },
+  "needs_review": true
+ },
+ "e79871a0-ea8d-4470-9be6-68bcaa97aacd": {
+  "canonical": "Ethan Aycock",
+  "variants": {
+   "Ethan Aycock": 2
   },
   "needs_review": true
  },
@@ -23350,7 +23393,7 @@
  "ea0b7d06-7e9f-4786-a4ed-24da5029559f": {
   "canonical": "Dale Kim",
   "variants": {
-   "Dale Kim": 87
+   "Dale Kim": 91
   },
   "needs_review": false
  },
@@ -23462,7 +23505,7 @@
  "eb74c432-c1c4-456e-b010-5e21966abd01": {
   "canonical": "Fatyha Berjane",
   "variants": {
-   "Fatyha Berjane": 20
+   "Fatyha Berjane": 22
   },
   "needs_review": false
  },
@@ -23714,7 +23757,7 @@
  "edca189d-8781-4491-a146-868c85f7cf25": {
   "canonical": "Blake Suard",
   "variants": {
-   "Blake Suard": 39
+   "Blake Suard": 41
   },
   "needs_review": false
  },
@@ -23903,7 +23946,7 @@
  "efedfcd1-7638-4c6e-8225-fea7f8d40031": {
   "canonical": "Victoria Simon",
   "variants": {
-   "Victoria Simon": 62
+   "Victoria Simon": 64
   },
   "needs_review": false
  },
@@ -24043,14 +24086,14 @@
  "f13c20c3-1fed-4a9e-abec-f3f3bf1f8f91": {
   "canonical": "Anne-Sophie Courteau",
   "variants": {
-   "Anne-Sophie Courteau": 72
+   "Anne-Sophie Courteau": 76
   },
   "needs_review": false
  },
  "f13e0c0b-2355-4897-aadf-3ac220a78afa": {
   "canonical": "Ryan Camras",
   "variants": {
-   "Ryan Camras": 48
+   "Ryan Camras": 52
   },
   "needs_review": false
  },
@@ -24330,7 +24373,7 @@
  "f46666b8-a454-42eb-b316-f63ea86eeee2": {
   "canonical": "Brendan Gallagher",
   "variants": {
-   "Brendan Gallagher": 10
+   "Brendan Gallagher": 12
   },
   "needs_review": false
  },
@@ -24407,7 +24450,7 @@
  "f51d6dfa-5101-49d8-aea5-269e481e1918": {
   "canonical": "Helen To",
   "variants": {
-   "Helen To": 58
+   "Helen To": 64
   },
   "needs_review": false
  },
@@ -24540,7 +24583,7 @@
  "f684d481-25b9-4def-8af3-b7b2a8e507ce": {
   "canonical": "Francis Chi",
   "variants": {
-   "Francis Chi": 18
+   "Francis Chi": 23
   },
   "needs_review": false
  },
@@ -24862,7 +24905,7 @@
  "f91b88a1-7d1e-41ad-9782-200959faf6bd": {
   "canonical": "Olivia McMillan",
   "variants": {
-   "Olivia McMillan": 115
+   "Olivia McMillan": 119
   },
   "needs_review": false
  },
@@ -24946,7 +24989,7 @@
  "fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae": {
   "canonical": "Anderson Scarpa",
   "variants": {
-   "Anderson Scarpa": 217
+   "Anderson Scarpa": 221
   },
   "needs_review": false
  },
@@ -24960,7 +25003,7 @@
  "fab2d6de-43bd-49c6-903d-d07886cb0d7e": {
   "canonical": "Katelyn Hilliard",
   "variants": {
-   "Katelyn Hilliard": 9
+   "Katelyn Hilliard": 11
   },
   "needs_review": false
  },
@@ -25352,7 +25395,7 @@
  "fe8824f9-a572-45aa-b55a-40476dfd59dd": {
   "canonical": "Michael Hollings",
   "variants": {
-   "Michael Hollings": 7
+   "Michael Hollings": 10
   },
   "needs_review": false
  },
