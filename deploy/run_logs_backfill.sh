@@ -23,6 +23,12 @@ PY="$REPO/.venv/bin/python"
 
 "$PY" scraper/harvest_logs.py --summarize
 
+# Upsert per-match-per-player serve tallies into Supabase so serve/return
+# questions are a SQL query, never a re-harvest. No-op unless SUPABASE_URL /
+# SUPABASE_SERVICE_KEY are set in the droplet environment. Never blocks the
+# git refresh below if the network hiccups.
+"$PY" scraper/upload_supabase.py || echo "supabase upload skipped/failed (non-fatal)"
+
 if [[ -n "$(git status --porcelain -- data/match_rally_summary.csv data/player_serve_rallies.csv)" ]]; then
     git add data/match_rally_summary.csv data/player_serve_rallies.csv
     git commit -m "rally logs: nightly summary refresh ($(date +%F))"

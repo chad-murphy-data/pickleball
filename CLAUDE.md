@@ -195,6 +195,32 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   Schemas + log_type enum: recon.md. No shot-level data exists anywhere
   in this stack (ceiling: vision pipeline on broadcasts).
 
+- **Serve/return lives in Supabase — query it, don't re-harvest**
+  (2026-07-21). Rally logs are gitignored + droplet-only, and the committed
+  per-player-year CSV is too coarse to slice, so serve/return questions used
+  to force a fresh harvest every session. Fixed: the droplet upserts a
+  per-match-per-player table to Supabase nightly (`scraper/upload_supabase.py`,
+  wired into `deploy/run_logs_backfill.sh`, guarded on SUPABASE_URL /
+  SUPABASE_SERVICE_KEY). Then ANY serve/return/points cut (player, season,
+  tour, opponent set) is one SQL query — no logs touched.
+    - Front door: `model/rally_stats.py` (`serve_return(...)`, `freshness()`);
+      queries the store when SUPABASE_URL is set, else falls back to the
+      committed `data/player_serve_rallies.csv`. `model/serve_return_report.py`
+      does the population regression (who beats the field on return).
+    - **Data catalog** (Supabase project `nwgxyytowbluuykbdcfc`, public read via
+      anon key; writes = service role only):
+      · `pb_match_player_serve` — grain: 1 row / player / match
+        (side, serve_rallies, serve_wins). The base; slice it however.
+      · `pb_player_serve_return` (view) — per (player, tour, year) serve AND
+        return; return = opposing side's serve losses, reconstructed in SQL
+        (team-attributed in doubles — a per-player RATE, never summed).
+      · `pb_meta` — freshness stamp (serve_rows, max_match_date).
+    - Raw logs stay the source of truth: a tally-logic fix means re-derive
+      from raw + re-upsert, NOT re-fetch. DB is a queryable cache.
+    - Honest limit: this grain answers serve/return/points only. Score-state
+      / streak / rally-length questions need a per-rally table (unbuilt —
+      same pipeline, finer grain).
+
 ## Scheduled obligations
 
 - **September 2026**: score `model/registered_predictions.md` (frozen
