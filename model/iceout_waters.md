@@ -125,6 +125,78 @@ multi-σ joint skill miss — before Bright/Fahey are even coin-flips, and
 building that after seeing the box score is drawing the target around the
 arrow.
 
+But the grid above is *symmetric* — it penalizes both teams' skill gaps
+equally, which is not what "ice out Waters" means. The freeze is one-sided,
+and one-sided is a different, much sharper instrument.
+
+## The freeze-out mechanism — the actual "ice-out" story
+
+The eye-test claim is that Bright/Fahey *funneled every ball to Johnson and
+kept it away from Waters*. We take that as the **premise** (we don't try to
+prove it — see the data ceiling below) and ask the model one question: **if
+the freeze was real, what does it do to the odds?** The answer is the
+striking part of this whole file.
+
+**Why 88% and not 99% to begin with.** The weak-link term
+`stronger + weaker + γ·|gap|` with γ = −0.18 is *algebraically identical* to
+the stronger player only covering a share `w = (1+γ)/2 ≈ 0.41` of the court:
+
+```
+2·[(1−w)·weaker + w·stronger]  =  stronger + weaker + (2w−1)·(stronger−weaker),
+which equals the weak-link value exactly when w = (1+γ)/2.
+```
+
+So **the model already assumes Waters covers only ~41% of the court** —
+opponents already tilt ~59% of the load onto Johnson, and *that* is why they
+were 88% and not 99%. Sweeping w (`coverage_curve`) walks the same line all
+the way to the freeze:
+
+| Waters's court share w | team-1 value | P(win) |
+|---|---|---|
+| **0.00** — fully iced, touches nothing | +2.37 | **52.0%** |
+| **0.41** — realized γ tilt (= the pre-match number) | +2.88 | **90.0%** |
+| 0.50 — equal share | +3.00 | 94.0% |
+| 0.75 | +3.31 | 98.8% |
+| 1.00 — Waters does everything | +3.62 | 99.8% |
+
+The pre-match 90% *is* the w = 0.41 point (an internal consistency check —
+same γ, reached two independent ways). Ice Waters completely and you slide
+down the same curve to a **coin flip**.
+
+**The asymmetric freeze.** Set team-1 = `2·Johnson` (Waters iced to zero
+touches), team-2 at normal weighting, then add a skill dial k
+(`asymmetric_freeze`):
+
+| k (skill nudge on top of the freeze) | P(win) |
+|---|---|
+| 0.0 — freeze only, every rating left as-is | **52.0%** |
+| 0.5 | 35.8% |
+| 1.0 | 22.0% |
+| 2.0 | 5.7% |
+
+And the identity behind it (`two_of_weaker`): literally **two Jorja Johnsons
+vs the real Bright/Fahey = 49.7%.** A dead coin flip. **The freeze alone —
+with Waters's rating and everyone else's left exactly where the model had
+them — erases the 88%.** It needs no "Waters had a bad day" and no rating
+error; it needs her to not touch the ball. That is the one-sided instrument
+the symmetric grid couldn't represent, and it's the parsimonious explanation
+for the upset: not that the model was wrong, but that the game it priced
+(Waters covers 41%) is not the game that was played (Waters covers ~0%).
+
+## The data ceiling (why we assume the freeze rather than measure it)
+
+**No shot-level data exists anywhere in this stack** (a CLAUDE.md house
+rule). The referee log (`getListLogs`, cached under `raw/match_logs/`)
+records per rally only the **server** and the **receiver of the serve** —
+the first ball. The freeze happens *mid-rally* (the 3rd/5th/7th shots at the
+weaker player), which is invisible to every feed we have. As a sanity check,
+the serve-receiver split in this exact match was ~even (Johnson received 10,
+Waters 9) — uninformative, precisely because it only sees the return, not
+where the rally went afterward. So Part B is honestly a **model mechanism
+study** — "if the freeze was real, here is what it does" — not a measurement.
+Any real targeting signal would need shot tracking we don't have (ceiling: a
+vision pipeline on broadcasts).
+
 ## The lessons that generalize
 
 1. **For well-observed players, a lone upset is race variance + tight
@@ -143,3 +215,41 @@ arrow.
 3. **How badly a favorite lost is signal.** Loss severity is
    back-loaded onto close scores; a blowout is rarer and more informative
    than a squeaker.
+4. **A single result can illustrate a mechanism without measuring it.**
+   Part B is defensible *only* because it's framed as "what the model says
+   the freeze does," never "here's proof they froze her." Keep that wall up.
+
+## Reproduce (handoff for a new thread)
+
+Everything above comes from one self-contained script:
+
+```bash
+python model/iceout_waters.py            # all tables + the holdout validation
+python model/iceout_waters.py --json     # + model/iceout_waters_summary.json
+```
+
+Pure stdlib + numpy, ~5 s. To retarget **any** game, edit the `MATCHUP` /
+`OBSERVED` / `LOPSIDED_PTS` constants at the top of the script — player
+values are looked up by name from `data/v2_players.csv`, chem from
+`data/v2_dyads.csv`, and the posterior scalars (γ, sd_m) are constants from
+`model/v2_fit_summary.json`. The race DP mirrors `model/v2_holdout.py` and
+`web/sitelib/race.py` — keep the three in sync if you touch it.
+
+A fresh run should print, within Monte-Carlo noise:
+
+| number | expected |
+|---|---|
+| plug-in P(win) | 90.0% |
+| honest P(loss), value-uncertainty | ~11.9% (→ 88.1% win = the site's 88%) |
+| match-shock P(loss) *(the trap, do not ship)* | ~17.6% |
+| coverage w=0 / 0.41 / 1.0 | 52.0% / 90.0% / 99.8% |
+| asymmetric freeze k=0 / 1 / 2 | 52.0% / 22.0% / 5.7% |
+| two-Johnson identity | 49.7% |
+| holdout Brier: value-unc / match-shock | 0.1658 (best) / 0.1668 (worse) |
+
+**Story layer** (built from these numbers for a general audience) lives in
+`content/waters_iceout/`: `analysis_dossier.md` (7-lens menu + all numbers),
+`stats_summary.md` (source of truth for the drafts), `explainer_iceout.md`
+(long-form), `reddit_post.md` + `threads_post.md` (no-hedge voice),
+`iceout_infographic.html` (+ `iceout_preview.png`). Deeper method context:
+`model/spec_shootout.md` (the weak-link / convex-gap finding, #1).

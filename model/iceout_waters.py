@@ -230,6 +230,51 @@ def mc_bucket(V, SD, draw_vals, gdraw, match_eff, bucket_fn, rng, n=N_MC):
     return acc / n
 
 
+# ---- the freeze-out MECHANISM (court coverage, asymmetric freeze) ------
+
+def _team2_value(V, gamma=GAMMA):
+    return team_value(V[MATCHUP["team2"][0]], V[MATCHUP["team2"][1]], gamma) + MATCHUP["chem2"]
+
+
+def coverage_curve(V):
+    """Win prob as the STRONGER team-1 player's share of the court, w,
+    varies: team1 = 2*[(1-w)*weaker + w*stronger] (+ dyad chem).  w=0 fully
+    iced, 0.5 equal, 1 stronger does everything.  Realized w = (1+gamma)/2
+    (opponents already tilt the court toward the weaker player)."""
+    a, b = (V[p] for p in MATCHUP["team1"])
+    strong, weak = max(a, b), min(a, b)
+    t2 = _team2_value(V)
+    realized = (1 + GAMMA) / 2
+    rows = []
+    for w in (0.0, realized, 0.5, 0.75, 1.0):
+        team1 = 2 * ((1 - w) * weak + w * strong) + MATCHUP["chem1"]
+        rows.append((w, team1, race_win(team1 - t2, MATCHUP["T"])))
+    return rows, realized
+
+
+def asymmetric_freeze(V, SD):
+    """Stronger team-1 player fully iced -> team1 = 2*weaker (the weaker
+    player plays 100%), team2 kept at NORMAL weighting.  Skill dial k:
+    team1 down k*SD, team2 up k*SD."""
+    w1, w2 = MATCHUP["team1"]
+    weaker = w1 if V[w1] <= V[w2] else w2
+    o1, o2 = MATCHUP["team2"]
+    rows = []
+    for k in (0.0, 0.5, 1.0, 1.5, 2.0):
+        team1 = 2 * (V[weaker] - k * SD[weaker]) + MATCHUP["chem1"]
+        t2 = team_value(V[o1] + k * SD[o1], V[o2] + k * SD[o2], GAMMA) + MATCHUP["chem2"]
+        rows.append((k, race_win(team1 - t2, MATCHUP["T"])))
+    return rows, weaker
+
+
+def two_of_weaker(V):
+    """Sanity check: literally two copies of the weaker player (no dyad
+    chem) vs the real team2 — the identity behind the freeze."""
+    w1, w2 = MATCHUP["team1"]
+    weaker = w1 if V[w1] <= V[w2] else w2
+    return race_win(2 * V[weaker] - _team2_value(V), MATCHUP["T"]), weaker
+
+
 # ------------------------------------------------------------------ main
 
 def main():
@@ -300,6 +345,32 @@ def main():
         grid[k] = [p_loss_at_least(lop, sigmoid(eta_of(vv, g)), T) for g in gammas]
         print(f"  {k:4.1f}   " + "".join(f"{x*100:8.1f}%" for x in grid[k]))
 
+    # --- the FREEZE-OUT mechanism: court coverage, not a rating error ------
+    a, b = (V[p] for p in MATCHUP["team1"])
+    strong = MATCHUP["team1"][0] if a >= b else MATCHUP["team1"][1]
+    cov, realized = coverage_curve(V)
+    print(f"\nFREEZE-OUT MECHANISM — win prob vs {strong}'s share of the court w")
+    print(f"  (team1 = 2·[(1-w)·weaker + w·stronger] + chem; realized w={realized:.2f}"
+          f" already tilts to the weaker side via gamma):")
+    for w, team1v, wp in cov:
+        tag = ("  <- fully iced (stronger touches nothing)" if w == 0.0 else
+               "  <- realized court tilt (gamma)" if abs(w - realized) < 1e-9 else
+               "  <- equal share" if w == 0.5 else
+               "  <- stronger does everything" if w == 1.0 else "")
+        print(f"    w={w:4.2f}  team1 value={team1v:+.3f}  P(win)={wp*100:5.1f}%{tag}")
+
+    afz, weaker = asymmetric_freeze(V, SD)
+    print(f"\nASYMMETRIC FREEZE — stronger fully iced (team1 = 2·{weaker}), "
+          f"plus a skill dial k (team1 −k·SD, team2 +k·SD):")
+    for k, wp in afz:
+        print(f"    k={k:3.1f}  P(win)={wp*100:5.1f}%")
+
+    two_wp, weaker2 = two_of_weaker(V)
+    print(f"\nTWO-{weaker2.upper()} IDENTITY — literally two copies of the weaker "
+          f"player (no chem) vs team2:  P(win)={two_wp*100:.1f}%")
+    print(f"  (the 88%->~coin-flip collapse is the weakest-link structure, "
+          f"not a claim that Waters' rating was wrong.)")
+
     cal = holdout_calibration_test()
 
     if args.json:
@@ -311,6 +382,11 @@ def main():
                    ladder=lad,
                    both_dials_grid={f"k={k}": {f"g={g}": grid[k][i]
                                     for i, g in enumerate(gammas)} for k in ks},
+                   freeze_out=dict(
+                       realized_court_share=realized,
+                       coverage_curve={f"w={w:.2f}": wp for w, _, wp in cov},
+                       asymmetric_freeze={f"k={k}": wp for k, wp in afz},
+                       two_of_weaker=two_wp),
                    holdout_calibration_test=cal)
         (ROOT / "model" / "iceout_waters_summary.json").write_text(json.dumps(out, indent=1))
         print("\nwrote model/iceout_waters_summary.json")
