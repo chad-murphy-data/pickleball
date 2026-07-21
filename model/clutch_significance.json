@@ -1,0 +1,164 @@
+{
+ "n_players": 182,
+ "threshold_counts": [
+  {
+   "label": "z>1.645 (1-tail p<.05)",
+   "thr": 1.645,
+   "observed": 20,
+   "expected_by_chance": 9.1,
+   "excess": 10.9
+  },
+  {
+   "label": "z>1.96 (2-tail p<.05)",
+   "thr": 1.96,
+   "observed": 15,
+   "expected_by_chance": 4.5,
+   "excess": 10.5
+  },
+  {
+   "label": "z>2.326 (1-tail p<.01)",
+   "thr": 2.326,
+   "observed": 11,
+   "expected_by_chance": 1.8,
+   "excess": 9.2
+  },
+  {
+   "label": "z>2.576 (2-tail p<.01)",
+   "thr": 2.576,
+   "observed": 11,
+   "expected_by_chance": 0.9,
+   "excess": 10.1
+  },
+  {
+   "label": "z>3.09 (1-tail p<.001)",
+   "thr": 3.09,
+   "observed": 7,
+   "expected_by_chance": 0.2,
+   "excess": 6.8
+  }
+ ],
+ "n_confident_fdr05": 7,
+ "n_confident_fdr10": 11,
+ "confidently_clutch": [
+  {
+   "name": "Anna Leigh Waters",
+   "z": 7.9,
+   "n": 1695,
+   "value": 1.79,
+   "fdr05": true,
+   "fdr10": true,
+   "bonferroni": true
+  },
+  {
+   "name": "Ben Johns",
+   "z": 6.8,
+   "n": 1772,
+   "value": 1.1,
+   "fdr05": true,
+   "fdr10": true,
+   "bonferroni": true
+  },
+  {
+   "name": "Anna Bright",
+   "z": 6.7,
+   "n": 1909,
+   "value": 1.28,
+   "fdr05": true,
+   "fdr10": true,
+   "bonferroni": true
+  },
+  {
+   "name": "Gabriel Tardio",
+   "z": 5.5,
+   "n": 1821,
+   "value": 0.99,
+   "fdr05": true,
+   "fdr10": true,
+   "bonferroni": true
+  },
+  {
+   "name": "Christian Alshon",
+   "z": 4.2,
+   "n": 1400,
+   "value": 0.97,
+   "fdr05": true,
+   "fdr10": true,
+   "bonferroni": true
+  },
+  {
+   "name": "Jorja Johnson",
+   "z": 4.1,
+   "n": 1697,
+   "value": 1.16,
+   "fdr05": true,
+   "fdr10": true,
+   "bonferroni": true
+  },
+  {
+   "name": "JW Johnson",
+   "z": 3.3,
+   "n": 1480,
+   "value": 1.06,
+   "fdr05": true,
+   "fdr10": true,
+   "bonferroni": false
+  },
+  {
+   "name": "Andrei Daescu",
+   "z": 2.8,
+   "n": 1690,
+   "value": 0.95,
+   "fdr05": false,
+   "fdr10": true,
+   "bonferroni": false
+  },
+  {
+   "name": "Yuta Funemizu",
+   "z": 2.7,
+   "n": 757,
+   "value": 0.7,
+   "fdr05": false,
+   "fdr10": true,
+   "bonferroni": false
+  },
+  {
+   "name": "Rachel Rohrabacher",
+   "z": 2.7,
+   "n": 1445,
+   "value": 1.13,
+   "fdr05": false,
+   "fdr10": true,
+   "bonferroni": false
+  },
+  {
+   "name": "Federico Staksrud",
+   "z": 2.7,
+   "n": 1636,
+   "value": 0.92,
+   "fdr05": false,
+   "fdr10": true,
+   "bonferroni": false
+  }
+ ],
+ "z_distribution": {
+  "n_players": 182,
+  "mean_z": 0.012,
+  "var_z": 2.944,
+  "sd_ratio_vs_null": 1.716,
+  "ks_stat": 0.117,
+  "ks_p": 0.012577710009607704,
+  "note": "under pure noise: mean 0, var 1. var>1 = real spread of clutch across players."
+ },
+ "beyond_skill": {
+  "corr_clutch_value": 0.581,
+  "var_resid_z": 1.446,
+  "n_pass_fdr10": 2,
+  "obs_gt_1p96": 8,
+  "exp_gt_1p96": 4.5,
+  "survivors": [
+   "Ben Johns",
+   "Gabriel Tardio"
+  ],
+  "note": "clutch minus the part explained by overall skill. var still >1 = SOME clutch beyond skill exists in the population; few/no individuals clear FDR."
+ }
+}
