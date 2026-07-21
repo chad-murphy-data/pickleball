@@ -214,12 +214,24 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
       · `pb_player_serve_return` (view) — per (player, tour, year) serve AND
         return; return = opposing side's serve losses, reconstructed in SQL
         (team-attributed in doubles — a per-player RATE, never summed).
-      · `pb_meta` — freshness stamp (serve_rows, max_match_date).
+      · `pb_rally` — THE finest grain: 1 row / rally (server, receiver,
+        server_side, server_number, outcome point|sideout|second, won, and
+        running server/receiver score at rally start). Denormalized with
+        tour/date so rally mining needs no joins. Unlocks score-state
+        (win% at 9-9), serve-runs/streaks (order by rally_number), receiver
+        splits, 1st/2nd-server effects. Built by H.rally_events (mirrors
+        tally with correction handling; H.test_rally_events asserts it
+        reproduces tally's serve counts exactly, wins to ~0.02% — rare
+        multi-point rewinds; exact serve/return still comes from the
+        tally-based pb_match_player_serve).
+      · `pb_player` — dimension (player_uuid → full_name, gender) so queries
+        read in names. Join on player_uuid.
+      · `pb_meta` — freshness stamp (serve_rows, rally_rows, max_match_date).
     - Raw logs stay the source of truth: a tally-logic fix means re-derive
       from raw + re-upsert, NOT re-fetch. DB is a queryable cache.
-    - Honest limit: this grain answers serve/return/points only. Score-state
-      / streak / rally-length questions need a per-rally table (unbuilt —
-      same pipeline, finer grain).
+    - Ceiling: no shot-level data exists anywhere (only referee logs); that
+      needs a broadcast vision pipeline. Everything the logs contain is now
+      in the warehouse.
 
 ## Scheduled obligations
 

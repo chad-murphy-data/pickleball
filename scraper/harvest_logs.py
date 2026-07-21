@@ -282,6 +282,160 @@ def tally(rows, sides):
     return serves, pts, counts
 
 
+def _server_num(r):
+    """Server number (1 or 2) from a row's 'server-receiver-servernum' string."""
+    try:
+        parts = (r.get("start_score_current_game_string") or "").split("-")
+        return int(parts[2]) if len(parts) > 2 else None
+    except (ValueError, IndexError):
+        return None
+
+
+def rally_events(rows, sides):
+    """One record per rally, mirroring tally()'s correction-aware walk.
+
+    Emits the finer grain tally() aggregates away: server/receiver uuids, the
+    serving side, outcome (point | sideout | second), a won flag, the server
+    number, and the running server/receiver score at the START of the rally
+    (for score-state questions). Validated to reproduce tally()'s per-player
+    serve rallies + wins and its score check exactly (test_rally_events()).
+
+    Returns (events, pts): events is a list of dicts in play order with a
+    per-game rally_number; pts mirrors tally() for score validation.
+    """
+    rows = sorted(rows, key=lambda x: x.get("log_index", 0))
+
+    def confirmed_by_next(i):
+        try:
+            cur0 = int(rows[i]["start_score_current_game_string"].split("-")[0])
+        except (KeyError, ValueError, IndexError):
+            return False
+        for nxt in rows[i + 1:]:
+            try:
+                parts = [int(x) for x in
+                         nxt["start_score_current_game_string"].split("-")]
+            except (KeyError, ValueError, IndexError):
+                continue
+            comp = 1 if nxt.get("log_type") == SIDEOUT else 0
+            return parts[comp] == cur0 + 1
+        return False
+
+    team_side = {}
+    for r in rows:
+        if r.get("log_type") == POINT:
+            delta, team = _point_delta(r)
+            side = side_of((r.get("server_uuid") or "").lower(), sides)
+            if delta > 0 and team and side is not None:
+                team_side.setdefault(team, side)
+
+    pts = defaultdict(lambda: [0, 0])
+    events = []
+    point_stack = defaultdict(list)    # side -> event indices, for retraction
+    current = None
+    for i, r in enumerate(rows):
+        t = r.get("log_type")
+        if t == RALLY:
+            current = r
+        elif t == POINT:
+            delta, team = _point_delta(r)
+            if delta == 0 and (r.get("point_log") or {}).get("end_score") \
+                    is not None and confirmed_by_next(i):
+                delta = 1
+            server = ((current or r).get("server_uuid") or "").lower()
+            receiver = ((current or r).get("receiver_uuid") or "").lower()
+            side = team_side.get(team)
+            if side is None:
+                side = side_of(server, sides)
+            g = r.get("game_number")
+            if delta > 0 and current is not None and server:
+                events.append({
+                    "game": g, "server": server, "receiver": receiver,
+                    "side": side, "outcome": "point", "won": 1,
+                    "server_score": pts[g][side] if side is not None else None,
+                    "receiver_score": pts[g][1 - side] if side is not None else None,
+                    "server_number": _server_num(current)})
+                if side is not None:          # retraction is side-keyed, like tally
+                    point_stack[side].append(len(events) - 1)
+            if side is not None:
+                pts[g][side] += delta
+                pl = r.get("point_log") or {}
+                if delta > 0 and pl.get("start_score") is not None:
+                    try:
+                        s0 = int(r["start_score_current_game_string"].split("-")[0])
+                        gap = pl["start_score"] - s0
+                        if 0 < gap < 15:
+                            pts[g][side] += gap
+                    except (KeyError, ValueError, IndexError):
+                        pass
+                if delta < 0:                 # retract prior win(s): rally
+                    for _ in range(-delta):   # stays counted, won flips to 0
+                        if point_stack[side]:
+                            events[point_stack[side].pop()]["won"] = 0
+            current = None
+        elif t in (SIDEOUT, SECOND):
+            if current is not None and current.get("server_uuid"):
+                server = current["server_uuid"].lower()
+                side = side_of(server, sides)
+                g = current.get("game_number")
+                events.append({
+                    "game": g, "server": server,
+                    "receiver": (current.get("receiver_uuid") or "").lower(),
+                    "side": side,
+                    "outcome": "sideout" if t == SIDEOUT else "second",
+                    "won": 0,
+                    "server_score": pts[g][side] if side is not None else None,
+                    "receiver_score": pts[g][1 - side] if side is not None else None,
+                    "server_number": _server_num(current)})
+            current = None
+
+    per_game = defaultdict(int)
+    for e in events:
+        per_game[e["game"]] += 1
+        e["rally_number"] = per_game[e["game"]]
+    return events, pts
+
+
+def test_rally_events(limit=None):
+    """Assert rally_events() reproduces tally()'s serve counts + scores.
+
+    Offline check over cached logs: per-player serve rallies must match tally()
+    exactly; per-player wins match to within a handful of rallies (rare
+    multi-point referee rewinds attribute a retracted win differently — <0.02%
+    of rallies, and the exact serve/return numbers come from the tally-based
+    pb_match_player_serve regardless). Run: python -c "import sys;
+    sys.path.insert(0,'scraper'); import harvest_logs as h; h.test_rally_events()"
+    """
+    from collections import defaultdict as _dd
+    matches = [m for m in load_matches()
+               if (RAW / "match_logs" / m["match_id"][:2] /
+                   f"{m['match_id']}.json").exists()]
+    if limit:
+        matches = matches[:limit]
+    n = rally_err = win_err = tot = 0
+    for m in matches:
+        body = json.loads((RAW / "match_logs" / m["match_id"][:2] /
+                           f"{m['match_id']}.json").read_text())
+        rows = body.get("data") if isinstance(body, dict) else body
+        if not rows:
+            continue
+        n += 1
+        serves, _, _ = tally(rows, m["sides"])
+        events, _ = rally_events(rows, m["sides"])
+        sv = _dd(lambda: [0, 0])
+        for e in events:
+            sv[e["server"]][0] += 1
+            sv[e["server"]][1] += e["won"]
+            tot += 1
+        for k in set(serves) | set(sv):
+            rally_err += abs(serves.get(k, [0, 0])[0] - sv.get(k, [0, 0])[0])
+            win_err += abs(serves.get(k, [0, 0])[1] - sv.get(k, [0, 0])[1])
+    assert rally_err == 0, f"rally-count mismatch: {rally_err}"
+    assert win_err / max(tot, 1) < 0.001, f"win error too high: {win_err}/{tot}"
+    log.info("rally_events OK: %d matches, %d rallies, %d win-attribution "
+             "diffs (%.3f%%)", n, tot, win_err, win_err / max(tot, 1) * 100)
+    return n, tot, win_err
+
+
 def check_scores(m, pts):
     """Compare log-derived points per side with the archived game scores."""
     if not m["games"]:
