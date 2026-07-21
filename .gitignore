@@ -8,3 +8,6 @@ model/*.npz
 .netlify/
 node_modules/
 site/
+
+# droplet Supabase creds (service-role key — never commit)
+deploy/pickleball.env

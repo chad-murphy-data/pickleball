@@ -195,6 +195,44 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   Schemas + log_type enum: recon.md. No shot-level data exists anywhere
   in this stack (ceiling: vision pipeline on broadcasts).
 
+- **Serve/return lives in Supabase — query it, don't re-harvest**
+  (2026-07-21). Rally logs are gitignored + droplet-only, and the committed
+  per-player-year CSV is too coarse to slice, so serve/return questions used
+  to force a fresh harvest every session. Fixed: the droplet upserts a
+  per-match-per-player table to Supabase nightly (`scraper/upload_supabase.py`,
+  wired into `deploy/run_logs_backfill.sh`, guarded on SUPABASE_URL /
+  SUPABASE_SERVICE_KEY). Then ANY serve/return/points cut (player, season,
+  tour, opponent set) is one SQL query — no logs touched.
+    - Front door: `model/rally_stats.py` (`serve_return(...)`, `freshness()`);
+      queries the store when SUPABASE_URL is set, else falls back to the
+      committed `data/player_serve_rallies.csv`. `model/serve_return_report.py`
+      does the population regression (who beats the field on return).
+    - **Data catalog** (Supabase project `nwgxyytowbluuykbdcfc`, public read via
+      anon key; writes = service role only):
+      · `pb_match_player_serve` — grain: 1 row / player / match
+        (side, serve_rallies, serve_wins). The base; slice it however.
+      · `pb_player_serve_return` (view) — per (player, tour, year) serve AND
+        return; return = opposing side's serve losses, reconstructed in SQL
+        (team-attributed in doubles — a per-player RATE, never summed).
+      · `pb_rally` — THE finest grain: 1 row / rally (server, receiver,
+        server_side, server_number, outcome point|sideout|second, won, and
+        running server/receiver score at rally start). Denormalized with
+        tour/date so rally mining needs no joins. Unlocks score-state
+        (win% at 9-9), serve-runs/streaks (order by rally_number), receiver
+        splits, 1st/2nd-server effects. Built by H.rally_events (mirrors
+        tally with correction handling; H.test_rally_events asserts it
+        reproduces tally's serve counts exactly, wins to ~0.02% — rare
+        multi-point rewinds; exact serve/return still comes from the
+        tally-based pb_match_player_serve).
+      · `pb_player` — dimension (player_uuid → full_name, gender) so queries
+        read in names. Join on player_uuid.
+      · `pb_meta` — freshness stamp (serve_rows, rally_rows, max_match_date).
+    - Raw logs stay the source of truth: a tally-logic fix means re-derive
+      from raw + re-upsert, NOT re-fetch. DB is a queryable cache.
+    - Ceiling: no shot-level data exists anywhere (only referee logs); that
+      needs a broadcast vision pipeline. Everything the logs contain is now
+      in the warehouse.
+
 ## Scheduled obligations
 
 - **September 2026**: score `model/registered_predictions.md` (frozen
