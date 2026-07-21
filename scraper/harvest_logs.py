@@ -23,7 +23,10 @@ their logs may still be growing; the next run picks them up.
     data/match_rally_summary.csv   one row per match: rally/point counts,
                                    serve-rally win rate, score validation
     data/player_serve_rallies.csv  (player, discipline, tour, year):
-                                   serve rallies + wins  → serve/return splits
+                                   serve rallies + wins AND return rallies +
+                                   wins → full serve/return splits per player
+                                   (return is team-attributed in doubles; see
+                                   summarize() for the double-count caveat)
 It also prints the aggregate serve-rally win rate k by tour — the
 empirical replacement for the 0.35–0.45 the win-prob DP assumes.
 
@@ -291,7 +294,7 @@ def check_scores(m, pts):
 
 def summarize(matches, out_dir):
     out_dir.mkdir(parents=True, exist_ok=True)
-    per_match, per_player = [], defaultdict(lambda: [0, 0])
+    per_match, per_player = [], defaultdict(lambda: [0, 0, 0, 0])
     k_num, k_den = defaultdict(int), defaultdict(int)
     missing = 0
     for m in matches:
@@ -318,6 +321,27 @@ def summarize(matches, out_dir):
             agg = per_player[(s, m["discipline"], m["tour"], year)]
             agg[0] += n
             agg[1] += w
+        # Return rallies, reconstructed without a receiver field: a side's
+        # return rallies ARE the opposing side's serve rallies, and the side
+        # WINS the ones the opponent lost (every side-out is a return-team
+        # win). Singles sides are one player, so this is an exact individual
+        # split; doubles credits BOTH partners with the full team total — the
+        # right denominator for a per-player return rate, but it double-counts
+        # if you sum return_rallies across a doubles team, so never do that.
+        side_sr = [0, 0]
+        side_sw = [0, 0]
+        for i, s in enumerate(m["sides"]):
+            for u in s:
+                sn, sw = serves.get(u, (0, 0))
+                side_sr[i] += sn
+                side_sw[i] += sw
+        for i, s in enumerate(m["sides"]):
+            opp = 1 - i
+            rr, rw = side_sr[opp], side_sr[opp] - side_sw[opp]
+            for u in s:
+                agg = per_player[(u, m["discipline"], m["tour"], year)]
+                agg[2] += rr
+                agg[3] += rw
         per_match.append({**{k: m[k] for k in ("match_id", "discipline", "tour", "date")},
                           "n_logs": len(rows), "n_rallies": counts[RALLY],
                           "n_points": counts[POINT], "n_sideouts": counts[SIDEOUT],
@@ -333,9 +357,10 @@ def summarize(matches, out_dir):
     with pp.open("w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["player_uuid", "discipline", "tour", "year",
-                    "serve_rallies", "serve_wins"])
-        for (s, disc, tour, year), (n, wn) in sorted(per_player.items()):
-            w.writerow([s, disc, tour, year, n, wn])
+                    "serve_rallies", "serve_wins",
+                    "return_rallies", "return_wins"])
+        for (s, disc, tour, year), (sr, sw, rr, rw) in sorted(per_player.items()):
+            w.writerow([s, disc, tour, year, sr, sw, rr, rw])
     ok = sum(1 for r in per_match if r["score_check"] == "ok")
     bad = sum(1 for r in per_match if r["score_check"] == "mismatch")
     emp = sum(1 for r in per_match if r["score_check"] in ("empty", "404"))
