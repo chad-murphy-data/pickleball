@@ -59,6 +59,40 @@ is ~30k matches ≈ 9.5 h at 1.1 s/request; after that, nightly runs are
 minutes of incremental top-up. Interrupting is always safe — the cache
 resumes for free.
 
+## Supabase warehouse: get the full rally DB in (one-time)
+
+The droplet is the only machine holding every raw log, so the full load
+originates here. `run_logs_backfill.sh` already calls
+`scraper/upload_supabase.py` after `--summarize`; it no-ops until the creds
+exist. To turn it on:
+
+```bash
+# 1. Pull the code that has the uploader (this branch / merged main).
+git pull
+
+# 2. Drop in the Supabase creds. Get the service_role key from the Supabase
+#    dashboard → Project Settings → API (secret — it bypasses RLS, and is
+#    gitignored here so it never lands in the repo).
+cp deploy/pickleball.env.example deploy/pickleball.env
+$EDITOR deploy/pickleball.env          # paste SUPABASE_SERVICE_KEY
+
+# 3. Reinstall the unit so it picks up EnvironmentFile (or just re-run install).
+./deploy/install.sh
+
+# 4. Backfill now instead of waiting for tonight's 20:00 timer:
+set -a; . deploy/pickleball.env; set +a
+.venv/bin/python scraper/upload_supabase.py     # ~2.1M rally rows, minutes
+```
+
+Idempotent (upserts on primary key) and safe to re-run. After the first
+load, each nightly run keeps it current. To make nightly runs incremental
+instead of a full re-upsert, add `--since "$(date -d '10 days ago' +%F)"`
+to the `upload_supabase.py` call in `run_logs_backfill.sh`. Verify:
+
+```sql
+select * from pb_meta;                 -- serve_rows, rally_rows, max_match_date
+```
+
 **Active collector: the droplet timer** — `pickleball-logs.timer`
 (20:00 PT nightly, 11 h cap so it's done well before the 09:15 poller
 and first ball; summaries committed+pushed by `run_logs_backfill.sh`
