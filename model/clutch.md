@@ -180,9 +180,9 @@ big.
   (naming chokers is punching down and thinly supported).
 - For any **individual in the |z|<1.5 middle**, clutch is within noise —
   the reliability lives at the edges.
-- Clutch tracks skill, and our rating captures that far better than the
-  (real, current) DUPR does: on 65 shared top-50 players, clutch~our-rating
-  r = 0.71 vs clutch~DUPR r = 0.48.
+- Clutch tracks skill: it correlates r = 0.71 with our overall player
+  rating across the top-50 players, so most of "who's clutch" is just
+  "who's good" — the residual (§4) is the part worth naming.
 
 ## 8. Reproduce
 

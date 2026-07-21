@@ -328,36 +328,6 @@ def main():
           "~76% of the time) — the conservative direction: player values generalize at "
           "least as well as their posteriors claim.\n")
 
-    # ---- platform-rating benchmark (if present) ----
-    rc_p = ROOT / "model" / "rating_comparison.json"
-    if rc_p.exists():
-        rc = json.loads(rc_p.read_text())
-        A("## Benchmark: DUPR vs this model\n")
-        A("pickleball.com embeds each player's rating as an as-of-match snapshot in the "
-          "raw payloads — and this **is their synced DUPR doubles rating**: the client "
-          "bundle states DUPR is \"Pickleball.com's official rating system,\" the values "
-          "span 2.5–7.0 (DUPR's 2–8 scale, top: Dekel Bar 7.01), and a player's same-day "
-          "snapshot is identical across mixed and gendered doubles (DUPR keeps one "
-          "doubles rating; singles is a separate ledger — verified empirically: players "
-          "carry different ratings in singles vs doubles matches within the same week, "
-          "e.g. Waters 6.60 singles vs 6.75 doubles at the Texas Open). "
-          "Head-to-head on the same holdout games "
-          f"(≥ {rc['split']}, n = {rc['n_games']}), predicting each game's winner:\n")
-        A("| predictor | accuracy | Brier |")
-        A("|:--|--:|--:|")
-        A(f"| this model (frozen {rc['split']}) | {rc['model']['accuracy']:.1%} | "
-          f"{rc['model']['brier']:.3f} |")
-        A(f"| DUPR (as-of-match, updates all season) | "
-          f"{rc['platform_rating']['accuracy']:.1%} | {rc['platform_rating']['brier']:.3f} |")
-        cm, cf = rc["value_rating_correlation"]["M"], rc["value_rating_correlation"]["F"]
-        A(f"\nThe two systems agree on {rc['agreement']:.0%} of games; correlation between "
-          f"model value and latest rating is {cm['r']:.2f} (men, n={cm['n']}) / "
-          f"{cf['r']:.2f} (women, n={cf['n']}). The model wins despite the rating having "
-          "an information edge (it updates through the test window; the model is frozen "
-          "at the split). Notable rating oddities the model avoids: Gabriel Tardio (#1 "
-          "here) ranked ~#30 by rating; Jackie Kawamoto's rating collapsed mid-season "
-          "from 6.13 to 3.50 — an apparent reset/identity glitch in the rating engine.\n")
-
     # ---- core-pool robustness (if the _core fit exists) ----
     core_p = DATA / "results_players_core.csv"
     if core_p.exists():

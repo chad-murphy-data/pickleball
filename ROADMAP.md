@@ -9,7 +9,7 @@ of evenings · **XL** = a season-long side quest. Status: ✅ built, 🔜 next,
 - ✅ Full-history scraper: 36k games, 2024–2026, cached/idempotent/re-runnable
 - ✅ v1 season SRM (points scale) + diagnostics + analysis writeups
 - ✅ v2 model: dynamic monthly skill, race-to-T likelihood, weakest link —
-  validated at 77.4% holdout vs DUPR's 64.7%
+  validated at 77.4% holdout (v1 75.2%)
 - ✅ Findings library: weakest-link γ, chemistry-is-small, gender-blind
   targeting, Johns-never-declined, trajectory curves
 - ✅ Forecast machinery: any matchup → odds, score distributions, outcome
@@ -46,7 +46,7 @@ All pages regenerate from existing CSVs in ~4 s: `python web/build_site.py`
 
 - ✅ ★ PILLAR 1 — Power rankings page (men/women, uncertainty bars, form arrows)
 - ✅ ★ PILLAR 2 — Player pages: trajectory curve + band, W/L splits, clutch stats
-  (deciding-game/overtime records), DUPR overlay, partner network,
+  (deciding-game/overtime records), partner network,
   **game log vs expectation** chart (499 pages, one per tracked player)
 - ✅ ★ PILLAR 3 — **Matchup simulator** — values embedded, race DP + weakest
   link + uncertainty integration in client-side JS; shareable permalinks
@@ -54,7 +54,8 @@ All pages regenerate from existing CSVs in ~4 s: `python web/build_site.py`
   `model/receipts.json` (Gold final graded; chemistry preregistrations pending)
 - ✅ Methods page (EXPLAINER rendered + technical appendix), record book
   (streaks/upsets/marathons mined from games.csv)
-- ✅ DUPR-vs-model scoreboard page (scatter + biggest-disagreement tables)
+- ✅ ~~DUPR-vs-model scoreboard page~~ — removed 2026-07 (owner call: no
+  interest in a "we beat DUPR" comparison; DUPR dropped from the site entirely)
 - ✅ ~~Open CSV downloads page~~ — removed 2026-07-17 (owner call: don't
   redistribute raw source data; the site serves derived stats only, and
   methods.html now documents collection practices)

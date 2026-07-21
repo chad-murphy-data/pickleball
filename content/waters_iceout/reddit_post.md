@@ -6,7 +6,7 @@
 
 If you watched the MLP Mid-Season final, you saw Anna Leigh Waters and Jorja Johnson lose 6-11 to Anna Bright and Kate Fahey, and you probably heard the same take I did: Bright/Fahey **iced out** Waters — funneled everything to Johnson and kept the ball away from the GOAT.
 
-I run a Bayesian model of every MLP + PPA pro doubles game since 2024 (77% winner accuracy out of sample; DUPR is 65% on the same games). It had Waters/Johnson as **88% favorites** in that game. So it was the model's headline miss of the weekend — which makes it the perfect thing to interrogate. Does the "ice-out" hold up mathematically, or is that just a story we tell after a favorite loses?
+I run a Bayesian model of every MLP + PPA pro doubles game since 2024 (77% winner accuracy out of sample). It had Waters/Johnson as **88% favorites** in that game. So it was the model's headline miss of the weekend — which makes it the perfect thing to interrogate. Does the "ice-out" hold up mathematically, or is that just a story we tell after a favorite loses?
 
 **First, the thing that makes the ice-out work: pro doubles teams are ~59% their *weaker* player.**
 

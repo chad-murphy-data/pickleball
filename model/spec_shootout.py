@@ -5,7 +5,7 @@ The question (2026-07-18 session): did we settle on v2's specification too
 quickly?  This harness tries the alternatives — different ways to combine
 the four player ratings (men only, women only, weaker only, stronger only,
 free per-slot loadings), different levels of analysis (match / game /
-point / rally), different rating systems (Elo, platform rating), and a few
+point / rally), a different rating system (Elo), and a few
 wacky-but-defensible extras — all on identical footing:
 
   * every free parameter is fit on TRAIN data only (games before
@@ -22,7 +22,7 @@ Families:
      margin / point level
   D  rally level — serve/return split fit on referee logs, priced by the
      serve-aware DP (needs raw/match_logs; --rally)
-  E  other systems — Elo (game + point flavors), platform rating, coin
+  E  other systems — Elo (game + point flavors), coin
 
 Outputs model/spec_shootout_summary.json; the writeup lives in
 model/spec_shootout.md.  Usage:
@@ -917,9 +917,6 @@ def main():
     record("E_coin", np.full(len(hold), 0.5),
            extra=dict(family="E", desc="coin flip floor"), ref=ref)
 
-    # platform-rating arena (as-of-match snapshots; sparse coverage)
-    platform_arena(games, hold, racer, F_hold, record, ref)
-
     # zero-fitted-weight ensemble of three unlike systems (a leak-free
     # blend: equal logit weights, nothing tuned)
     def logit(p):
@@ -941,82 +938,6 @@ def main():
                      fit_params_scalar)
 
     finish(results)
-
-
-def platform_arena(games, hold, racer, F_hold, record, ref):
-    pm = json.loads((DATA / "per_match_ratings.json").read_text())
-    mdate = {}
-    for g in games:
-        mdate.setdefault(g["match"], g["date"])
-    snaps = defaultdict(list)
-    for m, d in pm.items():
-        dt = mdate.get(m.lower())
-        if not dt:
-            continue
-        for u, r in d.items():
-            snaps[u].append((dt, float(r)))
-    for u in snaps:
-        snaps[u].sort()
-
-    def as_of(u, date):
-        best = None
-        for dt, r in snaps.get(u, ()):
-            if dt < date:
-                best = r
-            else:
-                break
-        return best
-
-    def game_ratings(g):
-        rs = [as_of(u, g["date"]) for u in g["us"]]
-        return None if any(r is None for r in rs) else rs
-
-    rated_h = [(i, game_ratings(g)) for i, g in enumerate(hold)]
-    rated_h = [(i, r) for i, r in rated_h if r]
-    idx = np.array([i for i, _ in rated_h])
-    if len(idx) < 30:
-        print(f"platform arena skipped: only {len(idx)} rated holdout games")
-        return
-    R = np.array([r for _, r in rated_h])
-    mask = np.zeros(len(hold), bool)
-    mask[idx] = True
-    fr = F_hold.sub(mask)
-    ref_sub = racer.win(fr.eta_v2(), fr.T)
-    record("PL_v2", ref_sub, frame=fr,
-           extra=dict(family="platform-arena",
-                      desc="v2 plugin on the platform-rated subset"))
-    # calibrate each on pre-split rated games
-    train_rated = [(g, game_ratings(g)) for g in games
-                   if RECENT <= g["date"] < SPLIT]
-    train_rated = [(g, r) for g, r in train_rated if r]
-    Ttr = np.array([g["T"] for g, _ in train_rated])
-    wtr = np.array([g["won"] for g, _ in train_rated])
-    Rtr = np.array([r for _, r in train_rated])
-    print(f"platform arena: {len(idx)} holdout / {len(train_rated)} train "
-          "rated games")
-
-    def run(name, feat_fn, desc):
-        ftr = feat_fn(Rtr)
-        fho = feat_fn(R)
-
-        def nll(x):
-            pw = racer.win(x[0] * ftr, Ttr)
-            pc = np.clip(pw, 1e-9, 1 - 1e-9)
-            return -np.mean(np.where(wtr, np.log(pc), np.log(1 - pc)))
-        s = float(minimize(nll, [0.5], method="Nelder-Mead",
-                           options=dict(xatol=1e-4)).x[0])
-        record(name, racer.win(s * fho, fr.T), frame=fr,
-               extra=dict(family="platform-arena", params=[round(s, 3)],
-                          desc=desc), ref=ref_sub)
-
-    run("PL_sum", lambda R: R[:, 0] + R[:, 1] - R[:, 2] - R[:, 3],
-        "platform (DUPR-synced) rating sums, as-of-match")
-    run("PL_min", lambda R: 2 * (np.minimum(R[:, 0], R[:, 1])
-                                 - np.minimum(R[:, 2], R[:, 3])),
-        "platform rating, weaker player only")
-    run("PL_max", lambda R: 2 * (np.maximum(R[:, 0], R[:, 1])
-                                 - np.maximum(R[:, 2], R[:, 3])),
-        "platform rating, stronger player only")
 
 
 def rally_family(games, train, recent, hold, players, chem, racer,

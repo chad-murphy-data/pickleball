@@ -11,3 +11,6 @@ site/
 
 # social preview renders (regenerable from the HTML)
 content/**/*.png
+
+# droplet Supabase creds (service-role key — never commit)
+deploy/pickleball.env

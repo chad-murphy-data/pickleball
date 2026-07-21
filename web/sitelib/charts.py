@@ -83,35 +83,6 @@ def trajectory_chart(traj, w=780, h=280):
             f'text-anchor="middle">pts vs avg pairing</text></svg>')
 
 
-def dupr_spark(hist, w=780, h=110):
-    """Official-rating history as its own small chart (never a second axis)."""
-    if len(hist) < 3:
-        return ""
-    ml, mr, mt, mb = 44, 12, 8, 20
-    iw, ih = w - ml - mr, h - mt - mb
-    vals = [r for _, r in hist]
-    ymin, ymax = min(vals), max(vals)
-    pad = max(0.08, (ymax - ymin) * 0.15); ymin -= pad; ymax += pad
-    n = len(hist)
-
-    def X(i): return ml + iw * i / (n - 1)
-    def Y(v): return mt + ih * (1 - (v - ymin) / (ymax - ymin))
-
-    parts = []
-    for tv in _ticks(ymin, ymax, 2):
-        parts.append(f'<line class="grid" x1="{ml}" y1="{Y(tv):.1f}" x2="{w - mr}" y2="{Y(tv):.1f}"/>'
-                     f'<text class="axis" x="{ml - 6}" y="{Y(tv) + 3.5:.1f}" text-anchor="end">{tv:.1f}</text>')
-    line = " ".join(f"{X(i):.1f},{Y(r):.1f}" for i, (_, r) in enumerate(hist))
-    dots = "".join(
-        f'<circle class="hoverdot2" cx="{X(i):.1f}" cy="{Y(r):.1f}" r="6">'
-        f'<title>{esc(d)} · DUPR {r:.2f}</title></circle>'
-        for i, (d, r) in enumerate(hist))
-    return (f'<svg class="chart" viewBox="0 0 {w} {h}" role="img" aria-label="DUPR rating history">'
-            f'{"".join(parts)}<polyline class="s2line" points="{line}"/>{dots}'
-            f'<text class="axis" x="{w - mr}" y="{mt + 10}" text-anchor="end">official DUPR (own scale)</text>'
-            f'</svg>')
-
-
 def gamelog_chart(log, w=780, h=260, max_games=200):
     """Actual point share per game (win/loss dots) vs the model's expected
     share (line).  Even x-spacing by game index; year ticks."""
@@ -205,46 +176,3 @@ def calibration_chart(buckets, w=420, h=340):
     return (f'<svg class="chart capped" viewBox="0 0 {w} {h}" role="img" '
             f'aria-label="Calibration: forecast probability vs actual win rate">{"".join(parts)}</svg>')
 
-
-def dupr_scatter(points, w=380, h=330, label_top=6):
-    """Model points value vs official DUPR, one gender per panel.
-    points: [(name, href, dupr, pts, resid)] — resid ranks label priority."""
-    if not points:
-        return ""
-    ml, mr, mt, mb = 40, 12, 12, 32
-    iw, ih = w - ml - mr, h - mt - mb
-    xs = [p[2] for p in points]; ys = [p[3] for p in points]
-    xmin, xmax = min(xs) - 0.15, max(xs) + 0.15
-    ymin, ymax = min(ys) - 0.5, max(ys) + 0.5
-
-    def X(v): return ml + iw * (v - xmin) / (xmax - xmin)
-    def Y(v): return mt + ih * (1 - (v - ymin) / (ymax - ymin))
-
-    parts = []
-    for tv in _ticks(xmin, xmax, 4):
-        parts.append(f'<line class="grid" x1="{X(tv):.1f}" y1="{mt}" x2="{X(tv):.1f}" y2="{mt + ih}"/>'
-                     f'<text class="axis" x="{X(tv):.1f}" y="{h - 16}" text-anchor="middle">{tv:g}</text>')
-    for tv in _ticks(ymin, ymax, 4):
-        parts.append(f'<line class="grid" x1="{ml}" y1="{Y(tv):.1f}" x2="{w - mr}" y2="{Y(tv):.1f}"/>'
-                     f'<text class="axis" x="{ml - 5}" y="{Y(tv) + 3.5:.1f}" text-anchor="end">{tv:+g}</text>')
-    lab_set, placed = set(), []
-    for cand in sorted(points, key=lambda p: -abs(p[4])):
-        if len(lab_set) >= label_top:
-            break
-        cx, cy = X(cand[2]), Y(cand[3])
-        if all(abs(cx - px) > 64 or abs(cy - py) > 16 for px, py in placed):
-            lab_set.add(cand[0])
-            placed.append((cx, cy))
-    for name, href, x, y, _r in points:
-        parts.append(f'<a href="{esc(href)}"><circle class="scdot" cx="{X(x):.1f}" cy="{Y(y):.1f}" r="3.6">'
-                     f'<title>{esc(name)} · DUPR {x:.2f} · model {y:+.1f} pts</title></circle></a>')
-        if name in lab_set:
-            anchor = "end" if X(x) > w - 90 else "start"
-            dx = -6 if anchor == "end" else 6
-            parts.append(f'<text class="ptlabel" x="{X(x) + dx:.1f}" y="{Y(y) - 5:.1f}" '
-                         f'text-anchor="{anchor}">{esc(name.split()[-1])}</text>')
-    parts.append(f'<text class="axis" x="{ml + iw / 2:.0f}" y="{h - 2}" text-anchor="middle">official DUPR</text>')
-    parts.append(f'<text class="axis" transform="translate(10 {mt + ih / 2:.0f}) rotate(-90)" '
-                 f'text-anchor="middle">model pts vs avg</text>')
-    return (f'<svg class="chart" viewBox="0 0 {w} {h}" role="img" '
-            f'aria-label="Model value vs official DUPR rating">{"".join(parts)}</svg>')

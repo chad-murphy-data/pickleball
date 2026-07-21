@@ -31,7 +31,6 @@ python model/fit_v2.py                       # THE model (dynamic + race likelih
 python model/report.py                       # regenerate analysis.md (v1 sections)
 python scraper/parse_singles.py              # raw/ → data/singles_games.csv (26k games)
 python model/fit_singles.py                  # singles MAP ratings (pure python, ~10 s)
-python scraper/extract_ratings.py            # raw/ → per-match + latest DUPR (merges)
 python scraper/live_poller.py                # live score JSONL during event days
 python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
                                              #   --commit freezes into receipts.json
@@ -69,7 +68,7 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   SRM_MIXTEST, SRM_SAVE_DRAWS). Suffix convention: `_2026`, `_2026core`,
   `_train`, `_2026mm`, etc. map to data/model_*{suffix}.csv inputs.
 - Validation: v2 = 77.4% winner accuracy / 0.165 Brier on 884 post-June-1
-  holdout games (v1 75.2%/0.178; DUPR 64.7%/0.229). Gate any model change
+  holdout games (v1 75.2%/0.178). Gate any model change
   on beating this (`model/v2_holdout.py`; needs a `_train`-suffixed fit
   with SRM2_DATE_BEFORE=2026-06-01).
 
@@ -141,22 +140,12 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 - **Browsers cannot reach the network from this environment** (egress
   gateway TLS-fingerprints and resets Chromium; curl/httpx fine). Don't
   waste time on Playwright; recon.md documents the diagnosis.
-- **The embedded per-match "rating" is NO LONGER a trustworthy DUPR copy
-  (corrected 2026-07-20).** It once tracked the synced DUPR doubles rating
-  (singles is a separate ledger; scale 2–8), but it DIVERGED from real
-  DUPR around 2026-05-22 and stuck ~0.3–0.7 LOW. The "tour-wide
-  recalibration" previously noted here was a pickleball.com sync artifact,
-  NOT a real DUPR change — DUPR.com never dropped. Proof: Ben Johns is
-  frozen at 6.56772 in this field (identical value across 2025 AND
-  post-May-2026) while DUPR.com shows 7.121 / #1; every checked pro is
-  ~0.5 low, ordering scrambled (our data coughed up "Johns #10"). The old
-  "CORRECT post-recal, confirmed in fresh records" claim was wrong — those
-  "fresh records" were this broken field. **For real current DUPR use
-  `scraper/fetch_dupr.py`** → data/dupr_doubles.csv (scrapes dupr.com's
-  public Webflow rankings; top-50 per discipline, no auth; full list +
-  history need the login-gated api.dupr.gg, no key available). Separately,
-  Jackie Kawamoto 3.50021 is DUPR's reset default (site nulls it via
-  data.finalize_dupr).
+- **DUPR was deliberately removed from this project** (2026-07, user call:
+  no interest in a "we beat DUPR" scoreboard). The embedded per-match
+  "rating" field in the raw payloads IS the player's synced DUPR doubles
+  rating and is still present in raw/, but we no longer extract, store,
+  display, or benchmark against it — don't re-add it without asking. It
+  was never a model input; nothing in v1/v2/singles depends on it.
 - Be polite: ~1 req/s harvest, ≥15 s live-poll interval.
 
 ## Live win probability (in progress)
@@ -220,6 +209,44 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   Schemas + log_type enum: recon.md. No shot-level data exists anywhere
   in this stack (ceiling: vision pipeline on broadcasts).
 
+- **Serve/return lives in Supabase — query it, don't re-harvest**
+  (2026-07-21). Rally logs are gitignored + droplet-only, and the committed
+  per-player-year CSV is too coarse to slice, so serve/return questions used
+  to force a fresh harvest every session. Fixed: the droplet upserts a
+  per-match-per-player table to Supabase nightly (`scraper/upload_supabase.py`,
+  wired into `deploy/run_logs_backfill.sh`, guarded on SUPABASE_URL /
+  SUPABASE_SERVICE_KEY). Then ANY serve/return/points cut (player, season,
+  tour, opponent set) is one SQL query — no logs touched.
+    - Front door: `model/rally_stats.py` (`serve_return(...)`, `freshness()`);
+      queries the store when SUPABASE_URL is set, else falls back to the
+      committed `data/player_serve_rallies.csv`. `model/serve_return_report.py`
+      does the population regression (who beats the field on return).
+    - **Data catalog** (Supabase project `nwgxyytowbluuykbdcfc`, public read via
+      anon key; writes = service role only):
+      · `pb_match_player_serve` — grain: 1 row / player / match
+        (side, serve_rallies, serve_wins). The base; slice it however.
+      · `pb_player_serve_return` (view) — per (player, tour, year) serve AND
+        return; return = opposing side's serve losses, reconstructed in SQL
+        (team-attributed in doubles — a per-player RATE, never summed).
+      · `pb_rally` — THE finest grain: 1 row / rally (server, receiver,
+        server_side, server_number, outcome point|sideout|second, won, and
+        running server/receiver score at rally start). Denormalized with
+        tour/date so rally mining needs no joins. Unlocks score-state
+        (win% at 9-9), serve-runs/streaks (order by rally_number), receiver
+        splits, 1st/2nd-server effects. Built by H.rally_events (mirrors
+        tally with correction handling; H.test_rally_events asserts it
+        reproduces tally's serve counts exactly, wins to ~0.02% — rare
+        multi-point rewinds; exact serve/return still comes from the
+        tally-based pb_match_player_serve).
+      · `pb_player` — dimension (player_uuid → full_name, gender) so queries
+        read in names. Join on player_uuid.
+      · `pb_meta` — freshness stamp (serve_rows, rally_rows, max_match_date).
+    - Raw logs stay the source of truth: a tally-logic fix means re-derive
+      from raw + re-upsert, NOT re-fetch. DB is a queryable cache.
+    - Ceiling: no shot-level data exists anywhere (only referee logs); that
+      needs a broadcast vision pipeline. Everything the logs contain is now
+      in the warehouse.
+
 ## Scheduled obligations
 
 - **September 2026**: score `model/registered_predictions.md` (frozen
@@ -245,7 +272,7 @@ live-page bullet above), power rankings (rankings.html),
 499 player pages (trajectory + game-log-vs-expectation SVGs), client-side
 matchup simulator (race DP + weakest link + uncertainty in embedded JS,
 shareable permalinks), receipts ledger + calibration, record book,
-DUPR×model, methods, 404. The look is the PICKLES design handoff: master
+methods, 404. The look is the PICKLES design handoff: master
 stylesheet = CSS string in web/sitelib/style.py (design port verbatim +
 landing additions; light AND dark). Conventions: values are displayed as
 "expected margin vs an average pairing" via web/sitelib/race.py:value_points;

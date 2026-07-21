@@ -8,7 +8,7 @@ truth for the Reddit / Threads drafts in this folder.*
 
 - **MLP Mid-Season (Edward Jones Mid-Season Tournament, Grand Rapids), 2026-07-12.** Women's-doubles game of the final.
 - **Anna Leigh Waters / Jorja Johnson lost 6-11 to Anna Bright / Kate Fahey.**
-- The model (v2: every MLP + PPA pro game, 77% winner accuracy, beats DUPR at 65%) made **Waters/Johnson 88% favorites**. Graded a **MISS** on the site's public receipts — the headline miss of the weekend.
+- The model (v2: every MLP + PPA pro game, 77% winner accuracy out of sample) made **Waters/Johnson 88% favorites**. Graded a **MISS** on the site's public receipts — the headline miss of the weekend.
 - The eye-test story: Bright/Fahey "iced out" Waters — funneled the ball to Johnson, kept it away from the GOAT.
 
 ## The pre-match number, honestly
@@ -61,4 +61,4 @@ The freeze alone gets to ~50/50. To push past it you need Johnson's on-court lev
 - teams = 59% weaker player / 41% stronger
 - fully iced → 48% · two Johnsons → 48% · equal coverage → 93%
 - served-to split in the actual game: Johnson 10 / Waters 9 (≈ even)
-- model: 77% accuracy vs DUPR 65%; every MLP + PPA pro game since 2024
+- model: 77% winner accuracy out of sample; every MLP + PPA pro game since 2024

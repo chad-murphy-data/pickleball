@@ -43,7 +43,7 @@ Two hero elements: (1) the **clutch leaderboard**, (2) the **47% biggest-point**
 - **Attribution (small, under headline):** — Dave Fleming, on the broadcast. So we checked.
 - **Subhead / method line:** We reconstructed 162,942 rallies across 2,402 pro matches and measured exactly how much each point swung the game — then ranked who wins the big ones above their own baseline.
 - **The honest twist (caption):** There's no separate "clutch gene." A player's clutch score tracks their overall skill (correlation 0.58) — the best players don't flip a switch at 9-10, they're already there while everyone else drops.
-- **Footer / source:** v2 model · every MLP + PPA pro game since 2024 · 77% accuracy (DUPR 65%)
+- **Footer / source:** v2 model · every MLP + PPA pro game since 2024 · 77% winner accuracy out of sample
 
 ---
 

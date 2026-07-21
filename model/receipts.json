@@ -7,7 +7,6 @@
     "accuracy": 0.7738,
     "brier": 0.1653,
     "log_loss": 0.5058,
-    "dupr_reference": {"accuracy": 0.6467, "brier": 0.2289, "n_games": 518},
     "v1_reference": {"accuracy": 0.752, "brier": 0.178},
     "source": "model/v2_holdout_summary.json"
   },

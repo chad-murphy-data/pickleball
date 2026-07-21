@@ -72,7 +72,7 @@ floor.
 
 **TL;DR: v2 survives.** Nothing beats it significantly; two dozen
 defensible alternatives lose by amounts ranging from a rounding error to
-DUPR-sized. The only challengers that even lean positive are (a) an
+a couple hundredths of Brier. The only challengers that even lean positive are (a) an
 equal-weight ensemble of v2 with two worse models, and (b) v2 with its
 own uncertainty integrated — which is not a rival model but a nicer way
 to serve the same one, and is what the site's calibration layer already
@@ -173,7 +173,7 @@ on exactly those games; the reference is v2 on the same subset
 **The single most interesting result of the shootout.** Price mixed
 doubles from the two women alone and you get 74.0% accuracy — within
 shouting distance of the full model. Price it from the two men alone and
-you get 65.1%, barely better than DUPR prices full games. "Men don't
+you get 65.1%, a steep drop. "Men don't
 matter in mixed" is NOT the right reading, though: the free-loading
 model (MX_gender_free) fits nearly *equal* per-rating-point weights
 (men 0.75, women 0.77) and only matches — doesn't beat — the equal-weight
@@ -209,7 +209,7 @@ Two takeaways. First, the structure ranking is the same whether you
 re-aggregate v2's ratings (family A) or refit values natively under each
 structure: sum ≈ sum+γ ≫ min-only ≫ max-only. "Maybe min-only would work
 if the ratings were fit for it" — no; even with values estimated under
-the weakest-link-only likelihood, it's a DUPR-sized step backwards.
+the weakest-link-only likelihood, it's a real step backwards (+0.016 Brier).
 Second, the whole static-MAP family sits ~+0.003 Brier behind shipped v2.
 That gap *is* the measured value of v2's remaining machinery — monthly
 dynamics, the match random effect, full posterior — since likelihood and
@@ -264,12 +264,6 @@ last ~0.008.
 share is noisy enough that with the larger K the tuner wants, blowout
 games slosh ratings around; game-level Elo's binary signal is better
 behaved at this K range.
-
-**Platform (DUPR-synced) ratings, as-of-match** — the site's benchmark
-nemesis, now in three flavors on the 824 rated holdout games: sum 67.0%
-/ 0.2124, min-only 66.0%, max-only 63.1% (v2 on the same subset: 76.8% /
-0.1668). No aggregation rescues it; the gap is the rating, not the
-formula.
 
 **E_coin** — 0.2500 Brier, as the universe requires.
 
@@ -471,8 +465,7 @@ the point-logit scale — v2's posterior sd_v; min/max via softmin,
 τ = 0.05; γ prior N(0, 0.3) as in v2; margin model prior N(0, 2.5) pts,
 σ fit jointly, output rescaled to point logits on train). Elo
 prequential with K from {0.02…0.3} by sequential train log loss
-(2024-H1 burn-in excluded from the criterion). Platform arena uses
-strictly-before-game-date snapshots from `data/per_match_ratings.json`.
+(2024-H1 burn-in excluded from the criterion).
 Bootstrap: 4,000 paired resamples, seed 20260718. All rows deterministic;
 rerun with `python model/spec_shootout.py` (add `--rally` for family D,
 which needs `raw/match_logs/` from `scraper/harvest_logs.py`). Rally fit:
