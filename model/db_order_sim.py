@@ -331,17 +331,143 @@ def exp_anna(vals):
     print("  'mattering less,' independent of any cross-gender value claim.")
 
 
+# St. Louis Shock vs New Jersey 5s — the graded Gold-final rosters
+# (model/prediction_midseason_final.md; NJ DB roster from db_model.md).
+STL = {"Kate Fahey": "F", "Anna Bright": "F",
+       "Hayden Patriquin": "M", "Gabriel Tardio": "M"}
+NJ = {"Anna Leigh Waters": "F", "Jorja Johnson": "F",
+      "Noe Khlif": "M", "Will Howells": "M"}
+
+
+def valid_orderings(stl_names, nj_names, gender):
+    """Yield (stl_order, nj_order) player-name tuples such that every slot is
+    same-gender (slot i = stl_order[i] vs nj_order[i]). Dedup on the induced
+    per-slot matchup so identical DPs aren't recomputed."""
+    seen = set()
+    for so in set(permutations(stl_names)):
+        for no in set(permutations(nj_names)):
+            if any(gender[s] != gender[n] for s, n in zip(so, no)):
+                continue
+            key = tuple(zip(so, no))
+            if key in seen:
+                continue
+            seen.add(key)
+            yield so, no
+
+
+def exp_real_teams(vals):
+    hr("6. REAL TEAMS: St. Louis Shock vs New Jersey 5s DreamBreaker")
+    gender = {**STL, **NJ}
+    def val(n):
+        return v(vals, n)
+    print("St. Louis Shock:  " +
+          ", ".join(f"{n} {val(n):.2f}{gender[n]}" for n in STL))
+    print("New Jersey 5s:    " +
+          ", ".join(f"{n} {val(n):.2f}{gender[n]}" for n in NJ))
+    print("\nP is per-rally P(St. Louis wins), sigmoid(0.42*gap). St. Louis is")
+    print("the DB underdog here (Waters + Khlif/Howells outrate the Shock four).\n")
+
+    stl_w = [n for n in STL if gender[n] == "F"]
+    nj_w = [n for n in NJ if gender[n] == "F"]
+    stl_m = [n for n in STL if gender[n] == "M"]
+    nj_m = [n for n in NJ if gender[n] == "M"]
+
+    def pair_p(a, b):
+        return sigmoid(K_DB * (val(a) - val(b)))
+
+    # ---- A. the two women pairings, two men pairings (who faces whom) ----
+    print("-- Women pairings (who St. Louis's women draw) --")
+    wA = [(stl_w[0], nj_w[0]), (stl_w[1], nj_w[1])]
+    wB = [(stl_w[0], nj_w[1]), (stl_w[1], nj_w[0])]
+    for lab, pr in (("as listed ", wA), ("reversed  ", wB)):
+        print(f"  {lab}: " + " | ".join(
+            f"{a} v {b}  P={pair_p(a,b)*100:.1f}%" for a, b in pr))
+    print("-- Men pairings --")
+    mA = [(stl_m[0], nj_m[0]), (stl_m[1], nj_m[1])]
+    mB = [(stl_m[0], nj_m[1]), (stl_m[1], nj_m[0])]
+    for lab, pr in (("as listed ", mA), ("reversed  ", mB)):
+        print(f"  {lab}: " + " | ".join(
+            f"{a} v {b}  P={pair_p(a,b)*100:.1f}%" for a, b in pr))
+
+    # ---- B. each pairing combo at a neutral slot order (W,M,W,M) ----
+    print("\n-- St. Louis DB win prob per pairing combo (slot order W,M,W,M) --")
+    combos = {}
+    for wl, wp in (("womenAsListed", wA), ("womenReversed", wB)):
+        for ml, mp in (("menAsListed", mA), ("menReversed", mB)):
+            # interleave W,M,W,M
+            slots = [wp[0], mp[0], wp[1], mp[1]]
+            ps = tuple(pair_p(a, b) for a, b in slots)
+            p = db_win_prob(ps)
+            combos[(wl, ml)] = p
+            print(f"  {wl:14s} + {ml:12s}: {p*100:5.1f}%")
+    best = max(combos.items(), key=lambda kv: kv[1])
+    worst = min(combos.items(), key=lambda kv: kv[1])
+    print(f"  pairing choice alone (fixed order) moves St. Louis "
+          f"{(best[1]-worst[1])*100:.1f} pp "
+          f"[{worst[1]*100:.1f}-{best[1]*100:.1f}%]")
+
+    # ---- C. full joint: all valid same-gender orderings ----
+    print("\n-- Adding slot ORDER: every valid same-gender configuration --")
+    results = []
+    for so, no in valid_orderings(list(STL), list(NJ), gender):
+        ps = tuple(pair_p(s, n) for s, n in zip(so, no))
+        results.append((db_win_prob(ps), so, no))
+    results.sort(reverse=True)
+    hi, so_hi, no_hi = results[0]
+    lo, so_lo, no_lo = results[-1]
+    def fmt(so, no):
+        return "  vs  ".join(f"{s}/{n}" for s, n in zip(so, no))
+    print(f"  {len(results)} distinct configurations.")
+    print(f"  BEST for St. Louis  {hi*100:5.1f}%")
+    print(f"      slots: {fmt(so_hi, no_hi)}")
+    print(f"  WORST for St. Louis {lo*100:5.1f}%")
+    print(f"      slots: {fmt(so_lo, no_lo)}")
+    print(f"  Full swing from pairing + order: {(hi-lo)*100:.1f} pp.")
+
+    # The extremes above need the OPPONENT to cooperate (NJ would never bury
+    # Waters in slot 4). What survives when both order well depends on WHO
+    # announces first -- because the gender-interleaving pattern must match,
+    # so the announcer sets it and constrains the responder. This is exactly
+    # the "who sets matchups vs who sets position" lever Anna's essay is about.
+    by_stl, by_nj = {}, {}
+    for p, so, no in results:
+        by_stl.setdefault(so, []).append(p)
+        by_nj.setdefault(no, []).append(p)
+    stl_first = max(min(ps) for ps in by_stl.values())   # StL sets pattern
+    nj_first = min(max(ps) for ps in by_nj.values())      # NJ sets pattern
+    nj_open = min(by_nj, key=lambda k: max(by_nj[k]))
+    print(f"\n  When BOTH order well, the result turns on who announces first:")
+    print(f"    St. Louis announces first : {stl_first*100:.1f}% "
+          "(it sets the interleave, NJ replies)")
+    print(f"    New Jersey announces first: {nj_first*100:.1f}% "
+          "(NJ sets it, St. Louis replies)")
+    print(f"    -> announcing first (the 'button') is worth "
+          f"{(stl_first-nj_first)*100:.1f} pp here.")
+    print(f"  NJ's optimal opener is just strongest-first "
+          f"({' , '.join(nj_open)}),")
+    print(f"  which splits St. Louis's women into slots 1 and 4.")
+    print(f"  So the realistic band is ~{nj_first*100:.0f}-{stl_first*100:.0f}%"
+          f", not the full {lo*100:.0f}-{hi*100:.0f}% envelope.")
+
+    # what the current forecast would say (single mean-gap p, no order)
+    gap = (sum(val(n) for n in STL) - sum(val(n) for n in NJ)) / 4
+    flat = db_win_prob((sigmoid(K_DB * gap),) * 4)
+    print(f"  Today's forecast (single mean-gap p, order-blind): "
+          f"{flat*100:.1f}%.")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--only", type=int, default=None,
-                    help="run only experiment N (1-5)")
+                    help="run only experiment N (1-6)")
     args = ap.parse_args()
     vals = load_singles()
     runs = [exp_volume, exp_single_edge,
             lambda: exp_real_roster(vals),
             lambda: exp_equilibrium(vals),
-            lambda: exp_anna(vals)]
+            lambda: exp_anna(vals),
+            lambda: exp_real_teams(vals)]
     if args.only:
         runs[args.only - 1]()
     else:

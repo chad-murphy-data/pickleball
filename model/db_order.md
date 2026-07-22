@@ -120,6 +120,57 @@ strongest players; league-wide those are the men, so the women inherit the
 low-volume tail — structurally "mattering less," with no cross-gender value
 claim required to see it.
 
+## 6. Real teams: St. Louis Shock vs New Jersey 5s
+
+The graded Gold-final rosters (prediction_midseason_final.md; NJ DB four
+from db_model.md), a real 2W+2M-per-side DreamBreaker:
+
+- **St. Louis Shock**: Fahey 1.80, Bright 1.49 (W); Patriquin 1.24, Tardio 1.22 (M)
+- **New Jersey 5s**: Waters 2.27, Johnson 1.20 (W); Khlif 1.48, Howells 1.32 (M)
+
+St. Louis is the DB underdog (Waters plus a stronger men's pair). Every
+number below is P(St. Louis wins); per-rally p = sigmoid(0.42·gap).
+
+**The pairings (who faces whom), holding a neutral W,M,W,M order.** The
+women pairing is the real lever; the men pairing barely moves it:
+
+| women pairing | men pairing | St. Louis |
+|---|---|---:|
+| Fahey–Waters, Bright–Johnson | Patriquin–Khlif, Tardio–Howells | 41.3% |
+| Fahey–Waters, Bright–Johnson | Patriquin–Howells, Tardio–Khlif | 42.1% |
+| **Fahey–Johnson, Bright–Waters** | Patriquin–Khlif, Tardio–Howells | 44.9% |
+| **Fahey–Johnson, Bright–Waters** | Patriquin–Howells, Tardio–Khlif | **45.7%** |
+
+Pairing choice alone is worth **4.4 pp**. The two women pairings have the
+*same* summed rally prob (98.1% either way), yet "Fahey draws Johnson" is
+~3.6 pp better for St. Louis: as the underdog it wants its one winnable
+women's matchup concentrated and busy, not averaged away.
+
+**Adding slot order.** Across all 96 valid same-gender configurations St.
+Louis spans **39.2%–46.4% (7.3 pp)**. The best case buries Bright–Waters
+(its worst matchup) in slot 4 and features Fahey–Johnson in slot 1; the
+worst case does the reverse.
+
+**But the extremes need the opponent's cooperation** — NJ would never put
+Waters in slot 4. When both order well, the outcome turns on **who
+announces their order first**, because the gender-interleave pattern must
+match, so the announcer sets it and constrains the responder:
+
+- St. Louis announces first (sets the interleave): **43.0%**
+- New Jersey announces first: **40.7%**
+- The "button" (announcing first) is worth **2.3 pp** here.
+
+NJ's optimal opener is simply strongest-first (Waters, Khlif, Howells,
+Johnson), which forces St. Louis to split its two women into slots 1 and 4.
+So the *realistic* band is **~41–43%**, not the full 39–46% envelope — and
+today's order-blind forecast (42.8%) sits at the top of it, because it
+implicitly assumes placement never costs the underdog anything.
+
+This is the concrete, same-gender version of Anna's mechanism-and-fix: the
+lever is real (a few pp), it's biggest on the woman-vs-woman pairing, and
+**who announces first is itself worth ~2 pp** — exactly why she wants the
+announcement order changed.
+
 ## Honest limits
 
 - Rallies are iid within a matchup (repo DB model is serve-blind). Real DB
@@ -137,6 +188,6 @@ claim required to see it.
 ## Reproduce
 
 ```bash
-python model/db_order_sim.py          # full battery (experiments 1-5)
-python model/db_order_sim.py --only 3 # just the real-roster spread
+python model/db_order_sim.py          # full battery (experiments 1-6)
+python model/db_order_sim.py --only 6 # St. Louis Shock vs New Jersey 5s
 ```
