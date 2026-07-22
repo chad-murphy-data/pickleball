@@ -234,6 +234,59 @@ Two results worth pulling out:
 That role-flip — same team, opposite pairing instinct depending on who holds
 the order — is precisely the "unsolved meta" Anna's proposal is after.
 
+## 8. League-wide: does optimal play feature women in the top 2 slots?
+
+Anna's hypothesis, tested across the field. Rosters for 11 MLP teams
+reconstructed from projected lineups (forecasts.json — WD pair = a team's
+two women, MD pair = its two men; two players imputed from doubles). This is
+**cross-gender safe**: optimal ordering is edge-first, and every edge is a
+*within-gender* gap on the same identified scale, so "is my women's edge
+bigger than my men's edge?" is a legitimate comparison even though "is a
+woman stronger than a man?" is not.
+
+Over all 110 team-vs-team orderings, counting women in the two top slots
+under edge-first optimal play (rank-matched pairing):
+
+| women in top-2 | share |
+|---|---:|
+| 0 (both men) | 32% |
+| 1 | 36% |
+| 2 (both women) | 32% |
+
+**mean = 1.00 women in the top 2.** Now the comparison Anna cares about:
+
+- **Status quo she describes** (teams stack their strongest = men first):
+  **0 women** in the top 2, always.
+- **Optimal edge-first play: 1.00 on average — and both top slots are women
+  in 32% of matchups.**
+
+So optimizing instead of reflexively stacking men features women *far* more.
+The punchline is that the optimal rule is **gender-blind**: it just fronts
+your biggest edges, and those are women's matchups about half the time. It
+lands at ~1.0 (not higher) because it tracks spread, and in *this* singles
+cohort men's spread (sd 0.48) slightly exceeds women's (sd 0.33) — the
+reverse of the doubles finding (women's spread 1.5×), so no strong tilt
+either way. Favorites feature 1.09 women in the top 2, underdogs 0.91 —
+stronger teams lean marginally more on their women.
+
+**The concrete case (the "LA vs Dallas" you asked for).** Dallas Flash
+stacked strong men (JW Johnson 1.37, Ge 1.00) with a weak women's pair
+(Truong 0.70, Townsend 0.57) — exactly the men-first construction Anna
+critiques. Their opponents' optimal answer is *women first*:
+
+| slot | California Black Bears vs Dallas | win prob |
+|---|---|---:|
+| **1** | **[W] Dennehy v Truong** | 57% |
+| **2** | **[W] Weil v Townsend** | 53% |
+| 3 | [M] Tellez v J. Johnson | 48% |
+| 4 | [M] Wild v Ge | 44% |
+
+Optimal play buries California's *men* (underdogs to Dallas's strong men) in
+the low-volume slots and features its women up top. Dallas's men-first
+construction is self-defeating: it hands every opponent "women first" as the
+best response. So yes — Anna's hypothesis holds under optimal play, and it
+holds *hardest* precisely against the teams that stack men.
+
 ## Honest limits
 
 - Rallies are iid within a matchup (repo DB model is serve-blind). Real DB
@@ -251,8 +304,9 @@ the order — is precisely the "unsolved meta" Anna's proposal is after.
 ## Reproduce
 
 ```bash
-python model/db_order_sim.py          # full battery (experiments 1-9)
+python model/db_order_sim.py          # full battery (experiments 1-10)
 python model/db_order_sim.py --only 6 # St. Louis Shock vs New Jersey 5s
 python model/db_order_sim.py --only 8 # NJ opener: split the barbell
 python model/db_order_sim.py --only 9 # Anna's fix: StL pairs, NJ orders
+python model/db_order_sim.py --only 10 # league-wide: women in top-2 slots
 ```

@@ -38,6 +38,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import math
 from functools import lru_cache
 from itertools import permutations
@@ -573,11 +574,120 @@ def exp_split_roles(vals):
           "played defensively.")
 
 
+def load_rosters():
+    """Reconstruct each MLP team's 2W+2M DreamBreaker roster from the
+    projected lineups in data/forecasts.json (WD pair = women, MD pair =
+    men). Singles values from fit_singles; players without a singles history
+    imputed from doubles via the forecast's regression (0.28 + 1.14·d)."""
+    sv, gen, dbl = {}, {}, {}
+    with open(DATA / "singles_players.csv") as fh:
+        for r in csv.DictReader(fh):
+            sv[r["full_name"]] = float(r["singles_value"])
+            gen[r["full_name"]] = r["gender"]
+    try:
+        with open(DATA / "v2_players.csv") as fh:
+            for r in csv.DictReader(fh):
+                dbl[r["full_name"]] = float(r["value_now_mean"])
+                gen.setdefault(r["full_name"], r["gender"])
+    except FileNotFoundError:
+        pass
+
+    def val(n):
+        if n in sv:
+            return sv[n]
+        if n in dbl:
+            return 0.28 + 1.14 * dbl[n]
+        return None
+
+    fc = json.loads((DATA / "forecasts.json").read_text())["forecasts"]
+    rosters = {}
+    for f in fc:
+        for t, pk in ((f["team1"], "t1_pair"), (f["team2"], "t2_pair")):
+            wd = next(g for g in f["games"] if g["slot"] == "WD")
+            md = next(g for g in f["games"] if g["slot"] == "MD")
+            w = sorted(wd[pk], key=lambda n: -(val(n) or 0))
+            m = sorted(md[pk], key=lambda n: -(val(n) or 0))
+            if all(val(n) is not None for n in w + m):
+                rosters[t] = {"W": w, "M": m}
+    return rosters, val
+
+
+def exp_league(vals):
+    hr("10. LEAGUE-WIDE: does OPTIMAL play feature women in the top 2 slots?")
+    rosters, val = load_rosters()
+    teams = sorted(rosters)
+    print(f"{len(teams)} MLP teams, rosters from projected lineups "
+          "(forecasts.json).")
+    print("Optimal ordering is edge-first, so each team's top-2 slots are the")
+    print("two matchups it is most likely to win. Rank-matched same-gender")
+    print("pairing (stronger-vs-stronger within gender).\n")
+
+    def top2_women(A, B):
+        ms = []
+        for g in ("W", "M"):
+            for i in (0, 1):
+                ms.append((g, sigmoid(K_DB * (val(rosters[A][g][i])
+                                              - val(rosters[B][g][i])))))
+        ms.sort(key=lambda x: -x[1])
+        return [g for g, _ in ms[:2]].count("W")
+
+    from collections import Counter
+    counts, fav, dog = [], [], []
+    pairs = [(a, b) for a in teams for b in teams if a != b]
+    for A, B in pairs:
+        w = top2_women(A, B)
+        counts.append(w)
+        ga = sum(val(n) for g in ("W", "M") for n in rosters[A][g])
+        gb = sum(val(n) for g in ("W", "M") for n in rosters[B][g])
+        (fav if ga >= gb else dog).append(w)
+    dist = dict(sorted(Counter(counts).items()))
+    n = len(counts)
+    print(f"  # women in the top-2 slots, over {n} team-vs-team orderings:")
+    print(f"    0 women (both men) : {dist.get(0,0):3d}  ({dist.get(0,0)/n*100:.0f}%)")
+    print(f"    1 woman            : {dist.get(1,0):3d}  ({dist.get(1,0)/n*100:.0f}%)")
+    print(f"    2 women (both women): {dist.get(2,0):3d}  ({dist.get(2,0)/n*100:.0f}%)")
+    print(f"    mean = {sum(counts)/n:.2f} women in top-2\n")
+    print(f"  Anna's status quo (teams stack their men first): 0 women in "
+          "top-2, always.")
+    print(f"  Optimal edge-first play: {sum(counts)/n:.2f} on average -- women "
+          f"take BOTH top\n  slots in {dist.get(2,0)/n*100:.0f}% of matchups. "
+          "Optimizing (not stacking men) features\n  women far more; the "
+          "ordering rule itself is gender-blind.")
+    wsd = _pstdev([val(n) for t in teams for n in rosters[t]["W"]])
+    msd = _pstdev([val(n) for t in teams for n in rosters[t]["M"]])
+    print(f"\n  Why ~1.0 and not higher: it tracks spread, and in THIS cohort "
+          f"men's\n  singles spread (sd {msd:.2f}) exceeds women's (sd {wsd:.2f})"
+          ", so men's matchups\n  are marginally more lopsided. Favorites "
+          f"feature {sum(fav)/len(fav):.2f} women in top-2,\n  underdogs "
+          f"{sum(dog)/len(dog):.2f} -- stronger teams lean slightly more on "
+          "their women.")
+
+    # concrete example: a California team vs Dallas (the user's "LA v Dallas")
+    for A, B in (("California Black Bears", "Dallas Flash"),
+                 ("SoCal Hard Eights", "Dallas Flash")):
+        if A in rosters and B in rosters:
+            print(f"\n  Example -- {A} (as orderer) vs {B}:")
+            ms = []
+            for g in ("W", "M"):
+                for i in (0, 1):
+                    a, b = rosters[A][g][i], rosters[B][g][i]
+                    ms.append((g, a, b, sigmoid(K_DB * (val(a) - val(b)))))
+            ms.sort(key=lambda x: -x[3])
+            for rank, (g, a, b, p) in enumerate(ms, 1):
+                tag = "  <- top 2" if rank <= 2 else ""
+                print(f"    slot {rank} [{g}] {a} v {b}: {p*100:.0f}%{tag}")
+
+
+def _pstdev(xs):
+    m = sum(xs) / len(xs)
+    return (sum((x - m) ** 2 for x in xs) / len(xs)) ** 0.5
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--only", type=int, default=None,
-                    help="run only experiment N (1-9)")
+                    help="run only experiment N (1-10)")
     args = ap.parse_args()
     vals = load_singles()
     runs = [exp_volume, exp_single_edge,
@@ -587,7 +697,8 @@ def main():
             lambda: exp_real_teams(vals),
             lambda: exp_relative(vals),
             lambda: exp_nj_opener(vals),
-            lambda: exp_split_roles(vals)]
+            lambda: exp_split_roles(vals),
+            lambda: exp_league(vals)]
     if args.only:
         runs[args.only - 1]()
     else:
