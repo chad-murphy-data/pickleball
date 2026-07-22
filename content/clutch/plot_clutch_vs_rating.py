@@ -44,9 +44,9 @@ for nm in STARS:
         ax.annotate(nm.split()[-1] if nm != "Anna Bright" else "Bright",
                     xy=m[0], xytext=(m[0][0], m[0][1] + 0.6), fontsize=10.5,
                     fontweight="bold", color=INK, ha="center")
-ax.set_xlabel("PICKLE rating (mine)", fontsize=13, fontweight="bold", labelpad=8)
+ax.set_xlabel("PICKLE score (mine)", fontsize=13, fontweight="bold", labelpad=8)
 ax.set_ylabel("CLUTCH  —  wins the big points\nvs. their own baseline", fontsize=12.5, fontweight="bold")
-ax.set_title("Clutch vs. my PICKLE rating", fontsize=14.5, fontweight="bold", color=INK, pad=10)
+ax.set_title("Clutch vs. my PICKLE score", fontsize=14.5, fontweight="bold", color=INK, pad=10)
 for s in ("top", "right"):
     ax.spines[s].set_visible(False)
 ax.spines["left"].set_color(GRID); ax.spines["bottom"].set_color(INK)

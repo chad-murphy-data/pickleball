@@ -88,7 +88,8 @@ def calibrate(p: float) -> float:
 
 def value_points(v: float, gamma: float = GAMMA, T: int = 11) -> float:
     """Convert a per-point logit value to the human scale: expected margin of
-    (player + average partner) vs an average pair in a race to 11.  The
-    weakest-link penalty of dragging an average partner is included, so the
-    map is deliberately asymmetric around zero."""
+    (player + average partner) vs an average pair in a race to 11.  This is the
+    public "PICKLE score" shown on the site (a rating in points; higher =
+    better).  The weakest-link penalty of dragging an average partner is
+    included, so the map is deliberately asymmetric around zero."""
     return race_dist(round(sigmoid(v + gamma * abs(v)), 4), T)["exp_margin"]

@@ -274,8 +274,9 @@ matchup simulator (race DP + weakest link + uncertainty in embedded JS,
 shareable permalinks), receipts ledger + calibration, record book,
 methods, 404. The look is the PICKLES design handoff: master
 stylesheet = CSS string in web/sitelib/style.py (design port verbatim +
-landing additions; light AND dark). Conventions: values are displayed as
-"expected margin vs an average pairing" via web/sitelib/race.py:value_points;
+landing additions; light AND dark). Conventions: values are displayed as the
+"PICKLE score" — expected margin (in points) vs an average pairing — via
+web/sitelib/race.py:value_points (public-facing name, standardized 2026-07);
 the race DP there mirrors model/v2_holdout.py AND the JS inside
 build_simulator — keep all three in sync. Rankings rank 2026-active players
 only; men/women always separate. `model/receipts.json` is the receipts

@@ -80,7 +80,7 @@ def trajectory_chart(traj, w=780, h=280):
             f'<polyline class="s1line" points="{line}"/>'
             f'{"".join(dots)}{"".join(axis)}'
             f'<text class="axis" transform="translate(12 {mt + ih / 2:.0f}) rotate(-90)" '
-            f'text-anchor="middle">pts vs avg pairing</text></svg>')
+            f'text-anchor="middle">PICKLE score (vs avg pair)</text></svg>')
 
 
 def gamelog_chart(log, w=780, h=260, max_games=200):
