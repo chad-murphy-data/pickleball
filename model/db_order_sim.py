@@ -578,7 +578,8 @@ def load_rosters():
     """Reconstruct each MLP team's 2W+2M DreamBreaker roster from the
     projected lineups in data/forecasts.json (WD pair = women, MD pair =
     men). Singles values from fit_singles; players without a singles history
-    imputed from doubles via the forecast's regression (0.28 + 1.14·d)."""
+    imputed from doubles via the forecast's regression, intercept shrunk
+    0.28->0.08 for the DreamBreaker underperformance (model/db_impute.md)."""
     sv, gen, dbl = {}, {}, {}
     with open(DATA / "singles_players.csv") as fh:
         for r in csv.DictReader(fh):
@@ -596,7 +597,7 @@ def load_rosters():
         if n in sv:
             return sv[n]
         if n in dbl:
-            return 0.28 + 1.14 * dbl[n]
+            return 0.08 + 1.14 * dbl[n]      # shrunk imputation (db_impute.md)
         return None
 
     fc = json.loads((DATA / "forecasts.json").read_text())["forecasts"]
