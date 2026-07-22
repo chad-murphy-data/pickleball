@@ -202,6 +202,38 @@ Waters, bury Johnson in the dead slot. "Both women first" only wins when
 split them. (You also can't *force* the +0.78 Waters-vs-Bright: lead Waters
 and St. Louis counters with Fahey, so the realized Waters edge is +0.47.)
 
+## 7. Anna's fix in the concrete: one team pairs, the other orders
+
+Split the two decisions — St. Louis fixes the four matchups, New Jersey then
+slots them into the rotation. It's a Stackelberg game: NJ, moving second,
+puts St. Louis's *worst* matchup in the busy slot 1, so St. Louis picks the
+pairing with the best worst-case.
+
+| St. Louis's pairing | NJ orders → | St. Louis |
+|---|---|---:|
+| **Fahey–Waters + Bright–Johnson** (balanced) | worst matchup 45% into slot 1 | **40.7%** |
+| Fahey–Johnson + Bright–Waters (lopsided) | worst matchup **42%** into slot 1 | 39.2% |
+
+Two results worth pulling out:
+
+1. **Setting position is the stronger half of the split.** Handing NJ the
+   order pins St. Louis at **40.7%** — the floor of the realistic band (vs
+   42.8% order-blind, 43.0% if St. Louis set the order itself). Whoever sets
+   *position* holds the ~2 pp of leverage; the pairing-only role is the weak
+   hand.
+
+2. **The pairing logic flips.** With order power St. Louis wanted the
+   *lopsided* women pairing (Fahey–Johnson 56%, to feature early). Against an
+   adversarial orderer it wants the *balanced* one — pair Fahey against
+   Waters (45%, best resistance) and Bright against Johnson (53%, a matchup
+   it wins), so no matchup drops to the 42% that NJ would exploit. Pairing
+   becomes a **maximin (defend your weakest)** problem, not a **maximization
+   (feature your strongest)** one. That defensive choice is worth ~1.5 pp;
+   the men's pairing is a wash.
+
+That role-flip — same team, opposite pairing instinct depending on who holds
+the order — is precisely the "unsolved meta" Anna's proposal is after.
+
 ## Honest limits
 
 - Rallies are iid within a matchup (repo DB model is serve-blind). Real DB
@@ -219,7 +251,8 @@ and St. Louis counters with Fahey, so the realized Waters edge is +0.47.)
 ## Reproduce
 
 ```bash
-python model/db_order_sim.py          # full battery (experiments 1-8)
+python model/db_order_sim.py          # full battery (experiments 1-9)
 python model/db_order_sim.py --only 6 # St. Louis Shock vs New Jersey 5s
 python model/db_order_sim.py --only 8 # NJ opener: split the barbell
+python model/db_order_sim.py --only 9 # Anna's fix: StL pairs, NJ orders
 ```

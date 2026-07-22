@@ -534,11 +534,50 @@ def exp_nj_opener(vals):
     print("  first' only wins if BOTH women are your relatively stronger picks.")
 
 
+def exp_split_roles(vals):
+    hr("9. ANNA'S FIX: St. Louis sets the PAIRS, New Jersey sets the ORDER")
+    val = lambda n: v(vals, n)
+    pp = lambda a, b: sigmoid(K_DB * (val(a) - val(b)))    # P(StL wins a rally)
+    wA = [("Kate Fahey", "Anna Leigh Waters"), ("Anna Bright", "Jorja Johnson")]
+    wB = [("Kate Fahey", "Jorja Johnson"), ("Anna Bright", "Anna Leigh Waters")]
+    mA = [("Hayden Patriquin", "Noe Khlif"), ("Gabriel Tardio", "Will Howells")]
+    mB = [("Hayden Patriquin", "Will Howells"), ("Gabriel Tardio", "Noe Khlif")]
+    sets = {"women as-is,  men as-is": wA + mA, "women as-is,  men rev ": wA + mB,
+            "women rev,    men as-is": wB + mA, "women rev,    men rev ": wB + mB}
+    show = lambda m: f"{m[0].split()[-1]}-{m[1].split()[-1]}({pp(*m)*100:.0f})"
+
+    print("St. Louis fixes the four matchups; NJ then slots them adversarially")
+    print("(NJ puts St. Louis's WORST matchup in the busy slot 1). St. Louis")
+    print("picks the pairing with the best worst-case:\n")
+    best = None
+    for name, mus in sets.items():
+        ps = [pp(*m) for m in mus]
+        worst = min(db_win_prob(tuple(ps[i] for i in perm))
+                    for perm in permutations(range(4)))
+        arg = min(permutations(range(4)),
+                  key=lambda perm: db_win_prob(tuple(ps[i] for i in perm)))
+        if best is None or worst > best[1]:
+            best = (name, worst, arg, mus)
+        print(f"  {name}:  StL {worst*100:4.1f}%   "
+              f"NJ orders-> {' > '.join(show(mus[i]) for i in arg)}")
+    print(f"\n  St. Louis's best pairing: '{best[0]}' -> guarantees "
+          f"{best[1]*100:.1f}%.")
+    print("  Note the FLIP: with order power St. Louis wanted the LOPSIDED")
+    print("  women pairing (Fahey-Johnson 56%); now it wants the BALANCED one")
+    print("  (worst matchup 45%, not 42%) so NJ has no soft target to feature.")
+    gap = (sum(val(n) for n in STL) - sum(val(n) for n in NJ)) / 4
+    print(f"\n  For scale: order-blind forecast "
+          f"{db_win_prob((sigmoid(K_DB*gap),)*4)*100:.1f}%, St. Louis-sets-order "
+          "43.0%.\n  Setting POSITION is the stronger half of the split "
+          f"(~2 pp); pairing alone\n  leaves St. Louis on the weak side, best "
+          "played defensively.")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--only", type=int, default=None,
-                    help="run only experiment N (1-8)")
+                    help="run only experiment N (1-9)")
     args = ap.parse_args()
     vals = load_singles()
     runs = [exp_volume, exp_single_edge,
@@ -547,7 +586,8 @@ def main():
             lambda: exp_anna(vals),
             lambda: exp_real_teams(vals),
             lambda: exp_relative(vals),
-            lambda: exp_nj_opener(vals)]
+            lambda: exp_nj_opener(vals),
+            lambda: exp_split_roles(vals)]
     if args.only:
         runs[args.only - 1]()
     else:
