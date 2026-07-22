@@ -249,7 +249,7 @@ def build_rankings(players, updated, n_games, val):
                 f'<td class="num">{p.games}</td><td class="num">{rec}</td>'
                 f'<td class="num gray">{last}</td></tr>')
         return ('<div class="tblwrap"><table><tr><th class="num">#</th><th>player</th>'
-                '<th class="num">pts</th><th>90% interval (pts vs avg pairing)</th>'
+                '<th class="num">PICKLE score</th><th>90% interval (PICKLE score, vs avg pair)</th>'
                 '<th title="6-month form change">form</th><th class="num">games</th>'
                 '<th class="num">W–L</th>'
                 '<th class="num">last seen</th></tr>'
@@ -283,8 +283,8 @@ def build_rankings(players, updated, n_games, val):
 <h1 class="runtitle">Power rankings</h1>
 <div class="runmeta">RUN {updated} :: DYNAMIC BAYESIAN POSTERIOR :: MLP + PPA DOUBLES 2024–26</div>
 <p class="sub">Every player with ≥60 pro doubles games since 2024, rated by a
-dynamic Bayesian model of all {n_games:,} games. <strong>pts</strong> = expected
-margin (with an average partner, vs an average pair, race to 11) — median
+dynamic Bayesian model of all {n_games:,} games. <strong>PICKLE score</strong> = expected
+margin in points (with an average partner, vs an average pair, race to 11) — median
 regular ≈ +2, star ≈ +5. The interval is the point, not fine print.</p>
 <div class="syscheck">
  <div class="lrow"><span class="lk">GAMES IN THE MODEL (2024–26, MLP + PPA)</span><span class="ldot"></span><span class="lv">{n_games:,}</span></div>
@@ -324,7 +324,7 @@ since 2024). Rank is within gender.</p>
 <input class="searchbox" id="q" type="search" placeholder="Filter by name…"
  oninput="for(const r of document.querySelectorAll('.prow'))
  r.style.display=r.dataset.name.includes(this.value.toLowerCase())?'':'none'">
-<div class="tblwrap"><table><tr><th>player</th><th>g</th><th class="num">pts</th>
+<div class="tblwrap"><table><tr><th>player</th><th>g</th><th class="num">PICKLE score</th>
 <th class="num">rank</th><th class="num">games</th><th class="num">last seen</th></tr>
 {rows}</table></div>
 """
@@ -347,7 +347,7 @@ def build_player_page(p, players, chem, updated):
     tiles = f"""
 <div class="tiles">
  <div class="tile"><div class="v">{p.pts:+.1f} <span class="note">({p.pts_lo:+.1f}…{p.pts_hi:+.1f})</span></div>
-   <div class="k">pts vs avg pairing (90% interval)</div></div>
+   <div class="k">PICKLE score (vs avg pairing, 90% interval)</div></div>
  <div class="tile"><div class="v">{f"#{p.rank}" if p.rank else "—"}</div><div class="k">of {sum(1 for q in players.values() if q.dynamic and q.gender == p.gender and q.rank)} active {'men' if p.gender == 'M' else 'women'} (within gender only{'' if p.rank else '; no 2026 games'})</div></div>
  <div class="tile"><div class="v">{wl(st.w, st.l)}</div><div class="k">career record · {pct(st.w / max(st.w + st.l, 1))} wins, {pct(share)} of points</div></div>
  <div class="tile"><div class="v">{trend_arrow(p)}</div><div class="k">6-month form</div></div>
