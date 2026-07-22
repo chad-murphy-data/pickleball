@@ -493,11 +493,52 @@ def exp_relative(vals):
           "(rearrangement inequality).")
 
 
+def exp_nj_opener(vals):
+    hr("8. NJ's opener: split the barbell, don't cluster by gender")
+    gender = {**STL, **NJ}
+    val = lambda n: v(vals, n)
+    pp = lambda a, b: sigmoid(K_DB * (val(a) - val(b)))   # P(StL wins) a slot
+
+    def nj_winprob(no):
+        """NJ's win prob if it opens with order `no` and St. Louis best-
+        responds within the forced gender pattern."""
+        best = 0.0
+        for so in set(permutations(list(STL))):
+            if any(gender[s] != gender[n] for s, n in zip(so, no)):
+                continue
+            best = max(best, db_win_prob(tuple(pp(s, n) for s, n in zip(so, no))))
+        return 1 - best     # StL maximizes StL; NJ gets the complement
+
+    print("The tempting read: 'my women are relatively stronger, play them")
+    print("first.' But NJ's women are a BARBELL -- Waters is the board's top")
+    print("weapon, Johnson is NJ's weak link (underdog to both StL women).\n")
+    print("  NJ pair edges vs St. Louis (best-response matchups):")
+    print(f"    women: Waters {val('Anna Leigh Waters')-val('Kate Fahey'):+.2f} "
+          f"(vs Fahey), Johnson {val('Jorja Johnson')-val('Anna Bright'):+.2f} "
+          "(vs Bright)  -> net +0.18")
+    print(f"    men:   Khlif +0.24, Howells +0.10                         "
+          "        -> net +0.34\n")
+
+    both_women = ("Anna Leigh Waters", "Jorja Johnson", "Noe Khlif", "Will Howells")
+    split = ("Anna Leigh Waters", "Noe Khlif", "Will Howells", "Jorja Johnson")
+    edge_sorted = tuple(sorted(NJ, key=val, reverse=True))
+    print(f"  both women first (W,W,M,M): NJ {nj_winprob(both_women)*100:.1f}%")
+    print(f"  split - Waters 1st, Johnson last (W,M,M,W): "
+          f"NJ {nj_winprob(split)*100:.1f}%")
+    print(f"  edge-sorted players {edge_sorted}: "
+          f"NJ {nj_winprob(edge_sorted)*100:.1f}%")
+    print(f"\n  Splitting the barbell is worth "
+          f"{(nj_winprob(split)-nj_winprob(both_women))*100:+.1f} pp to NJ:")
+    print("  lead Waters (busy slot 1), bury Johnson (dead slot 4). The right")
+    print("  unit is the PLAYER's edge, not the gender pair -- 'both women")
+    print("  first' only wins if BOTH women are your relatively stronger picks.")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--only", type=int, default=None,
-                    help="run only experiment N (1-7)")
+                    help="run only experiment N (1-8)")
     args = ap.parse_args()
     vals = load_singles()
     runs = [exp_volume, exp_single_edge,
@@ -505,7 +546,8 @@ def main():
             lambda: exp_equilibrium(vals),
             lambda: exp_anna(vals),
             lambda: exp_real_teams(vals),
-            lambda: exp_relative(vals)]
+            lambda: exp_relative(vals),
+            lambda: exp_nj_opener(vals)]
     if args.only:
         runs[args.only - 1]()
     else:

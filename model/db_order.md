@@ -169,16 +169,38 @@ match, so the announcer sets it and constrains the responder:
 - New Jersey announces first: **40.7%**
 - The "button" (announcing first) is worth **2.3 pp** here.
 
-NJ's optimal opener is simply strongest-first (Waters, Khlif, Howells,
-Johnson), which forces St. Louis to split its two women into slots 1 and 4.
-So the *realistic* band is **~41–43%**, not the full 39–46% envelope — and
-today's order-blind forecast (42.8%) sits at the top of it, because it
-implicitly assumes placement never costs the underdog anything.
+NJ's optimal opener is simply edge-first on its players — **Waters, Khlif,
+Howells, Johnson** — which forces St. Louis to split its two women into
+slots 1 and 4. So the *realistic* band is **~41–43%**, not the full 39–46%
+envelope — and today's order-blind forecast (42.8%) sits at the top of it,
+because it implicitly assumes placement never costs the underdog anything.
 
 This is the concrete, same-gender version of Anna's mechanism-and-fix: the
 lever is real (a few pp), it's biggest on the woman-vs-woman pairing, and
 **who announces first is itself worth ~2 pp** — exactly why she wants the
 announcement order changed.
+
+### A tempting wrong move: "both women first"
+
+NJ's intuitive play is "my women are relatively stronger, play them both
+first." But NJ's women are a **barbell**, not a strong pair: Waters is the
+board's top weapon (+0.47 even against Fahey, St. Louis's best), while
+**Johnson is NJ's weak link** — an underdog to both St. Louis women. As
+*pairs*, NJ's edge actually lives with the men (net +0.34) over the women
+(net +0.18).
+
+| NJ opener | NJ win prob |
+|---|---:|
+| both women first (W,W,M,M) | 57.0% |
+| **split — Waters 1st, Johnson last (W,M,M,W)** | **59.3%** |
+
+Clustering both women costs NJ **2.3 pp**, because it drags Johnson (a ~47%
+matchup) into busy slot 2. The right unit is the **player's edge, not the
+gender pair**: edge-sort the four (Waters, Khlif, Howells, Johnson) — lead
+Waters, bury Johnson in the dead slot. "Both women first" only wins when
+*both* women are your relatively stronger picks; when one is a barbell end,
+split them. (You also can't *force* the +0.78 Waters-vs-Bright: lead Waters
+and St. Louis counters with Fahey, so the realized Waters edge is +0.47.)
 
 ## Honest limits
 
@@ -197,6 +219,7 @@ announcement order changed.
 ## Reproduce
 
 ```bash
-python model/db_order_sim.py          # full battery (experiments 1-7)
+python model/db_order_sim.py          # full battery (experiments 1-8)
 python model/db_order_sim.py --only 6 # St. Louis Shock vs New Jersey 5s
+python model/db_order_sim.py --only 8 # NJ opener: split the barbell
 ```
