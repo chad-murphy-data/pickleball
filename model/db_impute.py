@@ -193,8 +193,14 @@ def parse_db(rows, team1, team2):
             if delta > 0:
                 if delta > 1:
                     flags.append(f"multi-point delta {delta}")
-                p1, p2, srv = pending if pending else (cur.get(team1),
-                                                       cur.get(team2), None)
+                if pending is None:
+                    # POINT with no preceding rally row: on-court players
+                    # cannot be pinned (cur may already reflect a
+                    # substitution) -- credit the score, skip attribution
+                    flags.append(f"unattributed point row {r.get('log_index')}")
+                    totals[team] += delta
+                    continue
+                p1, p2, srv = pending
                 if srv and srv not in (p1, p2):
                     flags.append(f"server not on court row {r.get('log_index')}")
                 for _ in range(delta):
@@ -361,7 +367,7 @@ def main():
         exact = (v.get(team1) == t1s and v.get(team2) == t2s)
         # benign flags = the parser handling known log quirks correctly;
         # risky flags = possible on-court attribution error -> exclude
-        BENIGN = ("dup-entry dropped", "score gap")
+        BENIGN = ("dup-entry dropped", "score gap", "unattributed point")
         risky = [f for f in res["flags"] if not f.startswith(BENIGN)]
         if exact and not risky:
             ok.append(mid)

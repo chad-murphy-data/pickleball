@@ -83,12 +83,15 @@ def main():
     print(f"{len(matchups)} completed MLP matchups in window "
           f"{AS_OF - timedelta(days=WINDOW_DAYS)} .. {AS_OF}")
 
-    # most recent completed matchup per franchise
-    latest = {}      # team_uuid -> (date, matchup_uuid, title, event)
-    for muid, d in matchups.items():
+    # most recent completed matchup per franchise -- ordered by the actual
+    # start TIMESTAMP (plannedStartDate), not just the calendar date, so
+    # same-day matchups resolve deterministically and correctly
+    latest = {}      # team_uuid -> (start_ts, matchup_uuid, title, event)
+    for muid in matchups:
         md = c.matchup_data(muid, volatile=False)
         if md.get("matchupCompletedType") != "PLAYED_MATCHUP_COMPLETION_TYPE":
             continue
+        ts = md.get("plannedStartDate") or md.get("dateCreated") or ""
         event = md.get("matchupGroupTitle") or ""
         for tu, tt in (((md.get("teamOneUuid") or "").lower(),
                         md.get("teamOneTitle")),
@@ -96,8 +99,9 @@ def main():
                         md.get("teamTwoTitle"))):
             if not tu:
                 continue
-            if tu not in latest or d > latest[tu][0]:
-                latest[tu] = (d, muid, tt, event)
+            if tu not in latest or (ts, muid) > (latest[tu][0],
+                                                 latest[tu][1]):
+                latest[tu] = (ts, muid, tt, event)
 
     rows, problems = [], []
     for tu, (d, muid, title, event) in sorted(latest.items(),

@@ -9,9 +9,13 @@ matchups rotate every 4 points in slot order, cycling until the game ends.
 Scenarios (each of the 20 current franchises plays every other, both as
 Team 1 and as Team 2 -> 380 ordered matchups per scenario):
 
-  S1  Team 1 maximins (picks the gender pairings whose worst case under
-      Team 2's response is best); Team 2 sorts the four matchups by ITS
-      edge, biggest edge in slot 1.
+  S1  Team 1 maximins; Team 2 sorts the four matchups by ITS edge,
+      biggest edge in slot 1. "Maximin" here = Team 1 best-responds to
+      Team 2's SPECIFIED edge-sort policy (a deterministic policy, so
+      best response and maximin coincide). NOTE: under the freeze rules
+      edge-sort is close to but not exactly Team 2's optimal order
+      (audited: mean 0.7pp, max 2.1pp from the true 24-permutation
+      optimum); pass --adversarial for the true worst-case variant.
   S2  Team 1 instead picks the MOST UNBALANCED same-gender pairings it
       can (per gender, maximize |p_matchup1 - p_matchup2|); Team 2 still
       edge-sorts.
@@ -19,10 +23,15 @@ Team 1 and as Team 2 -> 380 ordered matchups per scenario):
       in slots 1-2, higher-PICKLE man first (women fill 3-4, higher-PICKLE
       woman first -- the spec pins only the men; documented assumption).
 
+Roster note: substitute usage means one player can appear in two teams'
+latest lineups (Yuta Funemizu: Miami 7/10 and Utah 7/18). Affected rows
+carry shared_player=1 (a self-matchup is simulated at p=0.5); summary
+tables report aggregates with and without them.
+
 Model: per-rally P = sigmoid(K_RALLY * (v1 - v2)) on PICKLE singles values
 (data/db_rosters.csv value_used: real singles if >= 10 games, else the
 corrected imputation -0.07 + 1.14*doubles, model/db_impute.md).
-K_RALLY = 0.502 -- the rally-level coefficient fitted on the 3,125
+K_RALLY = 0.510 -- the rally-level coefficient fitted on the 3,101
 validated same-gender DreamBreaker rallies (db_impute v2), i.e. estimated
 at exactly the grain simulated here. (Team-level fit was 0.42; a
 sensitivity run is reported in the summary.) Rallies are iid within a
@@ -39,7 +48,7 @@ Outputs:
   data/db_scenarios_matchups.csv   one row per (scenario, ordered pair)
   stdout summary tables
 
-Run: python model/db_scenarios.py [--k 0.502] [--mc 0]
+Run: python model/db_scenarios.py [--k 0.510] [--mc 0] [--adversarial]
 """
 from __future__ import annotations
 
@@ -55,9 +64,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 
-K_RALLY = 0.502        # rally-level fit, db_impute v2 (sensitivity: 0.42)
+K_RALLY = 0.510        # rally-level fit, db_impute v2 (sensitivity: 0.42)
 TARGET, WIN_BY, SEG, NPOS = 21, 2, 4, 4
-CAP = 90               # deuce guard; truncated mass ~6e-11, asserted below
+CAP = 90               # deuce guard; truncated mass ~4e-22, asserted below
 ROSTERS = DATA / "db_rosters.csv"
 OUT = DATA / "db_scenarios_matchups.csv"
 
@@ -279,6 +288,20 @@ def order_edge_sort_t2(k, matchups):
                                            m[1][0], m[0][0]))
 
 
+def order_adversarial_t2(k, matchups):
+    """True worst case for Team 1: Team 2 picks the slot order minimizing
+    Team 1's win prob over all 24 permutations (freeze-aware)."""
+    from itertools import permutations as _perms
+    best = None
+    for perm in _perms(range(4)):
+        ms = [matchups[i] for i in perm]
+        pw = win_prob(tuple(matchup_p(k, m) for m in ms))
+        key = (pw, tuple(m[0][0] for m in ms))
+        if best is None or key < best[0]:
+            best = (key, ms)
+    return best[1]
+
+
 def order_men_first_t2(k, matchups, t2):
     """S3 Team-2 policy: T2's men's matchups in slots 1-2, higher-PICKLE
     T2 man first; women in 3-4, higher-PICKLE T2 woman first."""
@@ -302,6 +325,8 @@ def scenario_config(scen, k, t1, t2):
     def respond(ms):
         if scen == "S3":
             return order_men_first_t2(k, ms, t2)
+        if scen.endswith("adv"):
+            return order_adversarial_t2(k, ms)
         return order_edge_sort_t2(k, ms)
 
     if scen == "S2":
@@ -334,6 +359,9 @@ def main():
                     help="Monte Carlo self-check with N sims per config "
                          "on a sample of configurations")
     ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--adversarial", action="store_true",
+                    help="add S1adv: Team 2 orders truly adversarially "
+                         "(min over all 24 permutations)")
     args = ap.parse_args()
     k = args.k
 
@@ -342,7 +370,8 @@ def main():
     print(f"{len(names)} franchise teams; k = {k}")
 
     rows = []
-    for scen in ("S1", "S2", "S3"):
+    scens = ("S1", "S2", "S3") + (("S1adv",) if args.adversarial else ())
+    for scen in scens:
         for t1n in names:
             for t2n in names:
                 if t1n == t2n:
@@ -354,8 +383,11 @@ def main():
                 genders = "".join(
                     "W" if m[0][0] in {u for u, _, _ in t1["W"]} else "M"
                     for m in order)
+                shared = bool({u for u, _, _ in t1["W"] + t1["M"]}
+                              & {u for u, _, _ in t2["W"] + t2["M"]})
                 rows.append({
                     "scenario": scen, "team1": t1n, "team2": t2n,
+                    "shared_player": int(shared),
                     "t1_win_prob": f"{pw:.4f}",
                     "t2_win_prob": f"{1 - pw:.4f}",
                     "exp_margin_t1": f"{exp_m:.3f}",
@@ -377,7 +409,7 @@ def main():
     print(f"\n{'scenario':<10}{'T1 win% (mean)':>15}{'T1 favored':>12}"
           f"{'E[margin]':>11}{'MOV|T1':>8}{'MOV|T2':>8}"
           f"{'%W in top2':>12}{'%W slot1':>10}")
-    for scen in ("S1", "S2", "S3"):
+    for scen in scens:
         rs = [r for r in rows if r["scenario"] == scen]
         n = len(rs)
         mp_ = sum(float(r["t1_win_prob"]) for r in rs) / n
@@ -390,6 +422,12 @@ def main():
         print(f"{scen:<10}{mp_ * 100:>14.1f}%{fav * 100:>11.1f}%"
               f"{em:>11.3f}{m1:>8.2f}{m2:>8.2f}"
               f"{wt2 * 100:>11.1f}%{w1 * 100:>9.1f}%")
+        rs2 = [r for r in rs if r["shared_player"] == 0]
+        if len(rs2) != n:
+            mp2 = sum(float(r["t1_win_prob"]) for r in rs2) / len(rs2)
+            print(f"{scen + '*':<10}{mp2 * 100:>14.1f}%"
+                  f"{'':>11}{'':>11}{'':>8}{'':>8}"
+                  f"   (excl. {n - len(rs2)} shared-player rows)")
 
     if args.mc:
         print(f"\nMonte Carlo self-check ({args.mc:,} sims per config, "
