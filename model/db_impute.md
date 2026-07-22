@@ -1,64 +1,86 @@
-# DreamBreaker imputation shrink — do never-singles players underperform? (2026-07-22)
+# DreamBreaker correction for non-ranked singles players (v2, 2026-07-22)
 
-Never-play-singles players get a singles value imputed from doubles via
-`make_forecast.SINGLES_IMPUTE` (`singles ≈ 0.28 + 1.14·doubles`, r = 0.74).
-`db_model.md` flagged the obvious selection bias: these players don't play
-singles *because* they're worse at it, so the imputation runs high. This
-measures the bias directly — **DreamBreakers are singles points** — by
-pooling every non-singles player's DB rallies and comparing their actual
-rally wins to what the imputation predicts.
+Players without a real PICKLE singles record get a singles value imputed
+from doubles (`singles ≈ 0.28 + 1.14·doubles`, r = 0.74, n = 543).
+db_model.md flagged the selection bias: they don't play singles *because*
+they're worse at it. DreamBreakers **are** singles points, so the bias is
+measurable: pool every non-ranked player's DB rallies and compare their
+actual rally wins to what the imputation predicts, controlling for
+opposition strength and their own doubles rating (both enter through the
+value gap in the rally logistic).
 
-## Data & method (`model/db_impute.py`)
+## v2 parser — explicit, validated reconstruction (`model/db_impute.py`)
 
-- DreamBreakers are **not** in the Supabase rally warehouse (filtered as
-  tie-breakers, verified: 0 rows), so fetch the referee logs directly
-  (`getListLogs`, cached in `raw/match_logs`). 94 of 103 DBs have rally logs
-  → 3,522 rallies.
-- DB logs are quirky, and getting this wrong silently corrupts everything:
-  the score string is the **team** total (server-team first, `a+b` = rally
-  index), and **`receiver_uuid` is unreliable** (it sticks to one player
-  across segments). So the winner of each rally is reconstructed from the
-  **server rotation + team scores**, and each matchup is read off the two
-  distinct servers in its 4-rally rotation segment.
-- Restrict to **same-gender rallies** — cross-gender value gaps aren't
-  identified (house rule).
-- Compare imputed vs real-singles players; fit a logistic for the shrink.
+v1 inferred winners from score strings and validated only 37/94 matches;
+its estimate (0.20) was attenuated by reconstruction noise. v2 uses what
+the referee logs actually contain:
 
-**Internal validation:** the recovered rally-level coefficient is
-**k = 0.458**, essentially matching the independent *team-level* DB fit
-(0.42, db_model.md). That agreement is the evidence the reconstruction is
-sound — an earlier buggy version gave k ≈ 0, which is how the bug was caught.
+- **type-14 POINT rows**: `point_log.team_uuid` = the scoring *franchise*
+  uuid; start/end give a correction-aware delta (`harvest_logs._point_delta`
+  handles rewinds, phantom double-entries, garbled strings — all observed).
+  The payload's per-team cumulative `end_score` is cross-checked against the
+  reconstructed running total: `end == total+1` → point; `end ≤ total` →
+  duplicate entry, dropped; `end > total+1` → unlogged score gap, credited
+  to the team without rally attribution.
+- **type-32 substitution rows**: every 4-point rotation is announced
+  explicitly (`player_in_uuid`, `player_out_uuid`, `team_uuid`), so the
+  on-court singles matchup for every rally is **explicit**, not inferred.
+  (Quirk: a segment's 4th POINT row is logged *after* the two sub rows, so
+  on-court players are snapshotted at the rally row.) Each team's announced
+  rotation **order** falls out for free (`data/db_orders.csv`).
 
-## Result
+**Validation: 88 of 94 logged DreamBreakers reconstruct the official final
+score EXACTLY** (teamOne/teamTwo-oriented via the matchup record). The 6
+others also match on totals but carry attribution-risk flags (server not in
+the tracked on-court pair, sub-sequence mismatch) and are **excluded** from
+the fit out of caution. 9 of 103 DBs have no digital referee log.
+Rally-level dataset: `data/db_rallies.csv` (3,213 rallies).
 
-| group | rallies | actual win% | expected (from rating) | residual |
-|---|--:|--:|--:|--:|
-| real singles | 5,218 | 50.1% | 49.8% | +0.3 pp |
-| **imputed** | 840 | 49.5% | 51.2% | **−1.7 pp** |
+## Empirical bonus: how teams actually order players today
 
-Logistic fit controlling for the value gap:
+From the 176 announced team-orders: **slot 1 is a man 176/176 times
+(100%)**; men fill **96%** of slots 1–2. Anna Bright's premise ("teams put
+their men first") is not a tendency — it is the entire league's revealed
+strategy. Corollary: only 2.7% of DB rallies are cross-gender (88/3,213).
+
+## Fit
+
+Same-gender rallies only (cross-gender gaps aren't identified — house
+rule). "Ranked" = ≥ 10 pro singles games. Logistic on rally outcomes:
 
 ```
-P(win) = sigmoid(-0.075 + 0.458·gap − 0.091·impdiff)
+P(i wins rally) = sigmoid(b0 + b1·gap + b2·impdiff)
+gap     = v_i − v_j   (singles value; non-ranked use 0.28 + 1.14·doubles)
+impdiff = imp_i − imp_j  (non-ranked indicator)
 ```
 
-The imputed-player penalty is **−0.091 logit ± 0.079** → imputed players
-play like their singles value is **~0.20 lower** than the formula gives them.
+| quantity | estimate |
+|---|---|
+| rallies in fit | 3,125 (640 imputed-vs-other) |
+| empirical rally k (b1) | **0.502 ± 0.077** (team-level fit was 0.42 — consistent) |
+| imputed penalty (b2) | **−0.177 ± 0.081** (z = −2.18) |
+| **correction (value shrink −b2/b1)** | **0.35** |
+| cluster bootstrap (2,000×, by match) | 95% CI [+0.00, +0.74], P(shrink ≤ 0) = **2.5%** |
 
-## Honest limits
-
-- **Not significant**: z = −1.15, p ≈ 0.25, rough 95% CI on the shrink
-  ≈ [−0.14, +0.54]. The *sign* matches the prior hunch; the *size* is
-  uncertain. Only 666 rallies pit an imputed player against a real one.
-- Reconstruction is imperfect (37/94 DBs reproduce the final score exactly,
-  most others within 1–3 points); the noise attenuates toward zero, so the
-  true effect could be a touch larger.
-- iid-per-rally, serve-blind (cancels between groups since both serve ~half).
+Sensitivity to the "ranked" threshold: ≥1 game → 0.41 [−0.00, +0.85];
+≥30 games → 0.44 [+0.13, +0.84]. Same direction and magnitude throughout;
+the effect is *not* an artifact of where the ranked line is drawn.
 
 ## Applied
 
-`SINGLES_IMPUTE` intercept **0.28 → 0.08** (subtract 0.20) in
-`web/make_forecast.py` and `model/db_order_sim.py`. A *rough, directional*
-correction — a better default than the un-shrunk imputation for never-singles
-players, explicitly not a certified constant. Refit as DBs accrue. Effect,
-e.g.: Jade Kawamoto 1.60 → 1.40, Columbus Sliders (3-of-4 imputed) drops most.
+Correction = **0.35**, subtracted from every non-ranked player's imputed
+singles value: `SINGLES_IMPUTE` intercept 0.28 → **−0.07**
+(web/make_forecast.py, model/db_order_sim.py, model/db_scenarios.py).
+E.g. Jade Kawamoto 1.60 → 1.25; Columbus Sliders (3 of 4 imputed) drop most.
+
+## Honest limits
+
+- Borderline-significant at the primary threshold (CI touches 0); the ≥30
+  sensitivity clears zero. Sign is consistent everywhere; magnitude has a
+  wide CI. Refit as DreamBreakers accrue.
+- 640 imputed-vs-other rallies carry the identification.
+- iid-per-rally, serve-blind (serve effects cancel between groups — both
+  serve about half of rallies).
+- Imputation-eligible non-ranked players enter via doubles value; players
+  with 1–9 singles games are treated as non-ranked (their nominal singles
+  fit is prior-dominated).

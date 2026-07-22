@@ -624,7 +624,7 @@ CURRENT_ROSTERS = {
 
 def current_valuer():
     """name -> singles value (real >=10 games, else shrunk imputation),
-    plus a name->gender map. Uses the 0.08+1.14*d shrunk intercept."""
+    plus a name->gender map. Uses the -0.07+1.14*d shrunk intercept (correction 0.35, db_impute.md)."""
     sv, sg, gen, dbl = {}, {}, {}, {}
     with open(DATA / "singles_players.csv") as fh:
         for r in csv.DictReader(fh):
@@ -639,7 +639,7 @@ def current_valuer():
         if n in sv and sg[n] >= 10:
             return sv[n]
         if n in dbl:
-            return 0.08 + 1.14 * dbl[n]
+            return -0.07 + 1.14 * dbl[n]
         if n in sv:
             return sv[n]
         return None
@@ -731,7 +731,7 @@ def exp_mlp_strategy(vals):
     projected lineups in data/forecasts.json (WD pair = women, MD pair =
     men). Singles values from fit_singles; players without a singles history
     imputed from doubles via the forecast's regression, intercept shrunk
-    0.28->0.08 for the DreamBreaker underperformance (model/db_impute.md)."""
+    0.28 -> -0.07 for the DreamBreaker underperformance (correction 0.35) (model/db_impute.md)."""
     sv, gen, dbl = {}, {}, {}
     with open(DATA / "singles_players.csv") as fh:
         for r in csv.DictReader(fh):
@@ -749,7 +749,7 @@ def exp_mlp_strategy(vals):
         if n in sv:
             return sv[n]
         if n in dbl:
-            return 0.08 + 1.14 * dbl[n]      # shrunk imputation (db_impute.md)
+            return -0.07 + 1.14 * dbl[n]     # shrunk imputation (db_impute.md)
         return None
 
     fc = json.loads((DATA / "forecasts.json").read_text())["forecasts"]
