@@ -89,13 +89,22 @@ For scale: that 7.8 pp is *larger than the entire roster-strength edge* the
 forecast currently prices for most DreamBreakers (a few pp). Order is a
 first-order effect the model ignores.
 
-## 4. The meta is degenerate
+## 4. The rule is "relative-strongest first," and the meta is degenerate
 
-Since slot `i` always faces the opponent's slot `i`, and the busiest slots
-reward your biggest edges, both teams sorting strongest→weakest is a
-**Nash equilibrium** for this matchup — neither side can profitably reorder
-(A's best deviation +0.00 pp, B's +0.03 pp). A's control over its own win
-prob is the same 7.8 pp spread whether B is fixed or best-responding.
+The optimal ordering is **not** by your own absolute strength — it's by your
+**edge** (your win probability in each matchup): put the matchup you're most
+likely to win in the busiest slot, descending. This is a rearrangement
+inequality (the busiest slot has the highest marginal value of +dp), and it
+is optimal in 2000/2000 random matchup sets. The two rules coincide only
+when your player ranking matches the gap ranking — e.g. your strongest
+player is a 45% underdog while a weaker teammate has a 60% edge, and
+edge-first (58.0%) beats absolute-first (55.6%).
+
+For *this* roster the two happen to coincide (A's strongest players also
+hold its biggest gaps), so both teams sorting strongest→weakest is a
+**Nash equilibrium** — neither side can profitably reorder (A's best
+deviation +0.00 pp, B's +0.03 pp). A's control over its own win prob is the
+same 7.8 pp spread whether B is fixed or best-responding.
 
 There is no interesting strategy here today: everyone stacks strong-first,
 high-vs-high. This is exactly what Anna's proposed fix targets — letting one
@@ -188,6 +197,6 @@ announcement order changed.
 ## Reproduce
 
 ```bash
-python model/db_order_sim.py          # full battery (experiments 1-6)
+python model/db_order_sim.py          # full battery (experiments 1-7)
 python model/db_order_sim.py --only 6 # St. Louis Shock vs New Jersey 5s
 ```

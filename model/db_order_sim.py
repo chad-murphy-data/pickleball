@@ -456,18 +456,56 @@ def exp_real_teams(vals):
           f"{flat*100:.1f}%.")
 
 
+def exp_relative(vals):
+    hr("7. RELATIVE, NOT ABSOLUTE: order by your EDGE, not your own strength")
+    print("Optimal ordering slots your biggest EDGE (highest win prob in the")
+    print("matchup) first -- NOT your strongest player. They differ when your")
+    print("best player is an underdog while a weaker teammate has a soft draw.\n")
+    # your strongest player faces a stronger opponent; a weaker player has a
+    # big edge over a weak one.
+    matchups = {"your 2.0 v their 2.5": (2.0, 2.5),
+                "your 1.5 v their 0.5": (1.5, 0.5),
+                "your 1.2 v their 1.1": (1.2, 1.1),
+                "your 1.0 v their 1.3": (1.0, 1.3)}
+    p = {k: sigmoid(K_DB * (a - b)) for k, (a, b) in matchups.items()}
+    for k, pv in p.items():
+        print(f"    {k}:  P(you win)={pv*100:.1f}%")
+    abs_order = list(matchups)                       # already strong->weak (you)
+    edge_order = sorted(p, key=lambda k: -p[k])
+    pa = db_win_prob(tuple(p[k] for k in abs_order))
+    pe = db_win_prob(tuple(p[k] for k in edge_order))
+    print(f"\n  absolute-strength-first : {pa*100:.1f}%")
+    print(f"  relative (edge)-first   : {pe*100:.1f}%   (+{(pe-pa)*100:.1f} pp)")
+    # confirm edge-first == brute-force optimum, here and on random sets
+    best = max(permutations(list(p)), key=lambda o: db_win_prob(tuple(p[k] for k in o)))
+    print(f"  brute-force optimum     : "
+          f"{db_win_prob(tuple(p[k] for k in best))*100:.1f}%  "
+          f"({'edge-first IS optimal' if best == tuple(edge_order) else 'differs'})")
+    mism = 0
+    for seed in range(500):
+        ps = [0.30 + 0.40 * ((seed * (i + 1) * 0.61803398875) % 1.0)
+              for i in range(NPOS)]
+        edge = tuple(sorted(ps, reverse=True))
+        bf = max(permutations(ps), key=db_win_prob)
+        if abs(db_win_prob(edge) - db_win_prob(bf)) > 1e-12:
+            mism += 1
+    print(f"  edge-first optimal in {500 - mism}/500 random matchup sets "
+          "(rearrangement inequality).")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--only", type=int, default=None,
-                    help="run only experiment N (1-6)")
+                    help="run only experiment N (1-7)")
     args = ap.parse_args()
     vals = load_singles()
     runs = [exp_volume, exp_single_edge,
             lambda: exp_real_roster(vals),
             lambda: exp_equilibrium(vals),
             lambda: exp_anna(vals),
-            lambda: exp_real_teams(vals)]
+            lambda: exp_real_teams(vals),
+            lambda: exp_relative(vals)]
     if args.only:
         runs[args.only - 1]()
     else:
