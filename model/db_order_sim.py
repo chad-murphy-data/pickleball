@@ -574,7 +574,159 @@ def exp_split_roles(vals):
           "played defensively.")
 
 
-def load_rosters():
+# Authoritative current MLP DreamBreaker rosters (2W+2M), pulled from the
+# live BFF 2026-07-22: MLP San Diego (through 7/19) preferred, Edward Jones
+# mid-season filling teams not in that field. Values resolved from
+# fit_singles (real >=10 games) else the shrunk imputation.
+CURRENT_ROSTERS = {
+    "Atlanta Bouncers": (["Jessie Irvine", "Mari Humberg"],
+                         ["Jaume Martinez Vich", "Jay Devilliers"]),
+    "Bay Area Breakers": (["Ella Yeh", "Kiora Kunimoto"],
+                          ["Blaine Hovenier", "Len Yang"]),
+    "Brooklyn Pickleball Team": (["Hannah Blatt", "Jackie Kawamoto"],
+                                 ["Christopher Haworth", "Pesa Teoni"]),
+    "California Black Bears": (["Sahra Dennehy", "Zoey Weil"],
+                              ["Pablo Tellez", "Joseph Wild"]),
+    "Carolina Hogs": (["Nicole Conard", "Abbigal Hatton"],
+                      ["Brandon French", "Michael Loyd"]),
+    "Chicago Slice": (["Elsie Hendershot", "Ting Chieh Wei"],
+                      ["John Lucian Goins", "Zane Navratil"]),
+    "Columbus Sliders": (["Parris Todd", "Tyra Hurricane Black"],
+                         ["Andrei Daescu", "CJ Klinger"]),
+    "Dallas Flash": (["Alix Truong", "Danni-Elle Townsend"],
+                     ["Augustus Ge", "JW Johnson"]),
+    "Florida Smash": (["Paula Rives", "Mya Bui"],
+                      ["Christopher Crouch", "Connor Mogle"]),
+    "Las Vegas Night Owls": (["Callie Smith", "Chao Yi Wang"],
+                             ["Clayton Powell", "Roscoe Bellamy"]),
+    "Los Angeles Mad Drops": (["Catherine Parenteau", "Jade Kawamoto"],
+                              ["Ben Johns", "Max Freeman"]),
+    "Miami Pickleball Club": (["Estee Widdershoven", "Isabella Dunlap"],
+                              ["Dylan Frazier", "Yuta Funemizu"]),
+    "New Jersey 5s": (["Anna Leigh Waters", "Jorja Johnson"],
+                      ["Noe Khlif", "Will Howells"]),
+    "Orlando Squeeze": (["Alex Walker", "Milan Rane"],
+                        ["Federico Staksrud", "Jack Sock"]),
+    "Palm Beach Royals": (["Sofia Sewing", "Tina Pisnik"],
+                          ["Dekel Bar", "Tyson McGuffin"]),
+    "Phoenix Flames": (["Alexa Schull", "Daria Walczak"],
+                       ["Camden Chaffin", "Jonathan Truong"]),
+    "SoCal Hard Eights": (["Cailyn Campbell", "Meghan Dizon"],
+                          ["Armaan Bhatia", "Will Mackinnon"]),
+    "St. Louis Shock": (["Anna Bright", "Kate Fahey"],
+                        ["Gabriel Tardio", "Hayden Patriquin"]),
+    "Texas Ranchers": (["Kaitlyn Christian", "Lea Jansen"],
+                       ["Eric Oncins", "Nicolas Acevedo"]),
+    "Utah Black Diamonds": (["Allyce Jones", "Victoria Dimuzio"],
+                            ["Connor Garnett", "Yuta Funemizu"]),
+}
+
+
+def current_valuer():
+    """name -> singles value (real >=10 games, else shrunk imputation),
+    plus a name->gender map. Uses the 0.08+1.14*d shrunk intercept."""
+    sv, sg, gen, dbl = {}, {}, {}, {}
+    with open(DATA / "singles_players.csv") as fh:
+        for r in csv.DictReader(fh):
+            sv[r["full_name"]] = float(r["singles_value"])
+            sg[r["full_name"]] = int(r["singles_games"]); gen[r["full_name"]] = r["gender"]
+    with open(DATA / "v2_players.csv") as fh:
+        for r in csv.DictReader(fh):
+            dbl[r["full_name"]] = float(r["value_now_mean"])
+            gen.setdefault(r["full_name"], r["gender"])
+
+    def val(n):
+        if n in sv and sg[n] >= 10:
+            return sv[n]
+        if n in dbl:
+            return 0.08 + 1.14 * dbl[n]
+        if n in sv:
+            return sv[n]
+        return None
+    return val, gen
+
+
+def split_role_game(picker, orderer, val):
+    """Anna's rule: `picker` fixes the four matchups, `orderer` then slots
+    them adversarially. Returns (picker_winprob, realized_slot_genders,
+    women_in_top2). picker/orderer are (women_list, men_list) of names."""
+    pw, pm = picker
+    ow, om = orderer
+    pp = lambda a, b: sigmoid(K_DB * (val(a) - val(b)))
+    # 2 women-pairings x 2 men-pairings the picker can choose
+    wpairs = [[(pw[0], ow[0]), (pw[1], ow[1])], [(pw[0], ow[1]), (pw[1], ow[0])]]
+    mpairs = [[(pm[0], om[0]), (pm[1], om[1])], [(pm[0], om[1]), (pm[1], om[0])]]
+    best = None
+    for wp in wpairs:
+        for mp in mpairs:
+            mus = [("W", a, b) for a, b in wp] + [("M", a, b) for a, b in mp]
+            ps = [pp(a, b) for _, a, b in mus]
+            # orderer minimises picker's win prob over all slot orders
+            worst_p, worst_perm = 1.0, None
+            for perm in permutations(range(4)):
+                p = db_win_prob(tuple(ps[i] for i in perm))
+                if p < worst_p:
+                    worst_p, worst_perm = p, perm
+            if best is None or worst_p > best[0]:
+                genders = [mus[i][0] for i in worst_perm]
+                best = (worst_p, genders, genders[:2].count("W"))
+    return best
+
+
+def exp_mlp_strategy(vals):
+    hr("11. MLP SPLIT-ROLE SIM: team 1 picks matchups, team 2 picks order")
+    val, gen = current_valuer()
+    teams = sorted(CURRENT_ROSTERS)
+    # drop any team with an unratable player
+    ok = []
+    for t in teams:
+        w, m = CURRENT_ROSTERS[t]
+        if all(val(n) is not None for n in w + m):
+            ok.append(t)
+    teams = ok
+    print(f"{len(teams)} current MLP teams (shrunk imputation applied).")
+    print("Every ordered pair: team 1 = matchup-picker (leader), team 2 =")
+    print("order-picker (adversarial follower). team 1 chooses the pairing")
+    print("with the best worst-case; team 2 then slots it to hurt team 1.\n")
+
+    from collections import Counter
+    pick_wp, w_top2 = [], []
+    picker_adv = []
+    for A in teams:
+        for B in teams:
+            if A == B:
+                continue
+            pA, gA, wtop = split_role_game(CURRENT_ROSTERS[A], CURRENT_ROSTERS[B], val)
+            pick_wp.append(pA); w_top2.append(wtop)
+            # advantage of holding a role: picker vs orderer for the SAME pair
+    # who benefits — compare the two role assignments per unordered pair
+    for i, A in enumerate(teams):
+        for B in teams[i + 1:]:
+            pA, *_ = split_role_game(CURRENT_ROSTERS[A], CURRENT_ROSTERS[B], val)
+            pB, *_ = split_role_game(CURRENT_ROSTERS[B], CURRENT_ROSTERS[A], val)
+            # if A picks matchups vs B, A wins pA. If B picks vs A, B wins pB,
+            # so A wins 1-pB. Order-advantage for A = (1-pB) - pA.
+            picker_adv.append((1 - pB) - pA)
+
+    dist = Counter(w_top2); n = len(w_top2)
+    print(f"Women in the top-2 slots (set by the adversarial ORDER-picker):")
+    for k in (0, 1, 2):
+        print(f"    {k} women: {dist.get(k,0):3d}  ({dist.get(k,0)/n*100:.0f}%)")
+    print(f"    mean = {sum(w_top2)/n:.2f}")
+    import statistics
+    print(f"\n  Holding the ORDER (vs holding matchups) is worth on average "
+          f"{statistics.mean(picker_adv)*100:+.1f} pp\n  to the order-picker "
+          "-- position is the stronger half of the split, league-wide.")
+
+    # a few concrete lines, incl. LA Mad Drops
+    print("\n  Examples (team 1 picks matchups -> team 1 win %, slot genders):")
+    for A, B in (("Los Angeles Mad Drops", "Dallas Flash"),
+                 ("Dallas Flash", "Los Angeles Mad Drops"),
+                 ("New Jersey 5s", "St. Louis Shock"),
+                 ("St. Louis Shock", "New Jersey 5s")):
+        pA, gA, wtop = split_role_game(CURRENT_ROSTERS[A], CURRENT_ROSTERS[B], val)
+        print(f"    {A:24s} vs {B:24s}: {pA*100:4.1f}%   slots {''.join(gA)} "
+              f"({wtop}W top-2)")
     """Reconstruct each MLP team's 2W+2M DreamBreaker roster from the
     projected lineups in data/forecasts.json (WD pair = women, MD pair =
     men). Singles values from fit_singles; players without a singles history
@@ -688,7 +840,7 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--only", type=int, default=None,
-                    help="run only experiment N (1-10)")
+                    help="run only experiment N (1-11)")
     args = ap.parse_args()
     vals = load_singles()
     runs = [exp_volume, exp_single_edge,
@@ -699,7 +851,8 @@ def main():
             lambda: exp_relative(vals),
             lambda: exp_nj_opener(vals),
             lambda: exp_split_roles(vals),
-            lambda: exp_league(vals)]
+            lambda: exp_league(vals),
+            lambda: exp_mlp_strategy(vals)]
     if args.only:
         runs[args.only - 1]()
     else:

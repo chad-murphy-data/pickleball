@@ -287,6 +287,51 @@ construction is self-defeating: it hands every opponent "women first" as the
 best response. So yes — Anna's hypothesis holds under optimal play, and it
 holds *hardest* precisely against the teams that stack men.
 
+## 9. The full MLP split-role sim (team 1 pairs, team 2 orders)
+
+Anna's proposed rule, run over all 20 current MLP teams (authoritative
+rosters pulled 2026-07-22; shrunk imputation from db_impute.md applied).
+Every ordered pair: team 1 fixes the four matchups, team 2 then slots them
+adversarially. Team 1 picks the pairing with the best worst-case (maximin).
+
+**Position is the stronger half — league-wide.** Holding the *order* is
+worth **+5.0 pp** on average over holding the *matchups*. Whoever sets
+position has the leverage; the matchup-picker plays defense.
+
+**Women in the top-2 slots, decided by the adversarial order-picker:**
+
+| women in top-2 | share |
+|---|---:|
+| 0 | 31% |
+| 1 | 39% |
+| 2 | 31% |
+| **mean** | **1.00** |
+
+Neutral on average — but that's the whole point versus the status quo. If
+teams currently stack men first (Anna's premise), women are ~0 of the top-2;
+under the split-role rule they average **1.0**. The rule roughly doubles
+women's presence in the busy slots, and **whoever holds position imposes
+their gender preference**:
+
+| team 1 picks matchups vs | team 1 win% | order-picker's slots | women top-2 |
+|---|--:|---|:--:|
+| LA Mad Drops vs Dallas | 73.3% | Dallas orders **MMWW** | 0 |
+| Dallas vs LA Mad Drops | 22.7% | LA orders **WWMM** | 2 |
+| New Jersey vs St. Louis | 55.2% | St. Louis orders WMMW | 1 |
+| St. Louis vs New Jersey | 40.7% | New Jersey orders WMMW | 1 |
+
+Same two teams, opposite outcome depending on who holds the order: LA (whose
+women are its biggest edge) orders **women-first** to feature them; Dallas
+(weak women) orders **men-first** to bury LA's women's blowouts in the dead
+slots. The St. Louis/New Jersey line (40.7% when St. Louis picks and New
+Jersey orders) reproduces the section-7 two-team result exactly — a
+consistency check on the full sim.
+
+Bottom line for Anna's essay: her fix is *not* a guaranteed win for women,
+but it moves them from buried (~0) to neutral (~1.0) in the busy slots, and
+it makes featuring-your-women the *optimal* play for every team whose women
+are its edge. Reproduce: `python model/db_order_sim.py --only 11`.
+
 ## Honest limits
 
 - Rallies are iid within a matchup (repo DB model is serve-blind). Real DB
@@ -304,7 +349,7 @@ holds *hardest* precisely against the teams that stack men.
 ## Reproduce
 
 ```bash
-python model/db_order_sim.py          # full battery (experiments 1-10)
+python model/db_order_sim.py          # full battery (experiments 1-11)
 python model/db_order_sim.py --only 6 # St. Louis Shock vs New Jersey 5s
 python model/db_order_sim.py --only 8 # NJ opener: split the barbell
 python model/db_order_sim.py --only 9 # Anna's fix: StL pairs, NJ orders
