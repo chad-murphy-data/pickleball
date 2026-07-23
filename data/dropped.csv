@@ -4,6 +4,7 @@ womens,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,91d85728-a
 mens,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,7881475d-5a9f-40f7-804d-a42bbfa28198,match not completed (status=1),Round 2 RR,MLP
 mixed,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,7a30f736-70c2-4f0c-ad07-b2483007f2b2,match not completed (status=1),Round 2 RR,MLP
 mixed,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,95ee8eb4-ef62-4089-9093-e521c7468326,match not completed (status=1),Round 2 RR,MLP
+,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,02563796-a36c-4cec-9874-f6a65418bfb3,bye matchup (no opponent),,MLP
 ,2026-06-11,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,0586df70-baec-4c2d-828d-5ccb1ec4434f,bye matchup (no opponent),,MLP
 ,2026-07-16,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,090a8fb9-ece1-4b01-b121-adead11a33c8,bye matchup (no opponent),,MLP
 ,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,0a1110ff-4c7c-46e5-b8d2-06fd36aac321,bye matchup (no opponent),,MLP
@@ -14,6 +15,10 @@ womens,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,4803ff34-9
 mens,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,f7d7ffd3-4026-4c98-86e6-a80914554cb0,match not completed (status=1),Round 5 RR,MLP
 mixed,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,6e7991a3-5665-4d4f-8376-5a7855582fd1,match not completed (status=1),Round 5 RR,MLP
 mixed,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,073f5daf-d82d-464c-bbe9-d3673b456bfd,match not completed (status=1),Round 5 RR,MLP
+womens,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,ed21d30f-c3fb-40db-a661-ed0d0605e0a5,match not completed (status=1),Round 4 RR,MLP
+mens,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,766cb253-6c4a-4465-b089-f5f23ce0fc11,match not completed (status=1),Round 4 RR,MLP
+mixed,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,46fa2943-65d0-4a1f-9a46-838c2943168b,match not completed (status=1),Round 4 RR,MLP
+mixed,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,f2c29aa4-99da-4722-a61e-0c6918967be8,match not completed (status=1),Round 4 RR,MLP
 ,2026-05-28,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,119b8e93-d7c5-42a9-8a4e-75dda5887f5a,bye matchup (no opponent),,MLP
 ,2026-06-11,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,128cf0e7-f95f-411c-9a4b-c8b309755054,bye matchup (no opponent),,MLP
 mixed,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,03814bd2-4deb-40ee-84f8-91836d952b76,no played games (forfeit/walkover),Round 1 L1,MLP
@@ -65,6 +70,10 @@ mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season To
 mixed,2025-11-02,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,661b0443-9393-4199-97a7-ac90b63bfeb9,no played games (forfeit/walkover),Semi-Finals W,MLP
 mixed,2025-08-15,141fe139-b4d2-4846-ac9f-a36b5dd6db41,Toray MLP Playoffs - San Diego,,9bb010f9-74e8-4bba-97cc-85d53c3f08f9,no played games (forfeit/walkover),RR,MLP
 mixed,2025-07-10,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,694680d5-8d22-49b7-b95e-654020a6361b,no played games (forfeit/walkover),Round 16 W,MLP
+womens,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,828bad0f-b167-4f4e-b67b-2b8649b0986c,match not completed (status=1),Round 2 RR,MLP
+mens,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,fdff8679-6ba6-46d1-bfe6-c4016fd2747a,match not completed (status=1),Round 2 RR,MLP
+mixed,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,6a619bf2-ed12-4424-9043-0bd06a45cdea,match not completed (status=1),Round 2 RR,MLP
+mixed,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,98d1bee9-0fd6-4aee-8366-9febc39ac8a0,match not completed (status=1),Round 2 RR,MLP
 ,2026-07-16,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,4e14517a-4937-48ba-b268-25e44827ea0e,bye matchup (no opponent),,MLP
 womens,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,1d690a5c-3568-45b6-9a88-d68cff340b71,match not completed (status=1),Round 3 RR,MLP
 mens,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,5651ccef-6719-48e8-8076-7c0671d1fa15,match not completed (status=1),Round 3 RR,MLP
@@ -86,6 +95,7 @@ womens,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,d084b4ab-0
 mens,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,5a006e0f-af46-4ff6-8623-7de214b919d7,match not completed (status=1),Round 2 RR,MLP
 mixed,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,c0ece913-4029-4ff1-a901-07abbd58fa8b,match not completed (status=1),Round 2 RR,MLP
 mixed,2026-07-19,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,f643f919-b895-4060-bf78-f75f707d75e0,match not completed (status=1),Round 2 RR,MLP
+,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,6d0d9ba5-e157-4d1a-ae7f-120ef45f5098,bye matchup (no opponent),,MLP
 ,2026-06-04,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,6f68c1b7-469f-4f14-923d-f5f37c4d7c14,bye matchup (no opponent),,MLP
 mixed,2025-07-10,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,675edbb8-3630-4a85-be4f-42c999c00492,no played games (forfeit/walkover),Round 16 W,MLP
 mixed,2026-07-10,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,88618853-9957-45b3-b48b-15b83413c582,no played games (forfeit/walkover),Round 16 W,MLP
@@ -105,6 +115,8 @@ mixed,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,5bba9330-0c
 mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,764a5bde-2731-4507-8e1f-1d6cc33a4a82,no played games (forfeit/walkover),Round 4 RR,MLP
 ,2026-05-28,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,9160ba6b-ab34-4685-b731-6d075565d733,bye matchup (no opponent),,MLP
 mixed,2026-06-14,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,642c796e-1c23-4301-a3ee-de44b26cfe96,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,92db1c16-1eb7-4abf-a718-3e85d1b84237,bye matchup (no opponent),,MLP
+,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,96a1db40-2e89-4803-96de-3cc234cf25e9,bye matchup (no opponent),,MLP
 womens,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,07f85162-9241-42cd-80b8-125ffb2c2e73,match not completed (status=1),Round 3 RR,MLP
 mens,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,ea732643-2177-40c0-bf88-0eac2dcdd0e5,match not completed (status=1),Round 3 RR,MLP
 mixed,2026-07-19,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,46cc6115-3424-4cb7-b067-70328c5d90dc,match not completed (status=1),Round 3 RR,MLP
@@ -116,6 +128,10 @@ mixed,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,eb691242-84
 ,2026-05-22,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,98e29ae0-5b5e-45f7-8645-79887b5e852a,bye matchup (no opponent),,MLP
 mixed,2025-07-13,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,d0298b46-33b9-421c-b8c3-bbe38f559074,no played games (forfeit/walkover),Round 6 L1,MLP
 ,2026-06-04,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,9b7a7a14-925b-49b4-9000-f888d13a3ffc,bye matchup (no opponent),,MLP
+womens,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,dcbe0644-4204-44d7-a943-b3e5454ff6c0,match not completed (status=1),Round 2 RR,MLP
+mens,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,c47665ea-49e5-4147-bd16-1e58f998c17f,match not completed (status=1),Round 2 RR,MLP
+mixed,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,d4d1b516-5fa8-44d9-9eb3-c7c1f4b5e687,match not completed (status=1),Round 2 RR,MLP
+mixed,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,82dfb716-2793-4b85-b625-fa8ab8b42203,match not completed (status=1),Round 2 RR,MLP
 womens,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,42dbdcb5-b4d9-410f-9e9c-dc3adf48d664,match not completed (status=1),Round 5 RR,MLP
 mens,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,b958f82f-5abf-4252-800b-3df03f2b5c1f,match not completed (status=1),Round 5 RR,MLP
 mixed,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,0e924682-1391-4a64-930e-79c5c1a6d426,match not completed (status=1),Round 5 RR,MLP
@@ -158,6 +174,10 @@ womens,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,2df95311-c
 mens,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,dc70b35f-2539-4d9c-9c26-19d6e56b7ee9,match not completed (status=1),Round 2 RR,MLP
 mixed,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,90cf9c13-53a1-44b3-adf0-5452d0cec577,match not completed (status=1),Round 2 RR,MLP
 mixed,2026-07-18,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,8a919395-d5df-4d8a-90d8-eee5352a4035,match not completed (status=1),Round 2 RR,MLP
+womens,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,bd785d18-8900-4421-aefe-68580f1f2896,match not completed (status=1),Round 1 RR,MLP
+mens,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,800b7fac-8b03-47c9-85b0-63e4663b5cba,match not completed (status=1),Round 1 RR,MLP
+mixed,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,3d4c5774-07fa-4d94-9077-3341dd65f47f,match not completed (status=1),Round 1 RR,MLP
+mixed,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,541d6748-4fee-4df7-8f41-4a457bfce171,match not completed (status=1),Round 1 RR,MLP
 ,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,d1b9e57c-3acd-4767-a1af-669bab809a80,bye matchup (no opponent),,MLP
 mixed,2026-05-31,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,cbc8a702-8f4e-4277-a028-0da169a139d4,no played games (forfeit/walkover),One and Done - Playoff W,MLP
 mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,73aa4200-baa0-45be-9b61-f0d62b4b6bfd,no played games (forfeit/walkover),Round 2 RR,MLP
@@ -180,10 +200,15 @@ mixed,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,ca3b17a7-49
 mixed,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,c0fec7a4-9823-4e02-a79a-f2c64ea7a511,match not completed (status=1),Round 3 RR,MLP
 mixed,2026-06-28,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,384df07d-d40c-4deb-b4ad-51d12c50e065,no played games (forfeit/walkover),One and Done - Playoff W,MLP
 mixed,2026-05-25,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,,d8ff2987-f9e2-4fb9-9390-760bed028b14,no played games (forfeit/walkover),One and Done - Playoff W,MLP
+,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,ee45aa63-5fe7-4182-be9b-8e04c4e2a75f,bye matchup (no opponent),,MLP
 womens,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,de1ec5df-299c-4b60-bac9-84f84b218e21,match not completed (status=1),Round 3 RR,MLP
 mens,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,0a401824-f3b8-4195-9195-a64dee01ff39,match not completed (status=1),Round 3 RR,MLP
 mixed,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,bca1a96e-15b2-48e1-ae73-30503839f031,match not completed (status=1),Round 3 RR,MLP
 mixed,2026-07-17,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,a6fcf43f-7298-481f-8a91-b8189c69a9db,match not completed (status=1),Round 3 RR,MLP
+womens,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,f27ebcf9-b51b-4e5f-8406-b9df14dc401b,match not completed (status=1),Round 4 RR,MLP
+mens,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,d46437d2-5349-4bd6-bca8-0998b1e4fd5f,match not completed (status=1),Round 4 RR,MLP
+mixed,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,00c44498-a6b0-4c1d-b1d0-9022c3f0887f,match not completed (status=1),Round 4 RR,MLP
+mixed,2026-07-23,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,,f7249c90-c243-4a14-be8b-1d4c8dd3f92d,match not completed (status=1),Round 4 RR,MLP
 ,2026-06-17,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,,f58ffb74-8356-449b-a741-aba343653c1a,bye matchup (no opponent),,MLP
 mixed,2026-06-27,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,d79606a6-0c93-4bcb-9bdf-c1bd704ff190,no played games (forfeit/walkover),Round 5 RR,MLP
 womens,2026-07-19,8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,,e5637fa8-d825-4160-be72-f91ef4ca51c4,match not completed (status=1),One and Done - Playoff W,MLP

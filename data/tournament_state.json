@@ -1,128 +1,543 @@
 {
- "generated": "2026-07-22",
+ "generated": "2026-07-23",
  "mlp": {
-  "group": "8d989cbc-a16a-458d-83b5-1ce0490145fd",
-  "event": "MLP San Diego",
-  "completed": [
+  "group": "1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450",
+  "event": "MLP Chicago",
+  "completed": [],
+  "remaining": [
    {
-    "uuid": "e2e7050d-1ddd-453d-8095-ad671f410026",
-    "date": "2026-07-16",
-    "start": "2026-07-16T17:00:00Z",
-    "team1": "Columbus Sliders",
-    "team2": "Orlando Squeeze",
-    "abbr1": "COL",
-    "abbr2": "ORL",
-    "pool": "ae4f54ae",
-    "bracket": "RR",
-    "round": "Round 3",
-    "mnum": 7,
-    "games1": 4,
-    "games2": 0,
-    "pts1": 44,
-    "pts2": 15,
-    "winner": 1
-   },
-   {
-    "uuid": "864bbc05-b575-45c8-a8b0-9a7ea32d1bcc",
-    "date": "2026-07-16",
-    "start": "2026-07-16T18:30:00Z",
-    "team1": "SoCal Hard Eights",
-    "team2": "Florida Smash",
-    "abbr1": "SoCal",
-    "abbr2": "FLA",
-    "pool": "ae4f54ae",
+    "uuid": "f521b568-cd74-4394-af95-4b06bda8f69a",
+    "date": "2026-07-23",
+    "start": "2026-07-23T16:00:00Z",
+    "team1": "Las Vegas Night Owls",
+    "team2": "Dallas Flash",
+    "abbr1": "LV",
+    "abbr2": "DAL",
+    "pool": "e74a14c8",
     "bracket": "RR",
     "round": "Round 4",
-    "mnum": 12,
-    "games1": 4,
-    "games2": 0,
-    "pts1": 47,
-    "pts2": 36,
-    "winner": 1
+    "mnum": 12
    },
    {
-    "uuid": "8ebcadd8-e562-4775-9a7c-cd882b72769f",
-    "date": "2026-07-16",
-    "start": "2026-07-16T20:00:00Z",
-    "team1": "Phoenix Flames",
-    "team2": "Orlando Squeeze",
-    "abbr1": "PHX",
-    "abbr2": "ORL",
-    "pool": "ae4f54ae",
+    "uuid": "cd90e400-8d7c-48e9-bbdf-b025a0d50e58",
+    "date": "2026-07-23",
+    "start": "2026-07-23T17:30:00Z",
+    "team1": "Atlanta Bouncers",
+    "team2": "Utah Black Diamonds",
+    "abbr1": "ATL",
+    "abbr2": "UTA",
+    "pool": "e74a14c8",
     "bracket": "RR",
     "round": "Round 1",
-    "mnum": 3,
-    "games1": 2,
-    "games2": 3,
-    "pts1": 41,
-    "pts2": 59,
-    "winner": 2
+    "mnum": 3
    },
    {
-    "uuid": "12450aa0-b761-44f5-8d58-f02cd16ecc6b",
-    "date": "2026-07-16",
-    "start": "2026-07-16T21:30:00Z",
+    "uuid": "9b900f88-6760-41b5-8554-6383693a92f4",
+    "date": "2026-07-23",
+    "start": "2026-07-23T19:00:00Z",
+    "team1": "SoCal Hard Eights",
+    "team2": "Las Vegas Night Owls",
+    "abbr1": "SoCal",
+    "abbr2": "LV",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 2",
+    "mnum": 4
+   },
+   {
+    "uuid": "11913245-0d13-4314-8a0a-25eedc99f03a",
+    "date": "2026-07-23",
+    "start": "2026-07-23T20:30:00Z",
+    "team1": "Brooklyn Pickleball Team",
+    "team2": "Miami Pickleball Club",
+    "abbr1": "BKLYN",
+    "abbr2": "MIA",
+    "pool": "e8d06f59",
+    "bracket": "RR",
+    "round": "Round 4",
+    "mnum": 10
+   },
+   {
+    "uuid": "4a325b56-ce7f-41ed-9920-a1c11a393096",
+    "date": "2026-07-23",
+    "start": "2026-07-23T22:00:00Z",
+    "team1": "Atlanta Bouncers",
+    "team2": "Chicago Slice",
+    "abbr1": "ATL",
+    "abbr2": "CHI",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 2",
+    "mnum": 6
+   },
+   {
+    "uuid": "85715a08-872b-4f4e-a80e-8aaa9ccbffc6",
+    "date": "2026-07-24",
+    "start": "2026-07-24T15:30:00Z",
+    "team1": "Dallas Flash",
+    "team2": "Atlanta Bouncers",
+    "abbr1": "DAL",
+    "abbr2": "ATL",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 5",
+    "mnum": 14
+   },
+   {
+    "uuid": "7f700984-2d8a-4987-8721-e5b535357cc5",
+    "date": "2026-07-24",
+    "start": "2026-07-24T16:00:00Z",
     "team1": "California Black Bears",
-    "team2": "Columbus Sliders",
+    "team2": "Brooklyn Pickleball Team",
     "abbr1": "CAL",
-    "abbr2": "COL",
-    "pool": "ae4f54ae",
+    "abbr2": "BKLYN",
+    "pool": "e8d06f59",
     "bracket": "RR",
-    "round": "Round 5",
-    "mnum": 13,
-    "games1": 0,
-    "games2": 4,
-    "pts1": 8,
-    "pts2": 44,
-    "winner": 2
+    "round": "Round 3",
+    "mnum": 7
    },
    {
-    "uuid": "2da6b1a0-681c-4f89-8ccf-b4825c74223e",
-    "date": "2026-07-16",
-    "start": "2026-07-16T23:00:00Z",
-    "team1": "Florida Smash",
+    "uuid": "fc110a20-7b8a-4327-a6f7-411f67752f05",
+    "date": "2026-07-24",
+    "start": "2026-07-24T17:00:00Z",
+    "team1": "Texas Ranchers",
     "team2": "Phoenix Flames",
-    "abbr1": "FLA",
+    "abbr1": "TEX",
     "abbr2": "PHX",
-    "pool": "ae4f54ae",
+    "pool": "e8d06f59",
+    "bracket": "RR",
+    "round": "Round 1",
+    "mnum": 2
+   },
+   {
+    "uuid": "44367de0-13b6-4549-a671-ac3febb73816",
+    "date": "2026-07-24",
+    "start": "2026-07-24T17:30:00Z",
+    "team1": "Chicago Slice",
+    "team2": "Las Vegas Night Owls",
+    "abbr1": "CHI",
+    "abbr2": "LV",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 1",
+    "mnum": 2
+   },
+   {
+    "uuid": "9eaf6211-160f-4bed-9f56-fd270bdd0339",
+    "date": "2026-07-24",
+    "start": "2026-07-24T18:30:00Z",
+    "team1": "SoCal Hard Eights",
+    "team2": "Atlanta Bouncers",
+    "abbr1": "SoCal",
+    "abbr2": "ATL",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 4",
+    "mnum": 10
+   },
+   {
+    "uuid": "12cfe17f-2ea7-4a90-ac81-5961917a9fb2",
+    "date": "2026-07-24",
+    "start": "2026-07-24T19:00:00Z",
+    "team1": "Utah Black Diamonds",
+    "team2": "Dallas Flash",
+    "abbr1": "UTA",
+    "abbr2": "DAL",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 2",
+    "mnum": 5
+   },
+   {
+    "uuid": "0ebfb618-0027-49a9-97ab-8b86cd6dec47",
+    "date": "2026-07-24",
+    "start": "2026-07-24T20:00:00Z",
+    "team1": "California Black Bears",
+    "team2": "Phoenix Flames",
+    "abbr1": "CAL",
+    "abbr2": "PHX",
+    "pool": "e8d06f59",
+    "bracket": "RR",
+    "round": "Round 4",
+    "mnum": 11
+   },
+   {
+    "uuid": "0e139c03-a55b-470a-b274-6cd4bf0803f3",
+    "date": "2026-07-24",
+    "start": "2026-07-24T20:30:00Z",
+    "team1": "Miami Pickleball Club",
+    "team2": "Texas Ranchers",
+    "abbr1": "MIA",
+    "abbr2": "TEX",
+    "pool": "e8d06f59",
+    "bracket": "RR",
+    "round": "Round 3",
+    "mnum": 8
+   },
+   {
+    "uuid": "a8f3dbcf-4a1b-4dd1-8dae-34b84b2b9766",
+    "date": "2026-07-24",
+    "start": "2026-07-24T21:30:00Z",
+    "team1": "Las Vegas Night Owls",
+    "team2": "Utah Black Diamonds",
+    "abbr1": "LV",
+    "abbr2": "UTA",
+    "pool": "e74a14c8",
     "bracket": "RR",
     "round": "Round 5",
-    "mnum": 14,
-    "games1": 1,
-    "games2": 3,
-    "pts1": 25,
-    "pts2": 34,
-    "winner": 2
+    "mnum": 15
+   },
+   {
+    "uuid": "505b8891-48ca-4bbf-9434-06a12351d4c4",
+    "date": "2026-07-24",
+    "start": "2026-07-24T22:00:00Z",
+    "team1": "SoCal Hard Eights",
+    "team2": "Chicago Slice",
+    "abbr1": "SoCal",
+    "abbr2": "CHI",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 5",
+    "mnum": 13
+   },
+   {
+    "uuid": "7a5e79ad-fae8-4120-a13a-252f73a7213e",
+    "date": "2026-07-25",
+    "start": "2026-07-25T14:30:00Z",
+    "team1": "Phoenix Flames",
+    "team2": "Miami Pickleball Club",
+    "abbr1": "PHX",
+    "abbr2": "MIA",
+    "pool": "e8d06f59",
+    "bracket": "RR",
+    "round": "Round 2",
+    "mnum": 6
+   },
+   {
+    "uuid": "83dc9d8f-bf7c-4b5c-bb67-2bc0f4c2019c",
+    "date": "2026-07-25",
+    "start": "2026-07-25T15:00:00Z",
+    "team1": "Utah Black Diamonds",
+    "team2": "SoCal Hard Eights",
+    "abbr1": "UTA",
+    "abbr2": "SoCal",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 3",
+    "mnum": 7
+   },
+   {
+    "uuid": "7e21bf4a-affe-49c1-bb1f-1eea78bfe555",
+    "date": "2026-07-25",
+    "start": "2026-07-25T16:00:00Z",
+    "team1": "Texas Ranchers",
+    "team2": "California Black Bears",
+    "abbr1": "TEX",
+    "abbr2": "CAL",
+    "pool": "e8d06f59",
+    "bracket": "RR",
+    "round": "Round 5",
+    "mnum": 15
+   },
+   {
+    "uuid": "d5857d79-a2a1-4c5d-b386-1b231a77e01b",
+    "date": "2026-07-25",
+    "start": "2026-07-25T16:30:00Z",
+    "team1": "Phoenix Flames",
+    "team2": "Brooklyn Pickleball Team",
+    "abbr1": "PHX",
+    "abbr2": "BKLYN",
+    "pool": "e8d06f59",
+    "bracket": "RR",
+    "round": "Round 5",
+    "mnum": 13
+   },
+   {
+    "uuid": "a6106265-412f-4b1f-a818-c76d1207198f",
+    "date": "2026-07-25",
+    "start": "2026-07-25T17:30:00Z",
+    "team1": "Dallas Flash",
+    "team2": "SoCal Hard Eights",
+    "abbr1": "DAL",
+    "abbr2": "SoCal",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 1",
+    "mnum": 1
+   },
+   {
+    "uuid": "c4e686d1-be7a-485c-b6bf-07e1c7e5a22e",
+    "date": "2026-07-25",
+    "start": "2026-07-25T18:00:00Z",
+    "team1": "Chicago Slice",
+    "team2": "Utah Black Diamonds",
+    "abbr1": "CHI",
+    "abbr2": "UTA",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 4",
+    "mnum": 11
+   },
+   {
+    "uuid": "09cd1337-825a-440c-b19c-0e25d916c868",
+    "date": "2026-07-25",
+    "start": "2026-07-25T19:00:00Z",
+    "team1": "Atlanta Bouncers",
+    "team2": "Las Vegas Night Owls",
+    "abbr1": "ATL",
+    "abbr2": "LV",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 3",
+    "mnum": 8
+   },
+   {
+    "uuid": "ba0f72bc-a6ab-40d0-9e1a-a8ae871694b3",
+    "date": "2026-07-25",
+    "start": "2026-07-25T19:30:00Z",
+    "team1": "Brooklyn Pickleball Team",
+    "team2": "Texas Ranchers",
+    "abbr1": "BKLYN",
+    "abbr2": "TEX",
+    "pool": "e8d06f59",
+    "bracket": "RR",
+    "round": "Round 2",
+    "mnum": 4
+   },
+   {
+    "uuid": "c4f357b2-dd27-4027-b188-ba6a48d93faf",
+    "date": "2026-07-25",
+    "start": "2026-07-25T20:30:00Z",
+    "team1": "Miami Pickleball Club",
+    "team2": "California Black Bears",
+    "abbr1": "MIA",
+    "abbr2": "CAL",
+    "pool": "e8d06f59",
+    "bracket": "RR",
+    "round": "Round 1",
+    "mnum": 3
+   },
+   {
+    "uuid": "e8c4db70-6fcf-431e-a089-8f2fa6000eb8",
+    "date": "2026-07-25",
+    "start": "2026-07-25T21:00:00Z",
+    "team1": "Dallas Flash",
+    "team2": "Chicago Slice",
+    "abbr1": "DAL",
+    "abbr2": "CHI",
+    "pool": "e74a14c8",
+    "bracket": "RR",
+    "round": "Round 3",
+    "mnum": 9
    }
   ],
-  "remaining": [],
   "matrix": {
-   "California Black Bears|Columbus Sliders": {
-    "p_win": 0.0546,
-    "p_40": 0.0004,
-    "p_31": 0.0131,
-    "p_db": 0.1265,
-    "p_13": 0.4182,
-    "p_04": 0.4418,
-    "p_db_win": 0.3252
+   "Atlanta Bouncers|Brooklyn Pickleball Team": {
+    "p_win": 0.943,
+    "p_40": 0.4179,
+    "p_31": 0.4806,
+    "p_db": 0.0955,
+    "p_13": 0.0059,
+    "p_04": 0.0001,
+    "p_db_win": 0.4663
    },
-   "California Black Bears|Florida Smash": {
-    "p_win": 0.9449,
-    "p_40": 0.455,
-    "p_31": 0.403,
-    "p_db": 0.1251,
-    "p_13": 0.0162,
-    "p_04": 0.0007,
-    "p_db_win": 0.695
+   "Atlanta Bouncers|California Black Bears": {
+    "p_win": 0.7301,
+    "p_40": 0.1923,
+    "p_31": 0.3939,
+    "p_db": 0.3003,
+    "p_13": 0.101,
+    "p_04": 0.0126,
+    "p_db_win": 0.4795
    },
-   "California Black Bears|Orlando Squeeze": {
-    "p_win": 0.5504,
-    "p_40": 0.0528,
-    "p_31": 0.2893,
-    "p_db": 0.4505,
-    "p_13": 0.1852,
-    "p_04": 0.0222,
-    "p_db_win": 0.4621
+   "Atlanta Bouncers|Chicago Slice": {
+    "p_win": 0.9384,
+    "p_40": 0.4671,
+    "p_31": 0.3976,
+    "p_db": 0.1198,
+    "p_13": 0.0149,
+    "p_04": 0.0006,
+    "p_db_win": 0.6153
+   },
+   "Atlanta Bouncers|Dallas Flash": {
+    "p_win": 0.3792,
+    "p_40": 0.0288,
+    "p_31": 0.1657,
+    "p_db": 0.3542,
+    "p_13": 0.334,
+    "p_04": 0.1173,
+    "p_db_win": 0.5216
+   },
+   "Atlanta Bouncers|Las Vegas Night Owls": {
+    "p_win": 0.8053,
+    "p_40": 0.2444,
+    "p_31": 0.422,
+    "p_db": 0.2594,
+    "p_13": 0.0678,
+    "p_04": 0.0064,
+    "p_db_win": 0.5352
+   },
+   "Atlanta Bouncers|Miami Pickleball Club": {
+    "p_win": 0.7936,
+    "p_40": 0.2369,
+    "p_31": 0.4303,
+    "p_db": 0.2652,
+    "p_13": 0.0632,
+    "p_04": 0.0044,
+    "p_db_win": 0.4768
+   },
+   "Atlanta Bouncers|Phoenix Flames": {
+    "p_win": 0.8941,
+    "p_40": 0.3738,
+    "p_31": 0.4175,
+    "p_db": 0.1743,
+    "p_13": 0.0322,
+    "p_04": 0.0022,
+    "p_db_win": 0.5898
+   },
+   "Atlanta Bouncers|SoCal Hard Eights": {
+    "p_win": 0.8331,
+    "p_40": 0.2437,
+    "p_31": 0.4318,
+    "p_db": 0.257,
+    "p_13": 0.0623,
+    "p_04": 0.0052,
+    "p_db_win": 0.6133
+   },
+   "Atlanta Bouncers|Texas Ranchers": {
+    "p_win": 0.5783,
+    "p_40": 0.1006,
+    "p_31": 0.3491,
+    "p_db": 0.3771,
+    "p_13": 0.1532,
+    "p_04": 0.02,
+    "p_db_win": 0.3411
+   },
+   "Atlanta Bouncers|Utah Black Diamonds": {
+    "p_win": 0.6867,
+    "p_40": 0.1456,
+    "p_31": 0.3795,
+    "p_db": 0.3415,
+    "p_13": 0.1204,
+    "p_04": 0.013,
+    "p_db_win": 0.4732
+   },
+   "Brooklyn Pickleball Team|California Black Bears": {
+    "p_win": 0.1423,
+    "p_40": 0.0009,
+    "p_31": 0.0299,
+    "p_db": 0.2173,
+    "p_13": 0.5071,
+    "p_04": 0.2448,
+    "p_db_win": 0.5132
+   },
+   "Brooklyn Pickleball Team|Chicago Slice": {
+    "p_win": 0.4618,
+    "p_40": 0.0074,
+    "p_31": 0.1513,
+    "p_db": 0.4683,
+    "p_13": 0.3303,
+    "p_04": 0.0427,
+    "p_db_win": 0.6472
+   },
+   "Brooklyn Pickleball Team|Dallas Flash": {
+    "p_win": 0.0376,
+    "p_40": 0.0,
+    "p_31": 0.0026,
+    "p_db": 0.0629,
+    "p_13": 0.4518,
+    "p_04": 0.4826,
+    "p_db_win": 0.5551
+   },
+   "Brooklyn Pickleball Team|Las Vegas Night Owls": {
+    "p_win": 0.2289,
+    "p_40": 0.0011,
+    "p_31": 0.0524,
+    "p_db": 0.3083,
+    "p_13": 0.5224,
+    "p_04": 0.1157,
+    "p_db_win": 0.5686
+   },
+   "Brooklyn Pickleball Team|Miami Pickleball Club": {
+    "p_win": 0.1822,
+    "p_40": 0.0027,
+    "p_31": 0.0468,
+    "p_db": 0.2598,
+    "p_13": 0.4933,
+    "p_04": 0.1973,
+    "p_db_win": 0.5105
+   },
+   "Brooklyn Pickleball Team|Phoenix Flames": {
+    "p_win": 0.3165,
+    "p_40": 0.0039,
+    "p_31": 0.087,
+    "p_db": 0.3625,
+    "p_13": 0.4568,
+    "p_04": 0.0897,
+    "p_db_win": 0.6223
+   },
+   "Brooklyn Pickleball Team|SoCal Hard Eights": {
+    "p_win": 0.2166,
+    "p_40": 0.003,
+    "p_31": 0.0512,
+    "p_db": 0.2518,
+    "p_13": 0.4556,
+    "p_04": 0.2384,
+    "p_db_win": 0.6447
+   },
+   "Brooklyn Pickleball Team|Texas Ranchers": {
+    "p_win": 0.1094,
+    "p_40": 0.0002,
+    "p_31": 0.0154,
+    "p_db": 0.252,
+    "p_13": 0.5307,
+    "p_04": 0.2017,
+    "p_db_win": 0.3721
+   },
+   "Brooklyn Pickleball Team|Utah Black Diamonds": {
+    "p_win": 0.1508,
+    "p_40": 0.0006,
+    "p_31": 0.0268,
+    "p_db": 0.2437,
+    "p_13": 0.4738,
+    "p_04": 0.255,
+    "p_db_win": 0.5063
+   },
+   "California Black Bears|Chicago Slice": {
+    "p_win": 0.8444,
+    "p_40": 0.2542,
+    "p_31": 0.4306,
+    "p_db": 0.2514,
+    "p_13": 0.0591,
+    "p_04": 0.0048,
+    "p_db_win": 0.6348
+   },
+   "California Black Bears|Dallas Flash": {
+    "p_win": 0.193,
+    "p_40": 0.0053,
+    "p_31": 0.0586,
+    "p_db": 0.2384,
+    "p_13": 0.4226,
+    "p_04": 0.275,
+    "p_db_win": 0.5415
+   },
+   "California Black Bears|Las Vegas Night Owls": {
+    "p_win": 0.6225,
+    "p_40": 0.093,
+    "p_31": 0.3207,
+    "p_db": 0.3758,
+    "p_13": 0.1804,
+    "p_04": 0.03,
+    "p_db_win": 0.5556
+   },
+   "California Black Bears|Miami Pickleball Club": {
+    "p_win": 0.6206,
+    "p_40": 0.1023,
+    "p_31": 0.3331,
+    "p_db": 0.3723,
+    "p_13": 0.1677,
+    "p_04": 0.0246,
+    "p_db_win": 0.4974
    },
    "California Black Bears|Phoenix Flames": {
     "p_win": 0.7571,
@@ -142,86 +557,221 @@
     "p_04": 0.0287,
     "p_db_win": 0.6324
    },
-   "Columbus Sliders|Florida Smash": {
-    "p_win": 0.9894,
-    "p_40": 0.8476,
-    "p_31": 0.1441,
-    "p_db": 0.0081,
-    "p_13": 0.0002,
-    "p_04": 0.0,
-    "p_db_win": 0.8319
+   "California Black Bears|Texas Ranchers": {
+    "p_win": 0.3675,
+    "p_40": 0.0288,
+    "p_31": 0.1934,
+    "p_db": 0.404,
+    "p_13": 0.3016,
+    "p_04": 0.0722,
+    "p_db_win": 0.3597
    },
-   "Columbus Sliders|Orlando Squeeze": {
-    "p_win": 0.9458,
-    "p_40": 0.3665,
-    "p_31": 0.4997,
-    "p_db": 0.1243,
-    "p_13": 0.0093,
-    "p_04": 0.0001,
-    "p_db_win": 0.6398
+   "California Black Bears|Utah Black Diamonds": {
+    "p_win": 0.4804,
+    "p_40": 0.05,
+    "p_31": 0.2363,
+    "p_db": 0.3936,
+    "p_13": 0.2647,
+    "p_04": 0.0554,
+    "p_db_win": 0.4932
    },
-   "Columbus Sliders|Phoenix Flames": {
-    "p_win": 0.9893,
-    "p_40": 0.6829,
-    "p_31": 0.2775,
-    "p_db": 0.0376,
-    "p_13": 0.002,
-    "p_04": 0.0,
-    "p_db_win": 0.7675
+   "Chicago Slice|Dallas Flash": {
+    "p_win": 0.0358,
+    "p_40": 0.0002,
+    "p_31": 0.0064,
+    "p_db": 0.0719,
+    "p_13": 0.3408,
+    "p_04": 0.5807,
+    "p_db_win": 0.4056
    },
-   "Columbus Sliders|SoCal Hard Eights": {
-    "p_win": 0.9756,
-    "p_40": 0.5009,
-    "p_31": 0.4056,
-    "p_db": 0.0881,
-    "p_13": 0.0054,
-    "p_04": 0.0001,
-    "p_db_win": 0.7854
+   "Chicago Slice|Las Vegas Night Owls": {
+    "p_win": 0.256,
+    "p_40": 0.0126,
+    "p_31": 0.1089,
+    "p_db": 0.3212,
+    "p_13": 0.3903,
+    "p_04": 0.167,
+    "p_db_win": 0.4189
    },
-   "Florida Smash|Orlando Squeeze": {
-    "p_win": 0.0881,
-    "p_40": 0.0015,
-    "p_31": 0.0321,
-    "p_db": 0.2,
-    "p_13": 0.4445,
-    "p_04": 0.322,
-    "p_db_win": 0.2724
+   "Chicago Slice|Miami Pickleball Club": {
+    "p_win": 0.2449,
+    "p_40": 0.0115,
+    "p_31": 0.1078,
+    "p_db": 0.3463,
+    "p_13": 0.4184,
+    "p_04": 0.116,
+    "p_db_win": 0.3627
    },
-   "Florida Smash|Phoenix Flames": {
-    "p_win": 0.1898,
-    "p_40": 0.0073,
-    "p_31": 0.0737,
-    "p_db": 0.2664,
-    "p_13": 0.4153,
-    "p_04": 0.2373,
-    "p_db_win": 0.4081
+   "Chicago Slice|Phoenix Flames": {
+    "p_win": 0.3914,
+    "p_40": 0.0316,
+    "p_31": 0.1839,
+    "p_db": 0.3714,
+    "p_13": 0.3161,
+    "p_04": 0.097,
+    "p_db_win": 0.4737
    },
-   "Florida Smash|SoCal Hard Eights": {
-    "p_win": 0.1364,
-    "p_40": 0.0022,
-    "p_31": 0.0389,
-    "p_db": 0.2211,
-    "p_13": 0.4543,
-    "p_04": 0.2835,
-    "p_db_win": 0.4314
+   "Chicago Slice|SoCal Hard Eights": {
+    "p_win": 0.302,
+    "p_40": 0.0111,
+    "p_31": 0.1125,
+    "p_db": 0.3584,
+    "p_13": 0.3902,
+    "p_04": 0.1278,
+    "p_db_win": 0.4979
    },
-   "Orlando Squeeze|Phoenix Flames": {
-    "p_win": 0.7141,
-    "p_40": 0.096,
-    "p_31": 0.3642,
-    "p_db": 0.3932,
-    "p_13": 0.1338,
-    "p_04": 0.0128,
-    "p_db_win": 0.6457
+   "Chicago Slice|Texas Ranchers": {
+    "p_win": 0.095,
+    "p_40": 0.003,
+    "p_31": 0.0422,
+    "p_db": 0.2065,
+    "p_13": 0.4275,
+    "p_04": 0.3208,
+    "p_db_win": 0.2411
    },
-   "Orlando Squeeze|SoCal Hard Eights": {
-    "p_win": 0.6349,
-    "p_40": 0.0355,
-    "p_31": 0.2582,
-    "p_db": 0.5111,
-    "p_13": 0.1781,
-    "p_04": 0.0172,
-    "p_db_win": 0.6676
+   "Chicago Slice|Utah Black Diamonds": {
+    "p_win": 0.1599,
+    "p_40": 0.0052,
+    "p_31": 0.0629,
+    "p_db": 0.2556,
+    "p_13": 0.426,
+    "p_04": 0.2503,
+    "p_db_win": 0.3592
+   },
+   "Dallas Flash|Las Vegas Night Owls": {
+    "p_win": 0.8863,
+    "p_40": 0.3728,
+    "p_31": 0.4255,
+    "p_db": 0.1712,
+    "p_13": 0.0288,
+    "p_04": 0.0017,
+    "p_db_win": 0.5142
+   },
+   "Dallas Flash|Miami Pickleball Club": {
+    "p_win": 0.8775,
+    "p_40": 0.3707,
+    "p_31": 0.4283,
+    "p_db": 0.1725,
+    "p_13": 0.0273,
+    "p_04": 0.0012,
+    "p_db_win": 0.4553
+   },
+   "Dallas Flash|Phoenix Flames": {
+    "p_win": 0.9444,
+    "p_40": 0.5151,
+    "p_31": 0.3723,
+    "p_db": 0.1001,
+    "p_13": 0.0119,
+    "p_04": 0.0005,
+    "p_db_win": 0.5686
+   },
+   "Dallas Flash|SoCal Hard Eights": {
+    "p_win": 0.9032,
+    "p_40": 0.3622,
+    "p_31": 0.44,
+    "p_db": 0.1705,
+    "p_13": 0.026,
+    "p_04": 0.0013,
+    "p_db_win": 0.5924
+   },
+   "Dallas Flash|Texas Ranchers": {
+    "p_win": 0.712,
+    "p_40": 0.2,
+    "p_31": 0.4177,
+    "p_db": 0.2933,
+    "p_13": 0.0815,
+    "p_04": 0.0075,
+    "p_db_win": 0.3214
+   },
+   "Dallas Flash|Utah Black Diamonds": {
+    "p_win": 0.8005,
+    "p_40": 0.2557,
+    "p_31": 0.4317,
+    "p_db": 0.2505,
+    "p_13": 0.0579,
+    "p_04": 0.0042,
+    "p_db_win": 0.4517
+   },
+   "Las Vegas Night Owls|Miami Pickleball Club": {
+    "p_win": 0.4946,
+    "p_40": 0.0504,
+    "p_31": 0.2568,
+    "p_db": 0.4243,
+    "p_13": 0.24,
+    "p_04": 0.0285,
+    "p_db_win": 0.4418
+   },
+   "Las Vegas Night Owls|Phoenix Flames": {
+    "p_win": 0.669,
+    "p_40": 0.1272,
+    "p_31": 0.348,
+    "p_db": 0.3492,
+    "p_13": 0.1517,
+    "p_04": 0.0239,
+    "p_db_win": 0.5551
+   },
+   "Las Vegas Night Owls|SoCal Hard Eights": {
+    "p_win": 0.5673,
+    "p_40": 0.0528,
+    "p_31": 0.276,
+    "p_db": 0.4124,
+    "p_13": 0.2242,
+    "p_04": 0.0347,
+    "p_db_win": 0.5785
+   },
+   "Las Vegas Night Owls|Texas Ranchers": {
+    "p_win": 0.2813,
+    "p_40": 0.0166,
+    "p_31": 0.1484,
+    "p_db": 0.3764,
+    "p_13": 0.3535,
+    "p_04": 0.1051,
+    "p_db_win": 0.3092
+   },
+   "Las Vegas Night Owls|Utah Black Diamonds": {
+    "p_win": 0.3876,
+    "p_40": 0.0248,
+    "p_31": 0.1818,
+    "p_db": 0.4135,
+    "p_13": 0.3096,
+    "p_04": 0.0703,
+    "p_db_win": 0.4376
+   },
+   "Miami Pickleball Club|Phoenix Flames": {
+    "p_win": 0.6713,
+    "p_40": 0.0907,
+    "p_31": 0.3479,
+    "p_db": 0.38,
+    "p_13": 0.1588,
+    "p_04": 0.0226,
+    "p_db_win": 0.6123
+   },
+   "Miami Pickleball Club|SoCal Hard Eights": {
+    "p_win": 0.5615,
+    "p_40": 0.0589,
+    "p_31": 0.2549,
+    "p_db": 0.3902,
+    "p_13": 0.2448,
+    "p_04": 0.0512,
+    "p_db_win": 0.6348
+   },
+   "Miami Pickleball Club|Texas Ranchers": {
+    "p_win": 0.2861,
+    "p_40": 0.0125,
+    "p_31": 0.1355,
+    "p_db": 0.3812,
+    "p_13": 0.362,
+    "p_04": 0.1087,
+    "p_db_win": 0.3622
+   },
+   "Miami Pickleball Club|Utah Black Diamonds": {
+    "p_win": 0.3869,
+    "p_40": 0.0231,
+    "p_31": 0.1709,
+    "p_db": 0.3886,
+    "p_13": 0.3308,
+    "p_04": 0.0866,
+    "p_db_win": 0.4963
    },
    "Phoenix Flames|SoCal Hard Eights": {
     "p_win": 0.4217,
@@ -231,6 +781,51 @@
     "p_13": 0.3104,
     "p_04": 0.0842,
     "p_db_win": 0.5237
+   },
+   "Phoenix Flames|Texas Ranchers": {
+    "p_win": 0.1672,
+    "p_40": 0.0069,
+    "p_31": 0.0816,
+    "p_db": 0.3007,
+    "p_13": 0.4226,
+    "p_04": 0.1882,
+    "p_db_win": 0.2619
+   },
+   "Phoenix Flames|Utah Black Diamonds": {
+    "p_win": 0.2504,
+    "p_40": 0.0119,
+    "p_31": 0.109,
+    "p_db": 0.3373,
+    "p_13": 0.3984,
+    "p_04": 0.1434,
+    "p_db_win": 0.3837
+   },
+   "SoCal Hard Eights|Texas Ranchers": {
+    "p_win": 0.2385,
+    "p_40": 0.0117,
+    "p_31": 0.1273,
+    "p_db": 0.4095,
+    "p_13": 0.3585,
+    "p_04": 0.093,
+    "p_db_win": 0.2428
+   },
+   "SoCal Hard Eights|Utah Black Diamonds": {
+    "p_win": 0.3382,
+    "p_40": 0.026,
+    "p_31": 0.1726,
+    "p_db": 0.3864,
+    "p_13": 0.3283,
+    "p_04": 0.0866,
+    "p_db_win": 0.3612
+   },
+   "Texas Ranchers|Utah Black Diamonds": {
+    "p_win": 0.6454,
+    "p_40": 0.0873,
+    "p_31": 0.3183,
+    "p_db": 0.3784,
+    "p_13": 0.1842,
+    "p_04": 0.0318,
+    "p_db_win": 0.6338
    }
   }
  },
