@@ -165,7 +165,29 @@ carry their biggest edges.
 - Momentum, fatigue, and matchup-specific tactics are outside the model;
   values are current form (monthly random walk), not season averages.
 
-## 8. Reproduce
+## 8. Why slot 1 matters: empirical point distribution
+
+A DreamBreaker averages **36.6 total points** (median 37, range 26–46 across
+88 logged DBs). The 4-point rotation cycles P1→P4→P1, advancing on scored
+points only (frozen side-outs consume no slot). At ~37 total points you get
+2.5 full cycles, so slot 1's pair plays **three passes** (points 1–4, 17–20,
+33–36) while slot 4's pair only gets **two** (13–16, 29–32):
+
+| slot | avg points | share | median | range |
+|---|---:|---:|---:|---:|
+| Slot 1 | 10.9 | 30.1% | 12 | 6–12 |
+| Slot 2 | 9.6 | 26.4% | 9 | 7–12 |
+| Slot 3 | 8.1 | 22.4% | 8 | 6–12 |
+| Slot 4 | 7.7 | 21.2% | 8 | 4–10 |
+
+**Slot 1 sees 1.42× more points than slot 4.** The slot-1 median is 12 —
+the empirical ceiling — because most games end mid-way through slot 1's
+third pass. Slot 4 often never starts a third pass at all. This is the
+mechanical reason edge-sorting is worth ~5 pp on average: you're not just
+choosing *which* matchup plays, you're choosing which one plays a third
+time.
+
+## 9. Reproduce
 
 ```bash
 python model/build_db_rosters.py            # rosters (cached API)
@@ -177,7 +199,7 @@ python model/db_scenarios.py --mc 500000    # Monte Carlo self-check
 Full per-matchup detail (orders, margins, flags):
 `data/db_scenarios_matchups.csv`.
 
-## Appendix: every matchup, Team-1 win probability by scenario
+## 10. Appendix: every matchup, Team-1 win probability by scenario
 
 `*` = shared-player pair (Funemizu on both rosters).
 
