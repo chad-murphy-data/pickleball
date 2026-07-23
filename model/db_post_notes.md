@@ -367,6 +367,23 @@ Drops (low asymmetry — uniformly dominant, small T2 advantage).
     staging her costs little and makes a real contest. Framing point
     ONLY — assert nothing about specific current players (no "ALW > Noe"
     claim; rosters churn, e.g. the Staksrud trade).
+  · Within-team, not league-wide (the key nuance, great for the post):
+    "every man beats every woman" is only true INSIDE a team (the
+    men-first data). Across teams it's false — a superteam's woman
+    outranks a budget team's man. Anna Bright isn't better than her own
+    STL men, but she's plausibly better than the cheapest man on a
+    budget roster. So in a superteam-vs-budget DreamBreaker the
+    cross-gender showcase is NOT a sacrifice — it's a matchup the star
+    woman is favored in, and it's cheap because the superteam wins
+    anyway. Quantified (model/db_crossteam_overlap.py, illustrative):
+    under within-team-only ordering, a stronger team's best woman
+    outranks the opponent's weakest man ~31% / best man ~22% of random
+    pairs; among clear-favorite pairs the star woman is
+    competitive-or-favored vs an opposing man ~99% of the time. This is
+    the strongest honest form of Anna's entertainment case, and it
+    corrects the earlier too-strong "designated-loser sacrifice" framing
+    (that was an artifact of assuming league-wide, not within-team,
+    ordering).
 
 ---
 

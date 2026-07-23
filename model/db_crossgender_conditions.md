@@ -253,12 +253,52 @@ claim that any current roster satisfies it (this analysis asserts no
 cross-gender player comparison, and rosters churn week to week). It's a
 "why a coach might still do it" coda, not a prediction.
 
+## 5c. Within-team, not league-wide — and why the sacrifice softens
+
+The "every woman weaker than every man" premise is only what the data
+reveals **within a team** (176/176 men-first orders). It is NOT a
+league-wide fact. A superteam's woman can outrank a budget team's man:
+Anna Bright is (plausibly) not a stronger singles player than her own
+STL men, but she may well be stronger than the cheapest man on a
+budget roster. The men-first hierarchy is real inside each locker room
+and false across the standings.
+
+This matters because §4's "designated-loser sacrifice" characterization
+is partly an artifact of the stage-2 draw, which enforced the *stronger*
+league-wide ordering (every woman below the weakest man on **either**
+team). Relax it to the within-team-only version (women below their own
+team's weakest man, cross-team overlap allowed) and the picture softens
+where teams are unequal. A quick sweep of 20,000 random asymmetric pairs
+under that relaxed draw (illustrative — depends on the draw, but the
+direction is robust):
+
+- T1's best woman outranks T2's **weakest** man ~31% of the time, and
+  T2's **best** man ~22% of the time.
+- A genuinely competitive woman-vs-man matchup (rally p within .45–.55)
+  exists in ~42% of random pairings.
+- Among pairs where T1 is the clearly stronger team, T1's star woman is
+  competitive-or-favored against at least one opposing man **~99%** of
+  the time.
+
+So in a superteam-vs-budget DreamBreaker the cross-gender showcase is not
+a sacrifice at all — it's a matchup the star woman is favored in, and
+(per §5b) it's cheap precisely because the superteam wins anyway. That is
+the strongest real form of Anna's entertainment case: not "engineer a
+woman into a losing spot for drama," but "when you outclass the
+opponent, your best woman genuinely outclasses some of their men, so
+featuring her is both watchable and nearly free." The win-maximizing
+conclusion (§5.1–5.2) is unchanged — rank-matching still wins — but the
+entertainment tradeoff is far more palatable in lopsided matchups than
+the same-budget sacrifice math implied.
+
 ## 6. Reproduce
 
 ```bash
 python model/db_crossgender_conditions.py --step 0.1 --draws 1500
+python model/db_crossteam_overlap.py        # §5c overlap stats (instant)
 ```
 
 Stage 1 ~40 s; stage 2 ~20 min (exact 24-matching × 24-order solve per
 draw). Sanity checks (all-neutral → 50%, degenerate cases, monotonicity,
-team-swap symmetry) assert at startup.
+team-swap symmetry) assert at startup. The overlap script is pure value
+comparisons (no DP) and runs instantly.
