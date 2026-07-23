@@ -318,19 +318,42 @@ Drops (low asymmetry — uniformly dominant, small T2 advantage).
 - Acknowledge the "camera pressure" caveat Anna raises (Hayden vs ALW
   being "actually neutral" in a no-vacuum setting). Our model has no
   crowd/pressure term. Worth one sentence of honesty.
-- **Important caveat on the cross-gender matchup claim**: Anna argues
-  the new rule produces more M-vs-F matchups and more women playing
-  first. But we can't test M-vs-F head-to-head directly (cross-gender
-  comparisons are model-flat — see house rules), and more importantly:
-  a min-maxing T2 edge-sorts on *edge*, not gender. The cross-gender
-  matchup only lands in slot 1 if it also happens to be T2's best edge.
-  If T1 sets a tricky cross-gender pairing (ALW vs Hayden), T2 puts it
-  wherever their edge-sort ranks it — which might be slot 2 or 3.
-  Anna's entertainment vision requires T2 to *also* want that drama in
-  slot 1, which is only true when the cross-gender matchup is their
-  highest-edge slot. Worth flagging: the rule creates the *option* for
-  more cross-gender action, but a game-theoretically optimal T2 doesn't
-  guarantee it.
+- **The cross-gender question is now SOLVED, not hand-waved**
+  (model/db_crossgender_conditions.md, 2026-07-23). We solved the
+  abstract game exactly on hypothetical players (no cross-gender rating
+  claim needed — gender is just a label on made-up strengths, so the
+  house rule is untouched). Findings, and this should probably be its
+  own section of the post or a follow-up post:
+  · The model never had a gender question — it has a MATCHING question:
+    "is pairing rank-for-rank always right when the opponent schedules?"
+    Under the league's own revealed assumption (176/176 real DB orders
+    put a man first: every team behaves as if its men outrank its women
+    at singles), rank-matching automatically = same-gender.
+  · A rational T1 basically never chooses cross-gender: the exact
+    frontier needs a same-gender men's mismatch of 2.2–3.6 logits —
+    2–3× the spread of the entire real MLP men's field.
+  · A cross swap only does one thing: stretches your matchups apart by
+    your own man-woman gap. Spread is the ORDER-PICKER's weapon (bad
+    matchup scheduled early where holes end games; blowout scheduled
+    late where surplus points are worthless). Equal man and woman →
+    the swap is a literal no-op, pure theater.
+  · "Our women are dominant so feature them" makes cross-gender LESS
+    attractive, not more — if your women already crush theirs, both
+    ends of the swap are saturated and you pay the stretch for nothing.
+  · When cross-gender finally IS optimal (19% of deliberately cartoon
+    random configs; gulf ~2 logits), 87% of the time the play is the
+    Tian Ji horse-race strategy from 4th-century-BC China: feed your
+    WORST woman to their BEST man, shift everyone else down a rung.
+    The competitive woman-vs-man showcase appears in ZERO of 285
+    optimal cross-matchings. Great hook: exhaustive search over a
+    pickleball tiebreaker rediscovered Sun Bin's horse races.
+  · The showcase can't be engineered by the rule change anyway: if a
+    woman is genuinely her team's #2, skill-ordering already schedules
+    her against men under BOTH structures (coach just slots her
+    second). It already happens: 88 of 3,189 logged DB rallies (2.8%,
+    7 of 88 matches) were man-vs-woman under current rules.
+  · Camera/crowd effects ("ALW loves the smoke") remain unmodelled —
+    keep the one-sentence honesty caveat.
 
 ---
 

@@ -173,7 +173,38 @@ adversarial order.
   the full matching space finds cheaper asymmetric sacrifices (see
   pattern table below).
 
-<!-- STAGE2_PATTERNS -->
+### What the winning cross-matchings actually are
+
+Re-solving the flagged configs and classifying the optimal matching
+(T1 role v T2 role, players ranked within team):
+
+| count | winning matching | structure |
+|---:|---|---|
+| 248 | M1vM2 \| M2vF1 \| F1vF2 \| **F2vM1** | full one-rung rotation |
+| 18 | M1vM1 \| M2vF1 \| F1vF2 \| **F2vM2** | partial rotation (keep the top men's matchup) |
+| 12 | M1vM2 \| M2vF1 \| **F1vM1** \| F2vF2 | rotation variant (F1 absorbs) |
+| 7 | M1vM1 \| M2vF1 \| **F1vM2** \| F2vF2 | partial variant |
+
+**87% of the time it's the same play: feed your WORST player to their
+BEST man, and shift everyone else down one rung of their ladder.** Your
+best man takes their #2 man, your weak man takes their best woman, your
+best woman takes their weak woman. This is the Tian Ji horse-race
+strategy, verbatim (Sun Bin, 4th century BC: race your worst horse
+against their best, your best against their middle, your middle against
+their worst) — rediscovered by exhaustive search over a pickleball
+tiebreaker.
+
+Example flagged config: T1 = one stud and a cliff (1.93, 0.03, −0.88,
+−1.79) vs a balanced T2 (1.64, 1.41, −0.11, −1.60). Rank-matching gives
+T1 one narrow win and three losses → 15.3%. The rotation gives three
+favored matchups plus one total sacrifice (F2, 3.4 logits under their
+M1) → 17.5%. It's an underdog's variance play, and the gain is small
+(median +1.1 pp across all flagged configs).
+
+Note what the rotation's cross-gender matchups look like on court:
+their best man annihilating your weakest woman, and your weak man
+against their best woman. The marquee woman-vs-man showcase appears in
+**zero** of the 285 optimal cross-matchings.
 
 ## 5. Bottom line
 
