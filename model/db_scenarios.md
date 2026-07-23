@@ -124,28 +124,28 @@ Reading it:
 
 ## 6. Per-team view (S1)
 
-| team | as matchup-picker (T1, S1) | as order-picker (T2, S1) | cost of men-first (S3, as T2) |
-|---|---:|---:|---:|
-| New Jersey 5s | 78.3% | 83.1% | -3.13 pp |
-| St. Louis Shock | 72.3% | 77.1% | -4.96 pp |
-| Los Angeles Mad Drops | 69.1% | 72.6% | -2.95 pp |
-| Texas Ranchers | 63.1% | 68.5% | -6.13 pp |
-| Orlando Squeeze | 55.0% | 63.5% | -0.18 pp |
-| Columbus Sliders | 56.0% | 62.1% | -6.24 pp |
-| Palm Beach Royals | 52.1% | 56.5% | -4.39 pp |
-| Atlanta Bouncers | 48.9% | 55.8% | -0.97 pp |
-| Brooklyn Pickleball Team | 47.6% | 54.0% | -4.39 pp |
-| Las Vegas Night Owls | 46.3% | 51.4% | -4.85 pp |
-| California Black Bears | 47.0% | 51.3% | -3.70 pp |
-| Utah Black Diamonds | 46.8% | 50.9% | -3.35 pp |
-| Miami Pickleball Club | 46.8% | 50.7% | -2.93 pp |
-| Dallas Flash | 39.4% | 44.4% | -1.44 pp |
-| Chicago Slice | 37.0% | 42.9% | -0.67 pp |
-| Phoenix Flames | 36.4% | 40.0% | -2.73 pp |
-| Bay Area Breakers | 31.9% | 37.4% | -3.72 pp |
-| SoCal Hard Eights | 31.4% | 36.7% | -5.73 pp |
-| Florida Smash | 23.9% | 27.8% | -0.91 pp |
-| Carolina Hogs | 20.3% | 23.8% | -1.79 pp |
+| team | as matchup-picker (T1, S1) | as order-picker (T2, S1) | advantage from being T2 | cost of men-first (S3, as T2) |
+|---|---:|---:|---:|---:|
+| New Jersey 5s | 78.3% | 83.1% | +4.8 pp | -3.13 pp |
+| St. Louis Shock | 72.3% | 77.1% | +4.8 pp | -4.96 pp |
+| Los Angeles Mad Drops | 69.1% | 72.6% | +3.5 pp | -2.95 pp |
+| Texas Ranchers | 63.1% | 68.5% | +5.4 pp | -6.13 pp |
+| Orlando Squeeze | 55.0% | 63.5% | +8.5 pp | -0.18 pp |
+| Columbus Sliders | 56.0% | 62.1% | +6.1 pp | -6.24 pp |
+| Palm Beach Royals | 52.1% | 56.5% | +4.4 pp | -4.39 pp |
+| Atlanta Bouncers | 48.9% | 55.8% | +6.9 pp | -0.97 pp |
+| Brooklyn Pickleball Team | 47.6% | 54.0% | +6.4 pp | -4.39 pp |
+| Las Vegas Night Owls | 46.3% | 51.4% | +5.1 pp | -4.85 pp |
+| California Black Bears | 47.0% | 51.3% | +4.3 pp | -3.70 pp |
+| Utah Black Diamonds | 46.8% | 50.9% | +4.1 pp | -3.35 pp |
+| Miami Pickleball Club | 46.8% | 50.7% | +3.9 pp | -2.93 pp |
+| Dallas Flash | 39.4% | 44.4% | +5.0 pp | -1.44 pp |
+| Chicago Slice | 37.0% | 42.9% | +5.9 pp | -0.67 pp |
+| Phoenix Flames | 36.4% | 40.0% | +3.6 pp | -2.73 pp |
+| Bay Area Breakers | 31.9% | 37.4% | +5.5 pp | -3.72 pp |
+| SoCal Hard Eights | 31.4% | 36.7% | +5.3 pp | -5.73 pp |
+| Florida Smash | 23.9% | 27.8% | +3.9 pp | -0.91 pp |
+| Carolina Hogs | 20.3% | 23.8% | +3.5 pp | -1.79 pp |
 
 
 The four teams that lose the most by men-first ordering (Columbus −6.2,
