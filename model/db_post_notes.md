@@ -354,6 +354,19 @@ Drops (low asymmetry — uniformly dominant, small T2 advantage).
     7 of 88 matches) were man-vs-woman under current rules.
   · Camera/crowd effects ("ALW loves the smoke") remain unmodelled —
     keep the one-sentence honesty caveat.
+  · The spectacle exception (good post beat): everything above is about
+    WIN-maximizing. A team playing for entertainment might pay a small
+    win-prob tax for the show — and that tax is cheapest for a heavy
+    favorite (the win-prob curve is flat near the extremes: at ~70%+
+    you're winning anyway, so a couple points of edge barely move the
+    needle; in an even game the same points flip it). Melancholy
+    punchline: the fireworks are affordable exactly in the games that
+    are already decided, unaffordable in the title games. The one
+    watchable-and-cheap case: you think your best woman is nearly as
+    strong as your second-best man and their second man is weak — then
+    staging her costs little and makes a real contest. Framing point
+    ONLY — assert nothing about specific current players (no "ALW > Noe"
+    claim; rosters churn, e.g. the Staksrud trade).
 
 ---
 

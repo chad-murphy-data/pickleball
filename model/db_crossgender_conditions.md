@@ -226,6 +226,33 @@ against their best woman. The marquee woman-vs-man showcase appears in
    is gender-blind by construction, which is exactly what makes the
    matching argument clean.
 
+## 5b. The spectacle exception (why a team might still do it)
+
+Everything above prices cross-gender as a *win-maximizing* choice, and
+finds it almost never is. But a team optimizing for *entertainment* is
+playing a different game, and might rationally pay a small win-probability
+tax to stage a woman-vs-man showcase.
+
+The tax is cheapest for a heavy favorite. The win-probability curve is
+flat near the extremes: if you're already ~70% (let alone ~90%) to win
+the DreamBreaker, giving up a couple points of edge barely moves your
+win probability, because you were going to win anyway. In an even game
+the same couple of points can flip the result outright. So fireworks are
+"affordable" mostly in games that are already decided — which is a little
+melancholy: the spectacle is free precisely when the competitive stakes
+are lowest, and unaffordable in the title games where everyone is
+watching.
+
+There is one configuration where the tax is genuinely small *and* the
+matchup is worth watching: you judge your best woman to be nearly as
+strong as your second-best man, and the opponent's second man is weak.
+Then moving her onto a man costs you little (she was already close to
+that strength tier) and produces a real contest rather than a blowout.
+That is a narrow, judgment-based, entertainment-driven call — **not** a
+claim that any current roster satisfies it (this analysis asserts no
+cross-gender player comparison, and rosters churn week to week). It's a
+"why a coach might still do it" coda, not a prediction.
+
 ## 6. Reproduce
 
 ```bash
