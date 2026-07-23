@@ -1,7 +1,86 @@
 # DreamBreaker post notes — Reddit first cut
 
 Source material: model/db_scenarios.md (simulation) + Anna Bright's
-"Women Don't Matter Enough at MLP" (Brighter Pickleball, Jun 15 2026).
+"Women Don't Matter Enough at MLP" (Brighter Pickleball, Jun 15 2026)
++ Anna Bright YouTube video (same topic, transcript reviewed).
+
+---
+
+## What the video adds vs the article
+
+The article is a tighter written version of the same argument, but the
+video contains several things the article doesn't that are directly
+relevant to the post:
+
+**1. Real match data on Anna Leigh Waters vs men.**
+Anna cites ALW's 73.81% win rate against women in 2024 (also in article),
+but the video adds the losing record that explains why NJ 5s moved her to
+slot 3: 5-3 loss to Tyler Lung at the MLP Superfinal; 7-5 loss to Tyson
+McGuffin at MLP Mesa (the chest-pump highlight — she won *that point*, lost
+the segment); loss to Riley Newman that decided a Dreambreaker. The punchline:
+even the best female singles player in the league battles to a draw or loses
+vs top men, so the entertainment upside doesn't justify the expected-value cost.
+
+**2. Lee Whitwell was MVP of the first MLP event.**
+Not in the article. She took points off De Celbar and Yates Johnson, was
+"literally the MVP" of 2021. Sets up the historical arc: cross-gender
+matchups used to be a feature, and they were electric. The league optimized
+them away.
+
+**3. A fully walked-through real example: NJ Fives vs STL Shock, MLP Dallas.**
+Fives set order: Cliff (1), Howles (2), Waters (3), Johnson (4). Shock
+countered: John vs Noah, Hayden vs Will, Kate vs Annalie, Anna Bright vs
+Georgia. Anna went 7-1 on Georgia — biggest gap of the match. John clinched
+at 19-13; Hayden and Will never played again. Slots 1 and 2 decided it.
+Slots 3 and 4 were never needed. This is the exact slot-distribution
+dynamic we quantified (slot 1 avg 11 pts, slot 4 avg 8, often never gets
+a third pass).
+
+**4. The Brooklyn / California Black Bears example — and our model covers it.**
+Anna explicitly names this pair as her illustration: Brooklyn has the best
+male duo (Christian Alshon + Chris Haworth), CBB has Sara Denahi + Kiora
+Kumamoto who are "absolutely elite" women. Under current men-first ordering,
+Brooklyn is favored because their dominant men play more. Under the new
+rule with edge-sort ordering, CBB can flip it by featuring their women first.
+
+Our model says exactly this:
+- S3 (men-first, current reality): Brooklyn wins 53.9% as T1, 50.9% as T2.
+  Brooklyn is favored in *both* roles.
+- S1 (edge-sort): whoever is T2 edge-sorts and wins 52–54%. CBB as T2
+  wins 54.0% because they put their elite women in slot 1.
+
+Anna's intuition is confirmed and quantified. The matchup is worth naming
+in the post.
+
+**5. "Unsolved meta" — use this phrase.**
+She explicitly says the new rule creates "an unsolved meta" where strategy is
+genuinely open. That framing lands perfectly for a pickleball Reddit audience.
+
+**6. She already pitched this to the MLP commissioner (Simonee Jardim).**
+Mentioned in passing in the video: she has "spoken about it to some friends,
+even mentioned it briefly to Simonee." That's the commissioner. This isn't
+just fan speculation; it's a proposal that has been floated to the league.
+
+**7. Also applies to mixed doubles.**
+Not in the article. She says the same rule change would apply to mixed:
+one team sets the mixed matchups (who faces whom), the other decides which
+mixed pairing plays first. Opens the same strategic complexity there.
+
+**8. 2027 implementation is her ask.**
+She thinks it's operationally simple enough to implement "as early as 2027."
+Adds a timeline to the proposal.
+
+**9. The "hiding" line is sharper in the video.**
+"Teams can kind of hide more behind having mediocre women or good but not
+great women more than you can hide behind having the same for your men."
+This is the pull-quote version of the argument. Worth using verbatim.
+
+**10. Hayden vs Annalie "neutralized by cameras" comment.**
+In her hypothetical cross-gender Dreambreaker, she calls Hayden/Annalie
+"actually pretty neutral" not because the PICKLE ratings say so but because
+"this is no vacuum — this is Major League Pickleball with a bunch of cameras
+and Annalie loves the smoke." Our model assigns values by singles record;
+the camera-pressure effect is unmodeled and worth acknowledging.
 
 ---
 
@@ -24,16 +103,17 @@ wild.*
 
 ---
 
-Anna Bright recently argued the DreamBreaker format undervalues women
-because teams just put their best men first. She proposed a fix: instead
-of one team setting the *order* and the other countering with *matchups*,
-flip it — one team sets the **matchups** (which of your players faces
-which of mine), the other sets the **order** (which matchup goes in which
-slot).
+Anna Bright dropped a YouTube video arguing the DreamBreaker format
+undervalues women because teams just put their best men first — and she's
+already mentioned a fix to commissioner Simonee Jardim. Instead of one
+team setting the *order* and the other countering with *matchups*, flip
+it: one team sets the **matchups** (which of your players faces which of
+mine), the other sets the **order** (which matchup goes in which slot).
 
-We modeled this. Real 2026 MLP rosters, PICKLE singles ratings, 380
+We modeled it. Real 2026 MLP rosters, PICKLE singles ratings, 380
 head-to-head pairs, exact math on the freeze + rotation. Here's what
-came out.
+came out — including one specific matchup Anna calls out that the numbers
+address directly.
 
 ---
 
@@ -103,28 +183,44 @@ currently adopting the strategy that throws away their ordering edge
 
 ---
 
-**Finding 5: Anna's biggest beneficiaries aren't who you'd expect.**
+**Finding 5: Anna's specific example is confirmed — and quantified.**
 
-Under her proposed system, the teams that gain most from holding the
-*order* (vs. matchups) are teams with **lopsided rosters** — one gender
-much stronger than the other — not just the best teams overall.
+Anna calls out Brooklyn (Christian Alshon + Chris Haworth, elite men;
+Rachel Rohrbacher + Jackie Kawamoto, good-not-elite women) vs California
+Black Bears (James Delgado + Nadir Braum, solid men; Sara Denahi + Kiora
+Kumamoto, "absolutely elite" women) as her illustration case.
 
-Orlando Squeeze gets the biggest T2 advantage (+8.5 pp), because their
-men (avg 1.72 PICKLE singles) dwarf their women (avg 0.64). They know
-their men's slots will dominate; edge-sorting lets them feature that.
+The model agrees:
 
-New Jersey 5s — the strongest team — only gain **+4.8 pp** from holding
-the order. They're good at everything, so there's no slot asymmetry to
-exploit. The team with Anna Bright and Parris Todd has homogeneous
-excellence; order-picking is less useful to them than to a team with a
-star/scrub structure.
+- **Men-first ordering (current reality)**: Brooklyn wins 53.9% as the
+  matchup-picker, 50.9% as the order-picker. They're favored *both ways*
+  — their dominant men play more under any men-first ordering.
+- **Edge-sort ordering (Anna's proposed rule)**: whoever holds the order
+  wins 52–54%. CBB as order-picker wins 54.0% because they put their
+  elite women in slot 1. Brooklyn's strong men land in slot 3 and
+  sometimes never get a third pass.
+
+Anna's "teams can hide behind mediocre women more than mediocre men" is
+exactly this: Brooklyn's women are their soft underbelly, but under
+men-first it almost never matters. Under the new rule it's the first
+thing the opponent exploits.
+
+**Finding 6: The biggest order-advantage teams aren't who you'd expect.**
+
+The teams that gain most from holding the *order* are those with
+**lopsided rosters** — one gender much stronger than the other. Orlando
+Squeeze gets the biggest advantage (+8.5 pp), because their men (avg
+1.72 PICKLE singles) dwarf their women (avg 0.64). NJ 5s — the
+strongest team — only gain +4.8 pp. They're good at everything, so
+there's no slot asymmetry to exploit. Great everywhere = nothing to edge-sort.
 
 ---
 
 **The one-sentence version:**  
-*The slot you're in matters 40% more than you think, men-first ordering
-wastes the advantage Anna's rule would create, and the teams that would
-benefit most aren't the ones currently leading the league.*
+*The slot you're in matters 40% more than most people realize, men-first
+ordering throws away the advantage Anna's rule creates, and the specific
+matchup she names (Brooklyn vs Cal Black Bears) flips from Brooklyn
+favored to Cal favored the moment the order-picker edge-sorts.*
 
 ---
 
@@ -197,19 +293,44 @@ Drops (low asymmetry — uniformly dominant, small T2 advantage).
 
 ## Tone / framing notes
 
-- Lead with Anna's piece — she's a current pro, it's her proposal, she
-  has the credibility and the audience. Frame this as "we ran the math on
-  her idea."
+- Lead with Anna's video (not just the article) — it's more accessible
+  and the walked-through Dallas Dreambreaker example is genuinely good
+  content. Frame this as "we ran the math on her idea."
+- Use her phrase **"unsolved meta"** — she says it herself and it's
+  exactly right for the audience.
+- The Brooklyn/CBB example is a gift: Anna named it, it's a current
+  roster matchup, and our model gives a before/after number on it.
+  Lead with the specific flip (Brooklyn 53.9% → CBB 54.0%).
 - The finding that men-first is self-defeating is a good hook: Anna is
   arguing women should matter more, and our data shows the current
   men-first strategy already costs teams that have strong women.
 - The "third pass" slot mechanic is genuinely surprising to most fans;
-  start there before the strategy.
-- Avoid the word "simulation" in the title — use "math" or "model." 
+  start there before the strategy. Anna explains it well in the video
+  too (33rd point = first return of slot 1).
+- The ALW losing-record stats (5-3 to Lung, 7-5 to Tyson) are concrete
+  and make the abstract argument real. Worth including as a brief aside.
+- The commissioner mention adds credibility — this isn't just fan talk.
+- Avoid the word "simulation" in the title — use "math" or "model."
 - r/PickleballMedia and r/MLP both skew toward engaged fans who follow
   strategy; don't over-explain the DreamBreaker rules.
 - Keep numbers to 3–4 in the body; push the full table to a link or
   comment.
+- Acknowledge the "camera pressure" caveat Anna raises (Hayden vs ALW
+  being "actually neutral" in a no-vacuum setting). Our model has no
+  crowd/pressure term. Worth one sentence of honesty.
+- **Important caveat on the cross-gender matchup claim**: Anna argues
+  the new rule produces more M-vs-F matchups and more women playing
+  first. But we can't test M-vs-F head-to-head directly (cross-gender
+  comparisons are model-flat — see house rules), and more importantly:
+  a min-maxing T2 edge-sorts on *edge*, not gender. The cross-gender
+  matchup only lands in slot 1 if it also happens to be T2's best edge.
+  If T1 sets a tricky cross-gender pairing (ALW vs Hayden), T2 puts it
+  wherever their edge-sort ranks it — which might be slot 2 or 3.
+  Anna's entertainment vision requires T2 to *also* want that drama in
+  slot 1, which is only true when the cross-gender matchup is their
+  highest-edge slot. Worth flagging: the rule creates the *option* for
+  more cross-gender action, but a game-theoretically optimal T2 doesn't
+  guarantee it.
 
 ---
 
