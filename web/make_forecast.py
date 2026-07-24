@@ -48,7 +48,14 @@ LOOKBACK_DAYS = 60
 # imputed from doubles via the fitted regression (singles ≈ 0.28 + 1.14*d).
 # Singles-gap model beats the doubles proxy by 3.1 nll on the 101 DBs.
 K_DB_SINGLES = 0.42
-SINGLES_IMPUTE = (0.28, 1.14)
+# Intercept shrunk 0.28 -> -0.07 (2026-07-22): players without a real
+# singles record UNDERperform their doubles-implied imputation in
+# DreamBreaker singles points by ~0.35 logit (model/db_impute.md v2:
+# referee-log parser with explicit on-court tracking, 88/94 DBs validate
+# exactly against official finals; cluster-bootstrap 95% CI [0.02, 0.74],
+# P(no effect) ~= 1.9%; sensitivity thresholds agree). Refit as DBs accrue.
+SINGLES_IMPUTE = (-0.07, 1.14)
+SINGLES_IMPUTE_SHRINK = 0.35   # applied to the 0.28 intercept above
 
 
 def load_singles():
