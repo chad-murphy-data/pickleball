@@ -332,16 +332,32 @@ function wireCharts(root) {
 // ---- MLP matchup card ---------------------------------------------------
 const SLOT_LABEL = m => esc(m.ab || '?');
 const stateFromSnap = m => m.svT === 1 ? (m.svN === 1 ? PKL.A1 : PKL.A2) : (m.svN === 1 ? PKL.B1 : PKL.B2);
+function playerLink(p) {
+  const r = resolve(p);
+  const name = esc(r.n || p.n || '?');
+  return r.pid && r.pg ? `<a href="players/${r.pid}.html">${name}</a>` : name;
+}
 function pairNames(pair, side) {
   if (!pair.length) return '<span class="note">lineup TBD</span>';
-  return pair.map(p => {
-    const r = resolve(p);
-    const name = esc(r.n || p.n);
-    return r.pid && r.pg ? `<a href="players/${r.pid}.html">${name}</a>` : name;
-  }).join(' / ');
+  return pair.map(playerLink).join(' / ');
+}
+// current two players on court in a live DreamBreaker, from the latest rally
+// log (server + receiver), ordered [team1 player, team2 player] to match the
+// pairing cell. null if the log lacks a usable server/receiver.
+function dbCurrentPair(rows, side1) {
+  let last = null;
+  for (const r of rows) {
+    if (r.t === RALLY && r.sv && r.rcv && (!last || (r.i || 0) > (last.i || 0))) last = r;
+  }
+  if (!last) return null;
+  const srv = { id: last.sv }, rcv = { id: last.rcv };
+  const cur = side1.has(last.sv) ? [srv, rcv] : [rcv, srv];
+  // only trust it if both UUIDs resolve to real names (else keep the static pair)
+  if (cur.some(p => { const n = resolve(p).n; return !n || n === '?'; })) return null;
+  return cur;
 }
 
-function gameRow(m, info, liveP, preText) {
+function gameRow(m, info, liveP, preText, dbKey) {
   const dead = m.tb && skipped(m);
   const score = dead ? '<span class="note">not played (dead game)</span>'
     : m.g.map(([a, b]) => `<span class="lp-score">${a}–${b}</span>`).join(' ');
@@ -354,8 +370,9 @@ function gameRow(m, info, liveP, preText) {
     : (m.t1.length && !dead ? '<span class="note">unrated</span>' : '');
   const pairs = dead ? '<span class="note">—</span>'
     : `${pairNames(m.t1, 1)}<br>${pairNames(m.t2, 2)}`;
+  const pairAttr = dbKey ? ` data-dbpair="${dbKey}"` : '';
   return `<tr class="${m.st === 2 ? 'lp-liverow' : ''}"><td class="lp-slot">${SLOT_LABEL(m)}</td>` +
-    `<td>${pairs}</td>` +
+    `<td${pairAttr}>${pairs}</td>` +
     `<td class="num">${score} ${serve}</td><td class="num">${prob}</td><td class="num">${pre}</td></tr>`;
 }
 
@@ -417,7 +434,7 @@ function matchupCard(mu) {
 
   const dbPre = `<span class="note">${fpF(pDb)}%</span>`;
   const rows = games.map((m, i) => gameRow(m, infos[i], liveGameP(m, infos[i]))).join('') +
-    (db ? gameRow(db, null, db.st === 2 ? PKL.rallyRaceTable(PKL.rallyPForTarget(pDb, 21), 21).p(db.g[0][0], db.g[0][1]) : null, dbPre)
+    (db ? gameRow(db, null, db.st === 2 ? PKL.rallyRaceTable(PKL.rallyPForTarget(pDb, 21), 21).p(db.g[0][0], db.g[0][1]) : null, dbPre, db.st === 2 ? db.uuid : null)
         : (mu.matches.some(m => m.tb) ? gameRow(mu.matches.find(m => m.tb), null, null, '') : ''));
 
   return `<div class="card lp-card" data-mu="${mu.uuid}">
@@ -466,6 +483,11 @@ async function fillTrack(mu) {
     const pRally = PKL.rallyPForTarget(pDb, 21);
     const tbl = PKL.rallyRaceTable(pRally, 21);
     const rows = await ensureLogs(db.uuid, db.st === 2);
+    if (db.st === 2 && rows) {   // update the pairing cell to who's on court now
+      const cur = dbCurrentPair(rows, side1);
+      const cell = document.querySelector(`[data-dbpair="${db.uuid}"]`);
+      if (cur && cell) cell.innerHTML = `${playerLink(cur[0])}<br>${playerLink(cur[1])}`;
+    }
     let s = rows && rows.some(r => r.t === RALLY)
       ? dbSeriesFromLogs(rows, side1, pRally)
       : snapshotSeries(db.uuid, { p: (a, b) => tbl.p(a, b) });
