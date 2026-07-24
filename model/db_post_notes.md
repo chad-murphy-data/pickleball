@@ -29,7 +29,7 @@ them away.
 
 **3. A fully walked-through real example: NJ Fives vs STL Shock, MLP Dallas.**
 Fives set order: Cliff (1), Howles (2), Waters (3), Johnson (4). Shock
-countered: John vs Noah, Hayden vs Will, Kate vs Annalie, Anna Bright vs
+countered: John vs Noah, Hayden vs Will, Kate vs Anna Leigh, Anna Bright vs
 Georgia. Anna went 7-1 on Georgia — biggest gap of the match. John clinched
 at 19-13; Hayden and Will never played again. Slots 1 and 2 decided it.
 Slots 3 and 4 were never needed. This is the exact slot-distribution
@@ -75,11 +75,11 @@ Adds a timeline to the proposal.
 great women more than you can hide behind having the same for your men."
 This is the pull-quote version of the argument. Worth using verbatim.
 
-**10. Hayden vs Annalie "neutralized by cameras" comment.**
-In her hypothetical cross-gender Dreambreaker, she calls Hayden/Annalie
+**10. Hayden vs Anna Leigh "neutralized by cameras" comment.**
+In her hypothetical cross-gender Dreambreaker, she calls Hayden/Anna Leigh
 "actually pretty neutral" not because the PICKLE ratings say so but because
 "this is no vacuum — this is Major League Pickleball with a bunch of cameras
-and Annalie loves the smoke." Our model assigns values by singles record;
+and Anna Leigh loves the smoke." Our model assigns values by singles record;
 the camera-pressure effect is unmodeled and worth acknowledging.
 
 ---
