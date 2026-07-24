@@ -36,21 +36,24 @@ Slots 3 and 4 were never needed. This is the exact slot-distribution
 dynamic we quantified (slot 1 avg 11 pts, slot 4 avg 8, often never gets
 a third pass).
 
-**4. The Brooklyn / California Black Bears example — and our model covers it.**
-Anna explicitly names this pair as her illustration: Brooklyn has the best
-male duo (Christian Alshon + Chris Haworth), CBB has Sara Denahi + Kiora
-Kumamoto who are "absolutely elite" women. Under current men-first ordering,
-Brooklyn is favored because their dominant men play more. Under the new
-rule with edge-sort ordering, CBB can flip it by featuring their women first.
+**4. The Brooklyn / California Black Bears example — status-quo confirmed,
+flip NOT confirmed (validated 2026-07-24 on Anna's stated rosters).**
+Anna names Brooklyn (Christian Alshon + Chris Haworth, elite men; Rachel
+Rohrabacher + Jackie Kawamoto) vs CBB (James Delgado + Anouar Braham, solid
+men; Sahra Dennehy + Kiora Kunimoto, her "absolutely elite" women). Run on
+those exact rosters (Kunimoto has since moved to Bay Area — asterisk it):
 
-Our model says exactly this:
-- S3 (men-first, current reality): Brooklyn wins 53.9% as T1, 50.9% as T2.
-  Brooklyn is favored in *both* roles.
-- S1 (edge-sort): whoever is T2 edge-sorts and wins 52–54%. CBB as T2
-  wins 54.0% because they put their elite women in slot 1.
+- Men-first: Brooklyn ~77% either role. Her status-quo read is dead-on.
+- Edge-sort: CBB featuring its women climbs only to **31.5%** — the rule
+  narrows the game ~8 pp, it does NOT flip it. Brooklyn's men are +0.78/+0.92
+  on their matchups; CBB's women are only +0.12/+0.13 on theirs (Rohrabacher/
+  Kawamoto impute to ~1.2 from strong doubles). A visibility win, not a
+  scoreboard flip — which matches what Anna actually claims in the video
+  ("a win for the league… the women play more often").
 
-Anna's intuition is confirmed and quantified. The matchup is worth naming
-in the post.
+The lead example for the post is Finding 5 (NJ 5s vs Brooklyn / Waters-last)
+— crisper, current, and the swing is real. Keep CBB as the role-player
+companion case with the honest "narrows, not flips" framing.
 
 **5. "Unsolved meta" — use this phrase.**
 She explicitly says the new rule creates "an unsolved meta" where strategy is
@@ -183,27 +186,38 @@ currently adopting the strategy that throws away their ordering edge
 
 ---
 
-**Finding 5: Anna's specific example is confirmed — and quantified.**
+**Finding 5: Bat Anna Leigh Waters last and the 5s are underdogs.**
 
-Anna calls out Brooklyn (Christian Alshon + Chris Haworth, elite men;
-Rachel Rohrbacher + Jackie Kawamoto, good-not-elite women) vs California
-Black Bears (James Delgado + Nadir Braum, solid men; Sara Denahi + Kiora
-Kumamoto, "absolutely elite" women) as her illustration case.
+The sharpest case is a real, current matchup: **New Jersey 5s vs Brooklyn**,
+with Brooklyn fielding the men's duo Anna calls maybe the best in the format —
+Christian Alshon (1.73) and Chris Haworth (1.87), both of whom played this
+weekend. Brooklyn's men are *better* than New Jersey's (Khlif 1.48, Howells
+1.32). New Jersey is favored in exactly one of the four matchups: Waters, at
+2.27 — a +1.07 blowout over Rohrabacher — while Jorja Johnson vs Kawamoto is a
+draw and both men's matchups lean Brooklyn.
 
-The model agrees:
+So the whole DreamBreaker comes down to one question: does the format let
+Waters matter? Hold the four (rank-matched) matchups fixed and just move her:
 
-- **Men-first ordering (current reality)**: Brooklyn wins 53.9% as the
-  matchup-picker, 50.9% as the order-picker. They're favored *both ways*
-  — their dominant men play more under any men-first ordering.
-- **Edge-sort ordering (Anna's proposed rule)**: whoever holds the order
-  wins 52–54%. CBB as order-picker wins 54.0% because they put their
-  elite women in slot 1. Brooklyn's strong men land in slot 3 and
-  sometimes never get a third pass.
+| Waters's slot for New Jersey | NJ 5s win % |
+|---|---|
+| **Last (slot 4)** | **48.3% — underdog** |
+| Third (the men-first default) | 51.4% — coin flip |
+| Leadoff (slot 1) | 55.3% — favorite |
 
-Anna's "teams can hide behind mediocre women more than mediocre men" is
-exactly this: Brooklyn's women are their soft underbelly, but under
-men-first it almost never matters. Under the new rule it's the first
-thing the opponent exploits.
+Bat the best woman in the world **last** — the deepest of the dead slots that
+often never gets a third pass — and New Jersey, a team *built around her*,
+becomes an underdog in its own DreamBreaker. Under the men-first order every
+team actually runs, she plays third and it's a coin flip. Lead her off and the
+5s are favorites. Same eight players, same matchups: a ~7-point swing from
+where you slot one player.
+
+That's Anna's "women don't matter enough" made concrete at the very top of the
+sport: the format can neutralize *Anna Leigh Waters herself*, and the reform is
+exactly what lets her leadoff edge cash.
+
+\* *Values are PICKLE singles ratings; Rohrabacher and Kawamoto have too few
+pro singles games to rate directly and are imputed from their doubles records.*
 
 **Finding 6: The biggest order-advantage teams aren't who you'd expect.**
 
@@ -218,9 +232,10 @@ there's no slot asymmetry to exploit. Great everywhere = nothing to edge-sort.
 
 **The one-sentence version:**  
 *The slot you're in matters 40% more than most people realize, men-first
-ordering throws away the advantage Anna's rule creates, and the specific
-matchup she names (Brooklyn vs Cal Black Bears) flips from Brooklyn
-favored to Cal favored the moment the order-picker edge-sorts.*
+ordering throws away the advantage Anna's rule creates, and in a live
+matchup (NJ 5s vs Brooklyn's Alshon/Haworth) batting Anna Leigh Waters
+last makes her own team an underdog while leading her off makes them a
+favorite — a ~7-point swing from where you slot one player.*
 
 ---
 
@@ -298,9 +313,11 @@ Drops (low asymmetry — uniformly dominant, small T2 advantage).
   content. Frame this as "we ran the math on her idea."
 - Use her phrase **"unsolved meta"** — she says it herself and it's
   exactly right for the audience.
-- The Brooklyn/CBB example is a gift: Anna named it, it's a current
-  roster matchup, and our model gives a before/after number on it.
-  Lead with the specific flip (Brooklyn 53.9% → CBB 54.0%).
+- Lead with the Waters example (Finding 5): NJ 5s vs Brooklyn is live
+  (Alshon + Haworth played this weekend), and "bat Waters last and her
+  own team is an underdog; lead her off and they're favorites" is the
+  whole thesis in one sentence. Brooklyn/CBB is the companion case —
+  frame it honestly as "narrows ~8 pp, doesn't flip" (see video-note 4).
 - The finding that men-first is self-defeating is a good hook: Anna is
   arguing women should matter more, and our data shows the current
   men-first strategy already costs teams that have strong women.
@@ -405,3 +422,10 @@ Drops (low asymmetry — uniformly dominant, small T2 advantage).
 | NJ 5s T2 advantage | +4.8 pp | simulation |
 | Rally model k | 0.510 | fit on 3,101 same-gender DB rallies |
 | Non-ranked correction | −0.35 logit | fit, 88 DBs, p = 1.9% |
+| Waters ex. — NJ 5s vs BKN (Alshon/Haworth), Waters LAST | 48.3% NJ (underdog) | sim, fixed rank-matched matchups |
+| Waters ex. — Waters third (men-first default) | 51.4% NJ (coin flip) | sim |
+| Waters ex. — Waters leads off | 55.3% NJ (favorite) | sim |
+| Waters slot swing (last → first, matchups fixed) | ~7 pp | sim |
+| Waters singles value / her matchup edge | 2.27 / +1.07 vs Rohrabacher | PICKLE singles |
+| CBB (Anna's rosters) — men-first | ~23% CBB | sim, Kunimoto-era rosters |
+| CBB — edge-sort, women featured | 31.5% CBB (narrows, no flip) | sim |
