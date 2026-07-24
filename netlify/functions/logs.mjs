@@ -8,7 +8,8 @@
 //
 // Row compaction (~90% smaller than upstream):
 //   i=log_index t=log_type g=game_number s/e=start/end "srv-rcv-num" score
-//   sv=server_uuid n=server_index ts=epoch seconds team=timeout/challenge team
+//   sv=server_uuid rcv=receiver_uuid n=server_index ts=epoch seconds
+//   team=timeout/challenge team
 
 const BASE = "https://pickleball.com";
 const UA = "Mozilla/5.0 (compatible; pickles-bot/1.0; +https://chad-murphy-data.github.io/pickleball/methods.html)";
@@ -33,6 +34,7 @@ function compact(row) {
     s: row.start_score_current_game_string || "",
     e: row.end_score_current_game_string || "",
     sv: (row.server_uuid || "").toLowerCase(),
+    rcv: (row.receiver_uuid || "").toLowerCase(),
     n: row.server_index ?? 0,
     ts: row.date_created == null ? null
       : typeof row.date_created === "object" ? row.date_created.seconds ?? null

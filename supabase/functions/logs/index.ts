@@ -30,6 +30,7 @@ function compact(row: J) {
     s: row.start_score_current_game_string || "",
     e: row.end_score_current_game_string || "",
     sv: (row.server_uuid || "").toLowerCase(),
+    rcv: (row.receiver_uuid || "").toLowerCase(),
     n: row.server_index ?? 0,
     ts: row.date_created == null ? null
       : typeof row.date_created === "object" ? row.date_created.seconds ?? null
