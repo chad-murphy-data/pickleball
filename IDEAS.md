@@ -103,3 +103,18 @@ See also: `CLAUDE.md` "Open threads", `ROADMAP.md`, and open PRs.
   actually your opponents' weak link.* Needs a dedicated cut (mixed-only,
   targeting proxy from rally logs: who receives the 3rd/5th ball — though
   no shot-level data exists, so it may cap at the weakest-link inference).
+
+## Data hygiene / repo TODOs
+
+- **DreamBreaker rally logs undercount points** (found 2026-07-25, DB-post
+  verification audit). In the PR #29 branch's `data/db_rallies.csv`,
+  21 of 88 matches have fewer rally rows than the true final score
+  (t1+t2 from `data/dreambreakers.csv`): 13 short by 1, 6 by 2, 2 by 3 —
+  never over. Likely dropped correction/rewind rallies in the log parser.
+  Consequence: any stat built on rally-ROW counts inherits the error —
+  e.g. the final-point-slot distribution is 34/41/12.5/12.5 on row counts
+  but **32/44/11/13 (slots 1+2 = 76.1%) on the trustworthy true-score
+  basis**; median length is 36.5 vs the correct 37. Rule going forward:
+  derive point counts from final scores, use rally rows only for
+  within-game sequence. Root fix: re-derive from raw logs with correction
+  handling (mirror `H.rally_events`' approach) and regenerate the CSV.
