@@ -137,6 +137,14 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   \bPPA\b in title, minus Australia/Asia/College.
 - 403 endpoints (getMatchInfos, getTeamLeaguesMatchupsOnDivision) are
   permanent — the "Short" variants + detail endpoints cover everything.
+- **A matchup detail cached while SCHEDULED must never satisfy a reader
+  who believes the matchup is over.** Lookahead fetches (tournament_state,
+  forecasts) cache pre-completion snapshots; before 2026-07-26 these froze
+  forever once the short status flipped to COMPLETED, silently dropping
+  every played matchup (no MLP game 7/17–7/26 reached games.csv, and the
+  title-race sim erased live results). pb_api.matchup_data now self-heals
+  (refetch once when the cached payload's own matchupStatus isn't final) —
+  keep that property if the caching layer is ever touched.
 - **Browsers cannot reach the network from this environment** (egress
   gateway TLS-fingerprints and resets Chromium; curl/httpx fine). Don't
   waste time on Playwright; recon.md documents the diagnosis.
@@ -191,8 +199,17 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   to ~20 s scoreboard snapshots (localStorage). Pre-match numbers anchor to
   the calibrated race DP, so live curves agree with graded receipts at
   rally zero; DB panel uses the singles model.
-- **Lineups (2026-07-17)**: forecast.html reprices client-side the moment
-  actual lineups publish (projected vs LINEUPS OFFICIAL, same engine + a
+- **Lineups (2026-07-17; ladder reworked 2026-07-26)**: make_forecast
+  projects via a 3-tier ladder — (1) the matchup's own PUBLISHED lineups,
+  (2) BEST LINEUP: top 2W+2M by v2 value from the team's season roster
+  (roster = latest-MLP-appearance-wins per player, walked from
+  SEASON_START; mixed split maximizes weakest-link pair strength), (3)
+  last-completed-matchup fallback. Tier 2 exists because MLP Chicago
+  priced Brooklyn at <1% off a stale July-10 B-squad lineup (Navratil
+  called it out; best-lineup repriced them 83% pre-event and they lost
+  the title matchup 3-2). tournament_state's pair matrix uses the same
+  ladder. forecast.html still reprices client-side the moment actual
+  lineups publish (projected vs LINEUPS OFFICIAL, same engine + a
   differs-from-projection flag; day-2 evidence: 9/10 matchups ran pairings
   that differed from projection). `scraper/lineup_freeze.py` (droplet
   timer 09:15 PT via deploy/run_freeze.sh) auto-freezes at-announcement

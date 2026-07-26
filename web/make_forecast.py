@@ -6,12 +6,22 @@
                                                  # to model/receipts.json (the
                                                  # deliberate pre-match freeze)
 
-Lineups are PROJECTED: each team's most recent completed matchup supplies
-its WD/MD/MXD1/MXD2 pairings (the page says so loudly).  Pricing mirrors the
-graded Mid-Season methodology: per-game win prob from current v2 values +
-weakest link, race-to-11 DP, display calibration applied; the DreamBreaker
-is 50/50 by documented convention (singles is outside the doubles model).
-P(win matchup) = P(win >=3 of 4 games) + P(2-2) * 0.5.
+Lineups are PROJECTED as each team's BEST LINEUP unless real ones exist:
+
+1. official — the matchup's own published lineups (captains post them close
+   to match time; the detail payload carries them while still SCHEDULED);
+2. best lineup — top 2 women + top 2 men by current v2 value from the
+   team's roster, mixed pairs split to maximize weakest-link-adjusted
+   strength.  Roster = players whose most recent MLP appearance this season
+   was with that team (latest-appearance-wins handles trades; a stale
+   single-matchup lineup no longer prices a whole event — the MLP Chicago
+   lesson, where Brooklyn priced at <1% off a July 10 B-squad);
+3. last-matchup fallback — the pre-2026-07-26 behavior, only when the
+   roster pool can't field 2W+2M with tracked values.
+
+Pricing mirrors the graded Mid-Season methodology: per-game win prob from
+current v2 values + weakest link, race-to-11 DP, display calibration
+applied.  P(win matchup) = P(win >=3 of 4 games) + P(2-2) * P(DB).
 
 Network use: same polite cached client as the harvester.  CI runs this
 nightly for the page; --commit is reserved for a human deciding to put a
@@ -30,10 +40,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scraper"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from harvest import is_mlp_league                          # noqa: E402
+from harvest import SEASON_START, is_mlp_league            # noqa: E402
 from pb_api import PBClient                                # noqa: E402
-from sitelib.race import (calibrate, race_dist, set_calibration, sigmoid,
-                          team_eta)                        # noqa: E402
+from sitelib.race import (GAMMA, calibrate, race_dist, set_calibration,
+                          sigmoid, team_eta)               # noqa: E402
 
 DATA = ROOT / "data"
 CAL = json.loads((Path(__file__).resolve().parent / "calibration.json").read_text())
@@ -86,9 +96,12 @@ def db_win_prob(roster1, roster2, vals, singles):
 
 
 def load_values():
+    """player_uuid -> (full_name, value, gender). Existing consumers index
+    [0]/[1]; the gender rides along for best-lineup construction."""
     vals = {}
     for r in csv.DictReader((DATA / "v2_players.csv").open()):
-        vals[r["player_id"]] = (r["full_name"], float(r["value_now_mean"]))
+        vals[r["player_id"]] = (r["full_name"], float(r["value_now_mean"]),
+                                r.get("gender") or "")
     return vals
 
 
@@ -156,6 +169,86 @@ def recent_lineup_for_team(c, team_title, before, cache):
     return None, None
 
 
+def mlp_rosters(c, before, start=None):
+    """team_title -> {player_uuid} from every published MLP lineup this
+    season, assigning each player to the team of their MOST RECENT
+    appearance (latest-appearance-wins absorbs trades and event-to-event
+    roster rotation).  Walks the season via the same cached endpoints the
+    harvester fills nightly, so a CI/warm-cache run touches the network
+    only for the volatile trailing days."""
+    start = start or SEASON_START
+    latest = {}                        # player_uuid -> (date, team_title)
+    d = start
+    while d < before:
+        for tl in c.team_leagues_on_date(d):
+            if not is_mlp_league(tl):
+                continue
+            for div in tl.get("divisions") or []:
+                try:
+                    mus = c.tl_matchups_short(tl, div, d)
+                except PermissionError:
+                    continue
+                for mu in mus:
+                    if mu.get("matchupStatus") != "COMPLETED_MATCHUP_STATUS":
+                        continue
+                    md = c.matchup_data(mu["uuid"], volatile=False)
+                    for slot, pair in matchup_lineups(md).items():
+                        for side, tkey in (("One", "teamOneTitle"),
+                                           ("Two", "teamTwoTitle")):
+                            title = mu.get(tkey)
+                            if not title:
+                                continue
+                            for u in pair[side]:
+                                if (str(d), title) >= latest.get(u, ("", "")):
+                                    latest[u] = (str(d), title)
+        d += timedelta(days=1)
+    rosters = {}
+    for u, (_, title) in latest.items():
+        rosters.setdefault(title, set()).add(u)
+    return rosters
+
+
+def best_lineup(roster, vals):
+    """Strongest legal lineup from a roster: top 2 women + top 2 men by
+    current value; the mixed split maximizes summed weakest-link-adjusted
+    pair strength; the stronger mixed pair takes MXD1 (both teams sorting
+    the same way keeps slot alignment a fair convention). None when the
+    pool can't field 2W+2M with tracked values."""
+    def top2(g):
+        pool = [u for u in roster if u in vals and vals[u][2] == g]
+        return sorted(pool, key=lambda u: -vals[u][1])[:2]
+    women, men = top2("F"), top2("M")
+    if len(women) < 2 or len(men) < 2:
+        return None
+    def pair_v(a, b):
+        va, vb = vals[a][1], vals[b][1]
+        return va + vb + GAMMA * abs(va - vb)
+    (w1, w2), (m1, m2) = women, men
+    if pair_v(w1, m1) + pair_v(w2, m2) >= pair_v(w1, m2) + pair_v(w2, m1):
+        mixed = [(w1, m1), (w2, m2)]
+    else:
+        mixed = [(w1, m2), (w2, m1)]
+    mixed.sort(key=lambda p: -pair_v(*p))
+    return {"WD": [w1, w2], "MD": [m1, m2],
+            "MXD1": list(mixed[0]), "MXD2": list(mixed[1])}
+
+
+def projected_lineup_for_team(c, team_title, before, rosters, vals, cache):
+    """The projection ladder, minus the per-matchup official tier (which
+    needs the matchup itself): best lineup from the season roster, else the
+    team's last completed-matchup lineup.  Returns (slot->pair, source)."""
+    if team_title in cache:
+        return cache[team_title]
+    lu = best_lineup(rosters.get(team_title) or (), vals)
+    if lu:
+        got = (lu, "best lineup")
+    else:
+        recent, src = recent_lineup_for_team(c, team_title, before, {})
+        got = (recent, f"last matchup {src}" if src else None)
+    cache[team_title] = got
+    return got
+
+
 def price_game(pair_a, pair_b, vals):
     """Calibrated win prob + modal score for pair_a vs pair_b (race to 11)."""
     if not pair_a or not pair_b:
@@ -205,6 +298,7 @@ def main():
     singles = load_singles()
     c = PBClient()
     today = date.today()
+    rosters = mlp_rosters(c, today)
     lineup_cache = {}
     forecasts = []
 
@@ -225,8 +319,19 @@ def main():
                     t1, t2 = mu.get("teamOneTitle"), mu.get("teamTwoTitle")
                     if not t1 or not t2:
                         continue
-                    lu1, src1 = recent_lineup_for_team(c, t1, today, lineup_cache)
-                    lu2, src2 = recent_lineup_for_team(c, t2, today, lineup_cache)
+                    # tier 1: the matchup's own published lineups (posted
+                    # while still SCHEDULED — reprice on the real pairings)
+                    official = matchup_lineups(
+                        c.matchup_data(mu["uuid"], volatile=True))
+                    if len(official) >= 3:
+                        lu1 = {s: p["One"] for s, p in official.items()}
+                        lu2 = {s: p["Two"] for s, p in official.items()}
+                        src1 = src2 = "official"
+                    else:
+                        lu1, src1 = projected_lineup_for_team(
+                            c, t1, today, rosters, vals, lineup_cache)
+                        lu2, src2 = projected_lineup_for_team(
+                            c, t2, today, rosters, vals, lineup_cache)
                     games, ps = [], []
                     for slot in SLOTS:
                         g = price_game((lu1 or {}).get(slot), (lu2 or {}).get(slot), vals)
@@ -261,8 +366,10 @@ def main():
 
     out = {
         "generated": str(today),
-        "note": "Projected lineups (each team's most recent completed matchup); "
-                "DreamBreaker 50/50 by convention; calibrated probabilities.",
+        "note": "Lineups: official when published, else each team's best "
+                "lineup from its season roster (last-matchup fallback); "
+                "DreamBreaker from the singles model; calibrated "
+                "probabilities.",
         "forecasts": forecasts,
     }
     (DATA / "forecasts.json").write_text(json.dumps(out, indent=1))
@@ -275,8 +382,11 @@ def main():
         for f in forecasts:
             if not f["tree"]:
                 continue
+            kind = ("official lineups"
+                    if f["lineups_from"]["team1"] == "official"
+                    else "projected lineups")
             items.append({
-                "label": f"{f['date']} {f['team1']} over {f['team2']} (projected lineups)",
+                "label": f"{f['date']} {f['team1']} over {f['team2']} ({kind})",
                 "prob": f["tree"]["p_win"], "outcome": None, "result": None,
                 "grade": "PENDING", "brier": None,
             })

@@ -42,15 +42,18 @@ LOOKAHEAD = 4         # days ahead: rest of the current weekend
 def mlp_pair_matrix(teams, today, c):
     """Model-priced matchup tree for every unordered team pair, keyed
     "A|B" (sorted titles), tree oriented to the first title.  Reuses the
-    forecast machinery (projected lineups from each team's most recent
-    completed matchup) so simulated playoff pairings — which can be any
-    cross-pool combination — carry real probabilities, not coin flips."""
+    forecast machinery — each team's BEST LINEUP from its season roster
+    (last-matchup fallback; see make_forecast) — so simulated playoff
+    pairings, which can be any cross-pool combination, carry real
+    probabilities, not coin flips."""
     sys.path.insert(0, str(ROOT / "web"))
     import make_forecast as mf
     vals, singles = mf.load_values(), mf.load_singles()
+    rosters = mf.mlp_rosters(c, today)
     cache, lineups = {}, {}
     for t in teams:
-        lineups[t] = mf.recent_lineup_for_team(c, t, today, cache)[0]
+        lineups[t] = mf.projected_lineup_for_team(
+            c, t, today, rosters, vals, cache)[0]
     matrix = {}
     for i, a in enumerate(sorted(teams)):
         for b in sorted(teams)[i + 1:]:
