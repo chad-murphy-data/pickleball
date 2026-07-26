@@ -28,7 +28,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pb_api import RAW, PBClient
+from pb_api import MATCHUP_FINAL, RAW, PBClient
 
 log = logging.getLogger("harvest")
 
@@ -37,11 +37,6 @@ SEASON_START = date(2026, 1, 1)
 PPA_EXCLUDE = re.compile(r"PPA\s+TOUR\s+AUSTRALIA|PPA\s+Asia|College Pickleball", re.I)
 PPA_WORD = re.compile(r"\bPPA\b")
 MLP_ORG_SLUG = "major-league-pickleball"
-
-# matchupStatus values that are final — anything else is treated as
-# still-mutable so the matchup detail is refetched on the next run.
-MATCHUP_FINAL = {"COMPLETED_MATCHUP_STATUS", "BYE_MATCHUP_STATUS"}
-
 
 def is_ppa_tournament(t: dict) -> bool:
     title = t.get("Title") or ""

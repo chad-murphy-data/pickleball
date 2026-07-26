@@ -29,7 +29,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from harvest import is_mlp_league, is_ppa_tournament   # noqa: E402
-from pb_api import PBClient                            # noqa: E402
+from pb_api import MATCHUP_FINAL as FINAL, PBClient    # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -37,7 +37,6 @@ log = logging.getLogger("tournament_state")
 
 LOOKBACK = 6          # days behind today that still count as "this event"
 LOOKAHEAD = 4         # days ahead: rest of the current weekend
-FINAL = {"COMPLETED_MATCHUP_STATUS", "BYE_MATCHUP_STATUS"}
 
 
 def mlp_pair_matrix(teams, today, c):
