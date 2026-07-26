@@ -1,650 +1,182 @@
 {
- "generated": "2026-07-25",
+ "generated": "2026-07-26",
  "note": "Projected lineups (each team's most recent completed matchup); DreamBreaker 50/50 by convention; calibrated probabilities.",
  "forecasts": [
   {
-   "date": "2026-07-25",
-   "start": "2026-07-25T14:30:00Z",
-   "event": "MLP Chicago",
-   "team1": "Phoenix Flames",
-   "team2": "Miami Pickleball Club",
-   "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.4417,
-     "modal": "9-11",
-     "margin": -0.8,
-     "t1_pair": [
-      "Alexa Schull",
-      "Daria Walczak"
-     ],
-     "t2_pair": [
-      "Estee Widdershoven",
-      "Isabella Dunlap"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.5907,
-     "modal": "11-9",
-     "margin": 0.84,
-     "t1_pair": [
-      "Camden Chaffin",
-      "Jonathan Truong"
-     ],
-     "t2_pair": [
-      "Anderson Scarpa",
-      "Anouar Braham"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.6687,
-     "modal": "11-8",
-     "margin": 1.74,
-     "t1_pair": [
-      "Daria Walczak",
-      "Jonathan Truong"
-     ],
-     "t2_pair": [
-      "Isabella Dunlap",
-      "James Delgado"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.5793,
-     "modal": "11-9",
-     "margin": 0.72,
-     "t1_pair": [
-      "Alexa Schull",
-      "Camden Chaffin"
-     ],
-     "t2_pair": [
-      "Estee Widdershoven",
-      "Anouar Braham"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.5892,
-    "p_40": 0.1011,
-    "p_31": 0.3213,
-    "p_db": 0.3665,
-    "p_13": 0.1793,
-    "p_04": 0.0318,
-    "p_db_win": 0.4553
-   }
-  },
-  {
-   "date": "2026-07-25",
-   "start": "2026-07-25T15:00:00Z",
-   "event": "MLP Chicago",
-   "team1": "Utah Black Diamonds",
-   "team2": "SoCal Hard Eights",
-   "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.3531,
-     "modal": "8-11",
-     "margin": -1.79,
-     "t1_pair": [
-      "Etta Tuionetoa",
-      "Victoria Dimuzio"
-     ],
-     "t2_pair": [
-      "Cailyn Campbell",
-      "Meghan Dizon"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.6394,
-     "modal": "11-8",
-     "margin": 1.4,
-     "t1_pair": [
-      "Tyler Loong",
-      "Tama Shimabukuro"
-     ],
-     "t2_pair": [
-      "Rafael Lenhard",
-      "Will Mackinnon"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.5963,
-     "modal": "11-9",
-     "margin": 0.91,
-     "t1_pair": [
-      "Etta Tuionetoa",
-      "Tyler Loong"
-     ],
-     "t2_pair": [
-      "Meghan Dizon",
-      "Rafael Lenhard"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.4154,
-     "modal": "8-11",
-     "margin": -1.09,
-     "t1_pair": [
-      "Victoria Dimuzio",
-      "Tama Shimabukuro"
-     ],
-     "t2_pair": [
-      "Cailyn Campbell",
-      "Will Mackinnon"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.5351,
-    "p_40": 0.0559,
-    "p_31": 0.2506,
-    "p_db": 0.3904,
-    "p_13": 0.2481,
-    "p_04": 0.0551,
-    "p_db_win": 0.5857
-   }
-  },
-  {
-   "date": "2026-07-25",
-   "start": "2026-07-25T16:00:00Z",
+   "date": "2026-07-26",
+   "start": "2026-07-26T15:00:00Z",
    "event": "MLP Chicago",
    "team1": "Texas Ranchers",
-   "team2": "California Black Bears",
+   "team2": "Las Vegas Night Owls",
    "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.3599,
+     "p": 0.3917,
      "modal": "8-11",
-     "margin": -1.71,
+     "margin": -1.36,
      "t1_pair": [
       "Kaitlyn Christian",
       "Lea Jansen"
      ],
      "t2_pair": [
-      "Sahra Dennehy",
-      "Zoey Weil"
+      "Callie Smith",
+      "Chao Yi Wang"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.7739,
-     "modal": "11-7",
-     "margin": 3.01,
+     "p": 0.8594,
+     "modal": "11-6",
+     "margin": 4.2,
      "t1_pair": [
       "Eric Oncins",
       "Nicolas Acevedo"
      ],
      "t2_pair": [
-      "Dylan Frazier",
-      "Pablo Tellez"
+      "Clayton Powell",
+      "Roscoe Bellamy"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.6902,
-     "modal": "11-8",
-     "margin": 1.99,
+     "p": 0.8017,
+     "modal": "11-6",
+     "margin": 3.38,
      "t1_pair": [
       "Lea Jansen",
       "Eric Oncins"
      ],
      "t2_pair": [
-      "Zoey Weil",
-      "Pablo Tellez"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.3993,
-     "modal": "8-11",
-     "margin": -1.27,
-     "t1_pair": [
-      "Kaitlyn Christian",
-      "Nicolas Acevedo"
-     ],
-     "t2_pair": [
-      "Sahra Dennehy",
-      "Dylan Frazier"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.6072,
-    "p_40": 0.0768,
-    "p_31": 0.3089,
-    "p_db": 0.4022,
-    "p_13": 0.1852,
-    "p_04": 0.0269,
-    "p_db_win": 0.5509
-   }
-  },
-  {
-   "date": "2026-07-25",
-   "start": "2026-07-25T16:30:00Z",
-   "event": "MLP Chicago",
-   "team1": "Phoenix Flames",
-   "team2": "Brooklyn Pickleball Team",
-   "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.704,
-     "modal": "11-7",
-     "margin": 2.15,
-     "t1_pair": [
-      "Alexa Schull",
-      "Daria Walczak"
-     ],
-     "t2_pair": [
-      "Hannah Blatt",
-      "Jackie Kawamoto"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.0847,
-     "modal": "5-11",
-     "margin": -5.32,
-     "t1_pair": [
-      "Camden Chaffin",
-      "Jonathan Truong"
-     ],
-     "t2_pair": [
-      "Riley Newman",
-      "Christian Alshon"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.0596,
-     "modal": "4-11",
-     "margin": -5.85,
-     "t1_pair": [
-      "Daria Walczak",
-      "Jonathan Truong"
-     ],
-     "t2_pair": [
-      "Rachel Rohrabacher",
-      "Christian Alshon"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.2115,
-     "modal": "6-11",
-     "margin": -3.45,
-     "t1_pair": [
-      "Alexa Schull",
-      "Camden Chaffin"
-     ],
-     "t2_pair": [
-      "Jackie Kawamoto",
-      "Christopher Haworth"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.0819,
-    "p_40": 0.0008,
-    "p_31": 0.0231,
-    "p_db": 0.2122,
-    "p_13": 0.563,
-    "p_04": 0.2009,
-    "p_db_win": 0.2737
-   }
-  },
-  {
-   "date": "2026-07-25",
-   "start": "2026-07-25T17:30:00Z",
-   "event": "MLP Chicago",
-   "team1": "Dallas Flash",
-   "team2": "SoCal Hard Eights",
-   "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.7801,
-     "modal": "11-7",
-     "margin": 3.09,
-     "t1_pair": [
-      "Alix Truong",
-      "Danni-Elle Townsend"
-     ],
-     "t2_pair": [
-      "Cailyn Campbell",
-      "Meghan Dizon"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.9279,
-     "modal": "11-5",
-     "margin": 5.43,
-     "t1_pair": [
-      "Augustus Ge",
-      "JW Johnson"
-     ],
-     "t2_pair": [
-      "Rafael Lenhard",
-      "Will Mackinnon"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.8284,
-     "modal": "11-6",
-     "margin": 3.75,
-     "t1_pair": [
-      "Brooke Buckner",
-      "JW Johnson"
-     ],
-     "t2_pair": [
-      "Meghan Dizon",
-      "Rafael Lenhard"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.8813,
-     "modal": "11-5",
-     "margin": 4.55,
-     "t1_pair": [
-      "Danni-Elle Townsend",
-      "Augustus Ge"
-     ],
-     "t2_pair": [
-      "Cailyn Campbell",
-      "Will Mackinnon"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.9546,
-    "p_40": 0.5285,
-    "p_31": 0.3707,
-    "p_db": 0.0913,
-    "p_13": 0.0093,
-    "p_04": 0.0003,
-    "p_db_win": 0.6077
-   }
-  },
-  {
-   "date": "2026-07-25",
-   "start": "2026-07-25T18:00:00Z",
-   "event": "MLP Chicago",
-   "team1": "Chicago Slice",
-   "team2": "Utah Black Diamonds",
-   "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.3645,
-     "modal": "8-11",
-     "margin": -1.66,
-     "t1_pair": [
-      "Elsie Hendershot",
-      "Ting Chieh Wei"
-     ],
-     "t2_pair": [
-      "Etta Tuionetoa",
-      "Victoria Dimuzio"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.4245,
-     "modal": "8-11",
-     "margin": -0.99,
-     "t1_pair": [
-      "AJ Koller",
-      "John Lucian Goins"
-     ],
-     "t2_pair": [
-      "Tyler Loong",
-      "Tama Shimabukuro"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.1178,
-     "modal": "5-11",
-     "margin": -4.75,
-     "t1_pair": [
-      "Elsie Hendershot",
-      "AJ Koller"
-     ],
-     "t2_pair": [
-      "Etta Tuionetoa",
-      "Tyler Loong"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.7869,
-     "modal": "11-6",
-     "margin": 3.18,
-     "t1_pair": [
-      "Ting Chieh Wei",
-      "John Lucian Goins"
-     ],
-     "t2_pair": [
-      "Victoria Dimuzio",
-      "Tama Shimabukuro"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.3199,
-    "p_40": 0.0143,
-    "p_31": 0.1558,
-    "p_db": 0.4079,
-    "p_13": 0.3532,
-    "p_04": 0.0688,
-    "p_db_win": 0.3671
-   }
-  },
-  {
-   "date": "2026-07-25",
-   "start": "2026-07-25T19:00:00Z",
-   "event": "MLP Chicago",
-   "team1": "Atlanta Bouncers",
-   "team2": "Las Vegas Night Owls",
-   "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.7954,
-     "modal": "11-6",
-     "margin": 3.3,
-     "t1_pair": [
-      "Jessie Irvine",
-      "Mari Humberg"
-     ],
-     "t2_pair": [
       "Callie Smith",
-      "Liz Truluck"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.7457,
-     "modal": "11-7",
-     "margin": 2.66,
-     "t1_pair": [
-      "Jaume Martinez Vich",
-      "Jay Devilliers"
-     ],
-     "t2_pair": [
-      "Roscoe Bellamy",
       "Clayton Powell"
      ]
     },
     {
-     "slot": "MXD1",
-     "p": 0.588,
-     "modal": "11-9",
-     "margin": 0.81,
+     "slot": "MXD2",
+     "p": 0.4201,
+     "modal": "8-11",
+     "margin": -1.04,
      "t1_pair": [
-      "Jessie Irvine",
-      "Jay Devilliers"
+      "Kaitlyn Christian",
+      "Nicolas Acevedo"
      ],
      "t2_pair": [
       "Chao Yi Wang",
       "Roscoe Bellamy"
      ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.7403,
+    "p_40": 0.1134,
+    "p_31": 0.3792,
+    "p_db": 0.3843,
+    "p_13": 0.1133,
+    "p_04": 0.0098,
+    "p_db_win": 0.6447
+   }
+  },
+  {
+   "date": "2026-07-26",
+   "start": "2026-07-26T16:30:00Z",
+   "event": "MLP Chicago",
+   "team1": "Atlanta Bouncers",
+   "team2": "Miami Pickleball Club",
+   "lineups_from": {
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.7187,
+     "modal": "11-7",
+     "margin": 2.33,
+     "t1_pair": [
+      "Jessie Irvine",
+      "Mari Humberg"
+     ],
+     "t2_pair": [
+      "Estee Widdershoven",
+      "Isabella Dunlap"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.8282,
+     "modal": "11-6",
+     "margin": 3.74,
+     "t1_pair": [
+      "Jaume Martinez Vich",
+      "Jay Devilliers"
+     ],
+     "t2_pair": [
+      "Anderson Scarpa",
+      "Anouar Braham"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8472,
+     "modal": "11-6",
+     "margin": 4.02,
+     "t1_pair": [
+      "Jessie Irvine",
+      "Jay Devilliers"
+     ],
+     "t2_pair": [
+      "Isabella Dunlap",
+      "James Delgado"
+     ]
     },
     {
      "slot": "MXD2",
-     "p": 0.8162,
-     "modal": "11-6",
-     "margin": 3.58,
+     "p": 0.6789,
+     "modal": "11-8",
+     "margin": 1.86,
      "t1_pair": [
       "Mari Humberg",
       "Jaume Martinez Vich"
      ],
      "t2_pair": [
-      "Callie Smith",
-      "Clayton Powell"
+      "Estee Widdershoven",
+      "Anderson Scarpa"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.8403,
-    "p_40": 0.2847,
-    "p_31": 0.4339,
-    "p_db": 0.2276,
-    "p_13": 0.05,
-    "p_04": 0.0039,
-    "p_db_win": 0.5352
+    "p_win": 0.8813,
+    "p_40": 0.3424,
+    "p_31": 0.4287,
+    "p_db": 0.1909,
+    "p_13": 0.0356,
+    "p_04": 0.0024,
+    "p_db_win": 0.5775
    }
   },
   {
-   "date": "2026-07-25",
-   "start": "2026-07-25T19:30:00Z",
+   "date": "2026-07-26",
+   "start": "2026-07-26T18:00:00Z",
    "event": "MLP Chicago",
-   "team1": "Brooklyn Pickleball Team",
-   "team2": "Texas Ranchers",
-   "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.3451,
-     "modal": "8-11",
-     "margin": -1.88,
-     "t1_pair": [
-      "Hannah Blatt",
-      "Jackie Kawamoto"
-     ],
-     "t2_pair": [
-      "Kaitlyn Christian",
-      "Lea Jansen"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.6222,
-     "modal": "11-8",
-     "margin": 1.2,
-     "t1_pair": [
-      "Riley Newman",
-      "Christian Alshon"
-     ],
-     "t2_pair": [
-      "Eric Oncins",
-      "Nicolas Acevedo"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.8663,
-     "modal": "11-6",
-     "margin": 4.31,
-     "t1_pair": [
-      "Rachel Rohrabacher",
-      "Christian Alshon"
-     ],
-     "t2_pair": [
-      "Lea Jansen",
-      "Eric Oncins"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.6706,
-     "modal": "11-8",
-     "margin": 1.76,
-     "t1_pair": [
-      "Jackie Kawamoto",
-      "Christopher Haworth"
-     ],
-     "t2_pair": [
-      "Kaitlyn Christian",
-      "Nicolas Acevedo"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.6957,
-    "p_40": 0.1247,
-    "p_31": 0.393,
-    "p_db": 0.3549,
-    "p_13": 0.1165,
-    "p_04": 0.0109,
-    "p_db_win": 0.5016
-   }
-  },
-  {
-   "date": "2026-07-25",
-   "start": "2026-07-25T20:30:00Z",
-   "event": "MLP Chicago",
-   "team1": "Miami Pickleball Club",
+   "team1": "Chicago Slice",
    "team2": "California Black Bears",
    "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.457,
-     "modal": "9-11",
-     "margin": -0.64,
+     "p": 0.2557,
+     "modal": "7-11",
+     "margin": -2.91,
      "t1_pair": [
-      "Estee Widdershoven",
-      "Isabella Dunlap"
+      "Emma Nelson",
+      "Ting Chieh Wei"
      ],
      "t2_pair": [
       "Sahra Dennehy",
@@ -653,12 +185,12 @@
     },
     {
      "slot": "MD",
-     "p": 0.2772,
+     "p": 0.2639,
      "modal": "7-11",
-     "margin": -2.66,
+     "margin": -2.81,
      "t1_pair": [
-      "Anderson Scarpa",
-      "Anouar Braham"
+      "AJ Koller",
+      "John Lucian Goins"
      ],
      "t2_pair": [
       "Dylan Frazier",
@@ -667,119 +199,119 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.3274,
-     "modal": "7-11",
-     "margin": -2.08,
+     "p": 0.3808,
+     "modal": "8-11",
+     "margin": -1.48,
      "t1_pair": [
-      "Isabella Dunlap",
-      "James Delgado"
-     ],
-     "t2_pair": [
-      "Zoey Weil",
-      "Pablo Tellez"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.1979,
-     "modal": "6-11",
-     "margin": -3.62,
-     "t1_pair": [
-      "Estee Widdershoven",
-      "Anouar Braham"
+      "Ting Chieh Wei",
+      "John Lucian Goins"
      ],
      "t2_pair": [
       "Sahra Dennehy",
       "Dylan Frazier"
      ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.1891,
+     "modal": "6-11",
+     "margin": -3.74,
+     "t1_pair": [
+      "Emma Nelson",
+      "AJ Koller"
+     ],
+     "t2_pair": [
+      "Zoey Weil",
+      "Pablo Tellez"
+     ]
     }
    ],
    "tree": {
-    "p_win": 0.1919,
-    "p_40": 0.0082,
-    "p_31": 0.0813,
-    "p_db": 0.284,
-    "p_13": 0.4147,
-    "p_04": 0.2117,
-    "p_db_win": 0.3607
+    "p_win": 0.1313,
+    "p_40": 0.0049,
+    "p_31": 0.0564,
+    "p_db": 0.2371,
+    "p_13": 0.4265,
+    "p_04": 0.2751,
+    "p_db_win": 0.2953
    }
   },
   {
-   "date": "2026-07-25",
-   "start": "2026-07-25T21:00:00Z",
+   "date": "2026-07-26",
+   "start": "2026-07-26T19:30:00Z",
    "event": "MLP Chicago",
    "team1": "Dallas Flash",
-   "team2": "Chicago Slice",
+   "team2": "Brooklyn Pickleball Team",
    "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.9362,
-     "modal": "11-4",
-     "margin": 5.62,
+     "p": 0.9212,
+     "modal": "11-5",
+     "margin": 5.29,
      "t1_pair": [
       "Alix Truong",
       "Danni-Elle Townsend"
      ],
      "t2_pair": [
-      "Elsie Hendershot",
-      "Ting Chieh Wei"
+      "Hannah Blatt",
+      "Jackie Kawamoto"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.9156,
-     "modal": "11-5",
-     "margin": 5.17,
+     "p": 0.4007,
+     "modal": "8-11",
+     "margin": -1.26,
      "t1_pair": [
       "Augustus Ge",
       "JW Johnson"
      ],
      "t2_pair": [
-      "AJ Koller",
-      "John Lucian Goins"
+      "Riley Newman",
+      "Christian Alshon"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.9678,
-     "modal": "11-4",
-     "margin": 6.56,
+     "p": 0.2269,
+     "modal": "6-11",
+     "margin": -3.26,
      "t1_pair": [
       "Brooke Buckner",
       "JW Johnson"
      ],
      "t2_pair": [
-      "Elsie Hendershot",
-      "AJ Koller"
+      "Rachel Rohrabacher",
+      "Christian Alshon"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.7523,
-     "modal": "11-7",
-     "margin": 2.74,
+     "p": 0.5913,
+     "modal": "11-9",
+     "margin": 0.85,
      "t1_pair": [
       "Danni-Elle Townsend",
       "Augustus Ge"
      ],
      "t2_pair": [
-      "Ting Chieh Wei",
-      "John Lucian Goins"
+      "Jackie Kawamoto",
+      "Christopher Haworth"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.9812,
-    "p_40": 0.6241,
-    "p_31": 0.3263,
-    "p_db": 0.047,
-    "p_13": 0.0025,
-    "p_04": 0.0,
-    "p_db_win": 0.6541
+    "p_win": 0.4925,
+    "p_40": 0.0495,
+    "p_31": 0.2813,
+    "p_db": 0.4439,
+    "p_13": 0.2104,
+    "p_04": 0.0149,
+    "p_db_win": 0.3642
    }
   },
   {
@@ -789,8 +321,8 @@
    "team1": "Phoenix Flames",
    "team2": "Brooklyn Pickleball Team",
    "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
    },
    "games": [
     {
@@ -823,12 +355,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.0596,
+     "p": 0.0383,
      "modal": "4-11",
-     "margin": -5.85,
+     "margin": -6.44,
      "t1_pair": [
-      "Daria Walczak",
-      "Jonathan Truong"
+      "Alexa Schull",
+      "Camden Chaffin"
      ],
      "t2_pair": [
       "Rachel Rohrabacher",
@@ -837,12 +369,12 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.2115,
-     "modal": "6-11",
-     "margin": -3.45,
+     "p": 0.2625,
+     "modal": "7-11",
+     "margin": -2.83,
      "t1_pair": [
-      "Alexa Schull",
-      "Camden Chaffin"
+      "Daria Walczak",
+      "Michael Loyd"
      ],
      "t2_pair": [
       "Jackie Kawamoto",
@@ -851,13 +383,13 @@
     }
    ],
    "tree": {
-    "p_win": 0.0819,
-    "p_40": 0.0008,
-    "p_31": 0.0231,
-    "p_db": 0.2122,
-    "p_13": 0.563,
-    "p_04": 0.2009,
-    "p_db_win": 0.2737
+    "p_win": 0.0942,
+    "p_40": 0.0006,
+    "p_31": 0.0235,
+    "p_db": 0.2329,
+    "p_13": 0.5509,
+    "p_04": 0.1922,
+    "p_db_win": 0.3013
    }
   },
   {
@@ -868,7 +400,7 @@
    "team2": "Miami Pickleball Club",
    "lineups_from": {
     "team1": "2026-07-12",
-    "team2": "2026-07-24"
+    "team2": "2026-07-25"
    },
    "games": [
     {
@@ -915,25 +447,25 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.9757,
-     "modal": "11-3",
-     "margin": 6.94,
+     "p": 0.9367,
+     "modal": "11-4",
+     "margin": 5.63,
      "t1_pair": [
       "Kate Fahey",
       "Gabriel Tardio"
      ],
      "t2_pair": [
       "Estee Widdershoven",
-      "Anouar Braham"
+      "Anderson Scarpa"
      ]
     }
    ],
    "tree": {
     "p_win": 0.9894,
-    "p_40": 0.9105,
-    "p_31": 0.0864,
-    "p_db": 0.003,
-    "p_13": 0.0,
+    "p_40": 0.8741,
+    "p_31": 0.1203,
+    "p_db": 0.0055,
+    "p_13": 0.0001,
     "p_04": 0.0,
     "p_db_win": 0.758
    }
@@ -945,7 +477,7 @@
    "team1": "California Black Bears",
    "team2": "Palm Beach Royals",
    "lineups_from": {
-    "team1": "2026-07-24",
+    "team1": "2026-07-25",
     "team2": "2026-07-12"
    },
    "games": [
@@ -979,12 +511,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.1872,
-     "modal": "6-11",
-     "margin": -3.76,
+     "p": 0.3069,
+     "modal": "7-11",
+     "margin": -2.31,
      "t1_pair": [
-      "Zoey Weil",
-      "Pablo Tellez"
+      "Sahra Dennehy",
+      "Dylan Frazier"
      ],
      "t2_pair": [
       "Tina Pisnik",
@@ -993,12 +525,12 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.6355,
-     "modal": "11-8",
-     "margin": 1.35,
+     "p": 0.485,
+     "modal": "9-11",
+     "margin": -0.33,
      "t1_pair": [
-      "Sahra Dennehy",
-      "Dylan Frazier"
+      "Zoey Weil",
+      "Pablo Tellez"
      ],
      "t2_pair": [
       "Sofia Sewing",
@@ -1007,12 +539,12 @@
     }
    ],
    "tree": {
-    "p_win": 0.335,
-    "p_40": 0.0066,
-    "p_31": 0.0967,
-    "p_db": 0.3811,
-    "p_13": 0.3963,
-    "p_04": 0.1195,
+    "p_win": 0.3273,
+    "p_40": 0.0082,
+    "p_31": 0.1079,
+    "p_db": 0.3474,
+    "p_13": 0.3926,
+    "p_04": 0.1439,
     "p_db_win": 0.6082
    }
   },
@@ -1024,20 +556,20 @@
    "team2": "Chicago Slice",
    "lineups_from": {
     "team1": "2026-07-19",
-    "team2": "2026-07-24"
+    "team2": "2026-07-25"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.9716,
-     "modal": "11-3",
-     "margin": 6.73,
+     "p": 0.9568,
+     "modal": "11-4",
+     "margin": 6.17,
      "t1_pair": [
       "Catherine Parenteau",
       "Jade Kawamoto"
      ],
      "t2_pair": [
-      "Elsie Hendershot",
+      "Emma Nelson",
       "Ting Chieh Wei"
      ]
     },
@@ -1057,41 +589,41 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.9884,
-     "modal": "11-2",
-     "margin": 8.35,
+     "p": 0.9608,
+     "modal": "11-4",
+     "margin": 6.3,
      "t1_pair": [
       "Jade Kawamoto",
       "Ben Johns"
      ],
      "t2_pair": [
-      "Elsie Hendershot",
-      "AJ Koller"
+      "Ting Chieh Wei",
+      "John Lucian Goins"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.6303,
-     "modal": "11-8",
-     "margin": 1.29,
+     "p": 0.8982,
+     "modal": "11-5",
+     "margin": 4.84,
      "t1_pair": [
       "Catherine Parenteau",
       "Max Freeman"
      ],
      "t2_pair": [
-      "Ting Chieh Wei",
-      "John Lucian Goins"
+      "Emma Nelson",
+      "AJ Koller"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.9887,
-    "p_40": 0.5469,
-    "p_31": 0.4016,
-    "p_db": 0.0499,
-    "p_13": 0.0015,
+    "p_win": 0.9894,
+    "p_40": 0.7461,
+    "p_31": 0.2283,
+    "p_db": 0.0245,
+    "p_13": 0.0011,
     "p_04": 0.0,
-    "p_db_win": 0.8043
+    "p_db_win": 0.7838
    }
   },
   {
@@ -1101,22 +633,22 @@
    "team1": "Phoenix Flames",
    "team2": "Las Vegas Night Owls",
    "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.5412,
-     "modal": "11-9",
-     "margin": 0.29,
+     "p": 0.4177,
+     "modal": "8-11",
+     "margin": -1.07,
      "t1_pair": [
       "Alexa Schull",
       "Daria Walczak"
      ],
      "t2_pair": [
       "Callie Smith",
-      "Liz Truluck"
+      "Chao Yi Wang"
      ]
     },
     {
@@ -1129,26 +661,12 @@
       "Jonathan Truong"
      ],
      "t2_pair": [
-      "Roscoe Bellamy",
-      "Clayton Powell"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.3531,
-     "modal": "8-11",
-     "margin": -1.79,
-     "t1_pair": [
-      "Daria Walczak",
-      "Jonathan Truong"
-     ],
-     "t2_pair": [
-      "Chao Yi Wang",
+      "Clayton Powell",
       "Roscoe Bellamy"
      ]
     },
     {
-     "slot": "MXD2",
+     "slot": "MXD1",
      "p": 0.5218,
      "modal": "11-9",
      "margin": 0.08,
@@ -1160,16 +678,30 @@
       "Callie Smith",
       "Clayton Powell"
      ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.3202,
+     "modal": "7-11",
+     "margin": -2.16,
+     "t1_pair": [
+      "Daria Walczak",
+      "Michael Loyd"
+     ],
+     "t2_pair": [
+      "Chao Yi Wang",
+      "Roscoe Bellamy"
+     ]
     }
    ],
    "tree": {
-    "p_win": 0.4265,
-    "p_40": 0.0474,
-    "p_31": 0.2228,
-    "p_db": 0.3782,
-    "p_13": 0.2772,
-    "p_04": 0.0745,
-    "p_db_win": 0.4133
+    "p_win": 0.3794,
+    "p_40": 0.0332,
+    "p_31": 0.1837,
+    "p_db": 0.3675,
+    "p_13": 0.3164,
+    "p_04": 0.0993,
+    "p_db_win": 0.4423
    }
   },
   {
@@ -1257,8 +789,8 @@
    "team1": "Miami Pickleball Club",
    "team2": "Brooklyn Pickleball Team",
    "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
    },
    "games": [
     {
@@ -1305,12 +837,12 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.1678,
-     "modal": "6-11",
-     "margin": -4.02,
+     "p": 0.3535,
+     "modal": "8-11",
+     "margin": -1.78,
      "t1_pair": [
       "Estee Widdershoven",
-      "Anouar Braham"
+      "Anderson Scarpa"
      ],
      "t2_pair": [
       "Jackie Kawamoto",
@@ -1319,12 +851,12 @@
     }
    ],
    "tree": {
-    "p_win": 0.0676,
-    "p_40": 0.0002,
-    "p_31": 0.0124,
-    "p_db": 0.176,
-    "p_13": 0.6322,
-    "p_04": 0.1792,
+    "p_win": 0.1177,
+    "p_40": 0.0005,
+    "p_31": 0.0246,
+    "p_db": 0.2965,
+    "p_13": 0.5392,
+    "p_04": 0.1392,
     "p_db_win": 0.3124
    }
   },
@@ -1336,20 +868,20 @@
    "team2": "Chicago Slice",
    "lineups_from": {
     "team1": "2026-07-12",
-    "team2": "2026-07-24"
+    "team2": "2026-07-25"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.9802,
+     "p": 0.9716,
      "modal": "11-3",
-     "margin": 7.22,
+     "margin": 6.72,
      "t1_pair": [
       "Sofia Sewing",
       "Tina Pisnik"
      ],
      "t2_pair": [
-      "Elsie Hendershot",
+      "Emma Nelson",
       "Ting Chieh Wei"
      ]
     },
@@ -1369,41 +901,41 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.9748,
-     "modal": "11-3",
-     "margin": 6.88,
+     "p": 0.8182,
+     "modal": "11-6",
+     "margin": 3.61,
      "t1_pair": [
       "Tina Pisnik",
       "Dekel Bar"
      ],
      "t2_pair": [
-      "Elsie Hendershot",
-      "AJ Koller"
+      "Ting Chieh Wei",
+      "John Lucian Goins"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.5266,
-     "modal": "11-9",
-     "margin": 0.13,
+     "p": 0.8453,
+     "modal": "11-6",
+     "margin": 3.99,
      "t1_pair": [
       "Sofia Sewing",
       "Casey Diamond"
      ],
      "t2_pair": [
-      "Ting Chieh Wei",
-      "John Lucian Goins"
+      "Emma Nelson",
+      "AJ Koller"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.9407,
-    "p_40": 0.3663,
-    "p_31": 0.483,
-    "p_db": 0.1447,
-    "p_13": 0.0059,
-    "p_04": 0.0001,
-    "p_db_win": 0.6314
+    "p_win": 0.948,
+    "p_40": 0.4891,
+    "p_31": 0.3953,
+    "p_db": 0.1051,
+    "p_13": 0.0102,
+    "p_04": 0.0002,
+    "p_db_win": 0.6041
    }
   },
   {
@@ -1413,7 +945,7 @@
    "team1": "California Black Bears",
    "team2": "Carolina Hogs",
    "lineups_from": {
-    "team1": "2026-07-24",
+    "team1": "2026-07-25",
     "team2": "2026-07-10"
    },
    "games": [
@@ -1447,12 +979,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.8592,
-     "modal": "11-6",
-     "margin": 4.2,
+     "p": 0.9245,
+     "modal": "11-5",
+     "margin": 5.35,
      "t1_pair": [
-      "Zoey Weil",
-      "Pablo Tellez"
+      "Sahra Dennehy",
+      "Dylan Frazier"
      ],
      "t2_pair": [
       "Nicole Conard",
@@ -1461,12 +993,12 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.9278,
-     "modal": "11-5",
-     "margin": 5.43,
+     "p": 0.8648,
+     "modal": "11-6",
+     "margin": 4.29,
      "t1_pair": [
-      "Sahra Dennehy",
-      "Dylan Frazier"
+      "Zoey Weil",
+      "Pablo Tellez"
      ],
      "t2_pair": [
       "Abbigal Hatton",
@@ -1475,10 +1007,10 @@
     }
    ],
    "tree": {
-    "p_win": 0.9795,
-    "p_40": 0.5875,
-    "p_31": 0.3429,
-    "p_db": 0.0648,
+    "p_win": 0.9797,
+    "p_40": 0.5893,
+    "p_31": 0.3418,
+    "p_db": 0.0642,
     "p_13": 0.0047,
     "p_04": 0.0001,
     "p_db_win": 0.758
@@ -1491,18 +1023,18 @@
    "team1": "Las Vegas Night Owls",
    "team2": "Orlando Squeeze",
    "lineups_from": {
-    "team1": "2026-07-24",
+    "team1": "2026-07-25",
     "team2": "2026-07-19"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.6905,
-     "modal": "11-8",
-     "margin": 1.99,
+     "p": 0.7894,
+     "modal": "11-6",
+     "margin": 3.22,
      "t1_pair": [
       "Callie Smith",
-      "Liz Truluck"
+      "Chao Yi Wang"
      ],
      "t2_pair": [
       "Alex Walker",
@@ -1515,8 +1047,8 @@
      "modal": "6-11",
      "margin": -3.91,
      "t1_pair": [
-      "Roscoe Bellamy",
-      "Clayton Powell"
+      "Clayton Powell",
+      "Roscoe Bellamy"
      ],
      "t2_pair": [
       "Federico Staksrud",
@@ -1525,12 +1057,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.4723,
-     "modal": "9-11",
-     "margin": -0.47,
+     "p": 0.2245,
+     "modal": "6-11",
+     "margin": -3.29,
      "t1_pair": [
-      "Chao Yi Wang",
-      "Roscoe Bellamy"
+      "Callie Smith",
+      "Clayton Powell"
      ],
      "t2_pair": [
       "Milan Rane",
@@ -1539,12 +1071,12 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.5375,
-     "modal": "11-9",
-     "margin": 0.25,
+     "p": 0.7811,
+     "modal": "11-7",
+     "margin": 3.11,
      "t1_pair": [
-      "Callie Smith",
-      "Clayton Powell"
+      "Chao Yi Wang",
+      "Roscoe Bellamy"
      ],
      "t2_pair": [
       "Alex Walker",
@@ -1553,13 +1085,13 @@
     }
    ],
    "tree": {
-    "p_win": 0.4162,
-    "p_40": 0.0309,
-    "p_31": 0.2194,
-    "p_db": 0.4074,
-    "p_13": 0.2801,
-    "p_04": 0.0622,
-    "p_db_win": 0.4071
+    "p_win": 0.4424,
+    "p_40": 0.0244,
+    "p_31": 0.2117,
+    "p_db": 0.5042,
+    "p_13": 0.2303,
+    "p_04": 0.0294,
+    "p_db_win": 0.4092
    }
   },
   {
@@ -1570,7 +1102,7 @@
    "team2": "Phoenix Flames",
    "lineups_from": {
     "team1": "2026-07-12",
-    "team2": "2026-07-24"
+    "team2": "2026-07-25"
    },
    "games": [
     {
@@ -1603,41 +1135,41 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.9769,
+     "p": 0.983,
      "modal": "11-3",
-     "margin": 7.0,
+     "margin": 7.45,
      "t1_pair": [
       "Anna Bright",
       "Hayden Patriquin"
      ],
      "t2_pair": [
-      "Daria Walczak",
-      "Jonathan Truong"
+      "Alexa Schull",
+      "Camden Chaffin"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.969,
-     "modal": "11-3",
-     "margin": 6.61,
+     "p": 0.9593,
+     "modal": "11-4",
+     "margin": 6.25,
      "t1_pair": [
       "Kate Fahey",
       "Gabriel Tardio"
      ],
      "t2_pair": [
-      "Alexa Schull",
-      "Camden Chaffin"
+      "Daria Walczak",
+      "Michael Loyd"
      ]
     }
    ],
    "tree": {
     "p_win": 0.9894,
-    "p_40": 0.8961,
-    "p_31": 0.0997,
-    "p_db": 0.0041,
+    "p_40": 0.8926,
+    "p_31": 0.103,
+    "p_db": 0.0043,
     "p_13": 0.0001,
     "p_04": 0.0,
-    "p_db_win": 0.7916
+    "p_db_win": 0.7679
    }
   },
   {
@@ -1725,22 +1257,22 @@
    "team1": "Brooklyn Pickleball Team",
    "team2": "Las Vegas Night Owls",
    "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.3451,
-     "modal": "8-11",
-     "margin": -1.88,
+     "p": 0.2387,
+     "modal": "7-11",
+     "margin": -3.11,
      "t1_pair": [
       "Hannah Blatt",
       "Jackie Kawamoto"
      ],
      "t2_pair": [
       "Callie Smith",
-      "Liz Truluck"
+      "Chao Yi Wang"
      ]
     },
     {
@@ -1753,47 +1285,47 @@
       "Christian Alshon"
      ],
      "t2_pair": [
-      "Roscoe Bellamy",
-      "Clayton Powell"
+      "Clayton Powell",
+      "Roscoe Bellamy"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.8912,
-     "modal": "11-5",
-     "margin": 4.72,
+     "p": 0.9657,
+     "modal": "11-4",
+     "margin": 6.48,
      "t1_pair": [
       "Rachel Rohrabacher",
       "Christian Alshon"
      ],
      "t2_pair": [
-      "Chao Yi Wang",
-      "Roscoe Bellamy"
+      "Callie Smith",
+      "Clayton Powell"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.8117,
-     "modal": "11-6",
-     "margin": 3.52,
+     "p": 0.581,
+     "modal": "11-9",
+     "margin": 0.74,
      "t1_pair": [
       "Jackie Kawamoto",
       "Christopher Haworth"
      ],
      "t2_pair": [
-      "Callie Smith",
-      "Clayton Powell"
+      "Chao Yi Wang",
+      "Roscoe Bellamy"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.897,
-    "p_40": 0.227,
-    "p_31": 0.5338,
-    "p_db": 0.2099,
-    "p_13": 0.0281,
-    "p_04": 0.0012,
-    "p_db_win": 0.6487
+    "p_win": 0.8376,
+    "p_40": 0.1218,
+    "p_31": 0.4927,
+    "p_db": 0.345,
+    "p_13": 0.0396,
+    "p_04": 0.001,
+    "p_db_win": 0.6467
    }
   },
   {
@@ -1803,17 +1335,17 @@
    "team1": "Chicago Slice",
    "team2": "New Jersey 5s",
    "lineups_from": {
-    "team1": "2026-07-24",
+    "team1": "2026-07-25",
     "team2": "2026-07-12"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.0107,
+     "p": 0.0108,
      "modal": "1-11",
-     "margin": -9.19,
+     "margin": -8.95,
      "t1_pair": [
-      "Elsie Hendershot",
+      "Emma Nelson",
       "Ting Chieh Wei"
      ],
      "t2_pair": [
@@ -1837,12 +1369,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.011,
-     "modal": "2-11",
-     "margin": -8.71,
+     "p": 0.0258,
+     "modal": "3-11",
+     "margin": -6.94,
      "t1_pair": [
-      "Elsie Hendershot",
-      "AJ Koller"
+      "Ting Chieh Wei",
+      "John Lucian Goins"
      ],
      "t2_pair": [
       "Anna Leigh Waters",
@@ -1851,12 +1383,12 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.164,
-     "modal": "6-11",
-     "margin": -4.07,
+     "p": 0.033,
+     "modal": "3-11",
+     "margin": -6.63,
      "t1_pair": [
-      "Ting Chieh Wei",
-      "John Lucian Goins"
+      "Emma Nelson",
+      "AJ Koller"
      ],
      "t2_pair": [
       "Jorja Johnson",
@@ -1867,11 +1399,11 @@
    "tree": {
     "p_win": 0.0106,
     "p_40": 0.0,
-    "p_31": 0.0007,
-    "p_db": 0.0347,
-    "p_13": 0.292,
-    "p_04": 0.6727,
-    "p_db_win": 0.1285
+    "p_31": 0.0003,
+    "p_db": 0.013,
+    "p_13": 0.2203,
+    "p_04": 0.7664,
+    "p_db_win": 0.1441
    }
   },
   {
@@ -1881,7 +1413,7 @@
    "team1": "California Black Bears",
    "team2": "Los Angeles Mad Drops",
    "lineups_from": {
-    "team1": "2026-07-24",
+    "team1": "2026-07-25",
     "team2": "2026-07-19"
    },
    "games": [
@@ -1915,12 +1447,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.0395,
+     "p": 0.0769,
      "modal": "4-11",
-     "margin": -6.4,
+     "margin": -5.48,
      "t1_pair": [
-      "Zoey Weil",
-      "Pablo Tellez"
+      "Sahra Dennehy",
+      "Dylan Frazier"
      ],
      "t2_pair": [
       "Jade Kawamoto",
@@ -1929,12 +1461,12 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.5321,
-     "modal": "11-9",
-     "margin": 0.19,
+     "p": 0.3802,
+     "modal": "8-11",
+     "margin": -1.48,
      "t1_pair": [
-      "Sahra Dennehy",
-      "Dylan Frazier"
+      "Zoey Weil",
+      "Pablo Tellez"
      ],
      "t2_pair": [
       "Catherine Parenteau",
@@ -1943,12 +1475,12 @@
     }
    ],
    "tree": {
-    "p_win": 0.1163,
-    "p_40": 0.0009,
-    "p_31": 0.0294,
-    "p_db": 0.2141,
-    "p_13": 0.4798,
-    "p_04": 0.2758,
+    "p_win": 0.1,
+    "p_40": 0.0012,
+    "p_31": 0.0267,
+    "p_db": 0.1792,
+    "p_13": 0.4417,
+    "p_04": 0.3512,
     "p_db_win": 0.402
    }
   },
@@ -1959,7 +1491,7 @@
    "team1": "Phoenix Flames",
    "team2": "Orlando Squeeze",
    "lineups_from": {
-    "team1": "2026-07-24",
+    "team1": "2026-07-25",
     "team2": "2026-07-19"
    },
    "games": [
@@ -1993,12 +1525,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.3143,
-     "modal": "7-11",
-     "margin": -2.23,
+     "p": 0.2298,
+     "modal": "6-11",
+     "margin": -3.22,
      "t1_pair": [
-      "Daria Walczak",
-      "Jonathan Truong"
+      "Alexa Schull",
+      "Camden Chaffin"
      ],
      "t2_pair": [
       "Milan Rane",
@@ -2007,12 +1539,12 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.5446,
-     "modal": "11-9",
-     "margin": 0.33,
+     "p": 0.6092,
+     "modal": "11-8",
+     "margin": 1.05,
      "t1_pair": [
-      "Alexa Schull",
-      "Camden Chaffin"
+      "Daria Walczak",
+      "Michael Loyd"
      ],
      "t2_pair": [
       "Alex Walker",
@@ -2021,13 +1553,13 @@
     }
    ],
    "tree": {
-    "p_win": 0.3191,
-    "p_40": 0.0186,
-    "p_31": 0.1672,
-    "p_db": 0.4105,
-    "p_13": 0.3279,
-    "p_04": 0.0758,
-    "p_db_win": 0.3247
+    "p_win": 0.3188,
+    "p_40": 0.0152,
+    "p_31": 0.1516,
+    "p_db": 0.4292,
+    "p_13": 0.3309,
+    "p_04": 0.0731,
+    "p_db_win": 0.3543
    }
   },
   {
@@ -2037,17 +1569,17 @@
    "team1": "Chicago Slice",
    "team2": "Carolina Hogs",
    "lineups_from": {
-    "team1": "2026-07-24",
+    "team1": "2026-07-25",
     "team2": "2026-07-10"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.7811,
-     "modal": "11-7",
-     "margin": 3.11,
+     "p": 0.8484,
+     "modal": "11-6",
+     "margin": 4.04,
      "t1_pair": [
-      "Elsie Hendershot",
+      "Emma Nelson",
       "Ting Chieh Wei"
      ],
      "t2_pair": [
@@ -2071,12 +1603,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.4652,
-     "modal": "9-11",
-     "margin": -0.55,
+     "p": 0.8685,
+     "modal": "11-5",
+     "margin": 4.35,
      "t1_pair": [
-      "Elsie Hendershot",
-      "AJ Koller"
+      "Ting Chieh Wei",
+      "John Lucian Goins"
      ],
      "t2_pair": [
       "Nicole Conard",
@@ -2085,12 +1617,12 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.8739,
-     "modal": "11-5",
-     "margin": 4.43,
+     "p": 0.579,
+     "modal": "11-9",
+     "margin": 0.71,
      "t1_pair": [
-      "Ting Chieh Wei",
-      "John Lucian Goins"
+      "Emma Nelson",
+      "AJ Koller"
      ],
      "t2_pair": [
       "Abbigal Hatton",
@@ -2099,13 +1631,13 @@
     }
    ],
    "tree": {
-    "p_win": 0.7583,
-    "p_40": 0.1704,
-    "p_31": 0.4154,
-    "p_db": 0.3217,
-    "p_13": 0.0857,
-    "p_04": 0.0068,
-    "p_db_win": 0.5363
+    "p_win": 0.8211,
+    "p_40": 0.2289,
+    "p_31": 0.4397,
+    "p_db": 0.2702,
+    "p_13": 0.0573,
+    "p_04": 0.0039,
+    "p_db_win": 0.5645
    }
   },
   {
@@ -2115,7 +1647,7 @@
    "team1": "Brooklyn Pickleball Team",
    "team2": "St. Louis Shock",
    "lineups_from": {
-    "team1": "2026-07-24",
+    "team1": "2026-07-25",
     "team2": "2026-07-12"
    },
    "games": [
@@ -2194,7 +1726,7 @@
    "team2": "California Black Bears",
    "lineups_from": {
     "team1": "2026-07-12",
-    "team2": "2026-07-24"
+    "team2": "2026-07-25"
    },
    "games": [
     {
@@ -2227,39 +1759,39 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.9773,
-     "modal": "11-3",
-     "margin": 7.03,
+     "p": 0.9589,
+     "modal": "11-4",
+     "margin": 6.24,
      "t1_pair": [
       "Anna Leigh Waters",
       "Noe Khlif"
      ],
      "t2_pair": [
-      "Zoey Weil",
-      "Pablo Tellez"
+      "Sahra Dennehy",
+      "Dylan Frazier"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.7607,
-     "modal": "11-7",
-     "margin": 2.85,
+     "p": 0.8606,
+     "modal": "11-6",
+     "margin": 4.22,
      "t1_pair": [
       "Jorja Johnson",
       "Will Howells"
      ],
      "t2_pair": [
-      "Sahra Dennehy",
-      "Dylan Frazier"
+      "Zoey Weil",
+      "Pablo Tellez"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.9667,
-    "p_40": 0.4624,
-    "p_31": 0.4339,
-    "p_db": 0.1005,
-    "p_13": 0.0032,
+    "p_win": 0.976,
+    "p_40": 0.5133,
+    "p_31": 0.4133,
+    "p_db": 0.0704,
+    "p_13": 0.0029,
     "p_04": 0.0,
     "p_db_win": 0.7001
    }
@@ -2272,7 +1804,7 @@
    "team2": "Miami Pickleball Club",
    "lineups_from": {
     "team1": "2026-07-19",
-    "team2": "2026-07-24"
+    "team2": "2026-07-25"
    },
    "games": [
     {
@@ -2319,26 +1851,26 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.5497,
-     "modal": "11-9",
-     "margin": 0.39,
+     "p": 0.3214,
+     "modal": "7-11",
+     "margin": -2.14,
      "t1_pair": [
       "Alex Walker",
       "Jack Sock"
      ],
      "t2_pair": [
       "Estee Widdershoven",
-      "Anouar Braham"
+      "Anderson Scarpa"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.7654,
-    "p_40": 0.1019,
-    "p_31": 0.4231,
-    "p_db": 0.3792,
-    "p_13": 0.0899,
-    "p_04": 0.0059,
+    "p_win": 0.6871,
+    "p_40": 0.0596,
+    "p_31": 0.3244,
+    "p_db": 0.4783,
+    "p_13": 0.1288,
+    "p_04": 0.0089,
     "p_db_win": 0.6338
    }
   },
@@ -2349,22 +1881,22 @@
    "team1": "Miami Pickleball Club",
    "team2": "Las Vegas Night Owls",
    "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.6128,
-     "modal": "11-8",
-     "margin": 1.09,
+     "p": 0.4904,
+     "modal": "9-11",
+     "margin": -0.27,
      "t1_pair": [
       "Estee Widdershoven",
       "Isabella Dunlap"
      ],
      "t2_pair": [
       "Callie Smith",
-      "Liz Truluck"
+      "Chao Yi Wang"
      ]
     },
     {
@@ -2377,47 +1909,47 @@
       "Anouar Braham"
      ],
      "t2_pair": [
-      "Roscoe Bellamy",
-      "Clayton Powell"
+      "Clayton Powell",
+      "Roscoe Bellamy"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.2182,
-     "modal": "6-11",
-     "margin": -3.37,
+     "p": 0.4642,
+     "modal": "9-11",
+     "margin": -0.56,
      "t1_pair": [
       "Isabella Dunlap",
       "James Delgado"
      ],
      "t2_pair": [
-      "Chao Yi Wang",
-      "Roscoe Bellamy"
+      "Callie Smith",
+      "Clayton Powell"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.457,
-     "modal": "9-11",
-     "margin": -0.64,
+     "p": 0.4177,
+     "modal": "8-11",
+     "margin": -1.07,
      "t1_pair": [
       "Estee Widdershoven",
-      "Anouar Braham"
+      "Anderson Scarpa"
      ],
      "t2_pair": [
-      "Callie Smith",
-      "Clayton Powell"
+      "Chao Yi Wang",
+      "Roscoe Bellamy"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.3648,
-    "p_40": 0.0244,
-    "p_31": 0.1685,
-    "p_db": 0.3758,
-    "p_13": 0.3326,
-    "p_04": 0.0987,
-    "p_db_win": 0.4574
+    "p_win": 0.398,
+    "p_40": 0.038,
+    "p_31": 0.1933,
+    "p_db": 0.3665,
+    "p_13": 0.3066,
+    "p_04": 0.0955,
+    "p_db_win": 0.4548
    }
   },
   {
@@ -2583,7 +2115,7 @@
    "team1": "Brooklyn Pickleball Team",
    "team2": "Orlando Squeeze",
    "lineups_from": {
-    "team1": "2026-07-24",
+    "team1": "2026-07-25",
     "team2": "2026-07-19"
    },
    "games": [
@@ -2661,17 +2193,17 @@
    "team1": "Chicago Slice",
    "team2": "California Black Bears",
    "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.1797,
-     "modal": "6-11",
-     "margin": -3.86,
+     "p": 0.2557,
+     "modal": "7-11",
+     "margin": -2.91,
      "t1_pair": [
-      "Elsie Hendershot",
+      "Emma Nelson",
       "Ting Chieh Wei"
      ],
      "t2_pair": [
@@ -2695,20 +2227,6 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.1278,
-     "modal": "5-11",
-     "margin": -4.6,
-     "t1_pair": [
-      "Elsie Hendershot",
-      "AJ Koller"
-     ],
-     "t2_pair": [
-      "Zoey Weil",
-      "Pablo Tellez"
-     ]
-    },
-    {
-     "slot": "MXD2",
      "p": 0.3808,
      "modal": "8-11",
      "margin": -1.48,
@@ -2720,16 +2238,30 @@
       "Sahra Dennehy",
       "Dylan Frazier"
      ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.1891,
+     "modal": "6-11",
+     "margin": -3.74,
+     "t1_pair": [
+      "Emma Nelson",
+      "AJ Koller"
+     ],
+     "t2_pair": [
+      "Zoey Weil",
+      "Pablo Tellez"
+     ]
     }
    ],
    "tree": {
-    "p_win": 0.0925,
-    "p_40": 0.0023,
-    "p_31": 0.0365,
-    "p_db": 0.1984,
-    "p_13": 0.4367,
-    "p_04": 0.3261,
-    "p_db_win": 0.2706
+    "p_win": 0.1313,
+    "p_40": 0.0049,
+    "p_31": 0.0564,
+    "p_db": 0.2371,
+    "p_13": 0.4265,
+    "p_04": 0.2751,
+    "p_db_win": 0.2953
    }
   },
   {
@@ -2739,18 +2271,18 @@
    "team1": "Las Vegas Night Owls",
    "team2": "St. Louis Shock",
    "lineups_from": {
-    "team1": "2026-07-24",
+    "team1": "2026-07-25",
     "team2": "2026-07-12"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.0223,
-     "modal": "3-11",
-     "margin": -7.13,
+     "p": 0.0359,
+     "modal": "4-11",
+     "margin": -6.52,
      "t1_pair": [
       "Callie Smith",
-      "Liz Truluck"
+      "Chao Yi Wang"
      ],
      "t2_pair": [
       "Anna Bright",
@@ -2763,8 +2295,8 @@
      "modal": "4-11",
      "margin": -6.39,
      "t1_pair": [
-      "Roscoe Bellamy",
-      "Clayton Powell"
+      "Clayton Powell",
+      "Roscoe Bellamy"
      ],
      "t2_pair": [
       "Gabriel Tardio",
@@ -2773,12 +2305,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.0483,
-     "modal": "4-11",
-     "margin": -6.14,
+     "p": 0.0174,
+     "modal": "3-11",
+     "margin": -7.48,
      "t1_pair": [
-      "Chao Yi Wang",
-      "Roscoe Bellamy"
+      "Callie Smith",
+      "Clayton Powell"
      ],
      "t2_pair": [
       "Anna Bright",
@@ -2787,12 +2319,12 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.0326,
-     "modal": "3-11",
-     "margin": -6.65,
+     "p": 0.1054,
+     "modal": "5-11",
+     "margin": -4.96,
      "t1_pair": [
-      "Callie Smith",
-      "Clayton Powell"
+      "Chao Yi Wang",
+      "Roscoe Bellamy"
      ],
      "t2_pair": [
       "Kate Fahey",
@@ -2803,11 +2335,11 @@
    "tree": {
     "p_win": 0.0106,
     "p_40": 0.0,
-    "p_31": 0.0002,
-    "p_db": 0.007,
-    "p_13": 0.1285,
-    "p_04": 0.8643,
-    "p_db_win": 0.2764
+    "p_31": 0.0003,
+    "p_db": 0.0116,
+    "p_13": 0.1743,
+    "p_04": 0.8137,
+    "p_db_win": 0.2786
    }
   },
   {
@@ -2973,8 +2505,8 @@
    "team1": "Miami Pickleball Club",
    "team2": "Phoenix Flames",
    "lineups_from": {
-    "team1": "2026-07-24",
-    "team2": "2026-07-24"
+    "team1": "2026-07-25",
+    "team2": "2026-07-25"
    },
    "games": [
     {
@@ -3007,41 +2539,41 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.3576,
-     "modal": "8-11",
-     "margin": -1.74,
+     "p": 0.457,
+     "modal": "9-11",
+     "margin": -0.64,
      "t1_pair": [
       "Isabella Dunlap",
       "James Delgado"
      ],
      "t2_pair": [
-      "Daria Walczak",
-      "Jonathan Truong"
+      "Alexa Schull",
+      "Camden Chaffin"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.4495,
-     "modal": "9-11",
-     "margin": -0.72,
+     "p": 0.616,
+     "modal": "11-8",
+     "margin": 1.13,
      "t1_pair": [
       "Estee Widdershoven",
-      "Anouar Braham"
+      "Anderson Scarpa"
      ],
      "t2_pair": [
-      "Alexa Schull",
-      "Camden Chaffin"
+      "Daria Walczak",
+      "Michael Loyd"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.4532,
-    "p_40": 0.0413,
-    "p_31": 0.207,
-    "p_db": 0.3763,
-    "p_13": 0.2934,
-    "p_04": 0.0821,
-    "p_db_win": 0.5447
+    "p_win": 0.5418,
+    "p_40": 0.0724,
+    "p_31": 0.2749,
+    "p_db": 0.3794,
+    "p_13": 0.2249,
+    "p_04": 0.0484,
+    "p_db_win": 0.5126
    }
   },
   {
