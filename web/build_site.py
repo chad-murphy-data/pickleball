@@ -700,10 +700,10 @@ def build_forecast(players, updated):
             }
             cards.append(f"""<div class="card fxcard" data-fx='{esc(json.dumps(fx))}'>{head}{tbl}
 <div class="fx-official" hidden></div>
-<p class="note">projected lineups from each team's last completed matchup
-({src["team1"] or "?"} / {src["team2"] or "?"}) — actual lineups are announced
-close to match time and can differ; announced lineups reprice here
-automatically.</p></div>""")
+<p class="note">lineups: {src["team1"] or "?"} / {src["team2"] or "?"} —
+"best lineup" assumes each team fields its strongest tracked 2W+2M; actual
+lineups are announced close to match time and can differ; announced lineups
+reprice here automatically.</p></div>""")
         gen = F["generated"]
         stale = ' <strong>(stale — regenerate with web/make_forecast.py)</strong>' \
             if gen < updated else ""
@@ -717,8 +717,10 @@ automatically.</p></div>""")
     body = f"""
 <h1>Upcoming matchup forecasts</h1>
 <p class="sub">Every scheduled MLP matchup in the next week, rated before it
-happens. Lineups are <strong>projected</strong> from each team's most recent
-completed matchup; per-game probabilities use current player values, the
+happens. Lineups are the <strong>published ones when available</strong>,
+otherwise each team's <strong>best lineup</strong> — its strongest tracked
+2W+2M from this season's roster, mixed pairs split by the weakest-link
+rule; per-game probabilities use current player values, the
 weakest-link penalty and display calibration; the DreamBreaker is rated by
 a rally-level model fit on all 101 historical DreamBreakers — doubles skill
 transfers to DB rallies at roughly half strength, so the stronger roster is
@@ -1007,8 +1009,8 @@ matchup. {N:,} simulations from the actual standings.</span></div>
 <p class="note" style="margin:10px 0 2px">Group rank: matchup wins, then game
 wins, then actual rally-point differential (simulated ties broken the same
 way; rally points frozen at actuals). Round-robin matchups use the slate-page
-forecasts; simulated title matchups use the same model on projected
-lineups.{unpriced_note}</p>
+forecasts; simulated title matchups use the same model on each team's best
+lineup.{unpriced_note}</p>
 </div>
 <div class="cols">{''.join(group_tables)}</div>
 <h3>Remaining slate</h3>

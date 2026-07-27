@@ -29,6 +29,11 @@ UA = (
 )
 RAW = Path(__file__).resolve().parent.parent / "raw"
 
+# matchupStatus values that are final; a cached matchup detail whose payload
+# is NOT final must never satisfy a caller who believes the matchup is over
+# (see matchup_data's self-heal).
+MATCHUP_FINAL = {"COMPLETED_MATCHUP_STATUS", "BYE_MATCHUP_STATUS"}
+
 MIN_INTERVAL = 0.8  # seconds between network hits — polite hobby pace
 # Results for the trailing window may still change (live events, score
 # corrections); anything older is treated as immutable.
@@ -46,6 +51,7 @@ class PBClient:
         self._last_hit = 0.0
         self.network_calls = 0
         self.cache_hits = 0
+        self._healed_matchups: set[str] = set()  # one heal attempt per run
 
     # ---------- plumbing ----------
 
@@ -168,12 +174,25 @@ class PBClient:
         return body.get("data") or []
 
     def matchup_data(self, matchup_id: str, volatile: bool) -> dict:
+        """Matchup detail. volatile=False means the caller believes the
+        matchup is FINAL (its short-row status is completed/bye).
+
+        Self-heal: lookahead fetches (tournament_state, forecasts) cache the
+        detail while the matchup is still scheduled; the night it completes,
+        every caller flips to volatile=False and would freeze that
+        pre-completion snapshot forever — no scores, no winner, no rally
+        points. If the cached payload's own matchupStatus is not final while
+        the caller says it should be, refetch once and re-cache.
+        """
         p = RAW / "matchup_data" / f"{matchup_id}.json"
-        body = self._cached(
-            p, f"/api/v2/results/getResultsMatchupData?matchupId={matchup_id}",
-            volatile=volatile,
-        )
-        return body.get("data") or {}
+        url = f"/api/v2/results/getResultsMatchupData?matchupId={matchup_id}"
+        data = self._cached(p, url, volatile=volatile).get("data") or {}
+        if (not volatile and not self.refresh_all
+                and data.get("matchupStatus") not in MATCHUP_FINAL
+                and matchup_id not in self._healed_matchups):
+            self._healed_matchups.add(matchup_id)
+            data = self._cached(p, url, volatile=True).get("data") or {}
+        return data
 
     def match_logs(self, match_id: str):
         """Full referee log for a COMPLETED match (getListLogs; see recon.md).
