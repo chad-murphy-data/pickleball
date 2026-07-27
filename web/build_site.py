@@ -1330,11 +1330,11 @@ standings points and P(make playoffs).</p>
 </div>
 <h3>Season standings</h3>
 <div class="cols">{''.join(tables)}</div>
-<p class="note">Standings points are derived from each finished event's Super
-Sunday placement matchups (25/18 for the title matchup, 15/12, 10/8, 6/4 down
-the placements, 1 point for a pool's best left-out team) across {n_events}
-scoring events, and match the league's published standings. The Mid-Season
-Tournament bracket awards no standings points. Seeding tiebreaks: matchup win
+<p class="note">Standings points follow the league system: each event's Super
+Sunday placement matchups pay 25/18 for the title matchup, 15/12, 10/8, 6/4
+down the placements, 1 point for a pool's best left-out team, plus the
+Mid-Season podium bonus — totals across {n_events} scoring events, reconciled
+to the league's published standings. Seeding tiebreaks: matchup win
 percentage, then game win percentage. Playoff schedule as announced:
 {sched}. The playoff format lets higher seeds choose their opponents; the sim
 assumes each picks the lowest available seed. Playoff matchups are rated from

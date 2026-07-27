@@ -25,13 +25,13 @@ Feeds the site's title-race page (web/build_site.py:build_titlerace):
   of the next PPA tournament in the lookahead (match lists don't exist until
   a day is underway, so it's a teaser only).
 
-Season points (validated vs the published standings through MLP Chicago,
-including the SoCal/Utah 5th-vs-6th game-win-pct split): Super Sunday
-placement matchups pay 25/18 (matchup #1, the pool winners' title matchup),
-15/12 (#2), 10/8 (#3), 6/4 (#4); the best team left out of Sunday in each
-pool takes 1 point, a second left-out team takes 0.  Events without Super
-Sunday placement matchups (the Mid-Season double-elimination bracket) award
-no standings points.
+Season points: Super Sunday placement matchups pay 25/18 (matchup #1, the
+pool winners' title matchup), 15/12 (#2), 10/8 (#3), 6/4 (#4); the best
+team left out of Sunday in each pool takes 1 point; the Mid-Season
+Tournament pays a podium bonus (10/6/4).  Standings through
+SEASON_BASE_DATE are frozen to the published table (see the constant's
+comment for why two 5th-place tiebreak cells can't be derived from match
+records); later events derive from data.
 
 Network use: the same polite cached client as the harvester (~1 req/s,
 volatile last-3-days refetch).  Runs in the nightly refresh right after the
@@ -59,6 +59,31 @@ LOOKAHEAD = 7         # days ahead: covers the next event weekend fully
 
 SUNDAY_ROUND = "One and Done - Playoff"
 SUNDAY_POINTS = {1: (25, 18), 2: (15, 12), 3: (10, 8), 4: (6, 4)}
+
+# Season standings points through MLP Chicago (2026-07-26), reconciled to
+# the league's published table (The Dink playoff guide and The Kitchen
+# week-9 power rankings agree on every playoff-relevant team).  The Super
+# Sunday placement points derive EXACTLY from matchup data (validated
+# team-by-team); the Mid-Season podium bonus (champion 10 / runner-up 6 /
+# third 4 — StL, NJ, Columbus) and the per-pool 5th-place single points are
+# included, but two 5th-place tiebreak cells are NOT derivable from match
+# records alone — MLP's published split contradicts head-to-head in one
+# event (Dallas) and game win pct in another (St. Louis) — so the
+# reconciled totals are frozen here and derivation resumes for events
+# AFTER this date (a future ±1 on a 5th-place point is possible and
+# harmless: it can only touch teams already out of the race).
+SEASON_BASE_DATE = "2026-07-26"
+SEASON_BASE_POINTS = {
+    "New Jersey 5s": 93, "St. Louis Shock": 93, "Columbus Sliders": 83,
+    "Dallas Flash": 72, "Los Angeles Mad Drops": 71,
+    "Brooklyn Pickleball Team": 66, "Texas Ranchers": 48,
+    "Palm Beach Royals": 44, "Atlanta Bouncers": 36,
+    "SoCal Hard Eights": 34, "California Black Bears": 30,
+    "Chicago Slice": 27, "Las Vegas Night Owls": 26, "Orlando Squeeze": 25,
+    "Miami Pickleball Club": 20, "Utah Black Diamonds": 17,
+    "Bay Area Breakers": 15, "Florida Smash": 15,
+    "Phoenix Flames": 2, "Carolina Hogs": 2,
+}
 
 # Announced 2026 playoff plan (not in the scheduling system yet as of late
 # July; the build labels it as announced).  Top 12 by standings points, seeds
@@ -252,9 +277,17 @@ def event_points(completed) -> dict[str, int]:
 
 
 def season_state(c: PBClient, events: dict, rows_by_key: dict) -> dict:
-    """Season-long playoff race: standings from finished scoring events,
-    remaining scoring events, announced playoff plan."""
+    """Season-long playoff race: standings = the reconciled published base
+    through SEASON_BASE_DATE plus derived points for later scoring events;
+    records and event cards from data; announced playoff plan."""
     standings: dict[str, dict] = {}
+
+    def row(t):
+        return standings.setdefault(t, {"team": t, "points": 0, "events": 0,
+                                        "mw": 0, "ml": 0, "gw": 0, "gl": 0})
+
+    for t, p in SEASON_BASE_POINTS.items():
+        row(t)["points"] = p
     counted, remaining = [], []
     for key, g in sorted(events.items(), key=lambda kv: event_span(kv[1])[0]):
         completed, sched = rows_by_key[key]
@@ -280,21 +313,17 @@ def season_state(c: PBClient, events: dict, rows_by_key: dict) -> dict:
         for r in completed:
             if r.get("winner") not in (1, 2):
                 continue
-            for t in (r["team1"], r["team2"]):
-                standings.setdefault(t, {"team": t, "points": 0, "events": 0,
-                                         "mw": 0, "ml": 0, "gw": 0, "gl": 0})
             w, l = (r["team1"], r["team2"]) if r["winner"] == 1 else (r["team2"], r["team1"])
-            standings[w]["mw"] += 1
-            standings[l]["ml"] += 1
-            standings[r["team1"]]["gw"] += r.get("games1") or 0
-            standings[r["team1"]]["gl"] += r.get("games2") or 0
-            standings[r["team2"]]["gw"] += r.get("games2") or 0
-            standings[r["team2"]]["gl"] += r.get("games1") or 0
+            row(w)["mw"] += 1
+            row(l)["ml"] += 1
+            row(r["team1"])["gw"] += r.get("games1") or 0
+            row(r["team1"])["gl"] += r.get("games2") or 0
+            row(r["team2"])["gw"] += r.get("games2") or 0
+            row(r["team2"])["gl"] += r.get("games1") or 0
         for t, p in pts.items():
-            standings.setdefault(t, {"team": t, "points": 0, "events": 0,
-                                     "mw": 0, "ml": 0, "gw": 0, "gl": 0})
-            standings[t]["points"] += p
-            standings[t]["events"] += 1
+            if first > SEASON_BASE_DATE:      # base already covers earlier
+                row(t)["points"] += p
+            row(t)["events"] += 1
     # published tiebreak order: match win pct, then game win pct
     def order(s):
         mp = s["mw"] / (s["mw"] + s["ml"]) if s["mw"] + s["ml"] else 0.0
