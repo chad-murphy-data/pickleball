@@ -107,7 +107,7 @@ function resolve(p) {              // {id, n} from the API -> value record
   return { pid: null, n: p.n || '?', v: null, s: null, sv: null, pg: 0, matched: null };
 }
 
-// ---- pre-match pricing (mirrors make_forecast.price_game) -------------
+// ---- pre-match rating (mirrors make_forecast.price_game) --------------
 function priceGame(pair1, pair2, T) {
   if (pair1.length !== 2 || pair2.length !== 2) return null;
   const a = pair1.map(resolve), b = pair2.map(resolve);
@@ -410,7 +410,7 @@ function matchupCard(mu) {
     : isDone ? '<span class="lp-chip">FINAL</span>'
     : `<span class="lp-chip lp-sched">${mu.start ? new Date(mu.start).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' }) : 'scheduled'}</span>`;
   const headline = head === null
-    ? `<span class="note">${headNote || 'unpriced'}</span>`
+    ? `<span class="note">${headNote || 'no forecast'}</span>`
     : isDone
       ? `<strong>${mu.s1 > mu.s2 ? esc(mu.t1) : esc(mu.t2)} won ${Math.max(mu.s1, mu.s2)}–${Math.min(mu.s1, mu.s2)}</strong>`
       : `<strong class="lp-big"><span class="lp-sw ${head >= 0.5 ? 'lp-sw1' : 'lp-sw2'}"></span>${esc(teamShort(head >= 0.5 ? mu.t1 : mu.t2))} ${fpF(head >= 0.5 ? head : 1 - head)}%</strong>`;
@@ -482,7 +482,7 @@ async function fillTrack(mu) {
   let sampledAny = false;
   for (const item of seq) {
     // the future AS OF this game: every later non-skipped game at its
-    // pre-match price, regardless of whether it has since been decided
+    // pre-match rating, regardless of whether it has since been decided
     // (replay_winprob semantics — w1/w2 carry the sequential outcomes)
     const fut = [];
     for (let j = item.i + 1; j < games.length; j++) {
@@ -741,7 +741,7 @@ async function tick() {
         else if (status === 'COMPLETED') html += ` · <span class="note">final ${mu.s1}–${mu.s2}</span> · <a href="live.html">charts →</a>`;
         else pending = true;   // lineups can still change until first serve
       } else {
-        html = `<span class="note">lineups announced for ${nIn}/4 games — full repricing when all four are in</span>`;
+        html = `<span class="note">lineups announced for ${nIn}/4 games — full re-rate when all four are in</span>`;
         pending = true;
       }
       c.out.innerHTML = html;
