@@ -297,6 +297,11 @@ the race DP there mirrors model/v2_holdout.py AND the JS inside
 build_simulator — keep all three in sync. Rankings rank 2026-active players
 only; men/women always separate. `model/receipts.json` is the receipts
 source of truth — commit predictions there BEFORE matches, grade after.
+Unlisted pages: `web/insights/` ships verbatim to `site/insights/` —
+public by URL, never linked from nav, noindex meta (user call 2026-07-26;
+a linked "insights" section may come later). First page:
+`insights/unsolved-meta/` (Anna Bright DreamBreaker post, design handoff
+ported verbatim).
 
 ## Open threads (specced, unbuilt)
 

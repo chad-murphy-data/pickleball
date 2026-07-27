@@ -2061,6 +2061,14 @@ def main():
     (SITE / "assets" / "style.css").write_text(style.CSS)
     (SITE / ".nojekyll").write_text("")
 
+    # unlisted extras: web/insights/ ships verbatim under site/insights/.
+    # Deliberately NOT linked from any nav or page and each page carries
+    # <meta name="robots" content="noindex"> — public by URL, not findable.
+    insights = Path(__file__).resolve().parent / "insights"
+    if insights.exists():
+        import shutil as _sh
+        _sh.copytree(insights, SITE / "insights", dirs_exist_ok=True)
+
     R = D.load_receipts()
     print("pages: landing, rankings, forecasts, results, simulator, receipts, records, methods, data …")
     build_landing(players, games, updated, len(games), R)
