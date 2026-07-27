@@ -34,8 +34,14 @@ python model/fit_singles.py                  # singles MAP ratings (pure python,
 python scraper/live_poller.py                # live score JSONL during event days
 python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
                                              #   --commit freezes into receipts.json
-python scraper/tournament_state.py           # live-event state (MLP standings/slate,
-                                             #   PPA seeded draws) → data/tournament_state.json
+python scraper/tournament_state.py           # event + season state (featured MLP event,
+                                             #   recap, PPA draws, ppa_next teaser, season
+                                             #   playoff race) → data/tournament_state.json
+                                             #   window today-6..+7; featured = earliest
+                                             #   OPEN event, so Mondays advance to next
+                                             #   weekend; season points derived from Super
+                                             #   Sunday placement matchups (validated vs
+                                             #   published standings through Chicago)
 python web/build_site.py                     # data/*.csv → site/ static website (~4 s)
 ```
 
@@ -266,6 +272,17 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 
 ## Scheduled obligations
 
+- **~Aug 27, 2026 (MLP Championship Weekend, NYC Aug 28–30)**: update the
+  title race page's playoff-race section for the finals — the season race
+  resolves into the championship matchup; make sure the announced-schedule
+  assumptions in build_site.py:season_race_panel still match reality (the
+  playoff rounds were hardcoded from the announced plan; the API had no
+  playoff matchups as of 2026-07-27 — swap to real matchup data once
+  published). Reminder trigger set 2026-07-27.
+- **~Aug 31, 2026 (MLP season over)**: grade/recap the playoff-race
+  forecasts, then repurpose the title race page's season section for
+  PPA-appropriate content (PPA runs year-round). Reminder trigger set
+  2026-07-27.
 - **September 2026**: score `model/registered_predictions.md` (frozen
   2026-07-12) against games dated AFTER 2026-07-12 only, using the method
   written in that file; update the pending entry in `model/receipts.json`.

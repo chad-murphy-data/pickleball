@@ -703,7 +703,7 @@ def build_forecast(players, updated):
 <p class="note">lineups: {src["team1"] or "?"} / {src["team2"] or "?"} —
 "best lineup" assumes each team fields its strongest tracked 2W+2M; actual
 lineups are announced close to match time and can differ; announced lineups
-reprice here automatically.</p></div>""")
+are re-rated here automatically.</p></div>""")
         gen = F["generated"]
         stale = ' <strong>(stale — regenerate with web/make_forecast.py)</strong>' \
             if gen < updated else ""
@@ -818,12 +818,35 @@ def bo_win(p, best_of):
     return p
 
 
-def mlp_race_panel(state, F, rng):
-    """Groups + playoff for the live MLP event.  Format (decoded from the
-    completed MLP Dallas 2026 weekend): two round-robin groups, then
-    cross-group "One and Done" placement matchups — the two GROUP WINNERS
-    meet in the title matchup.  P(champion) = simulate the remaining round
-    robin, then the title matchup between the simulated group winners."""
+def fmt_day(iso):
+    """"2026-07-30" -> "Thu, Jul 30" (empty-safe)."""
+    from datetime import date
+    try:
+        d = date.fromisoformat(iso)
+    except (TypeError, ValueError):
+        return iso or "?"
+    return d.strftime("%a, %b ") + str(d.day)
+
+
+def is_rr(r):
+    return (r.get("bracket") or "RR") == "RR"
+
+
+def mlp_event_status(state):
+    """"upcoming" | "live" | "final" — stored by tournament_state.py since
+    2026-07-27; derived here for older state files."""
+    s = state.get("status")
+    if s:
+        return s
+    if not state.get("completed"):
+        return "upcoming"
+    return "final" if not state.get("remaining") else "live"
+
+
+def mlp_event_table(state):
+    """(teams, pools, pool_ids, pool_label) accumulated from an MLP event's
+    rows — shared by the weekend panel, the recap panel, and the season
+    playoff-race sim."""
     from collections import defaultdict
     teams = {}
 
@@ -832,13 +855,9 @@ def mlp_race_panel(state, F, rng):
             "title": title, "pool": None,
             "mw": 0, "ml": 0, "gw": 0, "gl": 0, "pd": 0})
 
-    is_rr = lambda r: (r.get("bracket") or "RR") == "RR"
-    rr_done = [r for r in state["completed"] if is_rr(r)]
-    rr_left = [r for r in state["remaining"] if is_rr(r)]
-    po_done = [r for r in state["completed"] if not is_rr(r)]
-    po_left = [r for r in state["remaining"] if not is_rr(r)]
-
-    for r in rr_done:
+    for r in state["completed"]:
+        if not is_rr(r):
+            continue
         t1, t2 = team(r["team1"]), team(r["team2"])
         t1["pool"] = r.get("pool") or t1["pool"]
         t2["pool"] = r.get("pool") or t2["pool"]
@@ -850,7 +869,9 @@ def mlp_race_panel(state, F, rng):
             t1["mw"] += 1; t2["ml"] += 1
         elif r["winner"] == 2:
             t2["mw"] += 1; t1["ml"] += 1
-    for r in rr_left:
+    for r in state.get("remaining") or []:
+        if not is_rr(r):
+            continue
         for k in ("team1", "team2"):
             t = team(r[k])
             t["pool"] = r.get("pool") or t["pool"]
@@ -860,16 +881,54 @@ def mlp_race_panel(state, F, rng):
         pools[v["pool"] or "?"].append(v["title"])
     pool_ids = sorted(pools, key=lambda p: (-len(pools[p]), p))
     pool_label = {p: chr(ord("A") + i) for i, p in enumerate(pool_ids)}
+    return teams, pools, pool_ids, pool_label
+
+
+def sample_matchup(tree, flip, rng):
+    """(team1_won, games1, games2) sampled from a matchup tree."""
+    p40, p31 = tree["p_40"], tree["p_31"]
+    pdb, p13, p04 = tree["p_db"], tree["p_13"], tree["p_04"]
+    pdbw = tree.get("p_db_win", 0.5)
+    if flip:
+        p40, p31, p13, p04, pdbw = p04, p13, p31, p40, 1 - pdbw
+    u = rng.random() * (p40 + p31 + pdb + p13 + p04)
+    if u < p40:
+        return True, 4, 0
+    if u < p40 + p31:
+        return True, 3, 1
+    if u < p40 + p31 + pdb:
+        return (True, 3, 2) if rng.random() < pdbw else (False, 2, 3)
+    if u < p40 + p31 + pdb + p13:
+        return False, 1, 3
+    return False, 0, 4
+
+
+def matrix_tree_for(matrix, a, b):
+    """(tree, flip): tree oriented to `a`.  Stored oriented to the
+    alphabetically-first title."""
+    first, flip = (a, False) if a <= b else (b, True)
+    second = b if not flip else a
+    t = matrix.get(f"{first}|{second}")
+    return (t, flip) if t else (None, False)
+
+
+def mlp_race_panel(state, F, rng):
+    """Groups + playoff for the featured MLP event.  Format (decoded from
+    the completed MLP Dallas 2026 weekend): two round-robin groups, then
+    cross-group "One and Done" placement matchups — the two GROUP WINNERS
+    meet in the title matchup.  P(champion) = simulate the remaining round
+    robin, then the title matchup between the simulated group winners."""
+    from collections import defaultdict
+    status = mlp_event_status(state)
+    teams, pools, pool_ids, pool_label = mlp_event_table(state)
+    rr_left = [r for r in state["remaining"] if is_rr(r)]
+    po_done = [r for r in state["completed"] if not is_rr(r)]
+    po_left = [r for r in state["remaining"] if not is_rr(r)]
 
     matrix = state.get("matrix") or {}
 
     def matrix_tree(a, b):
-        """(tree, flip): tree oriented to `a`.  Stored oriented to the
-        alphabetically-first title."""
-        first, flip = (a, False) if a <= b else (b, True)
-        second = b if not flip else a
-        t = matrix.get(f"{first}|{second}")
-        return (t, flip) if t else (None, False)
+        return matrix_tree_for(matrix, a, b)
 
     fmap = {}
     for f in (F or {}).get("forecasts", []):
@@ -886,24 +945,6 @@ def mlp_race_panel(state, F, rng):
         if tree is None:
             tree, flip = matrix_tree(r["team1"], r["team2"])
         slate.append((r, tree, flip))
-
-    def sample_score(tree, flip):
-        """(team1_won, games1, games2) sampled from a matchup tree."""
-        p40, p31 = tree["p_40"], tree["p_31"]
-        pdb, p13, p04 = tree["p_db"], tree["p_13"], tree["p_04"]
-        pdbw = tree.get("p_db_win", 0.5)
-        if flip:
-            p40, p31, p13, p04, pdbw = p04, p13, p31, p40, 1 - pdbw
-        u = rng.random() * (p40 + p31 + pdb + p13 + p04)
-        if u < p40:
-            return True, 4, 0
-        if u < p40 + p31:
-            return True, 3, 1
-        if u < p40 + p31 + pdb:
-            return (True, 3, 2) if rng.random() < pdbw else (False, 2, 3)
-        if u < p40 + p31 + pdb + p13:
-            return False, 1, 3
-        return False, 0, 4
 
     # completed playoff results pin the sim (once the title matchup is
     # played, P(champion) collapses to fact)
@@ -925,7 +966,7 @@ def mlp_race_panel(state, F, rng):
                 if not won1:
                     ga, gb = gb, ga
             else:
-                won1, ga, gb = sample_score(tree, flip)
+                won1, ga, gb = sample_matchup(tree, flip, rng)
             mw[a if won1 else b] += 1
             gw[a] += ga; gw[b] += gb
         winners = []
@@ -999,12 +1040,36 @@ def mlp_race_panel(state, F, rng):
     unpriced_note = (f" {n_unpriced} round-robin matchup"
                      f"{'s' if n_unpriced != 1 else ''} unrated — simulated "
                      f"as coin flips." if n_unpriced else "")
+    chip = {"upcoming": "UPCOMING", "live": "MLP LIVE", "final": "MLP FINAL"}[status]
+    if status == "upcoming":
+        starts = fmt_day(state.get("dates", [None])[0]
+                         or min((r["date"] for r in state["remaining"]), default=""))
+        head = (f'<strong>Who wins {esc(state["event"])}?</strong> '
+                f'<span class="note">starts {starts}; two round-robin groups, '
+                f'then the group winners meet in the One-and-Done title '
+                f'matchup. {N:,} simulations of the full event from current '
+                f'form — the real pool draw, standings all zeros until first '
+                f'serve.</span>')
+        slate_head = "Scheduled slate"
+    elif status == "final":
+        head = ('<strong>Final.</strong> <span class="note">the event is '
+                'done; the sim collapses to the actual result once the '
+                'title matchup is played.</span>')
+        slate_head = "Remaining slate"
+    else:
+        head = (f'<strong>Who wins the weekend?</strong> <span class="note">'
+                f'two round-robin groups; the group winners meet in the '
+                f'One-and-Done title matchup. {N:,} simulations from the '
+                f'actual standings.</span>')
+        slate_head = "Remaining slate"
+    slate_html = "" if not srows else f"""
+<h3>{slate_head}</h3>
+<div class="tblwrap"><table><tr><th class="num">date</th><th class="num">start</th>
+<th>matchup</th><th class="num">favorite</th></tr>{''.join(srows)}</table></div>"""
     return f"""
-<h2><span class="secno">MLP</span>{esc(state["event"])}</h2>
+<h2><span class="secno">{chip}</span>{esc(state["event"])}</h2>
 <div class="card p1card">
-<div class="p1head"><strong>Who wins the weekend?</strong> <span class="note">
-two round-robin groups; the group winners meet in the One-and-Done title
-matchup. {N:,} simulations from the actual standings.</span></div>
+<div class="p1head">{head}</div>
 {''.join(bar_rows)}
 <p class="note" style="margin:10px 0 2px">Group rank: matchup wins, then game
 wins, then actual rally-point differential (simulated ties broken the same
@@ -1012,10 +1077,268 @@ way; rally points frozen at actuals). Round-robin matchups use the slate-page
 forecasts; simulated title matchups use the same model on each team's best
 lineup.{unpriced_note}</p>
 </div>
+<div class="cols">{''.join(group_tables)}</div>{slate_html}
+"""
+
+
+PLACE_LABEL = {1: "Title matchup", 2: "2nd-place matchup",
+               3: "3rd-place matchup", 4: "4th-place matchup"}
+
+
+def mlp_recap_panel(state):
+    """The just-finished event, shown under the upcoming one: champion,
+    Super Sunday results, final group tables."""
+    teams, pools, pool_ids, pool_label = mlp_event_table(state)
+    po_done = sorted((r for r in state["completed"]
+                      if not is_rr(r) and r.get("winner") in (1, 2)),
+                     key=lambda r: r.get("mnum") or 9)
+    champ = next((r["team1"] if r["winner"] == 1 else r["team2"]
+                  for r in po_done if (r.get("mnum") or 0) == 1), None)
+    sunday_rows = []
+    for r in po_done:
+        w, l = (("team1", "team2") if r["winner"] == 1 else ("team2", "team1"))
+        g_w, g_l = ((r["games1"], r["games2"]) if r["winner"] == 1
+                    else (r["games2"], r["games1"]))
+        sunday_rows.append(
+            f'<tr><td class="num gray">{esc(PLACE_LABEL.get(r.get("mnum"), "Placement"))}</td>'
+            f'<td><strong>{esc(r[w])}</strong> def. {esc(r[l])}</td>'
+            f'<td class="num">{g_w}–{g_l}</td></tr>')
+    group_tables = []
+    for p in pool_ids:
+        if p == "?" and len(pool_ids) > 1:
+            continue
+        rows = []
+        for t in sorted(pools[p], key=lambda t: (-teams[t]["mw"],
+                                                 -(teams[t]["gw"] - teams[t]["gl"]),
+                                                 -teams[t]["pd"])):
+            v = teams[t]
+            rows.append(f'<tr><td>{esc(t)}</td>'
+                        f'<td class="num">{v["mw"]}–{v["ml"]}</td>'
+                        f'<td class="num">{v["gw"]}–{v["gl"]}</td>'
+                        f'<td class="num">{v["pd"]:+d}</td></tr>')
+        group_tables.append(
+            f'<div><h3>Group {pool_label[p]}</h3>'
+            f'<table><tr><th>team</th><th class="num">matchups</th>'
+            f'<th class="num">games</th><th class="num">rally ±</th></tr>'
+            + "".join(rows) + "</table></div>")
+    champ_line = (f'<p><strong>{esc(champ)}</strong> won the event.</p>'
+                  if champ else "")
+    sunday_html = ("" if not sunday_rows else
+                   '<div class="tblwrap"><table><tr><th class="num">Super Sunday'
+                   '</th><th>result</th><th class="num">games</th></tr>'
+                   + "".join(sunday_rows) + "</table></div>")
+    return f"""
+<h2><span class="secno">MLP FINAL</span>{esc(state["event"])}</h2>
+<div class="card">{champ_line}{sunday_html}</div>
 <div class="cols">{''.join(group_tables)}</div>
-<h3>Remaining slate</h3>
-<div class="tblwrap"><table><tr><th class="num">date</th><th class="num">start</th>
-<th>matchup</th><th class="num">favorite</th></tr>{''.join(srows)}</table></div>
+"""
+
+
+# MLP 2026 season points: Super Sunday placement matchups pay winner/loser
+# by matchup number; per pool, the best team left out of Sunday takes 1
+# point.  Derivation validated against the published standings through MLP
+# Chicago (scraper/tournament_state.py has the receipts).
+PLACE_POINTS = {1: (25, 18), 2: (15, 12), 3: (10, 8), 4: (6, 4)}
+
+
+def season_race_panel(state, rng):
+    """The season-long playoff race: current standings points, then a Monte
+    Carlo over the remaining regular-season event(s) and the announced
+    playoff bracket — P(make playoffs), P(first-round bye), P(MLP champion)
+    for every team."""
+    season = (state or {}).get("season") or {}
+    standings = season.get("standings") or []
+    if not standings:
+        return ""
+    matrix = season.get("matrix") or {}
+    playoffs = season.get("playoffs") or {}
+    spots = playoffs.get("spots", 12)
+    byes = playoffs.get("byes", 4)
+
+    feat = state.get("mlp") or {}
+    rem = season.get("remaining") or []
+    simmable = feat and any(e.get("group") == feat.get("group") for e in rem)
+    unsimmed = [e["event"] for e in rem
+                if not feat or e.get("group") != feat.get("group")]
+
+    base = {s["team"]: s for s in standings}
+    all_teams = list(base)
+
+    # the featured event's slate, pools and pinned results (when it is a
+    # scoring event still in flight)
+    ev_teams = ev_pools = ev_pool_ids = None
+    rr_slate, po_result = [], {}
+    if simmable:
+        ev_teams, ev_pools, ev_pool_ids, _ = mlp_event_table(feat)
+        fmatrix = feat.get("matrix") or matrix
+        for r in feat.get("remaining") or []:
+            if is_rr(r):
+                rr_slate.append((r,) + matrix_tree_for(fmatrix, r["team1"], r["team2"]))
+        for r in feat.get("completed") or []:
+            if not is_rr(r) and r.get("winner") in (1, 2):
+                # (winner, winner's games, loser's games)
+                w1 = r["winner"] == 1
+                po_result[frozenset((r["team1"], r["team2"]))] = (
+                    r["team1"] if w1 else r["team2"],
+                    (r.get("games1") if w1 else r.get("games2")) or 0,
+                    (r.get("games2") if w1 else r.get("games1")) or 0)
+        for t in ev_teams:
+            base.setdefault(t, {"team": t, "points": 0, "events": 0,
+                                "mw": 0, "ml": 0, "gw": 0, "gl": 0})
+        all_teams = list(base)
+
+    def playoff_round(field, rng):
+        """One knockout round under the announced selection rule (higher
+        seed chooses; assume they choose the lowest available seed).
+        `field` is seed-ordered best-first; returns the winners, best-first
+        order preserved."""
+        n = len(field)
+        out = []
+        for i in range(n // 2):
+            a, b = field[i], field[n - 1 - i]
+            tree, flip = matrix_tree_for(matrix, a, b)
+            p = (1 - tree["p_win"] if flip else tree["p_win"]) if tree else 0.5
+            out.append(a if rng.random() < p else b)
+        return sorted(out, key=field.index)
+
+    N = 20000
+    made = {t: 0 for t in all_teams}
+    byed = {t: 0 for t in all_teams}
+    champs = {t: 0 for t in all_teams}
+    for _ in range(N):
+        pts = {t: base[t]["points"] for t in all_teams}
+        mw = {t: base[t]["mw"] for t in all_teams}
+        ml = {t: base[t]["ml"] for t in all_teams}
+        gw = {t: base[t]["gw"] for t in all_teams}
+        gl = {t: base[t]["gl"] for t in all_teams}
+
+        if simmable:
+            emw = {t: ev_teams[t]["mw"] for t in ev_teams}
+            egw = {t: ev_teams[t]["gw"] for t in ev_teams}
+            for r, tree, flip in rr_slate:
+                a, b = r["team1"], r["team2"]
+                if tree is None:
+                    won1, ga, gb = (rng.random() < 0.5), 3, 1
+                    if not won1:
+                        ga, gb = gb, ga
+                else:
+                    won1, ga, gb = sample_matchup(tree, flip, rng)
+                w, l = (a, b) if won1 else (b, a)
+                emw[w] += 1
+                egw[a] += ga; egw[b] += gb
+                mw[w] += 1; ml[l] += 1
+                gw[a] += ga; gl[a] += gb; gw[b] += gb; gl[b] += ga
+            ranks = []
+            for p in ev_pool_ids:
+                if p == "?":
+                    continue
+                order = sorted(ev_pools[p],
+                               key=lambda t: (emw[t], egw[t],
+                                              ev_teams[t]["pd"], rng.random()),
+                               reverse=True)
+                ranks.append(order)
+                for i, t in enumerate(order[4:]):     # 5th takes 1 pt, 6th 0
+                    pts[t] += 1 if i == 0 else 0
+            if len(ranks) == 2:
+                for place in (1, 2, 3, 4):
+                    a, b = ranks[0][place - 1], ranks[1][place - 1]
+                    pinned = po_result.get(frozenset((a, b)))
+                    if pinned:
+                        won_a = pinned[0] == a
+                        ga, gb = ((pinned[1], pinned[2]) if won_a
+                                  else (pinned[2], pinned[1]))
+                    else:
+                        tree, flip = matrix_tree_for(matrix, a, b)
+                        won_a, ga, gb = (sample_matchup(tree, flip, rng)
+                                         if tree else
+                                         ((rng.random() < 0.5), 3, 1))
+                        if tree is None and not won_a:
+                            ga, gb = gb, ga
+                    w, l = (a, b) if won_a else (b, a)
+                    pay = PLACE_POINTS[place]
+                    pts[w] += pay[0]; pts[l] += pay[1]
+                    mw[w] += 1; ml[l] += 1
+                    gw[a] += ga; gl[a] += gb; gw[b] += gb; gl[b] += ga
+
+        def order_key(t):
+            m = mw[t] + ml[t]
+            g = gw[t] + gl[t]
+            return (-pts[t], -(mw[t] / m if m else 0.0),
+                    -(gw[t] / g if g else 0.0), rng.random())
+        seeded = sorted(all_teams, key=order_key)[:spots]
+        for t in seeded:
+            made[t] += 1
+        for t in seeded[:byes]:
+            byed[t] += 1
+        field = playoff_round(seeded[byes:], rng)          # First Round
+        field = sorted(seeded[:byes] + field,
+                       key=seeded.index)
+        while len(field) > 1:
+            field = playoff_round(field, rng)
+        champs[field[0]] += 1
+
+    bar_rows = []
+    for t in sorted(all_teams, key=lambda t: (-champs[t], -made[t],
+                                              -base[t]["points"])):
+        p_c = champs[t] / N
+        bar_rows.append(
+            f'<div class="p1row"><span class="p1name">{esc(t)}</span>'
+            f'<span class="p1bar"><span class="p1fill" '
+            f'style="width:{p1_bar_width(p_c)}%"></span></span>'
+            f'<span class="p1pct">{pct_floor(p_c)}</span>'
+            f'<span class="p1meta">{base[t]["points"]} pts '
+            f'· playoffs {pct_floor(made[t] / N)}</span></div>')
+
+    ordered = sorted(all_teams, key=lambda t: (-base[t]["points"],
+                                               -made[t], t))
+    half = (len(ordered) + 1) // 2
+    tables = []
+    for chunk, offset in ((ordered[:half], 0), (ordered[half:], half)):
+        rows = []
+        for i, t in enumerate(chunk):
+            s = base[t]
+            rows.append(f'<tr><td class="num gray">{offset + i + 1}</td>'
+                        f'<td>{esc(t)}</td>'
+                        f'<td class="num"><strong>{s["points"]}</strong></td>'
+                        f'<td class="num">{s["events"]}</td>'
+                        f'<td class="num">{s["mw"]}–{s["ml"]}</td>'
+                        f'<td class="num">{pct_floor(made[t] / N)}</td></tr>')
+        tables.append(
+            '<div><table><tr><th class="num">#</th><th>team</th>'
+            '<th class="num">pts</th><th class="num">events</th>'
+            '<th class="num">matchups</th><th class="num">playoffs</th></tr>'
+            + "".join(rows) + "</table></div>")
+
+    rounds = playoffs.get("rounds") or []
+    sched = "; ".join(
+        f'{r["name"]} — {esc(r.get("location", ""))} '
+        f'{fmt_day(r["dates"][0])}–{fmt_day(r["dates"][-1])}'
+        for r in rounds if r.get("dates"))
+    unsim_note = (f' Not yet simulated (no matchup slate published): '
+                  f'{esc(", ".join(unsimmed))}.' if unsimmed else "")
+    n_events = len(season.get("events") or [])
+    return f"""
+<h2><span class="secno">SEASON</span>Playoff race</h2>
+<div class="card p1card">
+<div class="p1head"><strong>Who wins the MLP title?</strong> <span class="note">
+{N:,} simulations of the rest of the season: the remaining regular-season
+event (real pool draw, best lineups), then the announced playoff bracket —
+top {spots} by standings points, first-round byes for the top {byes}.</span></div>
+{''.join(bar_rows)}
+<p class="note" style="margin:10px 0 2px">P(champion) bars; meta shows current
+standings points and P(make playoffs).</p>
+</div>
+<h3>Season standings</h3>
+<div class="cols">{''.join(tables)}</div>
+<p class="note">Standings points are derived from each finished event's Super
+Sunday placement matchups (25/18 for the title matchup, 15/12, 10/8, 6/4 down
+the placements, 1 point for a pool's best left-out team) across {n_events}
+scoring events, and match the league's published standings. The Mid-Season
+Tournament bracket awards no standings points. Seeding tiebreaks: matchup win
+percentage, then game win percentage. Playoff schedule as announced:
+{sched}. The playoff format lets higher seeds choose their opponents; the sim
+assumes each picks the lowest available seed. Playoff matchups are rated from
+each team's best lineup, same engine as the weekend sim above.{unsim_note}</p>
 """
 
 
@@ -1159,26 +1482,42 @@ def build_titlerace(players, updated):
     sections = []
     if state and state.get("mlp"):
         sections.append(mlp_race_panel(state["mlp"], F, rng))
+        recap = state.get("mlp_recap")
+        if recap and not state["mlp"].get("completed"):
+            sections.append(mlp_recap_panel(recap))
+    ppa_live_ids = set()
     for t in (state or {}).get("ppa") or []:
+        ppa_live_ids.add(t.get("id"))
         sections.append(ppa_bracket_panel(t, by_uuid, floor_value))
+    nxt = (state or {}).get("ppa_next")
+    if nxt and nxt.get("id") not in ppa_live_ids:
+        d0, d1 = nxt["dates"][0], nxt["dates"][-1]
+        when = fmt_day(d0) if d0 == d1 else f"{fmt_day(d0)}–{fmt_day(d1)}"
+        sections.append(
+            f'<h2><span class="secno">PPA NEXT</span>{esc(nxt["tournament"])}</h2>'
+            f'<div class="card"><p>Next PPA stop: <strong>{when}</strong>. '
+            f'The bracket forecast appears here once the draw posts.</p></div>')
     sections = [s for s in sections if s]
 
     if sections:
         body_main = "".join(sections)
     else:
         body_main = ('<div class="card"><p>No MLP event or PPA pro doubles '
-                     'draw is live this week. This page wakes up with the '
-                     'next event — it refreshes with every nightly data '
-                     'build.</p></div>')
+                     'draw is live or upcoming this week. This page wakes up '
+                     'with the next event — it refreshes with every nightly '
+                     'data build.</p></div>')
+    body_main += season_race_panel(state, rng)
     gen = (state or {}).get("generated", updated)
     body = f"""
 <h1 class="runtitle">Title race</h1>
-<div class="runmeta">RUN {gen} :: WHO WINS THE WEEKEND :: UPDATES NIGHTLY WITH RESULTS</div>
-<p class="sub">The live event, simulated to the end from the current state:
-MLP standings use <strong>actual results and rally points</strong>, with the
-rest of the round robin rated by the model; PPA uses the <strong>actual
-seeded draw</strong>, with every remaining bracket path simulated from
-current form values. Assumptions printed where they live.</p>
+<div class="runmeta">RUN {gen} :: THE WEEKEND AND THE SEASON :: UPDATES NIGHTLY WITH RESULTS</div>
+<p class="sub">Two races. <strong>Upcoming</strong>: the featured event — in
+progress or next up — simulated to the end from the current state: MLP
+standings use <strong>actual results and rally points</strong>, with the rest
+of the round robin rated by the model; PPA uses the <strong>actual seeded
+draw</strong>. <strong>Playoff race</strong>: the season-long MLP title —
+standings points plus a simulation of everything left. Assumptions printed
+where they live.</p>
 {body_main}
 <p class="note">MLP matchup ratings come from the same projected-lineup
 forecasts as the <a href="forecast.html">slate page</a> (lineups are
@@ -1532,7 +1871,7 @@ robots.txt is honored.</li>
 ratings, probabilities, graded forecasts — not bulk copies of source
 data.</li>
 <li><strong>Non-commercial and unaffiliated.</strong> A hobby project with
-no ads, no fees, and no betting content; not associated with any tour or
+no ads and no fees; not associated with any tour or
 rating platform.</li>
 </ul>
 <p class="note">If you operate a source service and would like anything
