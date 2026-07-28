@@ -45,6 +45,16 @@ Primary: the swing = TEAM A's point share on its first end minus its share on it
 | OUTDOOR calm <8 mph | 1636 | 0.302 | 0.221 | +42.31 [+36.82, +48.16] | 1.72 [1.63, 1.83] | 1.78 |
 | OUTDOOR moderate 8–14 | 656 | 0.306 | 0.222 | +44.54 [+34.04, +56.92] | 1.76 [1.57, 1.98] | 1.79 |
 | OUTDOOR windy 14+ | 111 | 0.324 | 0.223 | +55.46 [+34.85, +73.43] | 1.95 [1.58, 2.28] | 1.79 |
+### The weather test — Δ mean z² vs OUTDOOR calm (reference)
+
+| contrast | Δ mean z² [95% CI] |
+|---|---|
+| INDOOR (all wind — no exposure expected) − calm | -0.056 [-0.177, +0.064] |
+| OUTDOOR moderate 8–14 − calm | +0.034 [-0.184, +0.285] |
+| OUTDOOR windy 14+ − calm | +0.224 [-0.160, +0.585] |
+
+Continuous: slope of z² on match-hour wind, outdoor only (2403 games): +0.165 per +10 mph [-0.053, +0.364]
+
 
 Secondary (older correlation view):
 

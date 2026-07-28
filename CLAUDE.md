@@ -339,6 +339,11 @@ SIMULATED NULL (winprob.py serve-state model, k=0.43, match etas, no
 momentum, no ends — sim_game in end_effects.py) reproduces z² ≈ 1.8
 everywhere: observed 1.67–1.95 vs null 1.76–1.79 (Design B, n=4,786
 with MLP; only windy 14+ sits above its null, +0.16, CI spans it) and
+the DUMMY-CONTRAST regression (the weather test proper, no sim needed:
+Δ mean z² vs outdoor-calm reference, cluster-bootstrapped) gives
+indoor −0.06 [−0.18,+0.06], windy 14+ +0.22 [−0.16,+0.59], continuous
+slope +0.17 z² per +10 mph [−0.05,+0.36] — wind-positive direction,
+nothing significant; sim null is only for the momentum question — and
 1.81–1.90 vs 1.84–1.88 (Design A2 = game1-vs-game2 shares, all 14k
 matches, no ratings needed). ⇒ (a) WITHIN/BETWEEN-GAME MOMENTUM IS
 ~ZERO — serve-streak clustering explains the entire swing

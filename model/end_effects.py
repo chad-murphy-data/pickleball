@@ -358,7 +358,9 @@ def main():
             rows_b[grp].append((m["event"],
                                 {"x": x - 0.5, "y": y - 0.5,
                                  "sq": (x - y) ** 2, "noise": noise,
-                                 "excess": excess, "eta": m["eta"] or 0.0}))
+                                 "excess": excess, "eta": m["eta"] or 0.0,
+                                 "wind": m["wind"],
+                                 "outdoor": m["setting"] == "outdoor"}))
 
     say("Primary: the swing = TEAM A's point share on its first end minus "
         "its share on its second end (the 6-0-then-5-7 comparison; team B "
@@ -407,6 +409,56 @@ def main():
         say(f"| {grp} | {len(recs)} | {rms:.3f} | {nrms:.3f} "
             f"| {me*1000:+.2f} [{lo*1000:+.2f}, {hi*1000:+.2f}] "
             f"| {z2:.2f} [{zlo:.2f}, {zhi:.2f}] | {null_sum/null_n:.2f} |")
+
+    # ---- the weather TEST: group contrasts vs a reference (dummy
+    # regression view — since regressors are dummies, coefficients are
+    # just differences in group mean z²; cluster-bootstrapped by event).
+    # This asks "does weather CHANGE the swing?", needs no simulation,
+    # and differences out any shared model/mechanics contamination.
+    say("### The weather test — Δ mean z² vs OUTDOOR calm (reference)\n")
+    say("| contrast | Δ mean z² [95% CI] |")
+    say("|---|---|")
+    zval = lambda d: d["sq"] / d["noise"] if d["noise"] > 0 else 0.0
+    ref_grp = next(g for g in rows_b if "calm" in g)
+    ref_clusters = defaultdict(list)
+    for ev, d in rows_b[ref_grp]:
+        ref_clusters["R:" + ev].append(("ref", d))
+    for grp in sorted(rows_b):
+        if grp == ref_grp:
+            continue
+        merged = defaultdict(list)
+        for k_, v_ in ref_clusters.items():
+            merged[k_] = list(v_)
+        for ev, d in rows_b[grp]:
+            merged["T:" + ev].append(("trt", d))
+        def diff(sample):
+            t = [zval(d) for tag, d in sample if tag == "trt"]
+            r = [zval(d) for tag, d in sample if tag == "ref"]
+            if not t or not r:
+                return float("nan")
+            return sum(t) / len(t) - sum(r) / len(r)
+        est = diff([p for v_ in merged.values() for p in v_])
+        lo, hi = boot(merged, diff)
+        say(f"| {grp} − calm | {est:+.3f} [{lo:+.3f}, {hi:+.3f}] |")
+
+    # continuous version: slope of per-game z² on match-hour wind, outdoor
+    out_rows = [(ev, d) for g in rows_b for ev, d in rows_b[g]
+                if d["outdoor"]]
+    def slope(sample):
+        pts = [(d["wind"], zval(d)) for _, d in sample]
+        n = len(pts)
+        mx = sum(x for x, _ in pts) / n
+        my = sum(y for _, y in pts) / n
+        den = sum((x - mx) ** 2 for x, _ in pts)
+        return sum((x - mx) * (y - my) for x, y in pts) / den if den else 0.0
+    clusters_w = defaultdict(list)
+    for ev, d in out_rows:
+        clusters_w[ev].append((ev, d))
+    s = slope(out_rows)
+    lo, hi = boot(clusters_w, slope)
+    say(f"\nContinuous: slope of z² on match-hour wind, outdoor only "
+        f"({len(out_rows)} games): {s*10:+.3f} per +10 mph "
+        f"[{lo*10:+.3f}, {hi*10:+.3f}]\n")
 
     say("\nSecondary (older correlation view):\n")
     say("| group | corr(pre, post) [95% CI] |")
