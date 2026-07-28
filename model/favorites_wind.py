@@ -200,11 +200,96 @@ def main():
         say(f"| {setting} | {len(rows)} | {mean_gap:+.3f} "
             f"| {coefs[1]:+.4f} [{cis[1][0]:+.4f}, {cis[1][1]:+.4f}] |")
 
+    # -------- Regression 3: rally-level binomial logit -------------------
+    say("\n## 3. Rally level proper: P(server wins THIS rally) — binomial "
+        "logit\n")
+    say("Each serve rally is a 0/1; with covariates constant within a "
+        "match-side the Bernoulli series collapses losslessly to its "
+        "(wins, attempts) sufficient statistic, so this fits the rally "
+        "series exactly while weighting every rally once (fixing the "
+        "equal-weight-per-game approximation of regression 2): "
+        "logit p = a + b·adv + c·(wind/10) + d·adv·(wind/10), where adv = "
+        "serving team's v2 eta advantage (signed). d < 0 = wind erodes "
+        "the better team's rally edge. Cluster bootstrap by event.\n")
+
+    def fit_logit(rows):
+        """Newton-Raphson binomial logit; rows carry wins, n, covariates."""
+        beta = [0.0, 0.0, 0.0, 0.0]
+        for _ in range(25):
+            grad = [0.0] * 4
+            hess = [[0.0] * 4 for _ in range(4)]
+            for r in rows:
+                x = (1.0, r["adv"], r["w"], r["adv"] * r["w"])
+                z = sum(b_ * x_ for b_, x_ in zip(beta, x))
+                p = 1.0 / (1.0 + math.exp(-max(-30, min(30, z))))
+                res = r["wins"] - r["n"] * p
+                wgt = r["n"] * p * (1 - p)
+                for i in range(4):
+                    grad[i] += res * x[i]
+                    for j in range(4):
+                        hess[i][j] += wgt * x[i] * x[j]
+            m = [hess[i][:] + [grad[i]] for i in range(4)]
+            for col in range(4):
+                piv = max(range(col, 4), key=lambda r_: abs(m[r_][col]))
+                m[col], m[piv] = m[piv], m[col]
+                if abs(m[col][col]) < 1e-10:
+                    return None
+                for r_ in range(4):
+                    if r_ != col:
+                        f = m[r_][col] / m[col][col]
+                        for c_ in range(col, 5):
+                            m[r_][c_] -= f * m[col][c_]
+            step = [m[i][4] / m[i][i] for i in range(4)]
+            beta = [b_ + s_ for b_, s_ in zip(beta, step)]
+            if max(abs(s_) for s_ in step) < 1e-9:
+                break
+        return beta
+
+    rally_rows = defaultdict(list)
+    for r in read_csv(ROOT / "data/decider_serve_splits.csv"):
+        meta = match_meta.get(r["match_id"])
+        if not meta:
+            continue
+        setting, wind, eta, ev = meta
+        for side, sgn in (("a", 1.0), ("b", -1.0)):
+            n = int(r[f"r{side}_pre"]) + int(r[f"r{side}_post"])
+            wins = int(r[f"w{side}_pre"]) + int(r[f"w{side}_post"])
+            if n < 4:
+                continue
+            rally_rows[setting].append({"ev": ev, "n": n, "wins": wins,
+                                        "adv": sgn * eta,
+                                        "w": wind / 10.0})
+
+    say("| setting | rallies | b (adv) | d (adv×wind) [95% CI] |")
+    say("|---|---|---|---|")
+    rng3 = random.Random(23)
+    for setting in ("outdoor", "indoor"):
+        rows = rally_rows[setting]
+        beta = fit_logit(rows)
+        clustered = defaultdict(list)
+        for r in rows:
+            clustered[r["ev"]].append(r)
+        keys = list(clustered)
+        draws = []
+        for _ in range(600):
+            s = []
+            for _ in keys:
+                s.extend(clustered[rng3.choice(keys)])
+            bb = fit_logit(s)
+            if bb:
+                draws.append(bb[3])
+        draws.sort()
+        n_rallies = sum(r["n"] for r in rows)
+        say(f"| {setting} | {n_rallies} | {beta[1]:.3f} | {beta[3]:+.3f} "
+            f"[{draws[int(0.025*len(draws))]:+.3f}, "
+            f"{draws[int(0.975*len(draws))]:+.3f}] |")
+
     say("\n---\n*All nulls are within-data: the interaction's zero, the "
         "indoor arm, and calm games. No simulation used. Caveats: "
         "current-form v2 retroactive (fine for interactions); outdoor "
-        "labels heuristic; regression 2's sample is close-match-selected "
-        "by construction.*")
+        "labels heuristic; regressions 2–3 use the close-match-selected "
+        "serve-splits sample (deciders + MLP) — slopes/interactions are "
+        "the objects, not levels.*")
 
     (ROOT / "model/favorites_wind.md").write_text("\n".join(out) + "\n")
     print("\nwrote model/favorites_wind.md")

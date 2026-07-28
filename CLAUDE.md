@@ -363,7 +363,11 @@ while INDOOR shows d = −0.080 [−0.150,+0.020]; rally-level fav−dog
 serve-rate gap slope is negative in BOTH arms and MORE indoor (−0.031
 sig) than outdoor (−0.022) — the falsification arm fails, so the old
 binned "favorites −6pp at 14–20 mph" was composition/label noise, NOT
-wind. Weather verdict, complete: no serve-rate effect, no end effect,
+wind. Rally-level binomial logit (P(server wins rally) ~ adv×wind,
+193k rallies — the exact 0/1-series likelihood; per-match covariates
+make it collapse to (wins,attempts)) agrees: d outdoor −0.017
+[−0.098,+0.058], indoor −0.060 [−0.129,+0.014], indoor again more
+negative. Weather verdict, complete: no serve-rate effect, no end effect,
 no momentum, no wind skill, no favorite compression. Wind does nothing
 detectable to pro pickleball outcomes in this archive — and
 1.81–1.90 vs 1.84–1.88 (Design A2 = game1-vs-game2 shares, all 14k
