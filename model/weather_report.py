@@ -3,9 +3,12 @@
     python model/weather_report.py        # prints + writes model/weather_report.md
 
 Joins games.csv to data/event_weather.csv (daily, from scraper/weather.py)
-by (event_id, date). Three cuts, each run outdoor vs indoor so the indoor
-arm serves as a placebo (a "wind effect" indoors would mean the labels or
-the method are broken):
+by (event_id, date). Three cuts, each run outdoor vs indoor. The indoor
+arm is a CONTROL, not a placebo assumed to be zero (house stance
+2026-07-28): indoor play is more controlled but not fully — drafts, HVAC,
+heat and travel fatigue can still move outcomes. What indoor rules out is
+direct WIND exposure, so a wind gradient indoors flags label/method noise
+while heat effects indoors remain physically plausible:
 
   A. Serve-point rate (n_points / n_rallies from data/match_rally_summary.csv)
      vs daily max wind. The physics question: does wind shorten rallies /
@@ -87,10 +90,29 @@ def wls_slope(rows, xkey, ykey, wkey):
     return (sxy - sx * sy / sw) / den if den else 0.0
 
 
+def load_hourly():
+    """(event_id, 'YYYY-MM-DDTHH') -> hourly weather row, plus
+    match_id -> local start hour string — empty dicts when the match-times
+    extraction (scraper/extract_match_times.py) hasn't run yet."""
+    hourly, start_hour = {}, {}
+    p = ROOT / "data/event_weather_hourly.csv"
+    q = ROOT / "data/match_times.csv"
+    if not p.exists() or not q.exists():
+        return hourly, start_hour
+    for r in read_csv(p):
+        hourly[(r["event_id"], r["local_time"][:13])] = r
+    for r in read_csv(q):
+        ts = r["start_local"] or r["planned_start_local"]
+        if ts:
+            start_hour[r["match_id"]] = ts[:13]
+    return hourly, start_hour
+
+
 def main():
     geo = {r["event_id"]: r for r in read_csv(ROOT / "data/event_geo.csv")}
     wx = {(r["event_id"], r["date"]): r
           for r in read_csv(ROOT / "data/event_weather.csv")}
+    hourly, start_hour = load_hourly()
     v2 = {r["player_id"]: (float(r["value_now_mean"]), float(r["value_now_sd"]))
           for r in read_csv(ROOT / "data/v2_players.csv")}
     rally = {r["match_id"]: r
@@ -113,6 +135,10 @@ def main():
                "cluster": g["event_id"] + g["date"],
                "wind": wind, "gust": fnum(w["windgusts_10m_max"]),
                "tmax": tmax, "precip": fnum(w["precipitation_sum"])}
+        # hour-level override when the match's start hour is known
+        hw = hourly.get((g["event_id"], start_hour.get(g["match_id"], "")))
+        row["wind_h"] = fnum(hw["windspeed_10m"]) if hw else None
+        row["temp_h"] = fnum(hw["temperature_2m"]) if hw else None
 
         # serve-point rate: one row per MATCH (not per game)
         if g["match_id"] not in matches_seen and g["match_id"] in rally:
@@ -149,38 +175,51 @@ def main():
 
     for setting in ("outdoor", "indoor"):
         say(f"\n## {setting.upper()}"
-            + ("  *(placebo arm — nothing should move)*" if setting == "indoor" else ""))
+            + ("  *(control arm — no direct wind exposure expected; "
+               "heat/HVAC effects still possible)*"
+               if setting == "indoor" else ""))
 
         # ---- A: serve rate vs wind ---------------------------------------
-        rows = [r for k, r in games if k == "match" and r["setting"] == setting]
-        say(f"\n### A. Serve-point rate vs daily max wind ({len(rows)} matches)")
-        say("| wind | matches | rallies | serve-point rate |")
-        say("|---|---|---|---|")
-        for lo, hi in WIND_BINS:
-            sub = [r for r in rows if lo <= r["wind"] < hi]
-            nr = sum(r["n_rallies"] for r in sub)
-            if not nr:
-                continue
-            rate = sum(r["serve_rate"] * r["n_rallies"] for r in sub) / nr
-            lbl = f"{lo}–{hi}" if hi < 99 else f"{lo}+"
-            say(f"| {lbl} mph | {len(sub)} | {nr} | {rate:.4f} |")
-        if rows:
-            for r in rows:
-                r["w"] = r["n_rallies"]
-            slope = wls_slope(rows, "wind", "serve_rate", "w")
-            clusters = defaultdict(list)
-            for r in rows:
-                clusters[r["cluster"]].append(r)
-            lo_ci, hi_ci = boot_ci(clusters,
-                                   lambda s: wls_slope(s, "wind", "serve_rate", "w"))
-            say(f"\nWLS slope: {slope*1000:+.3f} pp serve-rate per 1000×mph "
-                f"→ per +10 mph: {slope*10:+.4f} "
-                f"(95% cluster-bootstrap CI [{lo_ci*10:+.4f}, {hi_ci*10:+.4f}])")
+        all_m = [r for k, r in games if k == "match" and r["setting"] == setting]
+        a_cuts = [("daily max wind", "wind")]
+        if sum(1 for r in all_m if r.get("wind_h") is not None) >= 500:
+            a_cuts.append(("wind AT MATCH HOUR", "wind_h"))
+        for wlabel, wkey in a_cuts:
+            rows = [r for r in all_m if r.get(wkey) is not None]
+            say(f"\n### A. Serve-point rate vs {wlabel} ({len(rows)} matches)")
+            say("| wind | matches | rallies | serve-point rate |")
+            say("|---|---|---|---|")
+            for lo, hi in WIND_BINS:
+                sub = [r for r in rows if lo <= r[wkey] < hi]
+                nr = sum(r["n_rallies"] for r in sub)
+                if not nr:
+                    continue
+                rate = sum(r["serve_rate"] * r["n_rallies"] for r in sub) / nr
+                lbl = f"{lo}–{hi}" if hi < 99 else f"{lo}+"
+                say(f"| {lbl} mph | {len(sub)} | {nr} | {rate:.4f} |")
+            if rows:
+                for r in rows:
+                    r["w"] = r["n_rallies"]
+                slope = wls_slope(rows, wkey, "serve_rate", "w")
+                clusters = defaultdict(list)
+                for r in rows:
+                    clusters[r["cluster"]].append(r)
+                lo_ci, hi_ci = boot_ci(clusters,
+                                       lambda s: wls_slope(s, wkey, "serve_rate", "w"))
+                say(f"\nWLS slope: per +10 mph: {slope*10:+.4f} "
+                    f"(95% cluster-bootstrap CI [{lo_ci*10:+.4f}, {hi_ci*10:+.4f}])")
 
         # ---- B/C: favorites vs wind and heat -----------------------------
-        rows = [r for k, r in games if k == "game" and r["setting"] == setting]
-        for name, key, bins, unit in (("B. Favorites vs wind", "wind", WIND_BINS, "mph"),
-                                      ("C. Favorites vs heat", "tmax", TEMP_BINS, "°F")):
+        all_g = [r for k, r in games if k == "game" and r["setting"] == setting]
+        bc_cuts = [("B. Favorites vs wind (daily max)", "wind", WIND_BINS, "mph"),
+                   ("C. Favorites vs heat (daily max)", "tmax", TEMP_BINS, "°F")]
+        if sum(1 for r in all_g if r.get("wind_h") is not None) >= 1000:
+            bc_cuts += [("B2. Favorites vs wind AT MATCH HOUR", "wind_h",
+                         WIND_BINS, "mph"),
+                        ("C2. Favorites vs temp AT MATCH HOUR", "temp_h",
+                         TEMP_BINS, "°F")]
+        for name, key, bins, unit in bc_cuts:
+            rows = [r for r in all_g if r.get(key) is not None]
             say(f"\n### {name} ({len(rows)} games)")
             say(f"| {key} | games | predicted fav % | observed fav % | edge (obs−pred) | Brier |")
             say("|---|---|---|---|---|---|")
