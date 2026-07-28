@@ -150,9 +150,13 @@ def group_of(m):
 
 def main():
     matches, v2 = load_context()
+    hourly_mode = (ROOT / "data/match_times.csv").exists()
     out = []
     say = lambda s="": (print(s), out.append(s))
     say("# End effects (good side / bad side) — inferred from switch structure\n")
+    say("Wind source: **{}**.\n".format(
+        "at the match start hour (data/match_times.csv)" if hourly_mode
+        else "daily max (run scraper/extract_match_times.py for hour-level)"))
     say("Levels are NOT interpretable alone (they mix skill continuity with "
         "end effects); read the CONTRASTS between rows. End effects push "
         "every statistic DOWN.\n")
@@ -232,11 +236,11 @@ def main():
     say("\nBinomial noise in the point shares attenuates all rows toward "
         "zero equally; again, read contrasts, not levels.\n")
 
-    say("---\n*Caveats: day-level wind (attenuates the windy-vs-calm "
-        "contrast); indoor/outdoor labels heuristic; Design A assumes "
-        "match-level form variance is similar across groups. Hour-level "
-        "wind (data/match_times.csv + event_weather_hourly.csv) is the "
-        "designed upgrade.*")
+    say("---\n*Caveats: indoor/outdoor labels heuristic; Design A assumes "
+        "match-level form variance is similar across groups."
+        + ("" if hourly_mode else " Day-level wind attenuates the "
+           "windy-vs-calm contrast — run scraper/extract_match_times.py "
+           "for the hour-level version.") + "*")
 
     (ROOT / "model/end_effects.md").write_text("\n".join(out) + "\n")
     print("\nwrote model/end_effects.md")

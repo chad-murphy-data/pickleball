@@ -313,14 +313,27 @@ the Open-Meteo archive → data/event_geo.csv + event_weather{,_hourly}.csv;
 placebo). Findings so far: NO wind effect on serve-point rate outdoors
 (+0.002 per +10 mph, CI spans 0; indoor placebo equally null); favorites'
 obs−pred edge drifts a bit more negative in wind and in 92°F+ heat
-outdoors, but tail bins are thin and the indoor placebo fails at 20+ mph —
-treat as null pending the HOUR-level join. The hourly CSV is already on
-disk; the missing piece is per-match start times (`localDateMatch*` in
-raw/ match infos — extract where raw/ exists, e.g. Actions cache or
-droplet). Court-END effects (sun/wind side) are unobservable in referee
-logs — server_side is the team, not the physical end. Indoor/outdoor =
-tour default + venue keywords; curate data/venue_overrides.csv
-(event_id,setting) as broadcasts confirm.
+outdoors, but tail bins are thin and the indoor CONTROL arm moves too at
+20+ mph — so the wind-upset signal can't be cleanly attributed (label
+noise or storm-day confound). HOUR-level join DONE same day:
+`scraper/extract_match_times.py` sweeps localDateMatch* start times from
+the open BFF (instant where raw/ is warm, e.g. droplet) →
+data/match_times.csv; both reports auto-upgrade to wind/temp at match
+hour. Hour-level: serve rate still null; favorites −6.0pp
+[−8.0,−4.1] at 14–20 mph outdoors vs −4.0 calm (indoor arm still dips —
+keep skeptical); heat gradient monotone but mild. Court-END (good/bad
+side) effects: physically unobservable in logs (server_side = team, not
+end) BUT inferred from the switch schedule in `model/end_effects.py` —
+Design A consecutive-game residual cov (ends swap between games),
+Design B decider pre/post point-share around the switch at 6
+(data/decider_splits.csv from pb_rally). Verdict: NO wind gradient in
+either design even at match-hour wind (Design B corr ≈ +0.33 flat
+across indoor/calm/windy; Design A windy is highest, not lowest) —
+typical end advantage bounded well under ~1 pt/game. HOUSE STANCE
+(user, 2026-07-28): indoor is a CONTROL, never assumed end-effect-free
+— more controlled, not fully. Indoor/outdoor = tour default + venue
+keywords; curate data/venue_overrides.csv (event_id,setting) as
+broadcasts confirm.
 Website extras: live win-prob charts (needs Tier 1/2 listener on a VPS);
 social prediction-card renders (design bundle `Prediction Cards.dc.html`,
 port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
