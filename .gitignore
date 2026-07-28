@@ -14,3 +14,4 @@ content/**/*.png
 
 # droplet Supabase creds (service-role key — never commit)
 deploy/pickleball.env
+.claude/worktrees/
