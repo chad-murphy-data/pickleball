@@ -55,6 +55,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "web"))
 from sitelib.race import race_dist, sigmoid, team_eta  # noqa: E402
+from sitelib.winprob import K_DOUBLES, serve_probs  # noqa: E402
 
 WIND_GROUPS = [("calm <8 mph", 0, 8), ("moderate 8–14", 8, 14),
                ("windy 14+", 14, 99)]
@@ -99,6 +100,41 @@ def boot(clustered, stat, n=4000, seed=11):
     return vals[int(0.025 * len(vals))], vals[int(0.975 * len(vals))]
 
 
+def sim_game(kA: float, kB: float, rng: random.Random, T: int = 11):
+    """One side-out game under the winprob.py rally model — serve-state
+    Markov clustering only, NO momentum, NO end effects. Returns
+    (pre-switch points [A,B], post-switch points, final a, final b) with
+    the switch defined as in the decider design (rally-start max < 6)."""
+    a = b = 0
+    team = 0 if rng.random() < 0.5 else 1     # who serves first
+    num = 2                                    # first-server exception
+    pre, post = [0, 0], [0, 0]
+    while True:
+        period = pre if max(a, b) < 6 else post
+        k = kA if team == 0 else kB
+        if rng.random() < k:
+            period[team] += 1
+            if team == 0:
+                a += 1
+            else:
+                b += 1
+            if (a >= T or b >= T) and abs(a - b) >= 2:
+                return pre, post, a, b
+        elif num == 1:
+            num = 2
+        else:
+            team, num = 1 - team, 1
+
+
+def zsq(x_pts: int, n1: int, y_pts: int, n2: int):
+    """(swing², binomial noise, z²) for share x_pts/n1 vs y_pts/n2."""
+    x, y = x_pts / n1, y_pts / n2
+    p_hat = (x_pts + y_pts) / (n1 + n2)
+    noise = p_hat * (1 - p_hat) * (1 / n1 + 1 / n2)
+    sq = (x - y) ** 2
+    return sq, noise, (sq / noise if noise > 0 else 0.0)
+
+
 def load_context():
     """match_id -> (setting, wind, event_id) for PPA doubles matches.
     Wind = daily max, upgraded to wind AT THE MATCH START HOUR whenever
@@ -139,7 +175,9 @@ def load_context():
         hw = hourly.get((g0["event_id"], start_hour.get(mid, "")))
         if hw is not None:
             wind = hw
-        matches[mid] = {"setting": setting, "wind": wind,
+        vals = [v2.get(g0[k]) for k in ("t1_p1", "t1_p2", "t2_p1", "t2_p2")]
+        eta = team_eta(*vals) if all(v is not None for v in vals) else None
+        matches[mid] = {"setting": setting, "wind": wind, "eta": eta,
                         "event": g0["event_id"], "games": sorted(
                             gs, key=lambda r: int(r["game_number"])),
                         "best_of": int(g0["best_of"] or 0)}
@@ -173,7 +211,8 @@ def main():
     # ---------------- Design A: paired swing across the between-game switch
     say("## Design A — game 1 vs game 2 (same 4 players, ends switched "
         "between games)\n")
-    rows = defaultdict(list)   # group -> [(cluster,(r1,r2))]
+    rows = defaultdict(list)     # group -> [(cluster,(r1,r2))] margins, rated
+    rows_a2 = defaultdict(list)  # group -> [(cluster, rec)] share swing, all
     for mid, m in matches.items():
         gs = m["games"]
         if len(gs) < 2 or gs[0]["game_number"] != "1" or gs[1]["game_number"] != "2":
@@ -181,16 +220,20 @@ def main():
         g1, g2 = gs[0], gs[1]
         if g1["scoring_format"] != "sideout_11":
             continue
-        vals = [v2.get(g1[k]) for k in ("t1_p1", "t1_p2", "t2_p1", "t2_p2")]
-        if not all(v is not None for v in vals):
-            continue
-        eta = team_eta(*vals)
-        exp = race_dist(round(sigmoid(eta), 4), 11)["exp_margin"]
-        r1 = int(g1["t1_score"]) - int(g1["t2_score"]) - exp
-        r2 = int(g2["t1_score"]) - int(g2["t2_score"]) - exp
         grp = group_of(m)
-        if grp:
-            rows[grp].append((m["event"], (r1, r2)))
+        if not grp:
+            continue
+        s11, s12 = int(g1["t1_score"]), int(g1["t2_score"])
+        s21, s22 = int(g2["t1_score"]), int(g2["t2_score"])
+        if s11 + s12 >= 11 and s21 + s22 >= 11:
+            sq, noise, z2 = zsq(s11, s11 + s12, s21, s21 + s22)
+            rows_a2[grp].append((m["event"],
+                                 {"sq": sq, "noise": noise, "z2": z2,
+                                  "eta": m["eta"] or 0.0}))
+        if m["eta"] is None:
+            continue
+        exp = race_dist(round(sigmoid(m["eta"]), 4), 11)["exp_margin"]
+        rows[grp].append((m["event"], (s11 - s12 - exp, s21 - s22 - exp)))
 
     def var_d(pairs):
         ds = [x - y for x, y in pairs]
@@ -240,6 +283,46 @@ def main():
         say(f"| {grp} | {c:+.3f} [{lo:+.3f}, {hi:+.3f}] | {cov(pairs):+.2f} |")
     say("")
 
+    # ------- Design A2: between-games share swing (all matches, z²) ------
+    say("## Design A2 — game-1 vs game-2 POINT SHARES (share/z² framework, "
+        "no ratings needed)\n")
+    say("Same object as Design B but across the between-game end switch: "
+        "swing = team 1's share of points in game 1 minus game 2 "
+        "(scores ARE the point counts). 'null z²' = the same statistic in "
+        "games simulated from the winprob.py serve-state model (k = "
+        f"{K_DOUBLES}, match etas, NO momentum, NO end effects) — the "
+        "mechanical serve-clustering floor.\n")
+    rngs = random.Random(20260728)
+    say("| group | matches | mean z² [95% CI] | null z² (sim) | "
+        "mean excess ×10³ [95% CI] |")
+    say("|---|---|---|---|---|")
+    REPS_A = 12
+    for grp in sorted(rows_a2):
+        data = rows_a2[grp]
+        recs = [d for _, d in data]
+        clustered = defaultdict(list)
+        for ev, d in data:
+            clustered[ev].append(d)
+        mean_z2 = lambda s: sum(d["z2"] for d in s) / len(s)
+        mean_ex = lambda s: sum(d["sq"] - d["noise"] for d in s) / len(s)
+        z2 = mean_z2(recs)
+        zlo, zhi = boot(clustered, mean_z2)
+        me = mean_ex(recs)
+        elo, ehi = boot(clustered, mean_ex)
+        null_sum = null_n = 0.0
+        for d in recs:
+            kA, kB = serve_probs(d["eta"])
+            for _ in range(REPS_A):
+                _, _, a1, b1 = sim_game(kA, kB, rngs)
+                _, _, a2, b2 = sim_game(kA, kB, rngs)
+                _, _, z = zsq(a1, a1 + b1, a2, a2 + b2)
+                null_sum += z
+                null_n += 1
+        say(f"| {grp} | {len(recs)} | {z2:.2f} [{zlo:.2f}, {zhi:.2f}] "
+            f"| {null_sum/null_n:.2f} "
+            f"| {me*1000:+.2f} [{elo*1000:+.2f}, {ehi*1000:+.2f}] |")
+    say("")
+
     # ---------------- Design B: decider pre/post switch -------------------
     say("## Design B — decider game 3: point share before vs after the "
         "mid-game end switch at 6\n")
@@ -267,7 +350,7 @@ def main():
             rows_b[grp].append((m["event"],
                                 {"x": x - 0.5, "y": y - 0.5,
                                  "sq": (x - y) ** 2, "noise": noise,
-                                 "excess": excess}))
+                                 "excess": excess, "eta": m["eta"] or 0.0}))
 
     say("Primary: the swing = TEAM A's point share on its first end minus "
         "its share on its second end (the 6-0-then-5-7 comparison; team B "
@@ -279,8 +362,10 @@ def main():
         "halves count for more. LEVELS are inflated by serve-streak "
         "clustering; read contrasts.\n")
     say("| group | deciders | RMS swing | noise RMS | mean excess ×10³ "
-        "[95% CI] | mean z² [95% CI] |")
-    say("|---|---|---|---|---|---|")
+        "[95% CI] | mean z² [95% CI] | null z² (sim) |")
+    say("|---|---|---|---|---|---|---|")
+    rngs_b = random.Random(20260729)
+    REPS_B = 40
     for grp in sorted(rows_b):
         data = rows_b[grp]
         recs = [d for _, d in data]
@@ -299,9 +384,21 @@ def main():
         zlo, zhi = boot(clustered, mean_z2)
         rms = math.sqrt(sum(d["sq"] for d in recs) / len(recs))
         nrms = math.sqrt(sum(d["noise"] for d in recs) / len(recs))
+        null_sum = null_n = 0.0
+        for d in recs:
+            kA, kB = serve_probs(d["eta"])
+            for _ in range(REPS_B):
+                pre, post, _, _ = sim_game(kA, kB, rngs_b)
+                n1, n2 = sum(pre), sum(post)
+                if n1 < 5 or n2 < 5:
+                    continue
+                _, noise, z = zsq(pre[0], n1, post[0], n2)
+                if noise > 0:
+                    null_sum += z
+                null_n += 1
         say(f"| {grp} | {len(recs)} | {rms:.3f} | {nrms:.3f} "
             f"| {me*1000:+.2f} [{lo*1000:+.2f}, {hi*1000:+.2f}] "
-            f"| {z2:.2f} [{zlo:.2f}, {zhi:.2f}] |")
+            f"| {z2:.2f} [{zlo:.2f}, {zhi:.2f}] | {null_sum/null_n:.2f} |")
 
     say("\nSecondary (older correlation view):\n")
     say("| group | corr(pre, post) [95% CI] |")
