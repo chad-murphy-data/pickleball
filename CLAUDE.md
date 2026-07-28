@@ -278,11 +278,12 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   assumptions in build_site.py:season_race_panel still match reality (the
   playoff rounds were hardcoded from the announced plan; the API had no
   playoff matchups as of 2026-07-27 — swap to real matchup data once
-  published). Reminder trigger set 2026-07-27.
+  published). NO automated reminder exists (trigger creation was blocked
+  2026-07-27) — needs manual kickoff on the date.
 - **~Aug 31, 2026 (MLP season over)**: grade/recap the playoff-race
   forecasts, then repurpose the title race page's season section for
-  PPA-appropriate content (PPA runs year-round). Reminder trigger set
-  2026-07-27.
+  PPA-appropriate content (PPA runs year-round). NO automated reminder
+  exists — needs manual kickoff on the date.
 - **September 2026**: score `model/registered_predictions.md` (frozen
   2026-07-12) against games dated AFTER 2026-07-12 only, using the method
   written in that file; update the pending entry in `model/receipts.json`.
