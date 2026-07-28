@@ -325,8 +325,10 @@ keep skeptical); heat gradient monotone but mild. Court-END (good/bad
 side) effects: physically unobservable in logs (server_side = team, not
 end) BUT inferred from the switch schedule in `model/end_effects.py` —
 Design A consecutive-game residual cov (ends swap between games),
-Design B decider pre/post point-share around the switch at 6
-(data/decider_splits.csv from pb_rally). PRIMARY test = paired-swing
+Design B pre/post point-share around the mid-game switch at 6
+(data/decider_splits.csv from pb_rally) — PPA deciders PLUS every MLP
+game (MLP switches at 6 in ALL games, user rule 2026-07-28; MLP matches
+are single games; DBs excluded). PRIMARY test = paired-swing
 VARIANCE vs noise (user call 2026-07-28: mean-of-swing is identically 0
 by end-assignment symmetry; the paired difference cancels skill exactly,
 so the signal is excess variance — correlation kept as secondary only).
@@ -335,7 +337,8 @@ see end-adv sd ≳1 pt/game). Design B excess is monotone in match-hour
 wind (+42 indoor ≈ +42 calm < +49 mod < +55 windy ×10⁻³ share²) BUT the
 SIMULATED NULL (winprob.py serve-state model, k=0.43, match etas, no
 momentum, no ends — sim_game in end_effects.py) reproduces z² ≈ 1.8
-everywhere: observed 1.73–1.95 vs null 1.79–1.82 (Design B) and
+everywhere: observed 1.67–1.95 vs null 1.76–1.79 (Design B, n=4,786
+with MLP; only windy 14+ sits above its null, +0.16, CI spans it) and
 1.81–1.90 vs 1.84–1.88 (Design A2 = game1-vs-game2 shares, all 14k
 matches, no ratings needed). ⇒ (a) WITHIN/BETWEEN-GAME MOMENTUM IS
 ~ZERO — serve-streak clustering explains the entire swing

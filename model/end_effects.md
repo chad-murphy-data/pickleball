@@ -35,24 +35,24 @@ Same object as Design B but across the between-game end switch: swing = team 1's
 | OUTDOOR moderate 8–14 | 2638 | 1.90 [1.81, 2.00] | 1.86 | +29.09 [+26.14, +32.25] |
 | OUTDOOR windy 14+ | 483 | 1.81 [1.64, 1.97] | 1.84 | +26.89 [+21.73, +31.64] |
 
-## Design B — decider game 3: point share before vs after the mid-game end switch at 6
+## Design B — point share before vs after the mid-game end switch at 6 (PPA deciders + ALL MLP games)
 
 Primary: the swing = TEAM A's point share on its first end minus its share on its second end (the 6-0-then-5-7 comparison; team B is the mirror image, so side A alone carries all the information). Its mean is 0 by end-assignment symmetry, so the tests are (i) mean of swing² − binomial noise (= 4·Var(end adv) in share²) and (ii) mean z², each game standardized by its own sampling noise — 1.00 under the null, so games with decisive halves count for more. LEVELS are inflated by serve-streak clustering; read contrasts.
 
-| group | deciders | RMS swing | noise RMS | mean excess ×10³ [95% CI] | mean z² [95% CI] | null z² (sim) |
+| group | games | RMS swing | noise RMS | mean excess ×10³ [95% CI] | mean z² [95% CI] | null z² (sim) |
 |---|---|---|---|---|---|---|
-| INDOOR (all wind — no exposure expected) | 884 | 0.303 | 0.223 | +42.22 [+36.47, +48.01] | 1.73 [1.63, 1.83] | 1.79 |
-| OUTDOOR calm <8 mph | 1299 | 0.303 | 0.223 | +42.03 [+35.65, +49.05] | 1.73 [1.62, 1.86] | 1.80 |
-| OUTDOOR moderate 8–14 | 536 | 0.315 | 0.223 | +49.32 [+38.52, +60.95] | 1.85 [1.65, 2.06] | 1.81 |
-| OUTDOOR windy 14+ | 111 | 0.324 | 0.223 | +55.46 [+34.85, +73.43] | 1.95 [1.58, 2.28] | 1.82 |
+| INDOOR (all wind — no exposure expected) | 2383 | 0.297 | 0.220 | +39.81 [+36.28, +43.50] | 1.67 [1.61, 1.73] | 1.76 |
+| OUTDOOR calm <8 mph | 1636 | 0.302 | 0.221 | +42.31 [+36.82, +48.16] | 1.72 [1.63, 1.83] | 1.78 |
+| OUTDOOR moderate 8–14 | 656 | 0.306 | 0.222 | +44.54 [+34.04, +56.92] | 1.76 [1.57, 1.98] | 1.79 |
+| OUTDOOR windy 14+ | 111 | 0.324 | 0.223 | +55.46 [+34.85, +73.43] | 1.95 [1.58, 2.28] | 1.79 |
 
 Secondary (older correlation view):
 
 | group | corr(pre, post) [95% CI] |
 |---|---|
-| INDOOR (all wind — no exposure expected) | +0.335 [+0.292, +0.377] |
-| OUTDOOR calm <8 mph | +0.357 [+0.305, +0.411] |
-| OUTDOOR moderate 8–14 | +0.300 [+0.235, +0.372] |
+| INDOOR (all wind — no exposure expected) | +0.438 [+0.403, +0.468] |
+| OUTDOOR calm <8 mph | +0.381 [+0.333, +0.426] |
+| OUTDOOR moderate 8–14 | +0.342 [+0.272, +0.407] |
 | OUTDOOR windy 14+ | +0.368 [+0.227, +0.531] |
 
 ---

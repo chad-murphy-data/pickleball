@@ -26,8 +26,11 @@ statistical fingerprint:
     this). Margins are residualized on the v2-predicted margin first
     (affects nothing in d, kept for the secondary correlation table).
 
-  Design B — the mid-game switch in deciders (game 3 of a PPA best-of-3).
-    Teams switch ends when the first team reaches 6. Per decider, the
+  Design B — the mid-game end switch at 6. PPA switches mid-game only in
+    deciders (game 3 of a best-of-3, game 5 of a best-of-5); MLP switches
+    at 6 in EVERY game, and every MLP match is a single game — so all
+    logged MLP games qualify (DreamBreakers are excluded throughout).
+    Teams switch ends when the first team reaches 6. Per game, the
     swing d = (point share pre-switch) − (point share post-switch) has
     E[d] = 0 by the symmetry above; excess of d² over the binomial noise
     p(1−p)(1/n_pre + 1/n_post) estimates 4 Var(e) in share² units. The
@@ -158,8 +161,7 @@ def load_context():
     matches = {}
     by_match = defaultdict(list)
     for g in read_csv(ROOT / "data/games.csv"):
-        if g["tour"] != "PPA" or g["is_dreambreaker"] == "True" \
-                or g["is_forfeit"] == "True":
+        if g["is_dreambreaker"] == "True" or g["is_forfeit"] == "True":
             continue
         by_match[g["match_id"]].append(g)
     for mid, gs in by_match.items():
@@ -178,6 +180,7 @@ def load_context():
         vals = [v2.get(g0[k]) for k in ("t1_p1", "t1_p2", "t2_p1", "t2_p2")]
         eta = team_eta(*vals) if all(v is not None for v in vals) else None
         matches[mid] = {"setting": setting, "wind": wind, "eta": eta,
+                        "tour": g0["tour"],
                         "event": g0["event_id"], "games": sorted(
                             gs, key=lambda r: int(r["game_number"])),
                         "best_of": int(g0["best_of"] or 0)}
@@ -324,8 +327,8 @@ def main():
     say("")
 
     # ---------------- Design B: decider pre/post switch -------------------
-    say("## Design B — decider game 3: point share before vs after the "
-        "mid-game end switch at 6\n")
+    say("## Design B — point share before vs after the mid-game end "
+        "switch at 6 (PPA deciders + ALL MLP games)\n")
     splits = read_csv(ROOT / "data/decider_splits.csv")
     rows_b = defaultdict(list)
     for r in splits:
@@ -333,9 +336,14 @@ def main():
         if not m:
             continue
         gn = int(r["game_number"])
-        if not (m["best_of"] == 3 and gn == 3) and \
-           not (m["best_of"] == 5 and gn == 5):
-            continue
+        if m["tour"] == "MLP":
+            # MLP: EVERY game switches ends at 6 (user-provided rule,
+            # 2026-07-28) and each MLP match is a single game — all usable.
+            if gn != 1:
+                continue
+        elif not (m["best_of"] == 3 and gn == 3) and \
+                not (m["best_of"] == 5 and gn == 5):
+            continue  # PPA: only deciders switch mid-game
         pre = int(r["pa_pre"]) + int(r["pb_pre"])
         post = int(r["pa_post"]) + int(r["pb_post"])
         if pre < 5 or post < 5:
@@ -361,7 +369,7 @@ def main():
         "sampling noise — 1.00 under the null, so games with decisive "
         "halves count for more. LEVELS are inflated by serve-streak "
         "clustering; read contrasts.\n")
-    say("| group | deciders | RMS swing | noise RMS | mean excess ×10³ "
+    say("| group | games | RMS swing | noise RMS | mean excess ×10³ "
         "[95% CI] | mean z² [95% CI] | null z² (sim) |")
     say("|---|---|---|---|---|---|---|")
     rngs_b = random.Random(20260729)
