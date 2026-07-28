@@ -269,13 +269,18 @@ def main():
                                  "sq": (x - y) ** 2, "noise": noise,
                                  "excess": excess}))
 
-    say("Primary: mean of swing² − binomial noise, where swing = point "
-        "share pre-switch − post-switch (skill cancels; mean swing ≡ 0 by "
-        "end-assignment symmetry; excess = 4·Var(end adv) in share² — "
-        "LEVEL inflated by serve-streak clustering, read contrasts).\n")
+    say("Primary: the swing = TEAM A's point share on its first end minus "
+        "its share on its second end (the 6-0-then-5-7 comparison; team B "
+        "is the mirror image, so side A alone carries all the "
+        "information). Its mean is 0 by end-assignment symmetry, so the "
+        "tests are (i) mean of swing² − binomial noise (= 4·Var(end adv) "
+        "in share²) and (ii) mean z², each game standardized by its own "
+        "sampling noise — 1.00 under the null, so games with decisive "
+        "halves count for more. LEVELS are inflated by serve-streak "
+        "clustering; read contrasts.\n")
     say("| group | deciders | RMS swing | noise RMS | mean excess ×10³ "
-        "[95% CI] |")
-    say("|---|---|---|---|---|")
+        "[95% CI] | mean z² [95% CI] |")
+    say("|---|---|---|---|---|---|")
     for grp in sorted(rows_b):
         data = rows_b[grp]
         recs = [d for _, d in data]
@@ -283,12 +288,20 @@ def main():
         for ev, d in data:
             clustered[ev].append(d)
         mean_excess = lambda s: sum(d["excess"] for d in s) / len(s)
+        # noise == 0 only when one team took every point of the game
+        # (x == y exactly), which carries no swing information — z² := 0
+        mean_z2 = lambda s: sum(
+            d["sq"] / d["noise"] if d["noise"] > 0 else 0.0
+            for d in s) / len(s)
         me = mean_excess(recs)
         lo, hi = boot(clustered, mean_excess)
+        z2 = mean_z2(recs)
+        zlo, zhi = boot(clustered, mean_z2)
         rms = math.sqrt(sum(d["sq"] for d in recs) / len(recs))
         nrms = math.sqrt(sum(d["noise"] for d in recs) / len(recs))
         say(f"| {grp} | {len(recs)} | {rms:.3f} | {nrms:.3f} "
-            f"| {me*1000:+.2f} [{lo*1000:+.2f}, {hi*1000:+.2f}] |")
+            f"| {me*1000:+.2f} [{lo*1000:+.2f}, {hi*1000:+.2f}] "
+            f"| {z2:.2f} [{zlo:.2f}, {zhi:.2f}] |")
 
     say("\nSecondary (older correlation view):\n")
     say("| group | corr(pre, post) [95% CI] |")

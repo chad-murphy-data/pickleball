@@ -26,14 +26,14 @@ Secondary (older view — levels not interpretable, contrasts only):
 
 ## Design B — decider game 3: point share before vs after the mid-game end switch at 6
 
-Primary: mean of swing² − binomial noise, where swing = point share pre-switch − post-switch (skill cancels; mean swing ≡ 0 by end-assignment symmetry; excess = 4·Var(end adv) in share² — LEVEL inflated by serve-streak clustering, read contrasts).
+Primary: the swing = TEAM A's point share on its first end minus its share on its second end (the 6-0-then-5-7 comparison; team B is the mirror image, so side A alone carries all the information). Its mean is 0 by end-assignment symmetry, so the tests are (i) mean of swing² − binomial noise (= 4·Var(end adv) in share²) and (ii) mean z², each game standardized by its own sampling noise — 1.00 under the null, so games with decisive halves count for more. LEVELS are inflated by serve-streak clustering; read contrasts.
 
-| group | deciders | RMS swing | noise RMS | mean excess ×10³ [95% CI] |
-|---|---|---|---|---|
-| INDOOR (all wind — no exposure expected) | 884 | 0.303 | 0.223 | +42.22 [+36.47, +48.01] |
-| OUTDOOR calm <8 mph | 1299 | 0.303 | 0.223 | +42.03 [+35.65, +49.05] |
-| OUTDOOR moderate 8–14 | 536 | 0.315 | 0.223 | +49.32 [+38.52, +60.95] |
-| OUTDOOR windy 14+ | 111 | 0.324 | 0.223 | +55.46 [+34.85, +73.43] |
+| group | deciders | RMS swing | noise RMS | mean excess ×10³ [95% CI] | mean z² [95% CI] |
+|---|---|---|---|---|---|
+| INDOOR (all wind — no exposure expected) | 884 | 0.303 | 0.223 | +42.22 [+36.47, +48.01] | 1.73 [1.63, 1.83] |
+| OUTDOOR calm <8 mph | 1299 | 0.303 | 0.223 | +42.03 [+35.65, +49.05] | 1.73 [1.62, 1.86] |
+| OUTDOOR moderate 8–14 | 536 | 0.315 | 0.223 | +49.32 [+38.52, +60.95] | 1.85 [1.65, 2.06] |
+| OUTDOOR windy 14+ | 111 | 0.324 | 0.223 | +55.46 [+34.85, +73.43] | 1.95 [1.58, 2.28] |
 
 Secondary (older correlation view):
 
