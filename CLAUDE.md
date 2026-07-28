@@ -305,6 +305,87 @@ ported verbatim).
 
 ## Open threads (specced, unbuilt)
 
+Weather (2026-07-28) — **full session narrative + open threads in
+`model/weather_thread.md`; read that first if picking this back up.**
+Summary: `scraper/weather.py` resolves every
+event's venue lat/lon/tz from the BFF (PPA: getTournamentsOnDate by
+TournamentID; MLP: getTeamLeaguesResultsOnDate location object) and pulls
+the Open-Meteo archive → data/event_geo.csv + event_weather{,_hourly}.csv;
+`model/weather_report.py` runs the day-level cuts (outdoor vs indoor
+placebo). Findings so far: NO wind effect on serve-point rate outdoors
+(+0.002 per +10 mph, CI spans 0; indoor placebo equally null); favorites'
+obs−pred edge drifts a bit more negative in wind and in 92°F+ heat
+outdoors, but tail bins are thin and the indoor CONTROL arm moves too at
+20+ mph — so the wind-upset signal can't be cleanly attributed (label
+noise or storm-day confound). HOUR-level join DONE same day:
+`scraper/extract_match_times.py` sweeps localDateMatch* start times from
+the open BFF (instant where raw/ is warm, e.g. droplet) →
+data/match_times.csv; both reports auto-upgrade to wind/temp at match
+hour. Hour-level: serve rate still null; favorites −6.0pp
+[−8.0,−4.1] at 14–20 mph outdoors vs −4.0 calm (indoor arm still dips —
+keep skeptical); heat gradient monotone but mild. Court-END (good/bad
+side) effects: physically unobservable in logs (server_side = team, not
+end) BUT inferred from the switch schedule in `model/end_effects.py` —
+Design A consecutive-game residual cov (ends swap between games),
+Design B pre/post point-share around the mid-game switch at 6
+(data/decider_splits.csv from pb_rally) — PPA deciders PLUS every MLP
+game (MLP switches at 6 in ALL games, user rule 2026-07-28; MLP matches
+are single games; DBs excluded). PRIMARY test = paired-swing
+VARIANCE vs noise (user call 2026-07-28: mean-of-swing is identically 0
+by end-assignment symmetry; the paired difference cancels skill exactly,
+so the signal is excess variance — correlation kept as secondary only).
+Verdict: Design A flat but low-powered (game noise ~38 pts²; can only
+see end-adv sd ≳1 pt/game). Design B excess is monotone in match-hour
+wind (+42 indoor ≈ +42 calm < +49 mod < +55 windy ×10⁻³ share²) BUT the
+SIMULATED NULL (winprob.py serve-state model, k=0.43, match etas, no
+momentum, no ends — sim_game in end_effects.py) reproduces z² ≈ 1.8
+everywhere: observed 1.67–1.95 vs null 1.76–1.79 (Design B, n=4,786
+with MLP; only windy 14+ sits above its null, +0.16, CI spans it) and
+the DUMMY-CONTRAST regression (the weather test proper, no sim needed:
+Δ mean z² vs outdoor-calm reference, cluster-bootstrapped) gives
+indoor −0.06 [−0.18,+0.06], windy 14+ +0.22 [−0.16,+0.59], continuous
+slope +0.17 z² per +10 mph [−0.05,+0.36] — wind-positive direction,
+nothing significant; sim null is only for the momentum question.
+Design C = RALLY level (serve-rally win rate per side per half,
+data/decider_serve_splits.csv; serve rallies ≈ iid Bernoulli so the
+mechanical null falls to ~1.15 and team B adds independent info): same
+verdict — indoor/calm/moderate AT their nulls, windy 14+ 1.34
+[1.10,1.66] vs null 1.20, Δ vs calm +0.19 [−0.07,+0.54], continuous
+slope ≈ 0 — the windy bump is tail-bin only, no dose-response.
+WIND SKILL (orthogonal F1-rain dimension, `model/wind_skill.py`):
+split-half reliability of per-player wind slopes r = +0.06 vs
+permutation null [−0.07,+0.12] over 552 players / 24.8k outdoor
+games — NOT ESTABLISHED (clutch/durability cleared 0.13–0.15 on the
+same design; wind skill doesn't). Standout (Verstappen) tests too:
+max|z| 3.27 across 552 players, permutation p=0.58; |z|>2 count 29 vs
+null median 27 [19,36]; pre-specified Anna Bright slope −0.014/10mph,
+p=0.84 (per-player resolution ~±3pp share per 10 mph — only large
+individual effects detectable). Leaderboard is noise, never publish
+names off it. FAVORITES×WIND KILLED (2026-07-28, `model/favorites_wind.py`,
+data-referenced nulls only): continuous interaction share~skill+wind+
+skill×wind gives d = +0.002 [−0.060,+0.064] OUTDOOR (24.8k games — no
+compression at all; b≈1.04 so v2 shares are near-perfectly calibrated)
+while INDOOR shows d = −0.080 [−0.150,+0.020]; rally-level fav−dog
+serve-rate gap slope is negative in BOTH arms and MORE indoor (−0.031
+sig) than outdoor (−0.022) — the falsification arm fails, so the old
+binned "favorites −6pp at 14–20 mph" was composition/label noise, NOT
+wind. Rally-level binomial logit (P(server wins rally) ~ adv×wind,
+193k rallies — the exact 0/1-series likelihood; per-match covariates
+make it collapse to (wins,attempts)) agrees: d outdoor −0.017
+[−0.098,+0.058], indoor −0.060 [−0.129,+0.014], indoor again more
+negative. Weather verdict, complete: no serve-rate effect, no end effect,
+no momentum, no wind skill, no favorite compression. Wind does nothing
+detectable to pro pickleball outcomes in this archive — and
+1.81–1.90 vs 1.84–1.88 (Design A2 = game1-vs-game2 shares, all 14k
+matches, no ratings needed). ⇒ (a) WITHIN/BETWEEN-GAME MOMENTUM IS
+~ZERO — serve-streak clustering explains the entire swing
+overdispersion (matches spec-shootout's null momentum challenger);
+(b) the wind hint shrinks to +0.13 z² over its own null floor, CI
+spans 0. End effects: still no confirmed signal anywhere. HOUSE STANCE
+(user, 2026-07-28): indoor is a CONTROL, never assumed end-effect-free
+— more controlled, not fully. Indoor/outdoor = tour default + venue
+keywords; curate data/venue_overrides.csv (event_id,setting) as
+broadcasts confirm.
 Website extras: live win-prob charts (needs Tier 1/2 listener on a VPS);
 social prediction-card renders (design bundle `Prediction Cards.dc.html`,
 port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
