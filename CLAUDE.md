@@ -349,7 +349,13 @@ data/decider_serve_splits.csv; serve rallies ≈ iid Bernoulli so the
 mechanical null falls to ~1.15 and team B adds independent info): same
 verdict — indoor/calm/moderate AT their nulls, windy 14+ 1.34
 [1.10,1.66] vs null 1.20, Δ vs calm +0.19 [−0.07,+0.54], continuous
-slope ≈ 0 — the windy bump is tail-bin only, no dose-response — and
+slope ≈ 0 — the windy bump is tail-bin only, no dose-response.
+WIND SKILL (orthogonal F1-rain dimension, `model/wind_skill.py`):
+split-half reliability of per-player wind slopes r = +0.06 vs
+permutation null [−0.07,+0.12] over 552 players / 24.8k outdoor
+games — NOT ESTABLISHED (clutch/durability cleared 0.13–0.15 on the
+same design; wind skill doesn't). Leaderboard is noise, never publish
+names off it — and
 1.81–1.90 vs 1.84–1.88 (Design A2 = game1-vs-game2 shares, all 14k
 matches, no ratings needed). ⇒ (a) WITHIN/BETWEEN-GAME MOMENTUM IS
 ~ZERO — serve-streak clustering explains the entire swing
