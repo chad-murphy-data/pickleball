@@ -49,7 +49,7 @@ def mlp_pair_matrix(teams, today, c):
     sys.path.insert(0, str(ROOT / "web"))
     import make_forecast as mf
     vals, singles = mf.load_values(), mf.load_singles()
-    rosters = mf.mlp_rosters(c, today)
+    rosters = mf.mlp_rosters(c, today, vals=vals)
     cache, lineups = {}, {}
     for t in teams:
         lineups[t] = mf.projected_lineup_for_team(

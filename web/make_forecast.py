@@ -169,13 +169,26 @@ def recent_lineup_for_team(c, team_title, before, cache):
     return None, None
 
 
-def mlp_rosters(c, before, start=None):
+ROSTER_CAP = 3          # MLP rosters are exactly 3 men + 3 women
+
+
+def mlp_rosters(c, before, start=None, vals=None):
     """team_title -> {player_uuid} from every published MLP lineup this
     season, assigning each player to the team of their MOST RECENT
     appearance (latest-appearance-wins absorbs trades and event-to-event
     roster rotation).  Walks the season via the same cached endpoints the
     harvester fills nightly, so a CI/warm-cache run touches the network
-    only for the volatile trailing days."""
+    only for the volatile trailing days.
+
+    Rosters are then capped at ROSTER_CAP per gender (MLP rule: 3 men +
+    3 women), keeping the most recently seen players.  Latest-appearance-
+    wins alone is blind to trades until the player debuts for the new
+    team — Hunter Johnson was dealt to St. Louis in late June 2026 but
+    stayed a projected Slice man for a month because he hadn't played
+    since.  A 4th man/woman on a walked roster means somebody left; the
+    stalest appearance is the one who left.  Gender comes from `vals`
+    (load_values(); loaded here when not passed); players without a
+    tracked gender are left alone — they can't enter best_lineup anyway."""
     start = start or SEASON_START
     latest = {}                        # player_uuid -> (date, team_title)
     d = start
@@ -205,6 +218,24 @@ def mlp_rosters(c, before, start=None):
     rosters = {}
     for u, (_, title) in latest.items():
         rosters.setdefault(title, set()).add(u)
+    return cap_rosters(rosters, latest, vals if vals is not None
+                       else load_values())
+
+
+def cap_rosters(rosters, latest, vals):
+    """Trim each walked roster to ROSTER_CAP per gender, keeping the most
+    recently seen players (latest = uuid -> (date, title)).  Mutates and
+    returns `rosters`; prints each drop so forecast runs leave a trail."""
+    for title, roster in rosters.items():
+        for g in ("M", "F"):
+            pool = [u for u in roster if u in vals and vals[u][2] == g]
+            if len(pool) <= ROSTER_CAP:
+                continue
+            pool.sort(key=lambda u: (latest[u][0], u), reverse=True)
+            for u in pool[ROSTER_CAP:]:
+                roster.discard(u)
+                print(f"roster cap: dropped {vals[u][0]} from {title} "
+                      f"(last seen {latest[u][0]})")
     return rosters
 
 
@@ -298,7 +329,7 @@ def main():
     singles = load_singles()
     c = PBClient()
     today = date.today()
-    rosters = mlp_rosters(c, today)
+    rosters = mlp_rosters(c, today, vals=vals)
     lineup_cache = {}
     forecasts = []
 
