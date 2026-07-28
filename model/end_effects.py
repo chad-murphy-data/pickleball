@@ -6,28 +6,35 @@ Referee logs never record which physical end a team occupies — but the
 rules move teams across ends on a known schedule, so end effects leave a
 statistical fingerprint:
 
+  Why not a simple difference of means? Because nobody records which end
+  is the good one: per game the observable swing (performance on one end
+  minus the other) is SIGN-SYMMETRIC — team A's good end is team B's bad
+  end and the assignment is effectively a coin flip — so its mean is zero
+  with or without end effects. The paired difference is still the right
+  object (the skill term cancels exactly, which correlation never
+  manages); the information just lives in its VARIANCE: an end effect
+  makes the swing bigger than sampling noise, and wind should make the
+  excess grow.
+
   Design A — consecutive games (PPA doubles, same four players).
     Teams switch ends between games. Write team 1's margin in game g as
-        m_g = s + (−1)^(g+1) e + noise,
-    s = match-level skill/form edge, e = end advantage held in game 1.
-    Then cov(m1, m2) = Var(s) − Var(e): end effects DEPRESS the
-    consecutive-game covariance. Var(s) is unknown, so the LEVEL of the
-    correlation is not interpretable — but CONTRASTS are: comparing calm
-    vs windy outdoor days (or outdoor vs indoor) differences out Var(s)
-    and identifies the DIFFERENCE in end-effect variance:
-        cov_calm − cov_windy = Var(e|windy) − Var(e|calm).
-    Margins are residualized on the v2-predicted margin first, which
-    removes most of Var(s) and sharpens the contrast.
+        m_g = s + (−1)^(g+1) e + noise.
+    Paired difference d = m1 − m2 = 2e + noise: s cancels. Var(d) =
+    4 Var(e) + 2 Var(noise), so the windy-vs-calm contrast
+        [Var(d|windy) − Var(d|calm)] / 4 = Var(e|windy) − Var(e|calm)
+    (game noise assumed weather-invariant — the serve-rate cut backs
+    this). Margins are residualized on the v2-predicted margin first
+    (affects nothing in d, kept for the secondary correlation table).
 
   Design B — the mid-game switch in deciders (game 3 of a PPA best-of-3).
-    Teams switch ends when the first team reaches 6. If ends matter, a
-    team's point share before the switch anti-correlates with its share
-    after (they surrender the good end mid-game). Skill continuity pushes
-    the pre/post correlation positive; end effects push it negative; the
-    same contrast logic (windy vs calm, outdoor vs indoor) isolates the
-    end component. Data: data/decider_splits.csv, aggregated from the
-    Supabase pb_rally table (points by side, before/after the score
-    first reaches 6).
+    Teams switch ends when the first team reaches 6. Per decider, the
+    swing d = (point share pre-switch) − (point share post-switch) has
+    E[d] = 0 by the symmetry above; excess of d² over the binomial noise
+    p(1−p)(1/n_pre + 1/n_post) estimates 4 Var(e) in share² units. The
+    LEVEL of the excess is inflated by serve-streak clustering (rallies
+    are not iid), so again read the windy-vs-calm CONTRAST. Data:
+    data/decider_splits.csv, aggregated from the Supabase pb_rally table
+    (points by side, before/after the score first reaches 6).
 
 Per the house stance (2026-07-28): indoor is NOT assumed end-effect-free —
 more controlled, not fully (drafts, lighting, backdrops). Indoor gets its
@@ -157,13 +164,15 @@ def main():
     say("Wind source: **{}**.\n".format(
         "at the match start hour (data/match_times.csv)" if hourly_mode
         else "daily max (run scraper/extract_match_times.py for hour-level)"))
-    say("Levels are NOT interpretable alone (they mix skill continuity with "
-        "end effects); read the CONTRASTS between rows. End effects push "
-        "every statistic DOWN.\n")
+    say("End effects push the paired-swing VARIANCE up (primary tables) and "
+        "the correlations down (secondary). Levels are contaminated — "
+        "Design A by game noise, Design B by serve-streak clustering — so "
+        "read CONTRASTS between rows; the contaminants have no reason to "
+        "vary with wind.\n")
 
-    # ---------------- Design A: consecutive-game residual correlation ----
-    say("## Design A — corr of game-1 vs game-2 residual margins "
-        "(same 4 players, ends switched)\n")
+    # ---------------- Design A: paired swing across the between-game switch
+    say("## Design A — game 1 vs game 2 (same 4 players, ends switched "
+        "between games)\n")
     rows = defaultdict(list)   # group -> [(cluster,(r1,r2))]
     for mid, m in matches.items():
         gs = m["games"]
@@ -183,8 +192,43 @@ def main():
         if grp:
             rows[grp].append((m["event"], (r1, r2)))
 
-    say("| group | matches | corr(r1, r2) [95% CI] | cov (pts²) |")
+    def var_d(pairs):
+        ds = [x - y for x, y in pairs]
+        m = sum(ds) / len(ds)
+        return sum((d - m) ** 2 for d in ds) / (len(ds) - 1)
+
+    say("Primary: variance of the paired swing d = margin(g1) − margin(g2) "
+        "(skill cancels; Var(d) = 4·Var(end adv) + 2·Var(game noise)).\n")
+    say("| group | matches | Var(d) pts² [95% CI] | vs calm: implied "
+        "end-adv sd (pts/game) |")
     say("|---|---|---|---|")
+    calm_v = None
+    stats_a = {}
+    for grp in sorted(rows):
+        data = rows[grp]
+        pairs = [p for _, p in data]
+        clustered = defaultdict(list)
+        for ev, p in data:
+            clustered[ev].append(p)
+        v = var_d(pairs)
+        lo, hi = boot(clustered, var_d)
+        stats_a[grp] = (v, lo, hi)
+        if "calm" in grp:
+            calm_v = v
+    for grp in sorted(rows):
+        v, lo, hi = stats_a[grp]
+        if calm_v is None or "calm" in grp:
+            implied = "— (baseline)" if "calm" in grp else "—"
+        else:
+            dv = (v - calm_v) / 4
+            implied = (f"+{math.sqrt(dv):.2f}" if dv > 0
+                       else f"≤0 (Var Δ {dv*4:+.2f})")
+        say(f"| {grp} | {len(rows[grp])} | {v:.2f} [{lo:.2f}, {hi:.2f}] "
+            f"| {implied} |")
+
+    say("\nSecondary (older view — levels not interpretable, contrasts only):")
+    say("\n| group | corr(r1, r2) [95% CI] | cov (pts²) |")
+    say("|---|---|---|")
     for grp in sorted(rows):
         data = rows[grp]
         pairs = [p for _, p in data]
@@ -193,15 +237,12 @@ def main():
             clustered[ev].append(p)
         c = corr(pairs)
         lo, hi = boot(clustered, corr)
-        say(f"| {grp} | {len(pairs)} | {c:+.3f} [{lo:+.3f}, {hi:+.3f}] "
-            f"| {cov(pairs):+.2f} |")
-    say("\ncov(calm) − cov(windy) estimates Var(end adv | windy) − "
-        "Var(end adv | calm) in points²; its square root is the typical "
-        "per-game end advantage the wind adds.\n")
+        say(f"| {grp} | {c:+.3f} [{lo:+.3f}, {hi:+.3f}] | {cov(pairs):+.2f} |")
+    say("")
 
     # ---------------- Design B: decider pre/post switch -------------------
     say("## Design B — decider game 3: point share before vs after the "
-        "end switch at 6\n")
+        "mid-game end switch at 6\n")
     splits = read_csv(ROOT / "data/decider_splits.csv")
     rows_b = defaultdict(list)
     for r in splits:
@@ -216,25 +257,52 @@ def main():
         post = int(r["pa_post"]) + int(r["pb_post"])
         if pre < 5 or post < 5:
             continue
-        x = int(r["pa_pre"]) / pre - 0.5
-        y = int(r["pa_post"]) / post - 0.5
+        x = int(r["pa_pre"]) / pre
+        y = int(r["pa_post"]) / post
+        p_hat = (int(r["pa_pre"]) + int(r["pa_post"])) / (pre + post)
+        noise = p_hat * (1 - p_hat) * (1 / pre + 1 / post)
+        excess = (x - y) ** 2 - noise
         grp = group_of(m)
         if grp:
-            rows_b[grp].append((m["event"], (x, y)))
+            rows_b[grp].append((m["event"],
+                                {"x": x - 0.5, "y": y - 0.5,
+                                 "sq": (x - y) ** 2, "noise": noise,
+                                 "excess": excess}))
 
-    say("| group | deciders | corr(pre, post) [95% CI] |")
-    say("|---|---|---|")
+    say("Primary: mean of swing² − binomial noise, where swing = point "
+        "share pre-switch − post-switch (skill cancels; mean swing ≡ 0 by "
+        "end-assignment symmetry; excess = 4·Var(end adv) in share² — "
+        "LEVEL inflated by serve-streak clustering, read contrasts).\n")
+    say("| group | deciders | RMS swing | noise RMS | mean excess ×10³ "
+        "[95% CI] |")
+    say("|---|---|---|---|---|")
     for grp in sorted(rows_b):
         data = rows_b[grp]
-        pairs = [p for _, p in data]
+        recs = [d for _, d in data]
         clustered = defaultdict(list)
-        for ev, p in data:
-            clustered[ev].append(p)
+        for ev, d in data:
+            clustered[ev].append(d)
+        mean_excess = lambda s: sum(d["excess"] for d in s) / len(s)
+        me = mean_excess(recs)
+        lo, hi = boot(clustered, mean_excess)
+        rms = math.sqrt(sum(d["sq"] for d in recs) / len(recs))
+        nrms = math.sqrt(sum(d["noise"] for d in recs) / len(recs))
+        say(f"| {grp} | {len(recs)} | {rms:.3f} | {nrms:.3f} "
+            f"| {me*1000:+.2f} [{lo*1000:+.2f}, {hi*1000:+.2f}] |")
+
+    say("\nSecondary (older correlation view):\n")
+    say("| group | corr(pre, post) [95% CI] |")
+    say("|---|---|")
+    for grp in sorted(rows_b):
+        data = rows_b[grp]
+        pairs = [(d["x"], d["y"]) for _, d in data]
+        clustered = defaultdict(list)
+        for ev, d in data:
+            clustered[ev].append((d["x"], d["y"]))
         c = corr(pairs)
         lo, hi = boot(clustered, corr)
-        say(f"| {grp} | {len(pairs)} | {c:+.3f} [{lo:+.3f}, {hi:+.3f}] |")
-    say("\nBinomial noise in the point shares attenuates all rows toward "
-        "zero equally; again, read contrasts, not levels.\n")
+        say(f"| {grp} | {c:+.3f} [{lo:+.3f}, {hi:+.3f}] |")
+    say("")
 
     say("---\n*Caveats: indoor/outdoor labels heuristic; Design A assumes "
         "match-level form variance is similar across groups."
