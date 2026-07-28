@@ -67,7 +67,7 @@ Secondary (older correlation view):
 
 ## Design C — rally level: SERVE-RALLY WIN RATE before vs after the switch
 
-Each serve rally is close to an independent Bernoulli given the serve state, so the mechanical side-out clustering that inflates point-share swings mostly vanishes — the null sits near 1.00 on its own, and each team's serve rate is separate information (two observations per game, unlike point shares where B mirrors A). This is also the most physical channel: wind hits the serve toss. Same games as Design B; data/decider_serve_splits.csv (pb_rally, rallies + wins per side per half).
+Each serve rally is close to an independent Bernoulli given the serve state, so the mechanical side-out clustering that inflates point-share swings mostly vanishes — the null sits near 1.00 on its own, and each team's serve rate is separate information (two observations per game, unlike point shares where B mirrors A). The statistic is channel-agnostic: an end that hurts the SERVING team shows up in its own serve-rate swing, one that hurts the RECEIVING team (sun on the return, resets into wind) shows up in the opponent's — both sides are observed, so either lands here. Same games as Design B; data/decider_serve_splits.csv (pb_rally, rallies + wins per side per half).
 
 | group | team-halves | mean z² [95% CI] | null z² (sim) |
 |---|---|---|---|
