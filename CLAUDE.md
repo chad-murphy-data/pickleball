@@ -305,7 +305,9 @@ ported verbatim).
 
 ## Open threads (specced, unbuilt)
 
-Weather (2026-07-28, first pass): `scraper/weather.py` resolves every
+Weather (2026-07-28) — **full session narrative + open threads in
+`model/weather_thread.md`; read that first if picking this back up.**
+Summary: `scraper/weather.py` resolves every
 event's venue lat/lon/tz from the BFF (PPA: getTournamentsOnDate by
 TournamentID; MLP: getTeamLeaguesResultsOnDate location object) and pulls
 the Open-Meteo archive → data/event_geo.csv + event_weather{,_hourly}.csv;
