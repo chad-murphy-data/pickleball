@@ -177,6 +177,76 @@ def main():
         say(f"| {names.get(t[1], t[1])} {t[0]*10:+.3f} | {t[2]} "
             f"| {names.get(b[1], b[1])} {b[0]*10:+.3f} | {b[2]} |")
 
+    # ---- standout tests: a single Verstappen would NOT move split-half r
+    # (population variance test); he shows up in the tail of per-player
+    # z-scores instead. z = slope / OLS se; panel-permutation null charges
+    # correctly for scanning every player.
+    say("\n## Standout test — one great wind player among many "
+        "(the Verstappen case)\n")
+
+    def slope_z(games):
+        n = len(games)
+        mx = sum(x for x, _ in games) / n
+        my = sum(y for _, y in games) / n
+        sxx = sum((x - mx) ** 2 for x, _ in games)
+        if sxx < 1e-9 or n < 20:
+            return None
+        b = sum((x - mx) * (y - my) for x, y in games) / sxx
+        ssr = sum((y - my - b * (x - mx)) ** 2 for x, y in games)
+        se = math.sqrt(ssr / (n - 2) / sxx)
+        return b / se if se > 0 else None
+
+    zs = {}
+    for pid, games in players.items():
+        z = slope_z(games)
+        if z is not None:
+            zs[pid] = z
+    obs_max = max(abs(z) for z in zs.values())
+    obs_n2 = sum(1 for z in zs.values() if abs(z) > 2)
+
+    null_max, null_n2 = [], []
+    for _ in range(200):
+        mx_, n2_ = 0.0, 0
+        for pid, games in players.items():
+            winds = [x for x, _ in games]
+            rng.shuffle(winds)
+            z = slope_z([(w, y) for w, (_, y) in zip(winds, games)])
+            if z is None:
+                continue
+            mx_ = max(mx_, abs(z))
+            n2_ += abs(z) > 2
+        null_max.append(mx_)
+        null_n2.append(n2_)
+    p_max = sum(m >= obs_max for m in null_max) / len(null_max)
+    null_n2.sort()
+    say(f"max |z| across {len(zs)} players: observed {obs_max:.2f}, "
+        f"permutation p = {p_max:.2f}")
+    say(f"players with |z| > 2: observed {obs_n2}, null median "
+        f"{null_n2[len(null_n2)//2]}, null 95% range "
+        f"[{null_n2[int(0.025*len(null_n2))]}, "
+        f"{null_n2[int(0.975*len(null_n2))]}]\n")
+
+    # pre-specified player: Anna Bright (named in the asking, 2026-07-28)
+    target = next((pid for pid, nm in names.items()
+                   if nm == "Anna Bright"), None)
+    if target and target in players:
+        g = players[target]
+        b = ols_slope(g)
+        perm = []
+        for _ in range(2000):
+            winds = [x for x, _ in g]
+            rng.shuffle(winds)
+            s = ols_slope([(w, y) for w, (_, y) in zip(winds, g)])
+            if s is not None:
+                perm.append(s)
+        perm.sort()
+        rank = sum(1 for s in perm if s >= b) / len(perm)
+        say(f"Pre-specified player — Anna Bright ({len(g)} outdoor games): "
+            f"wind slope {b*10:+.4f} share per +10 mph, one-sided "
+            f"permutation p = {rank:.2f} "
+            f"(null 95% band [{perm[int(0.025*len(perm))]*10:+.4f}, "
+            f"{perm[int(0.975*len(perm))]*10:+.4f}])\n")
+
     say("\n---\n*Residual = actual point share − v2-expected, so the mean "
         "wind-compression effect is shared; the test targets player-"
         "specific deviations. Current-form v2 values applied "

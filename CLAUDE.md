@@ -354,7 +354,11 @@ WIND SKILL (orthogonal F1-rain dimension, `model/wind_skill.py`):
 split-half reliability of per-player wind slopes r = +0.06 vs
 permutation null [−0.07,+0.12] over 552 players / 24.8k outdoor
 games — NOT ESTABLISHED (clutch/durability cleared 0.13–0.15 on the
-same design; wind skill doesn't). Leaderboard is noise, never publish
+same design; wind skill doesn't). Standout (Verstappen) tests too:
+max|z| 3.27 across 552 players, permutation p=0.58; |z|>2 count 29 vs
+null median 27 [19,36]; pre-specified Anna Bright slope −0.014/10mph,
+p=0.84 (per-player resolution ~±3pp share per 10 mph — only large
+individual effects detectable). Leaderboard is noise, never publish
 names off it. FAVORITES×WIND KILLED (2026-07-28, `model/favorites_wind.py`,
 data-referenced nulls only): continuous interaction share~skill+wind+
 skill×wind gives d = +0.002 [−0.060,+0.064] OUTDOOR (24.8k games — no

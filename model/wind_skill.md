@@ -17,5 +17,13 @@ Reliability verdict: NOT ESTABLISHED — the list below is mostly noise, do not 
 | Kwan Wun Man +0.159 | 45 | Bryanna Ojeda -0.208 | 57 |
 | Alex Emery +0.157 | 43 | Connie Lee -0.191 | 44 |
 
+## Standout test — one great wind player among many (the Verstappen case)
+
+max |z| across 552 players: observed 3.27, permutation p = 0.58
+players with |z| > 2: observed 29, null median 27, null 95% range [19, 36]
+
+Pre-specified player — Anna Bright (730 outdoor games): wind slope -0.0142 share per +10 mph, one-sided permutation p = 0.84 (null 95% band [-0.0279, +0.0299])
+
+
 ---
 *Residual = actual point share − v2-expected, so the mean wind-compression effect is shared; the test targets player-specific deviations. Current-form v2 values applied retroactively; outdoor labels heuristic; power limited — this detects a moderate dimension, not a whisper.*
