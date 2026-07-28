@@ -355,7 +355,17 @@ split-half reliability of per-player wind slopes r = +0.06 vs
 permutation null [−0.07,+0.12] over 552 players / 24.8k outdoor
 games — NOT ESTABLISHED (clutch/durability cleared 0.13–0.15 on the
 same design; wind skill doesn't). Leaderboard is noise, never publish
-names off it — and
+names off it. FAVORITES×WIND KILLED (2026-07-28, `model/favorites_wind.py`,
+data-referenced nulls only): continuous interaction share~skill+wind+
+skill×wind gives d = +0.002 [−0.060,+0.064] OUTDOOR (24.8k games — no
+compression at all; b≈1.04 so v2 shares are near-perfectly calibrated)
+while INDOOR shows d = −0.080 [−0.150,+0.020]; rally-level fav−dog
+serve-rate gap slope is negative in BOTH arms and MORE indoor (−0.031
+sig) than outdoor (−0.022) — the falsification arm fails, so the old
+binned "favorites −6pp at 14–20 mph" was composition/label noise, NOT
+wind. Weather verdict, complete: no serve-rate effect, no end effect,
+no momentum, no wind skill, no favorite compression. Wind does nothing
+detectable to pro pickleball outcomes in this archive — and
 1.81–1.90 vs 1.84–1.88 (Design A2 = game1-vs-game2 shares, all 14k
 matches, no ratings needed). ⇒ (a) WITHIN/BETWEEN-GAME MOMENTUM IS
 ~ZERO — serve-streak clustering explains the entire swing
