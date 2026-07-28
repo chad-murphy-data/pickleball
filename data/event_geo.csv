@@ -1,0 +1,111 @@
+event_id,event_name,tour,first_date,last_date,venue,city,state,lat,lon,timezone,setting,setting_source
+ef4961bd-7c82-4c60-8181-ec81e778ce68,PPA Tour: Palm Springs CA,PPA,2024-01-09,2024-01-14,Mission Hills Country Club,Rancho Mirage,CA,33.79785,-116.432945,America/Los_Angeles,outdoor,heuristic
+3692157a-7dbf-45c1-a449-0a19923fb90b,PPA Tour: Phoenix AZ,PPA,2024-01-31,2024-02-04,JW Mariott Phoenix Desert Ridge Resort & Spa,Phoenix,AZ,33.683537,-111.96634,America/Phoenix,outdoor,heuristic
+08e9832a-d061-4e90-aaac-453eda53a50d,PPA Tour: Mesa AZ,PPA,2024-02-20,2024-02-25,Bell Bank Park,Mesa,AZ,33.30073,-111.63486,America/Phoenix,outdoor,heuristic
+cfc270b2-59e0-4b68-ae6f-9504e63c89e7,PPA Tour: Lakeville MN,PPA,2024-03-06,2024-03-10,Lifetime Lakeville,Lakeville,MN,44.683655,-93.25101,America/Chicago,indoor,heuristic
+f3082b63-bea9-47c6-8554-6e7fa6fb72d5,PPA Tour: Austin TX,PPA,2024-03-13,2024-03-18,Hills of Lakeway - Elevation Athletic Club,Lakeway,TX,30.352554,-97.99778,America/Chicago,indoor,heuristic
+e127a7a0-2fa6-4c82-9054-e4cc4343932f,PPA Tour: North Carolina Cup,PPA,2024-04-01,2024-04-07,Cary Tennis Park,Cary,NC,35.803585,-78.862434,America/New_York,outdoor,heuristic
+3b283897-4f46-415a-abea-2737d26a9c21,PPA Tour: Veolia Houston Open,PPA,2024-04-10,2024-04-14,Lifetime Kingwood,Atascocita,TX,30.01339,-95.15889,America/Chicago,indoor,heuristic
+00c4a0ca-c3f9-468b-b97a-bb022335ccf4,PPA Tour: Veolia LA Open,PPA,2024-04-17,2024-04-21,Los Cab,Fountain Valley,CA,33.71368,-117.92495,America/Los_Angeles,outdoor,heuristic
+d9e98d4d-2dad-4915-95fa-d8f301c49c8b,PPA Tour: Selkirk Red Rock Open,PPA,2024-04-24,2024-04-28,Little Valley Sports Complex,St George,UT,37.05402,-113.5397,America/Denver,outdoor,heuristic
+a30bcb3a-ee0f-4164-bc85-35fbdfe510c0,PPA Tour: Vizzy Atlanta Slam,PPA,2024-05-13,2024-05-19,Lifetime Peachtree Corners,Peachtree Corners,GA,33.964527,-84.24583,America/New_York,indoor,heuristic
+f6a44544-a7db-40ef-bf14-2718b612bfc2,PPA Tour: CIBC Texas Open,PPA,2024-05-29,2024-06-02,Oasis Tennis Club,Rockwall,TX,32.870514,-96.412346,America/Chicago,outdoor,heuristic
+de8a09d6-6688-44d8-b764-8bfec574ecf9,PPA Tour: Veolia Sacramento Open,PPA,2024-06-05,2024-06-09,Life Time Roseville,Roseville,CA,38.761894,-121.24475,America/Los_Angeles,indoor,heuristic
+5f38269d-d0c2-4e53-83ba-46ca5aa9872f,PPA Tour: Select Medical Orange County Cup,PPA,2024-06-24,2024-06-30,Life Time Rancho San Clemente,San Clemente,CA,33.442535,-117.60655,America/Los_Angeles,indoor,heuristic
+14798b52-0c02-4eb7-99c1-5e7103d67a1f,PPA Tour: Selkirk Kansas City Open,PPA,2024-08-07,2024-08-11,Kansas City Elite Tennis and Wellness,Overland Park,KS,38.866615,-94.664955,America/Chicago,outdoor,heuristic
+044c0e1e-d894-49be-9f5e-4b40ccd49781,PPA Tour: Bristol Open,PPA,2024-08-14,2024-08-18,Bristol Sportsplex,Bristol,TN,36.55742,-82.20883,America/New_York,outdoor,heuristic
+970d08db-a426-424e-8d45-b7a9ee13b08b,PPA Tour: Picklr Utah Open,PPA,2024-08-21,2024-08-25,Salt Palace Convention Center,Salt Lake City,UT,40.767475,-111.89598,America/Denver,indoor,heuristic
+dd85421f-87b4-483b-ae78-646424be9fbe,PPA Tour: Las Vegas Pickleball Cup,PPA,2024-08-26,2024-09-01,Fontainebleau Las Vegas,Las Vegas,NV,36.137535,-115.16004,America/Los_Angeles,outdoor,heuristic
+2edb8f20-82c0-4edf-ba16-7f67bcaf92fb,PPA Tour: Gold Coast Open,PPA,2024-08-30,2024-09-01,RACV Royal Pines,Benowa,Qld,-28.003475,153.37466,Australia/Brisbane,outdoor,heuristic
+1c186bb9-a8fd-40e9-988b-118e2f10b62c,PPA Tour: CIBC Atlanta Slam,PPA,2024-09-09,2024-09-15,Life Time Peachtree Corners,Peachtree Corners,GA,33.964527,-84.24583,America/New_York,indoor,heuristic
+e36b4125-8164-4cf8-a6bf-09bd0019619b,PPA Tour: Stratusphere Gin Virginia Beach Cup,PPA,2024-09-30,2024-10-06,Pickleball Virginia Beach,Virginia Beach,VA,36.814453,-75.98924,America/New_York,outdoor,heuristic
+068f6d56-97d9-42c9-87f5-54c2e7d3040f,PPA Tour: Guaranteed Rate Las Vegas Open,PPA,2024-10-09,2024-10-13,Darling Tennis Center,Las Vegas,NV,36.179985,-115.27581,America/Los_Angeles,outdoor,heuristic
+4b073aa7-e67f-43f4-9fcb-cab0fff733fe,2024 Lapiplasty Pickleball World Championships,PPA,2024-11-04,2024-11-10,Brookhaven Country Club,Farmers Branch,TX,32.932484,-96.86345,America/Chicago,outdoor,heuristic
+7cf26ebf-54ec-4342-8293-a9c0025af28e,PPA Tour: Veolia Milwaukee Open,PPA,2024-11-13,2024-11-17,Baird Center,Milwaukee,WI,43.039757,-87.91725,America/Chicago,outdoor,heuristic
+2e5f903e-93e3-4463-a85c-c08ef65b62dd,PPA Tour: CIBC The Finals,PPA,2024-12-04,2024-12-08,Life Time Rancho San Clemente,San Clemente,CA,33.442535,-117.60655,America/Los_Angeles,indoor,heuristic
+796cbe85-b541-4ab1-870e-0c4498087745,PPA Tour: Daytona Beach Open Presented by Roar,PPA,2024-12-18,2024-12-22,Pictona at Holly Hill,Holly Hill,FL,29.244253,-81.04108,America/New_York,outdoor,heuristic
+2a35d3a1-bb1a-474b-9986-897a09de73b1,PPA Tour: Masters,PPA,2025-01-06,2025-01-12,Mission Hills Country Club,Rancho Mirage,CA,33.797916,-116.433,America/Los_Angeles,outdoor,heuristic
+a26c60b0-a00a-49cd-b93e-9fa2ac32f433,PPA Tour: Australia Pickleball Open,PPA,2025-01-30,2025-02-02,Melbourne Convention and Exhibition Centre,Melbourne,Vic,-37.824394,144.95232,Australia/Melbourne,indoor,heuristic
+6e284f6f-ef45-43cf-a09a-eff88f9ce391,PPA Tour: Proton Tucson Open,PPA,2025-02-05,2025-02-09,Tucson Raquet and Fitness Club,Tucson,AZ,32.280445,-110.92802,America/Phoenix,outdoor,heuristic
+c19054b4-056e-474a-993c-46091b3f397e,PPA Tour: Carvana Mesa Cup,PPA,2025-02-17,2025-02-23,Arizona Athletic Grounds,Mesa,AZ,33.300144,-111.629944,America/Phoenix,outdoor,heuristic
+923b6d24-15ac-4ed0-860b-f83b52863e3e,PPA Tour: Veolia Cape Coral Open,PPA,2025-03-05,2025-03-09,Lake Kennedy Racquet Center,Cape Coral,FL,26.642012,-81.97844,America/New_York,indoor,heuristic
+3e4dfb79-372b-4e49-805e-aff3ebdb469f,PPA Tour: CIBC Texas Open - 2025,PPA,2025-03-12,2025-03-16,Courts of McKinney,McKinney,TX,33.168022,-96.71114,America/Chicago,outdoor,heuristic
+bd8ef132-a848-4ff8-ba4f-cb06b0f203d3,PPA Tour: Black Desert Resort Red Rock Open,PPA,2025-03-25,2025-03-30,Little Valley Sports Complex,St George,UT,37.05402,-113.5397,America/Denver,outdoor,heuristic
+9da4f63a-4225-4ca2-8646-f5766e1be56d,Columbia PPA Challenger,PPA,2025-03-29,2025-03-30,Cayce Pickleball Complex,Cayce,SC,33.967857,-81.071144,America/New_York,outdoor,heuristic
+4575ae49-0a16-4906-b8cd-def7795b034b,PPA Tour: Veolia North Carolina Open,PPA,2025-04-01,2025-04-06,Cary Tennis Park,Cary,NC,35.803604,-78.86242,America/New_York,outdoor,heuristic
+cd075e2c-056f-472e-97b8-d0990abeab98,Baton Rouge PPA Challenger,PPA,2025-04-05,2025-04-06,Stacks Pickleball,Baton Rouge,LA,30.42081,-91.07696,America/Chicago,outdoor,heuristic
+c1ef0b15-24d9-4c8a-b44b-4de6c13669ff,MLP Orlando,MLP,2025-04-24,2025-04-27,USTA,Orlando,FL,28.400402,-81.279144,America/New_York,indoor,heuristic
+481b5c99-cdbb-4094-99c1-93674721d8f8,PPA Tour NZ: Pickleball Cup,PPA,2025-04-24,2025-04-27,TotalCoach Tennis Centre,"St Johns, Auckland",,-36.880253,174.84294,Pacific/Auckland,outdoor,heuristic
+0b33f8c1-88ec-49f2-b813-0288236be891,MLP Columbus,MLP,2025-05-01,2025-05-04,Pickle & Chill,Columbus,OH,40.053806,-83.04389,America/Chicago,indoor,heuristic
+c99d3632-36f8-4b0d-a8a7-2292f9529ea6,New England PPA Challenger,PPA,2025-05-10,2025-05-11,The Picklr,Westbrook,ME,43.679527,-70.33098,America/New_York,indoor,heuristic
+9c61faee-196b-4c55-9ba0-e99b641f93bf,PPA Tour: Veolia Atlanta Pickleball Championships,PPA,2025-05-12,2025-05-18,Life Time Peachtree Corners,Peachtree Corners,GA,33.964527,-84.24583,America/New_York,indoor,heuristic
+b3850e7f-2ac3-4e98-8d3b-1b644017fd3c,MLP Austin,MLP,2025-05-23,2025-05-26,Austin Pickle Ranch,Austin,TX,30.373592,-97.68207,America/Chicago,indoor,heuristic
+c437ce67-98a9-4719-9da8-0b7293e40c2d,Punta Gorda PPA Challenger,PPA,2025-05-24,2025-05-25,PicklePlex,Punta Gorda,FL,26.923082,-82.01958,America/New_York,outdoor,heuristic
+ecad7b63-e483-4f51-b01f-98012225c8e3,MLP Phoenix,MLP,2025-05-29,2025-06-01,Arizona Athletic Grounds,Mesa,AZ,33.300415,-111.62962,US/Arizona,indoor,heuristic
+e1842e7a-e840-47dd-8cfb-831e39766f8b,Boise PPA Challenger,PPA,2025-05-31,2025-06-01,The Flying Pickle,Meridian,ID,43.615208,-116.36354,America/Boise,outdoor,heuristic
+14f018ab-7212-40cd-b419-491cadd30e41,MLP Daytona,MLP,2025-06-05,2025-06-08,Pictona at Holly Hill,Holly Hill,FL,29.244253,-81.04108,America/New_York,indoor,heuristic
+6721a195-d4c9-480e-b5d5-957a7a4870b2,PPA Tour: Select Medical Orange County Cup - 2025,PPA,2025-06-16,2025-06-22,Life Time Rancho San Clemente,San Clemente,CA,33.442356,-117.6069,America/Los_Angeles,indoor,heuristic
+88884999-e514-4a94-be67-02c48f317faa,Edward Jones MLP San Clemente,MLP,2025-06-26,2025-06-30,Lifetime San Clemente,San Clemente,CA,33.442127,-117.60718,America/Los_Angeles,indoor,heuristic
+3ab7541a-a4fd-4a13-89ab-79ea210770b4,PPA Flower City Challenger presented by Valenti Pickleball,PPA,2025-06-28,2025-06-29,Fairport Pickleball Club,Fairport,NY,43.1042,-77.442856,America/New_York,outdoor,heuristic
+dae871eb-7754-4e83-8eef-53b533385f53,MLP New York,MLP,2025-07-03,2025-07-06,Sportime Randall's Island,New York,NY,40.793056,-73.91954,America/New_York,indoor,heuristic
+bc0ebed9-2641-4a5a-bbee-5d33d0ea4bc6,"PPA Tour Asia, Panas Malaysia Open 2025",PPA,2025-07-03,2025-07-06,9Pickle,Shah Alam,SGR,3.1084075,101.460495,Asia/Kuala_Lumpur,outdoor,heuristic
+dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,MLP,2025-07-09,2025-07-13,Belknap Park,Grand Rapids,MI,42.980984,-85.66573,America/New_York,outdoor,heuristic
+fa23709a-f0d8-40ee-a019-0f57c1161dd4,Marathon MLP St. Louis,MLP,2025-07-17,2025-07-20,Chaifetz Arena,St. Louis,MO,38.632515,-90.227875,America/Chicago,indoor,heuristic
+780f5d04-429f-4c9b-a3a8-5d15e4cb16b9,Advil Targeted Relief MLP Dallas,MLP,2025-07-24,2025-07-27,Pickler Universe Carrollton,Carrollton,TX,32.988373,-96.93797,America/Chicago,indoor,heuristic
+9ff8e64b-de07-4c19-b517-c1155a2077cb,Wisconsin PPA Challenger,PPA,2025-07-26,2025-08-22,Lake Hallie Pickleball at Gower Park,Lake Hallie,WI,44.868355,-91.43413,America/Chicago,outdoor,heuristic
+65e490e1-7f92-456b-a0d5-e475d66b6239,MLP Salt Lake City,MLP,2025-07-31,2025-08-04,Picklr Kaysville,Kaysville,UT,41.026096,-111.94851,America/Indiana/Knox,indoor,heuristic
+82b1a95d-a818-4412-b84b-db1c52f3143c,PPA Tour: Bristol Open - 2025,PPA,2025-08-05,2025-08-10,Bristol Sportsplex,Bristol,TN,36.55742,-82.20883,America/New_York,outdoor,heuristic
+141fe139-b4d2-4846-ac9f-a36b5dd6db41,Toray MLP Playoffs - San Diego,MLP,2025-08-15,2025-08-17,Barnes Tennis Center,San Diego,CA,32.75397,-117.23491,America/Los_Angeles,outdoor,heuristic
+3b11da04-26cc-4cc3-817f-1509fd6aec41,"PPA Tour Asia, Hong Kong Open 2025",PPA,2025-08-21,2025-08-24,Kai Tak Arena,Hong Kong,HKG,22.324303,114.19412,Asia/Hong_Kong,indoor,heuristic
+5d9d8bbd-845b-4607-94bd-c48748c61946,"DoorDash MLP Finals NYC, powered by Toray",MLP,2025-08-22,2025-08-24,City Pickle at Wollman Rink,New York,NY,40.76764,-73.9713,America/New_York,indoor,heuristic
+296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,PPA,2025-08-23,2025-08-24,Allan Witt Park,Fairfield,CA,38.24715,-122.06075,America/Los_Angeles,outdoor,heuristic
+35e7ef8b-32a9-4963-9ecf-083303d98dcb,"PPA TOUR ASIA, Sansan FUKUOKA OPEN",PPA,2025-08-26,2025-08-31,Itoshimashi Sports Park,Itoshima-shi,,33.53964,130.22115,Asia/Tokyo,outdoor,heuristic
+a043cc4a-5889-4dd2-9888-9a0dbffed893,PPA Tour: Open at the Las Vegas Strip,PPA,2025-08-27,2025-09-01,Las Vegas Convention Center,Las Vegas,NV,36.13202,-115.152054,America/Los_Angeles,indoor,heuristic
+94cc819d-e1bf-4f99-9cc7-609d4efd0e25,"PPA Tour Asia, MB Vietnam Open 2025",PPA,2025-09-04,2025-09-07,"City Park, Global City",Ho Chi Minh City,SG,10.810019,106.78634,Asia/Ho_Chi_Minh,outdoor,heuristic
+34f5d03b-62ac-4529-aa27-ae850ce28128,Citrus Classic PPA Challenger,PPA,2025-09-06,2025-09-07,IHG Orange Lake Resort,Kissimmee,FL,28.354025,-81.62581,America/New_York,outdoor,heuristic
+1f96bd4a-2cab-4b70-8dce-96ab62f9d29b,PPA Tour: Veolia Cincinnati Showcase presented by Six Zero,PPA,2025-09-08,2025-09-14,Lindner Family Tennis Center,Mason,OH,39.35021,-84.27498,America/New_York,outdoor,heuristic
+03b56937-6be0-4115-a103-d95ed667af94,PPA TOUR ASIA PANAS MALAYSIA CUP 2025,PPA,2025-09-24,2025-09-28,9Pickle Setia Alam,Shah Alam,SGR,3.1084075,101.460495,Asia/Kuala_Lumpur,outdoor,heuristic
+64bbc71e-f0e2-425a-97f5-4a45ac47ee3e,PPA Tour: Pickleball Central Sacramento Vintage Open,PPA,2025-09-26,2025-09-28,Life Time Arden,Sacramento,CA,38.588287,-121.35507,America/Los_Angeles,indoor,heuristic
+aeb21200-04b6-4900-95d0-4a1e2d9e2770,"PPA TOUR ASIA, MB VIETNAM CUP 2025",PPA,2025-09-30,2025-12-01,Tien Son Sport Centre,Danang City,DN,16.037737,108.223694,Asia/Ho_Chi_Minh,outdoor,heuristic
+f1dc4c6b-bf8a-4461-abe7-7cdb25746da6,Charleston Metro PPA Challenger,PPA,2025-10-04,2025-10-05,Collins Park,North Charleston,SC,32.86869,-80.046745,America/New_York,outdoor,heuristic
+2b3050b3-8f87-45b5-bf44-0f056c1bd305,PPA Tour: Fasenra Virginia Beach Cup presented by Joola,PPA,2025-10-06,2025-10-12,Pickleball Virginia Beach,Virginia Beach,VA,36.81113,-75.990654,America/New_York,outdoor,heuristic
+df5e4382-7788-468c-8290-8044c8030c59,Rock City Rally PPA Challenger,PPA,2025-10-11,2025-10-12,Little Rock Athletic Club,Little Rock,AR,34.79405,-92.416504,America/Chicago,indoor,heuristic
+3d0b0b9c-82d2-4103-b0f9-8795aed25297,PPA Tour: Rate Vegas Cup,PPA,2025-10-20,2025-10-26,Darling Tennis Center,Las Vegas,NV,36.179985,-115.27581,America/Los_Angeles,outdoor,heuristic
+280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,MLP,2025-10-31,2025-11-02,Brookhaven Country Club,Farmers Branch,TX,32.935715,-96.863556,America/Indiana/Knox,outdoor,heuristic
+f02fa839-68e0-46d5-8b93-dc266f201a4e,2025 Pickleball World Championships,PPA,2025-11-03,2025-11-09,Brookhaven Country Club,Farmers Branch,TX,32.9328,-96.86326,America/Chicago,outdoor,heuristic
+1c44e440-c1a5-486e-9b26-3d42740f4d31,PPA Tour: Veolia Lakeland Open,PPA,2025-11-18,2025-11-23,Beerman Family Tennis Center,Lakeland,FL,28.012947,-81.94529,America/New_York,outdoor,heuristic
+309bc6d6-945f-4e60-a79e-69f68070d332,PPA Tour Asia Hangzhou Open 2025,PPA,2025-12-03,2025-12-06,Lin Ping Sports Center,Hangzhou,,30.27415,120.15515,Asia/Shanghai,outdoor,heuristic
+3c40bcc6-3b7f-4fe9-b477-86afcdb47477,Raleigh PPA Challenger,PPA,2025-12-13,2025-12-14,PinPoint Pickleball,Raleigh,NC,35.75253,-78.64005,America/New_York,outdoor,heuristic
+1259f4ea-2fc6-40d2-b172-c89bd3e5caae,PPA Tour: Daytona Beach Open,PPA,2025-12-16,2025-12-21,Pictona at Holly Hill,Holly Hill,FL,29.244253,-81.04108,America/New_York,outdoor,heuristic
+55041931-39e8-4537-84b0-502546dcfaa6,2026 Punta Gorda PPA Challenger,PPA,2026-01-10,2026-01-11,PicklePlex,Punta Gorda,FL,26.92344,-82.018234,America/New_York,outdoor,heuristic
+8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,PPA,2026-01-12,2026-01-18,Mission Hills Country Club,Rancho Mirage,CA,33.797916,-116.433,America/Los_Angeles,outdoor,heuristic
+a87739fb-9ea8-4572-9944-ec10f355b9c0,PPA Tour: Indoor National Championships,PPA,2026-01-19,2026-01-25,Lifetime Lakeville,Lakeville,MN,44.68371,-93.25113,America/Chicago,indoor,heuristic
+71ccc90b-c6e9-45e9-918a-deac067d89f8,2026 Tucson PPA Challenger,PPA,2026-01-24,2026-01-25,Kino Sports Complex (South Complex),Tucson,AZ,32.169113,-110.93586,America/Phoenix,outdoor,heuristic
+4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,PPA,2026-02-09,2026-02-15,"The Courts, Cape Coral",Cape Coral,FL,26.641975,-81.97966,America/New_York,outdoor,heuristic
+fc07fe03-0caa-4cb1-a71f-845438129aa5,PPA Tour: 2026 Carvana Mesa Cup,PPA,2026-02-16,2026-02-22,Arizona Athletic Grounds,Mesa,AZ,33.300144,-111.629944,America/Phoenix,outdoor,heuristic
+46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,PPA,2026-02-21,2026-02-22,Life Time Kingwood Pickleball,Atascocita,TX,30.01339,-95.15889,America/Chicago,indoor,heuristic
+48b7ff7c-01d8-437c-ba94-b37f2f6e02db,PPA Tour: 2026 Newport Beach Open,PPA,2026-03-02,2026-03-08,The Tennis and Pickleball Club at Newport Beach,Newport Beach,CA,33.610603,-117.8798,America/Los_Angeles,outdoor,heuristic
+344b993b-5b4d-48d8-81e8-13f033455e1a,2026 AdventHealth Tampa Bay Challenger,PPA,2026-03-07,2026-03-08,Harbour Island Life Time Pickleball,Tampa,FL,27.936441,-82.45213,America/New_York,indoor,heuristic
+a007e41a-7907-4a6f-8d37-9a153aed01ec,PPA Tour: Veolia Texas Open,PPA,2026-03-09,2026-03-15,The Courts McKinney Pickleball & Tennis Center,McKinney,TX,33.168022,-96.71114,America/Chicago,outdoor,heuristic
+e107a760-8d9c-4642-bae4-aff460bbf35a,PPA Tour: Greater Zion Cup at Black Desert Resort,PPA,2026-03-23,2026-03-29,Black Desert Resort,Santa Clara,UT,37.161423,-113.64704,America/Denver,outdoor,heuristic
+6c4c9f6c-1b51-4dc4-80aa-0024a635bd95,2026 Newport Beach PPA Challenger,PPA,2026-04-04,2026-04-06,The Tennis and Pickleball Club at Newport Beach,Newport Beach,CA,33.610603,-117.8798,America/Los_Angeles,outdoor,heuristic
+239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,PPA,2026-04-13,2026-04-19,Life Time Arden,Sacramento,CA,38.588287,-121.35507,America/Los_Angeles,indoor,heuristic
+7725ae53-97c5-447e-8197-48c0a3661033,2026 Opelika PPA Challenger,PPA,2026-04-18,2026-04-19,Opelika Sportsplex,Opelika,AL,32.67356,-85.34961,America/Chicago,outdoor,heuristic
+92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,PPA,2026-04-27,2026-05-03,Life Time Peach Tree Corners,Peachtree Corners/Norcross,GA,33.96454,-84.24583,America/New_York,indoor,heuristic
+ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,PPA,2026-05-02,2026-05-03,Black Desert Resort Pickleball Courts - Follow the road signs from S Black Desert Blvd,Santa Clara,UT,37.149807,-113.65516,America/Denver,outdoor,heuristic
+d7806c39-89b0-4692-970c-b73a835fa60a,PPA Tour: 2026 PPA Finals,PPA,2026-05-04,2026-05-10,Life Time Rancho San Clemente,San Clemente,CA,33.442127,-117.60718,America/Los_Angeles,indoor,heuristic
+940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,MLP Dallas,MLP,2026-05-22,2026-05-25,Pickler Universe Carrollton,Carrollton,TX,32.988373,-96.93797,America/Chicago,indoor,heuristic
+ffaf2bcd-1836-4961-a7c6-75269e7b4dd3,2026 Wilson PPA Challenger,PPA,2026-05-23,2026-05-24,Wilson Pickleball Facility,Wilson,NC,35.75228,-77.90103,America/New_York,outdoor,heuristic
+5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,MLP,2026-05-28,2026-05-31,Pickle & Chill,Columbus,OH,40.053806,-83.04389,America/Chicago,indoor,heuristic
+2a17a5d5-80bd-4540-8f04-499f9439cac2,2026 Fracas in Fort Collins PPA Challenger,PPA,2026-05-30,2026-05-31,Zero Zero Two,Fort Collins,CO,40.526745,-105.04437,America/Denver,outdoor,heuristic
+24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,MLP,2026-06-04,2026-06-07,Chaifetz Arena,St. Louis,MO,38.632515,-90.227875,America/Chicago,indoor,heuristic
+9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,MLP,2026-06-11,2026-06-14,Austin Pickle Ranch,Austin,TX,30.373592,-97.68207,America/Chicago,indoor,heuristic
+78499ed8-87d2-4879-986c-062c372c5234,2026 Boise PPA Challenger,PPA,2026-06-13,2026-06-14,The Flying Pickle,Meridian,ID,43.615208,-116.36354,America/Boise,outdoor,heuristic
+fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,MLP,2026-06-17,2026-06-21,St. Pete Athletic,St. Petersburg,FL,27.763008,-82.671165,America/New_York,indoor,heuristic
+39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,MLP,2026-06-25,2026-06-28,Sportime Randall's Island,New York,NY,40.793056,-73.91954,America/New_York,indoor,heuristic
+2dd8c673-2aa6-43b2-95bd-b4aa4e278e52,2026 Portland PPA Challenger,PPA,2026-06-27,2026-06-28,The Picklr Westbrook,Westbrook,ME,43.679386,-70.33108,America/New_York,indoor,heuristic
+7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,MLP,2026-07-08,2026-07-12,Belknap Park,Grand Rapids,MI,42.980984,-85.66573,America/New_York,outdoor,heuristic
+8d989cbc-a16a-458d-83b5-1ce0490145fd,MLP San Diego,MLP,2026-07-16,2026-07-19,Barnes Tennis Center,San Diego,CA,32.75397,-117.23491,America/Los_Angeles,outdoor,heuristic
+c33129da-d0ec-4dc5-ada4-61d1d7412764,2026 Macon PPA Challenger,PPA,2026-07-18,2026-07-19,Rhythm & Rally Sports & Events,Macon,GA,32.818085,-83.69387,America/New_York,outdoor,heuristic
+1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,MLP,2026-07-23,2026-07-26,Life Time North Shore Sport and Racquet,Northbrook,IL,42.118427,-87.81324,America/Chicago,indoor,heuristic
+9a2ca136-b5c6-4bbf-ac8c-dbddd0abcef8,PPA Italy P125 Portoroz,PPA,2026-07-25,2026-07-26,Portoroz Sport Center,Portorož,PI,45.508114,13.59671,Europe/Ljubljana,outdoor,heuristic

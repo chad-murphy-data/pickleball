@@ -305,6 +305,22 @@ ported verbatim).
 
 ## Open threads (specced, unbuilt)
 
+Weather (2026-07-28, first pass): `scraper/weather.py` resolves every
+event's venue lat/lon/tz from the BFF (PPA: getTournamentsOnDate by
+TournamentID; MLP: getTeamLeaguesResultsOnDate location object) and pulls
+the Open-Meteo archive → data/event_geo.csv + event_weather{,_hourly}.csv;
+`model/weather_report.py` runs the day-level cuts (outdoor vs indoor
+placebo). Findings so far: NO wind effect on serve-point rate outdoors
+(+0.002 per +10 mph, CI spans 0; indoor placebo equally null); favorites'
+obs−pred edge drifts a bit more negative in wind and in 92°F+ heat
+outdoors, but tail bins are thin and the indoor placebo fails at 20+ mph —
+treat as null pending the HOUR-level join. The hourly CSV is already on
+disk; the missing piece is per-match start times (`localDateMatch*` in
+raw/ match infos — extract where raw/ exists, e.g. Actions cache or
+droplet). Court-END effects (sun/wind side) are unobservable in referee
+logs — server_side is the team, not the physical end. Indoor/outdoor =
+tour default + venue keywords; curate data/venue_overrides.csv
+(event_id,setting) as broadcasts confirm.
 Website extras: live win-prob charts (needs Tier 1/2 listener on a VPS);
 social prediction-card renders (design bundle `Prediction Cards.dc.html`,
 port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
