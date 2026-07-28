@@ -326,10 +326,15 @@ side) effects: physically unobservable in logs (server_side = team, not
 end) BUT inferred from the switch schedule in `model/end_effects.py` —
 Design A consecutive-game residual cov (ends swap between games),
 Design B decider pre/post point-share around the switch at 6
-(data/decider_splits.csv from pb_rally). Verdict: NO wind gradient in
-either design even at match-hour wind (Design B corr ≈ +0.33 flat
-across indoor/calm/windy; Design A windy is highest, not lowest) —
-typical end advantage bounded well under ~1 pt/game. HOUSE STANCE
+(data/decider_splits.csv from pb_rally). PRIMARY test = paired-swing
+VARIANCE vs noise (user call 2026-07-28: mean-of-swing is identically 0
+by end-assignment symmetry; the paired difference cancels skill exactly,
+so the signal is excess variance — correlation kept as secondary only).
+Verdict: Design A flat but low-powered (game noise ~38 pts²; can only
+see end-adv sd ≳1 pt/game). Design B excess is MONOTONE in match-hour
+wind (+42 indoor ≈ +42 calm < +49 mod < +55 windy ×10⁻³ share²; CIs
+overlap; windy−calm ⇒ end-adv sd ≈ 6pp of point share IF real) — the
+one live end-effect hint; needs more windy deciders or label curation. HOUSE STANCE
 (user, 2026-07-28): indoor is a CONTROL, never assumed end-effect-free
 — more controlled, not fully. Indoor/outdoor = tour default + venue
 keywords; curate data/venue_overrides.csv (event_id,setting) as
