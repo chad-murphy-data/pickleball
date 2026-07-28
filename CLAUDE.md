@@ -343,7 +343,13 @@ the DUMMY-CONTRAST regression (the weather test proper, no sim needed:
 Δ mean z² vs outdoor-calm reference, cluster-bootstrapped) gives
 indoor −0.06 [−0.18,+0.06], windy 14+ +0.22 [−0.16,+0.59], continuous
 slope +0.17 z² per +10 mph [−0.05,+0.36] — wind-positive direction,
-nothing significant; sim null is only for the momentum question — and
+nothing significant; sim null is only for the momentum question.
+Design C = RALLY level (serve-rally win rate per side per half,
+data/decider_serve_splits.csv; serve rallies ≈ iid Bernoulli so the
+mechanical null falls to ~1.15 and team B adds independent info): same
+verdict — indoor/calm/moderate AT their nulls, windy 14+ 1.34
+[1.10,1.66] vs null 1.20, Δ vs calm +0.19 [−0.07,+0.54], continuous
+slope ≈ 0 — the windy bump is tail-bin only, no dose-response — and
 1.81–1.90 vs 1.84–1.88 (Design A2 = game1-vs-game2 shares, all 14k
 matches, no ratings needed). ⇒ (a) WITHIN/BETWEEN-GAME MOMENTUM IS
 ~ZERO — serve-streak clustering explains the entire swing

@@ -112,17 +112,22 @@ def sim_game(kA: float, kB: float, rng: random.Random, T: int = 11):
     team = 0 if rng.random() < 0.5 else 1     # who serves first
     num = 2                                    # first-server exception
     pre, post = [0, 0], [0, 0]
+    # serve tallies: [half][team] = [serve rallies, serve wins]
+    serve = {"pre": [[0, 0], [0, 0]], "post": [[0, 0], [0, 0]]}
     while True:
-        period = pre if max(a, b) < 6 else post
+        half = "pre" if max(a, b) < 6 else "post"
+        period = pre if half == "pre" else post
         k = kA if team == 0 else kB
+        serve[half][team][0] += 1
         if rng.random() < k:
+            serve[half][team][1] += 1
             period[team] += 1
             if team == 0:
                 a += 1
             else:
                 b += 1
             if (a >= T or b >= T) and abs(a - b) >= 2:
-                return pre, post, a, b
+                return pre, post, a, b, serve
         elif num == 1:
             num = 2
         else:
@@ -316,8 +321,8 @@ def main():
         for d in recs:
             kA, kB = serve_probs(d["eta"])
             for _ in range(REPS_A):
-                _, _, a1, b1 = sim_game(kA, kB, rngs)
-                _, _, a2, b2 = sim_game(kA, kB, rngs)
+                _, _, a1, b1, _ = sim_game(kA, kB, rngs)
+                _, _, a2, b2, _ = sim_game(kA, kB, rngs)
                 _, _, z = zsq(a1, a1 + b1, a2, a2 + b2)
                 null_sum += z
                 null_n += 1
@@ -398,7 +403,7 @@ def main():
         for d in recs:
             kA, kB = serve_probs(d["eta"])
             for _ in range(REPS_B):
-                pre, post, _, _ = sim_game(kA, kB, rngs_b)
+                pre, post, _, _, _ = sim_game(kA, kB, rngs_b)
                 n1, n2 = sum(pre), sum(post)
                 if n1 < 5 or n2 < 5:
                     continue
@@ -473,6 +478,115 @@ def main():
         lo, hi = boot(clustered, corr)
         say(f"| {grp} | {c:+.3f} [{lo:+.3f}, {hi:+.3f}] |")
     say("")
+
+    # ---------------- Design C: RALLY-level serve-win rate swings --------
+    say("## Design C — rally level: SERVE-RALLY WIN RATE before vs after "
+        "the switch\n")
+    say("Each serve rally is close to an independent Bernoulli given the "
+        "serve state, so the mechanical side-out clustering that inflates "
+        "point-share swings mostly vanishes — the null sits near 1.00 on "
+        "its own, and each team's serve rate is separate information (two "
+        "observations per game, unlike point shares where B mirrors A). "
+        "This is also the most physical channel: wind hits the serve toss. "
+        "Same games as Design B; data/decider_serve_splits.csv "
+        "(pb_rally, rallies + wins per side per half).\n")
+    serve_rows = defaultdict(list)
+    for r in read_csv(ROOT / "data/decider_serve_splits.csv"):
+        m = matches.get(r["match_id"])
+        if not m:
+            continue
+        gn = int(r["game_number"])
+        if m["tour"] == "MLP":
+            if gn != 1:
+                continue
+        elif not (m["best_of"] == 3 and gn == 3) and \
+                not (m["best_of"] == 5 and gn == 5):
+            continue
+        grp = group_of(m)
+        if not grp:
+            continue
+        for side in ("a", "b"):
+            rp, wp = int(r[f"r{side}_pre"]), int(r[f"w{side}_pre"])
+            rq, wq = int(r[f"r{side}_post"]), int(r[f"w{side}_post"])
+            if rp < 5 or rq < 5:
+                continue
+            sq, noise, z2 = zsq(wp, rp, wq, rq)
+            if noise <= 0:
+                continue
+            serve_rows[grp].append((m["event"],
+                                    {"z2": z2, "wind": m["wind"],
+                                     "outdoor": m["setting"] == "outdoor",
+                                     "eta": m["eta"] or 0.0}))
+
+    say("| group | team-halves | mean z² [95% CI] | null z² (sim) |")
+    say("|---|---|---|---|")
+    rngs_c = random.Random(20260730)
+    REPS_C = 25
+    for grp in sorted(serve_rows):
+        data = serve_rows[grp]
+        recs = [d for _, d in data]
+        clustered = defaultdict(list)
+        for ev, d in data:
+            clustered[ev].append(d)
+        mz = lambda s: sum(d["z2"] for d in s) / len(s)
+        z2 = mz(recs)
+        lo, hi = boot(clustered, mz)
+        null_sum = null_n = 0.0
+        for d in recs:
+            kA, kB = serve_probs(d["eta"])
+            for _ in range(REPS_C):
+                _, _, _, _, sv = sim_game(kA, kB, rngs_c)
+                for t in (0, 1):
+                    rp, wp = sv["pre"][t]
+                    rq, wq = sv["post"][t]
+                    if rp < 5 or rq < 5:
+                        continue
+                    _, noise, z = zsq(wp, rp, wq, rq)
+                    if noise > 0:
+                        null_sum += z
+                        null_n += 1
+        say(f"| {grp} | {len(recs)} | {z2:.2f} [{lo:.2f}, {hi:.2f}] "
+            f"| {null_sum/null_n:.2f} |")
+
+    say("\n### The weather test at rally level — Δ mean z² vs OUTDOOR calm\n")
+    say("| contrast | Δ mean z² [95% CI] |")
+    say("|---|---|")
+    ref_c = next(g for g in serve_rows if "calm" in g)
+    for grp in sorted(serve_rows):
+        if grp == ref_c:
+            continue
+        merged = defaultdict(list)
+        for ev, d in serve_rows[ref_c]:
+            merged["R:" + ev].append(("ref", d))
+        for ev, d in serve_rows[grp]:
+            merged["T:" + ev].append(("trt", d))
+        def diffc(sample):
+            t = [d["z2"] for tag, d in sample if tag == "trt"]
+            r = [d["z2"] for tag, d in sample if tag == "ref"]
+            if not t or not r:
+                return float("nan")
+            return sum(t) / len(t) - sum(r) / len(r)
+        est = diffc([p for v_ in merged.values() for p in v_])
+        lo, hi = boot(merged, diffc)
+        say(f"| {grp} − calm | {est:+.3f} [{lo:+.3f}, {hi:+.3f}] |")
+
+    out_c = [(ev, d) for g in serve_rows for ev, d in serve_rows[g]
+             if d["outdoor"]]
+    def slope_c(sample):
+        pts = [(d["wind"], d["z2"]) for _, d in sample]
+        n = len(pts)
+        mx = sum(x for x, _ in pts) / n
+        my = sum(y for _, y in pts) / n
+        den = sum((x - mx) ** 2 for x, _ in pts)
+        return sum((x - mx) * (y - my) for x, y in pts) / den if den else 0.0
+    clusters_c = defaultdict(list)
+    for ev, d in out_c:
+        clusters_c[ev].append((ev, d))
+    s = slope_c(out_c)
+    lo, hi = boot(clusters_c, slope_c)
+    say(f"\nContinuous: slope of serve-rate z² on match-hour wind, outdoor "
+        f"only ({len(out_c)} team-halves): {s*10:+.3f} per +10 mph "
+        f"[{lo*10:+.3f}, {hi*10:+.3f}]\n")
 
     say("---\n*Caveats: indoor/outdoor labels heuristic; Design A assumes "
         "match-level form variance is similar across groups."

@@ -65,5 +65,26 @@ Secondary (older correlation view):
 | OUTDOOR moderate 8–14 | +0.342 [+0.272, +0.407] |
 | OUTDOOR windy 14+ | +0.368 [+0.227, +0.531] |
 
+## Design C — rally level: SERVE-RALLY WIN RATE before vs after the switch
+
+Each serve rally is close to an independent Bernoulli given the serve state, so the mechanical side-out clustering that inflates point-share swings mostly vanishes — the null sits near 1.00 on its own, and each team's serve rate is separate information (two observations per game, unlike point shares where B mirrors A). This is also the most physical channel: wind hits the serve toss. Same games as Design B; data/decider_serve_splits.csv (pb_rally, rallies + wins per side per half).
+
+| group | team-halves | mean z² [95% CI] | null z² (sim) |
+|---|---|---|---|
+| INDOOR (all wind — no exposure expected) | 3857 | 1.10 [1.06, 1.15] | 1.15 |
+| OUTDOOR calm <8 mph | 2659 | 1.15 [1.09, 1.22] | 1.16 |
+| OUTDOOR moderate 8–14 | 1065 | 1.09 [0.99, 1.20] | 1.16 |
+| OUTDOOR windy 14+ | 162 | 1.34 [1.10, 1.66] | 1.20 |
+
+### The weather test at rally level — Δ mean z² vs OUTDOOR calm
+
+| contrast | Δ mean z² [95% CI] |
+|---|---|
+| INDOOR (all wind — no exposure expected) − calm | -0.052 [-0.130, +0.023] |
+| OUTDOOR moderate 8–14 − calm | -0.067 [-0.188, +0.062] |
+| OUTDOOR windy 14+ − calm | +0.190 [-0.067, +0.544] |
+
+Continuous: slope of serve-rate z² on match-hour wind, outdoor only (3886 team-halves): +0.038 per +10 mph [-0.093, +0.166]
+
 ---
 *Caveats: indoor/outdoor labels heuristic; Design A assumes match-level form variance is similar across groups.*
