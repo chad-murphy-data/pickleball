@@ -59,15 +59,21 @@ def get_csv(path: str, params: str, tries: int = 5):
 
 
 def shard_pages(table, cols, extra, shard, sink):
-    """Keyset-paginate one match_id hex shard, feeding rows to sink()."""
-    cursor = ""
+    """Keyset-paginate one match_id range, feeding rows to sink().
+
+    Ranges are gte/lt on match_id so the (match_id, game_number,
+    rally_number) primary key serves both the filter and the ordering —
+    a LIKE prefix filter makes the planner sort the whole table and the
+    statement times out.
+    """
+    lo, hi = shard
+    cursor = lo
     seen_last = None
     while True:
-        params = (f"select={cols}&{extra}&match_id=like.{shard}*"
+        params = (f"select={cols}&{extra}"
+                  f"&match_id=gte.{cursor}&match_id=lt.{hi}"
                   f"&order=match_id.asc,game_number.asc,rally_number.asc"
                   f"&limit={PAGE}")
-        if cursor:
-            params += f"&match_id=gte.{cursor}"
         rows = get_csv(table, params)
         if not rows:
             return
@@ -101,14 +107,13 @@ def main():
                 side_map.setdefault((r["match_id"], r["side"]), r["player_uuid"])
 
     def side_shard(sh):
-        cursor = ""
+        lo, hi = sh
+        cursor = lo
         seen = None
         while True:
             p = (f"select=match_id,player_uuid,side&discipline=eq.doubles"
-                 f"&match_id=like.{sh}*&order=match_id.asc,player_uuid.asc"
-                 f"&limit={PAGE}")
-            if cursor:
-                p += f"&match_id=gte.{cursor}"
+                 f"&match_id=gte.{cursor}&match_id=lt.{hi}"
+                 f"&order=match_id.asc,player_uuid.asc&limit={PAGE}")
             rows = get_csv("pb_match_player_serve", p)
             if not rows:
                 return
@@ -121,7 +126,9 @@ def main():
                 raise RuntimeError("stuck")
             seen, cursor = last, last
 
-    shards = "0123456789abcdef"
+    hexd = "0123456789abcdef"
+    bounds = [a + b for a in hexd for b in hexd] + ["g"]
+    shards = list(zip(bounds, bounds[1:]))
     run_parallel(side_shard, shards)
     print(f"  {len(side_map)} (match, side) rows", flush=True)
 
@@ -149,7 +156,10 @@ def main():
             else:
                 a[5] += 1
                 a[6] += won
-            ss, rs = int(r["server_score"]), int(r["receiver_score"])
+            try:                      # a few logs carry no running score
+                ss, rs = int(r["server_score"]), int(r["receiver_score"])
+            except ValueError:
+                continue
             b = min(max(ss, rs), 15)
             a[9 + b] += 1
             a[25 + b] += won

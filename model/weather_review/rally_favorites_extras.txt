@@ -1,0 +1,105 @@
+# B3 part 2 — dose-response, gusts, endgame contrast, MDE
+
+## A. non-parametric: skill->rally slope b within wind bins
+
+logit p = a + b*adv fitted inside each bin. Compression means b falls as wind rises; a threshold effect shows as a drop in the top bin only. Cluster bootstrap over events.
+
+### outdoor
+    0-4 mph: n_cells=3806 rallies=148750 events=58 (boot 300/300)
+         const = -0.3062  [-0.3281, -0.2898]
+           adv = +0.4941  [+0.4709, +0.5158]
+    4-8 mph: n_cells=8004 rallies=310956 events=66 (boot 300/300)
+         const = -0.2951  [-0.3074, -0.2852]
+           adv = +0.4917  [+0.4748, +0.5114]
+    8-12 mph: n_cells=3882 rallies=147253 events=57 (boot 300/300)
+         const = -0.2932  [-0.3075, -0.2785]
+           adv = +0.4889  [+0.4670, +0.5145]
+    12-16 mph: n_cells=1561 rallies=62206 events=31 (boot 300/300)
+         const = -0.2937  [-0.3280, -0.2667]
+           adv = +0.4739  [+0.4339, +0.5028]
+    16-40 mph: n_cells=300 rallies=13195 events=10 (boot 300/300)
+         const = -0.3207  [-0.3503, -0.2803]
+           adv = +0.4087  [+0.3382, +0.5193]
+
+### indoor
+    0-4 mph: n_cells=1442 rallies=49917 events=25 (boot 300/300)
+         const = -0.2958  [-0.3108, -0.2756]
+           adv = +0.5076  [+0.4577, +0.5383]
+    4-8 mph: n_cells=1639 rallies=54211 events=28 (boot 300/300)
+         const = -0.3007  [-0.3286, -0.2749]
+           adv = +0.5053  [+0.4733, +0.5396]
+    8-12 mph: n_cells=1440 rallies=49276 events=23 (boot 300/300)
+         const = -0.3058  [-0.3361, -0.2709]
+           adv = +0.5390  [+0.4915, +0.5943]
+    12-16 mph: n_cells=517 rallies=19118 events=14 (boot 300/300)
+         const = -0.3060  [-0.3449, -0.2612]
+           adv = +0.5764  [+0.4976, +0.6419]
+    16-40 mph: n_cells=330 rallies=14353 events=6 (boot 300/300)
+         const = -0.3605  [-0.3925, -0.3295]
+           adv = +0.4085  [+0.3547, +0.5978]
+
+## B. gusts instead of sustained wind (same spec)
+
+[outdoor] gust spec: n_cells=17553 rallies=682360 events=68 (boot 300/300)
+         const = -0.2993  [-0.3251, -0.2751]
+           adv = +0.4995  [+0.4689, +0.5295]
+             g = +0.0011  [-0.0132, +0.0152]
+          advg = -0.0065  [-0.0211, +0.0104]
+[indoor] gust spec: n_cells=5368 rallies=186875 events=28 (boot 300/300)
+         const = -0.2919  [-0.3158, -0.2705]
+           adv = +0.5329  [+0.4427, +0.5964]
+             g = -0.0073  [-0.0180, +0.0061]
+          advg = -0.0108  [-0.0418, +0.0443]
+
+## C. endgame contrast in a single model (to-11 games)
+
+logit p = a + b*adv + c*w + d*adv*w + e*late + f*late*w + g*late*adv + h*late*adv*w, late = leader score >= 9. h is the test: is the wind interaction bigger late in the game?
+
+[outdoor] late contrast: n_cells=31004 rallies=654851 events=68 (boot 300/300)
+         const = -0.2974  [-0.3177, -0.2814]
+           adv = +0.5077  [+0.4790, +0.5319]
+             w = +0.0058  [-0.0154, +0.0318]
+          advw = -0.0158  [-0.0479, +0.0224]
+          late = -0.0160  [-0.0522, +0.0121]
+         latew = +0.0120  [-0.0292, +0.0603]
+       lateadv = -0.0796  [-0.1314, -0.0266]
+      lateadvw = -0.0072  [-0.0642, +0.0433]
+[indoor] late contrast: n_cells=8936 rallies=173539 events=28 (boot 300/300)
+         const = -0.2883  [-0.3144, -0.2623]
+           adv = +0.5258  [+0.4736, +0.5726]
+             w = -0.0156  [-0.0339, +0.0092]
+          advw = -0.0142  [-0.0620, +0.0776]
+          late = +0.0076  [-0.0481, +0.0514]
+         latew = -0.0284  [-0.0650, +0.0325]
+       lateadv = -0.1004  [-0.2011, -0.0283]
+      lateadvw = +0.0177  [-0.0964, +0.1110]
+
+## D. what the outdoor interval still allows, in real units
+
+  15 mph point est: effective skill slope x 0.943
+      a 65% favorite (game to 11) -> 64.2% (-0.8 pp)
+      a 75% favorite (game to 11) -> 73.8% (-1.2 pp)
+      a 90% favorite (game to 11) -> 88.7% (-1.3 pp)
+  15 mph  CI floor: effective skill slope x 0.856
+      a 65% favorite (game to 11) -> 63.0% (-2.0 pp)
+      a 75% favorite (game to 11) -> 71.8% (-3.2 pp)
+      a 90% favorite (game to 11) -> 86.4% (-3.6 pp)
+  15 mph   CI ceil: effective skill slope x 1.040
+      a 65% favorite (game to 11) -> 65.6% (+0.6 pp)
+      a 75% favorite (game to 11) -> 75.9% (+0.9 pp)
+      a 90% favorite (game to 11) -> 90.8% (+0.8 pp)
+
+  20 mph point est: effective skill slope x 0.924
+      a 65% favorite (game to 11) -> 63.9% (-1.1 pp)
+      a 75% favorite (game to 11) -> 73.3% (-1.7 pp)
+      a 90% favorite (game to 11) -> 88.2% (-1.8 pp)
+  20 mph  CI floor: effective skill slope x 0.808
+      a 65% favorite (game to 11) -> 62.3% (-2.7 pp)
+      a 75% favorite (game to 11) -> 70.7% (-4.3 pp)
+      a 90% favorite (game to 11) -> 85.1% (-4.9 pp)
+  20 mph   CI ceil: effective skill slope x 1.053
+      a 65% favorite (game to 11) -> 65.8% (+0.8 pp)
+      a 75% favorite (game to 11) -> 76.1% (+1.1 pp)
+      a 90% favorite (game to 11) -> 91.1% (+1.1 pp)
+
+Ratings enter both b and d, so classical error in the v2 rating attenuates BOTH and largely cancels in the ratio d*w/b used above. Error in the WIND regressor does not cancel: it attenuates d toward zero, so the true compression could be larger than the interval by roughly 1/reliability of ERA5 grid wind as a proxy for on-court wind. If that reliability were as low as 0.6, the outdoor floor of -0.048 would correspond to a true -0.080.

@@ -23,12 +23,20 @@ import sys
 from pathlib import Path
 
 
+COLS = ["match_id", "game_number", "rally_number", "server_side",
+        "outcome", "won", "server_score", "receiver_score"]
+
+
 def games(rally_dir):
+    """Headerless per-prefix CSVs, globally ordered by match_id."""
     cur = None
     buf = []
-    for p in sorted(Path(rally_dir).glob("p*.csv")):
+    for p in sorted(Path(rally_dir).glob("*.csv")):
         with open(p) as f:
-            for row in csv.DictReader(f):
+            for rec in csv.reader(f):
+                if not rec or rec[0] == "match_id":
+                    continue
+                row = dict(zip(COLS, rec))
                 key = (row["match_id"], int(row["game_number"]))
                 if key != cur:
                     if cur is not None:
@@ -46,6 +54,10 @@ def summarise(rows):
     seq_ok = 1
     exp = [0, 0]
     for i, r in enumerate(rows):
+        if r["server_side"] == "" or r["server_score"] == "" or \
+                r["receiver_score"] == "":
+            seq_ok = 0            # NULL referee fields: game is not clean
+            continue
         side = int(r["server_side"])
         ss, rs = int(r["server_score"]), int(r["receiver_score"])
         obs = [0, 0]
