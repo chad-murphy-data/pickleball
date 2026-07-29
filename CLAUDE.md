@@ -34,6 +34,8 @@ python model/fit_singles.py                  # singles MAP ratings (pure python,
 python scraper/live_poller.py                # live score JSONL during event days
 python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
                                              #   --commit freezes into receipts.json
+python web/make_event_forecast.py            # whole MLP event weekend: groups +
+                                             #   crossover playoff → data/event_forecast.json
 python scraper/tournament_state.py           # live-event state (MLP standings/slate,
                                              #   PPA seeded draws) → data/tournament_state.json
 python web/build_site.py                     # data/*.csv → site/ static website (~4 s)
@@ -131,6 +133,15 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   rally-to-21 singles and NEVER enter models (isTieBreaker flag). 2026 MLP
   skips the dead 4th game at 3-0. matchCompletedType 5 = normal; 6 =
   walkover/cancelled; treat others as forfeits.
+- **MLP event format is FIXED and verified** (2026-07-29, all eight 2026
+  events): 11–12 teams in TWO round-robin groups (pools of 5–6), then ONE
+  round of rank-vs-rank crossovers — A1vB1, A2vB2, A3vB3, A4vB4 — winners
+  take places 1/3/5/7, losers 2/4/6/8. Only the top FOUR of each group play
+  a playoff matchup; group 5th/6th share 9–10 / 11–12. Group order = matchup
+  wins → head-to-head (2-way tie) → game differential → rally-point
+  differential (Chicago pins h2h over game diff; Austin pins game diff for a
+  3-way tie). All four RR games are played even at 3-0; only the playoff
+  stops at three. `web/make_event_forecast.py` implements this.
 - MLP is identified by organizationSlug == "major-league-pickleball"
   (titles lie: Grand Rapids = "Edward Jones Mid-Season Tournament";
   exclude "Junior" titles). PPA filter: ppatour.com contact emails or

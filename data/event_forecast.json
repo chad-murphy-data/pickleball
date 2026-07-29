@@ -1,0 +1,1344 @@
+{
+ "generated": "2026-07-29",
+ "event": "Amway MLP Orlando",
+ "group_uuid": "d5fc5840-64b2-47d1-b21d-a9dca9eb6390",
+ "sims": 200000,
+ "pools": {
+  "A": [
+   "California Black Bears",
+   "Carolina Hogs",
+   "Chicago Slice",
+   "Los Angeles Mad Drops",
+   "New Jersey 5s",
+   "Palm Beach Royals"
+  ],
+  "B": [
+   "Brooklyn Pickleball Team",
+   "Las Vegas Night Owls",
+   "Miami Pickleball Club",
+   "Orlando Squeeze",
+   "Phoenix Flames",
+   "St. Louis Shock"
+  ]
+ },
+ "pool_uuids": {
+  "A": "a954981f",
+  "B": "aaf7d506"
+ },
+ "played": 0,
+ "scheduled": 30,
+ "slate": [
+  {
+   "date": "2026-07-30",
+   "start": "2026-07-30T15:30:00Z",
+   "group": "B",
+   "team1": "Phoenix Flames",
+   "team2": "Brooklyn Pickleball Team",
+   "p_team1": 0.0106,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-30",
+   "start": "2026-07-30T16:00:00Z",
+   "group": "B",
+   "team1": "St. Louis Shock",
+   "team2": "Miami Pickleball Club",
+   "p_team1": 0.9894,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-30",
+   "start": "2026-07-30T17:00:00Z",
+   "group": "A",
+   "team1": "California Black Bears",
+   "team2": "Palm Beach Royals",
+   "p_team1": 0.2408,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-30",
+   "start": "2026-07-30T17:30:00Z",
+   "group": "A",
+   "team1": "Los Angeles Mad Drops",
+   "team2": "Chicago Slice",
+   "p_team1": 0.9614,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-30",
+   "start": "2026-07-30T18:30:00Z",
+   "group": "B",
+   "team1": "Phoenix Flames",
+   "team2": "Las Vegas Night Owls",
+   "p_team1": 0.333,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-30",
+   "start": "2026-07-30T19:00:00Z",
+   "group": "A",
+   "team1": "New Jersey 5s",
+   "team2": "Carolina Hogs",
+   "p_team1": 0.9894,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-30",
+   "start": "2026-07-30T20:00:00Z",
+   "group": "B",
+   "team1": "Miami Pickleball Club",
+   "team2": "Brooklyn Pickleball Team",
+   "p_team1": 0.0106,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-30",
+   "start": "2026-07-30T20:30:00Z",
+   "group": "A",
+   "team1": "Palm Beach Royals",
+   "team2": "Chicago Slice",
+   "p_team1": 0.8636,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-30",
+   "start": "2026-07-30T21:30:00Z",
+   "group": "A",
+   "team1": "California Black Bears",
+   "team2": "Carolina Hogs",
+   "p_team1": 0.9312,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-30",
+   "start": "2026-07-30T22:00:00Z",
+   "group": "B",
+   "team1": "Las Vegas Night Owls",
+   "team2": "Orlando Squeeze",
+   "p_team1": 0.178,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-31",
+   "start": "2026-07-31T15:30:00Z",
+   "group": "B",
+   "team1": "St. Louis Shock",
+   "team2": "Phoenix Flames",
+   "p_team1": 0.9894,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-31",
+   "start": "2026-07-31T16:00:00Z",
+   "group": "A",
+   "team1": "Los Angeles Mad Drops",
+   "team2": "Palm Beach Royals",
+   "p_team1": 0.7422,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-31",
+   "start": "2026-07-31T17:00:00Z",
+   "group": "B",
+   "team1": "Brooklyn Pickleball Team",
+   "team2": "Las Vegas Night Owls",
+   "p_team1": 0.9846,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-31",
+   "start": "2026-07-31T17:30:00Z",
+   "group": "A",
+   "team1": "Chicago Slice",
+   "team2": "New Jersey 5s",
+   "p_team1": 0.0127,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-31",
+   "start": "2026-07-31T18:30:00Z",
+   "group": "A",
+   "team1": "California Black Bears",
+   "team2": "Los Angeles Mad Drops",
+   "p_team1": 0.0928,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-31",
+   "start": "2026-07-31T19:00:00Z",
+   "group": "B",
+   "team1": "Phoenix Flames",
+   "team2": "Orlando Squeeze",
+   "p_team1": 0.0803,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-31",
+   "start": "2026-07-31T20:00:00Z",
+   "group": "A",
+   "team1": "Chicago Slice",
+   "team2": "Carolina Hogs",
+   "p_team1": 0.8123,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-31",
+   "start": "2026-07-31T20:30:00Z",
+   "group": "B",
+   "team1": "Brooklyn Pickleball Team",
+   "team2": "St. Louis Shock",
+   "p_team1": 0.2369,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-31",
+   "start": "2026-07-31T21:30:00Z",
+   "group": "A",
+   "team1": "New Jersey 5s",
+   "team2": "California Black Bears",
+   "p_team1": 0.9747,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-07-31",
+   "start": "2026-07-31T22:00:00Z",
+   "group": "B",
+   "team1": "Orlando Squeeze",
+   "team2": "Miami Pickleball Club",
+   "p_team1": 0.9037,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-08-01",
+   "start": "2026-08-01T15:30:00Z",
+   "group": "B",
+   "team1": "Miami Pickleball Club",
+   "team2": "Las Vegas Night Owls",
+   "p_team1": 0.3273,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-08-01",
+   "start": "2026-08-01T16:00:00Z",
+   "group": "A",
+   "team1": "Palm Beach Royals",
+   "team2": "New Jersey 5s",
+   "p_team1": 0.0523,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-08-01",
+   "start": "2026-08-01T17:00:00Z",
+   "group": "A",
+   "team1": "Carolina Hogs",
+   "team2": "Los Angeles Mad Drops",
+   "p_team1": 0.0106,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-08-01",
+   "start": "2026-08-01T17:30:00Z",
+   "group": "B",
+   "team1": "Brooklyn Pickleball Team",
+   "team2": "Orlando Squeeze",
+   "p_team1": 0.8851,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-08-01",
+   "start": "2026-08-01T18:30:00Z",
+   "group": "A",
+   "team1": "Chicago Slice",
+   "team2": "California Black Bears",
+   "p_team1": 0.2877,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-08-01",
+   "start": "2026-08-01T19:00:00Z",
+   "group": "B",
+   "team1": "Las Vegas Night Owls",
+   "team2": "St. Louis Shock",
+   "p_team1": 0.0106,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-08-01",
+   "start": "2026-08-01T20:00:00Z",
+   "group": "A",
+   "team1": "Carolina Hogs",
+   "team2": "Palm Beach Royals",
+   "p_team1": 0.0232,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-08-01",
+   "start": "2026-08-01T20:30:00Z",
+   "group": "A",
+   "team1": "New Jersey 5s",
+   "team2": "Los Angeles Mad Drops",
+   "p_team1": 0.7964,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-08-01",
+   "start": "2026-08-01T21:30:00Z",
+   "group": "B",
+   "team1": "Miami Pickleball Club",
+   "team2": "Phoenix Flames",
+   "p_team1": 0.517,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  },
+  {
+   "date": "2026-08-01",
+   "start": "2026-08-01T23:00:00Z",
+   "group": "B",
+   "team1": "Orlando Squeeze",
+   "team2": "St. Louis Shock",
+   "p_team1": 0.0322,
+   "done": false,
+   "games1": 0,
+   "games2": 0
+  }
+ ],
+ "teams": {
+  "California Black Bears": {
+   "group": "A",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "051f5c82-82ce-4ab8-b4f8-36976638a89b",
+      "Sahra Dennehy",
+      0.829
+     ],
+     [
+      "1d701c30-6b5d-485f-ae97-60f3b0c50896",
+      "Zoey Weil",
+      0.6966
+     ]
+    ],
+    "MD": [
+     [
+      "1de884f8-7bf7-4b49-9de8-3f1fd74cabd6",
+      "Dylan Frazier",
+      0.7531
+     ],
+     [
+      "a51b59c5-1a13-4472-821a-eb9866e72adf",
+      "Joseph Wild",
+      0.7049
+     ]
+    ],
+    "MXD1": [
+     [
+      "051f5c82-82ce-4ab8-b4f8-36976638a89b",
+      "Sahra Dennehy",
+      0.829
+     ],
+     [
+      "1de884f8-7bf7-4b49-9de8-3f1fd74cabd6",
+      "Dylan Frazier",
+      0.7531
+     ]
+    ],
+    "MXD2": [
+     [
+      "1d701c30-6b5d-485f-ae97-60f3b0c50896",
+      "Zoey Weil",
+      0.6966
+     ],
+     [
+      "a51b59c5-1a13-4472-821a-eb9866e72adf",
+      "Joseph Wild",
+      0.7049
+     ]
+    ]
+   },
+   "exp_wins": 2.001,
+   "exp_game_diff": -2.68,
+   "exp_rally_diff": -20.2,
+   "group_rank": {
+    "1": 0.00238,
+    "2": 0.02632,
+    "3": 0.17715,
+    "4": 0.5521,
+    "5": 0.21547,
+    "6": 0.02659
+   },
+   "p_group_win": 0.00238,
+   "p_playoff": 0.75794,
+   "place": {
+    "1": 4e-05,
+    "2": 0.00234,
+    "3": 0.00136,
+    "4": 0.02497,
+    "5": 0.05677,
+    "6": 0.12039,
+    "7": 0.34669,
+    "8": 0.20541,
+    "9": 0.21547,
+    "11": 0.02659
+   },
+   "p_title": 4e-05,
+   "p_final": 0.00238,
+   "p_podium": 0.00374,
+   "exp_place": 7.538
+  },
+  "Carolina Hogs": {
+   "group": "A",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "6794d224-7da3-43d9-8300-e24e731f5dea",
+      "Samantha Parker",
+      0.7293
+     ],
+     [
+      "f6e249dc-5bb9-483a-a99f-df364df93341",
+      "Kelly Goodnow",
+      0.3944
+     ]
+    ],
+    "MD": [
+     [
+      "a9a168ae-7822-4d31-b07b-fba40480c1fc",
+      "Brandon French",
+      0.5871
+     ],
+     [
+      "d45a3391-82f4-45d0-ba66-f1901854a8d0",
+      "Darrian Young",
+      0.522
+     ]
+    ],
+    "MXD1": [
+     [
+      "6794d224-7da3-43d9-8300-e24e731f5dea",
+      "Samantha Parker",
+      0.7293
+     ],
+     [
+      "a9a168ae-7822-4d31-b07b-fba40480c1fc",
+      "Brandon French",
+      0.5871
+     ]
+    ],
+    "MXD2": [
+     [
+      "f6e249dc-5bb9-483a-a99f-df364df93341",
+      "Kelly Goodnow",
+      0.3944
+     ],
+     [
+      "d45a3391-82f4-45d0-ba66-f1901854a8d0",
+      "Darrian Young",
+      0.522
+     ]
+    ]
+   },
+   "exp_wins": 0.284,
+   "exp_game_diff": -14.03,
+   "exp_rally_diff": -90.4,
+   "group_rank": {
+    "2": 3e-05,
+    "3": 0.00162,
+    "4": 0.01542,
+    "5": 0.16805,
+    "6": 0.81487
+   },
+   "p_group_win": 0.0,
+   "p_playoff": 0.01708,
+   "place": {
+    "4": 3e-05,
+    "5": 3e-05,
+    "6": 0.0016,
+    "7": 0.00261,
+    "8": 0.01282,
+    "9": 0.16805,
+    "11": 0.81487
+   },
+   "p_title": 0.0,
+   "p_final": 0.0,
+   "p_podium": 0,
+   "exp_place": 11.098
+  },
+  "Chicago Slice": {
+   "group": "A",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "29e8121d-6f86-4192-b7af-ab05b77b89fe",
+      "Ting Chieh Wei",
+      0.7522
+     ],
+     [
+      "574957ae-e8d5-486e-aabc-a1cc6a392f8d",
+      "Jalina Ingram",
+      0.4943
+     ]
+    ],
+    "MD": [
+     [
+      "8160ad59-4654-46b1-b229-8d5f2a9a45f9",
+      "Hunter Johnson",
+      0.7204
+     ],
+     [
+      "e96d9339-cfb6-473d-bcb3-23f2887a3e0f",
+      "John Lucian Goins",
+      0.6718
+     ]
+    ],
+    "MXD1": [
+     [
+      "29e8121d-6f86-4192-b7af-ab05b77b89fe",
+      "Ting Chieh Wei",
+      0.7522
+     ],
+     [
+      "8160ad59-4654-46b1-b229-8d5f2a9a45f9",
+      "Hunter Johnson",
+      0.7204
+     ]
+    ],
+    "MXD2": [
+     [
+      "574957ae-e8d5-486e-aabc-a1cc6a392f8d",
+      "Jalina Ingram",
+      0.4943
+     ],
+     [
+      "e96d9339-cfb6-473d-bcb3-23f2887a3e0f",
+      "John Lucian Goins",
+      0.6718
+     ]
+    ]
+   },
+   "exp_wins": 1.29,
+   "exp_game_diff": -7.91,
+   "exp_rally_diff": -51.3,
+   "group_rank": {
+    "1": 0.00026,
+    "2": 0.00504,
+    "3": 0.03993,
+    "4": 0.22221,
+    "5": 0.5772,
+    "6": 0.15535
+   },
+   "p_group_win": 0.00026,
+   "p_playoff": 0.26744,
+   "place": {
+    "1": 1e-05,
+    "2": 0.00026,
+    "3": 0.00014,
+    "4": 0.0049,
+    "5": 0.00726,
+    "6": 0.03267,
+    "7": 0.09891,
+    "8": 0.1233,
+    "9": 0.5772,
+    "11": 0.15535
+   },
+   "p_title": 1e-05,
+   "p_final": 0.00027,
+   "p_podium": 0.00041,
+   "exp_place": 9.202
+  },
+  "Los Angeles Mad Drops": {
+   "group": "A",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "6cae3a50-eee6-45ea-8b28-85ef9c50e3c4",
+      "Jade Kawamoto",
+      1.1558
+     ],
+     [
+      "9b97206b-783a-4fab-85e9-45a6240325a5",
+      "Catherine Parenteau",
+      0.8946
+     ]
+    ],
+    "MD": [
+     [
+      "6f862c1d-1317-4fe7-bdcd-64caa0dbb088",
+      "Ben Johns",
+      1.1139
+     ],
+     [
+      "b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9",
+      "Max Freeman",
+      0.6907
+     ]
+    ],
+    "MXD1": [
+     [
+      "6cae3a50-eee6-45ea-8b28-85ef9c50e3c4",
+      "Jade Kawamoto",
+      1.1558
+     ],
+     [
+      "6f862c1d-1317-4fe7-bdcd-64caa0dbb088",
+      "Ben Johns",
+      1.1139
+     ]
+    ],
+    "MXD2": [
+     [
+      "9b97206b-783a-4fab-85e9-45a6240325a5",
+      "Catherine Parenteau",
+      0.8946
+     ],
+     [
+      "b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9",
+      "Max Freeman",
+      0.6907
+     ]
+    ]
+   },
+   "exp_wins": 3.81,
+   "exp_game_diff": 8.36,
+   "exp_rally_diff": 50.8,
+   "group_rank": {
+    "1": 0.17698,
+    "2": 0.59745,
+    "3": 0.1962,
+    "4": 0.02573,
+    "5": 0.00358,
+    "6": 7e-05
+   },
+   "p_group_win": 0.17698,
+   "p_playoff": 0.99635,
+   "place": {
+    "1": 0.03222,
+    "2": 0.14477,
+    "3": 0.20248,
+    "4": 0.39496,
+    "5": 0.15076,
+    "6": 0.04544,
+    "7": 0.02406,
+    "8": 0.00166,
+    "9": 0.00358,
+    "11": 7e-05
+   },
+   "p_title": 0.03222,
+   "p_final": 0.17698,
+   "p_podium": 0.37946,
+   "exp_place": 3.752
+  },
+  "New Jersey 5s": {
+   "group": "A",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "129b2771-34b5-4b7f-9c23-e020a6aa3e6a",
+      "Anna Leigh Waters",
+      1.7994
+     ],
+     [
+      "b51ea0fb-c243-4427-85f8-b798febb51ff",
+      "Jorja Johnson",
+      1.1731
+     ]
+    ],
+    "MD": [
+     [
+      "1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4",
+      "Noe Khlif",
+      0.7918
+     ],
+     [
+      "d0f19d1e-2a6e-4eb3-b10c-1311edd599a8",
+      "Will Howells",
+      0.7824
+     ]
+    ],
+    "MXD1": [
+     [
+      "129b2771-34b5-4b7f-9c23-e020a6aa3e6a",
+      "Anna Leigh Waters",
+      1.7994
+     ],
+     [
+      "1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4",
+      "Noe Khlif",
+      0.7918
+     ]
+    ],
+    "MXD2": [
+     [
+      "b51ea0fb-c243-4427-85f8-b798febb51ff",
+      "Jorja Johnson",
+      1.1731
+     ],
+     [
+      "d0f19d1e-2a6e-4eb3-b10c-1311edd599a8",
+      "Will Howells",
+      0.7824
+     ]
+    ]
+   },
+   "exp_wins": 4.705,
+   "exp_game_diff": 13.43,
+   "exp_rally_diff": 92.3,
+   "group_rank": {
+    "1": 0.8012,
+    "2": 0.18305,
+    "3": 0.0143,
+    "4": 0.00139,
+    "5": 6e-05
+   },
+   "p_group_win": 0.8012,
+   "p_playoff": 0.99994,
+   "place": {
+    "1": 0.41485,
+    "2": 0.38636,
+    "3": 0.12467,
+    "4": 0.05838,
+    "5": 0.013,
+    "6": 0.00129,
+    "7": 0.00136,
+    "8": 4e-05,
+    "9": 6e-05
+   },
+   "p_title": 0.41485,
+   "p_final": 0.8012,
+   "p_podium": 0.92588,
+   "exp_place": 1.878
+  },
+  "Palm Beach Royals": {
+   "group": "A",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "f879086b-e0e5-4772-b0a6-4055c265da69",
+      "Tina Pisnik",
+      1.1255
+     ],
+     [
+      "b9bacc1e-29b5-4a92-a9c1-24e08ac72215",
+      "Sofia Sewing",
+      1.0173
+     ]
+    ],
+    "MD": [
+     [
+      "89843e44-48fd-4a3f-b8c0-5f5aa6ae5741",
+      "Dekel Bar",
+      0.7618
+     ],
+     [
+      "dbcb41e9-e983-410b-bc23-d184d034cfc0",
+      "Tyson McGuffin",
+      0.6494
+     ]
+    ],
+    "MXD1": [
+     [
+      "f879086b-e0e5-4772-b0a6-4055c265da69",
+      "Tina Pisnik",
+      1.1255
+     ],
+     [
+      "89843e44-48fd-4a3f-b8c0-5f5aa6ae5741",
+      "Dekel Bar",
+      0.7618
+     ]
+    ],
+    "MXD2": [
+     [
+      "b9bacc1e-29b5-4a92-a9c1-24e08ac72215",
+      "Sofia Sewing",
+      1.0173
+     ],
+     [
+      "dbcb41e9-e983-410b-bc23-d184d034cfc0",
+      "Tyson McGuffin",
+      0.6494
+     ]
+    ]
+   },
+   "exp_wins": 2.909,
+   "exp_game_diff": 2.83,
+   "exp_rally_diff": 18.8,
+   "group_rank": {
+    "1": 0.01917,
+    "2": 0.18812,
+    "3": 0.5708,
+    "4": 0.18316,
+    "5": 0.03565,
+    "6": 0.00312
+   },
+   "p_group_win": 0.01917,
+   "p_playoff": 0.96124,
+   "place": {
+    "1": 0.0012,
+    "2": 0.01797,
+    "3": 0.03122,
+    "4": 0.1569,
+    "5": 0.32521,
+    "6": 0.24558,
+    "7": 0.15373,
+    "8": 0.02942,
+    "9": 0.03565,
+    "11": 0.00312
+   },
+   "p_title": 0.0012,
+   "p_final": 0.01917,
+   "p_podium": 0.05039,
+   "exp_place": 5.544
+  },
+  "Brooklyn Pickleball Team": {
+   "group": "B",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "50908953-a944-4a34-898b-16af312bc814",
+      "Rachel Rohrabacher",
+      1.1172
+     ],
+     [
+      "be33755f-9262-461b-aedd-e9a7a686a82c",
+      "Jackie Kawamoto",
+      1.0882
+     ]
+    ],
+    "MD": [
+     [
+      "79a11da1-6aeb-4719-9b1e-9918e0163cec",
+      "Christian Alshon",
+      1.0143
+     ],
+     [
+      "05b194b3-db88-4f77-a26f-5ef5cfbf6146",
+      "Riley Newman",
+      0.9049
+     ]
+    ],
+    "MXD1": [
+     [
+      "50908953-a944-4a34-898b-16af312bc814",
+      "Rachel Rohrabacher",
+      1.1172
+     ],
+     [
+      "79a11da1-6aeb-4719-9b1e-9918e0163cec",
+      "Christian Alshon",
+      1.0143
+     ]
+    ],
+    "MXD2": [
+     [
+      "be33755f-9262-461b-aedd-e9a7a686a82c",
+      "Jackie Kawamoto",
+      1.0882
+     ],
+     [
+      "05b194b3-db88-4f77-a26f-5ef5cfbf6146",
+      "Riley Newman",
+      0.9049
+     ]
+    ]
+   },
+   "exp_wins": 4.092,
+   "exp_game_diff": 11.28,
+   "exp_rally_diff": 69.5,
+   "group_rank": {
+    "1": 0.22442,
+    "2": 0.69183,
+    "3": 0.08171,
+    "4": 0.00186,
+    "5": 0.00018,
+    "6": 1e-05
+   },
+   "p_group_win": 0.22442,
+   "p_playoff": 0.99981,
+   "place": {
+    "1": 0.08032,
+    "2": 0.1441,
+    "3": 0.43465,
+    "4": 0.25718,
+    "5": 0.0676,
+    "6": 0.01412,
+    "7": 0.00171,
+    "8": 0.00015,
+    "9": 0.00018,
+    "11": 1e-05
+   },
+   "p_title": 0.08032,
+   "p_final": 0.22442,
+   "p_podium": 0.65907,
+   "exp_place": 3.139
+  },
+  "Las Vegas Night Owls": {
+   "group": "B",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "20684550-cb89-4ea2-9e2f-0f44eb920b45",
+      "Chao Yi Wang",
+      0.8588
+     ],
+     [
+      "71992955-8b6f-470b-a991-796cfa56a826",
+      "Liz Truluck",
+      0.6809
+     ]
+    ],
+    "MD": [
+     [
+      "925c1306-6b3b-4510-8482-f34168a0842a",
+      "Roscoe Bellamy",
+      0.7114
+     ],
+     [
+      "b68c0204-d9d4-4cba-bf23-46706abd77bf",
+      "Clayton Powell",
+      0.5889
+     ]
+    ],
+    "MXD1": [
+     [
+      "20684550-cb89-4ea2-9e2f-0f44eb920b45",
+      "Chao Yi Wang",
+      0.8588
+     ],
+     [
+      "925c1306-6b3b-4510-8482-f34168a0842a",
+      "Roscoe Bellamy",
+      0.7114
+     ]
+    ],
+    "MXD2": [
+     [
+      "71992955-8b6f-470b-a991-796cfa56a826",
+      "Liz Truluck",
+      0.6809
+     ],
+     [
+      "b68c0204-d9d4-4cba-bf23-46706abd77bf",
+      "Clayton Powell",
+      0.5889
+     ]
+    ]
+   },
+   "exp_wins": 1.537,
+   "exp_game_diff": -7.1,
+   "exp_rally_diff": -45.8,
+   "group_rank": {
+    "1": 4e-05,
+    "2": 0.00269,
+    "3": 0.11623,
+    "4": 0.45514,
+    "5": 0.27027,
+    "6": 0.15563
+   },
+   "p_group_win": 4e-05,
+   "p_playoff": 0.5741,
+   "place": {
+    "2": 4e-05,
+    "3": 0.00016,
+    "4": 0.00253,
+    "5": 0.02048,
+    "6": 0.09575,
+    "7": 0.16582,
+    "8": 0.28931,
+    "9": 0.27027,
+    "11": 0.15563
+   },
+   "p_title": 0.0,
+   "p_final": 4e-05,
+   "p_podium": 0.0002,
+   "exp_place": 8.52
+  },
+  "Miami Pickleball Club": {
+   "group": "B",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "bf84d952-c6a8-4494-943d-064b223e764f",
+      "Estee Widdershoven",
+      0.7236
+     ],
+     [
+      "719e2d3b-d10d-402d-a195-41f072214679",
+      "Isabella Dunlap",
+      0.7124
+     ]
+    ],
+    "MD": [
+     [
+      "fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae",
+      "Anderson Scarpa",
+      0.7082
+     ],
+     [
+      "7886d6aa-2310-4ae8-9874-f0fc9c3e534f",
+      "James Delgado",
+      0.491
+     ]
+    ],
+    "MXD1": [
+     [
+      "bf84d952-c6a8-4494-943d-064b223e764f",
+      "Estee Widdershoven",
+      0.7236
+     ],
+     [
+      "fa8d5d28-d8f5-4996-8c35-0f4ca3c35bae",
+      "Anderson Scarpa",
+      0.7082
+     ]
+    ],
+    "MXD2": [
+     [
+      "719e2d3b-d10d-402d-a195-41f072214679",
+      "Isabella Dunlap",
+      0.7124
+     ],
+     [
+      "7886d6aa-2310-4ae8-9874-f0fc9c3e534f",
+      "James Delgado",
+      0.491
+     ]
+    ]
+   },
+   "exp_wins": 0.948,
+   "exp_game_diff": -10.32,
+   "exp_rally_diff": -65.2,
+   "group_rank": {
+    "1": 1e-05,
+    "2": 0.00044,
+    "3": 0.03562,
+    "4": 0.19517,
+    "5": 0.35735,
+    "6": 0.41141
+   },
+   "p_group_win": 1e-05,
+   "p_playoff": 0.23124,
+   "place": {
+    "2": 1e-05,
+    "3": 1e-05,
+    "4": 0.00044,
+    "5": 0.0034,
+    "6": 0.03222,
+    "7": 0.04757,
+    "8": 0.1476,
+    "9": 0.35735,
+    "11": 0.41141
+   },
+   "p_title": 0.0,
+   "p_final": 1e-05,
+   "p_podium": 2e-05,
+   "exp_place": 9.852
+  },
+  "Orlando Squeeze": {
+   "group": "B",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "a3ed7970-35d2-485c-8285-187c298a2d83",
+      "Lacy Schneemann",
+      0.895
+     ],
+     [
+      "eb14fc6e-ede1-4999-bec3-e36695e7f94e",
+      "Milan Rane",
+      0.7214
+     ]
+    ],
+    "MD": [
+     [
+      "7edb882c-6d17-4129-8208-710e3c82364c",
+      "Federico Staksrud",
+      0.905
+     ],
+     [
+      "3a43c56f-b9d8-4e72-ae8a-58fd69291946",
+      "Jack Sock",
+      0.8369
+     ]
+    ],
+    "MXD1": [
+     [
+      "a3ed7970-35d2-485c-8285-187c298a2d83",
+      "Lacy Schneemann",
+      0.895
+     ],
+     [
+      "7edb882c-6d17-4129-8208-710e3c82364c",
+      "Federico Staksrud",
+      0.905
+     ]
+    ],
+    "MXD2": [
+     [
+      "eb14fc6e-ede1-4999-bec3-e36695e7f94e",
+      "Milan Rane",
+      0.7214
+     ],
+     [
+      "3a43c56f-b9d8-4e72-ae8a-58fd69291946",
+      "Jack Sock",
+      0.8369
+     ]
+    ]
+   },
+   "exp_wins": 2.795,
+   "exp_game_diff": 0.76,
+   "exp_rally_diff": 2.8,
+   "group_rank": {
+    "1": 0.00426,
+    "2": 0.08332,
+    "3": 0.72931,
+    "4": 0.15368,
+    "5": 0.02127,
+    "6": 0.00816
+   },
+   "p_group_win": 0.00426,
+   "p_playoff": 0.97057,
+   "place": {
+    "1": 0.00051,
+    "2": 0.00376,
+    "3": 0.02161,
+    "4": 0.06171,
+    "5": 0.34552,
+    "6": 0.38379,
+    "7": 0.10887,
+    "8": 0.0448,
+    "9": 0.02127,
+    "11": 0.00816
+   },
+   "p_title": 0.00051,
+   "p_final": 0.00426,
+   "p_podium": 0.02588,
+   "exp_place": 5.766
+  },
+  "Phoenix Flames": {
+   "group": "B",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "3e6b668a-8d26-4424-9420-3ceb18486b65",
+      "Daria Walczak",
+      0.7092
+     ],
+     [
+      "a226291c-c48b-408b-a846-f45400d313a9",
+      "Alexa Schull",
+      0.6499
+     ]
+    ],
+    "MD": [
+     [
+      "62955f38-bdf5-46af-9622-13c7afe90619",
+      "Jonathan Truong",
+      0.6515
+     ],
+     [
+      "f86cff72-5f9c-40b1-9f28-f28aafae245f",
+      "Wyatt Stone",
+      0.6431
+     ]
+    ],
+    "MXD1": [
+     [
+      "3e6b668a-8d26-4424-9420-3ceb18486b65",
+      "Daria Walczak",
+      0.7092
+     ],
+     [
+      "62955f38-bdf5-46af-9622-13c7afe90619",
+      "Jonathan Truong",
+      0.6515
+     ]
+    ],
+    "MXD2": [
+     [
+      "a226291c-c48b-408b-a846-f45400d313a9",
+      "Alexa Schull",
+      0.6499
+     ],
+     [
+      "f86cff72-5f9c-40b1-9f28-f28aafae245f",
+      "Wyatt Stone",
+      0.6431
+     ]
+    ]
+   },
+   "exp_wins": 0.902,
+   "exp_game_diff": -10.21,
+   "exp_rally_diff": -63.8,
+   "group_rank": {
+    "2": 0.00037,
+    "3": 0.02985,
+    "4": 0.19404,
+    "5": 0.35093,
+    "6": 0.42479
+   },
+   "p_group_win": 0.0,
+   "p_playoff": 0.22427,
+   "place": {
+    "4": 0.00037,
+    "5": 0.00312,
+    "6": 0.02673,
+    "7": 0.04856,
+    "8": 0.14549,
+    "9": 0.35093,
+    "11": 0.42479
+   },
+   "p_title": 0.0,
+   "p_final": 0.0,
+   "p_podium": 0,
+   "exp_place": 9.9
+  },
+  "St. Louis Shock": {
+   "group": "B",
+   "lineup_source": "best lineup",
+   "lineup": {
+    "WD": [
+     [
+      "db5eef5c-99dd-49d9-bbfc-65171a366bda",
+      "Anna Bright",
+      1.3267
+     ],
+     [
+      "3af01041-5679-400a-87b8-12c01db8cec4",
+      "Kate Fahey",
+      1.0808
+     ]
+    ],
+    "MD": [
+     [
+      "fc05556e-3e38-4a38-99c2-f855174a7c28",
+      "Hayden Patriquin",
+      1.0803
+     ],
+     [
+      "d50310a6-9378-4228-823f-7fb54f7bd698",
+      "Gabriel Tardio",
+      1.0708
+     ]
+    ],
+    "MXD1": [
+     [
+      "db5eef5c-99dd-49d9-bbfc-65171a366bda",
+      "Anna Bright",
+      1.3267
+     ],
+     [
+      "fc05556e-3e38-4a38-99c2-f855174a7c28",
+      "Hayden Patriquin",
+      1.0803
+     ]
+    ],
+    "MXD2": [
+     [
+      "3af01041-5679-400a-87b8-12c01db8cec4",
+      "Kate Fahey",
+      1.0808
+     ],
+     [
+      "d50310a6-9378-4228-823f-7fb54f7bd698",
+      "Gabriel Tardio",
+      1.0708
+     ]
+    ]
+   },
+   "exp_wins": 4.726,
+   "exp_game_diff": 15.59,
+   "exp_rally_diff": 102.5,
+   "group_rank": {
+    "1": 0.77127,
+    "2": 0.22134,
+    "3": 0.00728,
+    "4": 0.00011
+   },
+   "p_group_win": 0.77127,
+   "p_playoff": 1.0,
+   "place": {
+    "1": 0.47086,
+    "2": 0.30041,
+    "3": 0.1837,
+    "4": 0.03764,
+    "5": 0.00686,
+    "6": 0.00041,
+    "7": 0.00011,
+    "8": 1e-05
+   },
+   "p_title": 0.47086,
+   "p_final": 0.77127,
+   "p_podium": 0.95497,
+   "exp_place": 1.811
+  }
+ }
+}
