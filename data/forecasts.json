@@ -1,5 +1,5 @@
 {
- "generated": "2026-07-29",
+ "generated": "2026-07-30",
  "note": "Lineups: official when published, else each team's best lineup from its season roster (last-matchup fallback); DreamBreaker from the singles model; calibrated probabilities.",
  "forecasts": [
   {
@@ -9,32 +9,32 @@
    "team1": "Phoenix Flames",
    "team2": "Brooklyn Pickleball Team",
    "lineups_from": {
-    "team1": "best lineup",
-    "team2": "best lineup"
+    "team1": "official",
+    "team2": "official"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.0428,
-     "modal": "4-11",
-     "margin": -6.3,
+     "p": 0.6987,
+     "modal": "11-7",
+     "margin": 2.09,
      "t1_pair": [
-      "Daria Walczak",
-      "Alexa Schull"
+      "Allison Phillips",
+      "Daria Walczak"
      ],
      "t2_pair": [
-      "Rachel Rohrabacher",
+      "Hannah Blatt",
       "Jackie Kawamoto"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.1054,
+     "p": 0.0847,
      "modal": "5-11",
-     "margin": -4.96,
+     "margin": -5.32,
      "t1_pair": [
-      "Jonathan Truong",
-      "Wyatt Stone"
+      "Camden Chaffin",
+      "Jonathan Truong"
      ],
      "t2_pair": [
       "Christian Alshon",
@@ -43,12 +43,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.0596,
+     "p": 0.0376,
      "modal": "4-11",
-     "margin": -5.85,
+     "margin": -6.47,
      "t1_pair": [
-      "Daria Walczak",
-      "Jonathan Truong"
+      "Allison Phillips",
+      "Camden Chaffin"
      ],
      "t2_pair": [
       "Rachel Rohrabacher",
@@ -57,27 +57,27 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.0846,
-     "modal": "5-11",
-     "margin": -5.33,
+     "p": 0.2927,
+     "modal": "7-11",
+     "margin": -2.48,
      "t1_pair": [
-      "Alexa Schull",
-      "Wyatt Stone"
+      "Daria Walczak",
+      "Jonathan Truong"
      ],
      "t2_pair": [
       "Jackie Kawamoto",
-      "Riley Newman"
+      "Christopher Haworth"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.0106,
-    "p_40": 0.0,
-    "p_31": 0.0013,
-    "p_db": 0.0269,
-    "p_13": 0.2347,
-    "p_04": 0.7371,
-    "p_db_win": 0.244
+    "p_win": 0.0843,
+    "p_40": 0.0007,
+    "p_31": 0.0256,
+    "p_db": 0.2483,
+    "p_13": 0.5377,
+    "p_04": 0.1877,
+    "p_db_win": 0.2337
    }
   },
   {
@@ -87,8 +87,8 @@
    "team1": "St. Louis Shock",
    "team2": "Miami Pickleball Club",
    "lineups_from": {
-    "team1": "best lineup",
-    "team2": "best lineup"
+    "team1": "official",
+    "team2": "official"
    },
    "games": [
     {
@@ -107,55 +107,55 @@
     },
     {
      "slot": "MD",
-     "p": 0.9753,
+     "p": 0.9766,
      "modal": "11-3",
-     "margin": 6.91,
+     "margin": 6.98,
      "t1_pair": [
-      "Hayden Patriquin",
-      "Gabriel Tardio"
+      "Gabriel Tardio",
+      "Hayden Patriquin"
      ],
      "t2_pair": [
       "Anderson Scarpa",
-      "James Delgado"
+      "Anouar Braham"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.9704,
+     "p": 0.9852,
      "modal": "11-3",
-     "margin": 6.67,
+     "margin": 7.69,
      "t1_pair": [
       "Anna Bright",
       "Hayden Patriquin"
      ],
      "t2_pair": [
-      "Estee Widdershoven",
-      "Anderson Scarpa"
+      "Isabella Dunlap",
+      "James Delgado"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.9751,
+     "p": 0.9757,
      "modal": "11-3",
-     "margin": 6.9,
+     "margin": 6.94,
      "t1_pair": [
       "Kate Fahey",
       "Gabriel Tardio"
      ],
      "t2_pair": [
-      "Isabella Dunlap",
-      "James Delgado"
+      "Estee Widdershoven",
+      "Anouar Braham"
      ]
     }
    ],
    "tree": {
     "p_win": 0.9894,
-    "p_40": 0.8951,
-    "p_31": 0.1006,
-    "p_db": 0.0042,
-    "p_13": 0.0001,
+    "p_40": 0.9105,
+    "p_31": 0.0864,
+    "p_db": 0.003,
+    "p_13": 0.0,
     "p_04": 0.0,
-    "p_db_win": 0.7755
+    "p_db_win": 0.758
    }
   },
   {
@@ -165,8 +165,8 @@
    "team1": "California Black Bears",
    "team2": "Palm Beach Royals",
    "lineups_from": {
-    "team1": "best lineup",
-    "team2": "best lineup"
+    "team1": "official",
+    "team2": "official"
    },
    "games": [
     {
@@ -179,18 +179,18 @@
       "Zoey Weil"
      ],
      "t2_pair": [
-      "Tina Pisnik",
-      "Sofia Sewing"
+      "Sofia Sewing",
+      "Tina Pisnik"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.5642,
+     "p": 0.5521,
      "modal": "11-9",
-     "margin": 0.55,
+     "margin": 0.41,
      "t1_pair": [
       "Dylan Frazier",
-      "Joseph Wild"
+      "Pablo Tellez"
      ],
      "t2_pair": [
       "Dekel Bar",
@@ -199,12 +199,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.3069,
-     "modal": "7-11",
-     "margin": -2.31,
+     "p": 0.1872,
+     "modal": "6-11",
+     "margin": -3.76,
      "t1_pair": [
-      "Sahra Dennehy",
-      "Dylan Frazier"
+      "Zoey Weil",
+      "Pablo Tellez"
      ],
      "t2_pair": [
       "Tina Pisnik",
@@ -213,27 +213,27 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.348,
-     "modal": "8-11",
-     "margin": -1.84,
+     "p": 0.6355,
+     "modal": "11-8",
+     "margin": 1.35,
      "t1_pair": [
-      "Zoey Weil",
-      "Joseph Wild"
+      "Sahra Dennehy",
+      "Dylan Frazier"
      ],
      "t2_pair": [
       "Sofia Sewing",
-      "Tyson McGuffin"
+      "Casey Diamond"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.2408,
-    "p_40": 0.006,
-    "p_31": 0.0837,
-    "p_db": 0.3107,
-    "p_13": 0.4223,
-    "p_04": 0.1773,
-    "p_db_win": 0.4863
+    "p_win": 0.335,
+    "p_40": 0.0066,
+    "p_31": 0.0967,
+    "p_db": 0.3811,
+    "p_13": 0.3963,
+    "p_04": 0.1195,
+    "p_db_win": 0.6082
    }
   },
   {
@@ -243,75 +243,75 @@
    "team1": "Los Angeles Mad Drops",
    "team2": "Chicago Slice",
    "lineups_from": {
-    "team1": "best lineup",
-    "team2": "best lineup"
+    "team1": "official",
+    "team2": "official"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.9532,
-     "modal": "11-4",
-     "margin": 6.06,
+     "p": 0.9716,
+     "modal": "11-3",
+     "margin": 6.73,
      "t1_pair": [
-      "Jade Kawamoto",
-      "Catherine Parenteau"
+      "Catherine Parenteau",
+      "Jade Kawamoto"
      ],
      "t2_pair": [
-      "Ting Chieh Wei",
-      "Jalina Ingram"
+      "Elsie Hendershot",
+      "Ting Chieh Wei"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.7785,
-     "modal": "11-7",
-     "margin": 3.07,
+     "p": 0.8586,
+     "modal": "11-6",
+     "margin": 4.19,
      "t1_pair": [
-      "Ben Johns",
-      "Max Freeman"
+      "Max Freeman",
+      "Ben Johns"
      ],
      "t2_pair": [
-      "Hunter Johnson",
-      "John Lucian Goins"
+      "John Lucian Goins",
+      "Zane Navratil"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.9519,
-     "modal": "11-4",
-     "margin": 6.02,
+     "p": 0.9858,
+     "modal": "11-2",
+     "margin": 7.77,
      "t1_pair": [
       "Jade Kawamoto",
       "Ben Johns"
      ],
      "t2_pair": [
-      "Ting Chieh Wei",
-      "Hunter Johnson"
+      "Emma Nelson",
+      "Zane Navratil"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.8198,
-     "modal": "11-6",
-     "margin": 3.63,
+     "p": 0.7362,
+     "modal": "11-7",
+     "margin": 2.54,
      "t1_pair": [
       "Catherine Parenteau",
-      "Max Freeman"
+      "Connor Garnett"
      ],
      "t2_pair": [
-      "Jalina Ingram",
+      "Ting Chieh Wei",
       "John Lucian Goins"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.9676,
-    "p_40": 0.5791,
-    "p_31": 0.3497,
-    "p_db": 0.0667,
-    "p_13": 0.0043,
-    "p_04": 0.0001,
-    "p_db_win": 0.5816
+    "p_win": 0.9888,
+    "p_40": 0.6054,
+    "p_31": 0.3431,
+    "p_db": 0.0498,
+    "p_13": 0.0017,
+    "p_04": 0.0,
+    "p_db_win": 0.8087
    }
   },
   {
@@ -321,32 +321,32 @@
    "team1": "Phoenix Flames",
    "team2": "Las Vegas Night Owls",
    "lineups_from": {
-    "team1": "best lineup",
-    "team2": "best lineup"
+    "team1": "official",
+    "team2": "official"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.3808,
+     "p": 0.4114,
      "modal": "8-11",
-     "margin": -1.48,
+     "margin": -1.14,
      "t1_pair": [
-      "Daria Walczak",
-      "Alexa Schull"
+      "Allison Phillips",
+      "Daria Walczak"
      ],
      "t2_pair": [
       "Chao Yi Wang",
-      "Liz Truluck"
+      "Callie Smith"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.5276,
-     "modal": "11-9",
-     "margin": 0.14,
+     "p": 0.4754,
+     "modal": "9-11",
+     "margin": -0.43,
      "t1_pair": [
-      "Jonathan Truong",
-      "Wyatt Stone"
+      "Camden Chaffin",
+      "Jonathan Truong"
      ],
      "t2_pair": [
       "Roscoe Bellamy",
@@ -355,12 +355,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.3531,
-     "modal": "8-11",
-     "margin": -1.79,
+     "p": 0.2596,
+     "modal": "7-11",
+     "margin": -2.86,
      "t1_pair": [
-      "Daria Walczak",
-      "Jonathan Truong"
+      "Allison Phillips",
+      "Camden Chaffin"
      ],
      "t2_pair": [
       "Chao Yi Wang",
@@ -369,27 +369,27 @@
     },
     {
      "slot": "MXD2",
-     "p": 0.5477,
-     "modal": "11-9",
-     "margin": 0.37,
+     "p": 0.8253,
+     "modal": "11-6",
+     "margin": 3.7,
      "t1_pair": [
-      "Alexa Schull",
-      "Wyatt Stone"
+      "Daria Walczak",
+      "Jonathan Truong"
      ],
      "t2_pair": [
-      "Liz Truluck",
-      "Clayton Powell"
+      "Callie Smith",
+      "Gabriel Joseph"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.3732,
-    "p_40": 0.0389,
-    "p_31": 0.2012,
-    "p_db": 0.3757,
-    "p_13": 0.2986,
-    "p_04": 0.0856,
-    "p_db_win": 0.3543
+    "p_win": 0.4106,
+    "p_40": 0.0419,
+    "p_31": 0.2346,
+    "p_db": 0.4168,
+    "p_13": 0.2668,
+    "p_04": 0.0399,
+    "p_db_win": 0.3219
    }
   },
   {
@@ -399,75 +399,75 @@
    "team1": "New Jersey 5s",
    "team2": "Carolina Hogs",
    "lineups_from": {
-    "team1": "best lineup",
-    "team2": "best lineup"
+    "team1": "official",
+    "team2": "official"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.9893,
+     "p": 0.9894,
      "modal": "11-1",
-     "margin": 9.17,
+     "margin": 9.72,
      "t1_pair": [
       "Anna Leigh Waters",
       "Jorja Johnson"
      ],
      "t2_pair": [
-      "Samantha Parker",
-      "Kelly Goodnow"
+      "Abbigal Hatton",
+      "Nicole Conard"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.8511,
-     "modal": "11-6",
-     "margin": 4.08,
+     "p": 0.8722,
+     "modal": "11-5",
+     "margin": 4.41,
      "t1_pair": [
-      "Noe Khlif",
+      "Federico Staksrud",
       "Will Howells"
      ],
      "t2_pair": [
-      "Brandon French",
-      "Darrian Young"
+      "Darrian Young",
+      "Wyatt Stone"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.9824,
-     "modal": "11-3",
-     "margin": 7.4,
+     "p": 0.9884,
+     "modal": "11-2",
+     "margin": 8.35,
      "t1_pair": [
       "Anna Leigh Waters",
       "Noe Khlif"
      ],
      "t2_pair": [
-      "Samantha Parker",
-      "Brandon French"
+      "Abbigal Hatton",
+      "Wyatt Stone"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.9754,
-     "modal": "11-3",
-     "margin": 6.92,
+     "p": 0.9875,
+     "modal": "11-2",
+     "margin": 8.08,
      "t1_pair": [
       "Jorja Johnson",
-      "Will Howells"
+      "Federico Staksrud"
      ],
      "t2_pair": [
-      "Kelly Goodnow",
+      "Aiko Yoshitomi",
       "Darrian Young"
      ]
     }
    ],
    "tree": {
     "p_win": 0.9894,
-    "p_40": 0.8068,
-    "p_31": 0.1847,
-    "p_db": 0.0084,
+    "p_40": 0.8423,
+    "p_31": 0.153,
+    "p_db": 0.0047,
     "p_13": 0.0001,
     "p_04": 0.0,
-    "p_db_win": 0.8861
+    "p_db_win": 0.9401
    }
   },
   {
@@ -477,32 +477,32 @@
    "team1": "Miami Pickleball Club",
    "team2": "Brooklyn Pickleball Team",
    "lineups_from": {
-    "team1": "best lineup",
-    "team2": "best lineup"
+    "team1": "official",
+    "team2": "official"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.0588,
-     "modal": "4-11",
-     "margin": -5.87,
+     "p": 0.7636,
+     "modal": "11-7",
+     "margin": 2.88,
      "t1_pair": [
       "Estee Widdershoven",
       "Isabella Dunlap"
      ],
      "t2_pair": [
-      "Rachel Rohrabacher",
+      "Hannah Blatt",
       "Jackie Kawamoto"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.0649,
+     "p": 0.0607,
      "modal": "4-11",
-     "margin": -5.73,
+     "margin": -5.83,
      "t1_pair": [
       "Anderson Scarpa",
-      "James Delgado"
+      "Anouar Braham"
      ],
      "t2_pair": [
       "Christian Alshon",
@@ -511,12 +511,12 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.0797,
-     "modal": "5-11",
-     "margin": -5.42,
+     "p": 0.0294,
+     "modal": "3-11",
+     "margin": -6.78,
      "t1_pair": [
       "Estee Widdershoven",
-      "Anderson Scarpa"
+      "Anouar Braham"
      ],
      "t2_pair": [
       "Rachel Rohrabacher",
@@ -539,13 +539,13 @@
     }
    ],
    "tree": {
-    "p_win": 0.0106,
-    "p_40": 0.0,
-    "p_31": 0.001,
-    "p_db": 0.0214,
-    "p_13": 0.2101,
-    "p_04": 0.7675,
-    "p_db_win": 0.3013
+    "p_win": 0.0423,
+    "p_40": 0.0001,
+    "p_31": 0.0048,
+    "p_db": 0.1006,
+    "p_13": 0.6904,
+    "p_04": 0.2042,
+    "p_db_win": 0.3726
    }
   },
   {
@@ -555,75 +555,75 @@
    "team1": "Palm Beach Royals",
    "team2": "Chicago Slice",
    "lineups_from": {
-    "team1": "best lineup",
-    "team2": "best lineup"
+    "team1": "official",
+    "team2": "official"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.9694,
+     "p": 0.9802,
      "modal": "11-3",
-     "margin": 6.63,
+     "margin": 7.22,
      "t1_pair": [
-      "Tina Pisnik",
-      "Sofia Sewing"
+      "Sofia Sewing",
+      "Tina Pisnik"
      ],
      "t2_pair": [
-      "Ting Chieh Wei",
-      "Jalina Ingram"
+      "Elsie Hendershot",
+      "Ting Chieh Wei"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.5208,
-     "modal": "11-9",
-     "margin": 0.07,
+     "p": 0.6432,
+     "modal": "11-8",
+     "margin": 1.44,
      "t1_pair": [
       "Dekel Bar",
       "Tyson McGuffin"
      ],
      "t2_pair": [
-      "Hunter Johnson",
-      "John Lucian Goins"
+      "John Lucian Goins",
+      "Zane Navratil"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.7849,
-     "modal": "11-7",
-     "margin": 3.16,
+     "p": 0.9496,
+     "modal": "11-4",
+     "margin": 5.96,
      "t1_pair": [
       "Tina Pisnik",
       "Dekel Bar"
      ],
      "t2_pair": [
-      "Ting Chieh Wei",
-      "Hunter Johnson"
+      "Emma Nelson",
+      "Zane Navratil"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.8466,
-     "modal": "11-6",
-     "margin": 4.01,
+     "p": 0.5266,
+     "modal": "11-9",
+     "margin": 0.13,
      "t1_pair": [
       "Sofia Sewing",
-      "Tyson McGuffin"
+      "Casey Diamond"
      ],
      "t2_pair": [
-      "Jalina Ingram",
+      "Ting Chieh Wei",
       "John Lucian Goins"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.8819,
-    "p_40": 0.3355,
-    "p_31": 0.472,
-    "p_db": 0.1717,
-    "p_13": 0.0203,
-    "p_04": 0.0005,
-    "p_db_win": 0.4334
+    "p_win": 0.9142,
+    "p_40": 0.3153,
+    "p_31": 0.4814,
+    "p_db": 0.1911,
+    "p_13": 0.012,
+    "p_04": 0.0002,
+    "p_db_win": 0.6148
    }
   },
   {
@@ -633,32 +633,32 @@
    "team1": "California Black Bears",
    "team2": "Carolina Hogs",
    "lineups_from": {
-    "team1": "best lineup",
-    "team2": "best lineup"
+    "team1": "official",
+    "team2": "official"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.833,
-     "modal": "11-6",
-     "margin": 3.81,
+     "p": 0.9515,
+     "modal": "11-4",
+     "margin": 6.01,
      "t1_pair": [
       "Sahra Dennehy",
       "Zoey Weil"
      ],
      "t2_pair": [
-      "Samantha Parker",
-      "Kelly Goodnow"
+      "Nicole Conard",
+      "Abbigal Hatton"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.7836,
+     "p": 0.7746,
      "modal": "11-7",
-     "margin": 3.14,
+     "margin": 3.02,
      "t1_pair": [
       "Dylan Frazier",
-      "Joseph Wild"
+      "Pablo Tellez"
      ],
      "t2_pair": [
       "Brandon French",
@@ -667,41 +667,41 @@
     },
     {
      "slot": "MXD1",
-     "p": 0.735,
-     "modal": "11-7",
-     "margin": 2.53,
+     "p": 0.8397,
+     "modal": "11-6",
+     "margin": 3.91,
      "t1_pair": [
-      "Sahra Dennehy",
-      "Dylan Frazier"
+      "Zoey Weil",
+      "Pablo Tellez"
      ],
      "t2_pair": [
-      "Samantha Parker",
+      "Abbigal Hatton",
       "Brandon French"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.8657,
-     "modal": "11-6",
-     "margin": 4.3,
+     "p": 0.9467,
+     "modal": "11-4",
+     "margin": 5.88,
      "t1_pair": [
-      "Zoey Weil",
-      "Joseph Wild"
+      "Sahra Dennehy",
+      "Dylan Frazier"
      ],
      "t2_pair": [
-      "Kelly Goodnow",
-      "Darrian Young"
+      "Aiko Yoshitomi",
+      "Wyatt Stone"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.9312,
-    "p_40": 0.4153,
-    "p_31": 0.4121,
-    "p_db": 0.1483,
-    "p_13": 0.0229,
-    "p_04": 0.0013,
-    "p_db_win": 0.6997
+    "p_win": 0.9825,
+    "p_40": 0.5859,
+    "p_31": 0.3452,
+    "p_db": 0.0645,
+    "p_13": 0.0043,
+    "p_04": 0.0001,
+    "p_db_win": 0.7973
    }
   },
   {
@@ -711,75 +711,75 @@
    "team1": "Las Vegas Night Owls",
    "team2": "Orlando Squeeze",
    "lineups_from": {
-    "team1": "best lineup",
-    "team2": "best lineup"
+    "team1": "official",
+    "team2": "official"
    },
    "games": [
     {
      "slot": "WD",
-     "p": 0.4485,
-     "modal": "9-11",
-     "margin": -0.73,
+     "p": 0.6933,
+     "modal": "11-8",
+     "margin": 2.02,
      "t1_pair": [
-      "Chao Yi Wang",
-      "Liz Truluck"
+      "Callie Smith",
+      "Chao Yi Wang"
      ],
      "t2_pair": [
-      "Lacy Schneemann",
-      "Milan Rane"
+      "Alex Walker",
+      "Lacy Schneemann"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.1764,
-     "modal": "6-11",
-     "margin": -3.91,
+     "p": 0.5743,
+     "modal": "11-9",
+     "margin": 0.66,
      "t1_pair": [
-      "Roscoe Bellamy",
-      "Clayton Powell"
+      "Clayton Powell",
+      "Roscoe Bellamy"
      ],
      "t2_pair": [
-      "Federico Staksrud",
-      "Jack Sock"
+      "Jack Sock",
+      "Gregory Dow"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.3051,
-     "modal": "7-11",
-     "margin": -2.33,
+     "p": 0.3651,
+     "modal": "8-11",
+     "margin": -1.65,
      "t1_pair": [
       "Chao Yi Wang",
       "Roscoe Bellamy"
      ],
      "t2_pair": [
       "Lacy Schneemann",
-      "Federico Staksrud"
+      "Jack Sock"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.2834,
-     "modal": "7-11",
-     "margin": -2.58,
+     "p": 0.6281,
+     "modal": "11-8",
+     "margin": 1.27,
      "t1_pair": [
-      "Liz Truluck",
-      "Clayton Powell"
+      "Callie Smith",
+      "Gabriel Joseph"
      ],
      "t2_pair": [
-      "Milan Rane",
-      "Jack Sock"
+      "Alex Walker",
+      "Yates Johnson"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.178,
-    "p_40": 0.0068,
-    "p_31": 0.0732,
-    "p_db": 0.2726,
-    "p_13": 0.4211,
-    "p_04": 0.2262,
-    "p_db_win": 0.3592
+    "p_win": 0.6588,
+    "p_40": 0.0913,
+    "p_31": 0.3209,
+    "p_db": 0.3759,
+    "p_13": 0.1811,
+    "p_04": 0.0308,
+    "p_db_win": 0.656
    }
   },
   {
