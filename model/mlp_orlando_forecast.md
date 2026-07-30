@@ -1,15 +1,25 @@
 # Amway MLP Orlando — predicted results (design brief)
 
-Generated 2026-07-29, before any ball is struck. Machine-readable payload:
+Generated 2026-07-30, before any ball is struck. Machine-readable payload:
 `data/event_forecast.json`. Regenerate with:
 
 ```bash
+python scraper/mlp_rosters.py                 # refresh official rosters first
 python web/make_event_forecast.py --sims 200000
 ```
 
 Event runs **Thu 30 July – Sat 1 Aug 2026**. 12 teams, two groups of six.
 200,000 simulations. Nothing here is a receipt yet — see "If you want this
 graded" at the bottom.
+
+> **Roster note (v2 of this brief).** These numbers use the OFFICIAL team
+> rosters scraped from majorleaguepickleball.co's team pages (2026-07-30),
+> which lead the played-lineup record by a full trade window. The moves
+> that matter: **Staksrud and Rane are now New Jersey 5s** (both formerly
+> Orlando), **Hunter Johnson is now St. Louis**, **Navratil/Koller/Nelson/
+> Hendershot are Chicago**, **Garnett and Parker are LA**, **Ingram is
+> California**. Orlando Squeeze — playing at home — lost its two best
+> players and collapses from 3rd in Group B to the 9–12 tier as a result.
 
 ---
 
@@ -55,17 +65,19 @@ uses if they differ.
 
 ## 2. What was assumed
 
+- **Rosters are the league's own** (majorleaguepickleball.co team pages,
+  fetched 2026-07-30 by `scraper/mlp_rosters.py`; 121/121 players matched to
+  our identity space by name, zero ambiguity).
 - **Best possible lineups**, as asked: each team's top 2 women + top 2 men by
-  current v2 value, drawn from that team's 2026 MLP roster
-  (latest-appearance-wins, so trades and rotations resolve), with the mixed
-  pairs split to maximize weakest-link-adjusted strength. No official lineups
-  have been published yet — all 30 matchups are still
+  current v2 value from that official roster, with the mixed pairs split to
+  maximize weakest-link-adjusted strength. No official match lineups have
+  been published yet — all 30 matchups are still
   `SCHEDULED_WAITING_FOR_HOME_TEAM_LINEUP`.
-- **This is the single largest source of error.** Rosters rotate event to
-  event, and captains routinely deviate: on day 2 of MLP Chicago, 9 of 10
-  matchups ran pairings that differed from the projection. A team's "best
-  lineup" also assumes every listed player actually travels to Orlando,
-  which the feed cannot confirm ahead of time.
+- **Lineup deviation is still the largest error source.** Captains routinely
+  deviate from the on-paper best four: on day 2 of MLP Chicago, 9 of 10
+  matchups ran pairings that differed from projection. New-roster teams
+  (Chicago, Carolina, Orlando) also have pairs with no shared MLP history,
+  where the model leans hardest on individual values.
 - Pricing is the **graded methodology, unchanged**: per-game win probability
   from v2 values + the weakest-link term, race-to-11 DP, display
   calibration; P(matchup) = P(win ≥3 of 4 games) + P(2–2) × P(DreamBreaker),
@@ -83,18 +95,18 @@ uses if they differ.
 
 | Team | WD | MD | MXD1 | MXD2 |
 |---|---|---|---|---|
+| New Jersey 5s | Anna Leigh Waters / Jorja Johnson | Federico Staksrud / Noe Khlif | Waters / Staksrud | Johnson / Khlif |
 | St. Louis Shock | Anna Bright / Kate Fahey | Hayden Patriquin / Gabriel Tardio | Bright / Patriquin | Fahey / Tardio |
-| New Jersey 5s | Anna Leigh Waters / Jorja Johnson | Noe Khlif / Will Howells | Waters / Khlif | Johnson / Howells |
 | Brooklyn Pickleball Team | Rachel Rohrabacher / Jackie Kawamoto | Christian Alshon / Riley Newman | Rohrabacher / Alshon | Kawamoto / Newman |
-| Los Angeles Mad Drops | Jade Kawamoto / Catherine Parenteau | Ben Johns / Max Freeman | Kawamoto / Johns | Parenteau / Freeman |
+| Los Angeles Mad Drops | Jade Kawamoto / Catherine Parenteau | Ben Johns / Connor Garnett | Kawamoto / Johns | Parenteau / Garnett |
 | Palm Beach Royals | Tina Pisnik / Sofia Sewing | Dekel Bar / Tyson McGuffin | Pisnik / Bar | Sewing / McGuffin |
-| Orlando Squeeze | Lacy Schneemann / Milan Rane | Federico Staksrud / Jack Sock | Schneemann / Staksrud | Rane / Sock |
-| California Black Bears | Sahra Dennehy / Zoey Weil | Dylan Frazier / Joseph Wild | Dennehy / Frazier | Weil / Wild |
+| California Black Bears | Sahra Dennehy / Zoey Weil | Dylan Frazier / Pablo Tellez | Dennehy / Frazier | Weil / Tellez |
 | Las Vegas Night Owls | Chao Yi Wang / Liz Truluck | Roscoe Bellamy / Clayton Powell | Wang / Bellamy | Truluck / Powell |
-| Chicago Slice | Ting Chieh Wei / Jalina Ingram | Hunter Johnson / John Lucian Goins | Wei / Johnson | Ingram / Goins |
 | Miami Pickleball Club | Estee Widdershoven / Isabella Dunlap | Anderson Scarpa / James Delgado | Widdershoven / Scarpa | Dunlap / Delgado |
-| Phoenix Flames | Daria Walczak / Alexa Schull | Jonathan Truong / Wyatt Stone | Walczak / Truong | Schull / Stone |
-| Carolina Hogs | Samantha Parker / Kelly Goodnow | Brandon French / Darrian Young | Parker / French | Goodnow / Young |
+| Phoenix Flames | Daria Walczak / Alexa Schull | Jonathan Truong / Michael Loyd | Walczak / Truong | Schull / Loyd |
+| Orlando Squeeze | Lacy Schneemann / Lina Padegimaite | Jack Sock / Gregory Dow | Schneemann / Sock | Padegimaite / Dow |
+| Chicago Slice | Ting Chieh Wei / Emma Nelson | John Lucian Goins / Zane Navratil | Wei / Goins | Nelson / Navratil |
+| Carolina Hogs | Abbigal Hatton / Nicole Conard | Wyatt Stone / Brandon French | Hatton / French | Conard / Stone |
 
 ---
 
@@ -104,27 +116,29 @@ Rows in predicted order. "Wins" = expected matchup wins out of 5.
 
 | # | Team | Exp. wins | Exp. game ± | 1st | 2nd | 3rd | 4th | 5th | 6th | Makes playoff |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | New Jersey 5s | 4.71 | +13.4 | **80.1%** | 18.3% | 1.4% | 0.1% | 0.0% | 0.0% | ~100% |
-| 2 | Los Angeles Mad Drops | 3.81 | +8.4 | 17.7% | **59.7%** | 19.6% | 2.6% | 0.4% | 0.0% | 99.6% |
-| 3 | Palm Beach Royals | 2.91 | +2.8 | 1.9% | 18.8% | **57.1%** | 18.3% | 3.6% | 0.3% | 96.1% |
-| 4 | California Black Bears | 2.00 | −2.7 | 0.2% | 2.6% | 17.7% | **55.2%** | 21.5% | 2.7% | 75.8% |
-| 5 | Chicago Slice | 1.29 | −7.9 | 0.0% | 0.5% | 4.0% | 22.2% | **57.7%** | 15.5% | 26.7% |
-| 6 | Carolina Hogs | 0.28 | −14.0 | 0.0% | 0.0% | 0.2% | 1.5% | 16.8% | **81.5%** | 1.7% |
+| 1 | New Jersey 5s | 4.74 | +14.3 | **80.2%** | 18.9% | 0.8% | 0.1% | 0.0% | 0.0% | ~100% |
+| 2 | Los Angeles Mad Drops | 3.97 | +9.9 | 18.9% | **67.3%** | 12.7% | 1.1% | 0.0% | 0.0% | ~100% |
+| 3 | Palm Beach Royals | 2.87 | +2.6 | 0.8% | 12.1% | **64.5%** | 20.8% | 1.8% | 0.1% | 98.1% |
+| 4 | California Black Bears | 2.14 | −2.4 | 0.1% | 1.6% | 20.9% | **65.2%** | 11.5% | 0.7% | 87.8% |
+| 5 | Chicago Slice | 1.05 | −9.7 | 0.0% | 0.1% | 1.1% | 12.3% | **70.0%** | 16.5% | 13.5% |
+| 6 | Carolina Hogs | 0.22 | −14.7 | 0.0% | 0.0% | 0.1% | 0.6% | 16.6% | **82.7%** | 0.7% |
 
 ## 5. GROUP B — predicted table
 
 | # | Team | Exp. wins | Exp. game ± | 1st | 2nd | 3rd | 4th | 5th | 6th | Makes playoff |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 | St. Louis Shock | 4.73 | +15.6 | **77.1%** | 22.1% | 0.7% | 0.0% | 0.0% | 0.0% | ~100% |
-| 2 | Brooklyn Pickleball Team | 4.09 | +11.3 | 22.4% | **69.2%** | 8.2% | 0.2% | 0.0% | 0.0% | ~100% |
-| 3 | Orlando Squeeze | 2.79 | +0.8 | 0.4% | 8.3% | **72.9%** | 15.4% | 2.1% | 0.8% | 97.1% |
-| 4 | Las Vegas Night Owls | 1.54 | −7.1 | 0.0% | 0.3% | 11.6% | **45.5%** | 27.0% | 15.6% | 57.4% |
-| 5 | Miami Pickleball Club | 0.95 | −10.3 | 0.0% | 0.0% | 3.6% | 19.5% | **35.7%** | 41.1% | 23.1% |
-| 6 | Phoenix Flames | 0.90 | −10.2 | 0.0% | 0.0% | 3.0% | 19.4% | 35.1% | **42.5%** | 22.4% |
+| 1 | St. Louis Shock | 4.75 | +16.2 | **76.3%** | 23.6% | 0.1% | 0.0% | 0.0% | 0.0% | ~100% |
+| 2 | Brooklyn Pickleball Team | 4.20 | +12.4 | 23.7% | **75.1%** | 1.3% | 0.0% | 0.0% | 0.0% | ~100% |
+| 3 | Las Vegas Night Owls | 2.06 | −4.5 | 0.0% | 0.8% | **47.3%** | 27.9% | 14.4% | 9.5% | 76.1% |
+| 4 | Miami Pickleball Club | 1.41 | −7.8 | 0.0% | 0.2% | 18.9% | **25.7%** | 28.2% | 27.0% | 44.8% |
+| 5 | Phoenix Flames | 1.34 | −8.1 | 0.0% | 0.2% | 17.4% | 24.1% | **28.5%** | 29.9% | 41.6% |
+| 6 | Orlando Squeeze | 1.24 | −8.3 | 0.0% | 0.2% | 15.0% | 22.3% | 28.9% | **33.6%** | 37.5% |
 
-Group B's bottom two are a genuine coin flip — Miami and Phoenix are
-separated by 0.05 expected wins, and their head-to-head on Saturday night is
-the closest matchup of the weekend at 51.7%.
+Group B splits into a top two and a genuine four-team scramble: Las Vegas,
+Miami, Phoenix and hometown Orlando are all within 0.8 expected wins of each
+other for the 3rd and 4th playoff spots. Three of the weekend's four closest
+matchups sit inside that scramble (Phoenix–Orlando 51.6%, Miami–Phoenix
+52.0%, Miami–Orlando 55.3%).
 
 ---
 
@@ -135,30 +149,37 @@ Places 1–8 come from the crossover playoff; 9–10 and 11–12 are shared tier
 
 | Team | Grp | 1st | 2nd | 3rd | 4th | 5th | 6th | 7th | 8th | 9–10 | 11–12 | Exp. place |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| St. Louis Shock | B | **47.1%** | 30.0% | 18.4% | 3.8% | 0.7% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 1.81 |
-| New Jersey 5s | A | 41.5% | **38.6%** | 12.5% | 5.8% | 1.3% | 0.1% | 0.1% | 0.0% | 0.0% | 0.0% | 1.88 |
-| Brooklyn Pickleball Team | B | 8.0% | 14.4% | **43.5%** | 25.7% | 6.8% | 1.4% | 0.2% | 0.0% | 0.0% | 0.0% | 3.14 |
-| Los Angeles Mad Drops | A | 3.2% | 14.5% | 20.2% | **39.5%** | 15.1% | 4.5% | 2.4% | 0.2% | 0.4% | 0.0% | 3.75 |
-| Palm Beach Royals | A | 0.1% | 1.8% | 3.1% | 15.7% | **32.5%** | 24.6% | 15.4% | 2.9% | 3.6% | 0.3% | 5.54 |
-| Orlando Squeeze | B | 0.1% | 0.4% | 2.2% | 6.2% | 34.6% | **38.4%** | 10.9% | 4.5% | 2.1% | 0.8% | 5.77 |
-| California Black Bears | A | 0.0% | 0.2% | 0.1% | 2.5% | 5.7% | 12.0% | **34.7%** | 20.5% | 21.5% | 2.7% | 7.54 |
-| Las Vegas Night Owls | B | 0.0% | 0.0% | 0.0% | 0.3% | 2.0% | 9.6% | 16.6% | **28.9%** | 27.0% | 15.6% | 8.52 |
-| Chicago Slice | A | 0.0% | 0.0% | 0.0% | 0.5% | 0.7% | 3.3% | 9.9% | 12.3% | **57.7%** | 15.5% | 9.20 |
-| Miami Pickleball Club | B | 0.0% | 0.0% | 0.0% | 0.0% | 0.3% | 3.2% | 4.8% | 14.8% | 35.7% | **41.1%** | 9.85 |
-| Phoenix Flames | B | 0.0% | 0.0% | 0.0% | 0.0% | 0.3% | 2.7% | 4.9% | 14.5% | 35.1% | **42.5%** | 9.90 |
-| Carolina Hogs | A | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.2% | 0.3% | 1.3% | 16.8% | **81.5%** | 11.10 |
+| New Jersey 5s | A | **49.8%** | 30.4% | 14.1% | 4.8% | 0.8% | 0.0% | 0.1% | 0.0% | 0.0% | 0.0% | 1.77 |
+| St. Louis Shock | B | 39.0% | **37.3%** | 17.9% | 5.7% | 0.1% | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 1.91 |
+| Brooklyn Pickleball Team | B | 6.3% | 17.3% | **39.0%** | 36.1% | 1.0% | 0.2% | 0.0% | 0.0% | 0.0% | 0.0% | 3.09 |
+| Los Angeles Mad Drops | A | 4.8% | 14.1% | 27.2% | **40.2%** | 12.3% | 0.3% | 1.0% | 0.0% | 0.0% | 0.0% | 3.47 |
+| Palm Beach Royals | A | 0.1% | 0.7% | 1.8% | 10.4% | **57.2%** | 7.3% | 18.9% | 1.9% | 1.8% | 0.1% | 5.43 |
+| California Black Bears | A | 0.0% | 0.1% | 0.1% | 1.5% | 14.8% | 6.0% | **48.7%** | 16.5% | 11.5% | 0.7% | 7.07 |
+| Las Vegas Night Owls | B | 0.0% | 0.0% | 0.0% | 0.8% | 8.1% | **39.2%** | 9.8% | 18.1% | 14.4% | 9.5% | 7.39 |
+| Miami Pickleball Club | B | 0.0% | 0.0% | 0.0% | 0.1% | 1.9% | 17.0% | 6.0% | 19.7% | **28.2%** | 27.0% | 8.91 |
+| Phoenix Flames | B | 0.0% | 0.0% | 0.0% | 0.2% | 1.8% | 15.6% | 5.7% | 18.4% | 28.5% | **29.9%** | 9.04 |
+| Orlando Squeeze | B | 0.0% | 0.0% | 0.0% | 0.2% | 1.5% | 13.5% | 5.0% | 17.3% | 28.9% | **33.6%** | 9.24 |
+| Chicago Slice | A | 0.0% | 0.0% | 0.0% | 0.1% | 0.4% | 0.7% | 4.8% | 7.5% | **70.0%** | 16.5% | 9.55 |
+| Carolina Hogs | A | 0.0% | 0.0% | 0.0% | 0.0% | 0.0% | 0.1% | 0.1% | 0.6% | 16.6% | **82.7%** | 11.14 |
+
+(The saw-tooth in the middle columns — e.g. Palm Beach 57.2% for 5th but
+7.3% for 6th — is real, not noise: odd places go to crossover *winners* and
+even places to *losers*, so a team that usually enters the A3vB3 matchup as
+the favorite lands on 5th far more often than 6th.)
 
 Headline numbers for the infographic:
 
-- **Title: St. Louis 47.1%, New Jersey 41.5%.** Between them, 88.6% — this
-  is a two-team weekend on paper.
-- **Reaching the title matchup** (winning your group): St. Louis 77.1%,
-  New Jersey 80.1%, Brooklyn 22.4%, LA Mad Drops 17.7%, everyone else
-  under 2%.
-- **Podium (top 3):** St. Louis 95.5%, New Jersey 92.6%, Brooklyn 65.9%,
-  LA Mad Drops 37.9%. Nobody else clears 5%.
-- **Most likely single outcome overall:** St. Louis and New Jersey meet for
-  the title (61.7% of simulations produce that final).
+- **Title: New Jersey 49.8%, St. Louis 39.0%.** The Staksrud trade flips the
+  favorite — between them 88.8%, and the two meet in the title matchup in
+  ~61% of simulations.
+- **Reaching the title matchup** (winning your group): New Jersey 80.2%,
+  St. Louis 76.3%, Brooklyn 23.7%, LA Mad Drops 18.9%, everyone else
+  under 1%.
+- **Podium (top 3):** New Jersey 94.3%, St. Louis 94.2%, Brooklyn 62.6%,
+  LA Mad Drops 46.1%. Nobody else clears 3%.
+- **The home-team story:** Orlando lost Staksrud and Rane to New Jersey in
+  the trade window and drops from a projected 3rd in Group B to most likely
+  missing the playoff round entirely (62.5%).
 
 ---
 
@@ -170,38 +191,39 @@ Times converted to ET (Orlando local).
 |---|---|---|---|---|---|
 | Thu 7/30 | 11:30a | B | Phoenix v Brooklyn | Brooklyn | 98.9% |
 | Thu 7/30 | 12:00p | B | St. Louis v Miami | St. Louis | 98.9% |
-| Thu 7/30 | 1:00p | A | California v Palm Beach | Palm Beach | 75.9% |
-| Thu 7/30 | 1:30p | A | LA Mad Drops v Chicago | LA Mad Drops | 96.1% |
-| Thu 7/30 | 2:30p | B | Phoenix v Las Vegas | Las Vegas | 66.7% |
+| Thu 7/30 | 1:00p | A | California v Palm Beach | Palm Beach | 74.6% |
+| Thu 7/30 | 1:30p | A | LA Mad Drops v Chicago | LA Mad Drops | 98.9% |
+| Thu 7/30 | 2:30p | B | Phoenix v Las Vegas | Las Vegas | 67.0% |
 | Thu 7/30 | 3:00p | A | New Jersey v Carolina | New Jersey | 98.9% |
 | Thu 7/30 | 4:00p | B | Miami v Brooklyn | Brooklyn | 98.9% |
-| Thu 7/30 | 4:30p | A | Palm Beach v Chicago | Palm Beach | 86.4% |
-| Thu 7/30 | 5:30p | A | California v Carolina | California | 93.1% |
-| Thu 7/30 | 6:00p | B | Las Vegas v Orlando | Orlando | 82.2% |
+| Thu 7/30 | 4:30p | A | Palm Beach v Chicago | Palm Beach | 93.4% |
+| Thu 7/30 | 5:30p | A | California v Carolina | California | 97.2% |
+| Thu 7/30 | 6:00p | B | Las Vegas v Orlando | Las Vegas | 69.6% |
 | Fri 7/31 | 11:30a | B | St. Louis v Phoenix | St. Louis | 98.9% |
-| Fri 7/31 | 12:00p | A | LA Mad Drops v Palm Beach | LA Mad Drops | 74.2% |
+| Fri 7/31 | 12:00p | A | LA Mad Drops v Palm Beach | LA Mad Drops | 82.6% |
 | Fri 7/31 | 1:00p | B | Brooklyn v Las Vegas | Brooklyn | 98.5% |
-| Fri 7/31 | 1:30p | A | Chicago v New Jersey | New Jersey | 98.7% |
-| Fri 7/31 | 2:30p | A | California v LA Mad Drops | LA Mad Drops | 90.7% |
-| Fri 7/31 | 3:00p | B | Phoenix v Orlando | Orlando | 92.0% |
-| Fri 7/31 | 4:00p | A | Chicago v Carolina | Chicago | 81.2% |
+| Fri 7/31 | 1:30p | A | Chicago v New Jersey | New Jersey | 98.9% |
+| Fri 7/31 | 2:30p | A | California v LA Mad Drops | LA Mad Drops | 94.5% |
+| Fri 7/31 | 3:00p | B | Phoenix v Orlando | Phoenix | 51.6% |
+| Fri 7/31 | 4:00p | A | Chicago v Carolina | Chicago | 82.2% |
 | Fri 7/31 | 4:30p | B | Brooklyn v St. Louis | St. Louis | 76.3% |
-| Fri 7/31 | 5:30p | A | New Jersey v California | New Jersey | 97.5% |
-| Fri 7/31 | 6:00p | B | Orlando v Miami | Orlando | 90.4% |
+| Fri 7/31 | 5:30p | A | New Jersey v California | New Jersey | 98.4% |
+| Fri 7/31 | 6:00p | B | Orlando v Miami | Miami | 55.3% |
 | Sat 8/1 | 11:30a | B | Miami v Las Vegas | Las Vegas | 67.3% |
-| Sat 8/1 | 12:00p | A | Palm Beach v New Jersey | New Jersey | 94.8% |
+| Sat 8/1 | 12:00p | A | Palm Beach v New Jersey | New Jersey | 97.0% |
 | Sat 8/1 | 1:00p | A | Carolina v LA Mad Drops | LA Mad Drops | 98.9% |
-| Sat 8/1 | 1:30p | B | Brooklyn v Orlando | Brooklyn | 88.5% |
-| Sat 8/1 | 2:30p | A | Chicago v California | California | 71.2% |
+| Sat 8/1 | 1:30p | B | Brooklyn v Orlando | Brooklyn | 98.9% |
+| Sat 8/1 | 2:30p | A | Chicago v California | California | 84.3% |
 | Sat 8/1 | 3:00p | B | Las Vegas v St. Louis | St. Louis | 98.9% |
-| Sat 8/1 | 4:00p | A | Carolina v Palm Beach | Palm Beach | 97.7% |
-| Sat 8/1 | 4:30p | A | New Jersey v LA Mad Drops | New Jersey | 79.6% |
-| Sat 8/1 | 5:30p | B | Miami v Phoenix | Miami | 51.7% |
-| Sat 8/1 | 7:00p | B | Orlando v St. Louis | St. Louis | 96.8% |
+| Sat 8/1 | 4:00p | A | Carolina v Palm Beach | Palm Beach | 98.6% |
+| Sat 8/1 | 4:30p | A | New Jersey v LA Mad Drops | New Jersey | 79.4% |
+| Sat 8/1 | 5:30p | B | Miami v Phoenix | Miami | 52.0% |
+| Sat 8/1 | 7:00p | B | Orlando v St. Louis | St. Louis | 98.9% |
 
-**The three that decide the weekend:** Brooklyn v St. Louis (Fri 4:30p, the
-Group B title), New Jersey v LA Mad Drops (Sat 4:30p, the Group A title), and
-Miami v Phoenix (Sat 5:30p) for last place in Group B.
+**The matchups that decide the weekend:** Brooklyn v St. Louis (Fri 4:30p)
+and New Jersey v LA Mad Drops (Sat 4:30p) for the two group titles, and the
+Group B scramble triangle — Phoenix–Orlando (Fri 3:00p), Miami–Orlando
+(Fri 6:00p), Miami–Phoenix (Sat 5:30p) — for the last two playoff spots.
 
 ---
 
@@ -214,6 +236,8 @@ Miami v Phoenix (Sat 5:30p) for last place in Group B.
   calibration cap rather than being genuinely near-certain.
 - Expected place mixes ranks and tiers (a 9–10 tier counts as 9.5), so it's
   a sorting key and a rough summary — not a prediction of a specific rank.
+- The saw-tooth across even/odd places (Section 6) is a real feature of the
+  crossover format — don't smooth it away.
 - Group labels A/B are ours, not MLP's.
 
 ## If you want this graded

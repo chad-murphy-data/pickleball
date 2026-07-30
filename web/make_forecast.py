@@ -169,13 +169,30 @@ def recent_lineup_for_team(c, team_title, before, cache):
     return None, None
 
 
+def official_rosters():
+    """team_title -> {player_uuid} from data/mlp_rosters.csv — the league's
+    OWN roster pages (scraper/mlp_rosters.py), which lead appearance-derived
+    rosters by a full trade window.  Rows with an empty player_id are
+    unmatched names (site uuids aren't ours; the join is by name) and are
+    skipped — the scraper logs them at fetch time.  {} when absent."""
+    path = DATA / "mlp_rosters.csv"
+    if not path.exists():
+        return {}
+    out = {}
+    for r in csv.DictReader(path.open()):
+        if r["player_id"]:
+            out.setdefault(r["team"], set()).add(r["player_id"])
+    return out
+
+
 def mlp_rosters(c, before, start=None):
-    """team_title -> {player_uuid} from every published MLP lineup this
-    season, assigning each player to the team of their MOST RECENT
-    appearance (latest-appearance-wins absorbs trades and event-to-event
-    roster rotation).  Walks the season via the same cached endpoints the
-    harvester fills nightly, so a CI/warm-cache run touches the network
-    only for the volatile trailing days."""
+    """team_title -> {player_uuid}.  A team present in the OFFICIAL roster
+    file (data/mlp_rosters.csv) uses that verbatim; otherwise every published
+    MLP lineup this season, assigning each player to the team of their MOST
+    RECENT appearance (latest-appearance-wins absorbs trades and
+    event-to-event roster rotation).  Walks the season via the same cached
+    endpoints the harvester fills nightly, so a CI/warm-cache run touches
+    the network only for the volatile trailing days."""
     start = start or SEASON_START
     latest = {}                        # player_uuid -> (date, team_title)
     d = start
@@ -205,6 +222,7 @@ def mlp_rosters(c, before, start=None):
     rosters = {}
     for u, (_, title) in latest.items():
         rosters.setdefault(title, set()).add(u)
+    rosters.update(official_rosters())      # league's own list wins per-team
     return rosters
 
 

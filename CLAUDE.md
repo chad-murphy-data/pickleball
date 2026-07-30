@@ -38,6 +38,9 @@ python web/make_event_forecast.py            # whole MLP event weekend: groups +
                                              #   crossover playoff → data/event_forecast.json
 python scraper/tournament_state.py           # live-event state (MLP standings/slate,
                                              #   PPA seeded draws) → data/tournament_state.json
+python scraper/mlp_rosters.py                # OFFICIAL rosters from majorleaguepickleball.co
+                                             #   → data/mlp_rosters.csv (name-joined; run
+                                             #   before pricing an event after a trade window)
 python web/build_site.py                     # data/*.csv → site/ static website (~4 s)
 ```
 
@@ -213,8 +216,12 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 - **Lineups (2026-07-17; ladder reworked 2026-07-26)**: make_forecast
   projects via a 3-tier ladder — (1) the matchup's own PUBLISHED lineups,
   (2) BEST LINEUP: top 2W+2M by v2 value from the team's season roster
-  (roster = latest-MLP-appearance-wins per player, walked from
-  SEASON_START; mixed split maximizes weakest-link pair strength), (3)
+  (roster = the OFFICIAL list in data/mlp_rosters.csv when present —
+  scraper/mlp_rosters.py scrapes majorleaguepickleball.co team pages,
+  which lead played lineups by a full trade window; join is BY NAME since
+  the site has its own uuid space, unmatched names logged loudly — else
+  latest-MLP-appearance-wins per player, walked from SEASON_START; mixed
+  split maximizes weakest-link pair strength), (3)
   last-completed-matchup fallback. Tier 2 exists because MLP Chicago
   priced Brooklyn at <1% off a stale July-10 B-squad lineup (Navratil
   called it out; best-lineup repriced them 83% pre-event and they lost

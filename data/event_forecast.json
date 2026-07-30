@@ -1,5 +1,5 @@
 {
- "generated": "2026-07-29",
+ "generated": "2026-07-30",
  "event": "Amway MLP Orlando",
  "group_uuid": "d5fc5840-64b2-47d1-b21d-a9dca9eb6390",
  "sims": 200000,
@@ -56,7 +56,7 @@
    "group": "A",
    "team1": "California Black Bears",
    "team2": "Palm Beach Royals",
-   "p_team1": 0.2408,
+   "p_team1": 0.2536,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -67,7 +67,7 @@
    "group": "A",
    "team1": "Los Angeles Mad Drops",
    "team2": "Chicago Slice",
-   "p_team1": 0.9614,
+   "p_team1": 0.9894,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -78,7 +78,7 @@
    "group": "B",
    "team1": "Phoenix Flames",
    "team2": "Las Vegas Night Owls",
-   "p_team1": 0.333,
+   "p_team1": 0.3298,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -111,7 +111,7 @@
    "group": "A",
    "team1": "Palm Beach Royals",
    "team2": "Chicago Slice",
-   "p_team1": 0.8636,
+   "p_team1": 0.9341,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -122,7 +122,7 @@
    "group": "A",
    "team1": "California Black Bears",
    "team2": "Carolina Hogs",
-   "p_team1": 0.9312,
+   "p_team1": 0.9717,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -133,7 +133,7 @@
    "group": "B",
    "team1": "Las Vegas Night Owls",
    "team2": "Orlando Squeeze",
-   "p_team1": 0.178,
+   "p_team1": 0.6963,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -155,7 +155,7 @@
    "group": "A",
    "team1": "Los Angeles Mad Drops",
    "team2": "Palm Beach Royals",
-   "p_team1": 0.7422,
+   "p_team1": 0.8257,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -177,7 +177,7 @@
    "group": "A",
    "team1": "Chicago Slice",
    "team2": "New Jersey 5s",
-   "p_team1": 0.0127,
+   "p_team1": 0.0106,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -188,7 +188,7 @@
    "group": "A",
    "team1": "California Black Bears",
    "team2": "Los Angeles Mad Drops",
-   "p_team1": 0.0928,
+   "p_team1": 0.0555,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -199,7 +199,7 @@
    "group": "B",
    "team1": "Phoenix Flames",
    "team2": "Orlando Squeeze",
-   "p_team1": 0.0803,
+   "p_team1": 0.5164,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -210,7 +210,7 @@
    "group": "A",
    "team1": "Chicago Slice",
    "team2": "Carolina Hogs",
-   "p_team1": 0.8123,
+   "p_team1": 0.8215,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -232,7 +232,7 @@
    "group": "A",
    "team1": "New Jersey 5s",
    "team2": "California Black Bears",
-   "p_team1": 0.9747,
+   "p_team1": 0.9838,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -243,7 +243,7 @@
    "group": "B",
    "team1": "Orlando Squeeze",
    "team2": "Miami Pickleball Club",
-   "p_team1": 0.9037,
+   "p_team1": 0.4473,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -265,7 +265,7 @@
    "group": "A",
    "team1": "Palm Beach Royals",
    "team2": "New Jersey 5s",
-   "p_team1": 0.0523,
+   "p_team1": 0.0303,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -287,7 +287,7 @@
    "group": "B",
    "team1": "Brooklyn Pickleball Team",
    "team2": "Orlando Squeeze",
-   "p_team1": 0.8851,
+   "p_team1": 0.9894,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -298,7 +298,7 @@
    "group": "A",
    "team1": "Chicago Slice",
    "team2": "California Black Bears",
-   "p_team1": 0.2877,
+   "p_team1": 0.1571,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -320,7 +320,7 @@
    "group": "A",
    "team1": "Carolina Hogs",
    "team2": "Palm Beach Royals",
-   "p_team1": 0.0232,
+   "p_team1": 0.0144,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -331,7 +331,7 @@
    "group": "A",
    "team1": "New Jersey 5s",
    "team2": "Los Angeles Mad Drops",
-   "p_team1": 0.7964,
+   "p_team1": 0.7937,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -342,7 +342,7 @@
    "group": "B",
    "team1": "Miami Pickleball Club",
    "team2": "Phoenix Flames",
-   "p_team1": 0.517,
+   "p_team1": 0.5199,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -353,7 +353,7 @@
    "group": "B",
    "team1": "Orlando Squeeze",
    "team2": "St. Louis Shock",
-   "p_team1": 0.0322,
+   "p_team1": 0.0106,
    "done": false,
    "games1": 0,
    "games2": 0
@@ -383,9 +383,9 @@
       0.7531
      ],
      [
-      "a51b59c5-1a13-4472-821a-eb9866e72adf",
-      "Joseph Wild",
-      0.7049
+      "52726ab1-2ac9-46c0-be90-6b0e7a2d56eb",
+      "Pablo Tellez",
+      0.6926
      ]
     ],
     "MXD1": [
@@ -407,41 +407,41 @@
       0.6966
      ],
      [
-      "a51b59c5-1a13-4472-821a-eb9866e72adf",
-      "Joseph Wild",
-      0.7049
+      "52726ab1-2ac9-46c0-be90-6b0e7a2d56eb",
+      "Pablo Tellez",
+      0.6926
      ]
     ]
    },
-   "exp_wins": 2.001,
-   "exp_game_diff": -2.68,
-   "exp_rally_diff": -20.2,
+   "exp_wins": 2.14,
+   "exp_game_diff": -2.4,
+   "exp_rally_diff": -17.6,
    "group_rank": {
-    "1": 0.00238,
-    "2": 0.02632,
-    "3": 0.17715,
-    "4": 0.5521,
-    "5": 0.21547,
-    "6": 0.02659
+    "1": 0.00136,
+    "2": 0.01573,
+    "3": 0.20868,
+    "4": 0.65196,
+    "5": 0.11543,
+    "6": 0.00684
    },
-   "p_group_win": 0.00238,
-   "p_playoff": 0.75794,
+   "p_group_win": 0.00136,
+   "p_playoff": 0.87772,
    "place": {
-    "1": 4e-05,
-    "2": 0.00234,
-    "3": 0.00136,
-    "4": 0.02497,
-    "5": 0.05677,
-    "6": 0.12039,
-    "7": 0.34669,
-    "8": 0.20541,
-    "9": 0.21547,
-    "11": 0.02659
+    "1": 2e-05,
+    "2": 0.00134,
+    "3": 0.00068,
+    "4": 0.01504,
+    "5": 0.1483,
+    "6": 0.06037,
+    "7": 0.48693,
+    "8": 0.16503,
+    "9": 0.11543,
+    "11": 0.00684
    },
-   "p_title": 4e-05,
-   "p_final": 0.00238,
-   "p_podium": 0.00374,
-   "exp_place": 7.538
+   "p_title": 2e-05,
+   "p_final": 0.00136,
+   "p_podium": 0.00204,
+   "exp_place": 7.073
   },
   "Carolina Hogs": {
    "group": "A",
@@ -449,33 +449,33 @@
    "lineup": {
     "WD": [
      [
-      "6794d224-7da3-43d9-8300-e24e731f5dea",
-      "Samantha Parker",
-      0.7293
+      "a018902f-114c-4519-997c-4fdf52d4a0e1",
+      "Abbigal Hatton",
+      0.3863
      ],
      [
-      "f6e249dc-5bb9-483a-a99f-df364df93341",
-      "Kelly Goodnow",
-      0.3944
+      "5925398b-b2a9-4e8f-ae46-5c2b59b1b818",
+      "Nicole Conard",
+      0.3319
      ]
     ],
     "MD": [
      [
+      "f86cff72-5f9c-40b1-9f28-f28aafae245f",
+      "Wyatt Stone",
+      0.6431
+     ],
+     [
       "a9a168ae-7822-4d31-b07b-fba40480c1fc",
       "Brandon French",
       0.5871
-     ],
-     [
-      "d45a3391-82f4-45d0-ba66-f1901854a8d0",
-      "Darrian Young",
-      0.522
      ]
     ],
     "MXD1": [
      [
-      "6794d224-7da3-43d9-8300-e24e731f5dea",
-      "Samantha Parker",
-      0.7293
+      "a018902f-114c-4519-997c-4fdf52d4a0e1",
+      "Abbigal Hatton",
+      0.3863
      ],
      [
       "a9a168ae-7822-4d31-b07b-fba40480c1fc",
@@ -485,42 +485,42 @@
     ],
     "MXD2": [
      [
-      "f6e249dc-5bb9-483a-a99f-df364df93341",
-      "Kelly Goodnow",
-      0.3944
+      "5925398b-b2a9-4e8f-ae46-5c2b59b1b818",
+      "Nicole Conard",
+      0.3319
      ],
      [
-      "d45a3391-82f4-45d0-ba66-f1901854a8d0",
-      "Darrian Young",
-      0.522
+      "f86cff72-5f9c-40b1-9f28-f28aafae245f",
+      "Wyatt Stone",
+      0.6431
      ]
     ]
    },
-   "exp_wins": 0.284,
-   "exp_game_diff": -14.03,
-   "exp_rally_diff": -90.4,
+   "exp_wins": 0.223,
+   "exp_game_diff": -14.69,
+   "exp_rally_diff": -102.1,
    "group_rank": {
-    "2": 3e-05,
-    "3": 0.00162,
-    "4": 0.01542,
-    "5": 0.16805,
-    "6": 0.81487
+    "2": 1e-05,
+    "3": 0.00056,
+    "4": 0.00632,
+    "5": 0.16585,
+    "6": 0.82725
    },
    "p_group_win": 0.0,
-   "p_playoff": 0.01708,
+   "p_playoff": 0.0069,
    "place": {
-    "4": 3e-05,
-    "5": 3e-05,
-    "6": 0.0016,
-    "7": 0.00261,
-    "8": 0.01282,
-    "9": 0.16805,
-    "11": 0.81487
+    "4": 1e-05,
+    "5": 6e-05,
+    "6": 0.00051,
+    "7": 0.00081,
+    "8": 0.00551,
+    "9": 0.16585,
+    "11": 0.82725
    },
    "p_title": 0.0,
    "p_final": 0.0,
    "p_podium": 0,
-   "exp_place": 11.098
+   "exp_place": 11.142
   },
   "Chicago Slice": {
    "group": "A",
@@ -533,21 +533,21 @@
       0.7522
      ],
      [
-      "574957ae-e8d5-486e-aabc-a1cc6a392f8d",
-      "Jalina Ingram",
-      0.4943
+      "ab6386c6-c7e3-422f-9134-e20e92725ee5",
+      "Emma Nelson",
+      0.4761
      ]
     ],
     "MD": [
      [
-      "8160ad59-4654-46b1-b229-8d5f2a9a45f9",
-      "Hunter Johnson",
-      0.7204
-     ],
-     [
       "e96d9339-cfb6-473d-bcb3-23f2887a3e0f",
       "John Lucian Goins",
       0.6718
+     ],
+     [
+      "30eb9a2b-1570-473f-8cf1-0f7c9d21b303",
+      "Zane Navratil",
+      0.5808
      ]
     ],
     "MXD1": [
@@ -557,53 +557,52 @@
       0.7522
      ],
      [
-      "8160ad59-4654-46b1-b229-8d5f2a9a45f9",
-      "Hunter Johnson",
-      0.7204
-     ]
-    ],
-    "MXD2": [
-     [
-      "574957ae-e8d5-486e-aabc-a1cc6a392f8d",
-      "Jalina Ingram",
-      0.4943
-     ],
-     [
       "e96d9339-cfb6-473d-bcb3-23f2887a3e0f",
       "John Lucian Goins",
       0.6718
      ]
+    ],
+    "MXD2": [
+     [
+      "ab6386c6-c7e3-422f-9134-e20e92725ee5",
+      "Emma Nelson",
+      0.4761
+     ],
+     [
+      "30eb9a2b-1570-473f-8cf1-0f7c9d21b303",
+      "Zane Navratil",
+      0.5808
+     ]
     ]
    },
-   "exp_wins": 1.29,
-   "exp_game_diff": -7.91,
-   "exp_rally_diff": -51.3,
+   "exp_wins": 1.053,
+   "exp_game_diff": -9.73,
+   "exp_rally_diff": -63.8,
    "group_rank": {
-    "1": 0.00026,
-    "2": 0.00504,
-    "3": 0.03993,
-    "4": 0.22221,
-    "5": 0.5772,
-    "6": 0.15535
-   },
-   "p_group_win": 0.00026,
-   "p_playoff": 0.26744,
-   "place": {
     "1": 1e-05,
-    "2": 0.00026,
-    "3": 0.00014,
-    "4": 0.0049,
-    "5": 0.00726,
-    "6": 0.03267,
-    "7": 0.09891,
-    "8": 0.1233,
-    "9": 0.5772,
-    "11": 0.15535
+    "2": 0.00053,
+    "3": 0.01124,
+    "4": 0.12293,
+    "5": 0.70041,
+    "6": 0.16487
    },
-   "p_title": 1e-05,
-   "p_final": 0.00027,
-   "p_podium": 0.00041,
-   "exp_place": 9.202
+   "p_group_win": 1e-05,
+   "p_playoff": 0.13472,
+   "place": {
+    "2": 1e-05,
+    "3": 1e-05,
+    "4": 0.00052,
+    "5": 0.00397,
+    "6": 0.00728,
+    "7": 0.048,
+    "8": 0.07493,
+    "9": 0.70041,
+    "11": 0.16487
+   },
+   "p_title": 0.0,
+   "p_final": 1e-05,
+   "p_podium": 2e-05,
+   "exp_place": 9.551
   },
   "Los Angeles Mad Drops": {
    "group": "A",
@@ -628,9 +627,9 @@
       1.1139
      ],
      [
-      "b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9",
-      "Max Freeman",
-      0.6907
+      "ff38654d-daae-4bad-a1a7-690e4e5706eb",
+      "Connor Garnett",
+      0.8096
      ]
     ],
     "MXD1": [
@@ -652,41 +651,39 @@
       0.8946
      ],
      [
-      "b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9",
-      "Max Freeman",
-      0.6907
+      "ff38654d-daae-4bad-a1a7-690e4e5706eb",
+      "Connor Garnett",
+      0.8096
      ]
     ]
    },
-   "exp_wins": 3.81,
-   "exp_game_diff": 8.36,
-   "exp_rally_diff": 50.8,
+   "exp_wins": 3.97,
+   "exp_game_diff": 9.9,
+   "exp_rally_diff": 63.4,
    "group_rank": {
-    "1": 0.17698,
-    "2": 0.59745,
-    "3": 0.1962,
-    "4": 0.02573,
-    "5": 0.00358,
-    "6": 7e-05
+    "1": 0.18893,
+    "2": 0.67348,
+    "3": 0.12654,
+    "4": 0.01056,
+    "5": 0.00049
    },
-   "p_group_win": 0.17698,
-   "p_playoff": 0.99635,
+   "p_group_win": 0.18893,
+   "p_playoff": 0.99951,
    "place": {
-    "1": 0.03222,
-    "2": 0.14477,
-    "3": 0.20248,
-    "4": 0.39496,
-    "5": 0.15076,
-    "6": 0.04544,
-    "7": 0.02406,
-    "8": 0.00166,
-    "9": 0.00358,
-    "11": 7e-05
+    "1": 0.04815,
+    "2": 0.14078,
+    "3": 0.27165,
+    "4": 0.40182,
+    "5": 0.12341,
+    "6": 0.00313,
+    "7": 0.01039,
+    "8": 0.00017,
+    "9": 0.00049
    },
-   "p_title": 0.03222,
-   "p_final": 0.17698,
-   "p_podium": 0.37946,
-   "exp_place": 3.752
+   "p_title": 0.04815,
+   "p_final": 0.18893,
+   "p_podium": 0.46058,
+   "exp_place": 3.467
   },
   "New Jersey 5s": {
    "group": "A",
@@ -706,14 +703,14 @@
     ],
     "MD": [
      [
+      "7edb882c-6d17-4129-8208-710e3c82364c",
+      "Federico Staksrud",
+      0.905
+     ],
+     [
       "1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4",
       "Noe Khlif",
       0.7918
-     ],
-     [
-      "d0f19d1e-2a6e-4eb3-b10c-1311edd599a8",
-      "Will Howells",
-      0.7824
      ]
     ],
     "MXD1": [
@@ -723,9 +720,9 @@
       1.7994
      ],
      [
-      "1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4",
-      "Noe Khlif",
-      0.7918
+      "7edb882c-6d17-4129-8208-710e3c82364c",
+      "Federico Staksrud",
+      0.905
      ]
     ],
     "MXD2": [
@@ -735,39 +732,39 @@
       1.1731
      ],
      [
-      "d0f19d1e-2a6e-4eb3-b10c-1311edd599a8",
-      "Will Howells",
-      0.7824
+      "1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4",
+      "Noe Khlif",
+      0.7918
      ]
     ]
    },
-   "exp_wins": 4.705,
-   "exp_game_diff": 13.43,
-   "exp_rally_diff": 92.3,
+   "exp_wins": 4.744,
+   "exp_game_diff": 14.27,
+   "exp_rally_diff": 100.6,
    "group_rank": {
-    "1": 0.8012,
-    "2": 0.18305,
-    "3": 0.0143,
-    "4": 0.00139,
-    "5": 6e-05
+    "1": 0.80206,
+    "2": 0.18902,
+    "3": 0.00819,
+    "4": 0.00072,
+    "5": 1e-05
    },
-   "p_group_win": 0.8012,
-   "p_playoff": 0.99994,
+   "p_group_win": 0.80206,
+   "p_playoff": 0.99999,
    "place": {
-    "1": 0.41485,
-    "2": 0.38636,
-    "3": 0.12467,
-    "4": 0.05838,
-    "5": 0.013,
-    "6": 0.00129,
-    "7": 0.00136,
-    "8": 4e-05,
-    "9": 6e-05
+    "1": 0.49798,
+    "2": 0.30408,
+    "3": 0.14111,
+    "4": 0.04791,
+    "5": 0.00806,
+    "6": 0.00013,
+    "7": 0.00071,
+    "8": 1e-05,
+    "9": 1e-05
    },
-   "p_title": 0.41485,
-   "p_final": 0.8012,
-   "p_podium": 0.92588,
-   "exp_place": 1.878
+   "p_title": 0.49798,
+   "p_final": 0.80206,
+   "p_podium": 0.94317,
+   "exp_place": 1.767
   },
   "Palm Beach Royals": {
    "group": "A",
@@ -822,35 +819,35 @@
      ]
     ]
    },
-   "exp_wins": 2.909,
-   "exp_game_diff": 2.83,
-   "exp_rally_diff": 18.8,
+   "exp_wins": 2.87,
+   "exp_game_diff": 2.65,
+   "exp_rally_diff": 19.5,
    "group_rank": {
-    "1": 0.01917,
-    "2": 0.18812,
-    "3": 0.5708,
-    "4": 0.18316,
-    "5": 0.03565,
-    "6": 0.00312
+    "1": 0.00764,
+    "2": 0.12122,
+    "3": 0.64479,
+    "4": 0.20752,
+    "5": 0.0178,
+    "6": 0.00103
    },
-   "p_group_win": 0.01917,
-   "p_playoff": 0.96124,
+   "p_group_win": 0.00764,
+   "p_playoff": 0.98117,
    "place": {
-    "1": 0.0012,
-    "2": 0.01797,
-    "3": 0.03122,
-    "4": 0.1569,
-    "5": 0.32521,
-    "6": 0.24558,
-    "7": 0.15373,
-    "8": 0.02942,
-    "9": 0.03565,
-    "11": 0.00312
+    "1": 0.00055,
+    "2": 0.0071,
+    "3": 0.01762,
+    "4": 0.1036,
+    "5": 0.5721,
+    "6": 0.07268,
+    "7": 0.18854,
+    "8": 0.01898,
+    "9": 0.0178,
+    "11": 0.00103
    },
-   "p_title": 0.0012,
-   "p_final": 0.01917,
-   "p_podium": 0.05039,
-   "exp_place": 5.544
+   "p_title": 0.00055,
+   "p_final": 0.00765,
+   "p_podium": 0.02527,
+   "exp_place": 5.431
   },
   "Brooklyn Pickleball Team": {
    "group": "B",
@@ -905,35 +902,33 @@
      ]
     ]
    },
-   "exp_wins": 4.092,
-   "exp_game_diff": 11.28,
-   "exp_rally_diff": 69.5,
+   "exp_wins": 4.202,
+   "exp_game_diff": 12.42,
+   "exp_rally_diff": 79.5,
    "group_rank": {
-    "1": 0.22442,
-    "2": 0.69183,
-    "3": 0.08171,
-    "4": 0.00186,
-    "5": 0.00018,
-    "6": 1e-05
+    "1": 0.23664,
+    "2": 0.75059,
+    "3": 0.01258,
+    "4": 0.00017,
+    "5": 1e-05
    },
-   "p_group_win": 0.22442,
-   "p_playoff": 0.99981,
+   "p_group_win": 0.23664,
+   "p_playoff": 0.99999,
    "place": {
-    "1": 0.08032,
-    "2": 0.1441,
-    "3": 0.43465,
-    "4": 0.25718,
-    "5": 0.0676,
-    "6": 0.01412,
-    "7": 0.00171,
-    "8": 0.00015,
-    "9": 0.00018,
-    "11": 1e-05
+    "1": 0.06349,
+    "2": 0.17316,
+    "3": 0.38981,
+    "4": 0.36079,
+    "5": 0.01029,
+    "6": 0.00229,
+    "7": 0.00017,
+    "8": 1e-05,
+    "9": 1e-05
    },
-   "p_title": 0.08032,
-   "p_final": 0.22442,
-   "p_podium": 0.65907,
-   "exp_place": 3.139
+   "p_title": 0.06349,
+   "p_final": 0.23664,
+   "p_podium": 0.62645,
+   "exp_place": 3.089
   },
   "Las Vegas Night Owls": {
    "group": "B",
@@ -988,34 +983,34 @@
      ]
     ]
    },
-   "exp_wins": 1.537,
-   "exp_game_diff": -7.1,
-   "exp_rally_diff": -45.8,
+   "exp_wins": 2.059,
+   "exp_game_diff": -4.47,
+   "exp_rally_diff": -31.6,
    "group_rank": {
-    "1": 4e-05,
-    "2": 0.00269,
-    "3": 0.11623,
-    "4": 0.45514,
-    "5": 0.27027,
-    "6": 0.15563
+    "1": 6e-05,
+    "2": 0.00849,
+    "3": 0.47336,
+    "4": 0.2791,
+    "5": 0.14406,
+    "6": 0.09493
    },
-   "p_group_win": 4e-05,
-   "p_playoff": 0.5741,
+   "p_group_win": 6e-05,
+   "p_playoff": 0.76101,
    "place": {
-    "2": 4e-05,
-    "3": 0.00016,
-    "4": 0.00253,
-    "5": 0.02048,
-    "6": 0.09575,
-    "7": 0.16582,
-    "8": 0.28931,
-    "9": 0.27027,
-    "11": 0.15563
+    "2": 6e-05,
+    "3": 0.00037,
+    "4": 0.00812,
+    "5": 0.0814,
+    "6": 0.39196,
+    "7": 0.09824,
+    "8": 0.18086,
+    "9": 0.14406,
+    "11": 0.09493
    },
    "p_title": 0.0,
-   "p_final": 4e-05,
-   "p_podium": 0.0002,
-   "exp_place": 8.52
+   "p_final": 6e-05,
+   "p_podium": 0.00043,
+   "exp_place": 7.387
   },
   "Miami Pickleball Club": {
    "group": "B",
@@ -1070,34 +1065,32 @@
      ]
     ]
    },
-   "exp_wins": 0.948,
-   "exp_game_diff": -10.32,
-   "exp_rally_diff": -65.2,
+   "exp_wins": 1.407,
+   "exp_game_diff": -7.85,
+   "exp_rally_diff": -51.7,
    "group_rank": {
-    "1": 1e-05,
-    "2": 0.00044,
-    "3": 0.03562,
-    "4": 0.19517,
-    "5": 0.35735,
-    "6": 0.41141
+    "2": 0.00152,
+    "3": 0.1889,
+    "4": 0.25716,
+    "5": 0.28232,
+    "6": 0.2701
    },
-   "p_group_win": 1e-05,
-   "p_playoff": 0.23124,
+   "p_group_win": 0.0,
+   "p_playoff": 0.44758,
    "place": {
-    "2": 1e-05,
-    "3": 1e-05,
-    "4": 0.00044,
-    "5": 0.0034,
-    "6": 0.03222,
-    "7": 0.04757,
-    "8": 0.1476,
-    "9": 0.35735,
-    "11": 0.41141
+    "3": 3e-05,
+    "4": 0.00149,
+    "5": 0.01876,
+    "6": 0.17014,
+    "7": 0.05987,
+    "8": 0.19728,
+    "9": 0.28232,
+    "11": 0.2701
    },
    "p_title": 0.0,
-   "p_final": 1e-05,
-   "p_podium": 2e-05,
-   "exp_place": 9.852
+   "p_final": 0.0,
+   "p_podium": 3e-05,
+   "exp_place": 8.906
   },
   "Orlando Squeeze": {
    "group": "B",
@@ -1110,21 +1103,21 @@
       0.895
      ],
      [
-      "eb14fc6e-ede1-4999-bec3-e36695e7f94e",
-      "Milan Rane",
-      0.7214
+      "cd7b97fc-d912-4c59-8ab3-c2d70e79d998",
+      "Lina Padegimaite",
+      0.47
      ]
     ],
     "MD": [
      [
-      "7edb882c-6d17-4129-8208-710e3c82364c",
-      "Federico Staksrud",
-      0.905
-     ],
-     [
       "3a43c56f-b9d8-4e72-ae8a-58fd69291946",
       "Jack Sock",
       0.8369
+     ],
+     [
+      "c96f7a83-9cc1-4fbe-a610-126ed8e3a202",
+      "Gregory Dow",
+      0.4427
      ]
     ],
     "MXD1": [
@@ -1134,53 +1127,52 @@
       0.895
      ],
      [
-      "7edb882c-6d17-4129-8208-710e3c82364c",
-      "Federico Staksrud",
-      0.905
-     ]
-    ],
-    "MXD2": [
-     [
-      "eb14fc6e-ede1-4999-bec3-e36695e7f94e",
-      "Milan Rane",
-      0.7214
-     ],
-     [
       "3a43c56f-b9d8-4e72-ae8a-58fd69291946",
       "Jack Sock",
       0.8369
      ]
+    ],
+    "MXD2": [
+     [
+      "cd7b97fc-d912-4c59-8ab3-c2d70e79d998",
+      "Lina Padegimaite",
+      0.47
+     ],
+     [
+      "c96f7a83-9cc1-4fbe-a610-126ed8e3a202",
+      "Gregory Dow",
+      0.4427
+     ]
     ]
    },
-   "exp_wins": 2.795,
-   "exp_game_diff": 0.76,
-   "exp_rally_diff": 2.8,
+   "exp_wins": 1.24,
+   "exp_game_diff": -8.28,
+   "exp_rally_diff": -54.6,
    "group_rank": {
-    "1": 0.00426,
-    "2": 0.08332,
-    "3": 0.72931,
-    "4": 0.15368,
-    "5": 0.02127,
-    "6": 0.00816
+    "1": 1e-05,
+    "2": 0.00186,
+    "3": 0.15017,
+    "4": 0.22297,
+    "5": 0.289,
+    "6": 0.33599
    },
-   "p_group_win": 0.00426,
-   "p_playoff": 0.97057,
+   "p_group_win": 1e-05,
+   "p_playoff": 0.37501,
    "place": {
-    "1": 0.00051,
-    "2": 0.00376,
-    "3": 0.02161,
-    "4": 0.06171,
-    "5": 0.34552,
-    "6": 0.38379,
-    "7": 0.10887,
-    "8": 0.0448,
-    "9": 0.02127,
-    "11": 0.00816
+    "2": 1e-05,
+    "3": 7e-05,
+    "4": 0.00178,
+    "5": 0.01499,
+    "6": 0.13518,
+    "7": 0.04965,
+    "8": 0.17333,
+    "9": 0.289,
+    "11": 0.33599
    },
-   "p_title": 0.00051,
-   "p_final": 0.00426,
-   "p_podium": 0.02588,
-   "exp_place": 5.766
+   "p_title": 0.0,
+   "p_final": 1e-05,
+   "p_podium": 8e-05,
+   "exp_place": 9.237
   },
   "Phoenix Flames": {
    "group": "B",
@@ -1205,9 +1197,9 @@
       0.6515
      ],
      [
-      "f86cff72-5f9c-40b1-9f28-f28aafae245f",
-      "Wyatt Stone",
-      0.6431
+      "763b4d27-8140-47cd-86f5-982706cd4ebb",
+      "Michael Loyd",
+      0.616
      ]
     ],
     "MXD1": [
@@ -1229,37 +1221,40 @@
       0.6499
      ],
      [
-      "f86cff72-5f9c-40b1-9f28-f28aafae245f",
-      "Wyatt Stone",
-      0.6431
+      "763b4d27-8140-47cd-86f5-982706cd4ebb",
+      "Michael Loyd",
+      0.616
      ]
     ]
    },
-   "exp_wins": 0.902,
-   "exp_game_diff": -10.21,
-   "exp_rally_diff": -63.8,
+   "exp_wins": 1.337,
+   "exp_game_diff": -8.05,
+   "exp_rally_diff": -52.3,
    "group_rank": {
-    "2": 0.00037,
-    "3": 0.02985,
-    "4": 0.19404,
-    "5": 0.35093,
-    "6": 0.42479
+    "1": 1e-05,
+    "2": 0.00164,
+    "3": 0.17418,
+    "4": 0.24059,
+    "5": 0.28461,
+    "6": 0.29897
    },
-   "p_group_win": 0.0,
-   "p_playoff": 0.22427,
+   "p_group_win": 1e-05,
+   "p_playoff": 0.41642,
    "place": {
-    "4": 0.00037,
-    "5": 0.00312,
-    "6": 0.02673,
-    "7": 0.04856,
-    "8": 0.14549,
-    "9": 0.35093,
-    "11": 0.42479
+    "2": 1e-05,
+    "3": 5e-05,
+    "4": 0.0016,
+    "5": 0.01792,
+    "6": 0.15626,
+    "7": 0.0567,
+    "8": 0.1839,
+    "9": 0.28461,
+    "11": 0.29897
    },
    "p_title": 0.0,
-   "p_final": 0.0,
-   "p_podium": 0,
-   "exp_place": 9.9
+   "p_final": 1e-05,
+   "p_podium": 6e-05,
+   "exp_place": 9.044
   },
   "St. Louis Shock": {
    "group": "B",
@@ -1314,31 +1309,30 @@
      ]
     ]
    },
-   "exp_wins": 4.726,
-   "exp_game_diff": 15.59,
-   "exp_rally_diff": 102.5,
+   "exp_wins": 4.755,
+   "exp_game_diff": 16.23,
+   "exp_rally_diff": 110.7,
    "group_rank": {
-    "1": 0.77127,
-    "2": 0.22134,
-    "3": 0.00728,
-    "4": 0.00011
+    "1": 0.76328,
+    "2": 0.23591,
+    "3": 0.00081,
+    "4": 1e-05
    },
-   "p_group_win": 0.77127,
+   "p_group_win": 0.76328,
    "p_playoff": 1.0,
    "place": {
-    "1": 0.47086,
-    "2": 0.30041,
-    "3": 0.1837,
-    "4": 0.03764,
-    "5": 0.00686,
-    "6": 0.00041,
-    "7": 0.00011,
-    "8": 1e-05
+    "1": 0.38982,
+    "2": 0.37345,
+    "3": 0.17859,
+    "4": 0.05731,
+    "5": 0.00074,
+    "6": 7e-05,
+    "7": 1e-05
    },
-   "p_title": 0.47086,
-   "p_final": 0.77127,
-   "p_podium": 0.95497,
-   "exp_place": 1.811
+   "p_title": 0.38982,
+   "p_final": 0.76328,
+   "p_podium": 0.94187,
+   "exp_place": 1.906
   }
  }
 }
