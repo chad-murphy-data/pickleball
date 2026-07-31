@@ -15,6 +15,9 @@ full = **+1.9494**   n = 111   events = 15   LOEO range [+1.8437, +2.0278]   big
 | 2 | PPA Tour: 2026 Carvana Mesa Cup (2026-02-16, Arizona Athletic Grounds) [audit: outdoor/medium] | 11 | +0.0784 | +2.0278 |
 | 3 | PPA Tour: Veolia Texas Open (2026-03-09, The Courts McKinney Pickleball & Tennis Center) [audit: outdoor/high] | 20 | -0.0684 | +1.8810 |
 
+*Audit composition of the Design B windy-14+ bin: unaudited 60 (54%), outdoor-high 20 (18%), indoor 19 (17%), outdoor-medium 12 (11%).*
+*Keeping ONLY audited-outdoor games (n=32): +1.9231 (full +1.9494).*
+
 ### Design B Δ mean z², windy 14+ − outdoor calm (published +0.224 [−0.160, +0.585])
 *an event can sit in BOTH arms (different match hours)*
 
@@ -37,6 +40,9 @@ full = **+1.3445**   n = 162   events = 15   LOEO range [+1.2858, +1.4089]   big
 | 1 | PPA Tour: Stratusphere Gin Virginia Beach Cup (2024-09-30, Pickleball Virginia Beach) [UNAUDITED — heuristic label] | 12 | +0.0644 | +1.4089 |
 | 2 | PPA Tour: Veolia Texas Open (2026-03-09, The Courts McKinney Pickleball & Tennis Center) [audit: outdoor/high] | 29 | +0.0587 | +1.4032 |
 | 3 | 2024 Lapiplasty Pickleball World Championships (2024-11-04, Brookhaven Country Club) [UNAUDITED — heuristic label] | 21 | -0.0587 | +1.2858 |
+
+*Audit composition of the Design C windy-14+ bin: unaudited 87 (54%), outdoor-high 29 (18%), indoor 28 (17%), outdoor-medium 18 (11%).*
+*Keeping ONLY audited-outdoor games (n=47): +1.1433 (full +1.3445).*
 
 ### Design C Δ mean z², windy 14+ − outdoor calm (published +0.190 [−0.067, +0.544])
 
@@ -82,6 +88,9 @@ full = **-0.0466**   n = 82   events = 4   LOEO range [-0.0646, +0.0096]   bigge
 | 2 | PPA Tour: Fasenra Virginia Beach Cup presented by Joola (2025-10-06, Pickleball Virginia Beach) [UNAUDITED — heuristic label] | 9 | -0.0181 | -0.0646 |
 | 3 | PPA Tour: CIBC Texas Open - 2025 (2025-03-12, Courts of McKinney) [UNAUDITED — heuristic label] | 8 | +0.0143 | -0.0323 |
 
+*Audit composition of this bin: unaudited 80 (98%), outdoor-high 2 (2%).*
+*Audited-outdoor games alone: only 2 — the bin cannot be re-estimated on verified-outdoor play.*
+
 ### outdoor 14–20 mph at match hour — the '−6.0pp' result (published −0.060, n=1151)
 
 full = **-0.0599**   n = 1151   events = 21   LOEO range [-0.0655, -0.0564]   biggest single event = 12% of the sample
@@ -91,6 +100,9 @@ full = **-0.0599**   n = 1151   events = 21   LOEO range [-0.0655, -0.0564]   bi
 | 1 | PPA Tour: 2026 Carvana Mesa Cup (2026-02-16, Arizona Athletic Grounds) [audit: outdoor/medium] | 110 | -0.0056 | -0.0655 |
 | 2 | PPA Tour NZ: Pickleball Cup (2025-04-24, TotalCoach Tennis Centre) [audit: unknown/low] | 77 | -0.0039 | -0.0638 |
 | 3 | 2026 Opelika PPA Challenger (2026-04-18, Opelika Sportsplex) [audit: outdoor/medium] | 113 | +0.0035 | -0.0564 |
+
+*Audit composition of this bin: unaudited 433 (38%), indoor 255 (22%), outdoor-medium 248 (22%), outdoor-high 138 (12%), unknown 77 (7%).*
+*Keeping ONLY audited-outdoor games (n=386): -0.0540 (full -0.0599).*
 
 ### outdoor 92+ °F at match hour (published −0.049, n=644)
 
@@ -102,6 +114,9 @@ full = **-0.0491**   n = 644   events = 6   LOEO range [-0.0540, -0.0470]   bigg
 | 2 | PPA Tour Asia, Panas Malaysia Open 2025 (2025-07-03, 9Pickle) [audit: indoor/medium] | 19 | +0.0021 | -0.0470 |
 | 3 | PPA Tour: Guaranteed Rate Las Vegas Open (2024-10-09, Darling Tennis Center) [UNAUDITED — heuristic label] | 93 | +0.0020 | -0.0471 |
 
+*Audit composition of this bin: indoor 529 (82%), unaudited 115 (18%).*
+*Audited-outdoor games alone: only 0 — the bin cannot be re-estimated on verified-outdoor play.*
+
 ### outdoor 92+ °F daily max (published −0.055, n=1755)
 
 full = **-0.0552**   n = 1755   events = 7   LOEO range [-0.0603, -0.0510]   biggest single event = 27% of the sample
@@ -111,6 +126,9 @@ full = **-0.0552**   n = 1755   events = 7   LOEO range [-0.0603, -0.0510]   big
 | 1 | Punta Gorda PPA Challenger (2025-05-24, PicklePlex) [UNAUDITED — heuristic label] | 190 | -0.0051 | -0.0603 |
 | 2 | 2026 Macon PPA Challenger (2026-07-18, Rhythm & Rally Sports & Events) [audit: indoor/high] | 230 | +0.0042 | -0.0510 |
 | 3 | Boise PPA Challenger (2025-05-31, The Flying Pickle) [audit: indoor/high] | 145 | +0.0026 | -0.0526 |
+
+*Audit composition of this bin: indoor 1089 (62%), unaudited 666 (38%).*
+*Audited-outdoor games alone: only 0 — the bin cannot be re-estimated on verified-outdoor play.*
 
 ### outdoor 20+ mph daily max (published −0.059, n=313)
 
@@ -122,6 +140,9 @@ full = **-0.0594**   n = 313   events = 4   LOEO range [-0.0641, -0.0527]   bigg
 | 2 | PPA Tour: Fasenra Virginia Beach Cup presented by Joola (2025-10-06, Pickleball Virginia Beach) [UNAUDITED — heuristic label] | 9 | -0.0047 | -0.0641 |
 | 3 | PPA Tour: CIBC Texas Open - 2025 (2025-03-12, Courts of McKinney) [UNAUDITED — heuristic label] | 155 | +0.0034 | -0.0560 |
 
+*Audit composition of this bin: unaudited 296 (95%), outdoor-high 17 (5%).*
+*Audited-outdoor games alone: only 17 — the bin cannot be re-estimated on verified-outdoor play.*
+
 ### INDOOR control 20+ mph at match hour (published −0.113, n=222)
 
 full = **-0.1134**   n = 222   events = 2   LOEO range [-0.1159, -0.0918]   biggest single event = 90% of the sample
@@ -130,6 +151,9 @@ full = **-0.1134**   n = 222   events = 2   LOEO range [-0.1159, -0.0918]   bigg
 |---|---|---|---|---|
 | 1 | PPA Tour: Picklr Utah Open (2024-08-21, Salt Palace Convention Center) [audit: indoor/high] | 199 | +0.0216 | -0.0918 |
 | 2 | PPA Tour: CIBC Atlanta Slam (2024-09-09, Life Time Peachtree Corners) [audit: mixed/high] | 23 | -0.0025 | -0.1159 |
+
+*Audit composition of this bin: indoor 199 (90%), mixed 23 (10%).*
+*Audited-outdoor games alone: only 0 — the bin cannot be re-estimated on verified-outdoor play.*
 
 ### outdoor 0–8 mph at match hour — the calm REFERENCE (published −0.040, n=17139)
 
@@ -140,6 +164,9 @@ full = **-0.0404**   n = 17139   events = 65   LOEO range [-0.0415, -0.0392]   b
 | 1 | 2026 Macon PPA Challenger (2026-07-18, Rhythm & Rally Sports & Events) [audit: indoor/high] | 319 | +0.0012 | -0.0392 |
 | 2 | PPA Tour: Rate Vegas Cup (2025-10-20, Darling Tennis Center) [UNAUDITED — heuristic label] | 436 | +0.0012 | -0.0392 |
 | 3 | 2026 Wilson PPA Challenger (2026-05-23, Wilson Pickleball Facility) [UNAUDITED — heuristic label] | 411 | -0.0011 | -0.0415 |
+
+*Audit composition of this bin: unaudited 9685 (57%), outdoor-medium 2243 (13%), indoor 2110 (12%), outdoor-high 1334 (8%), unknown 1055 (6%), mixed 712 (4%).*
+*Keeping ONLY audited-outdoor games (n=3577): -0.0483 (full -0.0404).*
 
 ### 2b. The CONTRAST that the claim rests on: tail bin − calm bin
 
@@ -153,6 +180,9 @@ full = **-0.0195**   n = 18290   events = 66   LOEO range [-0.0245, -0.0156]   b
 | 2 | PPA Tour NZ: Pickleball Cup (2025-04-24, TotalCoach Tennis Centre) [audit: unknown/low] | 77 | -0.0039 | -0.0234 |
 | 3 | 2026 Opelika PPA Challenger (2026-04-18, Opelika Sportsplex) [audit: outdoor/medium] | 365 | +0.0038 | -0.0156 |
 
+*Audit composition of this contrast: unaudited 10118 (55%), outdoor-medium 2491 (14%), indoor 2365 (13%), outdoor-high 1472 (8%), unknown 1132 (6%), mixed 712 (4%).*
+*Keeping ONLY audited-outdoor games (386 treated / 3577 reference): -0.0057 (full -0.0195).*
+
 ### outdoor 20+ mph − outdoor calm <8 (match hour)
 
 full = **-0.0062**   n = 17221   events = 65   LOEO range [-0.0240, +0.0496]   biggest single event = 3% of the sample
@@ -163,6 +193,9 @@ full = **-0.0062**   n = 17221   events = 65   LOEO range [-0.0240, +0.0496]   b
 | 2 | PPA Tour: Fasenra Virginia Beach Cup presented by Joola (2025-10-06, Pickleball Virginia Beach) [UNAUDITED — heuristic label] | 98 | -0.0178 | -0.0240 |
 | 3 | PPA Tour: CIBC Texas Open - 2025 (2025-03-12, Courts of McKinney) [UNAUDITED — heuristic label] | 57 | +0.0143 | +0.0081 |
 
+*Audit composition of this contrast: unaudited 9765 (57%), outdoor-medium 2243 (13%), indoor 2110 (12%), outdoor-high 1336 (8%), unknown 1055 (6%), mixed 712 (4%).*
+*Audited-outdoor only: 2 treated / 3577 reference games — too thin to re-estimate the contrast on verified-outdoor play.*
+
 ### outdoor 92+ °F − outdoor <70 °F (match hour)
 
 full = **-0.0098**   n = 10267   events = 56   LOEO range [-0.0147, -0.0078]   biggest single event = 5% of the sample
@@ -172,6 +205,9 @@ full = **-0.0098**   n = 10267   events = 56   LOEO range [-0.0147, -0.0078]   b
 | 1 | Punta Gorda PPA Challenger (2025-05-24, PicklePlex) [UNAUDITED — heuristic label] | 22 | -0.0049 | -0.0147 |
 | 2 | PPA Tour Asia, Panas Malaysia Open 2025 (2025-07-03, 9Pickle) [audit: indoor/medium] | 19 | +0.0021 | -0.0078 |
 | 3 | PPA Tour: Guaranteed Rate Las Vegas Open (2024-10-09, Darling Tennis Center) [UNAUDITED — heuristic label] | 93 | +0.0020 | -0.0079 |
+
+*Audit composition of this contrast: unaudited 4854 (47%), outdoor-medium 2089 (20%), indoor 1989 (19%), mixed 659 (6%), unknown 390 (4%), outdoor-high 286 (3%).*
+*Audited-outdoor only: 0 treated / 2375 reference games — too thin to re-estimate the contrast on verified-outdoor play.*
 
 ## 3. favorites_wind regression 1 — is the NULL itself fragile?
 

@@ -1,0 +1,23 @@
+calibrated local-clock offsets: 106 events, 8 needed a non-zero correction ([-1, 1] h)
+
+wrote 25737 game-duration rows -> /tmp/claude-0/-home-user-pickleball/a427a3a4-6690-5ae8-9453-094c68f7122d/scratchpad/c1_pace.csv
+
+DROPS
+  no game-end stamps           5786
+  game end missing             465
+  no usable start for game 1   81
+  no match_times row           57
+  no hourly weather            4
+
+                             min      p1      p5     p50     p95     p99     max
+DURATION s games 2+    n=12831       -1      394      554      994     1662     2050    13718
+SEC/POINT games 2+     n=12831     -0.1     31.5     41.0     60.8     89.9    107.3    925.0
+DURATION s game 1      n=12906    -2903      269      489      962     1715     2227    11760
+SEC/POINT game 1       n=12906   -223.0     20.8     36.2     58.0     91.7    120.3    784.0
+
+label arm corrected_all: {'outdoor': 17688, 'indoor': 4884, 'dropped': 3165}
+tour: {'PPA': 23567, 'MLP': 2170}
+format: {'sideout_11': 25121, 'sideout_15': 616}
+year: {'2024': 8369, '2025': 10704, '2026': 6664}
+events: 106
+outdoor(corrected) n=17688  wind p50 6.4 p90 12.1 p99 17.3 max 25.5; >=14mph 825  >=20mph 57

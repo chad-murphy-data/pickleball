@@ -17,6 +17,9 @@ PUBLISHED spec reproduces at d = +0.0017 [-0.0595, +0.0629] (CR1), vs published 
 
 PUBLISHED spec = +0.0016 → percentile 59 of its own curve (middle; 0 = most negative/compression end, 100 = most positive).
 
+Across-spec dispersion sd = 0.0348 vs median within-spec sampling se = 0.0305 — specification uncertainty is as large as sampling uncertainty here (see the decomposition below: it is the indoor/outdoor LABEL arm that supplies almost all of it, not the modelling choices). Adding the two as independent sources gives a total uncertainty of ±0.091 — about 1.5× the published interval's half-width.
+Closeness to zero: only 3% of specs land closer to zero than the published one — i.e. the published choice is among the MOST null-looking specifications in its own family (median |estimate| 0.0198 vs published 0.0016).
+
 **POINT-SHARE outcome only — raw d** — 288 specs
 
 | median | IQR | min | max | frac CI excludes 0 | frac negative (compression) |
@@ -24,6 +27,9 @@ PUBLISHED spec = +0.0016 → percentile 59 of its own curve (middle; 0 = most ne
 | -0.0025 | [-0.0231, +0.0141] | -0.0801 | +0.0607 | 15/288 (5%) | 151/288 (52%) |
 
 PUBLISHED spec = +0.0017 → percentile 54 of its own curve (middle; 0 = most negative/compression end, 100 = most positive).
+
+Across-spec dispersion sd = 0.0290 vs median within-spec sampling se = 0.0285 — specification uncertainty is as large as sampling uncertainty here (see the decomposition below: it is the indoor/outdoor LABEL arm that supplies almost all of it, not the modelling choices). Adding the two as independent sources gives a total uncertainty of ±0.080 — about 1.4× the published interval's half-width.
+Closeness to zero: only 3% of specs land closer to zero than the published one — i.e. the published choice is among the MOST null-looking specifications in its own family (median |estimate| 0.0191 vs published 0.0017).
 
 ## Curve by analyst choice (median r, and how many of that slice's CIs exclude zero)
 
@@ -49,6 +55,19 @@ PUBLISHED spec = +0.0017 → percentile 54 of its own curve (middle; 0 = most ne
 | fe | none | 288 | -0.0045 | [-0.0270, +0.0139] | 20/288 |
 | fe | tour | 288 | -0.0055 | [-0.0290, +0.0135] | 20/288 |
 
+## Where the curve's dispersion comes from
+
+| slice | specs | sd of r | median within-spec se |
+|---|---|---|---|
+| whole grid | 864 | 0.0348 | 0.0305 |
+| labels = audited_hi | 216 | 0.0336 | 0.0369 |
+| labels = corrected_all | 216 | 0.0190 | 0.0287 |
+| labels = corrected_hi | 216 | 0.0271 | 0.0299 |
+| labels = published | 216 | 0.0165 | 0.0302 |
+| published labels, published outcome (analyst choices only) | 72 | 0.0104 | 0.0282 |
+
+The label dimension, not the modelling choices, is what moves this coefficient: inside the published label arm the whole grid of analyst choices shifts r by far less than one sampling se, while swapping label arms moves the centre by up to 0.06.
+
 ## The composition question — event fixed effects
 
 - **FE = none**: median r -0.0045, IQR [-0.0270, +0.0139], range [-0.1113, +0.1058], median CI width 0.1193, 20/288 CIs exclude zero.
@@ -67,6 +86,17 @@ PUBLISHED spec = +0.0017 → percentile 54 of its own curve (middle; 0 = most ne
 | +0.1058 | [-0.0453, +0.2569] | hour_actual | sustained | all | audited_hi | win | none | 5160 |
 | +0.1077 | [-0.0464, +0.2618] | hour_actual | sustained | all | audited_hi | win | tour | 5160 |
 | +0.1253 | [-0.0246, +0.2752] | hour_actual | sustained | all | audited_hi | win | event | 5160 |
+
+### What the published null still allows (win-indicator twin)
+
+Same spec with the WIN indicator as outcome: d = -0.0795 [-0.2263, +0.0673] — d is the change in P(win) per unit of skill per +10 mph.
+
+| favourite | skill (|expected share − ½|) | allowed ΔP(win) at 15 mph | at 20 mph |
+|---|---|---|---|
+| median game | 0.104 | -3.5 pp | -4.7 pp |
+| 90th-pct mismatch | 0.244 | -8.3 pp | -11.0 pp |
+
+(read: the most compression the outdoor interval tolerates at 20 mph, using the lower CI bound; positive-side bound is the mirror image.)
 
 ### CR1 vs event cluster bootstrap (published spec, 2,000 reps)
 

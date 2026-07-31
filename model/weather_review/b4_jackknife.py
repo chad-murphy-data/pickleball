@@ -97,6 +97,46 @@ def mean(v):
     return sum(v) / len(v) if v else float("nan")
 
 
+def verdict(e):
+    o = OV.get(e)
+    if not o:
+        return "unaudited"
+    return o["setting"] if o["setting"] != "outdoor" else (
+        "outdoor-" + o["confidence"])
+
+
+def audit_breakdown(units, stat, label):
+    """How much of a supposedly-OUTDOOR statistic comes from events the
+    web audit says are not outdoor at all — and what happens if you keep
+    only the audited-outdoor games."""
+    by_v = defaultdict(list)
+    for e, p in units:
+        by_v[verdict(e)].append(p)
+    tot = len(units)
+    parts = ", ".join(f"{k} {len(v)} ({len(v)/tot*100:.0f}%)"
+                      for k, v in sorted(by_v.items(), key=lambda t: -len(t[1])))
+    clean = [p for k, v in by_v.items() if k.startswith("outdoor") for p in v]
+    say(f"\n*Audit composition of {label}: {parts}.*")
+    if clean and isinstance(clean[0], tuple) and clean[0][0] in ("t", "r"):
+        nt = sum(1 for p in clean if p[0] == "t")
+        nr = len(clean) - nt
+        if nt < 30 or nr < 30:
+            say(f"*Audited-outdoor only: {nt} treated / {nr} reference games "
+                f"— too thin to re-estimate the contrast on verified-outdoor "
+                f"play.*")
+            return
+        say(f"*Keeping ONLY audited-outdoor games ({nt} treated / {nr} "
+            f"reference): {stat(clean):+.4f} (full "
+            f"{stat([p for _, p in units]):+.4f}).*")
+        return
+    if len(clean) >= 20:
+        say(f"*Keeping ONLY audited-outdoor games (n={len(clean)}): "
+            f"{stat(clean):+.4f} (full {stat([p for _, p in units]):+.4f}).*")
+    else:
+        say(f"*Audited-outdoor games alone: only {len(clean)} — the bin "
+            f"cannot be re-estimated on verified-outdoor play.*")
+
+
 # =====================================================================
 # 1. Design B / Design C tail bins (end_effects.py)
 # =====================================================================
@@ -160,6 +200,7 @@ def design_bc():
     calm = "OUTDOOR calm <8"
     mz = lambda s: mean([d["z2"] for d in s])
     jackknife(rows_b[windy], mz, "Design B mean z², OUTDOOR windy 14+")
+    audit_breakdown(rows_b[windy], mz, "the Design B windy-14+ bin")
 
     # Δ vs calm: tag payloads
     units = ([(e, ("t", d)) for e, d in rows_b[windy]]
@@ -178,6 +219,7 @@ def design_bc():
     say("\n## 1b. Design C — serve-rate swing z², windy 14+ "
         "(published 1.34, n=162 team-halves)")
     jackknife(rows_c[windy], mz, "Design C mean z², OUTDOOR windy 14+")
+    audit_breakdown(rows_c[windy], mz, "the Design C windy-14+ bin")
     unitsc = ([(e, ("t", d)) for e, d in rows_c[windy]]
               + [(e, ("r", d)) for e, d in rows_c[calm]])
     jackknife(unitsc, dz, "Design C Δ mean z², windy 14+ − outdoor calm "
@@ -274,6 +316,7 @@ def fav_bins():
                if r["setting"] == st and r.get(key) is not None
                and lo <= r[key] < hi]
         jackknife(sub, edge, label)
+        audit_breakdown(sub, edge, "this bin")
 
     # difference of tail bin vs calm reference (the actual claim)
     say("\n### 2b. The CONTRAST that the claim rests on: tail bin − calm bin")
@@ -297,6 +340,7 @@ def fav_bins():
                 return float("nan")
             return edge(t) - edge(r_)
         jackknife(trt + ref, dedge, label)
+        audit_breakdown(trt + ref, dedge, "this contrast")
     return rows
 
 

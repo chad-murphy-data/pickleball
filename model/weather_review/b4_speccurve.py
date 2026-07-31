@@ -279,8 +279,29 @@ def summarize(specs, key, name, published_key=None):
         p = published_key[key]
         rank = sum(1 for v in vals if v < p) / len(vals)
         say(f"\nPUBLISHED spec = {p:+.4f} → percentile {rank*100:.0f} of its "
-            f"own curve ({'null-most edge' if rank < 0.15 or rank > 0.85 else 'middle'}"
+            f"own curve ({'edge' if rank < 0.15 or rank > 0.85 else 'middle'}"
             f"; 0 = most negative/compression end, 100 = most positive).")
+        m = sum(vals) / len(vals)
+        sd_spec = math.sqrt(sum((v - m) ** 2 for v in vals) / (len(vals) - 1))
+        ses = sorted((s[key + "_hi"] - s[key + "_lo"]) / 3.92 for s in specs)
+        se_med = ses[len(ses) // 2]
+        say(f"\nAcross-spec dispersion sd = {sd_spec:.4f} vs median "
+            f"within-spec sampling se = {se_med:.4f} — specification "
+            f"uncertainty is as large as sampling uncertainty here (see the "
+            f"decomposition below: it is the indoor/outdoor LABEL arm that "
+            f"supplies almost all of it, not the modelling choices). "
+            f"Adding the two as independent sources gives a total "
+            f"uncertainty of "
+            f"±{1.96*math.sqrt(sd_spec**2 + se_med**2):.3f} — about "
+            f"{math.sqrt(sd_spec**2 + se_med**2)/se_med:.1f}× the published "
+            f"interval's half-width.")
+        closer = sum(1 for v in vals if abs(v) < abs(p)) / len(vals)
+        say(f"Closeness to zero: only {closer*100:.0f}% of specs land closer "
+            f"to zero than the published one — i.e. the published choice is "
+            f"among the {'MOST null-looking' if closer < 0.25 else 'typical'} "
+            f"specifications in its own family (median |estimate| "
+            f"{pct([abs(v) for v in vals],0.5):.4f} vs published "
+            f"{abs(p):.4f}).")
     return vals
 
 
@@ -360,6 +381,26 @@ def h4():
                 f"| [{pct(vals,0.25):+.4f}, {pct(vals,0.75):+.4f}] "
                 f"| {nsig}/{len(sub)} |")
 
+    say("\n## Where the curve's dispersion comes from\n")
+    say("| slice | specs | sd of r | median within-spec se |")
+    say("|---|---|---|---|")
+    for nm, sub in ([("whole grid", specs)]
+                    + [(f"labels = {a}", [s for s in specs if s["labels"] == a])
+                       for a in sorted({s["labels"] for s in specs})]
+                    + [("published labels, published outcome "
+                        "(analyst choices only)",
+                        [s for s in specs if s["labels"] == "published"
+                         and s["outcome"] == "share"])]):
+        v = [s["r"] for s in sub]
+        mu = sum(v) / len(v)
+        sd = math.sqrt(sum((x - mu) ** 2 for x in v) / max(len(v) - 1, 1))
+        ses = sorted((s["r_hi"] - s["r_lo"]) / 3.92 for s in sub)
+        say(f"| {nm} | {len(sub)} | {sd:.4f} | {ses[len(ses)//2]:.4f} |")
+    say("\nThe label dimension, not the modelling choices, is what moves "
+        "this coefficient: inside the published label arm the whole grid of "
+        "analyst choices shifts r by far less than one sampling se, while "
+        "swapping label arms moves the centre by up to 0.06.")
+
     say("\n## The composition question — event fixed effects\n")
     for fe in ("none", "tour", "event"):
         sub = [s for s in specs if s["fe"] == fe]
@@ -380,6 +421,29 @@ def h4():
         say(f"| {s['r']:+.4f} | [{s['r_lo']:+.4f}, {s['r_hi']:+.4f}] "
             f"| {s['timing']} | {s['metric']} | {s['sample']} | {s['labels']} "
             f"| {s['outcome']} | {s['fe']} | {s['N']} |")
+
+    # ------- what the null still ALLOWS (MDE translation) ----------------
+    pw = next(s for s in specs
+              if (s["timing"], s["metric"], s["sample"], s["labels"],
+                  s["outcome"], s["fe"]) ==
+              ("hour_pub", "sustained", "all", "published", "win", "none"))
+    arm = arms["published"]
+    sk = sorted(abs(r["skill"]) for r in rows
+                if arm.get(r["ev"]) == "outdoor")
+    s50, s90 = sk[len(sk) // 2], sk[int(0.9 * len(sk))]
+    say("\n### What the published null still allows (win-indicator twin)\n")
+    say(f"Same spec with the WIN indicator as outcome: d = {pw['d']:+.4f} "
+        f"[{pw['d_lo']:+.4f}, {pw['d_hi']:+.4f}] — d is the change in "
+        f"P(win) per unit of skill per +10 mph.")
+    say(f"\n| favourite | skill (|expected share − ½|) | allowed ΔP(win) at "
+        f"15 mph | at 20 mph |")
+    say("|---|---|---|---|")
+    for nm, s_ in (("median game", s50), ("90th-pct mismatch", s90)):
+        say(f"| {nm} | {s_:.3f} | {pw['d_lo']*s_*1.5*100:+.1f} pp "
+            f"| {pw['d_lo']*s_*2.0*100:+.1f} pp |")
+    say("\n(read: the most compression the outdoor interval tolerates at "
+        "20 mph, using the lower CI bound; positive-side bound is the "
+        "mirror image.)")
 
     # ------- bootstrap cross-check of the CR1 interval on the published spec
     say("\n### CR1 vs event cluster bootstrap (published spec, 2,000 reps)")

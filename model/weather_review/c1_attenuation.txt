@@ -1,0 +1,11 @@
+outdoor matches with both a true game hour and a planned hour: 8815
+  same hour after rounding: 3305 (37%)
+  corr(wind @ true hour, wind @ planned hour)  = 0.864
+  corr(gust @ true hour, gust @ planned hour)  = 0.895
+  => timing-only attenuation factor ~ 0.864; a published slope of b is really ~ 1.16 x b
+  |wind(true) - wind(planned)|: median 0.4 mph, p90 2.9 mph
+
+  For reference, the committed tests (weather_report.py, favorites_wind.py,
+  end_effects.py, wind_skill.py) join on start_local OR planned_start_local,
+  i.e. the noisier of these two readings for the ~63% of matches where the
+  two hours disagree.

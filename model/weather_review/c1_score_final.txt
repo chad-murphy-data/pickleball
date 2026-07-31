@@ -1,0 +1,26 @@
+MUNDLAK split, score shape (event + hour FE, cluster boot / event)
+
+[outdoor] n=23065  sd(day-mean)=3.24  sd(within-day)=1.79
+   deuce    BETWEEN +0.98 [-0.61, +2.45] pp/10mph   (MDE80 2.19)
+            WITHIN  +1.27 [-1.30, +3.56] pp/10mph   (MDE80 3.47)
+   blowout  BETWEEN -0.98 [-3.94, +1.77] pp/10mph   (MDE80 4.08)
+            WITHIN  -0.45 [-4.20, +3.34] pp/10mph   (MDE80 5.39)
+   margin   BETWEEN -0.105 [-0.284, +0.064] pts/10mph   (MDE80 0.249)
+            WITHIN  -0.070 [-0.303, +0.148] pts/10mph   (MDE80 0.323)
+
+[indoor] n=6231  sd(day-mean)=4.63  sd(within-day)=1.86
+   deuce    BETWEEN -1.40 [-5.42, +1.94] pp/10mph   (MDE80 5.26)
+            WITHIN  -1.45 [-5.84, +3.02] pp/10mph   (MDE80 6.33)
+   blowout  BETWEEN -0.33 [-5.77, +5.74] pp/10mph   (MDE80 8.23)
+            WITHIN  -0.04 [-6.20, +10.37] pp/10mph   (MDE80 11.85)
+   margin   BETWEEN -0.001 [-0.326, +0.296] pts/10mph   (MDE80 0.444)
+            WITHIN  -0.029 [-0.448, +0.430] pts/10mph   (MDE80 0.627)
+
+
+OUTDOOR MINUS INDOOR interaction, score shape
+   deuce    indoor -1.30 [-4.51, +1.29] pp/10mph   (MDE80 4.15)
+            OUT-IN +2.34 [-0.38, +5.69] pp/10mph   (MDE80 4.34)
+   blowout  indoor -0.08 [-4.07, +5.56] pp/10mph   (MDE80 6.88)
+            OUT-IN -0.37 [-6.04, +4.13] pp/10mph   (MDE80 7.27)
+   margin   indoor +0.003 [-0.270, +0.295] pts/10mph   (MDE80 0.404)
+            OUT-IN -0.079 [-0.382, +0.228] pts/10mph   (MDE80 0.436)

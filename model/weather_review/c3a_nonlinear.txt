@@ -1,0 +1,28 @@
+
+== outdoor: 24718 games
+   wind 0-8 mph: n= 17083 mean|skill|=0.1197
+   wind 8-14 mph: n=  6502 mean|skill|=0.1185
+   wind 14-99 mph: n=  1133 mean|skill|=0.1239
+  L0 order=1: d=-0.0376 [-0.0948,+0.0163] CRse=0.0285  (skill, w, skill*w)
+  L0 order=3: d=-0.0535 [-0.1341,+0.0390] CRse=0.0438  (skill, w, skill*w, skill^3, skill^3*w)
+  L0 order=5: d=-0.0650 [-0.1843,+0.0482] CRse=0.0571  (skill, w, skill*w, skill^3, skill^3*w, skill^5, skill^5*w)
+  L2 order=1: d=-0.0502 [-0.1200,+0.0160] CRse=0.0338  (skill, w, skill*w)
+  L2 order=3: d=-0.0714 [-0.1578,+0.0180] CRse=0.0431  (skill, w, skill*w, skill^3, skill^3*w)
+  L2 order=5: d=-0.0892 [-0.2077,+0.0281] CRse=0.0559  (skill, w, skill*w, skill^3, skill^3*w, skill^5, skill^5*w)
+  L3 order=1: d=-0.0648 [-0.1093,-0.0137] CRse=0.0249  (skill, w, skill*w)
+  L3 order=3: d=-0.0668 [-0.1458,+0.0255] CRse=0.0418  (skill, w, skill*w, skill^3, skill^3*w)
+  L3 order=5: d=-0.0816 [-0.2151,+0.0487] CRse=0.0646  (skill, w, skill*w, skill^3, skill^3*w, skill^5, skill^5*w)
+
+== indoor: 7127 games
+   wind 0-8 mph: n=  4145 mean|skill|=0.1197
+   wind 8-14 mph: n=  2269 mean|skill|=0.1177
+   wind 14-99 mph: n=   713 mean|skill|=0.1132
+  L0 order=1: d=-0.0379 [-0.1258,+0.0947] CRse=0.0642  (skill, w, skill*w)
+  L0 order=3: d=-0.0262 [-0.1606,+0.1902] CRse=0.0934  (skill, w, skill*w, skill^3, skill^3*w)
+  L0 order=5: d=-0.0524 [-0.1685,+0.1336] CRse=0.0771  (skill, w, skill*w, skill^3, skill^3*w, skill^5, skill^5*w)
+  L2 order=1: d=+0.0647 [-0.0255,+0.2027] CRse=0.0608  (skill, w, skill*w)
+  L2 order=3: d=+0.0564 [-0.0816,+0.2688] CRse=0.0916  (skill, w, skill*w, skill^3, skill^3*w)
+  L2 order=5: d=+0.0265 [-0.1110,+0.2378] CRse=0.0816  (skill, w, skill*w, skill^3, skill^3*w, skill^5, skill^5*w)
+  L3 order=1: d=-0.0037 [-0.0720,+0.0779] CRse=0.0382  (skill, w, skill*w)
+  L3 order=3: d=-0.0179 [-0.1301,+0.1476] CRse=0.0689  (skill, w, skill*w, skill^3, skill^3*w)
+  L3 order=5: d=-0.0432 [-0.1844,+0.1685] CRse=0.0882  (skill, w, skill*w, skill^3, skill^3*w, skill^5, skill^5*w)

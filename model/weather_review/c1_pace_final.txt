@@ -1,0 +1,62 @@
+
+--------------------------------------------------------------------------
+1. OUTDOOR MINUS INDOOR — wind x outdoor interaction, one model
+--------------------------------------------------------------------------
+   n=22348 (17504 outdoor / 4844 indoor), 97 events
+   indoor slope        +1.441 [-2.062, +3.870] s/pt/10mph   (MDE80 4.240)
+   OUTDOOR - INDOOR    -3.514 [-6.388, +0.546] s/pt/10mph   (MDE80 4.957)
+
+--------------------------------------------------------------------------
+2. MUNDLAK — day-mean wind vs within-day deviation (outdoor)
+--------------------------------------------------------------------------
+   [outdoor] n=17504  sd(day-mean)=3.14 mph  sd(within-day)=1.90 mph
+      BETWEEN-day  -4.233 [-7.156, -1.469] s/pt/10mph   (MDE80 4.065)
+      WITHIN-day   +0.432 [-1.422, +2.162] s/pt/10mph   (MDE80 2.562)
+   [indoor] n=4844  sd(day-mean)=4.57 mph  sd(within-day)=1.96 mph
+      BETWEEN-day  +2.084 [-2.609, +4.777] s/pt/10mph   (MDE80 5.279)
+      WITHIN-day   +0.311 [-3.582, +3.095] s/pt/10mph   (MDE80 4.773)
+
+--------------------------------------------------------------------------
+3. RAIN as a rival day-level cause (outdoor)
+--------------------------------------------------------------------------
+   + precip control    -2.023 [-3.862, -0.136] s/pt/10mph   (MDE80 2.663)
+   precip coefficient  -8.28 [-19.03, +13.68] s/pt per inch   (MDE80 23.38)
+Traceback (most recent call last):
+  File "/home/user/pickleball/model/weather_review/c1_pace_final.py", line 150, in <module>
+    main()
+  File "/home/user/pickleball/model/weather_review/c1_pace_final.py", line 107, in main
+    dry = [r for r in out if r["precip"] <= 0]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/pickleball/model/weather_review/c1_pace_final.py", line 107, in <listcomp>
+    dry = [r for r in out if r["precip"] <= 0]
+                             ^^^^^^^^^^^^^^^^
+TypeError: '<=' not supported between instances of 'str' and 'int'
+
+--------------------------------------------------------------------------
+3. RAIN as a rival day-level cause (outdoor)
+--------------------------------------------------------------------------
+   + precip control    -2.023 [-3.862, -0.136] s/pt/10mph   (MDE80 2.663)
+   precip coefficient  -8.28 [-19.03, +13.68] s/pt per inch   (MDE80 23.38)
+   dry hours only n=15619  -2.282 [-4.255, -0.098] s/pt/10mph   (MDE80 2.972)
+
+--------------------------------------------------------------------------
+4a. GUSTS — pace
+--------------------------------------------------------------------------
+   [outdoor] gust alone       -1.040 [-2.000, +0.034] s/pt per +10 mph gust   (MDE80 1.454)
+   [outdoor] sustained | gust -2.483 [-4.951, -0.249] s/pt/10mph   (MDE80 3.361)
+   [outdoor] gustiness resid  +0.616 [-1.525, +3.328] s/pt per +10 mph excess   (MDE80 3.469)
+   [indoor] gust alone       +0.731 [-1.056, +2.253] s/pt per +10 mph gust   (MDE80 2.365)
+   [indoor] sustained | gust +1.917 [-3.281, +4.274] s/pt/10mph   (MDE80 5.400)
+   [indoor] gustiness resid  -0.787 [-3.344, +3.226] s/pt per +10 mph excess   (MDE80 4.696)
+
+--------------------------------------------------------------------------
+4b. GUSTS — score shape (blowout / deuce / margin), event+hour FE
+--------------------------------------------------------------------------
+   [outdoor] n=23065
+      blowout  -0.28 [-1.35, +0.93] pp/10mph gust   (MDE80 1.63)
+      deuce    +0.79 [-0.11, +1.51] pp/10mph gust   (MDE80 1.15)
+      margin   -0.049 [-0.120, +0.033] pts/10mph gust   (MDE80 0.109)
+   [indoor] n=6231
+      blowout  -0.09 [-2.93, +3.29] pp/10mph gust   (MDE80 4.44)
+      deuce    -0.83 [-2.72, +1.00] pp/10mph gust   (MDE80 2.66)
+      margin   -0.016 [-0.197, +0.171] pts/10mph gust   (MDE80 0.263)

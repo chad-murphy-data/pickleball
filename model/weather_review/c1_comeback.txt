@@ -1,0 +1,4 @@
+[outdoor] n=9370  comeback rate 0.148   sustained: +1.39 [-1.75, +4.77] pp per +10 mph   (MDE80 4.66)
+[outdoor] n=9370  comeback rate 0.148   gust: +0.51 [-1.16, +2.29] pp per +10 mph   (MDE80 2.46)
+[indoor] n=2287  comeback rate 0.153   sustained: -0.93 [-4.84, +1.91] pp per +10 mph   (MDE80 4.82)
+[indoor] n=2287  comeback rate 0.153   gust: -1.43 [-3.47, +0.36] pp per +10 mph   (MDE80 2.74)
