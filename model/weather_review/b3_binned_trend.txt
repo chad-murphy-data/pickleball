@@ -1,0 +1,128 @@
+# B3 part 3 — is the outdoor binned skill compression a dose-response?
+
+Pre-specified before looking: SIGNAL requires (a) a negative binned
+trend slope whose cluster-bootstrap CI excludes 0, (b) an outdoor
+top-bin drop that the INDOOR arm does not reproduce, and (c) a top
+bin that is not one tournament in disguise (leave-one-out stable).
+Any one of those failing downgrades it to a composition artifact.
+
+## 0. bin composition (what actually differs between bins)
+
+### outdoor
+       bin  rallies  cells events  meanW  sd(adv) mean|adv|   %MLP  %to-15  medN
+   0-4       148750   3806     58    2.5    0.606     0.478   6.4%    2.5%    38
+   4-8       310956   8004     66    5.8    0.613     0.480   6.0%    2.1%    38
+   8-12      147253   3882     57    9.7    0.610     0.472   7.5%    4.3%    37
+  12-16       62206   1561     31   13.5    0.625     0.486   1.7%    6.7%    38
+  16-40       13195    300     10   18.3    0.597     0.481   0.0%    1.5%    42
+
+### indoor
+       bin  rallies  cells events  meanW  sd(adv) mean|adv|   %MLP  %to-15  medN
+   0-4        49917   1442     25    2.4    0.611     0.474  14.4%    8.0%    32
+   4-8        54211   1639     28    5.7    0.612     0.487  22.6%    5.0%    29
+   8-12       49276   1440     23   10.0    0.590     0.464  18.6%    4.9%    31
+  12-16       19118    517     14   13.7    0.554     0.433   7.8%    9.1%    36
+  16-40       14353    330      6   19.8    0.604     0.479   1.8%    2.6%    42
+
+## 1. binned skill slopes, jointly bootstrapped (T1/T2/T3/T4)
+
+      arm        bin  meanW   b (point est)
+  outdoor    0-4        2.5   +0.4941
+  outdoor    4-8        5.8   +0.4917
+  outdoor    8-12       9.7   +0.4889
+  outdoor   12-16      13.5   +0.4739
+  outdoor   16-40      18.3   +0.4087
+  outdoor  0-12 pool          +0.4916
+
+   indoor    0-4        2.4   +0.5076
+   indoor    4-8        5.7   +0.5053
+   indoor    8-12      10.0   +0.5390
+   indoor   12-16      13.7   +0.5764
+   indoor   16-40      19.8   +0.4085
+   indoor  0-12 pool          +0.5163
+
+cluster bootstrap over 96 events, 993/1000 usable
+
+T1 trend  [outdoor]  d b / d(10 mph) = -0.0258  [-0.0568, +0.0073]
+T2 monotone-decreasing across all 5 bins: 16.5%  (chance 0.8%)
+T3 top(16-40) - calm(0-12) = -0.0829  [-0.1707, +0.0223]
+
+T1 trend  [ indoor]  d b / d(10 mph) = -0.0124  [-0.0557, +0.0720]
+T2 monotone-decreasing across all 5 bins: 0.3%  (chance 0.8%)
+T3 top(16-40) - calm(0-12) = -0.1079  [-0.1709, +0.0867]
+
+T4 FALSIFICATION diff-in-diff (outdoor drop - indoor drop) = +0.0250  [-0.2042, +0.1622]
+
+per-bin bootstrap CIs
+    outdoor  0-4 : +0.4941 [+0.4724, +0.5163]
+    outdoor  4-8 : +0.4917 [+0.4758, +0.5067]
+    outdoor  8-12: +0.4889 [+0.4639, +0.5153]
+    outdoor 12-16: +0.4739 [+0.4314, +0.5019]
+    outdoor 16-40: +0.4087 [+0.3241, +0.5156]
+     indoor  0-4 : +0.5076 [+0.4591, +0.5440]
+     indoor  4-8 : +0.5053 [+0.4720, +0.5402]
+     indoor  8-12: +0.5390 [+0.4888, +0.5888]
+     indoor 12-16: +0.5764 [+0.4945, +0.6457]
+     indoor 16-40: +0.4085 [+0.3480, +0.6026]
+
+## 2. T5 — is the outdoor 16-40 mph bin one tournament in disguise?
+
+ rallies  share  cells  days  event
+    3116  23.6%     68     1  PPA Tour: Veolia Houston Open | Atascocita, TX | 2024-04-10 | conf=high
+    2857  21.7%     64     2  PPA Tour: CIBC Texas Open - 2025 | McKinney, TX | 2025-03-14 | conf=heuristic
+    2319  17.6%     52     2  PPA Tour: Veolia Texas Open | McKinney, TX | 2026-03-11 | conf=high
+    1962  14.9%     48     2  2024 Lapiplasty Pickleball World Championships | Farmers Branch, TX | 2024-11-04 | conf=heuristic
+    1220   9.2%     26     2  PPA Tour: North Carolina Cup | Cary, NC | 2024-04-03 | conf=heuristic
+     755   5.7%     18     1  PPA Tour: 2026 Carvana Mesa Cup | Mesa, AZ | 2026-02-18 | conf=medium
+     336   2.5%      6     1  PPA Tour: Fasenra Virginia Beach Cup presented by Joola | Virginia Beach, VA | 2025-10-12 | conf=heuristic
+     287   2.2%      6     1  PPA Tour: Veolia Cape Coral Open | Cape Coral, FL | 2025-03-05 | conf=high
+     196   1.5%      8     2  PPA Tour: Phoenix AZ | Phoenix, AZ | 2024-02-01 | conf=medium
+     147   1.1%      4     1  PPA Tour: 2026 Newport Beach Open | Newport Beach, CA | 2026-03-07 | conf=heuristic
+
+leave-one-event-out refit of the outdoor 16-40 slope (full-sample +0.4087):
+    drop PPA Tour: Veolia Houston Open                  n= 10079  b=+0.3859
+    drop PPA Tour: CIBC Texas Open - 2025               n= 10338  b=+0.4637
+    drop PPA Tour: Veolia Texas Open                    n= 10876  b=+0.3946
+    drop 2024 Lapiplasty Pickleball World Championshi   n= 11233  b=+0.3995
+    drop PPA Tour: North Carolina Cup                   n= 11975  b=+0.4147
+    drop PPA Tour: 2026 Carvana Mesa Cup                n= 12440  b=+0.4092
+    drop PPA Tour: Fasenra Virginia Beach Cup present   n= 12859  b=+0.3981
+    drop PPA Tour: Veolia Cape Coral Open               n= 12908  b=+0.4079
+    drop PPA Tour: Phoenix AZ                           n= 12999  b=+0.4138
+    drop PPA Tour: 2026 Newport Beach Open              n= 13048  b=+0.4084
+
+## 3. T6 — within-event contrast (events straddling top and calm)
+
+[outdoor] 10 straddling events; top n=13195 b=+0.4087, calm n=98551 b=+0.5085
+          within-event top-minus-calm = -0.0997 [-0.2003, +0.0101]  (1000 draws)
+[indoor] 6 straddling events; top n=14353 b=+0.4085, calm n=31919 b=+0.5059
+          within-event top-minus-calm = -0.0975 [-0.1721, +0.0697]  (1000 draws)
+
+## 4. the 0-16 mph range on its own (the well-observed part)
+
+[outdoor] trend over bins 1-4 only: -0.0147 b per +10 mph (compare continuous d: outdoor -0.0191, indoor -0.0131)
+[indoor] trend over bins 1-4 only: +0.0573 b per +10 mph (compare continuous d: outdoor -0.0191, indoor -0.0131)
+
+
+## 5. what the binned-trend interval still allows (20 mph vs 2.5 mph calm)
+
+Applying the T1 outdoor trend to a game to 11 (race DP, web/sitelib/race.py):
+
+       point -0.0258: effective skill slope x 0.909
+          65% favorite -> 63.7% (-1.3 pp)
+          75% favorite -> 73.0% (-2.0 pp)
+          90% favorite -> 87.8% (-2.2 pp)
+    CI floor -0.0568: effective skill slope x 0.799
+          65% favorite -> 62.1% (-2.9 pp)
+          75% favorite -> 70.5% (-4.5 pp)
+          90% favorite -> 84.8% (-5.2 pp)
+     CI ceil +0.0073: effective skill slope x 1.026
+          65% favorite -> 65.4% (+0.4 pp)
+          75% favorite -> 75.5% (+0.5 pp)
+          90% favorite -> 90.6% (+0.6 pp)
+
+MDE of the continuous outdoor interaction: se(advw) ~ 0.0157, so the
+80%-power / 5%-two-sided minimum detectable |d| is 0.044.  At 20 mph that
+is an effective skill slope x 0.825 = -2.5 / -3.9 / -4.5 pp for a
+65 / 75 / 90 percent favorite.  Anything larger than that would have been
+caught; anything smaller would not.
