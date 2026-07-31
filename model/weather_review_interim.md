@@ -1,3 +1,11 @@
+> **SUPERSEDED 2026-07-31 by `model/weather_review.md`.** This file is the
+> phase-1 interim snapshot, preserved for its per-agent detail. Several of its
+> headline claims did NOT survive adversarial verification — notably the
+> "paired end-effects +0.401 is nominally significant" result (one weighting
+> only; the DiD that appeared to support it rested on a bootstrap bug) and the
+> "published spec is the null-most of its family" framing (the spec curve is a
+> null curve). Read the final review first.
+
 # Weather methods review — INTERIM findings (second-pass audit, paused)
 
 **Status: PAUSED mid-review at user request (2026-07-28), to be resumed.
