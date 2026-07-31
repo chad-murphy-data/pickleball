@@ -57,13 +57,14 @@ Logistic recalibration logit P(win) = alpha + beta·logit(p_v2) per bin. beta < 
 
 Inflating the outcome sd by a factor f multiplies mean z² by f². For the reference favourite (v2 expected share 0.60, an 83.6% favourite in a race to 11), an sd inflation of f raises the upset rate to Phi(−(mu−½)/(f·sd)) — the table converts the CI edges of V2 into that currency at 20 mph vs 5 mph.
 
-Reference: mu = 0.615, sd = 0.129, upset rate 16.4%.
+Reference: mu = 0.615, sd = 0.129, upset rate 18.7% (normal approximation; the exact race-DP value is 16.4% — the CHANGE column is the object, and both ends use the same approximation).
 
 | z² slope per 10 mph | z² at 20 mph vs 5 mph | sd inflation f | upset rate | change |
 |---|---|---|---|---|
-| point estimate +0.0632 | +0.0948 | 1.0251 | 19.25% | +2.89 pp |
-| lower CI edge -0.0235 | -0.0352 | 0.9905 | 18.43% | +2.07 pp |
-| upper CI edge +0.1656 | +0.2485 | 1.0646 | 20.14% | +3.78 pp |
+| point estimate +0.0632 | +0.0948 | 1.0251 | 19.25% | +0.59 pp |
+| lower CI edge -0.0235 | -0.0352 | 0.9905 | 18.43% | -0.23 pp |
+| upper CI edge +0.1656 | +0.2485 | 1.0646 | 20.14% | +1.48 pp |
+| upper CI edge, de-attenuated (lambda_T = 0.941) +0.1760 | +0.2640 | 1.0685 | 20.23% | +1.57 pp |
 
 Mean outdoor z² = 1.863 is the denominator: the excess over 1.0 is rating error + serve clustering, present in every bin.
 
