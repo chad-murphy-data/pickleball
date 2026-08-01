@@ -12,40 +12,58 @@ only by prior convention (house rule), so we never rank across.*
 
 | Award | Metric | Women | Men |
 |---|---|---|---|
-| **Most Improved** | 2025 → 2026 value delta, full-time MLP players | **Tina Pisnik** (+0.5 pts/gm) | **Jack Sock** (+0.9 pts/gm) |
+| **Most Improved** | MLP-only improvement, 2025 → 2026, two independent measures | **Kate Fahey** (+4.1pp rally share) | **Christian Alshon** (+5.3pp rally share) |
 | **MVP** | Matchup Win Probability Added | **Anna Leigh Waters** (+8.31) | **Hayden Patriquin** (+6.06, 16 clinchers) |
 | **Under the Radar** | Games Won Above Expectation | **Sofia Sewing** (+4.6) | **Anouar Braham** (+4.0) |
 
 ---
 
-## 1. Most Improved — season-over-season value delta, full-timers only
+## 1. Most Improved — MLP-only improvement, full-timers, two measures
 
-**Definition.** Change in v1 season value (expected points per game vs an
-average pairing, fit per season) from the 2025 fit to the 2026 fit, among
-**full-time MLP players: ≥ 25 MLP games in each season**. The games-played
+**Definition.** Improvement *in MLP play specifically*, 2025 → 2026, among
+**full-time MLP players: ≥ 25 MLP games in each season** (the games-played
 distribution is cleanly bimodal in both years — subs and part-timers below
-~20 games, the full-time mass from ~30 up — so 25 sits in the valley, and
-the boards are identical at any floor from 25 to 30.
+~20 games, the full-time mass from ~30 up — so 25 sits in the valley).
+Because any single number can be argued with, the award requires agreement
+between **two independent measures**:
 
-| Women | 2025 | 2026 | Δ | MLP games | Men | 2025 | 2026 | Δ | MLP games |
-|---|---|---|---|---|---|---|---|---|---|
-| **Tina Pisnik** | +4.56 | +5.02 | **+0.46** | 71→56 | **Jack Sock** | +3.38 | +4.28 | **+0.90** | 56→43 |
-| Cailyn Campbell | +1.86 | +2.23 | +0.37 | 33→60 | Christian Alshon | +4.92 | +5.27 | +0.35 | 52→45 |
-| Mya Bui | +1.82 | +1.91 | +0.09 | 65→39 | Max Freeman | +3.17 | +3.41 | +0.24 | 60→52 |
-| Lacy Schneemann | +3.73 | +3.72 | −0.00 | 67→32 | Hayden Patriquin | +5.24 | +5.42 | +0.18 | 74→53 |
-| Anna Bright | +6.17 | +6.09 | −0.08 | 74→52 | Gabriel Tardio | +5.67 | +5.55 | −0.13 | 76→47 |
+- **(A) Rally point share** — of every serve and return rally the player
+  contested in MLP that season (from the referee logs; ≥ 500 rallies each
+  year), the share their side won. Transparent, no model, huge samples;
+  not opponent-adjusted.
+- **(B) MLP-only margin fit** — a ridge regression on nothing but that
+  season's MLP game margins, giving each player a points-per-game effect.
+  Opponent- and partner-adjusted; noisier at ~50 games a season. Deltas are
+  anchored so the returning full-time cohort nets to zero, which removes
+  pool drift.
 
-(24 women and 23 men qualify. "2026 rank" below = that season's v1 fit,
-which can differ from the site's v2-based rankings page: Pisnik is #7F,
-Sock #12M.)
+| Women | Rally share Δ | Fit Δ (pts/gm) | Men | Rally share Δ | Fit Δ (pts/gm) |
+|---|---|---|---|---|---|
+| **Kate Fahey** | **+4.1pp** (.555→.597) | +1.2 (#4) | **Christian Alshon** | **+5.3pp** (.530→.583) | **+1.7 (#1)** |
+| Cailyn Campbell | +3.6pp | +0.8 (#5) | Riley Newman | +5.1pp | — |
+| Liz Truluck | +3.1pp | +1.5 (#2) | Max Freeman | +3.6pp | — |
+| Parris Todd | +2.8pp | — | Jay Devilliers | +3.1pp | — |
+| Lacy Schneemann | +2.3pp | +1.4 (#3) | Jaume Martinez Vich | +3.1pp | — |
 
-Sock is the story: a second-season leap of +0.90 points per game — twice
-anyone else's gain among full-time men — carrying him to #12 in the 2026
-men's fit. Pisnik's +0.46 wins a thinner women's race; the honest reading
-of both boards is that **among players who ran the full MLP gauntlet twice,
-almost nobody improved** — the field mostly held or slipped, which is what
-a maturing league looks like. Values are pool-relative per season, so these
-deltas measure movement against the field, not against a fixed yardstick.
+(47 players qualify. "—" = outside that measure's top five. Fit top fives:
+women Erokhina +1.8, Truluck +1.5, Schneemann +1.4, Fahey +1.2, Campbell
++0.8; men Alshon +1.7, Frazier +1.1, Khlif +1.1, Sock +1.1, Oncins +0.9.)
+
+**Alshon is the men's winner on both boards independently** — the biggest
+rally-share gain in the league (+5.3 points per hundred rallies, ~2.8
+standard errors) *and* the biggest opponent-adjusted margin gain. **Fahey
+wins the women** with the largest rally-share gain of any full-timer and a
+top-five fit delta — and she was already a star, which makes it better: she
+got better at every rally she played on the way to St. Louis's 24-1 season.
+Truluck is the honorable mention (top-3 on both boards, below-average →
+average-plus); Erokhina tops the fit but the rally board doesn't
+corroborate her, so she doesn't get the convergence call.
+
+**Why MLP-only?** The obvious construction — delta in all-tour season value
+— crowns Jack Sock (+0.90 pts/game) and Tina Pisnik (+0.46). Real gains,
+but partly earned in PPA play: on MLP-only evidence Sock drops to #4 among
+men and off the rally top five entirely, while Alshon is #1 on both MLP
+boards. For an MLP award, MLP evidence decides.
 
 **Where did the breakout names go?** An earlier draft of this award (all
 pro games counted, no MLP floor) crowned players like Tama Shimabukuro
@@ -201,5 +219,7 @@ and misses the 25-game floor.)
   singles, never enter doubles models). In WPA they net to zero by
   construction; a DB-inclusive variant could apportion the remaining ±0.5
   from `db_rallies.csv`.
-- Player ranks quoted with Most Improved are the per-season v1 fits
-  (`data/yearly_values.csv`), not the site's v2 rankings page.
+- Most Improved's rally shares come from the committed referee-log
+  aggregate (`data/player_serve_rallies.csv`); its margin fit uses MLP
+  games only and is pool-drift-anchored to the returning cohort. Both are
+  rates, so the partial 2026 season (through July 30) doesn't bias them.

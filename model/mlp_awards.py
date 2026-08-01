@@ -6,8 +6,14 @@ Prints every number behind model/mlp_awards_2026.md.  Stdlib-only.
 
 Definitions
 -----------
-Most Improved   delta in v1 season value (points per game) 2025 -> 2026 among
-                full-time MLP players: >= 25 MLP games in EACH season.
+Most Improved   MLP-only improvement 2025 -> 2026 among full-time MLP players
+                (>= 25 MLP games in EACH season), measured two independent
+                ways: (A) change in combined serve+return rally point share
+                in MLP play (data/player_serve_rallies.csv, >= 500 rallies
+                each season), and (B) change in an opponent/partner-adjusted
+                ridge margin fit run on nothing but that season's MLP games
+                (anchored so the returning cohort nets to zero, which removes
+                pool drift).  Winners are where the two boards converge.
 MVP (WPA)       game wins weighted by how much they moved the team's matchup
                 win probability.  Matchup structure (which games, what order)
                 comes from MLP's own records: data/mlp_matchups_2026.csv,
@@ -85,27 +91,78 @@ def on_court(g):
 
 
 # --------------------------------------------------------------- most improved
-def most_improved(players, mlp_games, min_games=IMPROVED_MIN_MLP_GAMES):
-    """2025 -> 2026 v1 value delta among >= min_games MLP games BOTH seasons."""
+def mlp_game_counts(mlp_games):
     counts = defaultdict(lambda: defaultdict(int))
     for g in mlp_games:
         for p in on_court(g):
             counts[g["date"][:4]][p] += 1
-    yearly = defaultdict(dict)
-    for r in csv.DictReader(open(DATA / "yearly_values.csv")):
-        yearly[r["player_id"]][r["year"]] = r
+    return counts
+
+
+def improved_rally(cohort, min_rallies=500):
+    """(A) delta in MLP combined serve+return rally point share 2025 -> 2026."""
+    sr = defaultdict(lambda: defaultdict(lambda: [0, 0]))
+    for r in csv.DictReader(open(DATA / "player_serve_rallies.csv")):
+        if r["tour"] == "MLP" and r["discipline"] == "doubles" \
+                and r["year"] in ("2025", "2026"):
+            cell = sr[r["year"]][r["player_uuid"].lower()]
+            cell[0] += int(r["serve_wins"]) + int(r["return_wins"])
+            cell[1] += int(r["serve_rallies"]) + int(r["return_rallies"])
     rows = []
-    for pid, n26 in counts["2026"].items():
-        n25 = counts["2025"].get(pid, 0)
-        if n25 < min_games or n26 < min_games:
+    for p in cohort:
+        a, b = sr["2025"].get(p), sr["2026"].get(p)
+        if not a or not b or a[1] < min_rallies or b[1] < min_rallies:
             continue
-        y = yearly.get(pid, {})
-        if "2025" not in y or "2026" not in y:
-            continue
-        a, b = y["2025"], y["2026"]
-        rows.append((float(b["value"]) - float(a["value"]), pid, a, b, n25, n26))
+        s25, s26 = a[0] / a[1], b[0] / b[1]
+        se = (s25 * (1 - s25) / a[1] + s26 * (1 - s26) / b[1]) ** 0.5
+        rows.append((s26 - s25, s25, s26, se, p))
     rows.sort(reverse=True)
     return rows
+
+
+def improved_fit(mlp_games, cohort, lam=8.0):
+    """(B) delta in an MLP-games-only ridge margin fit (pts/game),
+    anchored so the returning full-time cohort's mean delta is zero."""
+    def fit(year):
+        gs = [g for g in mlp_games if g["date"][:4] == year]
+        idx = {}
+        for g in gs:
+            for p in on_court(g):
+                idx.setdefault(p, len(idx))
+        n = len(idx)
+        A = [[0.0] * n for _ in range(n)]
+        b = [0.0] * n
+        for g in gs:
+            m = int(g["t1_score"]) - int(g["t2_score"])
+            xs = [(idx[g["t1_p1"]], 1), (idx[g["t1_p2"]], 1),
+                  (idx[g["t2_p1"]], -1), (idx[g["t2_p2"]], -1)]
+            for i, si in xs:
+                b[i] += si * m
+                for j, sj in xs:
+                    A[i][j] += si * sj
+        for i in range(n):
+            A[i][i] += lam
+        for c in range(n):                       # gaussian elimination
+            piv = max(range(c, n), key=lambda r: abs(A[r][c]))
+            A[c], A[piv] = A[piv], A[c]
+            b[c], b[piv] = b[piv], b[c]
+            for r in range(c + 1, n):
+                f = A[r][c] / A[c][c]
+                if f:
+                    for k in range(c, n):
+                        A[r][k] -= f * A[c][k]
+                    b[r] -= f * b[c]
+        x = [0.0] * n
+        for r in range(n - 1, -1, -1):
+            x[r] = (b[r] - sum(A[r][k] * x[k] for k in range(r + 1, n))) / A[r][r]
+        return {p: x[i] for p, i in idx.items()}
+
+    th25, th26 = fit("2025"), fit("2026")
+    deltas = {p: th26[p] - th25[p] for p in cohort if p in th25 and p in th26}
+    anchor = sum(deltas.values()) / len(deltas)
+    rows = sorted(((d - anchor, th25[p], th26[p], p) for p, d in deltas.items()),
+                  reverse=True)
+    return rows, anchor
 
 
 # ------------------------------------------------------------------ matchup WPA
@@ -200,16 +257,29 @@ def main():
     nm = lambda p: name(players, p)
     print(f"MLP {SEASON[:4]} doubles games (no DB/forfeit): {len(games)}\n")
 
-    print(f"=== MOST IMPROVED: v1 value 2025 -> 2026 (pts/game), full-timers"
-          f" (>= {IMPROVED_MIN_MLP_GAMES} MLP games each season) ===")
-    rows = most_improved(players, mlp)
+    counts = mlp_game_counts(mlp)
+    cohort = {p for p, n26 in counts["2026"].items()
+              if n26 >= IMPROVED_MIN_MLP_GAMES
+              and counts["2025"].get(p, 0) >= IMPROVED_MIN_MLP_GAMES}
+    print(f"=== MOST IMPROVED, MLP-ONLY: full-timers (>= {IMPROVED_MIN_MLP_GAMES}"
+          f" MLP games each season; cohort {len(cohort)}) ===")
+    print("  (A) combined serve+return rally point share in MLP play")
+    ra = improved_rally(cohort)
     for gender, label in (("F", "WOMEN"), ("M", "MEN")):
-        sub = [r for r in rows if players.get(r[1], {}).get("gender") == gender]
-        print(f"  -- {label} (eligible: {len(sub)}) --")
-        for delta, pid, a, b, n25, n26 in sub[:5]:
-            print(f"  {nm(pid):30s} {float(a['value']):+5.2f} -> {float(b['value']):+5.2f}"
-                  f"   delta {delta:+.2f}   MLP games {n25}->{n26}"
-                  f"   2026 season-fit rank #{b['gender_rank']}{gender}")
+        sub = [r for r in ra if players.get(r[4], {}).get("gender") == gender]
+        print(f"  -- {label} --")
+        for d, s25, s26, se, pid in sub[:5]:
+            print(f"  {nm(pid):30s} {s25:.3f} -> {s26:.3f}   delta {d:+.3f}"
+                  f" (se {se:.3f})")
+    rows_b, anchor = improved_fit(mlp, cohort)
+    print(f"  (B) MLP-games-only ridge margin fit, cohort-anchored"
+          f" (shift {anchor:+.2f} pts/game)")
+    for gender, label in (("F", "WOMEN"), ("M", "MEN")):
+        sub = [r for r in rows_b if players.get(r[3], {}).get("gender") == gender]
+        print(f"  -- {label} --")
+        for d, v25, v26, pid in sub[:5]:
+            print(f"  {nm(pid):30s} {v25:+5.2f} -> {v26:+5.2f}   delta {d:+.2f}"
+                  f"   MLP games {counts['2025'][pid]}->{counts['2026'][pid]}")
 
     stats, team, slot_lev, n_mu = wpa(games, table)
     ng = sum(s["n"] for s in stats.values()) // 4
