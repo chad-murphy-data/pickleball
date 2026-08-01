@@ -104,6 +104,24 @@ See also: `CLAUDE.md` "Open threads", `ROADMAP.md`, and open PRs.
   targeting proxy from rally logs: who receives the 3rd/5th ball — though
   no shot-level data exists, so it may cap at the weakest-link inference).
 
+## Bookmarks (angles to remember; analysis mostly exists)
+
+- **Is Ben Johns phoning it in during MLP?** (Answer looks like "no.")
+  Evidence already in hand: no MLP sandbagging — skill transfers across
+  tours (sd_w ≈ 0.13), slope test + player-tour effects both null
+  (CLAUDE.md finding #3); and Johns never declined in absolute terms —
+  the field rose (finding #4, dynamic model). Post = myth-check framing;
+  mostly assembly, not new analysis.
+
+- **How did Bright/Fahey ice out ALW at the Mid-Season tournament?**
+  (Not the final title — memory hook.) The math exists:
+  `content/waters_iceout/` bundle + `model/iceout_waters.py` — weakest-link
+  coverage dial (41% → 0% Waters coverage takes 88% to 48%), "two Jorja
+  Johnsons" equivalence, serve-target check from the referee logs
+  (Johnson 10 / Waters 9 — the freeze lives mid-rally, unprovable from
+  our data). READY bundle; this bookmark is about picking the right
+  title/angle when posting.
+
 ## Data hygiene / repo TODOs
 
 - **DreamBreaker rally logs undercount points** (found 2026-07-25, DB-post
