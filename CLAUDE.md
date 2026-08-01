@@ -111,6 +111,21 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    never publish as fact. A single 2W-vs-2M exhibition game carries ~se
    0.24 logit of DIRECT offset info; a weekend of them beats 14k mixed
    games. (Session analysis 2026-07-13; not on the site.)
+9. **MLP 2026 awards are FROZEN** (2026-08-01; model/mlp_awards_2026.md,
+   reproduce with model/mlp_awards.py — do NOT re-derive definitions or
+   re-pick thresholds in a fresh session). Most Improved = 2025→2026 v1
+   season delta, ≥20 games/season (Hendershot +2.0 / Shimabukuro +1.6).
+   MVP = matchup WPA — pure outcome accounting, MLP-2026-only, matchups
+   reconstructed from games.csv (no matchup id there: event/date/stage +
+   roster union-find, time-ordered); roster WPA sums to net
+   matchups-decided-in-games; men's +5.62 tie broken Johns > Tardio on
+   clinchers 13-10 (Waters +7.12 / Johns). Under the Radar = GWAE vs
+   month-of-game v2 values, ≥25 games (Sewing +4.6 / Braham +4.0);
+   ALL-TOUR expectations are a deliberate design call (MLP-only ratings
+   would grade small-sample players against their own graded games —
+   considered 2026-08-01 and rejected; the clean upgrade, if ever wanted,
+   is frozen pre-May ratings, not MLP-only). PAR was set aside (career
+   skill × MLP usage, not MLP-earned); total points & POE set aside too.
 
 ## House rules (hard-won; violating these produces silently wrong results)
 
