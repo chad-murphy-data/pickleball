@@ -195,11 +195,15 @@ and misses the 25-game floor.)
   mostly measures whose team played the most games.
 - **Points over expectation** (Braham led, +64): same surprise structure as
   GWAE at point grain; redundant with it and noisier per unit.
-- **Points above replacement** — (2026 v1 value − 20th-pctile value among
-  MLP-2026 players, +0.87) × games / 2 (Waters led, ~185 pts): a fine
-  skill-×-usage metric, but it ignores *when* you won and its ratings are
-  fit on the full season rather than earned game by game. WPA answers the
-  MVP question better.
+- **Points above replacement** — (value − 20th-pctile value among MLP-2026
+  players) × games / 2: a fine skill-×-usage metric, but it ignores *when*
+  you won and its ratings are fit on the full season rather than earned
+  game by game. Waters leads it under either skill input — all-tour v1
+  values (~185) or an MLP-games-only fit (~159). The men's board is why
+  the input matters: all-tour ratings crown JW Johnson (PPA-informed);
+  MLP-only ratings say Johns by a hair over Patriquin — and neither
+  version knows Patriquin converted his games into more matchup wins.
+  WPA answers the MVP question better.
 - **In-season trajectory delta**: inside the noise (see Most Improved).
 
 ## Caveats

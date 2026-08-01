@@ -120,44 +120,46 @@ def improved_rally(cohort, min_rallies=500):
     return rows
 
 
+def ridge_fit(gs, lam=8.0):
+    """Additive player effects on game margin, ridge-shrunk (pts/game)."""
+    idx = {}
+    for g in gs:
+        for p in on_court(g):
+            idx.setdefault(p, len(idx))
+    n = len(idx)
+    A = [[0.0] * n for _ in range(n)]
+    b = [0.0] * n
+    for g in gs:
+        m = int(g["t1_score"]) - int(g["t2_score"])
+        xs = [(idx[g["t1_p1"]], 1), (idx[g["t1_p2"]], 1),
+              (idx[g["t2_p1"]], -1), (idx[g["t2_p2"]], -1)]
+        for i, si in xs:
+            b[i] += si * m
+            for j, sj in xs:
+                A[i][j] += si * sj
+    for i in range(n):
+        A[i][i] += lam
+    for c in range(n):                       # gaussian elimination
+        piv = max(range(c, n), key=lambda r: abs(A[r][c]))
+        A[c], A[piv] = A[piv], A[c]
+        b[c], b[piv] = b[piv], b[c]
+        for r in range(c + 1, n):
+            f = A[r][c] / A[c][c]
+            if f:
+                for k in range(c, n):
+                    A[r][k] -= f * A[c][k]
+                b[r] -= f * b[c]
+    x = [0.0] * n
+    for r in range(n - 1, -1, -1):
+        x[r] = (b[r] - sum(A[r][k] * x[k] for k in range(r + 1, n))) / A[r][r]
+    return {p: x[i] for p, i in idx.items()}
+
+
 def improved_fit(mlp_games, cohort, lam=8.0):
     """(B) delta in an MLP-games-only ridge margin fit (pts/game),
     anchored so the returning full-time cohort's mean delta is zero."""
-    def fit(year):
-        gs = [g for g in mlp_games if g["date"][:4] == year]
-        idx = {}
-        for g in gs:
-            for p in on_court(g):
-                idx.setdefault(p, len(idx))
-        n = len(idx)
-        A = [[0.0] * n for _ in range(n)]
-        b = [0.0] * n
-        for g in gs:
-            m = int(g["t1_score"]) - int(g["t2_score"])
-            xs = [(idx[g["t1_p1"]], 1), (idx[g["t1_p2"]], 1),
-                  (idx[g["t2_p1"]], -1), (idx[g["t2_p2"]], -1)]
-            for i, si in xs:
-                b[i] += si * m
-                for j, sj in xs:
-                    A[i][j] += si * sj
-        for i in range(n):
-            A[i][i] += lam
-        for c in range(n):                       # gaussian elimination
-            piv = max(range(c, n), key=lambda r: abs(A[r][c]))
-            A[c], A[piv] = A[piv], A[c]
-            b[c], b[piv] = b[piv], b[c]
-            for r in range(c + 1, n):
-                f = A[r][c] / A[c][c]
-                if f:
-                    for k in range(c, n):
-                        A[r][k] -= f * A[c][k]
-                    b[r] -= f * b[c]
-        x = [0.0] * n
-        for r in range(n - 1, -1, -1):
-            x[r] = (b[r] - sum(A[r][k] * x[k] for k in range(r + 1, n))) / A[r][r]
-        return {p: x[i] for p, i in idx.items()}
-
-    th25, th26 = fit("2025"), fit("2026")
+    th25 = ridge_fit([g for g in mlp_games if g["date"][:4] == "2025"], lam)
+    th26 = ridge_fit([g for g in mlp_games if g["date"][:4] == "2026"], lam)
     deltas = {p: th26[p] - th25[p] for p in cohort if p in th25 and p in th26}
     anchor = sum(deltas.values()) / len(deltas)
     rows = sorted(((d - anchor, th25[p], th26[p], p) for p, d in deltas.items()),
@@ -341,8 +343,17 @@ def main():
     repl = vals[int(0.2 * len(vals))]
     par = sorted(((yv[p] - repl) * n / 2, p) for p, n in active_counts.items()
                  if p in yv)
-    print(f"  points above replacement (repl = 20th-pctile 2026 v1 value "
+    print(f"  points above replacement, all-tour v1 values (repl 20th pctile "
           f"{repl:+.2f}): {nm(par[-1][1])} {par[-1][0]:.0f}")
+    th = ridge_fit([g for g in games])
+    mvals = sorted(th[p] for p in active_counts)
+    mrepl = mvals[int(0.2 * len(mvals))]
+    mpar = sorted(((th[p] - mrepl) * n / 2, p) for p, n in active_counts.items())
+    for gender in ("F", "M"):
+        top = [z for z in reversed(mpar)
+               if players.get(z[1], {}).get("gender") == gender][:2]
+        print(f"  MLP-only PAR (ridge fit, repl {mrepl:+.2f}), top {gender}: "
+              + ", ".join(f"{nm(p)} {v:.0f}" for v, p in top))
 
 
 if __name__ == "__main__":
