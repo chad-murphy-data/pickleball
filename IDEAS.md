@@ -122,6 +122,16 @@ See also: `CLAUDE.md` "Open threads", `ROADMAP.md`, and open PRs.
   our data). READY bundle; this bookmark is about picking the right
   title/angle when posting.
 
+- **Weather** — does wind/heat compress skill gaps (more upsets in bad
+  conditions)? No weather data in the repo yet; would need a venue/date
+  join to historical weather. Chad's memory hook.
+
+- **"Serve/return bias"** — Chad's memory hook. Adjacent repo facts:
+  serving team wins only ~43.5% of doubles rallies (field baseline;
+  return side ~56.5%), serve-rally clustering k ≈ 0.43, and the
+  serve/return split ties plain points pre-match (spec shootout — a
+  live-only asset). Pin down the intended angle before drafting.
+
 ## Data hygiene / repo TODOs
 
 - **DreamBreaker rally logs undercount points** (found 2026-07-25, DB-post
