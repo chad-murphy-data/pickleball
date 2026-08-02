@@ -14,3 +14,6 @@ content/**/*.png
 
 # droplet Supabase creds (service-role key — never commit)
 deploy/pickleball.env
+
+# 9-9 rally-state pull (regenerable from Supabase pb_rally)
+model/_clutch99_cache.json
