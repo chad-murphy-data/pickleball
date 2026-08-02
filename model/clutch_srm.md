@@ -83,8 +83,12 @@ worth building the two parameters to find out they collapse.
 
 ## The open problem: it still tracks skill
 
-**corr(v2 skill, total clutch) = +0.80** — *higher* than the frozen index's
-0.58–0.71. The permutation null rules out "pure artifact", but it does not
+**corr(v2 skill, total clutch) = +0.80** over all 1,148 players — but
+**+0.94 on the 182 top pros** who overlap the frozen index (see
+`clutch_rank_compare.py`). The 0.80 was attenuated by the noisy low-rally
+tail; 0.94 is the number that matters, and it is far worse than the frozen
+index's 0.59 on the same players. On the population anyone cares about, this
+index is very close to a skill re-measurement. The permutation null rules out "pure artifact", but it does not
 rule out **skill that varies with leverage**: if better players' edge grows
 in late-and-close states for any reason other than clutch, or if the DP's
 constant-k assumption misprices those states as a function of skill gap, the
@@ -94,6 +98,11 @@ interaction absorbs it.
 residual (below) is the defensible cut, but the whole ranking should be
 treated as provisional until the leverage-interaction-with-skill channel is
 tested directly.
+
+And the skill-adjusted halves of the two indices barely agree at all:
+Spearman +0.137, CI [-0.011, +0.276]. The strong RAW agreement (+0.55, and
++0.79/+0.87 where the frozen index is reliable) is carried almost entirely
+by the shared skill component.
 
 Top 10 skill-adjusted: Ben Johns +0.459, Thomas Wilson +0.366, Waters
 +0.360, Alshon +0.346, Daescu +0.329, Tardio +0.305, Jorja Johnson +0.303,
