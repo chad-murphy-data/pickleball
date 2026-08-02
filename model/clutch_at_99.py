@@ -51,7 +51,7 @@ sys.path.insert(0, str(ROOT / "web"))
 
 from sitelib import race, winprob  # noqa: E402
 
-CACHE = ROOT / "model" / "_clutch99_cache.json"
+CACHE = ROOT / "model" / "_clutch99_cache_v2.json"
 SB_URL = "https://nwgxyytowbluuykbdcfc.supabase.co"
 SB_KEY = os.environ.get("SUPABASE_ANON_KEY", "")
 CONTAM = ("2026-01-01", "2026-06-01")   # clutch measurement window
@@ -91,6 +91,7 @@ def fetch():
             hi = f"{y + 1}-01-01" if m == 12 else f"{y}-{m + 1:02d}-01"
             rallies += _page("pb_rally", {
                 "select": ("match_id,game_number,rally_number,server_side,server_number,"
+                           "server_uuid,receiver_uuid,"
                            "server_score,receiver_score,won,outcome,match_date,tour"),
                 "discipline": "eq.doubles",
                 "server_score": "gte.9",
@@ -190,6 +191,7 @@ def build_games(blob, cur, traj):
             "mid": mid, "gn": gn, "date": e["match_date"], "tour": e["tour"],
             "us": us, "vals": vals,
             "serve_side": e["server_side"], "server_number": e["server_number"],
+            "server_uuid": (e["server_uuid"] or "").lower(),
             "won1": 1 if win_side == 0 else 0,   # "side 1" = pb side 0
         })
     return games, skipped
@@ -344,11 +346,138 @@ def report(games, clutch, zmap, label, hi_only=False):
           f"   (+1 sd of clutch gap = {pp:+.1f} pp)")
 
 
+def reliability(clutch_rows):
+    """Fraction of the observed spread in clutch that is SIGNAL.
+
+    Needed because regressing on a noisy predictor biases the slope toward
+    zero: the raw coefficient is a FLOOR, not the estimate.  Each player's
+    clutch carries sampling sd = null_sd, so
+        var(observed) = var(true) + mean(null_sd^2)
+    and reliability = var(true)/var(observed).  Divide any slope by it to
+    get the disattenuated (errors-in-variables) estimate.
+    """
+    c = np.array([r["clutch"] for r in clutch_rows])
+    e = np.array([r["null_sd"] for r in clutch_rows])
+    var_obs = float(c.var())
+    var_err = float((e ** 2).mean())
+    rel = max((var_obs - var_err) / var_obs, 1e-6)
+    return rel, var_obs, var_err
+
+
+def server_level(games, blob, clutch, zmap, label):
+    """The right GRAIN.
+
+    Clutch is defined on the server ("clutch on your own serve").  A
+    4-player team-sum dilutes it; at 9-9 we know exactly who is holding the
+    ball.  Two sharper arms:
+      GAME  -- the server at the first 9-9: does THEIR clutch predict their
+               side winning the game?
+      RALLY -- every rally at 9-9 or beyond: does the server's clutch
+               predict winning that rally?  Several times the observations,
+               and the outcome is the exact thing clutch is measured on.
+    """
+    keep = {(g["mid"], g["gn"]) for g in games}
+    pred99 = {(g["mid"], g["gn"]): g["p99"] for g in games}
+    won_by = {(g["mid"], g["gn"]): g["won1"] for g in games}
+
+    # ---- game arm: clutch of whoever served at 9-9, signed to their side
+    gx, gy, gp = [], [], []
+    for g in games:
+        srv = g.get("server_uuid")
+        if not srv or srv not in clutch:
+            continue
+        # probability THIS server's side wins, and whether it did
+        p = g["p99"] if g["serve_side"] == 0 else 1 - g["p99"]
+        w = g["won1"] if g["serve_side"] == 0 else 1 - g["won1"]
+        gx.append(clutch[srv]); gy.append(w); gp.append(p)
+    gx, gy, gp = np.array(gx), np.array(gy), np.array(gp)
+
+    # ---- rally arm: every rally at >=9-9 with a rated server.
+    # MUST carry a skill control: better servers hold more anyway, and clutch
+    # correlates ~0.6-0.7 with skill, so the raw rally correlation is
+    # confounded.  eta_srv = the serving side's skill edge, signed.
+    byg = {(g["mid"], g["gn"]): g for g in games}
+    rx, ry, rs, rv = [], [], [], []
+    for r in blob["rallies"]:
+        g = byg.get((r["match_id"], r["game_number"]))
+        if g is None:
+            continue
+        u = (r["server_uuid"] or "").lower()
+        if u not in clutch or u not in g["us"]:
+            continue
+        eta = g["skill_diff"] if r["server_side"] == 0 else -g["skill_diff"]
+        rx.append(clutch[u]); ry.append(r["won"])
+        rs.append(eta); rv.append(g["vals"][g["us"].index(u)])
+    rx, ry = np.array(rx), np.array(ry)
+    rs, rv = np.array(rs), np.array(rv)
+
+    print(f"{label} SHARPER GRAIN")
+    if len(gx) > 50:
+        r = float(np.corrcoef(gx, gy - gp)[0, 1])
+        X = np.column_stack([np.ones(len(gx)),
+                             np.log(np.clip(gp, 1e-6, 1 - 1e-6) /
+                                    np.clip(1 - gp, 1e-6, 1)), gx])
+        b = logistic(X, gy.astype(float))
+        print(f"    server-at-9-9 clutch -> wins game   n={len(gx):5d}  "
+              f"corr {r:+.3f}   logit {b[2]:+.2f}")
+    if len(rx) > 50:
+        base = ry.mean()
+        raw = logistic(np.column_stack([np.ones(len(rx)), rx]), ry.astype(float))
+        # with the skill control: side eta + the server's own v2 value
+        X = np.column_stack([np.ones(len(rx)), rs, rv, rx])
+        b = logistic(X, ry.astype(float))
+        print(f"    server clutch -> wins the RALLY     n={len(rx):5d}  "
+              f"(base hold {base:.3f})")
+        print(f"      raw logit           {raw[1]:+.2f}   <- CONFOUNDED, skill rides along")
+        print(f"      + skill control     {b[3]:+.2f}   <- clutch's own contribution")
+        sd = rx.std()
+        p0 = 1 / (1 + math.exp(-(b[0] + b[1] * rs.mean() + b[2] * rv.mean())))
+        p1 = 1 / (1 + math.exp(-(b[0] + b[1] * rs.mean() + b[2] * rv.mean() + b[3] * sd)))
+        print(f"      +1 sd clutch server = {100 * (p1 - p0):+.1f} pp on the rally "
+              f"(skill held fixed)")
+
+
+def mde(games, clutch, n_sim=400, seed=5):
+    """Minimum detectable effect: inject a KNOWN clutch effect into
+    synthetic outcomes and find the smallest one this design recovers with
+    95% confidence.  Without this, "null" cannot be distinguished from
+    "underpowered" — and reporting the former when it's the latter is the
+    failure mode a falsification-only protocol is prone to."""
+    rng = np.random.default_rng(seed)
+    p = np.array([g["p99"] for g in games])
+    cl = np.array([sum(clutch.get(u, 0.0) for u in g["us"][:2])
+                   - sum(clutch.get(u, 0.0) for u in g["us"][2:]) for g in games])
+    lg = np.log(np.clip(p, 1e-6, 1 - 1e-6) / np.clip(1 - p, 1e-6, 1))
+    X = np.column_stack([np.ones(len(cl)), lg, cl])
+    for beta in (1.0, 2.0, 3.0, 4.0, 6.0, 8.0):
+        hits = 0
+        for _ in range(n_sim):
+            py = 1 / (1 + np.exp(-(lg + beta * cl)))
+            y = (rng.random(len(py)) < py).astype(float)
+            try:
+                b = logistic(X, y)
+            except np.linalg.LinAlgError:
+                continue
+            se = None
+            pp = 1 / (1 + np.exp(-X @ b))
+            W = np.clip(pp * (1 - pp), 1e-9, None)
+            cov = np.linalg.inv(X.T @ (X * W[:, None]) + 1e-6 * np.eye(3))
+            se = math.sqrt(cov[2, 2])
+            if b[2] - 1.96 * se > 0:
+                hits += 1
+        sd = cl.std()
+        pp_eff = 100 * (1 / (1 + math.exp(-beta * sd)) - 0.5)
+        print(f"    injected logit {beta:>4.1f} (= {pp_eff:+.1f} pp per sd): "
+              f"recovered {100 * hits / n_sim:5.1f}% of the time")
+
+
 def main():
     print("Fetching rally states at 9-9 ...")
     blob = fetch()
     cur, traj = load_values()
     clutch, zmap = load_clutch(cur)
+    crows = [{"clutch": float(r["clutch"]), "null_sd": float(r["null_sd"])}
+             for r in csv.DictReader((ROOT / "data" / "clutch_players.csv").open())]
     cal = json.loads((ROOT / "web" / "calibration.json").read_text())
     race.set_calibration(cal["a"], cal["b"], cal["eps"])
 
@@ -373,6 +502,19 @@ def main():
         print()
         placebo(gs, clutch, zmap, lab)
         print()
+        server_level(gs, blob, clutch, zmap, lab)
+        print()
+
+    rel, vo, ve = reliability(crows)
+    print("=" * 74)
+    print(f"ATTENUATION: clutch reliability = {rel:.2f} "
+          f"(observed var {vo:.5f}, sampling-error var {ve:.5f})")
+    print(f"  => every slope above is biased toward zero; divide by {rel:.2f} "
+          f"for the disattenuated estimate (x{1 / rel:.2f})")
+    print()
+    print("POWER (what this design could even see):")
+    mde(clean, clutch)
+    print()
 
     # ---- sanity: is the 9-9 baseline itself calibrated?
     p = np.array([g["p99"] for g in covered])

@@ -159,6 +159,15 @@ the small ones, for the **same total points**, hence the **same games**.
 Skill sets the total; clutch just rearranges it inside the match. A real,
 stable trait can be perfectly game-neutral, and this one is.
 
+> **Qualified 2026-08-02 — see `model/clutch_at_99.md`.** Every test in this
+> section prices at the START of a game, where the mean-zero construction
+> below guarantees a wash. Conditioning on a game actually REACHING 9-9
+> removes the low-leverage half, and there clutch is *not* null: +0.056
+> orthogonal to skill (n=1,405 out-of-window), coherent across game,
+> server-only, and rally grains. Small, at the edge of resolution, and it
+> also exposed a real 9-9 miscalibration in the serve DP. §5's verdict
+> stands for everything §5 tested; it does not extend to the 9-9 tail.
+
 The clutch-closeness test is the cleanest cautionary tale in the set: the
 holdout's 158 toss-ups showed a tempting +0.22 that would have made a
 "clutch wins the close ones!" headline — and the training set's 1,237
