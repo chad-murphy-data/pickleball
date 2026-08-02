@@ -102,7 +102,7 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    loadings, women's spread 1.5×; offset-safe). Clutch & durability
    exist but are faint beyond skill (split-half r ≈ 0.15/0.13;
    ALW+Johns top BOTH lists; biggest rally = 9-10 on #2 server, 0.47
-   swing). Lone P≥0.95 challenger: equal-weight v2+margin+Elo ensemble
+   swing). **Clutch was rebuilt 2026-08-02 — see finding #10.** Lone P≥0.95 challenger: equal-weight v2+margin+Elo ensemble
    (0.1638 vs 0.1665 Brier) — shadow-ledger it before ever adopting.
    Rally logs cache: raw/match_logs/ (gitignored; harvest_logs.py).
 8. Cross-gender offset: the γ|gap| term is the ONLY identification channel
@@ -126,6 +126,33 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    considered 2026-08-01 and rejected; the clean upgrade, if ever wanted,
    is frozen pre-May ratings, not MLP-only). PAR was set aside (career
    skill × MLP usage, not MLP-earned); total points & POE set aside too.
+
+10. **Clutch index of record = `data/clutch_ratings.csv`** (2026-08-02;
+   `model/build_clutch_ratings.py`, written up in `model/clutch_regimes.md`).
+   Two leverage regimes per player (serve + return level on ordinary points
+   and on top-quartile-leverage points); clutch = big − regular. ALL FOUR
+   players load every rally, so it is teammate/opponent-adjusted; 795 players
+   vs 182. Fitted UNANCHORED — per-regime league constants, never the v2
+   offset, because anchoring to v2 pins each player's overall rally rate and
+   re-imposes the zero-sum artefact (that mistake produced elite players
+   "below baseline" on ordinary points; see clutch_regimes.md). Reliability:
+   lift split-half 0.63 (0.77 full-length), skill-adjusted 0.44 (0.61) — the
+   frozen index only reached 0.61 on its |z|>1.5 tail. Big-point and
+   regular-point ability are POSITIVELY correlated (+0.52): the zero-sum
+   framing was always an artefact. Serving is 4.2 pp harder on big points for
+   everyone (44.2% → 40.0%). corr with skill +0.72 — expected, not a defect;
+   use `skill_adj` for "more clutch than their level". **Still DESCRIPTIVE
+   ONLY**: no predictive value at 9-9 (n=1,823, `clutch_at_99_regimes.py`) or
+   at any of 30 entry-state × player-filter cells (`clutch_endgame_sweep.py`
+   — best cell dies against a shuffled-clutch null, p=0.10). `data/
+   clutch_players.csv` is retained as the archive behind the published
+   `content/clutch/` posts; don't repoint those scripts.
+11. **The serve DP is miscalibrated at 9-9** (found 2026-08-02,
+   `model/clutch_at_99.py`): it underprices the better team — observed 0.572
+   vs predicted 0.559 on 1,405 out-of-window games, and a zero-clutch skill
+   placebo predicts the residual (+0.052, CI excludes 0). `site/live.html`
+   and `replay_winprob.py` show 9-9 numbers that are slightly too flat.
+   UNFIXED. Consistent with the smoke calibration already noted below.
 
 ## House rules (hard-won; violating these produces silently wrong results)
 

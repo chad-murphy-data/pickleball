@@ -1,5 +1,25 @@
 # Clutch in pro pickleball — the whole investigation
 
+> **SUPERSEDED AS THE INDEX OF RECORD (2026-08-02).** The rating now lives in
+> `data/clutch_ratings.csv` (two-regime construction, `model/clutch_regimes.md`,
+> built by `model/build_clutch_ratings.py`). It uses ALL FOUR players in every
+> rally instead of the server only, covers 795 players instead of 182, is
+> teammate- and opponent-adjusted, and its skill-adjusted half replicates at
+> 0.61 full-length across the whole population rather than only on a |z|>1.5
+> tail.
+>
+> **This file stays as the record of the original investigation** and of the
+> numbers published in `content/clutch/` — those posts quote this index, and
+> `content/clutch/plot_*.py` still read `data/clutch_players.csv` deliberately.
+>
+> What did NOT change: §5's verdict. The new index does not predict who wins
+> either — see `model/clutch_at_99_regimes.py` (n=1,823, adds nothing) and
+> `model/clutch_endgame_sweep.py` (30 cells, best one dies against a shuffled
+> null). One public claim DOES change: the Reddit post says the skill-adjusted
+> leftover "barely survives". Under the new construction it replicates at 0.61
+> — but the two leftovers correlate only +0.14 with each other, so this is a
+> different quantity being measured reliably, not the old one vindicated.
+
 *Session 2026-07-20/21. Code: `model/big_points.py` (measure + existence),
 `model/clutch_significance.py` (who's confidently clutch), and the
 predictive ledger `model/clutch_predictive.py`, `clutch_predictive_subset.py`,
