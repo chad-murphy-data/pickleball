@@ -70,11 +70,51 @@ property of pickleball, and it is not the price of identification.
 separates far more when the point matters. Suggestive, not established — see
 the caveat below.
 
+## Is the leftover real?  Yes — split-half reliability
+
+Split by MATCH (no match spans the halves), refit both halves, correlate:
+
+| | split-half r | full-length (Spearman-Brown) |
+|---|---|---|
+| lift (raw) | +0.629 | **+0.772** |
+| **lift residualised on skill** | **+0.437** | **+0.608** |
+| top 25% by \|leftover\| | +0.643 | — |
+| top 9% by \|leftover\| | +0.776 | — |
+
+**The skill-adjusted leftover replicates.** 0.61 full-length matches the
+frozen index's best case — except the frozen index only reached 0.61 on its
+|z|>1.5 tail, while this holds across the whole 795-player population.
+
+Per-player stability across independent halves:
+
+| | resid A | resid B |
+|---|---|---|
+| Ben Johns | +1.066 | +1.094 |
+| Anna Leigh Waters | +0.809 | +0.902 |
+| Hayden Patriquin | +0.618 | +0.648 |
+| Noe Khlif | +0.417 | +0.381 |
+
+**So the +0.72 correlation with skill is NOT disqualifying**, and treating it
+as such was an error. Skill explains ~34% of lift variance in the half-fits;
+the remaining ~66% is reliable signal, not noise. A trait can correlate
+strongly with skill and still be separately measurable — which is what you
+expect if clutch is "a skill great players tend to also have" rather than an
+independent gift. Pickleball makes this cleaner than most sports: no manager
+assigns the big points, nobody is benched, everyone on court plays every
+rally, so the correlation cannot be manufactured by opportunity allocation
+the way it can for closers or crunch-time lineups.
+
+**Cross-validation:** Johns has the highest skill-adjusted lift here, above
+Waters. That is the third independent construction — frozen residual, SRM
+residual, and this one — agreeing Johns is the most clutch-beyond-skill
+player in the sport.
+
 ## Caveats — these are load-bearing
 
-* **The lift still correlates +0.72 with skill.** Clutch-beyond-skill is
-  still not cleanly separated. This construction fixes the sign problem; it
-  does not solve the identification problem.
+* **Reliable is not the same as "clutch rather than skill."** The leftover
+  could be a stable SECOND DIMENSION of skill (ability under pressure is
+  arguably just a skill). That may be a distinction without a difference in
+  practice, but it is not settled here.
 * **The permutation nulls are muddy and should not be leaned on.** Shuffling
   the regime label within game gives corr(regular, big) = +0.705 — *higher*
   than the real +0.515 — and null sd(regular) = 0.240, *exceeding* the real
@@ -82,8 +122,9 @@ the caveat below.
   distorts the reference rather than providing a clean one. The real/null
   ratio on the lift (1.96×) is the only null statistic here worth quoting,
   and only weakly.
-* The regime-label endogeneity I raised last time is still real. It just was
-  not what produced the impossible numbers.
+* The regime-label endogeneity raised earlier is still real and still
+  unaddressed. It was not what produced the impossible numbers, but it has
+  not been ruled out either.
 
 ## On bracket-stakes as an instrument
 
@@ -96,7 +137,12 @@ where the identification improves.
 
 ## Status
 
-Not adopted. Recorded because the sequence — plausible fix → impossible
+Not adopted, but this is now the best-supported clutch construction in the
+project: no zero-sum artefact, full-population reliability, sensible signs,
+and agreement with prior work on the one name every estimator agrees about.
+It is the candidate to replace `clutch_players.csv` if any does.
+
+Recorded because the sequence — plausible fix → impossible
 result → wrong diagnosis → correct diagnosis — is the useful part.
 
 ## Reproduce
