@@ -69,7 +69,8 @@ LO_Q = 0.50      # bottom half = the baseline regime
 MIN_EACH = 150   # rallies required in EACH regime to be estimated
 
 
-def fit_regimes(rows, index, lam=0.15, lam_lo=0.25, iters=400):
+def fit_regimes(rows, index, lam=0.15, lam_lo=0.25, iters=400,
+                anchor=True, league=0.0):
     """Params [mL | nL | mH | nH], P each.  Each rally loads exactly one
     regime, so the low- and high-leverage levels are fitted on disjoint data
     and their difference carries no mechanical constraint."""
@@ -77,7 +78,17 @@ def fit_regimes(rows, index, lam=0.15, lam_lo=0.25, iters=400):
     srv = np.array([[index[r[0]], index[r[1]]] for r in rows])
     rcv = np.array([[index[r[2]], index[r[3]]] for r in rows])
     hi = np.array([r[9] for r in rows], dtype=bool)
-    off = np.array([r[5] for r in rows])
+    # anchor=True  -> per-rally offset from v2 (pins each player's OVERALL
+    #                 rally rate, which forces high-leverage gains to be paid
+    #                 for at low leverage -- the zero-sum constraint smuggled
+    #                 back in through the skill anchor)
+    # anchor=False -> one league-average constant.  Each player's low- and
+    #                 high-leverage levels then float freely relative to the
+    #                 field, their sum is pinned by nothing, and "is big-point
+    #                 ability opposed to ordinary ability" becomes a real
+    #                 empirical question instead of an identity.
+    off = (np.array([r[5] for r in rows]) if anchor
+           else np.full(len(rows), league))
     y = np.array([r[6] for r in rows], dtype=float)
     pri = np.concatenate([np.full(2 * P, lam_lo), np.full(2 * P, lam)])
     sH, sL = hi.astype(float), (~hi).astype(float)

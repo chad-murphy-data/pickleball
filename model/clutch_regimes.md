@@ -1,119 +1,108 @@
-# Is clutch forced to be zero-sum? — asked, tested, and the answer is a warning
+# Is clutch forced to be zero-sum?  No — and the first answer here was wrong
 
-*Session 2026-08-02. Code: `model/clutch_regimes.py`, output
-`data/clutch_regimes.csv` (795 players). **Nothing here is adopted.** The
-result is recorded because the failure is instructive, not because the
-numbers are usable.*
+*Session 2026-08-02. Code: `model/clutch_regimes.py`. **Not adopted**;
+`data/clutch_players.csv` remains the index of record.*
 
 ## The question
 
-Both existing clutch constructions measure a leverage **gradient**:
+Both existing constructions measure a leverage **gradient** against a
+baseline fitted on ALL of a player's points, big ones included. That pins
+their average residual near zero, so beating the baseline on high-leverage
+points mechanically implies falling short on low-leverage ones. Is "wins the
+big points" doomed to mean "loses the small ones"?
 
-```
-frozen:  mean(levz × resid)  over a player's serving rallies
-SRM:     a coefficient on    levz × (side indicator)
-```
+## First attempt, and the error in it
 
-`levz` is centred within each game, so both are covariances, and the residual
-is taken against a baseline fitted on **all** of a player's points — the big
-ones included. That pins their average residual near zero. Beating the
-baseline on high-leverage points therefore *mechanically* implies falling
-short on low-leverage ones, and a uniformly excellent player scores exactly
-0.
+I fitted two levels per player on **disjoint** rally sets (top-quartile
+leverage vs bottom half) so nothing would constrain their difference, and got
+an impossible result: corr(v2, low-leverage level) = **−0.747**, corr(v2,
+high) = **+0.792**. Elite players supposedly performing below their own
+baseline on ordinary points.
 
-So: is "wins the big points" doomed to mean "loses the small ones"?
+I diagnosed that as endogeneity in the regime label — the score path is a
+function of the rally outcomes — and concluded the zero-sum property was "the
+price of identification."
 
-## The conceptual answer
+**That conclusion was wrong.** The user caught it: the per-rally offset
+`logit(k_side)` is derived from v2 and calibrated so each player's OVERALL
+rally-win rate reproduces their v2 point share. **The offset pins the sum.**
+Disjoint regime fitting was irrelevant — any high-leverage gain still had to
+be paid for at low leverage to keep the total matching v2. The constraint was
+never removed; it moved from the within-game centring into the skill anchor,
+and I read the resulting artefact as a substantive finding.
 
-**No — that tradeoff is imposed by the choice of baseline, not by pickleball.**
-Estimate the baseline **out of regime** and the constraint vanishes. Give
-every player two levels fitted on *disjoint* rallies:
+## Corrected construction
 
-```
-logit P(serving side wins) = offset
-    + [LOW-leverage rallies ]  (mL_s1 + mL_s2) − (nL_r1 + nL_r2)
-    + [HIGH-leverage rallies]  (mH_s1 + mH_s2) − (nH_r1 + nH_r2)
+Drop the skill anchor. Replace the per-rally v2 offset with a **per-regime
+league constant**, so each player's regular-point and big-point abilities
+float freely relative to the field and nothing pins their sum. Opponent
+adjustment is retained — all four players are still in every rally.
 
-clutch_u = (mH_u − mL_u) + (nH_u − nL_u)
-```
+## Results
 
-`mL` and `mH` never see the same rally, so nothing constrains their
-difference. A player is free to be above baseline in both regimes.
+**Global regime effect** (the reason the per-regime constant is needed — a
+common shift in the player terms cancels and cannot absorb this):
 
-## What happened when I ran it
-
-795 players, top-quartile leverage vs bottom-half. The permutation null
-(regime label shuffled within game) gives real sd 0.402 vs null 0.153 —
-**2.62×**, so there is real structure. And then:
-
-| | corr with v2 skill |
+| regime | serving side wins |
 |---|---|
-| low-leverage level | **−0.747** |
-| high-leverage level | **+0.792** |
-| clutch (high − low) | +0.830 |
+| low leverage | 44.18% |
+| high leverage | 40.01% |
+| | **−4.17 pp** |
 
-corr(low, high) across players = **−0.729**.
+Holding serve is materially harder on big points, for everybody.
 
-**This cannot be true.** It says elite players perform *below their own skill
-baseline* on ordinary points and make it all back on big ones — Waters at
-−0.662 on small points, +1.506 on big. Nobody believes Anna Leigh Waters
-loses routine rallies at a below-baseline rate. Taken at face value the model
-claims the entire top of the sport is a collection of coasters who only try
-when it matters.
+**The answer to the question:**
 
-## What it actually means
+| | value |
+|---|---|
+| corr(regular-point ability, big-point ability) | **+0.515** |
+| corr(v2, regular-point) | +0.563 |
+| corr(v2, big-point) | +0.825 |
+| corr(v2, lift = big − regular) | +0.721 |
+| sd(regular) / sd(big) / sd(lift) | 0.133 / 0.383 / 0.335 |
 
-Removing the within-game centring removed the zero-sum artefact and let a
-different artefact in through the same door. **The regime label is a function
-of the score path, which is a function of the rally outcomes** — the split is
-endogenous to the thing being measured. The centred estimators are immune to
-this precisely *because* they only ever compare a player to themselves inside
-the same game, which is also exactly what makes them zero-sum.
+**Regular-point and big-point ability are POSITIVELY correlated (+0.52).**
+Players who are good on ordinary points are good on big ones. The zero-sum
+tradeoff was an artefact of the baseline from start to finish — it is not a
+property of pickleball, and it is not the price of identification.
 
-**So the zero-sum property is not a bug to be fixed. It is the price paid for
-identification.** That is the real answer to the question, and it is a more
-useful one than a new leaderboard would have been.
+**Player spread is ~3× larger on big points** (sd 0.383 vs 0.133). The field
+separates far more when the point matters. Suggestive, not established — see
+the caveat below.
 
-I attempted a diagnostic to pin the mechanism precisely (is leverage simply a
-restatement of score margin?) and **botched it** — two arrays truncated to a
-common length whose orderings did not align, because `build()` skips
-flat-leverage games and the re-walk did not. Those numbers are not in this
-file and should not be quoted from the session log. The mechanism is
-identified in principle but not yet demonstrated here.
+## Caveats — these are load-bearing
 
-## What a real fix would need
+* **The lift still correlates +0.72 with skill.** Clutch-beyond-skill is
+  still not cleanly separated. This construction fixes the sign problem; it
+  does not solve the identification problem.
+* **The permutation nulls are muddy and should not be leaned on.** Shuffling
+  the regime label within game gives corr(regular, big) = +0.705 — *higher*
+  than the real +0.515 — and null sd(regular) = 0.240, *exceeding* the real
+  0.133. Shuffling mixes the regimes so each parameter fits a blend, which
+  distorts the reference rather than providing a clean one. The real/null
+  ratio on the lift (1.96×) is the only null statistic here worth quoting,
+  and only weakly.
+* The regime-label endogeneity I raised last time is still real. It just was
+  not what produced the impossible numbers.
 
-An **exogenous** definition of "big point" — one not derived from the realised
-score path. Candidates, roughly in order of promise:
+## On bracket-stakes as an instrument
 
-1. **Pre-committed score states.** Fix the set of "big" states in advance
-   (e.g. all rallies at 9-9 or later, or any game point) and compare a
-   player's rate there against their rate in *matched* states from
-   *different* games. Still endogenous to the current game, but the baseline
-   is not.
-2. **Instrument the state.** Use the opponent's characteristics or the draw
-   to predict arrival at high-leverage states, and use the predicted rather
-   than realised regime.
-3. **Match-level exogenous stakes.** Elimination vs round-robin, gold-medal
-   match vs early round, deciding game of a matchup. These are set by the
-   bracket, not by the rally outcomes — genuinely exogenous, though much
-   coarser and far fewer observations.
-
-Option 3 is the cleanest identification in the set and is the one I would
-build next. It answers a slightly different question — "does this player
-raise their level when the *match* matters" rather than "when the *point*
-matters" — but it is a question that can actually be answered without the
-estimator eating its own tail.
+Also flagged by the user, also correct: bracket-level stakes restrict the
+sample to players whose matches carry stakes, and the cleanest instruments
+are the most selective — gold-medal matches only exist for players who reach
+them. "Deciding game of a matchup" and "elimination vs round robin" apply to
+everyone in team play, so it is not fatal, but the population narrows exactly
+where the identification improves.
 
 ## Status
 
-Not adopted, not published, not a leaderboard. `data/clutch_players.csv`
-remains the index of record. The file `data/clutch_regimes.csv` is kept only
-so the failure is reproducible.
+Not adopted. Recorded because the sequence — plausible fix → impossible
+result → wrong diagnosis → correct diagnosis — is the useful part.
 
 ## Reproduce
 
 ```
-python model/clutch_regimes.py      # needs SUPABASE_ANON_KEY; reuses the
-                                    # clutch_srm rally cache
+python model/clutch_regimes.py      # anchored (the flawed version, kept for
+                                    # comparison); pass anchor=False to
+                                    # fit_regimes for the corrected fit
 ```
