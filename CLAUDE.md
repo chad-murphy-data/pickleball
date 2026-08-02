@@ -144,7 +144,9 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 - **Score formats are data, not assumptions**: PPA Challengers hide
   single-game-to-15 rounds (side-out, NOT rally); MLP DreamBreakers are
   rally-to-21 singles and NEVER enter models (isTieBreaker flag). 2026 MLP
-  skips the dead 4th game at 3-0. matchCompletedType 5 = normal; 6 =
+  dead 4th game at 3-0: generally PLAYED in round robin, recorded as a
+  walkover (skipped) in bracket play — matchup structure lives in
+  data/mlp_matchups_2026.csv (scraper/mlp_matchups.py, from the open BFF). matchCompletedType 5 = normal; 6 =
   walkover/cancelled; treat others as forfeits.
 - MLP is identified by organizationSlug == "major-league-pickleball"
   (titles lie: Grand Rapids = "Edward Jones Mid-Season Tournament";

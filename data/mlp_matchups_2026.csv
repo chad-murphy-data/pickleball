@@ -1,0 +1,1145 @@
+matchup_id,event_id,date,team_one,team_two,game_slot,match_id,completed_type,winner_side
+188e3bc7-4296-4216-ba16-23783b1aa5ea,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Texas Ranchers,Bay Area Breakers,1,4164be3f-9088-4bdc-8797-ee821ac82d99,5,1
+188e3bc7-4296-4216-ba16-23783b1aa5ea,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Texas Ranchers,Bay Area Breakers,2,8d386e78-228d-4375-a2b2-c417cafa94f7,5,1
+188e3bc7-4296-4216-ba16-23783b1aa5ea,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Texas Ranchers,Bay Area Breakers,3,301afd1a-8c9e-4a0c-a222-3efff3975037,5,2
+188e3bc7-4296-4216-ba16-23783b1aa5ea,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Texas Ranchers,Bay Area Breakers,4,17e0ccd1-845f-49c7-83b8-ce16d1262c36,5,1
+9caab699-f96e-41f2-8170-3c9fd64eed95,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Utah Black Diamonds,Los Angeles Mad Drops,1,19ccbeaf-e3af-432d-8e7a-50bba272a53a,5,2
+9caab699-f96e-41f2-8170-3c9fd64eed95,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Utah Black Diamonds,Los Angeles Mad Drops,2,fcc30c1e-f281-4007-9c4c-0276d2dae30e,5,1
+9caab699-f96e-41f2-8170-3c9fd64eed95,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Utah Black Diamonds,Los Angeles Mad Drops,3,52d784ec-7210-4c9e-906b-0c9311559fb0,5,2
+9caab699-f96e-41f2-8170-3c9fd64eed95,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Utah Black Diamonds,Los Angeles Mad Drops,4,33440b25-a946-4436-bc93-835575fbb20c,5,2
+95b5b97a-ffc5-4a31-ad7b-441a04aad459,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Orlando Squeeze,Columbus Sliders,1,6d475d62-529a-4ec4-8ab1-6c69cd6772a2,5,2
+95b5b97a-ffc5-4a31-ad7b-441a04aad459,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Orlando Squeeze,Columbus Sliders,2,fa4de33b-13b7-4f4c-91a6-df0de9adca06,5,1
+95b5b97a-ffc5-4a31-ad7b-441a04aad459,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Orlando Squeeze,Columbus Sliders,3,1bcd7ac6-2d2d-4f4f-af97-01018ca8e704,5,2
+95b5b97a-ffc5-4a31-ad7b-441a04aad459,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Orlando Squeeze,Columbus Sliders,4,8070e96f-dc55-49e5-bd92-cbb1b704a2a3,5,1
+633bb48c-0c90-46b3-a8f9-90a9bf26ae37,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Carolina Hogs,St. Louis Shock,1,ec95399b-2b0a-4c3a-9c37-7c577107b5be,5,2
+633bb48c-0c90-46b3-a8f9-90a9bf26ae37,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Carolina Hogs,St. Louis Shock,2,592422f5-b5ec-46ff-8b60-f8cde2ea3f47,5,2
+633bb48c-0c90-46b3-a8f9-90a9bf26ae37,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Carolina Hogs,St. Louis Shock,3,df98c242-661c-43c1-85fc-76562a13485d,5,2
+633bb48c-0c90-46b3-a8f9-90a9bf26ae37,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Carolina Hogs,St. Louis Shock,4,f7721a1b-3640-4d28-8de0-9aff552113a3,5,2
+42b4ff94-bfe9-4959-840f-73f23d8789cf,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Phoenix Flames,Dallas Flash,1,d979b09f-1a38-4169-bd8a-6367c47f056f,5,2
+42b4ff94-bfe9-4959-840f-73f23d8789cf,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Phoenix Flames,Dallas Flash,2,a446de94-5d0f-4ae6-9259-42cfb90bba3b,5,1
+42b4ff94-bfe9-4959-840f-73f23d8789cf,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Phoenix Flames,Dallas Flash,3,076bae03-3a61-45e5-952e-f05c9ae402e3,5,2
+42b4ff94-bfe9-4959-840f-73f23d8789cf,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-22,Phoenix Flames,Dallas Flash,4,c5535a8e-1640-4556-8d5e-654304fbf82d,5,2
+00107553-4777-480f-823e-380560b365a7,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Phoenix Flames,Orlando Squeeze,1,4ff6b1a9-cbaf-4032-8b21-472abe339df3,5,2
+00107553-4777-480f-823e-380560b365a7,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Phoenix Flames,Orlando Squeeze,2,46e4f2da-a28e-4565-903e-3f3c85461b7f,5,2
+00107553-4777-480f-823e-380560b365a7,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Phoenix Flames,Orlando Squeeze,3,6727250c-ddb1-427e-89fa-d55d170f5998,5,2
+00107553-4777-480f-823e-380560b365a7,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Phoenix Flames,Orlando Squeeze,4,7783496b-c3a3-42f9-901f-4fdafabbede5,5,1
+2c949e1c-f844-42e1-b7de-31d0849ed1fd,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Columbus Sliders,New Jersey 5s,1,d5c05630-4ae9-477d-aa5c-456fb554067c,5,2
+2c949e1c-f844-42e1-b7de-31d0849ed1fd,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Columbus Sliders,New Jersey 5s,2,df98b352-b309-4370-a5bc-7c417bba90ba,5,1
+2c949e1c-f844-42e1-b7de-31d0849ed1fd,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Columbus Sliders,New Jersey 5s,3,e66f312e-ed10-4e5f-a71d-4b7e25d0c29b,5,1
+2c949e1c-f844-42e1-b7de-31d0849ed1fd,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Columbus Sliders,New Jersey 5s,4,9a6d04c9-0e18-4919-95fc-bccab34dc6ed,5,1
+2b1f80b7-86f0-4068-9fdb-2e08ab088d96,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Los Angeles Mad Drops,Bay Area Breakers,1,2ae579e0-2892-41ad-aeca-1816e52572a9,5,1
+2b1f80b7-86f0-4068-9fdb-2e08ab088d96,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Los Angeles Mad Drops,Bay Area Breakers,2,dfe22eb4-b4b3-40bf-b2f3-8a4c84cd08be,5,1
+2b1f80b7-86f0-4068-9fdb-2e08ab088d96,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Los Angeles Mad Drops,Bay Area Breakers,3,74948474-9101-41da-ba75-4b418d2a4c8c,5,2
+2b1f80b7-86f0-4068-9fdb-2e08ab088d96,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Los Angeles Mad Drops,Bay Area Breakers,4,d300eefb-b555-47a8-8538-f89eea76d953,5,1
+124445c2-ed3d-462a-b055-7d8848726d82,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Texas Ranchers,St. Louis Shock,1,74525adf-4fa9-4bfd-9998-91fefb74283d,5,2
+124445c2-ed3d-462a-b055-7d8848726d82,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Texas Ranchers,St. Louis Shock,2,04add018-cd14-4621-9882-2b7d84b96661,5,2
+124445c2-ed3d-462a-b055-7d8848726d82,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Texas Ranchers,St. Louis Shock,3,ab289d73-1b34-4172-823f-fec1bee35494,5,2
+124445c2-ed3d-462a-b055-7d8848726d82,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Texas Ranchers,St. Louis Shock,4,8284059c-a527-4cf3-84f8-3c1f7245f154,5,2
+39f8f0e1-e20f-4cc9-bcef-5a1b6b88c6a3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Carolina Hogs,Utah Black Diamonds,1,5f985be7-8b70-41ed-881a-0cba0705d26a,5,1
+39f8f0e1-e20f-4cc9-bcef-5a1b6b88c6a3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Carolina Hogs,Utah Black Diamonds,2,c0080891-eba0-44cb-be73-9b4043852040,5,2
+39f8f0e1-e20f-4cc9-bcef-5a1b6b88c6a3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Carolina Hogs,Utah Black Diamonds,3,b6b8db4e-07c4-4bda-95db-1853651d01cc,5,2
+39f8f0e1-e20f-4cc9-bcef-5a1b6b88c6a3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Carolina Hogs,Utah Black Diamonds,4,6dcd6b48-3f2d-403e-adce-5f07ef822dd7,5,2
+9b88299f-e957-44a7-a93d-856dafa59cc3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Dallas Flash,Orlando Squeeze,1,898bb31a-e519-4b67-9d0b-61fa8ebe3e6b,5,1
+9b88299f-e957-44a7-a93d-856dafa59cc3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Dallas Flash,Orlando Squeeze,2,d7774f16-b350-4ed0-b947-c10e4ca130bf,5,1
+9b88299f-e957-44a7-a93d-856dafa59cc3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Dallas Flash,Orlando Squeeze,3,62aba499-b743-476e-8f5f-2cce99e4a89d,5,2
+9b88299f-e957-44a7-a93d-856dafa59cc3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Dallas Flash,Orlando Squeeze,4,f5575039-4adc-40a1-a9b5-a9277bc2574b,5,2
+99320af9-e452-4b0a-8a5b-5b328943e325,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Bay Area Breakers,Carolina Hogs,1,babdc3f4-e867-4a17-a71c-2f34f8d69807,5,2
+99320af9-e452-4b0a-8a5b-5b328943e325,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Bay Area Breakers,Carolina Hogs,2,4d98200f-93e1-43a0-bcd9-17bb027a0e54,5,2
+99320af9-e452-4b0a-8a5b-5b328943e325,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Bay Area Breakers,Carolina Hogs,3,f38bd6e1-227c-4002-8e29-2076425ba0b8,5,1
+99320af9-e452-4b0a-8a5b-5b328943e325,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Bay Area Breakers,Carolina Hogs,4,25935947-92f1-49d0-b2d9-7861cfc44f84,5,2
+f765cc29-701a-415e-bc7f-e29848b7b3dd,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Los Angeles Mad Drops,Texas Ranchers,1,98810ad6-6a59-4a98-8acc-711ca80cc139,5,1
+f765cc29-701a-415e-bc7f-e29848b7b3dd,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Los Angeles Mad Drops,Texas Ranchers,2,42fe3d4a-6fd3-4a23-88d7-0e083e4445a3,5,1
+f765cc29-701a-415e-bc7f-e29848b7b3dd,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Los Angeles Mad Drops,Texas Ranchers,3,48107680-ec20-45bc-86b3-7ff39a6f96a4,5,1
+f765cc29-701a-415e-bc7f-e29848b7b3dd,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,Los Angeles Mad Drops,Texas Ranchers,4,f26ca234-107f-4e99-81c0-57ae8922fe4d,5,2
+5bfca5d7-c955-4059-8ed6-109a9ebb87ab,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,St. Louis Shock,Utah Black Diamonds,1,c95e2dd6-d0ba-4fb3-9ef2-a87b7782b510,5,1
+5bfca5d7-c955-4059-8ed6-109a9ebb87ab,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,St. Louis Shock,Utah Black Diamonds,2,5a4171c9-ec3f-4bd9-bc87-dfc3ddcc92a8,5,2
+5bfca5d7-c955-4059-8ed6-109a9ebb87ab,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,St. Louis Shock,Utah Black Diamonds,3,e666d972-f779-4fa8-9514-d7fcf61c4fd9,5,1
+5bfca5d7-c955-4059-8ed6-109a9ebb87ab,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,St. Louis Shock,Utah Black Diamonds,4,93670f6f-b671-429f-a1d1-84e8cf0efca2,5,1
+7b344907-d98c-416c-8ddf-34f20bd4009d,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,New Jersey 5s,Dallas Flash,1,01cee61f-bbff-41ca-a334-d47a279e4e42,5,1
+7b344907-d98c-416c-8ddf-34f20bd4009d,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,New Jersey 5s,Dallas Flash,2,e854292e-2401-4bc5-8e5f-394236c3f66c,5,2
+7b344907-d98c-416c-8ddf-34f20bd4009d,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,New Jersey 5s,Dallas Flash,3,d6dd9795-1bff-4d10-bf43-75ca6f7d0a59,5,1
+7b344907-d98c-416c-8ddf-34f20bd4009d,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-23,New Jersey 5s,Dallas Flash,4,f955a157-2ab8-49a9-8f22-1e8674cf3d1f,5,1
+456003a5-4e10-49ff-8fbd-1f802790dade,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,New Jersey 5s,Phoenix Flames,1,e70162b4-d746-4bc5-bc80-b25b2aede884,5,1
+456003a5-4e10-49ff-8fbd-1f802790dade,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,New Jersey 5s,Phoenix Flames,2,1848459e-cbff-4454-89d3-76e36e21e5d5,5,1
+456003a5-4e10-49ff-8fbd-1f802790dade,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,New Jersey 5s,Phoenix Flames,3,6d963e1f-94ef-4bfb-a6d6-e2c6b7435bc8,5,1
+456003a5-4e10-49ff-8fbd-1f802790dade,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,New Jersey 5s,Phoenix Flames,4,abe065cd-cac3-42ac-85ea-da452b9db873,5,1
+3cc34516-8e78-40f8-b109-02747419da39,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Dallas Flash,Columbus Sliders,1,de9d7939-3721-4b60-87f1-df859746e8ca,5,2
+3cc34516-8e78-40f8-b109-02747419da39,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Dallas Flash,Columbus Sliders,2,62bf271e-e3cd-4fe9-9150-e371205261a7,5,2
+3cc34516-8e78-40f8-b109-02747419da39,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Dallas Flash,Columbus Sliders,3,08ab5ece-d7c9-4804-8258-298225e391c9,5,1
+3cc34516-8e78-40f8-b109-02747419da39,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Dallas Flash,Columbus Sliders,4,b835ae36-3ccb-499b-a8de-7b2add3aa7da,5,2
+bd36b877-bc94-488b-9b71-d40ac28fa87a,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Utah Black Diamonds,Texas Ranchers,1,a60b9b89-8da2-4624-a0b9-458ad20bf72b,5,2
+bd36b877-bc94-488b-9b71-d40ac28fa87a,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Utah Black Diamonds,Texas Ranchers,2,a2f3afe9-2612-4b2d-ab6f-bf4c1ada0222,5,2
+bd36b877-bc94-488b-9b71-d40ac28fa87a,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Utah Black Diamonds,Texas Ranchers,3,5539da12-f290-45e6-a610-f49e6d8a529b,5,1
+bd36b877-bc94-488b-9b71-d40ac28fa87a,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Utah Black Diamonds,Texas Ranchers,4,cdaa6a92-2842-4873-9b1d-6c623ad92475,5,2
+8942446a-ba5d-4801-b0a0-173b9539437d,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Bay Area Breakers,St. Louis Shock,1,2548b4ba-f857-43ae-8847-6995ca1f07d0,5,2
+8942446a-ba5d-4801-b0a0-173b9539437d,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Bay Area Breakers,St. Louis Shock,2,e53674ec-b9e8-4bd4-a8a6-d6377a103282,5,2
+8942446a-ba5d-4801-b0a0-173b9539437d,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Bay Area Breakers,St. Louis Shock,3,ae679bd7-c6bc-47ef-8dc5-384e68922240,5,2
+8942446a-ba5d-4801-b0a0-173b9539437d,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Bay Area Breakers,St. Louis Shock,4,667ef042-62b3-4db1-912e-7520037c10b3,5,1
+4f8dc8da-feab-4769-abc9-bdb051ef1666,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Los Angeles Mad Drops,Carolina Hogs,1,a92306fe-4502-4a30-b56c-7a5014866658,5,1
+4f8dc8da-feab-4769-abc9-bdb051ef1666,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Los Angeles Mad Drops,Carolina Hogs,2,876f2ee3-ab7c-49c9-9aaa-3cff41ee3dc1,5,1
+4f8dc8da-feab-4769-abc9-bdb051ef1666,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Los Angeles Mad Drops,Carolina Hogs,3,d28cf43e-6a14-41af-80f7-90ac87b9ece7,5,1
+4f8dc8da-feab-4769-abc9-bdb051ef1666,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Los Angeles Mad Drops,Carolina Hogs,4,363fbc32-db21-4a06-b5fb-60a9dc9c15dc,5,2
+2a9b822c-b74b-45e8-83c6-e1a7ccf681b3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Orlando Squeeze,New Jersey 5s,1,3973a4aa-6f2b-47b1-8d32-eb15eec551d0,5,2
+2a9b822c-b74b-45e8-83c6-e1a7ccf681b3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Orlando Squeeze,New Jersey 5s,2,83ee799d-1597-457f-8149-a725e23785ce,5,1
+2a9b822c-b74b-45e8-83c6-e1a7ccf681b3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Orlando Squeeze,New Jersey 5s,3,063b9206-b1f0-4fef-affb-b63b0d1d89aa,5,2
+2a9b822c-b74b-45e8-83c6-e1a7ccf681b3,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Orlando Squeeze,New Jersey 5s,4,c2404806-375e-4e89-a54e-ca8d09ac40b5,5,1
+e84c6d0c-4b73-4379-8421-1d229fbbb577,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Columbus Sliders,Phoenix Flames,1,e3c95389-c513-4144-b948-47eea342f00b,5,1
+e84c6d0c-4b73-4379-8421-1d229fbbb577,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Columbus Sliders,Phoenix Flames,2,b3d99537-1990-4ea4-878e-ecb6b52102b4,5,1
+e84c6d0c-4b73-4379-8421-1d229fbbb577,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Columbus Sliders,Phoenix Flames,3,648d13dc-b1b0-4c4f-b5da-82983690dc90,5,1
+e84c6d0c-4b73-4379-8421-1d229fbbb577,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Columbus Sliders,Phoenix Flames,4,9f31798c-084e-4f29-8d63-6e4363860571,5,1
+53f1cccc-8f14-4143-8f27-d9a9a07dff57,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Bay Area Breakers,Utah Black Diamonds,1,f56a7598-2472-48c7-9425-72938d258af6,5,1
+53f1cccc-8f14-4143-8f27-d9a9a07dff57,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Bay Area Breakers,Utah Black Diamonds,2,a5c0c204-c3a7-4398-8e7e-060e49dd37ec,5,1
+53f1cccc-8f14-4143-8f27-d9a9a07dff57,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Bay Area Breakers,Utah Black Diamonds,3,ef25205b-2711-415f-9104-a57391b75b16,5,2
+53f1cccc-8f14-4143-8f27-d9a9a07dff57,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Bay Area Breakers,Utah Black Diamonds,4,71a241a0-18b6-4177-b45d-f1b060fc6230,5,1
+3d1c19a9-e93d-4ed7-99e4-d0f430d889ed,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Texas Ranchers,Carolina Hogs,1,4dc8d881-d7d4-4e3a-a429-54927b9680fb,5,2
+3d1c19a9-e93d-4ed7-99e4-d0f430d889ed,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Texas Ranchers,Carolina Hogs,2,b3273cab-e093-40d9-9575-98117d9ade45,5,1
+3d1c19a9-e93d-4ed7-99e4-d0f430d889ed,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Texas Ranchers,Carolina Hogs,3,dcaa7841-362f-4a21-b8af-eca168d4c490,5,1
+3d1c19a9-e93d-4ed7-99e4-d0f430d889ed,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,Texas Ranchers,Carolina Hogs,4,cbb9d59c-615f-4e62-972f-411e6db477fa,5,1
+98bb6d3e-f2ec-449c-91c5-d90b6ba5c88c,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,St. Louis Shock,Los Angeles Mad Drops,1,6f1f33bc-e2cb-4d13-afce-98e02b7a755c,5,1
+98bb6d3e-f2ec-449c-91c5-d90b6ba5c88c,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,St. Louis Shock,Los Angeles Mad Drops,2,8f7cb571-a305-431d-b624-c9f5f23f51cc,5,1
+98bb6d3e-f2ec-449c-91c5-d90b6ba5c88c,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,St. Louis Shock,Los Angeles Mad Drops,3,c086e829-32b8-4d99-a138-72292db63535,5,2
+98bb6d3e-f2ec-449c-91c5-d90b6ba5c88c,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-24,St. Louis Shock,Los Angeles Mad Drops,4,c35742b4-397d-4a2c-9beb-d32a5352ccf9,5,2
+475c9263-cd7b-450e-9b3d-89883ef5b399,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Orlando Squeeze,Utah Black Diamonds,1,aa33fe23-d0da-4599-a35d-8fafdaab97bd,5,1
+475c9263-cd7b-450e-9b3d-89883ef5b399,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Orlando Squeeze,Utah Black Diamonds,2,f1e2a97c-baa5-4481-9c18-ac44657276b3,5,2
+475c9263-cd7b-450e-9b3d-89883ef5b399,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Orlando Squeeze,Utah Black Diamonds,3,e0275dd5-5813-4ab5-8efc-7bd5f8866951,5,1
+475c9263-cd7b-450e-9b3d-89883ef5b399,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Orlando Squeeze,Utah Black Diamonds,4,a4f77547-270d-4b81-a4e4-03205ea06cca,5,1
+ea2385a6-a40e-4655-8c39-e4fb15d038b2,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Texas Ranchers,Dallas Flash,1,22575397-80ca-42ac-a514-58aeec9b1749,5,2
+ea2385a6-a40e-4655-8c39-e4fb15d038b2,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Texas Ranchers,Dallas Flash,2,8a76e66a-d02a-4f95-ac63-613b8f303739,5,2
+ea2385a6-a40e-4655-8c39-e4fb15d038b2,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Texas Ranchers,Dallas Flash,3,38bd406a-c686-4eed-9889-3bc5c9a585d7,5,2
+ea2385a6-a40e-4655-8c39-e4fb15d038b2,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Texas Ranchers,Dallas Flash,4,d8ff2987-f9e2-4fb9-9390-760bed028b14,6,0
+90a298b3-525e-4b71-85aa-a10cdb66468b,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,St. Louis Shock,New Jersey 5s,1,e8028cf1-cb97-4007-9be7-f30f5e4df5a2,5,2
+90a298b3-525e-4b71-85aa-a10cdb66468b,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,St. Louis Shock,New Jersey 5s,2,5ce8c64b-f8e8-47fc-88d2-2d9530218639,5,1
+90a298b3-525e-4b71-85aa-a10cdb66468b,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,St. Louis Shock,New Jersey 5s,3,2f852003-4125-4dc1-b3e9-1d13240b209b,5,2
+90a298b3-525e-4b71-85aa-a10cdb66468b,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,St. Louis Shock,New Jersey 5s,4,5cb55843-a7a2-4e48-8eb3-cd18646ab2fa,5,1
+196f3f07-cef4-4702-a766-d96cfd7b6e38,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Los Angeles Mad Drops,Columbus Sliders,1,df3cd3ae-d8e9-4290-9328-1603c7698586,5,2
+196f3f07-cef4-4702-a766-d96cfd7b6e38,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Los Angeles Mad Drops,Columbus Sliders,2,0698c5c9-5b1a-4d58-a3ce-d074e42fb10a,5,1
+196f3f07-cef4-4702-a766-d96cfd7b6e38,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Los Angeles Mad Drops,Columbus Sliders,3,7fd76b38-428a-4f26-8804-27ad8b8acd17,5,1
+196f3f07-cef4-4702-a766-d96cfd7b6e38,940a7fb0-6fd9-4747-93c5-b7f8f46b1e5e,2026-05-25,Los Angeles Mad Drops,Columbus Sliders,4,c9762bf0-2254-45bf-9a77-bd2d429fc6e0,5,1
+8ab1a491-680d-4646-9372-fe25e355b279,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Las Vegas Night Owls,Florida Smash,1,5b723aba-ffa8-43c2-aa7e-c72819fddb1c,5,2
+8ab1a491-680d-4646-9372-fe25e355b279,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Las Vegas Night Owls,Florida Smash,2,c2ea236f-b97c-484a-90bc-97d3fa17485e,5,1
+8ab1a491-680d-4646-9372-fe25e355b279,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Las Vegas Night Owls,Florida Smash,3,4a088640-4353-45f4-ac04-533ce9b04a42,5,1
+8ab1a491-680d-4646-9372-fe25e355b279,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Las Vegas Night Owls,Florida Smash,4,2e3ce30b-fde9-49da-8eef-aaccf2c2cc73,5,1
+ff1ace87-ddf7-4c66-a84b-6fbc79b14f6c,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Palm Beach Royals,Carolina Hogs,1,d6424796-c656-45aa-83fa-4902a1f094d4,5,1
+ff1ace87-ddf7-4c66-a84b-6fbc79b14f6c,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Palm Beach Royals,Carolina Hogs,2,0d278a44-3bcb-482e-9599-522d3d91e0aa,5,2
+ff1ace87-ddf7-4c66-a84b-6fbc79b14f6c,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Palm Beach Royals,Carolina Hogs,3,cc6f792b-9040-4987-9599-cb936be86999,5,1
+ff1ace87-ddf7-4c66-a84b-6fbc79b14f6c,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Palm Beach Royals,Carolina Hogs,4,c363a2c9-6b6c-4bfa-8368-db1dc5d3996d,5,1
+1254360c-a9db-43cd-be63-466caaca3487,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Atlanta Bouncers,California Black Bears,1,8ea8e06f-61a0-472c-88a8-6daeb8571c18,5,1
+1254360c-a9db-43cd-be63-466caaca3487,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Atlanta Bouncers,California Black Bears,2,b2e6f59c-83d7-409e-96dc-2451fd675b33,5,1
+1254360c-a9db-43cd-be63-466caaca3487,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Atlanta Bouncers,California Black Bears,3,17b7da8f-9301-45ee-a468-8c1e74ef09a3,5,1
+1254360c-a9db-43cd-be63-466caaca3487,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Atlanta Bouncers,California Black Bears,4,588152c9-d212-46c3-8b8e-3e755c6b4b9f,5,2
+9a296541-7341-4708-a458-00d7f13b6452,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,New Jersey 5s,Chicago Slice,1,89af6913-3f01-46a2-999d-f9a8efedacb4,5,1
+9a296541-7341-4708-a458-00d7f13b6452,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,New Jersey 5s,Chicago Slice,2,a7d183bb-dc0b-4ea5-8da5-837ad54e2ba1,5,1
+9a296541-7341-4708-a458-00d7f13b6452,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,New Jersey 5s,Chicago Slice,3,c378edfc-cc29-4895-a023-3fe9c9bbd647,5,1
+9a296541-7341-4708-a458-00d7f13b6452,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,New Jersey 5s,Chicago Slice,4,d16ddbfc-6ac7-4c10-a665-2d8ead574297,5,2
+11357e02-6cc0-41fa-904a-179635d07b74,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Miami Pickleball Club,Columbus Sliders,1,1faac8df-c5db-4438-a3f2-5907412daa81,5,2
+11357e02-6cc0-41fa-904a-179635d07b74,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Miami Pickleball Club,Columbus Sliders,2,6dac01f8-026f-4b55-a701-1bc33a7af18e,5,1
+11357e02-6cc0-41fa-904a-179635d07b74,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Miami Pickleball Club,Columbus Sliders,3,bc3dfc9f-2acb-4ff9-a5da-81c6044cc98e,5,1
+11357e02-6cc0-41fa-904a-179635d07b74,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-28,Miami Pickleball Club,Columbus Sliders,4,ed4e89fb-595b-4633-be8c-32254be8f9e5,5,2
+80df46ed-572d-45a4-bde8-54761dbeb679,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Chicago Slice,California Black Bears,1,589ea619-b79b-4218-8f16-db2e8498c440,5,1
+80df46ed-572d-45a4-bde8-54761dbeb679,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Chicago Slice,California Black Bears,2,49a82d87-d57d-4d43-bca0-8c0541c9e055,5,1
+80df46ed-572d-45a4-bde8-54761dbeb679,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Chicago Slice,California Black Bears,3,d9c8431c-8ff5-47de-bcaf-7d56b65cacb6,5,1
+80df46ed-572d-45a4-bde8-54761dbeb679,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Chicago Slice,California Black Bears,4,1bba5508-ba82-496f-a0fc-802ee88c0739,5,1
+a9f743a2-0f31-457d-8bdb-7c15ac4cf2f5,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Miami Pickleball Club,Atlanta Bouncers,1,f83ec0d5-9bb6-4f64-8a9b-f8214fa20aa8,5,1
+a9f743a2-0f31-457d-8bdb-7c15ac4cf2f5,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Miami Pickleball Club,Atlanta Bouncers,2,2d45478a-4d99-47ec-b69e-7f615c6a30e9,5,1
+a9f743a2-0f31-457d-8bdb-7c15ac4cf2f5,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Miami Pickleball Club,Atlanta Bouncers,3,f4395d0d-a57f-4e0f-8e46-e056f52ec2dd,5,1
+a9f743a2-0f31-457d-8bdb-7c15ac4cf2f5,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Miami Pickleball Club,Atlanta Bouncers,4,a05c1c84-833f-480b-848d-0df3a2dc221e,5,1
+4f05dfcc-793e-4735-9068-2ad7566aa0ae,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Carolina Hogs,St. Louis Shock,1,842caa8d-e3b9-4585-bbcf-9ee5a25a6736,5,2
+4f05dfcc-793e-4735-9068-2ad7566aa0ae,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Carolina Hogs,St. Louis Shock,2,daeb32e7-6df6-45a7-b7db-c76a411e576e,5,2
+4f05dfcc-793e-4735-9068-2ad7566aa0ae,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Carolina Hogs,St. Louis Shock,3,a0c66c9e-5900-4810-b640-56e16c18369e,5,2
+4f05dfcc-793e-4735-9068-2ad7566aa0ae,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Carolina Hogs,St. Louis Shock,4,6be37d96-1f05-404a-9ab8-a3bf114135b6,5,2
+168879ad-0d9c-4e03-8a7f-99764de3fde4,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Atlanta Bouncers,New Jersey 5s,1,486b4e7b-4311-4465-8e6d-a060b5109fe6,5,2
+168879ad-0d9c-4e03-8a7f-99764de3fde4,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Atlanta Bouncers,New Jersey 5s,2,d45f6f10-2fb9-4214-98a2-0f1325658510,5,2
+168879ad-0d9c-4e03-8a7f-99764de3fde4,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Atlanta Bouncers,New Jersey 5s,3,4ee57e82-2b10-4ab3-97de-40dfba33592a,5,2
+168879ad-0d9c-4e03-8a7f-99764de3fde4,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Atlanta Bouncers,New Jersey 5s,4,e72173b8-aead-42b5-ab25-9ad491ab161c,5,2
+167add95-a3da-4492-8c8a-f910d6a81b3d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Florida Smash,Palm Beach Royals,1,fcaba683-b019-4b84-a9eb-da1b7ac63486,5,2
+167add95-a3da-4492-8c8a-f910d6a81b3d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Florida Smash,Palm Beach Royals,2,7d218ff5-d59d-44fe-bb91-d100f37c8224,5,2
+167add95-a3da-4492-8c8a-f910d6a81b3d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Florida Smash,Palm Beach Royals,3,36c8557d-eb79-4730-bf33-06a41ecf63da,5,2
+167add95-a3da-4492-8c8a-f910d6a81b3d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Florida Smash,Palm Beach Royals,4,17fc0e78-c5db-42f1-8d05-7b3ae83425f2,5,2
+e39308e9-c025-4ac6-afeb-f238ca1f44fd,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,California Black Bears,Columbus Sliders,1,b8cbeb09-3558-4c47-903f-0f3c8d344956,5,1
+e39308e9-c025-4ac6-afeb-f238ca1f44fd,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,California Black Bears,Columbus Sliders,2,9e97a807-e8fa-47b2-b418-14ffea248f32,5,2
+e39308e9-c025-4ac6-afeb-f238ca1f44fd,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,California Black Bears,Columbus Sliders,3,500fbbe2-e9a6-4442-80d6-a315c6b3cfb0,5,2
+e39308e9-c025-4ac6-afeb-f238ca1f44fd,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,California Black Bears,Columbus Sliders,4,c99ea410-b1c9-4e76-bee2-9a5305d0e7b7,5,2
+1b7f359f-f4df-4c4f-a196-dcdeee257d13,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Carolina Hogs,Las Vegas Night Owls,1,42a23971-8e02-46c4-a013-5d7e3f3fb4cf,5,1
+1b7f359f-f4df-4c4f-a196-dcdeee257d13,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Carolina Hogs,Las Vegas Night Owls,2,13fde88f-7cc5-4a1a-845f-bdd504535192,5,2
+1b7f359f-f4df-4c4f-a196-dcdeee257d13,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Carolina Hogs,Las Vegas Night Owls,3,ccb2d917-0707-4ea8-9933-fd6b9d816e13,5,1
+1b7f359f-f4df-4c4f-a196-dcdeee257d13,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Carolina Hogs,Las Vegas Night Owls,4,384b6049-84ef-486e-8ab3-8ca3a79dee57,5,2
+399fcb42-6637-4503-af72-47d35d59e313,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,New Jersey 5s,Miami Pickleball Club,1,7e452e58-3a04-4e65-8ebd-d2e5868af221,5,1
+399fcb42-6637-4503-af72-47d35d59e313,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,New Jersey 5s,Miami Pickleball Club,2,61cefe3e-fe5b-46da-80ec-ea0559968682,5,1
+399fcb42-6637-4503-af72-47d35d59e313,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,New Jersey 5s,Miami Pickleball Club,3,080b52b5-4ce8-48b7-8a4d-b7f33d4f2050,5,1
+399fcb42-6637-4503-af72-47d35d59e313,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,New Jersey 5s,Miami Pickleball Club,4,102a5752-3f2b-4dab-bc65-8bc0db7a5303,5,1
+12625f98-b414-4deb-9190-612c9e3f724e,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,St. Louis Shock,Florida Smash,1,e6bc4f32-37c6-4b23-8ede-468717d5def7,5,1
+12625f98-b414-4deb-9190-612c9e3f724e,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,St. Louis Shock,Florida Smash,2,8719dd65-ab3b-40ce-9ae5-e761ea451392,5,1
+12625f98-b414-4deb-9190-612c9e3f724e,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,St. Louis Shock,Florida Smash,3,93fb50cd-171b-4476-aad9-b3ccd4baa8c9,5,1
+12625f98-b414-4deb-9190-612c9e3f724e,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,St. Louis Shock,Florida Smash,4,37af9cf3-46e1-420b-962f-6f4c81a5fd80,5,1
+1932b36e-2f65-4e6a-a406-20c89bdc0cde,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Columbus Sliders,Chicago Slice,1,810c76df-52bf-4d67-b256-3377c9536de1,5,1
+1932b36e-2f65-4e6a-a406-20c89bdc0cde,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Columbus Sliders,Chicago Slice,2,57cba2d7-416f-49b8-9f05-e080b46ced62,5,1
+1932b36e-2f65-4e6a-a406-20c89bdc0cde,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Columbus Sliders,Chicago Slice,3,aa3779ed-7480-4869-bf81-306f7d7bcf99,5,1
+1932b36e-2f65-4e6a-a406-20c89bdc0cde,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-29,Columbus Sliders,Chicago Slice,4,f194e865-7a2f-4789-bdb5-940cd0daf9a8,5,2
+3bdc1015-6ef1-48e3-be5a-66c27e63aa34,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,California Black Bears,New Jersey 5s,1,912212fb-893b-422a-8254-ac64bd998651,5,2
+3bdc1015-6ef1-48e3-be5a-66c27e63aa34,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,California Black Bears,New Jersey 5s,2,bcc67394-47c9-4915-bffe-5443a108bafb,5,2
+3bdc1015-6ef1-48e3-be5a-66c27e63aa34,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,California Black Bears,New Jersey 5s,3,1bcf21e9-40d9-4b23-9435-a3f840d689bc,5,2
+3bdc1015-6ef1-48e3-be5a-66c27e63aa34,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,California Black Bears,New Jersey 5s,4,cf8ee73c-8d5f-4b27-8942-1d75d3e3042f,5,2
+d97b6cfc-5d76-4931-a48f-4ad55dd01824,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Atlanta Bouncers,Columbus Sliders,1,d733c8bb-8f3e-4f00-9fb3-a54122f4ef0f,5,2
+d97b6cfc-5d76-4931-a48f-4ad55dd01824,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Atlanta Bouncers,Columbus Sliders,2,17e6d3d7-ead3-4194-9b63-4e5669b73f4b,5,1
+d97b6cfc-5d76-4931-a48f-4ad55dd01824,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Atlanta Bouncers,Columbus Sliders,3,2cac96be-7135-40a0-8556-d970892625b0,5,2
+d97b6cfc-5d76-4931-a48f-4ad55dd01824,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Atlanta Bouncers,Columbus Sliders,4,9258d3d8-a554-4f0b-b624-bc82d380401c,5,2
+9d15006a-69d1-4bbb-b18b-79ff8a266a2a,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Chicago Slice,Miami Pickleball Club,1,cb320cc5-8857-41ec-a082-1d1cb90c7d8b,5,2
+9d15006a-69d1-4bbb-b18b-79ff8a266a2a,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Chicago Slice,Miami Pickleball Club,2,3b54185f-1cef-4fb9-b9dc-675d4fa7b8ab,5,1
+9d15006a-69d1-4bbb-b18b-79ff8a266a2a,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Chicago Slice,Miami Pickleball Club,3,8ac5e333-13de-4137-851a-5cb6ad1b3a3d,5,1
+9d15006a-69d1-4bbb-b18b-79ff8a266a2a,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Chicago Slice,Miami Pickleball Club,4,261c7e02-779d-4c14-bdc4-254fdb484e8b,5,2
+3d23e0ec-fd2d-4226-b646-e49da7ca2326,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Las Vegas Night Owls,St. Louis Shock,1,d0ec5f53-8571-42ea-8451-042e79399198,5,2
+3d23e0ec-fd2d-4226-b646-e49da7ca2326,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Las Vegas Night Owls,St. Louis Shock,2,6b5bf081-1e70-450f-8acc-e4236051e4c5,5,2
+3d23e0ec-fd2d-4226-b646-e49da7ca2326,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Las Vegas Night Owls,St. Louis Shock,3,3c8f890d-85bb-4375-ad87-655ffcba8e16,5,2
+3d23e0ec-fd2d-4226-b646-e49da7ca2326,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Las Vegas Night Owls,St. Louis Shock,4,c6666981-1a8e-4902-8048-2a816a121312,5,2
+4c5d43c0-3be9-43f0-bf50-e2d99a5ad130,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Florida Smash,Carolina Hogs,1,121ea9de-8a2b-4ef1-919a-cac0ff556629,5,1
+4c5d43c0-3be9-43f0-bf50-e2d99a5ad130,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Florida Smash,Carolina Hogs,2,32050ff2-9a79-4bd6-aba7-5a61580981df,5,2
+4c5d43c0-3be9-43f0-bf50-e2d99a5ad130,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Florida Smash,Carolina Hogs,3,807ebca5-4d67-4780-9d8e-6b729fe16235,5,1
+4c5d43c0-3be9-43f0-bf50-e2d99a5ad130,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Florida Smash,Carolina Hogs,4,4c75b586-8c67-4476-8c6e-a75e34a65a38,5,2
+5c89d534-cef3-409c-991c-49ce01c7cd75,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Palm Beach Royals,Las Vegas Night Owls,1,b9df4286-49c4-4f86-bfd6-bf9a2faa7c97,5,1
+5c89d534-cef3-409c-991c-49ce01c7cd75,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Palm Beach Royals,Las Vegas Night Owls,2,1c1487be-88cb-461a-8c24-08411a82f8c8,5,2
+5c89d534-cef3-409c-991c-49ce01c7cd75,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Palm Beach Royals,Las Vegas Night Owls,3,5f7a8cf6-97f9-4bbb-968c-95bbbe0706af,5,2
+5c89d534-cef3-409c-991c-49ce01c7cd75,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Palm Beach Royals,Las Vegas Night Owls,4,729d3863-95d2-4686-8954-7647d73c8947,5,1
+84f160c9-5717-4691-a500-bde47e8d3165,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Miami Pickleball Club,California Black Bears,1,f8c41f77-87ba-48d2-ba2f-46c22de4cc2b,5,2
+84f160c9-5717-4691-a500-bde47e8d3165,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Miami Pickleball Club,California Black Bears,2,0426e5f9-73a9-4752-81e6-c113f8d4c496,5,2
+84f160c9-5717-4691-a500-bde47e8d3165,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Miami Pickleball Club,California Black Bears,3,e94a0075-9b5c-42e0-a15d-679fa609b4e3,5,2
+84f160c9-5717-4691-a500-bde47e8d3165,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Miami Pickleball Club,California Black Bears,4,dff53159-09ea-4193-a6aa-84473e05d229,5,2
+d893dfee-3391-4a92-80c9-8d172d295425,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Columbus Sliders,New Jersey 5s,1,e5677746-236e-4e12-8d3f-78e11a6fa6cb,5,2
+d893dfee-3391-4a92-80c9-8d172d295425,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Columbus Sliders,New Jersey 5s,2,15da7d9e-9357-4ff3-87ea-f6726e8df095,5,2
+d893dfee-3391-4a92-80c9-8d172d295425,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Columbus Sliders,New Jersey 5s,3,19bbf880-bd26-4a70-8fb9-0a8d72eeba05,5,2
+d893dfee-3391-4a92-80c9-8d172d295425,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Columbus Sliders,New Jersey 5s,4,fe59ba0b-3e4a-4b0f-81e0-3df3258d1f88,5,2
+ec6a2550-fde8-4288-81f7-57b2e6d34b63,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Chicago Slice,Atlanta Bouncers,1,8d748699-1cdb-4041-b31f-049c209cc24f,5,2
+ec6a2550-fde8-4288-81f7-57b2e6d34b63,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Chicago Slice,Atlanta Bouncers,2,665bf139-3a76-4507-8cf2-e6e81d7da542,5,2
+ec6a2550-fde8-4288-81f7-57b2e6d34b63,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Chicago Slice,Atlanta Bouncers,3,009a9be1-a46c-4cf6-883a-ebc640468d2b,5,1
+ec6a2550-fde8-4288-81f7-57b2e6d34b63,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,Chicago Slice,Atlanta Bouncers,4,81d6f071-ed97-4390-baa9-633ec3c090e8,5,2
+13d37c6e-766d-475d-b44c-37f68e06b47d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,St. Louis Shock,Palm Beach Royals,1,573a4330-2e29-436d-8434-db9fbe7755db,5,1
+13d37c6e-766d-475d-b44c-37f68e06b47d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,St. Louis Shock,Palm Beach Royals,2,9ad5df69-3bff-4919-b1ef-c8b44d9ebf48,5,1
+13d37c6e-766d-475d-b44c-37f68e06b47d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,St. Louis Shock,Palm Beach Royals,3,09367dd8-5129-4021-9592-8311edb4426a,5,2
+13d37c6e-766d-475d-b44c-37f68e06b47d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-30,St. Louis Shock,Palm Beach Royals,4,e13acf2e-fcc5-422e-9652-6dd8659c72e6,5,1
+3851e52a-c9f1-4fa4-a1fb-d76d581dd7b8,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Chicago Slice,Florida Smash,1,d79e082b-df2e-4d5f-b438-d698ab751deb,5,1
+3851e52a-c9f1-4fa4-a1fb-d76d581dd7b8,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Chicago Slice,Florida Smash,2,fbf4249b-9275-4c7d-86f1-118525766870,5,1
+3851e52a-c9f1-4fa4-a1fb-d76d581dd7b8,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Chicago Slice,Florida Smash,3,74ef1347-bc44-4f17-9688-3b22c5694e97,5,1
+3851e52a-c9f1-4fa4-a1fb-d76d581dd7b8,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Chicago Slice,Florida Smash,4,2960fddd-778d-4124-8fec-f19d58b80a54,6,0
+af475c92-6cf2-445b-bb6c-de4d37d22fa9,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Las Vegas Night Owls,Atlanta Bouncers,1,4affc7fc-e12c-4079-b7ea-e99c87c7d688,5,1
+af475c92-6cf2-445b-bb6c-de4d37d22fa9,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Las Vegas Night Owls,Atlanta Bouncers,2,6eb59d50-ed3c-4d06-bc27-bdba627d0ae9,5,2
+af475c92-6cf2-445b-bb6c-de4d37d22fa9,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Las Vegas Night Owls,Atlanta Bouncers,3,a6185055-3aa0-4b66-ab6e-ad221fbab745,5,1
+af475c92-6cf2-445b-bb6c-de4d37d22fa9,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Las Vegas Night Owls,Atlanta Bouncers,4,135a7365-cdc5-424f-a12b-9faf5d95ad5e,5,1
+aa559d71-4b71-43b5-92d8-acd4173dd205,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Columbus Sliders,Palm Beach Royals,1,27eeb353-b4bc-4e54-9eae-aa1ed0a9726d,5,1
+aa559d71-4b71-43b5-92d8-acd4173dd205,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Columbus Sliders,Palm Beach Royals,2,88b7bd02-d6b5-4867-980a-5e97d136e5e1,5,1
+aa559d71-4b71-43b5-92d8-acd4173dd205,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Columbus Sliders,Palm Beach Royals,3,e922907b-5aa9-4e3b-ab93-221bba5d21f9,5,2
+aa559d71-4b71-43b5-92d8-acd4173dd205,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,Columbus Sliders,Palm Beach Royals,4,a865f2f4-9583-4b98-888d-17160a28c251,5,1
+d3d4081b-0d25-471f-8147-ec400f8b5c7d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,St. Louis Shock,New Jersey 5s,1,573cb60a-9023-4400-8d38-a875b80e057f,5,2
+d3d4081b-0d25-471f-8147-ec400f8b5c7d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,St. Louis Shock,New Jersey 5s,2,fbca11bb-bec4-419b-9fac-615dd5d538ec,5,2
+d3d4081b-0d25-471f-8147-ec400f8b5c7d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,St. Louis Shock,New Jersey 5s,3,205b044e-8b69-4266-a5ad-ef6a1cee8a4e,5,2
+d3d4081b-0d25-471f-8147-ec400f8b5c7d,5e469584-e821-4b40-bccd-3b1fa54a2e05,2026-05-31,St. Louis Shock,New Jersey 5s,4,cbc8a702-8f4e-4277-a028-0da169a139d4,6,0
+53efeeac-3551-4095-ab13-9fcfd8b92022,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Brooklyn Pickleball Team,Las Vegas Night Owls,1,af1e5dee-0d53-488e-901f-62777da0b1a2,5,1
+53efeeac-3551-4095-ab13-9fcfd8b92022,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Brooklyn Pickleball Team,Las Vegas Night Owls,2,e3bfecd2-5530-4e2d-8c25-56345d592b3e,5,1
+53efeeac-3551-4095-ab13-9fcfd8b92022,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Brooklyn Pickleball Team,Las Vegas Night Owls,3,64260201-2642-498b-b314-9f8125a09ea7,5,1
+53efeeac-3551-4095-ab13-9fcfd8b92022,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Brooklyn Pickleball Team,Las Vegas Night Owls,4,f103f3de-1341-4ed3-8799-781655f2ff1d,5,1
+3ea055bc-cfd4-44fa-96c1-2b96d2e79661,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,SoCal Hard Eights,Phoenix Flames,1,bebf3479-b8cd-4b06-b722-b95ff36395f7,5,2
+3ea055bc-cfd4-44fa-96c1-2b96d2e79661,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,SoCal Hard Eights,Phoenix Flames,2,e905861f-7517-4083-b181-1a61a72e899c,5,1
+3ea055bc-cfd4-44fa-96c1-2b96d2e79661,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,SoCal Hard Eights,Phoenix Flames,3,e12b6bdb-807b-41d7-b60c-f93f273b234b,5,1
+3ea055bc-cfd4-44fa-96c1-2b96d2e79661,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,SoCal Hard Eights,Phoenix Flames,4,a379b6be-f5ea-4444-9e47-c688611b8cf7,5,1
+f70383cd-7207-41db-b56b-2321fe01c1e0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Palm Beach Royals,Atlanta Bouncers,1,0944669e-9680-425f-9b67-3ed89fe76d14,5,2
+f70383cd-7207-41db-b56b-2321fe01c1e0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Palm Beach Royals,Atlanta Bouncers,2,0131605e-1072-44ee-91e2-a6eff504bcbf,5,1
+f70383cd-7207-41db-b56b-2321fe01c1e0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Palm Beach Royals,Atlanta Bouncers,3,1ed59c2d-6398-432a-9b9d-7658906f1eb2,5,1
+f70383cd-7207-41db-b56b-2321fe01c1e0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Palm Beach Royals,Atlanta Bouncers,4,4de8f0d0-7d1a-4bbc-9bfa-847702a29e48,5,1
+61b51c91-ed78-493e-8d7b-13505eb28631,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Utah Black Diamonds,Los Angeles Mad Drops,1,036e6b24-ff18-464d-bd62-d5a4aa355932,5,1
+61b51c91-ed78-493e-8d7b-13505eb28631,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Utah Black Diamonds,Los Angeles Mad Drops,2,b3681b26-1a7b-4b96-8bec-22b10d36f4ec,5,2
+61b51c91-ed78-493e-8d7b-13505eb28631,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Utah Black Diamonds,Los Angeles Mad Drops,3,9508511a-a369-431b-ba70-4a3d736c94e9,5,2
+61b51c91-ed78-493e-8d7b-13505eb28631,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,Utah Black Diamonds,Los Angeles Mad Drops,4,95f804f3-ea5f-4acf-ba77-aa9138aee3b8,5,2
+8e38f472-6a28-4a11-9ba9-e41ad2bac0e7,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,St. Louis Shock,Bay Area Breakers,1,4f96370e-9c6f-4306-b6c5-ac87a8329892,5,1
+8e38f472-6a28-4a11-9ba9-e41ad2bac0e7,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,St. Louis Shock,Bay Area Breakers,2,88fb8f33-e281-4feb-9833-5eb6a9684453,5,1
+8e38f472-6a28-4a11-9ba9-e41ad2bac0e7,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,St. Louis Shock,Bay Area Breakers,3,41bee111-bf51-4c57-be11-268b0e49bdff,5,1
+8e38f472-6a28-4a11-9ba9-e41ad2bac0e7,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-04,St. Louis Shock,Bay Area Breakers,4,f48263f3-c54f-4eb3-a5d2-6b6dae5adc67,5,1
+a1c08402-519d-4dbf-a01d-589e47bdaf47,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Las Vegas Night Owls,Phoenix Flames,1,65a1681d-da9a-43c5-8d5e-d824bc95cb4f,5,2
+a1c08402-519d-4dbf-a01d-589e47bdaf47,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Las Vegas Night Owls,Phoenix Flames,2,2c1bf457-7f1f-458e-b20b-255e1c13080b,5,2
+a1c08402-519d-4dbf-a01d-589e47bdaf47,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Las Vegas Night Owls,Phoenix Flames,3,4f6908b5-094e-4ed2-a6ba-c58869f30884,5,1
+a1c08402-519d-4dbf-a01d-589e47bdaf47,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Las Vegas Night Owls,Phoenix Flames,4,a29933b0-bd12-4726-a5be-9b983ae39e30,5,1
+e5a908c5-3897-4399-bbed-82f7cb3a45fd,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Atlanta Bouncers,Orlando Squeeze,1,585245b9-c840-4bb6-b998-68696af9aec3,5,2
+e5a908c5-3897-4399-bbed-82f7cb3a45fd,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Atlanta Bouncers,Orlando Squeeze,2,76197528-b625-43ef-9d77-82a9307d0c39,5,2
+e5a908c5-3897-4399-bbed-82f7cb3a45fd,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Atlanta Bouncers,Orlando Squeeze,3,bbfe8eff-db1f-4d24-96be-ce8627439784,5,1
+e5a908c5-3897-4399-bbed-82f7cb3a45fd,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Atlanta Bouncers,Orlando Squeeze,4,1124a5e6-cf87-4153-9863-b4dbbc924c2b,5,2
+ebde6558-aa00-4c8e-85cf-6e05bae5d351,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Bay Area Breakers,Palm Beach Royals,1,c6948288-0fc7-4c7e-979b-f8e2f73066f9,5,2
+ebde6558-aa00-4c8e-85cf-6e05bae5d351,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Bay Area Breakers,Palm Beach Royals,2,6fec0706-e213-4038-a951-7da53c3247b3,5,2
+ebde6558-aa00-4c8e-85cf-6e05bae5d351,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Bay Area Breakers,Palm Beach Royals,3,6c68b3f6-3ebe-4741-b1da-c9bd6554ad2b,5,2
+ebde6558-aa00-4c8e-85cf-6e05bae5d351,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Bay Area Breakers,Palm Beach Royals,4,f35ff7c0-ab9c-4e9b-aa43-5199dc215146,5,2
+2e98d83f-8f68-494c-a4d6-6935b8e14d29,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Brooklyn Pickleball Team,Utah Black Diamonds,1,9405bd48-987e-40a9-849a-9216c7c4e379,5,1
+2e98d83f-8f68-494c-a4d6-6935b8e14d29,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Brooklyn Pickleball Team,Utah Black Diamonds,2,7da236ce-8b0f-4aea-9455-58bf8909d6bf,5,1
+2e98d83f-8f68-494c-a4d6-6935b8e14d29,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Brooklyn Pickleball Team,Utah Black Diamonds,3,98582a3e-736c-4558-91b6-aa8d5e2bf27c,5,2
+2e98d83f-8f68-494c-a4d6-6935b8e14d29,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Brooklyn Pickleball Team,Utah Black Diamonds,4,e38a11fa-28ce-42f1-aa0d-d75461062a62,5,1
+8c6c24cf-a73f-41a7-ad71-a051cb1df632,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,SoCal Hard Eights,Las Vegas Night Owls,1,2f47eba0-a8ab-4158-b6e0-b57c1fe67ef3,5,2
+8c6c24cf-a73f-41a7-ad71-a051cb1df632,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,SoCal Hard Eights,Las Vegas Night Owls,2,ebacea3d-8035-44ee-93e4-1204706bbfdc,5,1
+8c6c24cf-a73f-41a7-ad71-a051cb1df632,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,SoCal Hard Eights,Las Vegas Night Owls,3,738f602b-b7be-4dca-833a-03b73c2d7d57,5,2
+8c6c24cf-a73f-41a7-ad71-a051cb1df632,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,SoCal Hard Eights,Las Vegas Night Owls,4,9fcb78a2-f76b-4e1d-819c-1e91b2e59f7a,5,2
+f0de56d7-d851-4c89-9d31-8785d29aa8b7,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Phoenix Flames,Los Angeles Mad Drops,1,8b104066-2e3c-4ef3-bd02-f585eb086390,5,2
+f0de56d7-d851-4c89-9d31-8785d29aa8b7,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Phoenix Flames,Los Angeles Mad Drops,2,3fb8fd74-8ca7-4148-a884-665574047cc4,5,2
+f0de56d7-d851-4c89-9d31-8785d29aa8b7,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Phoenix Flames,Los Angeles Mad Drops,3,9de1de4a-8557-4fbc-9637-19bb55f4afb6,5,1
+f0de56d7-d851-4c89-9d31-8785d29aa8b7,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Phoenix Flames,Los Angeles Mad Drops,4,a51c49c8-9917-4c91-85c6-ec4095fa9ea5,5,2
+6fecd65a-f8c1-4716-a0ed-be5a6fc78033,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Palm Beach Royals,Orlando Squeeze,1,b02610cd-9f72-4485-80a7-8c1355e3afa7,5,1
+6fecd65a-f8c1-4716-a0ed-be5a6fc78033,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Palm Beach Royals,Orlando Squeeze,2,c69e75ae-b93d-499b-8127-86da2020e66f,5,2
+6fecd65a-f8c1-4716-a0ed-be5a6fc78033,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Palm Beach Royals,Orlando Squeeze,3,ff88cea3-38a8-44a6-b091-494c01992d37,5,2
+6fecd65a-f8c1-4716-a0ed-be5a6fc78033,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Palm Beach Royals,Orlando Squeeze,4,cf855d4b-0893-4b55-aef6-e63d7e722ece,5,2
+6dab30b3-00ee-4307-9579-ff824f6a3c47,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Los Angeles Mad Drops,Brooklyn Pickleball Team,1,28ce1a7b-24d4-4e81-8312-d1f9141f14e9,5,2
+6dab30b3-00ee-4307-9579-ff824f6a3c47,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Los Angeles Mad Drops,Brooklyn Pickleball Team,2,5984c55c-93b1-4053-84cf-e8b27b8f558d,5,1
+6dab30b3-00ee-4307-9579-ff824f6a3c47,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Los Angeles Mad Drops,Brooklyn Pickleball Team,3,2b17d4c0-8a77-4971-84ac-db86fa1c4f4d,5,1
+6dab30b3-00ee-4307-9579-ff824f6a3c47,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Los Angeles Mad Drops,Brooklyn Pickleball Team,4,d8fdf3c1-468a-408e-a7c1-c46df024863b,5,1
+9afd0e66-c8c1-48c6-b3c4-a82446c88435,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Utah Black Diamonds,SoCal Hard Eights,1,4bf4e24c-3f3e-4d7d-9bc1-607a55346f34,5,1
+9afd0e66-c8c1-48c6-b3c4-a82446c88435,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Utah Black Diamonds,SoCal Hard Eights,2,c801268c-7b26-4abe-9a73-6efeedd5db9c,5,1
+9afd0e66-c8c1-48c6-b3c4-a82446c88435,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Utah Black Diamonds,SoCal Hard Eights,3,bde5bd6c-666b-4e27-9dc1-623ac50aaf1e,5,1
+9afd0e66-c8c1-48c6-b3c4-a82446c88435,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Utah Black Diamonds,SoCal Hard Eights,4,e250e889-8e17-4405-afea-e31ba230f350,5,1
+98072a62-6b82-4255-8766-ecd138484f57,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Atlanta Bouncers,St. Louis Shock,1,2f769607-c3be-4781-aeb3-5c616e639f32,5,2
+98072a62-6b82-4255-8766-ecd138484f57,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Atlanta Bouncers,St. Louis Shock,2,528eceb4-7bb6-4258-ad6e-75928dfdf907,5,2
+98072a62-6b82-4255-8766-ecd138484f57,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Atlanta Bouncers,St. Louis Shock,3,9e1b9aaa-e32e-4319-8a59-07ad8eaf1b3a,5,2
+98072a62-6b82-4255-8766-ecd138484f57,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-05,Atlanta Bouncers,St. Louis Shock,4,a208d630-cfb8-4780-a141-4c6f9bbe4f35,5,1
+c189fcd1-461a-4df7-b4c0-582b89b78c88,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,SoCal Hard Eights,Brooklyn Pickleball Team,1,bfd8721e-b442-48a4-8b3d-fd1a60db19a5,5,2
+c189fcd1-461a-4df7-b4c0-582b89b78c88,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,SoCal Hard Eights,Brooklyn Pickleball Team,2,14f443af-e99c-455d-9724-ed7d187391e0,5,2
+c189fcd1-461a-4df7-b4c0-582b89b78c88,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,SoCal Hard Eights,Brooklyn Pickleball Team,3,e7a50bde-7ce0-448b-aa59-b7a890c61222,5,2
+c189fcd1-461a-4df7-b4c0-582b89b78c88,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,SoCal Hard Eights,Brooklyn Pickleball Team,4,ad0abf27-989b-4c69-a9ba-c9bf70334593,5,2
+cf9c945c-ec5a-4702-a74a-a1a3e236bda0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Phoenix Flames,Utah Black Diamonds,1,6ef56466-fa81-4bcc-89b7-d58305aa3fa8,5,2
+cf9c945c-ec5a-4702-a74a-a1a3e236bda0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Phoenix Flames,Utah Black Diamonds,2,d04b293b-5380-47cc-aff9-85be5a189131,5,2
+cf9c945c-ec5a-4702-a74a-a1a3e236bda0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Phoenix Flames,Utah Black Diamonds,3,331737ab-56c2-4cbc-8ee7-d1666e2254d6,5,2
+cf9c945c-ec5a-4702-a74a-a1a3e236bda0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Phoenix Flames,Utah Black Diamonds,4,6b259727-f29a-42ac-81f0-bec17a83047a,5,1
+f05a5d67-455e-4c82-bfc5-08efde421a2c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Los Angeles Mad Drops,Las Vegas Night Owls,1,f4defb02-197b-426a-998f-840a6354b435,5,2
+f05a5d67-455e-4c82-bfc5-08efde421a2c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Los Angeles Mad Drops,Las Vegas Night Owls,2,9bb8cad9-7ef3-445c-9d06-dfed44a388a2,5,1
+f05a5d67-455e-4c82-bfc5-08efde421a2c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Los Angeles Mad Drops,Las Vegas Night Owls,3,9d274e2d-3e4e-49b7-b419-12aa09195726,5,1
+f05a5d67-455e-4c82-bfc5-08efde421a2c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Los Angeles Mad Drops,Las Vegas Night Owls,4,cbf1b161-a234-4001-8b36-ac41491d1141,5,1
+0a833c7f-b064-412d-bd16-0b7862e85284,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Orlando Squeeze,St. Louis Shock,1,0d5988fa-0fd1-4b82-bfa8-141f7b2a517f,5,2
+0a833c7f-b064-412d-bd16-0b7862e85284,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Orlando Squeeze,St. Louis Shock,2,c3f05986-e25b-4a08-a024-f27614022b03,5,2
+0a833c7f-b064-412d-bd16-0b7862e85284,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Orlando Squeeze,St. Louis Shock,3,34cb2918-cff5-4476-b433-1d33facd2161,5,2
+0a833c7f-b064-412d-bd16-0b7862e85284,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Orlando Squeeze,St. Louis Shock,4,0ff4b0aa-3e78-49ec-a6fa-d87088de6c0c,5,2
+ecd81815-e332-480b-87eb-bb1f8a2bee03,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Bay Area Breakers,Atlanta Bouncers,1,39427258-7c23-4521-aa14-5069c179e4ce,5,1
+ecd81815-e332-480b-87eb-bb1f8a2bee03,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Bay Area Breakers,Atlanta Bouncers,2,6c7c82be-5ce7-4ab6-93fc-f6dc1072d1ec,5,2
+ecd81815-e332-480b-87eb-bb1f8a2bee03,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Bay Area Breakers,Atlanta Bouncers,3,35328c33-7c66-4979-956f-c0163e58eae3,5,2
+ecd81815-e332-480b-87eb-bb1f8a2bee03,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Bay Area Breakers,Atlanta Bouncers,4,70cdfd84-ea53-446f-895a-465ef112826f,5,2
+a3c75202-289f-4b23-954f-defea975343c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Brooklyn Pickleball Team,Phoenix Flames,1,c53b24f3-1641-42f2-8512-e906379521fe,5,1
+a3c75202-289f-4b23-954f-defea975343c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Brooklyn Pickleball Team,Phoenix Flames,2,27aad5b8-7063-4de8-b779-a0cf5b789d93,5,1
+a3c75202-289f-4b23-954f-defea975343c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Brooklyn Pickleball Team,Phoenix Flames,3,c9ec71bc-77a7-4246-9461-8794816176fe,5,1
+a3c75202-289f-4b23-954f-defea975343c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Brooklyn Pickleball Team,Phoenix Flames,4,f94afdb3-6ef0-4971-8d00-00aef3fca52a,5,2
+6263fea4-9332-4ec8-884e-ee350a9f2b5c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Las Vegas Night Owls,Utah Black Diamonds,1,a47f6a53-69a9-402b-b3a2-958a11ae9b33,5,1
+6263fea4-9332-4ec8-884e-ee350a9f2b5c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Las Vegas Night Owls,Utah Black Diamonds,2,5d726aa1-b054-4a92-b722-fe6f1ca8b678,5,2
+6263fea4-9332-4ec8-884e-ee350a9f2b5c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Las Vegas Night Owls,Utah Black Diamonds,3,d50e59a2-27e6-4efc-a0c6-cf9f00e1235a,5,2
+6263fea4-9332-4ec8-884e-ee350a9f2b5c,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Las Vegas Night Owls,Utah Black Diamonds,4,b7db1999-66ba-4045-baa7-8bfa1d310e5e,5,1
+0c54282d-82b5-45ab-8bc4-c91836b30131,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Los Angeles Mad Drops,SoCal Hard Eights,1,125ef92e-f7da-4070-a434-6c3f018d985f,5,1
+0c54282d-82b5-45ab-8bc4-c91836b30131,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Los Angeles Mad Drops,SoCal Hard Eights,2,5fe7fd55-05c7-4de9-8442-5c775b54f698,5,1
+0c54282d-82b5-45ab-8bc4-c91836b30131,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Los Angeles Mad Drops,SoCal Hard Eights,3,b4a16d3d-8512-441f-a9b5-31f546ba4b83,5,2
+0c54282d-82b5-45ab-8bc4-c91836b30131,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Los Angeles Mad Drops,SoCal Hard Eights,4,6644ae55-75a2-441e-8c1a-f34e0b41cbab,5,1
+72d5f386-6044-47f8-a144-81b4fef60620,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Orlando Squeeze,Bay Area Breakers,1,89658138-20c9-4e5f-bf96-f064d7694b9f,5,1
+72d5f386-6044-47f8-a144-81b4fef60620,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Orlando Squeeze,Bay Area Breakers,2,438623c7-b51b-49a0-aa7d-bcddad893c38,5,1
+72d5f386-6044-47f8-a144-81b4fef60620,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Orlando Squeeze,Bay Area Breakers,3,10439459-8ca1-4517-9edf-b68dde43845a,5,1
+72d5f386-6044-47f8-a144-81b4fef60620,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,Orlando Squeeze,Bay Area Breakers,4,f7ee7e14-d6a0-434f-8667-17d70292d101,5,2
+2108c89c-ad25-48c2-af3a-ac866c1a4518,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,St. Louis Shock,Palm Beach Royals,1,5baaa4ed-b91b-4642-a526-3188254a7b26,5,1
+2108c89c-ad25-48c2-af3a-ac866c1a4518,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,St. Louis Shock,Palm Beach Royals,2,6ce79770-9769-4bfc-889d-63c1bc58f961,5,1
+2108c89c-ad25-48c2-af3a-ac866c1a4518,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,St. Louis Shock,Palm Beach Royals,3,a9e0cccb-498b-4676-9e8f-05f87f68ff3d,5,1
+2108c89c-ad25-48c2-af3a-ac866c1a4518,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-06,St. Louis Shock,Palm Beach Royals,4,75df91ce-8c2c-4d19-92ed-f8df94f93efa,5,2
+f4b8f74a-26c4-4a13-b1c7-ebf3cd8b9594,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Utah Black Diamonds,Atlanta Bouncers,1,b1c634f1-d173-4faa-988b-ef661f41cd5d,5,1
+f4b8f74a-26c4-4a13-b1c7-ebf3cd8b9594,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Utah Black Diamonds,Atlanta Bouncers,2,4ca8fffa-a61e-42cc-823c-ec32b6242f6b,5,2
+f4b8f74a-26c4-4a13-b1c7-ebf3cd8b9594,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Utah Black Diamonds,Atlanta Bouncers,3,e874d2ac-0385-4d85-bed1-d6ad918c858a,5,2
+f4b8f74a-26c4-4a13-b1c7-ebf3cd8b9594,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Utah Black Diamonds,Atlanta Bouncers,4,7c5a87e4-df6a-4587-b68a-2ce5ed8a914d,5,1
+d92c2a4c-3144-46df-b2a8-72a407ac91cf,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Palm Beach Royals,Las Vegas Night Owls,1,f60305fd-b27b-41fc-9e46-25a49edabe11,5,1
+d92c2a4c-3144-46df-b2a8-72a407ac91cf,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Palm Beach Royals,Las Vegas Night Owls,2,0d910ee6-e392-4843-a7d0-24900b47bc29,5,1
+d92c2a4c-3144-46df-b2a8-72a407ac91cf,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Palm Beach Royals,Las Vegas Night Owls,3,541e14a4-0ecf-4083-b33e-c30d1cca9a4f,5,1
+d92c2a4c-3144-46df-b2a8-72a407ac91cf,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Palm Beach Royals,Las Vegas Night Owls,4,f240559c-a128-46fb-aa1e-52f6c854d899,6,0
+b8974c8e-3cb8-45dc-abb5-a5637c04788b,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Brooklyn Pickleball Team,Orlando Squeeze,1,f1e3d051-2f60-45cb-b585-52ae0a9f3712,5,1
+b8974c8e-3cb8-45dc-abb5-a5637c04788b,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Brooklyn Pickleball Team,Orlando Squeeze,2,1dee6267-0245-4542-b6a9-4371035080ed,5,2
+b8974c8e-3cb8-45dc-abb5-a5637c04788b,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Brooklyn Pickleball Team,Orlando Squeeze,3,30b76f55-17b6-4841-a6da-68a9411fb062,5,1
+b8974c8e-3cb8-45dc-abb5-a5637c04788b,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,Brooklyn Pickleball Team,Orlando Squeeze,4,da47eb5d-94c7-49c5-b2d4-343f4fb7fddc,5,1
+e33d29df-d2dc-40bd-aac5-53640f9dcae0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,St. Louis Shock,Los Angeles Mad Drops,1,f9b4f236-8699-4c07-a91d-4f1f2e3f580c,5,1
+e33d29df-d2dc-40bd-aac5-53640f9dcae0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,St. Louis Shock,Los Angeles Mad Drops,2,b7316d39-b1bf-4320-8695-943a66f5ad64,5,1
+e33d29df-d2dc-40bd-aac5-53640f9dcae0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,St. Louis Shock,Los Angeles Mad Drops,3,c92b7e56-e444-46cc-81f5-174984467d6d,6,0
+e33d29df-d2dc-40bd-aac5-53640f9dcae0,24053d7f-1e91-454a-8e57-e13c51fc32ac,2026-06-07,St. Louis Shock,Los Angeles Mad Drops,4,de3181f4-2c59-4861-b7b0-bc63ad730d75,5,1
+a917bbc9-49e7-4d02-892c-ee1820238134,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Miami Pickleball Club,California Black Bears,1,9fcfd9c7-10f2-4f7b-b7c3-fa460901c69d,5,2
+a917bbc9-49e7-4d02-892c-ee1820238134,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Miami Pickleball Club,California Black Bears,2,e564127a-a65b-4189-8622-d6254fc9eab7,5,1
+a917bbc9-49e7-4d02-892c-ee1820238134,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Miami Pickleball Club,California Black Bears,3,ff0f92e4-5f99-47d9-bfba-060ab5e0df0a,5,1
+a917bbc9-49e7-4d02-892c-ee1820238134,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Miami Pickleball Club,California Black Bears,4,99df2ba4-2f79-499b-95cb-6986ec03c52a,5,1
+2aec345a-e777-4482-929f-1c1f4b08a353,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Columbus Sliders,Carolina Hogs,1,d5efb8d9-b9d3-49a4-b98c-a79609c19a88,5,1
+2aec345a-e777-4482-929f-1c1f4b08a353,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Columbus Sliders,Carolina Hogs,2,863dcc97-cc3b-486f-94ac-99015ef84d3b,5,1
+2aec345a-e777-4482-929f-1c1f4b08a353,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Columbus Sliders,Carolina Hogs,3,88fea66c-26e6-48be-aa70-0244ddb3613d,5,1
+2aec345a-e777-4482-929f-1c1f4b08a353,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Columbus Sliders,Carolina Hogs,4,623937bc-e227-4211-aba9-0ac7aa23be28,5,1
+1c538488-a4ac-4014-8707-ca21b9ac1657,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Florida Smash,Dallas Flash,1,e25a26f0-5958-4b46-9f16-41155bff9625,5,1
+1c538488-a4ac-4014-8707-ca21b9ac1657,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Florida Smash,Dallas Flash,2,c5f3d28c-e89c-471c-9915-2f4400ab2ea5,5,2
+1c538488-a4ac-4014-8707-ca21b9ac1657,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Florida Smash,Dallas Flash,3,a4e0358b-2359-41a4-9a89-a9f4f541376b,5,1
+1c538488-a4ac-4014-8707-ca21b9ac1657,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Florida Smash,Dallas Flash,4,9356c9dd-8068-4a99-ac25-776fc7807914,5,1
+22d9b0e4-ac1f-4d79-a558-dc419387c01f,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,New Jersey 5s,Bay Area Breakers,1,0a0f614f-9ffe-439b-a60a-48c30c5adf9d,5,1
+22d9b0e4-ac1f-4d79-a558-dc419387c01f,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,New Jersey 5s,Bay Area Breakers,2,f006b100-6afe-4fd3-bbd9-8d7d5575285f,5,2
+22d9b0e4-ac1f-4d79-a558-dc419387c01f,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,New Jersey 5s,Bay Area Breakers,3,6ffefd11-0729-4144-ad82-50c01210c5c9,5,1
+22d9b0e4-ac1f-4d79-a558-dc419387c01f,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,New Jersey 5s,Bay Area Breakers,4,e008fea4-6896-4da3-a4d4-b901cb43e773,5,1
+90751f3e-d967-4201-9277-17bc89657915,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Atlanta Bouncers,Texas Ranchers,1,c16e1398-bdef-435e-be9f-09cee4df9394,5,2
+90751f3e-d967-4201-9277-17bc89657915,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Atlanta Bouncers,Texas Ranchers,2,17704768-54ac-4af6-88a5-a3b1930647ec,5,1
+90751f3e-d967-4201-9277-17bc89657915,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Atlanta Bouncers,Texas Ranchers,3,edf38cba-5f58-411d-955c-4d7348624d13,5,1
+90751f3e-d967-4201-9277-17bc89657915,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-11,Atlanta Bouncers,Texas Ranchers,4,86437636-d0b1-4c98-b5a9-99b2a4ab7b43,5,2
+8c8b2df4-4f29-42c9-91e0-5f8ff78131a0,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Atlanta Bouncers,Bay Area Breakers,1,5c31580a-f83c-4b25-98f2-1453cce7eb87,5,2
+8c8b2df4-4f29-42c9-91e0-5f8ff78131a0,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Atlanta Bouncers,Bay Area Breakers,2,f70063ee-a76e-4ea8-97e0-b17dba9c6fa3,5,2
+8c8b2df4-4f29-42c9-91e0-5f8ff78131a0,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Atlanta Bouncers,Bay Area Breakers,3,10ec4539-1b31-4d2c-8303-8fa7458154cb,5,2
+8c8b2df4-4f29-42c9-91e0-5f8ff78131a0,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Atlanta Bouncers,Bay Area Breakers,4,741c760c-4108-4c1e-aa14-cdcc1334b705,5,2
+e4a2a3f5-f8d4-441d-b598-c7b3a9e86d66,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,New Jersey 5s,Florida Smash,1,bc990327-a4f4-4a33-8dcf-05ac493a46d1,5,1
+e4a2a3f5-f8d4-441d-b598-c7b3a9e86d66,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,New Jersey 5s,Florida Smash,2,b0d78c64-8017-4a72-a520-0a95996ec526,5,1
+e4a2a3f5-f8d4-441d-b598-c7b3a9e86d66,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,New Jersey 5s,Florida Smash,3,6b17f092-da6f-4d79-a978-e5930a1facb6,5,1
+e4a2a3f5-f8d4-441d-b598-c7b3a9e86d66,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,New Jersey 5s,Florida Smash,4,5693b23c-f051-4c2e-9916-48d14db43034,5,1
+1212e6df-9765-4431-a7b3-86d068c2718a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,California Black Bears,Columbus Sliders,1,0690d32c-c812-47da-ba28-90451389e829,5,1
+1212e6df-9765-4431-a7b3-86d068c2718a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,California Black Bears,Columbus Sliders,2,348ad3be-879a-4c24-8673-ca3054a90119,5,2
+1212e6df-9765-4431-a7b3-86d068c2718a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,California Black Bears,Columbus Sliders,3,a87e3a4e-9bb5-4fd1-a60e-9fc6e66e94b5,5,2
+1212e6df-9765-4431-a7b3-86d068c2718a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,California Black Bears,Columbus Sliders,4,f91963b3-8ce9-4f4a-b83b-829cbff84b50,5,1
+bfdcd96c-7a74-476b-bbc4-94bcf64ef457,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,SoCal Hard Eights,Miami Pickleball Club,1,d7782e41-8d18-4276-ad75-88d2b6785b77,5,1
+bfdcd96c-7a74-476b-bbc4-94bcf64ef457,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,SoCal Hard Eights,Miami Pickleball Club,2,74b7acd0-bfe3-4ccf-8c48-2aa4999ba9cb,5,1
+bfdcd96c-7a74-476b-bbc4-94bcf64ef457,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,SoCal Hard Eights,Miami Pickleball Club,3,711a9282-8c82-4c4b-895e-ebfb8785fa34,5,1
+bfdcd96c-7a74-476b-bbc4-94bcf64ef457,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,SoCal Hard Eights,Miami Pickleball Club,4,80ddfe6e-d734-41cc-84bd-3e4ff98819d8,5,2
+544ab05d-96eb-4ff4-8224-8e37cc6de360,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Dallas Flash,Bay Area Breakers,1,27323357-e8f9-41b7-a604-fad7e6139297,5,1
+544ab05d-96eb-4ff4-8224-8e37cc6de360,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Dallas Flash,Bay Area Breakers,2,7986a4e2-2bff-4a76-bd81-f211926ed726,5,1
+544ab05d-96eb-4ff4-8224-8e37cc6de360,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Dallas Flash,Bay Area Breakers,3,f8e6eae0-e510-4b71-aaa1-1bf5238ecb69,5,1
+544ab05d-96eb-4ff4-8224-8e37cc6de360,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Dallas Flash,Bay Area Breakers,4,57adf7bf-7752-4013-a37c-c4e4c4fc7b50,5,2
+1facdaed-e4fe-4259-987d-f91b985baa21,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Florida Smash,Texas Ranchers,1,49b28e4c-4f3a-48f6-84cb-71fabf40cc6d,5,2
+1facdaed-e4fe-4259-987d-f91b985baa21,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Florida Smash,Texas Ranchers,2,85082573-6654-499c-86eb-f215a3f53b2a,5,2
+1facdaed-e4fe-4259-987d-f91b985baa21,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Florida Smash,Texas Ranchers,3,2c5c20d2-cae1-4cec-a573-eb3c3959d105,5,2
+1facdaed-e4fe-4259-987d-f91b985baa21,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Florida Smash,Texas Ranchers,4,4bdf972f-9ee5-4700-b65d-b11d92f262b3,5,1
+25863609-ea75-4702-a514-b59855ceb01c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Carolina Hogs,California Black Bears,1,53a977da-7edd-4dce-a11e-76e6c611844b,5,2
+25863609-ea75-4702-a514-b59855ceb01c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Carolina Hogs,California Black Bears,2,f195379a-345a-4b98-8f4e-af50097d86d4,5,2
+25863609-ea75-4702-a514-b59855ceb01c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Carolina Hogs,California Black Bears,3,8a9cc4b5-5403-497e-8a06-93d480526d18,5,2
+25863609-ea75-4702-a514-b59855ceb01c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Carolina Hogs,California Black Bears,4,b45df3f9-3161-4727-a82e-d1ef9cbfa475,5,2
+f44ab847-9f9f-4aa7-bad3-252cbf3b9a57,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,New Jersey 5s,Atlanta Bouncers,1,214b9be4-c7de-4038-91c4-22a82d475b6b,5,1
+f44ab847-9f9f-4aa7-bad3-252cbf3b9a57,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,New Jersey 5s,Atlanta Bouncers,2,18513d70-35a5-4d7a-9ce5-952d30613409,5,2
+f44ab847-9f9f-4aa7-bad3-252cbf3b9a57,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,New Jersey 5s,Atlanta Bouncers,3,d7bd6585-febe-4219-a6f9-a55801611ffe,5,1
+f44ab847-9f9f-4aa7-bad3-252cbf3b9a57,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,New Jersey 5s,Atlanta Bouncers,4,3cce4233-16cb-40fb-894d-ed301f0b61c4,5,1
+a1872fcc-824d-475c-9877-cab3a5d8f73a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Columbus Sliders,SoCal Hard Eights,1,6474348e-e406-479b-b1f1-a0a31944a639,5,1
+a1872fcc-824d-475c-9877-cab3a5d8f73a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Columbus Sliders,SoCal Hard Eights,2,98aff161-9c6e-47de-a3ee-8bfd0f025bea,5,1
+a1872fcc-824d-475c-9877-cab3a5d8f73a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Columbus Sliders,SoCal Hard Eights,3,d0b31f0d-623f-4ed6-8b2b-fbc7abcd1a3d,5,1
+a1872fcc-824d-475c-9877-cab3a5d8f73a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Columbus Sliders,SoCal Hard Eights,4,1e48aa8e-6272-4592-bd5c-97a61b70e9f3,5,2
+f661abeb-2744-4b87-b41f-a0fec4f1f947,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Texas Ranchers,Dallas Flash,1,1e7eb9a2-8a97-422c-819d-38d679221a9e,5,1
+f661abeb-2744-4b87-b41f-a0fec4f1f947,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Texas Ranchers,Dallas Flash,2,bfae9538-d2d0-4989-add8-dfa8ad274114,5,1
+f661abeb-2744-4b87-b41f-a0fec4f1f947,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Texas Ranchers,Dallas Flash,3,19c16890-bdc0-43ac-b30b-0296a3ed45ae,5,2
+f661abeb-2744-4b87-b41f-a0fec4f1f947,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-12,Texas Ranchers,Dallas Flash,4,32ef2655-3205-4515-a4d6-391ac4cfaf19,5,1
+f485e9c0-7f93-4416-b98c-628719092abd,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Carolina Hogs,Miami Pickleball Club,1,1395964c-ad8e-4a79-b084-73ddcd3dc622,5,1
+f485e9c0-7f93-4416-b98c-628719092abd,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Carolina Hogs,Miami Pickleball Club,2,14a5d9da-8109-4d47-ad27-2efe4d871c0a,5,2
+f485e9c0-7f93-4416-b98c-628719092abd,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Carolina Hogs,Miami Pickleball Club,3,93e89b24-62b8-45d4-97b0-5746d0132055,5,2
+f485e9c0-7f93-4416-b98c-628719092abd,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Carolina Hogs,Miami Pickleball Club,4,0e8efc35-6b76-45fd-b180-7b4432b95f60,5,2
+5a6fcd5e-f23f-46e3-befc-2b8d0debb20c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Dallas Flash,Atlanta Bouncers,1,fa37384c-824c-406c-a98d-226ffe7da8ac,5,1
+5a6fcd5e-f23f-46e3-befc-2b8d0debb20c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Dallas Flash,Atlanta Bouncers,2,bdc94f61-01d4-4fa1-b4de-8e0138ea2a51,5,2
+5a6fcd5e-f23f-46e3-befc-2b8d0debb20c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Dallas Flash,Atlanta Bouncers,3,151f837d-9498-4e61-b674-278b11a42eb3,5,1
+5a6fcd5e-f23f-46e3-befc-2b8d0debb20c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Dallas Flash,Atlanta Bouncers,4,a4ea20f9-e3ef-409d-b82f-dd572f2c5934,5,2
+f75750fb-39c5-48fc-9406-a63c876ddf03,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Bay Area Breakers,Florida Smash,1,ad95380b-5a84-4b98-8a9f-1c457e0a3126,5,2
+f75750fb-39c5-48fc-9406-a63c876ddf03,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Bay Area Breakers,Florida Smash,2,eaf09f09-7a08-4bd3-a2e5-75a9116392dc,5,1
+f75750fb-39c5-48fc-9406-a63c876ddf03,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Bay Area Breakers,Florida Smash,3,172be802-f558-441b-84de-4ecb5166c5fe,5,1
+f75750fb-39c5-48fc-9406-a63c876ddf03,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Bay Area Breakers,Florida Smash,4,b2822230-2a1d-4580-be0a-2610f8d1ec6c,5,1
+3232e5b3-00c3-4571-864f-c90f40733e43,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Texas Ranchers,New Jersey 5s,1,4ab98da9-4969-4114-8975-391497e7b156,5,2
+3232e5b3-00c3-4571-864f-c90f40733e43,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Texas Ranchers,New Jersey 5s,2,03b63676-5569-47a7-866f-ab9c0176b37f,5,2
+3232e5b3-00c3-4571-864f-c90f40733e43,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Texas Ranchers,New Jersey 5s,3,36cf3390-96cf-40ee-965d-c4b4ead219fd,5,1
+3232e5b3-00c3-4571-864f-c90f40733e43,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Texas Ranchers,New Jersey 5s,4,239111bc-b59f-4e57-9197-2489a00f6042,5,2
+dc4f8393-244b-492f-95ff-d4056c059cfa,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,SoCal Hard Eights,Carolina Hogs,1,2751b5e5-bab6-435e-8f6b-e056c5cf0f4e,5,1
+dc4f8393-244b-492f-95ff-d4056c059cfa,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,SoCal Hard Eights,Carolina Hogs,2,12cf6c6c-9bd6-44aa-a46c-fed944b89739,5,1
+dc4f8393-244b-492f-95ff-d4056c059cfa,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,SoCal Hard Eights,Carolina Hogs,3,bdc62bce-88aa-4ee5-ace0-7ec0be985232,5,1
+dc4f8393-244b-492f-95ff-d4056c059cfa,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,SoCal Hard Eights,Carolina Hogs,4,55e692c7-0252-42dc-8560-9bb7251b89cc,5,1
+cbb9fc96-75af-4229-8fcc-4fc1264a7ce2,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Miami Pickleball Club,Columbus Sliders,1,f6d98670-0a09-40ac-ab70-9196805a1b1f,5,1
+cbb9fc96-75af-4229-8fcc-4fc1264a7ce2,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Miami Pickleball Club,Columbus Sliders,2,695792d6-fcbd-440a-9ccc-b2a9c30a8d0d,5,2
+cbb9fc96-75af-4229-8fcc-4fc1264a7ce2,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Miami Pickleball Club,Columbus Sliders,3,155064fd-aaf4-475f-a4e4-513fc178f85d,5,2
+cbb9fc96-75af-4229-8fcc-4fc1264a7ce2,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Miami Pickleball Club,Columbus Sliders,4,7d1de361-0cda-475a-bc6f-b2b487e87f07,5,2
+8425b668-e06a-4f83-9272-33bdbdd01078,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Atlanta Bouncers,Florida Smash,1,e7ea6fe2-365f-41bd-97ff-465cf7ea80f4,5,2
+8425b668-e06a-4f83-9272-33bdbdd01078,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Atlanta Bouncers,Florida Smash,2,8227c6ca-e812-4cc0-9dff-ab7e7644f173,5,2
+8425b668-e06a-4f83-9272-33bdbdd01078,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Atlanta Bouncers,Florida Smash,3,a47415f3-0eaa-4f56-aae4-b820704c746e,5,1
+8425b668-e06a-4f83-9272-33bdbdd01078,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Atlanta Bouncers,Florida Smash,4,3ea59a87-f8ec-4fbc-8461-bc7dfa3073ff,5,1
+36d2f626-309f-40b6-a8ac-4e61de6cddf8,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Bay Area Breakers,Texas Ranchers,1,40af5607-cf49-4a0a-9220-d5105948d19b,5,2
+36d2f626-309f-40b6-a8ac-4e61de6cddf8,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Bay Area Breakers,Texas Ranchers,2,499b9385-a0c0-4c03-ac17-053d3bb100ea,5,2
+36d2f626-309f-40b6-a8ac-4e61de6cddf8,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Bay Area Breakers,Texas Ranchers,3,6fe1883a-b980-43fd-addd-7f91439fc6f9,5,2
+36d2f626-309f-40b6-a8ac-4e61de6cddf8,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Bay Area Breakers,Texas Ranchers,4,34f10f73-47f7-40da-ab44-5e161ca2d932,5,2
+ab9989ca-32f0-43bb-a22c-025157d43b77,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,California Black Bears,SoCal Hard Eights,1,da88a47e-eec5-4d5f-9f84-9b76fa9c9d06,5,2
+ab9989ca-32f0-43bb-a22c-025157d43b77,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,California Black Bears,SoCal Hard Eights,2,cf672e82-5475-4fdc-abd5-a877b821b76e,5,2
+ab9989ca-32f0-43bb-a22c-025157d43b77,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,California Black Bears,SoCal Hard Eights,3,f2939b3d-64f9-4524-adce-e15c7e77a399,5,2
+ab9989ca-32f0-43bb-a22c-025157d43b77,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,California Black Bears,SoCal Hard Eights,4,788687b1-e45a-44cf-a647-cda66930d9b5,5,1
+0d6d30fa-9ff7-45da-a8b9-30069df7ee6c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Dallas Flash,New Jersey 5s,1,1d6042ce-9303-4969-b65a-ccba85c2bca4,5,2
+0d6d30fa-9ff7-45da-a8b9-30069df7ee6c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Dallas Flash,New Jersey 5s,2,ef21001b-dd35-4209-82ce-64a02624ef71,5,1
+0d6d30fa-9ff7-45da-a8b9-30069df7ee6c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Dallas Flash,New Jersey 5s,3,b1c97229-6ad7-43bf-92ef-bac492d873ba,5,2
+0d6d30fa-9ff7-45da-a8b9-30069df7ee6c,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-13,Dallas Flash,New Jersey 5s,4,8d4a5161-45a2-477d-970b-86a0d6f9e9d5,5,1
+473f14cc-98ae-4147-8a01-e860d95584d0,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,California Black Bears,Florida Smash,1,3f36b41d-982e-481a-803c-bacb76ef6629,5,2
+473f14cc-98ae-4147-8a01-e860d95584d0,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,California Black Bears,Florida Smash,2,337ed1ec-5dde-42e3-ad1a-50fd1adeb3d4,5,2
+473f14cc-98ae-4147-8a01-e860d95584d0,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,California Black Bears,Florida Smash,3,3c67909d-9853-48c4-a450-6ff8e2195e51,5,1
+473f14cc-98ae-4147-8a01-e860d95584d0,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,California Black Bears,Florida Smash,4,d6060353-fbf3-447e-ad46-a6a843d3c522,5,1
+91ac85ea-23a3-40be-9d67-a63c60f0b54a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,Miami Pickleball Club,Bay Area Breakers,1,c35624f4-ec00-4339-ac17-454ae44b5e88,5,1
+91ac85ea-23a3-40be-9d67-a63c60f0b54a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,Miami Pickleball Club,Bay Area Breakers,2,b9e8498e-ead7-4fa1-b6a3-4b0461c4918d,5,1
+91ac85ea-23a3-40be-9d67-a63c60f0b54a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,Miami Pickleball Club,Bay Area Breakers,3,524dd6fa-6c56-4ab5-af3f-1d955571262d,5,1
+91ac85ea-23a3-40be-9d67-a63c60f0b54a,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,Miami Pickleball Club,Bay Area Breakers,4,642c796e-1c23-4301-a3ee-de44b26cfe96,6,0
+4b3053ab-a767-4865-8e9f-877d91801d41,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,Texas Ranchers,SoCal Hard Eights,1,0f70a4ce-c6aa-4479-8aaf-d8e7f951836a,5,2
+4b3053ab-a767-4865-8e9f-877d91801d41,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,Texas Ranchers,SoCal Hard Eights,2,c4f53d7b-2321-43e0-be11-cbeeff5c4b67,5,1
+4b3053ab-a767-4865-8e9f-877d91801d41,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,Texas Ranchers,SoCal Hard Eights,3,f8954448-8122-4587-9e0f-540b0f6ae9ea,5,1
+4b3053ab-a767-4865-8e9f-877d91801d41,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,Texas Ranchers,SoCal Hard Eights,4,41849e8c-01b5-4763-9032-0ebc64fde548,5,1
+e675c6c1-2329-40fc-87f8-2c3ff579cce5,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,New Jersey 5s,Columbus Sliders,1,bff0592e-579a-4d00-a5bc-945753bf32ef,5,1
+e675c6c1-2329-40fc-87f8-2c3ff579cce5,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,New Jersey 5s,Columbus Sliders,2,2c3a2020-ecf2-46c4-9e7a-fdcc520dbcf7,5,2
+e675c6c1-2329-40fc-87f8-2c3ff579cce5,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,New Jersey 5s,Columbus Sliders,3,d04203f6-06e1-404b-8386-a721894c6f31,5,1
+e675c6c1-2329-40fc-87f8-2c3ff579cce5,9df489ec-31ac-4bd8-9df7-4fe508439d71,2026-06-14,New Jersey 5s,Columbus Sliders,4,445e1c83-c865-4e60-8971-d87370a0438f,5,1
+d7cde0c5-88fb-4295-b716-777bb572876f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Florida Smash,Chicago Slice,1,9951570c-0910-4b80-8cb6-ab9758522a22,5,1
+d7cde0c5-88fb-4295-b716-777bb572876f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Florida Smash,Chicago Slice,2,66607490-430b-498c-bbfc-d7fa409d65bb,5,2
+d7cde0c5-88fb-4295-b716-777bb572876f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Florida Smash,Chicago Slice,3,4ebf0f0a-46d4-4715-8c09-bf272aaac844,5,2
+d7cde0c5-88fb-4295-b716-777bb572876f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Florida Smash,Chicago Slice,4,a68d0a96-78e9-4b39-999e-8a331eda437c,5,1
+4a280af8-460d-47f9-bf02-e2e6e8d44dbb,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Palm Beach Royals,Texas Ranchers,1,446f0a77-ca8d-4adc-ba5a-668218e2ada0,5,1
+4a280af8-460d-47f9-bf02-e2e6e8d44dbb,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Palm Beach Royals,Texas Ranchers,2,e56bd814-5f63-40a8-ba64-a33420216a78,5,1
+4a280af8-460d-47f9-bf02-e2e6e8d44dbb,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Palm Beach Royals,Texas Ranchers,3,1ad5556b-c755-4a65-a0ad-f9026e1875ee,5,2
+4a280af8-460d-47f9-bf02-e2e6e8d44dbb,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Palm Beach Royals,Texas Ranchers,4,8aa4cc34-5733-4c0a-af66-3216cffc089b,5,1
+fdff9deb-d687-43cc-94b9-f8b8be762ed4,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Columbus Sliders,Orlando Squeeze,1,ad757c29-a8e7-4ee1-b988-8722c96f625a,5,1
+fdff9deb-d687-43cc-94b9-f8b8be762ed4,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Columbus Sliders,Orlando Squeeze,2,57061fe4-bd5c-48e8-ae5c-1901f416565f,5,2
+fdff9deb-d687-43cc-94b9-f8b8be762ed4,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Columbus Sliders,Orlando Squeeze,3,282b803b-392c-49b8-a361-6fddd8945a40,5,1
+fdff9deb-d687-43cc-94b9-f8b8be762ed4,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Columbus Sliders,Orlando Squeeze,4,95c1539f-3fe2-43b2-bd31-d2fdef4aedbb,5,1
+9858c449-05c9-48bf-9809-4473c6fb3167,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Miami Pickleball Club,Palm Beach Royals,1,c02fa5db-48a5-4a0e-9314-37653571fcd8,5,2
+9858c449-05c9-48bf-9809-4473c6fb3167,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Miami Pickleball Club,Palm Beach Royals,2,bd8984bb-3576-4c93-9590-28cb4cdc22f5,5,2
+9858c449-05c9-48bf-9809-4473c6fb3167,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Miami Pickleball Club,Palm Beach Royals,3,f0ca686e-1b22-4e01-b1c4-8dba69a78401,5,2
+9858c449-05c9-48bf-9809-4473c6fb3167,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Miami Pickleball Club,Palm Beach Royals,4,5747a134-b443-4532-8568-b722c755c9cb,5,2
+80344fa8-c328-4d5c-ac95-cc8924157c29,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Texas Ranchers,St. Louis Shock,1,4f09d0af-74aa-435a-a2b9-6d7255afe46c,5,2
+80344fa8-c328-4d5c-ac95-cc8924157c29,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Texas Ranchers,St. Louis Shock,2,77529c66-b06b-4b2f-9991-c6534671ec85,5,1
+80344fa8-c328-4d5c-ac95-cc8924157c29,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Texas Ranchers,St. Louis Shock,3,7c123d55-9ea6-4569-99f5-20c6d375b465,5,2
+80344fa8-c328-4d5c-ac95-cc8924157c29,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Texas Ranchers,St. Louis Shock,4,bfb9b6aa-2309-4b5c-9f11-d24a56bcd6a7,5,2
+f7479962-f55d-4779-8f13-e1669529d68e,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Orlando Squeeze,Miami Pickleball Club,1,0688693d-ed8f-41ba-abf0-26b471d663c1,5,1
+f7479962-f55d-4779-8f13-e1669529d68e,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Orlando Squeeze,Miami Pickleball Club,2,bcbe4ab6-aa17-4164-a9c9-d8a9139f2a5f,5,2
+f7479962-f55d-4779-8f13-e1669529d68e,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Orlando Squeeze,Miami Pickleball Club,3,2b8bc869-6dde-418f-b4d6-a87f98dd9f5c,5,1
+f7479962-f55d-4779-8f13-e1669529d68e,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-17,Orlando Squeeze,Miami Pickleball Club,4,55871b30-631d-4784-8c3e-149600cd9a18,5,1
+499a1e05-c170-412e-9bac-25aa0cf5172f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Brooklyn Pickleball Team,Florida Smash,1,5ba35470-5b5c-4f27-b7ff-95cbbeca374f,5,1
+499a1e05-c170-412e-9bac-25aa0cf5172f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Brooklyn Pickleball Team,Florida Smash,2,303de34a-70d2-4114-8dc1-88674ae564b0,5,1
+499a1e05-c170-412e-9bac-25aa0cf5172f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Brooklyn Pickleball Team,Florida Smash,3,107109cf-f940-4705-b508-9930d5af96de,5,2
+499a1e05-c170-412e-9bac-25aa0cf5172f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Brooklyn Pickleball Team,Florida Smash,4,13af0ff6-2c78-4965-85b8-ded20dde3a19,5,1
+a78f0739-7a04-48f0-9b6a-258ef231b47f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,St. Louis Shock,Palm Beach Royals,1,5c3882e2-eb37-4c9b-ac5d-ad58ce13b51a,5,2
+a78f0739-7a04-48f0-9b6a-258ef231b47f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,St. Louis Shock,Palm Beach Royals,2,2f762b4c-bce7-4b71-8e89-1c6a35942a8b,5,1
+a78f0739-7a04-48f0-9b6a-258ef231b47f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,St. Louis Shock,Palm Beach Royals,3,b5bbebc0-e8bd-4672-a307-0c491f4ca57c,5,1
+a78f0739-7a04-48f0-9b6a-258ef231b47f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,St. Louis Shock,Palm Beach Royals,4,a5f47554-4bae-467f-8fb7-5d7baa1d97e5,5,1
+9c08a14d-c7cb-4687-8727-c11771701501,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Utah Black Diamonds,Los Angeles Mad Drops,1,f0c5ee66-089d-4be7-abf3-e8ff11c5315a,5,2
+9c08a14d-c7cb-4687-8727-c11771701501,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Utah Black Diamonds,Los Angeles Mad Drops,2,62cc6287-f50f-4e93-9474-17136307ad48,5,2
+9c08a14d-c7cb-4687-8727-c11771701501,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Utah Black Diamonds,Los Angeles Mad Drops,3,edada77d-2cb2-4f7a-b159-36fffac12e90,5,1
+9c08a14d-c7cb-4687-8727-c11771701501,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Utah Black Diamonds,Los Angeles Mad Drops,4,6df06206-1111-4653-ab44-56991d9c56f4,5,2
+75cc1bb2-d823-4146-b0fe-f07570f030ca,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Texas Ranchers,Orlando Squeeze,1,3764f15b-3f2d-4fdc-a775-f88f2a50f51f,5,2
+75cc1bb2-d823-4146-b0fe-f07570f030ca,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Texas Ranchers,Orlando Squeeze,2,f21dbc15-1c31-4aca-a1a5-29e7e3f74019,5,1
+75cc1bb2-d823-4146-b0fe-f07570f030ca,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Texas Ranchers,Orlando Squeeze,3,901c75bf-3551-45c4-ae4b-17d9eb73efca,5,1
+75cc1bb2-d823-4146-b0fe-f07570f030ca,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Texas Ranchers,Orlando Squeeze,4,45d516ab-989e-4289-a97f-d92f6dd0cd6d,5,1
+fa5a8bef-8d2e-430a-a491-8137ce96897f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Columbus Sliders,Miami Pickleball Club,1,acfbcb55-bfeb-4339-a665-52aa57e66830,5,1
+fa5a8bef-8d2e-430a-a491-8137ce96897f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Columbus Sliders,Miami Pickleball Club,2,99b27d34-b8af-40ce-8e13-5ff31184aa1d,5,2
+fa5a8bef-8d2e-430a-a491-8137ce96897f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Columbus Sliders,Miami Pickleball Club,3,4381a520-f818-4697-aed2-b4556cf5e54d,5,1
+fa5a8bef-8d2e-430a-a491-8137ce96897f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Columbus Sliders,Miami Pickleball Club,4,e9b3c18b-0665-4b89-9304-22ad9bc8b097,5,1
+e09c041d-7f4a-4ada-89dc-f5ccbac14e9b,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Utah Black Diamonds,Chicago Slice,1,48ccd959-0690-4dbf-8d18-ae5c9269054f,5,2
+e09c041d-7f4a-4ada-89dc-f5ccbac14e9b,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Utah Black Diamonds,Chicago Slice,2,81bbaa59-a8de-43d8-8d30-9aad69eefad7,5,2
+e09c041d-7f4a-4ada-89dc-f5ccbac14e9b,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Utah Black Diamonds,Chicago Slice,3,55de53ce-b257-4d08-bcf9-c3498e3f19ad,5,1
+e09c041d-7f4a-4ada-89dc-f5ccbac14e9b,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-18,Utah Black Diamonds,Chicago Slice,4,3d5f8e2e-eb70-4a80-9833-19bfc0f0e2a3,5,2
+6b434c50-06bd-4bae-bb0b-6433a909790a,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Palm Beach Royals,Columbus Sliders,1,005484c9-e189-4f77-9a61-d18d424c3f29,5,1
+6b434c50-06bd-4bae-bb0b-6433a909790a,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Palm Beach Royals,Columbus Sliders,2,d0f75d5c-bfd0-4b7b-acf3-d4a2a7428092,5,2
+6b434c50-06bd-4bae-bb0b-6433a909790a,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Palm Beach Royals,Columbus Sliders,3,a98ea091-b797-4c97-a40a-4bf36fd5b879,5,1
+6b434c50-06bd-4bae-bb0b-6433a909790a,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Palm Beach Royals,Columbus Sliders,4,4aca212a-95c6-4634-a4f4-c8c3a0a920d6,5,1
+1f21fa6a-eeef-49ca-b9be-691ce95aba1d,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Chicago Slice,Brooklyn Pickleball Team,1,5614bc38-86c4-48bd-b2fd-85543e6dd8ba,5,2
+1f21fa6a-eeef-49ca-b9be-691ce95aba1d,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Chicago Slice,Brooklyn Pickleball Team,2,6da2169f-f5a4-440c-b3ac-17a94997df9c,5,2
+1f21fa6a-eeef-49ca-b9be-691ce95aba1d,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Chicago Slice,Brooklyn Pickleball Team,3,2916ffd5-7531-4740-878b-9f43a5e29490,5,2
+1f21fa6a-eeef-49ca-b9be-691ce95aba1d,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Chicago Slice,Brooklyn Pickleball Team,4,72c12be1-0c57-4f27-b34e-0f78b699c9f8,5,2
+042d576c-885f-4397-a494-b42b4a0e01b9,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Miami Pickleball Club,Texas Ranchers,1,9870c1b9-9222-4edf-8395-fb5ac8ddb618,5,2
+042d576c-885f-4397-a494-b42b4a0e01b9,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Miami Pickleball Club,Texas Ranchers,2,961b100a-efe2-47e7-95e1-e3a8001a07fd,5,2
+042d576c-885f-4397-a494-b42b4a0e01b9,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Miami Pickleball Club,Texas Ranchers,3,640eee5b-8255-4855-8c21-d982bde4dc33,5,1
+042d576c-885f-4397-a494-b42b4a0e01b9,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Miami Pickleball Club,Texas Ranchers,4,241e0043-2098-48dd-addf-514e3bdd4a97,5,2
+82d2916f-158e-43e0-b72c-43295e07e35c,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Brooklyn Pickleball Team,Utah Black Diamonds,1,e8e53a99-bd36-4182-8a68-22dd2d3e00ff,5,1
+82d2916f-158e-43e0-b72c-43295e07e35c,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Brooklyn Pickleball Team,Utah Black Diamonds,2,bdbbf3fa-89f2-4587-b71a-a74d41d7e3f1,5,1
+82d2916f-158e-43e0-b72c-43295e07e35c,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Brooklyn Pickleball Team,Utah Black Diamonds,3,f6300048-5bc6-496a-82bb-e47ee782d35c,5,1
+82d2916f-158e-43e0-b72c-43295e07e35c,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Brooklyn Pickleball Team,Utah Black Diamonds,4,828a177a-0e65-4eb6-afb6-9d451631673d,5,1
+db4c5d20-901e-48e2-8bed-956ff5b0b13c,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Los Angeles Mad Drops,Florida Smash,1,de8aebcb-da26-4a44-a54e-73e091e5e276,5,1
+db4c5d20-901e-48e2-8bed-956ff5b0b13c,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Los Angeles Mad Drops,Florida Smash,2,ac4af6bc-f671-4446-a322-82a304f004a7,5,1
+db4c5d20-901e-48e2-8bed-956ff5b0b13c,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Los Angeles Mad Drops,Florida Smash,3,9985825b-bd9c-4cb2-adf9-4bc8148e01e5,5,1
+db4c5d20-901e-48e2-8bed-956ff5b0b13c,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Los Angeles Mad Drops,Florida Smash,4,efb4f7f6-5117-43fd-8f93-cc9ec4b2c92e,5,2
+78673fb3-701a-4e6f-b48f-3667264722a8,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Orlando Squeeze,St. Louis Shock,1,1f6a2633-a436-4a95-a723-11fe5a8b355c,5,2
+78673fb3-701a-4e6f-b48f-3667264722a8,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Orlando Squeeze,St. Louis Shock,2,47b10b14-d1b5-450c-a0a3-6009450ee289,5,2
+78673fb3-701a-4e6f-b48f-3667264722a8,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Orlando Squeeze,St. Louis Shock,3,0fe1105a-e3bc-400b-af88-ebcadf560d80,5,2
+78673fb3-701a-4e6f-b48f-3667264722a8,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-19,Orlando Squeeze,St. Louis Shock,4,c322272a-07fe-478c-a3d6-38f6626fd4ae,5,2
+f2ecb592-a4d2-48fa-86ed-5e47ac7cdc6e,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Texas Ranchers,Columbus Sliders,1,6fbe9053-dc95-4598-9222-061f4919ec0c,5,2
+f2ecb592-a4d2-48fa-86ed-5e47ac7cdc6e,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Texas Ranchers,Columbus Sliders,2,1839d8a2-0121-4ded-b93f-33d98352c9a9,5,2
+f2ecb592-a4d2-48fa-86ed-5e47ac7cdc6e,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Texas Ranchers,Columbus Sliders,3,6087fce0-b196-4f39-8c52-794735bde49b,5,2
+f2ecb592-a4d2-48fa-86ed-5e47ac7cdc6e,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Texas Ranchers,Columbus Sliders,4,27b2e61d-5367-45c0-b28f-d789c724eef9,5,2
+e152c71e-f8ff-4d0f-ae07-34fd3d751c01,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Palm Beach Royals,Orlando Squeeze,1,ef244e2d-1843-4fde-a3cb-e4e6bb50ec09,5,1
+e152c71e-f8ff-4d0f-ae07-34fd3d751c01,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Palm Beach Royals,Orlando Squeeze,2,25c73c29-2cd0-40bb-bdd7-fafa066c75f6,5,2
+e152c71e-f8ff-4d0f-ae07-34fd3d751c01,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Palm Beach Royals,Orlando Squeeze,3,fc059f53-28f2-40eb-a8be-67af0a9e2b25,5,2
+e152c71e-f8ff-4d0f-ae07-34fd3d751c01,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Palm Beach Royals,Orlando Squeeze,4,b2cc362c-9ddb-4e05-b998-2755f520120d,5,1
+e84c5a5f-91d2-485e-b688-37a0e7dc6d13,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,St. Louis Shock,Miami Pickleball Club,1,563aacb6-4792-4d29-b9b3-b594517e8ab0,5,1
+e84c5a5f-91d2-485e-b688-37a0e7dc6d13,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,St. Louis Shock,Miami Pickleball Club,2,a1b1959f-070f-4e3e-8d30-bc5a4f330ba4,5,1
+e84c5a5f-91d2-485e-b688-37a0e7dc6d13,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,St. Louis Shock,Miami Pickleball Club,3,10c67516-72f9-4917-a026-f3bf123ce3d1,5,1
+e84c5a5f-91d2-485e-b688-37a0e7dc6d13,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,St. Louis Shock,Miami Pickleball Club,4,2e5c93dd-92ce-467d-87f1-835c1734a684,5,1
+84d8d2ec-3dd4-47fa-9bc2-863cf05a716d,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Chicago Slice,Los Angeles Mad Drops,1,6ac016d8-1998-4702-9b11-cbd3c1eea389,5,1
+84d8d2ec-3dd4-47fa-9bc2-863cf05a716d,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Chicago Slice,Los Angeles Mad Drops,2,a0ed88eb-26b8-46a2-8c76-6b54b9f64621,5,2
+84d8d2ec-3dd4-47fa-9bc2-863cf05a716d,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Chicago Slice,Los Angeles Mad Drops,3,4b28339a-da86-4635-a09d-c1ecf4acd037,5,2
+84d8d2ec-3dd4-47fa-9bc2-863cf05a716d,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Chicago Slice,Los Angeles Mad Drops,4,be769704-dd45-47a5-9fa5-4e4039190502,5,2
+d6c2e238-5cfd-4836-949b-55cbb5cdffab,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Columbus Sliders,St. Louis Shock,1,16520680-9820-4284-ab26-8b6d315637e9,5,2
+d6c2e238-5cfd-4836-949b-55cbb5cdffab,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Columbus Sliders,St. Louis Shock,2,42e6563e-fc7a-4a05-8003-50fa53a05d48,5,2
+d6c2e238-5cfd-4836-949b-55cbb5cdffab,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Columbus Sliders,St. Louis Shock,3,74267c0a-fa3f-421b-9e1b-8d1724c4cebc,5,2
+d6c2e238-5cfd-4836-949b-55cbb5cdffab,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Columbus Sliders,St. Louis Shock,4,b1118f4d-2909-40f4-9c0a-be5cb589ad2b,5,2
+798d3a24-ce22-4a03-8373-fe59abf23bac,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Los Angeles Mad Drops,Brooklyn Pickleball Team,1,70f01aa3-1159-4d1d-b4b3-1398a8e883b7,5,1
+798d3a24-ce22-4a03-8373-fe59abf23bac,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Los Angeles Mad Drops,Brooklyn Pickleball Team,2,7b2db780-c51a-41e6-ac65-f3342bd75594,5,1
+798d3a24-ce22-4a03-8373-fe59abf23bac,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Los Angeles Mad Drops,Brooklyn Pickleball Team,3,e17e4229-e23b-420d-8a36-af71c73309fa,5,1
+798d3a24-ce22-4a03-8373-fe59abf23bac,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Los Angeles Mad Drops,Brooklyn Pickleball Team,4,04be98ab-33fc-4298-be7b-5c12c2c35d57,5,1
+a8206675-470e-4f18-83b3-a84566232465,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Florida Smash,Utah Black Diamonds,1,f0e1febc-a1d3-4ecf-8aff-1a5ba3b37524,5,2
+a8206675-470e-4f18-83b3-a84566232465,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Florida Smash,Utah Black Diamonds,2,8c0b5672-863f-4354-8a02-38f58683d35a,5,2
+a8206675-470e-4f18-83b3-a84566232465,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Florida Smash,Utah Black Diamonds,3,ea5dc47f-07f8-4752-8d48-da3d4374d92b,5,1
+a8206675-470e-4f18-83b3-a84566232465,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-20,Florida Smash,Utah Black Diamonds,4,3a166aed-8360-4710-84e1-8d9391ba99d6,5,2
+0cf96d6d-af64-44d5-aaee-081143c4253f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Utah Black Diamonds,Texas Ranchers,1,24f4d273-9282-4276-8606-4b71e4ada3ab,5,1
+0cf96d6d-af64-44d5-aaee-081143c4253f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Utah Black Diamonds,Texas Ranchers,2,0e6230a5-7b91-4526-ac4e-294943c59b81,5,2
+0cf96d6d-af64-44d5-aaee-081143c4253f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Utah Black Diamonds,Texas Ranchers,3,4dd70625-e227-4cda-b87b-b50cdf87e05c,5,1
+0cf96d6d-af64-44d5-aaee-081143c4253f,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Utah Black Diamonds,Texas Ranchers,4,660ccff2-bfd4-446d-946e-d21405c68913,5,1
+65c6b2fc-936a-4e28-a36f-2fa5a9e72acf,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Columbus Sliders,Chicago Slice,1,1ab08be4-b6e7-4ed0-b297-b35041f7c075,5,1
+65c6b2fc-936a-4e28-a36f-2fa5a9e72acf,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Columbus Sliders,Chicago Slice,2,8978d8d8-859d-400d-83c9-b38346a4913f,5,1
+65c6b2fc-936a-4e28-a36f-2fa5a9e72acf,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Columbus Sliders,Chicago Slice,3,70921e41-9289-43e6-8064-2d0b90f3eaab,5,1
+65c6b2fc-936a-4e28-a36f-2fa5a9e72acf,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Columbus Sliders,Chicago Slice,4,2d54642a-b60b-4267-9c79-72507937785e,6,0
+1acf7667-a5b5-4815-9512-736b493a1742,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Brooklyn Pickleball Team,Palm Beach Royals,1,a0bdf912-d47b-4ae8-b1a5-f7db3f5deaff,5,2
+1acf7667-a5b5-4815-9512-736b493a1742,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Brooklyn Pickleball Team,Palm Beach Royals,2,cdc7ec44-d623-407f-a0be-2eac2f72a01c,5,1
+1acf7667-a5b5-4815-9512-736b493a1742,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Brooklyn Pickleball Team,Palm Beach Royals,3,9ac1d2d7-98ce-463f-ae80-dd9531586b2c,5,1
+1acf7667-a5b5-4815-9512-736b493a1742,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,Brooklyn Pickleball Team,Palm Beach Royals,4,4411f33e-252a-4e49-bea9-6e1c41ba3f26,5,1
+57e15e7b-d675-4c9c-8ccb-ac22845a0359,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,St. Louis Shock,Los Angeles Mad Drops,1,dc613ff3-76c4-4cde-bd13-bc7b8068c5d8,5,1
+57e15e7b-d675-4c9c-8ccb-ac22845a0359,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,St. Louis Shock,Los Angeles Mad Drops,2,1e7d1138-5360-4cb8-8242-2048ddaa5844,5,1
+57e15e7b-d675-4c9c-8ccb-ac22845a0359,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,St. Louis Shock,Los Angeles Mad Drops,3,82726188-fedf-4889-9cf0-56c6411f4426,5,1
+57e15e7b-d675-4c9c-8ccb-ac22845a0359,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,2026-06-21,St. Louis Shock,Los Angeles Mad Drops,4,247627f1-1a20-4769-a0b6-0fc4661e2527,6,0
+db1c64f4-3c5e-4aca-8b7e-3f568721a497,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Palm Beach Royals,Carolina Hogs,1,573b03b1-99d8-41a3-9dd1-7bef19c11a1c,5,1
+db1c64f4-3c5e-4aca-8b7e-3f568721a497,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Palm Beach Royals,Carolina Hogs,2,be97c343-b274-4e94-af07-f5bf362f40ad,5,2
+db1c64f4-3c5e-4aca-8b7e-3f568721a497,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Palm Beach Royals,Carolina Hogs,3,47e600a0-c7eb-425e-b1db-0f1369d7d392,5,2
+db1c64f4-3c5e-4aca-8b7e-3f568721a497,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Palm Beach Royals,Carolina Hogs,4,104acf7a-2697-4cca-badb-84d6234fe331,5,2
+99f9c2d5-c7d0-4c8d-912f-e30342cd4677,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Florida Smash,Dallas Flash,1,9b42b143-7162-4038-9f79-aad84f098889,5,2
+99f9c2d5-c7d0-4c8d-912f-e30342cd4677,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Florida Smash,Dallas Flash,2,2d5652df-2ba9-45bf-8b86-162b4faa41e4,5,2
+99f9c2d5-c7d0-4c8d-912f-e30342cd4677,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Florida Smash,Dallas Flash,3,e1d1c26e-7471-4b2a-bd87-0bd2d473087f,5,2
+99f9c2d5-c7d0-4c8d-912f-e30342cd4677,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Florida Smash,Dallas Flash,4,e176731a-36be-4eb5-91fa-16b529e764dc,5,2
+e97e22ea-db19-43ba-938e-8de76e93c3b6,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,SoCal Hard Eights,Chicago Slice,1,f601b3ad-7bbd-4555-ae8a-c21bd2f4422d,5,1
+e97e22ea-db19-43ba-938e-8de76e93c3b6,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,SoCal Hard Eights,Chicago Slice,2,3b4d5bc7-ec32-475e-b3f9-28ec8135a228,5,2
+e97e22ea-db19-43ba-938e-8de76e93c3b6,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,SoCal Hard Eights,Chicago Slice,3,3cf0477c-72d0-42fb-9232-d9f74b00c868,5,1
+e97e22ea-db19-43ba-938e-8de76e93c3b6,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,SoCal Hard Eights,Chicago Slice,4,2e82ea56-66c6-486d-8730-3b007866fb0d,5,1
+55bf51dc-a46c-42f6-946e-830bbb88e1f4,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Texas Ranchers,Las Vegas Night Owls,1,d69c5d66-c5ba-40ca-b7be-22619d9c656b,5,1
+55bf51dc-a46c-42f6-946e-830bbb88e1f4,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Texas Ranchers,Las Vegas Night Owls,2,9e99252e-7e2a-443f-92f7-f105ca3873ec,5,1
+55bf51dc-a46c-42f6-946e-830bbb88e1f4,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Texas Ranchers,Las Vegas Night Owls,3,0c053d29-f3bc-46af-a775-2b1c0b29d3fe,5,1
+55bf51dc-a46c-42f6-946e-830bbb88e1f4,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Texas Ranchers,Las Vegas Night Owls,4,061d1f5b-c55c-41fd-bf32-86f0e60647cc,5,2
+60980e4a-e135-4a2b-ab81-6b47cbb6d7fe,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Bay Area Breakers,Brooklyn Pickleball Team,1,0152a94a-7146-41ce-b433-3a7f3d299a5d,5,2
+60980e4a-e135-4a2b-ab81-6b47cbb6d7fe,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Bay Area Breakers,Brooklyn Pickleball Team,2,50c4e4e7-05c3-443c-abb3-489d55f72566,5,2
+60980e4a-e135-4a2b-ab81-6b47cbb6d7fe,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Bay Area Breakers,Brooklyn Pickleball Team,3,14bd129c-a051-4193-a408-adef714b3de5,5,2
+60980e4a-e135-4a2b-ab81-6b47cbb6d7fe,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-25,Bay Area Breakers,Brooklyn Pickleball Team,4,e4664f43-7048-4c82-828b-5b02f3c31170,5,1
+eaa00799-42b5-4378-b0a2-b0416e157884,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Las Vegas Night Owls,Chicago Slice,1,1fa85444-3849-4927-ac4a-e7254dd81f12,5,2
+eaa00799-42b5-4378-b0a2-b0416e157884,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Las Vegas Night Owls,Chicago Slice,2,6297806d-b75b-44d8-9b01-e6dba9e4e268,5,1
+eaa00799-42b5-4378-b0a2-b0416e157884,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Las Vegas Night Owls,Chicago Slice,3,70066910-d3af-47cc-bfac-cbddaf75fd25,5,1
+eaa00799-42b5-4378-b0a2-b0416e157884,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Las Vegas Night Owls,Chicago Slice,4,ee401591-f2bb-42a2-9a96-069d0c22362e,5,1
+81da44d0-3002-4323-9b79-5e2185522903,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Bay Area Breakers,Palm Beach Royals,1,6876a566-99e3-4cb9-b6d7-0ab1b36940d3,5,2
+81da44d0-3002-4323-9b79-5e2185522903,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Bay Area Breakers,Palm Beach Royals,2,a4b3c563-885d-4b56-8add-8937b90a1946,5,2
+81da44d0-3002-4323-9b79-5e2185522903,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Bay Area Breakers,Palm Beach Royals,3,b78a04cc-a61f-49ee-a618-c3aafdcfcf98,5,2
+81da44d0-3002-4323-9b79-5e2185522903,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Bay Area Breakers,Palm Beach Royals,4,a5698dfa-9874-4431-b475-852ea6c06a61,5,2
+5d190f4d-7789-4afe-b3e3-f3e476f3ca00,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Dallas Flash,Carolina Hogs,1,be9ec823-97c9-46c9-a984-021d915e1302,5,1
+5d190f4d-7789-4afe-b3e3-f3e476f3ca00,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Dallas Flash,Carolina Hogs,2,3704746c-ee6d-4110-911e-76891802f2b2,5,1
+5d190f4d-7789-4afe-b3e3-f3e476f3ca00,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Dallas Flash,Carolina Hogs,3,bb790b48-4da3-40fd-9792-e134017109d2,5,1
+5d190f4d-7789-4afe-b3e3-f3e476f3ca00,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Dallas Flash,Carolina Hogs,4,ff47b933-e00e-4377-a7fa-ad9363f5e2a1,5,2
+8256c274-8c9d-405e-8b99-3c4213cf1fff,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Florida Smash,Brooklyn Pickleball Team,1,f810c062-e515-49a9-ab66-aa4c21e14ebf,5,1
+8256c274-8c9d-405e-8b99-3c4213cf1fff,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Florida Smash,Brooklyn Pickleball Team,2,30051148-a4e1-4d99-9b3e-90275e0dae20,5,2
+8256c274-8c9d-405e-8b99-3c4213cf1fff,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Florida Smash,Brooklyn Pickleball Team,3,b73f3d5a-7429-48cc-9375-344a38623e1a,5,2
+8256c274-8c9d-405e-8b99-3c4213cf1fff,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Florida Smash,Brooklyn Pickleball Team,4,8ebbeca0-1007-4e96-9c3a-d41cff9fd3f5,5,2
+933350b8-5287-40c5-b2a7-dc34925285c9,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Chicago Slice,Texas Ranchers,1,8c7ac0a7-b201-4072-8863-f1a2c7056678,5,1
+933350b8-5287-40c5-b2a7-dc34925285c9,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Chicago Slice,Texas Ranchers,2,a4d9add4-979d-401e-95b8-b2b0b8c893ad,5,2
+933350b8-5287-40c5-b2a7-dc34925285c9,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Chicago Slice,Texas Ranchers,3,54d910b0-fa96-40a7-a1ef-066b862478a7,5,2
+933350b8-5287-40c5-b2a7-dc34925285c9,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Chicago Slice,Texas Ranchers,4,b2a07392-d149-4d7b-b2ec-e9063706509e,5,2
+b8860c8e-6d9a-4163-bf7b-a92771ebccd3,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,New Jersey 5s,Las Vegas Night Owls,1,216e1090-5a45-45dc-9d6c-62dc610eebe2,5,1
+b8860c8e-6d9a-4163-bf7b-a92771ebccd3,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,New Jersey 5s,Las Vegas Night Owls,2,e3d1cc9f-213c-4b46-a21f-2d79e5e4ddcb,5,1
+b8860c8e-6d9a-4163-bf7b-a92771ebccd3,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,New Jersey 5s,Las Vegas Night Owls,3,6541a209-4a85-4baa-8911-5f550f5daa06,5,1
+b8860c8e-6d9a-4163-bf7b-a92771ebccd3,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,New Jersey 5s,Las Vegas Night Owls,4,54c92a52-93f5-40b8-9b86-94a07e62dea8,5,1
+67d60d04-6f69-41ac-96a9-65638f97c03f,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Dallas Flash,Palm Beach Royals,1,01bfebfc-16ad-442f-97ec-c548f052506e,5,2
+67d60d04-6f69-41ac-96a9-65638f97c03f,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Dallas Flash,Palm Beach Royals,2,19e0beb2-046e-493f-aa44-eec5dc186634,5,2
+67d60d04-6f69-41ac-96a9-65638f97c03f,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Dallas Flash,Palm Beach Royals,3,17a53e78-3d29-4292-8f92-dcb6382fa30b,5,1
+67d60d04-6f69-41ac-96a9-65638f97c03f,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Dallas Flash,Palm Beach Royals,4,6167b60d-dce8-420e-b9a2-f0dac324a894,5,1
+4f4d0b46-227c-4557-8847-b8f2e3447411,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Carolina Hogs,Brooklyn Pickleball Team,1,1dcc30fa-4f42-454a-8bb5-e352ed73ce8b,5,2
+4f4d0b46-227c-4557-8847-b8f2e3447411,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Carolina Hogs,Brooklyn Pickleball Team,2,06a74cf3-62fc-4f12-a64b-793d6192275b,5,2
+4f4d0b46-227c-4557-8847-b8f2e3447411,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Carolina Hogs,Brooklyn Pickleball Team,3,1109530e-bf0a-4c0d-8a10-6ba753791290,5,2
+4f4d0b46-227c-4557-8847-b8f2e3447411,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Carolina Hogs,Brooklyn Pickleball Team,4,49c53243-2848-47bc-8997-78ebf717f88b,5,2
+3aaa52ae-5757-41c4-aadc-c88c71434404,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Florida Smash,Bay Area Breakers,1,16847e91-ec55-4b77-ace1-1d883965cfe9,5,1
+3aaa52ae-5757-41c4-aadc-c88c71434404,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Florida Smash,Bay Area Breakers,2,5c431afa-072e-48f2-af2f-fab26a643ed6,5,2
+3aaa52ae-5757-41c4-aadc-c88c71434404,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Florida Smash,Bay Area Breakers,3,753efaa4-1d75-42ac-9cc8-4cca7af9acdf,5,1
+3aaa52ae-5757-41c4-aadc-c88c71434404,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,Florida Smash,Bay Area Breakers,4,c7b3a756-87ce-49d9-ab0b-78d8df15db5d,5,1
+a5bb9f3b-f730-410d-9016-82a031291f48,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,SoCal Hard Eights,New Jersey 5s,1,5a341140-5454-4399-b699-9fa8154dc212,5,2
+a5bb9f3b-f730-410d-9016-82a031291f48,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,SoCal Hard Eights,New Jersey 5s,2,8ac389f6-43ea-439a-8016-d56631cccc40,5,2
+a5bb9f3b-f730-410d-9016-82a031291f48,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,SoCal Hard Eights,New Jersey 5s,3,88dd2892-08c5-4f03-8519-bde0396761b4,5,2
+a5bb9f3b-f730-410d-9016-82a031291f48,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-26,SoCal Hard Eights,New Jersey 5s,4,ca5ea04d-569a-4368-a117-b74a68e3b30e,5,2
+2c4cc818-8047-4a6e-b13d-e421b596c643,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Texas Ranchers,SoCal Hard Eights,1,14608f32-10bd-4876-8b53-ff957da1cd9c,5,2
+2c4cc818-8047-4a6e-b13d-e421b596c643,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Texas Ranchers,SoCal Hard Eights,2,eb1dbe40-0b7c-4bd4-849d-5307fa5460e1,5,2
+2c4cc818-8047-4a6e-b13d-e421b596c643,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Texas Ranchers,SoCal Hard Eights,3,46c4d9b0-82bc-407d-9cc5-923f821c3150,5,1
+2c4cc818-8047-4a6e-b13d-e421b596c643,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Texas Ranchers,SoCal Hard Eights,4,68f6554b-99dc-491a-a772-82697015ad0c,5,1
+26a23fdf-dbe3-446d-87bc-c7e4be7270d8,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Palm Beach Royals,Florida Smash,1,5ae42d94-5306-49fa-ba66-c9a44783280d,5,1
+26a23fdf-dbe3-446d-87bc-c7e4be7270d8,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Palm Beach Royals,Florida Smash,2,83ed381b-cca1-467d-9c00-a1132859f499,5,1
+26a23fdf-dbe3-446d-87bc-c7e4be7270d8,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Palm Beach Royals,Florida Smash,3,4b6bfdf0-0673-426c-ad20-be1dcb8fd09b,5,2
+26a23fdf-dbe3-446d-87bc-c7e4be7270d8,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Palm Beach Royals,Florida Smash,4,edbd5c44-7632-4809-8e01-569dbbcb9584,5,1
+ad59310b-fef0-4434-ac91-2e6ad9fff34f,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Bay Area Breakers,Dallas Flash,1,b22a3c81-aee7-4750-b7b5-1178ebc18ccc,5,2
+ad59310b-fef0-4434-ac91-2e6ad9fff34f,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Bay Area Breakers,Dallas Flash,2,2951f1ee-17ed-4191-ac50-afb80b685405,5,1
+ad59310b-fef0-4434-ac91-2e6ad9fff34f,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Bay Area Breakers,Dallas Flash,3,d1c999e2-b48c-4f24-a24f-b5ecc5693f2f,5,2
+ad59310b-fef0-4434-ac91-2e6ad9fff34f,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Bay Area Breakers,Dallas Flash,4,ba7acd98-8da7-4d25-86b7-832199b05fa2,5,2
+faa39479-f27c-4d1a-8c7d-bf3d72e3975d,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Carolina Hogs,Florida Smash,1,d79606a6-0c93-4bcb-9bdf-c1bd704ff190,6,0
+faa39479-f27c-4d1a-8c7d-bf3d72e3975d,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Carolina Hogs,Florida Smash,2,132c6a2f-0c5c-4800-a84c-5b4d53524b51,5,2
+faa39479-f27c-4d1a-8c7d-bf3d72e3975d,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Carolina Hogs,Florida Smash,3,0b84b0af-3782-4f83-bd03-37cc76bd896d,5,2
+faa39479-f27c-4d1a-8c7d-bf3d72e3975d,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Carolina Hogs,Florida Smash,4,b6ef5a4b-3664-46cb-9911-233ca1926ef5,5,2
+58836ef8-4e6f-4097-8cad-d1395aaea5a9,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Chicago Slice,New Jersey 5s,1,b171983c-7547-49ed-b113-52f6f4e2bdf3,5,2
+58836ef8-4e6f-4097-8cad-d1395aaea5a9,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Chicago Slice,New Jersey 5s,2,b683e70a-26eb-4d39-93df-02473c84fce9,5,2
+58836ef8-4e6f-4097-8cad-d1395aaea5a9,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Chicago Slice,New Jersey 5s,3,044e04f8-548e-47a1-ae9a-1e4118ec4cf5,5,2
+58836ef8-4e6f-4097-8cad-d1395aaea5a9,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Chicago Slice,New Jersey 5s,4,3dce15a4-5a14-4d73-8373-16c54943f390,6,0
+efca4951-302f-4a87-a523-b2c42f95bc0d,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Brooklyn Pickleball Team,Palm Beach Royals,1,38165484-6434-4746-bf83-5e9e75eebae4,5,2
+efca4951-302f-4a87-a523-b2c42f95bc0d,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Brooklyn Pickleball Team,Palm Beach Royals,2,c2b057a4-5a3f-45f1-9979-a0dcdbdbcb3f,5,1
+efca4951-302f-4a87-a523-b2c42f95bc0d,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Brooklyn Pickleball Team,Palm Beach Royals,3,ec964cf1-e2b6-4ffc-bc7c-98b98ec924d0,5,1
+efca4951-302f-4a87-a523-b2c42f95bc0d,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Brooklyn Pickleball Team,Palm Beach Royals,4,9f6f1f33-d1f7-4769-8484-7c7f1a3fe873,5,1
+a9db4552-f0bb-4019-8cf9-9aa2243ae8cc,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Las Vegas Night Owls,SoCal Hard Eights,1,5ef051a0-0c5f-46f2-8afa-52e00174ca31,5,1
+a9db4552-f0bb-4019-8cf9-9aa2243ae8cc,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Las Vegas Night Owls,SoCal Hard Eights,2,8278e700-ac6a-4941-abb8-118e136549b2,5,2
+a9db4552-f0bb-4019-8cf9-9aa2243ae8cc,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Las Vegas Night Owls,SoCal Hard Eights,3,f7ebdf38-18ee-44a4-a12e-93abe4e9f414,5,2
+a9db4552-f0bb-4019-8cf9-9aa2243ae8cc,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Las Vegas Night Owls,SoCal Hard Eights,4,9491785b-3c4d-4e81-8719-50eade21bb78,5,1
+2b659118-40b2-49b3-a4c0-c02f8445fafd,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Carolina Hogs,Bay Area Breakers,1,50710e12-6ca1-45af-872d-fa336e2426d2,5,2
+2b659118-40b2-49b3-a4c0-c02f8445fafd,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Carolina Hogs,Bay Area Breakers,2,98c1f2de-aef8-4bea-923a-891af3be9d45,5,2
+2b659118-40b2-49b3-a4c0-c02f8445fafd,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Carolina Hogs,Bay Area Breakers,3,395865fa-b93c-46df-8a94-a0149c6ffa0a,5,2
+2b659118-40b2-49b3-a4c0-c02f8445fafd,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-27,Carolina Hogs,Bay Area Breakers,4,0be4d9da-3aaa-4c76-9284-15f7e2b77bda,6,0
+0d374aed-bdab-43d5-b9da-9a04b504fd06,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,New Jersey 5s,Texas Ranchers,1,750f9f4b-d729-4566-916b-f19a7c4d019f,5,1
+0d374aed-bdab-43d5-b9da-9a04b504fd06,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,New Jersey 5s,Texas Ranchers,2,58c02b9b-30b2-4dc0-9000-2c5baab31d0b,5,2
+0d374aed-bdab-43d5-b9da-9a04b504fd06,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,New Jersey 5s,Texas Ranchers,3,8c4229e1-b8c8-4d0b-8810-879ed654c9c9,5,1
+0d374aed-bdab-43d5-b9da-9a04b504fd06,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,New Jersey 5s,Texas Ranchers,4,ea44fee7-c0c9-455c-966a-37c8a1d39d8f,5,2
+beaf54c0-51e9-4c47-bd80-ef165d9421e7,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Brooklyn Pickleball Team,Dallas Flash,1,103faabb-d3b1-41a7-8192-92df7d8f469d,5,2
+beaf54c0-51e9-4c47-bd80-ef165d9421e7,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Brooklyn Pickleball Team,Dallas Flash,2,eaaeb364-7731-4314-85dd-eeda1a65abf6,5,1
+beaf54c0-51e9-4c47-bd80-ef165d9421e7,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Brooklyn Pickleball Team,Dallas Flash,3,301ddb16-7cd7-4545-beb7-1ee03ee7a09c,5,1
+beaf54c0-51e9-4c47-bd80-ef165d9421e7,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Brooklyn Pickleball Team,Dallas Flash,4,7461d04f-c76d-4dc7-afc3-75ecae39c387,5,2
+115f8546-bae5-4016-ba99-c3553ca84fea,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Florida Smash,Las Vegas Night Owls,1,10674754-79d8-47f4-bfee-2442e6c26b2f,5,1
+115f8546-bae5-4016-ba99-c3553ca84fea,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Florida Smash,Las Vegas Night Owls,2,0c23bfa7-ecdd-4ef0-8a31-70585967206a,5,1
+115f8546-bae5-4016-ba99-c3553ca84fea,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Florida Smash,Las Vegas Night Owls,3,7c7b2d67-894e-4be3-a1f9-8975262cd92c,5,2
+115f8546-bae5-4016-ba99-c3553ca84fea,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Florida Smash,Las Vegas Night Owls,4,da2c0a4a-709c-4edb-ae59-7d4562191815,5,2
+16cdf51e-cac2-4a43-a28d-3d4f95d06801,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Palm Beach Royals,SoCal Hard Eights,1,17ecf658-c5e2-40d3-81ed-85f5da185e70,5,1
+16cdf51e-cac2-4a43-a28d-3d4f95d06801,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Palm Beach Royals,SoCal Hard Eights,2,734aea8c-181c-46d6-8c04-b722ce37f5c9,5,2
+16cdf51e-cac2-4a43-a28d-3d4f95d06801,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Palm Beach Royals,SoCal Hard Eights,3,ec879c3f-d2a4-407a-b388-66d29a32edad,5,1
+16cdf51e-cac2-4a43-a28d-3d4f95d06801,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Palm Beach Royals,SoCal Hard Eights,4,ef2fa698-fa05-48b0-9a09-bb5214799af2,5,1
+24b31b89-8a21-4b80-82e0-77e4ec0d8ae6,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Dallas Flash,Texas Ranchers,1,3644a4d3-2876-4dc3-b16c-2a937556b202,5,2
+24b31b89-8a21-4b80-82e0-77e4ec0d8ae6,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Dallas Flash,Texas Ranchers,2,db25d60e-6527-4164-9714-d28f0443da5f,5,1
+24b31b89-8a21-4b80-82e0-77e4ec0d8ae6,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Dallas Flash,Texas Ranchers,3,dd4cc9c7-09ea-4aa5-9e5f-bd3c2f14801e,5,2
+24b31b89-8a21-4b80-82e0-77e4ec0d8ae6,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,Dallas Flash,Texas Ranchers,4,8a1171fe-f199-4fa4-9d65-8e0acca8d425,5,1
+e7ded863-7358-463a-b1e6-40cdfa02c4be,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,New Jersey 5s,Brooklyn Pickleball Team,1,2dbe6e03-e1bd-4a43-8ea9-15fbac55f9f9,5,1
+e7ded863-7358-463a-b1e6-40cdfa02c4be,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,New Jersey 5s,Brooklyn Pickleball Team,2,b330a2ae-7b71-4f7c-9a3d-1d43bbfc87a9,5,1
+e7ded863-7358-463a-b1e6-40cdfa02c4be,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,New Jersey 5s,Brooklyn Pickleball Team,3,55fbb2af-4fb1-4fba-8125-3370a68c3b0d,5,1
+e7ded863-7358-463a-b1e6-40cdfa02c4be,39695d6b-c680-4ee8-82a0-51e03901f6f5,2026-06-28,New Jersey 5s,Brooklyn Pickleball Team,4,384df07d-d40c-4deb-b4ad-51d12c50e065,6,0
+a13efb98-1c68-462a-a655-2302f198b9b5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Las Vegas Night Owls,Team Australia,1,9495f4b9-8173-489d-8d4f-b02594a7bb9b,5,1
+a13efb98-1c68-462a-a655-2302f198b9b5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Las Vegas Night Owls,Team Australia,2,2fec26ed-ec3c-4b96-b254-982ed8ae4e54,5,1
+a13efb98-1c68-462a-a655-2302f198b9b5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Las Vegas Night Owls,Team Australia,3,d735c08b-ffaa-434a-8d4d-c37579a066e3,5,1
+a13efb98-1c68-462a-a655-2302f198b9b5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Las Vegas Night Owls,Team Australia,4,120a4fb8-afed-47af-a93a-d8d8be33e81d,6,0
+bc2849fb-1ea6-44ee-a9d7-4f9e36719eaf,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,California Black Bears,Miami Pickleball Club,1,212d15ae-24cb-4b2b-9b30-b72a4303a899,5,2
+bc2849fb-1ea6-44ee-a9d7-4f9e36719eaf,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,California Black Bears,Miami Pickleball Club,2,c02bc141-d509-4f4d-ad13-27e4703b67f6,5,2
+bc2849fb-1ea6-44ee-a9d7-4f9e36719eaf,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,California Black Bears,Miami Pickleball Club,3,100be96f-06ef-4ba0-b887-ec1172009d19,5,2
+bc2849fb-1ea6-44ee-a9d7-4f9e36719eaf,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,California Black Bears,Miami Pickleball Club,4,893eef83-8b41-4619-9300-f5fcd6178aed,6,0
+8debbbec-86ef-4dd6-bc25-c29330491f93,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Utah Black Diamonds,College All-Stars,1,50bacd8c-dd3c-4f65-b2c5-1a023d4280ab,5,1
+8debbbec-86ef-4dd6-bc25-c29330491f93,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Utah Black Diamonds,College All-Stars,2,b2546b62-b5ad-4ffb-859f-9587471987fe,5,2
+8debbbec-86ef-4dd6-bc25-c29330491f93,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Utah Black Diamonds,College All-Stars,3,c87a3876-cc82-47b4-ba0f-4d44d616b013,5,1
+8debbbec-86ef-4dd6-bc25-c29330491f93,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Utah Black Diamonds,College All-Stars,4,f55d0292-bfc1-43c3-a67b-1ff2d8a12ea2,5,1
+0ae77685-5deb-4ed4-a718-e79aa7d95a60,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Chicago Slice,Carolina Hogs,1,f0d5aa01-1c37-4df7-8cc6-acc7202ab5d6,5,1
+0ae77685-5deb-4ed4-a718-e79aa7d95a60,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Chicago Slice,Carolina Hogs,2,a5317eb4-ccdd-4221-995e-2b5cd1be7693,5,2
+0ae77685-5deb-4ed4-a718-e79aa7d95a60,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Chicago Slice,Carolina Hogs,3,1ef49e8d-34d2-4ee0-b702-b5d6c081f25e,5,1
+0ae77685-5deb-4ed4-a718-e79aa7d95a60,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Chicago Slice,Carolina Hogs,4,527bd3a0-cdcb-45ab-bea7-01e847d69965,5,1
+3b5221c5-8478-49c8-919e-6b79730afe13,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,SoCal Hard Eights,Team Canada,1,3a491ddc-5c5a-4a48-8497-c5413ef436b6,5,1
+3b5221c5-8478-49c8-919e-6b79730afe13,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,SoCal Hard Eights,Team Canada,2,0b543ca6-1ff7-40e3-b0e7-ae8d3b46587c,5,1
+3b5221c5-8478-49c8-919e-6b79730afe13,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,SoCal Hard Eights,Team Canada,3,8309dd94-e567-4fdb-b706-5294b6cb8719,5,1
+3b5221c5-8478-49c8-919e-6b79730afe13,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,SoCal Hard Eights,Team Canada,4,e03489cd-d506-42d6-9266-83032d328c5f,6,0
+9335634b-575d-4bcb-bed0-8d415f4dd147,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Florida Smash,Bay Area Breakers,1,809fe252-69a9-420c-a284-8ddf7f4f846c,5,2
+9335634b-575d-4bcb-bed0-8d415f4dd147,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Florida Smash,Bay Area Breakers,2,c66047ef-f906-4257-a5d7-040c8ae63459,5,1
+9335634b-575d-4bcb-bed0-8d415f4dd147,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Florida Smash,Bay Area Breakers,3,f307584f-ea8b-4c06-83d1-941c08258c7b,5,2
+9335634b-575d-4bcb-bed0-8d415f4dd147,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Florida Smash,Bay Area Breakers,4,d348a6d5-9cda-47ee-b8f3-1d480470f97c,5,1
+a463894c-e5f3-47c6-b964-ff50d24b3f5d,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Atlanta Bouncers,Phoenix Flames,1,0c1b72e5-2ea9-40e8-ad3f-cb484e4ca5bf,5,1
+a463894c-e5f3-47c6-b964-ff50d24b3f5d,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Atlanta Bouncers,Phoenix Flames,2,2b25ad14-06b7-4f83-a1d9-1fb2545be430,5,1
+a463894c-e5f3-47c6-b964-ff50d24b3f5d,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Atlanta Bouncers,Phoenix Flames,3,f54f29bd-9e19-4646-8377-60a49e4814ae,5,2
+a463894c-e5f3-47c6-b964-ff50d24b3f5d,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Atlanta Bouncers,Phoenix Flames,4,0b74a56a-14d9-4af1-ad74-5bc44ff98de2,5,2
+adb5bdbd-60df-4c91-abe9-e4e15790b3a2,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Orlando Squeeze,Team Europe,1,7c1095fb-d984-430b-bffb-c865a13e96e6,5,1
+adb5bdbd-60df-4c91-abe9-e4e15790b3a2,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Orlando Squeeze,Team Europe,2,8105ace7-c013-4f48-833d-0fcd27b5ee9e,5,1
+adb5bdbd-60df-4c91-abe9-e4e15790b3a2,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Orlando Squeeze,Team Europe,3,efb13510-096a-4506-932b-a990047fa57b,5,1
+adb5bdbd-60df-4c91-abe9-e4e15790b3a2,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-08,Orlando Squeeze,Team Europe,4,c41d7109-b2bb-4068-af79-c3e5b19ae27d,6,0
+01fb2c30-9d6e-4981-9c31-d2292d13bbce,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,New Jersey 5s,Miami Pickleball Club,1,bb16aece-6879-4b3e-86f8-59604977b51c,5,1
+01fb2c30-9d6e-4981-9c31-d2292d13bbce,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,New Jersey 5s,Miami Pickleball Club,2,0b760f45-d7cc-4be9-9cc4-4069a0a8f1eb,5,1
+01fb2c30-9d6e-4981-9c31-d2292d13bbce,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,New Jersey 5s,Miami Pickleball Club,3,dca86720-e74e-403a-b0f7-939ae32909dc,5,1
+01fb2c30-9d6e-4981-9c31-d2292d13bbce,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,New Jersey 5s,Miami Pickleball Club,4,3848f0b3-4865-49b5-8872-a492b3a476e8,6,0
+fb7dfc22-d2bc-4e1d-8d18-6dea3e1de532,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Dallas Flash,Las Vegas Night Owls,1,5e7fe0c8-63d3-40f0-b8c3-8f1e79d3a8e3,5,1
+fb7dfc22-d2bc-4e1d-8d18-6dea3e1de532,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Dallas Flash,Las Vegas Night Owls,2,f51f4bb0-9baf-41f9-8962-0cbf67088b34,5,1
+fb7dfc22-d2bc-4e1d-8d18-6dea3e1de532,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Dallas Flash,Las Vegas Night Owls,3,7e890cab-5f51-41a4-8492-ca280329df1e,5,2
+fb7dfc22-d2bc-4e1d-8d18-6dea3e1de532,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Dallas Flash,Las Vegas Night Owls,4,a5dbb790-d985-4163-af6d-045ad36e757a,5,1
+80bf7078-39e2-4198-a455-864b52ecdb45,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Brooklyn Pickleball Team,Chicago Slice,1,717b6411-72c4-4552-84f0-89e846717ee0,5,1
+80bf7078-39e2-4198-a455-864b52ecdb45,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Brooklyn Pickleball Team,Chicago Slice,2,0522f622-aa94-4584-a570-39848d2b31e2,5,2
+80bf7078-39e2-4198-a455-864b52ecdb45,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Brooklyn Pickleball Team,Chicago Slice,3,203ac715-ca82-43fb-864b-49bbfd75b766,5,2
+80bf7078-39e2-4198-a455-864b52ecdb45,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Brooklyn Pickleball Team,Chicago Slice,4,f970ddc2-e48d-463f-a6db-4390c8b8667c,5,1
+c86776db-59c6-49ef-900e-3eeed9e38bbc,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Texas Ranchers,SoCal Hard Eights,1,c9da195b-ba4d-4258-8969-6d4bd93d07f1,5,2
+c86776db-59c6-49ef-900e-3eeed9e38bbc,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Texas Ranchers,SoCal Hard Eights,2,75d65521-3c33-4962-afc5-80c186d07160,5,1
+c86776db-59c6-49ef-900e-3eeed9e38bbc,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Texas Ranchers,SoCal Hard Eights,3,216b7ae0-35f1-4607-afe3-edd510c6b43d,5,1
+c86776db-59c6-49ef-900e-3eeed9e38bbc,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Texas Ranchers,SoCal Hard Eights,4,d2a8cf0c-0033-44c2-893d-d184005918e5,5,1
+471d8438-0be6-4e26-8e7c-c530113e3b85,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Columbus Sliders,Utah Black Diamonds,1,3c3f12f5-91d8-4d66-94be-45e7e56a4796,5,1
+471d8438-0be6-4e26-8e7c-c530113e3b85,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Columbus Sliders,Utah Black Diamonds,2,c2da2fa0-09eb-4968-8668-f8e4688c840a,5,1
+471d8438-0be6-4e26-8e7c-c530113e3b85,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Columbus Sliders,Utah Black Diamonds,3,26ba94bb-781d-42ae-bfc2-126bbdb56373,5,1
+471d8438-0be6-4e26-8e7c-c530113e3b85,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Columbus Sliders,Utah Black Diamonds,4,3a435232-0fa9-43c6-b819-2ed4b1da30d0,6,0
+43e8a929-4585-4e09-84bf-69ffe4acf893,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Miami Pickleball Club,Team Europe,1,08a11121-270f-4b3e-9a1e-aea5fd2254a5,5,1
+43e8a929-4585-4e09-84bf-69ffe4acf893,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Miami Pickleball Club,Team Europe,2,62e0b10c-1ed4-4b8c-b4ee-d8127f87f39b,5,1
+43e8a929-4585-4e09-84bf-69ffe4acf893,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Miami Pickleball Club,Team Europe,3,44bb50ef-3ab3-40a7-af39-f1d81d3a8e67,5,1
+43e8a929-4585-4e09-84bf-69ffe4acf893,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Miami Pickleball Club,Team Europe,4,9de36581-9ee4-4eb7-8d31-fecd779048ee,6,0
+a47a32eb-3fc0-48ce-874e-eb62f975297b,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,St. Louis Shock,Florida Smash,1,27caf6c2-3b7a-43af-b02d-ac81c8305c9f,5,1
+a47a32eb-3fc0-48ce-874e-eb62f975297b,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,St. Louis Shock,Florida Smash,2,677e9a13-3cb1-4896-90bf-397920b4cf99,5,1
+a47a32eb-3fc0-48ce-874e-eb62f975297b,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,St. Louis Shock,Florida Smash,3,f1fbb011-90e1-434d-ba37-833e27c54d96,5,1
+a47a32eb-3fc0-48ce-874e-eb62f975297b,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,St. Louis Shock,Florida Smash,4,cec4612d-a7f7-4b40-b99c-de7b552f1d1f,6,0
+dc77d94b-1806-4fc3-82e4-8eff2fcc365d,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Las Vegas Night Owls,Phoenix Flames,1,eaa00224-097b-4e3b-8ec1-4a50379ec3aa,5,2
+dc77d94b-1806-4fc3-82e4-8eff2fcc365d,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Las Vegas Night Owls,Phoenix Flames,2,f4c7c3a1-1852-47f9-aa1b-2f8d6b7013ac,5,2
+dc77d94b-1806-4fc3-82e4-8eff2fcc365d,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Las Vegas Night Owls,Phoenix Flames,3,6ab37255-c50f-4636-9f11-f041ef2629e2,5,1
+dc77d94b-1806-4fc3-82e4-8eff2fcc365d,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Las Vegas Night Owls,Phoenix Flames,4,9fe4ee71-7a13-4eaf-b396-c488f35b8ae4,5,2
+d0fe683d-1470-4b9f-b784-328ad775ec9e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Los Angeles Mad Drops,Atlanta Bouncers,1,ee231de5-ebab-4dc4-b2da-199c1d5ef6c8,5,1
+d0fe683d-1470-4b9f-b784-328ad775ec9e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Los Angeles Mad Drops,Atlanta Bouncers,2,991a96f7-e0e1-4482-8422-a09432e9afe7,5,1
+d0fe683d-1470-4b9f-b784-328ad775ec9e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Los Angeles Mad Drops,Atlanta Bouncers,3,e0a41c14-c7b2-49bf-96ec-1f28602b35a0,5,2
+d0fe683d-1470-4b9f-b784-328ad775ec9e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Los Angeles Mad Drops,Atlanta Bouncers,4,aec46acb-6181-428c-aa1b-bfec3f40aaaf,5,2
+766aa65e-2710-409d-bba0-f3d32cde33f5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Palm Beach Royals,Orlando Squeeze,1,020354a4-b548-433e-b67c-f55a5de319e3,5,1
+766aa65e-2710-409d-bba0-f3d32cde33f5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Palm Beach Royals,Orlando Squeeze,2,17b96ebf-5802-42c9-b09a-f0e0c3efbce4,5,1
+766aa65e-2710-409d-bba0-f3d32cde33f5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Palm Beach Royals,Orlando Squeeze,3,5e11198c-6d7e-4662-bbef-5e78491d3a42,5,1
+766aa65e-2710-409d-bba0-f3d32cde33f5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Palm Beach Royals,Orlando Squeeze,4,88618853-9957-45b3-b48b-15b83413c582,6,0
+77d62a2f-f3a1-46be-9f01-69d7c7ec866f,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Brooklyn Pickleball Team,Team Canada,1,7b9698cc-2302-45d5-b67b-fdd0cf838392,5,1
+77d62a2f-f3a1-46be-9f01-69d7c7ec866f,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Brooklyn Pickleball Team,Team Canada,2,5c632857-6966-47ae-8431-5d34c208e0dc,5,1
+77d62a2f-f3a1-46be-9f01-69d7c7ec866f,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Brooklyn Pickleball Team,Team Canada,3,6732d059-3cf2-4b85-a480-898ef12f6983,5,1
+77d62a2f-f3a1-46be-9f01-69d7c7ec866f,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Brooklyn Pickleball Team,Team Canada,4,a62fdfa8-2075-47d6-9518-45e190093f9a,6,0
+88ab33ce-1d2d-40ae-a6ef-4192c64e627c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Utah Black Diamonds,Bay Area Breakers,1,c4cca2da-6b9a-4e8e-9d41-f00dc45a0dfc,5,1
+88ab33ce-1d2d-40ae-a6ef-4192c64e627c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Utah Black Diamonds,Bay Area Breakers,2,84d27ea2-cbf4-403e-9c4b-c197da868a9b,5,2
+88ab33ce-1d2d-40ae-a6ef-4192c64e627c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Utah Black Diamonds,Bay Area Breakers,3,ba83c577-ea61-4e09-99f0-2511bd93ecb1,5,1
+88ab33ce-1d2d-40ae-a6ef-4192c64e627c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-09,Utah Black Diamonds,Bay Area Breakers,4,1dd78426-1d73-423b-b633-10bec135ba7b,5,1
+b18b0f17-bcc7-45c3-88a5-312c62113f17,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Florida Smash,College All-Stars,1,373f219f-fd24-4a67-9ff6-fa7beadda50a,5,1
+b18b0f17-bcc7-45c3-88a5-312c62113f17,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Florida Smash,College All-Stars,2,9e759298-356e-44f0-9b68-e713e00de326,5,1
+b18b0f17-bcc7-45c3-88a5-312c62113f17,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Florida Smash,College All-Stars,3,ff0b9c82-e2c3-4ed9-b2e9-a715f1da3201,5,1
+b18b0f17-bcc7-45c3-88a5-312c62113f17,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Florida Smash,College All-Stars,4,f9bfc3da-fcc5-473b-9357-7274f402283c,6,0
+0ed9ef85-08bb-41ec-8af8-0b408a5ca653,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,SoCal Hard Eights,Carolina Hogs,1,b8c398bc-2c60-48bc-875f-4038bc717254,5,1
+0ed9ef85-08bb-41ec-8af8-0b408a5ca653,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,SoCal Hard Eights,Carolina Hogs,2,c70058f6-46ef-4322-9801-f2547fdddf38,5,2
+0ed9ef85-08bb-41ec-8af8-0b408a5ca653,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,SoCal Hard Eights,Carolina Hogs,3,20794766-1480-4b8f-a15e-e86763e2de5e,5,1
+0ed9ef85-08bb-41ec-8af8-0b408a5ca653,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,SoCal Hard Eights,Carolina Hogs,4,5ca7edc4-06b6-4aa5-9e4c-4b580be4d78a,5,1
+7987df7a-ffa8-40a2-8d9d-9246c623e465,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Atlanta Bouncers,Team Australia,1,134980e4-52ee-4b67-a4e1-23b776b958f6,5,1
+7987df7a-ffa8-40a2-8d9d-9246c623e465,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Atlanta Bouncers,Team Australia,2,4c22c44b-a2cf-4beb-b9f2-bd685dfac9bd,5,1
+7987df7a-ffa8-40a2-8d9d-9246c623e465,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Atlanta Bouncers,Team Australia,3,e30f4558-d7a2-4cd8-8d5d-2bafaa8d2aa3,5,1
+7987df7a-ffa8-40a2-8d9d-9246c623e465,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Atlanta Bouncers,Team Australia,4,d1300b1b-e2b2-4022-86bc-07acc70db02f,6,0
+de5cd735-acd2-418d-93b1-3dfaf462b0d5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Orlando Squeeze,California Black Bears,1,7d8c03c2-5160-4d93-8b1f-bad54e593248,5,2
+de5cd735-acd2-418d-93b1-3dfaf462b0d5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Orlando Squeeze,California Black Bears,2,0342785a-5f5f-4164-90e5-91511417bf1e,5,2
+de5cd735-acd2-418d-93b1-3dfaf462b0d5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Orlando Squeeze,California Black Bears,3,4a91f7f8-e42c-400a-b36f-5ea74e3dd7a8,5,1
+de5cd735-acd2-418d-93b1-3dfaf462b0d5,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Orlando Squeeze,California Black Bears,4,74ea4798-0f94-4dd3-886e-2bf51d7c1d28,5,2
+b947262b-2013-44dd-8a58-d191c27a2134,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Miami Pickleball Club,Phoenix Flames,1,cd0b5b47-28d9-47b7-84bb-1c707cbb5405,5,2
+b947262b-2013-44dd-8a58-d191c27a2134,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Miami Pickleball Club,Phoenix Flames,2,ccab9f3b-b6ef-4ee9-806f-52267ac98df8,5,1
+b947262b-2013-44dd-8a58-d191c27a2134,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Miami Pickleball Club,Phoenix Flames,3,5de69e57-cae6-4d1e-87c7-ce5d52f76000,5,2
+b947262b-2013-44dd-8a58-d191c27a2134,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Miami Pickleball Club,Phoenix Flames,4,24b902f6-d7bd-4655-b5ca-354bc269d5fc,5,2
+8691162f-5074-4b1f-8fde-198ecbc51a19,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Brooklyn Pickleball Team,Utah Black Diamonds,1,e9e5f114-23c0-4f30-8817-8a086cd99aae,5,2
+8691162f-5074-4b1f-8fde-198ecbc51a19,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Brooklyn Pickleball Team,Utah Black Diamonds,2,ccc447b3-1f48-4262-8090-f99b82d97173,5,1
+8691162f-5074-4b1f-8fde-198ecbc51a19,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Brooklyn Pickleball Team,Utah Black Diamonds,3,cd16f0a1-3bbf-43da-a30a-85074c575434,5,2
+8691162f-5074-4b1f-8fde-198ecbc51a19,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Brooklyn Pickleball Team,Utah Black Diamonds,4,0a8d924e-7a5d-4aa1-a980-95bfb27ab9df,5,2
+0c369bf1-120d-4d73-8667-da4d95c1d980,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,New Jersey 5s,Dallas Flash,1,8c9ebd0c-d543-44a8-b51d-cd348b237231,5,1
+0c369bf1-120d-4d73-8667-da4d95c1d980,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,New Jersey 5s,Dallas Flash,2,674f77d1-65f6-4f9d-a7a1-d2c351d29028,5,2
+0c369bf1-120d-4d73-8667-da4d95c1d980,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,New Jersey 5s,Dallas Flash,3,1ca933d3-6b1b-4420-aa97-bf411249f5f6,5,1
+0c369bf1-120d-4d73-8667-da4d95c1d980,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,New Jersey 5s,Dallas Flash,4,031d60cb-f93a-437d-88f3-06db9673b9ec,5,1
+d393d638-2ff9-4745-a565-24e51ef20b8c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,SoCal Hard Eights,Florida Smash,1,abfd3f24-5587-4843-9621-d3af86aa5ee0,5,1
+d393d638-2ff9-4745-a565-24e51ef20b8c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,SoCal Hard Eights,Florida Smash,2,146ba071-6aed-406f-b1bd-7cbd0eb50e79,5,2
+d393d638-2ff9-4745-a565-24e51ef20b8c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,SoCal Hard Eights,Florida Smash,3,e970e009-1849-4400-a635-680de6ee16a0,5,1
+d393d638-2ff9-4745-a565-24e51ef20b8c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,SoCal Hard Eights,Florida Smash,4,7770be9d-9b86-483f-9163-d66be284fc56,5,2
+2b87814b-6747-4698-94ba-98420faf7013,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Atlanta Bouncers,California Black Bears,1,755829b8-54dc-4e83-b5ea-6481c1d92022,5,1
+2b87814b-6747-4698-94ba-98420faf7013,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Atlanta Bouncers,California Black Bears,2,36d5e537-b41f-49bc-865f-0266b4fc121a,5,1
+2b87814b-6747-4698-94ba-98420faf7013,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Atlanta Bouncers,California Black Bears,3,5f6a2362-5c3c-4279-bbe8-cfd8959bea63,5,2
+2b87814b-6747-4698-94ba-98420faf7013,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Atlanta Bouncers,California Black Bears,4,cb956093-ed83-4892-8c67-6c5838108383,5,1
+3d336b4d-3b58-4c66-9ca2-4fd904a6c224,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Columbus Sliders,Chicago Slice,1,1f2b8de8-b9d3-4ab4-a43e-54803492a8c0,5,1
+3d336b4d-3b58-4c66-9ca2-4fd904a6c224,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Columbus Sliders,Chicago Slice,2,d0820d2a-8ef0-493e-b472-7216d440b782,5,1
+3d336b4d-3b58-4c66-9ca2-4fd904a6c224,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Columbus Sliders,Chicago Slice,3,7b06c248-bfc5-41c8-9bad-a6f560437af0,5,1
+3d336b4d-3b58-4c66-9ca2-4fd904a6c224,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-10,Columbus Sliders,Chicago Slice,4,6d757f70-2ed2-4e26-b7f7-f92271dbc3c9,6,0
+d5351e09-5a7b-411a-99b0-80ea7dbc8728,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,St. Louis Shock,Texas Ranchers,1,39e391e2-a796-4524-8421-60322368604a,5,1
+d5351e09-5a7b-411a-99b0-80ea7dbc8728,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,St. Louis Shock,Texas Ranchers,2,05ad6946-3718-45bc-bfe0-31f08017b035,5,1
+d5351e09-5a7b-411a-99b0-80ea7dbc8728,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,St. Louis Shock,Texas Ranchers,3,b6379542-e5b4-49f1-a2bf-f8903c1a9c02,5,1
+d5351e09-5a7b-411a-99b0-80ea7dbc8728,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,St. Louis Shock,Texas Ranchers,4,8a424030-19c9-4c40-9e15-4526e42464ea,6,0
+5d1d5be1-ca87-4b14-adb6-4c6f4ea7556a,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Dallas Flash,SoCal Hard Eights,1,38f401b3-a887-45ca-b88c-cf447fade1ca,5,1
+5d1d5be1-ca87-4b14-adb6-4c6f4ea7556a,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Dallas Flash,SoCal Hard Eights,2,c0835374-d24f-4040-863a-6442ac238060,5,1
+5d1d5be1-ca87-4b14-adb6-4c6f4ea7556a,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Dallas Flash,SoCal Hard Eights,3,55d03928-69a9-4635-8a31-28d5a68188b7,5,1
+5d1d5be1-ca87-4b14-adb6-4c6f4ea7556a,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Dallas Flash,SoCal Hard Eights,4,68e91f01-a742-4ee3-b2d8-5f1b2c8b04f8,6,0
+999e231d-b4d9-4575-b059-1e8ba8b29a29,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Los Angeles Mad Drops,Palm Beach Royals,1,04189b1d-e01c-472e-b02a-6a575b263470,5,2
+999e231d-b4d9-4575-b059-1e8ba8b29a29,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Los Angeles Mad Drops,Palm Beach Royals,2,fa600bf7-9e33-4072-adaf-8eb69d7c5ca6,5,1
+999e231d-b4d9-4575-b059-1e8ba8b29a29,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Los Angeles Mad Drops,Palm Beach Royals,3,5d5b1297-04b7-431d-92cb-1ed15de5bcc4,5,1
+999e231d-b4d9-4575-b059-1e8ba8b29a29,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Los Angeles Mad Drops,Palm Beach Royals,4,423c787a-8520-4e75-9944-a82b497ab8d7,5,2
+7d852b01-61cf-4867-948a-b7e57f21d0f8,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Chicago Slice,Atlanta Bouncers,1,8d7e434a-9819-4074-a5dc-511fa8b67bc7,5,2
+7d852b01-61cf-4867-948a-b7e57f21d0f8,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Chicago Slice,Atlanta Bouncers,2,e95b1447-923e-48c9-8c21-87e6afc3f239,5,1
+7d852b01-61cf-4867-948a-b7e57f21d0f8,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Chicago Slice,Atlanta Bouncers,3,6dc6c31a-0211-4c53-9a58-6b6083f492d4,5,2
+7d852b01-61cf-4867-948a-b7e57f21d0f8,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Chicago Slice,Atlanta Bouncers,4,f699c662-d669-4dd3-acc2-30cbc5aa293e,5,2
+007a1952-4d7f-45bf-a792-ac9b04d1fd7c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Texas Ranchers,Phoenix Flames,1,3a506b5b-f30b-410e-9c9a-269bc1f284f8,5,2
+007a1952-4d7f-45bf-a792-ac9b04d1fd7c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Texas Ranchers,Phoenix Flames,2,0a651c48-bf62-4911-b876-4b5114902ac9,5,1
+007a1952-4d7f-45bf-a792-ac9b04d1fd7c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Texas Ranchers,Phoenix Flames,3,eb8d6be1-ef15-483d-bfb1-fd4b3009ce38,5,1
+007a1952-4d7f-45bf-a792-ac9b04d1fd7c,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Texas Ranchers,Phoenix Flames,4,a6b54a8c-bf9f-4651-84f6-cdd580b0c4c6,5,2
+ebc7a48c-e8cd-48da-a31b-9d50ed5a2d4e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,New Jersey 5s,Columbus Sliders,1,b89175fe-0031-46ec-ade6-60256a1bdcba,5,1
+ebc7a48c-e8cd-48da-a31b-9d50ed5a2d4e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,New Jersey 5s,Columbus Sliders,2,d8ab8e2d-7c39-4aea-8cd8-aa6ac75009d9,5,2
+ebc7a48c-e8cd-48da-a31b-9d50ed5a2d4e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,New Jersey 5s,Columbus Sliders,3,dda08e94-6c6d-46d0-981a-100239c38316,5,1
+ebc7a48c-e8cd-48da-a31b-9d50ed5a2d4e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,New Jersey 5s,Columbus Sliders,4,f183bd8e-cdb6-42e6-9996-1ff607b21935,5,1
+126cdd68-80a3-4756-9df7-aba250b92fb6,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,St. Louis Shock,Los Angeles Mad Drops,1,7ca859bc-8dbd-4500-bc8f-adc64edad4a1,5,1
+126cdd68-80a3-4756-9df7-aba250b92fb6,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,St. Louis Shock,Los Angeles Mad Drops,2,ef3ebbd3-7dab-4973-846b-7d4513156974,5,1
+126cdd68-80a3-4756-9df7-aba250b92fb6,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,St. Louis Shock,Los Angeles Mad Drops,3,796d8678-58ed-41c9-be6c-0096ed67b345,5,2
+126cdd68-80a3-4756-9df7-aba250b92fb6,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,St. Louis Shock,Los Angeles Mad Drops,4,4587a152-ca8f-4455-8779-6c504bf4b0c2,5,1
+c27ad0fa-15e7-473c-b062-dc51a888699a,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Palm Beach Royals,Utah Black Diamonds,1,f9404923-3d2b-4965-baa5-84898128bd44,5,1
+c27ad0fa-15e7-473c-b062-dc51a888699a,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Palm Beach Royals,Utah Black Diamonds,2,cc68e8c1-e370-4432-b944-c79265951f5d,5,2
+c27ad0fa-15e7-473c-b062-dc51a888699a,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Palm Beach Royals,Utah Black Diamonds,3,8d5bda1a-2349-4d66-a065-12c814cbd754,5,1
+c27ad0fa-15e7-473c-b062-dc51a888699a,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-11,Palm Beach Royals,Utah Black Diamonds,4,0a9fa3d9-e751-4213-a377-ab97faa737a0,5,2
+f941abb6-c615-430f-bd78-7d4e7b95602f,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Dallas Flash,Atlanta Bouncers,1,03460950-6966-4bd6-950e-1608e1262f25,5,2
+f941abb6-c615-430f-bd78-7d4e7b95602f,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Dallas Flash,Atlanta Bouncers,2,51ac65ff-a94c-4535-829b-1b900711fda2,5,1
+f941abb6-c615-430f-bd78-7d4e7b95602f,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Dallas Flash,Atlanta Bouncers,3,e6876ca5-7f45-4411-aad0-6f2a3960b2fa,5,1
+f941abb6-c615-430f-bd78-7d4e7b95602f,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Dallas Flash,Atlanta Bouncers,4,b521fabb-6637-46cd-9e4d-997bd691f223,5,1
+00f0a598-8cd9-4808-aa6d-f58b1fcab8cc,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Palm Beach Royals,Texas Ranchers,1,f310d335-41e7-4df9-98bc-d180a0dd0fb8,5,1
+00f0a598-8cd9-4808-aa6d-f58b1fcab8cc,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Palm Beach Royals,Texas Ranchers,2,da5b87dc-4bab-49e8-a8e8-5da17a587e2d,5,2
+00f0a598-8cd9-4808-aa6d-f58b1fcab8cc,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Palm Beach Royals,Texas Ranchers,3,f7cef37d-41be-4dcf-b99a-5f8e260e270c,5,2
+00f0a598-8cd9-4808-aa6d-f58b1fcab8cc,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Palm Beach Royals,Texas Ranchers,4,ad41a907-6d86-45ea-9298-08e302bcca10,5,1
+e43812df-2746-4cfb-8290-fb5e68344f08,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Los Angeles Mad Drops,Dallas Flash,1,e28b7f01-9fbc-412f-86fb-871506c9faad,5,1
+e43812df-2746-4cfb-8290-fb5e68344f08,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Los Angeles Mad Drops,Dallas Flash,2,75bb4db9-73cf-4609-8fa3-aa8b289398b2,5,1
+e43812df-2746-4cfb-8290-fb5e68344f08,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Los Angeles Mad Drops,Dallas Flash,3,a60b1c37-daf4-4ce9-9722-f2bb5a2952fc,5,1
+e43812df-2746-4cfb-8290-fb5e68344f08,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Los Angeles Mad Drops,Dallas Flash,4,e6e8d19d-a63b-47f9-ad79-66674c570609,6,0
+41f4b412-65fb-4a71-862e-1dc6e896a010,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Columbus Sliders,Texas Ranchers,1,a8dc2a82-acd4-4484-924b-adf0f4fc606b,5,1
+41f4b412-65fb-4a71-862e-1dc6e896a010,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Columbus Sliders,Texas Ranchers,2,6243f123-f94c-4746-baee-c20a109de0d5,5,2
+41f4b412-65fb-4a71-862e-1dc6e896a010,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Columbus Sliders,Texas Ranchers,3,2f946038-6332-404c-a9e9-f5e13a479a5d,5,1
+41f4b412-65fb-4a71-862e-1dc6e896a010,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Columbus Sliders,Texas Ranchers,4,692d1256-6fc5-4160-8ca9-54b56a070ef2,5,1
+9b98072c-079b-403f-82c3-8b4dd23f264e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Los Angeles Mad Drops,Columbus Sliders,1,7efe48ea-1b9a-4880-a0f3-3f380a069c8b,5,2
+9b98072c-079b-403f-82c3-8b4dd23f264e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Los Angeles Mad Drops,Columbus Sliders,2,d8a8316e-f465-49ec-be58-abfa61b220e6,5,1
+9b98072c-079b-403f-82c3-8b4dd23f264e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Los Angeles Mad Drops,Columbus Sliders,3,9c5c0d94-b0c2-49b4-bdec-3ef382b9eb26,5,2
+9b98072c-079b-403f-82c3-8b4dd23f264e,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,Los Angeles Mad Drops,Columbus Sliders,4,9c3cae9f-2339-406a-8c8a-e7ff1905b417,5,2
+c81177b9-5e43-4eed-a7a9-0a537be09ff0,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,New Jersey 5s,St. Louis Shock,1,6548e1ac-4d54-47b9-a336-dc2716988388,5,2
+c81177b9-5e43-4eed-a7a9-0a537be09ff0,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,New Jersey 5s,St. Louis Shock,2,3df7a7b7-046e-474b-ae4e-8a1b4491dcc7,5,2
+c81177b9-5e43-4eed-a7a9-0a537be09ff0,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,New Jersey 5s,St. Louis Shock,3,b5442e2c-962f-4358-8c40-af10ff23be2f,5,2
+c81177b9-5e43-4eed-a7a9-0a537be09ff0,7c8e927f-13f3-4073-8871-4aaeb68d511b,2026-07-12,New Jersey 5s,St. Louis Shock,4,8f20ec62-88c8-4355-b5f8-a629b586fb32,6,0
+e2e7050d-1ddd-453d-8095-ad671f410026,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Columbus Sliders,Orlando Squeeze,1,b60d4544-52a5-4fc9-a3f8-3edb3c7e6443,5,1
+e2e7050d-1ddd-453d-8095-ad671f410026,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Columbus Sliders,Orlando Squeeze,2,77b24560-8555-4579-95e8-436c667c40d5,5,1
+e2e7050d-1ddd-453d-8095-ad671f410026,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Columbus Sliders,Orlando Squeeze,3,5082a557-2d40-40d1-a10f-54112aacf889,5,1
+e2e7050d-1ddd-453d-8095-ad671f410026,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Columbus Sliders,Orlando Squeeze,4,faca296f-bfec-47d7-89e3-48e11707e8d3,5,1
+864bbc05-b575-45c8-a8b0-9a7ea32d1bcc,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,SoCal Hard Eights,Florida Smash,1,fb6dcb36-1dc8-4bb0-9bac-de62870346b5,5,1
+864bbc05-b575-45c8-a8b0-9a7ea32d1bcc,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,SoCal Hard Eights,Florida Smash,2,8e1d89ba-71ce-4d60-b0d3-766b821db9cb,5,1
+864bbc05-b575-45c8-a8b0-9a7ea32d1bcc,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,SoCal Hard Eights,Florida Smash,3,df1b3b45-3857-43ce-986b-5a43ab03eb79,5,1
+864bbc05-b575-45c8-a8b0-9a7ea32d1bcc,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,SoCal Hard Eights,Florida Smash,4,c70ce832-4cd0-4c41-8736-0f4eb853de2a,5,1
+8ebcadd8-e562-4775-9a7c-cd882b72769f,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Phoenix Flames,Orlando Squeeze,1,d9ef1637-873e-4c2f-a045-9c1a1047757e,5,1
+8ebcadd8-e562-4775-9a7c-cd882b72769f,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Phoenix Flames,Orlando Squeeze,2,48cb1930-b35e-4677-a52f-a6ec3ebbca00,5,2
+8ebcadd8-e562-4775-9a7c-cd882b72769f,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Phoenix Flames,Orlando Squeeze,3,85846e92-3fd9-4c4b-a40c-5b0aca9609e2,5,2
+8ebcadd8-e562-4775-9a7c-cd882b72769f,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Phoenix Flames,Orlando Squeeze,4,4f04e9a3-4daa-4024-a17d-0ae4e09faa0e,5,1
+12450aa0-b761-44f5-8d58-f02cd16ecc6b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,California Black Bears,Columbus Sliders,1,8eb3e4ac-5d80-4864-9462-dd8af550f390,5,2
+12450aa0-b761-44f5-8d58-f02cd16ecc6b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,California Black Bears,Columbus Sliders,2,6a6e463a-6577-4655-9257-0f2f92d6872b,5,2
+12450aa0-b761-44f5-8d58-f02cd16ecc6b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,California Black Bears,Columbus Sliders,3,73941c7e-2a07-4bde-a58a-63b604f87641,5,2
+12450aa0-b761-44f5-8d58-f02cd16ecc6b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,California Black Bears,Columbus Sliders,4,5c8077d3-c1a8-4f9a-8e5f-bac280630c01,5,2
+2da6b1a0-681c-4f89-8ccf-b4825c74223e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Florida Smash,Phoenix Flames,1,4f0900b7-8217-4b44-bfa0-28cbc871c95e,5,2
+2da6b1a0-681c-4f89-8ccf-b4825c74223e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Florida Smash,Phoenix Flames,2,ce87e8ef-e1c0-45b1-9528-256b673effcf,5,2
+2da6b1a0-681c-4f89-8ccf-b4825c74223e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Florida Smash,Phoenix Flames,3,5bda0ff7-b835-421b-a00d-2903e933e84c,5,1
+2da6b1a0-681c-4f89-8ccf-b4825c74223e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-16,Florida Smash,Phoenix Flames,4,74565133-7400-46d1-bd3f-828b328cee35,5,2
+9d4ba482-256c-4fa2-b4d7-1f56023a19a7,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Atlanta Bouncers,Dallas Flash,1,0b101229-f45a-4206-869d-9bfb9aa03148,5,2
+9d4ba482-256c-4fa2-b4d7-1f56023a19a7,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Atlanta Bouncers,Dallas Flash,2,e75eb243-7c57-4a97-8f24-39ba6ac1da45,5,2
+9d4ba482-256c-4fa2-b4d7-1f56023a19a7,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Atlanta Bouncers,Dallas Flash,3,3abbf4d6-8f74-4912-b7d7-f4d289e205e5,5,2
+9d4ba482-256c-4fa2-b4d7-1f56023a19a7,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Atlanta Bouncers,Dallas Flash,4,0ee01b69-e5f6-41cd-b7f6-b97296e69f32,5,2
+3aa5ab79-ebd3-42a6-a760-e7109d7f3c32,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,California Black Bears,Orlando Squeeze,1,a8c9f1e5-61e6-47a0-84d4-778d05ead683,5,2
+3aa5ab79-ebd3-42a6-a760-e7109d7f3c32,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,California Black Bears,Orlando Squeeze,2,062fe453-c2c7-4899-8e66-dcdefe2d0441,5,2
+3aa5ab79-ebd3-42a6-a760-e7109d7f3c32,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,California Black Bears,Orlando Squeeze,3,03cc27d4-efa8-403b-a67a-b9f77481d6d9,5,1
+3aa5ab79-ebd3-42a6-a760-e7109d7f3c32,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,California Black Bears,Orlando Squeeze,4,711a2afe-3829-4690-a0ff-1bb23f824ba9,5,2
+db289819-861f-435d-a6e9-8c47e1615389,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Florida Smash,Columbus Sliders,1,1b277a06-891a-4d28-a805-21f7ee49f1fd,5,2
+db289819-861f-435d-a6e9-8c47e1615389,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Florida Smash,Columbus Sliders,2,3de0b060-9cf7-4883-97df-e2f622a06684,5,2
+db289819-861f-435d-a6e9-8c47e1615389,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Florida Smash,Columbus Sliders,3,3bbbfd71-a28d-47e0-85e9-acdbfdcf7821,5,2
+db289819-861f-435d-a6e9-8c47e1615389,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Florida Smash,Columbus Sliders,4,c760c6a4-c456-4197-b4da-497eabaf0d62,5,2
+e7bd2277-5bb6-409d-816b-f1be98e17e8e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,SoCal Hard Eights,Phoenix Flames,1,9aa597b3-3834-46c3-b30a-e03af3ccee48,5,2
+e7bd2277-5bb6-409d-816b-f1be98e17e8e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,SoCal Hard Eights,Phoenix Flames,2,68c65c32-c626-4bbd-9a75-9be5fa651a21,5,2
+e7bd2277-5bb6-409d-816b-f1be98e17e8e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,SoCal Hard Eights,Phoenix Flames,3,ca3b17a7-49e3-4686-ac63-20e9bad7ee68,5,1
+e7bd2277-5bb6-409d-816b-f1be98e17e8e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,SoCal Hard Eights,Phoenix Flames,4,c0fec7a4-9823-4e02-a79a-f2c64ea7a511,5,1
+50ca1c94-0f88-4447-8f81-3bf3c216a97e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Utah Black Diamonds,Bay Area Breakers,1,1d690a5c-3568-45b6-9a88-d68cff340b71,5,2
+50ca1c94-0f88-4447-8f81-3bf3c216a97e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Utah Black Diamonds,Bay Area Breakers,2,5651ccef-6719-48e8-8076-7c0671d1fa15,5,2
+50ca1c94-0f88-4447-8f81-3bf3c216a97e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Utah Black Diamonds,Bay Area Breakers,3,5aaf3a07-bbb1-4621-a5c8-3acaf4000336,5,1
+50ca1c94-0f88-4447-8f81-3bf3c216a97e,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Utah Black Diamonds,Bay Area Breakers,4,dfb7c259-4359-4590-9654-3f60810ac279,5,1
+fc7254f1-4037-4def-9516-9eee9e42efdc,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Los Angeles Mad Drops,Atlanta Bouncers,1,1cedf364-8a04-4faa-86ab-c8f9216bba27,5,2
+fc7254f1-4037-4def-9516-9eee9e42efdc,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Los Angeles Mad Drops,Atlanta Bouncers,2,80acbf33-5228-47e6-b934-6f368f6341cf,5,1
+fc7254f1-4037-4def-9516-9eee9e42efdc,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Los Angeles Mad Drops,Atlanta Bouncers,3,3a6f6f6a-bf05-44e0-8514-562499f65bab,5,2
+fc7254f1-4037-4def-9516-9eee9e42efdc,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Los Angeles Mad Drops,Atlanta Bouncers,4,d56ef065-364c-4be3-bb10-e3a78b2befbc,5,2
+f05daaea-4882-408f-934f-0c7eede1d748,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Florida Smash,California Black Bears,1,de1ec5df-299c-4b60-bac9-84f84b218e21,5,1
+f05daaea-4882-408f-934f-0c7eede1d748,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Florida Smash,California Black Bears,2,0a401824-f3b8-4195-9195-a64dee01ff39,5,2
+f05daaea-4882-408f-934f-0c7eede1d748,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Florida Smash,California Black Bears,3,bca1a96e-15b2-48e1-ae73-30503839f031,5,2
+f05daaea-4882-408f-934f-0c7eede1d748,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Florida Smash,California Black Bears,4,a6fcf43f-7298-481f-8a91-b8189c69a9db,5,2
+9c3f5206-41ad-44d7-8849-709fa303b1f3,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Orlando Squeeze,SoCal Hard Eights,1,42dbdcb5-b4d9-410f-9e9c-dc3adf48d664,5,2
+9c3f5206-41ad-44d7-8849-709fa303b1f3,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Orlando Squeeze,SoCal Hard Eights,2,b958f82f-5abf-4252-800b-3df03f2b5c1f,5,2
+9c3f5206-41ad-44d7-8849-709fa303b1f3,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Orlando Squeeze,SoCal Hard Eights,3,0e924682-1391-4a64-930e-79c5c1a6d426,5,2
+9c3f5206-41ad-44d7-8849-709fa303b1f3,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Orlando Squeeze,SoCal Hard Eights,4,4a0b5d1a-c348-4591-b138-348b5b177c89,5,2
+880abf00-261f-4d10-8be1-ac9411215d4b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Dallas Flash,Bay Area Breakers,1,ef190dc2-428b-43a8-8a5c-91f225193235,5,1
+880abf00-261f-4d10-8be1-ac9411215d4b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Dallas Flash,Bay Area Breakers,2,22e12c59-c2cd-4a11-ad94-b6dfe277bfe7,5,1
+880abf00-261f-4d10-8be1-ac9411215d4b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Dallas Flash,Bay Area Breakers,3,720287fe-8e7a-4130-a5fd-e9a68c4f793a,5,2
+880abf00-261f-4d10-8be1-ac9411215d4b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Dallas Flash,Bay Area Breakers,4,5bba9330-0cfa-4704-a9e4-4f8d29e48b16,5,1
+cd0d645f-0932-456b-94cd-c0f722e4f581,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Utah Black Diamonds,Los Angeles Mad Drops,1,2df95311-c709-475a-89b0-047b10dc27fe,5,2
+cd0d645f-0932-456b-94cd-c0f722e4f581,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Utah Black Diamonds,Los Angeles Mad Drops,2,dc70b35f-2539-4d9c-9c26-19d6e56b7ee9,5,2
+cd0d645f-0932-456b-94cd-c0f722e4f581,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Utah Black Diamonds,Los Angeles Mad Drops,3,90cf9c13-53a1-44b3-adf0-5452d0cec577,5,1
+cd0d645f-0932-456b-94cd-c0f722e4f581,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-17,Utah Black Diamonds,Los Angeles Mad Drops,4,8a919395-d5df-4d8a-90d8-eee5352a4035,5,2
+bbf77f48-c7ff-4ed7-8e16-51febc4dde8d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,California Black Bears,SoCal Hard Eights,1,e7d80091-ea93-4e7e-b235-6db982c3f3e8,5,1
+bbf77f48-c7ff-4ed7-8e16-51febc4dde8d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,California Black Bears,SoCal Hard Eights,2,71ebca1d-6ae8-473a-9b0b-d93356fac0cc,5,2
+bbf77f48-c7ff-4ed7-8e16-51febc4dde8d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,California Black Bears,SoCal Hard Eights,3,048525b7-0c87-4248-8721-d904f3b31a2c,5,1
+bbf77f48-c7ff-4ed7-8e16-51febc4dde8d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,California Black Bears,SoCal Hard Eights,4,d0476b86-a187-4723-82c2-30cc34faaad9,5,2
+10c103d9-30bd-4a77-bca0-12f0430b2746,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Dallas Flash,Utah Black Diamonds,1,4803ff34-9f56-46a2-be04-6b6f74c80ae5,5,2
+10c103d9-30bd-4a77-bca0-12f0430b2746,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Dallas Flash,Utah Black Diamonds,2,f7d7ffd3-4026-4c98-86e6-a80914554cb0,5,2
+10c103d9-30bd-4a77-bca0-12f0430b2746,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Dallas Flash,Utah Black Diamonds,3,6e7991a3-5665-4d4f-8376-5a7855582fd1,5,1
+10c103d9-30bd-4a77-bca0-12f0430b2746,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Dallas Flash,Utah Black Diamonds,4,073f5daf-d82d-464c-bbe9-d3673b456bfd,5,1
+2e439a6d-f906-4528-b758-8b9a4a251426,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Orlando Squeeze,Florida Smash,1,7750271d-e5ca-4720-b2ac-2b9b3f8d2faf,5,2
+2e439a6d-f906-4528-b758-8b9a4a251426,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Orlando Squeeze,Florida Smash,2,4fd247be-6347-4e3c-839e-6c95181bdfa8,5,1
+2e439a6d-f906-4528-b758-8b9a4a251426,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Orlando Squeeze,Florida Smash,3,26e2e9b5-94c7-441f-b47e-9984fbcd1cb5,5,1
+2e439a6d-f906-4528-b758-8b9a4a251426,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Orlando Squeeze,Florida Smash,4,deb1b08b-0db0-439d-9761-2b4341c5f71b,5,1
+9771fb2d-15b2-480a-9562-3814cccd1f5f,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Phoenix Flames,Columbus Sliders,1,d5286c0e-6f0f-48b5-aa9c-da362ee21113,5,2
+9771fb2d-15b2-480a-9562-3814cccd1f5f,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Phoenix Flames,Columbus Sliders,2,167d7847-0319-4cd8-9cf5-369ea9c214ba,5,2
+9771fb2d-15b2-480a-9562-3814cccd1f5f,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Phoenix Flames,Columbus Sliders,3,990cc6e9-f414-49f1-a6c8-9a9a43427e67,5,2
+9771fb2d-15b2-480a-9562-3814cccd1f5f,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Phoenix Flames,Columbus Sliders,4,eb691242-841d-4391-9b50-386854db6c85,5,2
+647efd96-1e15-4d3b-811b-cf018060af66,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Atlanta Bouncers,Utah Black Diamonds,1,8d6a6deb-6459-4e39-847c-a1efb9f34a1c,5,2
+647efd96-1e15-4d3b-811b-cf018060af66,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Atlanta Bouncers,Utah Black Diamonds,2,c3aaaa5e-8449-4bf4-9907-5c21b624874a,5,2
+647efd96-1e15-4d3b-811b-cf018060af66,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Atlanta Bouncers,Utah Black Diamonds,3,b767a529-12fc-469b-8324-af5d7b2e6d97,5,1
+647efd96-1e15-4d3b-811b-cf018060af66,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Atlanta Bouncers,Utah Black Diamonds,4,3356ef28-5c8f-4cad-aa8b-85960df1b027,5,2
+9f021399-c1e7-476f-bb2c-5fd8e04d3f6b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Bay Area Breakers,Los Angeles Mad Drops,1,623fb77f-ae01-441b-8ad1-5bd81060f0ef,5,2
+9f021399-c1e7-476f-bb2c-5fd8e04d3f6b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Bay Area Breakers,Los Angeles Mad Drops,2,2f2350cb-b110-4dc3-8fb2-deba3f0d5198,5,2
+9f021399-c1e7-476f-bb2c-5fd8e04d3f6b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Bay Area Breakers,Los Angeles Mad Drops,3,2bc395ed-4228-4d49-bbaa-f8f8c87b1b58,5,2
+9f021399-c1e7-476f-bb2c-5fd8e04d3f6b,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Bay Area Breakers,Los Angeles Mad Drops,4,9d3670c0-ce07-4d8e-ab47-25b55b09a530,5,2
+40569680-6a95-4002-b0a8-c497ca86ca31,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Phoenix Flames,California Black Bears,1,871b6786-387e-418b-820a-b005f508ba9d,5,1
+40569680-6a95-4002-b0a8-c497ca86ca31,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Phoenix Flames,California Black Bears,2,1dc22283-dfc1-43bc-bb7d-4ed8b02e790b,5,1
+40569680-6a95-4002-b0a8-c497ca86ca31,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Phoenix Flames,California Black Bears,3,13f333c3-f0c2-4897-9c16-8d8d158c44d9,5,2
+40569680-6a95-4002-b0a8-c497ca86ca31,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Phoenix Flames,California Black Bears,4,2efdb058-bac3-48ec-ad75-eaee5440cb3f,5,2
+0227ffc2-dff1-4afa-8726-954a281b2f60,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Columbus Sliders,SoCal Hard Eights,1,91d85728-a71c-4432-9f93-853e3194533f,5,1
+0227ffc2-dff1-4afa-8726-954a281b2f60,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Columbus Sliders,SoCal Hard Eights,2,7881475d-5a9f-40f7-804d-a42bbfa28198,5,1
+0227ffc2-dff1-4afa-8726-954a281b2f60,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Columbus Sliders,SoCal Hard Eights,3,7a30f736-70c2-4f0c-ad07-b2483007f2b2,5,1
+0227ffc2-dff1-4afa-8726-954a281b2f60,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Columbus Sliders,SoCal Hard Eights,4,95ee8eb4-ef62-4089-9093-e521c7468326,5,1
+6cfb145c-5e7c-4f7d-a51e-429dd5a2bc8a,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Bay Area Breakers,Atlanta Bouncers,1,d084b4ab-0c36-4139-ae21-212fda5b524d,5,2
+6cfb145c-5e7c-4f7d-a51e-429dd5a2bc8a,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Bay Area Breakers,Atlanta Bouncers,2,5a006e0f-af46-4ff6-8623-7de214b919d7,5,2
+6cfb145c-5e7c-4f7d-a51e-429dd5a2bc8a,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Bay Area Breakers,Atlanta Bouncers,3,c0ece913-4029-4ff1-a901-07abbd58fa8b,5,2
+6cfb145c-5e7c-4f7d-a51e-429dd5a2bc8a,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Bay Area Breakers,Atlanta Bouncers,4,f643f919-b895-4060-bf78-f75f707d75e0,5,2
+96f23830-6717-4a6d-824b-31f395d4809d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Los Angeles Mad Drops,Dallas Flash,1,07f85162-9241-42cd-80b8-125ffb2c2e73,5,1
+96f23830-6717-4a6d-824b-31f395d4809d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Los Angeles Mad Drops,Dallas Flash,2,ea732643-2177-40c0-bf88-0eac2dcdd0e5,5,2
+96f23830-6717-4a6d-824b-31f395d4809d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Los Angeles Mad Drops,Dallas Flash,3,46cc6115-3424-4cb7-b067-70328c5d90dc,5,2
+96f23830-6717-4a6d-824b-31f395d4809d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-18,Los Angeles Mad Drops,Dallas Flash,4,6ae16726-2dd9-4a37-9ae9-e6f5316096c4,5,1
+2c68b2b9-b0a7-4ace-9b4e-90ed81b850c7,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,SoCal Hard Eights,Atlanta Bouncers,1,5650646e-7630-4820-a673-0ec9aafe190d,5,2
+2c68b2b9-b0a7-4ace-9b4e-90ed81b850c7,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,SoCal Hard Eights,Atlanta Bouncers,2,60731dad-bd70-4004-8355-6010bf198e61,5,2
+2c68b2b9-b0a7-4ace-9b4e-90ed81b850c7,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,SoCal Hard Eights,Atlanta Bouncers,3,0aa62dda-8730-4207-97ef-1b17e1711aa7,5,2
+2c68b2b9-b0a7-4ace-9b4e-90ed81b850c7,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,SoCal Hard Eights,Atlanta Bouncers,4,734e08c6-372b-4a1d-b487-4fd18bab229b,6,0
+b4659146-cbb0-4b3e-b0af-ad8dbfeac2a8,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Orlando Squeeze,Bay Area Breakers,1,66fb66fa-d38e-40a9-bcb5-3a24c0e40957,5,1
+b4659146-cbb0-4b3e-b0af-ad8dbfeac2a8,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Orlando Squeeze,Bay Area Breakers,2,f2415761-1e6f-4cea-aea2-90478fed83e8,5,1
+b4659146-cbb0-4b3e-b0af-ad8dbfeac2a8,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Orlando Squeeze,Bay Area Breakers,3,c84c0fa4-731b-4889-aba0-dd394ad836dc,5,2
+b4659146-cbb0-4b3e-b0af-ad8dbfeac2a8,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Orlando Squeeze,Bay Area Breakers,4,dee31dad-d501-48e0-b710-3cd3431e02eb,5,2
+20a230ed-e11b-4297-bffe-baa2dfd3e10d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Los Angeles Mad Drops,California Black Bears,1,dea45020-9f4a-4689-b535-e5311a95a58b,5,1
+20a230ed-e11b-4297-bffe-baa2dfd3e10d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Los Angeles Mad Drops,California Black Bears,2,9f623914-db98-461b-8dbf-ad30e38ede29,5,1
+20a230ed-e11b-4297-bffe-baa2dfd3e10d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Los Angeles Mad Drops,California Black Bears,3,88ee6763-4e65-403d-b106-b40d4ef68d9c,5,1
+20a230ed-e11b-4297-bffe-baa2dfd3e10d,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Los Angeles Mad Drops,California Black Bears,4,2fb960b5-c107-4818-9b84-254d0328c6e1,6,0
+fbfc30f2-75a0-4530-aad6-81458f5ebe0a,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Columbus Sliders,Dallas Flash,1,e5637fa8-d825-4160-be72-f91ef4ca51c4,5,1
+fbfc30f2-75a0-4530-aad6-81458f5ebe0a,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Columbus Sliders,Dallas Flash,2,5b19b840-0a14-4567-93d9-d846089761ee,5,2
+fbfc30f2-75a0-4530-aad6-81458f5ebe0a,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Columbus Sliders,Dallas Flash,3,a9f4e753-30db-4923-be0c-70d17fcd0f16,5,2
+fbfc30f2-75a0-4530-aad6-81458f5ebe0a,8d989cbc-a16a-458d-83b5-1ce0490145fd,2026-07-19,Columbus Sliders,Dallas Flash,4,2c53a496-e265-4fcd-906c-d38a94ab6f38,5,2
+f521b568-cd74-4394-af95-4b06bda8f69a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Las Vegas Night Owls,Dallas Flash,1,f27ebcf9-b51b-4e5f-8406-b9df14dc401b,5,2
+f521b568-cd74-4394-af95-4b06bda8f69a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Las Vegas Night Owls,Dallas Flash,2,d46437d2-5349-4bd6-bca8-0998b1e4fd5f,5,2
+f521b568-cd74-4394-af95-4b06bda8f69a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Las Vegas Night Owls,Dallas Flash,3,00c44498-a6b0-4c1d-b1d0-9022c3f0887f,5,2
+f521b568-cd74-4394-af95-4b06bda8f69a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Las Vegas Night Owls,Dallas Flash,4,f7249c90-c243-4a14-be8b-1d4c8dd3f92d,5,2
+cd90e400-8d7c-48e9-bbdf-b025a0d50e58,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Atlanta Bouncers,Utah Black Diamonds,1,bd785d18-8900-4421-aefe-68580f1f2896,5,1
+cd90e400-8d7c-48e9-bbdf-b025a0d50e58,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Atlanta Bouncers,Utah Black Diamonds,2,800b7fac-8b03-47c9-85b0-63e4663b5cba,5,1
+cd90e400-8d7c-48e9-bbdf-b025a0d50e58,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Atlanta Bouncers,Utah Black Diamonds,3,3d4c5774-07fa-4d94-9077-3341dd65f47f,5,1
+cd90e400-8d7c-48e9-bbdf-b025a0d50e58,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Atlanta Bouncers,Utah Black Diamonds,4,541d6748-4fee-4df7-8f41-4a457bfce171,5,1
+9b900f88-6760-41b5-8554-6383693a92f4,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,SoCal Hard Eights,Las Vegas Night Owls,1,dcbe0644-4204-44d7-a943-b3e5454ff6c0,5,2
+9b900f88-6760-41b5-8554-6383693a92f4,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,SoCal Hard Eights,Las Vegas Night Owls,2,c47665ea-49e5-4147-bd16-1e58f998c17f,5,1
+9b900f88-6760-41b5-8554-6383693a92f4,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,SoCal Hard Eights,Las Vegas Night Owls,3,d4d1b516-5fa8-44d9-9eb3-c7c1f4b5e687,5,2
+9b900f88-6760-41b5-8554-6383693a92f4,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,SoCal Hard Eights,Las Vegas Night Owls,4,82dfb716-2793-4b85-b625-fa8ab8b42203,5,1
+11913245-0d13-4314-8a0a-25eedc99f03a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Brooklyn Pickleball Team,Miami Pickleball Club,1,ed21d30f-c3fb-40db-a661-ed0d0605e0a5,5,2
+11913245-0d13-4314-8a0a-25eedc99f03a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Brooklyn Pickleball Team,Miami Pickleball Club,2,766cb253-6c4a-4465-b089-f5f23ce0fc11,5,2
+11913245-0d13-4314-8a0a-25eedc99f03a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Brooklyn Pickleball Team,Miami Pickleball Club,3,46fa2943-65d0-4a1f-9a46-838c2943168b,5,1
+11913245-0d13-4314-8a0a-25eedc99f03a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Brooklyn Pickleball Team,Miami Pickleball Club,4,f2c29aa4-99da-4722-a61e-0c6918967be8,5,1
+4a325b56-ce7f-41ed-9920-a1c11a393096,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Atlanta Bouncers,Chicago Slice,1,828bad0f-b167-4f4e-b67b-2b8649b0986c,5,2
+4a325b56-ce7f-41ed-9920-a1c11a393096,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Atlanta Bouncers,Chicago Slice,2,fdff8679-6ba6-46d1-bfe6-c4016fd2747a,5,2
+4a325b56-ce7f-41ed-9920-a1c11a393096,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Atlanta Bouncers,Chicago Slice,3,6a619bf2-ed12-4424-9043-0bd06a45cdea,5,1
+4a325b56-ce7f-41ed-9920-a1c11a393096,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-23,Atlanta Bouncers,Chicago Slice,4,98d1bee9-0fd6-4aee-8366-9febc39ac8a0,5,1
+85715a08-872b-4f4e-a80e-8aaa9ccbffc6,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Dallas Flash,Atlanta Bouncers,1,13dd52bf-7c33-43e3-aa62-180e2935ae06,5,2
+85715a08-872b-4f4e-a80e-8aaa9ccbffc6,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Dallas Flash,Atlanta Bouncers,2,678d8e75-4fdd-406a-bf62-b8c354d9011d,5,1
+85715a08-872b-4f4e-a80e-8aaa9ccbffc6,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Dallas Flash,Atlanta Bouncers,3,2ac4c270-0611-460e-8a21-5b8d412f6b5a,5,1
+85715a08-872b-4f4e-a80e-8aaa9ccbffc6,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Dallas Flash,Atlanta Bouncers,4,ba69b883-bbb5-4c02-a259-a8e3ecfed4fc,5,1
+7f700984-2d8a-4987-8721-e5b535357cc5,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,California Black Bears,Brooklyn Pickleball Team,1,69793b78-19e4-492a-984e-a69a4cc79142,5,1
+7f700984-2d8a-4987-8721-e5b535357cc5,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,California Black Bears,Brooklyn Pickleball Team,2,03b6dee1-a18a-4519-a733-323b8998ed1f,5,2
+7f700984-2d8a-4987-8721-e5b535357cc5,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,California Black Bears,Brooklyn Pickleball Team,3,049b7b60-f5c0-4e05-a9cf-04ac7d27b2dd,5,2
+7f700984-2d8a-4987-8721-e5b535357cc5,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,California Black Bears,Brooklyn Pickleball Team,4,2cea46e3-4026-402c-a5d1-c4245b75c870,5,2
+fc110a20-7b8a-4327-a6f7-411f67752f05,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Texas Ranchers,Phoenix Flames,1,0e8dd14f-0695-4960-a1a0-51cce3a12ed7,5,1
+fc110a20-7b8a-4327-a6f7-411f67752f05,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Texas Ranchers,Phoenix Flames,2,a0b870c8-87ee-4d77-886a-07088fd0fb2f,5,1
+fc110a20-7b8a-4327-a6f7-411f67752f05,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Texas Ranchers,Phoenix Flames,3,eb147030-3624-4f28-b65e-c053d26725ab,5,1
+fc110a20-7b8a-4327-a6f7-411f67752f05,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Texas Ranchers,Phoenix Flames,4,9cd44e6a-78ad-4479-a75d-541dccad6b5a,5,1
+44367de0-13b6-4549-a671-ac3febb73816,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Chicago Slice,Las Vegas Night Owls,1,af2f6ea2-41e7-4961-83d8-96daaf58baeb,5,1
+44367de0-13b6-4549-a671-ac3febb73816,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Chicago Slice,Las Vegas Night Owls,2,f1f5d4f6-848b-4d02-8998-ec57cb9732f4,5,2
+44367de0-13b6-4549-a671-ac3febb73816,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Chicago Slice,Las Vegas Night Owls,3,cc465ba3-4b87-428d-b8d8-306c52922a4f,5,1
+44367de0-13b6-4549-a671-ac3febb73816,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Chicago Slice,Las Vegas Night Owls,4,1431580e-3cdd-428e-99eb-73cfb3335e81,5,1
+9eaf6211-160f-4bed-9f56-fd270bdd0339,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,SoCal Hard Eights,Atlanta Bouncers,1,c7bf8b49-97fa-491c-b266-9853a02c053e,5,1
+9eaf6211-160f-4bed-9f56-fd270bdd0339,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,SoCal Hard Eights,Atlanta Bouncers,2,8ac173a8-85f4-48df-b623-7f4bdc0019c8,5,2
+9eaf6211-160f-4bed-9f56-fd270bdd0339,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,SoCal Hard Eights,Atlanta Bouncers,3,2970b2dc-9afc-4f63-a9a6-c0fb6aa2b9ad,5,2
+9eaf6211-160f-4bed-9f56-fd270bdd0339,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,SoCal Hard Eights,Atlanta Bouncers,4,26b76ecf-3e6d-485e-a2b8-b8161e450e94,5,2
+12cfe17f-2ea7-4a90-ac81-5961917a9fb2,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Utah Black Diamonds,Dallas Flash,1,d579254a-0724-47d4-8d06-b3760fe79ffa,5,2
+12cfe17f-2ea7-4a90-ac81-5961917a9fb2,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Utah Black Diamonds,Dallas Flash,2,ffdb3b43-011e-4757-96a8-54ecad01f644,5,2
+12cfe17f-2ea7-4a90-ac81-5961917a9fb2,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Utah Black Diamonds,Dallas Flash,3,cf9b63fa-808f-40a3-bdc5-4645515d05f0,5,2
+12cfe17f-2ea7-4a90-ac81-5961917a9fb2,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Utah Black Diamonds,Dallas Flash,4,9147671b-a315-4a00-91d5-74fbe43b60d2,5,2
+0ebfb618-0027-49a9-97ab-8b86cd6dec47,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,California Black Bears,Phoenix Flames,1,d318e79e-86e2-4cb9-a8fe-8e875d689258,5,1
+0ebfb618-0027-49a9-97ab-8b86cd6dec47,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,California Black Bears,Phoenix Flames,2,35335c7e-4de7-44a5-865a-b09125bebfa9,5,1
+0ebfb618-0027-49a9-97ab-8b86cd6dec47,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,California Black Bears,Phoenix Flames,3,177cd937-223c-4bdd-962b-a1a15db03345,5,2
+0ebfb618-0027-49a9-97ab-8b86cd6dec47,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,California Black Bears,Phoenix Flames,4,400f202a-6950-496b-a37e-5f8cccfe4801,5,2
+0e139c03-a55b-470a-b274-6cd4bf0803f3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Miami Pickleball Club,Texas Ranchers,1,39c8762d-42b8-429c-abb0-d3adc161fe53,5,2
+0e139c03-a55b-470a-b274-6cd4bf0803f3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Miami Pickleball Club,Texas Ranchers,2,f0a97594-01b9-489b-bb52-05a6084f6615,5,1
+0e139c03-a55b-470a-b274-6cd4bf0803f3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Miami Pickleball Club,Texas Ranchers,3,0e1bb84d-0b69-41c8-a730-21ab26261a77,5,1
+0e139c03-a55b-470a-b274-6cd4bf0803f3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Miami Pickleball Club,Texas Ranchers,4,5cbd5d96-998b-4d83-a8bd-4d95157b49d3,5,2
+a8f3dbcf-4a1b-4dd1-8dae-34b84b2b9766,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Las Vegas Night Owls,Utah Black Diamonds,1,c3ea047f-de97-4936-898d-b5dfba0e1b87,5,1
+a8f3dbcf-4a1b-4dd1-8dae-34b84b2b9766,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Las Vegas Night Owls,Utah Black Diamonds,2,3cc14929-245a-4055-becf-0a0806eafd72,5,1
+a8f3dbcf-4a1b-4dd1-8dae-34b84b2b9766,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Las Vegas Night Owls,Utah Black Diamonds,3,11911571-b9ac-429a-9802-39abfee8de41,5,1
+a8f3dbcf-4a1b-4dd1-8dae-34b84b2b9766,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,Las Vegas Night Owls,Utah Black Diamonds,4,71dd5a83-f1d2-423e-a20b-ea1dc07aa62c,5,2
+505b8891-48ca-4bbf-9434-06a12351d4c4,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,SoCal Hard Eights,Chicago Slice,1,0b37b3f6-2618-4a3d-9a7d-e102fa1dac7a,5,2
+505b8891-48ca-4bbf-9434-06a12351d4c4,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,SoCal Hard Eights,Chicago Slice,2,54994d37-2d6f-4dc2-87d0-20efa21af19e,5,2
+505b8891-48ca-4bbf-9434-06a12351d4c4,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,SoCal Hard Eights,Chicago Slice,3,d0886d73-9e03-4e99-a6d1-7988c541ec15,5,1
+505b8891-48ca-4bbf-9434-06a12351d4c4,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-24,SoCal Hard Eights,Chicago Slice,4,9db60a17-ef7a-4ca7-a394-6684c680d61b,5,2
+7a5e79ad-fae8-4120-a13a-252f73a7213e,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Phoenix Flames,Miami Pickleball Club,1,133cf11d-d3eb-4448-8e82-7789b5d4e764,5,2
+7a5e79ad-fae8-4120-a13a-252f73a7213e,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Phoenix Flames,Miami Pickleball Club,2,6549b08c-d469-4509-947b-c15d46a920bb,5,2
+7a5e79ad-fae8-4120-a13a-252f73a7213e,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Phoenix Flames,Miami Pickleball Club,3,be9fabbf-584e-4176-94a4-26d2c4fc7c6e,5,2
+7a5e79ad-fae8-4120-a13a-252f73a7213e,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Phoenix Flames,Miami Pickleball Club,4,aad5478d-e79b-44e5-81de-71c363e692a4,5,1
+83dc9d8f-bf7c-4b5c-bb67-2bc0f4c2019c,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Utah Black Diamonds,SoCal Hard Eights,1,66bb2c3f-a262-4de9-9620-96c235f773cc,5,2
+83dc9d8f-bf7c-4b5c-bb67-2bc0f4c2019c,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Utah Black Diamonds,SoCal Hard Eights,2,95957fc6-4146-41d7-8f67-4538c240b722,5,1
+83dc9d8f-bf7c-4b5c-bb67-2bc0f4c2019c,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Utah Black Diamonds,SoCal Hard Eights,3,f0bafc42-713a-4fb8-a14c-f4d55885342d,5,2
+83dc9d8f-bf7c-4b5c-bb67-2bc0f4c2019c,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Utah Black Diamonds,SoCal Hard Eights,4,13bdbcd3-3d67-4988-9964-6528098b452d,5,1
+7e21bf4a-affe-49c1-bb1f-1eea78bfe555,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Texas Ranchers,California Black Bears,1,b37381e6-8ebc-4724-9eb6-8be405c0fdd0,5,2
+7e21bf4a-affe-49c1-bb1f-1eea78bfe555,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Texas Ranchers,California Black Bears,2,93e21465-c595-40ff-8f52-a0b904f5e48a,5,1
+7e21bf4a-affe-49c1-bb1f-1eea78bfe555,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Texas Ranchers,California Black Bears,3,3d9fe8b7-daf4-4b73-9608-6c5dde624b83,5,2
+7e21bf4a-affe-49c1-bb1f-1eea78bfe555,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Texas Ranchers,California Black Bears,4,7ecb2dd3-b59e-4c91-a893-a0f90ddb628c,5,1
+d5857d79-a2a1-4c5d-b386-1b231a77e01b,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Phoenix Flames,Brooklyn Pickleball Team,1,b074d038-c67e-43ec-970a-b88d8d8c82fb,5,2
+d5857d79-a2a1-4c5d-b386-1b231a77e01b,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Phoenix Flames,Brooklyn Pickleball Team,2,9c8e16b1-6a2c-448b-8e72-5a5ee73e1356,5,1
+d5857d79-a2a1-4c5d-b386-1b231a77e01b,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Phoenix Flames,Brooklyn Pickleball Team,3,290204e6-7878-4cd6-9aed-58e40b8398ed,5,2
+d5857d79-a2a1-4c5d-b386-1b231a77e01b,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Phoenix Flames,Brooklyn Pickleball Team,4,a1be6d76-d3cf-4c21-bb71-7a3e92fbd814,5,2
+a6106265-412f-4b1f-a818-c76d1207198f,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Dallas Flash,SoCal Hard Eights,1,f6457830-13bc-4702-8d3c-f5bd0eefde38,5,1
+a6106265-412f-4b1f-a818-c76d1207198f,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Dallas Flash,SoCal Hard Eights,2,cfcd66bd-07ad-46fa-a762-817e78aba26f,5,1
+a6106265-412f-4b1f-a818-c76d1207198f,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Dallas Flash,SoCal Hard Eights,3,9698565f-45c2-4856-af38-87733efee9a2,5,1
+a6106265-412f-4b1f-a818-c76d1207198f,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Dallas Flash,SoCal Hard Eights,4,2184685b-1a95-4658-b6ab-97e11b089cc9,5,1
+c4e686d1-be7a-485c-b6bf-07e1c7e5a22e,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Chicago Slice,Utah Black Diamonds,1,0ca7efd7-9a76-4dd4-bd69-c1fddeb3050e,5,2
+c4e686d1-be7a-485c-b6bf-07e1c7e5a22e,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Chicago Slice,Utah Black Diamonds,2,1c9ca388-a922-4bed-aa3b-205561187979,5,1
+c4e686d1-be7a-485c-b6bf-07e1c7e5a22e,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Chicago Slice,Utah Black Diamonds,3,0a157968-7250-42fa-96e4-62c64da9a24b,5,2
+c4e686d1-be7a-485c-b6bf-07e1c7e5a22e,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Chicago Slice,Utah Black Diamonds,4,56520919-20b9-41be-82a3-7d2b1bea6c97,5,2
+09cd1337-825a-440c-b19c-0e25d916c868,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Atlanta Bouncers,Las Vegas Night Owls,1,126f2897-d188-4600-ade8-57629f01db7b,5,1
+09cd1337-825a-440c-b19c-0e25d916c868,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Atlanta Bouncers,Las Vegas Night Owls,2,306e6550-ad84-4f78-b1d8-455f54a414bb,5,1
+09cd1337-825a-440c-b19c-0e25d916c868,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Atlanta Bouncers,Las Vegas Night Owls,3,eef4638e-ce6e-4801-9175-8f0c2e4f24da,5,1
+09cd1337-825a-440c-b19c-0e25d916c868,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Atlanta Bouncers,Las Vegas Night Owls,4,27efb858-0de1-4ebe-b8ea-414d0e418500,5,2
+ba0f72bc-a6ab-40d0-9e1a-a8ae871694b3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Brooklyn Pickleball Team,Texas Ranchers,1,ea7e62b7-532e-4919-9911-5a72871f255d,5,1
+ba0f72bc-a6ab-40d0-9e1a-a8ae871694b3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Brooklyn Pickleball Team,Texas Ranchers,2,73e58915-9cd3-46bd-a72d-37ff62de7470,5,2
+ba0f72bc-a6ab-40d0-9e1a-a8ae871694b3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Brooklyn Pickleball Team,Texas Ranchers,3,0bdb1d88-6e1e-48da-8cbe-8f848ad1be8b,5,2
+ba0f72bc-a6ab-40d0-9e1a-a8ae871694b3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Brooklyn Pickleball Team,Texas Ranchers,4,c7160705-42a6-4794-a3ef-74fdd5ef8ca2,5,2
+c4f357b2-dd27-4027-b188-ba6a48d93faf,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Miami Pickleball Club,California Black Bears,1,94185627-7c21-4fa1-8c81-71c86f498f0f,5,2
+c4f357b2-dd27-4027-b188-ba6a48d93faf,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Miami Pickleball Club,California Black Bears,2,a5db81eb-1ed5-422c-b4c8-40aab0bddfc0,5,2
+c4f357b2-dd27-4027-b188-ba6a48d93faf,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Miami Pickleball Club,California Black Bears,3,156c7902-5585-4ab8-9379-222d64f4ef9e,5,1
+c4f357b2-dd27-4027-b188-ba6a48d93faf,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Miami Pickleball Club,California Black Bears,4,79c5e003-6cc2-426a-94c1-5b7deb3317a6,5,2
+e8c4db70-6fcf-431e-a089-8f2fa6000eb8,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Dallas Flash,Chicago Slice,1,10033bd4-99e9-4a4d-909e-81e4951f0d6e,5,2
+e8c4db70-6fcf-431e-a089-8f2fa6000eb8,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Dallas Flash,Chicago Slice,2,c5cc1a96-078f-4e13-a992-ea3a07d98138,5,1
+e8c4db70-6fcf-431e-a089-8f2fa6000eb8,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Dallas Flash,Chicago Slice,3,f509185b-37d9-4fda-b6b3-f796b90f569c,5,1
+e8c4db70-6fcf-431e-a089-8f2fa6000eb8,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-25,Dallas Flash,Chicago Slice,4,4f7072c4-6916-4ea2-8f18-8565b55766a5,5,2
+65d78ec9-b964-4c72-a9e9-0e991a6a2f98,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Texas Ranchers,Las Vegas Night Owls,1,5a72aafe-e05c-49c7-a260-bb9e774be7b2,5,1
+65d78ec9-b964-4c72-a9e9-0e991a6a2f98,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Texas Ranchers,Las Vegas Night Owls,2,9fd29834-d9dc-47ae-98d1-de4a6d9fb48b,5,1
+65d78ec9-b964-4c72-a9e9-0e991a6a2f98,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Texas Ranchers,Las Vegas Night Owls,3,2a2c7de9-317a-4945-b1a0-1d46a07ad8ad,5,1
+65d78ec9-b964-4c72-a9e9-0e991a6a2f98,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Texas Ranchers,Las Vegas Night Owls,4,e5d051c9-44b1-4889-a4f3-f416e68673ab,6,0
+e5c5dcd4-d09f-439e-9431-6b76b7946ed3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Atlanta Bouncers,Miami Pickleball Club,1,366bcb0a-b3e5-4f1c-8ea9-79ef7a7fd5e9,5,1
+e5c5dcd4-d09f-439e-9431-6b76b7946ed3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Atlanta Bouncers,Miami Pickleball Club,2,151a9474-1aa1-48c6-b7fb-4b622e9864eb,5,2
+e5c5dcd4-d09f-439e-9431-6b76b7946ed3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Atlanta Bouncers,Miami Pickleball Club,3,2639bf2f-6280-4a76-8ea8-323c91322ca9,5,2
+e5c5dcd4-d09f-439e-9431-6b76b7946ed3,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Atlanta Bouncers,Miami Pickleball Club,4,90e90007-8f26-4c23-a581-3678f21e373a,5,2
+2c4eca5c-0e32-4e9e-86e8-7ff7a36c67cd,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Chicago Slice,California Black Bears,1,f8258531-7965-41da-9818-eb6f6ebfd3ae,5,2
+2c4eca5c-0e32-4e9e-86e8-7ff7a36c67cd,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Chicago Slice,California Black Bears,2,5aa2cfda-fcef-41b4-b175-1edfbc8380ff,5,2
+2c4eca5c-0e32-4e9e-86e8-7ff7a36c67cd,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Chicago Slice,California Black Bears,3,8df101a0-57a5-40ec-aaba-04980e8a890e,5,2
+2c4eca5c-0e32-4e9e-86e8-7ff7a36c67cd,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Chicago Slice,California Black Bears,4,f931ac46-0887-4193-beb5-9d849f01f627,6,0
+fd8f0803-0e10-4baa-8e67-0ee09cec516a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Dallas Flash,Brooklyn Pickleball Team,1,40fec6d4-8b7c-40c7-9eed-e70d755ab3fa,5,1
+fd8f0803-0e10-4baa-8e67-0ee09cec516a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Dallas Flash,Brooklyn Pickleball Team,2,037b8f87-c745-4b7b-bb5c-c4e7324293f7,5,2
+fd8f0803-0e10-4baa-8e67-0ee09cec516a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Dallas Flash,Brooklyn Pickleball Team,3,45f3ea2a-c6a6-49ac-ae71-dcd613622ce5,5,2
+fd8f0803-0e10-4baa-8e67-0ee09cec516a,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,2026-07-26,Dallas Flash,Brooklyn Pickleball Team,4,4d11a2da-dbd8-44b4-915b-118d40183f6c,5,1
+aaa9bb40-5cb9-45c1-84ce-6a8c5c8d3a2a,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Phoenix Flames,Brooklyn Pickleball Team,1,4739c0ac-fc02-425e-aafa-419dfcbf876f,5,1
+aaa9bb40-5cb9-45c1-84ce-6a8c5c8d3a2a,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Phoenix Flames,Brooklyn Pickleball Team,2,3705be93-3e43-4f93-9e7e-f40734c19743,5,2
+aaa9bb40-5cb9-45c1-84ce-6a8c5c8d3a2a,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Phoenix Flames,Brooklyn Pickleball Team,3,f718a09c-2f21-4ec6-8f15-af77bd226197,5,2
+aaa9bb40-5cb9-45c1-84ce-6a8c5c8d3a2a,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Phoenix Flames,Brooklyn Pickleball Team,4,7ee8e2f2-7f7e-4c03-b3d6-2ebc358701ae,5,2
+8886a971-c95b-4280-ac43-c27f0f6c9c08,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,St. Louis Shock,Miami Pickleball Club,1,f4d932f6-70e3-4717-866c-d889a7f3770d,5,1
+8886a971-c95b-4280-ac43-c27f0f6c9c08,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,St. Louis Shock,Miami Pickleball Club,2,761ac937-32e0-4d50-95d8-446eefeff5bf,5,1
+8886a971-c95b-4280-ac43-c27f0f6c9c08,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,St. Louis Shock,Miami Pickleball Club,3,b8c0afd0-dc89-4d1f-b29d-de56e5e99441,5,1
+8886a971-c95b-4280-ac43-c27f0f6c9c08,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,St. Louis Shock,Miami Pickleball Club,4,a6b572de-dbab-4fd3-9b1d-a33e81d653c3,5,1
+1b4bc2a8-dede-407f-88ef-a3821b87bf06,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,California Black Bears,Palm Beach Royals,1,43e37247-81ff-45a8-aca3-99bda8536f3c,5,2
+1b4bc2a8-dede-407f-88ef-a3821b87bf06,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,California Black Bears,Palm Beach Royals,2,2183e201-d1ec-4fe1-aae1-13b05dfdad8f,5,1
+1b4bc2a8-dede-407f-88ef-a3821b87bf06,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,California Black Bears,Palm Beach Royals,3,c01a9d32-6f7a-4589-b1b6-74d469ce79a3,5,2
+1b4bc2a8-dede-407f-88ef-a3821b87bf06,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,California Black Bears,Palm Beach Royals,4,7b41ef8d-877f-4d1c-a0ed-aa90b6524afd,5,2
+a42b688a-d59c-48b2-abce-d6de8962539a,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Los Angeles Mad Drops,Chicago Slice,1,d1b5a867-0e48-41b0-a3ad-0963b7dbd40c,5,1
+a42b688a-d59c-48b2-abce-d6de8962539a,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Los Angeles Mad Drops,Chicago Slice,2,68774b99-d06e-4373-ae5e-32f7e84d658e,5,1
+a42b688a-d59c-48b2-abce-d6de8962539a,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Los Angeles Mad Drops,Chicago Slice,3,2ac6de9e-4a51-4494-b596-d774e7a122ef,5,1
+a42b688a-d59c-48b2-abce-d6de8962539a,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Los Angeles Mad Drops,Chicago Slice,4,0e39a70a-a567-4b89-a8b5-572bd397c541,5,1
+23805352-8a47-4ae9-83e2-75100da205cc,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Phoenix Flames,Las Vegas Night Owls,1,a1d02ed1-8dd0-4301-9b06-db6ad3d259c5,5,2
+23805352-8a47-4ae9-83e2-75100da205cc,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Phoenix Flames,Las Vegas Night Owls,2,83773a53-9b81-4770-8b05-8e1866f53c05,5,1
+23805352-8a47-4ae9-83e2-75100da205cc,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Phoenix Flames,Las Vegas Night Owls,3,c7e1d647-9743-4584-b147-bab821b0859b,5,2
+23805352-8a47-4ae9-83e2-75100da205cc,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Phoenix Flames,Las Vegas Night Owls,4,024439b8-5f81-4f3b-a538-d9d43047fcf5,5,1
+bad31195-9db3-4e3f-af22-e5ef5f920c8e,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,New Jersey 5s,Carolina Hogs,1,02e7aa7d-d911-49f1-8b22-04b54e3051f6,5,1
+bad31195-9db3-4e3f-af22-e5ef5f920c8e,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,New Jersey 5s,Carolina Hogs,2,9f7c0c56-c06d-4ab0-9766-45f637998946,5,1
+bad31195-9db3-4e3f-af22-e5ef5f920c8e,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,New Jersey 5s,Carolina Hogs,3,8c3f7421-26b3-458b-8cc0-1c5de316ba50,5,1
+bad31195-9db3-4e3f-af22-e5ef5f920c8e,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,New Jersey 5s,Carolina Hogs,4,41336fa6-02d0-4fb6-9eac-97ab71df6fe9,5,1
+e9c49d31-755d-42f0-afac-6c9dafd2a648,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Miami Pickleball Club,Brooklyn Pickleball Team,1,e6fe6b20-78bd-4ce3-913a-735e475da3df,5,1
+e9c49d31-755d-42f0-afac-6c9dafd2a648,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Miami Pickleball Club,Brooklyn Pickleball Team,2,1eb4f5eb-9578-426b-b4f8-8145c0d416d9,5,2
+e9c49d31-755d-42f0-afac-6c9dafd2a648,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Miami Pickleball Club,Brooklyn Pickleball Team,3,34725943-09a8-4756-9f44-fbae292ce1bf,5,2
+e9c49d31-755d-42f0-afac-6c9dafd2a648,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Miami Pickleball Club,Brooklyn Pickleball Team,4,c2802cac-4afc-4ae9-bdf6-f6398f36c034,5,2
+daa4053f-e1df-45e4-ad3f-0dfe1fdf6b95,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Palm Beach Royals,Chicago Slice,1,a51cd4a9-549e-4a66-bd05-ae6300a31724,5,2
+daa4053f-e1df-45e4-ad3f-0dfe1fdf6b95,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Palm Beach Royals,Chicago Slice,2,28cdfaae-407f-4c71-8141-0bec3a2fe670,5,1
+daa4053f-e1df-45e4-ad3f-0dfe1fdf6b95,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Palm Beach Royals,Chicago Slice,3,c1c6493e-1125-464e-8a1c-445801d7e205,5,1
+daa4053f-e1df-45e4-ad3f-0dfe1fdf6b95,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Palm Beach Royals,Chicago Slice,4,0be286b8-0ca5-4337-ac9a-2962075015cc,5,2
+cc652a66-e2c0-4578-b594-cc130e4a3bb2,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,California Black Bears,Carolina Hogs,1,e5db4032-1c76-4bdd-875d-b47e27807d33,5,1
+cc652a66-e2c0-4578-b594-cc130e4a3bb2,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,California Black Bears,Carolina Hogs,2,ccdb161c-f892-4c7a-bedd-da42cb533776,5,1
+cc652a66-e2c0-4578-b594-cc130e4a3bb2,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,California Black Bears,Carolina Hogs,3,d2f8c674-c34c-455c-8862-9a49de0f74d1,5,1
+cc652a66-e2c0-4578-b594-cc130e4a3bb2,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,California Black Bears,Carolina Hogs,4,11aca6c8-7040-454e-b5a2-9ab3cf95767f,5,2
+12e2d960-1db0-456b-990f-ccdc2a054e78,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Las Vegas Night Owls,Orlando Squeeze,1,4b27ddad-1ec1-4b09-8f83-47b527b92d20,5,1
+12e2d960-1db0-456b-990f-ccdc2a054e78,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Las Vegas Night Owls,Orlando Squeeze,2,0d58a6d3-95ef-482b-a1c2-b6705781f4ca,5,1
+12e2d960-1db0-456b-990f-ccdc2a054e78,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Las Vegas Night Owls,Orlando Squeeze,3,73a013d5-4d01-45c5-b8a7-63e676308378,5,1
+12e2d960-1db0-456b-990f-ccdc2a054e78,d5fc5840-64b2-47d1-b21d-a9dca9eb6390,2026-07-30,Las Vegas Night Owls,Orlando Squeeze,4,54876164-6bb4-495a-bf00-9f5428d5eb81,5,1
