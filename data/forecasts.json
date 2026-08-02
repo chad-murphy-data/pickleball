@@ -1,13 +1,13 @@
 {
- "generated": "2026-08-01",
+ "generated": "2026-08-02",
  "note": "Lineups: official when published, else each team's best lineup from its season roster (last-matchup fallback); DreamBreaker from the singles model; calibrated probabilities.",
  "forecasts": [
   {
-   "date": "2026-08-01",
-   "start": "2026-08-01T15:30:00Z",
+   "date": "2026-08-02",
+   "start": "2026-08-02T14:00:00Z",
    "event": "Amway MLP Orlando",
    "team1": "Miami Pickleball Club",
-   "team2": "Las Vegas Night Owls",
+   "team2": "Chicago Slice",
    "lineups_from": {
     "team1": "official",
     "team2": "official"
@@ -15,76 +15,76 @@
    "games": [
     {
      "slot": "WD",
-     "p": 0.4904,
-     "modal": "9-11",
-     "margin": -0.27,
+     "p": 0.2885,
+     "modal": "7-11",
+     "margin": -2.52,
      "t1_pair": [
-      "Estee Widdershoven",
-      "Isabella Dunlap"
+      "Isabella Dunlap",
+      "Rika Fujiwara"
      ],
      "t2_pair": [
-      "Callie Smith",
-      "Chao Yi Wang"
+      "Elsie Hendershot",
+      "Ting Chieh Wei"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.3993,
-     "modal": "8-11",
-     "margin": -1.27,
+     "p": 0.4346,
+     "modal": "9-11",
+     "margin": -0.88,
      "t1_pair": [
       "Anderson Scarpa",
       "Anouar Braham"
      ],
      "t2_pair": [
-      "Clayton Powell",
-      "Roscoe Bellamy"
+      "John Lucian Goins",
+      "Zane Navratil"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.2182,
-     "modal": "6-11",
-     "margin": -3.37,
-     "t1_pair": [
-      "Isabella Dunlap",
-      "James Delgado"
-     ],
-     "t2_pair": [
-      "Chao Yi Wang",
-      "Roscoe Bellamy"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.4309,
-     "modal": "9-11",
-     "margin": -0.92,
+     "p": 0.7612,
+     "modal": "11-7",
+     "margin": 2.85,
      "t1_pair": [
       "Estee Widdershoven",
       "Anouar Braham"
      ],
      "t2_pair": [
-      "Liz Truluck",
-      "Clayton Powell"
+      "Elsie Hendershot",
+      "AJ Koller"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.3115,
+     "modal": "7-11",
+     "margin": -2.26,
+     "t1_pair": [
+      "Isabella Dunlap",
+      "James Delgado"
+     ],
+     "t2_pair": [
+      "Ting Chieh Wei",
+      "John Lucian Goins"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.3136,
-    "p_40": 0.0184,
-    "p_31": 0.1371,
-    "p_db": 0.3455,
-    "p_13": 0.3627,
-    "p_04": 0.1362,
-    "p_db_win": 0.4574
+    "p_win": 0.4468,
+    "p_40": 0.0297,
+    "p_31": 0.187,
+    "p_db": 0.3987,
+    "p_13": 0.3184,
+    "p_04": 0.0661,
+    "p_db_win": 0.5769
    }
   },
   {
-   "date": "2026-08-01",
-   "start": "2026-08-01T16:00:00Z",
+   "date": "2026-08-02",
+   "start": "2026-08-02T15:30:00Z",
    "event": "Amway MLP Orlando",
-   "team1": "Palm Beach Royals",
+   "team1": "St. Louis Shock",
    "team2": "New Jersey 5s",
    "lineups_from": {
     "team1": "official",
@@ -93,12 +93,12 @@
    "games": [
     {
      "slot": "WD",
-     "p": 0.066,
-     "modal": "4-11",
-     "margin": -5.71,
+     "p": 0.1535,
+     "modal": "6-11",
+     "margin": -4.22,
      "t1_pair": [
-      "Sofia Sewing",
-      "Tina Pisnik"
+      "Anna Bright",
+      "Kate Fahey"
      ],
      "t2_pair": [
       "Anna Leigh Waters",
@@ -107,679 +107,211 @@
     },
     {
      "slot": "MD",
-     "p": 0.2906,
-     "modal": "7-11",
-     "margin": -2.5,
-     "t1_pair": [
-      "Dekel Bar",
-      "Tyson McGuffin"
-     ],
-     "t2_pair": [
-      "Federico Staksrud",
-      "Will Howells"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.1131,
-     "modal": "5-11",
-     "margin": -4.83,
-     "t1_pair": [
-      "Tina Pisnik",
-      "Dekel Bar"
-     ],
-     "t2_pair": [
-      "Anna Leigh Waters",
-      "Noe Khlif"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.1056,
-     "modal": "5-11",
-     "margin": -4.95,
-     "t1_pair": [
-      "Sofia Sewing",
-      "Casey Diamond"
-     ],
-     "t2_pair": [
-      "Jorja Johnson",
-      "Federico Staksrud"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.0239,
-    "p_40": 0.0002,
-    "p_31": 0.0075,
-    "p_db": 0.0851,
-    "p_13": 0.3815,
-    "p_04": 0.5256,
-    "p_db_win": 0.1898
-   }
-  },
-  {
-   "date": "2026-08-01",
-   "start": "2026-08-01T17:00:00Z",
-   "event": "Amway MLP Orlando",
-   "team1": "Carolina Hogs",
-   "team2": "Los Angeles Mad Drops",
-   "lineups_from": {
-    "team1": "official",
-    "team2": "official"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.0133,
-     "modal": "2-11",
-     "margin": -7.99,
-     "t1_pair": [
-      "Abbigal Hatton",
-      "Nicole Conard"
-     ],
-     "t2_pair": [
-      "Catherine Parenteau",
-      "Jade Kawamoto"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.1476,
-     "modal": "6-11",
-     "margin": -4.31,
-     "t1_pair": [
-      "Brandon French",
-      "Wyatt Stone"
-     ],
-     "t2_pair": [
-      "Ben Johns",
-      "Max Freeman"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.012,
-     "modal": "2-11",
-     "margin": -8.26,
-     "t1_pair": [
-      "Nicole Conard",
-      "Brandon French"
-     ],
-     "t2_pair": [
-      "Jade Kawamoto",
-      "Ben Johns"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.0375,
-     "modal": "4-11",
-     "margin": -6.47,
-     "t1_pair": [
-      "Aiko Yoshitomi",
-      "Wyatt Stone"
-     ],
-     "t2_pair": [
-      "Catherine Parenteau",
-      "Connor Garnett"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.0106,
-    "p_40": 0.0,
-    "p_31": 0.0002,
-    "p_db": 0.0099,
-    "p_13": 0.1901,
-    "p_04": 0.7998,
-    "p_db_win": 0.1334
-   }
-  },
-  {
-   "date": "2026-08-01",
-   "start": "2026-08-01T17:30:00Z",
-   "event": "Amway MLP Orlando",
-   "team1": "Brooklyn Pickleball Team",
-   "team2": "Orlando Squeeze",
-   "lineups_from": {
-    "team1": "official",
-    "team2": "official"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.4053,
-     "modal": "8-11",
-     "margin": -1.21,
-     "t1_pair": [
-      "Hannah Blatt",
-      "Jackie Kawamoto"
-     ],
-     "t2_pair": [
-      "Alex Walker",
-      "Lacy Schneemann"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.9489,
-     "modal": "11-4",
-     "margin": 5.94,
-     "t1_pair": [
-      "Christian Alshon",
-      "Riley Newman"
-     ],
-     "t2_pair": [
-      "Jack Sock",
-      "Yates Johnson"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.807,
+     "p": 0.8555,
      "modal": "11-6",
-     "margin": 3.45,
+     "margin": 4.14,
      "t1_pair": [
-      "Rachel Rohrabacher",
-      "Christian Alshon"
-     ],
-     "t2_pair": [
-      "Lacy Schneemann",
-      "Jack Sock"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.9794,
-     "modal": "11-3",
-     "margin": 7.16,
-     "t1_pair": [
-      "Jackie Kawamoto",
-      "Riley Newman"
-     ],
-     "t2_pair": [
-      "Lina Padegimaite",
-      "Gregory Dow"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.9434,
-    "p_40": 0.304,
-    "p_31": 0.5415,
-    "p_db": 0.1459,
-    "p_13": 0.0086,
-    "p_04": 0.0001,
-    "p_db_win": 0.6715
-   }
-  },
-  {
-   "date": "2026-08-01",
-   "start": "2026-08-01T18:30:00Z",
-   "event": "Amway MLP Orlando",
-   "team1": "Chicago Slice",
-   "team2": "California Black Bears",
-   "lineups_from": {
-    "team1": "official",
-    "team2": "official"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.1797,
-     "modal": "6-11",
-     "margin": -3.86,
-     "t1_pair": [
-      "Elsie Hendershot",
-      "Ting Chieh Wei"
-     ],
-     "t2_pair": [
-      "Zoey Weil",
-      "Sahra Dennehy"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.3486,
-     "modal": "8-11",
-     "margin": -1.84,
-     "t1_pair": [
-      "John Lucian Goins",
-      "Zane Navratil"
-     ],
-     "t2_pair": [
-      "Dylan Frazier",
-      "Pablo Tellez"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.1072,
-     "modal": "5-11",
-     "margin": -4.93,
-     "t1_pair": [
-      "Elsie Hendershot",
-      "AJ Koller"
-     ],
-     "t2_pair": [
-      "Zoey Weil",
-      "Dylan Frazier"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.4404,
-     "modal": "9-11",
-     "margin": -0.82,
-     "t1_pair": [
-      "Ting Chieh Wei",
-      "John Lucian Goins"
-     ],
-     "t2_pair": [
-      "Sahra Dennehy",
-      "Pablo Tellez"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.1209,
-    "p_40": 0.003,
-    "p_31": 0.0474,
-    "p_db": 0.2392,
-    "p_13": 0.4435,
-    "p_04": 0.267,
-    "p_db_win": 0.2948
-   }
-  },
-  {
-   "date": "2026-08-01",
-   "start": "2026-08-01T19:00:00Z",
-   "event": "Amway MLP Orlando",
-   "team1": "Las Vegas Night Owls",
-   "team2": "St. Louis Shock",
-   "lineups_from": {
-    "team1": "official",
-    "team2": "official"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.0359,
-     "modal": "4-11",
-     "margin": -6.52,
-     "t1_pair": [
-      "Callie Smith",
-      "Chao Yi Wang"
-     ],
-     "t2_pair": [
-      "Anna Bright",
-      "Kate Fahey"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.0398,
-     "modal": "4-11",
-     "margin": -6.39,
-     "t1_pair": [
-      "Clayton Powell",
-      "Roscoe Bellamy"
-     ],
-     "t2_pair": [
-      "Hayden Patriquin",
-      "Gabriel Tardio"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.0188,
-     "modal": "3-11",
-     "margin": -7.37,
-     "t1_pair": [
-      "Liz Truluck",
-      "Clayton Powell"
-     ],
-     "t2_pair": [
-      "Anna Bright",
-      "Hayden Patriquin"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.1054,
-     "modal": "5-11",
-     "margin": -4.96,
-     "t1_pair": [
-      "Chao Yi Wang",
-      "Roscoe Bellamy"
-     ],
-     "t2_pair": [
-      "Kate Fahey",
-      "Gabriel Tardio"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.0106,
-    "p_40": 0.0,
-    "p_31": 0.0003,
-    "p_db": 0.0118,
-    "p_13": 0.1752,
-    "p_04": 0.8126,
-    "p_db_win": 0.2764
-   }
-  },
-  {
-   "date": "2026-08-01",
-   "start": "2026-08-01T20:00:00Z",
-   "event": "Amway MLP Orlando",
-   "team1": "Carolina Hogs",
-   "team2": "Palm Beach Royals",
-   "lineups_from": {
-    "team1": "official",
-    "team2": "official"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.0118,
-     "modal": "2-11",
-     "margin": -8.33,
-     "t1_pair": [
-      "Nicole Conard",
-      "Abbigal Hatton"
-     ],
-     "t2_pair": [
-      "Sofia Sewing",
-      "Tina Pisnik"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.371,
-     "modal": "8-11",
-     "margin": -1.59,
-     "t1_pair": [
-      "Brandon French",
-      "Wyatt Stone"
-     ],
-     "t2_pair": [
-      "Dekel Bar",
-      "Tyson McGuffin"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.0241,
-     "modal": "3-11",
-     "margin": -7.03,
-     "t1_pair": [
-      "Aiko Yoshitomi",
-      "Wyatt Stone"
-     ],
-     "t2_pair": [
-      "Tina Pisnik",
-      "Dekel Bar"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.1278,
-     "modal": "5-11",
-     "margin": -4.6,
-     "t1_pair": [
-      "Nicole Conard",
-      "Brandon French"
-     ],
-     "t2_pair": [
-      "Sofia Sewing",
-      "Casey Diamond"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.0197,
-    "p_40": 0.0,
-    "p_31": 0.0018,
-    "p_db": 0.0602,
-    "p_13": 0.409,
-    "p_04": 0.5291,
-    "p_db_win": 0.2976
-   }
-  },
-  {
-   "date": "2026-08-01",
-   "start": "2026-08-01T20:30:00Z",
-   "event": "Amway MLP Orlando",
-   "team1": "New Jersey 5s",
-   "team2": "Los Angeles Mad Drops",
-   "lineups_from": {
-    "team1": "official",
-    "team2": "official"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.9612,
-     "modal": "11-4",
-     "margin": 6.32,
-     "t1_pair": [
-      "Anna Leigh Waters",
-      "Jorja Johnson"
-     ],
-     "t2_pair": [
-      "Catherine Parenteau",
-      "Jade Kawamoto"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.4614,
-     "modal": "9-11",
-     "margin": -0.59,
-     "t1_pair": [
-      "Federico Staksrud",
-      "Will Howells"
-     ],
-     "t2_pair": [
-      "Ben Johns",
-      "Max Freeman"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.6355,
-     "modal": "11-8",
-     "margin": 1.35,
-     "t1_pair": [
-      "Anna Leigh Waters",
-      "Noe Khlif"
-     ],
-     "t2_pair": [
-      "Jade Kawamoto",
-      "Ben Johns"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.7765,
-     "modal": "11-7",
-     "margin": 3.05,
-     "t1_pair": [
-      "Jorja Johnson",
-      "Federico Staksrud"
-     ],
-     "t2_pair": [
-      "Catherine Parenteau",
-      "Connor Garnett"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.8409,
-    "p_40": 0.2189,
-    "p_31": 0.4528,
-    "p_db": 0.2741,
-    "p_13": 0.0525,
-    "p_04": 0.0017,
-    "p_db_win": 0.6173
-   }
-  },
-  {
-   "date": "2026-08-01",
-   "start": "2026-08-01T21:30:00Z",
-   "event": "Amway MLP Orlando",
-   "team1": "Miami Pickleball Club",
-   "team2": "Phoenix Flames",
-   "lineups_from": {
-    "team1": "official",
-    "team2": "official"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.5933,
-     "modal": "11-9",
-     "margin": 0.87,
-     "t1_pair": [
-      "Estee Widdershoven",
-      "Isabella Dunlap"
-     ],
-     "t2_pair": [
-      "Allison Phillips",
-      "Daria Walczak"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.438,
-     "modal": "9-11",
-     "margin": -0.84,
-     "t1_pair": [
-      "Anderson Scarpa",
-      "Anouar Braham"
-     ],
-     "t2_pair": [
-      "Camden Chaffin",
-      "Jonathan Truong"
-     ]
-    },
-    {
-     "slot": "MXD1",
-     "p": 0.4161,
-     "modal": "8-11",
-     "margin": -1.09,
-     "t1_pair": [
-      "Isabella Dunlap",
-      "James Delgado"
-     ],
-     "t2_pair": [
-      "Daria Walczak",
-      "Camden Chaffin"
-     ]
-    },
-    {
-     "slot": "MXD2",
-     "p": 0.4295,
-     "modal": "9-11",
-     "margin": -0.94,
-     "t1_pair": [
-      "Estee Widdershoven",
-      "Anouar Braham"
-     ],
-     "t2_pair": [
-      "Allison Phillips",
-      "Michael Loyd"
-     ]
-    }
-   ],
-   "tree": {
-    "p_win": 0.4731,
-    "p_40": 0.0464,
-    "p_31": 0.2183,
-    "p_db": 0.3771,
-    "p_13": 0.282,
-    "p_04": 0.0761,
-    "p_db_win": 0.5525
-   }
-  },
-  {
-   "date": "2026-08-01",
-   "start": "2026-08-01T23:00:00Z",
-   "event": "Amway MLP Orlando",
-   "team1": "Orlando Squeeze",
-   "team2": "St. Louis Shock",
-   "lineups_from": {
-    "team1": "official",
-    "team2": "official"
-   },
-   "games": [
-    {
-     "slot": "WD",
-     "p": 0.0183,
-     "modal": "3-11",
-     "margin": -7.41,
-     "t1_pair": [
-      "Alex Walker",
-      "Lacy Schneemann"
-     ],
-     "t2_pair": [
-      "Anna Bright",
-      "Kate Fahey"
-     ]
-    },
-    {
-     "slot": "MD",
-     "p": 0.0234,
-     "modal": "3-11",
-     "margin": -7.07,
-     "t1_pair": [
-      "Jack Sock",
-      "Yates Johnson"
-     ],
-     "t2_pair": [
       "Gabriel Tardio",
       "Hayden Patriquin"
+     ],
+     "t2_pair": [
+      "Federico Staksrud",
+      "Will Howells"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.0933,
-     "modal": "5-11",
-     "margin": -5.17,
+     "p": 0.4764,
+     "modal": "9-11",
+     "margin": -0.42,
      "t1_pair": [
-      "Lacy Schneemann",
-      "Jack Sock"
-     ],
-     "t2_pair": [
       "Anna Bright",
       "Hayden Patriquin"
+     ],
+     "t2_pair": [
+      "Anna Leigh Waters",
+      "Noe Khlif"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.0143,
-     "modal": "2-11",
-     "margin": -7.82,
+     "p": 0.6157,
+     "modal": "11-8",
+     "margin": 1.13,
      "t1_pair": [
-      "Lina Padegimaite",
-      "Gregory Dow"
-     ],
-     "t2_pair": [
       "Kate Fahey",
       "Gabriel Tardio"
+     ],
+     "t2_pair": [
+      "Jorja Johnson",
+      "Federico Staksrud"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.0106,
-    "p_40": 0.0,
-    "p_31": 0.0001,
-    "p_db": 0.0059,
-    "p_13": 0.1371,
-    "p_04": 0.8568,
-    "p_db_win": 0.2065
+    "p_win": 0.4983,
+    "p_40": 0.0385,
+    "p_31": 0.2853,
+    "p_db": 0.4396,
+    "p_13": 0.212,
+    "p_04": 0.0246,
+    "p_db_win": 0.3969
+   }
+  },
+  {
+   "date": "2026-08-02",
+   "start": "2026-08-02T17:00:00Z",
+   "event": "Amway MLP Orlando",
+   "team1": "Palm Beach Royals",
+   "team2": "Las Vegas Night Owls",
+   "lineups_from": {
+    "team1": "official",
+    "team2": "official"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.5027,
+     "modal": "9-11",
+     "margin": -0.13,
+     "t1_pair": [
+      "Tamaryn Emmrich",
+      "Tina Pisnik"
+     ],
+     "t2_pair": [
+      "Callie Smith",
+      "Chao Yi Wang"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.4604,
+     "modal": "9-11",
+     "margin": -0.6,
+     "t1_pair": [
+      "Casey Diamond",
+      "Dekel Bar"
+     ],
+     "t2_pair": [
+      "Clayton Powell",
+      "Roscoe Bellamy"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.7348,
+     "modal": "11-7",
+     "margin": 2.52,
+     "t1_pair": [
+      "Tina Pisnik",
+      "Dekel Bar"
+     ],
+     "t2_pair": [
+      "Chao Yi Wang",
+      "Roscoe Bellamy"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.2616,
+     "modal": "7-11",
+     "margin": -2.84,
+     "t1_pair": [
+      "Tamaryn Emmrich",
+      "Casey Diamond"
+     ],
+     "t2_pair": [
+      "Liz Truluck",
+      "Clayton Powell"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.4534,
+    "p_40": 0.0445,
+    "p_31": 0.2378,
+    "p_db": 0.403,
+    "p_13": 0.2622,
+    "p_04": 0.0525,
+    "p_db_win": 0.4246
+   }
+  },
+  {
+   "date": "2026-08-02",
+   "start": "2026-08-02T18:30:00Z",
+   "event": "Amway MLP Orlando",
+   "team1": "Los Angeles Mad Drops",
+   "team2": "Brooklyn Pickleball Team",
+   "lineups_from": {
+    "team1": "official",
+    "team2": "official"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9834,
+     "modal": "11-3",
+     "margin": 7.49,
+     "t1_pair": [
+      "Jade Kawamoto",
+      "Samantha Parker"
+     ],
+     "t2_pair": [
+      "Hannah Blatt",
+      "Irina Tereschenko"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.6467,
+     "modal": "11-8",
+     "margin": 1.48,
+     "t1_pair": [
+      "Connor Garnett",
+      "Max Freeman"
+     ],
+     "t2_pair": [
+      "Christopher Haworth",
+      "Stefan Auvergne"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.9844,
+     "modal": "11-3",
+     "margin": 7.59,
+     "t1_pair": [
+      "Jade Kawamoto",
+      "Connor Garnett"
+     ],
+     "t2_pair": [
+      "Hannah Blatt",
+      "Christopher Haworth"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.6681,
+     "modal": "11-8",
+     "margin": 1.73,
+     "t1_pair": [
+      "Samantha Parker",
+      "Max Freeman"
+     ],
+     "t2_pair": [
+      "Irina Tereschenko",
+      "Stefan Auvergne"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.9504,
+    "p_40": 0.4183,
+    "p_31": 0.45,
+    "p_db": 0.1279,
+    "p_13": 0.0038,
+    "p_04": 0.0,
+    "p_db_win": 0.6423
    }
   }
  ]
