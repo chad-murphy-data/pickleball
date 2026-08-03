@@ -131,8 +131,13 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    skill × MLP usage, not MLP-earned); total points & POE set aside too.
 
 10. **CLUTCH IS REAL BUT SMALL — and the naive measure is ~2/3 artifact**
-   (2026-08-03; `model/clutch_leverage.md` is the full story — read it
-   before re-opening this). Two independent errors had to be fixed, and
+   (2026-08-03; `model/clutch_notes.md` = what was FOUND, read that first;
+   `model/clutch_leverage.md` = the technical record. Read both before
+   re-opening this). Reusable beyond clutch: a per-rally LEVERAGE scale
+   (max 0.457 = down 9-10 receiving vs the #2 server), measured k = 0.4383
+   doubles / 0.5254 singles, and the match-vs-game VARIANCE SPLIT for PPA
+   best-of-3s (sd_match 0.15 + sd_game 0.35 — use this in any future
+   match simulation, the nominal 0.352 per-match is wrong). Two independent errors had to be fixed, and
    they pull opposite ways.
    (a) **Side-out scoring FAKES clutch and the fake scales with skill**: a
    service run is a string of wins ending in exactly ONE loss, at the run's

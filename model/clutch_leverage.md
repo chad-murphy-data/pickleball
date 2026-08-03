@@ -1,5 +1,10 @@
 # Clutch, measured against a null that fights back
 
+> **Start with `model/clutch_notes.md`** if you want what this investigation
+> *found* — the leverage scale, the side-out fingerprint, the minority-trait
+> result, the CWPA unit, and the match/game variance split — rather than the
+> statistics that got it there. This file is the technical record.
+
 *Session 2026-08-03. Supersedes `model/clutch.md`. Code: `clutch_leverage.py`
 (measure), `clutch_mechanical.py` (why the naive measure is broken),
 `clutch_null.py` (the null), `clutch_report.py` (attributed answer),
