@@ -76,6 +76,17 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 
 1. Weakest-link: team = sum + γ|gap|, γ = −0.47 pts (Gaussian) / −0.18
    logit (race model — the truncation-free estimate). Gender-blind in mixed.
+   Equivalent to weighting better/worse partner 0.41/0.59. PER-DIVISION
+   (2026-08-03, joint refit `model/fit_v2_gamma_div.py` →
+   `gamma_division_refit.md`): NOT uniform — mens −0.28 (0.36/0.64),
+   womens −0.20 (0.40/0.60), mixed −0.09 (0.45/0.55, CI touches 0); only
+   mens−mixed is credible (Δ=−0.19, P=0.008). The pooled −0.18 is a
+   mixed-heavy average. CAUTION: a conditional profile on frozen pooled-γ
+   values (`gamma_division.py`) gave the REVERSED ordering — that
+   circularity is real, always use the joint fit for γ questions. Mixed γ
+   is entangled with the cross-gender offset channel (finding 8: γ|gap| is
+   the offset's only identification). Production v2 keeps pooled γ until a
+   per-division variant beats the holdout gate.
 2. Chemistry is small: sd ≈ 0.3–0.5 pts, prior-insensitive; no single pair
    certifiable (need ~1,000 games; max on record 138).
 3. Skill transfers across contexts (sd_w ≈ 0.13) and tours (no MLP
@@ -480,7 +491,15 @@ max|z| 3.27 across 552 players, permutation p=0.58; |z|>2 count 29 vs
 null median 27 [19,36]; pre-specified Anna Bright slope −0.014/10mph,
 p=0.84 (per-player resolution ~±3pp share per 10 mph — only large
 individual effects detectable). Leaderboard is noise, never publish
-names off it. FAVORITES×WIND KILLED (2026-07-28, `model/favorites_wind.py`,
+names off it. RARE-TRAIT SHAPE ALSO NULL (2026-08-03,
+`model/wind_rare.py` + `wind_rare_power.py`, weather_thread.md §7):
+the full clutch battery (spike-slab LR 5.8 vs null max 7.2; tails
+null both directions; select-then-verify p≥0.17 both tails, strong
+side anti-persists) on the IDENTICAL panel, with an injection floor —
+a 13% minority at ±0.02 share/10mph fires the battery 75%, ±0.03
+100%, 0/20 false positives. So: no minority wind trait ≥0.02
+share/10mph; smaller is below the telescope. Don't re-open without a
+bigger archive or a sharper wind measure (court-level anemometer). FAVORITES×WIND KILLED (2026-07-28, `model/favorites_wind.py`,
 data-referenced nulls only): continuous interaction share~skill+wind+
 skill×wind gives d = +0.002 [−0.060,+0.064] OUTDOOR (24.8k games — no
 compression at all; b≈1.04 so v2 shares are near-perfectly calibrated)
