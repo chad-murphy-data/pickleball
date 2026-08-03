@@ -99,10 +99,13 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    plain points pre-match (live-only asset); winprob.py's odds-split
    assumption VALIDATED on 216k harvested rallies (slope 1.03). Women
    carry mixed predictively (74% women-only vs 65% men-only — equal
-   loadings, women's spread 1.5×; offset-safe). Clutch & durability
-   exist but are faint beyond skill (split-half r ≈ 0.15/0.13;
-   ALW+Johns top BOTH lists; biggest rally = 9-10 on #2 server, 0.47
-   swing). Lone P≥0.95 challenger: equal-weight v2+margin+Elo ensemble
+   loadings, women's spread 1.5×; offset-safe). ~~Clutch & durability
+   exist but are faint beyond skill (split-half r ≈ 0.15/0.13)~~ — the
+   clutch half is SUPERSEDED, see finding 10 (that split-half was mostly
+   a side-out artifact; the real effect is smaller AND needs a
+   team-outcome estimator). Durability untouched by that work; biggest
+   rally = 9-10 on #2 server, 0.47 swing, still stands.
+   Lone P≥0.95 challenger: equal-weight v2+margin+Elo ensemble
    (0.1638 vs 0.1665 Brier) — shadow-ledger it before ever adopting.
    Rally logs cache: raw/match_logs/ (gitignored; harvest_logs.py).
 8. Cross-gender offset: the γ|gap| term is the ONLY identification channel
@@ -126,6 +129,105 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    considered 2026-08-01 and rejected; the clean upgrade, if ever wanted,
    is frozen pre-May ratings, not MLP-only). PAR was set aside (career
    skill × MLP usage, not MLP-earned); total points & POE set aside too.
+
+10. **CLUTCH IS REAL BUT SMALL — and the naive measure is ~2/3 artifact**
+   (2026-08-03; `model/clutch_notes.md` = what was FOUND, read that first;
+   `model/clutch_leverage.md` = the technical record. Read both before
+   re-opening this). Reusable beyond clutch: a per-rally LEVERAGE scale
+   (max 0.457 = down 9-10 receiving vs the #2 server), measured k = 0.4383
+   doubles / 0.5254 singles, and the match-vs-game VARIANCE SPLIT for PPA
+   best-of-3s (sd_match 0.15 + sd_game 0.35 — use this in any future
+   match simulation, the nominal 0.352 per-match is wrong). Two independent errors had to be fixed, and
+   they pull opposite ways.
+   (a) **Side-out scoring FAKES clutch and the fake scales with skill**: a
+   service run is a string of wins ending in exactly ONE loss, at the run's
+   highest score and so its highest leverage, which manufactures the
+   covariance at a true effect of zero; better servers have longer runs, so
+   the artifact correlates +0.87 with own serve rate and +0.65 with v2
+   rating. That is what `model/clutch.md` measured — its existence claims
+   and named 7-player FDR list are RETRACTED.
+   (b) **NEVER attribute a doubles rally to its server or receiver.** Four
+   players contest it. Injecting TEAM-level clutch of tau=0.010 and reading
+   it through server/receiver attribution recovers 0.0042 and names ZERO
+   players (`clutch_circularity.py`). Use `model/clutch_team.py`: the cell
+   is the whole game, the outcome is the SIDE's, both partners get the same
+   number, individuals identified by partner rotation (same channel as v2;
+   same reason actor/partner aren't separable within a pairing).
+   Result vs a real-schedule no-clutch null (`clutch_null.py --model`,
+   60 replayed seasons): doubles tau = 0.0050 [0.0032, 0.0066], singles
+   0.0069 [0.0043, 0.0088], var(z) = 1.56 vs chance 1.00 — and var(z)
+   RISES to 2.10 among 300+ game players (noise would fall). Ben Johns
+   z = 5.28, Anna Leigh Waters z = 5.00 in a 336-player field whose null
+   max is ~3.2 — BUT see the partner decomposition before naming both:
+   Johns and Waters are mixed partners in 500 games (44%/46% of their
+   doubles records), and `model/clutch_partner.py` shows Johns survives
+   with her removed (z 3.27 on 648 games) while Waters does NOT survive
+   with him removed (z 1.14 on 577 games — a real null, not thin data;
+   Tardio is intermediate at 2.25). Defensible claim = "Ben Johns and the
+   teams he plays on", not two independent players. ALWAYS run the
+   partner split before publishing a doubles name — the team estimator
+   gives both partners the same per-game number, so one dominant pairing
+   can carry a whole career total. Doubles cross-era r = +0.171 (floor
+   +0.037); singles serve-vs-return r = +0.207 (floor +0.068), +0.160
+   after removing skill. **Clutch does NOT transfer doubles↔singles
+   (r ≈ −0.10) — pooling the two DILUTES; never pool.** All taus are ~12%
+   LOW: the null's abilities are fitted on clutch-contaminated data, which
+   costs 12% of the effect (measured, `clutch_circularity.py`).
+   **It is a MINORITY trait — do NOT read tau as "everyone has 0.005"**
+   (`model/clutch_rare.py`, the right instrument once you accept clutch
+   may be rare; var(z)/tau are DILUTION-prone and a Gaussian EB prior
+   over-shrinks true outliers). Spike-and-slab b~(1−π)δ₀+πN(μ,σ²):
+   doubles LR = 72.2 against π=0 vs a null LR of 1.0±1.3 (singles 18.2 vs
+   1.1±1.9); fitted shape ≈ 13% of players carrying sd 0.014, rest zero.
+   π alone is NOT quotable — π and σ trade off and null fits also return
+   large π; the LR is the test. Tail counts doubles z>2.5: 6 obs vs null
+   median 2; z>3: 3 vs 0 — and the excess sits in the 200-500 and 500+
+   game bins (11 vs 4, 5 vs 1), NOT the thin 60-200 bin (9 vs 7), which
+   is the direction that rules out se miscalibration. SELECT-THEN-VERIFY
+   (the only test that establishes individuals): name top-K on 2024-25
+   alone, measure that fixed roster on 2026 alone — K=40 gives z = 3.77
+   vs null 0.29±1.00, K=5 gives 3.31 vs 0.02±0.97, and 0 of 30 no-clutch
+   seasons ever reached it. Tail is TWO-SIDED (several z<−3); house
+   position on not naming chokers stands. Size: tau 0.005 ≈ half a point
+   of rally-win probability per sd of leverage; Johns ≈ one extra game
+   per 100. Real, repeatable, concentrated in a minority.
+   BETWEEN-GAME CLUTCH IS DEAD (`model/clutch_decider.py`, 13,767 PPA
+   best-of-3s, 3,873 deciders): D = mean point-share residual in a
+   player's game-3 deciders minus their other games. var(z) = 0.827 vs
+   chance 1.000, tau = 0 [0, 0.0043], 2 players past |z|>1.96 where 8 are
+   expected. Nobody elevates for the big match. NOTE THE TRAP — deciders
+   are SELECTED (reaching 1-1 is evidence the favourite is having a bad
+   day), the artifact correlates −0.68 with skill, and the race model's
+   nominal SD_MATCH=0.352 OVERSTATES it ~13x: it reproduces neither the
+   decider rate (0.219 sim vs 0.281 real) nor the selection structure
+   (−0.213 vs −0.016), and subtracting it manufactured a confident false
+   positive (var(z) 1.519, tau 0.017, 17 "significant" players). The null
+   must be CALIBRATED to reproduce both observed quantities first —
+   sd_match 0.15 + sd_game 0.35 does (0.281/0.281, −0.016/−0.016). A
+   per-match effect lowers the decider rate and drives the bias; a
+   per-game effect raises it and biases nothing.
+   TWO DELIVERABLES, don't conflate: the TRAIT question (a forecast —
+   needs replication + shrinkage; only Johns/Waters survive) vs the
+   LEDGER (`model/clutch_ledger.py` → data/clutch_ledger.csv). CWPA =
+   Clutch Win Probability Added, denominated in GAMES; +1.0 = one game's
+   worth of win prob banked purely from WHEN the rally wins landed. Not
+   shrunk (a record isn't an estimate) but still baseline-corrected —
+   subtracting the side-out artifact sets where zero is, it is not
+   shrinkage. Same family as finding 9's MVP outcome accounting. Career
+   doubles: Johns +26.3, Waters +21.0, Tardio +15.4, Alshon +10.6,
+   Erokhina +10.0 (best rate, +2.30/100). 2026: Johns +12.2. Singles:
+   Haworth +8.4 (and near the BOTTOM in doubles — the non-transfer in one
+   person). Publish CWPA next to its noise sd (±4.9 games per 1,000-game
+   career); most of the list sits inside its own error bar.
+   GOTCHA: the null's U must be rescaled to each player's OWN SSL before
+   averaging — Waters' games run short, so an unscaled baseline charged
+   her for leverage she never had and dropped her 2nd → 14th.
+   Traps that ate this session: (i) under the WEAKER flat-rate null the
+   cross-era correlation is +0.246 with calib slope 1.00 and looks like
+   proof — skill is stable across eras so any residual skill-linked bias
+   fakes it; residualising on skill kills it (−0.002). (ii) The attributed
+   estimator + pooling gave a confident "no clutch at any size"; it was an
+   estimator failure, not a finding.
 
 ## House rules (hard-won; violating these produces silently wrong results)
 

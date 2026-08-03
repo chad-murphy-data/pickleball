@@ -1,5 +1,22 @@
 # Clutch in pro pickleball — the whole investigation
 
+> **SUPERSEDED 2026-08-03 — see `model/clutch_leverage.md`.** The existence
+> and reliability claims below (§2, §3, §4 and the named FDR list) do not
+> survive a null that reproduces side-out scoring. A service run is a string
+> of wins ending in exactly one loss, at the run's highest score and so its
+> highest leverage; that manufactures a leverage/outcome covariance at a true
+> effect of zero, and because better servers have longer runs the fake effect
+> scales with skill. A simulated league in which nobody is clutch reproduces
+> the "2.9x wider than chance" spread and correlates +0.65 with v2 rating.
+> Re-measured on 1.46M rallies against a real-schedule null, using a
+> TEAM-outcome estimator (a doubles rally belongs to all four players, not
+> to whoever served), clutch is real but roughly a third the advertised
+> size: tau = 0.0050 in doubles, 0.0069 in singles, with Johns and Waters
+> the only clearly separated individuals. The §2–§4 magnitudes, the
+> reliability figures and the FDR list are all inflated by the artifact.
+> §5 (no game-prediction value) still stands. §1 and §6 (the leverage
+> machinery, the biggest point in pickleball) remain correct.
+
 *Session 2026-07-20/21. Code: `model/big_points.py` (measure + existence),
 `model/clutch_significance.py` (who's confidently clutch), and the
 predictive ledger `model/clutch_predictive.py`, `clutch_predictive_subset.py`,

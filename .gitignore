@@ -5,6 +5,10 @@ raw/
 *.log
 scraper/discovery/
 model/*.npz
+# clutch null bootstrap: 60 replayed seasons, ~30 MB each, regenerable in
+# ~40 min via model/clutch_null.py (the small obs/games npz stay committed)
+data/clutch_null.npz
+data/clutch_null_model.npz
 .netlify/
 node_modules/
 site/
@@ -14,3 +18,9 @@ content/**/*.png
 
 # droplet Supabase creds (service-role key — never commit)
 deploy/pickleball.env
+
+# rare-trait raw dump: 30 replicates x 7 arms, regenerable via clutch_team.py
+data/clutch_team_raw.npz
+
+# per-game null baseline cache: regenerable via clutch_partner.py (~15 min)
+data/clutch_pergame.npz
