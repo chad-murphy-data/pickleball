@@ -279,3 +279,41 @@ player in the sport. The ranking that falls out (Collin Johns +0.211, Daescu
 +0.154, Alshon +0.082, Ben Johns +0.036, Waters +0.029, Tardio +0.025,
 Patriquin −0.026) should be ignored until reliability clears — seven players
 is a leaderboard of noise.
+
+## Do attacking / defending styles exist? Yes — but Ben Johns isn't one
+
+Earlier this file dismissed "Ben Johns plays long points" as a matchup
+confound by noting everyone in his matches also medians 17s. That comparison
+included Johns himself and so was biased toward equality — a hand-wave. The
+proper test compares a player's serve rallies against **everyone else's in
+the same match**, excluding the player from their own baseline.
+
+| player | matches | own | others | diff | 95% CI |
+|---|---|---|---|---|---|
+| **Collin Johns** | 89 | 20.3s | 19.6s | **+0.62** | **[+0.11, +1.15]** |
+| Anna Bright | 31 | 20.7s | 19.9s | +0.73 | [−0.11, +1.49] |
+| Andrei Daescu | 40 | 19.8s | 19.5s | +0.28 | [−0.49, +1.06] |
+| JW Johnson | 34 | 20.1s | 19.9s | +0.16 | [−0.58, +0.88] |
+| Gabriel Tardio | 106 | 18.5s | 18.5s | +0.02 | [−0.54, +0.58] |
+| Christian Alshon | 45 | 19.1s | 19.2s | −0.08 | [−0.79, +0.69] |
+| **Ben Johns** | 427 | 18.6s | 18.6s | **−0.03** | [−0.28, +0.20] |
+| Anna Leigh Waters | 184 | 18.0s | 18.2s | −0.14 | [−0.41, +0.14] |
+
+**Style signatures are real.** Collin Johns clears zero on 89 matches,
+playing rallies ~0.6s longer than everyone else on his own court. That is a
+genuine attacking/defending axis, measured within match so matchup quality
+cannot explain it.
+
+**Ben Johns has none.** −0.03s on 427 matches, the tightest CI in the table.
+His 18.6s belongs to his opponents, not to him. Same for Waters.
+
+### The cross-player comparison that does NOT work
+
+Splitting each player's rallies at their own median opponent gives Johns
+18.4s vs Waters 17.4s against the "weaker half" — which looks like a style
+difference. **It is not usable.** Waters plays women's and mixed, Ben Johns
+men's and mixed: different opponent pools and a physically different game, so
+their "weak opponent" is not the same opponent. Any cross-gender duration
+comparison inherits this. The within-match design in the table above is
+immune, because it compares players on the same court in the same rallies —
+which is the reason to prefer it.
