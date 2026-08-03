@@ -371,13 +371,54 @@ simulation.
 (CWPA here reads slightly below §6b — 15 null replicates rather than 30, so
 the baseline is a touch noisier. The splits are what matter, not the level.)
 
+## 6d. Elevating in deciders: no
+
+The within-game estimator is blind to a player who lifts their whole level
+for a match that matters, so `clutch_decider.py` asks that directly. 13,767
+clean PPA best-of-threes, 3,873 of which reached 1-1 and played a third game
+for the match. Per player, D = mean point-share residual in their deciders
+minus the same in their other games — a within-player contrast, immune to
+level, stale ratings, or schedule.
+
+**Verdict: nobody.** var(z) = 0.827 against a chance value of 1.000, tau =
+0.00000 [0.00000, 0.00431], and **2 players past |z| = 1.96 where 8 are
+expected** — fewer than chance, across 159 qualifying players. Best on the
+board is Tardio at z = 2.10, which is one-in-159 and unremarkable.
+
+**The null had to be calibrated, and this is the cautionary tale of the
+session.** Deciders are selected: a match only reaches 1-1 if the teams
+split, which is evidence about the match-level effect, so a favourite that
+split is having a bad day and its third game is negative *with no clutch
+anywhere*. That artifact correlates **−0.68 with skill**. Feeding the
+simulator the race model's nominal per-match sd of 0.352 reproduced neither
+the observed decider rate (0.219 vs 0.281) nor the observed selection
+structure (−0.213 vs −0.016) — it overstated the trap about thirteenfold,
+and subtracting it produced a confident false positive: var(z) = 1.519,
+tau = 0.017, 17 significant players, a leaderboard that looked real.
+
+The fix is to make the null reproduce the data's own structure before it is
+allowed to correct anything. Two variance components pull opposite ways — a
+per-MATCH effect makes a match's games agree, lowering the decider rate and
+driving the skill-linked bias; a per-GAME effect makes them disagree, raising
+the decider rate and biasing nothing. Grid-searching both against the two
+observed quantities gives sd_match 0.15 / sd_game 0.35, which reproduces the
+decider rate to 0.281 vs 0.281 and the artifact to −0.016 vs −0.016. Against
+*that* null there is nothing.
+
+(The simulator still under-produces residual spread — 0.154 vs 0.170 — so its
+per-player noise is inflated ×1.102. Without that inflation var(z) = 1.004:
+still exactly chance, so the verdict does not rest on the adjustment.)
+
+So: clutch in this sport is a within-game timing effect, small and confined
+to a minority. It is **not** a "rises for the big match" effect. Those are
+different claims and only the first one survives.
+
 ## 7. Honest limits
 
 - **"Big" means big within a game.** Leverage is demeaned inside each cell,
-  so a decider's 10-10 and a dead rubber's 10-10 count alike. Whether players
-  elevate in big *matches* is a separate question this cannot see, and
-  `data/games.csv` carries a `stage` column that would support it — the
-  obvious next thread.
+  so a decider's 10-10 and a dead rubber's 10-10 count alike. The
+  between-game version of the question is now answered separately and
+  negatively (§6d).
 - **Uniform clutch is invisible by construction.** If a player's composure
   makes them better on *every* rally rather than differentially on big ones,
   a within-player estimator cannot distinguish that from skill, and neither
@@ -405,6 +446,7 @@ python model/clutch_team.py --reps 30        # THE ANSWER (no attribution)
 python model/clutch_rare.py                  # is it a MINORITY trait? who verifies?
 python model/clutch_ledger.py                # CWPA ledger: what happened
 python model/clutch_partner.py --reps 15     # player or pairing?
+python model/clutch_decider.py --reps 150    # between-game: elevating in deciders?
 python model/clutch_report.py                # attributed version, for contrast
 python model/clutch_circularity.py           # the two objections
 python model/clutch_selfcheck.py             # zero in -> zero out

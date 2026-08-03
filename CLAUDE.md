@@ -186,6 +186,21 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    position on not naming chokers stands. Size: tau 0.005 ≈ half a point
    of rally-win probability per sd of leverage; Johns ≈ one extra game
    per 100. Real, repeatable, concentrated in a minority.
+   BETWEEN-GAME CLUTCH IS DEAD (`model/clutch_decider.py`, 13,767 PPA
+   best-of-3s, 3,873 deciders): D = mean point-share residual in a
+   player's game-3 deciders minus their other games. var(z) = 0.827 vs
+   chance 1.000, tau = 0 [0, 0.0043], 2 players past |z|>1.96 where 8 are
+   expected. Nobody elevates for the big match. NOTE THE TRAP — deciders
+   are SELECTED (reaching 1-1 is evidence the favourite is having a bad
+   day), the artifact correlates −0.68 with skill, and the race model's
+   nominal SD_MATCH=0.352 OVERSTATES it ~13x: it reproduces neither the
+   decider rate (0.219 sim vs 0.281 real) nor the selection structure
+   (−0.213 vs −0.016), and subtracting it manufactured a confident false
+   positive (var(z) 1.519, tau 0.017, 17 "significant" players). The null
+   must be CALIBRATED to reproduce both observed quantities first —
+   sd_match 0.15 + sd_game 0.35 does (0.281/0.281, −0.016/−0.016). A
+   per-match effect lowers the decider rate and drives the bias; a
+   per-game effect raises it and biases nothing.
    TWO DELIVERABLES, don't conflate: the TRAIT question (a forecast —
    needs replication + shrinkage; only Johns/Waters survive) vs the
    LEDGER (`model/clutch_ledger.py` → data/clutch_ledger.csv). CWPA =
