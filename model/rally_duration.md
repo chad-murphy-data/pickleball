@@ -237,3 +237,45 @@ Max Freeman z = +2.26 mirage in `clutch.md` — a standout on 650 serving
 rallies that evaporated at 20× the sample.
 
 Needs the archive backfill, like everything else here.
+
+## Ben Johns, targeted (556 matches fetched specifically for him)
+
+A random 520-match sample gave him only 334 timed serve rallies. Fetching
+every match he appears in gives **9,164 clean timed serve rallies across 495
+matches** — the best-sampled player available, so if a style trait is not
+measurable for him it is not measurable for anyone.
+
+**"Ben Johns plays long points" is a fact about his opponents.** His rallies
+median 17s; everyone in his matches also medians 17s, against a general field
+of 16s. Elite vs elite runs long. The raw statistic says nothing about him,
+and is reported here only to be dismissed.
+
+Net of that:
+
+| | short (≤11s) | long (≥22s) | contrast |
+|---|---|---|---|
+| Johns | 46.2% | 49.8% | **+0.036** [+0.004, +0.067] |
+| field in his matches | 40.4% | 46.2% | +0.058 |
+
+His edge over the field is **+5.8pp on short rallies vs +3.6pp on long ones**
+— concentrated in finishing, not grinding, which is the opposite of the
+"grinds you down" story. **But** the gap between his contrast and the field's
+is smaller than his own CI width, so "more of a finisher than his peers" is
+NOT established. Only that his contrast is small and positive.
+
+The contrast is orthogonal to quality by construction: a player who is
+uniformly better scores zero. That is the point — it is a style axis, not a
+ranking, and cannot tell you who is good.
+
+**The deciding number does not decide.** Population split-half of the
+contrast across servers in his matches: **r = +0.477, 95% CI
+[−0.079, +0.843], n = 13 players**. Spearman-Brown full-length +0.646, which
+would be a genuine trait — but the CI spans zero and 13 players is not a
+basis for anything. Johns's own halves are at least self-consistent (+0.049
+and +0.025, gap 0.024 against a CI width of 0.063).
+
+Verdict: **plausible and undecided**, and undecided for the best-sampled
+player in the sport. The ranking that falls out (Collin Johns +0.211, Daescu
++0.154, Alshon +0.082, Ben Johns +0.036, Waters +0.029, Tardio +0.025,
+Patriquin −0.026) should be ignored until reliability clears — seven players
+is a leaderboard of noise.
