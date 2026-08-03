@@ -40,9 +40,11 @@ sample: **name the top 40 on 2024-25 alone and that fixed roster comes back
 at z = 3.77 on 2026 alone**, against a null that centres at 0.29 ± 1.00 and
 never once reached the observed value in 30 no-clutch seasons.
 
-**Ben Johns (z = 5.28) and Anna Leigh Waters (z = 5.00) are genuinely
-separated from the field.** They were also top of the retracted list, for the
-wrong reason; they survive for the right one.
+**Ben Johns is the one individual who survives partner decomposition**
+(§6c). Anna Leigh Waters posts a comparable raw z, but she and Johns are
+mixed partners in 500 games — 44% of his doubles record and 46% of hers — and
+with him removed she falls to z = 1.14 on 577 games. Read the headline as
+"Johns and the teams he plays on", not as two independent findings.
 
 Read tau as the *population* summary of a trait most players do not have —
 quoting it as "everyone has 0.005" is the error the rare-trait tests exist to
@@ -309,6 +311,38 @@ OWN leverage sum-of-squares before averaging. Waters' games run short (she
 wins fast), so her simulated twins accumulated more leverage than she ever
 had the chance to, and an unscaled baseline dropped her from 2nd to 14th.
 
+## 6c. Player or pairing?
+
+The team estimator gives both partners the same number, so an individual is
+identified only by partner rotation. If one partnership dominates a player's
+record, the two are indistinguishable within it — the standing house rule.
+The two headline names are each other's partner, so this has to be checked
+(`clutch_partner.py`, per-game null baseline over 15 replicates).
+
+| | games | CWPA | ± | z |
+|---|---|---|---|---|
+| **Ben Johns**, all doubles | 1,148 | +24.8 | 4.9 | **+5.09** |
+| with Waters | 500 | +12.0 | 2.9 | +4.14 |
+| **without Waters** | 648 | +12.8 | 3.9 | **+3.27** |
+| **Anna Leigh Waters**, all | 1,077 | +15.4 | 4.1 | +3.72 |
+| with Johns | 500 | +12.0 | 2.9 | +4.14 |
+| **without Johns** | 577 | +3.3 | 2.9 | **+1.14** |
+| **Gabriel Tardio**, all | 935 | +20.2 | 4.9 | +4.08 |
+| without Johns | 681 | +9.6 | 4.3 | +2.25 |
+
+Johns holds up with any single partner removed. Waters does not, and 577
+games at se 2.93 is a real null rather than thin data — her other partners
+also disagree with each other (Parenteau +5.0 / z 2.55, Anna Bright −1.4 /
+z −0.89). Even Johns concentrates in two cells: Waters (+12.0) and Tardio
+(+10.5), against +2.2 (z 1.09) with Collin Johns over 199 games.
+
+So the defensible claim is **Ben Johns and the teams he plays on**, not two
+independent 5-sigma players. Whether it is Johns personally or those
+pairings is not separable in doubles, by construction.
+
+(CWPA here reads slightly below §6b — 15 null replicates rather than 30, so
+the baseline is a touch noisier. The splits are what matter, not the level.)
+
 ## 7. Honest limits
 
 - **"Big" means big within a game.** Leverage is demeaned inside each cell,
@@ -342,6 +376,7 @@ python model/clutch_null.py --reps 60 --model --out clutch_null_model
 python model/clutch_team.py --reps 30        # THE ANSWER (no attribution)
 python model/clutch_rare.py                  # is it a MINORITY trait? who verifies?
 python model/clutch_ledger.py                # CWPA ledger: what happened
+python model/clutch_partner.py --reps 15     # player or pairing?
 python model/clutch_report.py                # attributed version, for contrast
 python model/clutch_circularity.py           # the two objections
 python model/clutch_selfcheck.py             # zero in -> zero out

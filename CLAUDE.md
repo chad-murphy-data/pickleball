@@ -153,7 +153,16 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    0.0069 [0.0043, 0.0088], var(z) = 1.56 vs chance 1.00 — and var(z)
    RISES to 2.10 among 300+ game players (noise would fall). Ben Johns
    z = 5.28, Anna Leigh Waters z = 5.00 in a 336-player field whose null
-   max is ~3.2 — those two are real. Doubles cross-era r = +0.171 (floor
+   max is ~3.2 — BUT see the partner decomposition before naming both:
+   Johns and Waters are mixed partners in 500 games (44%/46% of their
+   doubles records), and `model/clutch_partner.py` shows Johns survives
+   with her removed (z 3.27 on 648 games) while Waters does NOT survive
+   with him removed (z 1.14 on 577 games — a real null, not thin data;
+   Tardio is intermediate at 2.25). Defensible claim = "Ben Johns and the
+   teams he plays on", not two independent players. ALWAYS run the
+   partner split before publishing a doubles name — the team estimator
+   gives both partners the same per-game number, so one dominant pairing
+   can carry a whole career total. Doubles cross-era r = +0.171 (floor
    +0.037); singles serve-vs-return r = +0.207 (floor +0.068), +0.160
    after removing skill. **Clutch does NOT transfer doubles↔singles
    (r ≈ −0.10) — pooling the two DILUTES; never pool.** All taus are ~12%
