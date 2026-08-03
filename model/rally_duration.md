@@ -317,3 +317,62 @@ their "weak opponent" is not the same opponent. Any cross-gender duration
 comparison inherits this. The within-match design in the table above is
 immune, because it compares players on the same court in the same rallies —
 which is the reason to prefer it.
+
+## Presence effect: the first per-player trait that replicates
+
+Two earlier attempts at "do attacking/defending styles exist" were both
+wrong, and the errors are worth keeping:
+
+1. *"Ben Johns plays long points"* — his rallies median 17s, but so does
+   everyone's in his matches. Pure matchup.
+2. *A player's SERVE rallies vs other players' serve rallies in the same
+   match* — this does not isolate the player at all. **Every rally has all
+   four players on court**, so splitting by who served isolates the SERVING
+   ROLE, not the person. And serving is largely uninteresting in pickleball:
+   the serve is a put-in, not a weapon.
+
+The right design is the four-player structure with duration as the DV:
+
+    duration = mu + L[p1] + L[p2] + L[p3] + L[p4] + eps
+
+`L` is a player's effect on rally length net of teammates and opponents. No
+serve term. `model/rally_presence.py`.
+
+**Ridge chosen by held-out prediction of duration, not by the reliability
+statistic** — selecting the penalty on the metric you then report is
+circular, and heavier shrinkage inflates reliability nearly mechanically.
+(Both routes happened to agree here; that was not knowable in advance.)
+
+| ridge | held-out MSE | split-half r |
+|---|---|---|
+| 5 | 91.45 | +0.063 |
+| 100 | 86.84 | +0.267 |
+| 250 | 86.08 | +0.344 |
+| **1500** | **85.68** | **+0.453** |
+
+**split-half +0.453, Spearman-Brown full-length +0.624.** On ~38k rallies /
+139 players.
+
+| player | presence | rallies |
+|---|---|---|
+| **Collin Johns** | **+1.47s** | 7,689 |
+| **Anna Bright** | **+1.30s** | 4,340 |
+| Tina Pisnik | +0.95s | 1,978 |
+| JW Johnson | +0.94s | 4,557 |
+| Ben Johns | +0.06s | 33,031 |
+| Anna Leigh Waters | −0.15s | 14,903 |
+
+**Attacking vs defending styles are real, measurable and replicable.** This is
+the first per-player trait in the whole clutch/duration investigation to
+clear its own reliability test.
+
+Ben Johns is **+0.06s — dead average on 33,031 rallies.** Whatever makes him
+the best player, it is not rally tempo.
+
+Two caveats that travel with the result:
+
+* **0.79% of rally-duration variance.** A real, replicable trait that is a
+  rounding error against rally-to-rally noise. Both are true at once.
+* At ridge 1500 the sd collapses from 1.44s to 0.33s. The **ordering** is what
+  replicates; magnitudes are pulled hard toward zero. Read +1.47s as "top of
+  the distribution", not a literal 1.5-second effect.
