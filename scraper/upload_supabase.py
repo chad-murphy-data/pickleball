@@ -84,6 +84,8 @@ def _rally_rows(matches):
                 "outcome": e["outcome"], "won": e["won"],
                 "server_score": e["server_score"],
                 "receiver_score": e["receiver_score"],
+                "start_utc": e.get("start_utc"),
+                "dur_s": e.get("dur_s"),
             }
 
 

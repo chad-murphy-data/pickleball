@@ -43,6 +43,7 @@ import argparse
 import csv
 import datetime as dt
 import json
+from datetime import datetime
 import logging
 import signal
 import sys
@@ -291,6 +292,29 @@ def _server_num(r):
         return None
 
 
+def _rally_time(start_row, end_row):
+    """(start_utc, dur_s) for a rally, from the type-12 marker to its
+    resolution. Both endpoints carry `date_created` at second resolution;
+    verified against the explicit point_log time_started/time_ended payload,
+    which agrees exactly but only exists on POINT rows.
+
+    Computed HERE, inside the correction-aware walk, so timing inherits the
+    same rally_number as everything else. Deriving it from a separate naive
+    walk desynchronises on referee score corrections (~29% of rallies) —
+    see scraper/extract_rally_times.py, which exists only because this was
+    not wired up yet."""
+    try:
+        a = start_row.get("date_created") if start_row else None
+        b = end_row.get("date_created") if end_row else None
+        if not a or not b:
+            return None, None
+        d = (datetime.fromisoformat(b.replace("Z", "+00:00"))
+             - datetime.fromisoformat(a.replace("Z", "+00:00"))).total_seconds()
+        return a, int(round(d))
+    except (ValueError, AttributeError):
+        return None, None
+
+
 def rally_events(rows, sides):
     """One record per rally, mirroring tally()'s correction-aware walk.
 
@@ -348,12 +372,14 @@ def rally_events(rows, sides):
                 side = side_of(server, sides)
             g = r.get("game_number")
             if delta > 0 and current is not None and server:
+                _su, _dur = _rally_time(current, r)
                 events.append({
                     "game": g, "server": server, "receiver": receiver,
                     "side": side, "outcome": "point", "won": 1,
                     "server_score": pts[g][side] if side is not None else None,
                     "receiver_score": pts[g][1 - side] if side is not None else None,
-                    "server_number": _server_num(current)})
+                    "server_number": _server_num(current),
+                    "start_utc": _su, "dur_s": _dur})
                 if side is not None:          # retraction is side-keyed, like tally
                     point_stack[side].append(len(events) - 1)
             if side is not None:
@@ -377,6 +403,7 @@ def rally_events(rows, sides):
                 server = current["server_uuid"].lower()
                 side = side_of(server, sides)
                 g = current.get("game_number")
+                _su, _dur = _rally_time(current, r)
                 events.append({
                     "game": g, "server": server,
                     "receiver": (current.get("receiver_uuid") or "").lower(),
@@ -385,7 +412,8 @@ def rally_events(rows, sides):
                     "won": 0,
                     "server_score": pts[g][side] if side is not None else None,
                     "receiver_score": pts[g][1 - side] if side is not None else None,
-                    "server_number": _server_num(current)})
+                    "server_number": _server_num(current),
+                    "start_utc": _su, "dur_s": _dur})
             current = None
 
     per_game = defaultdict(int)

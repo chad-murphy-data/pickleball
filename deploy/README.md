@@ -129,3 +129,24 @@ two CSVs are small and live in the repo, refreshed by the nightly run.
 Upcoming windows this summer (see ROADMAP Phase 1): MLP San Diego
 Jul 16–19, PPA Macon Challenger Jul 17–19, MLP Chicago Jul 23–25,
 Amway MLP Orlando Jul 30–Aug 1.
+
+## Rally timing (added 2026-08-03)
+
+`pb_rally` gained `start_utc` and `dur_s`. **No pipeline change is needed** —
+the nightly `run_logs_backfill.sh` already calls `upload_supabase.py`, which
+already calls `harvest_logs.rally_events()`, and that now computes rally
+duration inside the same correction-aware walk that assigns `rally_number`.
+
+One-time prerequisite, run against the Supabase project before the next
+nightly:
+
+    supabase/migrations/20260803_pb_rally_timing.sql
+
+Until then the upsert will fail on the unknown columns, so run it first.
+
+Why it lives in `rally_events` and not a separate pass: a naive log walk
+desynchronises from `rally_number` whenever a referee corrects a score
+(~29% of rallies disagree). Computing timing inside the correction-aware walk
+removes the join problem entirely. `scraper/extract_rally_times.py` and
+`data/rally_times.csv.gz` were the interim and can be retired once the column
+is populated.
