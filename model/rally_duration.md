@@ -100,3 +100,48 @@ lives in the between-point gap it is a pacing/routine finding; if in the
 rally itself it is a play-style finding. Then per-player contrasts — but
 those need the within-match design, since who reaches pressure states is
 skill-determined.
+
+## "Make them earn it" — Anna Bright's stated strategy, tested
+
+Bright has written about not missing on match point: make the opponent earn
+it. That predicts something specific and checkable — when you are defending
+game point and lose, the rally should run LONG. A short loss is the gift.
+
+**Design note (the important part).** The first cut used only game-ENDING
+rallies: 374 in 400 matches, 64 in tight situations, and a maximum of **2 per
+player**. Useless per-player. The fix is to condition on rallies that COULD
+have ended the game — every rally with the server at game point — not the
+ones that did. A game only ends when the serving side converts, so restricting
+to enders silently drops every game point the defender SAVED, which is the
+half Bright is actually talking about. Conditioning on the outcome threw away
+the informative cases.
+
+That reframe takes per-player counts from max 2 to max 45; 32 players at ≥10,
+14 at ≥20.
+
+| | n | vs that game's average |
+|---|---|---|
+| game point converted | 605 | +0.52s |
+| game point saved by defender | 843 | −0.35s |
+| ordinary won | 5,591 | +0.07s |
+| ordinary lost | 7,475 | −0.39s |
+
+| contrast | effect | 95% CI |
+|---|---|---|
+| converting a game point vs an ordinary point | +0.44s | [−0.25, +1.14] |
+| saving a game point vs an ordinary lost rally | +0.04s | [−0.40, +0.51] |
+| (game-enders only) tight vs blowout ending | +1.48s | [−0.62, +3.68] |
+
+**Nothing clears zero.** All three cuts point Bright's way, but they are the
+SAME RALLIES sliced differently — three views of one dataset, not three
+independent tests. Do not treat the agreement as accumulating evidence.
+
+Honest state: a plausible ~0.5s effect with the right sign and now the right
+design, where **the sample is the binding constraint rather than the method**.
+That is the opposite of every clutch result in this thread, where more data
+would not have helped because the design was broken. At archive scale
+(~26,000 games) the game-ender CI alone would shrink from 4.3s wide to ~0.5s.
+
+Per-player "does everyone make them earn it" remains out of reach until the
+backfill, but is no longer hopeless: heavily-used pros would have hundreds of
+game-point defences across the archive.
