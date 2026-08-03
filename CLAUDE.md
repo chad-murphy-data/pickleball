@@ -100,9 +100,11 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    assumption VALIDATED on 216k harvested rallies (slope 1.03). Women
    carry mixed predictively (74% women-only vs 65% men-only — equal
    loadings, women's spread 1.5×; offset-safe). ~~Clutch & durability
-   exist but are faint beyond skill~~ — CLUTCH IS DEAD, see finding 10
-   (durability untouched by that work; biggest rally = 9-10 on #2
-   server, 0.47 swing, still stands).
+   exist but are faint beyond skill (split-half r ≈ 0.15/0.13)~~ — the
+   clutch half is SUPERSEDED, see finding 10 (that split-half was mostly
+   a side-out artifact; the real effect is smaller AND needs a
+   team-outcome estimator). Durability untouched by that work; biggest
+   rally = 9-10 on #2 server, 0.47 swing, still stands.
    Lone P≥0.95 challenger: equal-weight v2+margin+Elo ensemble
    (0.1638 vs 0.1665 Brier) — shadow-ledger it before ever adopting.
    Rally logs cache: raw/match_logs/ (gitignored; harvest_logs.py).
@@ -128,36 +130,43 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    is frozen pre-May ratings, not MLP-only). PAR was set aside (career
    skill × MLP usage, not MLP-earned); total points & POE set aside too.
 
-10. **CLUTCH DOES NOT EXIST at any detectable size** (2026-08-03;
-   `model/clutch_leverage.md` is the full story — read it before
-   re-opening this). Measured on ALL 1.46M warehouse rallies (2024-26,
-   doubles + singles, serve AND return channels — `receiver_uuid` names
-   the returner, so return rallies are individually attributable) as the
-   within-(player × game) covariance of rally outcome with exact
-   serve-aware leverage. **The naive statistic is ~75% artifact**: a
-   service run is a string of wins ending in exactly ONE loss, at the
-   run's highest score and so its highest leverage, which manufactures
-   the covariance at a true effect of zero — and because better servers
-   have longer runs, the fake effect scales with skill (simulated
-   artifact correlates +0.65 with v2 rating, +0.87 with own serve rate).
-   That is what `model/clutch.md` measured; its existence/reliability
-   claims and its named 7-player FDR list are RETRACTED. Against a
-   real-schedule no-clutch null (`clutch_null.py`, 60 replayed seasons,
-   real rosters, opponent-aware serve model): var(z) = 1.018 across 837
-   players (chance = 1.000), tau = 0.0031 [0.0005, 0.0043] vs a
-   machinery floor of 0.0010, all three reliability splits (serve/return,
-   2024-25 vs 2026, doubles/singles) ON their null floors, max|z| = 3.86
-   (Johns) permutation p = 0.133, 44 players past |z|>1.96 vs null median
-   42. Power is NOT the issue: injecting tau = 0.010 recovers 0.0099 with
-   46 significant players and cross-era r = 0.259 (`clutch_power.py`).
-   **Ceiling: any real clutch is under ~0.005 — half a percentage point
-   of rally-win probability per sd of leverage, <0.5 games per 100.**
-   Trap that ate a whole session: under the WEAKER flat-rate null the
-   cross-era correlation is +0.246 with calibration slope 1.00 and looks
-   like proof — but skill is stable across eras, so any residual
-   skill-linked bias reproduces it; residualising on skill kills it
-   (−0.002). Never accept a persistence result here without first
-   removing skill and quoting the null floor.
+10. **CLUTCH IS REAL BUT SMALL — and the naive measure is ~2/3 artifact**
+   (2026-08-03; `model/clutch_leverage.md` is the full story — read it
+   before re-opening this). Two independent errors had to be fixed, and
+   they pull opposite ways.
+   (a) **Side-out scoring FAKES clutch and the fake scales with skill**: a
+   service run is a string of wins ending in exactly ONE loss, at the run's
+   highest score and so its highest leverage, which manufactures the
+   covariance at a true effect of zero; better servers have longer runs, so
+   the artifact correlates +0.87 with own serve rate and +0.65 with v2
+   rating. That is what `model/clutch.md` measured — its existence claims
+   and named 7-player FDR list are RETRACTED.
+   (b) **NEVER attribute a doubles rally to its server or receiver.** Four
+   players contest it. Injecting TEAM-level clutch of tau=0.010 and reading
+   it through server/receiver attribution recovers 0.0042 and names ZERO
+   players (`clutch_circularity.py`). Use `model/clutch_team.py`: the cell
+   is the whole game, the outcome is the SIDE's, both partners get the same
+   number, individuals identified by partner rotation (same channel as v2;
+   same reason actor/partner aren't separable within a pairing).
+   Result vs a real-schedule no-clutch null (`clutch_null.py --model`,
+   60 replayed seasons): doubles tau = 0.0050 [0.0032, 0.0066], singles
+   0.0069 [0.0043, 0.0088], var(z) = 1.56 vs chance 1.00 — and var(z)
+   RISES to 2.10 among 300+ game players (noise would fall). Ben Johns
+   z = 5.28, Anna Leigh Waters z = 5.00 in a 336-player field whose null
+   max is ~3.2 — those two are real. Doubles cross-era r = +0.171 (floor
+   +0.037); singles serve-vs-return r = +0.207 (floor +0.068), +0.160
+   after removing skill. **Clutch does NOT transfer doubles↔singles
+   (r ≈ −0.10) — pooling the two DILUTES; never pool.** All taus are ~12%
+   LOW: the null's abilities are fitted on clutch-contaminated data, which
+   costs 12% of the effect (measured, `clutch_circularity.py`).
+   Size: tau 0.005 ≈ half a point of rally-win probability per sd of
+   leverage; Johns ≈ one extra game per 100. Real, repeatable, small.
+   Traps that ate this session: (i) under the WEAKER flat-rate null the
+   cross-era correlation is +0.246 with calib slope 1.00 and looks like
+   proof — skill is stable across eras so any residual skill-linked bias
+   fakes it; residualising on skill kills it (−0.002). (ii) The attributed
+   estimator + pooling gave a confident "no clutch at any size"; it was an
+   estimator failure, not a finding.
 
 ## House rules (hard-won; violating these produces silently wrong results)
 

@@ -175,9 +175,12 @@ def _by_year(d, F, keep, npl, ng):
     tests — the same corrections apply to each slice."""
     out = {}
     year = np.array([s[:4] for s in d["date"]])
-    slices = {"pre26": keep & (year != "2026"), "y26": keep & (year == "2026"),
-              "dbl": keep & (d["disc"] == "doubles"),
-              "sgl": keep & (d["disc"] == "singles")}
+    pre = year != "2026"
+    dbl, sgl = d["disc"] == "doubles", d["disc"] == "singles"
+    slices = {"pre26": keep & pre, "y26": keep & ~pre,
+              "dbl": keep & dbl, "sgl": keep & sgl,
+              "dbl_pre26": keep & dbl & pre, "dbl_y26": keep & dbl & ~pre,
+              "sgl_pre26": keep & sgl & pre, "sgl_y26": keep & sgl & ~pre}
     for nm, m in slices.items():
         for ch in ("S", "R"):
             who = (F.srv_code if ch == "S" else F.rcv_code)[m]
@@ -234,9 +237,11 @@ def main(reps=30, seed=4242, model=False, out="clutch_null"):
     gdisc = np.empty(ng, dtype="<U8")
     gyear[d["gidx"]] = year
     gdisc[d["gidx"]] = d["disc"]
-    gslice = {"all": np.ones(ng, bool), "pre26": gyear != "2026",
-              "y26": gyear == "2026", "dbl": gdisc == "doubles",
-              "sgl": gdisc == "singles"}
+    gpre, gd_ = gyear != "2026", gdisc == "doubles"
+    gslice = {"all": np.ones(ng, bool), "pre26": gpre, "y26": ~gpre,
+              "dbl": gd_, "sgl": ~gd_,
+              "dbl_pre26": gd_ & gpre, "dbl_y26": gd_ & ~gpre,
+              "sgl_pre26": ~gd_ & gpre, "sgl_y26": ~gd_ & ~gpre}
 
     rng = np.random.default_rng(seed)
     acc = {(sl, ch): {k: np.zeros((reps, npl)) for k in ("u", "ssl", "v")}
