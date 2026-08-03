@@ -127,26 +127,29 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    is frozen pre-May ratings, not MLP-only). PAR was set aside (career
    skill × MLP usage, not MLP-earned); total points & POE set aside too.
 
-10. **Clutch index of record = `data/clutch_ratings.csv`** (2026-08-02;
-   `model/build_clutch_ratings.py`, written up in `model/clutch_regimes.md`).
-   Two leverage regimes per player (serve + return level on ordinary points
-   and on top-quartile-leverage points); clutch = big − regular. ALL FOUR
-   players load every rally, so it is teammate/opponent-adjusted; 795 players
-   vs 182. Fitted UNANCHORED — per-regime league constants, never the v2
-   offset, because anchoring to v2 pins each player's overall rally rate and
-   re-imposes the zero-sum artefact (that mistake produced elite players
-   "below baseline" on ordinary points; see clutch_regimes.md). Reliability:
-   lift split-half 0.63 (0.77 full-length), skill-adjusted 0.44 (0.61) — the
-   frozen index only reached 0.61 on its |z|>1.5 tail. Big-point and
-   regular-point ability are POSITIVELY correlated (+0.52): the zero-sum
-   framing was always an artefact. Serving is 4.2 pp harder on big points for
-   everyone (44.2% → 40.0%). corr with skill +0.72 — expected, not a defect;
-   use `skill_adj` for "more clutch than their level". **Still DESCRIPTIVE
-   ONLY**: no predictive value at 9-9 (n=1,823, `clutch_at_99_regimes.py`) or
-   at any of 30 entry-state × player-filter cells (`clutch_endgame_sweep.py`
-   — best cell dies against a shuffled-clutch null, p=0.10). `data/
-   clutch_players.csv` is retained as the archive behind the published
-   `content/clutch/` posts; don't repoint those scripts.
+10. **CLUTCH IS NOT ESTABLISHED — both constructions fail a simulated null**
+   (2026-08-03, `model/clutch_endogeneity.py`). Which rallies count as "big"
+   is computed from the SCORE, and the score is the result of earlier
+   rallies, so the label is ENDOGENOUS to the outcome being measured.
+   Simulate the whole archive with ZERO clutch for anyone (same games, same
+   players, same month-of-game skill, one constant rally probability per
+   side, real side-out dynamics) and run the estimators on it:
+     · regime construction: sd(lift) 0.3405 sim vs 0.3350 real; corr(skill,
+       lift) +0.735 sim vs +0.721 real; split-half +0.691 sim vs +0.629 real.
+     · frozen serve-only index: sd 0.0301 sim vs 0.0301 real (ratio 1.00x);
+       corr(skill) +0.522 sim vs +0.59 real.
+   A no-clutch world reproduces BOTH indices essentially exactly. The
+   original permutation null missed this because shuffling levz within a
+   game destroys the leverage-outcome association altogether, testing
+   against "no association" rather than "no PLAYER-SPECIFIC clutch given
+   the real score dynamics". **Split-half reliability does not rescue it** —
+   a stable artefact replicates as well as a stable trait, which is why the
+   0.61 leftover reliability was not the evidence it looked like.
+   Consequences: `data/clutch_ratings.csv` is NOT adopted; `data/
+   clutch_players.csv` is not an index of record either; clutch.md's
+   "the trait exists" claim and the published `content/clutch/` posts rest
+   on the same artefact and need revisiting. Any future clutch work must
+   clear the SIMULATED null, not a label permutation.
 11. **The serve DP is miscalibrated at 9-9** (found 2026-08-02,
    `model/clutch_at_99.py`): it underprices the better team — observed 0.572
    vs predicted 0.559 on 1,405 out-of-window games, and a zero-clutch skill
