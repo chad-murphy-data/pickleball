@@ -193,3 +193,47 @@ Red/yellow/green remains the best theory on the table — it makes the correct
 non-monotonic prediction and the far-behind cell behaves as it says — but
 whether that is players reading the scoreboard or good matchups producing
 long rallies is not yet separable at n=231.
+
+## Duration × outcome — the return advantage is a transient
+
+First, the caveat that governs this whole section: **duration is an outcome,
+not a choice.** A rally is long because both sides kept it alive, so
+conditioning on it is conditioning on a post-treatment variable. "Win rate in
+long rallies" is a valid conditional description; it is NOT evidence that
+choosing to extend rallies causes wins.
+
+As a description, though, the shape is clean (29,086 clean timed rallies):
+
+| rally length | n | serving side wins |
+|---|---|---|
+| 2–6s | 494 | 43.9% |
+| 7–10s | 2,737 | 41.1% |
+| **11–15s** | **9,498** | **40.5%** |
+| 16–22s | 10,165 | 42.5% |
+| 23–32s | 4,620 | 46.0% |
+| 33–90s | 1,572 | **47.8%** |
+
+U-shaped, with the trough in the third-shot phase. The returning team's
+structural advantage — they reach the kitchen first — bites hardest 11–15s
+in, holding the server to 40.5%. Past ~30s both teams are established at the
+net, the rally neutralises, and the serving side recovers to 47.8%, near the
+50% you would expect once the serve no longer matters. **The return advantage
+decays with rally length.**
+
+## Per-player style: not computable at this sample
+
+"Wins the long ones" as a player trait (win% on 22s+ rallies minus win% on
+≤11s) is the natural next question and cannot be answered here:
+
+* 36 players have ≥25 rallies in each bucket
+* only **19** have enough in both halves of the data, so **split-half
+  reliability is not computable** — and that is the test that decides whether
+  this is a trait or noise
+* excess-variance ratio 1.43, which means nothing without the reliability
+
+Names do fall out of the ranking (most grinder / most finisher) on 25–60
+rallies per cell. **Treat them as noise.** That is precisely the shape of the
+Max Freeman z = +2.26 mirage in `clutch.md` — a standout on 650 serving
+rallies that evaporated at 20× the sample.
+
+Needs the archive backfill, like everything else here.
