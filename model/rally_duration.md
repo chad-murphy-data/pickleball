@@ -145,3 +145,51 @@ would not have helped because the design was broken. At archive scale
 Per-player "does everyone make them earn it" remains out of reach until the
 backfill, but is no longer hopeless: heavily-used pros would have hundreds of
 game-point defences across the archive.
+
+## Red / yellow / green — and a correction
+
+Tennis has a red/yellow/green framing: green = swing freely, red = don't
+miss. Crucially you return to GREEN when the situation is nearly lost (down
+40-0, 5-0) — nothing to lose. That predicts a NON-MONOTONIC relationship
+between score margin and rally length: longest when close, short at BOTH
+extremes. A naive "pressure → patience" model predicts monotone and gets the
+far-behind cell wrong.
+
+Late rallies (someone ≥ 8), duration vs that game's average, by the server's
+signed margin:
+
+| margin | vs avg |
+|---|---|
+| behind 5+ | −0.10s |
+| behind 2–4 | +0.43s |
+| **within 1** | **+0.90s** |
+| ahead 2–4 | +0.82s |
+| ahead 5+ | −0.21s |
+
+The shape is there, including the left tail returning to short.
+
+**But the strict test does not support it.** Comparing late-and-close against
+late-and-lopsided gives +1.06s [+0.55, +1.58] — and PAIRED WITHIN THE SAME
+GAME it falls to **+0.41s [−0.11, +0.93]**, with only 52.4% of games showing
+it (n=231 games visiting both states).
+
+The flaw was mine: normalizing each rally against its own game's average does
+NOT force the same game into both cells. Close states come overwhelmingly
+from close GAMES — evenly matched pairs, who rally longer intrinsically — and
+lopsided states from blowout games. Most of the +1.06s was between-game
+matchup composition, the exact confound the normalization was supposed to
+handle.
+
+**Status of each duration finding after this:**
+
+* **+1.74s** big-and-close vs the same match's early rallies — paired, with a
+  flat control arm (late-but-decided −0.27s). **Stands.**
+* **No choke signature** — losses under pressure are not faster. Different
+  comparison, untouched. **Stands.**
+* **Inverted U across margin** — substantially a matchup artefact. Residual
+  within-game effect +0.41s, right sign, **not established**.
+
+Red/yellow/green remains the best theory on the table — it makes the correct
+non-monotonic prediction and the far-behind cell behaves as it says — but
+whether that is players reading the scoreboard or good matchups producing
+long rallies is not yet separable at n=231.
