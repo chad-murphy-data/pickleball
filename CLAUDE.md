@@ -177,6 +177,22 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    position on not naming chokers stands. Size: tau 0.005 ≈ half a point
    of rally-win probability per sd of leverage; Johns ≈ one extra game
    per 100. Real, repeatable, concentrated in a minority.
+   TWO DELIVERABLES, don't conflate: the TRAIT question (a forecast —
+   needs replication + shrinkage; only Johns/Waters survive) vs the
+   LEDGER (`model/clutch_ledger.py` → data/clutch_ledger.csv). CWPA =
+   Clutch Win Probability Added, denominated in GAMES; +1.0 = one game's
+   worth of win prob banked purely from WHEN the rally wins landed. Not
+   shrunk (a record isn't an estimate) but still baseline-corrected —
+   subtracting the side-out artifact sets where zero is, it is not
+   shrinkage. Same family as finding 9's MVP outcome accounting. Career
+   doubles: Johns +26.3, Waters +21.0, Tardio +15.4, Alshon +10.6,
+   Erokhina +10.0 (best rate, +2.30/100). 2026: Johns +12.2. Singles:
+   Haworth +8.4 (and near the BOTTOM in doubles — the non-transfer in one
+   person). Publish CWPA next to its noise sd (±4.9 games per 1,000-game
+   career); most of the list sits inside its own error bar.
+   GOTCHA: the null's U must be rescaled to each player's OWN SSL before
+   averaging — Waters' games run short, so an unscaled baseline charged
+   her for leverage she never had and dropped her 2nd → 14th.
    Traps that ate this session: (i) under the WEAKER flat-rate null the
    cross-era correlation is +0.246 with calib slope 1.00 and looks like
    proof — skill is stable across eras so any residual skill-linked bias

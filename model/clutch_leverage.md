@@ -262,6 +262,53 @@ Johns at +0.0126 is worth on the order of **one extra game per hundred**
 purely from winning big points rather than small ones at the same total
 points. Real, repeatable, and small — nothing like the folklore.
 
+## 6b. The ledger: what happened, as distinct from what will happen
+
+Two different questions hide under one word, and they take different
+statistics. **Is this player clutch?** is a forecast — it has to replicate, it
+has to be shrunk, and only Johns and Waters survive it. **How much did this
+player actually win in big moments?** is a record. It happened. Requiring a
+record to replicate is a category error; nobody asks whether an RBI total is
+repeatable before printing it. This is the same call CLAUDE.md finding 9 makes
+for the MLP MVP award — pure outcome accounting.
+
+`clutch_ledger.py` reports **CWPA — Clutch Win Probability Added**, denominated
+in GAMES: +1.0 is one full game's worth of win probability banked purely from
+*when* a side's rally wins landed, at the same total rallies won.
+
+Not shrunk (a ledger is not an estimate of a latent thing) but still
+baseline-corrected against the no-clutch simulation — subtracting the
+side-out artifact is not shrinkage toward the field, it sets where zero is,
+and without it this would be a serve-rate leaderboard wearing a clutch hat.
+
+| # | doubles, career (≥200 games) | games | CWPA | per 100 |
+|---|---|---|---|---|
+| 1 | Ben Johns | 1,148 | **+26.3** | +2.29 |
+| 2 | Anna Leigh Waters | 1,077 | **+21.0** | +1.95 |
+| 3 | Gabriel Tardio | 935 | +15.4 | +1.65 |
+| 4 | Christian Alshon | 930 | +10.6 | +1.14 |
+| 5 | Genie Erokhina | 434 | +10.0 | **+2.30** |
+| 6 | Tyra Hurricane Black | 890 | +8.7 | +0.98 |
+| 7 | Jorja Johnson | 942 | +8.5 | +0.91 |
+| 8 | Tyler Loong | 469 | +8.2 | +1.75 |
+
+2026 alone: Johns +12.2 (+4.45/100), Tardio +7.9, Connor Mogle +4.5,
+Anna Bright +3.8. Singles career: Christopher Haworth +8.4, Gabriel Joseph
++6.6, John Lucian Goins +6.3 — note Haworth tops singles while sitting near
+the bottom of doubles, the doubles↔singles non-transfer in one person.
+
+Per-player noise sd is printed alongside (±4.9 games for a 1,000-game
+career), so a reader can see that most of the list is inside its own error
+bar. That is the correct way to publish a ledger: the number is what
+happened, the error bar says how much of it to read as skill. Only Johns and
+Waters clear their own noise by a wide margin — which is why they, and only
+they, also survive the trait test.
+
+Gotcha, found the hard way: the null's U must be rescaled to each player's
+OWN leverage sum-of-squares before averaging. Waters' games run short (she
+wins fast), so her simulated twins accumulated more leverage than she ever
+had the chance to, and an unscaled baseline dropped her from 2nd to 14th.
+
 ## 7. Honest limits
 
 - **"Big" means big within a game.** Leverage is demeaned inside each cell,
@@ -294,6 +341,7 @@ python model/clutch_mechanical.py            # why the naive statistic is broken
 python model/clutch_null.py --reps 60 --model --out clutch_null_model
 python model/clutch_team.py --reps 30        # THE ANSWER (no attribution)
 python model/clutch_rare.py                  # is it a MINORITY trait? who verifies?
+python model/clutch_ledger.py                # CWPA ledger: what happened
 python model/clutch_report.py                # attributed version, for contrast
 python model/clutch_circularity.py           # the two objections
 python model/clutch_selfcheck.py             # zero in -> zero out
