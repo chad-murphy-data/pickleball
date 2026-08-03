@@ -21,3 +21,6 @@ deploy/pickleball.env
 
 # rare-trait raw dump: 30 replicates x 7 arms, regenerable via clutch_team.py
 data/clutch_team_raw.npz
+
+# per-game null baseline cache: regenerable via clutch_partner.py (~15 min)
+data/clutch_pergame.npz

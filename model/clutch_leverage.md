@@ -340,6 +340,34 @@ So the defensible claim is **Ben Johns and the teams he plays on**, not two
 independent 5-sigma players. Whether it is Johns personally or those
 pairings is not separable in doubles, by construction.
 
+**Teams are the honest unit**, since the pairing is what the estimator
+actually measures. 33 pairs have ≥100 games together:
+
+| # | team | games | CWPA | ± | z |
+|---|---|---|---|---|---|
+| 1 | Anna Leigh Waters / Ben Johns | 500 | **+12.02** | 2.91 | +4.14 |
+| 2 | Ben Johns / Gabriel Tardio | 254 | **+10.54** | 2.48 | +4.25 |
+| 3 | Jessie Irvine / Gabriel Tardio | 229 | +5.36 | 2.61 | +2.05 |
+| 4 | Anna Leigh Waters / Catherine Parenteau | 243 | +5.02 | 1.97 | +2.55 |
+| 5 | Tyler Loong / Connor Garnett | 153 | +4.37 | 2.17 | +2.01 |
+
+Johns is in both of the top two, and those are the only pairs clearly clear
+of their own noise; #3–5 sit near 2 sigma, which is unremarkable as
+best-of-33. Bottom of the same table: Rohrabacher / Staksrud −5.54 (z −2.90),
+the only pair on the wrong side by a comparable margin.
+
+Two frequently-asked pairings, for reference: **Bright / Patriquin +3.14 over
+223 games (z 1.54)** — the best cell either partner has, but inside its error
+bar and best-of-33; and Waters / Bright at −1.39 (z −0.89). Individually
+**Anna Bright is +2.66 ± 4.77 (z 0.56) over 1,089 games** and **Hayden
+Patriquin +6.44 ± 5.11 (z 1.26) over 964** — both quiet, with partner cells
+scattering around zero in no pattern.
+
+`clutch_partner.py` caches the per-game observed moments and null baseline to
+`data/clutch_pergame.npz` (gitignored), so any later subset question — by
+partner, by pair, by event — is instant instead of another 15-minute
+simulation.
+
 (CWPA here reads slightly below §6b — 15 null replicates rather than 30, so
 the baseline is a touch noisier. The splits are what matter, not the level.)
 

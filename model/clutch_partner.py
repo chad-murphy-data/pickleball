@@ -99,6 +99,18 @@ def main(reps=15, seed=8080):
     base_rate = np.divide(nXY.mean(axis=0), nXX.mean(axis=0),
                           out=np.zeros(ng), where=nXX.mean(axis=0) > 0)
 
+    # persist the per-game observed moments and null baseline: any later
+    # subset question (by partner, by pair, by event) is then instant.
+    np.savez_compressed(DATA / "clutch_pergame.npz", uuids=F.uuids,
+                        oXX=oXX, oYY=oYY, oXY=oXY, oN=oN,
+                        base_rate=base_rate, gdisc=gdisc,
+                        roster0=np.array([r[0] if r else [-1, -1] for r in rb],
+                                         dtype=object),
+                        roster1=np.array([r[1] if r else [-1, -1] for r in rb],
+                                         dtype=object),
+                        reps=reps)
+    print("wrote data/clutch_pergame.npz")
+
     nm, _ = names()
     idx = {u: i for i, u in enumerate(F.uuids)}
 
@@ -152,6 +164,34 @@ def main(reps=15, seed=8080):
             cw, sd, z, _ = measure([r for r in rows if r[2] == q])
             print(f"   {nm.get(F.uuids[q], '?'):<28}{n:>5} games   "
                   f"CWPA {cw:>+7.2f}   +/-{sd:>5.2f}   z {z:>+5.2f}")
+
+    # ---- pair leaderboard ------------------------------------------
+    pair_rows = defaultdict(list)
+    for g, r in enumerate(rb):
+        if r is None or gdisc[g] != "doubles" or oN[g] == 0:
+            continue
+        for s_ in (0, 1):
+            if len(r[s_]) == 2:
+                key = tuple(sorted(r[s_]))
+                pair_rows[key].append((g, 1.0 if s_ == 0 else -1.0, -1))
+    out = []
+    for key, rr in pair_rows.items():
+        if len(rr) < 100:
+            continue
+        cw, sd, z, n = measure(rr)
+        out.append((cw, z, n, sd, key))
+    out.sort(reverse=True)
+    print("\n" + "=" * 74)
+    print("TEAMS — clutch by pairing (>= 100 games together)")
+    print("=" * 74)
+    print(f"{'':<3}{'pair':<44}{'games':>6}{'CWPA':>8}{'+/-':>7}{'z':>7}")
+    for r_, (cw, z, n, sd, key) in enumerate(out[:8], 1):
+        lbl = f"{nm.get(F.uuids[key[0]], '?')} / {nm.get(F.uuids[key[1]], '?')}"
+        print(f"{r_:>2}. {lbl:<44}{n:>6}{cw:>+8.2f}{sd:>7.2f}{z:>+7.2f}")
+    print(f"   ... {len(out)} pairs qualify; bottom:")
+    for cw, z, n, sd, key in out[-3:]:
+        lbl = f"{nm.get(F.uuids[key[0]], '?')} / {nm.get(F.uuids[key[1]], '?')}"
+        print(f"    {lbl:<45}{n:>6}{cw:>+8.2f}{sd:>7.2f}{z:>+7.2f}")
 
 
 if __name__ == "__main__":
