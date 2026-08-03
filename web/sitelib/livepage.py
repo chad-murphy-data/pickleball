@@ -341,22 +341,34 @@ function pairNames(pair, side) {
   }).join(' / ');
 }
 
-function gameRow(m, info, liveP, preText) {
+// Rows are FAVORITE-FIRST: the model's pre-match favorite is listed on top,
+// the score is printed favorite-first, and the pre/live percentages are the
+// favorite's win probability. "live" only ever holds an in-game number; the
+// result column marks whether the favorite delivered (✗ = upset). Unrated
+// games have no favorite, so they keep team-1 order and get no result mark.
+function gameRow(m, info, liveP, preP) {
   const dead = m.tb && skipped(m);
+  const p0 = preP !== undefined ? preP : (info ? info.p0 : null);
+  const flip = p0 !== null && p0 < 0.5;       // favorite is team 2 → show it first
+  const o = p => (flip ? 1 - p : p);          // orient a team-1 prob to the favorite
   const score = dead ? '<span class="note">not played (dead game)</span>'
-    : m.g.map(([a, b]) => `<span class="lp-score">${a}–${b}</span>`).join(' ');
-  const serve = m.st === 2 && m.svT ? `<span class="lp-serve" title="serving, server #${m.svN}">${m.svT === 1 ? '◀' : '▶'} #${m.svN}</span>` : '';
-  let prob = '';
-  if (m.st === 2 && liveP !== null) prob = `<strong>${fpF(liveP)}%</strong>`;
-  else if (m.st === 4 && m.win) prob = m.win === 1 ? '✓' : '✗';
-  const pre = preText !== undefined ? preText
-    : info ? `<span class="note">${fpF(info.p0)}%</span>`
+    : m.g.map(([a, b]) => `<span class="lp-score">${flip ? b : a}–${flip ? a : b}</span>`).join(' ');
+  const serve = m.st === 2 && m.svT ? `<span class="lp-serve" title="serving, server #${m.svN}">${(m.svT === 1) !== flip ? '◀' : '▶'} #${m.svN}</span>` : '';
+  const live = m.st === 2 && liveP !== null ? `<strong>${fpF(o(liveP))}%</strong>` : '';
+  const pre = p0 !== null ? `<span class="note">${fpF(o(p0))}%</span>`
     : (m.t1.length && !dead ? '<span class="note">unrated</span>' : '');
+  const res = m.st === 4 && m.win && p0 !== null
+    ? ((m.win === 1) !== flip ? '<span class="lp-res">✓</span>'
+                              : '<span class="lp-res lp-upset">✗ upset</span>')
+    : '';
+  const sw = t => `<span class="lp-sw lp-sw${t}"></span>`;
+  const fav = p0 !== null ? '<span class="lp-favtag">FAV</span>' : '';
   const pairs = dead ? '<span class="note">—</span>'
-    : `${pairNames(m.t1, 1)}<br>${pairNames(m.t2, 2)}`;
+    : flip ? `${sw(2)}${pairNames(m.t2, 2)}${fav}<br>${sw(1)}${pairNames(m.t1, 1)}`
+           : `${sw(1)}${pairNames(m.t1, 1)}${fav}<br>${sw(2)}${pairNames(m.t2, 2)}`;
   return `<tr class="${m.st === 2 ? 'lp-liverow' : ''}"><td class="lp-slot">${SLOT_LABEL(m)}</td>` +
     `<td>${pairs}</td>` +
-    `<td class="num">${score} ${serve}</td><td class="num">${prob}</td><td class="num">${pre}</td></tr>`;
+    `<td class="num">${score} ${serve}</td><td class="num">${pre}</td><td class="num">${live}</td><td class="num">${res}</td></tr>`;
 }
 
 function matchupCard(mu) {
@@ -415,16 +427,15 @@ function matchupCard(mu) {
       ? `<strong>${mu.s1 > mu.s2 ? esc(mu.t1) : esc(mu.t2)} won ${Math.max(mu.s1, mu.s2)}–${Math.min(mu.s1, mu.s2)}</strong>`
       : `<strong class="lp-big"><span class="lp-sw ${head >= 0.5 ? 'lp-sw1' : 'lp-sw2'}"></span>${esc(teamShort(head >= 0.5 ? mu.t1 : mu.t2))} ${fpF(head >= 0.5 ? head : 1 - head)}%</strong>`;
 
-  const dbPre = `<span class="note">${fpF(pDb)}%</span>`;
   const rows = games.map((m, i) => gameRow(m, infos[i], liveGameP(m, infos[i]))).join('') +
-    (db ? gameRow(db, null, db.st === 2 ? PKL.rallyRaceTable(PKL.rallyPForTarget(pDb, 21), 21).p(db.g[0][0], db.g[0][1]) : null, dbPre)
-        : (mu.matches.some(m => m.tb) ? gameRow(mu.matches.find(m => m.tb), null, null, '') : ''));
+    (db ? gameRow(db, null, db.st === 2 ? PKL.rallyRaceTable(PKL.rallyPForTarget(pDb, 21), 21).p(db.g[0][0], db.g[0][1]) : null, pDb)
+        : (mu.matches.some(m => m.tb) ? gameRow(mu.matches.find(m => m.tb), null, null) : ''));
 
   return `<div class="card lp-card" data-mu="${mu.uuid}">
     <div class="lp-head">${chip}<span class="lp-teams"><span class="lp-sw lp-sw1"></span>${esc(mu.t1)} <b>${mu.s1}</b>–<b>${mu.s2}</b> <span class="lp-sw lp-sw2"></span>${esc(mu.t2)}</span>${headline}</div>
     <div class="lp-track" data-track="${mu.uuid}"></div>
-    <table class="lp-games"><tr><th></th><th>pairing</th><th>score</th><th>live</th><th>pre</th></tr>${rows}</table>
-    <p class="note lp-dbnote">DreamBreaker rated ${fpF(pDb)}% for ${esc(teamShort(mu.t1))} (singles model — rough by design).</p>
+    <table class="lp-games"><tr><th></th><th>pairing</th><th>score</th><th>pre</th><th>live</th><th>result</th></tr>${rows}</table>
+    <p class="note lp-dbnote">DreamBreaker rated ${fpF(pDb >= 0.5 ? pDb : 1 - pDb)}% for ${esc(teamShort(pDb >= 0.5 ? mu.t1 : mu.t2))} (singles model — rough by design).</p>
   </div>`;
 }
 
@@ -535,7 +546,7 @@ function ppaCard(t) {
   }
   let html = `<div class="card lp-card"><div class="lp-head"><span class="lp-chip lp-ppa">PPA</span><span class="lp-teams">${esc(t.title)}</span></div>`;
   for (const [ev, ms] of byEvent) {
-    html += `<h3 class="lp-ev">${esc(ev)}</h3><table class="lp-games"><tr><th>round</th><th>pairing</th><th>score</th><th>live</th><th>pre</th></tr>`;
+    html += `<h3 class="lp-ev">${esc(ev)}</h3><table class="lp-games"><tr><th>round</th><th>pairing</th><th>score</th><th>pre</th><th>live</th><th>result</th></tr>`;
     for (const m of ms) html += ppaRow(m);
     html += '</table>';
   }
@@ -575,16 +586,26 @@ function ppaRow(m) {
       }
     }
   }
-  const score = m.g.map(([a, b]) => `<span class="lp-score">${a}–${b}</span>`).join(' ');
-  const serve = m.st === 2 && m.svT ? `<span class="lp-serve">${m.svT === 1 ? '◀' : '▶'} #${m.svN}</span>` : '';
+  // favorite-first, same convention as the MLP rows (see gameRow)
+  const flip = pre !== null && pre < 0.5;
+  const o = p => (flip ? 1 - p : p);
+  const score = m.g.map(([a, b]) => `<span class="lp-score">${flip ? b : a}–${flip ? a : b}</span>`).join(' ');
+  const serve = m.st === 2 && m.svT ? `<span class="lp-serve">${(m.svT === 1) !== flip ? '◀' : '▶'} #${m.svN}</span>` : '';
   const liveCell = m.st === 2
-    ? (live !== null ? `<strong>${fpF(live)}%</strong>` : '<span class="note">' + (fmt ? (fmt.rally ? 'rally format' : 'unrated') : 'format?') + '</span>')
-    : m.st === 4 ? (m.win === 1 ? '✓' : m.win === 2 ? '✗' : '') : '';
-  const preCell = pre !== null ? `<span class="note">${fpF(pre)}%</span>` : '';
+    ? (live !== null ? `<strong>${fpF(o(live))}%</strong>` : '<span class="note">' + (fmt ? (fmt.rally ? 'rally format' : 'unrated') : 'format?') + '</span>')
+    : '';
+  const resCell = m.st === 4 && (m.win === 1 || m.win === 2) && pre !== null
+    ? ((m.win === 1) !== flip ? '<span class="lp-res">✓</span>'
+                              : '<span class="lp-res lp-upset">✗ upset</span>')
+    : '';
+  const preCell = pre !== null ? `<span class="note">${fpF(o(pre))}%</span>` : '';
+  const fav = pre !== null ? '<span class="lp-favtag">FAV</span>' : '';
+  const pairs = flip ? `${pairNames(m.t2, 2)}${fav}<br>${pairNames(m.t1, 1)}`
+                     : `${pairNames(m.t1, 1)}${fav}<br>${pairNames(m.t2, 2)}`;
   const status = m.st === 2 ? ' class="lp-liverow"' : '';
   return `<tr${status}><td class="lp-slot">${esc(m.rd || '')}</td>` +
-    `<td>${pairNames(m.t1, 1)}<br>${pairNames(m.t2, 2)}</td>` +
-    `<td class="num">${score} ${serve}</td><td class="num">${liveCell}</td><td class="num">${preCell}</td></tr>`;
+    `<td>${pairs}</td>` +
+    `<td class="num">${score} ${serve}</td><td class="num">${preCell}</td><td class="num">${liveCell}</td><td class="num">${resCell}</td></tr>`;
 }
 
 function seqProb(w1, w2, need, fut) {
@@ -809,6 +830,11 @@ LIVE_CSS = """
 .lp-games td.num, .lp-games th:nth-child(n+3) { text-align:right; white-space:nowrap; }
 .lp-slot { font-family:"Space Mono",ui-monospace,monospace; font-size:12px; color:var(--ink2); }
 .lp-liverow { background:var(--band); }
+.lp-favtag { font-family:"Space Mono",ui-monospace,monospace; font-size:9.5px; font-weight:700;
+  color:var(--ink2); border:1px solid var(--border); padding:0 4px; margin-left:7px;
+  letter-spacing:.06em; vertical-align:1px; }
+.lp-res { font-family:"Space Mono",ui-monospace,monospace; font-weight:700; color:var(--good); }
+.lp-res.lp-upset { color:var(--bad); }
 .lp-score { font-family:"Space Mono",ui-monospace,monospace; padding:0 2px; }
 .lp-serve { color:var(--s1); font-size:11px; font-family:"Space Mono",ui-monospace,monospace; }
 .lp-track { margin-top:6px; }
@@ -839,7 +865,11 @@ def build_live(players, cal, updated, site_dir, write):
 <p class="sub">Rally-by-rally win probability for today's MLP matchups and PPA
 pro doubles, from the same validated model the receipts ledger grades — the
 serve-aware engine is anchored so its pre-match numbers match the frozen
-forecasts exactly. Board refreshes every ~20 seconds.</p>
+forecasts exactly. Each pairing lists the model's pre-match favorite first
+(tagged FAV) — the <strong>pre</strong> and <strong>live</strong> columns are
+that favorite's win probability, and <strong>result</strong> marks whether the
+favorite delivered (✗&nbsp;=&nbsp;upset). Board refreshes every
+~20&nbsp;seconds.</p>
 <p id="live-asof">connecting…</p>
 <div id="live-app"><div class="card"><p class="note">Loading the live board…</p></div></div>
 <noscript><p>This page needs JavaScript — it polls live scores and computes
