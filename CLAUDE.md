@@ -480,7 +480,15 @@ max|z| 3.27 across 552 players, permutation p=0.58; |z|>2 count 29 vs
 null median 27 [19,36]; pre-specified Anna Bright slope −0.014/10mph,
 p=0.84 (per-player resolution ~±3pp share per 10 mph — only large
 individual effects detectable). Leaderboard is noise, never publish
-names off it. FAVORITES×WIND KILLED (2026-07-28, `model/favorites_wind.py`,
+names off it. RARE-TRAIT SHAPE ALSO NULL (2026-08-03,
+`model/wind_rare.py` + `wind_rare_power.py`, weather_thread.md §7):
+the full clutch battery (spike-slab LR 5.8 vs null max 7.2; tails
+null both directions; select-then-verify p≥0.17 both tails, strong
+side anti-persists) on the IDENTICAL panel, with an injection floor —
+a 13% minority at ±0.02 share/10mph fires the battery 75%, ±0.03
+100%, 0/20 false positives. So: no minority wind trait ≥0.02
+share/10mph; smaller is below the telescope. Don't re-open without a
+bigger archive or a sharper wind measure (court-level anemometer). FAVORITES×WIND KILLED (2026-07-28, `model/favorites_wind.py`,
 data-referenced nulls only): continuous interaction share~skill+wind+
 skill×wind gives d = +0.002 [−0.060,+0.064] OUTDOOR (24.8k games — no
 compression at all; b≈1.04 so v2 shares are near-perfectly calibrated)

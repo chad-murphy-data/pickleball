@@ -222,3 +222,34 @@ The likely reason: **the rules already handle it.** Ends switch between
 games and again mid-game specifically so nobody eats a bad side for
 long, and everyone on tour was filtered through years of outdoor play
 before turning pro.
+
+---
+
+## 7. Postscript (2026-08-03): the rare-trait re-test
+
+After the clutch thread (finding 10) showed that split-half r and
+population-variance tests DILUTE a trait carried by a minority — and that
+clutch itself only appeared once minority-aimed instruments ran — the
+obvious objection to §5's wind-skill null was "wrong instrument." So the
+identical battery from `clutch_rare.py` was pointed at the identical
+wind panel (`model/wind_rare.py`; same 552 players / 24.8k outdoor games
+as wind_skill.py, so any verdict change is the instrument, not the data):
+
+- **Spike-and-slab LR** against pi=0: observed 5.8 vs permutation null
+  1.6±1.8 (max 7.2) — inside the null envelope. (Clutch on this test:
+  72.2 vs 1.0.)
+- **Tail counts** both directions: wind-strong 3 at z>2.5 vs null median
+  3; wind-fragile 5 vs 3 (p=0.27). Nothing.
+- **Select-then-verify** (top-K on 2024-25, measured on 2026, both
+  directions): every K, both tails, p ≥ 0.17; the wind-strong selection
+  actually anti-persists. (Clutch: K=40 z=3.77 vs null 0.29.)
+- **Injection power** (`model/wind_rare_power.py`): planting the trait in
+  13% of players (clutch's fitted fraction, sign persistent across eras)
+  fires the battery 75% of the time at ±0.02 share per 10 mph and 100%
+  at ±0.03; false-positive rate 0/20 at s=0. Observed data fired nothing.
+
+Verdict: wind skill fails the SAME instruments that established clutch,
+with a measured floor. **No minority wind trait at ≥0.02 share per
+10 mph (~½ point per game in a 10 mph breeze) exists in this archive;
+anything smaller is below the telescope.** The §5 null stands, now for
+the rare-trait shape too.
