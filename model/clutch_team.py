@@ -196,6 +196,17 @@ def main(reps=30, seed=515, min_games=MIN_GAMES):
         print(f"{arm:<14}{m.sum():>6}{r:>9.3f}   [{lo:+.3f},{hi:+.3f}]"
               f"{np.mean(fl):>+10.3f}±{np.std(fl):.3f}")
 
+    # dump every arm's observed and null-replicate sums, so the rare-trait
+    # tests (spike-and-slab, tail counts, select-then-verify) can be run
+    # without re-simulating.
+    dump = {"uuids": F.uuids, "reps": reps}
+    for a in arms:
+        for k in ("U", "SSL", "V", "games"):
+            dump[f"obs_{a}_{k}"] = obs[a][k]
+            dump[f"rep_{a}_{k}"] = np.array([x[k] for x in nulls[a]])
+    np.savez_compressed(DATA / "clutch_team_raw.npz", **dump)
+    print("wrote data/clutch_team_raw.npz")
+
     # write the doubles table
     nm, gdr = names()
     b, se, ok = corrected("doubles", min_games)

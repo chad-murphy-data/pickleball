@@ -31,9 +31,22 @@ After both fixes: **tau = 0.0050 [0.0032, 0.0066] in doubles and 0.0069
 rising to **2.10 among players with 300+ games** — the excess sharpens as
 precision improves, which is what a real effect does and noise does not.
 
+**And it is a minority trait, not a small universal one** (§5b). A
+spike-and-slab fit gives a likelihood ratio of **72.2 against "nobody is
+clutch", versus a null distribution of 1.0 ± 1.3**, with a fitted shape of
+about an eighth of doubles players carrying an effect of sd 0.014 and the
+rest carrying nothing. Most importantly, the individuals verify out of
+sample: **name the top 40 on 2024-25 alone and that fixed roster comes back
+at z = 3.77 on 2026 alone**, against a null that centres at 0.29 ± 1.00 and
+never once reached the observed value in 30 no-clutch seasons.
+
 **Ben Johns (z = 5.28) and Anna Leigh Waters (z = 5.00) are genuinely
 separated from the field.** They were also top of the retracted list, for the
 wrong reason; they survive for the right one.
+
+Read tau as the *population* summary of a trait most players do not have —
+quoting it as "everyone has 0.005" is the error the rare-trait tests exist to
+prevent.
 
 Clutch does **not** transfer between doubles and singles (r ≈ −0.10). It is
 not a portable personality trait.
@@ -164,6 +177,63 @@ two slices of one season are not quite independent):
 Positive, consistently, but marginal — this sits near the resolution limit of
 the archive for individuals, which is exactly what tau ≈ 0.005 implies.
 
+## 5b. It is a MINORITY trait, and the individuals verify
+
+τ and var(z) are the wrong instruments if clutch is something a few players
+have and nobody else does: 300 zero players dilute 40 real ones, and the
+Gaussian empirical-Bayes prior asserts everybody has a little, which shrinks
+genuine outliers far too hard. A field where 5% carry +0.03 and 95% carry
+exactly 0 has τ = 0.0067 — arithmetically identical, as a summary number, to
+everyone carrying a uniform 0.0067. `clutch_rare.py` asks the rare-trait
+questions instead.
+
+**Spike and slab.** Fit b_p ~ (1−π)·δ₀ + π·N(μ, σ²) through known noise.
+Doubles: π = 0.127, slab sd = 0.0144, **likelihood ratio against π = 0 of
+72.2, versus a null distribution of 1.0 ± 1.3**. Singles: LR 18.2 vs 1.1 ±
+1.9. Caveat that matters: π and σ trade off (π = 1 with tiny σ is just the
+Gaussian solution), so the null fits also return large π and **π must not be
+quoted on its own** — the LR is the test. But the fitted shape is a coherent
+description: about an eighth of doubles players carry a real effect of sd
+0.014, the rest carry nothing.
+
+**Tail counts** — the "13% are left-handed" test, which does not care whether
+the bulk of the field is spread out:
+
+| arm | bar | observed | null median | null 95th | p |
+|---|---|---|---|---|---|
+| doubles | z > 2.0 | 12 | 6 | 11 | 0.033 |
+| doubles | z > 2.5 | 6 | 2 | 4 | <0.033 |
+| doubles | z > 3.0 | 3 | 0 | 1 | <0.033 |
+| singles | z > 2.0 | 6 | 3 | 4 | <0.033 |
+
+And the excess lives where precision is highest, which is the direction that
+rules out miscalibration:
+
+| doubles players with | n | \|z\|>2 observed | null median |
+|---|---|---|---|
+| 60–200 games | 206 | 9 | 7 |
+| 200–500 games | 94 | **11** | 4 |
+| 500+ games | 36 | **5** | 1 |
+
+**Select then verify** — the only test that establishes individuals. Name the
+top K on **2024-25 alone**, then measure that fixed roster on **2026 alone**,
+against the identical procedure run on no-clutch seasons (selection plus
+regression-to-the-mean has its own signature under the null, which is what
+the comparison controls for):
+
+| arm | K | observed z | null mean | null sd | p |
+|---|---|---|---|---|---|
+| doubles | 5 | **3.31** | 0.02 | 0.97 | <0.033 |
+| doubles | 20 | **2.79** | 0.28 | 0.96 | <0.033 |
+| doubles | 40 | **3.77** | 0.29 | 1.00 | <0.033 |
+| singles | 5 | 1.99 | 0.02 | 0.77 | <0.033 |
+| singles | 20 | 1.20 | −0.14 | 0.99 | 0.167 |
+
+(p is floored at 1/30 — no null replicate reached the observed value.)
+
+Players named on the first two seasons deliver in the third. That is the
+claim "these particular players are clutch", tested the way it should be.
+
 ## 6. Who
 
 `data/clutch_team_doubles.csv`. Doubles, ≥60 games, 7 of 336 clear 95%.
@@ -177,8 +247,14 @@ the archive for individuals, which is exactly what tau ≈ 0.005 implies.
 
 Johns and Waters are 5 sigma up in a 336-player field where the null's
 typical maximum is around 3.2. That is not a multiplicity accident. Below
-them the list thins fast and the names with fewer than ~300 games should be
-read as noise.
+them the list thins fast, and names with fewer than ~200 games should be read
+as noise — that bin shows no tail excess over the null at all (§5b).
+
+The tail is **two-sided**: several players sit at z < −3, i.e. reliably worse
+on big points than on small ones. That is reassuring for the effect being a
+real trait distribution rather than a one-directional bias, but the
+lower-volume negative names are not publishable and the house position on
+naming chokers still stands.
 
 **Size check.** tau = 0.005 means the spread of true clutch across the field
 is half a percentage point of rally-win probability per sd of leverage.
@@ -217,6 +293,7 @@ python model/clutch_leverage.py --fetch      # rally cache from Supabase
 python model/clutch_mechanical.py            # why the naive statistic is broken
 python model/clutch_null.py --reps 60 --model --out clutch_null_model
 python model/clutch_team.py --reps 30        # THE ANSWER (no attribution)
+python model/clutch_rare.py                  # is it a MINORITY trait? who verifies?
 python model/clutch_report.py                # attributed version, for contrast
 python model/clutch_circularity.py           # the two objections
 python model/clutch_selfcheck.py             # zero in -> zero out

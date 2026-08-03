@@ -159,8 +159,24 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    (r ≈ −0.10) — pooling the two DILUTES; never pool.** All taus are ~12%
    LOW: the null's abilities are fitted on clutch-contaminated data, which
    costs 12% of the effect (measured, `clutch_circularity.py`).
-   Size: tau 0.005 ≈ half a point of rally-win probability per sd of
-   leverage; Johns ≈ one extra game per 100. Real, repeatable, small.
+   **It is a MINORITY trait — do NOT read tau as "everyone has 0.005"**
+   (`model/clutch_rare.py`, the right instrument once you accept clutch
+   may be rare; var(z)/tau are DILUTION-prone and a Gaussian EB prior
+   over-shrinks true outliers). Spike-and-slab b~(1−π)δ₀+πN(μ,σ²):
+   doubles LR = 72.2 against π=0 vs a null LR of 1.0±1.3 (singles 18.2 vs
+   1.1±1.9); fitted shape ≈ 13% of players carrying sd 0.014, rest zero.
+   π alone is NOT quotable — π and σ trade off and null fits also return
+   large π; the LR is the test. Tail counts doubles z>2.5: 6 obs vs null
+   median 2; z>3: 3 vs 0 — and the excess sits in the 200-500 and 500+
+   game bins (11 vs 4, 5 vs 1), NOT the thin 60-200 bin (9 vs 7), which
+   is the direction that rules out se miscalibration. SELECT-THEN-VERIFY
+   (the only test that establishes individuals): name top-K on 2024-25
+   alone, measure that fixed roster on 2026 alone — K=40 gives z = 3.77
+   vs null 0.29±1.00, K=5 gives 3.31 vs 0.02±0.97, and 0 of 30 no-clutch
+   seasons ever reached it. Tail is TWO-SIDED (several z<−3); house
+   position on not naming chokers stands. Size: tau 0.005 ≈ half a point
+   of rally-win probability per sd of leverage; Johns ≈ one extra game
+   per 100. Real, repeatable, concentrated in a minority.
    Traps that ate this session: (i) under the WEAKER flat-rate null the
    cross-era correlation is +0.246 with calib slope 1.00 and looks like
    proof — skill is stable across eras so any residual skill-linked bias
