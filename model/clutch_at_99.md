@@ -53,6 +53,14 @@ closeness. None conditioned on arrival at 9-9.
   baseline already knows skill **and** the serve situation.
 * **Test** — does the team clutch differential explain `won − predicted`?
 
+> **RETRACTED 2026-08-03 — the "real bug" in this section is not real.** The
+> 9-9 miscalibration below is an artefact of applying `calibration.json`'s
+> b=0.9 display flattening to in-sample month-of-game trajectory values.
+> Removing it puts the recalibration slope at 0.92–1.09 across every tied
+> state. The DP is correctly calibrated; see CLAUDE.md finding #11. The
+> skill-placebo result below still stands as a reason the clutch estimate was
+> confounded — but the confound is the calibration layer, not the DP.
+
 ## The placebo found a real bug (not in clutch — in the baseline)
 
 The skill placebo — swap clutch for the skill differential, zero clutch

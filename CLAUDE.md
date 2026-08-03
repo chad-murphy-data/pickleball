@@ -150,12 +150,22 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    "the trait exists" claim and the published `content/clutch/` posts rest
    on the same artefact and need revisiting. Any future clutch work must
    clear the SIMULATED null, not a label permutation.
-11. **The serve DP is miscalibrated at 9-9** (found 2026-08-02,
-   `model/clutch_at_99.py`): it underprices the better team — observed 0.572
-   vs predicted 0.559 on 1,405 out-of-window games, and a zero-clutch skill
-   placebo predicts the residual (+0.052, CI excludes 0). `site/live.html`
-   and `replay_winprob.py` show 9-9 numbers that are slightly too flat.
-   UNFIXED. Consistent with the smoke calibration already noted below.
+11. **The "serve DP is miscalibrated at 9-9" finding is RETRACTED**
+   (raised and withdrawn 2026-08-02/03). There is no 9-9 bug. Two errors
+   produced it: (a) it was measured only at 9-9, the state that happened to
+   be under discussion — the recalibration slope is ABOVE 1 at nearly every
+   tied state (0-0 1.114, 4-4 1.229, 9-9 1.158), so 9-9 is unremarkable; and
+   (b) the whole pattern is `web/calibration.json`'s b=0.9 flattening applied
+   to predictions that do not need it. 1/0.9 = 1.111 vs an observed 0-0 slope
+   of 1.114. Strip the display calibration and every tied-state slope lands at
+   0.92–1.09, centred on 1.0 — the DP is correctly calibrated.
+   **Why it is not a site bug:** b=0.9 was fitted OUT OF SAMPLE on the frozen
+   `_train` fit, and live games are genuinely out of sample, so the flattening
+   is right where the site applies it. The error was applying it to IN-SAMPLE
+   retrodictions built from month-of-game `v2_trajectories` values fitted on
+   those same games. **If you evaluate in-game win probabilities against
+   history, use raw (uncalibrated) probabilities, or frozen `_train` values —
+   never full-fit trajectory values through the display map.**
 
 ## House rules (hard-won; violating these produces silently wrong results)
 
