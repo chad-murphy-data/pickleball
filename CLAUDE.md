@@ -76,6 +76,17 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 
 1. Weakest-link: team = sum + γ|gap|, γ = −0.47 pts (Gaussian) / −0.18
    logit (race model — the truncation-free estimate). Gender-blind in mixed.
+   Equivalent to weighting better/worse partner 0.41/0.59. PER-DIVISION
+   (2026-08-03, joint refit `model/fit_v2_gamma_div.py` →
+   `gamma_division_refit.md`): NOT uniform — mens −0.28 (0.36/0.64),
+   womens −0.20 (0.40/0.60), mixed −0.09 (0.45/0.55, CI touches 0); only
+   mens−mixed is credible (Δ=−0.19, P=0.008). The pooled −0.18 is a
+   mixed-heavy average. CAUTION: a conditional profile on frozen pooled-γ
+   values (`gamma_division.py`) gave the REVERSED ordering — that
+   circularity is real, always use the joint fit for γ questions. Mixed γ
+   is entangled with the cross-gender offset channel (finding 8: γ|gap| is
+   the offset's only identification). Production v2 keeps pooled γ until a
+   per-division variant beats the holdout gate.
 2. Chemistry is small: sd ≈ 0.3–0.5 pts, prior-insensitive; no single pair
    certifiable (need ~1,000 games; max on record 138).
 3. Skill transfers across contexts (sd_w ≈ 0.13) and tours (no MLP

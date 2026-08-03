@@ -27,3 +27,11 @@ Pairwise differences (bootstrap of the difference):
 | mens | 0.170 | 0.200 |
 | womens | 0.181 | 0.220 |
 | mixed | 0.205 | 0.236 |
+
+---
+
+**SUPERSEDED (same day): the joint refit (`fit_v2_gamma_div.py` →
+`gamma_division_refit.md`) reverses this table's ordering — mens −0.280,
+womens −0.204, mixed −0.091, with mens−mixed the one credible contrast
+(P(Δ>0)=0.008). The conditional-on-pooled-values circularity warned about
+above is material. Quote the refit, not this file.**

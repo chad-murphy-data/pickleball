@@ -7,6 +7,13 @@ team = a + b + gamma*|a-b|.  Algebraically that is a weighted sum
 0.41*better + 0.59*worse (normalized), the "0.42/0.58" weighting.  Nobody
 has checked whether the three divisions share it.
 
+** SUPERSEDED for the division question: the joint refit
+(fit_v2_gamma_div.py -> gamma_division_refit.md) disagrees with this
+conditional profile — it REVERSES the men's-vs-mixed ordering (joint:
+mens -0.28 strongest, mixed -0.09 weakest; conditional below: mens
+mildest). The circularity this file warns about below is real and
+material; quote the refit, keep this only as the cautionary tale. **
+
 Method: profile likelihood with player values FIXED at their v2
 month-of-game means (trajectories where dynamic, static mean otherwise) —
 the same conditioning used for GWAE (finding 9).  Per division, maximize
