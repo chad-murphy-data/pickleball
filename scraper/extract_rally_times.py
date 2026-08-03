@@ -36,6 +36,12 @@ stopped and restarted, and extended as the log cache grows.
 
     python scraper/extract_rally_times.py            # all known matches
     python scraper/extract_rally_times.py --limit 500
+    python scraper/extract_rally_times.py --compress-only   # just refresh the .gz
+
+Working file is `data/rally_times.csv` (plain, cheap to append during a
+multi-hour run). The COMMITTED artifact is `data/rally_times.csv.gz` — the
+plain CSV is gitignored, since at archive scale it is ~165 MB and this repo
+takes nightly data commits. Resume reads whichever file exists.
 
 Archive-scale note: the droplet already pulls these logs nightly for the
 serve/return warehouse (deploy/run_logs_backfill.sh). The clean long-term home
@@ -46,7 +52,9 @@ from __future__ import annotations
 
 import argparse
 import csv
+import gzip
 import json
+import shutil
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -57,7 +65,31 @@ sys.path.insert(0, str(ROOT / "model"))
 
 from pb_api import PBClient                                    # noqa: E402
 
+# Working file is plain CSV (cheap appends during multi-hour runs); the
+# COMMITTED artifact is the gzip, which is ~10x smaller — the uncompressed
+# archive-scale file is ~165 MB, too large for a repo that takes nightly
+# data commits. Resume reads whichever exists.
 OUT = ROOT / "data" / "rally_times.csv"
+OUT_GZ = ROOT / "data" / "rally_times.csv.gz"
+
+
+def _open_read():
+    """Existing rows, from the plain CSV if present else the gzip."""
+    if OUT.exists():
+        return OUT.open()
+    if OUT_GZ.exists():
+        return gzip.open(OUT_GZ, "rt")
+    return None
+
+
+def compress():
+    """Refresh the committed .gz from the working CSV."""
+    if not OUT.exists():
+        return
+    with OUT.open("rb") as a, gzip.open(OUT_GZ, "wb", compresslevel=9) as b:
+        shutil.copyfileobj(a, b)
+    print(f"  gzipped -> {OUT_GZ} "
+          f"({OUT.stat().st_size / 1e6:.1f} MB -> {OUT_GZ.stat().st_size / 1e6:.1f} MB)")
 FIELDS = ["match_id", "game_number", "rally_ord", "server_score",
           "receiver_score", "server_number", "outcome", "start_utc",
           "dur_s", "clean", "log_index", "server_uuid", "receiver_uuid"]
@@ -133,12 +165,22 @@ def known_match_ids():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--compress-only", action="store_true",
+                    help="just refresh the committed .gz from the working CSV")
     args = ap.parse_args()
+    if args.compress_only:
+        compress()
+        return
 
     done = set()
-    if OUT.exists():
-        with OUT.open() as fh:
-            done = {r["match_id"] for r in csv.DictReader(fh)}
+    fh0 = _open_read()
+    if fh0 is not None:
+        with fh0 as f:
+            done = {r["match_id"] for r in csv.DictReader(f)}
+    # seed the working CSV from the committed gzip if only the gzip is present
+    if not OUT.exists() and OUT_GZ.exists():
+        with gzip.open(OUT_GZ, "rb") as a, OUT.open("wb") as b:
+            shutil.copyfileobj(a, b)
     ids = [m for m in known_match_ids() if m not in done]
     if args.limit:
         ids = ids[:args.limit]
@@ -170,6 +212,7 @@ def main():
             print(f"  {i}/{len(ids)}  ok={ok} bad={bad} rows={nrows}", flush=True)
     fh.close()
     print(f"done: {ok} matches, {bad} unusable, {nrows} rally rows -> {OUT}")
+    compress()
 
 
 if __name__ == "__main__":

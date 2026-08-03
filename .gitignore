@@ -19,3 +19,4 @@ deploy/pickleball.env
 model/_clutch99_cache.json
 model/_clutch99_cache_v2.json
 model/_clutch_srm_cache.json
+data/rally_times.csv
