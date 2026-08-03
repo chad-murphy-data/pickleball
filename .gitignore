@@ -5,6 +5,10 @@ raw/
 *.log
 scraper/discovery/
 model/*.npz
+# clutch null bootstrap: 60 replayed seasons, ~30 MB each, regenerable in
+# ~40 min via model/clutch_null.py (the small obs/games npz stay committed)
+data/clutch_null.npz
+data/clutch_null_model.npz
 .netlify/
 node_modules/
 site/
