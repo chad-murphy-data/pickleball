@@ -90,7 +90,7 @@ PKL.configure({ gamma: CFG.gamma, kDoubles: CFG.k, kDbSingles: CFG.kDbSingles,
 const $app = document.getElementById('live-app');
 const $asof = document.getElementById('live-asof');
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const fpF = p => PKL.fp(PKL.displayFloor(p));          // floored display %
+const fpF = p => PKL.pctLabel(PKL.displayFloor(p));    // "62%" | "WON" | "LOST"
 const RALLY = 12, MARK_TYPES = {18:'T',35:'T+',2:'C',37:'C',45:'C'};
 
 let VALUES = null;                 // pid -> [name, gender, v, sd, singles, hasPage]
@@ -258,7 +258,7 @@ function svgStep(series, opts) {
   // labels can dodge it)
   const t = opts.teams || null;
   const lastP = disp[disp.length - 1][1], fav1 = lastP >= 0.5;
-  const favTxt = t ? `${esc(t[fav1 ? 0 : 1]).toUpperCase()} ${PKL.fp(fav1 ? lastP : 1 - lastP)}%` : `${PKL.fp(lastP)}%`;
+  const favTxt = t ? `${esc(t[fav1 ? 0 : 1]).toUpperCase()} ${PKL.pctLabel(fav1 ? lastP : 1 - lastP)}` : PKL.pctLabel(lastP);
   const ex = X(disp[disp.length - 1][0]), ey = Y(lastP);
   const bw = 8 + favTxt.length * 6.6;
   const bx = Math.min(ex + 6, R - bw), by = Math.max(TOP + 2, Math.min(ey - 8, BOT - 18));
@@ -317,7 +317,7 @@ function wireCharts(root) {
       cross.setAttribute('x1', px); cross.setAttribute('x2', px);
       cross.setAttribute('visibility', 'visible');
       const p = PKL.displayFloor(best.p), fav1 = p >= 0.5;
-      const who = reg.teams ? `${esc(reg.teams[fav1 ? 0 : 1]).toUpperCase()} ${PKL.fp(fav1 ? p : 1 - p)}%` : `${PKL.fp(p)}%`;
+      const who = reg.teams ? `${esc(reg.teams[fav1 ? 0 : 1]).toUpperCase()} ${PKL.pctLabel(fav1 ? p : 1 - p)}` : PKL.pctLabel(p);
       const score = best.a !== undefined ? ` · ${best.a}–${best.b}` : '';
       tip.innerHTML = `rally ${best.x}${score} · <strong>${who}</strong>`;
       tip.hidden = false;
@@ -347,10 +347,10 @@ function gameRow(m, info, liveP, preText) {
     : m.g.map(([a, b]) => `<span class="lp-score">${a}–${b}</span>`).join(' ');
   const serve = m.st === 2 && m.svT ? `<span class="lp-serve" title="serving, server #${m.svN}">${m.svT === 1 ? '◀' : '▶'} #${m.svN}</span>` : '';
   let prob = '';
-  if (m.st === 2 && liveP !== null) prob = `<strong>${fpF(liveP)}%</strong>`;
+  if (m.st === 2 && liveP !== null) prob = `<strong>${fpF(liveP)}</strong>`;
   else if (m.st === 4 && m.win) prob = m.win === 1 ? '✓' : '✗';
   const pre = preText !== undefined ? preText
-    : info ? `<span class="note">${fpF(info.p0)}%</span>`
+    : info ? `<span class="note">${fpF(info.p0)}</span>`
     : (m.t1.length && !dead ? '<span class="note">unrated</span>' : '');
   const pairs = dead ? '<span class="note">—</span>'
     : `${pairNames(m.t1, 1)}<br>${pairNames(m.t2, 2)}`;
@@ -413,9 +413,9 @@ function matchupCard(mu) {
     ? `<span class="note">${headNote || 'unpriced'}</span>`
     : isDone
       ? `<strong>${mu.s1 > mu.s2 ? esc(mu.t1) : esc(mu.t2)} won ${Math.max(mu.s1, mu.s2)}–${Math.min(mu.s1, mu.s2)}</strong>`
-      : `<strong class="lp-big"><span class="lp-sw ${head >= 0.5 ? 'lp-sw1' : 'lp-sw2'}"></span>${esc(teamShort(head >= 0.5 ? mu.t1 : mu.t2))} ${fpF(head >= 0.5 ? head : 1 - head)}%</strong>`;
+      : `<strong class="lp-big"><span class="lp-sw ${head >= 0.5 ? 'lp-sw1' : 'lp-sw2'}"></span>${esc(teamShort(head >= 0.5 ? mu.t1 : mu.t2))} ${fpF(head >= 0.5 ? head : 1 - head)}</strong>`;
 
-  const dbPre = `<span class="note">${fpF(pDb)}%</span>`;
+  const dbPre = `<span class="note">${fpF(pDb)}</span>`;
   const rows = games.map((m, i) => gameRow(m, infos[i], liveGameP(m, infos[i]))).join('') +
     (db ? gameRow(db, null, db.st === 2 ? PKL.rallyRaceTable(PKL.rallyPForTarget(pDb, 21), 21).p(db.g[0][0], db.g[0][1]) : null, dbPre)
         : (mu.matches.some(m => m.tb) ? gameRow(mu.matches.find(m => m.tb), null, null, '') : ''));
@@ -424,7 +424,7 @@ function matchupCard(mu) {
     <div class="lp-head">${chip}<span class="lp-teams"><span class="lp-sw lp-sw1"></span>${esc(mu.t1)} <b>${mu.s1}</b>–<b>${mu.s2}</b> <span class="lp-sw lp-sw2"></span>${esc(mu.t2)}</span>${headline}</div>
     <div class="lp-track" data-track="${mu.uuid}"></div>
     <table class="lp-games"><tr><th></th><th>pairing</th><th>score</th><th>live</th><th>pre</th></tr>${rows}</table>
-    <p class="note lp-dbnote">DreamBreaker rated ${fpF(pDb)}% for ${esc(teamShort(mu.t1))} (singles model — rough by design).</p>
+    <p class="note lp-dbnote">DreamBreaker rated ${fpF(pDb)} for ${esc(teamShort(mu.t1))} (singles model — rough by design).</p>
   </div>`;
 }
 
@@ -578,9 +578,9 @@ function ppaRow(m) {
   const score = m.g.map(([a, b]) => `<span class="lp-score">${a}–${b}</span>`).join(' ');
   const serve = m.st === 2 && m.svT ? `<span class="lp-serve">${m.svT === 1 ? '◀' : '▶'} #${m.svN}</span>` : '';
   const liveCell = m.st === 2
-    ? (live !== null ? `<strong>${fpF(live)}%</strong>` : '<span class="note">' + (fmt ? (fmt.rally ? 'rally format' : 'unrated') : 'format?') + '</span>')
+    ? (live !== null ? `<strong>${fpF(live)}</strong>` : '<span class="note">' + (fmt ? (fmt.rally ? 'rally format' : 'unrated') : 'format?') + '</span>')
     : m.st === 4 ? (m.win === 1 ? '✓' : m.win === 2 ? '✗' : '') : '';
-  const preCell = pre !== null ? `<span class="note">${fpF(pre)}%</span>` : '';
+  const preCell = pre !== null ? `<span class="note">${fpF(pre)}</span>` : '';
   const status = m.st === 2 ? ' class="lp-liverow"' : '';
   return `<tr${status}><td class="lp-slot">${esc(m.rd || '')}</td>` +
     `<td>${pairNames(m.t1, 1)}<br>${pairNames(m.t2, 2)}</td>` +
@@ -676,7 +676,7 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 const cards = [...document.querySelectorAll('.fxcard')].map(el => ({
   el, fx: JSON.parse(el.dataset.fx), out: el.querySelector('.fx-official') }));
 let VALUES = null, timer = null;
-const fpF = p => PKL.fp(PKL.displayFloor(p));
+const fpF = p => PKL.pctLabel(PKL.displayFloor(p));
 function slotOf(ab) { ab = (ab || '').toUpperCase();
   for (const s of ['MXD1', 'MXD2', 'WD', 'MD']) if (ab.startsWith(s)) return s;
   return null; }
@@ -733,9 +733,9 @@ async function tick() {
         let was = '';
         if (c.fx.p != null) {
           const pf1 = c.fx.p >= 0.5;
-          was = ` <span class="note">— projected had ${esc((pf1 ? c.fx.t1 : c.fx.t2).split(' ').pop())} ${fpF(pf1 ? c.fx.p : 1 - c.fx.p)}%</span>`;
+          was = ` <span class="note">— projected had ${esc((pf1 ? c.fx.t1 : c.fx.t2).split(' ').pop())} ${fpF(pf1 ? c.fx.p : 1 - c.fx.p)}</span>`;
         }
-        html = `<strong>LINEUPS OFFICIAL:</strong> ${esc(fav1 ? c.fx.t1 : c.fx.t2)} <strong>${fpF(fav1 ? off : 1 - off)}%</strong>${was}`;
+        html = `<strong>LINEUPS OFFICIAL:</strong> ${esc(fav1 ? c.fx.t1 : c.fx.t2)} <strong>${fpF(fav1 ? off : 1 - off)}</strong>${was}`;
         if (diffs.length) html += `<br><span class="note">pairings differ from projection: ${diffs.join(', ')}</span>`;
         if (status === 'IN_PROGRESS') html += ' · <a href="live.html"><strong>LIVE now →</strong></a>';
         else if (status === 'COMPLETED') html += ` · <span class="note">final ${mu.s1}–${mu.s2}</span> · <a href="live.html">charts →</a>`;
@@ -851,8 +851,10 @@ calibrated pre-match probability, so live curves and the
 <a href="receipts.html">receipts ledger</a> agree at rally zero. In-game
 calibration is provisional pending the full rally-log backfill — treat
 mid-game numbers as honest estimates, not gospel. DreamBreakers use the
-singles model (rough by design). Probabilities are floored — nothing is ever
-0% or 100%. Rally-resolution curves appear on digitally-refereed courts;
+singles model (rough by design). Forecasts are floored — no number still in
+doubt is ever shown as 0% or 100%. A decided match is not a forecast: once a
+side has won the games it needs, it reads WON, not 99%.
+Rally-resolution curves appear on digitally-refereed courts;
 otherwise the page samples the scoreboard every ~20&nbsp;s. Chart ticks:
 T&nbsp;=&nbsp;timeout, C&nbsp;=&nbsp;challenge/review.</p>
 <script>

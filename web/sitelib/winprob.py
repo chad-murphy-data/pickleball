@@ -141,9 +141,27 @@ class MixedDP:
         return sum(w * dp.p(a, b, state) for w, dp in self._parts)
 
 
+def is_decided(p: float) -> bool:
+    """True when p is a settled outcome rather than an estimate.
+
+    Every DP and composer here returns EXACTLY 1.0 or 0.0 the moment a side
+    has clinched (terminal score cells, matchup_prob past 3 wins) and never
+    otherwise: the calibration layer's own mixture keeps live estimates
+    strictly inside (eps/2, 1 - eps/2). So exact equality — not a tolerance —
+    is the honest test for "there is nothing left to predict".
+    """
+    return p == 1.0 or p == 0.0
+
+
 def display_floor(p: float, eps: float = EPS_FLOOR) -> float:
-    """Mixture floor: nothing is ever displayed as 0% or 100%."""
-    return (1 - eps) * p + eps / 2
+    """Mixture floor: no ESTIMATE is ever displayed as 0% or 100%.
+
+    A decided outcome is exempt. The house rule exists because ~1% of 99%
+    favorites lose, which is a statement about forecasts; once the games are
+    on the board there is no such tail to reserve for, and flooring a fact
+    down to 99% misreports it.
+    """
+    return p if is_decided(p) else (1 - eps) * p + eps / 2
 
 
 def eta_anchor(target_p: float, k: float = K_DOUBLES, T: int = 11) -> float:

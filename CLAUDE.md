@@ -15,10 +15,21 @@ status snapshot + next-thread to-do (check its date; stale ones defer to here).*
   (Example of the standard: when asked "is the model underconfident?",
   the answer was to fit the recalibration out-of-sample on the frozen
   _train values, not to eyeball the old v1 curve.)
-- **No probability is ever displayed as 0% or 100%.** Empirical basis:
+- **No FORECAST is ever displayed as 0% or 100%.** Empirical basis:
   ~1% of ≥99% favorites lose (44/4,248 across all games). The calibration
   layer (web/calibration.json, refit via web/fit_calibration.py) encodes
   this as a mixture floor eps ≈ 0.021.
+  **Settled outcomes are exempt** (2026-08-04, user call: a finished match
+  reading "99%" is wrong, not cautious — the floor reserves a tail that no
+  longer exists once the games are on the board). The DPs and composers
+  return EXACTLY 1.0/0.0 the moment a side clinches and never otherwise
+  (the calibration mixture keeps estimates strictly inside the floor), so
+  exact equality — not a tolerance — is the test: `winprob.is_decided` /
+  `live_engine.isDecided`. `display_floor`/`displayFloor` pass those
+  through unfloored, and `PKL.pctLabel` renders them as WON/LOST rather
+  than a number, so a fact never wears a percentage that looks rounded.
+  Keep the two implementations in sync; `node web/test_live_engine.mjs`
+  covers the clinch path on both sides.
 
 ## Pipeline (run in this order; everything is idempotent & cached)
 

@@ -60,7 +60,17 @@
     return (1 - C.cal.eps) * sig(C.cal.a + C.cal.b * l) + C.cal.eps / 2;
   }
 
-  const displayFloor = (p) => (1 - C.epsFloor) * p + C.epsFloor / 2;
+  // A settled outcome is not a forecast. Every DP and composer below returns
+  // EXACTLY 1 or 0 the moment a side clinches (terminal score cells,
+  // matchupProb past 3 wins) and never otherwise — the calibration mixture
+  // keeps live estimates strictly inside (eps/2, 1 - eps/2). So exact
+  // equality, not a tolerance, is the test for "nothing left to predict".
+  const isDecided = (p) => p === 1 || p === 0;
+
+  // Mixture floor, estimates only: ~1% of 99% favorites lose, which is a fact
+  // about forecasts. Once the games are on the board there is no such tail to
+  // reserve for, and flooring a settled result down to 99% misreports it.
+  const displayFloor = (p) => (isDecided(p) ? p : (1 - C.epsFloor) * p + C.epsFloor / 2);
 
   // ---- winprob.py: serve-aware side-out DP -----------------------------
   // Serve states: 0 = A serves #1, 1 = A serves #2, 2 = B #1, 3 = B #2.
@@ -205,13 +215,18 @@
       + (1 - pGame) * bestOfProb(wonA, wonB + 1, need, pGame);
   }
 
-  // House formatting: no probability ever displays as 0% or 100%.
+  // House formatting: no estimate ever displays as 0% or 100%.
   const fp = (p) => (p < 0.005 ? "<1" : p > 0.995 ? ">99" : (100 * p).toFixed(0));
+
+  // The whole token for one side's chances, "%" included. A decided outcome
+  // reads as the fact it is — the side has won the games it needed — rather
+  // than as a percentage a reader would take for a rounded estimate.
+  const pctLabel = (p) => (p === 1 ? "WON" : p === 0 ? "LOST" : `${fp(p)}%`);
 
   return {
     configure, C, sig, comb, raceDist, teamEta, calibrate, displayFloor,
-    serveProbs, ServeDP, etaAnchor, rallyRaceTable, rallyPForTarget,
-    dbWinProb, matchupProb, bestOfProb, fp,
+    isDecided, serveProbs, ServeDP, etaAnchor, rallyRaceTable, rallyPForTarget,
+    dbWinProb, matchupProb, bestOfProb, fp, pctLabel,
     A1, A2, B1, B2,
   };
 });

@@ -32,6 +32,8 @@ out["anchor"] = [eta_anchor(p, 0.43, 11) for p in (0.5, 0.65, 0.88)]
 out["rally"] = [[a, b, p, rally_race_p(a, b, p, 21)] for (a, b, p) in ((0,0,0.5),(0,0,0.55),(14,18,0.52),(20,20,0.5))]
 out["cal"] = [calibrate(p) for p in (0.5, 0.75, 0.999)]
 out["floor"] = display_floor(0.97)
+# a settled outcome is exempt from the floor; a merely extreme estimate is not
+out["floor_decided"] = [display_floor(1.0), display_floor(0.0), display_floor(0.9999)]
 out["team_eta"] = team_eta(0.7, 0.2, 0.4, 0.35)
 print(json.dumps(out))
 `;
@@ -61,7 +63,29 @@ for (const [eta, a, b, s, want] of ref.dp) {
 for (const [a, b, p, want] of ref.rally) check(`rally(${a},${b},${p})`, PKL.rallyRaceTable(p, 21).p(a, b), want);
 [0.5, 0.75, 0.999].forEach((p, i) => check(`cal(${p})`, PKL.calibrate(p), ref.cal[i]));
 check("floor(0.97)", PKL.displayFloor(0.97), ref.floor);
+[1, 0, 0.9999].forEach((p, i) =>
+  check(`floorDecided(${p})`, PKL.displayFloor(p), ref.floor_decided[i]));
 check("teamEta", PKL.teamEta(0.7, 0.2, 0.4, 0.35), ref.team_eta);
+
+// A decided outcome reads as a fact; everything short of it stays a percentage.
+const label = (l, got, want) => {
+  if (got !== want) { console.error(`FAIL ${l}: js="${got}" want="${want}"`); fails++; }
+};
+label("pctLabel(1)", PKL.pctLabel(1), "WON");
+label("pctLabel(0)", PKL.pctLabel(0), "LOST");
+// the floor pulls even a 99.99% ESTIMATE under the >99 threshold — only a
+// decided outcome escapes it, which is exactly the distinction being drawn
+label("pctLabel(0.9999)", PKL.pctLabel(PKL.displayFloor(0.9999)), "99%");
+label("pctLabel(0.62)", PKL.pctLabel(0.62), "62%");
+// the clinch path end-to-end: 3 games banked must print WON, not 99%
+label("clinched matchup", PKL.pctLabel(PKL.displayFloor(
+  PKL.matchupProb(3, 0, [0.6], 0.5))), "WON");
+label("live matchup", PKL.pctLabel(PKL.displayFloor(
+  PKL.matchupProb(2, 0, [0.6, 0.6], 0.5))), "91%");
+// a terminal game cell is decided; one point short of it is not
+const dpEnd = PKL.ServeDP(0.4, 0.43, 11);
+label("game 11-6", PKL.pctLabel(PKL.displayFloor(dpEnd.p(11, 6, PKL.A2))), "WON");
+label("game 10-6", PKL.pctLabel(PKL.displayFloor(dpEnd.p(10, 6, PKL.A2))), "96%");
 
 // matchup composition sanity (JS-only invariants)
 check("matchup all-even", PKL.matchupProb(0, 0, [0.5, 0.5, 0.5, 0.5], 0.5), 0.5, 1e-12);

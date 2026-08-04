@@ -281,8 +281,10 @@ h1{{font-size:1.25em}} h3{{font-size:.95em;margin:.2em 0 .4em;font-weight:500}}
 cell algebra), league serve-rally win rate k={args.k} measured from
 referee logs; each game anchored to the calibrated pre-match probability
 so the receipts ledger and these curves agree at rally zero. Ticks:
-T=timeout, C=challenge/review. Probabilities are floored — nothing is
-ever 0% or 100%. In-game calibration is pending the full rally-log
+T=timeout, C=challenge/review. Forecasts are floored — nothing still in
+doubt is ever 0% or 100% — but a decided match is not a forecast, so the
+curve runs to the ceiling once a side clinches. In-game calibration is
+pending the full rally-log
 backfill; treat mid-game numbers as provisional.</p>
 """)
     print(f"wrote {out}")

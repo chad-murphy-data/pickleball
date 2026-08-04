@@ -1257,8 +1257,8 @@ pre-June fit ({CAL["fit_on"]["n_games"]} games). The fitted correction is
 nearly the identity (slope {CAL["b"]:.2f}) — the earlier v1 model ran
 underconfident, this one doesn't. What the data does insist on: across all
 36k games, favorites rated above 99% still lost {CAL["tail"]["losses"]} of
-{CAL["tail"]["n_extreme"]} games (~1%), so site probabilities are floored —
-nothing is ever 0% or 100%. Frozen predictions in the ledger above are
+{CAL["tail"]["n_extreme"]} games (~1%), so site forecasts are floored —
+no number still in doubt is ever 0% or 100%. Frozen predictions in the ledger above are
 graded exactly as committed, never re-calibrated after the fact.</p>
 {charts.calibration_chart(cal)}
 """
@@ -1495,7 +1495,10 @@ next six weeks: 77.4% winners, Brier 0.165.</li>
 <li><strong>Calibrated, floored probabilities:</strong> win probabilities are
 passed through a map fitted on out-of-sample games (near-identity: slope
 0.90) with an empirical tail floor — ~1% of ≥99% favorites lose, so no
-probability is ever shown as 0% or 100%. There is always a chance.</li>
+<em>forecast</em> is ever shown as 0% or 100%. There is always a chance.
+The floor covers predictions, not results: once a side has won the games it
+needed, the live board says so in words rather than rounding a settled
+match down to 99%.</li>
 </ul>
 <p class="note">Full writeups, code, data and diagnostics:
 <a href="{REPO}">the repository</a> — see analysis.md for every table and
