@@ -1,5 +1,942 @@
 {
- "generated": "2026-08-04",
+ "generated": "2026-08-05",
  "note": "Lineups: official when published, else each team's best lineup from its season roster (last-matchup fallback); DreamBreaker from the singles model; calibrated probabilities.",
- "forecasts": []
+ "forecasts": [
+  {
+   "date": "2026-08-07",
+   "start": "2026-08-07T19:00:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Palm Beach Royals",
+   "team2": "Chicago Slice",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9716,
+     "modal": "11-3",
+     "margin": 6.72,
+     "t1_pair": [
+      "Tina Pisnik",
+      "Sofia Sewing"
+     ],
+     "t2_pair": [
+      "Ting Chieh Wei",
+      "Emma Nelson"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.5208,
+     "modal": "11-9",
+     "margin": 0.07,
+     "t1_pair": [
+      "Dekel Bar",
+      "Tyson McGuffin"
+     ],
+     "t2_pair": [
+      "Hunter Johnson",
+      "John Lucian Goins"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.7849,
+     "modal": "11-7",
+     "margin": 3.16,
+     "t1_pair": [
+      "Tina Pisnik",
+      "Dekel Bar"
+     ],
+     "t2_pair": [
+      "Ting Chieh Wei",
+      "Hunter Johnson"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.8569,
+     "modal": "11-6",
+     "margin": 4.17,
+     "t1_pair": [
+      "Sofia Sewing",
+      "Tyson McGuffin"
+     ],
+     "t2_pair": [
+      "Emma Nelson",
+      "John Lucian Goins"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.8954,
+    "p_40": 0.3403,
+    "p_31": 0.4732,
+    "p_db": 0.1672,
+    "p_13": 0.0188,
+    "p_04": 0.0004,
+    "p_db_win": 0.4895
+   }
+  },
+  {
+   "date": "2026-08-07",
+   "start": "2026-08-07T20:30:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Texas Ranchers",
+   "team2": "Atlanta Bouncers",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.3359,
+     "modal": "8-11",
+     "margin": -1.98,
+     "t1_pair": [
+      "Layne Sleeth",
+      "Lea Jansen"
+     ],
+     "t2_pair": [
+      "Mari Humberg",
+      "Jessie Irvine"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.678,
+     "modal": "11-8",
+     "margin": 1.84,
+     "t1_pair": [
+      "Eric Oncins",
+      "Nicolas Acevedo"
+     ],
+     "t2_pair": [
+      "Jay Devilliers",
+      "Jaume Martinez Vich"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.3531,
+     "modal": "8-11",
+     "margin": -1.79,
+     "t1_pair": [
+      "Layne Sleeth",
+      "Eric Oncins"
+     ],
+     "t2_pair": [
+      "Mari Humberg",
+      "Jay Devilliers"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.5926,
+     "modal": "11-9",
+     "margin": 0.87,
+     "t1_pair": [
+      "Lea Jansen",
+      "Nicolas Acevedo"
+     ],
+     "t2_pair": [
+      "Jessie Irvine",
+      "Jaume Martinez Vich"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.5091,
+    "p_40": 0.0477,
+    "p_31": 0.2369,
+    "p_db": 0.3992,
+    "p_13": 0.2599,
+    "p_04": 0.0564,
+    "p_db_win": 0.5624
+   }
+  },
+  {
+   "date": "2026-08-07",
+   "start": "2026-08-07T22:00:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Dallas Flash",
+   "team2": "Las Vegas Night Owls",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.7277,
+     "modal": "11-7",
+     "margin": 2.44,
+     "t1_pair": [
+      "Danni-Elle Townsend",
+      "Alix Truong"
+     ],
+     "t2_pair": [
+      "Chao Yi Wang",
+      "Liz Truluck"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.8565,
+     "modal": "11-6",
+     "margin": 4.16,
+     "t1_pair": [
+      "JW Johnson",
+      "Augustus Ge"
+     ],
+     "t2_pair": [
+      "Roscoe Bellamy",
+      "Clayton Powell"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8845,
+     "modal": "11-5",
+     "margin": 4.61,
+     "t1_pair": [
+      "Danni-Elle Townsend",
+      "JW Johnson"
+     ],
+     "t2_pair": [
+      "Chao Yi Wang",
+      "Roscoe Bellamy"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.7322,
+     "modal": "11-7",
+     "margin": 2.49,
+     "t1_pair": [
+      "Alix Truong",
+      "Augustus Ge"
+     ],
+     "t2_pair": [
+      "Liz Truluck",
+      "Clayton Powell"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.8886,
+    "p_40": 0.4037,
+    "p_31": 0.419,
+    "p_db": 0.1531,
+    "p_13": 0.023,
+    "p_04": 0.0012,
+    "p_db_win": 0.4308
+   }
+  },
+  {
+   "date": "2026-08-08",
+   "start": "2026-08-08T16:00:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Palm Beach Royals",
+   "team2": "Chicago Slice",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9716,
+     "modal": "11-3",
+     "margin": 6.72,
+     "t1_pair": [
+      "Tina Pisnik",
+      "Sofia Sewing"
+     ],
+     "t2_pair": [
+      "Ting Chieh Wei",
+      "Emma Nelson"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.5208,
+     "modal": "11-9",
+     "margin": 0.07,
+     "t1_pair": [
+      "Dekel Bar",
+      "Tyson McGuffin"
+     ],
+     "t2_pair": [
+      "Hunter Johnson",
+      "John Lucian Goins"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.7849,
+     "modal": "11-7",
+     "margin": 3.16,
+     "t1_pair": [
+      "Tina Pisnik",
+      "Dekel Bar"
+     ],
+     "t2_pair": [
+      "Ting Chieh Wei",
+      "Hunter Johnson"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.8569,
+     "modal": "11-6",
+     "margin": 4.17,
+     "t1_pair": [
+      "Sofia Sewing",
+      "Tyson McGuffin"
+     ],
+     "t2_pair": [
+      "Emma Nelson",
+      "John Lucian Goins"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.8954,
+    "p_40": 0.3403,
+    "p_31": 0.4732,
+    "p_db": 0.1672,
+    "p_13": 0.0188,
+    "p_04": 0.0004,
+    "p_db_win": 0.4895
+   }
+  },
+  {
+   "date": "2026-08-08",
+   "start": "2026-08-08T17:30:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Dallas Flash",
+   "team2": "Las Vegas Night Owls",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.7277,
+     "modal": "11-7",
+     "margin": 2.44,
+     "t1_pair": [
+      "Danni-Elle Townsend",
+      "Alix Truong"
+     ],
+     "t2_pair": [
+      "Chao Yi Wang",
+      "Liz Truluck"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.8565,
+     "modal": "11-6",
+     "margin": 4.16,
+     "t1_pair": [
+      "JW Johnson",
+      "Augustus Ge"
+     ],
+     "t2_pair": [
+      "Roscoe Bellamy",
+      "Clayton Powell"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8845,
+     "modal": "11-5",
+     "margin": 4.61,
+     "t1_pair": [
+      "Danni-Elle Townsend",
+      "JW Johnson"
+     ],
+     "t2_pair": [
+      "Chao Yi Wang",
+      "Roscoe Bellamy"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.7322,
+     "modal": "11-7",
+     "margin": 2.49,
+     "t1_pair": [
+      "Alix Truong",
+      "Augustus Ge"
+     ],
+     "t2_pair": [
+      "Liz Truluck",
+      "Clayton Powell"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.8886,
+    "p_40": 0.4037,
+    "p_31": 0.419,
+    "p_db": 0.1531,
+    "p_13": 0.023,
+    "p_04": 0.0012,
+    "p_db_win": 0.4308
+   }
+  },
+  {
+   "date": "2026-08-08",
+   "start": "2026-08-08T19:00:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Brooklyn Pickleball Team",
+   "team2": "SoCal Hard Eights",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9475,
+     "modal": "11-4",
+     "margin": 5.9,
+     "t1_pair": [
+      "Rachel Rohrabacher",
+      "Jackie Kawamoto"
+     ],
+     "t2_pair": [
+      "Meghan Dizon",
+      "Cailyn Campbell"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.9063,
+     "modal": "11-5",
+     "margin": 4.99,
+     "t1_pair": [
+      "Christian Alshon",
+      "Riley Newman"
+     ],
+     "t2_pair": [
+      "Armaan Bhatia",
+      "Will Mackinnon"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8684,
+     "modal": "11-5",
+     "margin": 4.34,
+     "t1_pair": [
+      "Rachel Rohrabacher",
+      "Christian Alshon"
+     ],
+     "t2_pair": [
+      "Meghan Dizon",
+      "Armaan Bhatia"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.951,
+     "modal": "11-4",
+     "margin": 6.0,
+     "t1_pair": [
+      "Jackie Kawamoto",
+      "Riley Newman"
+     ],
+     "t2_pair": [
+      "Cailyn Campbell",
+      "Will Mackinnon"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.9894,
+    "p_40": 0.7092,
+    "p_31": 0.2566,
+    "p_db": 0.0325,
+    "p_13": 0.0017,
+    "p_04": 0.0,
+    "p_db_win": 0.7505
+   }
+  },
+  {
+   "date": "2026-08-08",
+   "start": "2026-08-08T20:30:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Palm Beach Royals",
+   "team2": "Chicago Slice",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9716,
+     "modal": "11-3",
+     "margin": 6.72,
+     "t1_pair": [
+      "Tina Pisnik",
+      "Sofia Sewing"
+     ],
+     "t2_pair": [
+      "Ting Chieh Wei",
+      "Emma Nelson"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.5208,
+     "modal": "11-9",
+     "margin": 0.07,
+     "t1_pair": [
+      "Dekel Bar",
+      "Tyson McGuffin"
+     ],
+     "t2_pair": [
+      "Hunter Johnson",
+      "John Lucian Goins"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.7849,
+     "modal": "11-7",
+     "margin": 3.16,
+     "t1_pair": [
+      "Tina Pisnik",
+      "Dekel Bar"
+     ],
+     "t2_pair": [
+      "Ting Chieh Wei",
+      "Hunter Johnson"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.8569,
+     "modal": "11-6",
+     "margin": 4.17,
+     "t1_pair": [
+      "Sofia Sewing",
+      "Tyson McGuffin"
+     ],
+     "t2_pair": [
+      "Emma Nelson",
+      "John Lucian Goins"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.8954,
+    "p_40": 0.3403,
+    "p_31": 0.4732,
+    "p_db": 0.1672,
+    "p_13": 0.0188,
+    "p_04": 0.0004,
+    "p_db_win": 0.4895
+   }
+  },
+  {
+   "date": "2026-08-09",
+   "start": "2026-08-09T16:00:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Dallas Flash",
+   "team2": "Las Vegas Night Owls",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.7277,
+     "modal": "11-7",
+     "margin": 2.44,
+     "t1_pair": [
+      "Danni-Elle Townsend",
+      "Alix Truong"
+     ],
+     "t2_pair": [
+      "Chao Yi Wang",
+      "Liz Truluck"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.8565,
+     "modal": "11-6",
+     "margin": 4.16,
+     "t1_pair": [
+      "JW Johnson",
+      "Augustus Ge"
+     ],
+     "t2_pair": [
+      "Roscoe Bellamy",
+      "Clayton Powell"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8845,
+     "modal": "11-5",
+     "margin": 4.61,
+     "t1_pair": [
+      "Danni-Elle Townsend",
+      "JW Johnson"
+     ],
+     "t2_pair": [
+      "Chao Yi Wang",
+      "Roscoe Bellamy"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.7322,
+     "modal": "11-7",
+     "margin": 2.49,
+     "t1_pair": [
+      "Alix Truong",
+      "Augustus Ge"
+     ],
+     "t2_pair": [
+      "Liz Truluck",
+      "Clayton Powell"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.8886,
+    "p_40": 0.4037,
+    "p_31": 0.419,
+    "p_db": 0.1531,
+    "p_13": 0.023,
+    "p_04": 0.0012,
+    "p_db_win": 0.4308
+   }
+  },
+  {
+   "date": "2026-08-09",
+   "start": "2026-08-09T17:30:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Texas Ranchers",
+   "team2": "Atlanta Bouncers",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.3359,
+     "modal": "8-11",
+     "margin": -1.98,
+     "t1_pair": [
+      "Layne Sleeth",
+      "Lea Jansen"
+     ],
+     "t2_pair": [
+      "Mari Humberg",
+      "Jessie Irvine"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.678,
+     "modal": "11-8",
+     "margin": 1.84,
+     "t1_pair": [
+      "Eric Oncins",
+      "Nicolas Acevedo"
+     ],
+     "t2_pair": [
+      "Jay Devilliers",
+      "Jaume Martinez Vich"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.3531,
+     "modal": "8-11",
+     "margin": -1.79,
+     "t1_pair": [
+      "Layne Sleeth",
+      "Eric Oncins"
+     ],
+     "t2_pair": [
+      "Mari Humberg",
+      "Jay Devilliers"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.5926,
+     "modal": "11-9",
+     "margin": 0.87,
+     "t1_pair": [
+      "Lea Jansen",
+      "Nicolas Acevedo"
+     ],
+     "t2_pair": [
+      "Jessie Irvine",
+      "Jaume Martinez Vich"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.5091,
+    "p_40": 0.0477,
+    "p_31": 0.2369,
+    "p_db": 0.3992,
+    "p_13": 0.2599,
+    "p_04": 0.0564,
+    "p_db_win": 0.5624
+   }
+  },
+  {
+   "date": "2026-08-09",
+   "start": "2026-08-09T19:00:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Brooklyn Pickleball Team",
+   "team2": "SoCal Hard Eights",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9475,
+     "modal": "11-4",
+     "margin": 5.9,
+     "t1_pair": [
+      "Rachel Rohrabacher",
+      "Jackie Kawamoto"
+     ],
+     "t2_pair": [
+      "Meghan Dizon",
+      "Cailyn Campbell"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.9063,
+     "modal": "11-5",
+     "margin": 4.99,
+     "t1_pair": [
+      "Christian Alshon",
+      "Riley Newman"
+     ],
+     "t2_pair": [
+      "Armaan Bhatia",
+      "Will Mackinnon"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8684,
+     "modal": "11-5",
+     "margin": 4.34,
+     "t1_pair": [
+      "Rachel Rohrabacher",
+      "Christian Alshon"
+     ],
+     "t2_pair": [
+      "Meghan Dizon",
+      "Armaan Bhatia"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.951,
+     "modal": "11-4",
+     "margin": 6.0,
+     "t1_pair": [
+      "Jackie Kawamoto",
+      "Riley Newman"
+     ],
+     "t2_pair": [
+      "Cailyn Campbell",
+      "Will Mackinnon"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.9894,
+    "p_40": 0.7092,
+    "p_31": 0.2566,
+    "p_db": 0.0325,
+    "p_13": 0.0017,
+    "p_04": 0.0,
+    "p_db_win": 0.7505
+   }
+  },
+  {
+   "date": "2026-08-09",
+   "start": "2026-08-09T20:30:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Texas Ranchers",
+   "team2": "Atlanta Bouncers",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.3359,
+     "modal": "8-11",
+     "margin": -1.98,
+     "t1_pair": [
+      "Layne Sleeth",
+      "Lea Jansen"
+     ],
+     "t2_pair": [
+      "Mari Humberg",
+      "Jessie Irvine"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.678,
+     "modal": "11-8",
+     "margin": 1.84,
+     "t1_pair": [
+      "Eric Oncins",
+      "Nicolas Acevedo"
+     ],
+     "t2_pair": [
+      "Jay Devilliers",
+      "Jaume Martinez Vich"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.3531,
+     "modal": "8-11",
+     "margin": -1.79,
+     "t1_pair": [
+      "Layne Sleeth",
+      "Eric Oncins"
+     ],
+     "t2_pair": [
+      "Mari Humberg",
+      "Jay Devilliers"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.5926,
+     "modal": "11-9",
+     "margin": 0.87,
+     "t1_pair": [
+      "Lea Jansen",
+      "Nicolas Acevedo"
+     ],
+     "t2_pair": [
+      "Jessie Irvine",
+      "Jaume Martinez Vich"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.5091,
+    "p_40": 0.0477,
+    "p_31": 0.2369,
+    "p_db": 0.3992,
+    "p_13": 0.2599,
+    "p_04": 0.0564,
+    "p_db_win": 0.5624
+   }
+  },
+  {
+   "date": "2026-08-09",
+   "start": "2026-08-09T22:00:00Z",
+   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
+   "team1": "Brooklyn Pickleball Team",
+   "team2": "SoCal Hard Eights",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.9475,
+     "modal": "11-4",
+     "margin": 5.9,
+     "t1_pair": [
+      "Rachel Rohrabacher",
+      "Jackie Kawamoto"
+     ],
+     "t2_pair": [
+      "Meghan Dizon",
+      "Cailyn Campbell"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.9063,
+     "modal": "11-5",
+     "margin": 4.99,
+     "t1_pair": [
+      "Christian Alshon",
+      "Riley Newman"
+     ],
+     "t2_pair": [
+      "Armaan Bhatia",
+      "Will Mackinnon"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.8684,
+     "modal": "11-5",
+     "margin": 4.34,
+     "t1_pair": [
+      "Rachel Rohrabacher",
+      "Christian Alshon"
+     ],
+     "t2_pair": [
+      "Meghan Dizon",
+      "Armaan Bhatia"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.951,
+     "modal": "11-4",
+     "margin": 6.0,
+     "t1_pair": [
+      "Jackie Kawamoto",
+      "Riley Newman"
+     ],
+     "t2_pair": [
+      "Cailyn Campbell",
+      "Will Mackinnon"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.9894,
+    "p_40": 0.7092,
+    "p_31": 0.2566,
+    "p_db": 0.0325,
+    "p_13": 0.0017,
+    "p_04": 0.0,
+    "p_db_win": 0.7505
+   }
+  }
+ ]
 }
