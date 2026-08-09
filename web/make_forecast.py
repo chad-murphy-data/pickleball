@@ -169,13 +169,32 @@ def recent_lineup_for_team(c, team_title, before, cache):
     return None, None
 
 
+def load_roster_overrides():
+    """player_uuid -> team_title from data/roster_overrides.csv.
+
+    latest-appearance-wins (below) can't see a trade until the traded
+    player has played a COMPLETED match for their new team — which can lag
+    the actual trade by weeks if the new team doesn't need them right
+    away (the Hunter Johnson/Chicago Slice case, 2026-08-09: traded to St.
+    Louis Shock June 24, hadn't played a game for either side since, so
+    the inferred roster still had him at Slice for the Dallas playoffs).
+    Add a row here for any trade the inferred roster hasn't caught up to;
+    remove it once a post-trade completed match makes it redundant."""
+    path = DATA / "roster_overrides.csv"
+    if not path.exists():
+        return {}
+    return {r["player_id"]: r["team"] for r in csv.DictReader(path.open())}
+
+
 def mlp_rosters(c, before, start=None):
     """team_title -> {player_uuid} from every published MLP lineup this
     season, assigning each player to the team of their MOST RECENT
     appearance (latest-appearance-wins absorbs trades and event-to-event
     roster rotation).  Walks the season via the same cached endpoints the
     harvester fills nightly, so a CI/warm-cache run touches the network
-    only for the volatile trailing days."""
+    only for the volatile trailing days.  data/roster_overrides.csv is
+    applied last, for trades the inference can't see yet (see
+    load_roster_overrides)."""
     start = start or SEASON_START
     latest = {}                        # player_uuid -> (date, team_title)
     d = start
@@ -204,6 +223,10 @@ def mlp_rosters(c, before, start=None):
         d += timedelta(days=1)
     rosters = {}
     for u, (_, title) in latest.items():
+        rosters.setdefault(title, set()).add(u)
+    for u, title in load_roster_overrides().items():
+        for roster in rosters.values():
+            roster.discard(u)
         rosters.setdefault(title, set()).add(u)
     return rosters
 
