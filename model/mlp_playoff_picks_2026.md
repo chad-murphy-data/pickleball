@@ -208,6 +208,54 @@ Two live reasons to deviate that are *not* about bracket structure: McGuffin
 returning would harden Palm Beach, and a healthy Sleeth would harden Texas.
 Both are information problems, not strategy problems.
 
+## Brooklyn's real women's doubles pair (correction)
+
+The tables above put Rachel Rohrabacher in Brooklyn's women's doubles. **She
+mostly isn't there.** Hannah Blatt has started WD in **12 of Brooklyn's last 13
+matchups** (every one since 7/23 except 8/8), and in 6 of those she played a
+mixed as well. Rohrabacher has been reduced to one mixed game in most matchups.
+In Dallas it was 1 of 2 — full strength on 8/8, Blatt in WD on 8/9.
+
+This is not a small sub. Blatt is +0.190 (254 games, sd 0.097) against
+Rohrabacher's +1.117 (910, sd 0.086) — a 0.927 logit hole in one of four games.
+The 2026 MLP record agrees with the model: Brooklyn games with Blatt on court
+go **36.7% won, −2.10 average margin** (n=30); with Rohrabacher, **77.1% and
++3.63** (n=35).
+
+Top seed's best-of-three series win probability against Brooklyn:
+
+| | full strength | Blatt in WD | Blatt in a mixed | Blatt in WD + mixed | playoff blend |
+|---|---|---|---|---|---|
+| #1 New Jersey | 88.5% | 91.2% | 92.4% | 94.5% | 89.8% |
+| #2 St. Louis | 87.8% | 95.8% | 93.2% | 98.0% | 91.8% |
+| #3 Los Angeles | 43.9% | 77.9% | 58.1% | 91.0% | 60.9% |
+| #4 Columbus | 32.7% | 56.0% | 52.5% | 80.1% | 44.3% |
+
+*(playoff blend = the observed 1-of-2 Dallas rate)*
+
+**The preference ordering survives — Brooklyn is still everyone's last choice**
+in every scenario but one. The exception: if Blatt plays *two* games, Los
+Angeles would rather have Brooklyn (91.0%) than Dallas (89.6%).
+
+**The magnitude does not survive, and this corrects the framing above.**
+Columbus is not doomed. Against a Blatt-in-WD Brooklyn they are a 56% favourite,
+not a 33% underdog; on the playoff blend, 44%. The claim that Brooklyn is the
+third-strongest team in the bracket holds only at full strength — with Blatt
+starting WD as she has all summer, Brooklyn is roughly a coin flip with
+Columbus and clearly behind Los Angeles.
+
+The asymmetry is worth noting: the sub costs Brooklyn **least against New
+Jersey** (+2.7pp), because Waters/Johnson were already winning that women's
+game 92% anyway, and most against St. Louis (+8.0pp) and Los Angeles (+34pp),
+whose women's pairs were in a real fight with Rohrabacher.
+
+Where should Brooklyn hide her? Women's doubles, in all four matchups — and by
+a wide margin against New Jersey (8.7% Brooklyn vs 2.0% if she goes in a
+mixed). The reason is the home-team rule: Brooklyn is the lower seed in every
+quarterfinal, so it posts mixed first and the top seed responds, which lets the
+top seed aim its strongest mixed pair straight at Blatt. Brooklyn's actual
+practice matches the model's advice.
+
 ## Reproduce
 
 Rosters and pricing come from `web/make_forecast.py`
