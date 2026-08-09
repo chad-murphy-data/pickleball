@@ -108,6 +108,12 @@ All pages regenerate from existing CSVs in ~4 s: `python web/build_site.py`
 - ⬜ Per-player senior/junior role effects (phase 2 of the weakest-link
   finding: WHO carries weaker partners best — identified via role-switching
   mid-tier players)
+- ✅ **The mirror question — WHO EXPLOITS a weak link best — is answered and
+  it is NULL** (2026-08-09, `model/gap_exploit.md`). No per-player skill at
+  punishing opponent imbalance above a measured floor of Δw ≈ 0.13; bound on
+  the population sd of the coverage dial is 0.058, tighter than the
+  between-division spread v2 already ignores. Do NOT re-derive. The carry
+  question above is still open and is not settled by this.
 - ⬜ Clean ramp-up estimation (pair histories now span 2024+, but window
   edges still need care)
 - ⬜ Posterior rank intervals on leaderboards; selection-aware game-3

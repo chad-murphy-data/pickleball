@@ -240,6 +240,48 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    estimator + pooling gave a confident "no clutch at any size"; it was an
    estimator failure, not a finding.
 
+11. **GAP EXPLOITATION IS NOT A SEASON-LEVEL SKILL — but the test only
+   rules out the PERSISTENT version** (2026-08-09; `model/gap_exploit.md`,
+   reproduce with `model/gap_exploit.py`). v2's γ|gap| IS a court-coverage
+   dial: w = (1+γ)/2 = 0.4085 is the stronger player's share of the court,
+   and v2 applies that ONE number to every team against every opponent —
+   the Waters freeze-out is w moving for a specific matchup. Tested whether
+   w depends on WHO is across the net: per-player slope b_p on the
+   OPPONENT's |gap|. This is an INTERACTION (my presence × their gap),
+   which an additive rating structurally cannot hold, so unlike a generic
+   style feature it is NOT already absorbed. 36,961 games, 514 players
+   ≥60 games, month-of-game values, per-player additive offset fit
+   alongside so v2 rating error loads there and b_p is identified only by
+   opponent gap varying WITHIN a player's own games (median sd 0.137).
+   NULL on every arm: var(z) 0.874 vs permutation null 0.847
+   [0.741, 0.951]; spike-slab 2logLR 0.0 (null max 1.0); tails 14/3/0 vs
+   null 15/3/0; select-then-verify null at every K. Pre-specified
+   Bright +0.55 / Fahey −0.72 / Waters +0.57 / Johns −0.75. Women's
+   doubles alone — widest gaps in the sport, median side gap 0.213 vs PPA
+   women's 0.133 — is MORE null: 0 players past |z|>2 where the null
+   expects 3. FLOOR MEASURED BY INJECTION (what makes a null mean
+   anything): the estimator returns 0.87 of a planted effect; the battery
+   fires at b = 0.065 (Δw 0.13, ≈12pp vs a p90-gap opponent), is marginal
+   at 0.05, blind at 0.03 — and the true floor is ~15% worse since real
+   ratings are fit on contaminated data. Bound: coverage sd ≤ 0.058 in w
+   units, SMALLER than the between-division spread (0.36 mens → 0.455
+   mixed) that production v2 already ignores by shipping pooled γ.
+   DOES NOT rule out an EPISODIC tactic — at 5% deployment any Δw fits,
+   and the Bright/Fahey game plan is exactly that shape. The dispersion
+   test built for episodic effects (squared residual vs opponent |gap|,
+   stratified on predicted share) is NEGATIVE pooled (z −2.96) and in
+   womens; the only positive arm, mixed (z +3.40), COLLAPSES to +0.91
+   once you also stratify on rating uncertainty — high-gap mixed teams
+   contain a less-well-estimated player. Don't chase it: mixed |gap| is
+   mostly the cross-gender offset, which is a prior convention.
+   TWO TRAPS: (i) **games.csv is NOT side-neutral — t1 wins 67.8%**
+   (PPA orders winner-first; MLP ~53%), which puts a +0.017 mean residual
+   in any residual panel and breaks the antisymmetry every gap term must
+   satisfy. SYMMETRISE (randomise orientation) before fitting anything on
+   game residuals. (ii) The per-division global slope this script fits is
+   a conditional profile on frozen pooled-γ values — finding 1's known
+   circular estimator. It is a stripped nuisance term, never a γ result.
+
 ## House rules (hard-won; violating these produces silently wrong results)
 
 - **UUIDs are identity, never names.** API mixes upper/lowercase UUIDs —
