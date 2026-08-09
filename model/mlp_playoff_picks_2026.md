@@ -137,6 +137,77 @@ case. The thin 50–60% bin under-performing is n = 20.)
   ordering intact.
 - Cross-gender comparisons remain a prior convention, per the house rule.
 
+## Roster verification (2026-08-09)
+
+MLP's own team pages render their rosters in JS, so the HTML carries none of
+it — same wall as the rest of this project. Checked instead against the
+team-run sites and The Dink's transaction tracker. Every inferred roster
+holds up:
+
+| team | independent check |
+|---|---|
+| Palm Beach | palmbeachroyals.com/team lists Sewing, McGuffin, Pisnik, Diamond, Bar, Goldin, Emmrich — an exact 7/7 match. Tracker: Diamond added and **Goldin to IR** on 6/23, matching Goldin's last appearance (6/18) |
+| Texas | ranchers.com/our-players lists Oncins, Acevedo, Hewett, Christian, Sleeth, Jansen. Barlow waived 6/23 (tracker) matches his 6/21 last appearance |
+| New Jersey | Staksrud + Milan Rane acquired from Orlando at the deadline for Emmrich/Padegimaite — matches his first NJ appearance on 7/30. Rane (+0.72) does not displace Jorja Johnson |
+| St. Louis | Hunter Johnson from Chicago 6/24 — the existing `roster_overrides.csv` entry. Also received Angie Walker (+0.55), who has still not played; she is the one player the inference misses and she does not crack the four |
+| Los Angeles | Freeman (1/30) and Garnett from Utah (6/10) both confirmed |
+| Columbus | Castillo in / Truong out (5/28) and Tyra Black in / Townsend out (6/15) both confirmed, and latest-appearance-wins moved Truong and Townsend correctly |
+| Dallas | Buckner (5/16), Townsend (6/15), Truong in / Huang out (6/22) all confirmed |
+| Brooklyn | Alshon from Texas (3/3) confirmed. The tracker also shows Haworth going to California on 3/4, but he played for Brooklyn through 8/2; bench either way |
+
+**The Sleeth correction is right, and the reason is injury, not a trade.**
+She was *in a sling at MLP Austin*, and Kaitlyn Christian was acquired on 6/24
+explicitly as the contingency to partner Jansen. Texas still rosters Sleeth, so
+a healthy return before Newport Beach is live — it would lift Texas's women
+from +0.63 to +0.79 and make them a slightly less attractive pick.
+
+Two cosmetic mismatches, neither load-bearing: MLP actually pairs Staksrud with
+**Howells** in men's doubles, not Khlif (a 0.009 gap in v2 — the two are
+interchangeable), and the tracker's "Marcela Hones" is the BFF's "Marcela
+Aguila Ampon".
+
+## Is there ever a reason not to take the easiest opponent?
+
+Tested three mechanisms exhaustively. **No — not in this bracket.**
+
+**Non-transitivity: none.** Zero intransitive triples across all 336 ordered
+triples. The eight teams form a clean total order, NJ > STL > Brooklyn > LA >
+Columbus > Dallas > Palm Beach > Texas. There is one *shape* effect that stops
+short of a cycle: Palm Beach beats Texas head-to-head (53%), yet New Jersey
+would rather play Palm Beach — the No. 1 seed prefers the objectively stronger
+team, because its own soft slot is men's doubles and Palm Beach's men are the
+weakest in the pool. That is the closest thing to a genuine oddity here.
+
+**The semi-pool effect: real mechanism, doesn't pay.** In the semis the top
+surviving seed picks from the two *lowest* remaining, so the second surviving
+seed is never selectable and inherits the *stronger* of that pair. That gives
+the No. 2 seed a real reason to want Brooklyn gone, and its only lever is
+taking Brooklyn itself. It doesn't come close: eliminating Brooklyn yourself
+costs a **certain** 89% series instead of a 99% one, while leaving Brooklyn
+alive costs a **probabilistic** one — and St. Louis beats them 89% in the semis
+anyway. Title equity 34.8% for taking Brooklyn vs 39.5% for the myopic pick.
+The general rule: ducking early only pays when the team you would duck is
+near-certain to survive *and* far more dangerous to you than any alternative
+semifinal opponent. Brooklyn is 66% to get through Columbus, and St. Louis is
+nearly as strong against them as against anyone.
+
+**Kingmaking by No. 3: no lever.** The No. 3 seed's pick decides what No. 4
+gets, so it can choose whether Brooklyn or a fellow top seed reaches the semis.
+But No. 3 sits in the bottom-two pool itself, so its semifinal is against
+No. 1 or No. 2 either way — and LA prices at 21.3% vs New Jersey and 20.0% vs
+St. Louis. Nothing to engineer when the two teams you might steer toward
+yourself are interchangeable.
+
+Shrinking every probability toward 50% on the logit scale — what correlated
+series outcomes or overstated rating gaps would look like — the myopic pick
+stays optimal at every level from k = 0.9 down to k = 0.1. The lone flip is at
+k = 1.0 exactly, where St. Louis's Dallas-over-Texas edge is 0.02pp of title
+equity: numerical noise, and it vanishes the moment the model is shaded at all.
+
+Two live reasons to deviate that are *not* about bracket structure: McGuffin
+returning would harden Palm Beach, and a healthy Sleeth would harden Texas.
+Both are information problems, not strategy problems.
+
 ## Reproduce
 
 Rosters and pricing come from `web/make_forecast.py`
