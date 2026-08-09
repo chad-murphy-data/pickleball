@@ -114,6 +114,13 @@ All pages regenerate from existing CSVs in ~4 s: `python web/build_site.py`
   the population sd of the coverage dial is 0.058, tighter than the
   between-division spread v2 already ignores. Do NOT re-derive. The carry
   question above is still open and is not settled by this.
+- ✅ **Dimensions of skill: the singles channel is measured**
+  (2026-08-09, `model/singles_dimension.md`). Singles surplus is a
+  RELIABLE player property (split-half r = 0.56 random, 0.36 across eras)
+  with NO incremental validity inside doubles (all interaction arms null,
+  bound ≈0.6pp of share per sd). Ship it as a player-page axis, not a model
+  feature. Do NOT re-derive. Remaining undecomposed channel: shot
+  selection, which has no outcome-side proxy and needs Phase 6 vision.
 - ⬜ Clean ramp-up estimation (pair histories now span 2024+, but window
   edges still need care)
 - ⬜ Posterior rank intervals on leaderboards; selection-aware game-3

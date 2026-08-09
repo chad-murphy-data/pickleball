@@ -282,6 +282,41 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    a conditional profile on frozen pooled-γ values — finding 1's known
    circular estimator. It is a stripped nuisance term, never a γ result.
 
+12. **SINGLES SURPLUS IS A REAL SECOND DIMENSION — of the PLAYER, not of
+   DOUBLES SKILL** (2026-08-09; `model/singles_dimension.md`, reproduce
+   with `model/singles_dimension.py`). v2's scalar is a sufficient
+   statistic for doubles by construction, so any physical/selection/
+   strategy split is likelihood-flat — same class as the cross-gender
+   offset. Singles is the best auxiliary channel (r = 0.74 with doubles ⇒
+   ~45% orthogonal). Surplus = singles value minus what doubles predicts,
+   residualised WITHIN GENDER (men and women never meet in singles, so
+   those two scales are prior-linked only). GATE 1 RELIABILITY PASSES:
+   split-half r = **+0.562** on random halves (null ±0.14, n=199) and
+   **+0.355** across ERAS 2024-25→2026 (null ±0.15, n=149), vs ceilings of
+   0.95/0.81 and 0.87/0.65 for the singles/doubles ratings themselves —
+   far above the 0.13–0.15 that clutch/durability cleared and the 0.06 that
+   sank wind skill. TWO TRAPS: both disciplines must be REFIT per half (one
+   shared doubles value puts its error in both residuals and fakes the
+   correlation), and SHRINKAGE must be controlled — few-singles-games
+   players get pulled to the prior, game count is stable across halves, and
+   leaving it uncontrolled inflates 0.562 → 0.776. Face-valid: Bouchard
+   (ex-WTA #5) 2nd among women, Haworth top among men (already on record in
+   finding 10 as singles-clutch-high / doubles-clutch-low).
+   GATE 2 INCREMENTAL VALIDITY IS NULL: main effect ≈ 0 as it must be, and
+   no interaction — within-match deciders −0.015 [−0.040,+0.008], same-day
+   match load ≥2 −0.0002 [−0.017,+0.018] (the best-powered fatigue arm),
+   heat >80°F +0.012 [−0.005,+0.033]; bound ≈ 0.6pp of point share per sd
+   of surplus difference. NOTE what does NOT count as validity: finding 6
+   (singles value predicts DreamBreakers) is near-tautological — DBs ARE
+   singles. DECIDER TRAP RECONFIRMED: the naive between-games contrast
+   gives −0.021 grazing significance, an ETA CONTROL DOES NOT REMOVE IT
+   (the artifact is the match-level shock, not the skill gap), and
+   within-match differencing kills it. So: a legitimate second axis for
+   player pages ("how much of this player's game survives without a
+   partner"), NOT a model feature. The channel with no proxy at all remains
+   SHOT SELECTION — execution and decision are perfectly confounded in the
+   result, which is vision or nothing.
+
 ## House rules (hard-won; violating these produces silently wrong results)
 
 - **UUIDs are identity, never names.** API mixes upper/lowercase UUIDs —
