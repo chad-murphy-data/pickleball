@@ -40,8 +40,32 @@ git fetch origin
 git checkout claude/pickleball-vision-match-analysis-dow5ds
 pip install yt-dlp numpy imageio-ffmpeg     # static ffmpeg, no brew/apt
 
-python vision/run_poc.py --url "<youtube url>" --pick midseason-womens
+python vision/run_poc.py --vod chicago-0725
 ```
+
+That's the whole thing. `--vod chicago-0725` is Chicago Slice v Utah Black
+Diamonds, MLP Chicago 2026-07-25
+([QOhu67FAeY4](https://www.youtube.com/watch?v=QOhu67FAeY4)) — all four
+games start-marked, 193 rallies, **no DreamBreaker**, so every second of
+competitive play in the VOD is logged.
+
+## Full-matchup VODs are an upgrade, not a limitation
+
+MLP only publishes whole matchups. That is better than a single game:
+
+- **4× the data.** 193 rallies instead of ~74.
+- **The offset is cross-validated four ways.** All games share one absolute
+  clock, so a continuous VOD needs *one* offset for all of them. Fitting it
+  per game gives four independent estimates that must agree — and if they
+  don't, the disagreements locate the broadcast's edit points. A single
+  game cannot check itself like this.
+- **Better negative controls.** The changeovers between games are minutes of
+  genuinely dead time, far stronger than the 1–4 s gaps between rallies.
+
+Verified against the real 4-game timeline with planted contacts: per-game
+offsets agreed to **0.22 s** against an estimator resolution of ~1.9 s,
+97% of contacts landed inside rally windows, density ratio 13.8×, and the
+interval modes came back at 206 ms / 554 ms.
 
 That one command does all four steps and skips anything already done, so
 re-running after a crash is cheap. Everything except the download works

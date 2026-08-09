@@ -215,6 +215,99 @@ def survey_matchup(teams, date=None):
           "  which is what lets the contact check validate itself with no labels.")
 
 
+def build_matchup(teams, date=None):
+    """One timeline spanning every game of a matchup — the right target for a
+    full-matchup VOD, which is all MLP publishes.
+
+    This is an UPGRADE over a single game, not a compromise. All games share
+    one absolute (UTC) clock, so a continuous VOD needs exactly ONE offset to
+    map video time onto all four. Fitting the offset per game then gives four
+    estimates that must agree — which is a free cross-validation of the sync
+    method that a single game cannot provide. If they disagree, the
+    disagreements are the broadcast's edit points, which is also worth
+    knowing.
+
+    Bonus: the changeovers between games are long stretches of genuinely
+    dead time, much better negative controls than the 1-4 s gaps between
+    rallies inside a game.
+    """
+    import time
+    want = {t.strip().lower()
+            for t in teams.replace(" vs ", " v ").split(" v ")}
+    rows = [r for r in csv.DictReader((DATA / "mlp_matchups_2026.csv").open())
+            if {r["team_one"].lower(), r["team_two"].lower()} == want
+            and (date is None or r["date"] == date)]
+    if not rows:
+        sys.exit(f"no 2026 matchup found for {teams!r}")
+    dates = sorted({r["date"] for r in rows})
+    if len(dates) > 1:
+        sys.exit(f"{teams} played on {dates} — pass --date to choose")
+    games = {g["match_id"]: g for g in csv.DictReader((DATA / "games.csv").open())}
+    names = {r["player_id"].lower(): r["full_name"]
+             for r in csv.DictReader((DATA / "v2_players.csv").open())}
+
+    allr, meta_games, modes = [], [], []
+    for r in sorted(rows, key=lambda r: int(r["game_slot"])):
+        g = games.get(r["match_id"])
+        if not g:
+            continue
+        rl, mode, frac, med = build(fetch(r["match_id"]))
+        if not rl:
+            print(f"  slot {r['game_slot']}: no rally rows, skipped")
+            continue
+        for x in rl:
+            x["slot"] = r["game_slot"]
+            x["match_id"] = r["match_id"]
+        allr.extend(rl)
+        modes.append(mode)
+        meta_games.append({
+            "slot": r["game_slot"], "match_id": r["match_id"],
+            "context": g["context"], "score": f"{g['t1_score']}-{g['t2_score']}",
+            "n_rallies": len(rl), "window_mode": mode,
+            "informative_fraction": frac, "median_lead_s": med,
+            "t_start": rl[0]["t_start"], "t_end": rl[-1]["t_end"],
+            "players": [names.get((g[k] or "").lower(), "?")
+                        for k in ("t1_p1", "t1_p2", "t2_p1", "t2_p2")]})
+        time.sleep(1.1)
+    if not allr:
+        sys.exit("no rallies found for this matchup")
+
+    allr.sort(key=lambda x: x["t_start"])
+    for i, x in enumerate(allr):
+        x["rally"] = i + 1
+
+    OUT.mkdir(parents=True, exist_ok=True)
+    stem = f"matchup_{dates[0].replace('-', '')}_{rows[0]['matchup_id'][:8]}"
+    cols = ["rally", "slot", "match_id", "game", "t_start", "t_end",
+            "duration_s", "gap_after_s", "lead_s", "start_score", "end_score",
+            "outcome", "server_uuid", "receiver_uuid"]
+    with (OUT / f"rally_timeline_{stem}.csv").open("w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=cols)
+        w.writeheader()
+        for x in allr:
+            w.writerow({c: x.get(c, "") for c in cols})
+    meta = {"matchup": teams, "date": dates[0], "games": meta_games,
+            "n_rallies": len(allr),
+            "all_start_marked": all(m == "start-marked" for m in modes)}
+    (OUT / f"rally_timeline_{stem}_meta.json").write_text(json.dumps(meta, indent=2))
+
+    t0 = dt.datetime.fromisoformat(allr[0]["t_start"])
+    print(f"matchup {teams}  {dates[0]}")
+    for m in meta_games:
+        rel = (dt.datetime.fromisoformat(m["t_start"]) - t0).total_seconds()
+        print(f"  slot {m['slot']} {m['context']:7s} {m['n_rallies']:3d} rallies "
+              f"{m['score']:>6s}  {m['window_mode']:12s}  starts +{rel/60:5.1f} min")
+        print(f"          {' / '.join(p.split()[-1] for p in m['players'])}")
+    span = (dt.datetime.fromisoformat(allr[-1]["t_end"]) - t0).total_seconds()
+    live = sum(x["duration_s"] for x in allr)
+    print(f"  TOTAL {len(allr)} rallies over {span/60:.1f} min, "
+          f"{live/span:.0%} live")
+    if not meta["all_start_marked"]:
+        print("  WARNING: not every game is start-marked — the density check "
+              "will be weaker for those")
+    print(f"  wrote {(OUT / f'rally_timeline_{stem}.csv').relative_to(ROOT)}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--match", help="match uuid")
@@ -223,13 +316,20 @@ def main():
                                     "style of every game in that matchup, so a "
                                     "candidate VOD can be vetted before you "
                                     "download it")
-    ap.add_argument("--date", help="YYYY-MM-DD, narrows --teams")
+    ap.add_argument("--matchup", help='"Team A v Team B" — build ONE combined '
+                                      "timeline covering every game in the "
+                                      "matchup. This is what to use with a "
+                                      "full-matchup VOD.")
+    ap.add_argument("--date", help="YYYY-MM-DD, narrows --teams/--matchup")
     args = ap.parse_args()
     if args.teams:
         survey_matchup(args.teams, args.date)
         return
+    if args.matchup:
+        build_matchup(args.matchup, args.date)
+        return
     if not args.match and not args.pick:
-        ap.error("give --match, --pick or --teams")
+        ap.error("give --match, --pick, --matchup or --teams")
 
     meta = {}
     if args.pick:

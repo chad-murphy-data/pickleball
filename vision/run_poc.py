@@ -26,6 +26,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "data" / "vision"
 
+# Known full-matchup VODs. MLP only publishes whole matchups, which is an
+# UPGRADE, not a limitation: all four games share one absolute clock, so the
+# offset can be fitted per game and the four estimates must agree — a
+# cross-validation of the sync a single game cannot give you.
+VODS = {
+    "chicago-0725": dict(
+        url="https://www.youtube.com/watch?v=QOhu67FAeY4",
+        matchup="Chicago Slice v Utah Black Diamonds", date="2026-07-25",
+        note="all four games start-marked (100/100/100/98%), 193 rallies, "
+             "no DreamBreaker — the whole VOD is logged"),
+}
+
 
 def run(cmd, **kw):
     print(f"\n$ {' '.join(str(c) for c in cmd)}")
@@ -37,12 +49,15 @@ def run(cmd, **kw):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--vod", choices=sorted(VODS),
+                    help="a known matchup VOD — supplies url, teams and date")
     ap.add_argument("--url", help="YouTube URL of the matchup VOD")
-    ap.add_argument("--pick", help="curated match name (see rally_timeline.py)")
+    ap.add_argument("--matchup", help='"Team A v Team B" (with --date)')
+    ap.add_argument("--date", help="YYYY-MM-DD")
+    ap.add_argument("--pick", help="curated single game (see rally_timeline.py)")
     ap.add_argument("--match", help="match uuid")
     ap.add_argument("--check", help='matchup as "Team A v Team B" — just report '
                                     "whether its games have usable rally windows")
-    ap.add_argument("--date", help="YYYY-MM-DD, used with --check")
     ap.add_argument("--audio", default=str(OUT / "match_audio.m4a"))
     ap.add_argument("--k", type=float, default=4.0)
     args = ap.parse_args()
@@ -53,11 +68,22 @@ def main():
              "--teams", args.check] + (["--date", args.date] if args.date else []))
         return
 
-    if not args.url or not (args.pick or args.match):
-        ap.error("need --url plus one of --pick/--match (or use --check)")
+    url, matchup, date = args.url, args.matchup, args.date
+    if args.vod:
+        v = VODS[args.vod]
+        url = url or v["url"]
+        matchup, date = matchup or v["matchup"], date or v["date"]
+        print(f"VOD {args.vod}: {v['matchup']} {v['date']}\n  {v['note']}")
+    if not url or not (matchup or args.pick or args.match):
+        ap.error("need a URL plus one of --vod/--matchup/--pick/--match")
 
     # 1. rally timeline (network: the open BFF, works anywhere)
-    sel = ["--pick", args.pick] if args.pick else ["--match", args.match]
+    if matchup:
+        sel = ["--matchup", matchup] + (["--date", date] if date else [])
+    elif args.pick:
+        sel = ["--pick", args.pick]
+    else:
+        sel = ["--match", args.match]
     run([py, str(ROOT / "vision" / "rally_timeline.py")] + sel)
     tls = sorted(OUT.glob("rally_timeline_*.csv"),
                  key=lambda p: p.stat().st_mtime)

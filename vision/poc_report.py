@@ -48,6 +48,7 @@ def load_timeline(path):
     for r in csv.DictReader(Path(path).open()):
         rows.append({
             "rally": int(r["rally"]),
+            "slot": r.get("slot") or "1",
             "start": dt.datetime.fromisoformat(r["t_start"]),
             "end": dt.datetime.fromisoformat(r["t_end"]),
             "outcome": r["outcome"],
@@ -60,23 +61,106 @@ def load_timeline(path):
 
 
 def inside_count(windows, times, offset):
-    """How many contact times land inside a rally window at this offset."""
+    """How many contact times land inside a rally window at this offset.
+
+    Half-open [a, b) — consecutive rally windows can share a boundary when
+    the referee marks the next start in the same second the last one ended,
+    and closed intervals double-count a contact sitting exactly there.
+    """
     t = np.sort(times - offset)
     tot = 0
     for a, b in windows:
+        tot += np.searchsorted(t, b, "left") - np.searchsorted(t, a, "left")
+    return int(tot)
+
+
+def _end_lag_spread(windows, times, offset):
+    """Spread of (window end - last contact in that window).
+
+    The count objective is FLAT: contacts sit in the middle of a ~20 s
+    window, so shifting the offset by seconds moves nobody across an edge
+    and the count does not change. That plateau made a continuous VOD look
+    edited in testing.
+
+    This is the sharp anchor. The referee presses at the moment the rally
+    ENDS, with a roughly constant reaction time, so the gap between the
+    final contact and the logged end should be near-constant across
+    rallies. Minimising its spread pins the offset far tighter than
+    counting can, and it uses the one timestamp refereeing actually nails.
+    """
+    t = np.sort(times - offset)
+    lags, n_hit = [], 0
+    for a, b in windows:
         i = np.searchsorted(t, a, "left")
-        j = np.searchsorted(t, b, "right")
-        tot += j - i
-    return tot
+        j = np.searchsorted(t, b, "left")
+        if j > i:
+            lags.append(b - t[j - 1])
+            n_hit += 1
+    if n_hit < max(5, 0.6 * len(windows)):
+        return np.inf, 0
+    lags = np.array(lags)
+    q1, q3 = np.percentile(lags, [25, 75])
+    return float(q3 - q1), n_hit
 
 
-def find_offset(windows, times, lo, hi, coarse=1.0, fine=0.05):
+def rally_end_candidates(times, min_gap=2.5):
+    """Contacts followed by a long silence — i.e. rally-ending shots.
+
+    Rallies are separated by seconds of dead time and shots inside one are
+    under a second apart, so the gap structure alone marks the ends. These
+    are SHARP events, unlike window membership, which is why the offset is
+    refined against them.
+    """
+    t = np.sort(times)
+    if len(t) < 2:
+        return t
+    gaps = np.diff(t)
+    idx = np.flatnonzero(gaps >= min_gap)
+    return np.concatenate([t[idx], t[-1:]])
+
+
+def refine_offset(windows, times, off0, max_shift=12.0, min_gap=2.5):
+    """Match detected rally-ends to logged rally-ends; take the median shift.
+
+    Window-membership plateaus because contacts sit in the middle of ~20 s
+    windows, so seconds of shift move nobody across an edge — in testing
+    that plateau alone left one game 5 s out and made a continuous VOD read
+    as edited. Matching END EVENTS instead uses the one timestamp
+    refereeing nails, and the median over ~200 rallies absorbs the
+    detector's false positives and misses.
+    """
+    ends = rally_end_candidates(times, min_gap) - off0
+    if len(ends) < 5:
+        return off0, np.nan
+    ends = np.sort(ends)
+    resid = []
+    for _a, b in windows:
+        i = np.searchsorted(ends, b)
+        for j in (i - 1, i):
+            if 0 <= j < len(ends) and abs(ends[j] - b) <= max_shift:
+                resid.append(ends[j] - b)
+    if len(resid) < max(5, 0.4 * len(windows)):
+        return off0, np.nan
+    resid = np.array(resid)
+    # residuals cluster at the true shift plus the referee's reaction lag
+    med = float(np.median(resid))
+    keep = resid[np.abs(resid - med) <= 3.0]
+    return off0 + float(np.median(keep)), float(np.percentile(keep, 75)
+                                                - np.percentile(keep, 25))
+
+
+def find_offset(windows, times, lo, hi, coarse=1.0, fine=0.05, refine=True):
+    """Coarse count-based search, then refine against rally-end events."""
     grid = np.arange(lo, hi, coarse)
     counts = np.array([inside_count(windows, times, o) for o in grid])
-    best = grid[int(np.argmax(counts))]
-    fgrid = np.arange(best - coarse, best + coarse, fine)
-    fcounts = np.array([inside_count(windows, times, o) for o in fgrid])
-    return float(fgrid[int(np.argmax(fcounts))]), grid, counts
+    best = float(grid[int(np.argmax(counts))])
+    if not refine:
+        fgrid = np.arange(best - coarse, best + coarse, fine)
+        fc = np.array([inside_count(windows, times, o) for o in fgrid])
+        return float(fgrid[int(np.argmax(fc))]), grid, counts
+    o1, _ = refine_offset(windows, times, best)
+    o2, _ = refine_offset(windows, times, o1, max_shift=5.0)
+    return float(o2), grid, counts
 
 
 def main():
@@ -107,31 +191,106 @@ def main():
     inside = inside_count(windows, times, off)
     base = np.median(counts)
     peak_ratio = inside / base if base > 0 else float("inf")
-    print(f"1. SYNC            offset {off:+.2f}s   {inside}/{len(times)} "
-          f"contacts inside rally windows ({inside/len(times):.0%})")
+    print(f"1. SYNC            offset {off:+.2f}s")
     print(f"                   peak/median of the alignment curve = "
           f"{peak_ratio:.2f}x  (flat ~1.0 means no real alignment)")
+    print("                   NB the offset absorbs the referee's reaction lag "
+          "as a constant\n                   (~1s): it is refined by matching "
+          "rally-END events, and the ref\n                   presses just after "
+          "the point. Fine for windowing and for the\n                   "
+          "cross-game agreement below; not a broadcast-delay measurement.")
 
-    t = times - off
+    # ---- 1b. per-game offsets: the free cross-validation ---------------
+    # All games of a matchup share one absolute clock, so a CONTINUOUS VOD
+    # needs one offset for all of them. Fitting each game separately gives
+    # independent estimates that must agree — and if they don't, the
+    # disagreements locate the broadcast's edits. Either outcome is useful,
+    # which is why a full-matchup VOD beats a single game.
+    slots = sorted({r["slot"] for r in rallies}, key=lambda s: (len(s), s))
+    per_slot = {}
+    if len(slots) > 1:
+        print("\n1b. PER-GAME SYNC  (all games share one clock, so these should agree)")
+        for s in slots:
+            w = [(r["a"], r["b"]) for r in rallies if r["slot"] == s]
+            o, _, _ = find_offset(w, times, off - 150, off + 150,
+                                  coarse=1.0, fine=0.05)
+            n_in = inside_count(w, times, o)
+            n_tot = sum(1 for _ in w)
+            per_slot[s] = o
+            print(f"    slot {s}: offset {o:+9.2f}s   {n_in} contacts in "
+                  f"{n_tot} rally windows")
+        spread = max(per_slot.values()) - min(per_slot.values())
+        # Judge the spread against the ESTIMATOR'S OWN RESOLUTION, not an
+        # arbitrary threshold. Contacts sit in the middle of ~20 s windows,
+        # so a range of offsets puts exactly the same contacts inside — the
+        # objective has a plateau, and offsets cannot be resolved finer than
+        # that. Calling a VOD "edited" on a spread smaller than the plateau
+        # would be reading noise.
+        print(f"    plateau half-widths: ", end="")
+        halves = []
+        for s in slots:
+            w = [(r["a"], r["b"]) for r in rallies if r["slot"] == s]
+            o = per_slot[s]
+            g = np.arange(o - 20, o + 20, 0.25)
+            c = np.array([inside_count(w, times, x) for x in g])
+            ok = g[c >= c.max() - max(1, 0.002 * c.max())]
+            halves.append((ok.max() - ok.min()) / 2.0)
+            print(f"{halves[-1]:.1f}s ", end="")
+        res = float(np.median(halves))
+        print(f" (median {res:.1f}s)")
+        print(f"    spread {spread:.2f}s vs resolution ~{res:.1f}s  ->  ", end="")
+        if spread <= 2 * res:
+            print("CONSISTENT: within what this estimator can resolve, so the\n"
+                  "                    VOD reads as continuous and the sync "
+                  "checks out four ways")
+        else:
+            print("DIVERGENT: larger than the estimator's resolution, so the\n"
+                  "                    broadcast is edited between games — each "
+                  "game still works\n                    on its own offset, and "
+                  "the jumps locate the cuts")
+    # Downstream, work in AUDIO time: shift each game's windows by its own
+    # offset rather than shifting the contacts. Strictly more accurate when
+    # the broadcast is edited, identical when it isn't.
+    # The refinement anchors each rally's LAST contact on the logged end, so
+    # that contact sits exactly on the boundary and the half-open rule drops
+    # it — one lost contact per rally, ~10% of the total. Pad the end by a
+    # hair, clipped at the next window's start so nothing double-counts.
+    t = times
+    aw = []
+    for i, r in enumerate(rallies):
+        o = per_slot.get(r["slot"], off)
+        a, b = r["a"] + o, r["b"] + o
+        if i + 1 < len(rallies):
+            nxt = rallies[i + 1]["a"] + per_slot.get(rallies[i + 1]["slot"], off)
+            b = min(b + 0.5, max(b, nxt - 1e-6))
+        else:
+            b += 0.5
+        aw.append((a, b))
+    ts = np.sort(t)
+    inside = sum(int(np.searchsorted(ts, b, "left") - np.searchsorted(ts, a, "left"))
+                 for a, b in aw)
+    live = sum(b - a for a, b in aw)
+    span_audio = max(b for _, b in aw) - min(a for a, _ in aw)
+    dead = max(1e-9, span_audio - live)
 
     # ---- 2. density contrast ------------------------------------------
     dens_in = inside / live
-    dens_out = (len(t) - inside) / max(1e-9, span - live)
-    print(f"2. DENSITY         inside {dens_in:.3f}/s   outside {dens_out:.3f}/s"
+    dens_out = max(0, len(t) - inside) / dead
+    print(f"\n2. DENSITY         {inside}/{len(times)} contacts inside rally "
+          f"windows ({inside/len(times):.0%})")
+    print(f"                   inside {dens_in:.3f}/s   outside {dens_out:.3f}/s"
           f"   ratio {dens_in/max(dens_out,1e-9):.1f}x")
 
     # ---- 3. contacts per rally ----------------------------------------
-    per = []
-    for a, b in windows:
-        per.append(int(np.sum((t >= a) & (t <= b))))
-    per = np.array(per)
+    per = np.array([int(np.searchsorted(ts, b, "left")
+                        - np.searchsorted(ts, a, "left")) for a, b in aw])
     print(f"3. PER RALLY       median {np.median(per):.0f}   "
           f"p10 {np.percentile(per,10):.0f}   p90 {np.percentile(per,90):.0f}   "
           f"zeros {int(np.sum(per==0))}/{len(per)}")
 
     # ---- late clustering (free check) ---------------------------------
     rel = []
-    for a, b in windows:
+    for a, b in aw:
         sel = t[(t >= a) & (t <= b)]
         if len(sel) and b > a:
             rel.extend((sel - a) / (b - a))
@@ -143,7 +302,7 @@ def main():
 
     # ---- 4. interval modes --------------------------------------------
     iv = []
-    for a, b in windows:
+    for a, b in aw:
         sel = np.sort(t[(t >= a) & (t <= b)])
         if len(sel) > 1:
             iv.extend(np.diff(sel))
@@ -170,7 +329,10 @@ def main():
         print(f"\n   smoothed peaks at: "
               f"{[f'{edges[i]:.2f}s' for i in pk] or 'none — unimodal'}")
 
-    rep = {"offset_s": off, "n_contacts": int(len(times)),
+    rep = {"offset_s": off, "per_game_offsets": per_slot,
+           "per_game_spread_s": (max(per_slot.values()) - min(per_slot.values()))
+           if len(per_slot) > 1 else 0.0,
+           "n_contacts": int(len(times)),
            "inside_fraction": float(inside / len(times)),
            "peak_ratio": float(peak_ratio),
            "density_in": float(dens_in), "density_out": float(dens_out),
