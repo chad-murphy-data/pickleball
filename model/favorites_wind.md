@@ -1,13 +1,15 @@
 # Does wind flatten the favorite's edge? (data-referenced nulls)
 
-## 1. Game level: share − ½ = a + b·skill + c·(wind/10) + d·skill·(wind/10)
+## 1. Game level: share − ½ = b·skill + d·skill·(wind/10)
 
 skill = v2-expected share − ½. d is the test: negative = wind compresses the favorite's conversion of skill into points. b at 0 mph vs b + 1.5d at 15 mph shows the size.
 
+No intercept and no wind main effect: both are odd under a side relabel and so are zero for a symmetric panel, but games.csv is not symmetric (t1 wins 67.8% — PPA orders the match winner first, which is selection on the outcome). Fitting them let that ordering leak into d; the indoor estimate was −0.080 with them and is −0.031 without. Corrected 2026-08-09.
+
 | setting | games | b (skill slope) | d (skill×wind) [95% CI] | slope at 15 mph |
 |---|---|---|---|---|
-| outdoor | 24819 | 1.040 | +0.002 [-0.060, +0.064] | 1.042 |
-| indoor | 11699 | 1.108 | -0.080 [-0.150, +0.020] | 0.988 |
+| outdoor | 24819 | 1.097 | -0.010 [-0.054, +0.039] | 1.083 |
+| indoor | 11699 | 1.117 | -0.031 [-0.092, +0.059] | 1.071 |
 
 ## 2. Rally level: favorite−underdog SERVE-RALLY win-rate gap vs wind
 

@@ -542,10 +542,15 @@ a 13% minority at ±0.02 share/10mph fires the battery 75%, ±0.03
 100%, 0/20 false positives. So: no minority wind trait ≥0.02
 share/10mph; smaller is below the telescope. Don't re-open without a
 bigger archive or a sharper wind measure (court-level anemometer). FAVORITES×WIND KILLED (2026-07-28, `model/favorites_wind.py`,
-data-referenced nulls only): continuous interaction share~skill+wind+
-skill×wind gives d = +0.002 [−0.060,+0.064] OUTDOOR (24.8k games — no
-compression at all; b≈1.04 so v2 shares are near-perfectly calibrated)
-while INDOOR shows d = −0.080 [−0.150,+0.020]; rally-level fav−dog
+data-referenced nulls only; game-level numbers CORRECTED 2026-08-09 for
+the t1-ordering leak in finding 11 — verdict unchanged, see
+weather_thread.md): continuous interaction share~skill+skill×wind
+gives d = −0.010 [−0.054,+0.039] OUTDOOR (24.8k games — no
+compression at all; b≈1.10 so v2 shares are near-perfectly calibrated)
+while INDOOR shows d = −0.031 [−0.092,+0.059] (was −0.080 before the
+fix: the intercept and wind main effect are odd under a side relabel,
+so fitting them on an asymmetric panel leaked the ordering into d);
+rally-level fav−dog
 serve-rate gap slope is negative in BOTH arms and MORE indoor (−0.031
 sig) than outdoor (−0.022) — the falsification arm fails, so the old
 binned "favorites −6pp at 14–20 mph" was composition/label noise, NOT

@@ -10,11 +10,26 @@ The nulls here are regression nulls, not simulations (house note
     supply a model-expected value that observed data is graded against.
 
 Regression 1 — game level (max power, games.csv scores):
-    share_i − ½ = a + b·skill_i + c·w_i + d·(skill_i × w_i)
+    share_i − ½ = b·skill_i + d·(skill_i × w_i)
   per setting, where skill = sigmoid(eta) − ½ (v2 expected share, centered)
   and w = match-hour wind / 10 mph. Favorites hypothesis: d < 0 outdoors
   (each unit of skill buys fewer points as wind rises), d ≈ 0 indoors.
   b is the skill slope at 0 mph; b + 1.5·d is the slope at 15 mph.
+
+  ORIENTATION (fixed 2026-08-09; the original fit carried an intercept a
+  and a wind main effect c, and both had to go). A game and its mirror
+  image are the same game: relabelling the sides flips y and skill but
+  leaves w alone. So a and c are ODD under the relabel and are identically
+  zero on any symmetric panel — but games.csv is NOT symmetric. t1 wins
+  67.8% of rows because PPA orders the match winner first, which is
+  selection ON THE OUTCOME, so t1's residual is positive by construction
+  (+0.017 mean share). Fitting a and c let that leak into d: the INDOOR
+  estimate was −0.080 with them and is −0.031 without. Dropping them
+  reproduces the symmetrised-panel estimate exactly, while keeping one row
+  per game so the cluster bootstrap CIs stay honest (duplicating each game
+  in both orientations would halve the apparent variance).
+  Regression 2 below was always safe — it is oriented by which side v2
+  calls the favorite, which is a function of the prediction, not the label.
 
 Regression 2 — rally level, favorite breakdown (decider_serve_splits):
     gap_i = favorite side's serve-rally win rate − underdog's, full game
@@ -45,13 +60,18 @@ def read_csv(path):
         return list(csv.DictReader(f))
 
 
-def ols(rows, ykey, xkeys):
-    """OLS with intercept via normal equations (few regressors)."""
-    p = len(xkeys) + 1
+def ols(rows, ykey, xkeys, intercept=True):
+    """OLS via normal equations (few regressors).
+
+    intercept=False is required for the game-level fit — see the ORIENTATION
+    note in the module docstring.  Coefficients are returned with the
+    intercept first when it is fitted, so callers index accordingly.
+    """
+    p = len(xkeys) + (1 if intercept else 0)
     xtx = [[0.0] * p for _ in range(p)]
     xty = [0.0] * p
     for r in rows:
-        x = [1.0] + [r[k] for k in xkeys]
+        x = ([1.0] if intercept else []) + [r[k] for k in xkeys]
         y = r[ykey]
         for i in range(p):
             xty[i] += x[i] * y
@@ -72,7 +92,7 @@ def ols(rows, ykey, xkeys):
     return [m[i][p] / m[i][i] for i in range(p)]
 
 
-def boot_coefs(clustered, ykey, xkeys, n=2000, seed=17):
+def boot_coefs(clustered, ykey, xkeys, n=2000, seed=17, intercept=True):
     keys = list(clustered)
     rng = random.Random(seed)
     draws = []
@@ -80,7 +100,7 @@ def boot_coefs(clustered, ykey, xkeys, n=2000, seed=17):
         s = []
         for _ in keys:
             s.extend(clustered[rng.choice(keys)])
-        b = ols(s, ykey, xkeys)
+        b = ols(s, ykey, xkeys, intercept)
         if b:
             draws.append(b)
     cis = []
@@ -141,23 +161,31 @@ def main():
                                  "sw": skill * w})
         match_meta[g["match_id"]] = (setting, wind, eta, g["event_id"])
 
-    say("## 1. Game level: share − ½ = a + b·skill + c·(wind/10) + "
-        "d·skill·(wind/10)\n")
+    say("## 1. Game level: share − ½ = b·skill + d·skill·(wind/10)\n")
     say("skill = v2-expected share − ½. d is the test: negative = wind "
         "compresses the favorite's conversion of skill into points. "
         "b at 0 mph vs b + 1.5d at 15 mph shows the size.\n")
+    say("No intercept and no wind main effect: both are odd under a "
+        "side relabel and so are zero for a symmetric panel, but games.csv "
+        "is not symmetric (t1 wins 67.8% — PPA orders the match winner "
+        "first, which is selection on the outcome). Fitting them let that "
+        "ordering leak into d; the indoor estimate was −0.080 with them "
+        "and is −0.031 without. Corrected 2026-08-09.\n")
     say("| setting | games | b (skill slope) | d (skill×wind) [95% CI] "
         "| slope at 15 mph |")
     say("|---|---|---|---|---|")
     for setting in ("outdoor", "indoor"):
         rows = rows_by[setting]
-        coefs = ols(rows, "y", ["skill", "w", "sw"])
+        # No intercept and no wind MAIN effect: both are odd under the
+        # side relabel and so are identically zero for a symmetric panel.
+        # Fitting them lets the games.csv t1 ordering leak into d.
+        coefs = ols(rows, "y", ["skill", "sw"], intercept=False)
         clustered = defaultdict(list)
         for r in rows:
             clustered[r["ev"]].append(r)
-        cis = boot_coefs(clustered, "y", ["skill", "w", "sw"])
-        b, d = coefs[1], coefs[3]
-        dlo, dhi = cis[3]
+        cis = boot_coefs(clustered, "y", ["skill", "sw"], intercept=False)
+        b, d = coefs[0], coefs[1]
+        dlo, dhi = cis[1]
         say(f"| {setting} | {len(rows)} | {b:.3f} | {d:+.3f} "
             f"[{dlo:+.3f}, {dhi:+.3f}] | {b + 1.5*d:.3f} |")
     say("")
