@@ -678,7 +678,10 @@ const cards = [...document.querySelectorAll('.fxcard')].map(el => ({
 let VALUES = null, timer = null;
 const fpF = p => PKL.fp(PKL.displayFloor(p));
 function slotOf(ab) { ab = (ab || '').toUpperCase();
-  for (const s of ['MXD1', 'MXD2', 'WD', 'MD']) if (ab.startsWith(s)) return s;
+  // MLP respells mixed MX1/MX2 in the 2026 playoffs (make_forecast.match_slot)
+  for (const [s, slot] of [['MXD1','MXD1'], ['MXD2','MXD2'], ['MX1','MXD1'],
+                           ['MX2','MXD2'], ['WD','WD'], ['MD','MD']])
+    if (ab.startsWith(s)) return slot;
   return null; }
 function priceIds(ids) {
   if (ids.length !== 4 || ids.some(id => !VALUES[id])) return null;

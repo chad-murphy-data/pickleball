@@ -106,11 +106,18 @@ def load_values():
 
 
 def match_slot(m):
-    """WD/MD/MXD1/MXD2 (finals use WDG/MDG etc., hence startswith)."""
+    """WD/MD/MXD1/MXD2 (finals use WDG/MDG etc., hence startswith).
+
+    MLP respells the mixed slots MX1/MX2 in the 2026 playoffs (first seen
+    at MLP Playoffs Dallas, 2026-08-07); before that every matchup used
+    MXD1/MXD2. Unrecognised spellings silently drop the mixed games, which
+    costs roster inference every player who appeared only in mixed."""
     ab = (m.get("matchAbbreviation") or "").upper()
-    for s in ("MXD1", "MXD2", "WD", "MD"):
+    for s, slot in (("MXD1", "MXD1"), ("MXD2", "MXD2"),
+                    ("MX1", "MXD1"), ("MX2", "MXD2"),
+                    ("WD", "WD"), ("MD", "MD")):
         if ab.startswith(s):
-            return s
+            return slot
     return None
 
 
