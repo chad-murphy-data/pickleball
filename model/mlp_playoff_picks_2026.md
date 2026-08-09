@@ -37,7 +37,7 @@ v2 current-form values (per-point logit). Two teams' inferred best lineup is
 | #2 St. Louis Shock | Bright +1.33, Fahey +1.08 | Patriquin +1.08, Tardio +1.07 | Hunter Johnson +0.72 traded in, no MLP game yet |
 | #3 Los Angeles Mad Drops | Jade Kawamoto +1.16, Parenteau +0.90 | Ben Johns +1.11, Garnett +0.81 | Parker/Freeman rotate |
 | #4 Columbus Sliders | Todd +1.14, Black +1.09 | Daescu +0.98, Klinger +0.76 | idle since 7/19 |
-| #5 Brooklyn | Rohrabacher +1.12, J. Kawamoto +1.09 | Alshon +1.01, Newman +0.91 | deepest bench in the field |
+| #5 Brooklyn | Rohrabacher +1.12, J. Kawamoto +1.09 | Alshon +1.01, Newman +0.91 | **weakest** bench in the field, and the most dependent on it — see below |
 | #6 Dallas Flash | Townsend +1.02, Truong +0.79 | JW Johnson +1.09, Ge +0.74 | Buckner +0.73 rotates |
 | #7 Palm Beach Royals | Pisnik +1.13, Sewing +1.02 | Bar +0.76, **Diamond +0.50** | **McGuffin +0.65 sat out all of Dallas** |
 | #8 Texas Ranchers | Jansen +0.70, **Christian +0.63** | Oncins +0.95, Acevedo +0.84 | **Sleeth +0.79 has not played since 6/20** |
@@ -207,6 +207,38 @@ equity: numerical noise, and it vanishes the moment the model is shaded at all.
 Two live reasons to deviate that are *not* about bracket structure: McGuffin
 returning would harden Palm Beach, and a healthy Sleeth would harden Texas.
 Both are information problems, not strategy problems.
+
+## The six-player rosters (confirmed 2026-08-09)
+
+Every MLP roster is exactly **3 men + 3 women** — four starters plus a
+one-man, one-woman bench. All eight playoff teams validate, and the six-player
+rosters are committed to `data/mlp_rosters_2026.csv`. Bench strength (sum of
+the two reserves' v2 values), weakest first:
+
+| team | starters | bench | bench players |
+|---|---|---|---|
+| #5 Brooklyn | 4.125 | **0.809** | Haworth +0.62, Blatt +0.19 |
+| #4 Columbus | 3.959 | 0.864 | Castillo +0.70, Crum +0.16 |
+| #7 Palm Beach | 3.405 | 1.097 | **McGuffin +0.65**, Emmrich +0.45 |
+| #6 Dallas | 3.643 | 1.242 | Buckner +0.73, Jakovljevic +0.52 |
+| #2 St. Louis | 4.559 | 1.275 | Hunter Johnson +0.72, Angie Walker +0.55 |
+| #3 Los Angeles | 3.974 | 1.420 | Parker +0.73, Freeman +0.69 |
+| #8 Texas | 3.120 | 1.449 | **Sleeth +0.79**, Hewett +0.66 |
+| #1 New Jersey | 4.669 | 1.504 | Howells +0.78, Rane +0.72 |
+
+Exactly two teams have a reserve who would crack their own best four —
+**Palm Beach's McGuffin and Texas's Sleeth**, the two availability cases
+already handled above. Nobody else's bench changes a lineup, so the pick
+analysis is untouched by any of this.
+
+Two consequences that make earlier reads *stronger*:
+
+- **Palm Beach's weak men are forced, not chosen.** Goldin is on IR, so the
+  roster carries exactly three men: Bar, McGuffin, Diamond. If McGuffin can't
+  go, Bar/Diamond is the only legal men's pair — the hole New Jersey is hunting
+  has no escape hatch.
+- **Blatt is Brooklyn's only bench woman.** Any game Rohrabacher sits, Blatt
+  *must* take. The 12-of-13 pattern below is not a selection among options.
 
 ## Brooklyn's real women's doubles pair (correction)
 

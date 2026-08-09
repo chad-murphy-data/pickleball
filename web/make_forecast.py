@@ -238,6 +238,44 @@ def mlp_rosters(c, before, start=None):
     return rosters
 
 
+def roster_shape_warnings(rosters, vals, squads=None):
+    """Flag rosters the appearance inference has probably got wrong.
+
+    Every MLP roster is exactly 3 men + 3 women (4 starters + a 1M/1W
+    bench) -- see CLAUDE.md. mlp_rosters() infers membership from who has
+    APPEARED, so the pool it returns is a superset: it keeps players who
+    have left or gone on IR and misses arrivals who have not played yet.
+    Ranking that pool by value then drafts phantoms into a best lineup.
+
+    Two checks, both advisory -- this changes no pricing:
+      shortfall  fewer than 3 tracked players of a gender => someone the
+                 inference cannot see is on the roster (an unplayed arrival)
+      stale      best_lineup picked a player absent from the team's most
+                 recent event => membership without availability, the
+                 Layne Sleeth / Tyson McGuffin failure mode
+
+    squads: optional team_title -> {player_uuid} seen in that team's most
+    recent event. Without it only the shortfall check runs.
+    """
+    out = []
+    for team, roster in sorted(rosters.items()):
+        tracked = [u for u in roster if u in vals]
+        for g, label in (("F", "women"), ("M", "men")):
+            n = sum(1 for u in tracked if vals[u][2] == g)
+            if n < 3:
+                out.append(f"{team}: only {n} tracked {label} (roster carries 3)"
+                           " -- an unplayed arrival is missing")
+        lu = best_lineup(roster, vals)
+        if lu and squads and team in squads:
+            for slot, pair in lu.items():
+                for u in pair:
+                    if u not in squads[team]:
+                        out.append(f"{team}: best lineup starts {vals[u][0]}"
+                                   f" in {slot}, who did not play the team's"
+                                   " most recent event")
+    return sorted(set(out))
+
+
 def best_lineup(roster, vals):
     """Strongest legal lineup from a roster: top 2 women + top 2 men by
     current value; the mixed split maximizes summed weakest-link-adjusted

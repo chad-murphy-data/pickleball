@@ -254,6 +254,22 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   anticorrelated) — a "bad chemistry" pairing implies mirrored "good" ones.
   Only within-player contrasts are identified, and for Bright/Patriquin
   they're collinear with tour (bad partner = PPA-only, good = MLP-only).
+- **Every MLP roster is exactly 3 men + 3 women** — four starters (2M+2W)
+  plus a one-man, one-woman bench. Verified against all 8 playoff teams
+  2026-08-09; `data/mlp_rosters_2026.csv` holds those six-player rosters.
+  Use it as a SHAPE CHECK: `mlp_rosters()` infers membership from who has
+  appeared, which structurally cannot see an arrival who has not played yet
+  (Milan Rane, Angie Walker) and cannot drop a departure or an IR move
+  (Grayson Goldin, Stefan Auvergne — whose +0.72 came off 17 games and who
+  was never really on the team). So the inferred pool is a SUPERSET, and
+  ranking it by value picks phantom players. Two real misfires this way:
+  Layne Sleeth anchored Texas's projected women's pair while seven weeks
+  into a shoulder injury, and Tyson McGuffin was projected into Palm
+  Beach's MD after sitting out an entire playoff weekend. Membership is
+  not availability — a player on the roster may still be unavailable, so
+  cross-check against the team's most recent event before trusting a
+  projected lineup. `make_forecast.roster_shape_warnings()` reports both
+  failure modes; `data/roster_overrides.csv` fixes team assignment.
 - **Score formats are data, not assumptions**: PPA Challengers hide
   single-game-to-15 rounds (side-out, NOT rally); MLP DreamBreakers are
   rally-to-21 singles and NEVER enter models (isTieBreaker flag). 2026 MLP
