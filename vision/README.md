@@ -29,24 +29,57 @@ afternoon rather than a month.
 Audio can never say *who* hit the ball. That is the division of labour:
 **audio is a timing instrument, vision is an attribution instrument.**
 
-## Run order
+## Where to run it
+
+**On a laptop, not the droplet.** YouTube bot-checks datacenter IPs — the
+agent sandbox gets `Sign in to confirm you're not a bot`, and a
+DigitalOcean box will get the same. Residential internet does not.
 
 ```bash
-# 0. the sync spine — no video needed, works today
-python vision/rally_timeline.py --pick midseason-womens
+git fetch origin
+git checkout claude/pickleball-vision-match-analysis-dow5ds
+pip install yt-dlp numpy imageio-ffmpeg     # static ffmpeg, no brew/apt
 
-# 1. detector sanity, no video needed: known contacts, swept SNR + threshold
-python vision/audio_contacts.py --selftest
-
-# 2. YOUR ONE LOCAL STEP: get the audio (this sandbox is IP-blocked by YouTube)
-yt-dlp -f bestaudio -o match.m4a "<youtube url>"
-
-# 3. find contacts, then report
-python vision/audio_contacts.py --audio match.m4a --out data/vision/contacts.csv
-python vision/poc_report.py \
-    --timeline data/vision/rally_timeline_809fe252.csv \
-    --contacts data/vision/contacts.csv
+python vision/run_poc.py --url "<youtube url>" --pick midseason-womens
 ```
+
+That one command does all four steps and skips anything already done, so
+re-running after a crash is cheap. Everything except the download works
+anywhere, including here.
+
+Individual steps, if you want them:
+
+```bash
+python vision/rally_timeline.py --pick midseason-womens      # the sync spine
+python vision/audio_contacts.py --selftest                   # detector sanity
+python vision/audio_contacts.py --audio match.m4a --out data/vision/contacts.csv
+python vision/poc_report.py --timeline data/vision/rally_timeline_809fe252.csv \
+                            --contacts data/vision/contacts.csv
+```
+
+## Vet a candidate video BEFORE downloading it
+
+Referee style varies **by match, not by event** — two courts at the same
+tournament log differently. So any VOD you find needs its matchup checked:
+
+```bash
+python vision/rally_timeline.py --teams "Florida Smash v Bay Area Breakers" \
+                                --date 2026-07-08
+```
+
+It prints every game in that matchup with `USABLE` or
+`degenerate windows`. A matchup VOD contains all four games, so the same
+audio can be scored against four independent timelines — four checks from
+one download.
+
+The target matchup passes on all four:
+
+| slot | division | rallies | style |
+|---|---|---|---|
+| 1 | women's | 74 | start-marked (96%, 20 s lead) |
+| 2 | men's | 42 | start-marked (91%, 20 s lead) |
+| 3 | mixed | 24 | start-marked (100%, 20 s lead) |
+| 4 | mixed | 44 | start-marked (93%, 16 s lead) |
 
 ## The match
 
@@ -82,7 +115,30 @@ between rallies, which is what lets the density check validate itself.
 
 This is why the first pick (Columbus, the densest women's game at 79
 rallies) was dropped — it is batch-entered, and its rally windows are
-degenerate.
+degenerate. Style also varies *within* an event: the Austin matchup with a
+confirmed VOD (Florida Smash v Bay Area Breakers, 2026-06-13) is
+batch-entered on all four courts, while a different Austin match the same
+day is 96% start-marked. Always vet the specific matchup.
+
+### Finding the video
+
+MLP uploads per-matchup VODs titled `<Team A> v <Team B> at the MLP
+<City>…`. Search their channel for the matchup, not the players.
+
+Start-marked matchups worth looking for, best first:
+
+| date | event | matchup | best game |
+|---|---|---|---|
+| 2026-07-08 | Mid-Season (Grand Rapids) | **Florida Smash v Bay Area Breakers** | women's, 74 rallies |
+| 2026-07-25 | Chicago | Chicago Slice v Utah Black Diamonds | mixed, 75 rallies |
+| 2026-06-13 | Austin | California Black Bears v SoCal Hard Eights | men's, 81 rallies |
+| 2026-06-26 | New York | Florida Smash v Bay Area Breakers | men's, 73 rallies |
+| 2026-07-17 | San Diego | Florida Smash v Phoenix Flames | mixed, 66 rallies |
+
+Caution: some MLP uploads titled "MLP Grand Rapids presented by DoorDash"
+are from an **earlier season** — they feature teams (FAU Pickleball Club,
+D.C Pickleball Team) that do not exist in the 2026 data. Check the teams
+against `data/mlp_matchups_2026.csv` before committing to a video.
 
 ## What the report tells you
 

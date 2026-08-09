@@ -174,13 +174,62 @@ def timeouts(log):
     return [parse_ts(r).isoformat() for r in log if r["log_type"] == TIMEOUT_LOG]
 
 
+def survey_matchup(teams, date=None):
+    """Vet a candidate VOD before downloading it.
+
+    Referee style turns out to vary BY MATCH, not by event — two courts at
+    the same tournament can log completely differently — so a matchup found
+    on YouTube has to be checked before you trust its rally windows.
+    """
+    import time
+    want = {t.strip().lower()
+            for t in teams.replace(" vs ", " v ").split(" v ")}
+    rows = [r for r in csv.DictReader((DATA / "mlp_matchups_2026.csv").open())
+            if {r["team_one"].lower(), r["team_two"].lower()} == want
+            and (date is None or r["date"] == date)]
+    if not rows:
+        sys.exit(f"no 2026 matchup found for {teams!r}"
+                 + (f" on {date}" if date else ""))
+    games = {g["match_id"]: g for g in csv.DictReader((DATA / "games.csv").open())}
+    rally = {r["match_id"]: int(r["n_rallies"] or 0)
+             for r in csv.DictReader((DATA / "match_rally_summary.csv").open())}
+    seen = set()
+    for r in sorted(rows, key=lambda r: (r["date"], r["game_slot"])):
+        if r["matchup_id"] in seen and len(rows) > 8:
+            continue
+        g = games.get(r["match_id"])
+        if not g:
+            continue
+        try:
+            _, mode, frac, med = build(fetch(r["match_id"]))
+        except Exception as exc:
+            print(f"  {r['date']} slot {r['game_slot']}: fetch failed ({exc})")
+            continue
+        flag = "USABLE" if mode == "start-marked" else "degenerate windows"
+        print(f"  {r['date']} slot {r['game_slot']} {g['context']:7s} "
+              f"{rally.get(r['match_id'], 0):3d} rallies  {mode:12s} "
+              f"({frac:.0%}, lead {med:.0f}s)  {flag}")
+        print(f"      match_id {r['match_id']}")
+        time.sleep(1.1)
+    print("\n  Only 'start-marked' games leave real dead time between rallies,\n"
+          "  which is what lets the contact check validate itself with no labels.")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--match", help="match uuid")
     ap.add_argument("--pick", choices=sorted(PICKS), help="curated POC match")
+    ap.add_argument("--teams", help='"Team A v Team B" — report the referee '
+                                    "style of every game in that matchup, so a "
+                                    "candidate VOD can be vetted before you "
+                                    "download it")
+    ap.add_argument("--date", help="YYYY-MM-DD, narrows --teams")
     args = ap.parse_args()
+    if args.teams:
+        survey_matchup(args.teams, args.date)
+        return
     if not args.match and not args.pick:
-        ap.error("give --match or --pick")
+        ap.error("give --match, --pick or --teams")
 
     meta = {}
     if args.pick:
