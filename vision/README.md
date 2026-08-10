@@ -84,6 +84,20 @@ hunted") — opposite stories, and the second is the ice-out signature.
 Separating them needs contact-height estimation; v1 reports the
 observable with the confound stated.
 
+**Speed-up outcome ledger (shot selection — finding 12's missing
+channel).** Per initiation store (initiator, terminal_contact_index,
+rally_winner); every cut is a query: lost-in-0 = the attack itself went
+net/out (attacked a ball that wasn't there), lost-in-1 = countered dead
+(punished selection), won-in-0/1 = the attack the ball deserved, 2+ =
+extended hands battle where selection was defensible. Attack rate x
+punished rate = the selection-quality quadrant. The same rows read from
+the other margin give counter-punch rate, the hands-battle defense stat.
+CONFOUNDS, stated before quoting: decision vs execution (a good pick with
+slow hands still loses; offered-ball height eventually splits them),
+opponent counter quality (read opponent-adjusted via v2), and n — one
+match holds ~20-40 initiations, so this VOD validates the instrument and
+only the archive supports leaderboards.
+
 Attribution ladder: side-of-net (robust now) -> player (anchored per rally
 by the log's server/receiver UUIDs + serve geometry; kitchen-line shots
 separate by stable left/right halves; ambiguous assignments fall back to
