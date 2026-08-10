@@ -59,7 +59,10 @@ except ImportError:
     HAVE_PIL = False
 
 FF = imageio_ffmpeg.get_ffmpeg_exe()
-FPS = 30.0          # MLP broadcasts are 30fps (confirmed on the probe clip)
+DEFAULT_FPS = 30.0  # fallback only — the real rate is PARSED from the file.
+                    # (The probe clip was 30fps mp4, but YouTube's 720p
+                    # AV1/VP9 streams are often 60fps; assuming 30 would
+                    # silently halve every timestamp.)
 REF_W, REF_H = 640, 360      # resolution the detector was validated at
 
 
@@ -72,7 +75,9 @@ def probe_video(path):
     w, h = int(m.group(1)), int(m.group(2))
     d = re.search(r"Duration: (\d+):(\d+):([\d.]+)", err)
     dur = int(d.group(1)) * 3600 + int(d.group(2)) * 60 + float(d.group(3)) if d else None
-    return w, h, dur
+    f = re.search(r"([\d.]+) fps", err)
+    fps = float(f.group(1)) if f else None
+    return w, h, dur, fps
 
 
 def frames(path, w, h, stride=1):
@@ -154,12 +159,19 @@ def main():
                     default=True)
     args = ap.parse_args()
 
-    w, h, dur = probe_video(args.video)
+    w, h, dur, fps = probe_video(args.video)
+    if fps is None:
+        print(f"WARNING: could not parse fps; assuming {DEFAULT_FPS}")
+        fps = DEFAULT_FPS
     scale = (w * h) / (REF_W * REF_H)
     max_area = args.max_area if args.max_area is not None else max(40, int(40 * scale))
-    print(f"video: {w}x{h} (scale {scale:.2f}x vs validation clip), "
-          + (f"duration {dur/60:.1f} min" if dur else "duration unknown"))
+    print(f"video: {w}x{h} @ {fps:g} fps (scale {scale:.2f}x vs validation "
+          f"clip), " + (f"duration {dur/60:.1f} min" if dur else "duration unknown"))
     print(f"ball area window: [{args.min_area}, {max_area}] px")
+    if fps > 40 and args.stride == 1:
+        print(f"NOTE: {fps:g} fps source — twice the frames of the validated "
+              f"30fps regime.\n      --stride 2 samples at {fps/2:g} fps "
+              f"(the validated rate) and halves detection cost.")
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -180,10 +192,10 @@ def main():
         print("NOTE: pillow not installed -> scorebug flip CSV still written, "
               "but no crop images.\n      python3 -m pip install pillow")
 
-    bg_every = max(1, round(args.bg_sample_every_s * FPS / args.stride))
-    bg_recompute = max(1, round(args.bg_recompute_every_s * FPS / args.stride))
-    dens_bin = max(1, round(10.0 * FPS / args.stride))
-    crop_every = max(1, round(args.crops_every_s * FPS / args.stride))
+    bg_every = max(1, round(args.bg_sample_every_s * fps / args.stride))
+    bg_recompute = max(1, round(args.bg_recompute_every_s * fps / args.stride))
+    dens_bin = max(1, round(10.0 * fps / args.stride))
+    crop_every = max(1, round(args.crops_every_s * fps / args.stride))
     sb_h, sb_w = int(0.17 * h), int(0.42 * w)
 
     bg_buf, bg_yellow, bg_gray = [], None, None
@@ -211,7 +223,7 @@ def main():
 
     for i, f in enumerate(frames(args.video, w, h, args.stride)):
         rf = i * args.stride
-        t_s = rf / FPS
+        t_s = rf / fps
         gray = f[::2, ::2].mean(axis=2, dtype=np.float32)
 
         # motion curve (cuts show as big spikes on a static camera)
@@ -283,10 +295,10 @@ def main():
             w_d.writerow([f"{bin_t:.1f}", bin_count])
             bin_count, bin_t = 0, t_s
 
-        if (i + 1) % max(1, round(60 * FPS / args.stride)) == 0:
+        if (i + 1) % max(1, round(60 * fps / args.stride)) == 0:
             el = time.time() - t0
             rate = (i + 1) / max(el, 1e-9)
-            rem = ((dur * FPS / args.stride - (i + 1)) / rate
+            rem = ((dur * fps / args.stride - (i + 1)) / rate
                    if dur and rate > 0 else None)
             print(f"  {t_s/60:6.1f} min of video, {n_cand} ball candidates, "
                   f"{el/60:.1f} min elapsed"
