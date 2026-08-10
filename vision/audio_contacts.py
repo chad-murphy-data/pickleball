@@ -311,7 +311,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--selftest", action="store_true")
     ap.add_argument("--audio", help="video or audio file to scan")
-    ap.add_argument("--out", default="data/vision/contacts.csv")
+    # absolute so the script behaves the same from any working directory
+    ap.add_argument("--out", default=str(Path(__file__).resolve().parent.parent
+                                         / "data" / "vision" / "contacts.csv"))
     ap.add_argument("--k", type=float, default=6.0, help="threshold in MADs")
     ap.add_argument("--rallies", type=int, default=25)
     ap.add_argument("--snrs", type=float, nargs="*",

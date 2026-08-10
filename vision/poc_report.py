@@ -172,7 +172,8 @@ def main():
     ap.add_argument("--search-hi", type=float, default=3600.0)
     ap.add_argument("--fast-cut", type=float, default=0.35,
                     help="interval below this counts as a fast/speed-up shot")
-    ap.add_argument("--out", default="data/vision/poc_report.json")
+    # absolute so the script behaves the same from any working directory
+    ap.add_argument("--out", default=str(ROOT / "data" / "vision" / "poc_report.json"))
     args = ap.parse_args()
 
     rallies, t0 = load_timeline(args.timeline)
