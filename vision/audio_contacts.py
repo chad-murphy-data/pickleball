@@ -39,11 +39,17 @@ from pathlib import Path
 
 import numpy as np
 
-SR = 22050
-N_FFT = 1024
-HOP = 128                 # 5.8 ms — the resolution the whole idea rests on
-BAND = (800.0, 8000.0)    # paddle transient energy; skips most speech/rumble
-REFRACTORY_S = 0.045      # two contacts closer than this are one event
+SR = 44100          # paddle transients carry well above 11 kHz;
+                    # 22050 capped us inside the commentary band
+N_FFT = 512         # 11.6 ms at 44.1k: sharper attack resolution
+HOP = 256                 # 5.8 ms at 44.1k — the resolution this rests on
+BAND = (2500.0, 12000.0)  # ABOVE the commentary bed (200-3500 Hz) and most
+                          # crowd energy. The 800 Hz floor used on the first
+                          # real broadcast let speech dominate the flux.
+REFRACTORY_S = 0.100      # the fastest real exchange is ~200 ms, so anything
+                          # closer is one strike counted twice. At 0.045 the
+                          # real broadcast produced a 662-interval spike at
+                          # 0.05-0.10 s that was pure double-triggering.
 CHUNK_FRAMES = 200_000
 
 
@@ -162,7 +168,7 @@ def peaks_from_flux(flux, sr=SR, hop=HOP, k=6.0, refractory_s=REFRACTORY_S,
 
 # -------------------------------------------------------------- self-test ---
 
-def synth_contact(sr, dur=0.06, f_lo=900.0, f_hi=7000.0, rng=None):
+def synth_contact(sr, dur=0.06, f_lo=1000.0, f_hi=14000.0, rng=None):
     """A paddle-like click: near-instant attack, fast decay, band-limited
     broadband content. Not a physical model — just the right envelope and
     spectrum for an onset detector to be honestly tested against."""
