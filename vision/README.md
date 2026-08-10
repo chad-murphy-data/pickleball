@@ -35,8 +35,10 @@ histogram needs dinks as much as speed-ups. Smoke-tested against the known
 reproduces the validated detector.
 
 ```bash
-# one-time: get a JS runtime so yt-dlp can see 720p+ formats (it silently
-# fell back to 360p without one)
+# one-time: deps the extractor needs (scipy was MISSING from the earlier
+# instructions and would have crashed the run), plus a JS runtime so
+# yt-dlp can see 720p+ formats (it silently fell back to 360p without one)
+python3 -m pip install scipy pillow
 curl -fsSL https://deno.land/install.sh | sh
 export PATH="$HOME/.deno/bin:$PATH"
 
@@ -44,11 +46,30 @@ export PATH="$HOME/.deno/bin:$PATH"
 ./ytdlp --ffmpeg-location . -f "bv*[height<=720]+ba/b[height<=720]" \
     -o full_match.mp4 "https://www.youtube.com/watch?v=QOhu67FAeY4"
 
-# stream the whole thing — prints an ETA within the first minute or two,
-# so there's no need to guess how long it'll take before deciding whether
-# to let it run or switch to --stride 2 for a faster first pass
+# stream the whole thing once, harvesting everything — prints an ETA within
+# the first minute or two; --stride 2 for a faster first pass
 python3 track_full_vod.py full_match.mp4 --out full_candidates.csv
+
+# send it all back as one file
+zip -r vod_outputs.zip full_candidates*
 ```
+
+### One pass, seven streams
+
+The expensive thing is decoding 144k frames, so the pass harvests
+everything cheap enough to grab during the decode (each stream validated
+against the probe clip's ground truth before shipping):
+
+| stream | unlocks |
+|---|---|
+| ball candidates | the interval question (dinks vs speed-ups) |
+| 10 s density bins | run sanity at a glance |
+| per-frame motion | cuts, replays, broadcast edit anatomy |
+| scorebug flip CSV | **every** score change frame-exact (known 5→6 flip: diff 149 vs 8 background) → full piecewise alignment of the condensed VOD |
+| scorebug crops (1/s) | read the actual scores offline → the rally→video-timestamp index, i.e. Tier 0 clip-linking for this match |
+| player blobs | movement heatmaps, distance covered per side, kitchen arrival — and the seed of hitter attribution |
+| audio loudness (full + 2–8 kHz cheer band) | crowd roar vs the leverage scale — the cheer meter independently rediscovered the applause structure the audio postmortem found |
+
 
 Runtime is real but unknown in advance — 6x pixel count vs the validated
 clip, and decode/detection cost don't scale identically on every machine.
