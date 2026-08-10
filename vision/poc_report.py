@@ -149,6 +149,82 @@ def refine_offset(windows, times, off0, max_shift=12.0, min_gap=2.5):
                                                 - np.percentile(keep, 25))
 
 
+def slot_candidates(windows, times, lo, hi, coarse=1.0, topk=12):
+    """Top local maxima of the inside-count curve for one game.
+
+    A single game's rally pattern is not unique enough to identify itself
+    across a whole broadcast — 34 windows of ~20 s will align plausibly
+    against a DIFFERENT game's contacts. In testing, game 1 locked onto
+    game 2 and scored HIGHER than at its true offset. So each game offers
+    candidates and the ordering constraint picks between them.
+    """
+    grid = np.arange(lo, hi, coarse)
+    counts = np.array([inside_count(windows, times, o) for o in grid])
+    order = np.argsort(counts)[::-1]
+    picked = []
+    for i in order:
+        if len(picked) >= topk:
+            break
+        if all(abs(grid[i] - grid[j]) > 30 for j in picked):
+            picked.append(i)
+    return [(float(grid[i]), int(counts[i])) for i in picked]
+
+
+def order_constrained_offsets(rallies, slots, times, lo, hi, coarse=1.0):
+    """Choose one offset per game, jointly, so the games appear in the video
+    in the same ORDER they were played and do not overlap.
+
+    Games are broadcast in sequence, so game k cannot start before game k-1
+    has finished. That constraint is what disambiguates the near-miss
+    alignments above; greedy per-game fitting cannot use it, and a greedy
+    pass locks in game 1's mistake. Dynamic programming over each game's
+    candidate offsets maximises total contacts placed subject to the order.
+    """
+    spans, cands = [], []
+    for s in slots:
+        w = [(r["a"], r["b"]) for r in rallies if r["slot"] == s]
+        spans.append((min(a for a, _ in w), max(b for _, b in w), w))
+        cands.append(slot_candidates(w, times, lo, hi, coarse))
+    # Constraint: games START in broadcast order. NOT "game k begins after
+    # game k-1's full span" — this VOD is CONDENSED (80 min of video over
+    # 107 min of play, and 97 min of that is in-game, so dead time is cut
+    # from inside games as well as between them). A game's footage is
+    # therefore SHORTER than its wall-clock span, and requiring non-overlap
+    # of wall-clock spans rejects the true solution.
+    n = len(slots)
+    best = [[(-1, None)] * len(cands[i]) for i in range(n)]
+    for j, (o, c) in enumerate(cands[0]):
+        best[0][j] = (c, None)
+    for i in range(1, n):
+        a_i, a_prev = spans[i][0], spans[i - 1][0]
+        for j, (o, c) in enumerate(cands[i]):
+            start_audio = a_i + o
+            bestprev, arg = -1, None
+            for k, (po, _) in enumerate(cands[i - 1]):
+                if best[i - 1][k][0] < 0:
+                    continue
+                if start_audio >= a_prev + po - 5.0:
+                    if best[i - 1][k][0] > bestprev:
+                        bestprev, arg = best[i - 1][k][0], k
+            if arg is not None:
+                best[i][j] = (bestprev + c, arg)
+    endj = max(range(len(cands[n - 1])), key=lambda j: best[n - 1][j][0])
+    if best[n - 1][endj][0] < 0:                     # no ordered path: give up
+        return {s: slot_candidates(
+            [(r["a"], r["b"]) for r in rallies if r["slot"] == s],
+            times, lo, hi, coarse, topk=1)[0][0] for s in slots}, False
+    chain, j = [None] * n, endj
+    for i in range(n - 1, -1, -1):
+        chain[i] = cands[i][j][0]
+        j = best[i][j][1]
+    out = {}
+    for i, s in enumerate(slots):
+        o, _ = refine_offset(spans[i][2], times, chain[i])
+        o, _ = refine_offset(spans[i][2], times, o, max_shift=5.0)
+        out[s] = float(o)
+    return out, True
+
+
 def find_offset(windows, times, lo, hi, coarse=1.0, fine=0.05, refine=True):
     """Coarse count-based search, then refine against rally-end events."""
     grid = np.arange(lo, hi, coarse)
@@ -211,15 +287,28 @@ def main():
     per_slot = {}
     if len(slots) > 1:
         print("\n1b. PER-GAME SYNC  (all games share one clock, so these should agree)")
+        # Each game searches the FULL range (a broadcast that cuts the breaks
+        # runs shorter than the wall clock it covers, so later games can sit
+        # many minutes off a global fit), but the choice is made JOINTLY under
+        # the constraint that games appear in broadcast order.
+        per_slot, ordered = order_constrained_offsets(
+            rallies, slots, times, args.search_lo, args.search_hi)
         for s in slots:
             w = [(r["a"], r["b"]) for r in rallies if r["slot"] == s]
-            o, _, _ = find_offset(w, times, off - 150, off + 150,
-                                  coarse=1.0, fine=0.05)
-            n_in = inside_count(w, times, o)
-            n_tot = sum(1 for _ in w)
-            per_slot[s] = o
-            print(f"    slot {s}: offset {o:+9.2f}s   {n_in} contacts in "
-                  f"{n_tot} rally windows")
+            print(f"    slot {s}: offset {per_slot[s]:+9.2f}s   "
+                  f"{inside_count(w, times, per_slot[s])} contacts in "
+                  f"{len(w)} rally windows")
+        if not ordered:
+            print("    WARNING: no ordering-consistent solution — the games do "
+                  "not appear in\n             broadcast order, so at least one "
+                  "offset is unreliable")
+        drift = [per_slot[s] - per_slot[slots[0]] for s in slots]
+        if max(abs(d) for d in drift) > 30:
+            print("    cumulative drift vs game 1: "
+                  + "  ".join(f"{d/60:+.1f} min" for d in drift))
+            print("    -> the broadcast removes the breaks between games; each "
+                  "game needs its\n       own offset, which is what the metrics "
+                  "below use.")
         spread = max(per_slot.values()) - min(per_slot.values())
         # Judge the spread against the ESTIMATOR'S OWN RESOLUTION, not an
         # arbitrary threshold. Contacts sit in the middle of ~20 s windows,
@@ -267,9 +356,14 @@ def main():
         else:
             b += 0.5
         aw.append((a, b))
+    # Count each contact AT MOST ONCE. With per-game offsets the audio-time
+    # windows of different games can overlap, and summing per-window counts
+    # then reports more contacts inside than exist (104% in testing).
     ts = np.sort(t)
-    inside = sum(int(np.searchsorted(ts, b, "left") - np.searchsorted(ts, a, "left"))
-                 for a, b in aw)
+    claimed = np.zeros(len(ts), dtype=bool)
+    for a, b in aw:
+        claimed[np.searchsorted(ts, a, "left"):np.searchsorted(ts, b, "left")] = True
+    inside = int(claimed.sum())
     live = sum(b - a for a, b in aw)
     span_audio = max(b for _, b in aw) - min(a for a, _ in aw)
     dead = max(1e-9, span_audio - live)
