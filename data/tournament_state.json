@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-09",
+ "generated": "2026-08-10",
  "mlp": {
   "group": "a0ab9ccc-eb1c-40bd-9649-943a876a7c55",
   "event": "MLP Playoffs Dallas Presented By EisnerAmper",
@@ -111,9 +111,7 @@
     "pts1": 66,
     "pts2": 53,
     "winner": 1
-   }
-  ],
-  "remaining": [
+   },
    {
     "uuid": "176e9502-0ce7-43ab-be59-6a8e61ae55a7",
     "date": "2026-08-09",
@@ -125,7 +123,12 @@
     "pool": "faf53b2f",
     "bracket": null,
     "round": null,
-    "mnum": null
+    "mnum": null,
+    "games1": 3,
+    "games2": 2,
+    "pts1": 54,
+    "pts2": 42,
+    "winner": 1
    },
    {
     "uuid": "11038a80-4f42-4385-97ca-35d70f9cbf23",
@@ -138,35 +141,15 @@
     "pool": "faf53b2f",
     "bracket": null,
     "round": null,
-    "mnum": null
-   },
-   {
-    "uuid": "f6db1c89-ed2c-4adc-876d-718292be0d31",
-    "date": "2026-08-09",
-    "start": "2026-08-09T19:00:00Z",
-    "team1": "Texas Ranchers",
-    "team2": "Atlanta Bouncers",
-    "abbr1": "TEX",
-    "abbr2": "ATL",
-    "pool": "faf53b2f",
-    "bracket": null,
-    "round": null,
-    "mnum": null
-   },
-   {
-    "uuid": "ee5a617c-e7c3-4bd7-96f6-a37b88dafc0a",
-    "date": "2026-08-09",
-    "start": "2026-08-09T20:30:00Z",
-    "team1": "Brooklyn Pickleball Team",
-    "team2": "SoCal Hard Eights",
-    "abbr1": "BKLYN",
-    "abbr2": "SoCal",
-    "pool": "faf53b2f",
-    "bracket": null,
-    "round": null,
-    "mnum": null
+    "mnum": null,
+    "games1": 3,
+    "games2": 1,
+    "pts1": 37,
+    "pts2": 24,
+    "winner": 1
    }
   ],
+  "remaining": [],
   "matrix": {
    "Atlanta Bouncers|Brooklyn Pickleball Team": {
     "p_win": 0.0991,
