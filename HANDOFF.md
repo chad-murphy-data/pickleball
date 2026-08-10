@@ -1,5 +1,45 @@
 # HANDOFF — live-listener launch & receipts
 
+## ► 2026-08-10 — VISION THREAD IN FLIGHT (supersedes everything below, which is stale but kept for droplet reference)
+
+Branch `claude/pickleball-vision-match-analysis-dow5ds` / PR #52. Canonical
+doc for the whole vision effort = **`vision/README.md`** (verdict table,
+derived-measure specs, run instructions). Read that first.
+
+State: the POC is DONE and positive (ball trackable at 360p with zero ML;
+scorebug flips give frame-exact log sync; audio demoted to timing polish —
+full story in the README). `vision/track_full_vod.py` is smoke-tested and
+frozen: one decode pass over the 80-min Chicago VOD harvesting seven
+streams (ball candidates, density, motion, scorebug flips + 1/s crops,
+player blobs, audio loudness).
+
+**WAITING ON: the user's local run** (their laptop; YouTube IP-blocks
+datacenter egress — do NOT try to download the VOD from a sandbox or the
+droplet). They have the exact command block. Deliverable back =
+`vod_outputs.zip`.
+
+When the zip arrives, the derivation stack (each layer validated against
+the referee log before the next builds on it):
+  1. tracks -> contacts -> the interval histogram (dinks vs speed-ups — THE
+     core question)
+  2. rally-end taxonomy (net/out/winner), audited against the log's rally
+     winners
+  3. four speed-up roles (offerer/initiator/finisher/victim) + the outcome
+     ledger (punished-selection quadrant) — all specced in vision/README,
+     all views over the contact sequence, no re-collection needed
+  4. fun layer: crowd-roar vs leverage, rally->timestamp clip index,
+     side heatmaps
+
+Match context: Chicago Slice v Utah Black Diamonds 2026-07-25, matchup
+timeline committed at data/vision/rally_timeline_matchup_20260725_*.csv
+(193 rallies, all four games start-marked). Also merged into this branch:
+findings 11 & 12 (gap exploitation null; singles surplus) + the t1-ordering
+audit — those are complete, do not re-open.
+
+---
+
+# (stale below — 2026-07-16)
+
 ## ► ADDENDUM 2026-07-16 late PT — live page built; check it Friday morning
 
 `site/live.html` (Pillar 5) ships on the `claude/live-match-progress-page-*`
