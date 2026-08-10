@@ -54,6 +54,41 @@ python3 track_full_vod.py full_match.mp4 --out full_candidates.csv
 zip -r vod_outputs.zip full_candidates*
 ```
 
+### Derived measures (specced 2026-08-10; derivation only, no new collection)
+
+**Rally-end taxonomy.** The last ball track ends into the net, out of
+bounds, or in-and-unreturned — error/error/winner by the last hitter. Every
+classification is audited free against the referee log's rally winner (the
+team the video blames must be the team the log says lost). Forced vs
+unforced is a *defined* cut over stored pressure physics (incoming
+interval, reach distance), never a judgment column — store physics, derive
+taxonomy.
+
+**Speed-up roles.** Each speed-up event decomposes over the contact
+sequence into four roles, in two pairs:
+
+    offerer -> initiator -- (exchange) --> finisher -> victim
+
+offerer = hitter of contact k-1 (the ball that got attacked); initiator =
+first fast-interval shot; finisher = last shot of the fast exchange;
+victim = losing-side player nearest the terminal ball (measurable even
+untouched). Collapses are informative: initiator = finisher on one-shot
+kills; offerer = victim when the attack comes straight back. Roles are
+VIEWS over the stored contact sequence, not columns — adding a role costs
+a query, not a video pass.
+
+Attack-rate-against (how often your balls get sped up on) IS the dink
+quality index specced earlier, built from the attack side. CONFOUND, do
+not skip: it mixes ball quality ("pops it up") with being targeted ("gets
+hunted") — opposite stories, and the second is the ice-out signature.
+Separating them needs contact-height estimation; v1 reports the
+observable with the confound stated.
+
+Attribution ladder: side-of-net (robust now) -> player (anchored per rally
+by the log's server/receiver UUIDs + serve geometry; kitchen-line shots
+separate by stable left/right halves; ambiguous assignments fall back to
+team level with a quality flag, never guessed).
+
 ### One pass, seven streams
 
 The expensive thing is decoding 144k frames, so the pass harvests
