@@ -1,5 +1,33 @@
 # Vision POC — can we read shots off a broadcast?
 
+## VERDICT (2026-08-10): YES — vision is the instrument, audio is polish
+
+A 60 s, 360p probe clip (Chicago 2026-07-25, game 1 — located as rallies
+29–30 purely from the scorebug reading 9-5) settled the feasibility
+questions on real footage, with `vision/probe_clip_ball.py` and
+`vision/probe_clip_audio.py`:
+
+| question | answer | evidence |
+|---|---|---|
+| ball visible at 360p? | **yes** | chroma+motion detector: 796 candidates, median 8 px; **11 fast tracks, all inside rally windows; 92 ball positions in rally 30 alone** — no ML, no GPU |
+| camera static? | **yes** | frame-to-frame motion median 0.64 grey levels |
+| scorebug usable for sync? | **yes, frame-exact** | the CHICAGO 5→6 digit flip hit one frame (delta 185 vs next-biggest 48), pinning video time to the log's 18:32:18Z. A pixel-region diff suffices — no OCR model needed for flips |
+| court lines / homography? | yes | crisp in every viewed frame |
+| do paddle pops survive the mix? | **yes — but** | the spectrogram of the fast exchange shows unmistakable broadband stripes at shot cadence. Both earlier "audio failed" verdicts were about the detector, not the signal |
+| standalone audio detection? | **no** | applause is also impulsive (between-rally gap is *hotter* than rallies at 6–12 kHz, ratio 0.52), and in-rally transients arrive every ~0.3–0.5 s, so density and z-score validations both saturate. Audio's role is **timing refinement**: vision finds the contact to ±2–3 frames, the biggest stripe within ±100 ms places it to ~3 ms |
+
+Two lessons worth keeping: **raw candidate density is not a validator**
+(players walking toward the camera in dead time shed more yellow-ish
+candidates than rallies do — 27/s vs 9–15/s; fast smooth *tracks* are the
+validator), and a detector statistic whose null saturates (52% of random
+in-rally moments "significant") is not measuring anything.
+
+At 1080p the ball scales to ~9–10 px across. Next step: full-VOD run at
+720p+, per-cut homography, contacts from trajectory reversals, per-rally
+metrics validated against the referee log.
+
+---
+
 Phase 6, Tier 0–1. The question this POC answers is narrow on purpose:
 **do paddle contacts survive a YouTube broadcast well enough to measure
 inter-contact intervals?** Everything else in the vision stack sits on top
