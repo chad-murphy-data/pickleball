@@ -197,18 +197,45 @@ It does **not** prove paddle pops survive a real broadcast mix. Synthetic
 SNR is not calibrated to YouTube audio. Read the floor as *how much
 headroom the method has*, not as a pass mark.
 
-Measured 2026-08-09 (147 planted contacts, crowd + commentary bed):
+Measured 2026-08-09, planted contacts in a crowd + commentary bed. The
+second row set is after the retune forced by the first real broadcast (see
+"What the first real run found" below):
 
-| SNR dB | best k | precision | recall | median timing error |
-|---|---|---|---|---|
-| 18 | 4.0 | 1.000 | 1.000 | 3.7 ms |
-| 12 | 4.0 | 1.000 | 0.980 | 3.0 ms |
-| 6 | 2.0 | 0.262 | 0.653 | 3.0 ms |
-| 3 | 2.0 | 0.108 | 0.238 | 3.2 ms |
+| SNR dB | v1 precision / recall | **v2 precision / recall** |
+|---|---|---|
+| 18 | 1.000 / 1.000 | **1.000 / 1.000** |
+| 12 | 1.000 / 0.980 | **1.000 / 1.000** |
+| 6 | 0.262 / 0.653 | **0.914 / 0.766** |
+| 3 | 0.108 / 0.238 | **0.357 / 0.640** |
 
-Operating floor ≈ **12 dB** for ≥0.90/0.90. Timing error stays ~3 ms
-wherever it detects at all, which is the claim that matters — video at
-30fps could not do better than 33 ms.
+Operating floor moved from ≈12 dB to ≈**6–8 dB**, and precision at 6 dB went
+0.26 → 0.91 — about 5 dB of extra headroom, which is what moving above the
+commentary band buys. Timing error improved 3.7 → **2.1 ms**, well under the
+33 ms that 30fps video floors out at.
+
+## What the first real run found
+
+Chicago 2026-07-25, 80.3 min of broadcast audio, first detector settings:
+**5551 onsets where ~1550 real contacts should exist, and they were not
+tracking play.** Two checks, neither needing a label:
+
+- sliding game 1's 34 rally windows across the contact stream peaks at
+  **1.12× chance**; a real detection would be several times chance
+- only **3% of 10-second bins are quiet**, in a match that is ~32% dead time
+
+So that run's interval histogram describes crowd and commentary, not
+pickleball. In particular a median interval of 0.54 s looked seductively
+like a dink mode and is not evidence of one — it survives no alignment test.
+Recorded here because it is exactly the kind of number that gets quoted.
+
+Causes, all addressed in the settings above: the 800 Hz band floor sat
+inside the commentary bed; 22 kHz sampling discarded the high-frequency
+content that most distinguishes a paddle strike; and a 45 ms refractory let
+single strikes register twice, producing a 662-interval spike at 0.05–0.10 s.
+
+Whether the retune clears a real mix is still open until it runs on the same
+audio. **The first thing to read on any rerun is the alignment-vs-chance
+number**, not the histogram.
 
 ### Sync and report, validated against the real timeline
 

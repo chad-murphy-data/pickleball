@@ -39,13 +39,21 @@ from pathlib import Path
 
 import numpy as np
 
-SR = 44100          # paddle transients carry well above 11 kHz;
-                    # 22050 capped us inside the commentary band
-N_FFT = 512         # 11.6 ms at 44.1k: sharper attack resolution
-HOP = 256                 # 5.8 ms at 44.1k — the resolution this rests on
-BAND = (2500.0, 12000.0)  # ABOVE the commentary bed (200-3500 Hz) and most
-                          # crowd energy. The 800 Hz floor used on the first
-                          # real broadcast let speech dominate the flux.
+# TUNING IS UNRESOLVED. Two settings have been tried on real broadcast audio
+# and BOTH failed to track play (see README "What the real runs found").
+# v1 (22050 / 800-8000 Hz) gave Fano 2.23 and 1.12x chance alignment.
+# v2 (44100 / 2500-12000 Hz) was WORSE: Fano 0.92 — a perfectly Poisson
+# stream, i.e. pure ambient — and 1.01-1.06x. Moving above the commentary
+# band did not escape the noise; it walked into YouTube's Opus codec, whose
+# quantisation in the top octaves manufactures transient-shaped flux.
+# Reverted to the v1 band, which at least retained some burst structure.
+# DO NOT tune this again by reasoning about it. The next move is to look at
+# the spectrum of KNOWN contacts in a short clip and design the feature from
+# evidence.
+SR = 22050
+N_FFT = 1024
+HOP = 128                 # 5.8 ms — the resolution the whole idea rests on
+BAND = (800.0, 8000.0)    # paddle transient energy; skips most speech/rumble
 REFRACTORY_S = 0.100      # the fastest real exchange is ~200 ms, so anything
                           # closer is one strike counted twice. At 0.045 the
                           # real broadcast produced a 662-interval spike at
