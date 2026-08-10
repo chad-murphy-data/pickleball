@@ -24,3 +24,7 @@ data/clutch_team_raw.npz
 
 # per-game null baseline cache: regenerable via clutch_partner.py (~15 min)
 data/clutch_pergame.npz
+
+# vision probe renders (broadcast-derived imagery stays out of the public
+# repo; regenerable from any clip via vision/probe_clip_*.py)
+data/vision/*.png
