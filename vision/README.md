@@ -22,9 +22,47 @@ candidates than rallies do — 27/s vs 9–15/s; fast smooth *tracks* are the
 validator), and a detector statistic whose null saturates (52% of random
 in-rally moments "significant") is not measuring anything.
 
-At 1080p the ball scales to ~9–10 px across. Next step: full-VOD run at
-720p+, per-cut homography, contacts from trajectory reversals, per-rally
-metrics validated against the referee log.
+At 1080p the ball scales to ~9–10 px across.
+
+## Next: full-VOD run
+
+`vision/track_full_vod.py` streams the whole broadcast with bounded memory
+(the probe's approach would need ~13 GB at 80 min/720p — this uses a small
+rolling background buffer instead, which also self-corrects across camera
+cuts) and keeps **every** candidate blob, not just fast ones — the interval
+histogram needs dinks as much as speed-ups. Smoke-tested against the known
+60 s clip: 794 candidates vs the probe's 796, confirming the rewrite
+reproduces the validated detector.
+
+```bash
+# one-time: get a JS runtime so yt-dlp can see 720p+ formats (it silently
+# fell back to 360p without one)
+curl -fsSL https://deno.land/install.sh | sh
+export PATH="$HOME/.deno/bin:$PATH"
+
+# full matchup video, up to 720p, muxed with ffmpeg (same binary as before)
+./ytdlp --ffmpeg-location . -f "bv*[height<=720]+ba/b[height<=720]" \
+    -o full_match.mp4 "https://www.youtube.com/watch?v=QOhu67FAeY4"
+
+# stream the whole thing — prints an ETA within the first minute or two,
+# so there's no need to guess how long it'll take before deciding whether
+# to let it run or switch to --stride 2 for a faster first pass
+python3 track_full_vod.py full_match.mp4 --out full_candidates.csv
+```
+
+Runtime is real but unknown in advance — 6x pixel count vs the validated
+clip, and decode/detection cost don't scale identically on every machine.
+The script's own progress line is the honest answer; check it early rather
+than estimating up front. `--stride 2` halves both decode and detection
+cost for a faster look (15fps-equivalent sampling, still comfortably above
+what a ~200ms speed-up needs to register a track).
+
+Output is two CSVs — candidates (frame, t, x, y, area, strength) and
+10-second density bins — written incrementally, so a Ctrl-C leaves a valid
+partial file rather than a corrupt one. Send both back; track-building,
+contact extraction and log alignment happen off these, the same way the
+audio onsets fed `poc_report.py` — that part is iteration, not another
+video run.
 
 ---
 
