@@ -1,5 +1,17 @@
 # Vision POC — can we read shots off a broadcast?
 
+> **UPDATE 2026-08-11 — read `vision/mvp_findings.md` first.** The MVP is
+> built (`court.py`, `lineup.py`, `track_match.py`, `shots.py`) and each
+> stage is now MEASURED rather than assumed. Court geometry is solved
+> (0.06 ft median residual) and player identity is solved for free from the
+> referee log (99.25% over 45,689 rallies). **Ball detection is the binding
+> constraint**: ~1.1 identified contacts per rally against ~12 shots
+> actually played, and the label-free side-alternation test sits at 9%
+> against a 50% chance floor before net-crossing selection, 33–37% after.
+> The "50–65% recall" quoted below was physics-referenced and never
+> measured; the measured figure is nearer 10%. Do not run analysis on the
+> current detector — fix detection first.
+
 ## VERDICT (2026-08-10): YES — vision is the instrument, audio is polish
 
 A 60 s, 360p probe clip (Chicago 2026-07-25, game 1 — located as rallies
