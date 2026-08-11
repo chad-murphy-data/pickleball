@@ -69,3 +69,20 @@ an adaptive baseline, which compresses sustained-noise differences, and the
 2–8 kHz band includes commentary excitement. The leverage null's CI
 excludes moderate tracking (r > ~0.08) but not tiny effects. Replication is
 one `track_full_vod.py` run per VOD — the marginal cost is a laptop-hour.
+
+## Addendum: "are X's matches louder?" (star-power, first look)
+
+Raw levels (not baseline excursions) are directly comparable within one
+broadcast — same night, same mics. Across the four games here: **near
+flat** (rms spread 1.07×, cheer band 1.10×), and the loudest game by raw
+level was the men's 11-3 *blowout*, not the 12-10 thriller. n=4, noise.
+
+The per-player cut within one matchup is **degenerate by design**: 8
+players, 2 games each, and co-appearing players (partners AND opponents)
+share identical game sets — Goins and Loong are indistinguishable here.
+Same identifiability structure as actor/partner effects in the ratings,
+same fix: variation across many matchups. The clean star-power design once
+more VODs are processed is the **within-broadcast contrast** — X's games
+vs the *same night's* other games — which cancels mic gain, venue, and
+crowd size, the three confounds that make raw cross-broadcast comparisons
+meaningless. One laptop-run per VOD.
