@@ -1,5 +1,47 @@
 # Vision MVP: what tracks, what doesn't (2026-08-11)
 
+## ⛔ STOPPED — 2026-08-11. Do not restart without hand-labelled frames.
+
+The shot-level vision layer is capped. The reason is arithmetic, not
+sentiment, and it is not "recall is low":
+
+**The metrics worth having are SEQUENCES, and sequences compound.** Speed-up
+lost after one shot, who forced the error, last dink before the first
+speed-up — each needs k consecutive shots, recovered at p^k. At the best
+per-frame rate measured (TrackNet, BGR, 46%): 2-shot chains 21%, 3-shot
+10%, 4-shot 4.5%. Touch share is the only 1-shot marginal, and a touch
+split alone does not justify the work.
+
+**Missed shots CORRUPT chains rather than shorten them.** Drop shot N+1 and
+the sequence reads N → N+2 as adjacent, so a speed-up that was answered
+twice is recorded as won immediately. Wrong data, not wide error bars.
+
+**The bar, run backwards: 80% of 3-shot chains needs p ≈ 0.93 per shot.**
+Nothing here is within reach of that. An earlier framing in this document —
+that random missingness is survivable because a proportion stays unbiased —
+is TRUE FOR TOUCH SHARE AND MISLEADING FOR EVERYTHING ELSE. Do not reuse it
+to justify a low-recall detector.
+
+**And the cheap fine-tuning path does not exist.** The "free labels" below
+(9,101 auto-labelled ball positions from net-crossing colour tracks) are
+measurably biased toward slow shots: 42% sit inside the kitchen band
+against a 14% base rate. Training on them yields a model good at dinks and
+bad at speed-ups — inverted from what the project wants. Closing the gap
+needs frames hand-labelled with deliberate sampling across shot speeds,
+i.e. a real annotation budget. That is what the commercial products bought
+and why they are ahead; they also control capture (fixed phone, one court,
+4K) in a way broadcast footage never will.
+
+What survives and is worth keeping: the court homography (Stage 1) and the
+lineup state machine (Stage 2). The second is a fact about the REFEREE
+LOGS, not about vision — it yields all four players' court positions at
+every serve across the whole 2026 corpus with no camera involved.
+
+Everything below is the record of how this was measured.
+
+---
+
+
 Built a full video tracking system end to end — court geometry, player
 identity, ball tracking, contact detection, attribution — and measured each
 stage instead of assuming it. Two of the four stages are solid enough to

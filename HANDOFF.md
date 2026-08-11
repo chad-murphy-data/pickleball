@@ -1,6 +1,22 @@
 # HANDOFF — live-listener launch & receipts
 
-## ► 2026-08-11 — VISION MVP BUILT AND MEASURED (read this first)
+## ► 2026-08-11 — VISION MVP BUILT, MEASURED, AND STOPPED (read this first)
+
+**STOPPED.** Shot-level vision is capped — see the top of
+`vision/mvp_findings.md`. Short version: the metrics worth having are
+SEQUENCES (speed-up lost after one shot, who forced the error), which
+recover as p^k. At the best measured per-frame rate (TrackNet BGR, 46%) a
+3-shot chain lands 10% of the time, and a missed middle shot CORRUPTS the
+chain rather than shortening it. 80% of 3-shot chains needs p ~ 0.93.
+Nothing here is close, and the cheap fine-tune path is blocked because the
+free auto-labels are biased toward slow shots (42% in the kitchen band vs a
+14% base rate) — training on them would teach the model to miss exactly the
+speed-ups the project cares about. Restarting needs a real hand-labelling
+budget, not more tuning.
+
+KEEP: the court homography and the lineup state machine (the latter is a
+fact about referee logs, not vision — all four players' court positions at
+every serve, no camera needed).
 
 **Canonical doc: `vision/mvp_findings.md`.** The full tracking system now
 exists and every stage has a number on it:
