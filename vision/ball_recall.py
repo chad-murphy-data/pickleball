@@ -107,8 +107,8 @@ def run(ball_csv, rallies_csv, horizon=5, tail=8, min_len=15,
 
     in_hits = in_span = 0
     n_conf = 0
-    conf_frames = 0
-    rally_frames = 0
+    conf_frames = 0          # UNIQUE frames: confident tracks overlap in
+    rally_frames = 0         # time, and summing spans double-counts them
     probe = {h: {"d": [], "null": [], "hold": []}
              for h in range(1, horizon + 1)}
     bridge_ok = bridge_tot = 0
@@ -136,11 +136,12 @@ def run(ball_csv, rallies_csv, horizon=5, tail=8, min_len=15,
         conf.sort(key=lambda tr: F[tr[0]])
         n_conf += len(conf)
 
+        covered = set()
         for tr in conf:
             span = int(F[tr[-1]] - F[tr[0]] + 1)
             in_hits += len(tr)
             in_span += span
-            conf_frames += span
+            covered.update(range(int(F[tr[0]]), int(F[tr[-1]]) + 1))
 
             # ---- 2. extrapolate past the end -------------------------
             tail_idx = tr[-tail:]
@@ -169,6 +170,8 @@ def run(ball_csv, rallies_csv, horizon=5, tail=8, min_len=15,
                 probe[h]["d"].append(d)
                 probe[h]["null"].append(dn)
                 probe[h]["hold"].append(dh)
+
+        conf_frames += len(covered)
 
         # ---- 3. can consecutive confident tracks be bridged? ----------
         for a, z in zip(conf, conf[1:]):

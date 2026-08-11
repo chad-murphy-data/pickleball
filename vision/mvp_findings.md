@@ -212,7 +212,7 @@ detector was doing in the frames *around* them.
 | | |
 |---|---|
 | confident (net-crossing, ≥15 frame) tracks | 4.5 per rally |
-| ...covering | **23.0%** of rally frames |
+| ...covering | **21.1%** of rally frames (unique frames) |
 | in-track recall (ceiling, survivorship-biased up) | **89.1%** |
 | one frame past a track end: nearest candidate | **median 239 px** |
 | same, displaced-null control | median 243 px |
@@ -233,7 +233,9 @@ within 20 px. Not a motion-model failure. The ball is not in the candidate
 set.
 
 Overall ball detection works out to roughly **20–25% of rally frames**,
-clustered rather than spread.
+clustered rather than spread.  (Coverage counts UNIQUE frames — confident
+tracks overlap in time, and an earlier version summed their spans, which
+reported 23.0% here and a nonsensical 199% on a single rally.)
 
 **And the coverage is biased against the shots that matter.** Confident
 ball detections sit in the middle of the court — 42% of them inside the
