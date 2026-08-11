@@ -40,12 +40,13 @@ track speed or reversal strictness moves it. Selecting tracks by
 net-crossing lifts it to 33–37% but leaves ~1.1 contacts/rally. **The old
 "50–65% recall" was never measured; the real figure is nearer 10%.**
 
-NEXT: the GPU weekend is now the whole job, not a polish step — a
-TrackNet-class detector emitting one ball position per frame removes both
-failure modes (75 candidate tracks per rally, 0.23 s fragments) and
-everything downstream is already written. **Do not run the tale-of-two
-analysis on the current detector**: at 1.1 contacts/rally the result would
-be dominated by which rallies happened to track.
+~~NEXT: the GPU weekend is now the whole job~~ — SUPERSEDED by the STOPPED
+block above, later the same day. A TrackNet-class detector was actually
+tested on CPU (`vision/tracknet_probe.py`): it does roughly double the
+colour detector (46% of frames vs ~21%, after fixing a BGR/RGB bug worth
+2.7x on its own), and that is still nowhere near the p ~ 0.93 that sequence
+metrics need. Do not buy GPU time on the strength of the doubling.
+**Do not run the tale-of-two analysis on any detector built here.**
 
 The target matchup is **four** meetings, not two — Dallas 5/25 (11-4),
 Columbus 5/31 (11-3), Mid-Season final 7/12 (6-11, the 88% miss), Orlando
