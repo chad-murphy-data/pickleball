@@ -201,6 +201,60 @@ detection is fixed:
   cropped the player out). Image space matters — the ball is airborne, so
   its ground back-projection runs long while a player's does not.
 
+### Detection or association? DETECTION. (`vision/ball_recall.py`)
+
+"~1 shot in 12" cannot say which stage failed, and the two answers cost
+very different amounts: better linking is an afternoon, a learned detector
+is a GPU weekend plus labelling. Settled using net-crossing tracks as a
+free label — nothing else in frame crosses the net — and asking what the
+detector was doing in the frames *around* them.
+
+| | |
+|---|---|
+| confident (net-crossing, ≥15 frame) tracks | 4.5 per rally |
+| ...covering | **23.0%** of rally frames |
+| in-track recall (ceiling, survivorship-biased up) | **89.1%** |
+| one frame past a track end: nearest candidate | **median 239 px** |
+| same, displaced-null control | median 243 px |
+| within 20 px of where the ball should be | **3.6%** (null 0.0%) |
+
+**The detector is bimodal.** While it holds the ball it holds it well —
+89% of frames inside a confident track carry a detection. The moment a
+track ends, there is *nothing anywhere near* where the ball must be: the
+nearest candidate sits ~240 px away, which is indistinguishable from the
+displaced null at ~243 px. The ball does not drift out of association. It
+vanishes.
+
+**The confound is closed.** Tracks often end *at a contact*, where forward
+extrapolation is wrong by construction — so the same probe was rerun
+holding the track's LAST OBSERVED position, which a ball that merely
+changed direction would still be near. Same answer: median 238 px, 5.8%
+within 20 px. Not a motion-model failure. The ball is not in the candidate
+set.
+
+Overall ball detection works out to roughly **20–25% of rally frames**,
+clustered rather than spread.
+
+**And the coverage is biased against the shots that matter.** Confident
+ball detections sit in the middle of the court — 42% of them inside the
+kitchen band (15 < y < 29) against a 14% base rate for all candidates,
+median y 18.1 ft vs 22.6. The detector holds the ball during slow dinks
+near the net and loses it on drives, serves and speed-ups from the
+baseline. That is the anti-correlation with the events of interest that
+this project cares about, now measured rather than suspected — and it is a
+further reason to treat the "fast mode at 0.15–0.25 s" in
+`interval_results.md` with suspicion, since the median ball track is
+0.233 s long.
+
+Association is a real but second-order effect: only 43% of consecutive
+confident tracks join up under extrapolation (null 14%), on n = 14 pairs.
+
+**Conclusion: perfect linking cannot beat ~25% of frames, because that is
+all there is to link.** Trajectory-level association, three-frame
+differencing, multi-hypothesis tracking — all of it is wasted effort here.
+The learned detector is not one option among several; it is the only one
+that addresses what is actually broken.
+
 ### Why the previous "50–65% recall" was optimistic
 
 It was physics-referenced, never measured. The measurement says the usable
