@@ -32,10 +32,18 @@ i.e. a real annotation budget. That is what the commercial products bought
 and why they are ahead; they also control capture (fixed phone, one court,
 4K) in a way broadcast footage never will.
 
-What survives and is worth keeping: the court homography (Stage 1) and the
-lineup state machine (Stage 2). The second is a fact about the REFEREE
-LOGS, not about vision — it yields all four players' court positions at
-every serve across the whole 2026 corpus with no camera involved.
+ONE thing here survives as a standalone asset, and it is not the vision
+work: the LINEUP STATE MACHINE (Stage 2). It is a fact about the REFEREE
+LOGS — all four players' court positions at every serve across the whole
+2026 corpus, no camera involved — so it keeps working with the rest of this
+directory switched off.
+
+The court homography (Stage 1) is NOT in that category, despite being the
+cleanest engineering here. It is a camera calibration: its only purpose is
+converting pixels to feet, and with the pipeline capped it has no
+downstream consumer. Its value is that `court.py` is validated and would
+not need redoing if anyone ever revisits this. That is a day saved, not an
+asset.
 
 Everything below is the record of how this was measured.
 

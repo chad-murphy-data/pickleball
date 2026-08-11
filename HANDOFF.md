@@ -14,9 +14,11 @@ free auto-labels are biased toward slow shots (42% in the kitchen band vs a
 speed-ups the project cares about. Restarting needs a real hand-labelling
 budget, not more tuning.
 
-KEEP: the court homography and the lineup state machine (the latter is a
-fact about referee logs, not vision — all four players' court positions at
-every serve, no camera needed).
+KEEP: the lineup state machine — and only that. It is a fact about referee
+logs, not vision (all four players' court positions at every serve, no
+camera needed), so it works with this whole directory switched off. The
+court homography is a camera calibration with no consumer while vision is
+capped; `court.py` being validated just means it would not need redoing.
 
 **Canonical doc: `vision/mvp_findings.md`.** The full tracking system now
 exists and every stage has a number on it:
