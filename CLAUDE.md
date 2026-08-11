@@ -391,8 +391,9 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
     - Raw logs stay the source of truth: a tally-logic fix means re-derive
       from raw + re-upsert, NOT re-fetch. DB is a queryable cache.
     - Ceiling: no shot-level data exists anywhere (only referee logs); that
-      needs a broadcast vision pipeline. Everything the logs contain is now
-      in the warehouse.
+      needs a broadcast vision pipeline — ATTEMPTED AND STOPPED 2026-08-11,
+      see the Vision entry under Open threads before re-opening. Everything
+      the logs contain is now in the warehouse.
 
 ## Scheduled obligations
 
@@ -528,6 +529,34 @@ Website extras: live win-prob charts (needs Tier 1/2 listener on a VPS);
 social prediction-card renders (design bundle `Prediction Cards.dc.html`,
 port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
 push to main, nightly data refresh); one-time setup = repo Settings →
-Pages → Source "GitHub Actions". Scorebug OCR of YouTube broadcasts could
-backfill point-by-point history (Tier 0 of the vision pipeline;
-championship-court sample bias noted).
+Pages → Source "GitHub Actions".
+Vision (2026-08-11) — BUILT, MEASURED, STOPPED, ADJUDICATED; do not
+re-open except via the gate below. Record: vision/mvp_findings.md +
+vision/README.md (branch of PR #52 until merged); the two-account
+litigation ("90%+ of rallies" vs "46% is the ceiling") is settled in
+model/vision_adjudication.md — both accounts were honest about DIFFERENT
+LAYERS. Outer layers solved: rally↔video sync 93% (broadcast edit depth
+recovered blind, 27.0 vs 26.9 min), court homography 0.06 ft, player
+identity 99.25% over 45,689 rallies from referee logs alone — that lineup
+state machine (vision/lineup.py) is a keeper asset, no camera needed.
+Inner layer (ball/contacts) is the wall and is junk-dominated:
+side-alternation 9% vs 50% chance (real contacts ≈100%), ~1.1 identified
+contacts/rally vs ~12 played, ball absent from the candidate set outside
+tracks (extrapolation probe ≈ displaced null). The interval histogram's
+"fast mode" is CONFOUNDED — its 0.23 s peak equals the median
+track-fragment length (0.233 s) and the blind gender split is co-predicted
+by differential motion blur — never publish from that stream. "TrackNet
+46%" is a 48-frame, unverified, tennis-weights CPU probe: neither a floor
+nor a ceiling, only "off-the-shelf transfer is insufficient". Auto-label
+fine-tuning is poisoned (42% kitchen-band vs 14% base). Sequence metrics
+need p ≈ 0.85–0.93 on FAST shots (parity+interval certification catches
+most chain corruption, so the hard-0.93 framing was slightly overstated).
+ONLY legitimate re-entry, one evening, decision-grade: fill the
+still-blank blind count (vision/recall_audit.md), hand-label ~300–500
+SPEED-STRATIFIED frames, fine-tune, score the fast stratum via
+vision/ball_recall.py + the alternation checksum — <0.8 = dead at any
+budget, ≥0.9 = the already-built stack revives. Even then, condensed
+championship-court VODs are a structural sample bias and the freeze-out
+question stays n=4 at any tracking quality. Scorebug OCR (flip sync is
+solved, frame-exact) remains viable for point-by-point backfill of
+UNLOGGED matches only — low value while getListLogs covers 2026.
