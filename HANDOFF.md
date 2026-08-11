@@ -1,6 +1,43 @@
 # HANDOFF — live-listener launch & receipts
 
-## ► 2026-08-10 — VISION THREAD IN FLIGHT (supersedes everything below, which is stale but kept for droplet reference)
+## ► 2026-08-11 — VISION MVP BUILT AND MEASURED (read this first)
+
+**Canonical doc: `vision/mvp_findings.md`.** The full tracking system now
+exists and every stage has a number on it:
+
+| stage | module | status |
+|---|---|---|
+| court geometry | `vision/court.py` | **solved** — 0.06 ft median residual |
+| player identity | `vision/lineup.py` | **solved, free** — 99.25% over 45,689 rallies |
+| player detection | `vision/track_match.py` | adequate; broadcast crops deep players |
+| ball detection | `vision/track_match.py` | **THE WALL** — ~1.1 contacts/rally vs ~12 played |
+| contacts + attribution | `vision/shots.py` | built, physically motivated, starved of input |
+
+The identity problem is gone: side-out doubles is a state machine, so the
+referee log's two names (server, receiver) yield all four players' court
+halves at every serve. That replaces the 57% appearance-based attribution.
+
+The blocker is ball detection, and it is measured, not guessed: the
+label-free side-alternation test (consecutive contacts must land on
+opposite sides; chance 50%) returns 9%, and no sweep of area, strength,
+track speed or reversal strictness moves it. Selecting tracks by
+net-crossing lifts it to 33–37% but leaves ~1.1 contacts/rally. **The old
+"50–65% recall" was never measured; the real figure is nearer 10%.**
+
+NEXT: the GPU weekend is now the whole job, not a polish step — a
+TrackNet-class detector emitting one ball position per frame removes both
+failure modes (75 candidate tracks per rally, 0.23 s fragments) and
+everything downstream is already written. **Do not run the tale-of-two
+analysis on the current detector**: at 1.1 contacts/rally the result would
+be dominated by which rallies happened to track.
+
+The target matchup is **four** meetings, not two — Dallas 5/25 (11-4),
+Columbus 5/31 (11-3), Mid-Season final 7/12 (6-11, the 88% miss), Orlando
+8/2 (11-5). All four have informative referee logs; timelines and lineups
+are committed under `data/vision/`. VODs must be downloaded locally —
+`*.googlevideo.com` is blocked by this environment's egress policy.
+
+## ► 2026-08-10 — VISION THREAD (superseded by the block above)
 
 Branch `claude/pickleball-vision-match-analysis-dow5ds` / PR #52. Canonical
 doc for the whole vision effort = **`vision/README.md`** (verdict table,
