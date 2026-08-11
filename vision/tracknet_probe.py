@@ -158,9 +158,15 @@ def run(video, court_json, out, t0=None, t1=None, thresh=0.5, device="cpu",
             continue
         if f1 and i > f1:
             break
-        # channel order matches the reference: current, prev, prev-prev
-        x = np.concatenate([buf[2], buf[1], buf[0]], axis=2)
-        x = np.rollaxis(x.astype(np.float32) / 255.0, 2, 0)[None]
+        # Channel order matches the reference: current, prev, prev-prev —
+        # and BGR, not RGB.  The reference reads frames with OpenCV, which
+        # is BGR, so the weights expect it.  Measured on 48 mid-rally
+        # frames: BGR 46% detections, RGB 17%.  Feeding RGB does not fail
+        # loudly, it just quietly makes the model three times worse.
+        x = np.concatenate([b[..., ::-1] for b in (buf[2], buf[1], buf[0])],
+                           axis=2)
+        x = np.ascontiguousarray(np.rollaxis(x.astype(np.float32) / 255.0,
+                                             2, 0))[None]
         with torch.no_grad():
             o = net(torch.from_numpy(x).float().to(device))
         # The head is a 256-way per-pixel classifier over heat-map
