@@ -13,10 +13,13 @@ frozen: one decode pass over the 80-min Chicago VOD harvesting seven
 streams (ball candidates, density, motion, scorebug flips + 1/s crops,
 player blobs, audio loudness).
 
-**WAITING ON: the user's local run** (their laptop; YouTube IP-blocks
-datacenter egress — do NOT try to download the VOD from a sandbox or the
-droplet). They have the exact command block. Deliverable back =
-`vod_outputs.zip`.
+**2026-08-11 UPDATE: the full-VOD run is DONE and the core question is
+ANSWERED** — see `vision/interval_results.md` (fast mode at 0.15–0.25 s,
+validated by duration-correlation +0.70, burstiness, and the blind gender
+split). Crowd analysis in `vision/crowd_leverage.md` (leverage AND
+allegiance both null). NEXT: attribution (side-of-net → player via the
+log's server/receiver anchors), then the freeze-out final VOD (New Jersey
+5s v STL 2026-07-12, vetted start-marked) for Waters ball-share.
 
 When the zip arrives, the derivation stack (each layer validated against
 the referee log before the next builds on it):
