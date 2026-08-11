@@ -62,3 +62,18 @@ speed-up roles and the selection ledger already specced in the README —
 and the freeze-out final (New Jersey 5s v St. Louis Shock 2026-07-12, all
 three games vetted start-marked) becomes a one-command rerun for the
 Waters ball-share measurement.
+
+## Post-script: two rejected recall improvements (2026-08-11)
+
+A bidirectional (forward+backward) chain with gap-contact inference was
+attempted twice — segment-level dedupe, then point-level fusion — and
+**rejected by the blind gender gate both times**: fast share flattened to
+a uniform ~26-30% including the women's game, the signature of injected
+artifact. Root cause: the backward pass locks onto different objects
+(shoes, clutter), and any union of two independent greedy chains
+interleaves ball with distractor, manufacturing reversals. The real fix is
+a single-best-path tracker (Viterbi over candidates), not chain unioning.
+Recorded so the next session does not re-walk it. v3 (forward-only) is the
+standing result. A blind 10-rally human count is specced in
+`vision/recall_audit.md` to convert the physics-guessed recall into a
+measurement.
