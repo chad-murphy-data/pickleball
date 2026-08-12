@@ -186,9 +186,12 @@ function side(){
   }
   const n = DATA.rallies.filter(r => done(r.cum)).length;
   h += `<div class="bar"><button onclick="dl()">⬇ download CSV</button>
-        <button onclick="cp()">copy CSV</button></div>
-        <div class="small dim">${n} rallies coded</div>`;
+        <button onclick="cp()">copy CSV</button>
+        <button onclick="el('csvpick').click()">⬆ import CSV</button></div>
+        <input type="file" id="csvpick" accept=".csv,text/csv" hidden>
+        <div class="small dim">${n} rallies coded${lastImport}</div>`;
   el("side").innerHTML = h;
+  el("csvpick").onchange = e => importCSV(e.target.files[0]);
 }
 
 function open_(c){
@@ -255,6 +258,11 @@ function intro(){
   0.5× or 0.25× for the hands battles. Everything autosaves locally.<br>
   <b>4.</b> Download the CSV when done (or partway — partial coverage is fine)
   and drop it in the repo as <b>data/vision/shot_labels_chicago0725.csv</b>.<br><br>
+  <b>Saving:</b> labels autosave in this browser and survive closing the tab
+  (same browser, same file location). For anything you'd hate to redo,
+  <b>download the CSV at the end of each sitting</b> — ⬆ import CSV restores
+  it exactly, in any browser on any machine, and merges over whatever is
+  already here. The CSV is both the deliverable and the backup.<br><br>
   No timestamps needed from you — the order is enough; audio carries the timing.<br>
   <span class="small dim">If every rally starts consistently early/late in your
   file, set the offset (seconds) in the bar above once.</span></div>`;
@@ -285,6 +293,59 @@ function dl(){ const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([csv()], {type: "text/csv"}));
   a.download = "shot_labels_chicago0725.csv"; a.click(); }
 function cp(){ navigator.clipboard.writeText(csv()); }
+
+/* ---- CSV import: makes the exported file a portable backup/resume ---- */
+let lastImport = "";
+function parseCSV(text){
+  const rows = [[]]; let cell = "", q = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (q){
+      if (c === '"' && text[i + 1] === '"'){ cell += '"'; i++; }
+      else if (c === '"') q = false;
+      else cell += c;
+    } else if (c === '"') q = true;
+    else if (c === ","){ rows[rows.length - 1].push(cell); cell = ""; }
+    else if (c === "\n" || c === "\r"){
+      if (cell !== "" || rows[rows.length - 1].length){
+        rows[rows.length - 1].push(cell); cell = ""; rows.push([]); }
+    } else cell += c;
+  }
+  if (cell !== "" || rows[rows.length - 1].length) rows[rows.length - 1].push(cell);
+  return rows.filter(r => r.length > 1);
+}
+function applyCsvText(text){
+  const rows = parseCSV(text);
+  const head = rows.shift().map(s => s.trim());
+  const col = name => head.indexOf(name);
+  if (col("rally_cum") < 0 || col("shot_index") < 0)
+    { lastImport = " — import failed: not a shot-labels CSV"; side(); return; }
+  const byRally = {};
+  for (const r of rows){
+    const cum = +r[col("rally_cum")], idx = +r[col("shot_index")];
+    if (!rget(cum) || !idx) continue;
+    (byRally[cum] = byRally[cum] || {shots: [], note: ""});
+    byRally[cum].shots[idx - 1] = {h: r[col("hitter_uuid")] || null,
+                                   t: r[col("shot_type")] || null};
+    if (idx === 1 && col("rally_note") >= 0 && r[col("rally_note")])
+      byRally[cum].note = r[col("rally_note")];
+  }
+  let nR = 0, nS = 0;
+  for (const cum in byRally){
+    const s = byRally[cum];
+    s.shots = Array.from(s.shots, x => x || {h: null, t: null});
+    store[cum] = s; nR++; nS += s.shots.length;
+  }
+  save();
+  lastImport = ` — imported ${nR} rallies / ${nS} shots`;
+  side(); panel();
+}
+function importCSV(f){
+  if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => applyCsvText(rd.result);
+  rd.readAsText(f);
+}
 
 wireVideo(); side(); panel();
 </script>
