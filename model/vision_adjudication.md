@@ -8,6 +8,14 @@ re-checked against the branch's code and docs, none re-derived from video.*
 
 ## Verdict
 
+**Amended same day, before merge:** the vote below covers the
+BALL-TRACKING program, and it is unchanged. A channel neither account
+ever tested — contacts from PLAYER SWING MOTIONS rather than the ball —
+was raised by the user afterward and survives the same scrutiny; it gets
+its own pre-registered gate in §Re-entry gates (Gate B). The distinction
+matters: every measured wall in this file is a fact about a ~9 px ball,
+not about the shot-level goal itself.
+
 **The STOP is upheld. Do not pursue the shot-level vision program.** The
 pessimistic account wins not because it is gloomier but because its
 instruments can fail and the optimistic account's cannot: every
@@ -140,27 +148,106 @@ measured; the blind 10-rally human audit specced to measure it
   infrastructure; the vision program competes with that for the same
   hobby hours and loses on expected receipts per hour.
 
-## The one legitimate re-entry gate (if the itch ever returns)
+## Re-entry gates (two, both pre-registered; run 0. first in either)
 
-Not "more tuning" — the branch is right that tuning is dead. One evening,
-decision-grade:
+Not "more tuning" — the branch is right that tuning is dead. Step 0 for
+either gate: fill in the blank 10-rally blind human count
+(`vision/recall_audit.md`, ~15 min) — the cheapest reality anchor, still
+unmeasured.
 
-0. Fill in the blank 10-rally blind human count (`vision/recall_audit.md`,
-   ~15 min) — the cheapest reality anchor, still unmeasured.
+### Gate A — the ball, via hand labels (as originally specced)
+
 1. Hand-label ~300–500 frames stratified BY SHOT SPEED (oversample
    drives/speed-ups; label blur streaks at their centroid), ~2–3 h with
    any click tool.
 2. Fine-tune (or at minimum run full-resolution, GPU, in-domain-threshold)
    TrackNet; a few dollars of compute.
-3. Score it with the yardsticks that already exist and were built before
-   the detector (`vision/ball_recall.py`, the alternation checksum),
-   reading recall **on the fast stratum**, not overall.
+3. Score with the yardsticks built before the detector
+   (`vision/ball_recall.py`, the alternation checksum), reading recall
+   **on the fast stratum**, not overall.
 
 Decision rule: fast-shot recall < 0.8 → the wall is physical (720p
-YouTube compression) and the program is dead at any label budget, said
-with a measurement; ≥ 0.9 → the sequence layer revives with the entire
-downstream stack (court, identity, contacts, attribution, sync) already
-built and validated. In between → it buys touch-share-grade output only.
+YouTube compression), dead at any label budget, said with a measurement;
+≥ 0.9 → the sequence layer revives with the entire downstream stack
+already built. In between → touch-share-grade output only.
+
+### Gate B — the swing proxy (added 2026-08-11; never tested by either account)
+
+Contacts from player swing events instead of ball reversals: pretrained
+pose estimation per player (wrist-speed peak = swing), gated by the audio
+pop train, attributed by `lineup.py`. Four asymmetries vs the ball, each
+anchored to something already measured on the branch:
+
+- **Person-scale, not ball-scale.** The wall was a ~9 px object among ~75
+  distractor tracks/rally; a swing is a 40–80 px/frame wrist arc on the
+  near side (~half that far side), and the branch measured that player
+  detection succeeds *whenever players are in frame* — the shortfall was
+  broadcast framing, not vision.
+- **Off-the-shelf transfer runs the right direction.** Tennis TrackNet →
+  pickleball ball failed (46% unverified); pretrained pose → athletes is
+  in-domain (humans are the best-covered class in vision). The
+  hand-label blocker was ball-specific.
+- **Attribution is free.** The swing IS the attribution (which box swung);
+  `lineup.py` names the box (99.25%). No net-crossing inference at all.
+- **Audio revives, and the failure modes are complementary.** Pops
+  survive the mix in fast exchanges (measured: broadband stripes at shot
+  cadence) but died standalone on precision (applause). Swing∧pop
+  coincidence (±150 ms) kills the applause channel. Vision-weak = small
+  fast counters; audio-weak = soft dink pops — opposite strata, unlike
+  the ball detector whose bias aligned AGAINST the measurand.
+
+Known failure modes, ranked, all measurable in the probe: far-side
+counter-blocks (small + fast + half-resolution + net occlusion — the
+residual anti-correlation risk, hence the fast-stratum requirement);
+fakes (false contact — the audio gate should kill them; a fake has no
+pop); arm-pump while chasing lobs (require wrist-relative-to-torso
+velocity, flag high-run-speed frames); both-partners-lunge (rare, and
+adjudicable: one pop + next contact's team + log winner); serves/returns
+cropped behind the baseline (identities are LOG-KNOWN — splice shots 1–2
+from the log, only their exact timing is lost). Team-alternation
+certification transfers intact: swing contacts carry team identity by
+construction. For touch share, the mid-game end switch at 6 (all MLP
+games) balances near/far recall asymmetry within every game.
+
+Pre-registered thresholds (set before any data; amend only before
+looking), scored on the Chicago VOD already downloaded, against the
+committed windows/lineups:
+
+- **G1**: team-alternation of audio-gated swing contacts ≥ 85%
+  (chance 50%, truth ≈ 100%).
+- **G2**: blind 10-rally audit — overall recall ≥ 75%, fast-exchange
+  recall ≥ 60%, precision ≥ 90%.
+- **G3**: contacts-vs-duration slope and serve/return identity checks as
+  SANITY ONLY — the tuning-to-plausibility trap is documented above; do
+  not tune to them.
+
+Decision rule: pass G1+G2 → build the swing pipeline as vision MVP v2
+(payoff: `hitter_player_uuid` — "the prize" field; touch share = the
+DIRECT measurement of finding 1's coverage dial w; speed-up
+initiator/finisher roles + the punished-selection ledger via audio
+intervals + log outcomes; scales across every start-marked VOD with no
+labels). Fast recall 40–60% with G1 passing → touch-share-only scope.
+Alternation < 70% or overall recall < 60% → the second wall is measured
+and the vision thread closes permanently, this time with both channels
+dead by measurement. What the swing channel can NEVER recover: placement,
+landing taxonomy, contact height — those need the ball, i.e. Gate A.
+
+Cost: one overnight CPU run (or ~1 GPU-hour) of pretrained pose over
+rally windows at 720p + one evening of scoring on the existing harness.
+No labels, no fine-tune, no new evaluation code.
+
+**The user's hand-coding offer (2026-08-11) and where it plugs in.** The
+user offered to hand-code some points as drive/drop/dink/speed-up. That
+is the most valuable label form for Gate B — NOT ball clicks: ~15–20
+rallies on the Chicago VOD, each shot in order typed
+serve/return/drive/drop/dink/speed-up/counter (~30–45 min of scrubbing;
+extends the blank `vision/recall_audit.md` from a count to a typed
+sequence). It converts G2 from "recall" into recall PER SHOT TYPE — the
+fast-stratum kill threshold measured directly — and later seeds a
+swing-kinematics → shot-type classifier. House discipline: these labels
+live on the EVALUATION side of the wall only (the probe is scored
+against them, never tuned on them; same contamination rule the POC
+already wrote down).
 
 ## What survives regardless (already flagged in the branch, confirmed)
 

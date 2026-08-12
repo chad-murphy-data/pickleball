@@ -551,11 +551,23 @@ nor a ceiling, only "off-the-shelf transfer is insufficient". Auto-label
 fine-tuning is poisoned (42% kitchen-band vs 14% base). Sequence metrics
 need p ≈ 0.85–0.93 on FAST shots (parity+interval certification catches
 most chain corruption, so the hard-0.93 framing was slightly overstated).
-ONLY legitimate re-entry, one evening, decision-grade: fill the
-still-blank blind count (vision/recall_audit.md), hand-label ~300–500
-SPEED-STRATIFIED frames, fine-tune, score the fast stratum via
-vision/ball_recall.py + the alternation checksum — <0.8 = dead at any
-budget, ≥0.9 = the already-built stack revives. Even then, condensed
+TWO legitimate re-entries, pre-registered in model/vision_adjudication.md
+§Re-entry gates (fill the still-blank blind count in
+vision/recall_audit.md first, either way): (A) BALL — hand-label
+~300–500 SPEED-STRATIFIED frames, fine-tune, score the fast stratum via
+vision/ball_recall.py + the alternation checksum; <0.8 = dead at any
+budget, ≥0.9 = the built stack revives. (B) SWING PROXY (2026-08-11,
+user's question; never tested by the branch) — contacts from player
+SWING events: pretrained pose (person-scale, so off-the-shelf transfer
+applies — the hand-label blocker was ball-specific), wrist-speed peaks
+gated on audio-pop coincidence (kills the applause channel that sank
+standalone audio), attribution free via lineup.py; team-alternation
+checksum transfers. Kill = alternation <70% or blind-audit recall <60%;
+pass = touch share measured DIRECTLY (the prize field hitter_uuid =
+finding 1's coverage dial w) + speed-up roles, scaling across the VOD
+archive with zero labels. Residual risk to measure, not assume:
+far-side counter-blocks (small+fast+half-res). Ball-only forever:
+placement, landing, contact height. Even then, condensed
 championship-court VODs are a structural sample bias and the freeze-out
 question stays n=4 at any tracking quality. Scorebug OCR (flip sync is
 solved, frame-exact) remains viable for point-by-point backfill of
