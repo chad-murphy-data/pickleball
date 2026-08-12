@@ -1,15 +1,16 @@
 """Generate the hand-coding instrument for the swing-proxy gate (Gate B).
 
-Produces a single self-contained HTML page the user opens NEXT TO their
-local video player, plus a spreadsheet template for anyone who prefers
-Excel.  One row of output per shot: WHO hit it and WHAT it was
-(serve/return/drive/drop/dink/speed-up/counter/lob/smash/other).  No
-timestamps are asked of the human — order is enough, because the audio
-pop train carries the timing and the label sequence aligns to it by
-order.  These labels are EVALUATION-side only (model/vision_adjudication.md
-§Gate B): the probe is scored against them, never tuned on them, and the
-page embeds no tracker output whatsoever, so the blind rule of
-vision/recall_audit.md is preserved by construction.
+Produces a single self-contained HTML page with an EMBEDDED VIDEO PLAYER —
+the user loads their local VOD file into it (nothing is uploaded; the
+browser streams the file from disk), and the page auto-seeks to each
+rally, plays it at 0.25-1x, auto-pauses at the rally's end, and takes
+who-hit + shot-type taps. One row of output per shot.  No timestamps are
+asked of the human — order is enough, because the audio pop train carries
+the timing and the label sequence aligns to it by order.  These labels
+are EVALUATION-side only (model/vision_adjudication.md §Gate B): the
+probe is scored against them, never tuned on them, and the page embeds no
+tracker output whatsoever, so the blind rule of vision/recall_audit.md is
+preserved by construction.
 
 Inputs (all committed; --data-dir must point at a checkout that has them —
 data/vision/ lives on the vision branch, PR #52):
@@ -26,7 +27,8 @@ vision/recall_audit.md before anything is written; the script refuses to
 emit if the median absolute error exceeds MAX_MEDIAN_ERR_S.  Rallies the
 cheer alignment could not match (13 of 193) get a time carried forward
 from the previous matched rally and are flagged "~approx" — usable for
-scrubbing, excluded from the core set.
+scrubbing, excluded from the core set.  A global offset field in the page
+covers any residual drift of the user's local file.
 
 Core set = the ten original blind-audit rallies (kept comparable) plus the
 longest remaining matched rallies per game, five per game, twenty total —
@@ -93,7 +95,7 @@ def load(data_dir: Path):
     for r in csv.DictReader(open(data_dir / "data/players.csv")):
         names[r["player_id"].lower()] = r["full_name"]
 
-    teams = {}  # match_id -> (frozenset t1 uuids, frozenset t2 uuids)
+    teams = {}  # match_id -> ([t1 uuids], [t2 uuids])
     for r in csv.DictReader(open(data_dir / "data/games.csv")):
         if r["match_id"] in {g["match_id"] for g in games.values()}:
             teams[r["match_id"]] = ([r["t1_p1"].lower(), r["t1_p2"].lower()],
@@ -195,7 +197,9 @@ def build_payload(games, names, teams, rallies, core):
             continue
         out["rallies"].append({
             "cum": r["cum"], "slot": r["slot"], "rally": r["rally"],
-            "t0": mmss(r["v0"]), "t1": mmss(r["v1"]), "dur": r["dur"],
+            "t0": mmss(r["v0"]), "t1": mmss(r["v1"]),
+            "t0s": round(r["v0"], 1), "t1s": round(r["v1"], 1),
+            "dur": r["dur"],
             "approx": r["approx"], "score": r["score"], "outcome": r["outcome"],
             "server": names.get(r["server"], "?"), "server_uuid": r["server"],
             "receiver": names.get(r["receiver"], "?"),
@@ -225,6 +229,9 @@ def write_template(payload, path: Path):
     print(f"wrote {path}")
 
 
+# The <video> element lives OUTSIDE the re-rendered panel on purpose:
+# every label tap re-renders the shot panel, and a video inside it would
+# be torn down and lose the loaded file + playback position on each tap.
 HTML = r"""<!doctype html>
 <meta charset="utf-8">
 <title>Shot audit — Chicago 2026-07-25</title>
@@ -235,7 +242,14 @@ HTML = r"""<!doctype html>
  body{background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,sans-serif;
       display:grid;grid-template-columns:290px 1fr;height:100vh}
  #side{border-right:1px solid var(--line);overflow-y:auto;padding:10px}
- #main{overflow-y:auto;padding:18px 22px}
+ #right{display:flex;flex-direction:column;height:100vh;min-width:0}
+ #vidwrap{padding:10px 14px 6px;border-bottom:1px solid var(--line);background:#0b0e12}
+ #vid{width:100%;max-height:42vh;background:#000;border-radius:8px;display:none}
+ #drop{border:2px dashed var(--line);border-radius:10px;padding:26px;text-align:center;
+       color:var(--dim);cursor:pointer}
+ #drop:hover{border-color:var(--acc);color:var(--ink)}
+ #vbar{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-top:7px;display:none}
+ #panel{overflow-y:auto;padding:14px 22px;flex:1}
  h1{font-size:17px;margin:4px 0 10px}
  .dim{color:var(--dim)} .small{font-size:12px}
  button{background:var(--panel);color:var(--ink);border:1px solid var(--line);
@@ -248,7 +262,8 @@ HTML = r"""<!doctype html>
  .badge{font-size:11px;padding:1px 6px;border-radius:9px;background:var(--line)}
  .badge.done{background:var(--acc);color:#08130d}
  .badge.orig{background:var(--warn);color:#1a1408}
- #scrub{font-size:34px;font-weight:700;letter-spacing:1px}
+ #scrub{font-size:26px;font-weight:700;letter-spacing:1px;cursor:pointer}
+ #scrub:hover{color:var(--acc)}
  .shot{display:flex;gap:6px;align-items:center;margin:5px 0;flex-wrap:wrap}
  .shot .idx{width:26px;text-align:right;color:var(--dim)}
  .pbtn{border-width:2px}
@@ -257,27 +272,63 @@ HTML = r"""<!doctype html>
  .pbtn.t2.on{background:var(--t2);border-color:var(--t2);color:#1f1206}
  .tbtn{font-size:12px;padding:5px 7px}
  .del{color:var(--dim);border:none;background:none;font-size:15px}
- #help{background:var(--panel);border:1px solid var(--line);border-radius:9px;
+ .help{background:var(--panel);border:1px solid var(--line);border-radius:9px;
        padding:12px 14px;margin:12px 0;font-size:13px}
  kbd{background:var(--line);border-radius:4px;padding:0 5px;font-size:12px}
  input[type=text]{background:var(--panel);border:1px solid var(--line);color:var(--ink);
        border-radius:7px;padding:6px 9px;width:100%;font:inherit}
+ input[type=number]{background:var(--panel);border:1px solid var(--line);color:var(--ink);
+       border-radius:7px;padding:4px 6px;width:64px;font:inherit}
  .bar{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap;align-items:center}
  a{color:var(--acc)}
  .approx{color:var(--warn)}
+ .vsep{width:1px;height:22px;background:var(--line)}
 </style>
 <div id="side"></div>
-<div id="main"></div>
+<div id="right">
+  <div id="vidwrap">
+    <div id="drop">🎬 <b>Load the match video</b> — click here or drag the file in<br>
+      <span class="small">__VIDEO_NOTE__<br>
+      stays on your machine; nothing is uploaded</span></div>
+    <input type="file" id="fpick" accept="video/*,.webm,.mp4,.mkv" hidden>
+    <video id="vid" controls preload="metadata"></video>
+    <div id="vbar">
+      <button id="breplay" title="R">⟲ rally</button>
+      <button id="bplay" title="space">⏯</button>
+      <button id="bm2" title="←">−2s</button>
+      <button id="bp2" title="→">+2s</button>
+      <span class="vsep"></span>
+      <span class="small dim">speed</span>
+      <button class="spd" data-r="0.25">.25×</button>
+      <button class="spd" data-r="0.5">.5×</button>
+      <button class="spd" data-r="0.75">.75×</button>
+      <button class="spd on" data-r="1">1×</button>
+      <span class="vsep"></span>
+      <button id="bpause" class="on" title="pause automatically at the end of the current rally">auto-pause ✓</button>
+      <span class="small dim">offset</span>
+      <input type="number" id="voff" step="0.5" value="0" title="if every rally starts consistently early/late in YOUR file, correct it here (seconds)">
+      <button id="bswap" class="small">↺ file</button>
+    </div>
+  </div>
+  <div id="panel"></div>
+</div>
 <script>
 const DATA = __PAYLOAD__;
 const LSK = "shot_audit_chicago0725";
 let store = JSON.parse(localStorage.getItem(LSK) || "{}");
-let coreOnly = true, cur = null;
+let prefs = JSON.parse(localStorage.getItem(LSK + "_prefs") || "{}");
+let coreOnly = true, cur = null, autoPause = prefs.autoPause !== false;
 
 const save = () => localStorage.setItem(LSK, JSON.stringify(store));
+const savePrefs = () => localStorage.setItem(LSK + "_prefs",
+  JSON.stringify({rate: V.playbackRate, voff: +el("voff").value, autoPause}));
+const el = id => document.getElementById(id);
+const V = el("vid");
 const rallies = () => DATA.rallies.filter(r => !coreOnly || r.core);
 const rget = c => DATA.rallies.find(r => r.cum === c);
 const shots = c => (store[c] = store[c] || {shots: prefill(c), note: ""}).shots;
+const voff = () => +el("voff").value || 0;
+const loaded = () => !!V.src;
 
 function prefill(c){
   const r = rget(c);
@@ -290,10 +341,69 @@ function players(r){
 function done(c){ const s = store[c]; return s && s.shots.length > 2 &&
   s.shots.every(x => x.h && x.t); }
 
+/* ---------------- video ---------------- */
+function loadFile(f){
+  if (!f) return;
+  V.src = URL.createObjectURL(f);
+  V.style.display = "block"; el("drop").style.display = "none";
+  el("vbar").style.display = "flex";
+  V.playbackRate = prefs.rate || 1;
+  markSpeed();
+  if (cur !== null) seekRally(rget(cur), false);
+}
+function seekTo(t, play){
+  if (!loaded()) return;
+  const go = () => { V.currentTime = Math.max(0, t + voff());
+                     if (play) V.play().catch(() => {}); };
+  V.readyState >= 1 ? go() : V.addEventListener("loadedmetadata", go, {once: true});
+}
+function seekRally(r, play){ seekTo(r.t0s - 1.0, play); }
+function markSpeed(){
+  document.querySelectorAll(".spd").forEach(b =>
+    b.classList.toggle("on", +b.dataset.r === V.playbackRate));
+}
+function wireVideo(){
+  el("drop").onclick = () => el("fpick").click();
+  el("bswap").onclick = () => el("fpick").click();
+  el("fpick").onchange = e => loadFile(e.target.files[0]);
+  document.addEventListener("dragover", e => e.preventDefault());
+  document.addEventListener("drop", e => { e.preventDefault();
+    loadFile(e.dataTransfer.files[0]); });
+  el("bplay").onclick = () => V.paused ? V.play().catch(() => {}) : V.pause();
+  el("breplay").onclick = () => cur !== null && seekRally(rget(cur), true);
+  el("bm2").onclick = () => { if (loaded()) V.currentTime -= 2; };
+  el("bp2").onclick = () => { if (loaded()) V.currentTime += 2; };
+  document.querySelectorAll(".spd").forEach(b => b.onclick = () => {
+    V.playbackRate = +b.dataset.r; markSpeed(); savePrefs(); });
+  el("bpause").onclick = () => { autoPause = !autoPause;
+    el("bpause").classList.toggle("on", autoPause);
+    el("bpause").textContent = autoPause ? "auto-pause ✓" : "auto-pause ✗";
+    savePrefs(); };
+  el("voff").value = prefs.voff || 0;
+  el("voff").onchange = savePrefs;
+  V.addEventListener("timeupdate", () => {
+    if (autoPause && cur !== null && !V.paused &&
+        V.currentTime > rget(cur).t1s + voff() + 1.5) V.pause();
+  });
+  document.addEventListener("keydown", e => {
+    if (e.target.tagName === "INPUT" || !loaded()) return;
+    if (e.code === "Space"){ e.preventDefault(); el("bplay").onclick(); }
+    else if (e.key === "r" || e.key === "R") el("breplay").onclick();
+    else if (e.key === "ArrowLeft") el("bm2").onclick();
+    else if (e.key === "ArrowRight") el("bp2").onclick();
+    else if (e.key === "[" || e.key === "]"){
+      const steps = [0.25, 0.5, 0.75, 1];
+      let i = steps.indexOf(V.playbackRate); if (i < 0) i = 3;
+      V.playbackRate = steps[Math.min(3, Math.max(0, i + (e.key === "]" ? 1 : -1)))];
+      markSpeed(); savePrefs();
+    }
+  });
+}
+
+/* ---------------- panels ---------------- */
 function side(){
-  const el = document.getElementById("side");
   let h = `<h1>Shot audit</h1>
-  <div class="small dim">MLP Chicago 2026-07-25<br>scrub in: ${DATA.video}</div>
+  <div class="small dim">MLP Chicago 2026-07-25<br>Chicago Slice v Utah Black Diamonds</div>
   <div class="bar">
     <button class="${coreOnly ? "on" : ""}" onclick="coreOnly=true;side()">core 20</button>
     <button class="${coreOnly ? "" : "on"}" onclick="coreOnly=false;side()">all rallies</button>
@@ -312,28 +422,32 @@ function side(){
   h += `<div class="bar"><button onclick="dl()">⬇ download CSV</button>
         <button onclick="cp()">copy CSV</button></div>
         <div class="small dim">${n} rallies coded</div>`;
-  el.innerHTML = h;
+  el("side").innerHTML = h;
 }
 
-function open_(c){ cur = c; side(); mainv(); }
+function open_(c){
+  cur = c; side(); panel();
+  seekRally(rget(c), true);
+}
 
-function mainv(){
-  const el = document.getElementById("main");
-  if (cur === null){ el.innerHTML = intro(); return; }
+function panel(){
+  const p = el("panel");
+  if (cur === null){ p.innerHTML = intro(); return; }
   const r = rget(cur), ps = players(r), sh = shots(cur);
-  let h = `<div class="bar"><span id="scrub">${r.approx ? "≈" : ""}${r.t0}</span>
+  let h = `<div class="bar"><span id="scrub" onclick="seekRally(rget(cur),true)"
+      title="click to replay this rally">${r.approx ? "≈" : ""}${r.t0}</span>
     <span class="dim">→ ends ~${r.t1} (${r.dur.toFixed(0)}s)</span>
     <span class="badge">G${r.slot} R${r.rally} · #${r.cum}</span>
     <span class="badge">${DATA.games[r.slot].division}</span>
     ${r.orig ? '<span class="badge orig">original blind-10</span>' : ""}</div>
     <div class="small dim">score ${r.score} · serve: <b>${r.server}</b> → ${r.receiver}
     ${r.approx ? ' · <span class="approx">time approximated across a broadcast cut — trust the scorebug</span>' : ""}</div>
-    <div id="help">${helprow(r)}</div>`;
+    <div class="help small">${helprow(r)}</div>`;
   sh.forEach((s, i) => {
     h += `<div class="shot"><span class="idx">${i + 1}</span>`;
-    for (const p of ps)
-      h += `<button class="pbtn t${p.team} ${s.h === p.uuid ? "on" : ""}"
-        onclick="setH(${i},'${p.uuid}')">${p.name.split(" ").slice(-1)[0]}</button>`;
+    for (const p2 of ps)
+      h += `<button class="pbtn t${p2.team} ${s.h === p2.uuid ? "on" : ""}"
+        onclick="setH(${i},'${p2.uuid}')">${p2.name.split(" ").slice(-1)[0]}</button>`;
     h += `<span style="width:8px"></span>`;
     for (const [k, lab] of DATA.types)
       h += `<button class="tbtn ${s.t === lab ? "on" : ""}"
@@ -348,14 +462,16 @@ function mainv(){
     <div class="bar">
       <button onclick="nav(-1)">← prev rally</button>
       <button onclick="nav(1)">next rally →</button></div>`;
-  el.innerHTML = h;
+  p.innerHTML = h;
 }
 
 function helprow(r){
   const t = Object.entries(DATA.typedefs).map(([k, v]) => `<b>${k}</b> — ${v}`).join("<br>");
   return `<b>Count every PADDLE STRIKE in order</b> (serve included; bounces are not shots;
   a fake or swing-and-miss is NOT a shot — note it instead). If the rally ends with a ball
-  nobody touches, the last shot is the previous strike.<br><br>${t}<br><br>
+  nobody touches, the last shot is the previous strike.
+  Keys: <kbd>space</kbd> play/pause · <kbd>R</kbd> replay rally · <kbd>←</kbd><kbd>→</kbd> ±2s ·
+  <kbd>[</kbd><kbd>]</kbd> slower/faster. Tip: 0.5× with sound on makes the pops easy to count.<br><br>${t}<br><br>
   <span class="dim">Blind rule: don't look at any tracker output for these rallies.
   Players: <span style="color:var(--t1)">${DATA.games[r.slot].teams[0].map(p=>p.name).join(" / ")}</span> vs
   <span style="color:var(--t2)">${DATA.games[r.slot].teams[1].map(p=>p.name).join(" / ")}</span></span>`;
@@ -363,21 +479,25 @@ function helprow(r){
 
 function intro(){
   return `<h1>How this works</h1>
-  <div id="help"><b>1.</b> Open your local copy of the VOD (${DATA.video}).<br>
+  <div class="help"><b>1.</b> Load the VOD above (click the box or drag the file in).
+  It plays inside this page — one window, no juggling.<br>
   <b>2.</b> Pick a rally on the left (core 20 first — the ten marked
-  <span class="badge orig">blind10</span> are the pre-registered audit set).<br>
-  <b>3.</b> Scrub the video to the big timestamp, watch the rally, and tap
-  who hit + what it was for each shot in order. Shots 1–2 are prefilled from
-  the referee log. Everything autosaves locally.<br>
+  <span class="badge orig">blind10</span> are the pre-registered audit set).
+  The video jumps there and plays; it auto-pauses when the rally ends.<br>
+  <b>3.</b> Tap who hit + what it was for each shot in order. Shots 1–2 are
+  prefilled from the referee log. <kbd>R</kbd> replays the rally; drop to
+  0.5× or 0.25× for the hands battles. Everything autosaves locally.<br>
   <b>4.</b> Download the CSV when done (or partway — partial coverage is fine)
   and drop it in the repo as <b>data/vision/shot_labels_chicago0725.csv</b>.<br><br>
-  No timestamps needed from you — the order is enough; audio carries the timing.</div>`;
+  No timestamps needed from you — the order is enough; audio carries the timing.<br>
+  <span class="small dim">If every rally starts consistently early/late in your
+  file, set the offset (seconds) in the bar above once.</span></div>`;
 }
 
-function setH(i, u){ shots(cur)[i].h = u; save(); mainv(); side(); }
-function setT(i, t){ shots(cur)[i].t = t; save(); mainv(); side(); }
-function addS(){ shots(cur).push({h: null, t: null}); save(); mainv(); }
-function delS(i){ shots(cur).splice(i, 1); save(); mainv(); side(); }
+function setH(i, u){ shots(cur)[i].h = u; save(); panel(); side(); }
+function setT(i, t){ shots(cur)[i].t = t; save(); panel(); side(); }
+function addS(){ shots(cur).push({h: null, t: null}); save(); panel(); }
+function delS(i){ shots(cur).splice(i, 1); save(); panel(); side(); }
 function nav(d){ const rs = rallies(); const i = rs.findIndex(r => r.cum === cur);
   const n = rs[i + d]; if (n) open_(n.cum); }
 
@@ -400,7 +520,7 @@ function dl(){ const a = document.createElement("a");
   a.download = "shot_labels_chicago0725.csv"; a.click(); }
 function cp(){ navigator.clipboard.writeText(csv()); }
 
-side(); mainv();
+wireVideo(); side(); panel();
 </script>
 """
 
@@ -424,7 +544,8 @@ def main():
     core = pick_core(rallies)
     payload = build_payload(games, names, teams, rallies, core)
 
-    html = HTML.replace("__PAYLOAD__", json.dumps(payload))
+    html = (HTML.replace("__PAYLOAD__", json.dumps(payload))
+                .replace("__VIDEO_NOTE__", VIDEO_NOTE))
     p = out / "shot_audit_chicago0725.html"
     p.write_text(html)
     print(f"wrote {p} ({len(payload['rallies'])} rallies, "
