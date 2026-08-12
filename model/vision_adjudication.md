@@ -247,7 +247,18 @@ fast-stratum kill threshold measured directly — and later seeds a
 swing-kinematics → shot-type classifier. House discipline: these labels
 live on the EVALUATION side of the wall only (the probe is scored
 against them, never tuned on them; same contamination rule the POC
-already wrote down).
+already wrote down). **The instrument is BUILT**:
+`data/vision/shot_audit_chicago0725.html` (generator
+`vision/make_shot_audit.py`) — open it next to the local VOD, tap
+who-hit + shot-type per shot, download the CSV, commit as
+`data/vision/shot_labels_chicago0725.csv`. Scrub times derive from the
+committed cheer↔rally join and validate against all ten hand-scrubbed
+recall_audit anchors at median |err| 1 s (worst +3 s); 191/193 rallies
+timed, 20-rally core set = the original blind ten + the longest matched
+rallies per game (five per game). No timestamps are asked of the human —
+order suffices; the audio pop train carries timing and labels align by
+sequence. The page embeds referee-log facts only (no tracker output), so
+the blind rule holds by construction.
 
 ## What survives regardless (already flagged in the branch, confirmed)
 
