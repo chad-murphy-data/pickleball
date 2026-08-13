@@ -562,10 +562,14 @@ SWING events: pretrained pose (person-scale, so off-the-shelf transfer
 applies — the hand-label blocker was ball-specific), wrist-speed peaks
 gated on audio-pop coincidence (kills the applause channel that sank
 standalone audio), attribution free via lineup.py; team-alternation
-checksum transfers. Kill = alternation <70% or blind-audit recall <60%;
-pass = touch share measured DIRECTLY (the prize field hitter_uuid =
-finding 1's coverage dial w) + speed-up roles, scaling across the VOD
-archive with zero labels. Residual risk to measure, not assume:
+checksum transfers. Kill = alternation <0.45 (below-random = structured
+junk; the naive ≥85% bar was corrected 2026-08-12 — expected alternation
+is q²/(2−r)+(1−q²)/2 ≈ 0.74 at the recall/precision bars) or blind-audit
+recall <60%; pass = touch share measured DIRECTLY (the prize field
+hitter_uuid = finding 1's coverage dial w) + speed-up roles, scaling
+across the VOD archive with zero labels. Probe + scorer BUILT and
+self-tested 2026-08-12 (vision/swing_probe.py, swing_score.py; runbook
+in the adjudication doc). Residual risk to measure, not assume:
 far-side counter-blocks (small+fast+half-res). Ball-only forever:
 placement, landing, contact height. Even then, condensed
 championship-court VODs are a structural sample bias and the freeze-out

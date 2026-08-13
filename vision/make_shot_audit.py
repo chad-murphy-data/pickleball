@@ -209,6 +209,32 @@ def build_payload(games, names, teams, rallies, core):
     return out
 
 
+def write_windows(payload, path: Path):
+    """Self-contained rally-windows CSV for vision/swing_probe.py: video
+    times, log anchors and team rosters per rally, so the probe needs
+    nothing from the vision branch's data/vision inputs."""
+    with open(path, "w", newline="") as fh:
+        w = csv.writer(fh)
+        w.writerow(["rally_cum", "game", "division", "match_id",
+                    "rally_in_game", "t0s", "t1s", "dur_s", "approx",
+                    "start_score", "outcome", "server_uuid", "receiver_uuid",
+                    "teamA_uuids", "teamB_uuids", "teamA_names", "teamB_names",
+                    "core"])
+        for r in payload["rallies"]:
+            g = payload["games"][r["slot"]]
+            ta, tb = g["teams"]
+            w.writerow([r["cum"], r["slot"], g["division"], g["match_id"],
+                        r["rally"], r["t0s"], r["t1s"], r["dur"],
+                        int(r["approx"]), r["score"], r["outcome"],
+                        r["server_uuid"], r["receiver_uuid"],
+                        "|".join(p["uuid"] for p in ta),
+                        "|".join(p["uuid"] for p in tb),
+                        "|".join(p["name"] for p in ta),
+                        "|".join(p["name"] for p in tb),
+                        int(r["core"])])
+    print(f"wrote {path}")
+
+
 def write_template(payload, path: Path):
     with open(path, "w", newline="") as fh:
         w = csv.writer(fh)
@@ -612,6 +638,7 @@ def main():
     print(f"wrote {p} ({len(payload['rallies'])} rallies, "
           f"{sum(1 for r in payload['rallies'] if r['core'])} core)")
     write_template(payload, out / "shot_audit_template.csv")
+    write_windows(payload, out / "rally_windows_chicago0725.csv")
 
 
 if __name__ == "__main__":

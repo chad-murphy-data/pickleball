@@ -213,10 +213,21 @@ Pre-registered thresholds (set before any data; amend only before
 looking), scored on the Chicago VOD already downloaded, against the
 committed windows/lineups:
 
-- **G1**: team-alternation of audio-gated swing contacts ≥ 85%
-  (chance 50%, truth ≈ 100%).
-- **G2**: blind 10-rally audit — overall recall ≥ 75%, fast-exchange
-  recall ≥ 60%, precision ≥ 90%.
+- **G1** (AMENDED 2026-08-12, before any probe data existed — the
+  original ≥85% bar was arithmetically inconsistent with G2's bars):
+  side-alternation of gated contacts, scored for CONSISTENCY with the
+  measured (recall r, precision q). Truth alternates strictly, a
+  detected pair is same-side iff an ODD number of shots was missed
+  between them, so alt(r,q) = q²/(2−r) + (1−q²)/2 — verified by
+  simulation (0.741 observed vs 0.743 predicted at r=.75, q=.90). A
+  detector at exactly the G2 bars shows ~74% alternation, so 85% was
+  unpassable-by-construction. Pass = observed within ±0.08 of
+  alt(r̂,q̂); absolute JUNK-KILL at < 0.45 (structured junk repeats on
+  one side and lands below the 0.5 random floor — the ball streams sat
+  at 9–37%). Alternation is also the label-free criterion that picks
+  the operating point, so the labels are only ever touched once.
+- **G2** (decisive): typed blind audit — overall recall ≥ 75%,
+  fast-exchange recall ≥ 60%, precision ≥ 90%.
 - **G3**: contacts-vs-duration slope and serve/return identity checks as
   SANITY ONLY — the tuning-to-plausibility trap is documented above; do
   not tune to them.
@@ -226,15 +237,45 @@ Decision rule: pass G1+G2 → build the swing pipeline as vision MVP v2
 DIRECT measurement of finding 1's coverage dial w; speed-up
 initiator/finisher roles + the punished-selection ledger via audio
 intervals + log outcomes; scales across every start-marked VOD with no
-labels). Fast recall 40–60% with G1 passing → touch-share-only scope.
-Alternation < 70% or overall recall < 60% → the second wall is measured
-and the vision thread closes permanently, this time with both channels
-dead by measurement. What the swing channel can NEVER recover: placement,
-landing taxonomy, contact height — those need the ball, i.e. Gate A.
+labels). Fast recall 40–60% with G1 consistent → touch-share-only scope.
+Alternation < 0.45 (the junk regime) or overall recall < 60% → the
+second wall is measured and the vision thread closes permanently, this
+time with both channels dead by measurement. What the swing channel can
+NEVER recover: placement, landing taxonomy, contact height — those need
+the ball, i.e. Gate A.
 
 Cost: one overnight CPU run (or ~1 GPU-hour) of pretrained pose over
 rally windows at 720p + one evening of scoring on the existing harness.
 No labels, no fine-tune, no new evaluation code.
+
+**TOOLING BUILT 2026-08-12** — the probe and scorer exist and are
+self-tested; the probe was written before any labels existed and the
+scorer touches labels once, at a label-free-chosen operating point.
+
+```bash
+pip install ultralytics imageio-ffmpeg
+git checkout claude/vision-branch-accounts-e1s6yk    # single branch has it all
+python vision/swing_probe.py --selftest              # no video needed
+python vision/swing_probe.py --video full_match.mp4 --smoke   # 2 rallies + debug frame
+python vision/swing_probe.py --video full_match.mp4           # GPU ~20-30 min
+python vision/swing_probe.py --video full_match.mp4 --fast    # CPU overnight preset
+python vision/swing_score.py                         # the gate verdict
+```
+
+`vision/swing_probe.py` emits every wrist-speed peak (pose, per side
+near/far by image geometry) and every audio-flux onset above low floors —
+permissive on purpose, thresholds live in the scorer. Windows come from
+the committed `data/vision/rally_windows_chicago0725.csv` (validated
+against the ten hand-scrubbed anchors, median |err| 1 s). Resumable;
+side-level attribution only (naming the player within a team is
+lineup.py's already-measured job). `vision/swing_score.py` picks the
+operating point label-free (max alternation at a plausible contact
+rate), maps near/far→team by serve anchors per game-half (the mid-game
+end switch at 6 is honored), aligns detected team-sequences to labeled
+shot-sequences (Needleman-Wunsch), and prints the G1/G2/G3 table with
+the verdict. Both carry `--selftest` (planted swings/pops/misses/falses;
+the tests already caught and fixed a first-wins refractory bug and the
+original wrong G1 formula).
 
 **The user's hand-coding offer (2026-08-11) and where it plugs in.** The
 user offered to hand-code some points as drive/drop/dink/speed-up. That
