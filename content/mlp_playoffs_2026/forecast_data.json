@@ -1,0 +1,443 @@
+{
+  "generated": "2026-08-13",
+  "event": "Toray MLP Playoffs Newport Beach",
+  "display_rule": "never render 0% or 100%; clamp to >99% / <1%",
+  "series": [
+    {
+      "team1": "St. Louis Shock",
+      "team2": "Texas Ranchers",
+      "abbr1": "STL",
+      "abbr2": "TEX",
+      "schedule_pt": [
+        "Fri 8/14 2PM PT",
+        "Sat 8/15 10AM PT",
+        "Sat 8/15 5:30PM PT"
+      ],
+      "starts_utc": [
+        "2026-08-14T21:00:00Z",
+        "2026-08-15T17:00:00Z",
+        "2026-08-16T00:30:00Z"
+      ],
+      "lineup_status": "projected (best lineup); officials not yet published",
+      "matchup": {
+        "p_team1": 0.9809,
+        "favorite": "St. Louis Shock",
+        "dist": {
+          "t1_4_0": 0.648,
+          "t1_3_1": 0.3041,
+          "dreambreaker": 0.0452,
+          "t1_wins_db": 0.6358,
+          "t2_3_1": 0.0026,
+          "t2_4_0": 0.0
+        }
+      },
+      "series_best_of_3": {
+        "p_team1": 0.9989,
+        "favorite": "St. Louis Shock",
+        "dist": {
+          "t1_2_0": 0.9622,
+          "t1_2_1": 0.0368,
+          "t2_2_1": 0.0007,
+          "t2_2_0": 0.0004
+        }
+      },
+      "games": [
+        {
+          "slot": "WD",
+          "name": "Women's Doubles",
+          "team1_pair": [
+            "Anna Bright",
+            "Kate Fahey"
+          ],
+          "team2_pair": [
+            "Layne Sleeth",
+            "Lea Jansen"
+          ],
+          "p_team1": 0.9656,
+          "favorite": "STL",
+          "p_favorite": 0.966,
+          "modal_score": "11-4",
+          "margin": 6.47
+        },
+        {
+          "slot": "MD",
+          "name": "Men's Doubles",
+          "team1_pair": [
+            "Hayden Patriquin",
+            "Gabriel Tardio"
+          ],
+          "team2_pair": [
+            "Eric Oncins",
+            "Nicolas Acevedo"
+          ],
+          "p_team1": 0.7996,
+          "favorite": "STL",
+          "p_favorite": 0.8,
+          "modal_score": "11-6",
+          "margin": 3.35
+        },
+        {
+          "slot": "MXD1",
+          "name": "Mixed Doubles 1",
+          "team1_pair": [
+            "Anna Bright",
+            "Hayden Patriquin"
+          ],
+          "team2_pair": [
+            "Layne Sleeth",
+            "Eric Oncins"
+          ],
+          "p_team1": 0.9197,
+          "favorite": "STL",
+          "p_favorite": 0.92,
+          "modal_score": "11-5",
+          "margin": 5.25
+        },
+        {
+          "slot": "MXD2",
+          "name": "Mixed Doubles 2",
+          "team1_pair": [
+            "Kate Fahey",
+            "Gabriel Tardio"
+          ],
+          "team2_pair": [
+            "Lea Jansen",
+            "Nicolas Acevedo"
+          ],
+          "p_team1": 0.9126,
+          "favorite": "STL",
+          "p_favorite": 0.913,
+          "modal_score": "11-5",
+          "margin": 5.11
+        }
+      ]
+    },
+    {
+      "team1": "Los Angeles Mad Drops",
+      "team2": "Dallas Flash",
+      "abbr1": "LA",
+      "abbr2": "DAL",
+      "schedule_pt": [
+        "Fri 8/14 4PM PT",
+        "Sat 8/15 4PM PT",
+        "Sun 8/16 12PM PT"
+      ],
+      "starts_utc": [
+        "2026-08-14T23:00:00Z",
+        "2026-08-15T23:00:00Z",
+        "2026-08-16T19:00:00Z"
+      ],
+      "lineup_status": "projected (best lineup); officials not yet published",
+      "matchup": {
+        "p_team1": 0.8095,
+        "favorite": "Los Angeles Mad Drops",
+        "dist": {
+          "t1_4_0": 0.1783,
+          "t1_3_1": 0.3859,
+          "dreambreaker": 0.3108,
+          "t1_wins_db": 0.7893,
+          "t2_3_1": 0.1104,
+          "t2_4_0": 0.0146
+        }
+      },
+      "series_best_of_3": {
+        "p_team1": 0.905,
+        "favorite": "Los Angeles Mad Drops",
+        "dist": {
+          "t1_2_0": 0.6553,
+          "t1_2_1": 0.2497,
+          "t2_2_1": 0.0588,
+          "t2_2_0": 0.0363
+        }
+      },
+      "games": [
+        {
+          "slot": "WD",
+          "name": "Women's Doubles",
+          "team1_pair": [
+            "Jade Kawamoto",
+            "Catherine Parenteau"
+          ],
+          "team2_pair": [
+            "Danni-Elle Townsend",
+            "Alix Truong"
+          ],
+          "p_team1": 0.6996,
+          "favorite": "LA",
+          "p_favorite": 0.7,
+          "modal_score": "11-7",
+          "margin": 2.1
+        },
+        {
+          "slot": "MD",
+          "name": "Men's Doubles",
+          "team1_pair": [
+            "Ben Johns",
+            "Connor Garnett"
+          ],
+          "team2_pair": [
+            "JW Johnson",
+            "Augustus Ge"
+          ],
+          "p_team1": 0.6016,
+          "favorite": "LA",
+          "p_favorite": 0.602,
+          "modal_score": "11-9",
+          "margin": 0.97
+        },
+        {
+          "slot": "MXD1",
+          "name": "Mixed Doubles 1",
+          "team1_pair": [
+            "Jade Kawamoto",
+            "Ben Johns"
+          ],
+          "team2_pair": [
+            "Danni-Elle Townsend",
+            "JW Johnson"
+          ],
+          "p_team1": 0.6527,
+          "favorite": "LA",
+          "p_favorite": 0.653,
+          "modal_score": "11-8",
+          "margin": 1.55
+        },
+        {
+          "slot": "MXD2",
+          "name": "Mixed Doubles 2",
+          "team1_pair": [
+            "Catherine Parenteau",
+            "Connor Garnett"
+          ],
+          "team2_pair": [
+            "Alix Truong",
+            "Augustus Ge"
+          ],
+          "p_team1": 0.6489,
+          "favorite": "LA",
+          "p_favorite": 0.649,
+          "modal_score": "11-8",
+          "margin": 1.51
+        }
+      ]
+    },
+    {
+      "team1": "Columbus Sliders",
+      "team2": "Brooklyn Pickleball Team",
+      "abbr1": "COL",
+      "abbr2": "BKN",
+      "schedule_pt": [
+        "Sat 8/15 11:30AM PT",
+        "Sun 8/16 1:30PM PT",
+        "Sun 8/16 5:30PM PT"
+      ],
+      "starts_utc": [
+        "2026-08-15T18:30:00Z",
+        "2026-08-16T20:30:00Z",
+        "2026-08-17T00:30:00Z"
+      ],
+      "lineup_status": "projected (best lineup); officials not yet published",
+      "matchup": {
+        "p_team1": 0.3798,
+        "favorite": "Brooklyn Pickleball Team",
+        "dist": {
+          "t1_4_0": 0.0327,
+          "t1_3_1": 0.182,
+          "dreambreaker": 0.3675,
+          "t1_wins_db": 0.4491,
+          "t2_3_1": 0.318,
+          "t2_4_0": 0.0997
+        }
+      },
+      "series_best_of_3": {
+        "p_team1": 0.3232,
+        "favorite": "Brooklyn Pickleball Team",
+        "dist": {
+          "t1_2_0": 0.1442,
+          "t1_2_1": 0.1789,
+          "t2_2_1": 0.2922,
+          "t2_2_0": 0.3846
+        }
+      },
+      "games": [
+        {
+          "slot": "WD",
+          "name": "Women's Doubles",
+          "team1_pair": [
+            "Parris Todd",
+            "Tyra Hurricane Black"
+          ],
+          "team2_pair": [
+            "Rachel Rohrabacher",
+            "Jackie Kawamoto"
+          ],
+          "p_team1": 0.5293,
+          "favorite": "COL",
+          "p_favorite": 0.529,
+          "modal_score": "11-9",
+          "margin": 0.16
+        },
+        {
+          "slot": "MD",
+          "name": "Men's Doubles",
+          "team1_pair": [
+            "Andrei Daescu",
+            "CJ Klinger"
+          ],
+          "team2_pair": [
+            "Christian Alshon",
+            "Riley Newman"
+          ],
+          "p_team1": 0.3426,
+          "favorite": "BKN",
+          "p_favorite": 0.657,
+          "modal_score": "8-11",
+          "margin": -1.91
+        },
+        {
+          "slot": "MXD1",
+          "name": "Mixed Doubles 1",
+          "team1_pair": [
+            "Parris Todd",
+            "Andrei Daescu"
+          ],
+          "team2_pair": [
+            "Rachel Rohrabacher",
+            "Christian Alshon"
+          ],
+          "p_team1": 0.4901,
+          "favorite": "BKN",
+          "p_favorite": 0.51,
+          "modal_score": "9-11",
+          "margin": -0.27
+        },
+        {
+          "slot": "MXD2",
+          "name": "Mixed Doubles 2",
+          "team1_pair": [
+            "Tyra Hurricane Black",
+            "CJ Klinger"
+          ],
+          "team2_pair": [
+            "Jackie Kawamoto",
+            "Riley Newman"
+          ],
+          "p_team1": 0.368,
+          "favorite": "BKN",
+          "p_favorite": 0.632,
+          "modal_score": "8-11",
+          "margin": -1.62
+        }
+      ]
+    },
+    {
+      "team1": "New Jersey 5s",
+      "team2": "Palm Beach Royals",
+      "abbr1": "NJ",
+      "abbr2": "PB",
+      "schedule_pt": [
+        "Sat 8/15 1PM PT",
+        "Sun 8/16 4PM PT",
+        "Sun 8/16 7PM PT"
+      ],
+      "starts_utc": [
+        "2026-08-15T20:00:00Z",
+        "2026-08-16T23:00:00Z",
+        "2026-08-17T02:00:00Z"
+      ],
+      "lineup_status": "projected (best lineup); officials not yet published",
+      "matchup": {
+        "p_team1": 0.9697,
+        "favorite": "New Jersey 5s",
+        "dist": {
+          "t1_4_0": 0.487,
+          "t1_3_1": 0.3996,
+          "dreambreaker": 0.104,
+          "t1_wins_db": 0.7988,
+          "t2_3_1": 0.0091,
+          "t2_4_0": 0.0003
+        }
+      },
+      "series_best_of_3": {
+        "p_team1": 0.9973,
+        "favorite": "New Jersey 5s",
+        "dist": {
+          "t1_2_0": 0.9403,
+          "t1_2_1": 0.057,
+          "t2_2_1": 0.0018,
+          "t2_2_0": 0.0009
+        }
+      },
+      "games": [
+        {
+          "slot": "WD",
+          "name": "Women's Doubles",
+          "team1_pair": [
+            "Anna Leigh Waters",
+            "Jorja Johnson"
+          ],
+          "team2_pair": [
+            "Tina Pisnik",
+            "Sofia Sewing"
+          ],
+          "p_team1": 0.9399,
+          "favorite": "NJ",
+          "p_favorite": 0.94,
+          "modal_score": "11-4",
+          "margin": 5.71
+        },
+        {
+          "slot": "MD",
+          "name": "Men's Doubles",
+          "team1_pair": [
+            "Federico Staksrud",
+            "Noe Khlif"
+          ],
+          "team2_pair": [
+            "Dekel Bar",
+            "Tyson McGuffin"
+          ],
+          "p_team1": 0.7404,
+          "favorite": "NJ",
+          "p_favorite": 0.74,
+          "modal_score": "11-7",
+          "margin": 2.59
+        },
+        {
+          "slot": "MXD1",
+          "name": "Mixed Doubles 1",
+          "team1_pair": [
+            "Anna Leigh Waters",
+            "Federico Staksrud"
+          ],
+          "team2_pair": [
+            "Tina Pisnik",
+            "Dekel Bar"
+          ],
+          "p_team1": 0.9365,
+          "favorite": "NJ",
+          "p_favorite": 0.936,
+          "modal_score": "11-4",
+          "margin": 5.62
+        },
+        {
+          "slot": "MXD2",
+          "name": "Mixed Doubles 2",
+          "team1_pair": [
+            "Jorja Johnson",
+            "Noe Khlif"
+          ],
+          "team2_pair": [
+            "Sofia Sewing",
+            "Tyson McGuffin"
+          ],
+          "p_team1": 0.7473,
+          "favorite": "NJ",
+          "p_favorite": 0.747,
+          "modal_score": "11-7",
+          "margin": 2.68
+        }
+      ]
+    }
+  ]
+}
