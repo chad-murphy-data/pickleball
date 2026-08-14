@@ -89,6 +89,7 @@ def main():
     ap.add_argument("--out", default="scorebug_states.csv")
     a = ap.parse_args()
 
+    print("scorebug_read v6 — combined row boxes, plate-step anchor")
     items = crop_times(a.crops)
     print(f"{len(items)} crops")
 
