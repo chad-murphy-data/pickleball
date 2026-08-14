@@ -55,6 +55,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--crops", required=True, type=Path)
     ap.add_argument("--out", default="scorebug_score_changes.csv")
+    ap.add_argument("--debug-bundle", default="scorebug_debug",
+                    help="folder for ref/variance/change maps + samples")
     a = ap.parse_args()
 
     items = crop_times(a.crops)
@@ -96,16 +98,24 @@ def main():
         if k % 600 == 0:
             print(f"  pass1 {k}/{len(items)}", flush=True)
 
-    # digit boxes: the two hottest change clusters in the RIGHT 60% of
-    # the strip (names/logo left of them barely change; digits flip
-    # hundreds of times)
-    right = acc.copy()
-    right[:, :int(0.40 * w)] = 0
-    thr = np.percentile(right[right > 0], 97) if (right > 0).any() else 1
-    hot = right >= max(thr, 20)
+    # digit boxes.  Two discriminators, both needed (v1 grabbed the TV
+    # background right of the panel, which flickers with every camera
+    # change): (1) PANEL mask = temporally STABLE pixels (the bug panel
+    # is a fixed graphic; the background behind it churns) — low variance
+    # across the sampled frames; (2) digits = pixels changing RARELY but
+    # repeatedly — a middle band of change counts, excluding both static
+    # panel paint (near zero) and background bleed (thousands).
+    var = np.var(np.stack(sample), axis=0)
+    panel = var < np.percentile(var, 55)
+    n_present_pairs = max(1, sum(pres_flags) - 1)
+    lo_c, hi_c = 0.01 * n_present_pairs, 0.25 * n_present_pairs
+    hot = panel & (acc >= lo_c) & (acc <= hi_c)
+    hot[:, :int(0.30 * w)] = False           # logo/team-name zone
+    print(f"strip {w}x{h}; panel pixels {panel.mean():.0%}; "
+          f"hot digit pixels {int(hot.sum())} (band {lo_c:.0f}-{hi_c:.0f} changes)")
     ys, xs = np.nonzero(hot)
     if len(ys) < 10:
-        raise SystemExit("no hot digit pixels found — send me the acc stats")
+        raise SystemExit("no hot digit pixels found — send the debug bundle")
     # split into top/bottom halves = UTAH / CHICAGO rows
     mid = h / 2
     boxes = {}
@@ -141,6 +151,27 @@ def main():
         rows_out.append((t, int(pr), u, c))
         if k % 600 == 0:
             print(f"  pass2 {k}/{len(items)}", flush=True)
+
+    # debug bundle: everything needed to verify the boxes by eye
+    from PIL import Image
+    bd = Path(a.debug_bundle)
+    bd.mkdir(exist_ok=True)
+    def save_img(arr, name):
+        x = arr.astype(np.float32)
+        x = (255 * (x - x.min()) / max(x.max() - x.min(), 1e-9)).astype(np.uint8)
+        Image.fromarray(x).save(bd / name)
+    save_img(ref, "ref.png")
+    save_img(var, "variance.png")
+    save_img(np.minimum(acc, np.percentile(acc, 99)), "changecount.png")
+    save_img(hot.astype(np.float32), "digitmask.png")
+    ov = ref.copy()
+    for name, box in boxes.items():
+        if box is not None:
+            ov[box] = 255
+    save_img(ov, "boxes_on_ref.png")
+    for i in np.linspace(0, len(items) - 1, 6).astype(int):
+        Image.open(items[i][1]).save(bd / f"sample_{items[i][0]:.0f}s.jpg")
+    print(f"debug bundle -> {bd}/ (zip and attach this folder)")
 
     with open(a.out, "w", newline="") as fh:
         wcsv = csv.writer(fh)
