@@ -141,7 +141,18 @@ def load_labels(path, windows):
 
 def gate_contacts(swings, pops, tv, tz, coinc=0.18, merge=0.12):
     """contacts per rally: swing peaks above tv with a pop above tz within
-    +-coinc, merged within `merge` keeping the strongest swing."""
+    +-coinc, merged within `merge`.
+
+    Two treatments the Chicago smoke data forced (2026-08-12, label-free):
+    - NO velocity ceiling.  v > 0.6 box-h/frame is physically impossible
+      for a wrist, but cutting those events COLLAPSED alternation (71-77%
+      -> 20-45%) — the recall-removal signature.  They are real hard
+      swings whose wrist keypoint exploded from motion blur at contact:
+      garbage magnitude, real timing.  Keep them.
+    - Same-instant opposite-side pairs (a slot-swap artifact fires both
+      sides within ~0.06 s) are ONE contact of unknown side: merged to
+      side '?', which counts toward rate but never toward alternation or
+      team alignment."""
     out = {}
     for cum, sw in swings.items():
         pp = [t for t, z in pops.get(cum, []) if z >= tz]
@@ -155,8 +166,9 @@ def gate_contacts(swings, pops, tv, tz, coinc=0.18, merge=0.12):
         merged = []
         for c in cand:
             if merged and c[0] - merged[-1][0] < merge:
-                if c[2] > merged[-1][2]:
-                    merged[-1] = c
+                p = merged[-1]
+                side = p[1] if p[1] == c[1] else "?"
+                merged[-1] = (p[0], side, max(p[2], c[2]))
             else:
                 merged.append(c)
         out[cum] = merged
@@ -164,9 +176,12 @@ def gate_contacts(swings, pops, tv, tz, coinc=0.18, merge=0.12):
 
 
 def alternation(contacts):
+    """Side-alternation over contacts of KNOWN side ('?' merges excluded —
+    an unknown side can neither confirm nor break parity)."""
     pairs = ok = 0
     for seq in contacts.values():
-        for a, b in zip(seq, seq[1:]):
+        known = [c for c in seq if c[1] != "?"]
+        for a, b in zip(known, known[1:]):
             pairs += 1
             ok += a[1] != b[1]
     return ok / pairs if pairs else 0.0, pairs
@@ -178,19 +193,28 @@ def contact_rate(contacts, windows):
     return n / dur if dur else 0.0
 
 
-def pick_operating_point(swings, pops, windows, coinc):
+def pick_operating_point(swings, pops, windows, coincs=(0.15, 0.20, 0.25)):
+    """Label-free grid over (theta_v, theta_z, coinc).  The smoke offset
+    histogram showed swing peaks centred on pops (median -1 ms, IQR
+    +-0.14 s) with tails to +-0.3 s, so the coincidence window is swept
+    too rather than fixed."""
     rows, best = [], None
     for tv in GRID_V:
         for tz in GRID_Z:
-            c = gate_contacts(swings, pops, tv, tz, coinc)
-            alt, pairs = alternation(c)
-            rate = contact_rate(c, windows)
-            feas = RATE_BAND[0] <= rate <= RATE_BAND[1] and pairs >= 50
-            rows.append((tv, tz, alt, rate, pairs, feas))
-            if feas and (best is None or alt > best[2]):
-                best = (tv, tz, alt, rate, pairs, feas)
-    if best is None:                        # nothing plausible: report best
-        best = max(rows, key=lambda r: r[2] * min(1.0, r[3] / RATE_BAND[0]))
+            for co in coincs:
+                c = gate_contacts(swings, pops, tv, tz, co)
+                alt, pairs = alternation(c)
+                rate = contact_rate(c, windows)
+                feas = RATE_BAND[0] <= rate <= RATE_BAND[1] and pairs >= 50
+                rows.append((tv, tz, co, alt, rate, pairs, feas))
+                if feas and (best is None or alt > best[3]):
+                    best = rows[-1]
+    if best is None:                        # nothing plausible: report best,
+        best = max(rows, key=lambda r:      # discounting thin pairs AND
+                   r[3]                     # off-band rates (both sides)
+                   * min(1.0, r[4] / RATE_BAND[0],
+                         RATE_BAND[1] / max(r[4], 1e-9))
+                   * min(1.0, r[5] / 50.0))
     return best, rows
 
 
@@ -204,9 +228,10 @@ def side_team_maps(contacts, windows):
     votes = {}
     for cum, seq in contacts.items():
         w = windows.get(cum)
-        if not w or not seq:
+        known = [c for c in (seq or []) if c[1] != "?"]
+        if not w or not known:
             continue
-        t, side, _ = seq[0]
+        t, side, _ = known[0]
         if not (w["t0"] - 0.5 <= t <= w["t0"] + 2.5):
             continue
         serving = "A" if w["server"] in w["teamA"] else "B"
@@ -238,7 +263,7 @@ def teamify(contacts, windows, maps):
             m = maps.get(alt_key)
         if not m:
             continue
-        out[cum] = [(t, m[0][side], v) for t, side, v in seq]
+        out[cum] = [(t, m[0][side], v) for t, side, v in seq if side != "?"]
     return out
 
 
@@ -331,25 +356,31 @@ def run(a):
     pops = load_pops(a.pops)
 
     print("== STAGE 1: label-free operating point ==")
-    best, rows = pick_operating_point(swings, pops, windows, a.coinc)
-    print("   theta_v theta_z   alternation  contacts/s  pairs feasible")
-    for tv, tz, alt, rate, pairs, feas in rows:
-        mark = " <== chosen" if (tv, tz) == best[:2] else ""
-        print(f"   {tv:7.2f} {tz:7.1f}   {alt:11.3f}  {rate:10.2f}  "
+    best, rows = pick_operating_point(swings, pops, windows)
+    print("   theta_v theta_z coinc   alternation  contacts/s  pairs feasible")
+    for tv, tz, co, alt, rate, pairs, feas in rows:
+        if not feas and (tv, tz, co) != best[:3]:
+            continue                        # keep the print readable
+        mark = " <== chosen" if (tv, tz, co) == best[:3] else ""
+        print(f"   {tv:7.2f} {tz:7.1f} {co:5.2f}   {alt:11.3f}  {rate:10.2f}  "
               f"{pairs:5d} {'yes' if feas else ' no'}{mark}")
-    tv, tz, alt, rate, pairs, _ = best
-    print(f"\n   frozen: theta_v={tv}, theta_z={tz}  "
+    tv, tz, co, alt, rate, pairs, _ = best
+    print(f"\n   frozen: theta_v={tv}, theta_z={tz}, coinc={co}  "
           f"(alternation {alt:.1%}, {rate:.2f} contacts/s)")
 
-    contacts = gate_contacts(swings, pops, tv, tz, a.coinc)
+    contacts = gate_contacts(swings, pops, tv, tz, co)
+    n_amb = sum(1 for s in contacts.values() for c in s if c[1] == "?")
+    if n_amb:
+        print(f"   ({n_amb} side-ambiguous merged contacts — count toward "
+              f"rate, excluded from alternation and alignment)")
     maps = side_team_maps(contacts, windows)
     print("\n   serve-anchored side->team maps (game, half): "
-          + ", ".join(f"G{g}H{h}: near={m[0]['near']} ({agr}/{tot})"
-                      for (g, h), (m, agr, tot) in sorted(maps.items())))
+          + (", ".join(f"G{g}H{h}: near={m['near']} ({agr}/{tot})"
+                       for (g, h), (m, agr, tot) in sorted(maps.items()))
+             or "none (no gated serve-anchor contacts)"))
     team_contacts = teamify(contacts, windows, maps)
 
-    out = {"operating_point": {"theta_v": tv, "theta_z": tz,
-                               "coinc_s": a.coinc},
+    out = {"operating_point": {"theta_v": tv, "theta_z": tz, "coinc_s": co},
            "alternation": alt, "contact_rate": rate}
 
     if not Path(a.labels).exists():
@@ -444,7 +475,6 @@ def main():
     ap.add_argument("--pops", default=str(D / "swing_probe_pops.csv"))
     ap.add_argument("--labels", default=str(D / "shot_labels_chicago0725.csv"))
     ap.add_argument("--out", default=str(D / "swing_gate_report.json"))
-    ap.add_argument("--coinc", type=float, default=0.18)
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
