@@ -408,8 +408,11 @@ function wireVideo(){
   el("voff").value = prefs.voff || 0;
   el("voff").onchange = savePrefs;
   V.addEventListener("timeupdate", () => {
-    if (autoPause && cur !== null && !V.paused &&
-        V.currentTime > rget(cur).t1s + voff() + 1.5) V.pause();
+    if (!autoPause || cur === null || V.paused) return;
+    const r = rget(cur);
+    const sv = (store[cur] || {}).serve;
+    const end = sv != null ? sv + r.dur : (r.approx ? null : r.t1s + voff());
+    if (end != null && V.currentTime > end + 1.5) V.pause();
   });
   document.addEventListener("keydown", e => {
     if (e.target.tagName === "INPUT" || !loaded()) return;
@@ -438,8 +441,10 @@ function side(){
   for (const r of rallies()){
     if (r.slot !== slot){ slot = r.slot;
       h += `<div class="small dim" style="margin-top:9px">GAME ${slot} — ${DATA.games[slot].division}</div>`; }
+    const sv = (store[r.cum] || {}).serve;
+    const tshow = sv != null ? "⏱" + fmts(sv) : (r.approx ? "—" : r.t0);
     h += `<div class="rrow ${cur === r.cum ? "sel" : ""}" onclick="open_(${r.cum})">
-      <span style="width:74px">${r.approx ? "≈" : ""}${r.t0}</span>
+      <span style="width:74px">${tshow}</span>
       <span>R${r.rally}</span><span class="dim small">#${r.cum}</span>
       ${r.orig ? '<span class="badge orig">blind10</span>' : ""}
       ${done(r.cum) ? '<span class="badge done">✓</span>' : ""}</div>`;
@@ -456,16 +461,23 @@ function side(){
 
 function open_(c){
   cur = c; side(); panel();
-  seekRally(rget(c), true);
+  const sv = (store[c] || {}).serve;
+  const r = rget(c);
+  if (sv != null) seekTo(sv - 2, true);       // your mark is the truth
+  else if (!r.approx) seekRally(r, true);     // verified window: seek
+  /* approx & unmarked: DON'T seek — working in order, the video is
+     already at the right place; a wrong jump is worse than none */
 }
 
 function panel(){
   const p = el("panel");
   if (cur === null){ p.innerHTML = intro(); return; }
   const r = rget(cur), ps = players(r), sh = shots(cur);
-  let h = `<div class="bar"><span id="scrub" onclick="seekRally(rget(cur),true)"
-      title="click to replay this rally">${r.approx ? "≈" : ""}${r.t0}</span>
-    <span class="dim">→ ends ~${r.t1} (${r.dur.toFixed(0)}s)</span>
+  const sv0 = (store[cur] || {}).serve;
+  const bigt = sv0 != null ? "⏱" + fmts(sv0) : (r.approx ? "—" : r.t0);
+  let h = `<div class="bar"><span id="scrub" onclick="open_(cur)"
+      title="click to replay this rally">${bigt}</span>
+    <span class="dim">${r.approx && sv0 == null ? "no verified time — video stays put; scrub to the rally" : `→ ends ~${r.t1}`} (${r.dur.toFixed(0)}s)</span>
     <span class="badge">G${r.slot} R${r.rally} · #${r.cum}</span>
     <span class="badge">${DATA.games[r.slot].division}</span>
     ${r.orig ? '<span class="badge orig">original blind-10</span>' : ""}
@@ -634,6 +646,9 @@ def main():
                     help="checkout containing data/vision (the vision branch)")
     ap.add_argument("--out-dir", default=None, type=Path,
                     help="where to write outputs (default <data-dir>/data/vision)")
+    ap.add_argument("--windows-in", type=Path,
+                    help="aligned windows CSV (v3): overrides video times; "
+                         "approx-flagged rallies get NO auto-seek in the tool")
     a = ap.parse_args()
     out = a.out_dir or (a.data_dir / "data/vision")
     out.mkdir(parents=True, exist_ok=True)
@@ -643,7 +658,21 @@ def main():
         g["n_rallies"] for g in games.values()), "expected cumulative numbering"
 
     rallies = cumulative(games, video_times(rallies, cheer))
-    validate(rallies)
+    if a.windows_in:
+        win = {int(r["rally_cum"]): r
+               for r in csv.DictReader(open(a.windows_in))}
+        n_over = 0
+        for r in rallies:
+            wr = win.get(r["cum"])
+            if wr:
+                r["v0"] = float(wr["t0s"])
+                r["v1"] = float(wr["t1s"])
+                r["approx"] = wr.get("approx", "1") == "1"
+                n_over += 1
+        print(f"video times overridden from {a.windows_in} "
+              f"({n_over} rallies; approx-flagged get no auto-seek)")
+    else:
+        validate(rallies)
     core = pick_core(rallies)
     payload = build_payload(games, names, teams, rallies, core)
 
