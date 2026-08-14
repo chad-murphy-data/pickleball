@@ -427,11 +427,14 @@ the race DP there mirrors model/v2_holdout.py AND the JS inside
 build_simulator — keep all three in sync. Rankings rank 2026-active players
 only; men/women always separate. `model/receipts.json` is the receipts
 source of truth — commit predictions there BEFORE matches, grade after.
-Unlisted pages: `web/insights/` ships verbatim to `site/insights/` —
-public by URL, never linked from nav, noindex meta (user call 2026-07-26;
-a linked "insights" section may come later). First page:
-`insights/unsolved-meta/` (Anna Bright DreamBreaker post, design handoff
-ported verbatim).
+Insights: `web/insights/` ships verbatim to `site/insights/`, and since
+2026-08-14 it is a LINKED section — build_insights_index() generates
+`insights/index.html` (linked from the landing nav + site-wide NAV) off
+the hand-maintained INSIGHTS_ARTICLES list in build_site.py; add a row
+there whenever a new piece ships. Article pages still carry their
+original noindex meta from the unlisted era (user call 2026-07-26).
+Articles: unsolved-meta (Anna Bright DreamBreaker post), smoke-dimension
+(Part II), wind (null-result write-up).
 
 ## Open threads (specced, unbuilt)
 
