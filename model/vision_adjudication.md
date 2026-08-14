@@ -307,9 +307,31 @@ continuity; wrist velocity relative to the player's own torso; arm-
 geometry gating. Rule: the original 16 labeled rallies grade v1 ONLY;
 any v2 is graded on fresh labels, so nothing is contaminated either way.
 
-**STAGE 2, OFFICIAL — VERDICT: KILL (2026-08-13; labels touched once at
-the frozen point θv=0.12, θz=6.0, coinc=0.15; full report
-`data/vision/swing_gate_report_v1.json`).** 203 hand-labeled shots over
+**⚠ VERDICT SUSPENDED 2026-08-14 — the measurement frame itself is
+compromised.** The user reports the tool's scrub links ran UP TO 40
+SECONDS OFF while labeling — the signature of the cheer↔rally DP join
+matching some rallies to a NEIGHBORING rally's cheer (inter-rally
+spacing ≈ 20–40 s). The ±1 s validation covered only the ten
+recall_audit anchors and was wrongly generalized to all 191 windows.
+Consequences: the probe harvested swings/pops from WRONG SPANS for an
+unknown subset of rallies; a 40 s shift lands mostly on dead time
+(walking players + applause = exactly the "junk" signature diagnosed),
+so window error is OBSERVATIONALLY EQUIVALENT to detector failure in
+every label-free diagnostic below, and stage 2 compared labels against
+different rallies' data. The "audio channel dead" and "base-rate
+coincidence" findings are equally contaminated. What still stands:
+rallies 2 and 8 (anchor-validated windows — the smoke results), the
+pose debug frames, and the 203 labels themselves (the user hand-found
+the correct rallies while labeling; prefilled servers matched). The
+kill below is retained as the record of what was concluded BEFORE the
+frame bug surfaced, and is NOT operative. Re-gate procedure: correct
+windows for the 16 labeled rallies (user-supplied starts or scorebug
+flips if the full-VOD output files survive), re-run the probe on those
+spans only, then stage 1+2 on the corrected frame.
+
+**STAGE 2 — VERDICT: KILL — SUSPENDED, SEE ABOVE (2026-08-13; labels
+touched once at the frozen point θv=0.12, θz=6.0, coinc=0.15; full
+report `data/vision/swing_gate_report_v1.json`).** 203 hand-labeled shots over
 the first 16 rallies of the women's game (15 fully coded used;
 `data/vision/shot_labels_chicago0725.csv`, with rally notes flagging
 both-went-for-it and swing-and-miss events). Overall recall **46.7%**

@@ -556,13 +556,16 @@ TWO legitimate re-entries, pre-registered in model/vision_adjudication.md
 vision/recall_audit.md first, either way): (A) BALL — hand-label
 ~300–500 SPEED-STRATIFIED frames, fine-tune, score the fast stratum via
 vision/ball_recall.py + the alternation checksum; <0.8 = dead at any
-budget, ≥0.9 = the built stack revives. (B) SWING PROXY — TESTED AND
-KILLED 2026-08-13 (user's idea 2026-08-11; vision/swing_probe.py +
-swing_score.py run on the full Chicago VOD, graded once against 203
-hand-labeled shots at the pre-frozen operating point): recall 46.7% vs
-the 60% kill floor, fast stratum 47.5%, precision 72.1%, and the G1
-consistency check exposed the recall as alignment slack (alternation
-46.0% vs 57.9% implied by r̂,q̂ — the alt(r,q)=q²/(2−r)+(1−q²)/2 curve).
+budget, ≥0.9 = the built stack revives. (B) SWING PROXY — verdict
+SUSPENDED 2026-08-14: the 2026-08-13 KILL (recall 46.7% vs the 60%
+floor) ran on a COMPROMISED MEASUREMENT FRAME — the cheer↔rally join
+put some windows up to 40 s off (user-observed while labeling; only 10
+anchor rallies were ever time-validated), so the probe watched wrong
+spans and dead time is observationally equivalent to detector junk in
+every diagnostic. Do NOT treat the swing channel as killed OR alive
+until the re-gate on corrected windows (procedure in
+model/vision_adjudication.md §Stage 2). Rallies 2/8 results and the
+pose debug frames stand; the 203 labels are on correct rallies.
 Autopsy (model/vision_adjudication.md §Stage 2): the AUDIO gate was a
 PREMISE failure — per-rally pop counts are uncorrelated with true shot
 counts on broadcast audio at every threshold (r≈0.0–0.2; the POC's
