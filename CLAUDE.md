@@ -556,23 +556,31 @@ TWO legitimate re-entries, pre-registered in model/vision_adjudication.md
 vision/recall_audit.md first, either way): (A) BALL — hand-label
 ~300–500 SPEED-STRATIFIED frames, fine-tune, score the fast stratum via
 vision/ball_recall.py + the alternation checksum; <0.8 = dead at any
-budget, ≥0.9 = the built stack revives. (B) SWING PROXY (2026-08-11,
-user's question; never tested by the branch) — contacts from player
-SWING events: pretrained pose (person-scale, so off-the-shelf transfer
-applies — the hand-label blocker was ball-specific), wrist-speed peaks
-gated on audio-pop coincidence (kills the applause channel that sank
-standalone audio), attribution free via lineup.py; team-alternation
-checksum transfers. Kill = alternation <0.45 (below-random = structured
-junk; the naive ≥85% bar was corrected 2026-08-12 — expected alternation
-is q²/(2−r)+(1−q²)/2 ≈ 0.74 at the recall/precision bars) or blind-audit
-recall <60%; pass = touch share measured DIRECTLY (the prize field
-hitter_uuid = finding 1's coverage dial w) + speed-up roles, scaling
-across the VOD archive with zero labels. Probe + scorer BUILT and
-self-tested 2026-08-12 (vision/swing_probe.py, swing_score.py; runbook
-in the adjudication doc). Residual risk to measure, not assume:
-far-side counter-blocks (small+fast+half-res). Ball-only forever:
-placement, landing, contact height. Even then, condensed
-championship-court VODs are a structural sample bias and the freeze-out
-question stays n=4 at any tracking quality. Scorebug OCR (flip sync is
+budget, ≥0.9 = the built stack revives. (B) SWING PROXY — TESTED AND
+KILLED 2026-08-13 (user's idea 2026-08-11; vision/swing_probe.py +
+swing_score.py run on the full Chicago VOD, graded once against 203
+hand-labeled shots at the pre-frozen operating point): recall 46.7% vs
+the 60% kill floor, fast stratum 47.5%, precision 72.1%, and the G1
+consistency check exposed the recall as alignment slack (alternation
+46.0% vs 57.9% implied by r̂,q̂ — the alt(r,q)=q²/(2−r)+(1−q²)/2 curve).
+Autopsy (model/vision_adjudication.md §Stage 2): the AUDIO gate was a
+PREMISE failure — per-rally pop counts are uncorrelated with true shot
+counts on broadcast audio at every threshold (r≈0.0–0.2; the POC's
+"stripes at shot cadence" was an eyeball over-read; the original
+standalone-audio postmortem was right), so swing∧pop lost its precision
+witness. The POSE channel keeps count-level signal (swing-peak counts
+carry partial r≈+0.5–0.6 with shot counts beyond duration; the tracker's
+frame-local side split corrupted 42% of far labels — fixable). Any
+revival = a THIRD instrument (identity-continuous tracking,
+torso-relative wrist velocity, arm-geometry gating, alternation-prior
+sequence decoding, NO audio gate), graded on FRESH labels only; prior
+~1-in-5. The 203 labeled shots (data/vision/shot_labels_chicago0725.csv,
+first 16 rallies of the women's game, notes incl. both-went-for-it and
+swing-and-miss events) are spent for gating v1 but remain the project's
+ONLY shot-level ground truth (dink 31%/counter 23%/smash 10%/speed-up
+7%) — answer key for any future instrument or purchased hand-coded
+data. Ball-only forever: placement, landing, contact height. Condensed
+championship-court VODs remain a structural sample bias and the
+freeze-out question stays n=4 at any tracking quality. Scorebug OCR (flip sync is
 solved, frame-exact) remains viable for point-by-point backfill of
 UNLOGGED matches only — low value while getListLogs covers 2026.

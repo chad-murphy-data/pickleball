@@ -305,7 +305,47 @@ A legitimate v2 instrument attacks exactly those two measured causes
 (not threshold tuning): per-player identity tracking with temporal
 continuity; wrist velocity relative to the player's own torso; arm-
 geometry gating. Rule: the original 16 labeled rallies grade v1 ONLY;
-any v2 is graded on fresh labels, so nothing is contaminated either way. The
+any v2 is graded on fresh labels, so nothing is contaminated either way.
+
+**STAGE 2, OFFICIAL — VERDICT: KILL (2026-08-13; labels touched once at
+the frozen point θv=0.12, θz=6.0, coinc=0.15; full report
+`data/vision/swing_gate_report_v1.json`).** 203 hand-labeled shots over
+the first 16 rallies of the women's game (15 fully coded used;
+`data/vision/shot_labels_chicago0725.csv`, with rally notes flagging
+both-went-for-it and swing-and-miss events). Overall recall **46.7%**
+(kill floor 60%), fast stratum 47.5% on n=61, precision 72.1%, and the
+G1 consistency check did its job: observed alternation 46.0% vs 57.9%
+implied by (r̂,q̂) — the "recall" is Needleman-Wunsch alignment slack
+over side-scrambled events, not detection, exactly as the box-height
+forensics predicted.
+
+**AUTOPSY (labels legitimately spent on v1's post-mortem):**
+- **The audio channel is a PREMISE failure, not a tuning failure.**
+  Per-rally pop counts are uncorrelated with true shot counts at every
+  threshold (r = −0.03…+0.21 raw; partial vs duration +0.03 at the
+  gating z, at best +0.37 at z≥10 — a whisper). The POC's "broadband
+  stripes at shot cadence" was an eyeball over-read of a spectrogram;
+  the original standalone-audio postmortem was right the first time.
+  The swing∧pop two-witness architecture is dead because one witness
+  never showed up.
+- **The pose channel keeps a real pulse at the COUNT level.** Swing-peak
+  counts track labeled shot counts beyond duration (partial r +0.61 at
+  v≥0.08, +0.38–0.50 across thresholds; n=16 rallies, se≈0.28 — a
+  pulse, not a heartbeat). At v≥0.5 the slope is 0.99 peaks per shot.
+  The information the events squandered (locomotion contamination,
+  42% side corruption) partially exists in the stream.
+- Any revival is therefore a THIRD instrument, not a v1 patch:
+  identity-continuous player tracking, torso-relative wrist velocity,
+  arm-geometry gating, and an alternation-prior sequence decoder doing
+  the precision work audio was supposed to do — graded on FRESH labels.
+  Prior odds honestly stated: ~1-in-5, down from 1-in-3, because the
+  architecture lost its precision witness.
+
+The 203 labeled shots outlive the instrument they killed: the project's
+first shot-level ground truth (dink 31%, counter 23%, smash 10%,
+speed-up 7% in a pro women's game), the answer key for any future
+instrument, and the calibration set for evaluating commercial hand-coded
+data if it is ever purchased. The
 user offered to hand-code some points as drive/drop/dink/speed-up. That
 is the most valuable label form for Gate B — NOT ball clicks: ~15–20
 rallies on the Chicago VOD, each shot in order typed
