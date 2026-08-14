@@ -47,8 +47,12 @@ FLIP_LAG_S = 1.0                 # flip trails the rally's final ball
 
 # alignment costs
 CUT_MAX_S = 240.0                # video gap may be shorter than wall gap
+REPLAY_MAX_S = 90.0              # ...or LONGER: replays insert video time
 LONGER_TOL_S = 4.0               # ...but longer only by jitter
 COST_SKIP_RALLY = 5.0            # missed flip
+Z_MATCH = 9.0                    # only flips this strong can BE a rally end
+                                 # (weaker ones are skippable junk: storms,
+                                 # animations; real digit flips are loud)
 
 
 def skip_flip_cost(z):
@@ -131,73 +135,73 @@ def detect_flips(diff_csv, floor_z=5.0, refractory=3.0):
 # ------------------------------------------------------------ alignment
 
 
-def align(flips, wall_ends, durs):
-    """Exact monotone DP over MATCHED PAIRS.
+def align(flips, wall_ends, durs, skip_rally=COST_SKIP_RALLY,
+          early=0.005, insert=0.2):
+    """Exact monotone DP over MATCHED PAIRS, transitions by TIME WINDOW.
 
-    A state is "flip i is matched to rally j" — not "i flips and j rallies
-    consumed", because the cost of the next match depends on WHICH pair
-    was matched last, and collapsing that into an (i, j) counter table
-    violates Bellman optimality (the first version did exactly that and
-    produced paths costlier than the true chain; caught by the selftest).
-
-    Physics per matched pair (i,j) -> (i',j'): the broadcast trims dead
-    time, never play, so the video gap must cover the summed durations of
-    rallies j+1..j' (junk flips inside play are infeasible) and cannot
-    exceed the wall gap plus jitter.  Among feasible flips the EARLIEST
-    is preferred (the score updates ~1-2 s after the final ball; replay
-    wipes and animations trail it), charged as 0.1 * (dv - min_play).
-    Skipped flips cost skip_flip_cost(z) (strong flips cost more), skipped
-    rallies COST_SKIP_RALLY (missed flips)."""
+    Two failure modes of earlier versions, both caught on real data:
+    (1) an index cap on consecutive skipped flips — the pre-match intro
+    and between-game breaks are flip STORMS (449 detections for 191
+    rallies on the Chicago VOD), so a cap forces the chain to anchor on
+    junk and whole segments derail; skips are now unlimited, priced by
+    flip strength.  (2) a hard "video gap cannot exceed wall gap" bound —
+    REPLAYS INSERT video time, so dv > dw by up to REPLAY_MAX_S is
+    allowed at a linear penalty.  Candidate next-flips come from a bisect
+    over the feasible TIME band [min_play, dw + REPLAY_MAX_S], so cost is
+    O(states x band), no caps anywhere."""
+    import bisect
     m, n = len(flips), len(wall_ends)
     INF = 1e18
-    MAXJ, MAXI = 4, 14              # consecutive missed flips / junk flips
+    MAXJ = 4                        # consecutive missed flips
     F = [f[0] for f in flips]
     zpre = [0.0]
     for f in flips:
         zpre.append(zpre[-1] + skip_flip_cost(f[1]))
 
-    best = {}
+    best = [dict() for _ in range(n)]   # best[j][i] = cost, flip i -> rally j
     par = {}
-    # source: first matched pair (i, j) — i junk flips and j missed
-    # rallies precede it
-    for j in range(min(n, MAXJ + 1)):
-        for i in range(min(m, MAXI + 1)):
-            c = zpre[i] + j * COST_SKIP_RALLY
-            if c < best.get((i, j), INF):
-                best[(i, j)] = c
+    for j in range(min(n, MAXJ + 1)):   # source: leading junk + missed rallies
+        for i in range(m):
+            if flips[i][1] < Z_MATCH:
+                continue
+            c = zpre[i] + j * skip_rally
+            if c < best[j].get(i, INF):
+                best[j][i] = c
                 par[(i, j)] = None
 
-    order = sorted(best)            # will grow; process by (j, i)
-    # iterate states in increasing rally order (monotone => DAG)
-    all_states = [(i, j) for j in range(n) for i in range(m)]
-    for i, j in sorted(all_states, key=lambda s: (s[1], s[0])):
-        c = best.get((i, j), INF)
-        if c >= INF:
-            continue
-        for j2 in range(j + 1, min(n, j + 1 + MAXJ + 1)):
-            min_play = sum(durs[k] for k in range(j + 1, j2 + 1))
-            dw = wall_ends[j2] - wall_ends[j]
-            for i2 in range(i + 1, min(m, i + 1 + MAXI + 1)):
-                dv = F[i2] - F[i]
-                if dv < min_play - 1.0:
-                    continue                     # junk inside play
-                slack = dw - dv
-                if slack < -LONGER_TOL_S:
-                    break                        # dv only grows with i2
-                cost = (0.1 * max(0.0, dv - min_play)
-                        + (zpre[i2] - zpre[i + 1])
-                        + (j2 - j - 1) * COST_SKIP_RALLY
-                        + (10.0 if slack > CUT_MAX_S else 0.0))
-                if c + cost < best.get((i2, j2), INF):
-                    best[(i2, j2)] = c + cost
-                    par[(i2, j2)] = (i, j)
+    for j in range(n):
+        for i, c in sorted(best[j].items()):
+            for j2 in range(j + 1, min(n, j + 1 + MAXJ + 1)):
+                min_play = sum(durs[k] for k in range(j + 1, j2 + 1))
+                dw = wall_ends[j2] - wall_ends[j]
+                lo = bisect.bisect_left(F, F[i] + min_play - 1.0, i + 1)
+                hi = bisect.bisect_right(F, F[i] + dw + REPLAY_MAX_S, i + 1)
+                for i2 in range(lo, hi):
+                    if flips[i2][1] < Z_MATCH:
+                        continue
+                    dv = F[i2] - F[i]
+                    slack = dw - dv
+                    # slack > 0 = broadcast cut (common, free); slack < 0
+                    # = claimed replay INSERT (rare, priced) — this is
+                    # what makes lag-chains at missed flips expensive,
+                    # since each one must claim a phantom insert.  The
+                    # earliness term is only a tie-break: matchability
+                    # (Z_MATCH) already excludes storm junk.
+                    cost = (early * max(0.0, dv - min_play)
+                            + insert * max(0.0, -slack)
+                            + (zpre[i2] - zpre[i + 1])
+                            + (j2 - j - 1) * skip_rally
+                            + (10.0 if slack > CUT_MAX_S else 0.0))
+                    if c + cost < best[j2].get(i2, INF):
+                        best[j2][i2] = c + cost
+                        par[(i2, j2)] = (i, j)
 
-    # sink: charge leftover flips and rallies
     end_best, end_state = INF, None
-    for (i, j), c in best.items():
-        tot = c + (zpre[m] - zpre[i + 1]) + (n - 1 - j) * COST_SKIP_RALLY
-        if tot < end_best:
-            end_best, end_state = tot, (i, j)
+    for j in range(n):
+        for i, c in best[j].items():
+            tot = c + (zpre[m] - zpre[i + 1]) + (n - 1 - j) * skip_rally
+            if tot < end_best:
+                end_best, end_state = tot, (i, j)
 
     match = [None] * n
     s = end_state
@@ -229,8 +233,11 @@ def build(diff_csv, old_windows, timeline_csv, out_csv):
     flips = detect_flips(diff_csv)
     print(f"{len(flips)} scorebug flips detected for {len(cums)} rallies")
     match, cost = align(flips, wall_ends, durs)
+    match_b, _ = align(flips, wall_ends, durs, early=0.06, insert=0.05)
+    stable = [a is not None and a == b for a, b in zip(match, match_b)]
     n_ok = sum(1 for m in match if m is not None)
-    print(f"aligned {n_ok}/{len(cums)} rallies (DP cost {cost:.1f})")
+    print(f"aligned {n_ok}/{len(cums)} rallies (DP cost {cost:.1f}); "
+          f"{sum(stable)} stable under skip-price perturbation")
 
     # interpolate the missed ones between matched neighbours (wall-scaled)
     t1_video = [flips[m][0] - FLIP_LAG_S if m is not None else None
@@ -250,20 +257,53 @@ def build(diff_csv, old_windows, timeline_csv, out_csv):
             elif hi is not None:
                 t1_video[k] = t1_video[hi] - (wall_ends[hi] - wall_ends[k])
 
+    # Near a missed flip, gap structure CANNOT pin which end of a run of
+    # similar-length rallies absorbed the miss — measured on synthetics:
+    # the alternative readings differ by draw-noise under any pure-gap
+    # cost model, so no coefficient perturbation reliably separates them.
+    # Be conservative instead: flag a +-5 neighbourhood of every
+    # unmatched rally (union with the instability probe), and let the
+    # scorer exclude flagged rallies / the human audit the handful.
+    fuzzy = {k for k, s in enumerate(stable) if not s}
+    for k, mk in enumerate(match):
+        if mk is None:
+            for d in range(-5, 6):
+                if 0 <= k + d < len(match):
+                    fuzzy.add(k + d)
     shifts = []
     with open(out_csv, "w", newline="") as fh:
         w = csv.writer(fh)
         hdr = list(old[0].keys())
         w.writerow(hdr)
-        for r, t1, mk in zip(old, t1_video, match):
+        for k, (r, t1, mk) in enumerate(zip(old, t1_video, match)):
             r = dict(r)
             old_t1 = float(r["t1s"])
             dur = float(r["dur_s"])
             r["t1s"] = f"{t1:.1f}"
             r["t0s"] = f"{t1 - dur:.1f}"
-            r["approx"] = "0" if mk is not None else "1"
+            r["approx"] = "0" if (mk is not None and k not in fuzzy) else "1"
             shifts.append(t1 - old_t1)
             w.writerow([r[h] for h in hdr])
+    print(f"confident windows: {sum(1 for k, mk in enumerate(match) if mk is not None and k not in fuzzy)}"
+          f"/{len(match)} (rest flagged approx: missed-flip neighbourhoods)")
+    # validation gates on real data:
+    # (1) the POC hand-verified the CHICAGO 5->6 flip (rally #30, wall
+    #     18:32:18Z) at video 778.07 s — a photo-grade absolute anchor
+    for k, c in enumerate(cums):
+        if abs(wall_ends[k] - 66738.0) < 1.0:
+            got = t1_video[k] + FLIP_LAG_S
+            print(f"ANCHOR rally #{c} (wall 18:32:18Z): flip at video "
+                  f"{got:.1f}s vs hand-verified 778.07s  "
+                  f"({'PASS' if abs(got - 778.07) < 3 else 'FAIL'})")
+    # (2) confident windows must not overlap within a game
+    ov = 0
+    for a, b in zip(range(len(old)), range(1, len(old))):
+        if old[a]['game'] != old[b]['game']:
+            continue
+        if match[a] is not None and match[b] is not None:
+            if (t1_video[b] - float(old[b]['dur_s'])) - t1_video[a] < -1.0:
+                ov += 1
+    print(f"overlapping consecutive matched windows: {ov} (must be ~0)")
     s = np.array(shifts)
     print(f"wrote {out_csv}")
     print(f"\nshift vs OLD windows (v2 minus v1, seconds):")
@@ -304,12 +344,25 @@ def selftest():
         video.append(tv)
         tv += dead[k] - 1.5 - cuts[k]          # shown dead time
     wall, video = np.array(wall), np.array(video)
-    flips = [(float(v), 10.0) for v in video]
+    # replay inserts: some gaps carry +15-40 s of inserted video time
+    ins = rng.choice(59, 8, replace=False)
+    add = np.zeros(60)
+    for k in ins:
+        add[k + 1:] += rng.uniform(15, 40)
+    video = video + add
+    flips = [(float(v), rng.uniform(9, 25)) for v in video]
     drop = rng.choice(60, 3, replace=False)             # missed flips
     flips = [f for k, f in enumerate(flips) if k not in drop]
-    junk = [(float(rng.uniform(50, video[-1])), 6.0) for _ in range(9)]
+    junk = [(float(rng.uniform(2, 38)), rng.uniform(4.5, 8.5))   # pre-roll
+            for _ in range(30)]
+    storm_at = [video[19] + 5, video[39] + 5]                    # breaks
+    for s in storm_at:
+        junk += [(float(s + rng.uniform(0, 25)), rng.uniform(4.5, 8.5))
+                 for _ in range(20)]
+    junk += [(float(rng.uniform(50, video[-1])), rng.uniform(4.5, 8.5))
+             for _ in range(9)]                                  # scattered
     flips = sorted(flips + junk)
-    match, cost = align(flips, list(wall), durs)
+    match, cost = align(flips, [float(w) for w in wall], durs)
     ok = bad = miss = 0
     for k in range(60):
         if match[k] is None:
@@ -322,9 +375,23 @@ def selftest():
             ok += 1
         else:
             bad += 1
-    print(f"selftest: {ok} correct, {bad} wrong, {miss} unmatched "
-          f"(3 flips were deleted, 9 junk added; DP cost {cost:.1f})")
-    assert ok >= 54 and bad <= 2, "alignment selftest failed"
+    match_b, _ = align(flips, [float(w) for w in wall], durs, early=0.06, insert=0.05)
+    fuzzy = {k for k in range(60)
+             if match[k] is None or match[k] != match_b[k]}
+    for k in range(60):
+        if match[k] is None:
+            for d in range(-5, 6):
+                if 0 <= k + d < 60:
+                    fuzzy.add(k + d)
+    unflagged_bad = [k for k in range(60)
+                     if match[k] is not None and k not in drop
+                     and abs(flips[match[k]][0] - video[k]) >= 1.0
+                     and k not in fuzzy]
+    print(f"selftest: {ok} correct, {bad} wrong ({len(unflagged_bad)} of them "
+          f"UNFLAGGED), {miss} unmatched (3 deleted, 79 junk incl. storms, "
+          f"8 replay inserts; DP cost {cost:.1f})")
+    assert ok >= 50, "alignment selftest failed: too few correct"
+    assert not unflagged_bad, f"wrong matches escaped the approx flag: {unflagged_bad}"
     print("SELFTEST OK")
 
 
