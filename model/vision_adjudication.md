@@ -277,7 +277,35 @@ the verdict. Both carry `--selftest` (planted swings/pops/misses/falses;
 the tests already caught and fixed a first-wins refractory bug and the
 original wrong G1 formula).
 
-**The user's hand-coding offer (2026-08-11) and where it plugs in.** The
+**GATE B, RUN 1 — INSTRUMENT v1 FAILS (2026-08-13, label-free; stage 2
+pending labels, expected to formalize the kill for v1).** The full-match
+run (191 rallies, 14,986 swing peaks, 18,658 pops) pinned label-free
+side-alternation at 0.39–0.50 over the ENTIRE operating grid — coin-flip
+sides, frozen point 0.460, a hair above the 0.45 auto-kill but exposed
+as randomization by forensics, not signal. The promising smoke numbers
+(64–77%) were a 13–25-pair small-n artifact plus post-hoc cell picking —
+the exact sin this repo documents elsewhere; recorded as such. Forensic
+chain, all label-free: applause bleed acquitted (8% of contacts outside
+rally bounds; trimming moved alternation 0.460→0.461); multi-contact-
+per-pop acquitted (0.33 contacts/strong-pop — two thirds of loud pops
+have NO coincident swing peak, contradicting the smoke offset histogram,
+which base-rate coincidence also produces); partner-echo acquitted
+(same-side pairs sit at median 1.57 s, not <0.5 s). CONFIRMED: the
+tracker's frame-local near/far split corrupts sides — 42% of far-labeled
+events carry near-sized boxes (missing far pair → the near pair gets
+split into fake near/far). Repairing sides by per-rally box-height
+clustering then EXPOSED the real failure: alternation fell to 0.16–0.19
+— consecutive events are same-side RUNS, i.e. the gated events are
+dominated by the better-tracked near team's movement peaks coinciding
+with pops at base rate. The events are not contacts. POSE IS NOT THE
+FAILURE (debug frames: all four players, far pair at 0.86 conf); the
+swing-EVENT DEFINITION is: absolute per-frame wrist speed registers
+locomotion, and frame-local slot assignment shreds identity.
+A legitimate v2 instrument attacks exactly those two measured causes
+(not threshold tuning): per-player identity tracking with temporal
+continuity; wrist velocity relative to the player's own torso; arm-
+geometry gating. Rule: the original 16 labeled rallies grade v1 ONLY;
+any v2 is graded on fresh labels, so nothing is contaminated either way. The
 user offered to hand-code some points as drive/drop/dink/speed-up. That
 is the most valuable label form for Gate B — NOT ball clicks: ~15–20
 rallies on the Chicago VOD, each shot in order typed
