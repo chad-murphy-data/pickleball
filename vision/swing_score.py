@@ -77,6 +77,7 @@ def load_windows(path):
             "cum": int(r["rally_cum"]), "game": int(r["game"]),
             "t0": float(r["t0s"]), "t1": float(r["t1s"]),
             "dur": float(r["dur_s"]),
+            "conf": r.get("approx", "0") == "0",
             "half": 1 if max(int(a), int(b)) >= 6 else 0,
             "server": r["server_uuid"],
             "teamA": set(r["teamA_uuids"].split("|")),
@@ -355,6 +356,12 @@ def run(a):
     swings = load_swings(a.swings)
     pops = load_pops(a.pops)
 
+    n_conf = sum(1 for w in windows.values() if w["conf"])
+    print(f"windows: {len(windows)} total, {n_conf} confident — "
+          f"approx-flagged rallies are EXCLUDED from all scoring")
+    conf_cums = {c for c, w in windows.items() if w["conf"]}
+    swings = {c: s for c, s in swings.items() if c in conf_cums}
+    pops = {c: s for c, s in pops.items() if c in conf_cums}
     print("== STAGE 1: label-free operating point ==")
     best, rows = pick_operating_point(swings, pops, windows)
     print("   theta_v theta_z coinc   alternation  contacts/s  pairs feasible")
