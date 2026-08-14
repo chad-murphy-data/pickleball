@@ -325,7 +325,7 @@ HTML = r"""<!doctype html>
       <button id="bp2" title="→">+2s</button>
       <span class="vsep"></span>
       <span class="small dim">speed</span>
-      <button class="spd" data-r="0.25">.25×</button>
+      <button class="spd" data-r="0.2">.2×</button>
       <button class="spd" data-r="0.5">.5×</button>
       <button class="spd" data-r="0.75">.75×</button>
       <button class="spd on" data-r="1">1×</button>
@@ -418,7 +418,7 @@ function wireVideo(){
     else if (e.key === "ArrowLeft") el("bm2").onclick();
     else if (e.key === "ArrowRight") el("bp2").onclick();
     else if (e.key === "[" || e.key === "]"){
-      const steps = [0.25, 0.5, 0.75, 1];
+      const steps = [0.2, 0.5, 0.75, 1];
       let i = steps.indexOf(V.playbackRate); if (i < 0) i = 3;
       V.playbackRate = steps[Math.min(3, Math.max(0, i + (e.key === "]" ? 1 : -1)))];
       markSpeed(); savePrefs();
@@ -468,7 +468,9 @@ function panel(){
     <span class="dim">→ ends ~${r.t1} (${r.dur.toFixed(0)}s)</span>
     <span class="badge">G${r.slot} R${r.rally} · #${r.cum}</span>
     <span class="badge">${DATA.games[r.slot].division}</span>
-    ${r.orig ? '<span class="badge orig">original blind-10</span>' : ""}</div>
+    ${r.orig ? '<span class="badge orig">original blind-10</span>' : ""}
+    <button onclick="markServe()" title="store the video's CURRENT time as this rally's serve moment — pause on the serve, then click">⏱ serve=now</button>
+    ${store[cur].serve != null ? `<span class="badge" style="background:var(--acc);color:#08130d">serve @ ${fmts(store[cur].serve)}</span><button class="del" onclick="clearServe()">✕</button>` : ""}</div>
     <div class="small dim">score ${r.score} · serve: <b>${r.server}</b> → ${r.receiver}
     ${r.approx ? ' · <span class="approx">time approximated across a broadcast cut — trust the scorebug</span>' : ""}</div>
     <div class="help small">${helprow(r)}</div>`;
@@ -528,6 +530,15 @@ function intro(){
   file, set the offset (seconds) in the bar above once.</span></div>`;
 }
 
+const fmts = s => `${Math.floor(s/60)}:${(s%60).toFixed(1).padStart(4,"0")}`;
+function markServe(){
+  if (!loaded() || cur === null) return;
+  shots(cur);                      // ensure the rally record exists
+  store[cur].serve = V.currentTime;
+  save(); panel();
+}
+function clearServe(){ delete store[cur].serve; save(); panel(); }
+
 function setH(i, u){ shots(cur)[i].h = u; save(); panel(); side(); }
 function setT(i, t){ shots(cur)[i].t = t; save(); panel(); side(); }
 function addS(){ shots(cur).push({h: null, t: null}); save(); panel(); }
@@ -539,13 +550,15 @@ function csv(){
   const uuid2name = {}; for (const s in DATA.games)
     for (const t of DATA.games[s].teams) for (const p of t) uuid2name[p.uuid] = p.name;
   let rows = [["game","division","rally_in_game","rally_cum","shot_index",
-               "hitter_name","hitter_uuid","shot_type","rally_note"]];
+               "hitter_name","hitter_uuid","shot_type","rally_note",
+               "serve_time_s"]];
   for (const r of DATA.rallies){
     const s = store[r.cum]; if (!s) continue;
     s.shots.forEach((x, i) => { if (x.h || x.t)
       rows.push([r.slot, DATA.games[r.slot].division, r.rally, r.cum, i + 1,
                  uuid2name[x.h] || "", x.h || "", x.t || "",
-                 i === 0 ? (s.note || "") : ""]); });
+                 i === 0 ? (s.note || "") : "",
+                 i === 0 && s.serve != null ? s.serve.toFixed(2) : ""]); });
   }
   return rows.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
 }
@@ -589,11 +602,14 @@ function applyCsvText(text){
                                    t: r[col("shot_type")] || null};
     if (idx === 1 && col("rally_note") >= 0 && r[col("rally_note")])
       byRally[cum].note = r[col("rally_note")];
+    if (idx === 1 && col("serve_time_s") >= 0 && r[col("serve_time_s")])
+      byRally[cum].serve = parseFloat(r[col("serve_time_s")]);
   }
   let nR = 0, nS = 0;
   for (const cum in byRally){
     const s = byRally[cum];
     s.shots = Array.from(s.shots, x => x || {h: null, t: null});
+    if (s.serve == null) delete s.serve;
     store[cum] = s; nR++; nS += s.shots.length;
   }
   save();
