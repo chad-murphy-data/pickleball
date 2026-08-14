@@ -113,9 +113,12 @@ def detect_flips(diff_csv, floor_z=5.0, refractory=3.0):
     t, d = [], []
     for r in csv.DictReader(open(diff_csv)):
         t.append(float(r["t_s"]))
-        d.append(float(r["diff"]))
+        # accept both this script's scan output ('diff') and the original
+        # full-VOD pass's frame-exact stream ('strip_diff')
+        d.append(float(r.get("diff") or r.get("strip_diff")))
     t, d = np.array(t), np.array(d)
-    w = int(60 * SCAN_FPS)
+    dt = float(np.median(np.diff(t))) if len(t) > 1 else 1.0 / SCAN_FPS
+    w = max(10, int(60.0 / max(dt, 1e-6)))     # 60 s rolling window at any fps
     z = np.zeros_like(d)
     for i in range(len(d)):
         lo, hi = max(0, i - w // 2), min(len(d), i + w // 2)
