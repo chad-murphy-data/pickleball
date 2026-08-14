@@ -196,17 +196,25 @@ def speed_peaks(rows, fps, floor=0.06, refractory=0.30):
 
 
 def keep_person(box, kps, kpc, H, W):
-    """Court players, not crowd: feet in the lower ~2/3, box tall enough,
-    wrists actually seen."""
+    """Court players, not crowd or officials: feet in the lower ~2/3, box
+    tall enough, wrists actually seen, and center-x inside the court band —
+    the Chicago smoke frame showed line officials standing at the frame
+    edges (cx ~0.06 and ~0.96) passing the y/height gates and threatening
+    to steal tracker slots; the sidelines sit at ~0.16-0.83 of width, so
+    a 0.12-0.88 band keeps every on-court position (an ATP chase may exit
+    it for a few frames — acceptable for the probe)."""
     x0, y0, x1, y1 = box
     bh = y1 - y0
+    cx = (x0 + x1) / 2
     if y1 < 0.34 * H or bh < 0.07 * H:
+        return None
+    if not (0.12 * W <= cx <= 0.88 * W):
         return None
     wr = kps[[L_WRIST, R_WRIST]]
     wc = kpc[[L_WRIST, R_WRIST]]
     if np.nanmax(wc) < 0.25:
         return None
-    return {"bottom": float(y1), "cx": float((x0 + x1) / 2),
+    return {"bottom": float(y1), "cx": float(cx),
             "box_h": float(bh), "wrists": wr, "kpc": float(np.nanmax(wc))}
 
 
@@ -325,6 +333,7 @@ def run(a):
             res = model(frame, imgsz=a.imgsz, verbose=False,
                         device=(a.device or None), conf=0.35)[0]
             persons = []
+            dbg_rows = [] if (a.smoke and i == int(a.fps * 3)) else None
             if res.keypoints is not None and len(res.boxes):
                 kxy = res.keypoints.xy.cpu().numpy()
                 kcf = (res.keypoints.conf.cpu().numpy()
@@ -335,15 +344,32 @@ def run(a):
                     p = keep_person(box, kps, kpc, H, W)
                     if p:
                         persons.append(p)
+                    if dbg_rows is not None:
+                        dbg_rows.append((box, kps, p))
             trk.feed(t, persons)
             n_frames += 1
-            if a.smoke and i == int(a.fps * 3):
+            if dbg_rows is not None:
+                # green = fed to the tracker, red = rejected by the filter:
+                # the picture must show the filter's decision, not the raw
+                # model output, or officials look like a problem after
+                # they've already been solved.
                 png = Path(f"{a.out}_debugframe_r{wnd['cum']}.png")
                 try:
                     import cv2
-                    dbg = res.plot()
+                    dbg = frame.copy()
+                    for box, kps, p in dbg_rows:
+                        x0, y0, x1, y1 = map(int, box[:4])
+                        ok = p is not None
+                        cv2.rectangle(dbg, (x0, y0), (x1, y1),
+                                      (0, 200, 0) if ok else (0, 0, 230),
+                                      2 if ok else 1)
+                        if ok:
+                            for wx, wy in kps[[L_WRIST, R_WRIST]]:
+                                cv2.circle(dbg, (int(wx), int(wy)), 5,
+                                           (0, 165, 255), -1)
                     cv2.imwrite(str(png), dbg)
-                    print(f"  debug frame -> {png}")
+                    print(f"  debug frame -> {png} "
+                          f"(green=tracked, red=rejected)")
                 except Exception:
                     pass
         peaks = speed_peaks(trk.rows, a.fps)
