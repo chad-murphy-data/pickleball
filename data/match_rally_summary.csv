@@ -1,4 +1,12 @@
 match_id,discipline,tour,date,n_logs,n_rallies,n_points,n_sideouts,n_second,k_match,score_check
+40ce3562-8c46-44eb-9d51-675e76e598b1,doubles,MLP,2026-08-09,85,32,15,11,8,0.438,ok
+5ee2f3af-5edc-477d-98d0-fca097df320d,doubles,MLP,2026-08-09,86,35,18,9,8,0.514,ok
+725961d5-8d0a-4e1f-87b4-fe394b076e1f,doubles,MLP,2026-08-09,83,31,15,8,8,0.484,ok
+776fa1b6-77af-416f-9dc0-aa8b7171b648,doubles,MLP,2026-08-09,83,34,16,9,9,0.471,ok
+884dd46a-fa18-4041-b576-2d4f44ab0620,doubles,MLP,2026-08-09,111,46,16,17,15,0.326,ok
+98f6b7f7-500f-4925-9541-c06fa65159f6,doubles,MLP,2026-08-09,107,45,17,14,14,0.378,ok
+dd116dd9-6dc7-45ee-82ce-cfe734a5d39d,doubles,MLP,2026-08-09,49,17,12,3,2,0.706,ok
+fe6409ca-ddfe-4a42-85a8-faa2c2640049,doubles,MLP,2026-08-09,75,27,16,6,5,0.593,ok
 0f48ba7c-d4a3-4775-95c9-d9fa6672f746,doubles,MLP,2026-08-08,79,32,16,8,8,0.500,ok
 3565fa1d-a5b2-4c61-825e-ee19383016c8,doubles,MLP,2026-08-08,93,35,22,7,6,0.629,ok
 3ea9f262-04bd-4339-9f78-e25f02a949d9,doubles,MLP,2026-08-08,61,23,13,5,5,0.565,ok
