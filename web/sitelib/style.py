@@ -470,6 +470,7 @@ NAV = [("rankings.html", "Rankings"), ("players/index.html", "Players"),
        ("results.html", "Results"),
        ("simulator.html", "Simulator"), ("receipts.html", "Receipts"),
        ("records.html", "Record book"),
+       ("insights/index.html", "Insights"),
        ("methods.html", "Methods")]
 
 

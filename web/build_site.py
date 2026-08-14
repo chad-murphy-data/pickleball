@@ -1544,21 +1544,56 @@ promptly.</p></div>
                                      body, "methods.html", "", updated))
 
 
+# ---------------------------------------------------------------- insights
+
+# Editorial, hand-maintained: one entry per article in web/insights/
+# (slug, title, rubric, date line, blurb) — newest first.  Add a row here
+# whenever a new piece ships so the index stays complete.
+INSIGHTS_ARTICLES = [
+    ("smoke-dimension", "The smoke dimension",
+     "MLP · The DreamBreaker · Part II", "August 4, 2026",
+     "Part II of the DreamBreaker series: what the marquee man-v-woman "
+     "matchup under the lights actually costs in win probability, and "
+     "which owners might pay it. Prices Anna Bright's “smoke” idea "
+     "across every MLP roster on record."),
+    ("wind", "The sport shrugged",
+     "Weather · A null result", "July 28, 2026",
+     "Six ways to look for a wind effect in pro pickleball — serve "
+     "rates, the “bad side,” upsets, momentum, a per-player wind "
+     "skill — with the weather matched to the hour of play across "
+     "37,000 games. Six nulls, reported in full."),
+    ("unsolved-meta", "Solving the unsolved meta",
+     "MLP · The DreamBreaker", "July 26, 2026",
+     "The math behind Anna Bright's DreamBreaker proposal: her fix tested "
+     "across all of MLP, a solution to the lineup meta she called "
+     "unsolved, and numbers on how much more strategic, equitable and "
+     "exciting the format would get."),
+]
+
+
+def build_insights_index(updated):
+    cards = "".join(f"""
+<div class="card"><h3 style="margin-top:0"><a href="{slug}/">{esc(title)}</a></h3>
+<p class="note">{esc(rubric)} · {esc(dateline)}</p>
+<p>{esc(blurb)}</p>
+<p style="margin-bottom:0"><a href="{slug}/">Read the piece →</a></p></div>"""
+        for slug, title, rubric, dateline, blurb in INSIGHTS_ARTICLES)
+    body = f"""
+<h1>Insights</h1>
+<p class="sub">Longer-form pieces from the model — one question at a time,
+written up with the receipts attached.</p>
+{cards}
+"""
+    write("insights/index.html",
+          style.page("Insights — PICKLES", body, "insights/index.html",
+                     "../", updated))
+
+
 # ---------------------------------------------------------------- landing
 
 # Threads/IG handle for the manifesto footer — set once the account exists;
 # empty renders the archive line alone (no fake placeholder ships).
 HANDLE = ""
-
-# Editorial, hand-maintained (design mock DATA block) — not generated.
-FIELD_NOTES = [
-    ("F-01", "Chemistry is (mostly) a myth", "quality ≈ 5× pair fit"),
-    ("F-02", "It's a weakest-link game", "gap costs ½ pt/game"),
-    ("F-03", "Ben Johns never declined", "the field arrived"),
-    ("F-04", "Waters' lead over #2", "= men's entire top 25"),
-    ("F-05", "Mixed targeting is gender-blind", "attack the weaker player"),
-    ("F-06", "Pros don't sandbag MLP", "same pts-per-skill rate"),
-]
 
 # MLP team display forms: full name -> (city line, ticker-style short code).
 MLP_TEAMS = {
@@ -1577,6 +1612,7 @@ MLP_TEAMS = {
     "New Jersey 5s": ("New Jersey", "NJ"),
     "New York Hustlers": ("NY", "NY"),
     "Orlando Squeeze": ("Orlando", "ORL"),
+    "Palm Beach Royals": ("Palm Beach", "PBR"),
     "Phoenix Flames": ("Phoenix", "PHX"),
     "SoCal Hard Eights": ("SoCal", "SOC"),
     "St. Louis Shock": ("St. Louis", "STL"),
@@ -1726,12 +1762,26 @@ def build_slate(F, players, games, updated, today):
         cands = [f for f in F.get("forecasts", []) if f.get("date")]
         upcoming = sorted({f["date"] for f in cands if f["date"] >= today})
         if upcoming:
+            from datetime import date
             day = upcoming[0]
             night = sorted((f for f in cands if f["date"] == day),
                            key=lambda f: f.get("start") or "")
+            # Playoff days stagger the series, so the nearest day's card can
+            # be a partial slate.  Pull forward the FIRST later meeting of
+            # every pairing not already on it — the strip then previews all
+            # rated matchups (e.g. all four playoff series), not just today's.
+            seen = {frozenset((f["team1"], f["team2"])) for f in night}
+            for f in sorted((f for f in cands if f["date"] > day),
+                            key=lambda f: (f["date"], f.get("start") or "")):
+                key = frozenset((f["team1"], f["team2"]))
+                if key not in seen:
+                    seen.add(key)
+                    night.append(f)
+            multiday = any(f["date"] != day for f in night)
+            label = "UPCOMING SLATE" if multiday else slate_day_label(day, today)
             event = (night[0].get("event") or "MLP").upper()
             head = (f'<div class="slatehead"><span class="doortag">'
-                    f'{slate_day_label(day, today)}</span>'
+                    f'{label}</span>'
                     f'<span class="slateevent">{esc(event)} :: {len(night)} '
                     f'MATCHUP{"S" if len(night) != 1 else ""} RATED</span>'
                     f'<span class="fill"></span>'
@@ -1746,9 +1796,13 @@ def build_slate(F, players, games, updated, today):
                     val = f'{fav} {pct_floor(max(t["p_win"], 1 - t["p_win"]))}'
                 else:
                     val = "NOT RATED"
+                st = start_et(f.get("start") or "")
+                if f["date"] != day:
+                    wd = date.fromisoformat(f["date"]).strftime("%a").upper()
+                    st = f"{wd} {st}".strip()
                 bits.append(
                     f'<a class="srow" href="forecast.html">'
-                    f'<span class="st">{start_et(f.get("start") or "")}</span>'
+                    f'<span class="st">{st}</span>'
                     f'<span class="sm">{team_short(f["team1"])} v {team_short(f["team2"])}</span>'
                     f'<span class="lead"></span><span class="sp">{val}</span></a>')
             rows = f'<div class="slaterows">{"".join(bits)}</div>'
@@ -1916,12 +1970,6 @@ def build_landing(players, games, updated, n_games, R):
  </div>
 </section>"""
 
-    fnotes = "".join(
-        f'<div class="fnote"><span class="no">{no}</span>'
-        f'<span class="claim">{esc(claim)}</span><span class="lead"></span>'
-        f'<span class="ev">{esc(ev)}</span></div>'
-        for no, claim, ev in FIELD_NOTES)
-
     handle_bit = f"{esc(HANDLE)} · " if HANDLE else ""
     html = f"""<!DOCTYPE html>
 <html lang="en">
@@ -1937,7 +1985,7 @@ def build_landing(players, games, updated, n_games, R):
 <header class="landing"><div class="bar">
  <span class="brandchip">PICKLES</span>
  <span class="brandsub">Probabilistic Inference of Competitive Kitchen-Line Expected Scores</span>
- <nav><a href="live.html" id="nav-live">LIVE</a><a href="rankings.html">RANKINGS</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="methods.html">METHODS</a></nav>
+ <nav><a href="live.html" id="nav-live">LIVE</a><a href="rankings.html">RANKINGS</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="insights/">INSIGHTS</a><a href="methods.html">METHODS</a></nav>
  <button class="themetog" type="button" title="toggle light/dark">◐</button>
 </div></header>
 {slate}
@@ -2016,11 +2064,6 @@ included. Superstar + passenger ≠ two solids.</p>
  </div>
 </section>
 
-<section class="lsec notes">
- <h2 class="lh2">Field notes — what {hero_games} games actually say</h2>
- <div class="fnotes">{fnotes}</div>
-</section>
-
 <footer class="manifesto"><div class="inner">
  <div class="credo">
   <div class="slogan">Error bars are a <span class="hl">flex.</span></div>
@@ -2061,17 +2104,18 @@ def main():
     (SITE / "assets" / "style.css").write_text(style.CSS)
     (SITE / ".nojekyll").write_text("")
 
-    # unlisted extras: web/insights/ ships verbatim under site/insights/.
-    # Deliberately NOT linked from any nav or page and each page carries
-    # <meta name="robots" content="noindex"> — public by URL, not findable.
+    # web/insights/ ships verbatim under site/insights/; the generated
+    # insights/index.html (build_insights_index) links every article —
+    # a linked section since 2026-08-14 (previously unlisted by design).
     insights = Path(__file__).resolve().parent / "insights"
     if insights.exists():
         import shutil as _sh
         _sh.copytree(insights, SITE / "insights", dirs_exist_ok=True)
 
     R = D.load_receipts()
-    print("pages: landing, rankings, forecasts, results, simulator, receipts, records, methods, data …")
+    print("pages: landing, insights, rankings, forecasts, results, simulator, receipts, records, methods, data …")
     build_landing(players, games, updated, len(games), R)
+    build_insights_index(updated)
     build_rankings(players, updated, len(games), R["validation"])
     build_player_index(players, updated)
     build_forecast(players, updated)
