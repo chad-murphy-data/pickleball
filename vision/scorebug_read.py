@@ -116,39 +116,88 @@ def main():
     ys, xs = np.nonzero(hot)
     if len(ys) < 10:
         raise SystemExit("no hot digit pixels found — send the debug bundle")
-    # split into top/bottom halves = UTAH / CHICAGO rows
-    mid = h / 2
-    boxes = {}
-    for name, m in (("utah", ys < mid), ("chicago", ys >= mid)):
-        if m.sum() < 5:
-            boxes[name] = None
+    # connected components of the hot mask = the panel's changing elements
+    # (score digits, serve indicator, game-score chip) — each becomes its
+    # own tracked state machine, per the user's design: read the state
+    # every second and ask "same as t-1?"
+    lab = np.zeros((h, w), np.int32)
+    nlab = 0
+    for y0, x0 in zip(ys, xs):
+        if lab[y0, x0]:
             continue
-        y0, y1 = ys[m].min(), ys[m].max()
-        x0, x1 = xs[m].min(), xs[m].max()
+        nlab += 1
+        stack = [(y0, x0)]
+        lab[y0, x0] = nlab
+        while stack:
+            cy, cx = stack.pop()
+            for dy in (-2, -1, 0, 1, 2):
+                for dx in (-2, -1, 0, 1, 2):
+                    ny, nx = cy + dy, cx + dx
+                    if 0 <= ny < h and 0 <= nx < w and hot[ny, nx] \
+                            and not lab[ny, nx]:
+                        lab[ny, nx] = nlab
+                        stack.append((ny, nx))
+    boxes = {}
+    for li in range(1, nlab + 1):
+        m = lab == li
+        if m.sum() < 6:
+            continue
+        yy, xx = np.nonzero(m)
         pad = 3
-        boxes[name] = (slice(max(0, y0 - pad), min(h, y1 + pad)),
-                       slice(max(0, x0 - pad), min(w, x1 + pad)))
-        print(f"  {name} digit box: rows {y0}-{y1}, cols {x0}-{x1}")
+        boxes[f"c{li}"] = (slice(max(0, yy.min() - pad), min(h, yy.max() + pad)),
+                           slice(max(0, xx.min() - pad), min(w, xx.max() + pad)))
+    print(f"  {len(boxes)} tracked panel elements:")
+    for name, b in boxes.items():
+        print(f"    {name}: rows {b[0].start}-{b[0].stop}, "
+              f"cols {b[1].start}-{b[1].stop}")
 
-    # ---- pass 2: per-second digit-box change vs last PRESENT frame ----
+    # ---- pass 2: per-element STATE machines (the user's design) --------
+    # each element's crop is matched against its dictionary of previously
+    # seen appearances (normalized correlation); no match = a new state.
+    # A transition counts only after the new state persists 2 seconds
+    # (flash animations and jpeg shimmer do not persist).
+    def norm(v):
+        v = v.ravel().astype(np.float32)
+        v = v - v.mean()
+        n = float(np.sqrt((v * v).sum()))
+        return v / n if n > 1e-6 else v
+
+    states = {name: [] for name in boxes}      # list of state vectors
+    cur = {name: -1 for name in boxes}
+    pend = {name: (-1, 0) for name in boxes}   # candidate state, run length
     rows_out = []
-    last_present = None
     for k, (t, p) in enumerate(items):
         fr = load_gray(p)[:h, :w]
         pr = pres_flags[k]
-        u = c = 0.0
-        if pr and last_present is not None:
-            for name, box in boxes.items():
-                if box is None:
-                    continue
-                d = float((np.abs(fr[box] - last_present[box]) > 30).mean())
-                if name == "utah":
-                    u = d
+        rec = {"t": t, "present": int(pr)}
+        for name, box in boxes.items():
+            changed = 0
+            if pr:
+                v = norm(fr[box])
+                sid = None
+                for si, sv in enumerate(states[name]):
+                    if float(v @ sv) > 0.92:
+                        sid = si
+                        break
+                if sid is None:
+                    states[name].append(v)
+                    sid = len(states[name]) - 1
+                if sid != cur[name]:
+                    csid, run = pend[name]
+                    run = run + 1 if sid == csid else 1
+                    pend[name] = (sid, run)
+                    if run >= 2:
+                        if cur[name] >= 0:
+                            changed = 1
+                        cur[name] = sid
+                        pend[name] = (-1, 0)
                 else:
-                    c = d
-        if pr:
-            last_present = fr
-        rows_out.append((t, int(pr), u, c))
+                    pend[name] = (-1, 0)
+            rec[f"{name}_state"] = cur[name]
+            rec[f"{name}_chg"] = changed
+            rec[f"{name}_x"] = boxes[name][1].start
+            rec[f"{name}_y"] = boxes[name][0].start
+        rows_out.append(rec)
         if k % 600 == 0:
             print(f"  pass2 {k}/{len(items)}", flush=True)
 
@@ -173,21 +222,30 @@ def main():
         Image.open(items[i][1]).save(bd / f"sample_{items[i][0]:.0f}s.jpg")
     print(f"debug bundle -> {bd}/ (zip and attach this folder)")
 
+    names = list(boxes)
     with open(a.out, "w", newline="") as fh:
         wcsv = csv.writer(fh)
-        wcsv.writerow(["t_s", "bug_present", "utah_change", "chicago_change",
-                       "either"])
-        for t, pr, u, c in rows_out:
-            wcsv.writerow([f"{t:.2f}", pr, f"{u:.4f}", f"{c:.4f}",
-                           f"{max(u, c):.4f}"])
+        hdr = ["t_s", "bug_present"]
+        for n_ in names:
+            hdr += [f"{n_}_state", f"{n_}_chg"]
+        wcsv.writerow(hdr)
+        for rec in rows_out:
+            row = [f"{rec['t']:.2f}", rec["present"]]
+            for n_ in names:
+                row += [rec[f"{n_}_state"], rec[f"{n_}_chg"]]
+            wcsv.writerow(row)
 
-    ch = np.array([max(u, c) for _, pr, u, c in rows_out])
-    npres = sum(pr for _, pr, _, _ in rows_out)
+    npres = sum(r["present"] for r in rows_out)
     print(f"\nwrote {a.out}")
     print(f"bug present {npres}/{len(rows_out)} seconds")
-    for th in (0.05, 0.10, 0.20, 0.30):
-        print(f"  seconds with digit-change > {th}: {(ch > th).sum()}"
-              f"   (191 rally flips expected, plus game transitions)")
+    print("per-element transitions (score digits ~78 expected; serve "
+          "indicator ~190+; game chip ~a handful):")
+    for n_ in names:
+        tr = sum(r[f"{n_}_chg"] for r in rows_out)
+        ns = len(states[n_])
+        b = boxes[n_]
+        print(f"  {n_} (rows {b[0].start}-{b[0].stop}, cols {b[1].start}-"
+              f"{b[1].stop}): {tr} transitions, {ns} distinct states")
 
 
 if __name__ == "__main__":
