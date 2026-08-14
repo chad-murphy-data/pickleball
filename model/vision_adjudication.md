@@ -341,6 +341,23 @@ forensics predicted.
   Prior odds honestly stated: ~1-in-5, down from 1-in-3, because the
   architecture lost its precision witness.
 
+**Post-verdict challenge, tested (2026-08-14; user asked whether bad
+timestamps could explain the kill).** Two timestamp channels existed.
+Video↔rally windows: validated to median |err| 1 s against the user's
+own ten hand-scrubbed anchors, used successfully for 16 rallies of
+labeling, and 91.6% of gated events fall inside rally bounds — aligned.
+Audio↔video (never previously validated — the audio extraction ignores
+container timestamps, so a demux offset would shift every pop by a
+constant and destroy coincidence globally): swept δ ∈ [−3 s, +3 s] in
+50 ms steps, maximizing pop↔swing coincidence. The curve is FLAT — max
+0.448 at δ=−0.05 s vs 0.391 median across the sweep (1.15× contrast;
+per-game argmaxes scatter −0.30…+0.15 with margins in the noise). A
+real offset would show a sharp 2–3× peak at the true δ. There is no
+offset; worse for the instrument, the flatness confirms the base-rate
+diagnosis — ~40% of strong pops find a "coincident" swing at ANY shift,
+because the swing stream is dense and temporally unstructured. The kill
+stands with this confound closed.
+
 The 203 labeled shots outlive the instrument they killed: the project's
 first shot-level ground truth (dink 31%, counter 23%, smash 10%,
 speed-up 7% in a pro women's game), the answer key for any future
