@@ -195,20 +195,40 @@ def speed_peaks(rows, fps, floor=0.06, refractory=0.30):
     return out
 
 
+def court_halfwidth(y_frac):
+    """Allowed |cx - 0.5W| as a fraction of W, at a person's feet row.
+
+    The court is a trapezoid in the image, so a FIXED x-gate cannot both
+    reject the line officials (who stand at mid-frame rows, cx ~0.06 and
+    ~0.96 in the Chicago smoke frame) and keep a server hugging the
+    sideline at the near baseline, where the court spans nearly the full
+    frame.  Piecewise-linear band, calibrated on the smoke frame: narrow
+    where the far court is (sidelines ~0.34-0.66 there), the measured
+    ~0.16-0.83 at the near kitchen row, wide open at the frame bottom —
+    officials never stand down there, and that is exactly where wide
+    baseline stances live."""
+    pts = [(0.34, 0.24), (0.60, 0.36), (0.85, 0.50)]
+    if y_frac <= pts[0][0]:
+        return pts[0][1]
+    if y_frac >= pts[-1][0]:
+        return pts[-1][1]
+    for (ya, wa), (yb, wb) in zip(pts, pts[1:]):
+        if ya <= y_frac <= yb:
+            f = (y_frac - ya) / (yb - ya)
+            return wa + f * (wb - wa)
+    return pts[-1][1]
+
+
 def keep_person(box, kps, kpc, H, W):
     """Court players, not crowd or officials: feet in the lower ~2/3, box
-    tall enough, wrists actually seen, and center-x inside the court band —
-    the Chicago smoke frame showed line officials standing at the frame
-    edges (cx ~0.06 and ~0.96) passing the y/height gates and threatening
-    to steal tracker slots; the sidelines sit at ~0.16-0.83 of width, so
-    a 0.12-0.88 band keeps every on-court position (an ATP chase may exit
-    it for a few frames — acceptable for the probe)."""
+    tall enough, wrists actually seen, and center-x inside the
+    perspective-shaped court band (see court_halfwidth)."""
     x0, y0, x1, y1 = box
     bh = y1 - y0
     cx = (x0 + x1) / 2
     if y1 < 0.34 * H or bh < 0.07 * H:
         return None
-    if not (0.12 * W <= cx <= 0.88 * W):
+    if abs(cx / W - 0.5) > court_halfwidth(y1 / H):
         return None
     wr = kps[[L_WRIST, R_WRIST]]
     wc = kpc[[L_WRIST, R_WRIST]]
@@ -357,6 +377,14 @@ def run(a):
                 try:
                     import cv2
                     dbg = frame.copy()
+                    # draw the gate's boundary so the frame shows exactly
+                    # who would be cut where
+                    for yy in range(int(0.34 * H), H - 1, 6):
+                        hw = court_halfwidth(yy / H)
+                        for xx in (int((0.5 - hw) * W), int((0.5 + hw) * W)):
+                            if 0 <= xx < W:
+                                dbg[yy:yy + 3, max(0, xx - 1):xx + 1] = \
+                                    (0, 220, 220)
                     for box, kps, p in dbg_rows:
                         x0, y0, x1, y1 = map(int, box[:4])
                         ok = p is not None
