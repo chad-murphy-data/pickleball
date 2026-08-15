@@ -87,7 +87,7 @@
 </div>
 
 <script>
-const ZOOM = 5, KEY = "ballflip.v1";
+const ZOOM = 5, KEY = "ballflip.v2";
 let items = [], i = 0, store = {}, urls = {}, blink = false;
 
 const $ = id => document.getElementById(id);
@@ -128,9 +128,14 @@ function show(){
   $("strat").textContent = p.strat;
   $("strat").className = "pill " + p.strat;
   $("rally").textContent = `rally ${p.rally} · ${p.t.toFixed(3)}s`;
-  const done = Object.keys(store).length;
+  // count only frames in THIS set — a regenerated frame set leaves the
+  // old set's keys behind in storage, and counting those inflates progress
+  let done = 0, vis = 0;
+  for (const it of items){
+    const r = store[it.name];
+    if (r){ done++; if (r.v) vis++; }
+  }
   $("progf").style.width = (100*done/items.length).toFixed(1) + "%";
-  const vis = Object.values(store).filter(v => v.v).length;
   $("tally").textContent = `${done} done · ${vis} with a ball · ${done-vis} unseen`;
   const rec = store[p.name], d = $("dot");
   if (rec && rec.v){

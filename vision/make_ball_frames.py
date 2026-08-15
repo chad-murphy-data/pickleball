@@ -5,13 +5,8 @@ ball is trivial to see on a dink and nearly invisible on a drive, and the
 gate is read on the FAST stratum.  Clicking whatever the video happens to
 show next spends most clicks on easy frames; this picks them instead.
 
-Three strata, each earning its budget:
+Two strata, each earning its budget:
 
-  calib   +/- a few frames around each of the 16 hand-marked serve times.
-          Dual purpose: they are clean ball-visible frames AND, with the
-          'c' key in the flipbook, they measure the labeler's own timing
-          jitter against their played-speed serve marks.  Unmeasured label
-          precision confounds every later timing result.
   fast    weighted toward the divisions that hit hardest (mens > mixed >
           womens) and the highest-tempo rallies.  This is a PROXY: shot
           types are known only for rallies 1-16 and per-shot times for
@@ -22,6 +17,25 @@ Three strata, each earning its budget:
   random  uniform over all rallies.  Deliberate ballast: without it the
           set only contains frames we already believe are interesting,
           and the detector inherits our belief.
+
+DROPPED 2026-08-15 — a dense `calib` stratum (every frame within +/-0.15 s
+of each hand-marked serve) existed to measure the labeler's click timing
+for the SWING channel.  That channel was killed the same day, so the
+stratum was vestigial, and the user caught what it was doing to the
+labeling: nine consecutive frames of a player dropping the ball to serve
+is nine clicks on a near-stationary ball in one court position.  Nine
+near-duplicates teach what one teaches, and worse, they were a third of
+the click budget, which would have taught a detector that balls are slow
+and live near the baseline — precisely inverted from the fast stratum the
+gate is read on.  Same shape as the auto-label poisoning (42% kitchen-band
+vs 14% base), reached by a different route.  One tool, one purpose: if
+labeler timing ever needs measuring again, that is the shot-click tool's
+job, not this one's.
+
+Two guards keep near-duplicates out for good: no two samples from the same
+rally land within MIN_SEP_S, and sampling never starts before the serve
+(exact where a mark exists, PAD_HEAD otherwise) because the head of a
+window is the pre-serve ball-drop, where the ball barely moves.
 
 Each sample extracts a TRIPLET (t-2, t-1, t frames) at native resolution:
 TrackNet consumes three consecutive frames to exploit motion, and the
@@ -48,8 +62,10 @@ import subprocess
 from pathlib import Path
 
 DIV_WEIGHT = {"mens": 3.0, "mixed": 2.0, "womens": 1.0}   # hardest hitting first
-CALIB_SPAN_S = 0.15      # +/- around each serve mark; brackets ~5 frames each way
-EDGE_PAD_S = 0.6         # keep samples away from window edges (dead time)
+PAD_HEAD = 1.2           # window head is pre-serve ball-drop: a static ball
+PAD_TAIL = 0.6           # tail is the point already over
+SERVE_FLOOR = 0.10       # where a serve mark exists, start just after contact
+MIN_SEP_S = 0.5          # no two samples this close within one rally
 
 
 def ffmpeg_bin():
@@ -66,7 +82,7 @@ def load_rallies(windows_csv, confident_only):
         if confident_only and r["approx"] != "0":
             continue
         t0, t1 = float(r["t0s"]), float(r["t1s"])
-        if t1 - t0 < 2 * EDGE_PAD_S + 0.5:
+        if t1 - t0 < PAD_HEAD + PAD_TAIL + MIN_SEP_S:
             continue
         out.append({"cum": int(r["rally_cum"]), "div": r["division"],
                     "t0": t0, "t1": t1})
@@ -83,52 +99,72 @@ def load_marks(labels_csv):
     return marks, shots
 
 
-def plan(rallies, marks, shots, n_fast, n_random, fps, rng):
-    """-> list of (stratum, rally_cum, t_video)."""
-    picks = []
+def live_span(r, marks):
+    """The stretch of a window where the ball is actually in play. The head
+    of a window is the server bouncing/holding the ball before contact —
+    a stationary ball, and worthless as training signal. Where the rally
+    has a hand-marked serve we know that boundary exactly."""
+    lo = r["t0"] + PAD_HEAD
+    sv = marks.get(r["cum"])
+    if sv is not None:
+        lo = max(lo, sv + SERVE_FLOOR)
+    return lo, r["t1"] - PAD_TAIL
 
-    # --- calib: every frame within +/- CALIB_SPAN_S of each serve mark
-    step = 1.0 / fps
-    for cum, sv in sorted(marks.items()):
-        k = int(CALIB_SPAN_S / step)
-        for i in range(-k, k + 1):
-            picks.append(("calib", cum, round(sv + i * step, 3)))
+
+def plan(rallies, marks, shots, n_fast, n_random, seed):
+    """-> list of (stratum, rally_cum, t_video).
+
+    Each stratum draws from its OWN rng stream, so changing one stratum's
+    count leaves the other's picks byte-identical — a set can be topped up
+    later without invalidating labels already collected."""
+    spans = {}
+    for r in rallies:
+        lo, hi = live_span(r, marks)
+        if hi - lo > MIN_SEP_S:
+            spans[r["cum"]] = (lo, hi, r)
+    picks = []
 
     # --- fast: division weight x rally tempo (shots/sec where known)
     pool = []
-    for r in rallies:
+    for cum, (lo, hi, r) in spans.items():
         w = DIV_WEIGHT.get(r["div"], 1.0)
-        n = shots.get(r["cum"])
+        n = shots.get(cum)
         if n:
             tempo = n / max(r["t1"] - r["t0"], 1e-6)
             w *= max(0.4, min(2.5, tempo / 0.5))     # 0.5 shots/s ~ average
-        pool.append((w, r))
+        pool.append((w, cum))
     tot = sum(w for w, _ in pool)
+    rf = random.Random(seed ^ 0xFA57)
     for _ in range(n_fast):
-        x, acc = rng.random() * tot, 0.0
-        for w, r in pool:
+        x, acc = rf.random() * tot, 0.0
+        for w, cum in pool:
             acc += w
             if acc >= x:
-                picks.append(("fast", r["cum"],
-                              round(rng.uniform(r["t0"] + EDGE_PAD_S,
-                                                r["t1"] - EDGE_PAD_S), 3)))
+                lo, hi, _r = spans[cum]
+                picks.append(("fast", cum, round(rf.uniform(lo, hi), 3)))
                 break
 
     # --- random: uniform over rallies, uniform within
+    rr = random.Random(seed ^ 0x8A5E)
+    keys = sorted(spans)
     for _ in range(n_random):
-        r = rng.choice(rallies)
-        picks.append(("random", r["cum"],
-                      round(rng.uniform(r["t0"] + EDGE_PAD_S,
-                                        r["t1"] - EDGE_PAD_S), 3)))
+        cum = rr.choice(keys)
+        lo, hi, _r = spans[cum]
+        picks.append(("random", cum, round(rr.uniform(lo, hi), 3)))
 
-    # de-dupe near-identical times (within one frame) — a duplicate frame
-    # costs a click and teaches nothing
-    picks.sort(key=lambda p: (p[2], p[0]))
-    kept = []
+    # Thin to MIN_SEP_S WITHIN a rally. Two frames half a second apart in
+    # the same point are near-duplicates: one click's worth of information
+    # for two clicks of effort, and over-representing whatever the ball was
+    # doing at that moment.
+    picks.sort(key=lambda p: (p[1], p[2]))
+    kept, last = [], {}
     for p in picks:
-        if kept and abs(p[2] - kept[-1][2]) < step * 0.9:
+        prev = last.get(p[1])
+        if prev is not None and p[2] - prev < MIN_SEP_S:
             continue
+        last[p[1]] = p[2]
         kept.append(p)
+    kept.sort(key=lambda p: p[2])
     return kept
 
 
@@ -138,8 +174,8 @@ def main():
     ap.add_argument("--windows", default="rally_windows_chicago0725_v4.csv")
     ap.add_argument("--labels", default="shot_labels_chicago0725.csv")
     ap.add_argument("--out", default="ball_frames")
-    ap.add_argument("--n-fast", type=int, default=200)
-    ap.add_argument("--n-random", type=int, default=120)
+    ap.add_argument("--n-fast", type=int, default=300)
+    ap.add_argument("--n-random", type=int, default=190)
     ap.add_argument("--fps", type=float, default=30.0)
     ap.add_argument("--seed", type=int, default=20260815)
     ap.add_argument("--all-rallies", action="store_true",
@@ -147,12 +183,11 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     a = ap.parse_args()
 
-    rng = random.Random(a.seed)
     rallies = load_rallies(a.windows, not a.all_rallies)
     marks, shots = load_marks(a.labels)
     if not rallies:
         raise SystemExit("no usable rally windows")
-    picks = plan(rallies, marks, shots, a.n_fast, a.n_random, a.fps, rng)
+    picks = plan(rallies, marks, shots, a.n_fast, a.n_random, a.seed)
 
     from collections import Counter
     cs, cd = Counter(p[0] for p in picks), Counter()
