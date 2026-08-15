@@ -1,5 +1,104 @@
 # HANDOFF — live-listener launch & receipts
 
+## ► 2026-08-11 — VISION MVP BUILT, MEASURED, AND STOPPED (read this first)
+
+**STOPPED.** Shot-level vision is capped — see the top of
+`vision/mvp_findings.md`. Short version: the metrics worth having are
+SEQUENCES (speed-up lost after one shot, who forced the error), which
+recover as p^k. At the best measured per-frame rate (TrackNet BGR, 46%) a
+3-shot chain lands 10% of the time, and a missed middle shot CORRUPTS the
+chain rather than shortening it. 80% of 3-shot chains needs p ~ 0.93.
+Nothing here is close, and the cheap fine-tune path is blocked because the
+free auto-labels are biased toward slow shots (42% in the kitchen band vs a
+14% base rate) — training on them would teach the model to miss exactly the
+speed-ups the project cares about. Restarting needs a real hand-labelling
+budget, not more tuning.
+
+KEEP: the lineup state machine — and only that. It is a fact about referee
+logs, not vision (all four players' court positions at every serve, no
+camera needed), so it works with this whole directory switched off. The
+court homography is a camera calibration with no consumer while vision is
+capped; `court.py` being validated just means it would not need redoing.
+
+**Canonical doc: `vision/mvp_findings.md`.** The full tracking system now
+exists and every stage has a number on it:
+
+| stage | module | status |
+|---|---|---|
+| court geometry | `vision/court.py` | **solved** — 0.06 ft median residual |
+| player identity | `vision/lineup.py` | **solved, free** — 99.25% over 45,689 rallies |
+| player detection | `vision/track_match.py` | adequate; broadcast crops deep players |
+| ball detection | `vision/track_match.py` | **THE WALL** — ~1.1 contacts/rally vs ~12 played |
+| contacts + attribution | `vision/shots.py` | built, physically motivated, starved of input |
+
+The identity problem is gone: side-out doubles is a state machine, so the
+referee log's two names (server, receiver) yield all four players' court
+halves at every serve. That replaces the 57% appearance-based attribution.
+
+The blocker is ball detection, and it is measured, not guessed: the
+label-free side-alternation test (consecutive contacts must land on
+opposite sides; chance 50%) returns 9%, and no sweep of area, strength,
+track speed or reversal strictness moves it. Selecting tracks by
+net-crossing lifts it to 33–37% but leaves ~1.1 contacts/rally. **The old
+"50–65% recall" was never measured; the real figure is nearer 10%.**
+
+~~NEXT: the GPU weekend is now the whole job~~ — SUPERSEDED by the STOPPED
+block above, later the same day. A TrackNet-class detector was actually
+tested on CPU (`vision/tracknet_probe.py`): it does roughly double the
+colour detector (46% of frames vs ~21%, after fixing a BGR/RGB bug worth
+2.7x on its own), and that is still nowhere near the p ~ 0.93 that sequence
+metrics need. Do not buy GPU time on the strength of the doubling.
+**Do not run the tale-of-two analysis on any detector built here.**
+
+The target matchup is **four** meetings, not two — Dallas 5/25 (11-4),
+Columbus 5/31 (11-3), Mid-Season final 7/12 (6-11, the 88% miss), Orlando
+8/2 (11-5). All four have informative referee logs; timelines and lineups
+are committed under `data/vision/`. VODs must be downloaded locally —
+`*.googlevideo.com` is blocked by this environment's egress policy.
+
+## ► 2026-08-10 — VISION THREAD (superseded by the block above)
+
+Branch `claude/pickleball-vision-match-analysis-dow5ds` / PR #52. Canonical
+doc for the whole vision effort = **`vision/README.md`** (verdict table,
+derived-measure specs, run instructions). Read that first.
+
+State: the POC is DONE and positive (ball trackable at 360p with zero ML;
+scorebug flips give frame-exact log sync; audio demoted to timing polish —
+full story in the README). `vision/track_full_vod.py` is smoke-tested and
+frozen: one decode pass over the 80-min Chicago VOD harvesting seven
+streams (ball candidates, density, motion, scorebug flips + 1/s crops,
+player blobs, audio loudness).
+
+**2026-08-11 UPDATE: the full-VOD run is DONE and the core question is
+ANSWERED** — see `vision/interval_results.md` (fast mode at 0.15–0.25 s,
+validated by duration-correlation +0.70, burstiness, and the blind gender
+split). Crowd analysis in `vision/crowd_leverage.md` (leverage AND
+allegiance both null). NEXT: attribution (side-of-net → player via the
+log's server/receiver anchors), then the freeze-out final VOD (New Jersey
+5s v STL 2026-07-12, vetted start-marked) for Waters ball-share.
+
+When the zip arrives, the derivation stack (each layer validated against
+the referee log before the next builds on it):
+  1. tracks -> contacts -> the interval histogram (dinks vs speed-ups — THE
+     core question)
+  2. rally-end taxonomy (net/out/winner), audited against the log's rally
+     winners
+  3. four speed-up roles (offerer/initiator/finisher/victim) + the outcome
+     ledger (punished-selection quadrant) — all specced in vision/README,
+     all views over the contact sequence, no re-collection needed
+  4. fun layer: crowd-roar vs leverage, rally->timestamp clip index,
+     side heatmaps
+
+Match context: Chicago Slice v Utah Black Diamonds 2026-07-25, matchup
+timeline committed at data/vision/rally_timeline_matchup_20260725_*.csv
+(193 rallies, all four games start-marked). Also merged into this branch:
+findings 11 & 12 (gap exploitation null; singles surplus) + the t1-ordering
+audit — those are complete, do not re-open.
+
+---
+
+# (stale below — 2026-07-16)
+
 ## ► ADDENDUM 2026-07-16 late PT — live page built; check it Friday morning
 
 `site/live.html` (Pillar 5) ships on the `claude/live-match-progress-page-*`

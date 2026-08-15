@@ -240,6 +240,83 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    estimator + pooling gave a confident "no clutch at any size"; it was an
    estimator failure, not a finding.
 
+11. **GAP EXPLOITATION IS NOT A SEASON-LEVEL SKILL — but the test only
+   rules out the PERSISTENT version** (2026-08-09; `model/gap_exploit.md`,
+   reproduce with `model/gap_exploit.py`). v2's γ|gap| IS a court-coverage
+   dial: w = (1+γ)/2 = 0.4085 is the stronger player's share of the court,
+   and v2 applies that ONE number to every team against every opponent —
+   the Waters freeze-out is w moving for a specific matchup. Tested whether
+   w depends on WHO is across the net: per-player slope b_p on the
+   OPPONENT's |gap|. This is an INTERACTION (my presence × their gap),
+   which an additive rating structurally cannot hold, so unlike a generic
+   style feature it is NOT already absorbed. 36,961 games, 514 players
+   ≥60 games, month-of-game values, per-player additive offset fit
+   alongside so v2 rating error loads there and b_p is identified only by
+   opponent gap varying WITHIN a player's own games (median sd 0.137).
+   NULL on every arm: var(z) 0.874 vs permutation null 0.847
+   [0.741, 0.951]; spike-slab 2logLR 0.0 (null max 1.0); tails 14/3/0 vs
+   null 15/3/0; select-then-verify null at every K. Pre-specified
+   Bright +0.55 / Fahey −0.72 / Waters +0.57 / Johns −0.75. Women's
+   doubles alone — widest gaps in the sport, median side gap 0.213 vs PPA
+   women's 0.133 — is MORE null: 0 players past |z|>2 where the null
+   expects 3. FLOOR MEASURED BY INJECTION (what makes a null mean
+   anything): the estimator returns 0.87 of a planted effect; the battery
+   fires at b = 0.065 (Δw 0.13, ≈12pp vs a p90-gap opponent), is marginal
+   at 0.05, blind at 0.03 — and the true floor is ~15% worse since real
+   ratings are fit on contaminated data. Bound: coverage sd ≤ 0.058 in w
+   units, SMALLER than the between-division spread (0.36 mens → 0.455
+   mixed) that production v2 already ignores by shipping pooled γ.
+   DOES NOT rule out an EPISODIC tactic — at 5% deployment any Δw fits,
+   and the Bright/Fahey game plan is exactly that shape. The dispersion
+   test built for episodic effects (squared residual vs opponent |gap|,
+   stratified on predicted share) is NEGATIVE pooled (z −2.96) and in
+   womens; the only positive arm, mixed (z +3.40), COLLAPSES to +0.91
+   once you also stratify on rating uncertainty — high-gap mixed teams
+   contain a less-well-estimated player. Don't chase it: mixed |gap| is
+   mostly the cross-gender offset, which is a prior convention.
+   TWO TRAPS: (i) **games.csv is NOT side-neutral — t1 wins 67.8%**
+   (PPA orders winner-first; MLP ~53%), which puts a +0.017 mean residual
+   in any residual panel and breaks the antisymmetry every gap term must
+   satisfy. SYMMETRISE (randomise orientation) before fitting anything on
+   game residuals. (ii) The per-division global slope this script fits is
+   a conditional profile on frozen pooled-γ values — finding 1's known
+   circular estimator. It is a stripped nuisance term, never a γ result.
+
+12. **SINGLES SURPLUS IS A REAL SECOND DIMENSION — of the PLAYER, not of
+   DOUBLES SKILL** (2026-08-09; `model/singles_dimension.md`, reproduce
+   with `model/singles_dimension.py`). v2's scalar is a sufficient
+   statistic for doubles by construction, so any physical/selection/
+   strategy split is likelihood-flat — same class as the cross-gender
+   offset. Singles is the best auxiliary channel (r = 0.74 with doubles ⇒
+   ~45% orthogonal). Surplus = singles value minus what doubles predicts,
+   residualised WITHIN GENDER (men and women never meet in singles, so
+   those two scales are prior-linked only). GATE 1 RELIABILITY PASSES:
+   split-half r = **+0.562** on random halves (null ±0.14, n=199) and
+   **+0.355** across ERAS 2024-25→2026 (null ±0.15, n=149), vs ceilings of
+   0.95/0.81 and 0.87/0.65 for the singles/doubles ratings themselves —
+   far above the 0.13–0.15 that clutch/durability cleared and the 0.06 that
+   sank wind skill. TWO TRAPS: both disciplines must be REFIT per half (one
+   shared doubles value puts its error in both residuals and fakes the
+   correlation), and SHRINKAGE must be controlled — few-singles-games
+   players get pulled to the prior, game count is stable across halves, and
+   leaving it uncontrolled inflates 0.562 → 0.776. Face-valid: Bouchard
+   (ex-WTA #5) 2nd among women, Haworth top among men (already on record in
+   finding 10 as singles-clutch-high / doubles-clutch-low).
+   GATE 2 INCREMENTAL VALIDITY IS NULL: main effect ≈ 0 as it must be, and
+   no interaction — within-match deciders −0.015 [−0.040,+0.008], same-day
+   match load ≥2 −0.0002 [−0.017,+0.018] (the best-powered fatigue arm),
+   heat >80°F +0.012 [−0.005,+0.033]; bound ≈ 0.6pp of point share per sd
+   of surplus difference. NOTE what does NOT count as validity: finding 6
+   (singles value predicts DreamBreakers) is near-tautological — DBs ARE
+   singles. DECIDER TRAP RECONFIRMED: the naive between-games contrast
+   gives −0.021 grazing significance, an ETA CONTROL DOES NOT REMOVE IT
+   (the artifact is the match-level shock, not the skill gap), and
+   within-match differencing kills it. So: a legitimate second axis for
+   player pages ("how much of this player's game survives without a
+   partner"), NOT a model feature. The channel with no proxy at all remains
+   SHOT SELECTION — execution and decision are perfectly confounded in the
+   result, which is vision or nothing.
+
 ## House rules (hard-won; violating these produces silently wrong results)
 
 - **UUIDs are identity, never names.** API mixes upper/lowercase UUIDs —
@@ -503,10 +580,15 @@ a 13% minority at ±0.02 share/10mph fires the battery 75%, ±0.03
 100%, 0/20 false positives. So: no minority wind trait ≥0.02
 share/10mph; smaller is below the telescope. Don't re-open without a
 bigger archive or a sharper wind measure (court-level anemometer). FAVORITES×WIND KILLED (2026-07-28, `model/favorites_wind.py`,
-data-referenced nulls only): continuous interaction share~skill+wind+
-skill×wind gives d = +0.002 [−0.060,+0.064] OUTDOOR (24.8k games — no
-compression at all; b≈1.04 so v2 shares are near-perfectly calibrated)
-while INDOOR shows d = −0.080 [−0.150,+0.020]; rally-level fav−dog
+data-referenced nulls only; game-level numbers CORRECTED 2026-08-09 for
+the t1-ordering leak in finding 11 — verdict unchanged, see
+weather_thread.md): continuous interaction share~skill+skill×wind
+gives d = −0.010 [−0.054,+0.039] OUTDOOR (24.8k games — no
+compression at all; b≈1.10 so v2 shares are near-perfectly calibrated)
+while INDOOR shows d = −0.031 [−0.092,+0.059] (was −0.080 before the
+fix: the intercept and wind main effect are odd under a side relabel,
+so fitting them on an asymmetric panel leaked the ordering into d);
+rally-level fav−dog
 serve-rate gap slope is negative in BOTH arms and MORE indoor (−0.031
 sig) than outdoor (−0.022) — the falsification arm fails, so the old
 binned "favorites −6pp at 14–20 mph" was composition/label noise, NOT

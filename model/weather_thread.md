@@ -70,16 +70,32 @@ null momentum challenger, now extended inside games.
 **This one initially looked real and was wrong.** Binned obs−pred showed
 favorites at −4.0pp calm → −6.0pp at 14–20 mph outdoors (1,151 games).
 Killed by two things:
-- Continuous interaction `share ~ skill + wind + skill×wind`, 24,819
-  outdoor games: **d = +0.002 [−0.060, +0.064]**. Zero. (Also: skill
-  slope b = 1.040 — v2 shares are near-perfectly calibrated on the share
+- Continuous interaction `share ~ skill + skill×wind`, 24,819
+  outdoor games: **d = −0.010 [−0.054, +0.039]**. Zero. (Also: skill
+  slope b = 1.097 — v2 shares are near-perfectly calibrated on the share
   scale; the −4pp overconfidence lives in the race-DP tail transform,
   not the ratings.)
 - Rally-level binomial logit (P(server wins rally) ~ adv×wind, 98k
   outdoor rallies): d = −0.017 [−0.098, +0.058].
-- **The falsification arm fails**: indoor shows d = −0.080 (game level)
+- **The falsification arm fails**: indoor shows d = −0.031 (game level)
   and −0.060 (rally level) — *more* apparent effect where wind cannot
   reach. So the binned drift is composition/label noise, not wind.
+
+**Game-level numbers corrected 2026-08-09** (verdict unchanged). The
+original fit carried an intercept and a wind main effect; both are odd
+under a side relabel and so are identically zero on a symmetric panel,
+but `games.csv` is not symmetric — t1 wins 67.8% of rows because PPA
+orders the match winner first, which is selection ON THE OUTCOME, so t1
+carries a +0.017 mean share residual by construction. Those two terms let
+the ordering leak into `d`: outdoor was +0.002 and is now −0.010; indoor
+was **−0.080 and is now −0.031**, i.e. the falsification arm was more than
+twice as dramatic as it should have been. It still points the same way
+(indoor more negative than outdoor), so the conclusion stands and the two
+arms are now closer together, which if anything reads as *more* clearly
+"nothing happening in either." Regressions 2 and 3 were never affected —
+they orient by which side v2 calls the favorite, which is a function of
+the prediction rather than the row label. Audit of every other analysis
+that touches `games.csv`: `model/gap_exploit.md`.
 
 ### H5 — A wind-skill dimension (F1 rain)
 Per-player wind slopes, 552 players with ≥40 outdoor games. Split-half

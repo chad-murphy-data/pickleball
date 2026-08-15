@@ -1,0 +1,53 @@
+{
+  "date": "2026-07-08",
+  "event_name": "Edward Jones Mid-Season Tournament",
+  "context": "womens",
+  "stage": "Round 32 W",
+  "t1_score": "12",
+  "t2_score": "14",
+  "scoring_format": "sideout_11",
+  "players": [
+    "65bcab7c-9c93-4dc8-a847-a34da426b933",
+    "1d701c30-6b5d-485f-ae97-60f3b0c50896",
+    "25104e43-16f9-4ce3-9085-70243d8b350a",
+    "461f063e-a587-4638-bad9-421ff33d91d7"
+  ],
+  "match_id": "809fe252-69a9-420c-a284-8ddf7f4f846c",
+  "n_log_rows": 171,
+  "n_rallies": 73,
+  "log_types": {
+    "38": 1,
+    "46": 1,
+    "10": 4,
+    "15": 2,
+    "3": 2,
+    "22": 1,
+    "45": 4,
+    "12": 74,
+    "14": 26,
+    "16": 24,
+    "23": 23,
+    "17": 2,
+    "31": 1,
+    "18": 4,
+    "4": 1,
+    "6": 1
+  },
+  "timeouts": [
+    "2026-07-08T18:00:44+00:00",
+    "2026-07-08T18:00:46+00:00",
+    "2026-07-08T18:04:16+00:00",
+    "2026-07-08T18:04:19+00:00"
+  ],
+  "window_mode": "start-marked",
+  "informative_start_fraction": 0.958904109589041,
+  "median_lead_s": 20.0,
+  "t0": "2026-07-08T17:43:55+00:00",
+  "t_last": "2026-07-08T18:17:22+00:00",
+  "player_names": [
+    "Martina Frantova",
+    "Zoey Weil",
+    "Ella Yeh",
+    "Genie Erokhina"
+  ]
+}
