@@ -530,8 +530,13 @@ social prediction-card renders (design bundle `Prediction Cards.dc.html`,
 port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
 push to main, nightly data refresh); one-time setup = repo Settings →
 Pages → Source "GitHub Actions".
-Vision (2026-08-11) — BUILT, MEASURED, STOPPED, ADJUDICATED; do not
-re-open except via the gate below. Record: vision/mvp_findings.md +
+Vision (2026-08-11 → CLOSED 2026-08-15) — **READ `vision/POSTMORTEM.md`
+FIRST**: the whole arc in order with the numbers, the surviving assets,
+and the six lessons. The rest of this entry and
+model/vision_adjudication.md are the layered technical record, written in
+the order things happened (including two reversals), and are harder to
+read cold. BUILT, MEASURED, STOPPED, ADJUDICATED; do not re-open except
+via the gate below. Record: vision/mvp_findings.md +
 vision/README.md (branch of PR #52 until merged); the two-account
 litigation ("90%+ of rallies" vs "46% is the ceiling") is settled in
 model/vision_adjudication.md — both accounts were honest about DIFFERENT

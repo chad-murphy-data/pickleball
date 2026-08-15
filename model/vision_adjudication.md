@@ -1,5 +1,13 @@
 # Vision thread adjudication — the "90%+" vs "46%" accounts (2026-08-11)
 
+> **The program is CLOSED (2026-08-15). For the readable account —
+> the whole arc in order, both gate closures, what survives — read
+> [`vision/POSTMORTEM.md`](../vision/POSTMORTEM.md) first.** This file is
+> the technical record and is layered in the order things happened: an
+> original adjudication, two pre-registered gates, a suspended verdict, a
+> re-gate that reinstated it, and a Gate A closure prepended above the
+> spec it closes. Accurate, but not a narrative.
+
 *Litigating the two accounts on branch
 `claude/pickleball-vision-match-analysis-dow5ds` (PR #52): the 08-10/early-08-11
 "the instrument works, we get 90%+ of rallies" story vs the late-08-11
