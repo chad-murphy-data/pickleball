@@ -106,8 +106,10 @@ labeler's timing noise. **Training guard band = max(0.4 s, 3 × p95
 1. **Label**: re-tap the core 16 with timestamps
    (`data/vision/contact_audit_chicago0725.html`, pass 1; ~1 evening).
 2. **Extract**: `python vision/pose_extract.py --video full_match.mp4
-   --rallies labeled` (CPU overnight with `--fast`, or ~minutes/rally on
-   a modest GPU).
+   --rallies labeled` (rtmpose-balanced, the pre-registered backend —
+   see the amendment below; overnight-class on CPU for the core 16,
+   minutes on a GPU with `--device cuda`; `--fast` is a smoke preset
+   and NOT the gate).
 3. **Gate**: `python vision/contact_ceiling.py` → verdict against the
    bars above.
 4. **Only on PROCEED**: label the pilot corpus (~40–60 rallies across
@@ -130,3 +132,32 @@ features. With trained discrimination and the random-thinning argument
 above: pilot-shows-signal near even, ultimately-clears-Gate-D ~1-in-3.
 Writing these down now so the eventual verdict can be checked against
 what we believed going in.
+
+## Amendment 2026-08-15 (same day, STILL PRE-LABEL): pose backend
+
+Made while zero timestamped labels exist, so the instrument remains
+frozen-before-data; nothing below was chosen with any Gate C output in
+hand.
+
+- **Primary backend = RTMPose via rtmlib, `balanced` mode** (top-down
+  two-stage: detector → per-person crop → pose), wired as
+  `pose_extract.py --backend rtmpose` (the default). Rationale: top-down
+  normalizes every person crop to a fixed input size, so the ~40 px far
+  pair stops being small to the keypoint head — exactly Gate B's failure
+  surface — and RTMPose-m sits ~15 COCO-AP above the yolov8s-pose the v1
+  probe used (~75 vs ~60), with the gap widest on small people. Install
+  verified: `pip install rtmlib onnxruntime`, ONNX models auto-download,
+  returns the same 17 COCO keypoints the npz schema and scorer already
+  use.
+- **Secondary backend = yolov8s-pose (`--backend yolo`), diagnostic
+  only.** It may be run for A/B context; it is NEVER the verdict, and
+  the better of two backends is NEVER selected after seeing results —
+  that disjunction is exactly the forking path this amendment exists to
+  foreclose. The gate verdict comes from rtmpose-balanced, full stop.
+- `contact_ceiling.py` warns when the pose meta records any other
+  backend/mode; `--fast` (lightweight models) is a smoke preset, not the
+  gate.
+- MediaPipe was considered and rejected without being run: BlazePose is
+  a single-person, near-field pipeline (fitness-app shape); our frame
+  has four-plus people with the far pair at ~40-120 px. It was never
+  used anywhere in this project.

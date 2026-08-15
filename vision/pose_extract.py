@@ -23,10 +23,24 @@ each labeled rally + the v4 window rule), so extraction covers exactly
 the cases being scored — the measurement-frame lesson, kept by
 construction. Unlabeled rallies can still be extracted via --windows.
 
-RUN (needs the VOD; GPU ~2-4 s/rally, CPU with --fast ~1-2 min/rally)
-    pip install ultralytics imageio-ffmpeg
+RUN (needs the VOD)
+    pip install rtmlib onnxruntime imageio-ffmpeg    # onnxruntime-gpu for CUDA
     python vision/pose_extract.py --video full_match.mp4 --rallies labeled
-    # CPU: add --fast   (yolov8n-pose, 640 px, 20 fps)
+    # GPU: add --device cuda (minutes for the core 16)
+    # CPU: 'balanced' is overnight-class for 16 rallies; --fast is the
+    #      smoke preset (lightweight models, 20 fps) and NOT for the gate
+
+BACKENDS (pre-registered choice — contact_gate.md amendment 2026-08-15,
+made while zero timestamped labels existed):
+    --backend rtmpose (default, PRIMARY): top-down two-stage via rtmlib —
+      detector -> per-person crop -> RTMPose. Every crop is normalized to
+      a fixed input size, so the ~40 px far pair stops being small to the
+      keypoint head; one-stage models see them at native scale, which is
+      exactly where Gate B bled (COCO AP ~75 for RTMPose-m vs ~60 for
+      yolov8s-pose, and the gap widens on small people).
+    --backend yolo (SECONDARY, diagnostic): v1's one-stage yolov8-pose
+      (pip install ultralytics). Reported for A/B context; never the
+      verdict.
 
 Outputs (data/vision/pose/ is gitignored — regenerable from the VOD):
     data/vision/pose/r0001.npz ...   one per rally
@@ -185,10 +199,22 @@ def assign_sides(track_ids, boxes):
 # ------------------------------------------------------------- filter
 
 
-def keep_boxes(res, H, W):
+def gate_person(cf, box, kpt, kpc, H, W):
     """Court players only — feet band + height + perspective court gate
     (reused from swing_probe) — but NO wrist-confidence gate: keypoint
     confidences are features now, not filters."""
+    x0, y0, x1, y1 = box
+    bh, cx = y1 - y0, (x0 + x1) / 2
+    if y1 < 0.30 * H or bh < 0.06 * H:
+        return None
+    if abs(cx / W - 0.5) > court_halfwidth(y1 / H):
+        return None
+    return (float(cf), np.asarray(box, np.float32),
+            kpt.astype(np.float32), kpc.astype(np.float32))
+
+
+def keep_boxes(res, H, W):
+    """ultralytics results -> gated person tuples."""
     out = []
     if res.keypoints is None or not len(res.boxes):
         return out
@@ -199,31 +225,98 @@ def keep_boxes(res, H, W):
     confs = res.boxes.conf.cpu().numpy()
     for box, kps, kpc, cf in zip(res.boxes.xyxy.cpu().numpy(),
                                  kxy, kcf, confs):
-        x0, y0, x1, y1 = box[:4]
-        bh, cx = y1 - y0, (x0 + x1) / 2
-        if y1 < 0.30 * H or bh < 0.06 * H:
-            continue
-        if abs(cx / W - 0.5) > court_halfwidth(y1 / H):
-            continue
-        out.append((float(cf), box[:4].astype(np.float32),
-                    kps.astype(np.float32), kpc.astype(np.float32)))
+        p = gate_person(cf, box[:4], kps, kpc, H, W)
+        if p:
+            out.append(p)
     out.sort(key=lambda x: -x[0])
     return out[:MAX_PERSONS]
+
+
+def box_from_kpts(kpt, kpc, conf_min=0.3, pad=0.08):
+    """rtmlib's Body returns keypoints only; derive the person box from
+    the CONFIDENT keypoints' extent (nose->ankles spans the body, so the
+    derived height scales like a person box and the near/far height
+    clustering is unaffected). None if too few confident points."""
+    ok = kpc >= conf_min
+    if ok.sum() < 4:
+        return None
+    xs, ys = kpt[ok, 0], kpt[ok, 1]
+    w, h = xs.max() - xs.min(), ys.max() - ys.min()
+    if h < 1:
+        return None
+    return np.array([xs.min() - pad * w, ys.min() - pad * h,
+                     xs.max() + pad * w, ys.max() + pad * h], np.float32)
+
+
+def rtm_persons(kpts, scores, H, W):
+    """rtmlib (N,17,2)/(N,17) -> gated person tuples; person confidence
+    proxied by the mean keypoint score (the top-down detector's own box
+    score is not exposed by the Body API)."""
+    out = []
+    for kpt, kpc in zip(np.asarray(kpts, np.float32),
+                        np.asarray(scores, np.float32)):
+        box = box_from_kpts(kpt, kpc)
+        if box is None:
+            continue
+        p = gate_person(float(kpc.mean()), box, kpt, kpc, H, W)
+        if p:
+            out.append(p)
+    out.sort(key=lambda x: -x[0])
+    return out[:MAX_PERSONS]
+
+
+# ----------------------------------------------------------- backends
+
+
+def make_infer(a):
+    """Returns (infer(frame, H, W) -> person tuples, backend label).
+
+    PRIMARY (pre-registered, contact_gate.md amendment 2026-08-15):
+    'rtmpose' — top-down two-stage via rtmlib (detector -> per-person
+    crop -> RTMPose). Top-down normalizes every person crop to a fixed
+    input size, so the ~40 px far pair stops being small as far as the
+    keypoint head is concerned — exactly Gate B's failure surface. The
+    gate runs in 'balanced' mode; 'lightweight' is for smoke tests only.
+
+    SECONDARY (diagnostic): 'yolo' — the one-stage yolov8-pose the v1
+    probe used. Never the verdict; kept for A/B context."""
+    if a.backend == "rtmpose":
+        try:
+            from rtmlib import Body
+        except ImportError:
+            raise SystemExit(
+                "backend rtmpose needs: pip install rtmlib onnxruntime\n"
+                "(onnxruntime-gpu for CUDA; or run --backend yolo)")
+        mode = "lightweight" if a.fast else a.rtm_mode
+        dev = "cuda" if a.device and a.device != "cpu" else "cpu"
+        body = Body(mode=mode, backend="onnxruntime", device=dev)
+
+        def infer(frame, H, W):
+            kpts, sc = body(frame)
+            return rtm_persons(kpts, sc, H, W)
+        return infer, f"rtmpose-{mode}"
+
+    from ultralytics import YOLO
+    model = YOLO(a.model)
+
+    def infer(frame, H, W):
+        res = model(frame, imgsz=a.imgsz, verbose=False,
+                    device=(a.device or None), conf=0.30)[0]
+        return keep_boxes(res, H, W)
+    return infer, a.model
 
 
 # ------------------------------------------------------------- extract
 
 
-def extract_rally(model, video, cum, t0, t1, fps, width, imgsz, device):
+def extract_rally(infer, video, cum, t0, t1, fps, width):
     trk = IoUTracker()
     rows = []          # (t, tid, conf, box, kpt, kpc)
     H = W = None
     for i, frame in enumerate(decode_window(video, t0, t1 - t0, fps, width)):
         t = t0 + i / fps
         H, W = frame.shape[:2]
-        res = model(frame, imgsz=imgsz, verbose=False,
-                    device=(device or None), conf=0.30)[0]
-        kept = keep_boxes(res, H, W)
+        kept = infer(frame, H, W)
         ids = trk.feed(t, [k[1] for k in kept])
         for tid, (cf, box, kpt, kpc) in zip(ids, kept):
             rows.append((t, tid, cf, box, kpt, kpc))
@@ -253,8 +346,6 @@ def save_rally(out_dir: Path, cum, rows, side, hw, fps):
 
 
 def run(a):
-    from ultralytics import YOLO          # lazy: --selftest needs no torch
-
     labels_win = windows_from_labels(a.labels) if Path(a.labels).exists() else {}
     v4_win = windows_from_v4(a.windows) if Path(a.windows).exists() else {}
     if a.rallies == "labeled":
@@ -274,7 +365,8 @@ def run(a):
     print(f"{len(todo)} rallies to extract "
           f"({len(labels_win)} label-windowed, {len(done)} already done)")
 
-    model = YOLO(a.model)
+    infer, backend = make_infer(a)
+    print(f"pose backend: {backend}")
     t_start = time.time()
     counts = {}
     for k, cum in enumerate(todo):
@@ -287,8 +379,8 @@ def run(a):
         else:
             print(f"rally #{cum}: no window anywhere — skipped")
             continue
-        rows, side, hw = extract_rally(model, a.video, cum, t0, t1,
-                                       a.fps, a.width, a.imgsz, a.device)
+        rows, side, hw = extract_rally(infer, a.video, cum, t0, t1,
+                                       a.fps, a.width)
         n = save_rally(out_dir, cum, rows, side, hw, a.fps)
         n_tracks = len({r[1] for r in rows})
         n_sided = len({tid for tid, s in side.items() if s >= 0})
@@ -301,7 +393,7 @@ def run(a):
               f"{t1 - t0:5.1f}s  {n:5d} det  {n_tracks:2d} trk "
               f"({n_sided} sided)  eta {eta:.0f} min", flush=True)
 
-    meta = {"video": str(a.video), "model": a.model, "imgsz": a.imgsz,
+    meta = {"video": str(a.video), "backend": backend,
             "fps": a.fps, "width": a.width, "device": a.device or "auto",
             "iou_min": IOU_MIN, "gap_s": GAP_S,
             "runtime_s": round(time.time() - t_start, 1), "rallies": counts}
@@ -423,6 +515,25 @@ def selftest():
         assert abs(win[7][0] - (299.8 - PAD_PRE)) < 1e-9, "refined time wins"
         print("  windows: v4 rule + gap handling + refined-time priority OK")
 
+        # ---- rtm box derivation --------------------------------------
+        kpt = np.zeros((17, 2), np.float32)
+        kpc = np.full(17, 0.9, np.float32)
+        kpt[:, 0] = np.linspace(620, 660, 17)     # 40 px wide, mid-court
+        kpt[:, 1] = np.linspace(300, 420, 17)     # 120 px tall
+        b = box_from_kpts(kpt, kpc)
+        assert b is not None and abs((b[3] - b[1]) - 120 * 1.16) < 1
+        kpt2, kpc2 = kpt.copy(), kpc.copy()
+        kpt2[:, 1] = np.linspace(300, 360, 17)    # half the extent ->
+        b2 = box_from_kpts(kpt2, kpc2)            # half the box height,
+        assert abs((b[3] - b[1]) / (b2[3] - b2[1]) - 2.0) < 0.05, \
+            "kpt-derived boxes must preserve height ratios (side split)"
+        assert box_from_kpts(kpt, np.full(17, 0.1, np.float32)) is None, \
+            "low-confidence person must be dropped, not boxed at random"
+        ps = rtm_persons(np.stack([kpt, kpt2]), np.stack([kpc, kpc2]),
+                         720, 1280)
+        assert len(ps) == 2 and ps[0][2].shape == (17, 2)
+        print("  rtm backend: kpt-derived boxes + gating OK")
+
         # ---- npz round trip ------------------------------------------
         rows = [(i / fps, all_ids[i], 0.9,
                  np.array(all_boxes[i], np.float32),
@@ -446,15 +557,27 @@ def main():
     ap.add_argument("--rallies", default="labeled",
                     help="'labeled' (default) or comma-separated rally_cum")
     ap.add_argument("--out-dir", default=str(OUT_DIR))
-    ap.add_argument("--model", default="yolov8s-pose.pt")
-    ap.add_argument("--imgsz", type=int, default=960)
+    ap.add_argument("--backend", choices=["rtmpose", "yolo"],
+                    default="rtmpose",
+                    help="rtmpose = the pre-registered primary (top-down, "
+                         "rtmlib); yolo = v1's one-stage, diagnostic only")
+    ap.add_argument("--rtm-mode", default="balanced",
+                    choices=["performance", "balanced", "lightweight"],
+                    help="rtmlib mode; the GATE runs on 'balanced' "
+                         "(lightweight is for smoke tests)")
+    ap.add_argument("--model", default="yolov8s-pose.pt",
+                    help="yolo backend only")
+    ap.add_argument("--imgsz", type=int, default=960,
+                    help="yolo backend only")
     ap.add_argument("--fps", type=float, default=30.0)
     ap.add_argument("--width", type=int, default=1280)
-    ap.add_argument("--device", default="")
+    ap.add_argument("--device", default="",
+                    help="'' = cpu (rtmpose) / auto (yolo); 'cuda' for GPU")
     ap.add_argument("--force", action="store_true",
                     help="re-extract rallies that already have an npz")
     ap.add_argument("--fast", action="store_true",
-                    help="CPU preset: yolov8n-pose, imgsz 640, 20 fps")
+                    help="smoke preset: 20 fps + lightweight/nano models — "
+                         "NOT for the gate")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:

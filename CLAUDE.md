@@ -657,7 +657,9 @@ is the tell. **Gate C is pre-registered in `vision/contact_gate.md`
 touching this thread.** Sequence: label core 16 with timestamps
 (`data/vision/contact_audit_chicago0725.html`, from
 vision/make_contact_audit.py) → `vision/pose_extract.py` (full-skeleton
-identity-continuous tracks, --selftest'd) → `vision/contact_ceiling.py`
+identity-continuous tracks; PRIMARY backend = RTMPose top-down via
+rtmlib per the pre-label amendment in contact_gate.md, yolov8 kept as
+diagnostic only; --selftest'd) → `vision/contact_ceiling.py`
 (torso-relative candidate ceiling vs shifted-label null, verdict
 printed). Trainer deliberately UNBUILT until Gate C passes — building
 it first is the anti-pattern Gate A avoided. The BALL thread is

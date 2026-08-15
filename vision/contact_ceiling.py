@@ -524,6 +524,13 @@ def main():
         raise SystemExit(f"{a.labels} not found — label the core 16 in "
                          f"data/vision/contact_audit_chicago0725.html "
                          f"and export first")
+    mp = Path(a.pose_dir) / "meta.json"
+    if mp.exists():
+        be = json.loads(mp.read_text()).get("backend", "?")
+        if be != "rtmpose-balanced":
+            print(f"WARNING: pose backend '{be}' != the pre-registered "
+                  f"'rtmpose-balanced' (contact_gate.md amendment) — "
+                  f"this run is DIAGNOSTIC, not the gate")
     rosters = load_rosters(Path(a.windows))
     labels = load_labels(Path(a.labels), rosters)
     print(f"labels: {len(labels)} rallies, "
