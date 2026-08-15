@@ -557,15 +557,30 @@ vision/recall_audit.md first, either way): (A) BALL — hand-label
 ~300–500 SPEED-STRATIFIED frames, fine-tune, score the fast stratum via
 vision/ball_recall.py + the alternation checksum; <0.8 = dead at any
 budget, ≥0.9 = the built stack revives. (B) SWING PROXY — verdict
-SUSPENDED 2026-08-14: the 2026-08-13 KILL (recall 46.7% vs the 60%
-floor) ran on a COMPROMISED MEASUREMENT FRAME — the cheer↔rally join
-put some windows up to 40 s off (user-observed while labeling; only 10
-anchor rallies were ever time-validated), so the probe watched wrong
-spans and dead time is observationally equivalent to detector junk in
-every diagnostic. Do NOT treat the swing channel as killed OR alive
-until the re-gate on corrected windows (procedure in
-model/vision_adjudication.md §Stage 2). Rallies 2/8 results and the
+KILLED 2026-08-15 on a sound frame — CLOSED, do not re-open. The
+2026-08-13 KILL was suspended a day for a COMPROMISED MEASUREMENT FRAME
+(cheer↔rally join up to 40 s off, user-observed while labeling; only 10
+anchor rallies were ever time-validated). Re-gate: the user hand-marked
+the serve instant of all 16 labeled rallies in the audit tool, marks and
+labels coming from the SAME video so the frame is airtight
+(`vision/serve_pin_windows.py` → `rally_windows_chicago0725_v4.csv`);
+probe re-run over 191 windows (4.9 h); `swing_gate_report_v2.json`.
+The comparison IS the finding — the confound was real and it corrupted
+PRECISION, not recall: precision 0.721→0.871 (+15 pts, exactly what
+un-breaking the spans should do, and independent proof the frame was
+broken), overall recall 0.467→0.442, fast 0.475→0.469 (n=81 with smash
+folded in pre-scoring), alternation 0.460→0.448. Alternation tops out at
+0.448 across ALL 34 feasible grid points — under the 0.45 junk-kill
+line, under 0.50 chance, far under the 0.608 the measured (r,q) implies.
+The touch-share fallback needs fast recall 40-60% WITH G1 consistency;
+consistency fails, so it does not apply. Rallies 2/8 results and the
 pose debug frames stand; the 203 labels are on correct rallies.
+GENERAL LESSON (cost: two sessions): a measurement-frame bug and a
+detector failure are observationally identical in every label-free
+diagnostic. When windows are machine-derived, validate them on the
+CASES BEING SCORED before trusting any verdict — the ±1 s check that
+covered 10 anchor rallies was generalized to 191 and hid a 40 s error.
+Human ground truth on the scored cases is the cheap fix.
 Autopsy (model/vision_adjudication.md §Stage 2): the AUDIO gate was a
 PREMISE failure — per-rally pop counts are uncorrelated with true shot
 counts on broadcast audio at every threshold (r≈0.0–0.2; the POC's

@@ -307,8 +307,44 @@ continuity; wrist velocity relative to the player's own torso; arm-
 geometry gating. Rule: the original 16 labeled rallies grade v1 ONLY;
 any v2 is graded on fresh labels, so nothing is contaminated either way.
 
-**⚠ VERDICT SUSPENDED 2026-08-14 — the measurement frame itself is
-compromised.** The user reports the tool's scrub links ran UP TO 40
+**✅ SUSPENSION LIFTED 2026-08-15 — re-gated on a sound frame, and the
+KILL holds. Gate B is CLOSED; do not re-open the swing channel.** The
+16 labeled rallies were re-windowed from the user's own hand-marked
+serve instants (`vision/serve_pin_windows.py` →
+`data/vision/rally_windows_chicago0725_v4.csv`; marks and labels come
+from the same video, so the frame is airtight by construction), the
+probe was re-run over all 191 windows (4.9 h, yolov8s-pose, imgsz 960),
+and stage 1+2 re-scored. Report:
+`data/vision/swing_gate_report_v2.json`.
+
+The comparison is the finding — the confound was REAL and it was
+corrupting PRECISION, not recall:
+
+| | v1 (broken frame) | v2 (hand-pinned) |
+|---|---|---|
+| precision | 0.721 | **0.871** |
+| overall recall | 0.467 | 0.442 |
+| fast recall | 0.475 (n=61) | 0.469 (n=81) |
+| alternation | 0.460 | 0.448 |
+
+Precision moved 15 points, which is exactly what fixing wrong spans
+should do (junk from dead time stops being attributed to rallies) and
+independently confirms the frame really was broken. Recall did not move
+at all. So the suspension was justified and the re-gate was necessary,
+and the answer on the axis that decides the gate is unchanged: the
+detector finds under half the contacts, and no operating point in the
+whole grid does better. Alternation tops out at 0.448 across all 34
+feasible points — below the 0.45 junk-kill line, below the 0.50 chance
+rate for two sides, and far below the 0.608 that the measured (r,q)
+implies, so the contact stream is not tracking rally structure. The
+degraded-scope fallback (fast recall 40–60% *with* G1 consistent →
+touch-share only) does NOT apply: fast recall is in band at 46.9% but
+G1 consistency fails. Folding smash into the fast stratum before
+scoring (the labeler's least confident split) did not rescue it either.
+Everything below this block is the v1 record, preserved as written.
+
+**⚠ VERDICT SUSPENDED 2026-08-14 — the measurement frame itself was
+compromised (superseded by the re-gate above; kept for the record).** The user reports the tool's scrub links ran UP TO 40
 SECONDS OFF while labeling — the signature of the cheer↔rally DP join
 matching some rallies to a NEIGHBORING rally's cheer (inter-rally
 spacing ≈ 20–40 s). The ±1 s validation covered only the ten

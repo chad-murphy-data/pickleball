@@ -1,0 +1,59 @@
+{
+ "operating_point": {
+  "theta_v": 0.18,
+  "theta_z": 8.0,
+  "coinc_s": 0.25
+ },
+ "alternation": 0.4481012658227848,
+ "contact_rate": 0.3125,
+ "per_type": {
+  "counter": [
+   24,
+   46
+  ],
+  "dink": [
+   30,
+   62
+  ],
+  "drive": [
+   4,
+   10
+  ],
+  "drop": [
+   4,
+   6
+  ],
+  "lob": [
+   2,
+   8
+  ],
+  "other": [
+   2,
+   2
+  ],
+  "return": [
+   3,
+   15
+  ],
+  "serve": [
+   5,
+   15
+  ],
+  "smash": [
+   10,
+   20
+  ],
+  "speed-up": [
+   4,
+   15
+  ]
+ },
+ "recall_overall": 0.44221105527638194,
+ "recall_fast": 0.4691358024691358,
+ "n_fast": 81,
+ "precision": 0.8712871287128713,
+ "n_labeled_shots": 199,
+ "n_detected": 101,
+ "alt_expected": 0.6077490821582957,
+ "verdict": "KILL \u2014 below the pre-registered floor; the thread closes"
+}
