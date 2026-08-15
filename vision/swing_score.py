@@ -53,7 +53,11 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 D = ROOT / "data/vision"
 
-FAST_TYPES = {"speed-up", "counter"}
+FAST_TYPES = {"speed-up", "counter", "smash"}
+# counter vs. smash is the labeler's least confident split (both are fast,
+# hard-contact shots to the eye); dink/fast/lob is a firm split. Keeping
+# both in FAST_TYPES makes that ambiguity harmless to the gate - a shot
+# mislabeled counter<->smash still lands in the same stratum either way.
 BARS = {"recall_overall": 0.75, "recall_fast": 0.60, "precision": 0.90,
         "alt_tolerance": 0.08, "alt_junk_kill": 0.45,
         "kill_recall_overall": 0.60}
