@@ -64,7 +64,12 @@ PEAK_FLOOR = 0.02         # permissive; budgets do the real selection
 FAST_TYPES = {"speed-up", "counter", "smash"}
 
 # COCO-17 keypoints
-L_SHO, R_SHO, L_WRIST, R_WRIST, L_HIP, R_HIP = 5, 6, 9, 10, 11, 12
+L_SHO, R_SHO, L_ELB, R_ELB = 5, 6, 7, 8
+L_WRIST, R_WRIST, L_HIP, R_HIP = 9, 10, 11, 12
+ARM_JOINTS = (L_WRIST, R_WRIST, L_ELB, R_ELB)   # amendment 2: motion blur
+# kills the most distal joint first; a swing moves the whole arm, so the
+# candidate signal is the max over wrists AND elbows (no coefficients —
+# wrists dominate when visible, elbows carry through blur frames)
 
 
 # ------------------------------------------------------------- loading
@@ -135,7 +140,7 @@ def track_peaks(t, box, kpt, kpc, fps):
     dt = np.diff(t)
     ok_dt = dt <= 2.5 / fps            # no speeds across detection gaps
     v = np.full(n, np.nan)
-    for w in (L_WRIST, R_WRIST):
+    for w in ARM_JOINTS:
         rel = kpt[:, w] - hip
         conf = kpc[:, w] >= 0.15
         d = np.linalg.norm(np.diff(rel, axis=0), axis=1)
@@ -394,10 +399,14 @@ def jitter_report(labels):
 # ------------------------------------------------------------ selftest
 
 
-def synth_rally(rng, contacts, planted=True, fps=30.0, t0=100.0, t1=130.0):
+def synth_rally(rng, contacts, planted=True, blur=(), fps=30.0,
+                t0=100.0, t1=130.0):
     """Two tracks per side; hip+wrist share a locomotion sinusoid (which
     torso-relative speed must cancel); bursts planted at contact times on
-    the mapped side's first track. Returns arrays shaped like an npz."""
+    the mapped side's first track. Contacts whose time is in `blur` get
+    the motion-blur treatment instead: wrist confidences collapse and
+    the burst rides on the ELBOW — covered only if the arm-joint channel
+    works. Returns arrays shaped like an npz."""
     n = int((t1 - t0) * fps)
     ts = t0 + np.arange(n) / fps
     rows = {"t": [], "track": [], "side": [], "box": [], "kpt": [],
@@ -421,13 +430,22 @@ def synth_rally(rng, contacts, planted=True, fps=30.0, t0=100.0, t1=130.0):
             kpt[L_SHO] = kpt[R_SHO] = sho
             wr = hip + np.array([0.3 * bh, -0.2 * bh])
             wr = wr + rng.normal(0, 0.004 * bh, 2)        # idle jitter
-            if planted:
+            elb = hip + np.array([0.16 * bh, -0.30 * bh])
+            elb = elb + rng.normal(0, 0.003 * bh, 2)
+            if planted and tid in (0, 2):
                 for (tc, team, *_ ) in contacts:
-                    if team == s and tid in (0, 2) and abs(t - tc) < 0.08:
-                        wr = wr + np.array([0.5 * bh *
-                                            np.sin((t - tc) * 40), 0])
+                    if team != s or abs(t - tc) >= 0.08:
+                        continue
+                    burst = np.array([0.5 * bh * np.sin((t - tc) * 40), 0])
+                    if tc in blur:
+                        elb = elb + burst * 0.6           # blurred wrist:
+                        kpc[L_WRIST] = kpc[R_WRIST] = 0.05   # elbow carries
+                    else:
+                        wr = wr + burst
             kpt[L_WRIST] = wr
             kpt[R_WRIST] = wr + np.array([8, 4])
+            kpt[L_ELB] = elb
+            kpt[R_ELB] = elb + np.array([6, 3])
             rows["t"].append(t)
             rows["track"].append(tid)
             rows["side"].append(s)
@@ -454,9 +472,14 @@ def selftest():
             contacts = [(103.0 + k * 2.0 + rng.normal(0, 0.05),
                          (k % 2) ^ (1 if flip_teams else 0), types[k])
                         for k in range(12)]
+            # 2 of 12 contacts per rally get the motion-blur treatment
+            # (wrist confs collapse, burst on the elbow): if the arm-joint
+            # channel fails, the ceiling caps at 30/36 = 0.83 < the 0.90
+            # assertion, so the blur path has teeth.
+            blur = {contacts[4][0], contacts[8][0]} if planted else set()
             z = synth_rally(rng, [(t, team ^ (1 if flip_teams else 0))
                                   for t, team, _ in contacts],
-                            planted=planted)
+                            planted=planted, blur=blur)
             cands, bounds = rally_candidates(z)
             rallies[cum] = {"contacts": sorted(contacts),
                             "cands": cands, "bounds": bounds}
@@ -527,10 +550,16 @@ def main():
     mp = Path(a.pose_dir) / "meta.json"
     if mp.exists():
         be = json.loads(mp.read_text()).get("backend", "?")
-        if be != "rtmpose-balanced":
-            print(f"WARNING: pose backend '{be}' != the pre-registered "
-                  f"'rtmpose-balanced' (contact_gate.md amendment) — "
-                  f"this run is DIAGNOSTIC, not the gate")
+        if be == "vitpose-plus-huge":
+            pass                                  # the verdict instrument
+        elif be == "rtmpose-balanced":
+            print("note: rtmpose-balanced = the production-spine A/B "
+                  "diagnostic (contact_gate.md amendment 2) — report "
+                  "alongside the verdict, never AS the verdict")
+        else:
+            print(f"WARNING: pose backend '{be}' is not the "
+                  f"pre-registered verdict instrument 'vitpose-plus-huge'"
+                  f" — this run is DIAGNOSTIC, not the gate")
     rosters = load_rosters(Path(a.windows))
     labels = load_labels(Path(a.labels), rosters)
     print(f"labels: {len(labels)} rallies, "

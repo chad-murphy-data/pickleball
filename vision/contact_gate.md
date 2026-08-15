@@ -106,10 +106,11 @@ labeler's timing noise. **Training guard band = max(0.4 s, 3 × p95
 1. **Label**: re-tap the core 16 with timestamps
    (`data/vision/contact_audit_chicago0725.html`, pass 1; ~1 evening).
 2. **Extract**: `python vision/pose_extract.py --video full_match.mp4
-   --rallies labeled` (rtmpose-balanced, the pre-registered backend —
-   see the amendment below; overnight-class on CPU for the core 16,
-   minutes on a GPU with `--device cuda`; `--fast` is a smoke preset
-   and NOT the gate).
+   --device cuda` on the GPU box (ViTPose-plus-huge at native fps — the
+   verdict instrument per Amendment 2 below, which supersedes
+   Amendment 1's RTMPose-primary). Optionally also `--backend rtmpose
+   --out-dir data/vision/pose_rtm` for the production-spine A/B.
+   `--fast` is a smoke preset and NOT the gate.
 3. **Gate**: `python vision/contact_ceiling.py` → verdict against the
    bars above.
 4. **Only on PROCEED**: label the pilot corpus (~40–60 rallies across
@@ -161,3 +162,53 @@ hand.
   a single-person, near-field pipeline (fitness-app shape); our frame
   has four-plus people with the far pair at ~40-120 px. It was never
   used anywhere in this project.
+
+## Amendment 2, 2026-08-15 (same day, STILL PRE-LABEL): gold-standard
+## instrument — user directive
+
+User, verbatim intent: *"I don't want to kill this because we took an
+easy route... I'm relying heavily on you to get gold standard of what is
+reasonable rather than reaching for the quickest, easiest tool."* Made
+while zero timestamped labels exist. The principle that follows: the
+gate is a ONE-SHOT ~15k-frame measurement, so inference speed is nearly
+irrelevant to it — the verdict instrument must be the strongest model
+that practically runs, and production convenience is a separate,
+post-gate concern. Amendment 1's RTMPose pick conflated those two
+questions; this amendment separates them.
+
+- **VERDICT instrument = ViTPose-plus-huge** (top-down, ~81 COCO AP —
+  the strongest practical 2D pose model; HF transformers path, RT-DETR
+  person boxes, court-gated before pose, `pose_extract.py --backend
+  vitpose --device cuda`). Install + inference of both the base and the
+  MoE `plus` code paths verified in a fresh environment before this
+  amendment was written. Needs the GPU box; that is a feature of the
+  choice, not a bug.
+- **RTMPose-balanced is demoted to PRODUCTION SPINE**: it is what a
+  500-rally pipeline would run at scale, so its ceiling is REPORTED
+  next to the verdict (named A/B, `--out-dir data/vision/pose_rtm`) to
+  price the production gap — but it is never the verdict.
+  yolov8s-pose remains a diagnostic. The better-of-N-backends
+  disjunction stays foreclosed: the verdict number comes from
+  ViTPose-plus-huge, decided before any label existed.
+- **Candidate signal widened to the whole arm**: max of torso-relative
+  speed over wrists AND elbows, no coefficients. Motion blur destroys
+  the most distal joint first and a swing moves the whole arm; wrists
+  dominate whenever visible, elbows carry through blur frames. The
+  selftest plants blur-degraded contacts that only the elbow channel
+  can cover.
+- **Native fps**: extraction runs at the VOD's native frame rate
+  (auto-detected, `--fps 0` default) — no temporal subsampling on a
+  measurement whose object is ~100 ms events.
+- **No super-resolution, ever, for measurement**: SR hallucinates
+  pixels, and claims scored on hallucinated pixels are unfalsifiable —
+  the same failure class that poisoned the auto-label fine-tune. Native
+  720p in, verdict on native 720p.
+- **Escalation ladder, pre-named to foreclose post-hoc reaching**: if
+  the verdict is MIDDLE [0.75, 0.85), ONE escalation is permitted —
+  Sapiens-1B pose (Meta's 300M-image-pretrained model, the exotic tier
+  above ViTPose) — and its result is final either way. A KILL at
+  ViTPose-plus-huge is final for this footage: a >10-point gap to the
+  bar is not a model-size gap at 720p; it is the footage, which is the
+  postmortem's stated only door. MediaPipe is not on the ladder
+  (single-person, near-field — wrong shape, never used in this
+  project).

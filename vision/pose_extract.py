@@ -23,24 +23,30 @@ each labeled rally + the v4 window rule), so extraction covers exactly
 the cases being scored — the measurement-frame lesson, kept by
 construction. Unlabeled rallies can still be extracted via --windows.
 
-RUN (needs the VOD)
-    pip install rtmlib onnxruntime imageio-ffmpeg    # onnxruntime-gpu for CUDA
-    python vision/pose_extract.py --video full_match.mp4 --rallies labeled
-    # GPU: add --device cuda (minutes for the core 16)
-    # CPU: 'balanced' is overnight-class for 16 rallies; --fast is the
-    #      smoke preset (lightweight models, 20 fps) and NOT for the gate
+RUN (needs the VOD; the GATE runs on the GPU box)
+    pip install torch transformers scipy pillow imageio-ffmpeg
+    python vision/pose_extract.py --video full_match.mp4 --device cuda
+    # production-spine A/B (report alongside, never the verdict):
+    #   pip install rtmlib onnxruntime && \
+    #   python vision/pose_extract.py --video ... --backend rtmpose \
+    #       --out-dir data/vision/pose_rtm
+    # CPU smoke: --fast (vitpose-base, 20 fps) — NOT the gate
 
-BACKENDS (pre-registered choice — contact_gate.md amendment 2026-08-15,
-made while zero timestamped labels existed):
-    --backend rtmpose (default, PRIMARY): top-down two-stage via rtmlib —
-      detector -> per-person crop -> RTMPose. Every crop is normalized to
-      a fixed input size, so the ~40 px far pair stops being small to the
-      keypoint head; one-stage models see them at native scale, which is
-      exactly where Gate B bled (COCO AP ~75 for RTMPose-m vs ~60 for
-      yolov8s-pose, and the gap widens on small people).
-    --backend yolo (SECONDARY, diagnostic): v1's one-stage yolov8-pose
-      (pip install ultralytics). Reported for A/B context; never the
-      verdict.
+BACKENDS (pre-registered — contact_gate.md amendments 1-2, 2026-08-15,
+both made while zero timestamped labels existed):
+    --backend vitpose (default, THE VERDICT): ViTPose-plus-huge top-down
+      via HF transformers (~81 COCO AP), RT-DETR person boxes, court-
+      gated before pose. The gate is a one-shot ~15k-frame measurement,
+      so the instrument is the strongest model that runs, not the most
+      convenient one (user directive). Top-down normalizes every person
+      crop to a fixed input size, so the ~40 px far pair stops being
+      small to the keypoint head — exactly Gate B's failure surface.
+    --backend rtmpose (PRODUCTION SPINE, named A/B): rtmlib 'balanced'
+      (~75 AP, ONNX, CPU-viable) — what a full 500-rally pipeline would
+      run; its ceiling is reported next to the verdict to price the
+      production gap.
+    --backend yolo (diagnostic): v1's one-stage yolov8-pose (~60 AP).
+      A/B context only.
 
 Outputs (data/vision/pose/ is gitignored — regenerable from the VOD):
     data/vision/pose/r0001.npz ...   one per rally
@@ -75,6 +81,22 @@ IOU_MIN = 0.15        # association floor
 GAP_S = 0.6           # a track survives a detection gap up to this
 MIN_TRACK_DET = 5     # shorter tracks get side=-1 (junk fragments)
 MAX_PERSONS = 6       # per frame, by detection confidence
+
+
+def detect_fps(video):
+    """Native frame rate off ffmpeg's stream banner; the gate samples at
+    native rate so no swing peak can fall between frames we skipped."""
+    import re
+    import subprocess
+    err = subprocess.run([ffmpeg_bin(), "-i", str(video)],
+                         capture_output=True).stderr.decode(errors="replace")
+    m = re.search(r"(\d+(?:\.\d+)?)\s*fps", err)
+    if m:
+        f = float(m.group(1))
+        print(f"native fps detected: {f}")
+        return f
+    print("WARNING: could not detect fps from the file — using 30")
+    return 30.0
 
 
 # ------------------------------------------------------------- windows
@@ -199,15 +221,21 @@ def assign_sides(track_ids, boxes):
 # ------------------------------------------------------------- filter
 
 
-def gate_person(cf, box, kpt, kpc, H, W):
+def box_gate(box, H, W):
     """Court players only — feet band + height + perspective court gate
-    (reused from swing_probe) — but NO wrist-confidence gate: keypoint
-    confidences are features now, not filters."""
-    x0, y0, x1, y1 = box
+    (reused from swing_probe). Box-only, so top-down backends can gate
+    BEFORE spending pose compute on crowd/officials."""
+    x0, y0, x1, y1 = box[:4]
     bh, cx = y1 - y0, (x0 + x1) / 2
     if y1 < 0.30 * H or bh < 0.06 * H:
-        return None
-    if abs(cx / W - 0.5) > court_halfwidth(y1 / H):
+        return False
+    return abs(cx / W - 0.5) <= court_halfwidth(y1 / H)
+
+
+def gate_person(cf, box, kpt, kpc, H, W):
+    """box_gate + tuple packing — NO keypoint-confidence gate: keypoint
+    confidences are features now, not filters."""
+    if not box_gate(box, H, W):
         return None
     return (float(cf), np.asarray(box, np.float32),
             kpt.astype(np.float32), kpc.astype(np.float32))
@@ -271,15 +299,77 @@ def rtm_persons(kpts, scores, H, W):
 def make_infer(a):
     """Returns (infer(frame, H, W) -> person tuples, backend label).
 
-    PRIMARY (pre-registered, contact_gate.md amendment 2026-08-15):
-    'rtmpose' — top-down two-stage via rtmlib (detector -> per-person
-    crop -> RTMPose). Top-down normalizes every person crop to a fixed
-    input size, so the ~40 px far pair stops being small as far as the
-    keypoint head is concerned — exactly Gate B's failure surface. The
-    gate runs in 'balanced' mode; 'lightweight' is for smoke tests only.
+    VERDICT backend (contact_gate.md amendment 2, 2026-08-15, pre-label):
+    'vitpose' — ViTPose-plus-huge top-down via HF transformers (RT-DETR
+    person boxes, court-gated, then per-crop pose). The strongest 2D
+    pose model that practically runs (~81 COCO AP); the gate is a
+    one-shot ~15k-frame measurement, so inference speed is nearly
+    irrelevant and the instrument should be the best available, not the
+    most convenient — user directive 2026-08-15. Needs the GPU box for
+    plus-huge; --fast smokes with vitpose-base on CPU.
 
-    SECONDARY (diagnostic): 'yolo' — the one-stage yolov8-pose the v1
-    probe used. Never the verdict; kept for A/B context."""
+    PRODUCTION SPINE (named A/B diagnostic): 'rtmpose' — top-down via
+    rtmlib, 'balanced' mode. What the eventual full pipeline would run
+    at scale; its ceiling is REPORTED next to the verdict to price the
+    production gap, but it is not the verdict.
+
+    DIAGNOSTIC ONLY: 'yolo' — the one-stage yolov8-pose the v1 probe
+    used. A/B context; never the verdict."""
+    if a.backend == "vitpose":
+        try:
+            import torch
+            from transformers import (AutoProcessor,
+                                      RTDetrForObjectDetection,
+                                      VitPoseForPoseEstimation)
+        except ImportError:
+            raise SystemExit(
+                "backend vitpose needs: pip install torch transformers "
+                "scipy pillow\n(GPU strongly recommended for plus-huge: "
+                "--device cuda; or --backend rtmpose)")
+        dev = a.device or "cpu"
+        det_name = "PekingU/rtdetr_r50vd_coco_o365"
+        dproc = AutoProcessor.from_pretrained(det_name)
+        dmodel = RTDetrForObjectDetection.from_pretrained(det_name)
+        dmodel = dmodel.to(dev).eval()
+        pproc = AutoProcessor.from_pretrained(a.pose_model)
+        pmodel = VitPoseForPoseEstimation.from_pretrained(a.pose_model)
+        pmodel = pmodel.to(dev).eval()
+        is_moe = "plus" in a.pose_model    # MoE variants take dataset_index
+
+        def infer(frame, H, W):
+            rgb = np.ascontiguousarray(frame[..., ::-1])
+            with torch.no_grad():
+                di = dproc(images=rgb, return_tensors="pt").to(dev)
+                r = dproc.post_process_object_detection(
+                    dmodel(**di), target_sizes=torch.tensor([(H, W)]),
+                    threshold=a.det_thresh)[0]
+                m = (r["labels"] == 0).cpu().numpy()
+                boxes = r["boxes"].cpu().numpy()[m]
+                scores = r["scores"].cpu().numpy()[m]
+                keep = sorted(((s, b) for s, b in zip(scores, boxes)
+                               if box_gate(b, H, W)),
+                              key=lambda x: -x[0])[:MAX_PERSONS]
+                if not keep:
+                    return []
+                bx = np.stack([b for _, b in keep])
+                coco = bx.copy()
+                coco[:, 2] -= coco[:, 0]
+                coco[:, 3] -= coco[:, 1]           # xyxy -> xywh
+                pi = pproc(rgb, boxes=[coco], return_tensors="pt").to(dev)
+                kw = ({"dataset_index": torch.zeros(len(coco),
+                                                    dtype=torch.long,
+                                                    device=dev)}
+                      if is_moe else {})           # 0 = the COCO expert
+                res = pproc.post_process_pose_estimation(
+                    pmodel(**pi, **kw), boxes=[coco])[0]
+            return [(float(s), b.astype(np.float32),
+                     p["keypoints"].cpu().numpy().astype(np.float32),
+                     p["scores"].cpu().numpy().astype(np.float32))
+                    for (s, _), b, p in zip(keep, bx, res)]
+        label = a.pose_model.split("/")[-1]
+        return infer, label if label.startswith("vitpose") \
+            else f"vitpose-{label}"
+
     if a.backend == "rtmpose":
         try:
             from rtmlib import Body
@@ -557,19 +647,27 @@ def main():
     ap.add_argument("--rallies", default="labeled",
                     help="'labeled' (default) or comma-separated rally_cum")
     ap.add_argument("--out-dir", default=str(OUT_DIR))
-    ap.add_argument("--backend", choices=["rtmpose", "yolo"],
-                    default="rtmpose",
-                    help="rtmpose = the pre-registered primary (top-down, "
-                         "rtmlib); yolo = v1's one-stage, diagnostic only")
+    ap.add_argument("--backend", choices=["vitpose", "rtmpose", "yolo"],
+                    default="vitpose",
+                    help="vitpose = the VERDICT instrument (strongest "
+                         "model, GPU box); rtmpose = production-spine "
+                         "A/B; yolo = v1 diagnostic")
+    ap.add_argument("--pose-model",
+                    default="usyd-community/vitpose-plus-huge",
+                    help="vitpose backend HF model id; the GATE runs "
+                         "plus-huge (base-simple for smoke)")
+    ap.add_argument("--det-thresh", type=float, default=0.3,
+                    help="vitpose backend person-detector threshold")
     ap.add_argument("--rtm-mode", default="balanced",
                     choices=["performance", "balanced", "lightweight"],
-                    help="rtmlib mode; the GATE runs on 'balanced' "
-                         "(lightweight is for smoke tests)")
+                    help="rtmlib mode (lightweight = smoke only)")
     ap.add_argument("--model", default="yolov8s-pose.pt",
                     help="yolo backend only")
     ap.add_argument("--imgsz", type=int, default=960,
                     help="yolo backend only")
-    ap.add_argument("--fps", type=float, default=30.0)
+    ap.add_argument("--fps", type=float, default=0.0,
+                    help="0 = detect the VOD's native rate (the gate "
+                         "runs at native fps, no subsampling)")
     ap.add_argument("--width", type=int, default=1280)
     ap.add_argument("--device", default="",
                     help="'' = cpu (rtmpose) / auto (yolo); 'cuda' for GPU")
@@ -585,8 +683,11 @@ def main():
         return
     if a.fast:
         a.model, a.imgsz, a.fps = "yolov8n-pose.pt", 640, 20.0
+        a.pose_model = "usyd-community/vitpose-base-simple"
     if not a.video:
         raise SystemExit("--video required (or --selftest)")
+    if not a.fps:
+        a.fps = detect_fps(a.video)
     run(a)
 
 
