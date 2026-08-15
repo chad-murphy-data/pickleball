@@ -18,7 +18,7 @@
   #mag{position:fixed;width:var(--mag);height:var(--mag);
        border:2px solid var(--acc);
        border-radius:50%;pointer-events:none;display:none;z-index:9;
-       background-repeat:no-repeat;box-shadow:0 4px 20px #000c}
+       background-repeat:no-repeat;background-origin:border-box;box-shadow:0 4px 20px #000c}
   #mag:after{content:"";position:absolute;inset:0;
              background:linear-gradient(var(--acc),var(--acc)) 50% 50%/1px 14px no-repeat,
                         linear-gradient(var(--acc),var(--acc)) 50% 50%/14px 1px no-repeat;
@@ -87,7 +87,7 @@
 </div>
 
 <script>
-const ZOOM = 5, GAP = 35, KEY = "ballflip.v1";   // GAP: clearance above cursor
+const ZOOM = 5, KEY = "ballflip.v1";
 let items = [], i = 0, store = {}, urls = {}, blink = false;
 
 const $ = id => document.getElementById(id);
@@ -165,9 +165,13 @@ $("frame").addEventListener("mousemove", e => {
   const r = e.target.getBoundingClientRect(), m = $("mag");
   const x = e.clientX - r.left, y = e.clientY - r.top;
   m.style.display = "block";
+  // Centred ON the cursor, not floating above it. An offset loupe plus
+  // cursor:none left nothing on screen marking the real click point, so
+  // the circle read as "you are here" while clicks landed a loupe-height
+  // lower. Centred, the crosshair IS the click point.
   const D = m.offsetWidth || 115, half = D / 2;
   m.style.left = (e.clientX - half) + "px";
-  m.style.top  = (e.clientY - D - GAP) + "px";
+  m.style.top  = (e.clientY - half) + "px";
   m.style.backgroundImage = `url("${$("frame").src}")`;
   m.style.backgroundSize = `${r.width*ZOOM}px ${r.height*ZOOM}px`;
   m.style.backgroundPosition = `${half - x*ZOOM}px ${half - y*ZOOM}px`;
