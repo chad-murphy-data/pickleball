@@ -124,10 +124,31 @@ def load_pops(path):
 
 def load_labels(path, windows):
     """rally_cum -> list of (team, type); only fully-coded rallies count."""
-    raw = {}
+    raw, notes = {}, {}
     for r in csv.DictReader(open(path)):
-        raw.setdefault(int(r["rally_cum"]), []).append(
+        cum = int(r["rally_cum"])
+        raw.setdefault(cum, []).append(
             (int(r["shot_index"]), r["hitter_uuid"], r["shot_type"]))
+        if r.get("rally_note", "").strip():
+            notes[cum] = True
+
+    # Tripwire on the hand-maintained CODED_RALLIES list. A coded rally
+    # always shows one of two marks: a shot type beyond the prefilled
+    # serve/return, or a note. Rallies 13 and 15 are genuinely two shots
+    # (return went out / return missed) and prove length alone cannot
+    # decide, so the list stays authoritative — this only shouts when the
+    # file and the list disagree, which is how a future stray click gets
+    # caught instead of quietly becoming ground truth.
+    for cum, rows in sorted(raw.items()):
+        rich = notes.get(cum, False) or any(
+            t not in ("serve", "return", "") for _, _, t in rows)
+        if cum in CODED_RALLIES and not rich:
+            print(f"  ! rally {cum} is in CODED_RALLIES but looks like an "
+                  f"untouched prefill stub — verify before trusting it")
+        if cum not in CODED_RALLIES and rich:
+            print(f"  ! rally {cum} looks coded but is excluded from "
+                  f"CODED_RALLIES — was the label set extended?")
+
     out, skipped = {}, 0
     for cum, rows in raw.items():
         if cum not in windows or cum not in CODED_RALLIES:
