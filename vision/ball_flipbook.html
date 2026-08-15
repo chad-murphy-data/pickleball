@@ -3,7 +3,8 @@
 <title>Ball flipbook — Gate A labeling</title>
 <style>
   :root{--bg:#0d1117;--fg:#e6edf3;--dim:#8b949e;--acc:#3fb950;--warn:#d29922;
-        --bad:#f85149;--line:#30363d;--panel:#161b22}
+        --bad:#f85149;--line:#30363d;--panel:#161b22;
+        --mag:115px}   /* magnifier diameter — JS reads it off the element */
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5
        ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -14,12 +15,13 @@
          display:flex;align-items:center;justify-content:center;background:#000}
   #frame{max-width:100%;max-height:100%;display:block;cursor:none;
          image-rendering:auto}
-  #mag{position:fixed;width:230px;height:230px;border:2px solid var(--acc);
+  #mag{position:fixed;width:var(--mag);height:var(--mag);
+       border:2px solid var(--acc);
        border-radius:50%;pointer-events:none;display:none;z-index:9;
        background-repeat:no-repeat;box-shadow:0 4px 20px #000c}
   #mag:after{content:"";position:absolute;inset:0;
-             background:linear-gradient(var(--acc),var(--acc)) 50% 50%/1px 26px no-repeat,
-                        linear-gradient(var(--acc),var(--acc)) 50% 50%/26px 1px no-repeat;
+             background:linear-gradient(var(--acc),var(--acc)) 50% 50%/1px 14px no-repeat,
+                        linear-gradient(var(--acc),var(--acc)) 50% 50%/14px 1px no-repeat;
              opacity:.85}
   #foot{height:34px;display:flex;align-items:center;gap:16px;padding:0 14px;
         background:var(--panel);border-top:1px solid var(--line);
@@ -85,7 +87,7 @@
 </div>
 
 <script>
-const ZOOM = 5, KEY = "ballflip.v1";
+const ZOOM = 5, GAP = 35, KEY = "ballflip.v1";   // GAP: clearance above cursor
 let items = [], i = 0, store = {}, urls = {}, blink = false;
 
 const $ = id => document.getElementById(id);
@@ -156,16 +158,19 @@ $("frame").addEventListener("click", e => {
   record(true, (e.clientX - r.left)/r.width, (e.clientY - r.top)/r.height);
 });
 
-// magnifier — CSS background trick, no canvas, no cross-origin worries
+// magnifier — CSS background trick, no canvas, no cross-origin worries.
+// Diameter comes from the rendered element (CSS --mag), so resizing the
+// circle is a one-line CSS change and the centring maths cannot drift.
 $("frame").addEventListener("mousemove", e => {
   const r = e.target.getBoundingClientRect(), m = $("mag");
   const x = e.clientX - r.left, y = e.clientY - r.top;
   m.style.display = "block";
-  m.style.left = (e.clientX - 115) + "px";
-  m.style.top  = (e.clientY - 265) + "px";
+  const D = m.offsetWidth || 115, half = D / 2;
+  m.style.left = (e.clientX - half) + "px";
+  m.style.top  = (e.clientY - D - GAP) + "px";
   m.style.backgroundImage = `url("${$("frame").src}")`;
   m.style.backgroundSize = `${r.width*ZOOM}px ${r.height*ZOOM}px`;
-  m.style.backgroundPosition = `${115 - x*ZOOM}px ${115 - y*ZOOM}px`;
+  m.style.backgroundPosition = `${half - x*ZOOM}px ${half - y*ZOOM}px`;
 });
 $("frame").addEventListener("mouseleave", () => $("mag").style.display = "none");
 
