@@ -551,12 +551,28 @@ nor a ceiling, only "off-the-shelf transfer is insufficient". Auto-label
 fine-tuning is poisoned (42% kitchen-band vs 14% base). Sequence metrics
 need p ≈ 0.85–0.93 on FAST shots (parity+interval certification catches
 most chain corruption, so the hard-0.93 framing was slightly overstated).
-TWO legitimate re-entries, pre-registered in model/vision_adjudication.md
-§Re-entry gates (fill the still-blank blind count in
-vision/recall_audit.md first, either way): (A) BALL — hand-label
-~300–500 SPEED-STRATIFIED frames, fine-tune, score the fast stratum via
-vision/ball_recall.py + the alternation checksum; <0.8 = dead at any
-budget, ≥0.9 = the built stack revives. (B) SWING PROXY — verdict
+BOTH RE-ENTRY GATES ARE NOW SHUT — the vision program is over; do not
+re-open it without NEW FOOTAGE (see the scope line at the end).
+(A) BALL — CLOSED 2026-08-15, the wall is PHYSICAL and measured
+(`vision/ball_visibility.py`, `data/vision/ball_labels_chicago0725.csv`).
+The user hand-labeled all 416 sampled frames with a 5× loupe,
+blink-compare and no time limit, and could not find the ball in 48%.
+Their own correction — "a decent chunk of the can't-find were between
+points" — is right and is what makes the number trustworthy: rally-17+
+windows are t0 = t1 − duration and the log's duration carries a ~6 s
+pre-serve lead. Binning by seconds-since-window-open separates dead time
+from play and plateaus: 14% (0–3 s), 22% (3–6 s), 58%, 70%, 63%. IN-PLAY
+FINDABILITY 64.1% [59%, 69%], n=306 — whole CI under the pre-registered
+0.8 kill line. Generous if anything: the `fast` stratum proxy produced no
+difficulty split (z=−0.62), so true fast frames are likely worse. Step 2
+(fine-tune) was NOT run and should not be: ground truth exists only where
+a human can see the ball, so on 36% of in-play frames a detector's claims
+are unfalsifiable — the exact failure that poisoned the auto-label
+fine-tune. A perfect detector returns ~64% of positions with the misses
+piled at fast/occluded moments, i.e. the contacts. SCOPE: this measures a
+condensed 720p VOD; higher-res or uncondensed source would need
+re-measuring, and that is the only door left — it needs different video,
+not more labels or compute. (B) SWING PROXY — verdict
 KILLED 2026-08-15 on a sound frame — CLOSED, do not re-open. The
 2026-08-13 KILL was suspended a day for a COMPROMISED MEASUREMENT FRAME
 (cheer↔rally join up to 40 s off, user-observed while labeling; only 10

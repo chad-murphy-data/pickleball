@@ -155,7 +155,52 @@ either gate: fill in the blank 10-rally blind human count
 (`vision/recall_audit.md`, ~15 min) — the cheapest reality anchor, still
 unmeasured.
 
-### Gate A — the ball, via hand labels (as originally specced)
+### Gate A — CLOSED 2026-08-15. The wall is physical, and it is measured.
+
+**Both gates are now shut. The vision program is over.** Step 1 answered
+the question before step 2 ran, in a way the gate did not anticipate: the
+labeler did all 416 frames (`data/vision/ball_labels_chicago0725.csv`,
+`vision/ball_visibility.py` reproduces everything below) with a 5x loupe,
+blink-compare against the previous frame, and no time limit — and could
+not locate the ball in 48% of them.
+
+The labeler supplied the correction that makes the number trustworthy:
+"a decent chunk of the can't-find were between points." Correct. Windows
+for rallies 17+ are `t0 = t1 - duration`, and the log's duration carries
+a ~6 s pre-serve lead (measured on the 16 hand-marked rallies) that the
+1.2 s head-pad barely dents. Binning by seconds-since-window-open
+separates dead time from play, and the curve is exactly the shape that
+predicts — 14% findable in the first 3 s, 22% at 3-6 s, then a plateau:
+
+    0-3 s  14%  |  3-6 s  22%  |  6-10 s  58%  |  10-16 s  70%  |  16+ s  63%
+
+    IN-PLAY HUMAN FINDABILITY  64.1%  [59%, 69%]   n=306
+
+The whole confidence interval sits below the pre-registered 0.8 kill
+line. Two things make it generous rather than harsh: the `fast` stratum
+proxy (division x tempo) produced no detectable difficulty split
+(z = -0.62 vs random), so this is OVERALL findability and true fast-shot
+frames are likely worse; and some misses are the broadcast framing the
+ball out, which this document already records as a permanent bias that
+binds even a perfect detector.
+
+**Why human findability closes the program rather than merely describing
+it.** Ground truth exists only where a human can see the ball. On 36% of
+in-play frames there is nothing to train on and nothing to score against,
+so a detector's claims there are unfalsifiable — and unverifiable machine
+labels are exactly what poisoned the earlier fine-tune (42% kitchen-band
+vs 14% base). Grant a perfect detector on every findable frame and ~64%
+of ball positions come back, with the misses concentrated where the ball
+is fast or occluded: at the contacts, which is the thing the program
+wanted. Step 2 (fine-tune) was not run, because no detector result could
+change this: it would be scored on the easy 64% and silent on the rest.
+
+Scope of the claim: this measures THIS footage — a condensed 720p
+YouTube VOD. Higher-resolution or uncondensed source would need
+re-measuring; nothing else would. That is the only door left, and it
+needs different video, not more labels or more compute.
+
+### Gate A — the original spec, as written before any of the above
 
 1. Hand-label ~300–500 frames stratified BY SHOT SPEED (oversample
    drives/speed-ups; label blur streaks at their centroid), ~2–3 h with
