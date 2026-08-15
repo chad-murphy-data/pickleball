@@ -24,6 +24,13 @@ grammar-aligned v3 row verbatim (approx flags included) — the scorebug
 stream is clean mid-match and junk-stormy only around game 1's start,
 which is precisely the block the marks replace.
 
+The exception is the handful of game-1 rallies v3 placed INSIDE the
+marked block (its chain was off by +53..+135 s there and only re-syncs
+later — rally 30's window is hand-verified at 777 s).  Those are clamped
+to start after the block if their tail leaves room, and DROPPED outright
+if it does not: their true location is unresolved, and a missing rally is
+honest where a wrong one quietly attributes junk detections to it.
+
 Marks are accepted ONLY for rally_cum 1-16 (the frozen label set): the
 tool's early jumpy version left a stale duplicate mark on rally 18
 (91.11 s = rally 3's serve), which this rule drops.
@@ -47,6 +54,7 @@ PAD_PRE = 1.5                # window opens this early before the serve
 GAP_POST = 2.0               # window closes this early before next serve
 CADENCE = 1.5                # generous s/shot upper bound
 TAIL = 5.0                   # + slack for the final ball landing
+MIN_LEN = 2.0                # a post-block window shorter than this is noise
 
 
 def main():
@@ -88,6 +96,7 @@ def main():
     rows = list(csv.DictReader(open(a.v3)))
     n_rep = n_clamp = 0
     t1_last = max(t1 for _, t1 in win.values())
+    keep, dropped, degen = [], [], []
     for r in rows:
         cum = int(r["rally_cum"])
         if cum in win:
@@ -95,9 +104,34 @@ def main():
             r["t0s"], r["t1s"] = f"{t0:.1f}", f"{t1:.1f}"
             r["approx"] = "0"        # human-pinned: the most confident tier
             n_rep += 1
-        elif int(r["game"]) == 1 and float(r["t0s"]) < t1_last + 0.5:
-            r["t0s"] = f"{t1_last + 0.5:.1f}"   # no bleed into the marked block
+        elif int(r["game"]) == 1 and float(r["t0s"]) < t1_last:
+            # v3's game-1 chain mis-anchored early (off by +53..+135 s against
+            # the marks) and re-syncs later - rally 30's window is hand-
+            # verified at 777 s. A post-block rally whose v3 window still has
+            # room after the marked block is kept and clamped (its tail is
+            # trustworthy, its head is not); one that ends BEFORE the block
+            # does is landing entirely inside footage the marks prove belongs
+            # to rallies 1-16, so its true location is unresolved and it gets
+            # no window at all. A missing rally is honest; a wrong one
+            # silently attributes junk detections to it. An earlier revision
+            # clamped t0 and left t1 alone, producing t1 < t0 - the probe
+            # then emitted nothing for it, without saying so.
+            if float(r["t1s"]) <= t1_last + MIN_LEN:
+                dropped.append(cum)
+                continue
+            r["t0s"] = f"{t1_last + 0.5:.1f}"
+            r["approx"] = "1"        # head is now an assumption, not a match
             n_clamp += 1
+        if float(r["t1s"]) <= float(r["t0s"]):
+            degen.append(cum)        # inherited from v3, not ours to invent
+            r["approx"] = "1"
+        keep.append(r)
+    rows = keep
+    if dropped:
+        print(f"  dropped {len(dropped)} unresolvable game-1 windows: "
+              f"{dropped} (v3 places them inside the hand-marked block)")
+    if degen:
+        print(f"  degenerate v3 windows downgraded to approx=1: {degen}")
 
     for i in range(1, len(rows)):
         a0, b1 = float(rows[i]["t0s"]), float(rows[i - 1]["t1s"])
@@ -106,13 +140,21 @@ def main():
             raise SystemExit(f"overlap between marked rallies "
                              f"{rows[i-1]['rally_cum']} and {rows[i]['rally_cum']}")
 
+    # geometry gate: the probe turns t1 - t0 into an ffmpeg -t, so an
+    # inverted window decodes nothing and reports nothing. Never ship one.
+    for r in rows:
+        if float(r["t1s"]) < float(r["t0s"]):
+            raise SystemExit(f"inverted window on rally {r['rally_cum']}: "
+                             f"[{r['t0s']}, {r['t1s']}]")
+
     with open(a.out, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         w.writeheader()
         w.writerows(rows)
     n_conf = sum(1 for r in rows if r["approx"] == "0")
     print(f"\nwrote {a.out}: {len(rows)} rallies, {n_rep} mark-pinned, "
-          f"{n_clamp} clamped after the block, {n_conf} total approx=0")
+          f"{n_clamp} clamped, {len(dropped)} dropped, "
+          f"{n_conf} total approx=0")
 
 
 if __name__ == "__main__":

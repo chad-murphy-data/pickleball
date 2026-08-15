@@ -53,6 +53,17 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 D = ROOT / "data/vision"
 
+# The audit tool PREFILLS shots 1-2 (serve, return) for any rally the
+# labeler merely opens - both are log-known, so they arrive with a real
+# uuid and a real type and look fully coded. Rallies 17/18/43/49 carry
+# exactly those two rows from stray clicks and were never watched; scored
+# as genuine 2-shot rallies they would charge the detector a false
+# positive for every real shot it correctly found. A length rule cannot
+# separate them: rallies 13 and 15 really are two shots (return went
+# out / missed return). So the coded set is explicit - game 1, rallies
+# 1-16, the frozen 203-shot ground truth.
+CODED_RALLIES = frozenset(range(1, 17))
+
 FAST_TYPES = {"speed-up", "counter", "smash"}
 # counter vs. smash is the labeler's least confident split (both are fast,
 # hard-contact shots to the eye); dink/fast/lob is a firm split. Keeping
@@ -119,7 +130,7 @@ def load_labels(path, windows):
             (int(r["shot_index"]), r["hitter_uuid"], r["shot_type"]))
     out, skipped = {}, 0
     for cum, rows in raw.items():
-        if cum not in windows:
+        if cum not in windows or cum not in CODED_RALLIES:
             continue
         rows.sort()
         w = windows[cum]
