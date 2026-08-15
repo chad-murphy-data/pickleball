@@ -409,10 +409,8 @@ function wireVideo(){
   el("voff").onchange = savePrefs;
   V.addEventListener("timeupdate", () => {
     if (!autoPause || cur === null || V.paused) return;
-    const r = rget(cur);
     const sv = (store[cur] || {}).serve;
-    const end = sv != null ? sv + r.dur : (r.approx ? null : r.t1s + voff());
-    if (end != null && V.currentTime > end + 1.5) V.pause();
+    if (sv != null && V.currentTime > sv + rget(cur).dur + 1.5) V.pause();
   });
   document.addEventListener("keydown", e => {
     if (e.target.tagName === "INPUT" || !loaded()) return;
@@ -442,7 +440,7 @@ function side(){
     if (r.slot !== slot){ slot = r.slot;
       h += `<div class="small dim" style="margin-top:9px">GAME ${slot} — ${DATA.games[slot].division}</div>`; }
     const sv = (store[r.cum] || {}).serve;
-    const tshow = sv != null ? "⏱" + fmts(sv) : (r.approx ? "—" : r.t0);
+    const tshow = sv != null ? "⏱" + fmts(sv) : "—";
     h += `<div class="rrow ${cur === r.cum ? "sel" : ""}" onclick="open_(${r.cum})">
       <span style="width:74px">${tshow}</span>
       <span>R${r.rally}</span><span class="dim small">#${r.cum}</span>
@@ -462,11 +460,9 @@ function side(){
 function open_(c){
   cur = c; side(); panel();
   const sv = (store[c] || {}).serve;
-  const r = rget(c);
-  if (sv != null) seekTo(sv - 2, true);       // your mark is the truth
-  else if (!r.approx) seekRally(r, true);     // verified window: seek
-  /* approx & unmarked: DON'T seek — working in order, the video is
-     already at the right place; a wrong jump is worse than none */
+  if (sv != null) seekTo(sv - 2, true);   // your mark is the ONLY authority
+  /* unmarked: never seek — machine-derived times are retired from this
+     page; working in order, the video is already at the right place */
 }
 
 function panel(){
@@ -474,10 +470,10 @@ function panel(){
   if (cur === null){ p.innerHTML = intro(); return; }
   const r = rget(cur), ps = players(r), sh = shots(cur);
   const sv0 = (store[cur] || {}).serve;
-  const bigt = sv0 != null ? "⏱" + fmts(sv0) : (r.approx ? "—" : r.t0);
+  const bigt = sv0 != null ? "⏱" + fmts(sv0) : "—";
   let h = `<div class="bar"><span id="scrub" onclick="open_(cur)"
-      title="click to replay this rally">${bigt}</span>
-    <span class="dim">${r.approx && sv0 == null ? "no verified time — video stays put; scrub to the rally" : `→ ends ~${r.t1}`} (${r.dur.toFixed(0)}s)</span>
+      title="click to replay from your serve mark">${bigt}</span>
+    <span class="dim">${sv0 == null ? "scrub to the serve, pause, hit ⏱" : "click the time to replay"} (~${r.dur.toFixed(0)}s logged)</span>
     <span class="badge">G${r.slot} R${r.rally} · #${r.cum}</span>
     <span class="badge">${DATA.games[r.slot].division}</span>
     ${r.orig ? '<span class="badge orig">original blind-10</span>' : ""}
