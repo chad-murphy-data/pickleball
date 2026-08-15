@@ -615,8 +615,9 @@ social prediction-card renders (design bundle `Prediction Cards.dc.html`,
 port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
 push to main, nightly data refresh); one-time setup = repo Settings →
 Pages → Source "GitHub Actions".
-Vision (2026-08-11 → CLOSED 2026-08-15) — **READ `vision/POSTMORTEM.md`
-FIRST**: the whole arc in order with the numbers, the surviving assets,
+Vision (2026-08-11 → CLOSED 2026-08-15 → **SWING THREAD REOPENED later
+the same day, user call**) — **READ `vision/POSTMORTEM.md` FIRST**: the
+whole arc in order with the numbers, the surviving assets,
 and the six lessons. The rest of this entry and
 model/vision_adjudication.md are the layered technical record, written in
 the order things happened (including two reversals), and are harder to
@@ -643,6 +644,24 @@ need p ≈ 0.85–0.93 on FAST shots (parity+interval certification catches
 most chain corruption, so the hard-0.93 framing was slightly overstated).
 BOTH RE-ENTRY GATES ARE NOW SHUT — the vision program is over; do not
 re-open it without NEW FOOTAGE (see the scope line at the end).
+**EXCEPTION, 2026-08-15 later the same day (user decision): the SWING
+thread reopened with the zero-training constraint DROPPED** — the user
+supplies hand-timestamped contact labels, which v1 never had (the 203
+ordinal labels carried no times because audio was supposed to carry
+timing, and audio's premise failed). Rationale: v1's 0.442 recall was
+measured through the audio coincidence gate — a near-random thinning
+(pops uncorrelated with shots) — so the pose channel's own ceiling was
+never measured; serve recall 33% on the sport's most stereotyped motion
+is the tell. **Gate C is pre-registered in `vision/contact_gate.md`
+(bars frozen BEFORE any timestamped label existed) — read it before
+touching this thread.** Sequence: label core 16 with timestamps
+(`data/vision/contact_audit_chicago0725.html`, from
+vision/make_contact_audit.py) → `vision/pose_extract.py` (full-skeleton
+identity-continuous tracks, --selftest'd) → `vision/contact_ceiling.py`
+(torso-relative candidate ceiling vs shifted-label null, verdict
+printed). Trainer deliberately UNBUILT until Gate C passes — building
+it first is the anti-pattern Gate A avoided. The BALL thread is
+unchanged: still closed, still needs new footage.
 (A) BALL — CLOSED 2026-08-15, the wall is PHYSICAL and measured
 (`vision/ball_visibility.py`, `data/vision/ball_labels_chicago0725.csv`).
 The user hand-labeled all 416 sampled frames with a 5× loupe,

@@ -1,5 +1,16 @@
 # Vision POC — can we read shots off a broadcast?
 
+> **UPDATE 2026-08-15 (evening) — the SWING thread is reopened with
+> training data; read `vision/contact_gate.md` first.** The program
+> closed that morning (`vision/POSTMORTEM.md`), then the user dropped
+> the zero-training constraint: hand-TIMESTAMPED contact labels become
+> the new instrument. Gate C (pose-stream candidate ceiling, bars
+> pre-registered before any label existed) decides whether a trainer
+> ever gets built. Workflow: `make_contact_audit.py` → the labeling
+> page → `pose_extract.py` → `contact_ceiling.py`. The ball thread
+> stays closed — training data cannot exist where a human cannot see
+> the ball.
+
 > **UPDATE 2026-08-11 — read `vision/mvp_findings.md` first.** The MVP is
 > built (`court.py`, `lineup.py`, `track_match.py`, `shots.py`) and each
 > stage is now MEASURED rather than assumed. Court geometry is solved
