@@ -1,0 +1,242 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Ball flipbook — Gate A labeling</title>
+<style>
+  :root{--bg:#0d1117;--fg:#e6edf3;--dim:#8b949e;--acc:#3fb950;--warn:#d29922;
+        --bad:#f85149;--line:#30363d;--panel:#161b22;
+        --mag:115px}   /* magnifier diameter — JS reads it off the element */
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5
+       ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+       overflow:hidden;user-select:none}
+  #bar{display:flex;align-items:center;gap:14px;padding:8px 14px;
+       background:var(--panel);border-bottom:1px solid var(--line);height:46px}
+  #stage{position:relative;height:calc(100vh - 46px - 34px);
+         display:flex;align-items:center;justify-content:center;background:#000}
+  #frame{max-width:100%;max-height:100%;display:block;cursor:none;
+         image-rendering:auto}
+  #mag{position:fixed;width:var(--mag);height:var(--mag);
+       border:2px solid var(--acc);
+       border-radius:50%;pointer-events:none;display:none;z-index:9;
+       background-repeat:no-repeat;background-origin:border-box;box-shadow:0 4px 20px #000c}
+  #mag:after{content:"";position:absolute;inset:0;
+             background:linear-gradient(var(--acc),var(--acc)) 50% 50%/1px 14px no-repeat,
+                        linear-gradient(var(--acc),var(--acc)) 50% 50%/14px 1px no-repeat;
+             opacity:.85}
+  #foot{height:34px;display:flex;align-items:center;gap:16px;padding:0 14px;
+        background:var(--panel);border-top:1px solid var(--line);
+        color:var(--dim);font-size:12px}
+  .pill{padding:2px 9px;border-radius:99px;background:#21262d;font-size:12px}
+  .pill.calib{background:#1f6feb33;color:#79c0ff}
+  .pill.fast{background:#f8514933;color:#ff7b72}
+  .pill.random{background:#8b949e33}
+  button{background:#21262d;color:var(--fg);border:1px solid var(--line);
+         border-radius:6px;padding:5px 11px;font:inherit;cursor:pointer}
+  button:hover{border-color:var(--dim)}
+  button.go{background:var(--acc);color:#08130d;border-color:transparent;
+            font-weight:600}
+  #prog{flex:1;height:6px;background:#21262d;border-radius:99px;overflow:hidden}
+  #progf{height:100%;width:0;background:var(--acc);transition:width .12s}
+  kbd{background:#21262d;border:1px solid var(--line);border-bottom-width:2px;
+      border-radius:4px;padding:0 5px;font:11px ui-monospace,monospace}
+  #splash{position:fixed;inset:0;background:var(--bg);z-index:20;display:flex;
+          align-items:center;justify-content:center}
+  #splash>div{max-width:620px;padding:30px}
+  h2{margin:0 0 6px;font-size:19px}
+  ul{padding-left:20px;color:var(--dim)} li{margin:5px 0}
+  #dot{position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;
+       border:2px solid var(--acc);border-radius:50%;display:none;
+       pointer-events:none;box-shadow:0 0 0 1px #000}
+</style>
+
+<div id="splash"><div>
+  <h2>Ball flipbook</h2>
+  <p style="color:var(--dim)">Click the ball. It moves to the next frame.
+  That is the whole loop.</p>
+  <ul>
+    <li><b>Click</b> the ball's centre. On a fast shot it is a <b>streak</b> —
+        click the middle of the streak, and be consistent about it.</li>
+    <li><kbd>space</kbd> or <kbd>x</kbd> — can't see it / not in frame.
+        <b>Never guess</b>; a wrong position is worse than none.</li>
+    <li><kbd>b</kbd> hold — blink to the previous frame. The ball moves,
+        everything else doesn't, so it pops out. Best tool you have.</li>
+    <li><kbd>c</kbd> — this frame is the moment of paddle contact.</li>
+    <li><kbd>z</kbd> back one · <kbd>→</kbd> skip · save often.</li>
+  </ul>
+  <p><button class="go" id="pick">Choose the ball_frames folder…</button>
+    <input type="file" id="dir" webkitdirectory directory multiple hidden></p>
+  <p style="color:var(--dim);font-size:12px">Nothing uploads. Work is kept in
+    this browser; use <b>Download CSV</b> at the end of every sitting.</p>
+</div></div>
+
+<div id="bar">
+  <b id="pos">–</b><span class="pill" id="strat">–</span>
+  <span class="pill" id="rally">–</span>
+  <div id="prog"><div id="progf"></div></div>
+  <span id="tally" style="color:var(--dim);font-size:12px"></span>
+  <button id="dl">⬇ CSV</button>
+  <button id="imp">⬆ restore</button>
+  <input type="file" id="csvpick" accept=".csv" hidden>
+</div>
+<div id="stage"><img id="frame" alt=""><div id="dot"></div></div>
+<div id="foot">
+  <span><kbd>click</kbd> ball</span><span><kbd>space</kbd> can't see</span>
+  <span><kbd>b</kbd> blink</span><span><kbd>c</kbd> contact</span>
+  <span><kbd>z</kbd> back</span>
+  <span id="msg" style="margin-left:auto;color:var(--acc)"></span>
+</div>
+
+<script>
+const ZOOM = 5, KEY = "ballflip.v2";
+let items = [], i = 0, store = {}, urls = {}, blink = false;
+
+const $ = id => document.getElementById(id);
+const cur = () => items[i];
+
+// filenames carry everything: f0007_r23_fast_t145.833_2.jpg
+function parseName(n){
+  const m = n.match(/^f(\d+)_r(\d+)_(calib|fast|random)_t(\d+\.\d+)_(\d)\.jpg$/);
+  return m ? {idx:+m[1], rally:+m[2], strat:m[3], t:+m[4], k:+m[5], name:n} : null;
+}
+
+$("pick").onclick = () => $("dir").click();
+$("dir").onchange = e => {
+  const files = [...e.target.files], tgt = [];
+  for (const f of files){
+    const p = parseName(f.name);
+    if (!p) continue;
+    urls[f.name] = URL.createObjectURL(f);
+    if (p.k === 2) tgt.push(p);
+  }
+  if (!tgt.length){ alert("No frames found. Pick the folder make_ball_frames.py wrote."); return; }
+  tgt.sort((a,b) => a.idx - b.idx);
+  items = tgt;
+  try { store = JSON.parse(localStorage.getItem(KEY) || "{}"); } catch { store = {}; }
+  i = items.findIndex(x => !(x.name in store));
+  if (i < 0) i = items.length - 1;
+  $("splash").style.display = "none";
+  show();
+};
+
+function prevName(p){ return p.name.replace(/_2\.jpg$/, "_1.jpg"); }
+
+function show(){
+  const p = cur();
+  if (!p) return;
+  $("frame").src = urls[blink ? prevName(p) : p.name] || urls[p.name];
+  $("pos").textContent = `${i+1} / ${items.length}`;
+  $("strat").textContent = p.strat;
+  $("strat").className = "pill " + p.strat;
+  $("rally").textContent = `rally ${p.rally} · ${p.t.toFixed(3)}s`;
+  // count only frames in THIS set — a regenerated frame set leaves the
+  // old set's keys behind in storage, and counting those inflates progress
+  let done = 0, vis = 0;
+  for (const it of items){
+    const r = store[it.name];
+    if (r){ done++; if (r.v) vis++; }
+  }
+  $("progf").style.width = (100*done/items.length).toFixed(1) + "%";
+  $("tally").textContent = `${done} done · ${vis} with a ball · ${done-vis} unseen`;
+  const rec = store[p.name], d = $("dot");
+  if (rec && rec.v){
+    const im = $("frame").getBoundingClientRect(), st = $("stage").getBoundingClientRect();
+    d.style.display = "block";
+    d.style.left = (im.left - st.left + rec.x*im.width) + "px";
+    d.style.top  = (im.top  - st.top  + rec.y*im.height) + "px";
+  } else d.style.display = "none";
+}
+
+function record(v, x, y){
+  const p = cur();
+  store[p.name] = {v: v?1:0, x: x??"", y: y??"",
+                   c: (store[p.name]||{}).c || 0,
+                   r: p.rally, s: p.strat, t: p.t};
+  localStorage.setItem(KEY, JSON.stringify(store));
+  if (i < items.length - 1){ i++; show(); }
+  else { show(); flash("last frame — download the CSV"); }
+}
+
+function flash(t){ $("msg").textContent = t; setTimeout(()=>{ if($("msg").textContent===t) $("msg").textContent=""; }, 2200); }
+
+$("frame").addEventListener("click", e => {
+  const r = e.target.getBoundingClientRect();
+  record(true, (e.clientX - r.left)/r.width, (e.clientY - r.top)/r.height);
+});
+
+// magnifier — CSS background trick, no canvas, no cross-origin worries.
+// Diameter comes from the rendered element (CSS --mag), so resizing the
+// circle is a one-line CSS change and the centring maths cannot drift.
+$("frame").addEventListener("mousemove", e => {
+  const r = e.target.getBoundingClientRect(), m = $("mag");
+  const x = e.clientX - r.left, y = e.clientY - r.top;
+  m.style.display = "block";
+  // Centred ON the cursor, not floating above it. An offset loupe plus
+  // cursor:none left nothing on screen marking the real click point, so
+  // the circle read as "you are here" while clicks landed a loupe-height
+  // lower. Centred, the crosshair IS the click point.
+  const D = m.offsetWidth || 115, half = D / 2;
+  m.style.left = (e.clientX - half) + "px";
+  m.style.top  = (e.clientY - half) + "px";
+  m.style.backgroundImage = `url("${$("frame").src}")`;
+  m.style.backgroundSize = `${r.width*ZOOM}px ${r.height*ZOOM}px`;
+  m.style.backgroundPosition = `${half - x*ZOOM}px ${half - y*ZOOM}px`;
+});
+$("frame").addEventListener("mouseleave", () => $("mag").style.display = "none");
+
+addEventListener("keydown", e => {
+  if (!items.length) return;
+  const k = e.key.toLowerCase();
+  if (k === " " || k === "x"){ e.preventDefault(); record(false); }
+  else if (k === "b" && !blink){ blink = true; show(); }
+  else if (k === "z"){ e.preventDefault();
+    if (i > 0){ i--; delete store[cur().name];
+                localStorage.setItem(KEY, JSON.stringify(store)); show(); } }
+  else if (k === "arrowright"){ if (i < items.length-1){ i++; show(); } }
+  else if (k === "arrowleft"){ if (i > 0){ i--; show(); } }
+  else if (k === "c"){
+    const p = cur(); store[p.name] = store[p.name] || {v:0,x:"",y:"",r:p.rally,s:p.strat,t:p.t};
+    store[p.name].c = store[p.name].c ? 0 : 1;
+    localStorage.setItem(KEY, JSON.stringify(store));
+    flash(store[p.name].c ? "marked as the contact frame" : "contact mark cleared");
+  }
+});
+addEventListener("keyup", e => {
+  if (e.key.toLowerCase() === "b"){ blink = false; show(); }
+});
+
+$("dl").onclick = () => {
+  const rows = [["frame_file","rally_cum","stratum","t_video",
+                 "x_frac","y_frac","visible","is_contact"]];
+  for (const p of items){
+    const r = store[p.name];
+    if (!r) continue;
+    rows.push([p.name, r.r, r.s, r.t.toFixed(3),
+               r.v ? (+r.x).toFixed(5) : "", r.v ? (+r.y).toFixed(5) : "",
+               r.v, r.c || 0]);
+  }
+  const csv = rows.map(r => r.join(",")).join("\n");
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv"}));
+  a.download = "ball_labels_chicago0725.csv"; a.click();
+};
+
+$("imp").onclick = () => $("csvpick").click();
+$("csvpick").onchange = e => {
+  const fr = new FileReader();
+  fr.onload = () => {
+    const lines = fr.result.trim().split(/\r?\n/).slice(1);
+    for (const ln of lines){
+      const c = ln.split(",");
+      if (c.length < 8) continue;
+      store[c[0]] = {v:+c[6], x:c[4], y:c[5], c:+c[7],
+                     r:+c[1], s:c[2], t:+c[3]};
+    }
+    localStorage.setItem(KEY, JSON.stringify(store));
+    i = items.findIndex(x => !(x.name in store));
+    if (i < 0) i = items.length - 1;
+    show(); flash("restored " + lines.length + " rows");
+  };
+  fr.readAsText(e.target.files[0]);
+};
+</script>
+<div id="mag"></div>

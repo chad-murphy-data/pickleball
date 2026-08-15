@@ -468,8 +468,9 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
     - Raw logs stay the source of truth: a tally-logic fix means re-derive
       from raw + re-upsert, NOT re-fetch. DB is a queryable cache.
     - Ceiling: no shot-level data exists anywhere (only referee logs); that
-      needs a broadcast vision pipeline. Everything the logs contain is now
-      in the warehouse.
+      needs a broadcast vision pipeline — ATTEMPTED AND STOPPED 2026-08-11,
+      see the Vision entry under Open threads before re-opening. Everything
+      the logs contain is now in the warehouse.
 
 ## Scheduled obligations
 
@@ -613,6 +614,97 @@ Website extras: live win-prob charts (needs Tier 1/2 listener on a VPS);
 social prediction-card renders (design bundle `Prediction Cards.dc.html`,
 port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
 push to main, nightly data refresh); one-time setup = repo Settings →
-Pages → Source "GitHub Actions". Scorebug OCR of YouTube broadcasts could
-backfill point-by-point history (Tier 0 of the vision pipeline;
-championship-court sample bias noted).
+Pages → Source "GitHub Actions".
+Vision (2026-08-11 → CLOSED 2026-08-15) — **READ `vision/POSTMORTEM.md`
+FIRST**: the whole arc in order with the numbers, the surviving assets,
+and the six lessons. The rest of this entry and
+model/vision_adjudication.md are the layered technical record, written in
+the order things happened (including two reversals), and are harder to
+read cold. BUILT, MEASURED, STOPPED, ADJUDICATED; do not re-open except
+via the gate below. Record: vision/mvp_findings.md +
+vision/README.md (branch of PR #52 until merged); the two-account
+litigation ("90%+ of rallies" vs "46% is the ceiling") is settled in
+model/vision_adjudication.md — both accounts were honest about DIFFERENT
+LAYERS. Outer layers solved: rally↔video sync 93% (broadcast edit depth
+recovered blind, 27.0 vs 26.9 min), court homography 0.06 ft, player
+identity 99.25% over 45,689 rallies from referee logs alone — that lineup
+state machine (vision/lineup.py) is a keeper asset, no camera needed.
+Inner layer (ball/contacts) is the wall and is junk-dominated:
+side-alternation 9% vs 50% chance (real contacts ≈100%), ~1.1 identified
+contacts/rally vs ~12 played, ball absent from the candidate set outside
+tracks (extrapolation probe ≈ displaced null). The interval histogram's
+"fast mode" is CONFOUNDED — its 0.23 s peak equals the median
+track-fragment length (0.233 s) and the blind gender split is co-predicted
+by differential motion blur — never publish from that stream. "TrackNet
+46%" is a 48-frame, unverified, tennis-weights CPU probe: neither a floor
+nor a ceiling, only "off-the-shelf transfer is insufficient". Auto-label
+fine-tuning is poisoned (42% kitchen-band vs 14% base). Sequence metrics
+need p ≈ 0.85–0.93 on FAST shots (parity+interval certification catches
+most chain corruption, so the hard-0.93 framing was slightly overstated).
+BOTH RE-ENTRY GATES ARE NOW SHUT — the vision program is over; do not
+re-open it without NEW FOOTAGE (see the scope line at the end).
+(A) BALL — CLOSED 2026-08-15, the wall is PHYSICAL and measured
+(`vision/ball_visibility.py`, `data/vision/ball_labels_chicago0725.csv`).
+The user hand-labeled all 416 sampled frames with a 5× loupe,
+blink-compare and no time limit, and could not find the ball in 48%.
+Their own correction — "a decent chunk of the can't-find were between
+points" — is right and is what makes the number trustworthy: rally-17+
+windows are t0 = t1 − duration and the log's duration carries a ~6 s
+pre-serve lead. Binning by seconds-since-window-open separates dead time
+from play and plateaus: 14% (0–3 s), 22% (3–6 s), 58%, 70%, 63%. IN-PLAY
+FINDABILITY 64.1% [59%, 69%], n=306 — whole CI under the pre-registered
+0.8 kill line. Generous if anything: the `fast` stratum proxy produced no
+difficulty split (z=−0.62), so true fast frames are likely worse. Step 2
+(fine-tune) was NOT run and should not be: ground truth exists only where
+a human can see the ball, so on 36% of in-play frames a detector's claims
+are unfalsifiable — the exact failure that poisoned the auto-label
+fine-tune. A perfect detector returns ~64% of positions with the misses
+piled at fast/occluded moments, i.e. the contacts. SCOPE: this measures a
+condensed 720p VOD; higher-res or uncondensed source would need
+re-measuring, and that is the only door left — it needs different video,
+not more labels or compute. (B) SWING PROXY — verdict
+KILLED 2026-08-15 on a sound frame — CLOSED, do not re-open. The
+2026-08-13 KILL was suspended a day for a COMPROMISED MEASUREMENT FRAME
+(cheer↔rally join up to 40 s off, user-observed while labeling; only 10
+anchor rallies were ever time-validated). Re-gate: the user hand-marked
+the serve instant of all 16 labeled rallies in the audit tool, marks and
+labels coming from the SAME video so the frame is airtight
+(`vision/serve_pin_windows.py` → `rally_windows_chicago0725_v4.csv`);
+probe re-run over 191 windows (4.9 h); `swing_gate_report_v2.json`.
+The comparison IS the finding — the confound was real and it corrupted
+PRECISION, not recall: precision 0.721→0.871 (+15 pts, exactly what
+un-breaking the spans should do, and independent proof the frame was
+broken), overall recall 0.467→0.442, fast 0.475→0.469 (n=81 with smash
+folded in pre-scoring), alternation 0.460→0.448. Alternation tops out at
+0.448 across ALL 34 feasible grid points — under the 0.45 junk-kill
+line, under 0.50 chance, far under the 0.608 the measured (r,q) implies.
+The touch-share fallback needs fast recall 40-60% WITH G1 consistency;
+consistency fails, so it does not apply. Rallies 2/8 results and the
+pose debug frames stand; the 203 labels are on correct rallies.
+GENERAL LESSON (cost: two sessions): a measurement-frame bug and a
+detector failure are observationally identical in every label-free
+diagnostic. When windows are machine-derived, validate them on the
+CASES BEING SCORED before trusting any verdict — the ±1 s check that
+covered 10 anchor rallies was generalized to 191 and hid a 40 s error.
+Human ground truth on the scored cases is the cheap fix.
+Autopsy (model/vision_adjudication.md §Stage 2): the AUDIO gate was a
+PREMISE failure — per-rally pop counts are uncorrelated with true shot
+counts on broadcast audio at every threshold (r≈0.0–0.2; the POC's
+"stripes at shot cadence" was an eyeball over-read; the original
+standalone-audio postmortem was right), so swing∧pop lost its precision
+witness. The POSE channel keeps count-level signal (swing-peak counts
+carry partial r≈+0.5–0.6 with shot counts beyond duration; the tracker's
+frame-local side split corrupted 42% of far labels — fixable). Any
+revival = a THIRD instrument (identity-continuous tracking,
+torso-relative wrist velocity, arm-geometry gating, alternation-prior
+sequence decoding, NO audio gate), graded on FRESH labels only; prior
+~1-in-5. The 203 labeled shots (data/vision/shot_labels_chicago0725.csv,
+first 16 rallies of the women's game, notes incl. both-went-for-it and
+swing-and-miss events) are spent for gating v1 but remain the project's
+ONLY shot-level ground truth (dink 31%/counter 23%/smash 10%/speed-up
+7%) — answer key for any future instrument or purchased hand-coded
+data. Ball-only forever: placement, landing, contact height. Condensed
+championship-court VODs remain a structural sample bias and the
+freeze-out question stays n=4 at any tracking quality. Scorebug OCR (flip sync is
+solved, frame-exact) remains viable for point-by-point backfill of
+UNLOGGED matches only — low value while getListLogs covers 2026.
