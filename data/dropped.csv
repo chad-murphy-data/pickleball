@@ -19,10 +19,7 @@ mixed,2026-08-17,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport
 mixed,2025-07-09,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,9604fe52-fee8-4726-b7f8-7d330aa5826a,no played games (forfeit/walkover),Quarter Finals W,MLP
 mixed,2025-11-01,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,fe4b4262-43af-4b1e-bb5d-cb5c1265b116,no played games (forfeit/walkover),Round 3 RR,MLP
 mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,1f6f9075-5598-4c45-8166-9d5e6a1a961f,no played games (forfeit/walkover),Round 2 RR,MLP
-womens,2026-08-14,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,9c20bc32-88c9-44ce-becc-a16f57a1bd4f,match not completed (status=1),RR,MLP
-mens,2026-08-14,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,21946850-cb25-45e0-b91c-419b089fd5e7,match not completed (status=1),RR,MLP
-mixed,2026-08-14,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,7484ac56-aee1-470c-9e0e-0116274e594d,match not completed (status=1),RR,MLP
-mixed,2026-08-14,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,a68ce158-10e0-4911-8dd9-8be118e17bd8,match not completed (status=1),RR,MLP
+mixed,2026-08-14,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,a68ce158-10e0-4911-8dd9-8be118e17bd8,no played games (forfeit/walkover),RR,MLP
 ,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,1d40231a-26ef-4c04-a890-d2868d1020a0,bye matchup (no opponent),,MLP
 womens,2026-08-17,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,9c258e85-2ae4-4cfa-aea7-e3a4d62e040c,match not completed (status=1),RR,MLP
 mens,2026-08-17,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,4750c711-81b0-4bf1-9770-0a6070e0e373,match not completed (status=1),RR,MLP
@@ -131,10 +128,6 @@ mixed,2026-08-16,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport
 mixed,2025-07-10,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,68ff9aa2-8213-47e3-af2a-9c92ba723a8e,no played games (forfeit/walkover),Round 16 W,MLP
 mixed,2026-07-12,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,8f20ec62-88c8-4355-b5f8-a629b586fb32,no played games (forfeit/walkover),Finals GS,MLP
 ,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,c9c2086a-4d4c-4c23-9d0a-c134120873ca,bye matchup (no opponent),,MLP
-womens,2026-08-14,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,e3551ef1-bef4-40dc-9406-86837191b6ca,match not completed (status=1),RR,MLP
-mens,2026-08-14,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,93b28a12-b295-4a57-8876-9e196632198e,match not completed (status=1),RR,MLP
-mixed,2026-08-15,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,d032c030-4424-466f-822d-e4ec2be12f2e,match not completed (status=1),RR,MLP
-mixed,2026-08-15,dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281,Toray MLP Playoffs Newport Beach,,d5bb6eb6-f76e-4186-9f3c-61d5c01800fb,match not completed (status=1),RR,MLP
 ,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,d1b9e57c-3acd-4767-a1af-669bab809a80,bye matchup (no opponent),,MLP
 mixed,2026-05-31,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,cbc8a702-8f4e-4277-a028-0da169a139d4,no played games (forfeit/walkover),One and Done - Playoff W,MLP
 mixed,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,73aa4200-baa0-45be-9b61-f0d62b4b6bfd,no played games (forfeit/walkover),Round 2 RR,MLP
@@ -259,6 +252,61 @@ womens,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento
 womens,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,2e9b69d8-2803-4b00-aee5-19017e282cd6,no played games (forfeit/walkover),Qualifier — Semi-Finals,PPA
 womens,2026-04-17,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,fc32f379-939f-405b-ad7f-b01db39f4912,no played games (forfeit/walkover),Quarter Finals,PPA
 womens,2026-04-19,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,b53896c8-7fc8-4a11-bcf7-0a212ec771ef,no played games (forfeit/walkover),Bronze,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,a7de3f7b-fe26-4dc2-acac-590f4225b4e9,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,55144a0b-5c22-4648-b160-153a82181920,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,59cea783-4fe9-4c32-b0e0-c2f35aa757c6,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,6f47726b-57f1-4321-b834-39bfff8888b0,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,7951c23b-7d2d-4987-a9e3-170d4aeff49f,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,79a54a5e-45bb-45f8-80e4-5e6df0cc16e9,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,7f0e99c6-93e0-40c7-aed7-0ee67d9f129e,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,856ee57d-1129-45a6-bafe-aa17dba82348,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,86729e6c-c469-40cd-9221-bed7423d5eff,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,893df26b-4332-4718-bd07-74d0c4c4e210,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,908fcaa7-866f-4885-b044-d1e97b6be9ca,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,98e76ec7-10ed-4230-a248-01d4fc039c3b,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,a369e026-ccb5-4543-88f4-3d31bb0aa3ef,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,a42ca4f3-3f4c-4592-b090-02898cd5dc42,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,4cfafe29-a254-477c-ba49-d9d0a49bbb46,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,aaa297ff-7be5-4410-bb3e-cb1deaf6f054,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,af15db35-c623-4d50-a737-792e8bed37b6,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,afab854c-b9cb-44fc-bc93-5d46b1f2eaef,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,b708421b-6153-4614-8ded-c62555192d9c,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,b767e4de-f2ba-4900-b922-c9818f113f65,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,ba1e9c36-f57d-44ce-927f-bdbad2fc7038,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,c0042348-ebdd-4a07-9586-a75f11fc33ea,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,d152cb41-da98-44bc-b3e1-6b28823a9fb5,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,de765071-5b18-4071-86e5-8915cd7e078d,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,e035461c-9936-4072-8d63-44fdb281546c,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,e7845a65-636e-4f5f-ae95-044432a46ad9,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,f412bbe4-2b66-4084-b61b-f98373da55e6,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,f70afa47-b0c1-4af2-b9cd-f055f5a9c389,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,33d65720-e9ed-4d6b-bb90-8411af87c1be,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,309ee4ca-c268-42a0-97fd-ffaf45f6d0e6,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,25123af7-510d-4426-aa03-2de3fe4fdc46,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,20f6b357-2982-4ca4-bd3e-ac36e3ece56a,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,164c5b00-75bd-40a3-a255-a416f87720dc,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,10bea844-66e0-4fd9-b8c1-488f4e8a63dd,match not completed (status=1),,PPA
+mens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,0a9be92a-bbb5-4bb4-b69c-a873d3b01e5e,match not completed (status=1),,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,642dcce1-acb6-4082-a67d-dc908c2e36ce,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,09417892-8242-48d7-86d6-cf54bb7e8538,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,525e798d-5a60-43c2-9c6c-ec3650f4d4c3,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,3f786b61-b5a8-4bc7-a491-d0a14c64196a,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,3070e147-812a-4152-8b1d-913afffc777b,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,2415f9bd-0f00-413a-ac82-6128b88239f3,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,15da23bf-ba12-4b58-b07c-d645f342b514,match not completed (status=1),Round 64,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,0f9aa5b9-c435-4fbb-a0db-370b85268a99,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,0cba8ed0-7db7-4095-a0b0-e65b88d38175,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,089e629e-38e5-49d9-81c7-81e2f8d1b978,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,66ee4df9-3686-49ea-bf9e-b801e15eca01,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,69d4ca71-2cdc-46e2-baf2-29f9f873d616,match not completed (status=1),Round 64,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,6d3737d9-7000-4522-a9d0-4ee1771fe191,match not completed (status=1),Round 64,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,70a26e86-0d8f-4787-8d0c-168ee0568384,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,740bb667-b877-416c-ae2f-3b7949521a9c,match not completed (status=1),Round 64,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,7fa2c791-a0b4-4067-99c3-bb4bb33c83b8,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,8217c29d-c8bf-4c2e-a6e1-901c6e7f637d,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,8680c899-bc72-4a7e-9de0-4d70a46999eb,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,94c257b0-c012-4cec-9e54-577b8af58f41,match not completed (status=1),Round 32,PPA
+womens,2026-08-15,24c9d0bb-4906-45b9-830e-c5b09bf04521,2026 Seattle PPA Challenger,,feafb800-55b7-4728-b6cb-ec9d728610df,match not completed (status=1),Round 32,PPA
 mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,008733c5-3937-4349-8c7f-34b8ea32bbe1,match not completed (status=1),Round 64,PPA
 mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,342a9cf3-dd21-41a9-a149-2672d9057a19,match not completed (status=1),Round 32,PPA
 mens,2025-08-23,296b6f6f-577f-4cf2-8a5a-657c71485b38,Fairfield & Suisun Valley PPA Challenger Presented by Caymus-Suisun,,359cf770-e509-494c-848f-d556baa6073e,match not completed (status=1),Round 32,PPA
@@ -607,6 +655,15 @@ womens,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Mas
 womens,2026-01-12,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,bb5631ea-1cc8-4dd3-b4f2-7778708e0739,match not completed (status=1),Qualifier — Semi-Finals,PPA
 womens,2026-01-14,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,2b994fb7-7424-4e64-b5cc-54b0ed4b98d9,no played games (forfeit/walkover),Round 64,PPA
 mens,2026-01-14,8ab37b28-af20-44e9-845d-0beae3e388d8,PPA Tour: Carvana PPA Masters Powered by Invited,,bde72b0e-d709-4fc7-90c2-74b6b47d8967,no played games (forfeit/walkover),Round 64,PPA
+womens,2026-08-15,8e81ca62-11c2-41d4-85b8-fda8491c5c20,PPA125 - GOLD COAST,,512ecd77-6f64-46c4-af5e-e2284c6166ae,no played games (forfeit/walkover),WOMEN'S PRO DOUBLES MAIN DRAW,PPA
+mens,2026-08-15,8e81ca62-11c2-41d4-85b8-fda8491c5c20,PPA125 - GOLD COAST,,45b7d9b9-d2c9-47dc-b781-c31120247406,no played games (forfeit/walkover),PRO MEN's DOUBLES MAIN DRAW,PPA
+womens,2026-08-15,8e81ca62-11c2-41d4-85b8-fda8491c5c20,PPA125 - GOLD COAST,,2de3658a-512f-4785-a865-dc94b86cbe74,no played games (forfeit/walkover),WOMEN'S PRO DOUBLES MAIN DRAW,PPA
+womens,2026-08-15,8e81ca62-11c2-41d4-85b8-fda8491c5c20,PPA125 - GOLD COAST,,1b35c305-6163-4b9c-b62f-1235d0271be4,no played games (forfeit/walkover),WOMEN'S PRO DOUBLES MAIN DRAW,PPA
+womens,2026-08-15,8e81ca62-11c2-41d4-85b8-fda8491c5c20,PPA125 - GOLD COAST,,e81addb6-2c1f-4e74-9961-44fb5487880b,no played games (forfeit/walkover),WOMEN'S PRO DOUBLES MAIN DRAW — Quarter Finals,PPA
+mens,2026-08-14,8e81ca62-11c2-41d4-85b8-fda8491c5c20,PPA125 - GOLD COAST,,24caa89d-42a6-494a-98e3-50707e491ddd,no played games (forfeit/walkover),PRO MEN's DOUBLES MAIN DRAW,PPA
+mens,2026-08-14,8e81ca62-11c2-41d4-85b8-fda8491c5c20,PPA125 - GOLD COAST,,9b38cd4c-45ae-43a7-ae8e-ce51a90ebde2,no played games (forfeit/walkover),PRO MEN's DOUBLES MAIN DRAW — Round 16,PPA
+mens,2026-08-14,8e81ca62-11c2-41d4-85b8-fda8491c5c20,PPA125 - GOLD COAST,,5b7cc2b7-d5b7-48ba-a5d4-a11c84f727fd,"bracket bye/shell (empty side, no scores)",PRO MEN's DOUBLES MAIN DRAW,PPA
+womens,2026-08-14,8e81ca62-11c2-41d4-85b8-fda8491c5c20,PPA125 - GOLD COAST,,d7d175fd-1333-4f5d-9b6d-bc81b68a0ccf,"bracket bye/shell (empty side, no scores)",WOMEN'S PRO DOUBLES MAIN DRAW,PPA
 womens,2025-03-09,923b6d24-15ac-4ed0-860b-f83b52863e3e,PPA Tour: Veolia Cape Coral Open,,6f5b9a56-6694-4c48-91ae-407d00f3d51f,no played games (forfeit/walkover),Bronze,PPA
 mixed,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,0255a4c5-fefa-41b2-832a-69b9659831a8,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
 mixed,2026-04-27,92d37566-5850-40a3-8aad-7217276dc586,PPA Tour: 2026 Veolia Atlanta Pickleball Championships,,1748e69f-ad52-456b-94bb-f98d2a78593e,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
