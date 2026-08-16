@@ -67,21 +67,39 @@ def green_mask(fr):
 
 def locate_cells(frames):
     """The two green score cells + the dots bands left of them.
-    Median green mask over sampled frames -> two stacked cell boxes."""
+
+    Component-based: median green mask over sampled frames, then the
+    PAIR of similar-width, vertically stacked components (venue turf
+    and greenery also read green — a column-profile locator locked
+    onto the white games-won column next door on the mixed final)."""
+    from scipy import ndimage
     m = np.median(np.stack([green_mask(f) for f in frames]), axis=0) > 0.5
-    cols = m.sum(axis=0)
-    good_cols = np.where(cols > 10)[0]
-    if len(good_cols) < 4:
-        raise SystemExit("no green score cells found — different bug style")
-    x0, x1 = good_cols.min(), good_cols.max() + 1
-    rows = m[:, x0:x1].sum(axis=1)
-    good_rows = np.where(rows > (x1 - x0) * 0.3)[0]
-    y0, y1 = good_rows.min(), good_rows.max() + 1
-    ymid = (y0 + y1) // 2
-    cells = ((y0, ymid, x0, x1), (ymid, y1, x0, x1))
-    # dots live left of the cells on the same rows, right of the names:
-    dots = ((y0, ymid, max(0, x0 - 90), x0 - 4),
-            (ymid, y1, max(0, x0 - 90), x0 - 4))
+    lab, n = ndimage.label(m)
+    comps = []
+    for i in range(1, n + 1):
+        ys, xs = np.nonzero(lab == i)
+        h, w = ys.max() - ys.min() + 1, xs.max() - xs.min() + 1
+        if 12 <= h <= 60 and 8 <= w <= 70 and len(ys) > 0.5 * h * w:
+            comps.append((ys.min(), ys.max() + 1, xs.min(), xs.max() + 1))
+    best = None
+    for a in comps:
+        for b in comps:
+            if a is b or not (a[1] <= b[0] + 6 and b[0] - a[1] < 20):
+                continue
+            ov = min(a[3], b[3]) - max(a[2], b[2])
+            if ov < 0.6 * max(a[3] - a[2], b[3] - b[2]):
+                continue
+            area = (a[1] - a[0]) * (a[3] - a[2])
+            if best is None or area > best[0]:
+                best = (area, a, b)
+    if best is None:
+        raise SystemExit("no stacked green score cells — different bug")
+    _, a, b = best
+    x0 = min(a[2], b[2])
+    x1 = max(a[3], b[3])
+    cells = ((a[0], a[1], x0, x1), (b[0], b[1], x0, x1))
+    dots = ((a[0], a[1], max(0, x0 - 130), x0 - 34),
+            (b[0], b[1], max(0, x0 - 130), x0 - 34))
     return cells, dots
 
 
@@ -290,8 +308,8 @@ def selftest():
     fr[:, :, :] = 30
     fr[5:18, 70:90, 1] = 200      # green cell row 0
     fr[22:35, 70:90, 1] = 200     # green cell row 1
-    fr[8:14, 60:63, 1] = 220      # one dot row 0
-    fr[8:14, 65:68, 1] = 220      # second dot row 0
+    fr[8:14, 22:25, 1] = 220      # one dot row 0
+    fr[8:14, 28:31, 1] = 220      # second dot row 0
     cells, dots = locate_cells([fr] * 8)
     vec, present, nd = frame_state(fr, cells, dots)
     assert present and nd[0] == 2 and nd[1] == 0, (present, nd)
