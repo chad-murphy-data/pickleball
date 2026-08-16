@@ -88,13 +88,42 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    the offset's only identification). Production v2 keeps pooled γ until a
    per-division variant beats the holdout gate.
 2. Chemistry is small: sd ≈ 0.3–0.5 pts, prior-insensitive; no single pair
-   certifiable (need ~1,000 games; max on record 138).
+   certifiable (need ~1,000 games; max on record 138). SURVIVORSHIP TESTED
+   AND REJECTED as the explanation (2026-08-16, `model/chem_survival.md`,
+   reproduce with `model/chem_survival.py`): pairs ARE dropped on results
+   (continuation β ≈ +2.9/share, +13pp top-vs-bottom tercile; 58% of the
+   9,290 pairings ever tried die ≤5 games) but what selection retains is
+   LUCK, not chemistry — the forward tenure curve (mean residual of the
+   pair's NEXT game by prior games together; analytically flat-at-0 under
+   any outcome-based selection) shows no survivor enrichment (−2.7±2.5e-3
+   share), and the era-crossfit split-half moment (injection-calibrated,
+   λ=0.89) bounds persistent chemistry < 1.5× finding-2, implied 0–0.6×.
+   The censored negative tail is not hiding a bigger effect; analysis.md's
+   "+0.44 hints at survivorship" is stopping-rule + tracking artifact.
+   Bonus finding: unconditional FIRST-TIME pairings of established players
+   run −0.8pp share vs settled pairs (scratch penalty). ESTIMATOR TRAPS
+   (a session's worth; receipts printed by the script): naive player
+   offsets CHASE dyad effects (see-saw as estimator bug, λ 2–4); one fit's
+   offset noise sits in BOTH halves of any within-dyad product (fake +τ²);
+   v2's monthly walk TRACKS selection luck, so short-lag split-half
+   products read NEGATIVE and the tenure curve dips transiently at 12–19
+   games — quantitative reads must be tracking-converged (era-lag
+   products, 40+ bucket), and injections CANNOT see the tracking bias
+   (injected effects bypass the walk). Per-(player,quarter) offsets fix
+   tracking but triple the variance — rejected. MLP roster-forced arm
+   (the M2 quasi-experiment) underpowered; revisit +2 MLP seasons.
 3. Skill transfers across contexts (sd_w ≈ 0.13) and tours (no MLP
    sandbagging; slope test + player-tour effects both null).
 4. Johns never declined in absolute terms (dynamic model); the field rose.
    Tardio's rise is smooth and real.
 5. New pairings OVERperform first ~6 games (beta_new > 0) — window-edge
-   caveat only partially resolved; treat gently.
+   caveat RESOLVED DEFLATIONARY 2026-08-16 (`model/chem_survival.md`):
+   xnew flags the first 6 games of dyads that eventually reach ≥15, and a
+   stopping rule manufactures exactly that within-pair shape at zero true
+   effect (game 2 exists BECAUSE game 1 went well; measured +14e-3 share
+   above own-pair mean at bucket 0). The UNCONDITIONAL forward read is
+   mildly negative (−0.8pp vs settled pairs). Candidate future v2 cleanup:
+   unconditional first-games flag (expect sign flip); gate on holdout.
 6. DreamBreakers are NOT 50/50: mean roster SINGLES value predicts them
    (k = 0.42, CI [0.20, 0.65], n = 101; beats the doubles proxy by 3.1
    nll; stronger-singles roster wins 60%; model/db_model.md). Singles
