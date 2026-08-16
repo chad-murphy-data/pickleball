@@ -203,9 +203,15 @@ def scan_camera(video, out_csv, fps=10.0, w=160, h=90):
 
 
 def load_camera(path, fps=10.0):
-    """-> (t array, is_main array) or None."""
-    if not path or not Path(path).exists():
+    """-> (t array, is_main array); None only when no path was given.
+    A path that was EXPLICITLY passed but doesn't exist is an error —
+    a typo'd --cam must not silently run the whole VOD ungated."""
+    if not path:
         return None
+    if not Path(path).exists():
+        raise SystemExit(f"--cam {path} does not exist "
+                         f"(run --scan-camera first, or pass no --cam "
+                         f"with --no-cam-gate)")
     t, m = [], []
     for r in csv.DictReader(open(path)):
         t.append(float(r["t_s"]))
@@ -343,21 +349,35 @@ def serving_config(pos):
         rcv_kitchen = min(dR, key=dR.get)
         receiver = max(dR, key=dR.get)
         # The serve is cross-court by rule, so the server stands DIAGONAL
-        # to the receiver (opposite lateral half).  Under stacking the
-        # partner can be exactly as deep as the server, so depth alone
-        # coin-flips — the diagonal is the rule-determined discriminator;
-        # depth breaks ties only when both serving-end players sit on the
-        # receiver's own half (server mid-crossover, rare).
+        # to the receiver (opposite lateral half).  Under stacking BOTH
+        # serving-end players can sit on the diagonal half — then the
+        # rule court's lateral bounds decide (the server must serve from
+        # within the diagonal half's x-range; the classic stack partner
+        # hugs or crosses the sideline extension).  A residual depth
+        # tie-break is flagged ambiguous so it can never ride at full
+        # confidence.
         rx = R[receiver][0]
+        lo, hi = (0.0, W_FT / 2) if rx > W_FT / 2 else (W_FT / 2, W_FT)
         diag = [tr for tr, p in S.items()
                 if (p[0] - W_FT / 2) * (rx - W_FT / 2) < 0]
-        server = diag[0] if len(diag) == 1 else max(dS, key=dS.get)
+        amb = False
+        if len(diag) == 1:
+            server = diag[0]
+        else:
+            cand = diag or list(S)
+            inside = [tr for tr in cand if lo <= S[tr][0] <= hi]
+            if len(inside) == 1:
+                server = inside[0]     # stack partner outside the lines
+            else:
+                server = max(cand, key=lambda tr: dS[tr])
+                amb = True             # stacked; geometry cannot say
         margin = min(min(dS.values()) - DEEP_FT,          # both srv deep
                      RCV_KITCHEN_FT - dR[rcv_kitchen],    # one rcv at NVZ
                      dR[receiver] - DEEP_FT)              # receiver deep
         roles = {"server": server,
                  "srv_partner": next(tr for tr in S if tr != server),
-                 "receiver": receiver, "rcv_kitchen": rcv_kitchen}
+                 "receiver": receiver, "rcv_kitchen": rcv_kitchen,
+                 "srv_amb": amb}
         return margin, roles
 
     m_near, r_near = hyp("near")
@@ -493,6 +513,9 @@ def anchor_identity(dets, t_serve, win, lin, genders, heights=None):
     diag_ok = (sx - W_FT / 2) * (rx - W_FT / 2) < 0
     checks["diagonal"] = int(diag_ok)
     conf *= 1.0 if diag_ok else 0.75
+    if roles.get("srv_amb"):
+        checks["stacked"] = 1          # depth tie-break had to decide
+        conf *= 0.75
     # mixed-doubles gender/height prior: within each pair the male's
     # detections should image taller (redundant check, never an input)
     if genders and heights:
@@ -731,10 +754,23 @@ def player_meta():
 def run(a):
     court = load_court(a.court)
     cam = load_camera(a.cam)
+    if cam is None and not getattr(a, "no_cam_gate", False):
+        raise SystemExit("--run needs --cam (or --no-cam-gate to run "
+                         "ungated — the ledger will say so)")
     windows = load_windows(a.windows)
     lineup_rows, lineup_by, lineup_ids = load_lineup(a.lineup)
     genders, names = player_meta()
     pose_dir = Path(a.pose_dir)
+    # backend provenance: fleet numbers are not trusted until the spec's
+    # pre-named A/B guard has run (vision/coverage_ab.py; ViTPose wins
+    # disagreements) — so every row records which backend produced it
+    backend = "unknown"
+    mp = pose_dir / "meta.json"
+    if mp.exists():
+        backend = json.loads(mp.read_text()).get("backend", "unknown")
+    if backend == "unknown":
+        print("WARNING: pose dir carries no backend provenance "
+              "(meta.json missing/keyless) — rows record 'unknown'")
     spot = {}
     if a.spotcheck and Path(a.spotcheck).exists():
         for r in csv.DictReader(open(a.spotcheck)):
@@ -745,6 +781,7 @@ def run(a):
     endmap_obs = []                   # (id8, game, cum, serving team, end)
     dropped = defaultdict(int)        # rally-level drops, by reason
     det_drops = defaultdict(int)      # detection-level gate drops
+    frames_kept = 0
     anchor_offsets = []
     halves_ok = halves_tested = 0
     gender_agree = gender_tested = 0
@@ -766,6 +803,7 @@ def run(a):
         dets, drops = load_rally(npz, court, cam)
         for k, v in drops.items():
             det_drops[k] += v
+        frames_kept += len(dets)
         if not dets:
             dropped["no_detections"] += 1
             continue
@@ -824,8 +862,8 @@ def run(a):
         per_uuid = defaultdict(lambda: ([], [], [], []))  # ts, xy, w, hand
         for d, (u, c, hand) in zip(dets_sorted, assign):
             if u is None:
-                dropped["unnamed_dets"] += 1
-                continue
+                det_drops["unnamed"] += 1    # per-DETECTION, so it lives
+                continue                     # with the gate counts
             per_uuid[u][0].append(d.t)
             per_uuid[u][1].append(d.xy)
             per_uuid[u][2].append(d.conf)
@@ -912,6 +950,7 @@ def run(a):
             prow.append({
                 "vod": a.vod, "event": a.event, "date": a.date,
                 "match_id": game[0], "game": game[1],
+                "backend": backend,
                 "player_uuid": u, "player": names.get(u, u[:8]),
                 "gender": genders.get(u, "?"),
                 "partner_uuid": part or "",
@@ -972,9 +1011,11 @@ def run(a):
         "n_rallies_dropped": sum(dropped.values()),
         "rally_drop_reasons": ";".join(f"{k}:{v}" for k, v in
                                        sorted(dropped.items())),
+        "backend": backend,
+        "frames_kept": frames_kept,
         "det_gate_drops": ";".join(f"{k}:{v}" for k, v in
                                    sorted(det_drops.items())),
-        "camera_gate": ("off" if cam is None
+        "camera_gate": ("OFF" if cam is None
                         else f"{float(cam[1].mean()):.2f}_main"),
         "anchor_offset_med_s": (f"{np.median(anchor_offsets):.1f}"
                                 if anchor_offsets else ""),
@@ -990,7 +1031,8 @@ def run(a):
     }
     upsert_csv(DATA / "coverage_players.csv", prow,
                ("vod", "match_id", "game", "player_uuid"))
-    upsert_csv(DATA / "coverage_events.csv", [ecount], ("vod",))
+    upsert_csv(DATA / "coverage_events.csv", [ecount],
+               ("vod", "match_id"))
     print(f"covered {n_covered}/{len(windows)} rallies; "
           f"dropped: {dict(dropped)}")
     if endmap_n:
@@ -1025,6 +1067,65 @@ def upsert_csv(path, rows, key_cols):
         w = csv.DictWriter(fh, fieldnames=cols, extrasaction="ignore")
         w.writeheader()
         w.writerows(allr)
+
+
+# ------------------------------------------------- anchor validation
+
+
+def validate_anchor(a):
+    """Anchor-finder error vs the hand-stamped Chicago serve pins — the
+    spec's pre-scale-out validation, runnable wherever the Gate C pose
+    npzs exist (data/vision/pose/, extracted from the Chicago VOD; fit
+    the court once with court.py and pass its json).
+
+        python vision/coverage.py --validate-anchor \
+            --pose-dir data/vision/pose --court chicago_court.json
+
+    Ground truth: shot_labels_chicago0725.csv serve_time_s (rallies
+    1-16; rally 3 excluded — its pin marks a broadcast replay, see
+    data/vision/pin_realignment.md).  CAVEAT on reading the numbers:
+    these label windows open only 1.5 s before the serve, so the
+    visible pre-serve freeze is short — treat the error distribution as
+    an UPPER bound for real coverage windows, whose pre-serve spans run
+    6-20 s."""
+    court = load_court(a.court)
+    labels = ROOT / "data/vision/shot_labels_chicago0725.csv"
+    v4 = ROOT / "data/vision/rally_windows_chicago0725_v4.csv"
+    pins = {}
+    for r in csv.DictReader(open(labels)):
+        cum = int(r["rally_cum"])
+        if r.get("serve_time_s") and 1 <= cum <= 16 and cum != 3:
+            pins[cum] = float(r["serve_time_s"])
+    wins = {int(r["rally_cum"]): (float(r["t0s"]), float(r["t1s"]))
+            for r in csv.DictReader(open(v4))}
+    errs, missing, quals = [], [], []
+    for cum, t_pin in sorted(pins.items()):
+        npz = Path(a.pose_dir) / f"r{cum:04d}.npz"
+        if not npz.exists() or cum not in wins:
+            missing.append(cum)
+            continue
+        dets, _ = load_rally(npz, court, None)
+        t0, t1 = wins[cum]
+        t_found, qual, _ = find_serve(dets, t0, t1, 0.0)
+        quals.append(qual)
+        if qual > 0:
+            errs.append(t_found - t_pin)
+    if missing:
+        print(f"missing pose/window for rallies {missing} — extract "
+              f"them first (pose_extract.py --rallies "
+              f"{','.join(str(m) for m in missing)})")
+    if not errs:
+        raise SystemExit("no rallies validated")
+    e = np.array(errs)
+    print(f"anchor finder vs {len(e)} hand-stamped serves "
+          f"({sum(q == 0 for q in quals)} finder-failures dropped):")
+    print(f"  error  median {np.median(e):+.2f}s  "
+          f"IQR [{np.percentile(e, 25):+.2f}, {np.percentile(e, 75):+.2f}]  "
+          f"max|.| {np.abs(e).max():.2f}s")
+    print(f"  within 1s: {(np.abs(e) <= 1).sum()}/{len(e)}   "
+          f"within 2s: {(np.abs(e) <= 2).sum()}/{len(e)}")
+    print("  (upper bound: label windows open only 1.5 s pre-serve; "
+          "coverage windows give the finder 6-20 s of freeze)")
 
 
 # ------------------------------------------------------------ selftest
@@ -1076,7 +1177,22 @@ def selftest():
             3: (7.0, 0.5), 4: (13.0, 2.0)}      # far pair deep
     end2, _, roles2 = serving_config(pos2)
     assert end2 == "far" and roles2["rcv_kitchen"] == 1, (end2, roles2)
-    print("  serving-end + roles OK both ways")
+    # STACKED serve: both serving-end players deep on the diagonal half,
+    # partner parked OUTSIDE the sideline extension -> lateral bounds
+    # resolve it (not depth), unambiguously
+    pos3 = {1: (15.0, 45.5), 2: (20.8, 45.9),    # partner outside + deeper
+            3: (13.0, 16.0), 4: (7.0, 1.0)}
+    end3, _, roles3 = serving_config(pos3)
+    assert end3 == "near" and roles3["server"] == 1 \
+        and not roles3["srv_amb"], (end3, roles3)
+    # stack with BOTH inside the lines: geometry cannot say -> depth
+    # tie-break, flagged ambiguous
+    pos4 = {1: (15.0, 44.5), 2: (12.0, 46.0),
+            3: (13.0, 16.0), 4: (7.0, 1.0)}
+    _, _, roles4 = serving_config(pos4)
+    assert roles4["srv_amb"] and roles4["server"] == 2, roles4
+    print("  serving-end + roles OK both ways; stacked serve resolved "
+          "by sideline bound, residual ambiguity flagged")
 
     # ---- synthetic rally: anchor finder + identity + metrics ---------
     fps = 10.0
@@ -1202,11 +1318,17 @@ def main():
     ap.add_argument("--scan-camera", type=Path, metavar="VIDEO")
     ap.add_argument("--cam-out", type=Path, default=Path("camera_mask.csv"))
     ap.add_argument("--run", action="store_true")
+    ap.add_argument("--validate-anchor", action="store_true",
+                    help="anchor-finder error vs the Chicago serve pins "
+                         "(needs --pose-dir of Gate C npzs + --court)")
     ap.add_argument("--pose-dir")
     ap.add_argument("--court")
     ap.add_argument("--windows")
     ap.add_argument("--lineup")
     ap.add_argument("--cam", default="")
+    ap.add_argument("--no-cam-gate", action="store_true",
+                    help="explicitly run without the main-camera gate "
+                         "(recorded as OFF in the events ledger)")
     ap.add_argument("--spotcheck", default="")
     ap.add_argument("--vod", default="")
     ap.add_argument("--event", default="")
@@ -1217,6 +1339,10 @@ def main():
         selftest()
     elif a.scan_camera:
         scan_camera(a.scan_camera, a.cam_out)
+    elif a.validate_anchor:
+        if not (a.pose_dir and a.court):
+            ap.error("--validate-anchor needs --pose-dir and --court")
+        validate_anchor(a)
     elif a.run:
         for req in ("pose_dir", "court", "windows", "lineup", "vod"):
             if not getattr(a, req):

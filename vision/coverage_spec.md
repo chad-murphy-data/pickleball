@@ -171,10 +171,12 @@ Pre-register the formulas BEFORE the first real number is looked at
 
 Committed: data/coverage_players.csv (one row per player-game:
 ellipse area, width share, depth range, distance, phase splits,
-identity-error rate from the overlay spot-check, frames kept/dropped
-by each gate) + data/coverage_events.csv (per-VOD ledger: homography
-calibration residual, main-camera gate stats, rallies covered/excluded
-with reasons). Pose npz and overlay renders stay local (gitignored /
+identity-error rate from the overlay spot-check) +
+data/coverage_events.csv (per-VOD ledger: homography calibration
+residual, main-camera gate stats, rallies covered/excluded with
+reasons, and the per-gate FRAME drop counts — frame gating precedes
+identity resolution, so dropped frames cannot be attributed to a
+player and live at the event level; build decision 2026-08-16). Pose npz and overlay renders stay local (gitignored /
 broadcast-imagery rule).
 
 ## Verification overlay (user-requested, 2026-08-16 — build it FIRST)
@@ -236,7 +238,14 @@ contact-thread instruments were not touched.
   low-confidence labels, exclusion banners, `--sample N` + spotcheck
   template that coverage.py folds back in as the identity error rate.
 - `vision/coverage_ab.py` — the backend agreement guard, mechanical
-  (run before any scale-out; ViTPose wins disagreements).
+  (run before any scale-out; ViTPose wins disagreements); every
+  players/events row records backend provenance off the pose dir's
+  meta.json.
+- `vision/coverage.py --validate-anchor` — the anchor finder's
+  ground-truth check against the 15 Chicago serve pins (rally 3
+  excluded; needs the Gate C pose npzs + a Chicago court fit, i.e. the
+  machine that holds the Chicago VOD). Numbers are an UPPER bound:
+  label windows open 1.5 s pre-serve vs 6-20 s in coverage windows.
 - `bash vision/coverage_pipeline.sh <vod> <match_uuid> <vod_id> ...`
   runs the whole chain idempotently (test target: the 2026-01-25 PPA
   Indoor Nationals mixed final, YouTube SQg2mHBPHC0, match c4eb30d0 —
