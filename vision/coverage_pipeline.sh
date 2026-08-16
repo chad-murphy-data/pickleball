@@ -64,9 +64,10 @@ if [ ! -f "$WORK/cam.csv" ]; then
   python3 coverage.py --scan-camera "$VOD" --cam-out "$WORK/cam.csv" || exit 1
 fi
 
-log "stage 5: pose extraction (rtmpose balanced, 10 fps)"
-python3 pose_extract.py --video "$VOD" --labels /nonexistent.csv \
-  --windows "$REPO/data/vision/coverage_windows_$VODID.csv" --rallies "" \
+log "stage 5: pose extraction (rtmpose balanced, 10 fps, court pre-filter)"
+python3 coverage_extract.py --video "$VOD" \
+  --windows "$REPO/data/vision/coverage_windows_$VODID.csv" \
+  --court "$REPO/data/vision/court_$VODID.json" \
   --backend rtmpose --fps 10 \
   --out-dir "$REPO/data/vision/pose_$VODID" || exit 1
 

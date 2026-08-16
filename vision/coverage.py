@@ -283,21 +283,26 @@ def load_rally(npz_path, court, cam):
                         (float(x), float(y)), srcs[i],
                         float(z["box"][i][3] - z["box"][i][1]),
                         z["kpt"][i], z["kpc"][i], z["box"][i]))
-    # side sanity per track
+    # Side comes from COURT GEOMETRY here, not the npz height clusters:
+    # coverage has the homography, and on multi-angle broadcasts (PPA
+    # Indoor Nationals cuts between TWO elevated court angles plus
+    # close-ups mid-window) the height clustering collapses — one
+    # close-up torso out-heights every real player and all four get
+    # "far".  Track-median court y is the side; the npz label survives
+    # only as a disagreement DIAGNOSTIC in the ledger ("side" count —
+    # high values flag footage where the pose-side channel is unusable,
+    # they no longer cost detections).
     ys = defaultdict(list)
-    sides = {}
+    npz_side = {}
     for d in dets:
         ys[d.track].append(d.xy[1])
-        sides[d.track] = d.side
-    bad = set()
-    for tr, yy in ys.items():
-        court_side = 0 if float(np.median(yy)) > NET_Y else 1
-        if sides.get(tr, -1) >= 0 and sides[tr] != court_side:
-            bad.add(tr)
-    if bad:
-        kept = [d for d in dets if d.track not in bad]
-        drops["side"] += len(dets) - len(kept)
-        dets = kept
+        npz_side[d.track] = d.side
+    court_side = {tr: 0 if float(np.median(yy)) > NET_Y else 1
+                  for tr, yy in ys.items()}
+    for d in dets:
+        if npz_side[d.track] >= 0 and npz_side[d.track] != court_side[d.track]:
+            drops["side"] += 1          # diagnostic only
+        d.side = court_side[d.track]
     return dets, drops
 
 
@@ -444,7 +449,12 @@ def find_serve(dets, t0, t1, lead_s):
     # window reaches back over the previous rally, whose own freeze can
     # be longer — the last freeze before the flip is structurally this
     # rally's, because this rally's play fills the span up to the flip).
-    # Noise guard: a last "run" under 3 frames falls back to the longest.
+    # Noise guard: a last "run" under 3 frames falls back to the
+    # longest — UNLESS the short run starts at the very first visible
+    # frame: replay-heavy broadcasts cut back to the main camera with
+    # the freeze already underway, amputating its start (measured on
+    # PPA Indoor Nationals), and a 2-frame freeze at the span's opening
+    # edge is the freeze's END, which is all the anchor needs.
     runs, cur = [], [good[0]]
     for k in good[1:]:
         if ts[k] - ts[cur[-1]] <= 0.7:
@@ -453,7 +463,8 @@ def find_serve(dets, t0, t1, lead_s):
             runs.append(cur)
             cur = [k]
     runs.append(cur)
-    best = runs[-1] if len(runs[-1]) >= 3 else max(runs, key=len)
+    min_len = 2 if runs[-1][0] == 0 else 3
+    best = runs[-1] if len(runs[-1]) >= min_len else max(runs, key=len)
     k_end = best[-1]
     margin = float(np.median([ok_seq[k][1] for k in best]))
     qual = min(1.0, len(best) / 8.0) * min(1.0, max(margin, 0.0) / 2.0 + 0.5)
