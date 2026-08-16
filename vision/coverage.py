@@ -231,13 +231,15 @@ def is_main_at(cam, t):
 
 
 class Det:
-    __slots__ = ("t", "track", "side", "conf", "xy", "src", "h_px", "kpt",
-                 "kpc", "box")
+    __slots__ = ("t", "track", "side", "conf", "xy", "src", "h_px", "h_ft",
+                 "kpt", "kpc", "box")
 
-    def __init__(self, t, track, side, conf, xy, src, h_px, kpt, kpc, box):
+    def __init__(self, t, track, side, conf, xy, src, h_px, kpt, kpc, box,
+                 h_ft=0.0):
         self.t, self.track, self.side, self.conf = t, track, side, conf
         self.xy, self.src, self.h_px = xy, src, h_px
         self.kpt, self.kpc, self.box = kpt, kpc, box
+        self.h_ft = h_ft
 
 
 def load_rally(npz_path, court, cam):
@@ -260,6 +262,29 @@ def load_rally(npz_path, court, cam):
         feet[i] = (x, y)
         srcs.append(src)
     ct = project(court, feet, W_img, H_img)
+    # local px-per-ft at each foot, from the inverse homography (for
+    # perspective-corrected person height: partners split across 10+ ft
+    # of depth during serves, so raw image heights are incomparable —
+    # measured on the mixed final, where the deep receiver imaged
+    # smaller than the male at the kitchen and the gender check
+    # inverted)
+    Hinv = np.linalg.inv(court["H"])
+    sx, sy = W_img / court["w"], H_img / court["h"]
+
+    def to_img(pts):
+        q = np.hstack([pts, np.ones((len(pts), 1))]) @ Hinv.T
+        q = q[:, :2] / q[:, 2:3]
+        q[:, 0] *= sx
+        q[:, 1] *= sy
+        return q
+
+    # LATERAL px-per-ft: a standing body's image height scales like
+    # f/Z, exactly as a 1-ft segment ACROSS the court does; the along-
+    # court axis is foreshortening-dominated and over-corrects far
+    # players ~3x (measured: 18-ft receivers)
+    pxft = np.linalg.norm(to_img(ct + np.array([1.0, 0.0])) - to_img(ct),
+                          axis=1)
+    pxft = np.maximum(pxft, 1e-6)
     last = {}                      # track -> (t, xy) for the speed gate
     for i in np.argsort(z["t"], kind="stable"):
         t = float(z["t"][i])
@@ -279,10 +304,11 @@ def load_rally(npz_path, court, cam):
                 drops["speed"] += 1
                 continue
         last[tr] = (t, (x, y))
+        h_px = float(z["box"][i][3] - z["box"][i][1])
         dets.append(Det(t, tr, int(z["side"][i]), float(z["conf"][i]),
-                        (float(x), float(y)), srcs[i],
-                        float(z["box"][i][3] - z["box"][i][1]),
-                        z["kpt"][i], z["kpc"][i], z["box"][i]))
+                        (float(x), float(y)), srcs[i], h_px,
+                        z["kpt"][i], z["kpc"][i], z["box"][i],
+                        h_ft=h_px / float(pxft[i])))
     # Side comes from COURT GEOMETRY here, not the npz height clusters:
     # coverage has the homography, and on multi-angle broadcasts (PPA
     # Indoor Nationals cuts between TWO elevated court angles plus
@@ -543,9 +569,13 @@ def anchor_identity(dets, t_serve, win, lin, genders, heights=None):
                 female = trs[g.index("F")]
                 agree += heights[male] > heights[female]
         if tested:
+            # REPORT-ONLY, no confidence effect: rally-median box height
+            # measures STANCE, not stature — kitchen players crouch all
+            # rally, so the tallest man on tour measures shortest when
+            # he plays the NVZ (measured on the mixed final).  A crouch-
+            # proof estimator (skeleton torso+femur segment lengths)
+            # is the upgrade path if this check is ever to bite.
             checks["gender"] = f"{agree}/{tested}"
-            if agree < tested:
-                conf *= 0.8
     return names, conf, checks
 
 
@@ -831,7 +861,7 @@ def run(a):
         lin, id8 = lineup_for(win, lineup_by, lineup_ids)
         heights = defaultdict(list)
         for d in dets:
-            heights[d.track].append(d.h_px)
+            heights[d.track].append(d.h_ft or d.h_px)
         heights = {tr: float(np.median(v)) for tr, v in heights.items()}
         names_map, conf, checks = anchor_identity(
             dets, t_serve, win, lin, genders, heights)

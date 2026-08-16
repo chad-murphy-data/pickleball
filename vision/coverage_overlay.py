@@ -248,7 +248,7 @@ def run(a):
             # heights (the overlay must verify the frames being scored)
             hts = {}
             for d in dets:
-                hts.setdefault(d.track, []).append(d.h_px)
+                hts.setdefault(d.track, []).append(d.h_ft or d.h_px)
             hts = {tr: float(np.median(v)) for tr, v in hts.items()}
             nm, conf, checks = anchor_identity(
                 dets, t_serve, win, lin, genders, hts)

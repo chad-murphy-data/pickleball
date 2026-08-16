@@ -40,13 +40,41 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from coverage import foot_point, load_court, project
+import pose_extract as PE
 from pose_extract import IoUTracker, assign_sides, make_infer, save_rally
 from swing_probe import decode_window
 
 MAX_KEEP = 8
 EDGE_PX = 6
 X_LO, X_HI = -4.0, 24.0
-Y_LO, Y_HI = -7.0, 51.0
+# Far receivers stand up to ~8 ft behind the baseline and far-court
+# perspective amplifies foot-projection noise (~1 px = ~1 ft there), so
+# the far bound is deep; the near bound stays tighter because bottom
+# crowd lives at y 45-52 and the edge-truncation rule is the real
+# near-side guard (measured on the mixed final: the receiver projected
+# to y = -9.7 during the serve freeze and a -6 bound deleted her).
+Y_LO, Y_HI = -13.0, 51.0
+
+
+def _open_box_gate(box, H, W):
+    """Replaces pose_extract.box_gate IN THIS PROCESS ONLY.  The Gate C
+    pixel heuristic (feet below 0.30 H + the Chicago-calibrated court
+    trapezoid) is venue-specific: PPA Indoor Nationals frames the far
+    baseline at 0.26 H, so every person standing there — the RECEIVER
+    of every serve — was rejected before pose ran.  Coverage has the
+    homography, so the real gate is the court projection in
+    court_filter; here only a tiny-size floor survives.  Gate C runs
+    its own process with pose_extract unpatched."""
+    return (box[3] - box[1]) >= 0.035 * H
+
+
+PE.box_gate = _open_box_gate
+# Same process-local reasoning: pose_extract caps persons INSIDE its
+# backend closures (out[:MAX_PERSONS], 6) BEFORE court_filter can
+# rank them, and on this venue two officials + crowd routinely out-
+# score the stacked partner and the far receiver.  Lift the inner cap;
+# court_filter's MAX_KEEP applies after the court has had its say.
+PE.MAX_PERSONS = 12
 
 
 def court_filter(persons, court, H, W):
@@ -77,6 +105,9 @@ def extract(a):
     out_dir.mkdir(parents=True, exist_ok=True)
     done = {int(p.stem[1:]) for p in out_dir.glob("r*.npz")}
     todo = [c for c in sorted(wins) if c not in done or a.force]
+    if a.rallies:
+        want = {int(x) for x in a.rallies.split(",")}
+        todo = [c for c in todo if c in want]
     infer, backend = make_infer(a)
     print(f"pose backend: {backend} + court pre-filter; "
           f"{len(todo)} rallies to extract")
@@ -185,6 +216,8 @@ def main():
     ap.add_argument("--device", default="")
     ap.add_argument("--fast", action="store_true")
     ap.add_argument("--force", action="store_true")
+    ap.add_argument("--rallies", default="",
+                    help="comma-separated rally_cum subset")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
