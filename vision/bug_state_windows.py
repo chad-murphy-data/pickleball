@@ -102,7 +102,7 @@ def locate_cells(frames):
         # the two cells usually TOUCH (one tall component): take the
         # best cell-proportioned tall blob and split at its midpoint
         tall = [c for c in comps if (c[1] - c[0]) >= 24
-                and (c[1] - c[0]) >= 1.2 * (c[3] - c[2])]
+                and (c[1] - c[0]) >= 0.9 * (c[3] - c[2])]
         if not tall:
             raise SystemExit("no stacked green score cells — different bug")
         c = max(tall, key=lambda c: (c[1] - c[0]) * (c[3] - c[2]))
