@@ -32,3 +32,5 @@ data/vision/*.mp4
 # full-skeleton pose streams (vision/pose_extract.py; regenerable from
 # the VOD, ~0.2 MB/rally compressed)
 data/vision/pose*/
+# scorebug_verify crop caches (broadcast imagery, regenerable)
+data/vision/*.crops.npz
