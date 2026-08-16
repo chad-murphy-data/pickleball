@@ -270,3 +270,43 @@ direct human observation of in-play frames), the one sync-corrupted
 verdict (the first 0.467 swing kill) was caught and retracted at the
 time, and the sync-vulnerable number that survived in folklore (0.442
 recall) is precisely the one Gate C refuses to inherit.
+
+## Amendment 3, 2026-08-16: the pin-identity scare, resolved — and the
+## replay rule
+
+Sequence of events, so the record reads straight: the user found the
+scorebug reading 1-0 at the rally-3 pin where 0-0 was expected. An
+ultracode workflow (two independent solvers + adversarial verifier +
+surface audit; data/vision/pin_realignment.md is the verdict document)
+plus a non-circular parity tiebreak (teams alternate shots, so the
+user's typed hitters on odd shots ≥3 identify the serving team; row 6 =
+5/5 Utah-served, impossible under the shift hypothesis) established:
+
+- **Pin mapping is IDENTITY** — rows 1-16 pin and describe rallies
+  1-16. The single anomaly: row 3's pin marks a full-speed broadcast
+  REPLAY of rally 3 (the match's first point); the live airing is
+  ~56-79 s. The audit tool now drops that pin and seeks the live
+  region; 15 pins remain valid.
+- **The jitter reference is REINSTATED over those 15 pins** (the
+  2026-08-16 note's blanket "pins remain valid" was an overclaim when
+  written, and is now true again by measurement, minus rally 3). Guard
+  band formula unchanged.
+- **Correction to my own 2026-08-16 note**: its "labels x log x pins
+  consistent at offset 0" check was partly CIRCULAR — the old tool
+  prefilled shots 1-2 from the log per row, so shot-1-hitter matches
+  were the log agreeing with itself, and server identity cannot
+  distinguish rallies inside a same-server run. The checks that
+  actually carry weight are the parity signature (typed hitters,
+  shots ≥3), shot-count-vs-duration capacity, and pin-gap arithmetic —
+  all of which the realignment used.
+- **Replay rule added to the labeling protocol**: a serve whose bug
+  shows a LATER score than the header is a replay (replays display the
+  replayed rally's END state); the live serve is earlier. This is the
+  third face of one recurring lesson — the broadcast stream contains
+  non-live segments (replays, filler), and every alignment that ignored
+  them (cheer join, scorebug chain, the pinning session) tripped on
+  exactly that.
+- Label-quality bonus from the tiebreak: the typed sequences are
+  parity-PERFECT in every disputed row, so pop-era damage is bounded to
+  shot types and occasional count slips — the ordinal labels are
+  structurally sounder than the 2026-08-16 note feared.

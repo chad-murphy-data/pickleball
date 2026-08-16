@@ -736,13 +736,17 @@ first 16 rallies of the women's game, notes incl. both-went-for-it and
 swing-and-miss events) are spent for gating v1 but remain the project's
 ONLY shot-level ground truth (dink 31%/counter 23%/smash 10%/speed-up
 7%) — answer key for any future instrument or purchased hand-coded
-data. **CAVEAT 2026-08-16 (found during contact re-labeling, user
-observation + data audit; contact_gate.md note)**: their mid-rally
-SEQUENCES carry errors — the old tool's counting aid was audio pops,
-later proven noise. Reliable content = rally identity, shots 1-2, serve
-pins, approximate counts/type mix; shots 3+ order/types are
-approximate. data/vision/contact_labels_chicago0725.csv (timestamped,
-scorebug-verified) supersedes it as ground truth once labeled. Ball-only forever: placement, landing, contact height. Condensed
+data. **CAVEAT 2026-08-16, revised same day after the realignment
+workflow (data/vision/pin_realignment.md + contact_gate.md Amendments)**:
+rally identity is CONFIRMED (rows describe their rallies; the one scare
+was row 3's pin marking a broadcast REPLAY of rally 3, not a shift),
+and the typed sequences are parity-perfect on team alternation — so
+reliable content = rally identity, hitters/order structure, serve pins
+(15 of 16; rally 3's excluded); residual pop-era risk = shot TYPES and
+occasional count slips. data/vision/contact_labels_chicago0725.csv
+(timestamped, scorebug-verified) supersedes it as ground truth once
+labeled. Broadcast REPLAYS are the recurring alignment trap: a replayed
+serve shows the rally's END score on the bug. Ball-only forever: placement, landing, contact height. Condensed
 championship-court VODs remain a structural sample bias and the
 freeze-out question stays n=4 at any tracking quality. Scorebug OCR (flip sync is
 solved, frame-exact) remains viable for point-by-point backfill of

@@ -128,6 +128,12 @@ def build_payload(games, names, teams, rallies, windows, prefill, pilot):
         # the game-2/4 openers) are still listed: no auto-seek, located by
         # SCOREBUG (the start score uniquely identifies a rally in-game)
         pf = prefill.get(r["cum"], {})
+        # Rally 3's pin marks a full-speed REPLAY of rally 3, not its live
+        # serve (data/vision/pin_realignment.md) — drop the pin and seek
+        # the LIVE airing instead (~56-79 s, scorebug 0-0)
+        if r["cum"] == 3:
+            pf = dict(pf, pin=None)
+            w = {"t0": 55.0, "t1": 84.0, "approx": True}
         out["rallies"].append({
             "cum": r["cum"], "slot": r["slot"], "rally": r["rally"],
             "t0s": round(w["t0"], 1) if w else None,
@@ -557,9 +563,11 @@ function helprow(r){
                          : "Keys <kbd>1</kbd>–<kbd>4</kbd> stamp hitter + time; shots 1–2 auto-type serve/return, fill the rest in the table."}
   <kbd>W</kbd> arms a whiff (swing-and-miss — stamped, but contact=0, never consumes the prefill).
   <b>Lining up</b>: every rally's START SCORE is in the list and the banner —
-  read the on-screen bug and match; that IS the rally's identity. A segment
-  where the bug does <b>not</b> advance is a REPLAY: skip it, stamp only live
-  play (never slo-mo). A rally the broadcast truly cut: mark
+  read the on-screen bug and match; that IS the rally's identity. If the bug
+  shows a <b>LATER</b> score than the banner at a serve, you're watching a
+  REPLAY (it shows the replayed rally's END score) — the live serve is
+  EARLIER: scrub back to the serve whose bug matches. Stamp only live play
+  (never slo-mo). A rally the broadcast truly cut: mark
   <b>⛔ not in video</b> and move on — an honest gap beats a guessed stamp.
   <kbd>⌫</kbd> undo · <kbd>space</kbd> play/pause · <kbd>R</kbd> replay ·
   <kbd>←</kbd><kbd>→</kbd> ±2s · <kbd>,</kbd><kbd>.</kbd> ±1 frame
@@ -776,8 +784,10 @@ def main():
     payload = build_payload(games, names, teams, rallies, windows, prefill, pilot)
     n_pf = sum(1 for r in payload["rallies"] if r["pf"])
     n_pin = sum(1 for r in payload["rallies"] if r["pin"] is not None)
-    assert n_pf == len(CORE) and n_pin == len(CORE), \
-        f"expected {len(CORE)} prefilled+pinned core rallies, got {n_pf}/{n_pin}"
+    # 15 pins, not 16: rally 3's pin marks a replay and is dropped
+    # (data/vision/pin_realignment.md)
+    assert n_pf == len(CORE) and n_pin == len(CORE) - 1, \
+        f"expected {len(CORE)} prefilled / {len(CORE)-1} pinned, got {n_pf}/{n_pin}"
 
     html = (HTML.replace("__PAYLOAD__", json.dumps(payload))
                 .replace("__VIDEO_NOTE__", VIDEO_NOTE))
