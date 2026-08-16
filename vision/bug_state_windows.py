@@ -218,9 +218,16 @@ def run_main(a):
     # candidate rows from BOTH assignments and pick the consistent one.
     servers = sorted({r["server_uuid"].lower() for r in tl})
     print("sampling bug states at 2 Hz (one pass)...")
+    # locator reference frames from MID-RALLY times (the bug is provably
+    # up there; sampling early video medians the cells away while venue
+    # turf survives — measured failure)
+    mids = sorted(float(w["t1s"]) - 3.0 for w in wins)
+    wanted = set()
+    for k in np.linspace(0, len(mids) - 1, 40).astype(int):
+        wanted.add(round(mids[k] * FPS) / FPS)
     sample, states = [], []
     for t, fr in stream_bug(a.video):
-        if len(sample) < 40 and int(t) % 97 == 0:
+        if round(t * FPS) / FPS in wanted:
             sample.append(fr)
         states.append((t, fr))
     cells, dots = locate_cells(sample if len(sample) >= 8 else
