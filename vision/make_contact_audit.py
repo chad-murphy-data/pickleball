@@ -260,6 +260,10 @@ const loaded = () => !!V.src;
 const rget = c => DATA.rallies.find(r => r.cum === c);
 const rec = c => (store[c] = store[c] || {taps: [], note: rget(c).pfnote || ""});
 const fmts = s => `${Math.floor(s/60)}:${(s%60).toFixed(2).padStart(5,"0")}`;
+/* effective prefill: the old ordinal sequences carry mid-rally errors
+   (pop-counting era — see contact_gate.md 2026-08-16 note), so a rally's
+   prefill can be dropped once it diverges from the screen */
+const pfOf = c => (store[c] && store[c].nopf) ? [] : (rget(c).pf || []);
 
 function rallies(){
   return DATA.rallies.filter(r =>
@@ -281,11 +285,11 @@ function sortedTaps(c){
   return s ? s.taps.slice().sort((a, b) => a.t - b.t) : [];
 }
 function rows(c){
-  const r = rget(c), out = [];
+  const out = [], pfe = pfOf(c);
   let k = 0;
   for (const tp of sortedTaps(c)){
     if (tp.w){ out.push({tp, ty: "whiff", pf: null, div: false}); continue; }
-    const pf = (r.pf && r.pf[k]) || null;
+    const pf = pfe[k] || null;
     const ty = tp.ty || (pf && pf.t) || (k === 0 ? "serve" : k === 1 ? "return" : "");
     out.push({tp, ty, pf, div: !!(pf && tp.h && pf.h && tp.h !== pf.h), k});
     k++;
@@ -293,15 +297,25 @@ function rows(c){
   return out;
 }
 function expected(c){
-  const r = rget(c);
   const k = sortedTaps(c).filter(t => !t.w).length;
-  return (r.pf && r.pf[k]) || null;
+  return pfOf(c)[k] || null;
 }
 function done(c){
-  const r = rget(c), rs = rows(c);
+  const rs = rows(c), pfe = pfOf(c);
   const n = rs.filter(x => !x.tp.w).length;
-  const need = r.pf && r.pf.length ? r.pf.length : 2;
+  const need = pfe.length ? pfe.length : 2;
   return n >= need && rs.every(x => x.ty && x.tp.h);
+}
+function dropPrefill(){
+  if (cur === null || !rget(cur).pf.length) return;
+  const s = rec(cur);
+  if (s.nopf){ delete s.nopf; }
+  else {
+    /* materialize the types already showing, so stamped rows keep them */
+    rows(cur).forEach(x => { if (!x.tp.w && !x.tp.ty && x.ty) x.tp.ty = x.ty; });
+    s.nopf = 1;
+  }
+  save(); panel(); side();
 }
 
 /* ---------------- video ---------------- */
@@ -466,13 +480,19 @@ function panel(){
       · ~${r.dur.toFixed(0)}s logged
       ${r.approx ? ' · <span class="approx">window approximate — trust the scorebug</span>' : ""}</span>
   </div>
+  <div class="bar" style="font-size:14px">
+    <span>🔎 <b>scorebug check</b>: at the serve the bug must read
+    <b style="color:var(--warn)">${r.score}</b> — if it doesn't, scrub until
+    it does. The score IS the rally's identity; where the prefill disagrees
+    with the screen, <b>the screen wins</b> (keys 1–4).</span></div>
   <div class="bar"><span id="next" class="${whiffArmed ? "armed" : ""}">${
     whiffArmed ? "next stamp = WHIFF (press 1-4)" :
     exp ? `NEXT ⏎ #${(rs.filter(x=>!x.tp.w).length)+1}: <span class="hitter t${expName ? expName.team : 1}">${expName ? expName.name : "?"}</span> — ${exp.t || "?"}` :
-    r.pf && r.pf.length ? "prefill complete — keys 1-4 for extras" :
+    pfOf(cur).length ? "prefill complete — keys 1-4 for extras" :
     "keys 1-4 stamp the hitter"}</span>
     <button onclick="whiffArmed=!whiffArmed;panel()" title="W">${whiffArmed ? "cancel whiff" : "＋whiff (W)"}</button>
-    <button onclick="undo()" title="backspace">↶ undo</button></div>
+    <button onclick="undo()" title="backspace">↶ undo</button>
+    ${r.pf.length ? `<button onclick="dropPrefill()">${(store[cur]&&store[cur].nopf) ? "↩ restore prefill" : "✕ prefill (wrong for this rally)"}</button>` : ""}</div>
   <div class="bar small">`;
   ps.forEach((pl, i) => {
     h += `<button class="stepb" onclick="stamp('${pl.uuid}')">
@@ -508,7 +528,11 @@ function panel(){
 
 function helprow(r){
   return `<b>Stamp every paddle strike AS IT HAPPENS</b> at 0.25–0.5×.
-  ${r.pf && r.pf.length ? "This rally is prefilled: <kbd>⏎</kbd> stamps the next expected shot; keys <kbd>1</kbd>–<kbd>4</kbd> stamp an explicit hitter (mismatch is flagged, not lost)."
+  The prefill is a CONVENIENCE, not an authority — it was coded in an era
+  whose counting aid (audio pops) later proved to be noise, so mid-rally
+  divergence from the screen is expected sometimes: trust your eyes,
+  stamp with <kbd>1</kbd>–<kbd>4</kbd>, and the flag keeps the record.
+  ${pfOf(r.cum).length ? "This rally is prefilled: <kbd>⏎</kbd> stamps the next expected shot; keys <kbd>1</kbd>–<kbd>4</kbd> stamp an explicit hitter (mismatch is flagged, not lost). At the first real divergence, hit <b>✕ prefill</b> and go keys-only."
                          : "Keys <kbd>1</kbd>–<kbd>4</kbd> stamp hitter + time; shots 1–2 auto-type serve/return, fill the rest in the table."}
   <kbd>W</kbd> arms a whiff (swing-and-miss — stamped, but contact=0, never consumes the prefill).
   <kbd>⌫</kbd> undo · <kbd>space</kbd> play/pause · <kbd>R</kbd> replay ·
@@ -574,7 +598,15 @@ function wireVideo(){
     if (!autoPause || cur === null || V.paused) return;
     const r = rget(cur);
     const sv = serveStamp(cur) ?? r.pin;
-    const end = sv != null ? sv + r.dur + 2 : r.t1s + 1;   // v4 window fallback
+    let end = sv != null ? sv + r.dur + 2 : r.t1s + 1;     // v4 window fallback
+    /* the log duration includes pre-serve lead the condensed video cuts,
+       so pin+dur can overrun the NEXT rally's serve — clamp to it */
+    const i = DATA.rallies.findIndex(x => x.cum === r.cum);
+    const nxt = DATA.rallies[i + 1];
+    if (nxt){
+      const nsv = serveStamp(nxt.cum) ?? nxt.pin ?? nxt.t0s;
+      if (nsv != null) end = Math.min(end, nsv - 0.5);
+    }
     if (V.currentTime > end) V.pause();
   });
   document.addEventListener("keydown", e => {

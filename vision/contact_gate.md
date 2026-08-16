@@ -212,3 +212,44 @@ questions; this amendment separates them.
   postmortem's stated only door. MediaPipe is not on the ladder
   (single-person, near-field — wrong shape, never used in this
   project).
+
+## Labeling protocol note, 2026-08-16: prefill demoted — the pop-counting
+## era reached the labels
+
+During the first timestamped session the user found rallies whose prefill
+diverged from the screen mid-rally ("the server is correct, but the rest
+aren't"; rallies 3-4, while 1-2 tracked). Data-side audit before touching
+anything: labels × log × pins × page payload are all CONSISTENT at offset
+0 — all 16 coded shot-1 hitters equal the log server (shifted alignments
+score 8/14 at ±1 vs 14/14 at 0), pins are monotone with plausible gaps,
+and the user confirms the correct server at the pin instants. So rally
+IDENTITY, the serve pins, and the time base are sound; the divergence is
+in the old ORDINAL sequences themselves. Mechanism: the v1 audit tool
+anchored shots 1-2 from the referee log and advised counting the rest
+"at 0.5× with sound on — the pops make it easy" — and the pops were later
+proven uncorrelated with shots. The audio premise failure degraded the
+answer key, not just the detector it graded.
+
+Consequences:
+- **The prefill is a suggestion, not an authority.** Protocol: scorebug-
+  verify shot 1 (the header shows the log start_score; the on-screen bug
+  must match — the score IS the rally's identity), ⏎ only while the video
+  visibly tracks the prefill, "✕ prefill" at the first divergence and
+  keys 1-4 from there. The screen always wins. Tool updated accordingly
+  (scorebug banner, ✕ prefill toggle that materializes already-stamped
+  types, auto-pause clamped to the next rally's serve).
+- **Gate C is unaffected**: its ground truth is the NEW timestamped CSV,
+  which depends on nothing from the old sequences; windows derive from
+  the new serve stamps. Per-rally identity is now VERIFIED via scorebug
+  rather than inherited — an upgrade to the measurement frame.
+- **The jitter reference (pins) remains valid** — pins were user-
+  confirmed correct at the serve instants.
+- **Historical caveat, recorded not re-litigated**: shot_labels_
+  chicago0725.csv's reliable content = rally identity + shots 1-2 +
+  approximate counts/type mix; mid-rally order and per-shot types carry
+  errors at an unknown rate. Gate B's 0.442 recall / 0.871 precision
+  were scored against those sequences — one more unquantified reason
+  0.442 was never the pose ceiling. Once the new labels cover the core
+  16, rescoring Gate B against corrected sequences is a cheap curiosity
+  for the record; it carries zero decision weight (the thread was
+  already reopened on stronger grounds).
