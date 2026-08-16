@@ -27,6 +27,47 @@ validation of the weakest-link structure; where specific pairings
 deviate (episodic game plans), that is exactly what the null test could
 not see.
 
+## Backend choice — gold standard is PER-TASK, decided on merit
+
+Use **RTMPose-balanced** (`pose_extract.py --backend rtmpose`) — and the
+reasoning must be stated so a future thread doesn't mistake it for the
+convenience pick the contact thread had to correct (contact_gate.md
+Amendment 2): Gate C is a ONE-SHOT ~15k-frame measurement whose verdict
+hinges on wrist precision during motion blur, so its instrument is the
+strongest model that runs (ViTPose-plus-huge). Coverage is the opposite
+regime on both axes: a BULK pass over full matches (eventually many
+VODs — ViT-huge would cost GPU-days for nothing), measuring a SLOW
+AGGREGATE of foot positions where per-frame keypoint noise averages
+out and the binding accuracy terms are homography calibration and
+identity/side attribution, not keypoint AP. RTMPose is the merit
+choice here, not the easy one.
+
+**Pre-named validation guard (run before trusting the fleet)**: extract
+a handful of rallies with BOTH backends and confirm the coverage
+metrics (ellipse area, width share) agree within a few percent. If
+they disagree, the ViTPose number wins and the discrepancy gets
+diagnosed before any scale-out.
+
+## Prerequisites for a fresh session
+
+- **PR #57 must be merged** (or the session works on branch
+  `claude/pickleball-swing-detection-6mw3xk`): pose_extract, the gate
+  docs, and this spec all live there — a fresh clone of main has none
+  of it.
+- **Rally windows at scale come from the scorebug reader**
+  (`vision/scorebug_read.py`, frame-exact flip sync — the keeper
+  asset), NOT from the cheer join or grammar chains (both failed; see
+  data/vision/pin_realignment.md).
+- **EXCLUDE REPLAYS** — the recurring alignment trap (2026-08-16
+  lesson): broadcasts re-air rallies at full speed, and a replayed
+  rally would double-count coverage frames. Detection: a segment whose
+  scorebug state duplicates or fails to advance the score sequence is
+  a replay; only score-advancing segments are live. The scorebug
+  reader makes this check mechanical.
+- Sequencing: do NOT touch the contact-thread instruments
+  (contact_gate.md is pre-registered and mid-measurement); coverage is
+  a parallel read-only consumer of pose_extract.
+
 ## Pipeline (every stage exists; the glue is the build)
 
 1. Rally windows for a VOD (scorebug sync / stamped serves where
