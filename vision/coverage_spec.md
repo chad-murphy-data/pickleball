@@ -153,11 +153,19 @@ Pre-register the formulas BEFORE the first real number is looked at
   the singles surplus cleared and wind skill failed. Single-match
   leaderboards are never quoted; report per-player values with
   between-match sd and a minimum-matches threshold.
-- **Mixed rating-gap caveat**: correlating width share against
-  within-pair rating gaps is clean WITHIN gender; in mixed, the rating
-  gap is loaded with the cross-gender offset, which is a prior
-  convention (house rule / finding 8) — never publish a mixed
-  gap-vs-coverage claim as fact.
+- **Cross-gender scope (user correction, 2026-08-16)**: width share
+  and every other coverage quantity are DIRECT OBSERVABLES — measured
+  off the video with no prior in the derivation — so they compare
+  across genders and are publishable as fact once validated ("men
+  cover X% more ground than women in mixed" is a fair, reasonable
+  statement of measurement). The likelihood-flat house rule protects
+  RATINGS (outcome-inferred, offset-conventional), not measurements.
+  Two boundaries that do stand: (1) coverage never feeds ratings —
+  it is descriptive, a player-page axis like the singles surplus, not
+  a model input; (2) any analysis correlating coverage against a
+  RATING-DERIVED quantity in mixed (e.g. within-pair rating gaps)
+  inherits the offset convention through the ratings side — run those
+  within gender or flag the convention.
 
 ## Output data model
 
