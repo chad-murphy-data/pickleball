@@ -1166,7 +1166,8 @@ def validate_anchor(a):
     6-20 s."""
     court = load_court(a.court)
     labels = ROOT / "data/vision/shot_labels_chicago0725.csv"
-    v4 = ROOT / "data/vision/rally_windows_chicago0725_v4.csv"
+    v4 = Path(a.windows) if a.windows else \
+        ROOT / "data/vision/rally_windows_chicago0725_v4.csv"
     pins = {}
     for r in csv.DictReader(open(labels)):
         cum = int(r["rally_cum"])
