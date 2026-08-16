@@ -73,13 +73,17 @@ def locate_cells(frames):
     and greenery also read green — a column-profile locator locked
     onto the white games-won column next door on the mixed final)."""
     from scipy import ndimage
-    m = np.median(np.stack([green_mask(f) for f in frames]), axis=0) > 0.5
+    # mean, low threshold, then closing: the WHITE digits carve moving
+    # holes in the green cells across frames, so a strict median erodes
+    # the cells below any size floor
+    m = np.mean(np.stack([green_mask(f) for f in frames]), axis=0) > 0.3
+    m = ndimage.binary_closing(m, structure=np.ones((3, 3)), iterations=2)
     lab, n = ndimage.label(m)
     comps = []
     for i in range(1, n + 1):
         ys, xs = np.nonzero(lab == i)
         h, w = ys.max() - ys.min() + 1, xs.max() - xs.min() + 1
-        if 12 <= h <= 60 and 8 <= w <= 70 and len(ys) > 0.5 * h * w:
+        if 12 <= h <= 90 and 8 <= w <= 70 and len(ys) > 0.4 * h * w:
             comps.append((ys.min(), ys.max() + 1, xs.min(), xs.max() + 1))
     best = None
     for a in comps:
@@ -92,9 +96,19 @@ def locate_cells(frames):
             area = (a[1] - a[0]) * (a[3] - a[2])
             if best is None or area > best[0]:
                 best = (area, a, b)
-    if best is None:
-        raise SystemExit("no stacked green score cells — different bug")
-    _, a, b = best
+    if best is not None:
+        _, a, b = best
+    else:
+        # the two cells usually TOUCH (one tall component): take the
+        # best cell-proportioned tall blob and split at its midpoint
+        tall = [c for c in comps if (c[1] - c[0]) >= 24
+                and (c[1] - c[0]) >= 1.2 * (c[3] - c[2])]
+        if not tall:
+            raise SystemExit("no stacked green score cells — different bug")
+        c = max(tall, key=lambda c: (c[1] - c[0]) * (c[3] - c[2]))
+        mid = (c[0] + c[1]) // 2
+        a = (c[0], mid, c[2], c[3])
+        b = (mid, c[1], c[2], c[3])
     x0 = min(a[2], b[2])
     x1 = max(a[3], b[3])
     cells = ((a[0], a[1], x0, x1), (b[0], b[1], x0, x1))
