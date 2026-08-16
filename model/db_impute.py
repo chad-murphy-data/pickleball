@@ -38,6 +38,7 @@ Run: python model/db_impute.py   (offline after first run; logs cached)
 """
 from __future__ import annotations
 
+import argparse
 import csv
 import math
 import random
@@ -346,6 +347,11 @@ def run_fit(rally_rows, sv, sg, gen, dbl, ranked_min, label):
 
 # ---------------------------------------------------------------------------
 def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--parse-only", action="store_true",
+                    help="rebuild db_rallies/db_orders and stop before the "
+                         "bootstrap fits (nightly mode)")
+    args = ap.parse_args()
     sv, sg, gen, dbl, names = load_players()
     dbs = load_dreambreakers()
     c = PBClient()
@@ -415,6 +421,9 @@ def main():
     print(f"  slot 1 is a man: {m_first}/{n_ord} ({m_first/n_ord*100:.0f}%)")
     print(f"  men share of slots 1-2: {m_top2}/{2*n_ord} "
           f"({m_top2/(2*n_ord)*100:.0f}%)")
+
+    if args.parse_only:
+        return
 
     # main fit + sensitivity
     run_fit(all_rallies, sv, sg, gen, dbl, RANKED_MIN_GAMES, "primary")

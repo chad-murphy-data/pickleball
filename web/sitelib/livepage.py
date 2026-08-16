@@ -12,7 +12,8 @@ pre-match probability, matchup track composed via matchup_prob, DreamBreaker
 via the singles model of make_forecast.py.
 
 Data: site/data/live_values.json (built here) — every v2 player's current
-value/sd + singles value where fitted, keyed by uuid.
+value/sd + suite singles value (fitted/blended/imputed — always present),
+keyed by uuid.
 """
 from __future__ import annotations
 
@@ -40,21 +41,37 @@ API_KEY = os.environ.get("LIVE_API_KEY", (
     "NzEwNzU4Nn0.ktyO_FYxFP5xwQB0TXucnPMjMQi0HAVKGSdC0miDi4w"))
 
 K_DOUBLES = 0.43          # winprob.py — measured serve-rally win rate
-K_DB_SINGLES = 0.42       # make_forecast.py DreamBreaker model
-SINGLES_IMPUTE = (0.28, 1.14)
-SINGLES_MIN_GAMES = 10
+K_DB_SINGLES = 0.42       # make_forecast.py DreamBreaker model (team-level)
 POLL_MS = 20_000          # ≥15 s floor, same politeness rule as the poller
+
+
+def _singles_impute():
+    """Client-side fallback only. The suite (model/fit_singles.py) puts a
+    posterior singles value on every tracked player, so live_values.json
+    ships singles for everyone and the JS impute path is dead code kept
+    for robustness (a UUID that appears before the nightly refit). Average
+    of the per-gender zero-evidence closed forms in singles_model.json —
+    MUST match make_forecast's fallback family so live DB numbers agree
+    with graded pre-match receipts (the 0.28-vs--0.07 drift bug, fixed
+    2026-08-16)."""
+    try:
+        imp = json.loads((ROOT / "model" / "singles_model.json")
+                         .read_text())["impute"]
+        return (round((imp["M"]["a"] + imp["F"]["a"]) / 2, 4),
+                round((imp["M"]["b"] + imp["F"]["b"]) / 2, 4))
+    except (OSError, KeyError, ValueError):
+        return (-0.07, 1.14)
+
+
+SINGLES_IMPUTE = _singles_impute()
 
 
 def _load_singles():
     path = DATA / "singles_players.csv"
     if not path.exists():
         return {}
-    out = {}
-    for r in csv.DictReader(path.open()):
-        if int(r["singles_games"]) >= SINGLES_MIN_GAMES:
-            out[r["player_id"].lower()] = round(float(r["singles_value"]), 4)
-    return out
+    return {r["player_id"].lower(): round(float(r["singles_value"]), 4)
+            for r in csv.DictReader(path.open())}
 
 
 def build_values_json(players, cal, updated, site_dir):

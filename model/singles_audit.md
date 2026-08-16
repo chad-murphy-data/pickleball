@@ -155,3 +155,14 @@ tier always visibly badged.
 Notes that bind any public version: cross-gender singles comparisons stay
 unpublishable as fact (DB cross-gender rallies are 2.7% of the corpus and
 identify nothing); UUIDs are identity; no 0%/100% anywhere.
+
+---
+
+**OUTCOME (same day).** User answered all decisions: DB rallies as
+evidence for thin/zero-coverage players — yes; DB record book — yes;
+surfacing — singles rankings page + blocks on the EXISTING player pages.
+Everything above was built the same session: see `model/singles_suite.md`
+for what shipped, the holdout gate results (wins singles games, TIES the
+DB arm — recorded honestly, regrade at season end), and the two
+structural lessons (location mode, slow-fading selection penalty) that
+changed the design between this audit and the build.

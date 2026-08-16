@@ -56,6 +56,8 @@ jobs:
           python scraper/enrich_formats.py
           python scraper/parse.py
           python scraper/parse_singles.py
+          python model/db_impute.py --parse-only
+          python model/fit_singles.py
           python web/make_forecast.py --days 7
           python scraper/tournament_state.py
         timeout-minutes: 210
@@ -80,7 +82,7 @@ jobs:
         if: github.event_name != 'push'
         continue-on-error: true
         run: |
-          git add -A data/
+          git add -A data/ model/singles_model.json
           if git diff --cached --quiet; then
             echo "data unchanged — nothing to commit"
           else
