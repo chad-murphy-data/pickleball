@@ -78,10 +78,23 @@ diagnosed before any scale-out.
    box bottom-center.
 4. Homography (court.py, calibrated once per broadcast setup) → court
    coordinates in feet.
-5. Identity: near/far from tracks × which-half-at-serve from lineup.py;
-   within-side disambiguation by track continuity + height prior
-   (mixed) + serve-position anchors. Confidence-weighted; drop
-   ambiguous spans (aggregate metrics tolerate gaps).
+5. Identity — the SERVE-ANCHOR chain, re-derived here so no session
+   has to: the referee log names the server and receiver of every
+   rally, and lineup.py's state machine supplies those two names for
+   all 45k rallies at 99.25% measured accuracy. At each serve, the
+   rules position-pin both of them: the server is the track serving
+   from the rule-determined half (behind the baseline, hits shot 1),
+   the receiver is the diagonal track. Each remaining track is simply
+   "the partner" on its side — so all four names resolve WITHOUT
+   predicting where partners stand (stacking swaps partners' halves
+   but never touches identity, because tracks give physical position
+   and the anchor only needs server + receiver). Track continuity then
+   carries the names through the rally, and the NEXT serve re-anchors
+   — identity errors are rally-local by construction and can never
+   propagate. Mixed doubles adds a redundant height-prior check.
+   Confidence-weighted; ambiguous spans (camera cut mid-rally, anchor
+   frame unclear) are dropped, not guessed — aggregate metrics
+   tolerate gaps.
 6. Per player per rally: occupancy distribution on the court plane.
 
 ## Metrics (report per player per match, aggregate per season)
