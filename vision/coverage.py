@@ -343,13 +343,14 @@ def by_frame(dets):
 
 
 def track_positions_at(dets, t_lo, t_hi, min_n=2):
-    """track -> median court position over [t_lo, t_hi] (sided only)."""
+    """track -> (median court x, median court y, n dets) over
+    [t_lo, t_hi] (sided only); n feeds serving_config's subset weights."""
     acc = defaultdict(list)
     for d in dets:
         if t_lo <= d.t <= t_hi and d.side >= 0:
             acc[d.track].append(d.xy)
     return {tr: (float(np.median([p[0] for p in v])),
-                 float(np.median([p[1] for p in v])))
+                 float(np.median([p[1] for p in v])), len(v))
             for tr, v in acc.items() if len(v) >= min_n}
 
 
@@ -357,15 +358,48 @@ def d_kitchen(xy, end):
     return abs(xy[1] - KITCHEN_Y[end])
 
 
-def serving_config(pos):
+def serving_config(pos, weight=None):
     """Score the two serving-end hypotheses on a position snapshot.
 
-    pos: track -> (x, y).  Returns (end, margin, roles) where roles =
-    dict(server=track, srv_partner=track, receiver=track,
-    rcv_kitchen=track); or (None, 0, {}) when the snapshot cannot say
-    (missing players, nobody at the kitchen, ...).  The margin is the
+    pos: track -> (x, y) (extra tuple elements tolerated).  Returns
+    (end, margin, roles) where roles = dict(server=track,
+    srv_partner=track, receiver=track, rcv_kitchen=track); or
+    (None, 0, {}) when the snapshot cannot say.  The margin is the
     weakest of the geometric facts the winning hypothesis asserts, in
-    feet — 0 or negative means unconvinced."""
+    feet — 0 or negative means unconvinced.
+
+    More than 2 candidates per side is NORMAL on real footage (track
+    fragments, a ballkid) — the best 2+2 SUBSET by margin wins, with
+    detection-count weights as the tie-break so a fragment never beats
+    a persistent track (measured on the mixed final: the strict ==2
+    rule refused whole rallies whose anchor slice held one fragment)."""
+    from itertools import combinations
+    near_all = {tr: p for tr, p in pos.items() if p[1] > NET_Y}
+    far_all = {tr: p for tr, p in pos.items() if p[1] <= NET_Y}
+    if len(near_all) < 2 or len(far_all) < 2:
+        return None, 0.0, {}
+    w = weight or {}
+
+    def top(side):
+        return sorted(side, key=lambda tr: -w.get(tr, 1))[:5]
+
+    best = (None, 0.0, {})
+    best_score = -1e18
+    for np_ in combinations(top(near_all), 2):
+        for fp_ in combinations(top(far_all), 2):
+            sub = {tr: pos[tr] for tr in np_ + fp_}
+            end, margin, roles = _config4(sub)
+            if end is None:
+                continue
+            score = margin + 1e-3 * sum(w.get(tr, 1) for tr in sub)
+            if score > best_score:
+                best_score = score
+                best = (end, margin, roles)
+    return best
+
+
+def _config4(pos):
+    """The exact 2+2 configuration test (see serving_config)."""
     near = {tr: p for tr, p in pos.items() if p[1] > NET_Y}
     far = {tr: p for tr, p in pos.items() if p[1] <= NET_Y}
     if len(near) != 2 or len(far) != 2:
@@ -518,7 +552,8 @@ def anchor_identity(dets, t_serve, win, lin, genders, heights=None):
     (names {track: uuid}, conf, checks dict) or (None, 0, checks)."""
     checks = {"diagonal": "", "halves": "", "gender": ""}
     pos = track_positions_at(dets, t_serve - 0.6, t_serve + 0.4)
-    end, margin, roles = serving_config(pos)
+    wts = {tr: p[2] for tr, p in pos.items() if len(p) > 2}
+    end, margin, roles = serving_config(pos, wts)
     if end is None:
         return None, 0.0, dict(checks, reason="no_serving_config")
     server_uuid = win["server_uuid"].lower()
