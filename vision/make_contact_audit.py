@@ -124,13 +124,15 @@ def build_payload(games, names, teams, rallies, windows, prefill, pilot):
         }
     for r in rallies:
         w = windows.get(r["cum"])
-        if w is None:          # dropped in v4: location unresolved
-            continue
+        # rallies v4 DROPPED (machine alignment unresolved — 17/18/19 and
+        # the game-2/4 openers) are still listed: no auto-seek, located by
+        # SCOREBUG (the start score uniquely identifies a rally in-game)
         pf = prefill.get(r["cum"], {})
         out["rallies"].append({
             "cum": r["cum"], "slot": r["slot"], "rally": r["rally"],
-            "t0s": round(w["t0"], 1), "t1s": round(w["t1"], 1),
-            "dur": r["dur"], "approx": w["approx"],
+            "t0s": round(w["t0"], 1) if w else None,
+            "t1s": round(w["t1"], 1) if w else None,
+            "dur": r["dur"], "approx": w["approx"] if w else True,
             "score": r["score"], "outcome": r["outcome"],
             "server": names.get(r["server"], "?"), "server_uuid": r["server"],
             "receiver": names.get(r["receiver"], "?"),
@@ -313,6 +315,12 @@ function done(c){
   const need = pfe.length ? pfe.length : 2;
   return n >= need && rs.every(x => x.ty && x.tp.h);
 }
+function toggleNV(){
+  if (cur === null) return;
+  const s = rec(cur);
+  if (s.nv) delete s.nv; else s.nv = 1;
+  save(); panel(); side();
+}
 function dropPrefill(){
   if (cur === null || !rget(cur).pf.length) return;
   const s = rec(cur);
@@ -350,7 +358,8 @@ function openSeek(r){
   const sv = serveStamp(r.cum);
   if (sv != null) seekTo(sv - 2, true);
   else if (r.pin != null) seekTo(r.pin - 2, true);       // v4 hand pin
-  else seekTo(r.t0s - 1, !r.approx);
+  else if (r.t0s != null) seekTo(r.t0s - 1, !r.approx);
+  else toast(`no window — find by scorebug: ${r.score}`, 2600);
 }
 function step(nf){ if (!loaded()) return; V.pause();
   V.currentTime = Math.max(0, V.currentTime + nf / fps()); }
@@ -449,10 +458,13 @@ function side(){
       h += `<div class="small dim" style="margin-top:9px">GAME ${slot} — ${DATA.games[slot].division}</div>`; }
     const n = store[r.cum] ? rows(r.cum).length : 0;
     h += `<div class="rrow ${cur === r.cum ? "sel" : ""}" onclick="open_(${r.cum})">
-      <span style="width:60px">${n ? n + " taps" : "—"}</span>
+      <span style="width:48px">${n ? n + "t" : "—"}</span>
       <span>R${r.rally}</span><span class="dim small">#${r.cum}</span>
+      <span class="dim small" style="margin-left:auto">${r.score}</span>
       ${r.core ? '<span class="badge core">core</span>' : ""}
       ${r.pilot ? '<span class="badge pilot">pilot</span>' : ""}
+      ${r.t0s == null ? '<span class="badge" title="no window — locate by scorebug">🔎</span>' : ""}
+      ${(store[r.cum] || {}).nv ? '<span class="badge" title="marked not in video">⛔</span>' : ""}
       ${done(r.cum) ? '<span class="badge done">✓</span>' : ""}</div>`;
   }
   const nd = DATA.rallies.filter(r => done(r.cum)).length;
@@ -500,7 +512,8 @@ function panel(){
     "keys 1-4 stamp the hitter"}</span>
     <button onclick="whiffArmed=!whiffArmed;panel()" title="W">${whiffArmed ? "cancel whiff" : "＋whiff (W)"}</button>
     <button onclick="undo()" title="backspace">↶ undo</button>
-    ${r.pf.length ? `<button onclick="dropPrefill()">${(store[cur]&&store[cur].nopf) ? "↩ restore prefill" : "✕ prefill (wrong for this rally)"}</button>` : ""}</div>
+    ${r.pf.length ? `<button onclick="dropPrefill()">${(store[cur]&&store[cur].nopf) ? "↩ restore prefill" : "✕ prefill (wrong for this rally)"}</button>` : ""}
+    <button onclick="toggleNV()" title="the broadcast genuinely cut this rally">${(store[cur]&&store[cur].nv) ? "↩ it IS in the video" : "⛔ not in video"}</button></div>
   <div class="bar small">`;
   ps.forEach((pl, i) => {
     h += `<button class="stepb" onclick="stamp('${pl.uuid}')">
@@ -543,6 +556,11 @@ function helprow(r){
   ${pfOf(r.cum).length ? "This rally is prefilled: <kbd>⏎</kbd> stamps the next expected shot; keys <kbd>1</kbd>–<kbd>4</kbd> stamp an explicit hitter (mismatch is flagged, not lost). At the first real divergence, hit <b>✕ prefill</b> and go keys-only."
                          : "Keys <kbd>1</kbd>–<kbd>4</kbd> stamp hitter + time; shots 1–2 auto-type serve/return, fill the rest in the table."}
   <kbd>W</kbd> arms a whiff (swing-and-miss — stamped, but contact=0, never consumes the prefill).
+  <b>Lining up</b>: every rally's START SCORE is in the list and the banner —
+  read the on-screen bug and match; that IS the rally's identity. A segment
+  where the bug does <b>not</b> advance is a REPLAY: skip it, stamp only live
+  play (never slo-mo). A rally the broadcast truly cut: mark
+  <b>⛔ not in video</b> and move on — an honest gap beats a guessed stamp.
   <kbd>⌫</kbd> undo · <kbd>space</kbd> play/pause · <kbd>R</kbd> replay ·
   <kbd>←</kbd><kbd>→</kbd> ±2s · <kbd>,</kbd><kbd>.</kbd> ±1 frame
   (<kbd>shift</kbd> = ±5) · <kbd>[</kbd><kbd>]</kbd> speed.
@@ -676,9 +694,12 @@ function dl(){ const a = document.createElement("a");
 function dlMeta(){
   const j = jitter();
   const nd = DATA.rallies.filter(r => done(r.cum)).length;
+  const nv = DATA.rallies.filter(r => (store[r.cum] || {}).nv)
+                         .map(r => r.cum);
   const meta = {tool: "contact_audit v1", exported_at: new Date().toISOString(),
                 fps: fps(), rallies_done: nd, jitter: j,
-                video_name: vname, video_dur_s: vdur()};
+                video_name: vname, video_dur_s: vdur(),
+                not_in_video: nv};
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([JSON.stringify(meta, null, 1)],
                                         {type: "application/json"}));
