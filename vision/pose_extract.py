@@ -25,6 +25,11 @@ construction. Unlabeled rallies can still be extracted via --windows.
 
 RUN (needs the VOD; the GATE runs on the GPU box)
     pip install torch transformers scipy pillow imageio-ffmpeg
+    # FIRST, the CPU smoke with eyeball frames (no GPU, no labels, ~min):
+    python vision/pose_extract.py --video full_match.mp4 \
+        --fast --rallies 1 --debug-frames 3
+    #   -> data/vision/pose/debug/r0001_f*.png: check 4 boxes sit on the
+    #      4 players, near=green / far=orange, skeletons sane. LOCAL ONLY.
     python vision/pose_extract.py --video full_match.mp4 --device cuda
     # production-spine A/B (report alongside, never the verdict):
     #   pip install rtmlib onnxruntime && \
@@ -454,10 +459,47 @@ def make_infer(a):
 # ------------------------------------------------------------- extract
 
 
-def extract_rally(infer, video, cum, t0, t1, fps, width):
+# COCO-17 limb pairs for the debug skeletons
+SKEL = [(5, 6), (5, 7), (7, 9), (6, 8), (8, 10), (5, 11), (6, 12),
+        (11, 12), (11, 13), (13, 15), (12, 14), (14, 16)]
+SIDE_COLOR = {0: (80, 200, 80), 1: (60, 160, 240), -1: (60, 60, 230)}
+# BGR: near=green, far=orange-ish, junk=red
+
+
+def draw_debug(frame, dets, side_map):
+    """Annotate one frame: box colored by assigned side, track id,
+    skeleton for confident keypoints. The human check this enables —
+    'are the four boxes on the four players, near/far colored right,
+    skeletons sane?' — is the cheapest validation of the whole
+    detection+tracking layer on REAL footage, and it needs no GPU and
+    no labels (house pattern: ask the human where the machine is
+    guessing)."""
+    import cv2
+    img = frame.copy()
+    for tid, cf, box, kpt, kpc in dets:
+        col = SIDE_COLOR.get(side_map.get(tid, -1), SIDE_COLOR[-1])
+        x0, y0, x1, y1 = map(int, box[:4])
+        cv2.rectangle(img, (x0, y0), (x1, y1), col, 2)
+        cv2.putText(img, f"t{tid}", (x0, max(12, y0 - 5)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, col, 1)
+        for a, b in SKEL:
+            if kpc[a] >= 0.3 and kpc[b] >= 0.3:
+                cv2.line(img, tuple(map(int, kpt[a])),
+                         tuple(map(int, kpt[b])), col, 1)
+        for j in range(17):
+            if kpc[j] >= 0.3:
+                cv2.circle(img, tuple(map(int, kpt[j])), 2, col, -1)
+    return img
+
+
+def extract_rally(infer, video, cum, t0, t1, fps, width, debug_n=0):
     trk = IoUTracker()
     rows = []          # (t, tid, conf, box, kpt, kpc)
     H = W = None
+    n_exp = max(int((t1 - t0) * fps), 1)
+    dbg_idx = {int(k * (n_exp - 1) / max(debug_n - 1, 1))
+               for k in range(debug_n)} if debug_n else set()
+    stash = []
     for i, frame in enumerate(decode_window(video, t0, t1 - t0, fps, width)):
         t = t0 + i / fps
         H, W = frame.shape[:2]
@@ -465,9 +507,12 @@ def extract_rally(infer, video, cum, t0, t1, fps, width):
         ids = trk.feed(t, [k[1] for k in kept])
         for tid, (cf, box, kpt, kpc) in zip(ids, kept):
             rows.append((t, tid, cf, box, kpt, kpc))
+        if i in dbg_idx:
+            stash.append((i, frame.copy(),
+                          [(tid, *k) for tid, k in zip(ids, kept)]))
     side = assign_sides([r[1] for r in rows], [r[3] for r in rows]) \
         if rows else {}
-    return rows, side, (H, W)
+    return rows, side, (H, W), stash
 
 
 def save_rally(out_dir: Path, cum, rows, side, hw, fps):
@@ -525,8 +570,23 @@ def run(a):
         else:
             print(f"rally #{cum}: no window anywhere — skipped")
             continue
-        rows, side, hw = extract_rally(infer, a.video, cum, t0, t1,
-                                       a.fps, a.width)
+        rows, side, hw, stash = extract_rally(infer, a.video, cum, t0, t1,
+                                              a.fps, a.width,
+                                              a.debug_frames)
+        if stash:
+            try:
+                import cv2
+                dbg_dir = out_dir / "debug"
+                dbg_dir.mkdir(exist_ok=True)
+                for fi, frame, dets in stash:
+                    p = dbg_dir / f"r{cum:04d}_f{fi:04d}.png"
+                    cv2.imwrite(str(p), draw_debug(frame, dets, side))
+                print(f"  debug frames -> {dbg_dir}/r{cum:04d}_f*.png "
+                      f"(green=near, orange=far, red=junk; local only, "
+                      f"never commit)")
+            except ImportError:
+                print("  --debug-frames needs opencv (pip install "
+                      "opencv-python) — skipped")
         n = save_rally(out_dir, cum, rows, side, hw, a.fps)
         n_tracks = len({r[1] for r in rows})
         n_sided = len({tid for tid, s in side.items() if s >= 0})
@@ -688,6 +748,25 @@ def selftest():
         assert len(ps) == 2 and ps[0][2].shape == (17, 2)
         print("  rtm backend: kpt-derived boxes + gating OK")
 
+        # ---- debug-frame drawing path --------------------------------
+        try:
+            import cv2  # noqa: F401
+            frame = np.zeros((720, 1280, 3), np.uint8)
+            kpt = np.zeros((17, 2), np.float32)
+            kpt[:, 0] = np.linspace(600, 680, 17)
+            kpt[:, 1] = np.linspace(300, 420, 17)
+            dets = [(0, 0.9, np.array([580, 290, 700, 430], np.float32),
+                     kpt, np.full(17, 0.9, np.float32))]
+            img = draw_debug(frame, dets, {0: 0})
+            assert img.shape == frame.shape and img.sum() > 0, \
+                "debug drawing produced an empty image"
+            p = Path(td) / "dbg.png"
+            cv2.imwrite(str(p), img)
+            assert p.exists() and p.stat().st_size > 0
+            print("  debug-frame drawing + write OK")
+        except ImportError:
+            print("  (cv2 not installed here — debug drawing untested)")
+
         # ---- npz round trip ------------------------------------------
         rows = [(i / fps, all_ids[i], 0.9,
                  np.array(all_boxes[i], np.float32),
@@ -740,6 +819,11 @@ def main():
     ap.add_argument("--force-video", action="store_true",
                     help="override the same-file duration check (only if "
                          "CERTAIN the labels match this file)")
+    ap.add_argument("--debug-frames", type=int, default=0,
+                    help="write N annotated PNGs per rally (boxes colored "
+                         "by side + skeletons) for eyeball verification — "
+                         "run the CPU smoke with --debug-frames 3 BEFORE "
+                         "spending the GPU hour")
     ap.add_argument("--fast", action="store_true",
                     help="smoke preset: 20 fps + lightweight/nano models — "
                          "NOT for the gate")
