@@ -173,110 +173,128 @@ def run(a):
     thr = calibrate_thr(a.video, flips, mask, rng)
     print(f"cluster threshold {thr:.1f} grey levels")
 
-    idx = sorted(set(before) | set(after))
-    vecs, keys = [], []
-    for i in idx:
-        for which, store in (("b", before), ("a", after)):
-            if i in store:
-                vecs.append(state_vec(store[i], mask))
-                keys.append((i, which))
-    labels = cluster_states(vecs, thr)
-    lab = dict(zip(keys, labels))
-    n_cl = len(set(labels))
-    print(f"{n_cl} distinct scorebug states across {len(vecs)} crops")
-    if n_cl < 10:
-        raise SystemExit(
-            f"clustering collapsed to {n_cl} states — a real match has "
-            f"dozens of scores; the threshold or mask is wrong for this "
-            f"bug. NOT emitting verdicts on a broken instrument.")
+    V = {}                     # (flip, "b"/"a") -> state vector
+    for i in sorted(set(before) | set(after)):
+        if i in before:
+            V[(i, "b")] = state_vec(before[i], mask)
+        if i in after:
+            V[(i, "a")] = state_vec(after[i], mask)
 
-    # score -> cluster map from currently-confident rallies
+    def close(k1, k2):
+        a, b = V.get(k1), V.get(k2)
+        return a is not None and b is not None \
+            and float(np.abs(a - b).mean()) < thr
+
+    # a REAL rally-end flip CHANGES the score state; a replay wipe or
+    # animation leaves it unchanged (the bug keeps the current score
+    # through replays).  Junk filter by value:
+    changing = {i for i in range(len(flips)) if (i, "b") in V
+                and (i, "a") in V and not close((i, "b"), (i, "a"))}
+    print(f"{len(changing)}/{len(flips)} flips actually change the "
+          f"score state (rest are replay wipes/animations)")
+
     F = [f[0] for f in flips]
+
     def flip_near(t1):
         j = int(np.argmin(np.abs(np.array(F) - (t1 + FLIP_LAG_S))))
         return j if abs(F[j] - (t1 + FLIP_LAG_S)) <= MATCH_TOL_S else None
-    votes = defaultdict(Counter)
+
+    cums = sorted(int(w["rally_cum"]) for w in wins)
+    wall = {int(w["rally_cum"]): float(w["t1s"]) for w in wins}
+    dur = {int(w["rally_cum"]): float(w["dur_s"]) for w in wins}
+    assign = {}                # rally_cum -> flip index (state-changing)
+    seed = set()
     for w in wins:
         cum = int(w["rally_cum"])
-        if w["approx"] != "0":
+        if w["approx"] == "0":
+            j = flip_near(float(w["t1s"]))
+            if j is not None and j in changing:
+                assign[cum] = j
+                seed.add(cum)
+    print(f"{len(seed)} seed rallies from confident windows")
+
+    # CHAIN PROPAGATION on score continuity: after(rally i) is the score
+    # start of rally i+1, so flip(i+1)'s BEFORE state must match
+    # flip(i)'s AFTER state (same game).  Extend from seeds both ways;
+    # only ever assign when the candidate is UNIQUE in the time band.
+    def cand_band(cum_from, j_from, cum_to, forward):
+        lo_t = F[j_from] + max(dur[cum_to] - 2, 1.0) if forward else \
+            F[j_from] - SEARCH_S - (wall[cum_from] - wall[cum_to])
+        hi_t = F[j_from] + (abs(wall[cum_to] - wall[cum_from])
+                            + SEARCH_S) if forward else \
+            F[j_from] - max(dur[cum_from] - 2, 1.0)
+        return [k for k in changing
+                if lo_t <= F[k] <= hi_t and k != j_from
+                and (F[k] > F[j_from]) == forward]
+
+    changed = True
+    while changed:
+        changed = False
+        for x, cum in enumerate(cums):
+            if cum in assign:
+                continue
+            g = games[cum]
+            prev_c = cums[x - 1] if x and games[cums[x - 1]] == g else None
+            next_c = cums[x + 1] if x + 1 < len(cums) \
+                and games[cums[x + 1]] == g else None
+            cand = None
+            if prev_c in assign:
+                ks = [k for k in cand_band(prev_c, assign[prev_c], cum, True)
+                      if close((k, "b"), (assign[prev_c], "a"))]
+                cand = ks if cand is None else [k for k in ks if k in cand]
+            if next_c in assign:
+                ks = [k for k in cand_band(next_c, assign[next_c], cum, False)
+                      if close((k, "a"), (assign[next_c], "b"))]
+                cand = ks if cand is None else [k for k in cand if k in ks]
+            if cand and len(set(cand)) == 1:
+                j = cand[0]
+                if j not in assign.values():
+                    assign[cum] = j
+                    changed = True
+    n_chained = len(assign) - len(seed)
+    print(f"chained {n_chained} more rallies from the seeds "
+          f"(total {len(assign)}/{len(cums)})")
+
+    # verify chain consistency where BOTH neighbors are assigned
+    n_incons = 0
+    for x, cum in enumerate(cums):
+        if cum not in assign:
             continue
-        j = flip_near(float(w["t1s"]))
-        if j is not None and (j, "a") in lab:
-            votes[(games[cum], scores[cum])][lab[(j, "a")]] += 1
-    score_cl = {k: c.most_common(1)[0][0] for k, c in votes.items()
-                if c.most_common(1)[0][1] >= max(1, sum(c.values()) // 2)}
-    # scores seen once are still usable; ambiguous (tied) ones dropped
-    print(f"{len(score_cl)} score states pinned from confident rallies")
+        nxt = cums[x + 1] if x + 1 < len(cums) else None
+        if nxt in assign and games[nxt] == games[cum]:
+            if not close((assign[cum], "a"), (assign[nxt], "b")):
+                n_incons += 1
+    print(f"adjacent-state inconsistencies among assigned: {n_incons}")
 
-    n_ver = n_cor = n_dem = n_unk = 0
+    n_ver = n_cor = n_unk = 0
     out_rows = []
-    replay_flips = set()
-    # replay detection: a flip whose after-state matches a score pinned
-    # EARLIER in video time than that score's real end
-    pinned_time = {}
-    for w in wins:
-        cum = int(w["rally_cum"])
-        key = (games[cum], scores[cum])
-        j = flip_near(float(w["t1s"]))
-        if w["approx"] == "0" and j is not None and key in score_cl:
-            pinned_time[score_cl[key]] = min(
-                pinned_time.get(score_cl[key], 1e18), F[j])
-    for j, (t, z) in enumerate(flips):
-        cl = lab.get((j, "a"))
-        if cl is not None and cl in pinned_time and t > pinned_time[cl] + 5.0:
-            replay_flips.add(j)
-
     for w in wins:
         w = dict(w)
         cum = int(w["rally_cum"])
-        key = (games[cum], scores[cum])
-        exp = score_cl.get(key)
-        j = flip_near(float(w["t1s"]))
-        got = lab.get((j, "a")) if j is not None else None
-        prev_key = (games[cum], scores[cum - 1]) if cum - 1 in scores \
-            and games.get(cum - 1) == games[cum] else None
-        exp_prev = score_cl.get(prev_key) if prev_key else None
-        verdict = "unknown"
-        if exp is not None and got is not None:
-            if got == exp:
-                verdict = "verified"
+        if cum in assign:
+            t1_new = F[assign[cum]] - FLIP_LAG_S
+            moved = abs(t1_new - float(w["t1s"])) > 0.6
+            w["t1s"] = f"{t1_new:.1f}"
+            w["t0s"] = f"{max(t1_new - dur[cum], 0.0):.1f}"
+            w["approx"] = "0"
+            w["state_check"] = ("seed" if cum in seed else
+                                ("chained_moved" if moved else "chained"))
+            if cum in seed:
+                n_ver += 1
             else:
-                # search for the right flip by value
-                cand = [k for k, (tf, _) in enumerate(flips)
-                        if abs(tf - (float(w["t1s"]) + FLIP_LAG_S)) <= SEARCH_S
-                        and lab.get((k, "a")) == exp
-                        and k not in replay_flips
-                        and (exp_prev is None
-                             or lab.get((k, "b")) == exp_prev)]
-                if len(cand) == 1:
-                    dur = float(w["dur_s"])
-                    t1 = flips[cand[0]][0] - FLIP_LAG_S
-                    w["t1s"] = f"{t1:.1f}"
-                    w["t0s"] = f"{max(t1 - dur, 0.0):.1f}"
-                    verdict = "corrected"
-                else:
-                    verdict = "mismatch"
-        if verdict == "verified":
-            n_ver += 1
-            w["approx"] = "0"
-        elif verdict == "corrected":
-            n_cor += 1
-            w["approx"] = "0"
-        elif verdict == "mismatch":
-            n_dem += 1
-            w["approx"] = "1"
+                n_cor += 1
         else:
-            n_unk += 1          # keep the spacing verdict as-is
-        w["state_check"] = verdict
+            w["approx"] = "1"
+            w["state_check"] = "unassigned"
+            n_unk += 1
         out_rows.append(w)
     with open(a.out, "w", newline="") as fh:
         wr = csv.DictWriter(fh, fieldnames=list(out_rows[0]))
         wr.writeheader()
         wr.writerows(out_rows)
     n_conf = sum(1 for w in out_rows if w["approx"] == "0")
-    print(f"verified {n_ver}, corrected {n_cor}, demoted {n_dem}, "
-          f"unknown {n_unk}; confident windows now {n_conf}/{len(out_rows)}")
-    print(f"replay-echo flips detected by value: {len(replay_flips)}")
+    print(f"seeds {n_ver}, chained {n_cor}, unassigned {n_unk}; "
+          f"confident windows now {n_conf}/{len(out_rows)}")
     print(f"wrote {a.out}")
 
 
