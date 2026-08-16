@@ -286,16 +286,21 @@ def box_gate(box, H, W):
     (reused from swing_probe). Box-only, so top-down backends can gate
     BEFORE spending pose compute on crowd/officials.
 
-    Feet band 0.24H, LOOSENED from v1's 0.30 after the 2026-08-16 smoke
-    debug frames: at 0.30 the far pair flickered out whenever they stood
-    deep (a far-side receiver's serve stance sits right at the old
-    boundary), killing their tracks and minting new ids (t2/t5 -> t9
-    across one rally). 0.24 keeps the deep-return stance while still
-    excluding the walkway loiterers (~0.21H) and, via the x-band, the
-    referee and camera operators."""
+    Feet band 0.18H — loosened TWICE from v1's 0.30 on 2026-08-16 smoke
+    debug frames. First cut (0.24) was still too tight: measured off the
+    user's frames, the far BASELINE is ~0.26H and the far pair's deep
+    stances — including the far SERVER'S serve stance, the one box the
+    identity anchor cannot lose — sit at ~0.20-0.22H. At 0.18 every far
+    stance in the frames passes with margin; crowd/ref/camera rejection
+    is carried by the x-band (court_halfwidth is a constant 0.24 above
+    the 0.34H row, which excludes the left seating, the right-side
+    referee and the walkway camera crew at those heights) plus the
+    0.06H box-height floor. If a future venue breaks this, the right
+    fix is the homography court polygon (vision/court.py), not another
+    scalar tweak."""
     x0, y0, x1, y1 = box[:4]
     bh, cx = y1 - y0, (x0 + x1) / 2
-    if y1 < 0.24 * H or bh < 0.06 * H:
+    if y1 < 0.18 * H or bh < 0.06 * H:
         return False
     return abs(cx / W - 0.5) <= court_halfwidth(y1 / H)
 
