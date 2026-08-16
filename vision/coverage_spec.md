@@ -212,7 +212,41 @@ imagery: LOCAL ONLY, never committed (same rule as data/vision/*.png).
 - Camera-side occlusion inflates near-pair uncertainty slightly;
   aggregate metrics + confidence weighting absorb it.
 
-**Status**: specced, unbuilt. Sequenced BEHIND the Gate C evening (do
-not preempt the contact thread's labeling/verdict). Natural build
-moment: right after the Gate C verdict, either way — coverage does not
-depend on it.
+**Status**: BUILT 2026-08-16 (branch claude/court-coverage-model-8rg94l;
+first real-VOD run pending — see the PR + build record below). The
+contact-thread instruments were not touched.
+
+## Build record (2026-08-16)
+
+- `vision/coverage_windows.py` — flip-train x referee-timeline windows
+  for ANY fresh VOD (scorebug_windows.align reused; approx flags carry
+  missed-flip neighbourhoods, DP instability, and claimed replay
+  inserts). `--selftest`.
+- `vision/coverage.py` — camera gate (`--scan-camera`), off-court +
+  speed gates, anchor-frame finder (last pre-flip freeze, motion over a
+  0.5 s baseline, per-window adaptive quiet threshold), serve-anchor
+  identity chain (geometry + logged names only; lineup halves, mixed
+  height prior, and the per-game end-map are report-only checks),
+  pre-registered metrics (frozen in its docstring BEFORE any real
+  number existed), committed-CSV writers. `--selftest` covers the
+  previous-rally-freeze trap, handoffs, the 0.30/0.70 width-share
+  reproduction, and the ellipse against the analytic value.
+- `vision/coverage_overlay.py` — the verification instrument (built
+  first per this spec): names/boxes/skeletons/court-inset, dimmed
+  low-confidence labels, exclusion banners, `--sample N` + spotcheck
+  template that coverage.py folds back in as the identity error rate.
+- `vision/coverage_ab.py` — the backend agreement guard, mechanical
+  (run before any scale-out; ViTPose wins disagreements).
+- `bash vision/coverage_pipeline.sh <vod> <match_uuid> <vod_id> ...`
+  runs the whole chain idempotently (test target: the 2026-01-25 PPA
+  Indoor Nationals mixed final, YouTube SQg2mHBPHC0, match c4eb30d0 —
+  Bright/Patriquin vs Black/Alshon, three of the spec's named cuts in
+  one match).
+- FOUND while wiring: PPA referee logs can DESYNC the lineup state
+  machine (c4eb30d0: receiver prediction 65.2% overall, but the misses
+  are two long runs — games 1-2 — with game 3 at 36/37 and only one
+  impossible row, so the LOGGED server/receiver names stay sound; the
+  99.25% figure is MLP-2026-measured). The identity chain is built to
+  survive this: it consumes logged names + geometry only, and the R/L
+  halves check weights itself by the machine's local receiver_ok
+  agreement.
