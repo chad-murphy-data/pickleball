@@ -95,6 +95,30 @@ diagnosed before any scale-out.
 - Cuts: gender within mixed; by pairing (Waters/partner across
   partners); size outliers (Alshon); serve vs receive.
 
+## Verification overlay (user-requested, 2026-08-16 — build it FIRST)
+
+Render an annotated copy of the video the user can just watch: boxes +
+skeletons on all four players, each labeled with the RESOLVED PLAYER
+NAME (team-colored), track id, near/far side, and the foot point — plus
+a small schematic-court inset showing the four projected dots moving in
+court coordinates (that inset verifies homography AND identity at once,
+and court coordinates are where every coverage metric lives). Dim/flag
+a player's label when identity confidence is low, so the eye goes
+straight to the moments the machine is guessing; banner replay-excluded
+segments visibly. Optional 0.5x render for checking.
+
+This is the identity layer's human-verification instrument, in the
+house pattern (validate on the cases being scored; ask the human where
+the machine is guessing): the ONE failure coverage cannot self-detect
+is within-side partner swaps mid-rally, and a name label jumping
+between partners is instantly visible to a human who knows the
+players. Make the check a MEASUREMENT, not a vibe: sample ~10 random
+rallies per game for the user to watch and record swaps found → a
+per-rally identity error rate with a denominator, before any
+leaderboard is quoted. Precedent: swing_probe's --smoke debug frames
+(same drawing, single frame). Overlay videos are broadcast-derived
+imagery: LOCAL ONLY, never committed (same rule as data/vision/*.png).
+
 ## Caveats (carried from the record, not new)
 
 - Championship-court VODs only — the permanent sample bias.
