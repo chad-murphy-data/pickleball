@@ -284,10 +284,18 @@ def assign_sides(track_ids, boxes):
 def box_gate(box, H, W):
     """Court players only — feet band + height + perspective court gate
     (reused from swing_probe). Box-only, so top-down backends can gate
-    BEFORE spending pose compute on crowd/officials."""
+    BEFORE spending pose compute on crowd/officials.
+
+    Feet band 0.24H, LOOSENED from v1's 0.30 after the 2026-08-16 smoke
+    debug frames: at 0.30 the far pair flickered out whenever they stood
+    deep (a far-side receiver's serve stance sits right at the old
+    boundary), killing their tracks and minting new ids (t2/t5 -> t9
+    across one rally). 0.24 keeps the deep-return stance while still
+    excluding the walkway loiterers (~0.21H) and, via the x-band, the
+    referee and camera operators."""
     x0, y0, x1, y1 = box[:4]
     bh, cx = y1 - y0, (x0 + x1) / 2
-    if y1 < 0.30 * H or bh < 0.06 * H:
+    if y1 < 0.24 * H or bh < 0.06 * H:
         return False
     return abs(cx / W - 0.5) <= court_halfwidth(y1 / H)
 
