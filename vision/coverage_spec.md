@@ -97,16 +97,77 @@ diagnosed before any scale-out.
    tolerate gaps.
 6. Per player per rally: occupancy distribution on the court plane.
 
+## Frame hygiene (the gaps a cold session would fall into)
+
+- **Main-camera gating**: broadcasts cut to close-ups/low angles
+  mid-rally; those frames must be DETECTED and EXCLUDED before
+  projection (the homography only holds for the main elevated angle).
+  Detection: scene-change + court-line reprojection sanity (the main
+  camera is static — frame-to-frame motion median 0.64 grey levels per
+  the POC — so a cut is loud). Validate the gate on a hand-checked
+  sample before trusting it.
+- **Rally-active span**: coverage counts ONLY frames between the serve
+  anchor and the rally's end (scorebug flip, frame-exact); between-
+  rally wandering poisons every metric. This needs the spec's ONE new
+  algorithmic piece: an **anchor-frame finder** for unstamped rallies
+  (within each inter-flip window, the frame where a serving-side track
+  occupies the service stance zone in court coordinates with low
+  all-player motion). Ground truth to validate it exists already: the
+  contact thread's stamped serve times — measure the finder's error
+  distribution there before scaling out.
+- **Phases**: the serve stance (server frozen at the baseline) is not
+  "coverage" — either exclude the first ~2 s of each rally or report
+  serve-phase and rally-phase separately; pick before data.
+- **Glitch rejection**: a physical speed gate on court-plane
+  trajectories (feet do not move 7+ m/s) drops keypoint teleports
+  before they enter any aggregate.
+- **DreamBreakers are EXCLUDED** (house rule: DBs are singles and
+  never enter doubles models; singles coverage would be its own,
+  separate cut).
+
 ## Metrics (report per player per match, aggregate per season)
 
-- **Coverage area**: 90% occupancy ellipse, ft² (in-rally frames only).
-- **Width share at the kitchen**: fraction of the team's 20 ft the
-  player patrols — THE w observable. Team pairs sum to 1 by
-  construction.
+Pre-register the formulas BEFORE the first real number is looked at
+(house style); the definitions below are the proposal to freeze:
+
+- **Coverage area**: 90% occupancy ellipse of rally-active foot
+  positions, ft², per player per game.
+- **Width share** (the w observable): per frame, the partner midpoint's
+  lateral offset from the team's court centerline, time-averaged and
+  mapped to a [0,1] share; secondary definition = the player's fraction
+  of the team's combined ellipse area. Team pairs sum to 1 by
+  construction. HONESTY CLAUSE: v2's w = 0.4085 is a responsibility
+  weighting inferred from OUTCOMES; the video quantity is a geometric
+  PROXY. The deliverable is the correlation between the two across
+  pairings — never a claim that they are the same number.
 - Depth range (baseline↔kitchen transitions), distance traveled per
   rally, static stance vs dynamic coverage split.
 - Cuts: gender within mixed; by pairing (Waters/partner across
   partners); size outliers (Alshon); serve vs receive.
+
+## Publication gates (same bar every other trait had to clear)
+
+- **Reliability first**: before any player-level coverage number is
+  published as a trait, it passes the house split-half battery (random
+  halves + across-eras where data allows) — the same gate clutch and
+  the singles surplus cleared and wind skill failed. Single-match
+  leaderboards are never quoted; report per-player values with
+  between-match sd and a minimum-matches threshold.
+- **Mixed rating-gap caveat**: correlating width share against
+  within-pair rating gaps is clean WITHIN gender; in mixed, the rating
+  gap is loaded with the cross-gender offset, which is a prior
+  convention (house rule / finding 8) — never publish a mixed
+  gap-vs-coverage claim as fact.
+
+## Output data model
+
+Committed: data/coverage_players.csv (one row per player-game:
+ellipse area, width share, depth range, distance, phase splits,
+identity-error rate from the overlay spot-check, frames kept/dropped
+by each gate) + data/coverage_events.csv (per-VOD ledger: homography
+calibration residual, main-camera gate stats, rallies covered/excluded
+with reasons). Pose npz and overlay renders stay local (gitignored /
+broadcast-imagery rule).
 
 ## Verification overlay (user-requested, 2026-08-16 — build it FIRST)
 
