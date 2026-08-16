@@ -516,6 +516,17 @@ Articles: unsolved-meta (Anna Bright DreamBreaker post), smoke-dimension
 
 ## Open threads (specced, unbuilt)
 
+Court coverage per player (2026-08-16, user request —
+`vision/coverage_spec.md`): track all four players via the Gate C kit's
+solved layers ONLY (pose tracks + court homography + lineup identity —
+no ball, no contact detection, no training) and measure per-player
+court occupancy: 90% ellipse ft², width share at the kitchen (= the
+DIRECT observation of finding 11's w = 0.4085 dial that gap_exploit
+could only test through scores), mixed gender split, Alshon, the
+Waters-partner freeze-out geometry. Robust to tracking blips
+(aggregate). Sequenced after the Gate C verdict; depends on it not at
+all.
+
 Weather (2026-07-28) — **full session narrative + open threads in
 `model/weather_thread.md`; read that first if picking this back up.**
 Summary: `scraper/weather.py` resolves every
