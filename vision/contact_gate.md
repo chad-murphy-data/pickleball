@@ -253,3 +253,20 @@ Consequences:
   16, rescoring Gate B against corrected sequences is a cheap curiosity
   for the record; it carries zero decision weight (the thread was
   already reopened on stronger grounds).
+
+Addendum to the 2026-08-16 note — **same-file check is now mechanical**:
+the labels export stamps the loaded video's name and duration
+(`video_name`/`video_dur_s` on shot-1 rows + the meta JSON), and
+`pose_extract.py` refuses to extract when the file it is given differs
+by >2 s from the stamp (`--force-video` to override, only when certain).
+Rationale: a tap IS the video's own clock, so timestamped labels can
+only desync from the footage if the FILE changes between labeling and
+extraction — the one sync failure mode taps cannot self-detect, now
+checked by machine instead of memory. This also answers, for the
+record, the user's standing worry that past kills were sync artifacts:
+the kills that stand rest on sync-proof evidence (Gate B = detector-
+stream side-alternation + the label-free side-repair autopsy; Gate A =
+direct human observation of in-play frames), the one sync-corrupted
+verdict (the first 0.467 swing kill) was caught and retracted at the
+time, and the sync-vulnerable number that survived in folklore (0.442
+recall) is precisely the one Gate C refuses to inherit.

@@ -83,16 +83,71 @@ MIN_TRACK_DET = 5     # shorter tracks get side=-1 (junk fragments)
 MAX_PERSONS = 6       # per frame, by detection confidence
 
 
-def detect_fps(video):
-    """Native frame rate off ffmpeg's stream banner; the gate samples at
-    native rate so no swing peak can fall between frames we skipped."""
+def parse_ffmpeg_banner(text):
+    """(fps, duration_s) from an `ffmpeg -i` stderr banner; None where
+    unparseable. Pure so the selftest can exercise it without a file."""
     import re
+    fps = dur = None
+    m = re.search(r"(\d+(?:\.\d+)?)\s*fps", text)
+    if m:
+        fps = float(m.group(1))
+    m = re.search(r"Duration:\s*(\d+):(\d+):(\d+(?:\.\d+)?)", text)
+    if m:
+        h, mnt, s = m.groups()
+        dur = int(h) * 3600 + int(mnt) * 60 + float(s)
+    return fps, dur
+
+
+def probe_video(video):
     import subprocess
     err = subprocess.run([ffmpeg_bin(), "-i", str(video)],
                          capture_output=True).stderr.decode(errors="replace")
-    m = re.search(r"(\d+(?:\.\d+)?)\s*fps", err)
-    if m:
-        f = float(m.group(1))
+    return parse_ffmpeg_banner(err)
+
+
+def check_video_identity(video, labels_path, force):
+    """The labels export stamps the duration of the file the taps were
+    made on. A tap IS the video's own clock, so labels can only desync
+    from the video if the FILE changes underneath them — this is the
+    machine check for exactly that (contact_gate.md 2026-08-16 note).
+    Old exports without the column skip the check with a notice."""
+    stamped = None
+    if Path(labels_path).exists():
+        for r in csv.DictReader(open(labels_path)):
+            v = r.get("video_dur_s")
+            if v:
+                stamped = float(v)
+                break
+    if stamped is None:
+        print("note: labels carry no video_dur_s stamp (older export) — "
+              "same-file check skipped; make sure this is the file the "
+              "taps were made on")
+        return
+    _, dur = probe_video(video)
+    if dur is None:
+        print("WARNING: could not read this file's duration — same-file "
+              "check skipped")
+        return
+    if abs(dur - stamped) > 2.0:
+        msg = (f"VIDEO MISMATCH: labels were tapped on a file of "
+               f"{stamped:.1f}s; this file is {dur:.1f}s "
+               f"(delta {dur - stamped:+.1f}s). Timestamps would be "
+               f"meaningless against a different file.")
+        if force:
+            print("WARNING (--force-video): " + msg)
+        else:
+            raise SystemExit(msg + "\nUse the original file, or "
+                             "--force-video if you are CERTAIN.")
+    else:
+        print(f"same-file check OK (labels {stamped:.1f}s vs "
+              f"file {dur:.1f}s)")
+
+
+def detect_fps(video):
+    """Native frame rate off ffmpeg's stream banner; the gate samples at
+    native rate so no swing peak can fall between frames we skipped."""
+    f, _ = probe_video(video)
+    if f:
         print(f"native fps detected: {f}")
         return f
     print("WARNING: could not detect fps from the file — using 30")
@@ -436,6 +491,7 @@ def save_rally(out_dir: Path, cum, rows, side, hw, fps):
 
 
 def run(a):
+    check_video_identity(a.video, a.labels, a.force_video)
     labels_win = windows_from_labels(a.labels) if Path(a.labels).exists() else {}
     v4_win = windows_from_v4(a.windows) if Path(a.windows).exists() else {}
     if a.rallies == "labeled":
@@ -605,6 +661,14 @@ def selftest():
         assert abs(win[7][0] - (299.8 - PAD_PRE)) < 1e-9, "refined time wins"
         print("  windows: v4 rule + gap handling + refined-time priority OK")
 
+        # ---- ffmpeg banner parsing (same-file check) ------------------
+        fps_p, dur_p = parse_ffmpeg_banner(
+            "Input #0, mov,mp4\n  Duration: 01:20:33.48, start: 0.0\n"
+            "  Stream #0:0: Video: h264, 1280x720, 29.97 fps, 30 tbr\n")
+        assert fps_p == 29.97 and abs(dur_p - 4833.48) < 1e-6
+        assert parse_ffmpeg_banner("garbage") == (None, None)
+        print("  ffmpeg banner parse (fps + duration) OK")
+
         # ---- rtm box derivation --------------------------------------
         kpt = np.zeros((17, 2), np.float32)
         kpc = np.full(17, 0.9, np.float32)
@@ -673,6 +737,9 @@ def main():
                     help="'' = cpu (rtmpose) / auto (yolo); 'cuda' for GPU")
     ap.add_argument("--force", action="store_true",
                     help="re-extract rallies that already have an npz")
+    ap.add_argument("--force-video", action="store_true",
+                    help="override the same-file duration check (only if "
+                         "CERTAIN the labels match this file)")
     ap.add_argument("--fast", action="store_true",
                     help="smoke preset: 20 fps + lightweight/nano models — "
                          "NOT for the gate")

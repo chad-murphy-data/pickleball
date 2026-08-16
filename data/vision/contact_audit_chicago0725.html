@@ -120,6 +120,13 @@ const fmts = s => `${Math.floor(s/60)}:${(s%60).toFixed(2).padStart(5,"0")}`;
    (pop-counting era — see contact_gate.md 2026-08-16 note), so a rally's
    prefill can be dropped once it diverges from the screen */
 const pfOf = c => (store[c] && store[c].nopf) ? [] : (rget(c).pf || []);
+/* video fingerprint: exported with the labels so pose_extract can refuse
+   to run against a DIFFERENT file — the one sync failure taps can't
+   detect on their own (a tap IS the video's own clock, so labels can
+   only desync if the file changes underneath them) */
+let vname = null;
+const vdur = () => (loaded() && isFinite(V.duration) && V.duration > 0)
+  ? V.duration : null;
 
 function rallies(){
   return DATA.rallies.filter(r =>
@@ -177,6 +184,7 @@ function dropPrefill(){
 /* ---------------- video ---------------- */
 function loadFile(f){
   if (!f) return;
+  vname = f.name || null;
   V.src = URL.createObjectURL(f);
   V.style.display = "block"; el("drop").style.display = "none";
   el("vbar").style.display = "flex";
@@ -499,7 +507,7 @@ function csv(){
   let out = [["game","division","rally_in_game","rally_cum","shot_index",
               "hitter_name","hitter_uuid","shot_type","contact",
               "t_tap_s","t_refined_s","tap_rate","source",
-              "rally_note","pin_ref_s"]];
+              "rally_note","pin_ref_s","video_name","video_dur_s"]];
   for (const r of DATA.rallies){
     if (!store[r.cum] || !rec(r.cum).taps.length) continue;
     rows(r.cum).forEach((x, i) => {
@@ -511,7 +519,9 @@ function csv(){
                 x.tp.t.toFixed(3), x.tp.tr != null ? x.tp.tr.toFixed(3) : "",
                 x.tp.rate || "", src,
                 i === 0 ? (rec(r.cum).note || "") : "",
-                i === 0 && r.pin != null ? r.pin.toFixed(2) : ""]);
+                i === 0 && r.pin != null ? r.pin.toFixed(2) : "",
+                i === 0 ? (vname || "") : "",
+                i === 0 && vdur() ? vdur().toFixed(1) : ""]);
     });
   }
   return out.map(r => r.map(c => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
@@ -523,7 +533,8 @@ function dlMeta(){
   const j = jitter();
   const nd = DATA.rallies.filter(r => done(r.cum)).length;
   const meta = {tool: "contact_audit v1", exported_at: new Date().toISOString(),
-                fps: fps(), rallies_done: nd, jitter: j};
+                fps: fps(), rallies_done: nd, jitter: j,
+                video_name: vname, video_dur_s: vdur()};
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([JSON.stringify(meta, null, 1)],
                                         {type: "application/json"}));
