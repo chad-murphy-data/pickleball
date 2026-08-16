@@ -122,11 +122,12 @@ def frame_state(fr, cells, dots):
     gm = green_mask(fr)
     present = gm[cells[0][0]:cells[1][1], cells[0][2]:cells[0][3]].mean() > 0.35
     vecs = []
+    hmin = min(yb - ya for ya, yb, xa, xb in cells)
     for (ya, yb, xa, xb) in cells:
-        cell = fr[ya:yb, xa:xb].mean(axis=2)
+        cell = fr[ya:ya + hmin, xa:xb].mean(axis=2)
         hh, ww = cell.shape
-        sub = cell[:hh - hh % 4, :ww - ww % 4]
-        sub = sub.reshape(hh // 4, 4, ww // 4, 4).mean(axis=(1, 3))
+        sub = cell[:hh - hh % 2, :ww - ww % 2]
+        sub = sub.reshape(hh // 2, 2, ww // 2, 2).mean(axis=(1, 3))
         vecs.append(sub.ravel())
     nd = []
     for (ya, yb, xa, xb) in dots:
@@ -155,6 +156,8 @@ def segment(states, thr):
         runs.append(cur)
     for r in runs:
         r["vec"] = np.median(np.stack(r["vecs"]), axis=0)
+        half = len(r["vec"]) // 2
+        r["vtop"], r["vbot"] = r["vec"][:half], r["vec"][half:]
         dc = defaultdict(int)
         for nd in r["dots"]:
             dc[nd] += 1
@@ -179,6 +182,67 @@ def serve_sig(row):
     caller via team_of_server."""
     n = row["start_score"].split("-")
     return int(n[2]) if len(n) == 3 and n[2].isdigit() else 0
+
+
+def value_match(runs, rallies, team_row, thr):
+    """ABSOLUTE matching via monotone digit identity — no global
+    alignment to drift.  Each game's top/bottom score cells take a
+    monotone non-decreasing sequence of values; leader-clustering the
+    run cell-crops and ordering clusters by FIRST APPEARANCE yields
+    each run's (top rank, bottom rank).  The log's per-row score
+    sequences are monotone with known values, so rank k = the k-th
+    distinct logged value, giving every run an absolute
+    (top score, bottom score, dots) key that is UNIQUE within a game —
+    rallies match by dict lookup, and a drifted assignment is
+    impossible by construction.  Rallies whose state never appears
+    (bug hidden all through) stay unmatched, honestly."""
+
+    def ranks(vs):
+        cents, out = [], []
+        for v in vs:
+            best, bd = -1, 1e18
+            for i, c in enumerate(cents):
+                d = float(np.abs(v - c[0] / c[1]).mean())
+                if d < bd:
+                    best, bd = i, d
+            if best >= 0 and bd < thr:
+                cents[best][0] += v
+                cents[best][1] += 1
+                out.append(best)
+            else:
+                cents.append([v.copy(), 1])
+                out.append(len(cents) - 1)
+        first = {}
+        for k, c in enumerate(out):
+            first.setdefault(c, len(first))
+        return [first[c] for c in out]
+
+    rt = ranks([u["vtop"] for u in runs])
+    rb = ranks([u["vbot"] for u in runs])
+    # logged per-row score values, in rally order
+    top_seq, bot_seq, keys = [], [], []
+    for r in rallies:
+        n = r["start_score"].split("-")
+        x, y = int(n[0]), int(n[1])
+        srv_row = team_row[r["server_uuid"].lower()]
+        top = x if srv_row == 0 else y
+        bot = y if srv_row == 0 else x
+        top_seq.append(top)
+        bot_seq.append(bot)
+        keys.append((top, bot, srv_row, serve_sig(r)))
+    dt = sorted(set(top_seq))         # distinct values in monotone order
+    db = sorted(set(bot_seq))
+    out = {}
+    for j, u in enumerate(runs):
+        if rt[j] >= len(dt) or rb[j] >= len(db):
+            continue
+        row = 0 if u["dot"][0] > 0 else (1 if u["dot"][1] > 0 else -1)
+        key = (dt[rt[j]], db[rb[j]], row, max(u["dot"]))
+        for i, k in enumerate(keys):
+            if k == key and rallies[i]["_cum"] not in out:
+                out[rallies[i]["_cum"]] = u
+                break
+    return out
 
 
 def align_game(runs, rallies, team_row):
@@ -292,7 +356,7 @@ def run_main(a):
         best = {}
         for a_row in (0, 1):
             tr = {p: (side.get(p, 0) + a_row) % 2 for p in players}
-            m = align_game(gruns, rallies, tr)
+            m = value_match(gruns, rallies, tr, thr)
             if len(m) > len(best):
                 best = m
         out_map.update(best)
