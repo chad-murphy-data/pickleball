@@ -28,3 +28,6 @@ data/clutch_pergame.npz
 # vision probe renders (broadcast-derived imagery stays out of the public
 # repo; regenerable from any clip via vision/probe_clip_*.py)
 data/vision/*.png
+# full-skeleton pose streams (vision/pose_extract.py; regenerable from
+# the VOD, ~0.2 MB/rally compressed)
+data/vision/pose/

@@ -86,3 +86,27 @@ more VODs are processed is the **within-broadcast contrast** — X's games
 vs the *same night's* other games — which cancels mic gain, venue, and
 crowd size, the three confounds that make raw cross-broadcast comparisons
 meaningless. One laptop-run per VOD.
+
+## Addendum 2026-08-16: CAVEAT — the join underneath this was later
+## shown locally unreliable; nulls downgraded to unverified
+
+The cheer↔rally join used above was subsequently found to land up to
+~40 s off for an unknown subset of rallies (user-observed during the
+2026-08-14/15 labeling sessions; the v1 swing-gate kill measured on the
+same join's windows was retracted for exactly this). The two
+validations in the Method section certify the alignment's global SPINE
+(anchor + edit depth), not per-rally assignment — and misassigned
+cheers attenuate every correlation toward zero, which is the direction
+of both of this file's conclusions. "The crowd does not track
+leverage/allegiance" was therefore measured with an instrument biased
+toward exactly that answer.
+
+Standing status: plausible, NOT quotable. Surfaced by the user's
+recollection ("we killed something based on a sync that didn't work") —
+this is the one standing conclusion built on the broken join that was
+never re-examined after it broke. Cheap re-measurement now exists: the
+timestamped contact labels (data/vision/contact_labels_chicago0725.csv,
+scorebug-verified serve stamps) give exact video times for their
+rallies; recompute the leverage/allegiance correlations on stamped
+rallies only, where assignment is certain. Until that is done, treat
+both nulls as unverified.
