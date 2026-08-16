@@ -103,21 +103,24 @@ def cluster_states(vecs, thr):
 
 
 def calibrate_thr(video, flips, mask, rng):
-    """Same-state noise floor: crop pairs 0.5 s apart with no flip
-    between -> threshold = generous multiple of the noise."""
+    """Same-state noise floor: crop pairs 0.4 s apart just BEFORE
+    flips (where the bug is provably up — the same place the 'before'
+    states come from).  MEDIAN, not a high percentile: on a dense flip
+    train some samples land in bug animations and a p90 there inflated
+    the floor 40x (measured: threshold 120 -> 2 clusters -> garbage)."""
     ds = []
-    for _ in range(24):
-        i = int(rng.integers(0, len(flips) - 1))
-        t = flips[i][0] + 4.0
-        if flips[i + 1][0] - t < 2.0:
+    for _ in range(30):
+        i = int(rng.integers(1, len(flips)))
+        t = flips[i][0] - PRE_S - 0.4
+        if i and t - flips[i - 1][0] < 2.0:
             continue
-        a, b = grab_crop(video, t), grab_crop(video, t + 0.5)
+        a, b = grab_crop(video, t), grab_crop(video, t + 0.4)
         if a is None or b is None:
             continue
         ds.append(float(np.abs(state_vec(a, mask)
                                - state_vec(b, mask)).mean()))
-    noise = np.percentile(ds, 90) if ds else 3.0
-    return max(3.0 * noise, 6.0)
+    noise = float(np.median(ds)) if ds else 1.5
+    return max(4.0 * noise, 6.0)
 
 
 def run(a):
@@ -129,18 +132,30 @@ def run(a):
               for w, r in zip(wins, tl)}
     games = {int(w["rally_cum"]): w["game"] for w in wins}
 
-    # crops around every flip
+    # crops around every flip (cached: crop grabs are the slow pass)
+    cache = Path(str(a.out) + ".crops.npz")
     before, after = {}, {}
-    print("grabbing crops (2 per flip)...")
-    for i, (t, z) in enumerate(flips):
-        b = grab_crop(a.video, t - PRE_S)
-        f = grab_crop(a.video, t + POST_S)
-        if b is not None:
-            before[i] = b
-        if f is not None:
-            after[i] = f
-        if (i + 1) % 100 == 0:
-            print(f"  {i + 1}/{len(flips)}", flush=True)
+    if cache.exists():
+        z = np.load(cache)
+        before = {int(k[1:]): z[k] for k in z.files if k[0] == "b"}
+        after = {int(k[1:]): z[k] for k in z.files if k[0] == "a"}
+        print(f"crops from cache ({len(before)}/{len(after)})")
+    if len(before) < len(flips) - 5:
+        print("grabbing crops (2 per flip)...")
+        for i, (t, z_) in enumerate(flips):
+            if i not in before:
+                b = grab_crop(a.video, t - PRE_S)
+                if b is not None:
+                    before[i] = b
+            if i not in after:
+                f = grab_crop(a.video, t + POST_S)
+                if f is not None:
+                    after[i] = f
+            if (i + 1) % 100 == 0:
+                print(f"  {i + 1}/{len(flips)}", flush=True)
+        np.savez_compressed(
+            cache, **{f"b{i}": v for i, v in before.items()},
+            **{f"a{i}": v for i, v in after.items()})
     rng = np.random.default_rng(11)
     fp = [(before[i], after[i]) for i in range(len(flips))
           if i in before and i in after]
@@ -169,6 +184,11 @@ def run(a):
     lab = dict(zip(keys, labels))
     n_cl = len(set(labels))
     print(f"{n_cl} distinct scorebug states across {len(vecs)} crops")
+    if n_cl < 10:
+        raise SystemExit(
+            f"clustering collapsed to {n_cl} states — a real match has "
+            f"dozens of scores; the threshold or mask is wrong for this "
+            f"bug. NOT emitting verdicts on a broken instrument.")
 
     # score -> cluster map from currently-confident rallies
     F = [f[0] for f in flips]
