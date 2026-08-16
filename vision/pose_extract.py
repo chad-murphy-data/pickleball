@@ -25,6 +25,11 @@ construction. Unlabeled rallies can still be extracted via --windows.
 
 RUN (needs the VOD; the GATE runs on the GPU box)
     pip install torch transformers scipy pillow imageio-ffmpeg
+    # FIRST, the CPU smoke with eyeball frames (no GPU, no labels, ~min):
+    python vision/pose_extract.py --video full_match.mp4 \
+        --fast --rallies 1 --debug-frames 3
+    #   -> data/vision/pose/debug/r0001_f*.png: check 4 boxes sit on the
+    #      4 players, near=green / far=orange, skeletons sane. LOCAL ONLY.
     python vision/pose_extract.py --video full_match.mp4 --device cuda
     # production-spine A/B (report alongside, never the verdict):
     #   pip install rtmlib onnxruntime && \
@@ -77,6 +82,7 @@ LABELS = ROOT / "data/vision/contact_labels_chicago0725.csv"
 WINDOWS_V4 = ROOT / "data/vision/rally_windows_chicago0725_v4.csv"
 OUT_DIR = ROOT / "data/vision/pose"
 
+BUILD = "2026-08-16d (gate 0.18H, reject-draw, --det-size)"
 IOU_MIN = 0.15        # association floor
 GAP_S = 0.6           # a track survives a detection gap up to this
 MIN_TRACK_DET = 5     # shorter tracks get side=-1 (junk fragments)
@@ -279,10 +285,23 @@ def assign_sides(track_ids, boxes):
 def box_gate(box, H, W):
     """Court players only — feet band + height + perspective court gate
     (reused from swing_probe). Box-only, so top-down backends can gate
-    BEFORE spending pose compute on crowd/officials."""
+    BEFORE spending pose compute on crowd/officials.
+
+    Feet band 0.18H — loosened TWICE from v1's 0.30 on 2026-08-16 smoke
+    debug frames. First cut (0.24) was still too tight: measured off the
+    user's frames, the far BASELINE is ~0.26H and the far pair's deep
+    stances — including the far SERVER'S serve stance, the one box the
+    identity anchor cannot lose — sit at ~0.20-0.22H. At 0.18 every far
+    stance in the frames passes with margin; crowd/ref/camera rejection
+    is carried by the x-band (court_halfwidth is a constant 0.24 above
+    the 0.34H row, which excludes the left seating, the right-side
+    referee and the walkway camera crew at those heights) plus the
+    0.06H box-height floor. If a future venue breaks this, the right
+    fix is the homography court polygon (vision/court.py), not another
+    scalar tweak."""
     x0, y0, x1, y1 = box[:4]
     bh, cx = y1 - y0, (x0 + x1) / 2
-    if y1 < 0.30 * H or bh < 0.06 * H:
+    if y1 < 0.18 * H or bh < 0.06 * H:
         return False
     return abs(cx / W - 0.5) <= court_halfwidth(y1 / H)
 
@@ -297,10 +316,10 @@ def gate_person(cf, box, kpt, kpc, H, W):
 
 
 def keep_boxes(res, H, W):
-    """ultralytics results -> gated person tuples."""
-    out = []
+    """ultralytics results -> (gated person tuples, rejected boxes)."""
+    out, rej = [], []
     if res.keypoints is None or not len(res.boxes):
-        return out
+        return out, rej
     kxy = res.keypoints.xy.cpu().numpy()
     kcf = (res.keypoints.conf.cpu().numpy()
            if res.keypoints.conf is not None
@@ -311,8 +330,10 @@ def keep_boxes(res, H, W):
         p = gate_person(cf, box[:4], kps, kpc, H, W)
         if p:
             out.append(p)
+        else:
+            rej.append(np.asarray(box[:4], np.float32))
     out.sort(key=lambda x: -x[0])
-    return out[:MAX_PERSONS]
+    return out[:MAX_PERSONS], rej
 
 
 def box_from_kpts(kpt, kpc, conf_min=0.3, pad=0.08):
@@ -332,10 +353,13 @@ def box_from_kpts(kpt, kpc, conf_min=0.3, pad=0.08):
 
 
 def rtm_persons(kpts, scores, H, W):
-    """rtmlib (N,17,2)/(N,17) -> gated person tuples; person confidence
-    proxied by the mean keypoint score (the top-down detector's own box
-    score is not exposed by the Body API)."""
-    out = []
+    """rtmlib (N,17,2)/(N,17) -> (gated person tuples, rejected boxes);
+    person confidence proxied by the mean keypoint score (the top-down
+    detector's own box score is not exposed by the Body API). A person
+    in `rejected` was DETECTED but cut by the court gate; a person with
+    no box anywhere was never detected at all — the distinction the
+    debug frames exist to show."""
+    out, rej = [], []
     for kpt, kpc in zip(np.asarray(kpts, np.float32),
                         np.asarray(scores, np.float32)):
         box = box_from_kpts(kpt, kpc)
@@ -344,8 +368,10 @@ def rtm_persons(kpts, scores, H, W):
         p = gate_person(float(kpc.mean()), box, kpt, kpc, H, W)
         if p:
             out.append(p)
+        else:
+            rej.append(box)
     out.sort(key=lambda x: -x[0])
-    return out[:MAX_PERSONS]
+    return out[:MAX_PERSONS], rej
 
 
 # ----------------------------------------------------------- backends
@@ -401,11 +427,13 @@ def make_infer(a):
                 m = (r["labels"] == 0).cpu().numpy()
                 boxes = r["boxes"].cpu().numpy()[m]
                 scores = r["scores"].cpu().numpy()[m]
+                rej = [b.astype(np.float32) for b in boxes
+                       if not box_gate(b, H, W)]
                 keep = sorted(((s, b) for s, b in zip(scores, boxes)
                                if box_gate(b, H, W)),
                               key=lambda x: -x[0])[:MAX_PERSONS]
                 if not keep:
-                    return []
+                    return [], rej
                 bx = np.stack([b for _, b in keep])
                 coco = bx.copy()
                 coco[:, 2] -= coco[:, 0]
@@ -420,7 +448,7 @@ def make_infer(a):
             return [(float(s), b.astype(np.float32),
                      p["keypoints"].cpu().numpy().astype(np.float32),
                      p["scores"].cpu().numpy().astype(np.float32))
-                    for (s, _), b, p in zip(keep, bx, res)]
+                    for (s, _), b, p in zip(keep, bx, res)], rej
         label = a.pose_model.split("/")[-1]
         return infer, label if label.startswith("vitpose") \
             else f"vitpose-{label}"
@@ -434,12 +462,15 @@ def make_infer(a):
                 "(onnxruntime-gpu for CUDA; or run --backend yolo)")
         mode = "lightweight" if a.fast else a.rtm_mode
         dev = "cuda" if a.device and a.device != "cpu" else "cpu"
-        body = Body(mode=mode, backend="onnxruntime", device=dev)
+        kw = ({"det_input_size": (a.det_size, a.det_size)}
+              if a.det_size else {})
+        body = Body(mode=mode, backend="onnxruntime", device=dev, **kw)
 
         def infer(frame, H, W):
             kpts, sc = body(frame)
             return rtm_persons(kpts, sc, H, W)
-        return infer, f"rtmpose-{mode}"
+        label = f"rtmpose-{mode}"
+        return infer, label + (f"-det{a.det_size}" if a.det_size else "")
 
     from ultralytics import YOLO
     model = YOLO(a.model)
@@ -447,27 +478,73 @@ def make_infer(a):
     def infer(frame, H, W):
         res = model(frame, imgsz=a.imgsz, verbose=False,
                     device=(a.device or None), conf=0.30)[0]
-        return keep_boxes(res, H, W)
+        return keep_boxes(res, H, W)   # (kept, rejected)
     return infer, a.model
 
 
 # ------------------------------------------------------------- extract
 
 
-def extract_rally(infer, video, cum, t0, t1, fps, width):
+# COCO-17 limb pairs for the debug skeletons
+SKEL = [(5, 6), (5, 7), (7, 9), (6, 8), (8, 10), (5, 11), (6, 12),
+        (11, 12), (11, 13), (13, 15), (12, 14), (14, 16)]
+SIDE_COLOR = {0: (80, 200, 80), 1: (60, 160, 240), -1: (60, 60, 230)}
+# BGR: near=green, far=orange-ish, junk=red
+
+
+def draw_debug(frame, dets, side_map, rejects=()):
+    """Annotate one frame: box colored by assigned side, track id,
+    skeleton for confident keypoints; detections CUT BY THE GATE drawn
+    as thin red boxes marked 'gate'. The legend that matters: a red box
+    means the detector SAW the person and the gate rejected them; no
+    box at all means the detector never fired — two failures that are
+    indistinguishable without this and need opposite fixes. (House
+    pattern: ask the human where the machine is guessing.)"""
+    import cv2
+    img = frame.copy()
+    for b in rejects:
+        x0, y0, x1, y1 = map(int, b[:4])
+        cv2.rectangle(img, (x0, y0), (x1, y1), (40, 40, 255), 1)
+        cv2.putText(img, "gate", (x0, max(12, y0 - 4)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.45, (40, 40, 255), 1)
+    for tid, cf, box, kpt, kpc in dets:
+        col = SIDE_COLOR.get(side_map.get(tid, -1), SIDE_COLOR[-1])
+        x0, y0, x1, y1 = map(int, box[:4])
+        cv2.rectangle(img, (x0, y0), (x1, y1), col, 2)
+        cv2.putText(img, f"t{tid}", (x0, max(12, y0 - 5)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, col, 1)
+        for a, b in SKEL:
+            if kpc[a] >= 0.3 and kpc[b] >= 0.3:
+                cv2.line(img, tuple(map(int, kpt[a])),
+                         tuple(map(int, kpt[b])), col, 1)
+        for j in range(17):
+            if kpc[j] >= 0.3:
+                cv2.circle(img, tuple(map(int, kpt[j])), 2, col, -1)
+    return img
+
+
+def extract_rally(infer, video, cum, t0, t1, fps, width, debug_n=0):
     trk = IoUTracker()
     rows = []          # (t, tid, conf, box, kpt, kpc)
     H = W = None
+    n_exp = max(int((t1 - t0) * fps), 1)
+    dbg_idx = {int(k * (n_exp - 1) / max(debug_n - 1, 1))
+               for k in range(debug_n)} if debug_n else set()
+    stash = []
     for i, frame in enumerate(decode_window(video, t0, t1 - t0, fps, width)):
         t = t0 + i / fps
         H, W = frame.shape[:2]
-        kept = infer(frame, H, W)
+        kept, rejects = infer(frame, H, W)
         ids = trk.feed(t, [k[1] for k in kept])
         for tid, (cf, box, kpt, kpc) in zip(ids, kept):
             rows.append((t, tid, cf, box, kpt, kpc))
+        if i in dbg_idx:
+            stash.append((i, frame.copy(),
+                          [(tid, *k) for tid, k in zip(ids, kept)],
+                          rejects))
     side = assign_sides([r[1] for r in rows], [r[3] for r in rows]) \
         if rows else {}
-    return rows, side, (H, W)
+    return rows, side, (H, W), stash
 
 
 def save_rally(out_dir: Path, cum, rows, side, hw, fps):
@@ -491,6 +568,7 @@ def save_rally(out_dir: Path, cum, rows, side, hw, fps):
 
 
 def run(a):
+    print(f"pose_extract build: {BUILD}")
     check_video_identity(a.video, a.labels, a.force_video)
     labels_win = windows_from_labels(a.labels) if Path(a.labels).exists() else {}
     v4_win = windows_from_v4(a.windows) if Path(a.windows).exists() else {}
@@ -525,8 +603,25 @@ def run(a):
         else:
             print(f"rally #{cum}: no window anywhere — skipped")
             continue
-        rows, side, hw = extract_rally(infer, a.video, cum, t0, t1,
-                                       a.fps, a.width)
+        rows, side, hw, stash = extract_rally(infer, a.video, cum, t0, t1,
+                                              a.fps, a.width,
+                                              a.debug_frames)
+        if stash:
+            try:
+                import cv2
+                dbg_dir = out_dir / "debug"
+                dbg_dir.mkdir(exist_ok=True)
+                for fi, frame, dets, rejects in stash:
+                    p = dbg_dir / f"r{cum:04d}_f{fi:04d}.png"
+                    cv2.imwrite(str(p),
+                                draw_debug(frame, dets, side, rejects))
+                print(f"  debug frames -> {dbg_dir}/r{cum:04d}_f*.png "
+                      f"(green=near, orange=far, thin red 'gate' = "
+                      f"detected but gated out, NO box = never detected; "
+                      f"local only, never commit)")
+            except ImportError:
+                print("  --debug-frames needs opencv (pip install "
+                      "opencv-python) — skipped")
         n = save_rally(out_dir, cum, rows, side, hw, a.fps)
         n_tracks = len({r[1] for r in rows})
         n_sided = len({tid for tid, s in side.items() if s >= 0})
@@ -683,10 +778,39 @@ def selftest():
             "kpt-derived boxes must preserve height ratios (side split)"
         assert box_from_kpts(kpt, np.full(17, 0.1, np.float32)) is None, \
             "low-confidence person must be dropped, not boxed at random"
-        ps = rtm_persons(np.stack([kpt, kpt2]), np.stack([kpc, kpc2]),
-                         720, 1280)
-        assert len(ps) == 2 and ps[0][2].shape == (17, 2)
-        print("  rtm backend: kpt-derived boxes + gating OK")
+        ps, rj = rtm_persons(np.stack([kpt, kpt2]), np.stack([kpc, kpc2]),
+                             720, 1280)
+        assert len(ps) == 2 and ps[0][2].shape == (17, 2) and not rj
+        # a person far outside the court band must land in rejects
+        kpt3 = kpt.copy()
+        kpt3[:, 0] -= 550                       # x ~ 0.06W: crowd zone
+        ps2, rj2 = rtm_persons(np.stack([kpt3]), np.stack([kpc]),
+                               720, 1280)
+        assert not ps2 and len(rj2) == 1, "gated person must be reported"
+        print("  rtm backend: kpt-derived boxes + gating + rejects OK")
+
+        # ---- debug-frame drawing path --------------------------------
+        try:
+            import cv2  # noqa: F401
+            frame = np.zeros((720, 1280, 3), np.uint8)
+            kpt = np.zeros((17, 2), np.float32)
+            kpt[:, 0] = np.linspace(600, 680, 17)
+            kpt[:, 1] = np.linspace(300, 420, 17)
+            dets = [(0, 0.9, np.array([580, 290, 700, 430], np.float32),
+                     kpt, np.full(17, 0.9, np.float32))]
+            img = draw_debug(frame, dets, {0: 0})
+            assert img.shape == frame.shape and img.sum() > 0, \
+                "debug drawing produced an empty image"
+            img2 = draw_debug(frame, dets, {0: 0},
+                              [np.array([100, 100, 200, 300], np.float32)])
+            assert (img2[90:310, 90:210, 2] > 200).any(), \
+                "rejected box must be drawn in red"
+            p = Path(td) / "dbg.png"
+            cv2.imwrite(str(p), img2)
+            assert p.exists() and p.stat().st_size > 0
+            print("  debug-frame drawing + reject-draw + write OK")
+        except ImportError:
+            print("  (cv2 not installed here — debug drawing untested)")
 
         # ---- npz round trip ------------------------------------------
         rows = [(i / fps, all_ids[i], 0.9,
@@ -725,6 +849,11 @@ def main():
     ap.add_argument("--rtm-mode", default="balanced",
                     choices=["performance", "balanced", "lightweight"],
                     help="rtmlib mode (lightweight = smoke only)")
+    ap.add_argument("--det-size", type=int, default=0,
+                    help="rtmpose person-detector input size override "
+                         "(e.g. 960) — raise if small/far players are "
+                         "NOT DETECTED (no box at all in debug frames, "
+                         "not even a red one)")
     ap.add_argument("--model", default="yolov8s-pose.pt",
                     help="yolo backend only")
     ap.add_argument("--imgsz", type=int, default=960,
@@ -740,6 +869,11 @@ def main():
     ap.add_argument("--force-video", action="store_true",
                     help="override the same-file duration check (only if "
                          "CERTAIN the labels match this file)")
+    ap.add_argument("--debug-frames", type=int, default=0,
+                    help="write N annotated PNGs per rally (boxes colored "
+                         "by side + skeletons) for eyeball verification — "
+                         "run the CPU smoke with --debug-frames 3 BEFORE "
+                         "spending the GPU hour")
     ap.add_argument("--fast", action="store_true",
                     help="smoke preset: 20 fps + lightweight/nano models — "
                          "NOT for the gate")
