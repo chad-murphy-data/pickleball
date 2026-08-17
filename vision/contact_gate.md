@@ -346,3 +346,17 @@ adjacent to a contact = both-went-for-it. Handling unchanged (whiffs
 are contact=0, excluded from every Gate C denominator) and these are
 premium trainer-era events: real swings with no contact, the exact
 hard-negative class W exists for.
+
+Correction to the addendum above (user, same evening): there were NO
+replays in the VOD — the replay mechanism is NOT established and the
+bug/banner mismatches at pins 3/4/11 remain mechanically unexplained
+(candidate: a mid-game score correction making the log's reconstructed
+chain differ from the broadcast bug; candidate: residual pin drift).
+What held, and what Gate C actually rests on: CONTENT-first
+identification — the user coded rallies whose action matched the
+prefilled sequences, with timestamps in the same footage pose
+extraction reads. The ceiling consumes timestamps + hitter TEAM +
+pose windows and never touches scores, so the unresolved mechanism has
+zero effect on the gate. Do not re-assert the replay story; if the
+mechanism ever matters (it doesn't for Gate C), resolve it against the
+raw referee log's correction events.
