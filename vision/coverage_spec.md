@@ -230,7 +230,12 @@ contact-thread instruments were not touched.
   cluster runs into the two mode families, keep score-mode only, merge
   across interruptions, re-symbolize, re-test the five hand-read
   anchors (r74~1918, r8~301-321, r10~409, r83/r84 per the bug reads).
-  Windows remain UNSHIPPED until anchors pass; no metrics computed.
+  A-B-A interruption bridging is IN (drop_interruptions; 190->142
+  runs) but 76 'X' boundaries remain, mostly presence GAPS where
+  rallies ended while the bug was hidden - the aligner needs
+  X = 'one or more ends occurred here' gap semantics, and mode-B
+  deserves one visual crop inspection before more rules. Windows
+  remain UNSHIPPED until anchors pass; no metrics computed.
 
 - ANCHOR-FINDER VALIDATION, first pass (2026-08-17, vs the 15 Chicago
   serve pins, court-gated extractor at 10 fps): 13/15 anchor; median

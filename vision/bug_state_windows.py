@@ -199,6 +199,34 @@ def serve_sig(row):
     return int(n[2]) if len(n) == 3 and n[2].isdigit() else 0
 
 
+def drop_interruptions(runs, thr, max_dur=10.0):
+    """A -> B -> A: a short run whose NEIGHBORS match each other is an
+    interruption (the bug cycling display modes in place, a replay
+    sting, a presence flicker) — the surrounding state RESUMES, so B is
+    deleted and A bridged.  Iterates to fixpoint; kills the rhythmic
+    both-cells 'X' flood measured on the PPA Indoor bug (52/95 junk
+    boundaries were in-place mode cycles)."""
+    runs = list(runs)
+    changed = True
+    while changed:
+        changed = False
+        for i in range(1, len(runs) - 1):
+            short = runs[i]["t1"] - runs[i]["t0"] <= max_dur
+            if short and float(np.abs(runs[i - 1]["vec"]
+                                      - runs[i + 1]["vec"]).mean()) < thr:
+                a, c = runs[i - 1], runs[i + 1]
+                a["t1"] = c["t1"]
+                a["dots"] = a["dots"] + c["dots"]
+                dc = defaultdict(int)
+                for nd in a["dots"]:
+                    dc[nd] += 1
+                a["dot"] = max(dc, key=dc.get)
+                del runs[i:i + 2]
+                changed = True
+                break
+    return runs
+
+
 def change_symbols_video(runs, thr):
     """Symbol per consecutive-run boundary: which bug region changed.
     'T' = top score cell, 'B' = bottom, 'D' = dots only, '?' = none of
@@ -392,6 +420,8 @@ def finish(a, tl, wins, runs, thr):
             elif v in side and s not in side:
                 side[s] = 1 - side[v]
                 changed = True
+    runs = drop_interruptions(runs, thr)
+    print(f"{len(runs)} runs after interruption bridging")
     sym_vid = change_symbols_video(runs, thr)
     from collections import Counter as _C
     print("video boundary symbols:", dict(_C(sym_vid)))
