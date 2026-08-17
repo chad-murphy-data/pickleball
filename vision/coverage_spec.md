@@ -219,6 +219,18 @@ first real-VOD run pending — see the PR + build record below). The
 contact-thread instruments were not touched.
 
 ## Build record (2026-08-16)
+
+- ANCHOR-FINDER VALIDATION, first pass (2026-08-17, vs the 15 Chicago
+  serve pins, court-gated extractor at 10 fps): 13/15 anchor; median
+  error +1.57 s, 8/13 within 2 s — but a FAT LATE TAIL (5 rallies
+  +10..27 s: the finder takes a mid-rally lull for the pre-serve
+  freeze). NOT cleared for production windowing yet. The run produced
+  the labeled tuning set the fix needs (pins + candidate freezes on
+  the deployed substrate; scratchpad pose_chicago_wide2). Candidate
+  discriminator: the true freeze ends with the receiver's deep track
+  surging forward. Also: the frozen Gate C extractor anchors only
+  4/15 here (far-baseline starvation, see the 0.30 H cross-finding
+  above) — anchor validation MUST run on coverage_extract output.
 - CROSS-FINDING for the contact thread (2026-08-17, from the anchor
   validation): pose_extract's pixel gate rejects persons whose box
   bottom sits above 0.30 H, and BOTH test broadcasts frame the far
