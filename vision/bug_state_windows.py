@@ -184,6 +184,77 @@ def serve_sig(row):
     return int(n[2]) if len(n) == 3 and n[2].isdigit() else 0
 
 
+def change_symbols_video(runs, thr):
+    """Symbol per consecutive-run boundary: which bug region changed.
+    'T' = top score cell, 'B' = bottom, 'D' = dots only, '?' = none of
+    them clearly (segmentation glitch).  Needs no digit recognition."""
+    out = []
+    for a, b in zip(runs, runs[1:]):
+        dt = float(np.abs(a["vtop"] - b["vtop"]).mean()) > thr
+        db = float(np.abs(a["vbot"] - b["vbot"]).mean()) > thr
+        dd = a["dot"] != b["dot"]
+        if dt and not db:
+            out.append("T")
+        elif db and not dt:
+            out.append("B")
+        elif dd and not dt and not db:
+            out.append("D")
+        else:
+            out.append("?")
+    return out
+
+
+def change_symbols_log(rallies, team_row):
+    """The log's predicted boundary symbol per rally end: a POINT bumps
+    the serving row's score cell; a side-out or second-server changes
+    only the dots."""
+    out = []
+    for r in rallies:
+        if r["outcome"] == "point":
+            row = team_row[r["server_uuid"].lower()]
+            out.append("T" if row == 0 else "B")
+        else:
+            out.append("D")
+    return out
+
+
+def align_symbols(sym_vid, sym_log):
+    """Needleman on the two symbol strings; '?' matches anything at a
+    small cost.  Returns log index -> video boundary index."""
+    L, V = len(sym_log), len(sym_vid)
+    GAP = 1.0
+    D = np.full((L + 1, V + 1), 1e9)
+    D[0, :] = np.arange(V + 1) * GAP
+    D[:, 0] = np.arange(L + 1) * GAP
+    P = np.zeros((L + 1, V + 1), np.int8)
+    for i in range(1, L + 1):
+        for j in range(1, V + 1):
+            if sym_vid[j - 1] == "?":
+                m = 0.4
+            elif sym_log[i - 1] == sym_vid[j - 1]:
+                m = 0.0
+            else:
+                m = 3.0
+            best = (D[i - 1, j - 1] + m, 0)
+            if D[i - 1, j] + GAP < best[0]:
+                best = (D[i - 1, j] + GAP, 1)
+            if D[i, j - 1] + GAP < best[0]:
+                best = (D[i, j - 1] + GAP, 2)
+            D[i, j], P[i, j] = best
+    out = {}
+    i, j = L, V
+    while i > 0 and j > 0:
+        if P[i, j] == 0:
+            if sym_vid[j - 1] == sym_log[i - 1] or sym_vid[j - 1] == "?":
+                out[i - 1] = j - 1
+            i, j = i - 1, j - 1
+        elif P[i, j] == 1:
+            i -= 1
+        else:
+            j -= 1
+    return out
+
+
 def value_match(runs, rallies, team_row, thr):
     """ABSOLUTE matching via monotone digit identity — no global
     alignment to drift.  Each game's top/bottom score cells take a
@@ -295,6 +366,23 @@ def run_main(a):
     # bug row is resolved by majority vote later; start with server ->
     # candidate rows from BOTH assignments and pick the consistent one.
     servers = sorted({r["server_uuid"].lower() for r in tl})
+    cache = Path(str(a.out) + ".states.npz")
+    if cache.exists():
+        z = np.load(cache)
+        parsed = [(float(z["t"][i]),
+                   np.concatenate([z["vtop"][i], z["vbot"][i]]),
+                   bool(z["present"][i]),
+                   (int(z["nd0"][i]), int(z["nd1"][i])))
+                  for i in range(len(z["t"]))]
+        print(f"states from cache ({len(parsed)})")
+        ds = [float(np.abs(parsed[i][1] - parsed[i + 1][1]).mean())
+              for i in range(200, min(1200, len(parsed) - 1))
+              if parsed[i][2] and parsed[i + 1][2]]
+        thr = max(4.0 * float(np.median(ds)), 5.0)
+        print(f"state threshold {thr:.1f}")
+        runs = segment(parsed, thr)
+        print(f"{len(runs)} constant-state runs")
+        return finish(a, tl, wins, runs, thr)
     print("sampling bug states at 2 Hz (one pass)...")
     # locator reference frames from MID-RALLY times (the bug is provably
     # up there; sampling early video medians the cells away while venue
@@ -325,55 +413,50 @@ def run_main(a):
     runs = segment(parsed, thr)
     print(f"{len(runs)} constant-state runs")
 
-    # games from the timeline; try both team->row mappings per game and
-    # keep the one that matches more rallies
-    by_game = defaultdict(list)
-    for r in tl:
-        by_game[r["game"]].append(r)
-    out_map = {}
-    for g, rallies in by_game.items():
-        t_lo = min(float(w["t0s"]) for w in wins if w["game"] == g) - 120
-        t_hi = max(float(w["t1s"]) for w in wins if w["game"] == g) + 120
-        gruns = [u for u in runs if u["t0"] >= t_lo and u["t1"] <= t_hi]
-        # team partition by propagation: server and receiver are ALWAYS
-        # opponents, so seeding one player and sweeping the rally list
-        # (both directions, until fixpoint) two-colors everyone
-        players = {r["server_uuid"].lower() for r in rallies} | \
-                  {r["receiver_uuid"].lower() for r in rallies}
-        side = {rallies[0]["server_uuid"].lower(): 0}
-        changed = True
-        while changed:
-            changed = False
-            for r in rallies:
-                s = r["server_uuid"].lower()
-                v = r["receiver_uuid"].lower()
-                if s in side and v not in side:
-                    side[v] = 1 - side[s]
-                    changed = True
-                elif v in side and s not in side:
-                    side[s] = 1 - side[v]
-                    changed = True
-        best = {}
-        for a_row in (0, 1):
-            tr = {p: (side.get(p, 0) + a_row) % 2 for p in players}
-            m = value_match(gruns, rallies, tr, thr)
-            if len(m) > len(best):
-                best = m
-        out_map.update(best)
-        print(f"game {g}: matched {len(best)}/{len(rallies)} rallies "
-              f"({len(gruns)} runs in span)")
+    # GLOBAL change-type alignment: one DP over all 141 rally-end
+    # symbols vs all run boundaries (between-game junk absorbs as
+    # gaps).  Team partition by propagation: server and receiver are
+    # ALWAYS opponents, so seeding one player two-colors everyone.
+    players = {r["server_uuid"].lower() for r in tl} | \
+              {r["receiver_uuid"].lower() for r in tl}
+    side = {tl[0]["server_uuid"].lower(): 0}
+    changed = True
+    while changed:
+        changed = False
+        for r in tl:
+            s = r["server_uuid"].lower()
+            v = r["receiver_uuid"].lower()
+            if s in side and v not in side:
+                side[v] = 1 - side[s]
+                changed = True
+            elif v in side and s not in side:
+                side[s] = 1 - side[v]
+                changed = True
+    sym_vid = change_symbols_video(runs, thr)
+    from collections import Counter as _C
+    print("video boundary symbols:", dict(_C(sym_vid)))
+    best_map, best_n, best_row = {}, -1, 0
+    for a_row in (0, 1):
+        team_row = {p: (side.get(p, 0) + a_row) % 2 for p in players}
+        sym_log = change_symbols_log(tl, team_row)
+        mp = align_symbols(sym_vid, sym_log)
+        if len(mp) > best_n:
+            best_map, best_n, best_row = mp, len(mp), a_row
+    print(f"aligned {best_n}/{len(tl)} rally ends (orientation {best_row})")
 
     n_set = 0
     out_rows = []
     for w in wins:
         w = dict(w)
         cum = int(w["rally_cum"])
-        u = out_map.get(cum)
-        if u is not None:
-            t1 = u["t1"] + 0.5 / FPS - FLIP_LAG_S + 1.0
-            dur = float(w["dur_s"])
-            w["t1s"] = f"{u['t1'] + 0.75:.1f}"
-            w["t0s"] = f"{max(u['t0'] - 1.5, 0.0):.1f}"
+        j = best_map.get(cum - 1)          # log index = cum - 1
+        if j is not None:
+            # rally cum's span = the run whose END is boundary j (its
+            # state shows cum's start score); boundary time = the gap
+            # between run j and run j+1
+            t_end = (runs[j]["t1"] + runs[j + 1]["t0"]) / 2
+            w["t0s"] = f"{max(runs[j]['t0'] - 1.0, 0.0):.1f}"
+            w["t1s"] = f"{t_end + 0.5:.1f}"
             w["approx"] = "0"
             w["state_check"] = "bugstate"
             n_set += 1
