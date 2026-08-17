@@ -413,3 +413,79 @@ for development (11-16 + pilot). Independently of any verdict: the
 attack-shot layer (smash/speed-up events at ~95-100% coverage) is a
 real, immediately usable capability, and the 162+7 timestamped labels
 are permanent assets.
+
+## VERDICT RUN, 2026-08-17 (ViTPose-plus-huge, Colab T4, native 60 fps):
+## KILL — Gate C closed, final for this footage
+
+Same-file check passed (labels 4820.0 s vs file 4820.0 s). 10 rallies /
+162 contacts — the deviation from the pre-registered 16 stands exactly
+as in the A/B (rallies 11–16 unlabeled at run time). Report JSON lives
+in the user's Drive (`contact_ceiling_report.json`); commit it beside
+the RTM one as `contact_ceiling_report_vit.json` when shared in-thread.
+
+    ceiling-side  40.7%  [33.5, 48.4]   (bar 85)
+    fast stratum  53.7%  on n=41        (bar 75)
+    null          29.1%  p95 34.0       (max 55)
+    @4x 59.9%   ceiling-any @2x 66.0%
+
+**The A/B question — "does a stronger backbone put the soft contacts
+into the stream?" — is answered NO.** ViTPose-plus-huge ≤ RTMPose on
+every summary number: side 40.7 vs 45.1, fast 53.7 vs 61.0, any 66.0
+vs 71.0, @4x 59.9 vs 64.2. Per type, ViT gains counters (11/22 vs
+7/22) but LOSES attacks (smash 5/10 vs 9/10, speed-up 6/9 vs 9/9).
+CIs overlap heavily, so the licensed conclusion is narrow: **the pose
+backbone is not the binding constraint on this footage** — not "RTM is
+better". (One speculative line, not investigated: ViT-huge may localize
+motion-blurred fast arms worse than RTMPose's training mix.)
+
+Corroboration from the exploration layer (swing_explore, same run):
+the learned-scorer lift is the SAME SIZE on both streams (+11.8 on ViT,
+40.7→52.5; +11.1 on RTM, 45.1→56.2) — learning improves the selector,
+the stream sets the level, and both streams plateau at the same soft-
+kitchen wall. Oracle-orientation = headline on both (orientation is
+solved). Prep-window ablation ≈ 0 on ViT (−0.6 pts).
+
+**Escalation clause resolves: KILL, not MIDDLE → no Sapiens shot.
+Gate C is CLOSED, final for this footage.** The A/B addendum's caveat
+carries into this closure unchanged: the licensed reading is "a 2×
+height-budget candidate ceiling on THIS 720p condensed VOD is too low
+for the gated trainer" — the KILL clause's "nothing in the stream"
+wording remains unlicensed (attacks near-ceiling in at least one
+stream; ceiling-any 66–71%).
+
+Pre-named KILL follow-ups: (1) this closure; (2) footage outreach —
+different video, not more labels or compute, is the ball-thread door
+and now also the swing-ceiling door; (3) the label-scale route
+(`vision/labeling_protocol.md`, split frozen 2026-08-17) feeds a
+TEMPORAL model class — that is NOT a Gate C knob-turn; it requires a
+fresh pre-registration scored on untouched holdout rallies.
+
+## Measured anomaly, 2026-08-17 (recorded, deliberately NOT adjudicated):
+## r9/r10 label spans vs log durations
+
+Surfaced by the user asking "are we sure it gets the right rallies?"
+Label-window lengths (extraction log) vs the v4 log durations:
+r9 41.1 s vs 17.0 s (+24), r10 47.0 s vs 24.0 s (+23); every other
+rally is within +4/−13 (r1 is −13 the other way: window 29.8 vs dur
+43.0). 29 contacts inside a 17 s log-rally is physically impossible
+(0.6 s cadence including dinks), so at least one of {per-rally log
+durations, label rally attribution} is wrong for r9/r10 — and log
+durations err in BOTH directions across the set, which points at them.
+
+What this does NOT touch: the verdict. Scoring windows derive from the
+labels themselves (internally consistent regardless of identity), and
+excising r9+r10 entirely (56/162 contacts) moves learned coverage only
+52.5→61.3 (r1–r8) — still far under every bar; KILL is robust. Against
+the wrong-rally hypothesis: serve-side mapping agrees with the log on
+9/10 rallies (only r4 flips, at zero oracle cost), the ±0.8 s drift
+sweep is flat on r9/r10, and the strong rallies score 2.5–2.8× the
+shifted-label null — impossible on wrong-rally windows.
+
+Per the postmortem lesson (a frame bug and a detector failure are
+observationally identical in label-free diagnostics), this is settled
+by HUMAN EYEBALL, not by more reasoning: the Colab debug frames
+`pose/debug/r0009_f*.png` / `r0010_f*.png` should show scorebugs
+2-3-1 / 2-3-2, and rally 9 on screen should run ~30 s, not ~11 s.
+If the scorebugs mismatch → real identity problem → remap before any
+TRAINING use of r9/r10. Until checked, r9/r10 carry an asterisk for
+training purposes only.

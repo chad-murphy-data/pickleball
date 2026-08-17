@@ -703,8 +703,31 @@ top-down at native fps per contact_gate.md Amendment 2 — user directive
 A/B, yolov8 diagnostic; --selftest'd) → `vision/contact_ceiling.py`
 (torso-relative candidate ceiling vs shifted-label null, verdict
 printed). Trainer deliberately UNBUILT until Gate C passes — building
-it first is the anti-pattern Gate A avoided. The BALL thread is
-unchanged: still closed, still needs new footage.
+it first is the anti-pattern Gate A avoided.
+**GATE C CLOSED 2026-08-17: KILL on BOTH instruments** (ViTPose-huge
+verdict 40.7% [33.5, 48.4] vs bar 85, fast 53.7 vs 75; RTMPose A/B
+45.1%; 10 rallies / 162 contacts — full addenda in contact_gate.md).
+The A/B ruled the BACKBONE out as the binding constraint (ViT ≤ RTM
+everywhere, worse on attacks; learned-scorer lift identical +11-12 pts
+on both streams — the stream sets the level). Final for this footage
+per the frozen escalation clause (KILL ≠ MIDDLE → no Sapiens shot).
+Licensed reading stays NARROW: the 2× height-budget candidate ceiling
+on this 720p condensed VOD is too low; "nothing in the stream" is NOT
+licensed (attacks near-ceiling, ceiling-any 66-71%). Exploration
+results (vision/swing_explore_notes.md): learned scorer 45→56%,
+alternation decoder gets shot COUNTS near-exact on RTM (161/162) at
+~51% placement precision — turn-order/shot-count analytics closer than
+timestamp attribution. Forward = (1) LABELS AT SCALE: user labels as an
+ongoing habit per `vision/labeling_protocol.md` — train/holdout split
+FROZEN 2026-08-17 in data/vision/label_split.csv (per-game 60/40, 117
+train / 76 holdout; tuning scripts read train ONLY; holdout burns on
+use), audit tool has chained seek (build 2026-08-17a) so machine-window
+drift no longer forces hunts; full Chicago ≈ 3k contacts feeding a
+TEMPORAL model class under a FRESH pre-registration (not a Gate C
+knob-turn); (2) new footage. OPEN ANOMALY: r9/r10 label spans exceed
+log durations by ~24 s (verdict robust to excising both; asterisk for
+TRAINING use until the debug-frame scorebug check — gate addendum).
+The BALL thread is unchanged: still closed, still needs new footage.
 (A) BALL — CLOSED 2026-08-15, the wall is PHYSICAL and measured
 (`vision/ball_visibility.py`, `data/vision/ball_labels_chicago0725.csv`).
 The user hand-labeled all 416 sampled frames with a 5× loupe,

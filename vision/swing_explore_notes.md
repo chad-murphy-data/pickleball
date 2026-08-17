@@ -67,17 +67,47 @@ r7 +7, r8 +6, r9 −10, r10 −6.
   precision for completeness; it commits through stretches where the
   stream has nothing.
 
-## Remaining levers (in order of expected value)
+## ViTPose A/B result (2026-08-17, Colab T4 — lever 1 RESOLVED: backbone ruled out)
 
-1. **ViTPose A/B** — after the Colab run (gpu_runbook.md Cell 4), rerun
-   `swing_explore.py --pose-dir pose`. The one untested instrument
-   question: does a stronger pose backbone put the soft kitchen contacts
-   into the stream at all?
-2. **Rallies 11–16 labels** (11–12 fast-heavy) — more dev data; 10
-   rallies is thin for anything beyond this coarse picture.
-3. **Temporal model class** (sequence model over frames instead of
-   per-peak logistic) — only worth building if (1) or (2) moves the
-   soft-shot number.
+Same script, same labels, `--pose-dir pose` (ViTPose-plus-huge stream):
+
+| metric | RTMPose | ViTPose-huge |
+|---|---|---|
+| raw ceiling-side @2× | 45.1% | 40.7% |
+| learned coverage @2× | 56.2% | 52.5% |
+| learned lift | +11.1 | +11.8 |
+| fast stratum (raw) | 61.0% | 53.7% |
+| ceiling-any @2× | 71.0% | 66.0% |
+| decoded count | 161 / 162 | 139 / 162 |
+| smash (raw) | 9/10 | 5/10 |
+| speed-up (raw) | 9/9 | 6/9 |
+| counter (raw) | 7/22 | 11/22 |
+
+The stronger backbone does NOT put the soft contacts into the stream —
+it's slightly worse overall and clearly worse on attacks (CIs overlap;
+licensed claim = "backbone not the binding constraint", not "RTM
+better"). The learned lift is the same size on both streams: learning
+improves the selector, the stream sets the level, both plateau at the
+same soft-kitchen wall. Oracle-orientation = headline on both; prep
+ablation ≈ 0 on ViT (−0.6). Gate C's ViT verdict run printed KILL —
+gate formally CLOSED, final for this footage (contact_gate.md).
+Production spine for anything downstream: RTMPose (faster AND ≥).
+
+## Remaining levers (post-A/B)
+
+1. **Labels at scale** (`labeling_protocol.md` — split frozen, chained
+   seek shipped) feeding a **temporal model class** (sequence over
+   frames, not per-peak logistic). Not gated by the Gate C KILL — a
+   different instrument — but requires fresh pre-registration on
+   untouched holdout. The prep-ablation ≈ 0 result is mild evidence the
+   easy temporal win isn't free; the counter-evidence is that per-peak
+   features structurally can't use context a sequence model can.
+2. **New footage** (higher-res / uncondensed) — the postmortem's
+   standing door, now for the swing ceiling too.
+
+Also: r9/r10 label spans exceed their log durations by ~24 s (others
+±4/−13) — recorded in contact_gate.md's anomaly addendum; asterisk on
+r9/r10 for TRAINING use until the debug-frame scorebug check clears it.
 
 Constant-tuning further on these 10 rallies is over — the numbers above
 are the plateau.
