@@ -158,21 +158,25 @@ def window_feats(ser, tc, pre=PRE_S, post=POST_S):
     m_all = (t >= tc - pre) & (t <= tc + post)
     if m_all.sum() < max(6, 0.5 * (pre + post) * 20):
         return None
-    m_prep = (t >= tc - pre) & (t < tc - 0.1)
-    m_strk = (t >= tc - 0.1) & (t <= tc + post)
+    # JITTER-AWARE split (v2's crisp prep/strike boundary at tc-0.1
+    # fought the user's tap rhythm: a slightly-late tap put the real
+    # strike into "prep", voiding the ablation). EARLY = beyond any
+    # plausible tap jitter; CORE = wide enough to contain the true
+    # contact wherever the tap rhythm put it.
+    m_early = (t >= tc - pre) & (t < tc - 0.35)
+    m_core = (t >= tc - 0.35) & (t <= tc + post)
     f = []
-    # PER CHANNEL, prep and strike kept strictly separate so the
-    # ablation is real (v1 leaked prep through whole-window maxima and
-    # its "strike-only" arm silently still saw the preparation):
-    # [prep_max, prep_mean, strike_max, strike_mean, rise, strike_tpeak]
+    # per channel: [early_max, early_mean, core_max, core_mean,
+    #               core_std, rise, core_tpeak]
     for ch in ("arm", "lw", "rw", "le", "re", "dsho"):
         v = ser[ch]
-        pm = v[m_prep].max() if m_prep.any() else 0.0
-        pu = v[m_prep].mean() if m_prep.any() else 0.0
-        sm = v[m_strk].max() if m_strk.any() else 0.0
-        su = v[m_strk].mean() if m_strk.any() else 0.0
-        tp = (t[m_strk][np.argmax(v[m_strk])] - tc) if m_strk.any() else 0.0
-        f += [pm, pu, sm, su, sm - pu, tp]
+        em = v[m_early].max() if m_early.any() else 0.0
+        eu = v[m_early].mean() if m_early.any() else 0.0
+        cm = v[m_core].max() if m_core.any() else 0.0
+        cu = v[m_core].mean() if m_core.any() else 0.0
+        cs = v[m_core].std() if m_core.any() else 0.0
+        tp = (t[m_core][np.argmax(v[m_core])] - tc) if m_core.any() else 0.0
+        f += [em, eu, cm, cu, cs, cm - eu, tp]
     f += [ser["hipv"][m_all].max(), ser["hipv"][m_all].mean()]
     f += [ser["whi"][m_all].max(), ser["kconf"][m_all].mean()]
     f += [float(ser["side"]), ser["ynorm"][m_all].mean() / ser["H"],
@@ -194,21 +198,29 @@ def window_feats(ser, tc, pre=PRE_S, post=POST_S):
 
 
 def strike_only(x):
-    """Ablation: remove every trace of the preparation window (question
-    2). Blocks of 6 per channel: [prep_max, prep_mean, strike_max,
-    strike_mean, rise, strike_tpeak] — zero prep_max, prep_mean, rise."""
+    """Ablation (question 2, jitter-safe): remove the ANTICIPATION
+    window — everything more than 0.35 s before the tap, which no
+    plausible tap jitter can contaminate with the strike itself.
+    Blocks of 7: [early_max, early_mean, core_max, core_mean, core_std,
+    rise, core_tpeak] — zero early_max, early_mean, rise."""
     x = x.copy()
     for b in range(6):
-        x[:, b * 6 + 0] = 0.0
-        x[:, b * 6 + 1] = 0.0
-        x[:, b * 6 + 4] = 0.0
+        x[:, b * 7 + 0] = 0.0
+        x[:, b * 7 + 1] = 0.0
+        x[:, b * 7 + 5] = 0.0
     return x
 
 
 # ------------------------------------------------------------- model
 
 
-def fit_logreg(X, y, l2=1.0, iters=400, lr=0.5, seed=SEED):
+def fit_logreg(X, y, l2=0.02, iters=800, lr=0.15, seed=SEED):
+    """v3: the v1/v2 'matmul overflow' warnings were NOT input inf —
+    they were THIS function diverging (lr 0.5 with a ~l2/n penalty is
+    effectively unregularized on near-separable data, so w grew without
+    bound and every downstream number was confident garbage). Now:
+    absolute l2, decaying lr, and a HARD abort if weights go nonfinite
+    — this script prints numbers or fails loudly, never both."""
     rng = np.random.default_rng(seed)
     X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
     mu, sd = X.mean(0), X.std(0) + 1e-9
@@ -216,14 +228,18 @@ def fit_logreg(X, y, l2=1.0, iters=400, lr=0.5, seed=SEED):
     n, d = Xs.shape
     w = rng.normal(0, 0.01, d)
     b = 0.0
-    pos_w = (y == 0).sum() / max((y == 1).sum(), 1)
+    pos_w = min((y == 0).sum() / max((y == 1).sum(), 1), 5.0)
     sw = np.where(y == 1, pos_w, 1.0)
-    for _ in range(iters):
+    for it in range(iters):
         z = Xs @ w + b
         p = 1.0 / (1.0 + np.exp(-np.clip(z, -30, 30)))
         g = (p - y) * sw
-        w -= lr * (Xs.T @ g / n + l2 * w / n)
-        b -= lr * g.mean()
+        step = lr / (1.0 + it / 200.0)
+        w -= step * (Xs.T @ g / n + l2 * w)
+        b -= step * g.mean()
+    if not (np.isfinite(w).all() and np.isfinite(b)):
+        raise RuntimeError("logistic training diverged — do not trust "
+                           "any output; report this")
     return {"w": w, "b": b, "mu": mu, "sd": sd}
 
 
@@ -438,8 +454,18 @@ def run(a):
         all_flags += fl
         all_flags_ab += fl_ab
         h, ha = sum(x for _, x in fl), sum(x for _, x in fl_alt)
+        # label-drift sweep: slide this rally's label times and re-score.
+        # A coverage peak away from tau=0 = the taps drifted (rhythm slip
+        # on long rallies); a flat low curve = the stream is blind here.
+        best_tau, best_cov = 0.0, h / len(fl)
+        for tau in np.arange(-0.8, 0.81, 0.1):
+            sc = [(tc + tau, tm, *rest) for tc, tm, *rest in r["contacts"]]
+            fh = sum(x for _, x in
+                     coverage_at_budget(dets, sc, r["m"]))
+            if fh / len(fl) > best_cov + 1e-9:
+                best_tau, best_cov = float(tau), fh / len(fl)
         per_rally[held] = (h, len(fl), max(h, ha), r["flip"],
-                           ha > h)
+                           ha > h, best_tau, best_cov)
         for th, p, rc, nd in pr_curve(dets, r["contacts"], r["m"],
                                       [0.3, 0.5, 0.7, 0.85]):
             agg = pr_all.setdefault(th, [0, 0, 0, 0])
@@ -470,17 +496,19 @@ def run(a):
         by_ty[ty] = (aa + h, bb + 1)
     for ty, (aa, bb) in sorted(by_ty.items(), key=lambda kv: -kv[1][1]):
         print(f"    {ty:<10} {aa:>3}/{bb:<3} {aa / bb:6.1%}")
-    oracle = sum(o for _, _, o, _, _ in per_rally.values()) / n
+    oracle = sum(v[2] for v in per_rally.values()) / n
     print(f"\n  oracle-orientation coverage@2x: {oracle:6.1%}  "
           f"(per-rally best of both team->side mappings — a DIAGNOSTIC "
           f"upper line;\n   a big gap vs the headline means orientation, "
           f"not detection, is what's failing)")
-    print("\n  per rally:  (serve-flip = serve anchor overrode the "
-          "raw-peak mapping;\n               alt-better = the OTHER "
-          "orientation scores higher — suspect flip)")
-    for cum, (aa, bb, oo, flip, alt) in sorted(per_rally.items()):
+    print("\n  per rally:  (drift: coverage if this rally's labels are "
+          "slid by tau —\n               a peak away from 0 means the "
+          "taps drifted, not that the stream is blind)")
+    for cum, (aa, bb, oo, flip, alt, bt, bc) in sorted(per_rally.items()):
         tags = ("  serve-flip" if flip else "") + \
                (f"  alt-better({oo}/{bb})" if alt else "")
+        if abs(bt) > 1e-9 and bc > aa / bb + 0.08:
+            tags += f"  drift tau={bt:+.1f}s -> {bc:.0%}"
         print(f"    r{cum:<3} {aa:>3}/{bb:<3} {aa / bb:6.1%}{tags}")
     print("\nEXPLORATION ONLY: dev rallies, same match, same day. If a "
           "number here\nwants to be believed, it graduates to a fresh "
@@ -491,7 +519,9 @@ def run(a):
             "coverage_2x": cov, "coverage_2x_strike_only": cov_ab,
             "coverage_2x_oracle": oracle,
             "per_type": {k: list(v) for k, v in by_ty.items()},
-            "per_rally": {str(k): list(v) for k, v in per_rally.items()},
+            "per_rally": {str(k): [x if not isinstance(x, np.floating)
+                                   else float(x) for x in v]
+                          for k, v in per_rally.items()},
             "n_contacts": n, "rallies": sorted(rallies)}, indent=1))
         print(f"\nreport -> {a.report}")
 
