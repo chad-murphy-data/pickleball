@@ -34,3 +34,5 @@ data/vision/*.mp4
 data/vision/pose*/
 # scorebug_verify crop caches (broadcast imagery, regenerable)
 data/vision/*.crops.npz
+# scorebug state caches (bug_state_windows.py; regenerable from the VOD)
+data/vision/*.states.npz
