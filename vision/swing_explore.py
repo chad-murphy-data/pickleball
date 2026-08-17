@@ -429,7 +429,20 @@ def decode_rally(dets, s0, floor=0.02, min_gap=0.25, max_gap=3.0,
                     best[j] = cand
                     prev[j] = i
                     ghosts[j] = g
-    end = int(np.argmax(best))
+    # SPAN CONSTRAINT (the second half of the user's sentence: alternate
+    # "until the rally is over"). v4 let the path STOP whenever extending
+    # went net-negative, and it did exactly that in the weak dink
+    # stretches — r9 decoded 1 of 29 events, ghosts never fired, because
+    # quitting was free. The path must now reach the neighborhood of the
+    # LAST confident candidate (self-calibrating: >= ref), so the weak
+    # middle gets explained by weak candidates or paid ghosts — "nothing"
+    # is no longer on the menu.
+    conf_ts = [t for (t, _, sc) in cands if sc >= ref]
+    t_late = max(conf_ts) if conf_ts else cands[-1][0]
+    finishers = [j for j in range(n)
+                 if best[j] > -1e17 and cands[j][0] >= t_late - 1.0]
+    end = max(finishers, key=lambda j: best[j]) if finishers \
+        else int(np.argmax(best))
     if best[end] <= -1e17:
         return []
     path = []
@@ -674,9 +687,9 @@ def selftest():
         contacts = [(103.0 + k * 1.1 + rng.normal(0, 0.05), k % 2,
                      types[k]) for k in range(12)]
         z = synth_rally(rng, [(t, team) for t, team, _ in contacts],
-                        planted=True)
+                        planted=True, t1=117.5)
         rd = {"tracks": {}, "fps": 30.0, "z": z,
-              "bounds": (100.0, 130.0)}
+              "bounds": (100.0, 117.5)}
         t, trk = np.asarray(z["t"]), np.asarray(z["track"])
         for tid in np.unique(trk):
             m = trk == tid
@@ -718,8 +731,8 @@ def selftest():
 
     # null control: no planted swings -> low coverage
     z0 = synth_rally(rng, [(t, tm) for t, tm, _ in rallies[1]["contacts"]],
-                     planted=False)
-    rd0 = {"tracks": {}, "fps": 30.0, "z": z0, "bounds": (100.0, 130.0)}
+                     planted=False, t1=117.5)
+    rd0 = {"tracks": {}, "fps": 30.0, "z": z0, "bounds": (100.0, 117.5)}
     t0a, trk0 = np.asarray(z0["t"]), np.asarray(z0["track"])
     for tid in np.unique(trk0):
         m = trk0 == tid
