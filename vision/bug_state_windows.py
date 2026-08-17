@@ -357,62 +357,7 @@ def align_game(runs, rallies, team_row):
     return out
 
 
-def run_main(a):
-    tl = list(csv.DictReader(open(a.timeline)))
-    wins = list(csv.DictReader(open(a.windows)))
-    for i, r in enumerate(tl):
-        r["_cum"] = i + 1
-    # team row on the bug: row 0 = team listed first.  The lineup teams:
-    # bug row is resolved by majority vote later; start with server ->
-    # candidate rows from BOTH assignments and pick the consistent one.
-    servers = sorted({r["server_uuid"].lower() for r in tl})
-    cache = Path(str(a.out) + ".states.npz")
-    if cache.exists():
-        z = np.load(cache)
-        parsed = [(float(z["t"][i]),
-                   np.concatenate([z["vtop"][i], z["vbot"][i]]),
-                   bool(z["present"][i]),
-                   (int(z["nd0"][i]), int(z["nd1"][i])))
-                  for i in range(len(z["t"]))]
-        print(f"states from cache ({len(parsed)})")
-        ds = [float(np.abs(parsed[i][1] - parsed[i + 1][1]).mean())
-              for i in range(200, min(1200, len(parsed) - 1))
-              if parsed[i][2] and parsed[i + 1][2]]
-        thr = max(4.0 * float(np.median(ds)), 5.0)
-        print(f"state threshold {thr:.1f}")
-        runs = segment(parsed, thr)
-        print(f"{len(runs)} constant-state runs")
-        return finish(a, tl, wins, runs, thr)
-    print("sampling bug states at 2 Hz (one pass)...")
-    # locator reference frames from MID-RALLY times (the bug is provably
-    # up there; sampling early video medians the cells away while venue
-    # turf survives — measured failure)
-    mids = sorted(float(w["t1s"]) - 3.0 for w in wins)
-    wanted = set()
-    for k in np.linspace(0, len(mids) - 1, 40).astype(int):
-        wanted.add(round(mids[k] * FPS) / FPS)
-    sample, states = [], []
-    for t, fr in stream_bug(a.video):
-        if round(t * FPS) / FPS in wanted:
-            sample.append(fr)
-        states.append((t, fr))
-    cells, dots = locate_cells(sample if len(sample) >= 8 else
-                               [f for _, f in states[::311]][:40])
-    print(f"cells {cells} dots {dots}")
-    parsed = []
-    for t, fr in states:
-        vec, present, nd = frame_state(fr, cells, dots)
-        parsed.append((t, vec, present, nd))
-    del states
-    # noise threshold from consecutive same-state samples
-    ds = [float(np.abs(parsed[i][1] - parsed[i + 1][1]).mean())
-          for i in range(200, min(1200, len(parsed) - 1))
-          if parsed[i][2] and parsed[i + 1][2]]
-    thr = max(4.0 * float(np.median(ds)), 5.0)
-    print(f"state threshold {thr:.1f}")
-    runs = segment(parsed, thr)
-    print(f"{len(runs)} constant-state runs")
-
+def finish(a, tl, wins, runs, thr):
     # GLOBAL change-type alignment: one DP over all 141 rally-end
     # symbols vs all run boundaries (between-game junk absorbs as
     # gaps).  Team partition by propagation: server and receiver are
@@ -469,6 +414,75 @@ def run_main(a):
         wr.writeheader()
         wr.writerows(out_rows)
     print(f"windows set from bug state: {n_set}/{len(out_rows)} -> {a.out}")
+
+
+def run_main(a):
+    tl = list(csv.DictReader(open(a.timeline)))
+    wins = list(csv.DictReader(open(a.windows)))
+    for i, r in enumerate(tl):
+        r["_cum"] = i + 1
+    # team row on the bug: row 0 = team listed first.  The lineup teams:
+    # bug row is resolved by majority vote later; start with server ->
+    # candidate rows from BOTH assignments and pick the consistent one.
+    servers = sorted({r["server_uuid"].lower() for r in tl})
+    cache = Path(str(a.out) + ".states.npz")
+    if cache.exists():
+        z = np.load(cache)
+        parsed = [(float(z["t"][i]),
+                   np.concatenate([z["vtop"][i], z["vbot"][i]]),
+                   bool(z["present"][i]),
+                   (int(z["nd0"][i]), int(z["nd1"][i])))
+                  for i in range(len(z["t"]))]
+        print(f"states from cache ({len(parsed)})")
+        ds = [float(np.abs(parsed[i][1] - parsed[i + 1][1]).mean())
+              for i in range(200, min(1200, len(parsed) - 1))
+              if parsed[i][2] and parsed[i + 1][2]]
+        thr = max(4.0 * float(np.median(ds)), 5.0)
+        print(f"state threshold {thr:.1f}")
+        runs = segment(parsed, thr)
+        print(f"{len(runs)} constant-state runs")
+        return finish(a, tl, wins, runs, thr)
+    print("sampling bug states at 2 Hz (one pass)...")
+    # locator reference frames from MID-RALLY times (the bug is provably
+    # up there; sampling early video medians the cells away while venue
+    # turf survives — measured failure)
+    mids = sorted(float(w["t1s"]) - 3.0 for w in wins)
+    wanted = set()
+    for k in np.linspace(0, len(mids) - 1, 40).astype(int):
+        wanted.add(round(mids[k] * FPS) / FPS)
+    sample, states = [], []
+    for t, fr in stream_bug(a.video):
+        if round(t * FPS) / FPS in wanted:
+            sample.append(fr)
+        states.append((t, fr))
+    cells, dots = locate_cells(sample if len(sample) >= 8 else
+                               [f for _, f in states[::311]][:40])
+    print(f"cells {cells} dots {dots}")
+    parsed = []
+    for t, fr in states:
+        vec, present, nd = frame_state(fr, cells, dots)
+        parsed.append((t, vec, present, nd))
+    del states
+    # noise threshold from consecutive same-state samples
+    ds = [float(np.abs(parsed[i][1] - parsed[i + 1][1]).mean())
+          for i in range(200, min(1200, len(parsed) - 1))
+          if parsed[i][2] and parsed[i + 1][2]]
+    thr = max(4.0 * float(np.median(ds)), 5.0)
+    print(f"state threshold {thr:.1f}")
+    runs = segment(parsed, thr)
+    print(f"{len(runs)} constant-state runs")
+    half = len(parsed[0][1]) // 2
+    np.savez_compressed(
+        cache,
+        t=np.array([x[0] for x in parsed]),
+        vtop=np.stack([x[1][:half] for x in parsed]),
+        vbot=np.stack([x[1][half:] for x in parsed]),
+        present=np.array([x[2] for x in parsed]),
+        nd0=np.array([x[3][0] for x in parsed]),
+        nd1=np.array([x[3][1] for x in parsed]))
+    return finish(a, tl, wins, runs, thr)
+
+
 
 
 def selftest():
