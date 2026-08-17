@@ -244,6 +244,8 @@ HTML = r"""<!doctype html>
       <span class="small dim">offset</span>
       <input type="number" id="voff" step="0.5" value="0" title="if every rally starts consistently early/late in YOUR file, correct it here (seconds)">
       <button id="bswap" class="small">↺ file</button>
+      <span class="vsep"></span>
+      <span class="small dim" id="bldtag"></span>
     </div>
   </div>
   <div id="panel"></div>
@@ -251,6 +253,7 @@ HTML = r"""<!doctype html>
 <div id="toast"></div>
 <script>
 const DATA = __PAYLOAD__;
+const BUILD = "2026-08-17a (chained seek)";
 const LSK = "contact_audit_chicago0725";
 let store = JSON.parse(localStorage.getItem(LSK) || "{}");
 let prefs = JSON.parse(localStorage.getItem(LSK + "_prefs") || "{}");
@@ -360,12 +363,66 @@ function serveStamp(c){
   const rs = rows(c).filter(x => !x.tp.w);
   return rs.length ? (rs[0].tp.tr ?? rs[0].tp.t) : null;
 }
+/*PURE-BEGIN chained seek (node-testable; no DOM) */
+function lastStamp(c){
+  const ts = sortedTaps(c);
+  return ts.length ? (ts[ts.length - 1].tr ?? ts[ts.length - 1].t) : null;
+}
+/* Self-calibrating inter-rally gap: median of (rally k's serve stamp) −
+   (rally k−1's last stamp) over consecutive labeled same-game pairs.
+   Broadcast cuts vary (sd ~12 s on the 15 hand pins), so learn the
+   typical kept gap from the user's own labels. Cold start 10 s. */
+function gapEst(){
+  const gs = [];
+  for (let i = 1; i < DATA.rallies.length; i++){
+    const a = DATA.rallies[i - 1], b = DATA.rallies[i];
+    if (a.slot !== b.slot) continue;
+    const L = lastStamp(a.cum), s = serveStamp(b.cum);
+    if (L != null && s != null && s - L > 0 && s - L < 60) gs.push(s - L);
+  }
+  if (!gs.length) return 10;
+  gs.sort((x, y) => x - y);
+  return Math.min(25, Math.max(3, gs[Math.floor(gs.length / 2)]));
+}
+const G_CHAIN = 2.7;   // median serve→serve gap beyond log duration (15 pins)
+/* Predict an unpinned rally's serve from the nearest EARLIER labeled/pinned
+   rally in the same game. Adjacent + labeled: previous rally's last contact
+   + learned gap (no log-duration error). Otherwise: serve→serve chain of
+   log durations + G_CHAIN over the skipped rallies. Measured on the hand
+   pins: ~8 s median error rally-to-rally vs ~20 s for the raw machine
+   windows — and rallies 17-19 have no machine window at all. */
+function chainPred(c){
+  const i = DATA.rallies.findIndex(r => r.cum === c);
+  if (i < 0) return null;
+  const r = DATA.rallies[i];
+  for (let j = i - 1; j >= 0 && i - j <= 20; j--){
+    const a = DATA.rallies[j];
+    if (a.slot !== r.slot) break;
+    const L = lastStamp(a.cum);
+    const sv = serveStamp(a.cum) ?? a.pin;
+    if (j === i - 1 && L != null) return {t: L + gapEst(), from: a.cum};
+    if (sv != null){
+      let t = sv;
+      for (let k = j; k < i; k++) t += DATA.rallies[k].dur + G_CHAIN;
+      return {t, from: a.cum};
+    }
+  }
+  return null;
+}
+/*PURE-END*/
 function openSeek(r){
   const sv = serveStamp(r.cum);
   if (sv != null) seekTo(sv - 2, true);
   else if (r.pin != null) seekTo(r.pin - 2, true);       // v4 hand pin
-  else if (r.t0s != null) seekTo(r.t0s - 1, !r.approx);
-  else toast(`no window — find by scorebug: ${r.score}`, 2600);
+  else {
+    const cp = chainPred(r.cum);
+    if (cp != null){
+      seekTo(cp.t - 5, true);
+      toast(`≈ predicted from rally ${cp.from} — confirm scorebug ${r.score}`, 3600);
+    }
+    else if (r.t0s != null) seekTo(r.t0s - 1, !r.approx);
+    else toast(`no window — find by scorebug: ${r.score}`, 2600);
+  }
 }
 function step(nf){ if (!loaded()) return; V.pause();
   V.currentTime = Math.max(0, V.currentTime + nf / fps()); }
@@ -626,6 +683,7 @@ function wireVideo(){
     savePrefs(); };
   el("voff").value = prefs.voff || 0;
   el("voff").onchange = savePrefs;
+  el("bldtag").textContent = "build " + BUILD;
   el("fps").value = prefs.fps || 30;
   el("fps").onchange = savePrefs;
   V.addEventListener("timeupdate", () => {
