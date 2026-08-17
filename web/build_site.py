@@ -724,10 +724,7 @@ rule; per-game probabilities use current player values, the
 weakest-link penalty and display calibration; the DreamBreaker is rated by
 a rally-level model fit on all 101 historical DreamBreakers — doubles skill
 transfers to DB rallies at roughly half strength, so the stronger roster is
-a mild (not heavy) DB favorite. To make a forecast part of the permanent
-record, it must be frozen into the <a href="receipts.html">receipts ledger</a>
-before first serve (<code>make_forecast.py --commit</code>) — this page alone
-is a living view, not a commitment.</p>
+a mild (not heavy) DB favorite.</p>
 {body_mid}
 {livepage.forecast_script()}
 """
