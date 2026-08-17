@@ -360,3 +360,56 @@ pose windows and never touches scores, so the unresolved mechanism has
 zero effect on the gate. Do not re-assert the replay story; if the
 mechanism ever matters (it doesn't for Gate C), resolve it against the
 raw referee log's correction events.
+
+## A/B diagnostic result, 2026-08-17 (rtmpose-balanced, 10 rallies —
+## NOT the verdict; interpretation written BEFORE the ViTPose run)
+
+data/vision/contact_ceiling_report_rtm.json. Headline: ceiling-side
+45.1% [37.6, 52.7] vs null 30.4% -> KILL on the frozen definition.
+n = 162 contacts / 10 rallies (a deviation from the pre-registered 16;
+rallies 11-16 unlabeled at run time — r11+r12 alone hold ~55 contacts
+and most of the missing fast stratum).
+
+What is INSIDE the number matters more than the verdict line:
+
+- **The stream sees every violent swing**: speed-up 9/9, smash 9/10.
+  The pose channel is near-perfect exactly where Gate B's fast-stratum
+  fear lived.
+- **What fails is small-amplitude shots under the frozen candidate
+  RANKING**: dink 41%, counter 32%, other 34%. The budget selects the
+  top-2x peaks BY RAW HEIGHT, so small dink/counter peaks lose their
+  budget slots to big swings and residual noise. Direct evidence the
+  selector, not the stream, binds: ceiling@4x = 64% (+19 pts from
+  budget relaxation alone) and ceiling-any = 71%. (Caveat: no null was
+  computed at 4x, so 64% has no chance-floor beside it.)
+- **The KILL clause's stated interpretation ("the pose stream
+  physically does not carry the shots; no classifier can recall what
+  is not there") is NOT licensed by this evidence.** The licensed
+  conclusion is narrower: a height-ranked 2x-budget candidate
+  generator cannot reach 85% coverage at 720p. A trained
+  discriminator — the thing Gate C was gating — would not rank
+  candidates by raw peak height; the frozen ceiling under-proxies it
+  for small motions. This gap between the clause's wording and its
+  evidence must carry into any closure write-up.
+- Fast stratum 61% on n=41 vs bar 75% — the nearest margin, and
+  diluted: 58/162 contacts are typed "other" (some are surely
+  counters/speed-ups), and the missing r11/r12 are fast-heavy.
+- **Jitter line is VOID**: median |tap-pin| = 19.8 s confirms the v4
+  pins were never serve references for these rallies (consistent with
+  the unresolved bug/banner mechanism and "no replays"); the printed
+  83 s guard band is meaningless. Trainer-era guard band must come
+  from refine-pass deltas or the 0.4 s default — never from pins.
+
+Predictions, stated before the verdict run: ViTPose-plus-huge improves
+keypoint quality and thus peak-ranking cleanliness, but a 40-point gap
+to the 85% bar does not close on model quality; realistic verdict =
+KILL or low MIDDLE on the frozen definition, with the attack stratum
+staying near-perfect. Pre-registered options unchanged: the verdict
+run stands; MIDDLE buys one Sapiens shot; KILL closes THIS instrument.
+A candidate-definition v2 (e.g. learned or per-type-aware ranking) is
+NOT a knob-turn on Gate C — it would be a new pre-registration,
+developed on the now-spent 10 rallies and gated on rallies never used
+for development (11-16 + pilot). Independently of any verdict: the
+attack-shot layer (smash/speed-up events at ~95-100% coverage) is a
+real, immediately usable capability, and the 162+7 timestamped labels
+are permanent assets.
