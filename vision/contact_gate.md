@@ -310,3 +310,39 @@ user's typed hitters on odd shots ≥3 identify the serving team; row 6 =
   parity-PERFECT in every disputed row, so pop-era damage is bounded to
   shot types and occasional count slips — the ordinal labels are
   structurally sounder than the 2026-08-16 note feared.
+
+## Addendum, 2026-08-17 (mid-labeling): the VOD stitches REPLAYS —
+## content is the identity authority, not the bug
+
+User observations while timestamping the core 16: rally 3's live
+airing was where the realignment put it; rally 4's pin lands past
+rally 4; rally 11's banner score (3-2-1) appears NOWHERE near its pin
+while the bug there reads 4-2-2 — which is the log's post-rally-12
+state, i.e. exactly what a replay of the 29-shot marathon aired after
+rally 12 would display. Corrected picture: pin_realignment.md's
+mechanism (replay-pinned rows) was right but its scope ("one replay
+pin") was low — this condensed VOD stitches FULL-SPEED REPLAYS after
+notable rallies, multiple pins sit on them, and at least one live
+airing (rally 11's) may not exist in the VOD at all. What SURVIVES
+untouched is the load-bearing claim: row k's CONTENT is rally k
+(nothing else can hold 29 coded shots but rally 11), which is what the
+labels' validity rests on.
+
+Protocol (supersedes the bug-must-match rule where they conflict):
+- **CONTENT is the authority.** If the prefilled sequence matches what
+  plays, it IS that rally — a later-score bug only means you are on
+  its replay. CODE IT THERE: a full-speed replay contains the rally's
+  real swings, taps land in the same video pose extraction reads, so
+  labels and pose stay window-consistent. Add "REPLAY" to the rally
+  note (the record + any coverage-era logic needs to know).
+- Skip via ⛔ + note only if the replay is slow-motion or starts
+  mid-rally — never stamp slo-mo.
+- Window machinery is unaffected: pins/stamps stay monotone, so the
+  serve-to-serve bounds hold.
+
+Whiff convention (user, recorded): W was stamped when BOTH partners
+went for a ball and only one connected — so a whiff on the same team
+adjacent to a contact = both-went-for-it. Handling unchanged (whiffs
+are contact=0, excluded from every Gate C denominator) and these are
+premium trainer-era events: real swings with no contact, the exact
+hard-negative class W exists for.
