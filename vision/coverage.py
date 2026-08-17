@@ -454,6 +454,65 @@ def _config4(pos):
     return "far", m_far - max(m_near, 0.0), r_far
 
 
+def serving_config3(pos):
+    """Relaxed 2+1 / 1+2 serving-configuration test for the ANCHOR
+    FINDER only.  Extraction drops a player in many real pre-serve
+    freezes (measured on the Chicago pins: 5/15 freezes ran with 3 or
+    fewer tracks the whole way), so the strict 2+2 test never sees the
+    true freeze and the finder falls back onto a late impostor.  This
+    is weaker evidence by construction — find_serve accepts such runs
+    only with a positive post-freeze signature (return rush / play
+    onset) and a longer minimum run, and identity resolution still
+    demands the full 2+2."""
+    from itertools import combinations
+    near_all = {tr: p for tr, p in pos.items() if p[1] > NET_Y}
+    far_all = {tr: p for tr, p in pos.items() if p[1] <= NET_Y}
+    if not near_all or not far_all:
+        return None, 0.0, {}
+
+    def score(S, R, srv_end):
+        rcv_end = "far" if srv_end == "near" else "near"
+        dS = {tr: d_kitchen(p, srv_end) for tr, p in S.items()}
+        dR = {tr: d_kitchen(p, rcv_end) for tr, p in R.items()}
+        facts = [min(dS.values()) - DEEP_FT]      # visible servers deep
+        roles = {"srv_amb": True}
+        if len(R) == 2:
+            rcv_kitchen = min(dR, key=dR.get)
+            receiver = max(dR, key=dR.get)
+            facts += [RCV_KITCHEN_FT - dR[rcv_kitchen],
+                      dR[receiver] - DEEP_FT]
+            roles["receiver"] = receiver
+            roles["rcv_kitchen"] = rcv_kitchen
+        else:
+            (tr,) = R
+            k_fact = RCV_KITCHEN_FT - dR[tr]      # fits the NVZ role...
+            r_fact = dR[tr] - DEEP_FT             # ...or the deep role
+            if r_fact >= k_fact:
+                facts.append(r_fact)
+                roles["receiver"] = tr
+            else:
+                facts.append(k_fact)
+                roles["rcv_kitchen"] = tr
+        return min(facts), roles
+
+    best = (None, 0.0, {})
+    best_m = 0.0
+    for srv_end in ("near", "far"):
+        S_all = near_all if srv_end == "near" else far_all
+        R_all = far_all if srv_end == "near" else near_all
+        for ns, nr in ((2, 1), (1, 2)):
+            if len(S_all) < ns or len(R_all) < nr:
+                continue
+            for Sc in combinations(S_all, ns):
+                for Rc in combinations(R_all, nr):
+                    m, roles = score({tr: S_all[tr] for tr in Sc},
+                                     {tr: R_all[tr] for tr in Rc}, srv_end)
+                    if m > best_m:
+                        best_m = m
+                        best = (srv_end, m, roles)
+    return best
+
+
 def find_serve(dets, t0, t1, lead_s):
     """The anchor-frame finder (the spec's one new algorithmic piece).
 
@@ -471,8 +530,12 @@ def find_serve(dets, t0, t1, lead_s):
     for t, ds in frames:
         pos = {d.track: d.xy for d in ds if d.side >= 0}
         end, margin, roles = serving_config(pos)
+        partial = False
+        if end is None:
+            end, margin, roles = serving_config3(pos)
+            partial = end is not None
         pos_seq.append(pos)
-        ok_seq.append((end, margin))
+        ok_seq.append((end, margin, roles, partial))
     # median motion (ft/s) over a ~0.5 s baseline: real movement
     # integrates over the baseline while projected-foot jitter does not,
     # so slow post-serve convergence separates cleanly from stillness
@@ -523,11 +586,116 @@ def find_serve(dets, t0, t1, lead_s):
             runs.append(cur)
             cur = [k]
     runs.append(cur)
-    min_len = 2 if runs[-1][0] == 0 else 3
-    best = runs[-1] if len(runs[-1]) >= min_len else max(runs, key=len)
+
+    def surge(run):
+        """A real serve is followed by the RETURN RUSH: the deep
+        receiver moves net-ward within ~4 s of the freeze end (the
+        two-bounce rule keeps the SERVING pair back, so the surge is
+        one-sided and receiver-specific).  A quiet serving-shaped span
+        5+ s before the actual serve — the next rally's forming freeze
+        leaking into the window tail, the measured +10..27 s late tail
+        on the Chicago pins — has no surge and is rejected."""
+        k_end = run[-1]
+        end, _, roles, _p = ok_seq[k_end]
+        rcv = roles.get("receiver")
+        if rcv is None or rcv not in pos_seq[k_end]:
+            return False
+        y_tau = pos_seq[k_end][rcv][1]
+        s = 1.0 if end == "near" else -1.0
+        tau = ts[k_end]
+        best = 0.0
+        for k in range(k_end + 1, len(frames)):
+            if ts[k] - tau > 4.0:
+                break
+            if rcv in pos_seq[k]:
+                best = max(best, s * (pos_seq[k][rcv][1] - y_tau))
+        return best >= 4.5
+
+    def sustained(run):
+        """Play-onset fallback when no receiver track survives to be
+        watched: rally motion (median ~3+ ft/s) follows a real serve
+        within its first 4 s; pre-serve milling stays at walking pace
+        (measured medians 3.4 vs 1.3 on the Chicago failures).  Too
+        few post-freeze frames (window edge) counts as NO evidence."""
+        k_end = run[-1]
+        tau = ts[k_end]
+        ms = [mot[k] for k in range(k_end + 1, len(frames))
+              if ts[k] - tau <= 4.0 and np.isfinite(mot[k])]
+        return len(ms) >= 6 and float(np.median(ms)) >= 2.5
+
+    def hold_deep(run):
+        """Two-bounce corollary: after a REAL serve the serving pair
+        stays deep through the return (the serve and return must both
+        bounce), so for ~1.5 s no serving-side track may appear inside
+        the court.  After a mid-rally lull the 'serving-shaped' side is
+        free to advance immediately — the measured thief (a 30-frame
+        lull, +12.5 s late) fails exactly this.  Tracks that vanish
+        give no evidence either way."""
+        k_end = run[-1]
+        end = ok_seq[k_end][0]
+        side = [tr for tr, p in pos_seq[k_end].items()
+                if (p[1] > NET_Y) == (end == "near")]
+        tau = ts[k_end]
+        for k in range(k_end + 1, len(frames)):
+            dt = ts[k] - tau
+            if dt > 1.5:
+                break
+            if dt < 0.3:
+                continue
+            for tr in side:
+                if tr in pos_seq[k] and \
+                        d_kitchen(pos_seq[k][tr], end) < DEEP_FT - 2.0:
+                    return False
+        return True
+
+    def follow(run):
+        rcv = ok_seq[run[-1]][2].get("receiver")
+        rcv_gone = rcv is None or rcv not in pos_seq[run[-1]]
+        sig = surge(run) or (rcv_gone and sustained(run))
+        return sig and hold_deep(run)
+
+    def is_partial(run):
+        return sum(1 for k in run if ok_seq[k][3]) * 2 > len(run)
+
+    # Walk candidates latest-first; take the first with a post-freeze
+    # signature.  Partial-config runs (serving_config3) may ONLY win
+    # this way and need a longer freeze; with no signature anywhere,
+    # fall back to the OLD rule over runs rebuilt from strict-config
+    # frames alone (bit-identical to the pre-signature behavior), so
+    # the discriminators can move the anchor but never lose one.
+    best = None
+    fallback = False
+    for run in reversed(runs):
+        ml = 6 if is_partial(run) else (2 if run[0] == 0 else 3)
+        if len(run) >= ml and follow(run):
+            best = run
+            break
+    if best is None:
+        fallback = True
+        good_f = [k for k in good if not ok_seq[k][3]]
+        if not good_f:
+            t = min(max(t0 + (lead_s or 0.0), t0), t1 - 3.0)
+            return t, 0.0, None
+        runs_f, cur = [], [good_f[0]]
+        for k in good_f[1:]:
+            if ts[k] - ts[cur[-1]] <= 0.7:
+                cur.append(k)
+            else:
+                runs_f.append(cur)
+                cur = [k]
+        runs_f.append(cur)
+        min_len = 2 if runs_f[-1][0] == 0 else 3
+        best = runs_f[-1] if len(runs_f[-1]) >= min_len \
+            else max(runs_f, key=len)
     k_end = best[-1]
     margin = float(np.median([ok_seq[k][1] for k in best]))
     qual = min(1.0, len(best) / 8.0) * min(1.0, max(margin, 0.0) / 2.0 + 0.5)
+    if is_partial(best):
+        qual *= 0.75
+    if fallback:
+        # no post-freeze signature confirmed this anchor — the measured
+        # late tail lives exactly here, so it rides at half trust
+        qual *= 0.5
     ends = [ok_seq[k][0] for k in best]
     end = max(set(ends), key=ends.count)
     return ts[k_end], qual, end

@@ -36,3 +36,6 @@ data/vision/pose*/
 data/vision/*.crops.npz
 # scorebug state caches (bug_state_windows.py; regenerable from the VOD)
 data/vision/*.states.npz
+data/vision/*.states2.npz
+data/vision/*.states3.npz
+data/vision/*.crops3.npz
