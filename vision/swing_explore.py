@@ -91,11 +91,15 @@ def track_series(t, box, kpt, kpc, fps):
         rel = (kpt[:, j] - hip) / scale[:, None]
         v = np.zeros(n)
         d = np.linalg.norm(np.diff(rel, axis=0), axis=1)
-        # torso-scales per frame, gap-safe (no speed across track gaps)
-        vv = np.where(ok_dt, d / np.maximum(dt * fps, 1e-9), 0.0)
+        # torso-scales per frame, gap-safe; dt FLOOR at a third of a
+        # frame (v1 divided by near-zero dt on duplicate-adjacent rows,
+        # spraying inf through the feature matrix — the matmul overflow
+        # warnings in the first real run), and a physical cap: no human
+        # wrist moves 3 torso-lengths per frame
+        vv = np.where(ok_dt, d / np.maximum(dt * fps, 0.33), 0.0)
         conf = kpc[:, j] >= 0.15
         v[1:] = np.where(conf[1:] & conf[:-1], vv, 0.0)
-        chans[name] = v
+        chans[name] = np.minimum(v, 3.0)
     arm = np.maximum.reduce([chans[k] for k in ("lw", "rw", "le", "re")])
 
     shovec = kpt[:, R_SHO] - kpt[:, L_SHO]
@@ -105,10 +109,11 @@ def track_series(t, box, kpt, kpc, fps):
     hipv = np.zeros(n)
     hipv[1:] = np.where(ok_dt,
                         np.linalg.norm(np.diff(hip, axis=0), axis=1)
-                        / np.maximum(dt * fps, 1e-9) / scale[1:], 0.0)
-    wrist_hi = np.maximum(
+                        / np.maximum(dt * fps, 0.33) / scale[1:], 0.0)
+    hipv = np.minimum(hipv, 3.0)
+    wrist_hi = np.clip(np.maximum(
         (sho[:, 1] - kpt[:, L_WRIST, 1]) / scale,
-        (sho[:, 1] - kpt[:, R_WRIST, 1]) / scale)   # >0 = wrist above
+        (sho[:, 1] - kpt[:, R_WRIST, 1]) / scale), -3.0, 3.0)
     kconf = (kpc[:, L_WRIST] + kpc[:, R_WRIST]) / 2
 
     return {"t": t, "arm": arm, "lw": chans["lw"], "rw": chans["rw"],
@@ -156,16 +161,18 @@ def window_feats(ser, tc, pre=PRE_S, post=POST_S):
     m_prep = (t >= tc - pre) & (t < tc - 0.1)
     m_strk = (t >= tc - 0.1) & (t <= tc + post)
     f = []
+    # PER CHANNEL, prep and strike kept strictly separate so the
+    # ablation is real (v1 leaked prep through whole-window maxima and
+    # its "strike-only" arm silently still saw the preparation):
+    # [prep_max, prep_mean, strike_max, strike_mean, rise, strike_tpeak]
     for ch in ("arm", "lw", "rw", "le", "re", "dsho"):
         v = ser[ch]
-        va = v[m_all]
-        f += [va.max(), va.mean(), va.std(),
-              (t[m_all][np.argmax(va)] - tc)]
-        f += [v[m_prep].max() if m_prep.any() else 0.0,
-              v[m_prep].mean() if m_prep.any() else 0.0]
-        f += [v[m_strk].max() if m_strk.any() else 0.0]
-        f += [(v[m_strk].max() if m_strk.any() else 0.0)
-              - (v[m_prep].mean() if m_prep.any() else 0.0)]
+        pm = v[m_prep].max() if m_prep.any() else 0.0
+        pu = v[m_prep].mean() if m_prep.any() else 0.0
+        sm = v[m_strk].max() if m_strk.any() else 0.0
+        su = v[m_strk].mean() if m_strk.any() else 0.0
+        tp = (t[m_strk][np.argmax(v[m_strk])] - tc) if m_strk.any() else 0.0
+        f += [pm, pu, sm, su, sm - pu, tp]
     f += [ser["hipv"][m_all].max(), ser["hipv"][m_all].mean()]
     f += [ser["whi"][m_all].max(), ser["kconf"][m_all].mean()]
     f += [float(ser["side"]), ser["ynorm"][m_all].mean() / ser["H"],
@@ -182,18 +189,19 @@ def window_feats(ser, tc, pre=PRE_S, post=POST_S):
         ser["_peaks"] = pk
     prev = [pt for pt in pk if pt < tc - 0.05]
     f += [min(tc - prev[-1], 3.0) if prev else 3.0]
-    return np.array(f, dtype=np.float64)
+    out = np.array(f, dtype=np.float64)
+    return out if np.isfinite(out).all() else None
 
 
 def strike_only(x):
-    """Ablation: zero out every preparation-window feature (question 2:
-    is the prep arc carrying signal?). Indices per channel block of 8:
-    [max, mean, std, tpeak, prep_max, prep_mean, strike_max, rise]."""
+    """Ablation: remove every trace of the preparation window (question
+    2). Blocks of 6 per channel: [prep_max, prep_mean, strike_max,
+    strike_mean, rise, strike_tpeak] — zero prep_max, prep_mean, rise."""
     x = x.copy()
     for b in range(6):
-        x[:, b * 8 + 4] = 0.0
-        x[:, b * 8 + 5] = 0.0
-        x[:, b * 8 + 7] = 0.0
+        x[:, b * 6 + 0] = 0.0
+        x[:, b * 6 + 1] = 0.0
+        x[:, b * 6 + 4] = 0.0
     return x
 
 
@@ -202,8 +210,9 @@ def strike_only(x):
 
 def fit_logreg(X, y, l2=1.0, iters=400, lr=0.5, seed=SEED):
     rng = np.random.default_rng(seed)
+    X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
     mu, sd = X.mean(0), X.std(0) + 1e-9
-    Xs = (X - mu) / sd
+    Xs = np.clip((X - mu) / sd, -8.0, 8.0)
     n, d = Xs.shape
     w = rng.normal(0, 0.01, d)
     b = 0.0
@@ -219,7 +228,8 @@ def fit_logreg(X, y, l2=1.0, iters=400, lr=0.5, seed=SEED):
 
 
 def predict(model, X):
-    Xs = (X - model["mu"]) / model["sd"]
+    X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
+    Xs = np.clip((X - model["mu"]) / model["sd"], -8.0, 8.0)
     z = Xs @ model["w"] + model["b"]
     return 1.0 / (1.0 + np.exp(-np.clip(z, -30, 30)))
 
@@ -319,6 +329,28 @@ def score_rally(model, rd, ablate=False):
     return dets
 
 
+def serve_mapping(rd, contacts):
+    """Per-rally team->image-side orientation from the SERVE anchor:
+    the first labeled contact is the serve, by a known team, and a
+    serve is a big clean motion at a known instant — so the image side
+    whose tracks carry the most arm energy within ±0.35 s of the serve
+    tap is the server's side. Independent of raw-peak luck, which is
+    what v1's inherited mapping rode on (the near-null rallies in the
+    first real run had the flip signature). Returns (m, margin);
+    side = team ^ m; margin near 1 = ambiguous, caller should fall
+    back."""
+    t_serve, team, *_ = sorted(contacts)[0]
+    e = {0: 1e-9, 1: 1e-9}
+    for ser in rd["tracks"].values():
+        m = (ser["t"] >= t_serve - 0.35) & (ser["t"] <= t_serve + 0.35)
+        if m.any():
+            e[ser["side"]] = max(e[ser["side"]],
+                                 float(ser["arm"][m].max()))
+    srv_side = 0 if e[0] >= e[1] else 1
+    margin = max(e.values()) / min(e.values())
+    return team ^ srv_side, margin
+
+
 # ---------------------------------------------------------- evaluation
 
 
@@ -368,9 +400,12 @@ def run(a):
         if rd is None or not d["contacts"]:
             continue
         cands, _b = rally_candidates(rd["z"])
-        _fl, m = rally_coverage(d["contacts"], cands, 2, TOL_S)
+        _fl, m_raw = rally_coverage(d["contacts"], cands, 2, TOL_S)
+        m_srv, margin = serve_mapping(rd, d["contacts"])
+        m = m_srv if margin >= 1.25 else m_raw
         rallies[cum] = {"rd": rd, "contacts": d["contacts"],
-                        "whiffs": d["whiffs"], "m": m}
+                        "whiffs": d["whiffs"], "m": m,
+                        "flip": m != m_raw, "margin": margin}
     if len(rallies) < 3:
         raise SystemExit("need >=3 rallies with labels + pose "
                          f"(found {len(rallies)}) — check --pose-dir")
@@ -398,10 +433,13 @@ def run(a):
         dets = score_rally(model, r["rd"])
         dets_ab = score_rally(model_ab, r["rd"], ablate=True)
         fl = coverage_at_budget(dets, r["contacts"], r["m"])
+        fl_alt = coverage_at_budget(dets, r["contacts"], r["m"] ^ 1)
         fl_ab = coverage_at_budget(dets_ab, r["contacts"], r["m"])
         all_flags += fl
         all_flags_ab += fl_ab
-        per_rally[held] = (sum(h for _, h in fl), len(fl))
+        h, ha = sum(x for _, x in fl), sum(x for _, x in fl_alt)
+        per_rally[held] = (h, len(fl), max(h, ha), r["flip"],
+                           ha > h)
         for th, p, rc, nd in pr_curve(dets, r["contacts"], r["m"],
                                       [0.3, 0.5, 0.7, 0.85]):
             agg = pr_all.setdefault(th, [0, 0, 0, 0])
@@ -432,9 +470,18 @@ def run(a):
         by_ty[ty] = (aa + h, bb + 1)
     for ty, (aa, bb) in sorted(by_ty.items(), key=lambda kv: -kv[1][1]):
         print(f"    {ty:<10} {aa:>3}/{bb:<3} {aa / bb:6.1%}")
-    print("\n  per rally:")
-    for cum, (aa, bb) in sorted(per_rally.items()):
-        print(f"    r{cum:<3} {aa:>3}/{bb:<3} {aa / bb:6.1%}")
+    oracle = sum(o for _, _, o, _, _ in per_rally.values()) / n
+    print(f"\n  oracle-orientation coverage@2x: {oracle:6.1%}  "
+          f"(per-rally best of both team->side mappings — a DIAGNOSTIC "
+          f"upper line;\n   a big gap vs the headline means orientation, "
+          f"not detection, is what's failing)")
+    print("\n  per rally:  (serve-flip = serve anchor overrode the "
+          "raw-peak mapping;\n               alt-better = the OTHER "
+          "orientation scores higher — suspect flip)")
+    for cum, (aa, bb, oo, flip, alt) in sorted(per_rally.items()):
+        tags = ("  serve-flip" if flip else "") + \
+               (f"  alt-better({oo}/{bb})" if alt else "")
+        print(f"    r{cum:<3} {aa:>3}/{bb:<3} {aa / bb:6.1%}{tags}")
     print("\nEXPLORATION ONLY: dev rallies, same match, same day. If a "
           "number here\nwants to be believed, it graduates to a fresh "
           "pre-registration on\nrallies never touched by this script "
@@ -442,6 +489,7 @@ def run(a):
     if a.report:
         Path(a.report).write_text(json.dumps({
             "coverage_2x": cov, "coverage_2x_strike_only": cov_ab,
+            "coverage_2x_oracle": oracle,
             "per_type": {k: list(v) for k, v in by_ty.items()},
             "per_rally": {str(k): list(v) for k, v in per_rally.items()},
             "n_contacts": n, "rallies": sorted(rallies)}, indent=1))
@@ -489,6 +537,9 @@ def selftest():
     ytr = np.array(ytr, float)
     assert (ytr == 1).sum() >= 30 and (ytr == 0).sum() >= 30, \
         f"thin instance sets: {(ytr == 1).sum()}/{(ytr == 0).sum()}"
+    m0, marg = serve_mapping(rallies[1]["rd"], rallies[1]["contacts"])
+    assert m0 == 0 and marg > 1.2, f"serve mapping failed: {m0}/{marg:.2f}"
+    print(f"  serve-anchored mapping recovered (margin {marg:.1f}x)")
     model = fit_logreg(Xtr, ytr)
     tr_auc = _auc(predict(model, Xtr), ytr)
     r = rallies[held]
