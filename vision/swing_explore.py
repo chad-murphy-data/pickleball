@@ -230,13 +230,19 @@ def fit_logreg(X, y, l2=0.02, iters=800, lr=0.15, seed=SEED):
     b = 0.0
     pos_w = min((y == 0).sum() / max((y == 1).sum(), 1), 5.0)
     sw = np.where(y == 1, pos_w, 1.0)
-    for it in range(iters):
-        z = Xs @ w + b
-        p = 1.0 / (1.0 + np.exp(-np.clip(z, -30, 30)))
-        g = (p - y) * sw
-        step = lr / (1.0 + it / 200.0)
-        w -= step * (Xs.T @ g / n + l2 * w)
-        b -= step * g.mean()
+    # np.errstate: Apple's Accelerate BLAS (numpy matmul on macOS ARM)
+    # sets FP error flags as a SIMD side effect even on perfectly
+    # finite data — the "overflow in matmul" warnings the first three
+    # runs printed were that, not real divergence (the hard finiteness
+    # checks below are the actual guarantee, and they pass).
+    with np.errstate(all="ignore"):
+        for it in range(iters):
+            z = Xs @ w + b
+            p = 1.0 / (1.0 + np.exp(-np.clip(z, -30, 30)))
+            g = (p - y) * sw
+            step = lr / (1.0 + it / 200.0)
+            w -= step * (Xs.T @ g / n + l2 * w)
+            b -= step * g.mean()
     if not (np.isfinite(w).all() and np.isfinite(b)):
         raise RuntimeError("logistic training diverged — do not trust "
                            "any output; report this")
@@ -246,8 +252,11 @@ def fit_logreg(X, y, l2=0.02, iters=800, lr=0.15, seed=SEED):
 def predict(model, X):
     X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
     Xs = np.clip((X - model["mu"]) / model["sd"], -8.0, 8.0)
-    z = Xs @ model["w"] + model["b"]
-    return 1.0 / (1.0 + np.exp(-np.clip(z, -30, 30)))
+    with np.errstate(all="ignore"):    # Accelerate flag noise; see fit
+        z = Xs @ model["w"] + model["b"]
+        p = 1.0 / (1.0 + np.exp(-np.clip(z, -30, 30)))
+    assert np.isfinite(p).all(), "non-finite predictions — report this"
+    return p
 
 
 # ----------------------------------------------------- set construction
