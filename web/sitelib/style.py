@@ -467,7 +467,7 @@ for (const b of document.querySelectorAll('.themetog')) {
 NAV = [("rankings.html", "Rankings"), ("singles.html", "Singles"),
        ("players/index.html", "Players"),
        ("live.html", "Live"),
-       ("forecast.html", "Forecasts"), ("titlerace.html", "Title race"),
+       ("forecast.html", "Forecasts"),
        ("results.html", "Results"),
        ("simulator.html", "Simulator"), ("receipts.html", "Receipts"),
        ("records.html", "Record book"),
