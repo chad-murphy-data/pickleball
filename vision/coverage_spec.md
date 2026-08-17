@@ -220,34 +220,59 @@ contact-thread instruments were not touched.
 
 ## Build record (2026-08-16)
 
-- WINDOWS INSTRUMENT STATUS (2026-08-17 late): change-type alignment
-  (bug_state_windows.py v5) is the right frame — each rally end changes
-  exactly one bug region, the log predicts the 141-symbol sequence —
-  but this venue's bug CYCLES DISPLAY MODES in place every ~6-15 s
-  (52/95 junk 'X' boundaries are in-place both-cell jumps on a rhythm;
-  20/95 are presence gaps), fragmenting the state timeline. NEXT STEP
-  (fast, states are cached in coverage_windows_ppa0125_v5.csv.states.npz):
-  cluster runs into the two mode families, keep score-mode only, merge
-  across interruptions, re-symbolize, re-test the five hand-read
-  anchors (r74~1918, r8~301-321, r10~409, r83/r84 per the bug reads).
-  A-B-A interruption bridging is IN (drop_interruptions; 190->142
-  runs) but 76 'X' boundaries remain, mostly presence GAPS where
-  rallies ended while the bug was hidden - the aligner needs
-  X = 'one or more ends occurred here' gap semantics, and mode-B
-  deserves one visual crop inspection before more rules. Windows
-  remain UNSHIPPED until anchors pass; no metrics computed.
+- WINDOWS INSTRUMENT **SOLVED** (2026-08-17 night;
+  bug_state_windows.py): 113/141 rallies with SCORE-VERIFIED windows
+  (g1 36/48, g2 51/56, g3 26/37), orientation margin 113:16, all five
+  check anchors frame-verified (r8 2-2·1 at 376-384, r10 3-2·2 at
+  411-416, r74 5-2·1 at 1979-1984, r83 6-6·1 at 2163-2181, r84 7-6·1
+  at 2180-2199). What it took, in order (each measured, none guessed):
+  (1) canonical per-layout boxes — the locator wobbles ±2 px on a
+  static overlay and every windowed-median drift faked a state change;
+  the bug's three x0 modes (370/400/428) are COMPLETED-GAME COLUMNS
+  appended after each game, so LAYOUT INDEX = GAME, and one canonical
+  box per layout makes plateau crops pixel-identical (566→85 runs);
+  (2) raw crop cache (.crops3.npz, gray+greenmask region stream) so
+  every later iteration is offline; (3) dots are NAME-ANCHORED AND
+  STATIC (region x 45-105), not score-column-relative — the relative
+  band read the wrong place in 2 of 3 layouts; width fallback for
+  touching dots (single 4-6 cols, double 8-13); (4) per-game ABSOLUTE
+  value matching replaces global symbol alignment — leader-cluster the
+  cell states, rank clusters by WEIGHTED INTERVAL SCHEDULING (true
+  score states occupy disjoint time blocks; junk score-flash clusters
+  recur across blocks and drop out — first-appearance ranking let one
+  junk cluster shift every later value one off), rank k = k-th
+  distinct logged value, rallies match by (top,bot,row,server#) dict
+  key, so drift is structurally impossible; (5) dot-changepoint run
+  splitting recovers side-out/second rallies (~half the match) whose
+  only on-bug change is the dots; runs carry REAL per-frame timestamps
+  and close at >8 s absences (linear interpolation over gap-spanning
+  sparse runs fabricated overlapping pieces — a 67→12 collapse traced
+  to exactly that). The 28 unmatched rallies stay approx=1/unmatched
+  and are EXCLUDED from extraction (drop-don't-guess).
+  LESSON THAT INVALIDATED OLD 'TRUTHS': the spacing-window positions
+  for r8/r10 were ~100 s off, yet identity hand-checks 'confirmed'
+  them — the same four players serve nearby rallies in similar
+  directions, so identity checks CANNOT validate rally IDENTITY; only
+  score reads off the bug can.
 
-- ANCHOR-FINDER VALIDATION, first pass (2026-08-17, vs the 15 Chicago
-  serve pins, court-gated extractor at 10 fps): 13/15 anchor; median
-  error +1.57 s, 8/13 within 2 s — but a FAT LATE TAIL (5 rallies
-  +10..27 s: the finder takes a mid-rally lull for the pre-serve
-  freeze). NOT cleared for production windowing yet. The run produced
-  the labeled tuning set the fix needs (pins + candidate freezes on
-  the deployed substrate; scratchpad pose_chicago_wide2). Candidate
-  discriminator: the true freeze ends with the receiver's deep track
-  surging forward. Also: the frozen Gate C extractor anchors only
-  4/15 here (far-baseline starvation, see the 0.30 H cross-finding
-  above) — anchor validation MUST run on coverage_extract output.
+- ANCHOR-FINDER VALIDATION (2026-08-17, vs the Chicago serve pins,
+  court-gated extractor at 10 fps): now resolves 14/15; median +1.41 s,
+  IQR [+0.62, +2.57], 8/14 within 2 s. Upgrades that got there:
+  serving_config3 (relaxed 2+1/1+2 config, FINDER ONLY — 5/15 true
+  freezes run with ≤3 tracks and the strict 2+2 never saw them),
+  post-freeze signatures gating every candidate (receiver return-rush
+  surge ≥4.5 ft net-ward within 4 s; sustained play-onset motion when
+  no receiver track survives; two-bounce hold-deep — the serving pair
+  must stay deep 1.5 s after a real serve), and a signatureless
+  fallback that reruns the OLD rule on strict-config runs only at half
+  qual. Residual: 3 late anchors (+12..27 s) on the WIDE tuning
+  windows, whose tails contain the next rally's pre-serve period by
+  construction — production bug-state windows end at the score flip
+  and structurally exclude that class; the survivors ride at reduced
+  qual for downstream drop rules. Also: the frozen Gate C extractor
+  anchors only 4/15 here (far-baseline starvation, see the 0.30 H
+  cross-finding above) — anchor validation MUST run on
+  coverage_extract output.
 - CROSS-FINDING for the contact thread (2026-08-17, from the anchor
   validation): pose_extract's pixel gate rejects persons whose box
   bottom sits above 0.30 H, and BOTH test broadcasts frame the far
