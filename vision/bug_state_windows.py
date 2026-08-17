@@ -168,7 +168,14 @@ def segment(states, thr):
     # '?', which let the aligner slide onto junk)
     merged = [runs[0]] if runs else []
     for r in runs[1:]:
-        if float(np.abs(r["vec"] - merged[-1]["vec"]).mean()) < thr:
+        cells_same = float(np.abs(r["vec"] - merged[-1]["vec"]).mean()) < thr
+        # a PERSISTENT dot difference (>=4 samples, ~2 s) is a real
+        # side-out/second boundary even with identical cells; a short
+        # run's dot disagreement is read noise and merges away
+        dot_boundary = (r["dot"] != merged[-1]["dot"]
+                        and len(r["vecs"]) >= 4
+                        and len(merged[-1]["vecs"]) >= 4)
+        if cells_same and not dot_boundary:
             m = merged[-1]
             m["t1"] = r["t1"]
             m["dots"] = m["dots"] + r["dots"]
@@ -436,11 +443,11 @@ def run_main(a):
     cache = Path(str(a.out) + ".states.npz")
     if cache.exists():
         z = np.load(cache)
-        parsed = [(float(z["t"][i]),
-                   np.concatenate([z["vtop"][i], z["vbot"][i]]),
-                   bool(z["present"][i]),
-                   (int(z["nd0"][i]), int(z["nd1"][i])))
-                  for i in range(len(z["t"]))]
+        T, VT, VB = z["t"], z["vtop"], z["vbot"]
+        PR, N0, N1 = z["present"], z["nd0"], z["nd1"]
+        parsed = [(float(T[i]), np.concatenate([VT[i], VB[i]]),
+                   bool(PR[i]), (int(N0[i]), int(N1[i])))
+                  for i in range(len(T))]
         print(f"states from cache ({len(parsed)})")
         ds = [float(np.abs(parsed[i][1] - parsed[i + 1][1]).mean())
               for i in range(200, min(1200, len(parsed) - 1))

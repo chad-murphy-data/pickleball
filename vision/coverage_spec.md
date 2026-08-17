@@ -220,6 +220,18 @@ contact-thread instruments were not touched.
 
 ## Build record (2026-08-16)
 
+- WINDOWS INSTRUMENT STATUS (2026-08-17 late): change-type alignment
+  (bug_state_windows.py v5) is the right frame — each rally end changes
+  exactly one bug region, the log predicts the 141-symbol sequence —
+  but this venue's bug CYCLES DISPLAY MODES in place every ~6-15 s
+  (52/95 junk 'X' boundaries are in-place both-cell jumps on a rhythm;
+  20/95 are presence gaps), fragmenting the state timeline. NEXT STEP
+  (fast, states are cached in coverage_windows_ppa0125_v5.csv.states.npz):
+  cluster runs into the two mode families, keep score-mode only, merge
+  across interruptions, re-symbolize, re-test the five hand-read
+  anchors (r74~1918, r8~301-321, r10~409, r83/r84 per the bug reads).
+  Windows remain UNSHIPPED until anchors pass; no metrics computed.
+
 - ANCHOR-FINDER VALIDATION, first pass (2026-08-17, vs the 15 Chicago
   serve pins, court-gated extractor at 10 fps): 13/15 anchor; median
   error +1.57 s, 8/13 within 2 s — but a FAT LATE TAIL (5 rallies
