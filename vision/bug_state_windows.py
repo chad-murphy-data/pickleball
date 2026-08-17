@@ -162,12 +162,20 @@ def segment(states, thr):
         for nd in r["dots"]:
             dc[nd] += 1
         r["dot"] = max(dc, key=dc.get)
-    # merge consecutive runs whose MEDIAN states match (brief occlusions)
+    # merge consecutive runs whose MEDIAN states match — on the CELLS
+    # alone (dot-count reads are noisy; requiring dot equality here
+    # fragmented same-score runs and flooded the boundary symbols with
+    # '?', which let the aligner slide onto junk)
     merged = [runs[0]] if runs else []
     for r in runs[1:]:
-        if float(np.abs(r["vec"] - merged[-1]["vec"]).mean()) < thr \
-                and r["dot"] == merged[-1]["dot"]:
-            merged[-1]["t1"] = r["t1"]
+        if float(np.abs(r["vec"] - merged[-1]["vec"]).mean()) < thr:
+            m = merged[-1]
+            m["t1"] = r["t1"]
+            m["dots"] = m["dots"] + r["dots"]
+            dc = defaultdict(int)
+            for nd in m["dots"]:
+                dc[nd] += 1
+            m["dot"] = max(dc, key=dc.get)
         else:
             merged.append(r)
     return merged
@@ -200,7 +208,7 @@ def change_symbols_video(runs, thr):
         elif dd and not dt and not db:
             out.append("D")
         else:
-            out.append("?")
+            out.append("X")     # both cells changed: game break / junk
     return out
 
 
@@ -229,10 +237,10 @@ def align_symbols(sym_vid, sym_log):
     P = np.zeros((L + 1, V + 1), np.int8)
     for i in range(1, L + 1):
         for j in range(1, V + 1):
-            if sym_vid[j - 1] == "?":
-                m = 0.4
-            elif sym_log[i - 1] == sym_vid[j - 1]:
+            if sym_log[i - 1] == sym_vid[j - 1]:
                 m = 0.0
+            elif sym_vid[j - 1] == "X":
+                m = 6.0        # never match a rally end to a game break
             else:
                 m = 3.0
             best = (D[i - 1, j - 1] + m, 0)
@@ -245,7 +253,7 @@ def align_symbols(sym_vid, sym_log):
     i, j = L, V
     while i > 0 and j > 0:
         if P[i, j] == 0:
-            if sym_vid[j - 1] == sym_log[i - 1] or sym_vid[j - 1] == "?":
+            if sym_vid[j - 1] == sym_log[i - 1]:
                 out[i - 1] = j - 1
             i, j = i - 1, j - 1
         elif P[i, j] == 1:
