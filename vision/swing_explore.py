@@ -228,8 +228,12 @@ def fit_logreg(X, y, l2=0.02, iters=800, lr=0.15, seed=SEED):
     n, d = Xs.shape
     w = rng.normal(0, 0.01, d)
     b = 0.0
-    pos_w = min((y == 0).sum() / max((y == 1).sum(), 1), 5.0)
-    sw = np.where(y == 1, pos_w, 1.0)
+    # NO class weighting: it inflates the probability scale (debug on
+    # synth: median dense score 0.37 — half of all peaks "confident"),
+    # and everything downstream needs honest RANKING, not recall-tilted
+    # probabilities. Imbalance only shifts the operating threshold,
+    # which the decoder's self-calibrating reference absorbs anyway.
+    sw = np.ones_like(y)
     # np.errstate: Apple's Accelerate BLAS (numpy matmul on macOS ARM)
     # sets FP error flags as a SIMD side effect even on perfectly
     # finite data — the "overflow in matmul" warnings the first three
@@ -354,6 +358,88 @@ def score_rally(model, rd, ablate=False):
     return dets
 
 
+def decode_rally(dets, s0, floor=0.02, min_gap=0.25, max_gap=3.0,
+                 ghost_pen=-3.2, max_ghost=2):
+    """The user's 'logic', formalized (and the spec's missing pillar):
+    teams STRICTLY alternate contacts and the serve side is known from
+    the log, so decode the best time-increasing, side-alternating path
+    through the scored candidates instead of thresholding them
+    independently. Weak dink peaks get SELECTED when it's their side's
+    turn; same-side echoes get pruned by construction; occlusion gaps
+    are bridged by penalized GHOSTS (parity kept, no timestamp claimed
+    — still correct for counts and attribution). Returns
+    [(t, side, score, n_ghosts_before)]."""
+    # PRE-MERGE per side: dense scoring sprouts clusters of peaks
+    # around each real swing; without this the path zigzags through
+    # parity-legal cluster pairs (selftest: 47 events on 12 contacts)
+    merged = []
+    for s in (0, 1):
+        side_c = [(t, sc) for t, sd, sc in dets if sd == s and sc >= floor]
+        merged += [(t, s, sc) for t, sc in strongest_first(side_c, 0.55)]
+    cands = sorted(merged)
+    if not cands:
+        return []
+    # per-event GAIN relative to a SELF-CALIBRATING reference: the 70th
+    # percentile of this rally's own merged candidate scores. Absolute
+    # probability references break the moment the model's scale drifts
+    # (the selftest walked through all three failure modes: log p alone
+    # collapsed paths to one event, floor-relative chained every noise
+    # peak, and a fixed 0.35 met a model whose median score WAS 0.37).
+    # Top-tail candidates add value; the bulk cost a little — less than
+    # a ghost, so a weak dink candidate still beats a blind ghost when
+    # it's that side's turn.
+    ref = max(float(np.quantile([sc for _, _, sc in cands], 0.70)), 0.05)
+    logp = [math.log(max(sc, 1e-6)) - math.log(ref)
+            for _, _, sc in cands]
+    n = len(cands)
+    best = [-1e18] * n
+    prev = [-1] * n
+    ghosts = [0] * n
+    t0 = cands[0][0]
+    for i, (t, s, sc) in enumerate(cands):
+        # start: the serve side, near the window head (1 leading ghost ok)
+        if t - t0 < 8.0:
+            if s == s0:
+                best[i] = max(best[i], logp[i])
+            elif best[i] < logp[i] + ghost_pen:
+                best[i] = logp[i] + ghost_pen
+                ghosts[i] = 1
+    for j in range(n):
+        tj, sj, _ = cands[j]
+        for i in range(j):
+            if best[i] <= -1e17:
+                continue
+            ti, si, _ = cands[i]
+            dt = tj - ti
+            if dt < min_gap:
+                continue
+            if dt > max_gap * (max_ghost + 1):
+                continue
+            for g in range(0, max_ghost + 1):
+                if sj != (si ^ ((1 + g) % 2)):
+                    continue
+                if dt > max_gap * (g + 1) or dt < min_gap * (g + 1):
+                    continue
+                per = dt / (g + 1)
+                gap_bonus = (0.0 if 0.45 <= per <= 2.2 else
+                             -1.2 if per < 0.45 and per >= 0.3 else
+                             -3.0)
+                cand = best[i] + logp[j] + g * ghost_pen + gap_bonus
+                if cand > best[j]:
+                    best[j] = cand
+                    prev[j] = i
+                    ghosts[j] = g
+    end = int(np.argmax(best))
+    if best[end] <= -1e17:
+        return []
+    path = []
+    i = end
+    while i >= 0:
+        path.append((cands[i][0], cands[i][1], cands[i][2], ghosts[i]))
+        i = prev[i]
+    return path[::-1]
+
+
 def serve_mapping(rd, contacts):
     """Per-rally team->image-side orientation from the SERVE anchor:
     the first labeled contact is the serve, by a known team, and a
@@ -439,7 +525,7 @@ def run(a):
           f"(leave-one-rally-out; EXPLORATION, not a gate)\n")
 
     all_flags, all_flags_ab, pr_all = [], [], {}
-    per_rally = {}
+    per_rally, decode_stats = {}, {}
     for held in sorted(rallies):
         Xtr, ytr = [], []
         for cum, r in rallies.items():
@@ -473,6 +559,24 @@ def run(a):
                      coverage_at_budget(dets, sc, r["m"]))
             if fh / len(fl) > best_cov + 1e-9:
                 best_tau, best_cov = float(tau), fh / len(fl)
+        # the user's alternation decode: serve side from the log, best
+        # alternating path through the same scored candidates
+        s0 = r["contacts"][0][1] ^ r["m"]
+        path = decode_rally(dets, s0)
+        real_ev = [(t, s) for t, s, _, _ in path]
+        n_gh = sum(g for _, _, _, g in path)
+        ct_by_side = {}
+        for tc, tm, *_ in r["contacts"]:
+            ct_by_side.setdefault(tm ^ r["m"], []).append(tc)
+        dec_hit = sum(
+            any(abs(tc - t) <= TOL_S for t, s in real_ev
+                if s == (tm ^ r["m"]))
+            for tc, tm, *_ in r["contacts"])
+        dec_matched_ev = sum(
+            any(abs(t - tc) <= TOL_S for tc in ct_by_side.get(s, []))
+            for t, s in real_ev)
+        decode_stats[held] = (dec_hit, len(r["contacts"]),
+                              dec_matched_ev, len(real_ev), n_gh)
         per_rally[held] = (h, len(fl), max(h, ha), r["flip"],
                            ha > h, best_tau, best_cov)
         for th, p, rc, nd in pr_curve(dets, r["contacts"], r["m"],
@@ -505,6 +609,21 @@ def run(a):
         by_ty[ty] = (aa + h, bb + 1)
     for ty, (aa, bb) in sorted(by_ty.items(), key=lambda kv: -kv[1][1]):
         print(f"    {ty:<10} {aa:>3}/{bb:<3} {aa / bb:6.1%}")
+    d_hit = sum(v[0] for v in decode_stats.values())
+    d_ct = sum(v[1] for v in decode_stats.values())
+    d_mev = sum(v[2] for v in decode_stats.values())
+    d_ev = sum(v[3] for v in decode_stats.values())
+    d_gh = sum(v[4] for v in decode_stats.values())
+    print(f"\n  ALTERNATION-DECODED (the 'logic': serve side from the "
+          f"log, teams alternate,\n  best side-alternating path through "
+          f"the same scored candidates):")
+    print(f"    decoded coverage:   {d_hit / d_ct:6.1%}   "
+          f"sequence precision: {d_mev / max(d_ev, 1):6.1%}   "
+          f"ghosts: {d_gh}")
+    print(f"    decoded count vs labeled: {d_ev + d_gh} vs {d_ct}  "
+          f"(per rally: " + ", ".join(
+              f"r{c}:{v[3] + v[4] - v[1]:+d}"
+              for c, v in sorted(decode_stats.items())) + ")")
     oracle = sum(v[2] for v in per_rally.values()) / n
     print(f"\n  oracle-orientation coverage@2x: {oracle:6.1%}  "
           f"(per-rally best of both team->side mappings — a DIAGNOSTIC "
@@ -527,6 +646,9 @@ def run(a):
         Path(a.report).write_text(json.dumps({
             "coverage_2x": cov, "coverage_2x_strike_only": cov_ab,
             "coverage_2x_oracle": oracle,
+            "decoded": {"coverage": d_hit / d_ct if d_ct else None,
+                        "precision": d_mev / d_ev if d_ev else None,
+                        "ghosts": d_gh, "events": d_ev},
             "per_type": {k: list(v) for k, v in by_ty.items()},
             "per_rally": {str(k): [x if not isinstance(x, np.floating)
                                    else float(x) for x in v]
@@ -545,7 +667,11 @@ def selftest():
              "smash", "dink", "counter", "dink", "drive", "dink"]
     rallies = {}
     for cum in (1, 2, 3, 4):
-        contacts = [(103.0 + k * 2.0 + rng.normal(0, 0.05), k % 2,
+        # 1.1 s between contacts = realistic side-alternation cadence
+        # (ball flight time); the original 2.0 s spacing was slower than
+        # real rallies and left phantom-pair insertions sitting inside
+        # the plausible-cadence band, testing the wrong regime
+        contacts = [(103.0 + k * 1.1 + rng.normal(0, 0.05), k % 2,
                      types[k]) for k in range(12)]
         z = synth_rally(rng, [(t, team) for t, team, _ in contacts],
                         planted=True)
@@ -609,6 +735,19 @@ def selftest():
     cov0 = sum(h for _, h in fl0) / len(fl0)
     print(f"  null control coverage@2x: {cov0:.1%} (must be << planted)")
     assert cov0 <= 0.7, "null control suspiciously covered"
+
+    # alternation decode on the held-out planted rally
+    s0 = r["contacts"][0][1] ^ 0
+    path = decode_rally(dets, s0)
+    ev = [(t, s) for t, s, _, _ in path]
+    hit = sum(any(abs(tc - t) <= TOL_S for t, s in ev if s == tm)
+              for tc, tm, *_ in r["contacts"])
+    n_gh = sum(g for *_, g in path)
+    cnt = len(ev) + n_gh
+    print(f"  decode: {hit}/{len(r['contacts'])} covered, "
+          f"count {cnt} vs {len(r['contacts'])}, ghosts {n_gh}")
+    assert hit / len(r["contacts"]) >= 0.85, "decoder lost planted swings"
+    assert abs(cnt - len(r["contacts"])) <= 2, "decoded count way off"
     print("SELFTEST OK")
 
 
