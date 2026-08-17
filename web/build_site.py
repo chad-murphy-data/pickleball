@@ -2096,7 +2096,7 @@ def receipt_teaser_rows(R, n=3):
     return rows
 
 
-def build_landing(players, games, updated, n_games, R):
+def build_landing(players, games, updated, n_games, R, S=None):
     from datetime import date
     val = R["validation"]
     acc = pct(val["accuracy"], 1)
@@ -2175,6 +2175,26 @@ def build_landing(players, games, updated, n_games, R):
     term = ("&gt; PICK ANY FOUR PROS<br>\n&gt; ANY PAIRING, ANY FORMAT<br>\n"
             "&gt; RUNNING 100,000 SIMS_<br>\n"
             '<span class="result">→ RATED, WITH ERROR BARS</span>')
+
+    # singles doorway — same source as singles.html (the suite ctx)
+    srows = ""
+    if S:
+        def _sact(u):
+            return (S["rec"].get(u, ("", "", ""))[2] >= "2026-01-01"
+                    or u in S["mlp26"])
+        cells = []
+        for g_, tag in (("F", "W"), ("M", "M")):
+            u, e = max(((u, e) for u, e in S["suite"].items()
+                        if e["gender"] == g_ and e["tier"] != "imputed"
+                        and _sact(u)),
+                       key=lambda t: t[1]["value"])
+            cells.append((f'{tag}#1 {esc(e["name"].split()[-1].upper())}',
+                          f'{S["spts"](e["value"], g_):+.1f} PTS'))
+        cells.append(("NO SINGLES RECORD?", "STILL PROJECTED"))
+        srows = "".join(
+            f'<div class="t-row"><span class="call"><strong>{c}</strong></span>'
+            f'<span class="lead"></span><span class="res">{r}</span></div>'
+            for c, r in cells)
     if feat:
         best = max((g for g in feat["games"] if g),
                    key=lambda g: max(g["p"], 1 - g["p"]), default=None)
@@ -2242,7 +2262,7 @@ def build_landing(players, games, updated, n_games, R):
 <header class="landing"><div class="bar">
  <span class="brandchip">PICKLES</span>
  <span class="brandsub">Probabilistic Inference of Competitive Kitchen-Line Expected Scores</span>
- <nav><a href="live.html" id="nav-live">LIVE</a><a href="rankings.html">RANKINGS</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="insights/">INSIGHTS</a><a href="methods.html">METHODS</a></nav>
+ <nav><a href="live.html" id="nav-live">LIVE</a><a href="rankings.html">RANKINGS</a><a href="singles.html">SINGLES</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="insights/">INSIGHTS</a><a href="methods.html">METHODS</a></nav>
  <button class="themetog" type="button" title="toggle light/dark">◐</button>
 </div></header>
 {slate}
@@ -2290,6 +2310,13 @@ numbers the receipts page grades.</p>
    <span class="doortag">POWER RANKINGS</span>
    <div class="t-bars">{"".join(bars)}</div>
    <p class="doorblurb">{rankings_blurb}</p>
+  </a>
+  <a class="door" href="singles.html">
+   <span class="doortag">SINGLES RATINGS</span>
+   <div class="t-rows">{srows}</div>
+   <p class="doorblurb">PPA singles games plus MLP DreamBreaker rallies as
+evidence — every 2026 player rated or projected, error bars included, with
+the DreamBreaker record book.</p>
   </a>
   <a class="door" href="forecast.html">
    <span class="doortag">MATCH FORECASTS</span>
@@ -2371,10 +2398,10 @@ def main():
 
     R = D.load_receipts()
     print("pages: landing, insights, rankings, singles, forecasts, results, simulator, receipts, records, methods, data …")
-    build_landing(players, games, updated, len(games), R)
+    S = build_singles(players, games, updated)
+    build_landing(players, games, updated, len(games), R, S)
     build_insights_index(updated)
     build_rankings(players, updated, len(games), R["validation"])
-    S = build_singles(players, games, updated)
     build_player_index(players, updated)
     build_forecast(players, updated)
     build_results(players, games, updated)
