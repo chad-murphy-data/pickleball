@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-16",
+ "generated": "2026-08-17",
  "mlp": {
   "group": "dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281",
   "event": "Toray MLP Playoffs Newport Beach",
@@ -111,9 +111,7 @@
     "pts1": 46,
     "pts2": 62,
     "winner": 2
-   }
-  ],
-  "remaining": [
+   },
    {
     "uuid": "c24c6045-d7d3-4141-9465-239919e61484",
     "date": "2026-08-16",
@@ -125,7 +123,12 @@
     "pool": "faf53b2f",
     "bracket": null,
     "round": null,
-    "mnum": null
+    "mnum": null,
+    "games1": 3,
+    "games2": 2,
+    "pts1": 57,
+    "pts2": 54,
+    "winner": 1
    },
    {
     "uuid": "15deda2f-a755-457e-823a-47358afe0d25",
@@ -138,7 +141,12 @@
     "pool": "faf53b2f",
     "bracket": null,
     "round": null,
-    "mnum": null
+    "mnum": null,
+    "games1": 3,
+    "games2": 1,
+    "pts1": 42,
+    "pts2": 21,
+    "winner": 1
    },
    {
     "uuid": "7f06c1fc-1a1b-48e2-9ad2-194012cecda2",
@@ -151,35 +159,33 @@
     "pool": "faf53b2f",
     "bracket": null,
     "round": null,
-    "mnum": null
+    "mnum": null,
+    "games1": 1,
+    "games2": 3,
+    "pts1": 27,
+    "pts2": 39,
+    "winner": 2
    },
    {
     "uuid": "1f9fd1ac-03d6-4457-a92e-28be23a75744",
     "date": "2026-08-16",
     "start": "2026-08-17T00:30:00Z",
-    "team1": "Columbus Sliders",
-    "team2": "Brooklyn Pickleball Team",
-    "abbr1": "COL",
-    "abbr2": "BKLYN",
+    "team1": "Brooklyn Pickleball Team",
+    "team2": "Columbus Sliders",
+    "abbr1": "BKLYN",
+    "abbr2": "COL",
     "pool": "faf53b2f",
     "bracket": null,
     "round": null,
-    "mnum": null
-   },
-   {
-    "uuid": "7dea807c-8c53-4833-b6fc-835b7571d8ed",
-    "date": "2026-08-16",
-    "start": "2026-08-17T02:00:00Z",
-    "team1": "New Jersey 5s",
-    "team2": "Palm Beach Royals",
-    "abbr1": "NJ",
-    "abbr2": "PBR",
-    "pool": "faf53b2f",
-    "bracket": null,
-    "round": null,
-    "mnum": null
+    "mnum": null,
+    "games1": 3,
+    "games2": 1,
+    "pts1": 39,
+    "pts2": 29,
+    "winner": 1
    }
   ],
+  "remaining": [],
   "matrix": {
    "Brooklyn Pickleball Team|Columbus Sliders": {
     "p_win": 0.6604,
@@ -2671,7 +2677,7 @@
         "Grace Sorbello"
        ],
        "n2": [
-        "Andy van der Vyver",
+        "Andy Van der Vyver",
         "Chelsea Olditch"
        ],
        "winner": 2,
@@ -3007,7 +3013,7 @@
         "Joey Wild"
        ],
        "n2": [
-        "Andy van der Vyver",
+        "Andy Van der Vyver",
         "Chelsea Olditch"
        ],
        "winner": 1,
