@@ -219,6 +219,15 @@ first real-VOD run pending — see the PR + build record below). The
 contact-thread instruments were not touched.
 
 ## Build record (2026-08-16)
+- CROSS-FINDING for the contact thread (2026-08-17, from the anchor
+  validation): pose_extract's pixel gate rejects persons whose box
+  bottom sits above 0.30 H, and BOTH test broadcasts frame the far
+  baseline at ~0.26 H — far-baseline players (the server or receiver
+  of every rally) never reach the pose model until they step forward.
+  Chicago anchor validation only worked on the court-projection-gated
+  coverage extractor. May bear on Gate C's 33% serve recall tell
+  (v1 measured through the same gate); noted, instrument untouched.
+
 
 - `vision/coverage_windows.py` — flip-train x referee-timeline windows
   for ANY fresh VOD (scorebug_windows.align reused; approx flags carry
