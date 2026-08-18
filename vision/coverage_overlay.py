@@ -126,7 +126,7 @@ def draw_detection(frame, det, name, color, dim, court):
 
 def render_rally(video, cum, win, dets, assign_by_id, conf, t_serve,
                  status, lin, names_full, court, fps, width, writer,
-                 cam=None):
+                 cam=None, legend=None):
     """Draw one rally's frames into the ffmpeg writer."""
     import cv2
     t0, t1 = float(win["t0s"]), float(win["t1s"])
@@ -140,6 +140,14 @@ def render_rally(video, cum, win, dets, assign_by_id, conf, t_serve,
                            f"{win['start_score']}  t={t:7.1f}s",
                     (12, 24), cv2.FONT_HERSHEY_SIMPLEX, 0.6,
                     (240, 240, 240), 2, cv2.LINE_AA)
+        if legend:
+            # jersey-description lines in each team's LABEL color, so
+            # the coder can tie label color to what the players wear
+            for k, (txt, col) in enumerate(legend):
+                if txt:
+                    cv2.putText(frame, txt, (12, 48 + 20 * k),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, col, 2,
+                                cv2.LINE_AA)
         near = []
         if len(det_times):
             j = int(np.argmin(np.abs(det_times - t)))
@@ -260,9 +268,12 @@ def run(a):
                 srt = sorted(dets, key=lambda d: d.t)
                 for d, tup in zip(srt, carry_names(srt, nm, conf)):
                     assign_by_id[id(d)] = tup
+        legend = [(a.legend_a, TEAM_COLORS["A"]),
+                  (a.legend_b, TEAM_COLORS["B"])] \
+            if (a.legend_a or a.legend_b) else None
         render_rally(a.video, cum, win, dets, assign_by_id, conf, t_serve,
                      status, lin, names_full, court, fps, width, writer,
-                     cam)
+                     cam, legend)
         print(f"  rally {cum} ({k + 1}/{len(todo)}) "
               f"{'[' + status + ']' if status else 'ok'}", flush=True)
     writer.stdin.close()
@@ -316,6 +327,11 @@ def main():
                          "spotcheck template")
     ap.add_argument("--spotcheck-out", default="")
     ap.add_argument("--vod", default="")
+    ap.add_argument("--legend-a", default="",
+                    help="jersey-description line drawn in team A's "
+                         "label color (match-specific, so a flag)")
+    ap.add_argument("--legend-b", default="",
+                    help="same for team B")
     ap.add_argument("--half-speed", action="store_true")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
