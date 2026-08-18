@@ -203,10 +203,20 @@ def report(rows, n_holdout, split_path):
         print(f"(skipped {n_holdout} holdout contacts per {split_path} — "
               f"train-only, per labeling_protocol.md)\n")
 
-    print(f"=== face-keypoint coverage ({len(rows)} contacts, full "
-          f"prep+strike window, >= {FACE_THRESH:.1f} confidence) ===")
+    print(f"=== face-keypoint EXISTENCE confidence ({len(rows)} contacts, "
+          f"full prep+strike window, >= {FACE_THRESH:.1f}) ===")
+    print(f"  this measures 'did the model think a keypoint is probably "
+          f"here', not 'is the position right' — pose models are known "
+          f"to stay confident on precision for small/ambiguous landmarks "
+          f"like eyes at distance (the same gap that let a confidently- "
+          f"WRONG shoulder swap pass the dsho confidence gate untouched "
+          f"on the first real run). A high number here does not by "
+          f"itself vindicate dgaze; the plausibility-capped distribution "
+          f"below is the more direct test.")
+    means = {}
     for k in FACE_KEYS:
         vals = np.array([r[f"face_{k}"] for r in rows])
+        means[k] = vals.mean()
         print(f"  {FACE_LABELS[k]:<6} mean {vals.mean():5.1%}   "
               f"median {np.median(vals):5.1%}   "
               f"zero-coverage contacts {int((vals == 0).sum())}/{len(vals)}")
@@ -214,9 +224,18 @@ def report(rows, n_holdout, split_path):
                        [r["face_reye_c"] for r in rows])
     ear_mean = np.mean([r["face_lear_c"] for r in rows] +
                        [r["face_rear_c"] for r in rows])
-    print(f"  -> eyes average {eye_mean:.1%}, ears average {ear_mean:.1%} "
-          f"across all contacts. dgaze below rides on ears; treat it as "
-          f"noisy-to-unusable if either number is low.\n")
+    print(f"  -> eyes average {eye_mean:.1%}, ears average {ear_mean:.1%}. "
+          f"dgaze below rides on ears; treat it as noisy-to-unusable if "
+          f"either number is low.")
+    if min(means.values()) > 0.97:
+        print(f"  NOTE: every keypoint above 97% with essentially no "
+              f"variation is itself a flag, not a clean result — real "
+              f"tracking on this footage (see ball_visibility.py: the "
+              f"ball itself was findable in only 64% of in-play frames) "
+              f"essentially never reads this saturated. Existence "
+              f"confidence and positional precision are different "
+              f"things; this number is the former.")
+    print()
 
     def summarize(ty_set, name, field):
         vals = sorted(r[field] for r in rows if r["type"] in ty_set)

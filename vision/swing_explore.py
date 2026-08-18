@@ -59,6 +59,16 @@ LABELS = "contact_labels_chicago0725.csv"
 WINDOWS_V4 = "rally_windows_chicago0725_v4.csv"
 POSE_DIR = "pose_rtm"
 
+MAX_ROT_RAD = 1.2   # hard physical cap on dsho/dgaze: ~69 deg between
+# two valid consecutive frames (ok_dt already bounds that gap at <=2.5
+# frames), well above any real human shoulder/head turn even at elite
+# rotational speed, comfortably below the ~pi (180 deg) an L/R swap
+# produces. Confidence gating alone does NOT catch swaps: a model can
+# be fully confident it found "a shoulder" while wrong about which side
+# -- measured on the user's real run, 2026-08-18, where the confidence
+# gate made ZERO difference to the reported dsho numbers (identical
+# max/median/histogram to the pre-gate run). Belt and suspenders.
+
 PRE_S, POST_S = 0.75, 0.35     # the window around a click (question 2)
 STRIKE_PRE_S = 0.10            # "strike-only" ablation window start
 GUARD_S = 0.5                  # negatives keep this far from any contact
@@ -119,35 +129,36 @@ def track_series(t, box, kpt, kpc, fps):
 
     shovec = kpt[:, R_SHO] - kpt[:, L_SHO]
     shoang = np.arctan2(shovec[:, 1], shovec[:, 0] + 1e-9)
+    dsho_step = np.abs(np.angle(np.exp(1j * np.diff(shoang))))
     dsho = np.zeros(n)
-    # unlike every other channel here, this had NO confidence/gap gate:
-    # a low-confidence or occluded shoulder keypoint can flip L/R by
-    # noise alone, which reads as a near-pi "rotation" between two
-    # consecutive frames (physically impossible at native fps) and pins
-    # the ceiling every other channel's gating already avoids. Found via
-    # shoulder_check.py's real output: both shot-type groups showed a
-    # handful of values sitting right at the pi wraparound bound.
+    # confidence gate alone measured to do NOTHING here (see MAX_ROT_RAD
+    # above) -- an L/R swap is often confidently reported, not flagged
+    # low. Keep the confidence gate anyway (catches genuinely-uncertain
+    # frames the plausibility cap wouldn't) and add the cap as a second,
+    # independent check.
     sho_conf = (kpc[:, L_SHO] >= 0.2) & (kpc[:, R_SHO] >= 0.2)
-    dsho_ok = ok_dt & sho_conf[1:] & sho_conf[:-1]
-    dsho[1:] = np.where(dsho_ok,
-                        np.abs(np.angle(np.exp(1j * np.diff(shoang)))), 0.0)
+    dsho_ok = ok_dt & sho_conf[1:] & sho_conf[:-1] & (dsho_step <= MAX_ROT_RAD)
+    dsho[1:] = np.where(dsho_ok, dsho_step, 0.0)
 
     # gaze proxy: same angular-velocity math as dsho, on the ear line
     # instead of the shoulder line. Ears over eyes — same head-yaw
     # geometry, but a pose model localizes the ear landmark from head
     # shape/context and doesn't need to resolve anything as fine as an
-    # eye at broadcast distance, so it should hold confidence better.
-    # Raw eye/ear/nose confidence is returned separately below
-    # (feature_check.py reports it directly) so how much "eyes"
-    # specifically buys here is an honest, checkable number, not an
-    # assumption.
+    # eye at broadcast distance. Raw eye/ear/nose confidence is returned
+    # separately below (feature_check.py reports it directly) so how
+    # much "eyes" specifically buys here is an honest, checkable number
+    # — but note confidence measures EXISTENCE ("a keypoint is probably
+    # here"), not PRECISION ("this pixel is right"), so high confidence
+    # on its own doesn't vindicate the signal either (same lesson as
+    # dsho, right above).
     earvec = kpt[:, R_EAR] - kpt[:, L_EAR]
     earang = np.arctan2(earvec[:, 1], earvec[:, 0] + 1e-9)
+    dgaze_step = np.abs(np.angle(np.exp(1j * np.diff(earang))))
     dgaze = np.zeros(n)
     ear_conf = (kpc[:, L_EAR] >= 0.2) & (kpc[:, R_EAR] >= 0.2)
-    dgaze_ok = ok_dt & ear_conf[1:] & ear_conf[:-1]
-    dgaze[1:] = np.where(dgaze_ok,
-                         np.abs(np.angle(np.exp(1j * np.diff(earang)))), 0.0)
+    dgaze_ok = (ok_dt & ear_conf[1:] & ear_conf[:-1] &
+               (dgaze_step <= MAX_ROT_RAD))
+    dgaze[1:] = np.where(dgaze_ok, dgaze_step, 0.0)
 
     hipv = np.zeros(n)
     hipv[1:] = np.where(ok_dt,
@@ -878,6 +889,32 @@ def selftest():
         "leg: real small drift should still register"
     print("  dsho/dgaze/leg gates: glitches suppressed, real motion "
           "preserved, shoulder/ear gates independent OK")
+
+    # plausibility cap: this is the case that actually happened on the
+    # user's real data (2026-08-18) -- a CONFIDENTLY reported L/R swap.
+    # The confidence gate above only proves low-confidence glitches are
+    # caught; it says nothing about this failure mode, which is exactly
+    # what got missed the first time this shipped.
+    tp = np.arange(3) / 30.0
+    boxp = np.tile([100., 100., 150., 300.], (3, 1)).astype(np.float32)
+    kptp = np.zeros((3, 17, 2), np.float32)
+    kpcp = np.zeros((3, 17), np.float32)
+    kptp[:, L_HIP] = kptp[:, R_HIP] = [125., 250.]
+    kpcp[:, L_HIP] = kpcp[:, R_HIP] = 0.9
+    for i, a in enumerate([0.0, 0.03]):     # frames 0-1: real slow turn
+        kptp[i, L_SHO] = [125 - 20 * np.cos(a), 180 - 20 * np.sin(a)]
+        kptp[i, R_SHO] = [125 + 20 * np.cos(a), 180 + 20 * np.sin(a)]
+        kpcp[i, L_SHO] = kpcp[i, R_SHO] = 0.9
+    kptp[2, L_SHO] = [146., 181.]            # frame 2: swapped-looking
+    kptp[2, R_SHO] = [104., 179.]            # position, but...
+    kpcp[2, L_SHO] = kpcp[2, R_SHO] = 0.9    # ...CONFIDENTLY reported
+    serp = track_series(tp, boxp, kptp, kpcp, 30.0)
+    assert serp["dsho"][2] < 1e-6, \
+        "a confidently-wrong swap must still be capped by plausibility " \
+        "-- confidence alone passed this exact case on real data"
+    assert serp["dsho"][1] > 0.01, "real slow rotation must still register"
+    print("  plausibility cap: confident-but-wrong swap suppressed even "
+          "though confidence alone would pass it OK")
     print("SELFTEST OK")
 
 

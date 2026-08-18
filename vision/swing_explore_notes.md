@@ -219,5 +219,38 @@ regardless of what its distribution looks like — the report says so
 inline. Both new channels got the same selftest rigor as the dsho fix:
 a synthetic 6-frame rig with INDEPENDENT glitch frames for shoulders
 (frame 3) and ears (frame 4) proving the two gates don't leak into each
-other, plus a real-motion-preserved check for each. Not yet run against
-real pose data.
+other, plus a real-motion-preserved check for each.
+
+**First real run, post confidence-gate fix (2026-08-18)**: identical
+output to the pre-fix run — same max (3.129/3.126), same histogram, same
+BC (0.933), to the last digit. The confidence gate did LITERALLY
+NOTHING. Face-keypoint coverage came back 100.0% mean/median on every
+one of nose/L eye/R eye/L ear/R ear, zero exceptions across 66 contacts
+— also the tell, not a clean result: real tracking on this footage
+doesn't read that saturated (`ball_visibility.py` found the ball itself
+findable in only 64% of in-play frames).
+
+Root cause, unifying both symptoms: keypoint confidence measures
+EXISTENCE ("a keypoint is probably here"), not PRECISION ("this pixel
+is right"). A pose model can be fully confident it found two
+shoulder-shaped blobs while being wrong about which one is left —
+exactly the L/R-swap failure the gate was built for, and exactly the
+kind of error confidence doesn't flag. Fix: `MAX_ROT_RAD = 1.2` (~69°),
+a hard physical-plausibility cap on dsho/dgaze's per-step reading,
+independent of and in addition to the confidence gate — no human
+shoulder or head turns further than that between two valid consecutive
+frames (`ok_dt` already bounds the gap at <=2.5 frames), but an L/R
+swap always lands near pi regardless of reported confidence. New
+selftest specifically constructs a CONFIDENTLY-reported swap (0.9, not
+low) and proves the cap catches it where the confidence gate alone
+passed it — this is the exact case that shipped and reached the user
+before it was caught. `feature_check.py`'s face-coverage section
+rewritten to say what it actually measures and to print an explicit
+saturation warning when every keypoint reads >97% with no spread.
+
+Not yet re-run against real pose data with the cap in place. Until
+then: nothing printed on this file's first two real runs (shoulder-only
+and 3-channel) should be trusted for `dsho`/`dgaze` specifically — the
+`leg` numbers from the 3-channel run are unaffected (no confidence-vs-
+precision issue in that channel's design; it never had a glitch class
+to begin with, same math as the already-correct `arm` channel).
