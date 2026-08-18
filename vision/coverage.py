@@ -1140,13 +1140,44 @@ def run(a, collect=None):
         if cum in track_map:
             tm = track_map[cum]
             assign = list(assign)
+            action = [None] * len(assign)
             for i, d in enumerate(dets_sorted):
                 for (ta, tb, uu, act) in tm.get(d.track, ()):
                     if ta <= d.t <= tb:
                         if assign[i][0] != uu:
                             n_tm[act] += 1
                         assign[i] = (uu, assign[i][1], False)
+                        action[i] = act
                         break
+            # per-instant uniqueness: corrections must never create two
+            # bodies under one name (measured failure: rescues colliding
+            # with the carried track interleaved two players' positions
+            # and collapsed the pair arrays).  A rescue only fills
+            # absence; a rebind outranks the carried name it corrects.
+            by_t = defaultdict(list)
+            for i, d in enumerate(dets_sorted):
+                if assign[i][0] is not None:
+                    by_t[(round(d.t, 3), assign[i][0])].append(i)
+            for (_t, _u), idxs in by_t.items():
+                if len(idxs) < 2:
+                    continue
+                keep = None
+                if any(action[i] in ("rebind", "split") for i in idxs):
+                    for i in idxs:
+                        if action[i] in ("rebind", "split"):
+                            keep = i
+                            break
+                else:
+                    for i in idxs:
+                        if action[i] is None:
+                            keep = i
+                            break
+                if keep is None:
+                    keep = idxs[0]
+                for i in idxs:
+                    if i != keep:
+                        assign[i] = (None, assign[i][1], False)
+                        n_tm["dedup_dropped"] += 1
         per_uuid = defaultdict(lambda: ([], [], [], []))  # ts, xy, w, hand
         for d, (u, c, hand) in zip(dets_sorted, assign):
             if u is None:
