@@ -225,6 +225,34 @@ def load_rally(pose_dir, cum):
 # ----------------------------------------------------------- features
 
 
+def track_peaks(ser):
+    """This track's arm-motion peak times (strongest-first pruned),
+    cached on the ser. UNCONDITIONAL on purpose — this computation
+    previously lived inside window_feats BEHIND its window-coverage
+    guard, so whether a track had _peaks cached depended on which
+    window_feats calls happened to have succeeded earlier in the
+    process. rally_instances' hard-negative loop read that cache, so
+    the TRAINING SET depended on evaluation order: fragment tracks too
+    short/misaligned to pass the guard at any contact or probe time
+    contributed no hard negatives cold, but score_rally's dense pass
+    (which probes at the track's own timestamps) filled their cache,
+    changing every later fit in the same process. Measured on real
+    data 2026-08-18: BASE coverage@2x printed 57.4% evaluated first in
+    a process and 54.3% evaluated second, perfectly reproducibly, same
+    inputs (channel_ablation default vs --drop mode). Reproduced
+    mechanically with a 15-frame fragment (13 vs 14 negatives from
+    identical calls). Do not move this back behind a coverage guard."""
+    pk = ser.get("_peaks")
+    if pk is None:
+        t, arm = ser["t"], ser["arm"]
+        cands = [(t[i], arm[i]) for i in range(1, len(arm) - 1)
+                 if arm[i] >= 0.05 and arm[i] >= arm[i - 1]
+                 and arm[i] >= arm[i + 1]]
+        pk = [x[0] for x in strongest_first(cands, REFRACTORY_S)]
+        ser["_peaks"] = pk
+    return pk
+
+
 def window_feats(ser, tc, pre=PRE_S, post=POST_S, channels=CHANNELS_BASE):
     """Feature vector for one (track, time) instance, or None if the
     window lacks coverage. Prep-arc features are computed on
@@ -260,14 +288,7 @@ def window_feats(ser, tc, pre=PRE_S, post=POST_S, channels=CHANNELS_BASE):
           ser["cx"][m_all].mean() / max(ser["H"] * 16 / 9, 1.0)]
     # cadence proxies, label-free: time since this track's last big arm
     # peak, and since the other side's (alternation prior stand-in)
-    pk = ser.get("_peaks")
-    if pk is None:
-        arm = ser["arm"]
-        cands = [(t[i], arm[i]) for i in range(1, len(arm) - 1)
-                 if arm[i] >= 0.05 and arm[i] >= arm[i - 1]
-                 and arm[i] >= arm[i + 1]]
-        pk = [x[0] for x in strongest_first(cands, REFRACTORY_S)]
-        ser["_peaks"] = pk
+    pk = track_peaks(ser)
     prev = [pt for pt in pk if pt < tc - 0.05]
     f += [min(tc - prev[-1], 3.0) if prev else 3.0]
     out = np.array(f, dtype=np.float64)
@@ -395,9 +416,13 @@ def rally_instances(rd, contacts, whiffs, mapping, channels=CHANNELS_BASE):
         cts = side_ct[s]
         for ser in by_side[s]:
             # hard negatives: this track's own motion peaks away from
-            # contacts (the locomotion spikes that fooled the ceiling)
-            window_feats(ser, (t0 + t1) / 2)   # ensure _peaks cached
-            for pt in ser.get("_peaks", []):
+            # contacts (the locomotion spikes that fooled the ceiling).
+            # track_peaks, NOT a window_feats priming call — the old
+            # "ensure cached" probe at the rally midpoint could fail
+            # its coverage guard and silently skip the track (see
+            # track_peaks' docstring for the order-dependence that
+            # caused)
+            for pt in track_peaks(ser):
                 if all(abs(pt - c) > GUARD_S for c in cts) and \
                         all(abs(pt - w) > WHIFF_GUARD_S for w in wh_t):
                     f = window_feats(ser, pt, channels=channels)
@@ -950,6 +975,49 @@ def selftest():
     print("  plausibility cap: confident-but-wrong swap suppressed even "
           "though confidence alone would pass it; _nocap preserves the "
           "raw reading for after-the-fact sensitivity checks OK")
+
+    # rally_instances must be CALL-ORDER-INDEPENDENT (regression for the
+    # 2026-08-18 position bug: BASE printed 57.4% evaluated first in a
+    # process, 54.3% evaluated second — see track_peaks). The carrier
+    # was a fragment track: short and parked in a gap between contact
+    # windows, so window_feats never succeeded on it during
+    # rally_instances, but a dense-scoring-style call at its OWN
+    # timestamp cached _peaks and grew the next call's negatives.
+    def _mk(ts0, ts1, side, bursts):
+        n = int((ts1 - ts0) * 30)
+        tt = ts0 + np.arange(n) / 30.0
+        bx = np.zeros((n, 4), np.float32)
+        bx[:, 0], bx[:, 1] = 100 + side * 400, 300
+        bx[:, 2], bx[:, 3] = 60, 160
+        kp = np.zeros((n, 17, 2), np.float32)
+        kp[:, :, 0] = bx[:, 0:1] + 30
+        kp[:, :, 1] = 300 + np.linspace(0, 150, 17)[None, :]
+        kc = np.full((n, 17), 0.9, np.float32)
+        for bt in bursts:
+            mB = np.abs(tt - bt) < 0.1
+            kp[mB, 9, 0] += 40 * np.sin(np.arange(mB.sum()))
+        s = track_series(tt, bx, kp, kc, 30.0)
+        s["side"], s["H"] = side, 720
+        return s
+
+    ctf = [(103.0 + k * 2.2, k % 2, "dink") for k in range(10)]
+    frag_c = ctf[6][0] + 0.9   # in the window gap, off the midpoint
+    frag = _mk(frag_c - 0.25, frag_c + 0.25, 0, [frag_c])
+    rdf = {"tracks": {
+        1: _mk(100.0, 126.0, 0, [c for c, tm, _ in ctf if tm == 0]),
+        2: _mk(100.0, 126.0, 1, [c for c, tm, _ in ctf if tm == 1]),
+        3: frag}, "z": None, "bounds": (100.0, 126.0)}
+    _X1, y1f = rally_instances(rdf, ctf, [], 0)
+    window_feats(frag, float(frag["t"][len(frag["t"]) // 2]))  # "scoring"
+    _X2, y2f = rally_instances(rdf, ctf, [], 0)
+    assert y1f == y2f, \
+        f"rally_instances changed with call history: " \
+        f"{sum(1 for v in y1f if v == 0)} -> " \
+        f"{sum(1 for v in y2f if v == 0)} negatives (position bug back?)"
+    assert frag["_peaks"], "fragment's peaks must be found unconditionally"
+    print(f"  rally_instances order-independence: identical instances "
+          f"before/after a scoring pass, fragment contributes "
+          f"({len(y1f)} instances) OK")
     print("SELFTEST OK")
 
 

@@ -28,6 +28,17 @@ on the first real run every large-looking per-type delta was exactly
 one contact flipping). --per-type restores the sliced tables for
 debugging.
 
+VOID: every delta printed BEFORE swing_explore's track_peaks fix
+(2026-08-18: BASE 57.4 vs EXT 54.9; minus-dsho 54.9 vs BASE 54.3).
+Those runs compared a first-position eval against a second-position
+eval while rally_instances' training set silently depended on
+evaluation order (fragment tracks gained hard negatives only after a
+scoring pass warmed the _peaks cache — see track_peaks' docstring).
+The two evals in one run were therefore fit under different negative
+sets: cross-REGIME, not cross-CHANNEL. Re-run both comparisons with
+the fixed swing_explore.py; post-fix, the BASE number must print
+identically in default and --drop mode.
+
 RUN (same flat folder as swing_explore.py; numpy only, minutes):
     python3 channel_ablation.py
 

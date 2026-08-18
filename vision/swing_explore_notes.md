@@ -505,3 +505,39 @@ BASE 93/162, EXT 89/162; run 2 minus-dsho 89/162, BASE 88/162 — a
 not the structure. The dsho conclusion (adds ~nothing) is robust to
 the whole band; the open question is instrument hygiene, not the
 finding.
+
+**POSITION BUG FOUND AND FIXED (2026-08-18): rally_instances' training
+set depended on evaluation order.** The user's decisive battery: BASE
+prints 57.4% whenever evaluated FIRST in a process (default mode, 2/2
+runs) and 54.3% whenever evaluated SECOND (--drop mode, 3/3 runs,
+including once on the pre-fingerprint file) — deterministic per
+position, labels fingerprint identical throughout (efb79d5003).
+Mechanism, confirmed by direct probe: window_feats computed the
+_peaks cache (hard-negative motion peaks) BEHIND its window-coverage
+guard, and rally_instances' "ensure cached" priming call probed the
+rally midpoint. FRAGMENT TRACKS — too short/misaligned for ≥11 frames
+in any contact/probe window — therefore contributed no hard negatives
+cold; but score_rally's dense pass probes each track at its OWN
+timestamps, where a 15-frame fragment passes, filling the cache. So
+fold k+1 trained on rallies scored in folds ≤k with MORE negatives
+than the same rallies contributed before scoring (intra-eval
+gradient), and a second loro_eval in the same process saw everything
+warm (inter-eval jump). Probe: a 15-frame fragment parked in a window
+gap yields 13 negatives cold / 14 warm from IDENTICAL calls — and the
+subtler intra-call variant appeared too (a random-negative draw
+landing on the fragment cached _peaks after its own hard-negative
+loop had already run empty). Synthetic probes missed it twice because
+synth tracks span the whole rally and pass the guard everywhere —
+same lesson as the serve-pin affair: the null your rig can't
+represent is the bug you can't see.
+FIX: track_peaks(ser) — unconditional, no coverage guard — replaces
+both the priming hack and window_feats' inline computation; regression
+test in swing_explore --selftest (fragment rig, instances must be
+identical before/after a scoring pass). Consequences: (1) the
+54.3-style warm regime is closer to the INTENDED estimator (every
+track's peaks as hard negatives) — the historical 56.2/57.4-era
+numbers were the accidental cold mixture and post-fix fresh runs will
+not reproduce them exactly; (2) BOTH printed ablation deltas (EXT
+−2.5, dsho −0.6) were cross-regime comparisons and are VOID — re-run
+both with fixed swing_explore.py; (3) registered prediction for the
+re-run: BASE prints the SAME number in default and --drop mode.
