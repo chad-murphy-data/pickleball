@@ -403,9 +403,12 @@ def team_lda_em(X, y, cs, iters=4):
 
 
 def audit(a, samples, partner, names_full):
-    """Anchor-identity audit: per-team EM over Lab moments -> a swap
-    ledger (rally x team -> swap 0/1 + unanimity).  Consumed by
-    coverage.run --swaps."""
+    """Anchor-identity audit: per (team x GAME) EM over Lab moments ->
+    a swap ledger (rally x team -> swap 0/1 + unanimity).  Consumed by
+    coverage.run --swaps.  Per-game because kits change between games
+    (the measured Alshon game-3 shirt change)."""
+    game_of = {int(r["rally_cum"]): int(r["game"]) for r in
+               csv.DictReader(open(a.windows))}
     z = np.load(ROOT / f"data/vision/appearance_crops_{a.vod}.npz")
     crops, uuids, cums = z["crop"], z["uuid"], z["cum"]
     kpts, kpcs, isos = z["kpt"], z["kpc"], z["iso"]
@@ -413,26 +416,30 @@ def audit(a, samples, partner, names_full):
     F = np.stack([moments_crop(crops[i], kpts[i], kpcs[i]) for i in keep])
     lab_u = np.array([str(uuids[i]) for i in keep])
     cum_k = np.array([int(cums[i]) for i in keep])
+    gm = np.array([game_of.get(int(c), -1) for c in cum_k])
     ok = ~np.isnan(F).any(1)
     teams = sorted({tuple(sorted((u, partner[u]))) for u in set(lab_u)
                     if partner.get(u)})
     rows = []
     for ua, ub in teams:
-        m = ok & np.isin(lab_u, (ua, ub))
-        X, y = F[m], (lab_u[m] == ub).astype(int)
-        cs = cum_k[m]
-        w, thr, yy = team_lda_em(X, y, cs)
-        proj = X @ w
-        pred = (proj > thr).astype(int)
-        for c in sorted(set(cs.tolist())):
-            mm = cs == c
-            if mm.sum() < 3:
+        for g in sorted(set(gm.tolist())):
+            m = ok & (gm == g) & np.isin(lab_u, (ua, ub))
+            if m.sum() < 16:
                 continue
-            swap = int(not np.array_equal(yy[mm], y[mm]))
-            unan = float(np.mean(pred[mm] == yy[mm]))
-            rows.append(dict(rally_cum=int(c), team=f"{ua}|{ub}",
-                             swap=swap, unanimity=f"{unan:.2f}",
-                             n=int(mm.sum())))
+            X, y = F[m], (lab_u[m] == ub).astype(int)
+            cs = cum_k[m]
+            w, thr, yy = team_lda_em(X, y, cs)
+            proj = X @ w
+            pred = (proj > thr).astype(int)
+            for c in sorted(set(cs.tolist())):
+                mm = cs == c
+                if mm.sum() < 3:
+                    continue
+                swap = int(not np.array_equal(yy[mm], y[mm]))
+                unan = float(np.mean(pred[mm] == yy[mm]))
+                rows.append(dict(rally_cum=int(c), team=f"{ua}|{ub}",
+                                 swap=swap, unanimity=f"{unan:.2f}",
+                                 n=int(mm.sum())))
         n_sw = sum(r["swap"] for r in rows if r["team"] == f"{ua}|{ub}")
         n_all = sum(1 for r in rows if r["team"] == f"{ua}|{ub}")
         print(f"{names_full[ua]}/{names_full[ub]}: chain swapped "
@@ -464,8 +471,11 @@ class FourWay:
         return d[0][1], d[1][0] - d[0][0]
 
 
-def clean_labels(a, partner):
-    """EM-corrected anchor labels (the audit's verdicts applied)."""
+def clean_labels(a, partner, game_of):
+    """EM-corrected anchor labels, PER (team x GAME): kits can change
+    between games (measured: Alshon swapped his red tee for a gray one
+    in game 3 and every appearance model trained across games called
+    him Bright), so no direction is ever fit across a game boundary."""
     z = np.load(ROOT / f"data/vision/appearance_crops_{a.vod}.npz")
     crops, uuids, cums = z["crop"], z["uuid"], z["cum"]
     kpts, kpcs, isos = z["kpt"], z["kpc"], z["iso"]
@@ -473,16 +483,20 @@ def clean_labels(a, partner):
     F = np.stack([moments_crop(crops[i], kpts[i], kpcs[i]) for i in keep])
     lab = np.array([str(uuids[i]) for i in keep])
     cum_k = np.array([int(cums[i]) for i in keep])
+    gm = np.array([game_of.get(int(c), -1) for c in cum_k])
     ok = ~np.isnan(F).any(1)
     teams = sorted({tuple(sorted((u, partner[u]))) for u in set(lab)
                     if partner.get(u)})
     lab2 = lab.copy()
-    for ua, ub in teams:
-        m = ok & np.isin(lab, (ua, ub))
-        X, y = F[m], (lab[m] == ub).astype(int)
-        _w, _t, yy = team_lda_em(X, y, cum_k[m])
-        lab2[m] = np.where(yy == 1, ub, ua)
-    return F[ok], lab2[ok], cum_k[ok]
+    for g in sorted(set(gm.tolist())):
+        for ua, ub in teams:
+            m = ok & (gm == g) & np.isin(lab, (ua, ub))
+            if m.sum() < 16:
+                continue
+            X, y = F[m], (lab[m] == ub).astype(int)
+            _w, _t, yy = team_lda_em(X, y, cum_k[m])
+            lab2[m] = np.where(yy == 1, ub, ua)
+    return F[ok], lab2[ok], cum_k[ok], gm[ok]
 
 
 def stage2(a, rallies, partner, names_full):
@@ -490,20 +504,26 @@ def stage2(a, rallies, partner, names_full):
     every detection -> per-track rebind / grey rescue / changepoint
     split -> identity_track_map_<vod>.csv (consumed by coverage.run
     --track-map on top of the anchor swap ledger)."""
-    F, lab, cum_k = clean_labels(a, partner)
-    fw = FourWay()
-    fw.fit(F, lab)
-    # leave-one-rally-out check on the cleaned labels
-    hits = tot = 0
-    for c in sorted(set(cum_k.tolist())):
-        m = cum_k != c
-        f2 = FourWay()
-        f2.fit(F[m], lab[m])
-        for i in np.nonzero(~m)[0]:
-            p, _ = f2.predict(F[i])
-            tot += 1
-            hits += p == lab[i]
-    print(f"4-way LORO on EM-cleaned labels: {hits/tot:.1%} on {tot}")
+    game_of = {int(r["rally_cum"]): int(r["game"]) for r in
+               csv.DictReader(open(a.windows))}
+    F, lab, cum_k, gm = clean_labels(a, partner, game_of)
+    fw = {}
+    for g in sorted(set(gm.tolist())):
+        fw[g] = FourWay()
+        fw[g].fit(F[gm == g], lab[gm == g])
+    # leave-one-rally-out check per game on the cleaned labels
+    for g in sorted(fw):
+        hits = tot = 0
+        for c in sorted(set(cum_k[gm == g].tolist())):
+            m = (gm == g) & (cum_k != c)
+            f2 = FourWay()
+            f2.fit(F[m], lab[m])
+            for i in np.nonzero((gm == g) & (cum_k == c))[0]:
+                p, _ = f2.predict(F[i])
+                tot += 1
+                hits += p == lab[i]
+        print(f"game {g} 4-way LORO on EM-cleaned labels: "
+              f"{hits/max(tot,1):.1%} on {tot}")
 
     swaps = defaultdict(list)
     led = ROOT / f"data/vision/identity_swaps_{a.vod}.csv"
@@ -516,6 +536,10 @@ def stage2(a, rallies, partner, names_full):
     rows = []
     n_rebind = n_rescue = n_split = 0
     for cum, win, dets, assign, t_serve, conf in rallies:
+        g = game_of.get(cum, -1)
+        if g not in fw:
+            continue
+        fwg = fw[g]
         by_t = C.by_frame(dets)
         det_times = np.array(sorted(by_t))
         a_by_id = {id(d): u for d, (u, c, _h) in zip(dets, assign)}
@@ -555,7 +579,7 @@ def stage2(a, rallies, partner, names_full):
                 f = moments_crop(cr, k, np.asarray(d.kpc, np.float32))
                 if np.isnan(f).any():
                     continue
-                p, margin = fw.predict(f)
+                p, margin = fwg.predict(f)
                 if margin >= 0.5:
                     votes[d.track].append((float(d.t), p))
                 carried[d.track][a_by_id.get(id(d))] += 1
