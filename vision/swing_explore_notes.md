@@ -564,3 +564,58 @@ mixture. Feature-engineering round closed for real this time: three
 instruments (marginal AUCs, clean incremental ablation, shot-vs-
 non-shot descriptives) agree — the lever is labels at scale, not more
 channels.
+
+## 2026-08-18 — fastslow_check.py: the step-2 coarse-split instrument (built + selftested; awaiting first real run)
+
+User proposal same day: step 2 as "if not fast, then slow." The idea
+is stronger than a default class: detection misses concentrate in
+soft shots while decoded shot COUNTS are near-exact (161/162), so
+"slow = total − fast" makes fast the only class needing direct
+recognition, and the binary is the smallest taxonomy that supports
+the firefight/speed-up analytics. New instrument `fastslow_check.py`
+measures the coarse split on TRUE contact windows (labeled times,
+picked hitter track) — the step-2 analogue of contact_ceiling:
+placement error removed, does the type signal exist at all.
+
+TYPE MAPPING FROZEN before any real-data result: fast = smash /
+speed-up / drive / counter (+ literal "fast"); slow = dink / drop /
+lob / reset (+ literal "slow"); serve/return excluded (rally position
+identifies them downstream); ""/"other" excluded with a counted
+nudge — tagging the 58 "other" contacts just fast/slow (coarse tags
+accepted) adds them without full typing. Unknown vocabulary prints
+LOUDLY, never silently drops. Train split only; holdout untouched.
+
+Three feature sets on the SAME instance set, because the answer
+directs the build: CADENCE (gaps to prev/next labeled contact, capped
+3 s — downstream this is decoder timestamps, no pose needed), POSE
+(window_feats EXT at the true time; carries its own label-free
+cadence proxy), POSE+CAD (deployable; gets the per-type table and
+confusion). If CADENCE ≈ the rest, fast/slow ships on timing alone.
+
+REGISTERED PREDICTIONS (before the first real run, n≈84: 46 fast /
+38 slow at current labels): (1) POSE+CAD accuracy 85–95% (point ~90)
+— the fast class rides the same arm-speed signature that already
+finds attacks at 88–100% detection; (2) CADENCE alone materially
+above the 55% majority baseline, point ~75% — counters live in tight
+exchanges; (3) errors concentrate at the speed-up/counter ↔ dink
+boundary (the transition shots), smash/drive near-perfect; (4) the
+true-window number is a CEILING — deployed accuracy sits below it by
+the placement-error tax.
+
+RIG TRAP RECORDED (cost: one selftest round each): (a) capped edge
+gaps — first/last contacts carry the 3.0 s cap, and a class cycle
+that puts a fixed class at rally edges lets cadence "separate" a
+separable-by-nothing arm (66.7%); bracket synth rallies with
+serve/other like real rallies. (b) FRAME-GRID ALIASING × DETERMINISTIC
+SLOT PATTERNS: with contacts at exact 2.2 s multiples on a 30 fps
+grid, float rounding flips single frames in/out of window masks as a
+deterministic function of slot index k; with class ALSO a function of
+k repeated across rallies, LORO transfers the wobble — a
+nothing-to-find null separated at 85% (arm_cmax d=1.09 on sd=0.012
+features). Fix: shuffle class assignment per rally (seeded) AND
+jitter times off-grid. General form: under LORO, any deterministic
+feature-of-slot-index wobble becomes learnable whenever class is also
+a function of slot index — synth nulls must randomize the LABEL
+channel, not just equalize the signal channel. Post-fix null: 57%
+acc / 0.56 AUC. Same family as the track_peaks incident: the rig
+telling the truth only after its own blind spot got a test.
