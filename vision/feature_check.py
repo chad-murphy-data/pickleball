@@ -51,7 +51,8 @@ from pathlib import Path
 import numpy as np
 
 from contact_ceiling import load_rosters, load_labels, rally_candidates, rally_coverage
-from swing_explore import load_rally, serve_mapping, TOL_S, PRE_S, POST_S
+from swing_explore import (load_rally, serve_mapping, TOL_S, PRE_S, POST_S,
+                          MAX_ROT_RAD)
 
 LABELS = "contact_labels_chicago0725.csv"
 WINDOWS_V4 = "rally_windows_chicago0725_v4.csv"
@@ -186,6 +187,9 @@ def collect(labels, split, pose_dir, windows_path):
                 row[f"{ch}_core_max"], row[f"{ch}_core_mean"] = core
             if not ok:
                 continue
+            for ch in ("dsho", "dgaze"):
+                nc = window_stat(ser, tc, *CORE, f"{ch}_nocap")
+                row[f"{ch}_nocap_core_max"] = nc[0] if nc else 0.0
             face = face_coverage(ser, tc)
             if face is None:
                 continue
@@ -277,6 +281,27 @@ def report(rows, n_holdout, split_path):
                       f"scores ~0.33). Rough heuristic, not a calibrated "
                       f"test — read it next to the histogram, not "
                       f"instead of it.")
+
+        if ch in ("dsho", "dgaze") and soft_vals:
+            # is MAX_ROT_RAD cutting off real signal or artifact? _nocap
+            # keeps the confidence/gap-gated-but-uncapped reading, so
+            # this splits what the cap suppressed into "ambiguous" (could
+            # be a genuinely fast turn) vs "unambiguous artifact" (only
+            # an L/R swap reads this close to pi) without re-running
+            # pose extraction at a different threshold.
+            soft_nocap = [r[f"{ch}_nocap_core_max"] for r in rows
+                         if r["type"] in SOFT]
+            kept = sum(1 for x in soft_nocap if x <= MAX_ROT_RAD)
+            ambig = sum(1 for x in soft_nocap if MAX_ROT_RAD < x <= 2.0)
+            artifact = sum(1 for x in soft_nocap if x > 2.0)
+            near_cap = sum(1 for x in soft_vals if x >= 0.9 * MAX_ROT_RAD)
+            print(f"cap sensitivity (soft group): {kept} kept "
+                  f"(<={MAX_ROT_RAD:.1f} rad), {ambig} suppressed in the "
+                  f"ambiguous {MAX_ROT_RAD:.1f}-2.0 band, {artifact} "
+                  f"suppressed above 2.0 (unambiguous — real pi is 3.14, "
+                  f"nothing legitimate reads there); {near_cap} of the "
+                  f"KEPT values sit within 10% of the cap itself — worth "
+                  f"a second look if that number is more than a couple.")
         print()
 
 

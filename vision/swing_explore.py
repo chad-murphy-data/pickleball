@@ -137,7 +137,12 @@ def track_series(t, box, kpt, kpc, fps):
     # frames the plausibility cap wouldn't) and add the cap as a second,
     # independent check.
     sho_conf = (kpc[:, L_SHO] >= 0.2) & (kpc[:, R_SHO] >= 0.2)
-    dsho_ok = ok_dt & sho_conf[1:] & sho_conf[:-1] & (dsho_step <= MAX_ROT_RAD)
+    dsho_ok_nocap = ok_dt & sho_conf[1:] & sho_conf[:-1]
+    dsho_nocap = np.zeros(n)   # confidence/gap gated but NOT plausibility-
+    dsho_nocap[1:] = np.where(dsho_ok_nocap, dsho_step, 0.0)  # capped —
+    # lets a reader check whether MAX_ROT_RAD is cutting off real signal
+    # or artifact (feature_check.py's cap-sensitivity breakdown)
+    dsho_ok = dsho_ok_nocap & (dsho_step <= MAX_ROT_RAD)
     dsho[1:] = np.where(dsho_ok, dsho_step, 0.0)
 
     # gaze proxy: same angular-velocity math as dsho, on the ear line
@@ -156,8 +161,10 @@ def track_series(t, box, kpt, kpc, fps):
     dgaze_step = np.abs(np.angle(np.exp(1j * np.diff(earang))))
     dgaze = np.zeros(n)
     ear_conf = (kpc[:, L_EAR] >= 0.2) & (kpc[:, R_EAR] >= 0.2)
-    dgaze_ok = (ok_dt & ear_conf[1:] & ear_conf[:-1] &
-               (dgaze_step <= MAX_ROT_RAD))
+    dgaze_ok_nocap = ok_dt & ear_conf[1:] & ear_conf[:-1]
+    dgaze_nocap = np.zeros(n)
+    dgaze_nocap[1:] = np.where(dgaze_ok_nocap, dgaze_step, 0.0)
+    dgaze_ok = dgaze_ok_nocap & (dgaze_step <= MAX_ROT_RAD)
     dgaze[1:] = np.where(dgaze_ok, dgaze_step, 0.0)
 
     hipv = np.zeros(n)
@@ -173,6 +180,7 @@ def track_series(t, box, kpt, kpc, fps):
     return {"t": t, "arm": arm, "lw": chans["lw"], "rw": chans["rw"],
             "le": chans["le"], "re": chans["re"], "dsho": dsho,
             "leg": leg, "dgaze": dgaze,
+            "dsho_nocap": dsho_nocap, "dgaze_nocap": dgaze_nocap,
             "nose_c": kpc[:, NOSE], "leye_c": kpc[:, L_EYE],
             "reye_c": kpc[:, R_EYE], "lear_c": kpc[:, L_EAR],
             "rear_c": kpc[:, R_EAR],
@@ -913,8 +921,17 @@ def selftest():
         "a confidently-wrong swap must still be capped by plausibility " \
         "-- confidence alone passed this exact case on real data"
     assert serp["dsho"][1] > 0.01, "real slow rotation must still register"
+    # _nocap must show what the cap suppressed (confidence/gap gated
+    # only) -- this is what lets a reader tell "cap cut off real signal"
+    # from "cap correctly killed an artifact" after the fact, without
+    # re-running pose extraction at a different threshold
+    assert serp["dsho_nocap"][2] > 2.5, \
+        "dsho_nocap should retain the near-pi raw reading the cap hides"
+    assert abs(serp["dsho_nocap"][1] - serp["dsho"][1]) < 1e-9, \
+        "nocap and capped should agree when nothing was suppressed"
     print("  plausibility cap: confident-but-wrong swap suppressed even "
-          "though confidence alone would pass it OK")
+          "though confidence alone would pass it; _nocap preserves the "
+          "raw reading for after-the-fact sensitivity checks OK")
     print("SELFTEST OK")
 
 

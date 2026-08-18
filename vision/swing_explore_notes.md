@@ -248,9 +248,26 @@ before it was caught. `feature_check.py`'s face-coverage section
 rewritten to say what it actually measures and to print an explicit
 saturation warning when every keypoint reads >97% with no spread.
 
-Not yet re-run against real pose data with the cap in place. Until
-then: nothing printed on this file's first two real runs (shoulder-only
-and 3-channel) should be trusted for `dsho`/`dgaze` specifically — the
-`leg` numbers from the 3-channel run are unaffected (no confidence-vs-
-precision issue in that channel's design; it never had a glitch class
-to begin with, same math as the already-correct `arm` channel).
+**Second real run, with the cap (2026-08-18)**: cap clearly active this
+time — dsho max dropped from 3.129 to 1.112 (comfortably under 1.2, no
+more pi-pinned values), BC 0.849. `leg` unchanged from the pre-cap run
+(expected — it was never touched by this fix, same already-correct
+math as `arm`).
+
+But `dgaze` max came back 1.194 — 99.5% of the 1.2 cap — with 7/43 soft
+contacts in the top histogram bin, right up against the ceiling. Genuine
+ambiguity, not obviously artifact this time: a head is lighter than a
+shoulder girdle and can plausibly rotate faster, so MAX_ROT_RAD=1.2
+(chosen from shoulder-turn physics) is NOT independently justified for
+ears — it could be truncating a real fast head-turn as easily as it
+could be softening an L/R ear swap short of pi. Added `dsho_nocap`/
+`dgaze_nocap` (confidence/gap gated, NOT plausibility-capped) so this
+is checkable without re-running pose extraction at a different
+threshold: `feature_check.py` now reports, per channel, how many
+suppressed soft-group events sit in the ambiguous 1.2-2.0 band (could
+be real) vs unambiguously past 2.0 (nothing legitimate reads that close
+to pi), plus how many KEPT values sit within 10% of the cap itself.
+Selftest extended: `dsho_nocap` must preserve the raw reading a capped
+`dsho` suppresses, and must equal the capped value when nothing was
+suppressed. Not yet re-run — this is the next thing to look at before
+reading dgaze's soft-vs-committed gap as real.
