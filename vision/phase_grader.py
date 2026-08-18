@@ -75,8 +75,12 @@ SEQ is that intuition made principled — a supervised 2-state HMM:
     not more features.
   - transitions fitted from adjacent labeled pairs within rallies
     (the stickiness = the run-length prior, learned not hand-set);
-    Viterbi decode over the full sequence, unlabeled and opening
-    gaps included as evidence.
+    decoded over the full sequence, unlabeled and opening gaps
+    included as evidence. V3 readout: forward-backward POSTERIOR
+    marginals at 0.5, not Viterbi — run 2 measured the MAP path
+    suppressing the rare state (B has_fast 1/6, first fast 12.9 s
+    late); MAP optimizes whole-path probability, which nothing here
+    grades.
 Level C SEQ reads out at paced contacts (comparable to gap/full
 columns); Level B SEQ runs on decoded events with ghost-adjusted
 gaps. Falls back to the GAP threshold if a train fold lacks
@@ -334,6 +338,42 @@ def _emit(g, s, hmm):
     return -math.log(sd) - 0.5 * ((x - mu) / sd) ** 2
 
 
+def _lse(vals):
+    m = max(vals)
+    return m + math.log(sum(math.exp(v - m) for v in vals))
+
+
+def posterior_fast(gaps, hmm):
+    """Forward-backward P(fast) per step. V3 readout: Viterbi's MAP
+    path SUPPRESSES the rare state — with overlapping emissions a
+    single short gap pays back less log-likelihood than the fitted
+    slow->fast transition costs, so the MAP path enters firefights
+    late or never (measured on run 2: Level B has_fast 1/6, first
+    fast declared 12.9 s late; Level C first-fast 1/5 at med
+    +3.25 s). Marginals are the right readout for per-contact calls
+    and short-run detection; MAP optimizes a loss nothing here
+    grades."""
+    S = ("slow", "fast")
+    n = len(gaps)
+    fa = [{s: hmm["logpi"][s] + _emit(gaps[0], s, hmm) for s in S}]
+    for g in gaps[1:]:
+        prev = fa[-1]
+        fa.append({b: _lse([prev[a] + hmm["logT"][(a, b)] for a in S])
+                   + _emit(g, b, hmm) for b in S})
+    bw = [{s: 0.0 for s in S}]
+    for g in reversed(gaps[1:]):
+        nxt = bw[0]
+        bw.insert(0, {a: _lse([hmm["logT"][(a, b)]
+                               + _emit(g, b, hmm) + nxt[b]
+                               for b in S]) for a in S})
+    out = []
+    for i in range(n):
+        d = (fa[i]["slow"] + bw[i]["slow"]) - \
+            (fa[i]["fast"] + bw[i]["fast"])
+        out.append(1.0 / (1.0 + math.exp(min(max(d, -500.0), 500.0))))
+    return out
+
+
 def viterbi(gaps, hmm):
     """MAP state per step over gaps (None = unobserved step, scored by
     transitions alone). States are per PRODUCING contact; the caller
@@ -374,7 +414,8 @@ def seq_states(times, hmm, th, gaps=None):
         gaps = [times[i + 1] - times[i] for i in range(n - 1)] + [None]
     assert len(gaps) == n
     if hmm is not None:
-        return viterbi(gaps, hmm)
+        return ["fast" if p >= 0.5 else "slow"
+                for p in posterior_fast(gaps, hmm)]
     calls = []
     for g in gaps:
         if g is not None:
@@ -897,7 +938,30 @@ def selftest():
     st1 = viterbi([1.3, 1.3, 0.85, 1.3, 1.3], hmm_t)
     st2 = viterbi([0.6, 0.6, 0.85, 0.6, 0.6], hmm_t)
     assert st1[2] == "slow" and st2[2] == "fast", (st1, st2)
-    print("selftest: context flips the marginal gap OK")
+    p1 = posterior_fast([1.3, 1.3, 0.85, 1.3, 1.3], hmm_t)
+    p2 = posterior_fast([0.6, 0.6, 0.85, 0.6, 0.6], hmm_t)
+    assert p1[2] < 0.5 < p2[2], (p1[2], p2[2])
+    print("selftest: context flips the marginal gap OK "
+          "(viterbi + posterior)")
+
+    # ---- posterior against brute-force path enumeration: marginal
+    # P(fast) at step i = sum of exp(path score) over paths fast at i
+    # over the total — forward-backward must reproduce it to 1e-9
+    tot = [0.0] * len(gs)
+    Z = 0.0
+    for pth in _prod(("slow", "fast"), repeat=len(gs)):
+        sc = hmm_t["logpi"][pth[0]] + _emit(gs[0], pth[0], hmm_t)
+        for i in range(1, len(gs)):
+            sc += hmm_t["logT"][(pth[i - 1], pth[i])] + \
+                _emit(gs[i], pth[i], hmm_t)
+        w = math.exp(sc)
+        Z += w
+        for i, s in enumerate(pth):
+            if s == "fast":
+                tot[i] += w
+    pf = posterior_fast(gs, hmm_t)
+    assert all(abs(pf[i] - tot[i] / Z) < 1e-9 for i in range(len(gs)))
+    print("selftest: posterior = brute force OK")
 
     # ---- fit_hmm: supervised estimates are sane; unlabeled gaps are
     # excluded; transitions never pair across rallies (two rallies

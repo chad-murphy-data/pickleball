@@ -915,3 +915,52 @@ gn-threshold; tagging the 'other' backlog fixes this too.
 REGISTRATION AMENDMENT (pre-run): the verdict bands now read on the
 BEST of the three classifiers (expected SEQ), not FULL specifically;
 regime logic unchanged.
+
+## 2026-08-18 — phase_grader run 2 (SEQ): predictions MOSTLY FALSIFIED; V3 posterior readout; MODEL-ITERATION FREEZE
+
+Run 2 (same fingerprints/split): C SEQ per-contact 65.5% (55/84) —
+best of the three families but ONE CONTACT below the registered
+66–74 floor; C SEQ structure COLLAPSED (has_fast 5/6, ff<=1s 1/5
+med +3.25 s, team 2/5, share corr +0.03); B SEQ catastrophic
+(matched acc 50.0%, has_fast 1/6, ff found once at +12.86 s).
+Scorecard: per-contact graze-miss; every structure prediction
+MISSED; "B ff med <= 1.0 s" missed by 12x. The registered
+limitation (hole-thinned adjacent-pair transitions) fired in the
+worse direction: not degenerate-to-threshold but OVER-STICKY toward
+slow.
+
+DIAGNOSIS (mechanism, visible in the numbers): Viterbi's MAP path
+suppresses the rare state. With overlapping real emissions
+(fast-produced med 0.68 vs slow 1.05, wide sd) one short gap earns
+less log-likelihood than the fitted slow->fast transition costs, so
+the MAP path enters firefights late or never — first-fast ~3 shots
+late at C, has_fast 1/6 at B. MAP optimizes whole-path probability;
+nothing we grade is that loss.
+
+V3 (same file): readout switched to forward-backward POSTERIOR
+marginals at 0.5. Pinned in selftest against brute-force path
+enumeration (1e-9); context-flip holds under marginals; clean-synth
+end-to-end unchanged (68/68). Registered expectation: V3 fixes the
+SUPPRESSION pathology (has_fast, ff lateness should recover toward
+GAP/FULL levels) but does NOT move the ~63–65% per-contact ceiling
+— the information per gap is what it is.
+
+**MODEL-ITERATION FREEZE (house discipline).** Three model families
+— min-gap threshold, 68-feature logistic, 2-state HMM — have now
+been evaluated against the SAME 72 paced contacts, landing 59.5 /
+63.1 / 65.5 at Level C. The sample is exhausted for model
+selection; further variants against it are knob-turning on a frozen
+tiny sample. NO new pace models until the label base changes.
+The next run that carries evidential weight is THE POST-TAGGING RUN:
+user tags the 58 'other' contacts fast/slow (~15 min, the coarse
+judgment they trust), then this same V3 grader, same pre-registered
+bands, now on ~130 paced contacts, ~10 certain rallies, and
+repaired transition adjacency. PRE-REGISTERED READING OF THAT RUN:
+if best-classifier Level C structure clears the bands -> the
+2000-rally question REOPENS with a real case (placement tax is
+demonstrably the remaining binder). If C structure still misses ->
+the pace-classification thread CLOSES on this footage and the
+product ships counts + continuous tempo stats (rally length, gap
+distributions, tempo curves — no classification needed). The
+2000-rally position TODAY, three families deep: NOT licensed,
+unchanged from run 1.
