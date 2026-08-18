@@ -21,6 +21,13 @@ on don't exist anymore. This script re-measures BASE fresh, on the
 SAME rallies, so the BASE-vs-EXT comparison is apples to apples
 regardless of what the old number was.
 
+Default output is pure swing/no-swing (user call, 2026-08-18: the
+pipeline is a two-step process — swing detection first, shot type
+later — and the per-type slices at n=3-10 per type were pure noise:
+on the first real run every large-looking per-type delta was exactly
+one contact flipping). --per-type restores the sliced tables for
+debugging.
+
 RUN (same flat folder as swing_explore.py; numpy only, minutes):
     python3 channel_ablation.py
 
@@ -86,11 +93,12 @@ def assemble_rallies(labels, pose_dir):
     return rallies
 
 
-def print_result(name, overall, per_type, n):
+def print_result(name, overall, per_type, n, show_types=False):
     print(f"=== {name} ===")
     print(f"  coverage@2x overall: {overall:.1%}  (n={n})")
-    for ty, (h, b) in sorted(per_type.items(), key=lambda kv: -kv[1][1]):
-        print(f"    {ty:<10} {h:>3}/{b:<3} {h / b:6.1%}")
+    if show_types:
+        for ty, (h, b) in sorted(per_type.items(), key=lambda kv: -kv[1][1]):
+            print(f"    {ty:<10} {h:>3}/{b:<3} {h / b:6.1%}")
     print()
 
 
@@ -99,6 +107,9 @@ def main():
     ap.add_argument("--labels", default=LABELS)
     ap.add_argument("--windows", default=WINDOWS_V4)
     ap.add_argument("--pose-dir", default=POSE_DIR)
+    ap.add_argument("--per-type", action="store_true",
+                    help="also print the per-shot-type slices (noise at "
+                         "this label count — debugging only)")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -117,20 +128,21 @@ def main():
 
     ov_b, pt_b, n_b = loro_eval(rallies, CHANNELS_BASE)
     print_result("BASE  (arm/lw/rw/le/re/dsho — re-measured post-fix, "
-                 "NOT the historical 56.2%)", ov_b, pt_b, n_b)
+                 "NOT the historical 56.2%)", ov_b, pt_b, n_b, a.per_type)
 
     ov_e, pt_e, n_e = loro_eval(rallies, CHANNELS_EXT)
-    print_result("EXT   (BASE + leg + dgaze)", ov_e, pt_e, n_e)
+    print_result("EXT   (BASE + leg + dgaze)", ov_e, pt_e, n_e, a.per_type)
 
     d = ov_e - ov_b
     print(f"delta: {d:+.1%} overall "
           f"({'EXT ahead' if d > 0 else 'BASE ahead' if d < 0 else 'tied'})")
-    for ty in sorted(set(pt_b) | set(pt_e)):
-        hb, bb = pt_b.get(ty, (0, 0))
-        he, be = pt_e.get(ty, (0, 0))
-        if bb and be:
-            print(f"  {ty:<10} BASE {hb / bb:6.1%}  EXT {he / be:6.1%}  "
-                  f"({he / be - hb / bb:+.1%})")
+    if a.per_type:
+        for ty in sorted(set(pt_b) | set(pt_e)):
+            hb, bb = pt_b.get(ty, (0, 0))
+            he, be = pt_e.get(ty, (0, 0))
+            if bb and be:
+                print(f"  {ty:<10} BASE {hb / bb:6.1%}  EXT {he / be:6.1%}  "
+                      f"({he / be - hb / bb:+.1%})")
     print(f"\nn={n_contacts} contacts, 10 rallies — read any single-digit "
           f"delta as noise, not a verdict. A result worth believing "
           f"graduates to a fresh pre-registration on untouched holdout "

@@ -347,3 +347,54 @@ real risk the further back you look. Reported, not silently corrected
 trust the number.
 
 Not yet run against real data.
+
+## feature_check.py repurposed: shot vs NON-shot (2026-08-18)
+
+User call, arriving in two beats: "change this to just classify
+whether something is a shot or not a shot, rather than trying to
+decide whether it's shot type A or B" — then, sharpening it, "maybe
+it's a two-step process: (1) swing/no-swing, (2) shot type?" That
+two-step framing is exactly how the pipeline is already built on the
+detection side (the trained scorer IS binary swing/no-swing; per-type
+numbers were only ever recall slices), but feature_check.py was the
+one tool still framing its whole analysis as type A vs type B
+(soft dink/counter vs committed drive/speed-up/smash medians, plus
+the dink-bimodality question). Rewritten:
+
+- SHOT rows = every labeled contact, all types pooled (type survives
+  as a passenger column in the CSV for eventual step-2 work).
+- NON-SHOT rows = a deterministic 0.5s grid of in-play anchors
+  between each rally's first and last contact, guarded by the SAME
+  constants the real detector's negatives train with (GUARD_S=0.5
+  from own-side contacts, WHIFF_GUARD_S=0.6 from whiffs — imported
+  from swing_explore, not re-invented). Opponent-contact instants
+  pass on purpose: the other side hitting IS a non-shot moment for
+  this side, and rally_instances builds its matched negatives at
+  exactly those instants.
+- The hitter-proxy selection (max prep-arc arm energy) is applied to
+  BOTH classes, so a channel merely correlated with the selection
+  rule can't fake a gap.
+- Separation metric = AUC with MIDRANK tie handling — gated channels
+  emit exact zeros, and a naive rank AUC (argsort order) would break
+  zero-ties by concatenation order and shade the number. Selftest
+  pins exact values incl. the tie case (auc([0,0,1],[0,0,0]) = 2/3).
+- --sweep-leg reframed the same way: per window, shot vs non-shot
+  medians + AUC + contamination % for each class ("did this window
+  reach past the most recent prior contact" — for shots that's
+  recovery polluting prep; for non-shots it's real shot movement
+  leaking into the quiet reading, pushing AUC toward 0.5).
+- Removed: SOFT/COMMITTED constants and the bimodality coefficient.
+  The dink-mechanics question's results-so-far stay recorded in the
+  earlier sections above; if it ever reopens, it reopens as step-2
+  work after step 1 is usable.
+- channel_ablation.py default output likewise reduced to pure
+  swing/no-swing (overall coverage + delta); --per-type restores the
+  sliced tables for debugging.
+
+Step 2 (shot type) is deliberately NOT built: at 45-57% step-1
+coverage, classifying the type of swings we mostly can't find is
+premature. The typed contact labels being produced under
+labeling_protocol.md are exactly the training data step 2 will need,
+so nothing about the labeling habit changes.
+
+Not yet run against real data in the new form.
