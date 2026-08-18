@@ -142,10 +142,15 @@ def render_rally(video, cum, win, dets, assign_by_id, conf, t_serve,
                     (240, 240, 240), 2, cv2.LINE_AA)
         if legend:
             # jersey-description lines in each team's LABEL color, so
-            # the coder can tie label color to what the players wear
+            # the coder can tie label color to what the players wear;
+            # right-aligned under the court inset — top-left belongs to
+            # the broadcast's own scorebug (measured collision)
+            y = INSET_PAD + INSET_H + 24
             for k, (txt, col) in enumerate(legend):
                 if txt:
-                    cv2.putText(frame, txt, (12, 48 + 20 * k),
+                    (tw, _), _ = cv2.getTextSize(
+                        txt, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 2)
+                    cv2.putText(frame, txt, (W_img - 12 - tw, y + 20 * k),
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.5, col, 2,
                                 cv2.LINE_AA)
         near = []
