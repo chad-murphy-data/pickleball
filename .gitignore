@@ -39,3 +39,4 @@ data/vision/*.states.npz
 data/vision/*.states2.npz
 data/vision/*.states3.npz
 data/vision/*.crops3.npz
+data/vision/appearance_crops_*.npz
