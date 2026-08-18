@@ -36,7 +36,7 @@ Hard rules:
 - **Future VODs**: assign each whole match to train or holdout at
   acquisition time, before labeling, by appending to this protocol.
 
-## Workflow (unchanged from core-16; tool build 2026-08-17a)
+## Workflow (tool build 2026-08-18a — two passes per rally)
 
 Open `contact_audit_chicago0725.html`, load the video
 (`full_match.mp4.webm` — the tool verifies the file), pick a rally:
@@ -50,6 +50,18 @@ Open `contact_audit_chicago0725.html`, load the video
    recorded for the non-hitter — a whiff on the same team as the hitter
    means exactly that.
 4. ⛔ if the rally isn't in the video; ✕ drops a wrong prefill.
+5. **Pace pass (P)** — new in build 2026-08-18a: after stamping, press
+   **P**; the rally rewinds and replays (1× is fine) while **F**/**S**
+   tag each highlighted contact fast or slow in order. Serves, returns,
+   whiffs, and shots already carrying a granular type are skipped, so
+   on old rallies the pass is exactly the "other" backlog. Coarse is
+   the contract (user call 2026-08-18): fast = attacked ball, slow =
+   soft ball — never agonize over smash vs counter vs speed-up (they
+   were coded interchangeably anyway, and the analysis pools them).
+   Tags are written into the same shot_type column as literal
+   `fast`/`slow`; the CSV format and every consumer are unchanged.
+   ⌫ in pace mode un-tags; the orange **F/S** badge in the rally list
+   marks rallies still owing the pass.
 
 **Chained seek** (new in build 2026-08-17a): rallies without a hand pin
 now auto-seek off YOUR previous labels — the previous rally's last

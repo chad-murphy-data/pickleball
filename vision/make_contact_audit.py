@@ -27,6 +27,20 @@ Two-pass design (agreed 2026-08-15):
     designed to train (guard bands absorb tap noise on the negative side,
     window models + jitter augmentation absorb it on the positive side).
 
+  PACE PASS (build 2026-08-18a, user request): pass 1 = player+time as
+    before; pressing P rewinds the rally and replays it while F/S tag
+    each contact fast/slow in order. Only contacts that NEED pace are
+    armed — serves/returns (position rule), whiffs, and anything already
+    carrying a granular type are skipped, so on old rallies the pass
+    covers exactly the "other" backlog and on fresh rallies exactly
+    shots 3+. Tags are written as literal "fast"/"slow" in the SAME
+    shot_type column (fastslow_check.py's frozen mapping accepts them),
+    so the CSV schema, export, import, and every downstream consumer
+    are unchanged. Coarse is the contract (user, 2026-08-18): fast vs
+    slow is the judgment they trust; smash-vs-counter brightlines are
+    explicitly NOT asked for. Stamping is gated off while the pace pass
+    is live, and Backspace un-tags instead of deleting taps.
+
 Inputs (all committed):
     data/vision/rally_timeline_matchup_20260725_c4e686d1.csv  rally spine
     data/vision/rally_timeline_matchup_20260725_c4e686d1_meta.json
@@ -54,6 +68,10 @@ CORE = set(range(1, 17))     # the frozen 16-rally label set (womens game)
 PILOT_PER_GAME = 12          # suggested pilot corpus: longest per game
 
 TYPES = SHOT_TYPES + [
+    ("f", "fast", "PACE (pass 2): attacked ball — the smash/speed-up/"
+                  "counter/drive family, coded coarse"),
+    ("s2", "slow", "PACE (pass 2): soft ball — the dink/drop/lob/reset "
+                   "family, coded coarse"),
     ("w", "whiff", "swing-and-miss or full swing at a fake — a SWING but "
                    "not a contact (stamped, contact=0, own class)"),
 ]
@@ -185,6 +203,9 @@ HTML = r"""<!doctype html>
  .badge.pilot{background:#3b5bd0;color:#eef}
  .badge.div{background:var(--bad);color:#fff}
  .badge.whiff{background:#8b5cf6;color:#fff}
+ .badge.pace{background:#d0763b;color:#fff}
+ .shotrow.pace{outline:2px solid var(--acc)}
+ #next.pacing{outline:2px solid var(--acc)}
  #next{font-size:19px;font-weight:700;padding:8px 12px;border:1px solid var(--line);
        border-radius:9px;background:var(--panel)}
  #next.armed{outline:2px solid #8b5cf6}
@@ -253,12 +274,13 @@ HTML = r"""<!doctype html>
 <div id="toast"></div>
 <script>
 const DATA = __PAYLOAD__;
-const BUILD = "2026-08-17a (chained seek)";
+const BUILD = "2026-08-18a (pace pass)";
 const LSK = "contact_audit_chicago0725";
 let store = JSON.parse(localStorage.getItem(LSK) || "{}");
 let prefs = JSON.parse(localStorage.getItem(LSK + "_prefs") || "{}");
 let tab = "core", cur = null, whiffArmed = false;
 let autoPause = prefs.autoPause !== false;
+let paceMode = false, paceUndo = [];
 
 const save = () => localStorage.setItem(LSK, JSON.stringify(store));
 const savePrefs = () => localStorage.setItem(LSK + "_prefs", JSON.stringify(
@@ -318,6 +340,23 @@ function expected(c){
   const k = sortedTaps(c).filter(t => !t.w).length;
   return pfOf(c)[k] || null;
 }
+/*PURE-BEGIN pace pass (node-testable; no DOM) */
+/* a row needs the pace pass iff it's a real contact whose effective
+   type is empty or "other" — serves/returns (position rule), whiffs,
+   and granular types are all already informative and get skipped */
+function paceNeeds(x){
+  return !x.tp.w && (!x.ty || x.ty === "other");
+}
+function paceableIdx(c){
+  const out = [];
+  rows(c).forEach((x, i) => { if (paceNeeds(x)) out.push(i); });
+  return out;
+}
+function paceArmed(c){
+  const ids = paceableIdx(c);
+  return ids.length ? ids[0] : null;
+}
+/*PURE-END*/
 function done(c){
   const rs = rows(c), pfe = pfOf(c);
   const n = rs.filter(x => !x.tp.w).length;
@@ -435,9 +474,43 @@ function toast(msg, ms){
   clearTimeout(t._h); t._h = setTimeout(() => t.style.display = "none", ms || 1200);
 }
 
+/* ---------------- pace pass (pass 2) ---------------- */
+function paceStart(){
+  if (cur === null) return;
+  if (paceMode){ paceMode = false; panel(); return; }
+  if (paceArmed(cur) === null){
+    toast("nothing here needs fast/slow"); return; }
+  paceMode = true; paceUndo = []; whiffArmed = false;
+  openSeek(rget(cur));
+  panel();
+  toast("PACE PASS — F fast · S slow as the rally replays (1× is fine)",
+        2400);
+}
+function paceTag(v){
+  if (cur === null || !paceMode) return;
+  const i = paceArmed(cur);
+  if (i === null) return;
+  const x = rows(cur)[i];
+  paceUndo.push({t: x.tp.t, prev: x.tp.ty});
+  setType(i, v);
+  if (paceArmed(cur) === null){
+    paceMode = false;
+    toast("pace pass complete ✓", 2000);
+    panel();
+  }
+}
+function paceUndoLast(){
+  if (!paceMode || !paceUndo.length) return;
+  const u = paceUndo.pop();
+  const i = sortedTaps(cur).findIndex(tp => tp.t === u.t);
+  if (i >= 0) setType(i, u.prev || "");
+}
+
 /* ---------------- stamping ---------------- */
 function stamp(uuid, viaEnter){
   if (!loaded() || cur === null) return;
+  if (paceMode){ toast("pace pass is live — exit it (P) to stamp");
+    return; }
   const r = rget(cur), t = V.currentTime;
   if (whiffArmed){
     if (!uuid){ toast("whiff needs a hitter — press 1-4"); return; }
@@ -528,15 +601,18 @@ function side(){
       ${r.pilot ? '<span class="badge pilot">pilot</span>' : ""}
       ${r.t0s == null ? '<span class="badge" title="no window — locate by scorebug">🔎</span>' : ""}
       ${(store[r.cum] || {}).nv ? '<span class="badge" title="marked not in video">⛔</span>' : ""}
+      ${n && paceArmed(r.cum) !== null ? '<span class="badge pace" title="stamped, but some contacts still need the fast/slow pace pass (P)">F/S</span>' : ""}
       ${done(r.cum) ? '<span class="badge done">✓</span>' : ""}</div>`;
   }
   const nd = DATA.rallies.filter(r => done(r.cum)).length;
   const ns = DATA.rallies.reduce((s, r) => s + (store[r.cum] ? rows(r.cum).length : 0), 0);
+  const np = DATA.rallies.filter(r => store[r.cum] && rows(r.cum).length &&
+                                      paceArmed(r.cum) !== null).length;
   h += `<div class="bar"><button onclick="dl()">⬇ labels CSV</button>
         <button onclick="dlMeta()">meta</button>
         <button onclick="el('csvpick').click()">⬆ import</button></div>
         <input type="file" id="csvpick" accept=".csv,text/csv" hidden>
-        <div class="small dim">${nd} rallies done · ${ns} taps${lastImport}</div>`;
+        <div class="small dim">${nd} rallies done · ${ns} taps${np ? ` · ${np} await pace pass` : ""}${lastImport}</div>`;
   const j = jitter();
   if (j) h += `<div id="jit"><b>tap jitter</b> vs ${j.n} pinned serves:<br>
     median |Δ| ${j.med.toFixed(2)}s · p95 ${j.p95.toFixed(2)}s<br>
@@ -545,8 +621,8 @@ function side(){
   el("csvpick").onchange = e => importCSV(e.target.files[0]);
 }
 
-function open_(c){ cur = c; whiffArmed = false; side(); panel();
-  openSeek(rget(c)); }
+function open_(c){ cur = c; whiffArmed = false; paceMode = false;
+  paceUndo = []; side(); panel(); openSeek(rget(c)); }
 
 function panel(){
   const p = el("panel");
@@ -568,11 +644,19 @@ function panel(){
     <b style="color:var(--warn)">${r.score}</b> — if it doesn't, scrub until
     it does. The score IS the rally's identity; where the prefill disagrees
     with the screen, <b>the screen wins</b> (keys 1–4).</span></div>
-  <div class="bar"><span id="next" class="${whiffArmed ? "armed" : ""}">${
-    whiffArmed ? "next stamp = WHIFF (press 1-4)" :
-    exp ? `NEXT ⏎ #${(rs.filter(x=>!x.tp.w).length)+1}: <span class="hitter t${expName ? expName.team : 1}">${expName ? expName.name : "?"}</span> — ${exp.t || "?"}` :
-    pfOf(cur).length ? "prefill complete — keys 1-4 for extras" :
-    "keys 1-4 stamp the hitter"}</span>
+  <div class="bar"><span id="next" class="${paceMode ? "pacing" : whiffArmed ? "armed" : ""}">${(() => {
+    if (paceMode){
+      const pai = paceArmed(cur);
+      if (pai === null) return "pace pass complete";
+      const px = rs[pai], pn = ps.find(pp => pp.uuid === px.tp.h);
+      return `PACE #${pai + 1} @ ${fmts(px.tp.tr ?? px.tp.t)}: <span class="hitter t${pn ? pn.team : 1}">${pn ? pn.name.split(" ").slice(-1)[0] : "?"}</span> — <kbd>F</kbd> fast · <kbd>S</kbd> slow (${paceableIdx(cur).length} left)`;
+    }
+    if (whiffArmed) return "next stamp = WHIFF (press 1-4)";
+    if (exp) return `NEXT ⏎ #${(rs.filter(x=>!x.tp.w).length)+1}: <span class="hitter t${expName ? expName.team : 1}">${expName ? expName.name : "?"}</span> — ${exp.t || "?"}`;
+    return pfOf(cur).length ? "prefill complete — keys 1-4 for extras" :
+      "keys 1-4 stamp the hitter";
+  })()}</span>
+    <button onclick="paceStart()" title="P — rewind the rally and tag fast/slow as it replays">${paceMode ? "✕ exit pace (P)" : "▶ pace pass (P)"}</button>
     <button onclick="whiffArmed=!whiffArmed;panel()" title="W">${whiffArmed ? "cancel whiff" : "＋whiff (W)"}</button>
     <button onclick="undo()" title="backspace">↶ undo</button>
     ${r.pf.length ? `<button onclick="dropPrefill()">${(store[cur]&&store[cur].nopf) ? "↩ restore prefill" : "✕ prefill (wrong for this rally)"}</button>` : ""}
@@ -583,9 +667,10 @@ function panel(){
       <kbd>${i + 1}</kbd> <span class="hitter t${pl.team}">${pl.name.split(" ").slice(-1)[0]}</span></button>`;
   });
   h += `</div><div class="help small">${helprow(r)}</div>`;
+  const pai = paceMode ? paceArmed(cur) : null;
   rs.forEach((x, i) => {
     const nm = ps.find(pp => pp.uuid === x.tp.h);
-    h += `<div class="shotrow"><span class="idx">${i + 1}</span>
+    h += `<div class="shotrow${paceMode && i === pai ? " pace" : ""}"><span class="idx">${i + 1}</span>
       <span class="tt" title="click to replay from just before this tap"
             onclick="refine(${i},false)">${fmts(x.tp.tr ?? x.tp.t)}${x.tp.tr != null ? "*" : ""}</span>
       <span class="hitter t${nm ? nm.team : 0}">${nm ? nm.name.split(" ").slice(-1)[0] : "?"}</span>
@@ -594,6 +679,7 @@ function panel(){
     for (const [k2, lab] of DATA.types)
       h += `<option ${x.ty === lab ? "selected" : ""}>${lab}</option>`;
     h += `</select>
+      ${paceNeeds(x) ? `<button class="stepb" onclick="setType(${i},'fast')" title="tag fast">F</button><button class="stepb" onclick="setType(${i},'slow')" title="tag slow">S</button>` : ""}
       ${x.tp.w ? '<span class="badge whiff">whiff</span>' : ""}
       ${x.div ? `<span class="badge div" title="prefill says ${(ps.find(pp=>pp.uuid===x.pf.h)||{}).name}">≠ prefill</span>
         <button class="stepb" onclick="setHitter(${i},'${x.pf.h}')">accept prefill</button>` : ""}
@@ -619,6 +705,15 @@ function helprow(r){
   ${pfOf(r.cum).length ? "This rally is prefilled: <kbd>⏎</kbd> stamps the next expected shot; keys <kbd>1</kbd>–<kbd>4</kbd> stamp an explicit hitter (mismatch is flagged, not lost). At the first real divergence, hit <b>✕ prefill</b> and go keys-only."
                          : "Keys <kbd>1</kbd>–<kbd>4</kbd> stamp hitter + time; shots 1–2 auto-type serve/return, fill the rest in the table."}
   <kbd>W</kbd> arms a whiff (swing-and-miss — stamped, but contact=0, never consumes the prefill).
+  <b>Pass 2 — pace (<kbd>P</kbd>)</b>: once stamped, press <kbd>P</kbd> — the
+  rally rewinds and replays (1× is fine for this); hit <kbd>F</kbd> fast /
+  <kbd>S</kbd> slow for the highlighted contact as you watch. Coarse IS the
+  contract: fast = attacked ball, slow = soft ball — never agonize over
+  smash-vs-counter-vs-speed-up. Serves, returns, whiffs, and shots that
+  already have a type are skipped automatically (on old rallies the pass is
+  exactly the "other" backlog). <kbd>⌫</kbd> in pace mode un-tags;
+  <kbd>P</kbd> again exits. The orange <b>F/S</b> badge in the list marks
+  rallies still owing this pass.
   <b>Lining up</b>: every rally's START SCORE is in the list and the banner —
   read the on-screen bug and match; that IS the rally's identity. If the bug
   shows a <b>LATER</b> score than the banner at a serve, you're watching a
@@ -649,7 +744,11 @@ function intro(){
   hand-pinned serve, so the tool measures your own timing noise as you go.<br>
   <b>3.</b> <b>pilot</b> tab = the suggested next ~48 rallies (longest per
   game), for AFTER the ceiling test passes. Fresh rallies: keys
-  <kbd>1</kbd>–<kbd>4</kbd> stamp hitter + time.<br>
+  <kbd>1</kbd>–<kbd>4</kbd> stamp hitter + time — then press <kbd>P</kbd>
+  for the <b>pace pass</b>: the rally replays from the start and
+  <kbd>F</kbd>/<kbd>S</kbd> tag each contact fast or slow. Two passes per
+  rally: players first, pace second. Coarse fast/slow is all the taxonomy
+  the analysis needs.<br>
   <b>4.</b> Export ⬇ and commit as
   <b>data/vision/contact_labels_chicago0725.csv</b>, then run
   <code>vision/pose_extract.py</code> and <code>vision/contact_ceiling.py</code>.<br><br>
@@ -710,8 +809,12 @@ function wireVideo(){
       const pl = ps[+e.key - 1];
       if (pl) stamp(pl.uuid);
     }
+    else if (e.key === "p" || e.key === "P"){ paceStart(); }
+    else if ((e.key === "f" || e.key === "F") && paceMode){ paceTag("fast"); }
+    else if ((e.key === "s" || e.key === "S") && paceMode){ paceTag("slow"); }
     else if (e.key === "w" || e.key === "W"){ whiffArmed = !whiffArmed; panel(); }
-    else if (e.key === "Backspace" || e.key === "z"){ e.preventDefault(); undo(); }
+    else if (e.key === "Backspace" || e.key === "z"){ e.preventDefault();
+      paceMode ? paceUndoLast() : undo(); }
     else if (e.key === "r" || e.key === "R") el("breplay").onclick();
     else if (e.key === "ArrowLeft") el("bm2").onclick();
     else if (e.key === "ArrowRight") el("bp2").onclick();

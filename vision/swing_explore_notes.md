@@ -964,3 +964,32 @@ product ships counts + continuous tempo stats (rally length, gap
 distributions, tempo curves — no classification needed). The
 2000-rally position TODAY, three families deep: NOT licensed,
 unchanged from run 1.
+
+## 2026-08-18 — audit tool build 2026-08-18a: PACE PASS (two-pass labeling UX)
+
+User request: easy UX for coding player + fast/slow — pass 1 player
+(as now), pass 2 fast/slow with a rewind to rally start. Built into
+make_contact_audit.py / contact_audit_chicago0725.html:
+
+- P rewinds the rally (existing openSeek chain: serve stamp > pin >
+  chained-seek) and replays; F/S tag the armed contact and advance;
+  auto-exits when nothing is left; toast + orange F/S badge + "N
+  await pace pass" counter surface the queue. Backspace in pace mode
+  un-tags (restoring 'other' exactly, not blanking); tap-deletion
+  undo is gated off while pacing, as is stamping (stray 1-4/Enter
+  during the replay can't add taps).
+- SKIP RULE = paceNeeds(): a real contact whose effective type is
+  empty or 'other'. Serves/returns (position rule), whiffs, and
+  granular types skip — so the 58-contact 'other' backlog IS the
+  pace queue on old rallies, and fresh rallies need exactly shots 3+.
+- SCHEMA-STABLE: tags are literal fast/slow in the existing
+  shot_type column (fastslow_check's frozen mapping already accepts
+  them); export/import/consumers untouched. fast/slow added to the
+  type dropdown so manual round-trips work.
+- done() unchanged and now MEANS both passes: a fresh rally
+  completes only after hitters + pace are in.
+- Tested against the REAL built script under node with a stubbed DOM
+  (scratch pace_test.mjs, 12 assertions): skip rule, arm/advance,
+  auto-exit, exact 'other' restore on undo, serve/return rule
+  intact, done() semantics, stamp gating, prefilled-core no-op.
+  Build banner bumped 2026-08-17a -> 2026-08-18a.
