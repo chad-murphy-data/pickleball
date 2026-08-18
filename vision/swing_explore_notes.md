@@ -747,3 +747,63 @@ user (not yet edited into labeling_protocol.md): bless the coarse
 vocabulary — the trio can be typed as any of its three words or just
 "fast"; drive/drop/lob/dink stay; literal fast/slow tags are enough
 for the "other" backlog.
+
+## 2026-08-18 — phase_grader.py built: the 2000-rally decision instrument (selftested; bands + predictions registered BEFORE the first real run)
+
+User call: build the best phase-structure grader with everything
+learned (alternation decoder, pose, kitchen-located tempo), see how
+we do, then a verdict on whether 2000 coded rallies are worth it.
+
+WHAT IT DOES. Grades the product stats — has_fast, first-fast time
+(the speed-up moment, ±1.0 s), initiating TEAM, per-rally fast
+share — in two arms whose DIFFERENCE is the verdict: LEVEL C applies
+pace classifiers at TRUE labeled times (ceiling; placement removed);
+LEVEL B runs the real pipeline (LORO swing scorer -> dense scoring ->
+alternation decoder with ghost-aware ordinals -> pace on decoded
+events, ghost-adjusted gaps, ordinals 0/1 = opening). Level A
+supplements: decoded<->label matching (±0.5 s, same team) + pace acc
+on matched contacts. Classifiers, both trained at true times on
+train-fold paced contacts: GAP (min-gap threshold, fit per fold) and
+FULL (logistic: POSE-N + directional gaps + NEW kitchen context —
+per-rally net-line from the two sides' feet-line distributions,
+hitter + all-player proximity; ynorm IS the feet line, box[:,3]).
+
+PRE-REGISTERED VERDICT BANDS (FULL classifier): has_fast >=80%,
+first-fast<=1s >=70% of certain fast rallies, init-team >=75%,
+share corr >=+0.6. Regimes: B clears -> ship on current decoder,
+2000 rallies NOT needed for training; C clears but B misses -> 
+placement binds, temporal model justified, 2000 rallies are its
+fuel; C misses -> structure not recoverable on this footage,
+counts-only product. DEFERRAL CLAUSE: with 58 unpaced 'other'
+contacts across 10 rallies, most rallies will be boundary-UNCERTAIN
+and excluded from first-fast/team grading — if fewer than 4 certain
+fast rallies survive, the STRUCTURE verdict defers to a post-tagging
+re-run; per-contact (A/C) numbers and the match rate stand either
+way.
+
+REGISTERED PREDICTIONS (run 1): 5–8 of 10 rallies boundary-uncertain.
+Level C per-contact: GAP 58–66%, FULL 62–70% (kitchen context is the
+new hope over fastslow's 61%). Match rate (±0.5 s) 55–70%. Level B
+structure visibly below Level C (first-fast hit −10 to −20pp).
+Most likely regime read: C partially clears, B misses — leaning
+"2000 rallies justified" — but the deferral clause probably
+activates on run 1. BOUNDARY-SHOT LESSON (derived analytically,
+encoded in the selftest before any real run): the min-gap heuristic
+MUST misattribute the initiator — the last slow shot before the
+speed-up has a short gap_next, so GAP calls the defender fast one
+shot early (first-fast time still hits; TEAM wrong). Directional
+gaps fix it (synth: FULL 4/4 teams vs GAP 0/4). Expect GAP
+init-team to lag FULL on real data for exactly this reason.
+
+BUILD TRAPS (both caught by selftest before real data): (i) synth
+boxes were in a flat [x,y,w,h] layout inherited from the probes —
+inert for arm-only tests, fatal for position (track_series boxes are
+CORNER format; ynorm = box[:,3] = feet line); phase_grader's builder
+now uses corners, fastslow's stays as-is (its tests make no position
+claims). (ii) grid aliasing AGAIN: unjittered phase synths with one
+slot->class pattern let the 68-dim FULL model ride frame-grid float
+wobble (share corr −0.99 on features designed to contain nothing);
+jittering the synth times restored honest behavior (56/56, teams
+4/4). Second sighting same day — treat "synth on exact grid times +
+class repeated across rallies" as a banned combination in this
+codebase.
