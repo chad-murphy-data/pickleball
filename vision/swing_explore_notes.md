@@ -111,3 +111,48 @@ r9/r10 for TRAINING use until the debug-frame scorebug check clears it.
 
 Constant-tuning further on these 10 rallies is over — the numbers above
 are the plateau.
+
+## Shoulder-rotation bimodality check (2026-08-18, built, not yet run)
+
+Separate from the two levers above — a feature-value question, not a
+model-tuning one. Earlier ranking called shoulder rotation the weakest
+of three candidate signals (behind footwork, poaching) on the reasoning
+"dinks are compact, low-rotation shots." User pushback: "dink" isn't
+one mechanic — down-the-line dinks stay square, but cross-court ones
+(especially backhand rolls, prominent in the pro game right now)
+should show real rotation from body mechanics (backhand contact sits
+across the midline) plus the active pronation a roll needs for
+topspin; committed shots (drives/smashes) may be MORE square than
+assumed given pickleball's short paddle lever. If true, rotation isn't
+a weak uniform signal, it's a high-variance/bimodal one — usually more
+useful to a classifier than a small effect present everywhere.
+
+No forehand/backhand or cross-court/down-the-line label exists
+(checked `make_shot_audit.py`'s `SHOT_TYPES` — not there), so this
+can't attribute WHICH dinks rotate, only whether the distribution's
+SHAPE is consistent with a mixed population. `dsho` (shoulder-line
+angular velocity) already exists in `track_series` as one of the six
+learned-scorer channels — nothing new extracted, just looked at.
+
+`vision/shoulder_check.py`: pulls `dsho` core/early-window peaks for
+already-labeled dink+counter contacts vs drive/speed-up/smash, same
+hitter-track and window conventions as `rally_instances`/`window_feats`
+(reused, not reimplemented). Prints per-type distributions, a text
+histogram, and Sarle's bimodality coefficient (BC = (skew²+1)/kurtosis,
+>0.555 rule-of-thumb bimodal) — a rough heuristic, read next to the
+histogram, not instead of it. Selftest (`--selftest`, no files needed)
+caught a real bug before this ran on anything: a hand-rolled 1D-2-means
+gap/spread statistic was the first design and is mathematically unable
+to discriminate (pooled spread already contains the between-cluster
+gap, so the ratio caps near 2.0 even for infinitely-separated clusters,
+and a plain unimodal Gaussian split down the middle already scores
+~1.6) — replaced before ever pointing it at real labels.
+
+Not run against real pose data yet (needs the user's Mac / pose_rtm).
+If the soft-shot group reads bimodal, next step is a schema addition
+(optional forehand/backhand or direction tag) to test the attribution
+directly — a discussion with the user, not a unilateral change to the
+frozen labeling tool. If it's high-but-unimodal, or matches the
+committed-shot group, rotation stays out. Same rule as everything else
+here: a result worth believing graduates to fresh pre-registration on
+untouched holdout, never folded back into Gate C.
