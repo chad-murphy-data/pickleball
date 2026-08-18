@@ -205,6 +205,7 @@ def main():
     ap.add_argument("--cam", default="")
     ap.add_argument("--no-cam-gate", action="store_true")
     ap.add_argument("--spotcheck", default="/nonexistent.csv")
+    ap.add_argument("--swaps", default="")
     ap.add_argument("--vod", default="")
     ap.add_argument("--event", default="")
     ap.add_argument("--date", default="")

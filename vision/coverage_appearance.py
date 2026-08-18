@@ -49,25 +49,99 @@ SCAN_FPS = 5.0
 WIDTH = 1280                   # must match the extraction width
 
 
-def embed(frame, box):
+CROP_W, CROP_H = 48, 128
+# COCO segments per body region — colors are sampled ALONG THE
+# PLAYER'S OWN SKELETON.  Box-crop histograms validated at 64% LORO
+# with within-team confusion; the crop sheet showed why: serve-time
+# boxes are half floor and often contain the PARTNER (Bright's crops
+# carry Patriquin's black tee and vice versa).  Skeleton sampling
+# excludes background and partner pixels by construction.
+TORSO = [(5, 11), (6, 12), (5, 6)]
+LEGS = [(11, 13), (13, 15), (12, 14), (14, 16)]
+ARMS = [(5, 7), (6, 8)]
+
+
+def crop_of(frame, box, kpt=None, kpc=None):
     import cv2
     x0, y0, x1, y1 = [max(0, int(v)) for v in box[:4]]
     crop = frame[y0:y1, x0:x1]
     if crop.size == 0 or crop.shape[0] < 12 or crop.shape[1] < 6:
         return None
-    crop = cv2.resize(crop, (32, 96), interpolation=cv2.INTER_AREA)
+    out = cv2.resize(crop, (CROP_W, CROP_H), interpolation=cv2.INTER_AREA)
+    if kpt is None:
+        return out
+    k = np.zeros((17, 2), np.float32)
+    k[:, 0] = (kpt[:, 0] - x0) * CROP_W / max(x1 - x0, 1)
+    k[:, 1] = (kpt[:, 1] - y0) * CROP_H / max(y1 - y0, 1)
+    return out, k
+
+
+def embed_crop(crop, kpt, kpc):
+    """Per-region (torso/legs/arms) HSV histogram of colors sampled in
+    3x3 patches along the skeleton segments."""
+    import cv2
     hsv = cv2.cvtColor(crop, cv2.COLOR_RGB2HSV)
+    Hh, Ww = crop.shape[:2]
+
+    def region(segs):
+        cols = []
+        for a, b in segs:
+            if kpc[a] < 0.3 or kpc[b] < 0.3:
+                continue
+            pa, pb = kpt[a], kpt[b]
+            for f in np.linspace(0.15, 0.85, 8):
+                x = int(pa[0] + f * (pb[0] - pa[0]))
+                y = int(pa[1] + f * (pb[1] - pa[1]))
+                if 1 <= x < Ww - 1 and 1 <= y < Hh - 1:
+                    cols.append(hsv[y - 1:y + 2, x - 1:x + 2]
+                                .reshape(-1, 3).mean(0))
+        return cols
+
     parts = []
-    for band in np.array_split(hsv, 3, axis=0):
-        h = cv2.calcHist([band], [0, 1], None, [8, 8],
-                         [0, 180, 0, 256]).ravel()
-        parts.append(h / (h.sum() + 1e-9))
-    return np.concatenate(parts).astype(np.float32)
+    for segs in (TORSO, LEGS, ARMS):
+        cols = region(segs)
+        if len(cols) < 4:
+            parts.append(np.zeros(72, np.float32))
+            continue
+        hist, _ = np.histogramdd(
+            np.array(cols, np.float64), bins=(8, 3, 3),
+            range=((0, 181), (0, 256), (0, 256)))
+        h = hist.ravel()
+        parts.append((h / (h.sum() + 1e-9)).astype(np.float32))
+    return np.concatenate(parts)
+
+
+def embed(frame, d):
+    """Embedding for a detection (needs its keypoints)."""
+    if d.kpt is None:
+        return None
+    got = crop_of(frame, d.box, np.asarray(d.kpt, np.float32),
+                  np.asarray(d.kpc, np.float32))
+    if got is None:
+        return None
+    crop, k = got
+    return embed_crop(crop, k, np.asarray(d.kpc, np.float32))
 
 
 def cos(a, b):
     return float(a @ b / ((np.linalg.norm(a) + 1e-9)
                           * (np.linalg.norm(b) + 1e-9)))
+
+
+def box_iou(a, b):
+    x0, y0 = max(a[0], b[0]), max(a[1], b[1])
+    x1, y1 = min(a[2], b[2]), min(a[3], b[3])
+    if x1 <= x0 or y1 <= y0:
+        return 0.0
+    i = (x1 - x0) * (y1 - y0)
+    aa = (a[2] - a[0]) * (a[3] - a[1])
+    bb = (b[2] - b[0]) * (b[3] - b[1])
+    return i / (aa + bb - i)
+
+
+def max_iou(d, ds):
+    return max((box_iou(d.box, e.box) for e in ds if e is not d),
+               default=0.0)
 
 
 class Model:
@@ -129,8 +203,24 @@ def resolve_rallies(a):
 
 
 def harvest(a, rallies):
-    """Anchor-time labeled crops: (uuid, emb, cum) triples."""
-    samples = []
+    """Anchor-time labeled crops: (uuid, emb, cum) triples.  Crops are
+    cached next to the scan CSV so embedding iteration is offline —
+    the decode pass runs once."""
+    cache = ROOT / f"data/vision/appearance_crops_{a.vod}.npz"
+    if cache.exists():
+        z = np.load(cache, allow_pickle=False)
+        if "iso" in z:
+            crops, uuids, cums = z["crop"], z["uuid"], z["cum"]
+            sides, hs, isos = z["side"], z["h"], z["iso"]
+            kpts, kpcs = z["kpt"], z["kpc"]
+            print(f"harvest crops from cache ({len(crops)})")
+            return [(str(uuids[i]),
+                     embed_crop(crops[i], kpts[i], kpcs[i]),
+                     int(cums[i]), int(sides[i]), float(hs[i]),
+                     float(isos[i]))
+                    for i in range(len(crops))]
+        cache.unlink()          # pre-iso cache: rebuild
+    crops, uuids, cums, sides, hs, kpts, kpcs, isos = ([] for _ in range(8))
     for cum, win, dets, assign, t_serve, conf in rallies:
         by_t = C.by_frame(dets)
         det_times = np.array(sorted(by_t))
@@ -146,35 +236,72 @@ def harvest(a, rallies):
                 continue
             for d in by_t[det_times[j]]:
                 u = a_by_id.get(id(d))
-                if u is None:
+                if u is None or d.kpt is None:
                     continue
-                e = embed(frame, d.box)
-                if e is not None:
-                    samples.append((u, e, cum))
-    return samples
+                got = crop_of(frame, d.box,
+                              np.asarray(d.kpt, np.float32),
+                              np.asarray(d.kpc, np.float32))
+                if got is None:
+                    continue
+                cr, k = got
+                isos.append(max_iou(d, by_t[det_times[j]]))
+                crops.append(cr)
+                kpts.append(k)
+                kpcs.append(np.asarray(d.kpc, np.float32))
+                uuids.append(u)
+                cums.append(cum)
+                sides.append(int(d.side))
+                hs.append(float(d.box[3] - d.box[1]))
+    np.savez_compressed(cache, crop=np.stack(crops),
+                        uuid=np.array(uuids), cum=np.array(cums),
+                        side=np.array(sides), h=np.array(hs),
+                        kpt=np.stack(kpts), kpc=np.stack(kpcs),
+                        iso=np.array(isos))
+    print(f"cached {len(crops)} crops -> {cache}")
+    return [(uuids[i], embed_crop(crops[i], kpts[i], kpcs[i]),
+             cums[i], sides[i], hs[i], isos[i])
+            for i in range(len(crops))]
 
 
-def validate(samples):
-    """Leave-one-rally-out nearest-centroid accuracy + confusion."""
+def validate(samples, partner):
+    """Leave-one-rally-out diagnostics: overall 4-way, per-side 4-way
+    with per-side centroids (near and far court are different lighting
+    and scale regimes), and the binary within-team call the swap check
+    actually needs."""
     by_rally = defaultdict(list)
-    for u, e, cum in samples:
-        by_rally[cum].append((u, e))
-    hits = tot = 0
+    for u, e, cum, side, h, _iso in samples:
+        by_rally[cum].append((u, e, side, h))
+    st = Counter()
     confusion = Counter()
     for cum, test in by_rally.items():
-        X = defaultdict(list)
-        for u2, e2, c2 in samples:
+        Xs = {0: defaultdict(list), 1: defaultdict(list)}
+        Xall = defaultdict(list)
+        for u2, e2, c2, s2, _h2, _i2 in samples:
             if c2 != cum:
-                X[u2].append(e2)
-        m = Model()
-        m.fit(X)
-        for u, e in test:
-            p, _m = m.predict(e)
-            tot += 1
-            hits += p == u
+                Xs[s2][u2].append(e2)
+                Xall[u2].append(e2)
+        m_all = Model()
+        m_all.fit(Xall)
+        m_side = {}
+        for s in (0, 1):
+            m_side[s] = Model()
+            m_side[s].fit(Xs[s])
+        for u, e, s, _h in test:
+            p, _ = m_all.predict(e)
+            st["tot"] += 1
+            st["hit"] += p == u
             if p != u:
                 confusion[(u, p)] += 1
-    return hits / max(tot, 1), tot, confusion
+            ps, _ = m_side[s].predict(e)
+            st[f"stot{s}"] += 1
+            st[f"shit{s}"] += ps == u
+            q = partner.get(u)
+            if q and u in m_side[s].cent and q in m_side[s].cent:
+                bu = cos(e, m_side[s].cent[u])
+                bq = cos(e, m_side[s].cent[q])
+                st[f"btot{s}"] += 1
+                st[f"bhit{s}"] += bu > bq
+    return st, confusion
 
 
 def scan(a, rallies, model, names_full):
@@ -198,7 +325,7 @@ def scan(a, rallies, model, names_full):
                 continue
             nfr += 1
             for d in by_t[det_times[j]]:
-                e = embed(frame, d.box)
+                e = embed(frame, d)
                 if e is None:
                     continue
                 p, margin = model.predict(e)
@@ -219,6 +346,105 @@ def scan(a, rallies, model, names_full):
     return rows
 
 
+
+def moments_crop(crop, kpt, kpc):
+    """Per-region Lab color moments (mean+std of L,a,b for torso/legs/
+    arms = 18 dims).  Histogram embeddings could not separate the
+    desaturated kits (black tee, dark shorts) — compact moments in a
+    perceptual space do: 97.9%/98.3% within-team sample accuracy
+    against EM-consistent labels on the mixed final."""
+    import cv2
+    lab = cv2.cvtColor(crop, cv2.COLOR_RGB2LAB).astype(np.float32)
+    Hh, Ww = crop.shape[:2]
+    out = []
+    for segs in (TORSO, LEGS, ARMS):
+        cols = []
+        for a, b in segs:
+            if kpc[a] < 0.3 or kpc[b] < 0.3:
+                continue
+            pa, pb = kpt[a], kpt[b]
+            for f in np.linspace(0.15, 0.85, 8):
+                x = int(pa[0] + f * (pb[0] - pa[0]))
+                y = int(pa[1] + f * (pb[1] - pa[1]))
+                if 1 <= x < Ww - 1 and 1 <= y < Hh - 1:
+                    cols.append(lab[y - 1:y + 2, x - 1:x + 2]
+                                .reshape(-1, 3).mean(0))
+        if len(cols) < 4:
+            out.extend([np.nan] * 6)
+        else:
+            arr = np.array(cols)
+            out.extend(arr.mean(0).tolist() + arr.std(0).tolist())
+    return np.array(out, np.float32)
+
+
+def team_lda_em(X, y, cs, iters=4):
+    """2-class LDA direction with RALLY-level label-flip EM: anchor
+    identity errors swap BOTH partners for a whole rally, so labels are
+    noisy per-rally, not per-sample.  The direction is global; a rally
+    flips when its samples project majority-wrong; polarity is anchored
+    by the unswapped majority."""
+    yy = y.copy()
+    w = thr = None
+    for it in range(iters):
+        mu0, mu1 = X[yy == 0].mean(0), X[yy == 1].mean(0)
+        Sw = np.cov(X[yy == 0].T) + np.cov(X[yy == 1].T)
+        w = np.linalg.solve(Sw + 1e-3 * np.eye(X.shape[1]), mu1 - mu0)
+        proj = X @ w
+        thr = (proj[yy == 0].mean() + proj[yy == 1].mean()) / 2
+        flips = 0
+        for c in set(cs.tolist()):
+            mm = cs == c
+            if np.mean((proj[mm] > thr) == (yy[mm] == 1)) < 0.5:
+                yy[mm] = 1 - yy[mm]
+                flips += 1
+        if flips == 0 and it > 0:
+            break
+    return w, thr, yy
+
+
+def audit(a, samples, partner, names_full):
+    """Anchor-identity audit: per-team EM over Lab moments -> a swap
+    ledger (rally x team -> swap 0/1 + unanimity).  Consumed by
+    coverage.run --swaps."""
+    z = np.load(ROOT / f"data/vision/appearance_crops_{a.vod}.npz")
+    crops, uuids, cums = z["crop"], z["uuid"], z["cum"]
+    kpts, kpcs, isos = z["kpt"], z["kpc"], z["iso"]
+    keep = [i for i in range(len(crops)) if isos[i] <= 0.05]
+    F = np.stack([moments_crop(crops[i], kpts[i], kpcs[i]) for i in keep])
+    lab_u = np.array([str(uuids[i]) for i in keep])
+    cum_k = np.array([int(cums[i]) for i in keep])
+    ok = ~np.isnan(F).any(1)
+    teams = sorted({tuple(sorted((u, partner[u]))) for u in set(lab_u)
+                    if partner.get(u)})
+    rows = []
+    for ua, ub in teams:
+        m = ok & np.isin(lab_u, (ua, ub))
+        X, y = F[m], (lab_u[m] == ub).astype(int)
+        cs = cum_k[m]
+        w, thr, yy = team_lda_em(X, y, cs)
+        proj = X @ w
+        pred = (proj > thr).astype(int)
+        for c in sorted(set(cs.tolist())):
+            mm = cs == c
+            if mm.sum() < 3:
+                continue
+            swap = int(not np.array_equal(yy[mm], y[mm]))
+            unan = float(np.mean(pred[mm] == yy[mm]))
+            rows.append(dict(rally_cum=int(c), team=f"{ua}|{ub}",
+                             swap=swap, unanimity=f"{unan:.2f}",
+                             n=int(mm.sum())))
+        n_sw = sum(r["swap"] for r in rows if r["team"] == f"{ua}|{ub}")
+        n_all = sum(1 for r in rows if r["team"] == f"{ua}|{ub}")
+        print(f"{names_full[ua]}/{names_full[ub]}: chain swapped "
+              f"{n_sw}/{n_all} audited rallies")
+    out = ROOT / f"data/vision/identity_swaps_{a.vod}.csv"
+    with open(out, "w", newline="") as fh:
+        wr = csv.DictWriter(fh, fieldnames=list(rows[0]))
+        wr.writeheader()
+        wr.writerows(rows)
+    print(f"-> {out}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--video", type=Path)
@@ -228,6 +454,10 @@ def main():
     ap.add_argument("--lineup")
     ap.add_argument("--cam", default="")
     ap.add_argument("--vod", default="match")
+    ap.add_argument("--validate-only", action="store_true",
+                    help="harvest + LORO validation, skip the full scan")
+    ap.add_argument("--audit", action="store_true",
+                    help="anchor-identity audit -> swap ledger")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -236,27 +466,44 @@ def main():
     for req in ("video", "pose_dir", "court", "windows", "lineup"):
         if not getattr(a, req):
             ap.error(f"--{req} required")
-    names_full = {r["player_uuid"]: r["player"].split()[-1]
-                  for r in csv.DictReader(
-                      open(ROOT / "data/coverage_players.csv"))}
+    names_full, partner = {}, {}
+    for r in csv.DictReader(open(ROOT / "data/coverage_players.csv")):
+        names_full[r["player_uuid"]] = r["player"].split()[-1]
+        partner[r["player_uuid"]] = r["partner_uuid"]
     print("resolving rallies (geometry chain)...")
     rallies = resolve_rallies(a)
     print(f"{len(rallies)} rallies resolved")
     print("harvesting anchor-time labeled crops...")
     samples = harvest(a, rallies)
-    per = Counter(u for u, _e, _c in samples)
+    n0 = len(samples)
+    samples = [s for s in samples if s[5] <= 0.05]
+    print(f"isolation filter: {len(samples)}/{n0} crops kept "
+          f"(IoU<=0.05 with every other box)")
+    per = Counter(s[0] for s in samples)
     print(f"{len(samples)} samples: "
           + ", ".join(f"{names_full.get(u, u[:8])} {n}"
                       for u, n in per.most_common()))
-    acc, tot, confusion = validate(samples)
-    print(f"leave-one-rally-out accuracy {acc:.1%} on {tot}")
+    if a.audit:
+        audit(a, samples, partner, names_full)
+        return
+    st, confusion = validate(samples, partner)
+    print(f"leave-one-rally-out 4-way accuracy "
+          f"{st['hit'] / max(st['tot'], 1):.1%} on {st['tot']}")
+    for s, nm in ((0, "NEAR"), (1, "FAR")):
+        print(f"  {nm}: 4-way(per-side) "
+              f"{st[f'shit{s}'] / max(st[f'stot{s}'], 1):.1%} "
+              f"on {st[f'stot{s}']}   within-team binary "
+              f"{st[f'bhit{s}'] / max(st[f'btot{s}'], 1):.1%} "
+              f"on {st[f'btot{s}']}")
     for (u, p), n in confusion.most_common(6):
         print(f"  confused {names_full.get(u, u[:8])} -> "
               f"{names_full.get(p, p[:8])}: {n}")
+    if a.validate_only:
+        return
     model = Model()
     X = defaultdict(list)
-    for u, e, _cum in samples:
-        X[u].append(e)
+    for s in samples:
+        X[s[0]].append(s[1])
     model.fit(X)
     print("scanning all rallies for geometry/appearance disagreement...")
     rows = scan(a, rallies, model, names_full)
@@ -279,29 +526,53 @@ def main():
 
 
 def selftest():
-    # two synthetic 'players': red-shirt vs green-shirt over dark floor
-    import numpy as np
+    # two synthetic 'players': red-shirt vs green-shirt over dark floor,
+    # PLUS a partner-colored slab inside the box that skeleton sampling
+    # must ignore (the crop-histogram failure mode, reproduced)
     rng = np.random.default_rng(7)
-    def person(top):
+
+    class D:
+        pass
+
+    def person(top, bleed):
         fr = np.zeros((200, 100, 3), np.uint8)
-        fr[:, :] = (40, 40, 40)
-        fr[20:90, 30:70] = top          # torso band
-        fr[90:160, 35:65] = (30, 30, 90)
+        fr[:, :] = (170, 110, 60)              # bright floor
+        fr[20:90, 30:70] = top                 # torso
+        fr[90:160, 35:65] = (30, 30, 90)       # shorts
+        fr[10:190, 75:98] = bleed              # partner bleeding into box
         fr += rng.integers(0, 12, fr.shape, np.uint8)
-        return fr
+        d = D()
+        d.box = (25, 10, 99, 190)
+        k = np.zeros((17, 2), np.float32)
+        k[5] = (35, 25)
+        k[6] = (65, 25)                        # shoulders
+        k[11] = (38, 88)
+        k[12] = (62, 88)                       # hips
+        k[13] = (40, 120)
+        k[14] = (60, 120)                      # knees
+        k[15] = (42, 155)
+        k[16] = (58, 155)                      # ankles
+        k[7] = (32, 55)
+        k[8] = (68, 55)                        # elbows
+        d.kpt = k
+        d.kpc = np.full(17, 0.9, np.float32)
+        return fr, d
+
     X = defaultdict(list)
     for _ in range(10):
-        e = embed(person((200, 30, 30)), (25, 10, 75, 170))
-        X["red"].append(e)
-        e = embed(person((30, 200, 30)), (25, 10, 75, 170))
-        X["green"].append(e)
+        fr, d = person((200, 30, 30), (30, 200, 30))
+        X["red"].append(embed(fr, d))
+        fr, d = person((30, 200, 30), (200, 30, 30))
+        X["green"].append(embed(fr, d))
     m = Model()
     m.fit(X)
-    p, margin = m.predict(embed(person((210, 25, 25)), (25, 10, 75, 170)))
+    fr, d = person((210, 25, 25), (25, 210, 25))
+    p, margin = m.predict(embed(fr, d))
     assert p == "red" and margin > 0.02, (p, margin)
-    p, _ = m.predict(embed(person((25, 210, 25)), (25, 10, 75, 170)))
+    fr, d = person((25, 210, 25), (210, 25, 25))
+    p, _ = m.predict(embed(fr, d))
     assert p == "green"
-    print("SELFTEST OK (embedding separates kit colors, margins sane)")
+    print("SELFTEST OK (skeleton sampling ignores floor + partner bleed)")
 
 
 if __name__ == "__main__":

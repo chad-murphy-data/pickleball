@@ -196,6 +196,17 @@ def run(a):
     lineup_rows, lineup_by, lineup_ids = load_lineup(a.lineup)
     genders, names_full = player_meta()
     pose_dir = Path(a.pose_dir)
+    swaps = {}
+    if getattr(a, "swaps", ""):
+        import csv as _csv
+        from collections import defaultdict as _dd
+        swaps = _dd(list)
+        for r in _csv.DictReader(open(a.swaps)):
+            if r["swap"] == "1" and float(r["unanimity"]) >= 0.8:
+                swaps[int(r["rally_cum"])].append(
+                    tuple(r["team"].split("|")))
+        print(f"swap ledger: {sum(len(v) for v in swaps.values())} "
+              f"team-rally swaps")
 
     have = sorted(int(p.stem[1:]) for p in pose_dir.glob("r*.npz"))
     if a.rallies:
@@ -265,6 +276,13 @@ def run(a):
             hts = {tr: float(np.median(v)) for tr, v in hts.items()}
             nm, conf, checks = anchor_identity(
                 dets, t_serve, win, lin, genders, hts)
+            if nm is not None:
+                # appearance-audited anchor swaps (same ledger the
+                # metrics run consumes via coverage.run --swaps)
+                for (ua, ub) in swaps.get(cum, ()):
+                    inv = {u: tr for tr, u in nm.items()}
+                    if ua in inv and ub in inv:
+                        nm[inv[ua]], nm[inv[ub]] = ub, ua
             if qual == 0.0:
                 status = "anchor"
             elif nm is None or conf < CONF_MIN:
@@ -332,6 +350,9 @@ def main():
                          "spotcheck template")
     ap.add_argument("--spotcheck-out", default="")
     ap.add_argument("--vod", default="")
+    ap.add_argument("--swaps", default="",
+                    help="identity_swaps CSV (coverage_appearance "
+                         "--audit)")
     ap.add_argument("--legend-a", default="",
                     help="jersey-description line drawn in team A's "
                          "label color (match-specific, so a flag)")

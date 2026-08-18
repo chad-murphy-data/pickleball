@@ -1009,6 +1009,15 @@ def run(a, collect=None):
     lineup_rows, lineup_by, lineup_ids = load_lineup(a.lineup)
     genders, names = player_meta()
     pose_dir = Path(a.pose_dir)
+    swaps = defaultdict(list)
+    n_swapped = 0
+    if getattr(a, "swaps", ""):
+        for r in csv.DictReader(open(a.swaps)):
+            if r["swap"] == "1" and float(r["unanimity"]) >= 0.8:
+                swaps[int(r["rally_cum"])].append(
+                    tuple(r["team"].split("|")))
+        print(f"swap ledger: {sum(len(v) for v in swaps.values())} "
+              f"team-rally swaps loaded from {a.swaps}")
     # backend provenance: fleet numbers are not trusted until the spec's
     # pre-named A/B guard has run (vision/coverage_ab.py; ViTPose wins
     # disagreements) — so every row records which backend produced it
@@ -1075,6 +1084,16 @@ def run(a, collect=None):
         if names_map is None or conf < CONF_MIN:
             dropped["identity_" + checks.get("reason", "lowconf")] += 1
             continue
+        # appearance-audited anchor swaps (coverage_appearance --audit):
+        # the geometry chain's server/partner pick can swap a TEAM's two
+        # names for a whole rally (stacking ambiguity; measured 12/63 +
+        # 19/63 on the mixed final).  The ledger says which rallies —
+        # swap them back before any frame is attributed.
+        for (ua, ub) in swaps.get(cum, ()):
+            inv = {u: tr for tr, u in names_map.items()}
+            if ua in inv and ub in inv:
+                names_map[inv[ua]], names_map[inv[ub]] = ub, ua
+                n_swapped += 1
         # lineup-halves consistency (report-only): predicted lateral half
         # of the server vs observed, weighted by the machine's local
         # receiver_ok agreement around this rally
@@ -1286,6 +1305,8 @@ def run(a, collect=None):
                ("vod", "match_id"))
     print(f"covered {n_covered}/{len(windows)} rallies; "
           f"dropped: {dict(dropped)}")
+    if swaps:
+        print(f"anchor-identity swaps applied: {n_swapped}")
     if endmap_n:
         print(f"end-map consistency {endmap_n - endmap_viol}/{endmap_n}")
     if halves_tested:
@@ -1582,6 +1603,9 @@ def main():
                     help="explicitly run without the main-camera gate "
                          "(recorded as OFF in the events ledger)")
     ap.add_argument("--spotcheck", default="")
+    ap.add_argument("--swaps", default="",
+                    help="identity_swaps CSV from coverage_appearance "
+                         "--audit; anchor names swap back per ledger")
     ap.add_argument("--vod", default="")
     ap.add_argument("--event", default="")
     ap.add_argument("--date", default="")
