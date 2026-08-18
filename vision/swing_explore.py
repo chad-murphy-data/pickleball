@@ -47,6 +47,14 @@ from contact_ceiling import (load_rosters, load_labels, rally_candidates,
                              rally_coverage, ARM_JOINTS, L_SHO, R_SHO,
                              L_ELB, R_ELB, L_WRIST, R_WRIST, L_HIP, R_HIP)
 
+# COCO-17 indices not needed by Gate C, so not in contact_ceiling.py —
+# footwork and gaze channels only (feature_check.py)
+NOSE = 0
+L_EYE, R_EYE = 1, 2
+L_EAR, R_EAR = 3, 4
+L_KNEE, R_KNEE = 13, 14
+L_ANK, R_ANK = 15, 16
+
 LABELS = "contact_labels_chicago0725.csv"
 WINDOWS_V4 = "rally_windows_chicago0725_v4.csv"
 POSE_DIR = "pose_rtm"
@@ -87,7 +95,9 @@ def track_series(t, box, kpt, kpc, fps):
     ok_dt = dt <= 2.5 / fps
     chans = {}
     for name, j in (("lw", L_WRIST), ("rw", R_WRIST),
-                    ("le", L_ELB), ("re", R_ELB)):
+                    ("le", L_ELB), ("re", R_ELB),
+                    ("la", L_ANK), ("ra", R_ANK),
+                    ("lk", L_KNEE), ("rk", R_KNEE)):
         rel = (kpt[:, j] - hip) / scale[:, None]
         v = np.zeros(n)
         d = np.linalg.norm(np.diff(rel, axis=0), axis=1)
@@ -101,6 +111,11 @@ def track_series(t, box, kpt, kpc, fps):
         v[1:] = np.where(conf[1:] & conf[:-1], vv, 0.0)
         chans[name] = np.minimum(v, 3.0)
     arm = np.maximum.reduce([chans[k] for k in ("lw", "rw", "le", "re")])
+    # hip-relative, same as arm: cancels overall court travel (hipv,
+    # below, already covers that), isolates STEPPING/shuffle motion —
+    # a player planted with feet moving under them reads differently
+    # here than one just jogging to a spot with a steady stride
+    leg = np.maximum.reduce([chans[k] for k in ("la", "ra", "lk", "rk")])
 
     shovec = kpt[:, R_SHO] - kpt[:, L_SHO]
     shoang = np.arctan2(shovec[:, 1], shovec[:, 0] + 1e-9)
@@ -116,6 +131,24 @@ def track_series(t, box, kpt, kpc, fps):
     dsho_ok = ok_dt & sho_conf[1:] & sho_conf[:-1]
     dsho[1:] = np.where(dsho_ok,
                         np.abs(np.angle(np.exp(1j * np.diff(shoang)))), 0.0)
+
+    # gaze proxy: same angular-velocity math as dsho, on the ear line
+    # instead of the shoulder line. Ears over eyes — same head-yaw
+    # geometry, but a pose model localizes the ear landmark from head
+    # shape/context and doesn't need to resolve anything as fine as an
+    # eye at broadcast distance, so it should hold confidence better.
+    # Raw eye/ear/nose confidence is returned separately below
+    # (feature_check.py reports it directly) so how much "eyes"
+    # specifically buys here is an honest, checkable number, not an
+    # assumption.
+    earvec = kpt[:, R_EAR] - kpt[:, L_EAR]
+    earang = np.arctan2(earvec[:, 1], earvec[:, 0] + 1e-9)
+    dgaze = np.zeros(n)
+    ear_conf = (kpc[:, L_EAR] >= 0.2) & (kpc[:, R_EAR] >= 0.2)
+    dgaze_ok = ok_dt & ear_conf[1:] & ear_conf[:-1]
+    dgaze[1:] = np.where(dgaze_ok,
+                         np.abs(np.angle(np.exp(1j * np.diff(earang)))), 0.0)
+
     hipv = np.zeros(n)
     hipv[1:] = np.where(ok_dt,
                         np.linalg.norm(np.diff(hip, axis=0), axis=1)
@@ -128,6 +161,10 @@ def track_series(t, box, kpt, kpc, fps):
 
     return {"t": t, "arm": arm, "lw": chans["lw"], "rw": chans["rw"],
             "le": chans["le"], "re": chans["re"], "dsho": dsho,
+            "leg": leg, "dgaze": dgaze,
+            "nose_c": kpc[:, NOSE], "leye_c": kpc[:, L_EYE],
+            "reye_c": kpc[:, R_EYE], "lear_c": kpc[:, L_EAR],
+            "rear_c": kpc[:, R_EAR],
             "hipv": hipv, "whi": wrist_hi, "kconf": kconf,
             "ynorm": box[:, 3], "cx": cx, "bh": bh}
 
@@ -772,19 +809,25 @@ def selftest():
     assert hit / len(r["contacts"]) >= 0.85, "decoder lost planted swings"
     assert abs(cnt - len(r["contacts"])) <= 2, "decoded count way off"
 
-    # dsho confidence/gap gate: a glitched shoulder keypoint (L/R swap
-    # under low confidence) must not read as a near-pi "rotation"; a
-    # real, high-confidence, gradual rotation must still register
-    tg = np.arange(5) / 30.0
-    boxg = np.tile([100., 100., 150., 300.], (5, 1)).astype(np.float32)
-    kptg = np.zeros((5, 17, 2), np.float32)
-    kpcg = np.zeros((5, 17), np.float32)
+    # dsho/dgaze/leg gates, one synthetic 6-frame rig. Shoulders glitch
+    # at frame 3, ears glitch at frame 4 (DIFFERENT frames) so each
+    # gate's independence from the other is checked, not just that both
+    # fire together; ankle gets a real small drift plus one huge,
+    # low-confidence jump at frame 3 (same shape of bug as the dsho
+    # ceiling, for a speed channel instead of a wrapped angle).
+    n6 = 6
+    tg = np.arange(n6) / 30.0
+    boxg = np.tile([100., 100., 150., 300.], (n6, 1)).astype(np.float32)
+    kptg = np.zeros((n6, 17, 2), np.float32)
+    kpcg = np.zeros((n6, 17), np.float32)
     kptg[:, L_HIP] = kptg[:, R_HIP] = [125., 250.]
     kpcg[:, L_HIP] = kpcg[:, R_HIP] = 0.9
-    ang = [0.0, 0.02, 0.04, None, 0.06]      # frame 3 is the glitch
-    for i in range(5):
-        if ang[i] is not None:
-            a = ang[i]
+    sho_ang = [0.0, 0.02, 0.04, None, 0.06, 0.08]     # frame 3 glitches
+    ear_ang = [0.0, 0.015, 0.03, 0.045, None, 0.075]  # frame 4 glitches
+    ank_x = [110., 112., 114., None, 116., 118.]      # frame 3 glitches
+    for i in range(n6):
+        if sho_ang[i] is not None:
+            a = sho_ang[i]
             kptg[i, L_SHO] = [125 - 20 * np.cos(a), 180 - 20 * np.sin(a)]
             kptg[i, R_SHO] = [125 + 20 * np.cos(a), 180 + 20 * np.sin(a)]
             kpcg[i, L_SHO] = kpcg[i, R_SHO] = 0.9
@@ -793,14 +836,48 @@ def selftest():
             kptg[i, R_SHO] = [104., 179.]
             kpcg[i, L_SHO] = 0.05            # low confidence -> gated
             kpcg[i, R_SHO] = 0.9
+        if ear_ang[i] is not None:
+            a = ear_ang[i]
+            kptg[i, L_EAR] = [125 - 15 * np.cos(a), 165 - 15 * np.sin(a)]
+            kptg[i, R_EAR] = [125 + 15 * np.cos(a), 165 + 15 * np.sin(a)]
+            kpcg[i, L_EAR] = kpcg[i, R_EAR] = 0.9
+        else:
+            kptg[i, L_EAR] = [140., 166.]
+            kptg[i, R_EAR] = [110., 164.]
+            kpcg[i, L_EAR] = 0.9
+            kpcg[i, R_EAR] = 0.05             # low confidence -> gated
+        if ank_x[i] is not None:
+            for j in (L_ANK, R_ANK, L_KNEE, R_KNEE):
+                kptg[i, j] = [ank_x[i], 295.]
+                kpcg[i, j] = 0.9
+        else:
+            for j in (L_ANK, R_ANK, L_KNEE, R_KNEE):
+                kptg[i, j] = [174., 295.]     # a 60px jump — huge if
+                kpcg[i, j] = 0.05             # counted; low conf instead
     serg = track_series(tg, boxg, kptg, kpcg, 30.0)
-    assert serg["dsho"][3] < 1e-6, \
-        f"glitch frame should be gated to 0, got {serg['dsho'][3]:.3f}"
-    assert serg["dsho"][4] < 1e-6, \
-        f"diff touching the glitch frame should be gated, got {serg['dsho'][4]:.3f}"
+
+    assert serg["dsho"][3] < 1e-6 and serg["dsho"][4] < 1e-6, \
+        "dsho glitch frame (and the diff touching it) should gate to 0"
     assert 0.01 < serg["dsho"][1] < 0.05 and 0.01 < serg["dsho"][2] < 0.05, \
-        "real gradual rotation should still register, gate is too strict"
-    print("  dsho gate: glitch frame suppressed, real rotation preserved OK")
+        "dsho: real gradual rotation should still register"
+    assert 0.01 < serg["dsho"][5] < 0.05, \
+        "dsho should recover once past the glitch frame"
+
+    assert serg["dgaze"][4] < 1e-6 and serg["dgaze"][5] < 1e-6, \
+        "dgaze glitch frame (and the diff touching it) should gate to 0"
+    assert 0.005 < serg["dgaze"][1] < 0.03 and 0.005 < serg["dgaze"][2] < 0.03, \
+        "dgaze: real gradual rotation should still register"
+    assert serg["dgaze"][3] > 0.005, \
+        "dgaze at the SHOULDER glitch frame must not be gated by it " \
+        "(ears were fine there) -- the two gates must be independent"
+
+    assert serg["leg"][3] < 1e-6 and serg["leg"][4] < 1e-6, \
+        "leg glitch frame (and the diff touching it) should gate to 0, " \
+        "not read the 60px jump as real speed"
+    assert serg["leg"][1] > 1e-4 and serg["leg"][2] > 1e-4, \
+        "leg: real small drift should still register"
+    print("  dsho/dgaze/leg gates: glitches suppressed, real motion "
+          "preserved, shoulder/ear gates independent OK")
     print("SELFTEST OK")
 
 

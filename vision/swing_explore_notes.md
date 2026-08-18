@@ -112,7 +112,7 @@ r9/r10 for TRAINING use until the debug-frame scorebug check clears it.
 Constant-tuning further on these 10 rallies is over — the numbers above
 are the plateau.
 
-## Shoulder-rotation bimodality check (2026-08-18)
+## Candidate-feature checks: shoulders, feet, gaze (2026-08-18)
 
 Separate from the two levers above — a feature-value question, not a
 model-tuning one. Earlier ranking called shoulder rotation the weakest
@@ -134,19 +134,20 @@ SHAPE is consistent with a mixed population. `dsho` (shoulder-line
 angular velocity) already exists in `track_series` as one of the six
 learned-scorer channels — nothing new extracted, just looked at.
 
-`vision/shoulder_check.py`: pulls `dsho` core/early-window peaks for
-already-labeled dink+counter contacts vs drive/speed-up/smash, same
-hitter-track and window conventions as `rally_instances`/`window_feats`
-(reused, not reimplemented). Prints per-type distributions, a text
-histogram, and Sarle's bimodality coefficient (BC = (skew²+1)/kurtosis,
->0.555 rule-of-thumb bimodal) — a rough heuristic, read next to the
-histogram, not instead of it. Selftest (`--selftest`, no files needed)
-caught a real bug before this ran on anything: a hand-rolled 1D-2-means
-gap/spread statistic was the first design and is mathematically unable
-to discriminate (pooled spread already contains the between-cluster
-gap, so the ratio caps near 2.0 even for infinitely-separated clusters,
-and a plain unimodal Gaussian split down the middle already scores
-~1.6) — replaced before ever pointing it at real labels.
+`vision/shoulder_check.py` (original): pulled `dsho` core/early-window
+peaks for already-labeled dink+counter contacts vs drive/speed-up/smash,
+same hitter-track and window conventions as `rally_instances`/
+`window_feats` (reused, not reimplemented). Prints per-type
+distributions, a text histogram, and Sarle's bimodality coefficient
+(BC = (skew²+1)/kurtosis, >0.555 rule-of-thumb bimodal) — a rough
+heuristic, read next to the histogram, not instead of it. Selftest
+(`--selftest`, no files needed) caught a real bug before this ran on
+anything: a hand-rolled 1D-2-means gap/spread statistic was the first
+design and is mathematically unable to discriminate (pooled spread
+already contains the between-cluster gap, so the ratio caps near 2.0
+even for infinitely-separated clusters, and a plain unimodal Gaussian
+split down the middle already scores ~1.6) — replaced before ever
+pointing it at real labels.
 
 Not run against real pose data yet (needs the user's Mac / pose_rtm).
 If the soft-shot group reads bimodal, next step is a schema addition
@@ -185,3 +186,38 @@ nowhere near enough events to lean on. Re-run against the fixed code
 before drawing any conclusion; if the intermediate band survives and
 BC still clears 0.555 with the ceiling artifact gone, that's a real
 result worth taking to the schema-addition conversation.
+
+**Extended to feet and gaze, renamed `vision/feature_check.py`
+(2026-08-18)**: the user asked directly for footwork and eyes alongside
+shoulders — the other two candidates from the "what else could a
+swing-detector look at" discussion (footwork was independently agreed
+as the strongest candidate; poaching/court-crossing was reframed earlier
+as a decoder-identity aid, not a detection feature, and stays unbuilt).
+Two new `track_series` channels, both riding on keypoints
+`pose_extract.py` already saves and neither wired into the trained
+scorer (exploration only, no re-tune):
+
+- `leg`: hip-relative ankle+knee speed, identical math to the existing
+  `arm` channel (same confidence/gap gate from day one — no glitch class
+  to fix here, since it copies an already-correct pattern rather than
+  inventing new angle math). Headlined on the EARLY window, not core —
+  the hypothesis ("feet moving = getting ready to hit") is about the
+  PREP arc, unlike shoulder rotation which is about the strike itself.
+- `dgaze`: ear-line angular velocity, identical math to the
+  now-fixed `dsho` (same >=0.2-confidence, both-endpoints, both-keypoint
+  gate from the start). Ears, not eyes — same head-yaw geometry, but a
+  pose model localizes an ear from head shape/context and doesn't need
+  to resolve anything as fine as an eye at broadcast distance.
+
+`feature_check.py` reports raw nose/eye/ear keypoint CONFIDENCE/coverage
+first, before any behavioral number — a cheap, decisive answer to the
+user's stated skepticism about eyes specifically (grounded prior:
+`ball_visibility.py` found the ball findable in only 64% of in-play
+frames on this same condensed-VOD footage; faces are smaller). If eye/
+ear coverage reads low, `dgaze` should be treated as noisy-to-unusable
+regardless of what its distribution looks like — the report says so
+inline. Both new channels got the same selftest rigor as the dsho fix:
+a synthetic 6-frame rig with INDEPENDENT glitch frames for shoulders
+(frame 3) and ears (frame 4) proving the two gates don't leak into each
+other, plus a real-motion-preserved check for each. Not yet run against
+real pose data.
