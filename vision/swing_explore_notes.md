@@ -271,3 +271,42 @@ Selftest extended: `dsho_nocap` must preserve the raw reading a capped
 `dsho` suppresses, and must equal the capped value when nothing was
 suppressed. Not yet re-run — this is the next thing to look at before
 reading dgaze's soft-vs-committed gap as real.
+
+## Does leg/dgaze actually improve swing DETECTION? (2026-08-18)
+
+Different question from everything above. Every `feature_check.py`
+result answers "among KNOWN shots, does movement look different by shot
+type" — useful for deciding a feature is worth trying, but silent on
+whether it helps the thing this file's trained scorer is actually FOR:
+telling a real swing apart from a non-swing. `vision/channel_ablation.py`
+answers that directly, same LORO/coverage@2x/TOL_S=0.30s methodology
+already validated in this file, run twice and compared:
+
+    BASE = arm/lw/rw/le/re/dsho   (the v1-v5 pipeline's channels)
+    EXT  = BASE + leg + dgaze
+
+`window_feats`/`rally_instances`/`score_rally` in `swing_explore.py`
+now take an optional `channels=` param (default `CHANNELS_BASE`,
+preserving the exact v1-v5 vector shape/behavior for every existing
+caller). `strike_only` guarded with an explicit shape assertion rather
+than silently mis-ablating if ever pointed at EXT-shaped vectors (it
+isn't, currently — this comparison doesn't touch the prep/strike
+ablation question).
+
+IMPORTANT: BASE here is NOT the historical 56.2%. That number predates
+the dsho confidence-vs-precision fix — trained on values that don't
+exist anymore. channel_ablation.py re-measures BASE fresh on the same
+rallies so the comparison is apples to apples regardless of the old
+number.
+
+Selftest has real teeth (contact_ceiling.py's own standard: a control
+that would fail if the mechanism didn't work, not just "doesn't
+crash"): zeroes arm/lw/rw/le/re — everything BASE has except an already-
+uninformative-by-construction dsho — on 2 of 4 synthetic rallies while
+keeping a planted dgaze signal intact throughout. BASE genuinely
+struggles (75% vs its 100% ceiling unhandicapped); EXT recovers fully
+(100%) via dgaze alone. First version of this test only asserted
+"EXT >= BASE" and both tied at 100% — true but proved nothing about
+whether the mechanism does any work; caught before shipping.
+
+Not yet run against real data.

@@ -153,8 +153,7 @@ def bimodality_coefficient(v):
     return (skew ** 2 + 1) / max(kurt, 1e-9)
 
 
-def collect(labels, split, pose_dir, windows_path):
-    rosters = load_rosters(Path(windows_path))
+def collect(labels, split, pose_dir):
     rows, n_holdout = [], 0
     for cum, d in sorted(labels.items()):
         if split is not None and split.get(cum, "train") != "train":
@@ -196,7 +195,6 @@ def collect(labels, split, pose_dir, windows_path):
             for k in FACE_KEYS:
                 row[f"face_{k}"] = face[k]
             rows.append(row)
-    _ = rosters  # loaded for load_labels' caller upstream; kept for parity
     return rows, n_holdout
 
 
@@ -321,7 +319,7 @@ def main():
     rosters = load_rosters(Path(a.windows))
     labels = load_labels(Path(a.labels), rosters)
     split = load_split(a.split)
-    rows, n_holdout = collect(labels, split, a.pose_dir, a.windows)
+    rows, n_holdout = collect(labels, split, a.pose_dir)
     report(rows, n_holdout, a.split)
 
     if a.csv and rows:

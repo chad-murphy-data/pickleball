@@ -78,6 +78,15 @@ REFRACTORY_S = 0.25
 STRIDE = 3                     # frames between scored windows at inference
 SEED = 20260817
 
+# the trained scorer's channel set. BASE = the v1-v5 plateau (dsho
+# included since v3, now bug-fixed — see MAX_ROT_RAD above; a fresh
+# BASE run post-fix is NOT the same number as the historical 56.2%).
+# EXT adds leg/dgaze so channel_ablation.py can test, under the exact
+# same LORO methodology, whether they improve on what's already there
+# rather than just looking different on known contacts (feature_check.py).
+CHANNELS_BASE = ("arm", "lw", "rw", "le", "re", "dsho")
+CHANNELS_EXT = CHANNELS_BASE + ("leg", "dgaze")
+
 
 # ---------------------------------------------------------- per-track
 
@@ -216,10 +225,12 @@ def load_rally(pose_dir, cum):
 # ----------------------------------------------------------- features
 
 
-def window_feats(ser, tc, pre=PRE_S, post=POST_S):
+def window_feats(ser, tc, pre=PRE_S, post=POST_S, channels=CHANNELS_BASE):
     """Feature vector for one (track, time) instance, or None if the
     window lacks coverage. Prep-arc features are computed on
-    [tc-pre, tc-0.1]; strike on [tc-0.1, tc+post]."""
+    [tc-pre, tc-0.1]; strike on [tc-0.1, tc+post]. `channels` picks
+    which per-track series feed the vector (CHANNELS_BASE/_EXT above) —
+    default preserves the v1-v5 pipeline's exact shape."""
     t = ser["t"]
     m_all = (t >= tc - pre) & (t <= tc + post)
     if m_all.sum() < max(6, 0.5 * (pre + post) * 20):
@@ -234,7 +245,7 @@ def window_feats(ser, tc, pre=PRE_S, post=POST_S):
     f = []
     # per channel: [early_max, early_mean, core_max, core_mean,
     #               core_std, rise, core_tpeak]
-    for ch in ("arm", "lw", "rw", "le", "re", "dsho"):
+    for ch in channels:
         v = ser[ch]
         em = v[m_early].max() if m_early.any() else 0.0
         eu = v[m_early].mean() if m_early.any() else 0.0
@@ -268,9 +279,16 @@ def strike_only(x):
     window — everything more than 0.35 s before the tap, which no
     plausible tap jitter can contaminate with the strike itself.
     Blocks of 7: [early_max, early_mean, core_max, core_mean, core_std,
-    rise, core_tpeak] — zero early_max, early_mean, rise."""
+    rise, core_tpeak] — zero early_max, early_mean, rise. Only valid for
+    CHANNELS_BASE-shaped vectors (6 blocks + 8 fixed tail features) —
+    channel_ablation.py's EXT vectors have a different shape and don't
+    use this ablation, but assert rather than silently zero the wrong
+    columns if that ever changes."""
+    n_ch = len(CHANNELS_BASE)
+    assert x.shape[1] == n_ch * 7 + 8, \
+        f"strike_only assumes CHANNELS_BASE's shape, got {x.shape[1]} cols"
     x = x.copy()
-    for b in range(6):
+    for b in range(n_ch):
         x[:, b * 7 + 0] = 0.0
         x[:, b * 7 + 1] = 0.0
         x[:, b * 7 + 5] = 0.0
@@ -332,7 +350,7 @@ def predict(model, X):
 # ----------------------------------------------------- set construction
 
 
-def rally_instances(rd, contacts, whiffs, mapping):
+def rally_instances(rd, contacts, whiffs, mapping, channels=CHANNELS_BASE):
     """Training instances for one rally. Positives: at each contact, the
     max-arm-energy track on the hitter's image side (weak assignment —
     the actor within a side is not separately labeled). Negatives:
@@ -354,7 +372,7 @@ def rally_instances(rd, contacts, whiffs, mapping):
         s = team ^ mapping
         best, bf = None, None
         for ser in by_side[s]:
-            f = window_feats(ser, tc)
+            f = window_feats(ser, tc, channels=channels)
             if f is None:
                 continue
             if best is None or f[0] > best[0]:
@@ -367,7 +385,7 @@ def rally_instances(rd, contacts, whiffs, mapping):
         o = 1 - s
         if all(abs(tc - c) > GUARD_S for c in side_ct[o]):
             for ser in by_side[o]:
-                f = window_feats(ser, tc)
+                f = window_feats(ser, tc, channels=channels)
                 if f is not None:
                     X.append(f)
                     y.append(0)
@@ -382,7 +400,7 @@ def rally_instances(rd, contacts, whiffs, mapping):
             for pt in ser.get("_peaks", []):
                 if all(abs(pt - c) > GUARD_S for c in cts) and \
                         all(abs(pt - w) > WHIFF_GUARD_S for w in wh_t):
-                    f = window_feats(ser, pt)
+                    f = window_feats(ser, pt, channels=channels)
                     if f is not None:
                         X.append(f)
                         y.append(0)
@@ -390,14 +408,14 @@ def rally_instances(rd, contacts, whiffs, mapping):
                 rt = rng.uniform(t0 + PRE_S, t1 - POST_S)
                 if all(abs(rt - c) > GUARD_S for c in cts) and \
                         all(abs(rt - w) > WHIFF_GUARD_S for w in wh_t):
-                    f = window_feats(ser, rt)
+                    f = window_feats(ser, rt, channels=channels)
                     if f is not None:
                         X.append(f)
                         y.append(0)
     return X, y
 
 
-def score_rally(model, rd, ablate=False):
+def score_rally(model, rd, ablate=False, channels=CHANNELS_BASE):
     """Dense out-of-sample scoring: per-track score series -> peaks.
     Returns [(t, side, score)] detections."""
     dets = []
@@ -406,7 +424,7 @@ def score_rally(model, rd, ablate=False):
         idx = range(0, len(t), STRIDE)
         ts, feats = [], []
         for i in idx:
-            f = window_feats(ser, float(t[i]))
+            f = window_feats(ser, float(t[i]), channels=channels)
             if f is not None:
                 ts.append(float(t[i]))
                 feats.append(f)
