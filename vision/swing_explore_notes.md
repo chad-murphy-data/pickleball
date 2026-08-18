@@ -112,7 +112,7 @@ r9/r10 for TRAINING use until the debug-frame scorebug check clears it.
 Constant-tuning further on these 10 rallies is over — the numbers above
 are the plateau.
 
-## Shoulder-rotation bimodality check (2026-08-18, built, not yet run)
+## Shoulder-rotation bimodality check (2026-08-18)
 
 Separate from the two levers above — a feature-value question, not a
 model-tuning one. Earlier ranking called shoulder rotation the weakest
@@ -156,3 +156,32 @@ frozen labeling tool. If it's high-but-unimodal, or matches the
 committed-shot group, rotation stays out. Same rule as everything else
 here: a result worth believing graduates to fresh pre-registration on
 untouched holdout, never folded back into Gate C.
+
+**First real run, pre-fix (2026-08-18, RTMPose, the user's Mac)**:
+n=43 soft / 23 committed. Medians close (0.131 vs 0.146) but soft's p75
+reached higher (0.377 vs 0.227), and BC read 0.933 for soft — looked
+strongly bimodal at a glance. The histogram is why you don't stop at
+the summary number: both groups had a handful of values sitting right
+at ~3.13, and `dsho` is a wrapped angle difference — pi (≈3.14159) is
+its hard mathematical ceiling, not a real "fast rotation" reading.
+
+Traced the cause: unlike every other channel in `track_series`, `dsho`
+had no confidence or frame-gap gate. A low-confidence/occluded shoulder
+keypoint (an L/R swap under noise) reads as a near-180° flip between
+two consecutive frames — impossible physically at native fps, but
+exactly what pins the ceiling mathematically. Fixed: `dsho` now gates
+on >=0.2 confidence on both shoulder keypoints at both endpoints, plus
+the same `ok_dt` gap check every other channel already used. Selftest
+added directly to `track_series` (not just shoulder_check.py) proving
+a glitch frame zeroes out while real gradual rotation still registers.
+
+Net effect on the read: BC=0.933 shouldn't be trusted as-is — it's a
+kurtosis-based statistic and a few pi-pinned outliers can inflate it
+on their own. Excluding that top bin by eye, there's a smaller but
+real-looking asymmetry: soft had a few contacts (~4 of 43) in the
+1.2–2.7 range that committed (0 of 23) had none of — directionally
+consistent with "only some dinks/counters carry real rotation," but
+nowhere near enough events to lean on. Re-run against the fixed code
+before drawing any conclusion; if the intermediate band survives and
+BC still clears 0.555 with the ceiling artifact gone, that's a real
+result worth taking to the schema-addition conversation.

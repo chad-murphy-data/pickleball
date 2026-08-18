@@ -105,7 +105,17 @@ def track_series(t, box, kpt, kpc, fps):
     shovec = kpt[:, R_SHO] - kpt[:, L_SHO]
     shoang = np.arctan2(shovec[:, 1], shovec[:, 0] + 1e-9)
     dsho = np.zeros(n)
-    dsho[1:] = np.abs(np.angle(np.exp(1j * np.diff(shoang))))
+    # unlike every other channel here, this had NO confidence/gap gate:
+    # a low-confidence or occluded shoulder keypoint can flip L/R by
+    # noise alone, which reads as a near-pi "rotation" between two
+    # consecutive frames (physically impossible at native fps) and pins
+    # the ceiling every other channel's gating already avoids. Found via
+    # shoulder_check.py's real output: both shot-type groups showed a
+    # handful of values sitting right at the pi wraparound bound.
+    sho_conf = (kpc[:, L_SHO] >= 0.2) & (kpc[:, R_SHO] >= 0.2)
+    dsho_ok = ok_dt & sho_conf[1:] & sho_conf[:-1]
+    dsho[1:] = np.where(dsho_ok,
+                        np.abs(np.angle(np.exp(1j * np.diff(shoang)))), 0.0)
     hipv = np.zeros(n)
     hipv[1:] = np.where(ok_dt,
                         np.linalg.norm(np.diff(hip, axis=0), axis=1)
@@ -761,6 +771,36 @@ def selftest():
           f"count {cnt} vs {len(r['contacts'])}, ghosts {n_gh}")
     assert hit / len(r["contacts"]) >= 0.85, "decoder lost planted swings"
     assert abs(cnt - len(r["contacts"])) <= 2, "decoded count way off"
+
+    # dsho confidence/gap gate: a glitched shoulder keypoint (L/R swap
+    # under low confidence) must not read as a near-pi "rotation"; a
+    # real, high-confidence, gradual rotation must still register
+    tg = np.arange(5) / 30.0
+    boxg = np.tile([100., 100., 150., 300.], (5, 1)).astype(np.float32)
+    kptg = np.zeros((5, 17, 2), np.float32)
+    kpcg = np.zeros((5, 17), np.float32)
+    kptg[:, L_HIP] = kptg[:, R_HIP] = [125., 250.]
+    kpcg[:, L_HIP] = kpcg[:, R_HIP] = 0.9
+    ang = [0.0, 0.02, 0.04, None, 0.06]      # frame 3 is the glitch
+    for i in range(5):
+        if ang[i] is not None:
+            a = ang[i]
+            kptg[i, L_SHO] = [125 - 20 * np.cos(a), 180 - 20 * np.sin(a)]
+            kptg[i, R_SHO] = [125 + 20 * np.cos(a), 180 + 20 * np.sin(a)]
+            kpcg[i, L_SHO] = kpcg[i, R_SHO] = 0.9
+        else:
+            kptg[i, L_SHO] = [146., 181.]    # swapped-looking position
+            kptg[i, R_SHO] = [104., 179.]
+            kpcg[i, L_SHO] = 0.05            # low confidence -> gated
+            kpcg[i, R_SHO] = 0.9
+    serg = track_series(tg, boxg, kptg, kpcg, 30.0)
+    assert serg["dsho"][3] < 1e-6, \
+        f"glitch frame should be gated to 0, got {serg['dsho'][3]:.3f}"
+    assert serg["dsho"][4] < 1e-6, \
+        f"diff touching the glitch frame should be gated, got {serg['dsho'][4]:.3f}"
+    assert 0.01 < serg["dsho"][1] < 0.05 and 0.01 < serg["dsho"][2] < 0.05, \
+        "real gradual rotation should still register, gate is too strict"
+    print("  dsho gate: glitch frame suppressed, real rotation preserved OK")
     print("SELFTEST OK")
 
 
