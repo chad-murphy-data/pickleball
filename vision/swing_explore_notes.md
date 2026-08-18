@@ -309,4 +309,41 @@ struggles (75% vs its 100% ceiling unhandicapped); EXT recovers fully
 "EXT >= BASE" and both tied at 100% — true but proved nothing about
 whether the mechanism does any work; caught before shipping.
 
+**First real run (2026-08-18)**: BASE 57.4% overall (162 contacts) —
+the honest re-baseline, a small move from the stale 56.2% and NOT
+comparable to it directly, consistent with the dsho fix touching a
+modest slice of contacts rather than the whole model. EXT 54.9% — a
+small net NEGATIVE, not an improvement. Per-type deltas mostly single-
+digit and noise-range on the well-powered rows (other n=58, dink n=32,
+counter n=22); every large-looking delta (drop +33%, speed-up −11%,
+return −10%, serve +10%) turned out to be exactly ONE contact flipping
+on a sample of 3-10 — textbook small-n noise, not signal, exactly what
+the printed footer warns about. Plainest read: adding 14 columns
+(50->64) to a logistic model trained on ~150 examples per LORO fold
+costs more in estimation variance than these two channels are currently
+paying back. Doesn't kill leg/dgaze as features — it says the channels
+aren't strong enough YET to earn their keep at this label count, which
+points back to labels-at-scale (`labeling_protocol.md`) as the more
+load-bearing lever than more feature engineering right now.
+
+## Footwork window sweep (2026-08-18)
+
+User question: is the footwork ("leg") channel actually looking at the
+right window before contact, or did it just inherit PRE_S=0.75s from
+an unrelated earlier decision (the arm/prep-arc timing ablation, which
+picked 0.75s to sit safely beyond tap-jitter contamination on a totally
+different channel)? Answer: yes, inherited, never re-derived for
+footwork specifically. `feature_check.py --sweep-leg` adds a sliding
+0.40s window swept from 1.55s down to 0.75s before contact (the
+closest point exactly reproduces EARLY as a checkpoint — same window,
+computed two ways, asserted equal in the selftest).
+
+Also reports CONTAMINATION per window: whether it reaches back past the
+PREVIOUS contact (any player) via `sweep_contaminated()` — past that
+point a "prep" window is measuring recovery-from-the-last-shot as much
+as getting-ready-for-this-one, and fast hands exchanges make that a
+real risk the further back you look. Reported, not silently corrected
+— read the far-back rows against their contamination rate, don't just
+trust the number.
+
 Not yet run against real data.

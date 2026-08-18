@@ -66,6 +66,15 @@ COMMITTED = {"drive", "speed-up", "smash"}     # power shots — the
 EARLY = (-PRE_S, -0.35)   # prep arc — matches window_feats' m_early
 CORE = (-0.35, POST_S)    # strike — matches window_feats' m_core
 
+SWEEP_WIDTH = 0.40   # sliding window for leg_sweep (--sweep-leg): the
+SWEEP_STARTS = [1.55, 1.35, 1.15, 0.95, 0.75]  # existing EARLY window
+# was PRE_S=0.75s, chosen for an unrelated question (arm/prep-arc
+# timing, weeks ago) — never re-derived for footwork specifically.
+# Window = [tc-start, tc-start+SWEEP_WIDTH]; the LAST point (0.75)
+# exactly reproduces EARLY as a checkpoint. Doesn't sweep past -0.35s
+# (into CORE territory) -- that's the separate, already-covered
+# strike-window question.
+
 # channel key -> (display label, which window is the headline stat).
 # shoulder/gaze are about the STRIKE itself (core); footwork is about
 # GETTING READY to strike (early, prep arc) — both windows are always
@@ -99,6 +108,14 @@ def window_stat(ser, tc, lo, hi, ch):
     if not m.any():
         return None
     return float(v[m].max()), float(v[m].mean())
+
+
+def sweep_contaminated(tc, lo, prev_tc):
+    """Does a window starting at tc+lo reach back past the PREVIOUS
+    contact (any player)? If so it's measuring recovery from the last
+    shot as much as prep for this one — not what a footwork-prep window
+    is supposed to isolate."""
+    return prev_tc is not None and (tc + lo) < prev_tc
 
 
 def face_coverage(ser, tc):
@@ -167,13 +184,14 @@ def collect(labels, split, pose_dir):
         m_srv, margin = serve_mapping(rd, d["contacts"])
         m = m_srv if margin >= 1.25 else m_raw
         tracks = list(rd["tracks"].values())
-        for tc, team, ty in d["contacts"]:
+        for i, (tc, team, ty) in enumerate(d["contacts"]):
             ty = ty or "other"
             if ty not in SOFT and ty not in COMMITTED:
                 continue
             ser = pick_hitter(tracks, team ^ m, tc)
             if ser is None:
                 continue
+            prev_tc = d["contacts"][i - 1][0] if i > 0 else None
             row = {"rally": cum, "type": ty}
             ok = True
             for ch in CHANNELS:
@@ -189,6 +207,12 @@ def collect(labels, split, pose_dir):
             for ch in ("dsho", "dgaze"):
                 nc = window_stat(ser, tc, *CORE, f"{ch}_nocap")
                 row[f"{ch}_nocap_core_max"] = nc[0] if nc else 0.0
+            for start in SWEEP_STARTS:
+                lo, hi = -start, -start + SWEEP_WIDTH
+                st = window_stat(ser, tc, lo, hi, "leg")
+                row[f"leg_sweep_{start:.2f}_max"] = st[0] if st else 0.0
+                row[f"leg_sweep_{start:.2f}_contam"] = \
+                    sweep_contaminated(tc, lo, prev_tc)
             face = face_coverage(ser, tc)
             if face is None:
                 continue
@@ -303,6 +327,33 @@ def report(rows, n_holdout, split_path):
         print()
 
 
+def report_leg_sweep(rows):
+    print(f"=== leg (footwork) sweep: sliding {SWEEP_WIDTH:.2f}s window, "
+          f"by seconds-before-contact ===")
+    print(f"{'window':<16}{'soft n':>7}{'soft med':>10}{'comm n':>8}"
+          f"{'comm med':>10}{'gap':>8}{'contam%':>9}")
+    for start in SWEEP_STARTS:
+        mfield, cfield = f"leg_sweep_{start:.2f}_max", f"leg_sweep_{start:.2f}_contam"
+        soft = [r[mfield] for r in rows if r["type"] in SOFT]
+        comm = [r[mfield] for r in rows if r["type"] in COMMITTED]
+        if not soft or not comm:
+            continue
+        sm, cm = float(np.median(soft)), float(np.median(comm))
+        contam = float(np.mean([r[cfield] for r in rows]))
+        lo, hi = -start, -start + SWEEP_WIDTH
+        label = f"[{lo:.2f},{hi:.2f}]"
+        print(f"{label:<16}{len(soft):>7}{sm:>10.3f}{len(comm):>8}"
+              f"{cm:>10.3f}{sm - cm:>+8.3f}{contam:>8.0%}")
+    print(f"(checkpoint: the [{-SWEEP_STARTS[-1]:.2f},-0.35] row should "
+          f"match the leg early-window numbers above exactly — same "
+          f"window, computed two ways)")
+    print(f"contam% = share of ALL scored contacts whose window at that "
+          f"offset reaches back past the previous contact (any player) "
+          f"— at that point you're measuring recovery from the last "
+          f"shot as much as prep for this one; discount rows where "
+          f"it's high.\n")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--labels", default=LABELS)
@@ -310,6 +361,9 @@ def main():
     ap.add_argument("--pose-dir", default=POSE_DIR)
     ap.add_argument("--split", default=SPLIT)
     ap.add_argument("--csv", default=None)
+    ap.add_argument("--sweep-leg", action="store_true",
+                    help="sweep the footwork window further back before "
+                         "contact instead of the single fixed EARLY window")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -321,6 +375,8 @@ def main():
     split = load_split(a.split)
     rows, n_holdout = collect(labels, split, a.pose_dir)
     report(rows, n_holdout, a.split)
+    if a.sweep_leg:
+        report_leg_sweep(rows)
 
     if a.csv and rows:
         with open(a.csv, "w", newline="") as f:
@@ -369,6 +425,37 @@ def selftest():
     assert abs(core[0] - 1.23) < 1e-9, "core window missed the planted spike"
     assert early[0] < 1e-9, "early window leaked the core spike"
     print("  window_stat: core/early boundary is clean OK (channel-generic)")
+
+    # sweep checkpoint: the sweep's last (closest-to-contact) window is
+    # DESIGNED to exactly reproduce EARLY -- same bounds, computed two
+    # different ways. If this doesn't match, the sweep's window math has
+    # a bug (off-by-one, wrong sign) that the rest of the sweep inherits.
+    leg2 = np.zeros_like(t)
+    early_mask = (t >= tc - PRE_S) & (t < tc - 0.35)
+    leg2[np.where(early_mask)[0][2]] = 2.46
+    ser2 = _mk_ser(0, t, arm=z, dsho=z, leg=leg2, dgaze=z)
+    sweep_lo = -SWEEP_STARTS[-1]
+    sweep_hi = -SWEEP_STARTS[-1] + SWEEP_WIDTH
+    assert abs(sweep_lo - EARLY[0]) < 1e-9 and abs(sweep_hi - EARLY[1]) < 1e-9, \
+        "SWEEP_STARTS[-1]/SWEEP_WIDTH no longer reproduce EARLY's bounds"
+    sweep_last = window_stat(ser2, tc, sweep_lo, sweep_hi, "leg")
+    early2 = window_stat(ser2, tc, *EARLY, "leg")
+    assert sweep_last == early2, \
+        f"sweep checkpoint should exactly match EARLY, got " \
+        f"{sweep_last} vs {early2}"
+    print(f"  sweep checkpoint: [{sweep_lo:.2f},{sweep_hi:.2f}] "
+          f"matches EARLY exactly OK")
+
+    # contamination: a window that would reach past the previous
+    # contact must be flagged; one that stays clear must not
+    assert sweep_contaminated(tc=10.0, lo=-1.5, prev_tc=9.0), \
+        "window starting at t=8.5 reaches past a prev contact at t=9.0"
+    assert not sweep_contaminated(tc=10.0, lo=-0.75, prev_tc=9.0), \
+        "window starting at t=9.25 does NOT reach past a prev contact at t=9.0"
+    assert not sweep_contaminated(tc=10.0, lo=-1.5, prev_tc=None), \
+        "no previous contact (first in rally) should never flag contaminated"
+    print("  sweep_contaminated: flags reaching past the previous "
+          "contact, not windows that stay clear OK")
 
     # face_coverage: frames below FACE_THRESH must not count, frames at
     # or above it must
