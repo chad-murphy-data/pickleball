@@ -53,6 +53,35 @@ Decoded events with ordinal 0/1 (serve/return, ghost-aware ordinals)
 are openings — excluded from pace, mirroring the truth convention.
 Ghost events (no timestamp) count toward ordinals, never toward pace.
 
+V2 (2026-08-18, after run 1): adds SEQ — the model run 1's pivot
+pointed at and should have shipped with. Run 1 graded PER-CONTACT
+classifiers; the actual phase model is a segmentation of the whole
+GAP SEQUENCE: a firefight is a RUN of short gaps, not one short gap.
+SEQ is that intuition made principled — a supervised 2-state HMM:
+  - one hidden state per CONTACT = the state of the gap it PRODUCES
+    (a fast shot forces a fast reply, so the gap AFTER a shot is the
+    shot's signature; fastslow v2 measured gap_next as the strongest
+    single feature, 0.758 in the coded direction). This lands the
+    phase boundary exactly ON the speed-up shot — the gap before it
+    is dink-paced, the gap after it is fast — structurally fixing
+    min-gap's initiator misattribution. The rally-ending shot
+    produces no gap and takes its state from the transition prior
+    (usually: the firefight it ended).
+  - emissions: log-normal over the gap per state, fitted on the
+    train fold's LABELED gaps. GAP-ONLY BY DESIGN: run 1 measured
+    FULL (68 features) LOSING to a single threshold at n=84 — at
+    this label count extra channels subtract, and pose/kitchen were
+    each independently null. The HMM's edge is the temporal prior,
+    not more features.
+  - transitions fitted from adjacent labeled pairs within rallies
+    (the stickiness = the run-length prior, learned not hand-set);
+    Viterbi decode over the full sequence, unlabeled and opening
+    gaps included as evidence.
+Level C SEQ reads out at paced contacts (comparable to gap/full
+columns); Level B SEQ runs on decoded events with ghost-adjusted
+gaps. Falls back to the GAP threshold if a train fold lacks
+MIN_PER_CLASS labeled gaps per state.
+
 RUN (flat folder, after fastslow_check.py works; trains the swing
 scorer once per held rally — a few minutes, like channel_ablation):
     python3 phase_grader.py
@@ -244,6 +273,117 @@ def classify(row, th, model):
     return gap_call, ("fast" if p >= 0.5 else "slow")
 
 
+# ------------------------------------------------- SEQ: 2-state HMM
+
+
+G_LO, G_HI = 0.15, 6.0    # gap clip for log-normal emissions
+SD_FLOOR = 0.15           # log-space sd floor (degenerate-fit guard)
+
+
+def gap_truth_rows(contacts):
+    """One rally's gap observations with supervision: [(g, lab)] where
+    gap i sits between contact i and i+1 and its label is the pace of
+    the PRODUCING contact i (fast/slow, or None for opening/unpaced —
+    present at inference, excluded from fitting)."""
+    evs = sorted(contacts)
+    rows = []
+    for i in range(len(evs) - 1):
+        cls = classify_type(evs[i][2])
+        rows.append((evs[i + 1][0] - evs[i][0],
+                     cls if cls in ("fast", "slow") else None))
+    return rows
+
+
+def fit_hmm(per_rally_rows):
+    """Supervised 2-state HMM from labeled gaps. per_rally_rows keeps
+    rallies separate so transitions never pair gaps across rallies.
+    Returns None when either state has < MIN_PER_CLASS labeled gaps
+    (caller falls back to the GAP threshold)."""
+    lg = {"slow": [], "fast": []}
+    tc = {("slow", "slow"): 1.0, ("slow", "fast"): 1.0,
+          ("fast", "slow"): 1.0, ("fast", "fast"): 1.0}
+    for rows in per_rally_rows:
+        for i, (g, lab) in enumerate(rows):
+            if lab is not None:
+                lg[lab].append(math.log(min(max(g, G_LO), G_HI)))
+            if i + 1 < len(rows) and lab is not None \
+                    and rows[i + 1][1] is not None:
+                tc[(lab, rows[i + 1][1])] += 1.0
+    if min(len(lg["slow"]), len(lg["fast"])) < MIN_PER_CLASS:
+        return None
+    hmm = {"mu": {}, "sd": {}, "logT": {}, "logpi": {}}
+    for s in ("slow", "fast"):
+        v = np.array(lg[s])
+        hmm["mu"][s] = float(v.mean())
+        hmm["sd"][s] = max(float(v.std()), SD_FLOOR)
+    for a in ("slow", "fast"):
+        tot = tc[(a, "slow")] + tc[(a, "fast")]
+        for b in ("slow", "fast"):
+            hmm["logT"][(a, b)] = math.log(tc[(a, b)] / tot)
+    n_tot = len(lg["slow"]) + len(lg["fast"])
+    for s in ("slow", "fast"):
+        hmm["logpi"][s] = math.log(max(len(lg[s]), 1) / n_tot)
+    return hmm
+
+
+def _emit(g, s, hmm):
+    if g is None:
+        return 0.0
+    x = math.log(min(max(g, G_LO), G_HI))
+    mu, sd = hmm["mu"][s], hmm["sd"][s]
+    return -math.log(sd) - 0.5 * ((x - mu) / sd) ** 2
+
+
+def viterbi(gaps, hmm):
+    """MAP state per step over gaps (None = unobserved step, scored by
+    transitions alone). States are per PRODUCING contact; the caller
+    appends a final None so the rally-ending shot gets a state too."""
+    if not gaps:
+        return []
+    S = ("slow", "fast")
+    score = {s: hmm["logpi"][s] + _emit(gaps[0], s, hmm) for s in S}
+    back = []
+    for g in gaps[1:]:
+        nb, ns = {}, {}
+        for b in S:
+            a_best = max(S, key=lambda a: score[a] + hmm["logT"][(a, b)])
+            nb[b] = a_best
+            ns[b] = score[a_best] + hmm["logT"][(a_best, b)] + \
+                _emit(g, b, hmm)
+        back.append(nb)
+        score = ns
+    end = max(S, key=lambda s: score[s])
+    path = [end]
+    for nb in reversed(back):
+        path.append(nb[path[-1]])
+    return path[::-1]
+
+
+def seq_states(times, hmm, th, gaps=None):
+    """Pace state per event for a time-ordered sequence: the gap
+    PRODUCED by event i observes step i; the last event's step is
+    unobserved (transition prior decides). `gaps` overrides the raw
+    time diffs — Level B passes the decoder's ghost-adjusted per-gap
+    estimates. With no HMM (thin training fold), falls back to the
+    GAP threshold on the produced gap, the last event inheriting its
+    predecessor."""
+    n = len(times)
+    if n == 0:
+        return []
+    if gaps is None:
+        gaps = [times[i + 1] - times[i] for i in range(n - 1)] + [None]
+    assert len(gaps) == n
+    if hmm is not None:
+        return viterbi(gaps, hmm)
+    calls = []
+    for g in gaps:
+        if g is not None:
+            calls.append("fast" if min(g, GAP_CAP_S) <= th else "slow")
+        else:
+            calls.append(calls[-1] if calls else "slow")
+    return calls
+
+
 # ------------------------------------------------------ decoded events
 
 
@@ -374,9 +514,10 @@ def run_all(rallies):
     needs."""
     truths = {cum: truth_structure(r["contacts"])
               for cum, r in rallies.items()}
-    out = {"C": {"gap": {}, "full": {}}, "B": {"gap": {}, "full": {}},
-           "acc": {"C": {"gap": [0, 0], "full": [0, 0]},
-                   "A": {"gap": [0, 0], "full": [0, 0]}},
+    KS = ("gap", "full", "seq")
+    out = {"C": {k: {} for k in KS}, "B": {k: {} for k in KS},
+           "acc": {"C": {k: [0, 0] for k in KS},
+                   "A": {k: [0, 0] for k in KS}},
            "match": [0, 0], "decoded_n": {}, "no_decode": []}
     for held in sorted(rallies):
         # pace classifiers from the OTHER rallies' true-time rows
@@ -391,24 +532,30 @@ def run_all(rallies):
         n_f = sum(1 for _, p in full_rows if p == "fast")
         model = fit_full(full_rows) \
             if min(n_f, len(full_rows) - n_f) >= MIN_PER_CLASS else None
+        hmm = fit_hmm([gap_truth_rows(r["contacts"])
+                       for cum, r in rallies.items() if cum != held])
 
         r = rallies[held]
         # ---- LEVEL C: true times
+        all_evs = sorted(r["contacts"])
+        states_c = seq_states([t for t, *_ in all_evs], hmm, th)
+        idx_of = {t: i for i, (t, *_r) in enumerate(all_evs)}
         held_rows = true_pace_rows(r)
-        c_calls = {"gap": [], "full": []}
+        c_calls = {k: [] for k in KS}
         for row, pace, t, team in held_rows:
             gc, fc = classify(row, th, model)
-            for k, call in (("gap", gc), ("full", fc)):
+            sc = states_c[idx_of[t]]
+            for k, call in (("gap", gc), ("full", fc), ("seq", sc)):
                 out["acc"]["C"][k][0] += (call == pace)
                 out["acc"]["C"][k][1] += 1
                 c_calls[k].append((t, team, call))
-        for k, seq in c_calls.items():
-            ff = next(((t, tm) for t, tm, c in seq if c == "fast"),
+        for k, calls in c_calls.items():
+            ff = next(((t, tm) for t, tm, c in calls if c == "fast"),
                       None)
             out["C"][k][held] = {
                 "has_fast": ff is not None, "first_fast": ff,
-                "n_fast": sum(1 for *_, c in seq if c == "fast"),
-                "n_slow": sum(1 for *_, c in seq if c == "slow")}
+                "n_fast": sum(1 for *_, c in calls if c == "fast"),
+                "n_slow": sum(1 for *_, c in calls if c == "slow")}
 
         # ---- LEVEL B: scorer -> decoder -> pace
         Xtr, ytr = [], []
@@ -427,19 +574,30 @@ def run_all(rallies):
         out["decoded_n"][held] = len(evs)
         if not evs:
             out["no_decode"].append(held)
-            for k in ("gap", "full"):
+            for k in KS:
                 out["B"][k][held] = {"has_fast": False,
                                      "first_fast": None,
                                      "n_fast": 0, "n_slow": 0}
             continue
         stats = predict_structure(evs, r["rd"], r["m"], th, model)
-        for k in ("gap", "full"):
+        states_b = seq_states([e["t"] for e in evs], hmm, th,
+                              gaps=[e["gn"] for e in evs])
+        b_seq = [(e["t"], e["team"], states_b[i])
+                 for i, e in enumerate(evs) if e["ord"] not in (0, 1)]
+        ffb = next(((t, tm) for t, tm, c in b_seq if c == "fast"),
+                   None)
+        stats["seq"] = {
+            "has_fast": ffb is not None, "first_fast": ffb,
+            "n_fast": sum(1 for *_, c in b_seq if c == "fast"),
+            "n_slow": sum(1 for *_, c in b_seq if c == "slow")}
+        for k in KS:
             out["B"][k][held] = stats[k]
         # ---- LEVEL A: matched-contact pace accuracy at decoded times
-        non_open = [e for e in evs if e["ord"] not in (0, 1)]
-        seq = truths[held]["seq"]
-        pairs = match_events(non_open, seq)
-        paced_idx = {j for j, (*_, p) in enumerate(seq)
+        idxs = [i for i, e in enumerate(evs) if e["ord"] not in (0, 1)]
+        non_open = [evs[i] for i in idxs]
+        lab_seq = truths[held]["seq"]
+        pairs = match_events(non_open, lab_seq)
+        paced_idx = {j for j, (*_, p) in enumerate(lab_seq)
                      if p is not None}
         out["match"][0] += len([j for _i, j in pairs
                                 if j in paced_idx])
@@ -452,8 +610,9 @@ def run_all(rallies):
             row = pace_row(r["rd"], r["m"], e["t"], e["team"],
                            e["gp"], e["gn"], y_net, span)
             gc, fc = classify(row, th, model)
-            pace = seq[j][2]
-            for k, call in (("gap", gc), ("full", fc)):
+            sc = states_b[idxs[i]]
+            pace = lab_seq[j][2]
+            for k, call in (("gap", gc), ("full", fc), ("seq", sc)):
                 out["acc"]["A"][k][0] += (call == pace)
                 out["acc"]["A"][k][1] += 1
     return truths, out
@@ -473,7 +632,7 @@ def report(rallies, truths, out):
                             "condition)")):
         print(name)
         if lvl == "C":
-            for k in ("gap", "full"):
+            for k in ("gap", "full", "seq"):
                 ok, n = out["acc"]["C"][k]
                 print(f"    {k:<6} per-contact pace acc "
                       f"{ok}/{n} = {ok / n:.1%}" if n else
@@ -487,12 +646,12 @@ def report(rallies, truths, out):
             print(f"    paced labels matched by a decoded event "
                   f"(±{MATCH_TOL_S}s, same team): {mt}/{mn} = "
                   f"{mt / mn:.1%}" if mn else "    (no paced labels)")
-            for k in ("gap", "full"):
+            for k in ("gap", "full", "seq"):
                 ok, n = out["acc"]["A"][k]
                 if n:
                     print(f"    {k:<6} pace acc on matched contacts "
                           f"{ok}/{n} = {ok / n:.1%}")
-        for k in ("gap", "full"):
+        for k in ("gap", "full", "seq"):
             print_grade(k, grade(truths, out[lvl][k]))
         print()
     print("VERDICT GUIDE (bands pre-registered in "
@@ -589,13 +748,19 @@ def _mk_rally(contacts, amp=25.0, y_by_side=None):
 
 
 def _phase_contacts(base, n_slow=6, n_fast=6):
-    """Dink phase then firefight, times JITTERED off the exact frame
-    grid (seeded by base). Without jitter these rallies repeat one
-    slot->class pattern on grid-aligned times, and frame-grid float
-    aliasing makes the near-constant pose dims carry transferable
-    class signal — the same trap fastslow_check's null caught; the
-    68-dim FULL model rode it here too (share corr -0.99 on features
-    designed to contain nothing)."""
+    """Dink phase -> firefight -> reset + cool-down, with PRODUCED-GAP
+    physics: a shot's pace shows in the gap AFTER it (a fast shot
+    forces a fast reply), so the speed-up ARRIVES on a dink-paced gap
+    and PRODUCES the first 0.45 s gap (real data agrees: speed-up
+    gap_prev med 0.98 s ~ dink's 0.93). v1 of this synth had the
+    speed-up arriving 0.45 s after the last dink — unphysical, and it
+    manufactured a fake "min-gap misattributes the initiator" lesson.
+    The real min-gap failure mode is the RESET: a slow shot ARRIVING
+    on a fast gap (here the dink that ends the firefight) — min-gap
+    calls it fast; produced-gap semantics don't. Times JITTERED off
+    the exact frame grid (seeded by base) — unjittered grid-aligned
+    synths let high-dim models ride float aliasing (trap recorded
+    twice on 2026-08-18)."""
     rng = np.random.default_rng(int(base))
 
     def j():
@@ -607,8 +772,11 @@ def _phase_contacts(base, n_slow=6, n_fast=6):
         t += 2.2 + j()
         c.append((t, k % 2, "dink"))
     for k in range(n_fast):
-        t += 0.45 + j()
+        t += (2.2 if k == 0 else 0.45) + j()
         c.append((t, (n_slow + k) % 2, "counter"))
+    for k in range(3):
+        t += (0.45 if k == 0 else 2.2) + j()
+        c.append((t, (n_slow + n_fast + k) % 2, "dink"))
     return c
 
 
@@ -683,9 +851,9 @@ def selftest():
                               (303.0, 0, "dink"), (305.2, 1, "dink")])}
     ff1, ff2 = tr[1]["first_fast"], tr[2]["first_fast"]
     perfect = {1: {"has_fast": True, "first_fast": ff1,
-                   "n_fast": 6, "n_slow": 6},
+                   "n_fast": 6, "n_slow": 9},
                2: {"has_fast": True, "first_fast": ff2,
-                   "n_fast": 6, "n_slow": 6},
+                   "n_fast": 6, "n_slow": 9},
                3: {"has_fast": False, "first_fast": None,
                    "n_fast": 0, "n_slow": 2}}
     g = grade(tr, perfect)
@@ -693,21 +861,87 @@ def selftest():
     broken = dict(perfect)
     broken[1] = {"has_fast": True,
                  "first_fast": (ff1[0] + 2.0, 1 - ff1[1]),
-                 "n_fast": 6, "n_slow": 6}
+                 "n_fast": 6, "n_slow": 9}
     g2 = grade(tr, broken)
     assert g2["ff_hit"] == 1 and g2["team_ok"] == 1 and \
         g2["ff_med"] > 0.5
     print("selftest: grading teeth OK")
 
-    # ---- end-to-end LEVEL C on synthetic phase rallies: 4 with a
-    # firefight + 1 all-dink. KNOWN STRUCTURAL LESSON encoded here:
-    # the min-gap heuristic MUST misattribute the initiating team —
-    # the last dink before the speed-up has a short gap_next, so GAP
-    # calls the defender fast one shot early (time error 0.45 s,
-    # still a first-fast hit; team wrong). FULL sees gap_prev and
-    # gap_next separately and gets the team right. Assertions pin
-    # both behaviors — if GAP ever scores 4/4 teams here, the rig
-    # changed and this test must be re-derived.
+    # ---- viterbi against brute-force enumeration (real DP teeth):
+    # every 2^n state path scored by the same emissions/transitions,
+    # argmax must equal the DP's path — including an unobserved step
+    hmm_t = {"mu": {"slow": math.log(1.05), "fast": math.log(0.7)},
+             "sd": {"slow": 0.4, "fast": 0.4},
+             "logT": {("slow", "slow"): math.log(0.8),
+                      ("slow", "fast"): math.log(0.2),
+                      ("fast", "slow"): math.log(0.25),
+                      ("fast", "fast"): math.log(0.75)},
+             "logpi": {"slow": math.log(0.6), "fast": math.log(0.4)}}
+    gs = [1.3, 0.85, 0.6, None, 0.7, 1.6]
+    from itertools import product as _prod
+    best_sc, best_path = -1e18, None
+    for pth in _prod(("slow", "fast"), repeat=len(gs)):
+        sc = hmm_t["logpi"][pth[0]] + _emit(gs[0], pth[0], hmm_t)
+        for i in range(1, len(gs)):
+            sc += hmm_t["logT"][(pth[i - 1], pth[i])] + \
+                _emit(gs[i], pth[i], hmm_t)
+        if sc > best_sc:
+            best_sc, best_path = sc, list(pth)
+    assert viterbi(gs, hmm_t) == best_path, \
+        (viterbi(gs, hmm_t), best_path)
+    print("selftest: viterbi = brute force OK")
+
+    # ---- context flips the marginal call (the HMM's whole point on
+    # OVERLAPPING real-data emissions): the same 0.85 s gap reads
+    # slow inside a 1.3 s dink run and fast inside a 0.6 s firefight
+    st1 = viterbi([1.3, 1.3, 0.85, 1.3, 1.3], hmm_t)
+    st2 = viterbi([0.6, 0.6, 0.85, 0.6, 0.6], hmm_t)
+    assert st1[2] == "slow" and st2[2] == "fast", (st1, st2)
+    print("selftest: context flips the marginal gap OK")
+
+    # ---- fit_hmm: supervised estimates are sane; unlabeled gaps are
+    # excluded; transitions never pair across rallies (two rallies
+    # ending fast / starting slow must not manufacture fast->slow)
+    ra_ = [(2.2, "slow"), (2.2, "slow"), (2.2, "slow"),
+           (0.45, "fast"), (0.45, "fast"), (0.45, "fast")]
+    rb_ = [(2.1, "slow"), (1.9, None), (2.3, "slow"), (2.2, "slow"),
+           (0.5, "fast"), (0.4, "fast")]
+    hf_ = fit_hmm([ra_ * 3, rb_ * 3])
+    assert hf_ is not None
+    assert hf_["mu"]["fast"] < hf_["mu"]["slow"]
+    assert hf_["logT"][("slow", "slow")] > hf_["logT"][("slow", "fast")]
+    assert fit_hmm([[(2.2, "slow")] * 20]) is None   # one class only
+    two = fit_hmm([[(0.45, "fast")] * 9, [(2.2, "slow")] * 9])
+    # cross-rally isolation: no labeled fast->slow pair exists, so the
+    # smoothed count stays at the +1 prior exactly
+    assert two is not None and \
+        abs(math.exp(two["logT"][("fast", "slow")]) - 1.0 / 10.0) < 1e-9
+    print("selftest: fit_hmm OK (holes excluded, rally-isolated "
+          "transitions)")
+
+    # ---- seq_states: produced-gap semantics, last-event rule,
+    # threshold fallback, explicit-gaps override
+    times_ = [10.0, 12.2, 14.4, 14.85, 15.3]
+    st = seq_states(times_, hmm_t, 1.0)
+    assert st[:2] == ["slow", "slow"] and st[2] == "fast", st
+    assert st[4] == "fast", "rally-ending shot inherits the firefight"
+    stf = seq_states(times_, None, 1.0)
+    assert stf == ["slow", "slow", "fast", "fast", "fast"], stf
+    stg = seq_states([10.0, 11.0], None, 1.0, gaps=[0.5, None])
+    assert stg == ["fast", "fast"], stg
+    print("selftest: seq_states OK")
+
+    # ---- end-to-end LEVEL C on synthetic phase rallies: 4 with
+    # dinks -> firefight -> reset + cool-down, 1 all-dink. Derived
+    # expectations under PRODUCED-GAP physics: the min-gap heuristic
+    # errs on exactly the RESET each rally (arrives on a 0.45 s gap,
+    # truth slow -> 64/68) while getting the initiator RIGHT (the
+    # speed-up is the first short min-gap); SEQ is exact everywhere
+    # including the reset (it produces a 2.2 s gap) and the
+    # rally-ending dink (transition prior from a slow run) -> 68/68.
+    # v1 of this test encoded a "min-gap misattributes the initiator"
+    # lesson — an artifact of the old unphysical synth timing,
+    # RETRACTED (real-data run 1 agreed: GAP teams 4/5 at C).
     def _synth_set():
         rallies = {c: _mk_rally(_phase_contacts(100.0 + 400.0 * c))
                    for c in (1, 2, 3, 4)}
@@ -723,28 +957,29 @@ def selftest():
 
     rallies = _synth_set()
     truths, out = run_all(rallies)
-    gC = grade(truths, out["C"]["gap"])
-    assert gC["hf_ok"] == gC["hf_n"] == 5, (gC["hf_ok"], gC["hf_n"])
-    assert gC["ff_hit"] == gC["ff_n"] == 4, gC
-    assert gC["team_ok"] == 0, \
-        (gC["team_ok"], "min-gap boundary lesson changed?")
+    for k, want_acc in (("gap", 64), ("seq", 68)):
+        gk = grade(truths, out["C"][k])
+        assert gk["hf_ok"] == gk["hf_n"] == 5, (k, gk)
+        assert gk["ff_hit"] == gk["ff_n"] == 4, (k, gk)
+        assert gk["team_ok"] == 4, (k, gk)
+        ok, n = out["acc"]["C"][k]
+        assert n == 68 and ok == want_acc, (k, ok, n)
     gF = grade(truths, out["C"]["full"])
     assert gF["hf_ok"] == 5 and gF["ff_hit"] == 4 and \
         gF["team_ok"] == 4, gF
-    ok, n = out["acc"]["C"]["gap"]
     okF, nF = out["acc"]["C"]["full"]
-    assert n == nF == 56, (n, nF)
-    assert ok == 52 and okF >= 54, (ok, okF)
-    print(f"selftest: end-to-end Level C OK (gap {ok}/{n} with the "
-          f"4 boundary-shot errors as derived; full {okF}/{nF}, "
-          f"teams 4/4 full vs 0/4 gap)")
+    assert nF == 68 and okF >= 66, (okF, nF)
+    print(f"selftest: end-to-end Level C OK (gap 64/68 with the 4 "
+          f"reset errors as derived; full {okF}/68; seq 68/68 — "
+          f"the reset and the rally-ending shot both land right)")
 
     # ---- Level B ran end-to-end on the same synth (scorer -> decoder
-    # -> pace); structure output exists for every rally and the
-    # no-decode list is empty (assertions are existence/shape, not
-    # accuracy — synthetic dets aren't the claim under test)
+    # -> pace incl. SEQ over ghost-adjusted gaps); structure output
+    # exists for every rally and the no-decode list is empty
+    # (assertions are existence/shape, not accuracy — synthetic dets
+    # aren't the claim under test)
     assert not out["no_decode"]
-    assert set(out["B"]["gap"]) == set(rallies)
+    assert set(out["B"]["gap"]) == set(out["B"]["seq"]) == set(rallies)
     assert all(out["decoded_n"][c] > 0 for c in rallies)
     print(f"selftest: end-to-end Level B smoke OK (decoded "
           f"{[out['decoded_n'][c] for c in sorted(rallies)]} events)")

@@ -865,3 +865,53 @@ only decoded TIMING FIDELITY — which is also the one thing the
 temporal model demonstrably improves. If a labeling investment is
 ever justified, it will be by timing fidelity for continuous
 stats, not by the binary classifier.
+
+## 2026-08-18 — phase_grader V2: SEQ (2-state HMM over the gap sequence) — predictions registered BEFORE the first run
+
+User (correctly) called out that run 1 graded per-contact
+classifiers when the sequence model was the stated design. V2 adds
+SEQ into the SAME grader so all three land side by side, same folds,
+same bands: a supervised 2-state HMM — one hidden state per contact
+= the state of the gap it PRODUCES (a fast shot forces a fast
+reply; fastslow v2 measured produced-gap (gap_next) as the strongest
+single feature, 0.758 coded direction). Log-normal emissions per
+state fit on train-fold labeled gaps (clip [0.15, 6.0] s, log-sd
+floor 0.15); transitions from ADJACENT both-labeled pairs within
+rallies (the run-length prior, learned); Viterbi over the full
+sequence including unlabeled/opening gaps; rally-ending shot (no
+produced gap) takes the transition prior. GAP-ONLY EMISSIONS BY
+DESIGN — run 1 measured 68 features losing to one threshold at
+n=84; the HMM's edge is the temporal prior, not more channels.
+Level B runs SEQ on decoded events with ghost-adjusted gaps;
+fallback to the GAP threshold if a train fold lacks 8 labeled gaps
+per state.
+
+RETRACTION (synth physics): the run-1 selftest's "min-gap
+misattributes the initiator to the defender one shot early" lesson
+was an ARTIFACT of unphysical synth timing (speed-up arriving 0.45 s
+after the last dink). Under produced-gap physics — the speed-up
+ARRIVES on a dink-paced gap and PRODUCES the first short gap, which
+real data confirms (speed-up gap_prev med 0.98 ~ dink 0.93) — the
+min-gap failure mode is the RESET (slow shot arriving on a fast
+gap), one per firefight, and min-gap gets the initiator RIGHT.
+Run 1's real Level C (GAP teams 4/5) agreed with physics, not with
+my synth. Corrected synth: dinks -> firefight -> reset + cool-down,
+jittered; derived and confirmed: GAP 64/68 (the 4 resets), SEQ
+68/68 (reset produces a slow gap; rally-ender inherits its run),
+FULL 68/68, all teams 4/4. Viterbi pinned to brute-force
+enumeration; context-flip test pins the HMM's actual value on
+overlapping real-data emissions (same 0.85 s gap reads slow in a
+1.3 s run, fast in a 0.6 s run).
+
+REGISTERED PREDICTIONS (before the first real V2 run): C SEQ
+per-contact 66–74% (point ~70; beats GAP 63.1 — right feature
+direction + run prior); C SEQ ff>=3/5, init-team >=3/5, share corr
+positive; B SEQ matched acc >= GAP's 52.1, ff median <= 1.0 s (vs
+FULL's 1.44 — smoothing noisy decoded gaps is where the prior
+should pay most). KNOWN LIMITATION registered: transitions need
+ADJACENT both-paced pairs, and 58 unpaced holes thin them — if
+fitted stickiness comes out near-uniform, SEQ degenerates toward a
+gn-threshold; tagging the 'other' backlog fixes this too.
+REGISTRATION AMENDMENT (pre-run): the verdict bands now read on the
+BEST of the three classifiers (expected SEQ), not FULL specifically;
+regime logic unchanged.
