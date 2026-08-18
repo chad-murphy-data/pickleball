@@ -995,7 +995,11 @@ def player_meta():
     return g, nm
 
 
-def run(a):
+def run(a, collect=None):
+    """collect: optional callback handed rally_tracks_by_game after the
+    resolution loop — lets sibling instruments (coverage_dominance.py)
+    compute on EXACTLY the frame set the shipped metrics used, without
+    duplicating the identity chain.  Never alters this run's output."""
     court = load_court(a.court)
     cam = load_camera(a.cam)
     if cam is None and not getattr(a, "no_cam_gate", False):
@@ -1129,6 +1133,9 @@ def run(a):
                                      serve_m, end)
             rally_data[u] = (ts[phase], xy[phase], end)
         rally_tracks_by_game[game].append((cum, rally_data, lin))
+
+    if collect is not None:
+        collect(rally_tracks_by_game)
 
     # width shares per game (needs partner pairing per rally)
     for game, rallies in rally_tracks_by_game.items():
