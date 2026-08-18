@@ -398,3 +398,43 @@ labeling_protocol.md are exactly the training data step 2 will need,
 so nothing about the labeling habit changes.
 
 Not yet run against real data in the new form.
+
+**First real run of the shot-vs-non-shot form (2026-08-18, user's Mac,
+123 shot rows / 193 non-shot rows; 123 of 162 contacts scored, rest
+lost to track/window coverage)**:
+
+- **dsho AUC 0.745** — the one genuinely shot-correlated channel of
+  the three, and it's the one ALREADY in the trained detector. Shot
+  median 0.118 vs non-shot 0.063.
+- **leg AUC 0.464** — nothing, and directionally NEGATIVE: medians
+  identical (0.108/0.109) with the non-shot p75 HIGHER (0.228 vs
+  0.165). Feet move slightly MORE when no shot is happening —
+  repositioning/locomotion, i.e. exactly the "motion peaks away from
+  contacts" hard-negative class rally_instances already trains
+  against. Footwork is not a tell; it's mild anti-signal.
+- **Sweep: flat at every lead time** (AUC 0.470-0.530 across all five
+  windows) — answers the user's original window question decisively:
+  there is no window where footwork separates shot from non-shot, so
+  the inherited PRE_S=0.75 wasn't hiding a better one. Structural
+  bonus finding: contamination hits 90%/93% at the [-1.55,-1.15]
+  window — i.e. ~90% of anchors have the PREVIOUS contact within
+  1.55s. **A quiet "one second before the shot" mostly does not exist
+  in this sport's rally cadence**; prep windows further back than
+  ~0.75s are measuring the previous exchange, full stop.
+- **dgaze AUC 0.680** — moderate separation but mechanism suspect:
+  30/123 shot rows (24%) had unambiguous >2.0-rad L/R-ear-swap
+  artifacts suppressed, vs 15/123 (12%) for dsho — the artifact RATE
+  itself is plausibly shot-correlated (motion blur peaks at strikes),
+  so part of the capped signal may still be swap-adjacent garbage
+  rather than gaze behavior. Also plausibly redundant with dsho (head
+  turns with the shoulders). Both consistent with channel_ablation's
+  zero incremental value.
+- Face existence confidence saturated ~100% again (the printed
+  saturation NOTE fired as designed) — uninformative, as expected.
+
+Closes the loop with the channel_ablation run: EXT failed to help
+because the two added channels are a nothing (leg) and a weaker,
+artifact-suspect cousin of a channel already in the model (dgaze).
+Three candidate channels tested end to end; feature engineering on
+this pose stream looks tapped out. Labels at scale remains the
+load-bearing lever.
