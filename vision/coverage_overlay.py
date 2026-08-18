@@ -207,6 +207,15 @@ def run(a):
                     tuple(r["team"].split("|")))
         print(f"swap ledger: {sum(len(v) for v in swaps.values())} "
               f"team-rally swaps")
+    track_map = {}
+    if getattr(a, "track_map", ""):
+        import csv as _csv
+        from collections import defaultdict as _dd
+        track_map = _dd(lambda: _dd(list))
+        for r in _csv.DictReader(open(a.track_map)):
+            track_map[int(r["rally_cum"])][int(r["track"])].append(
+                (float(r["t0"]), float(r["t1"]), r["uuid"], r["action"]))
+        print(f"track map loaded")
 
     have = sorted(int(p.stem[1:]) for p in pose_dir.glob("r*.npz"))
     if a.rallies:
@@ -289,7 +298,12 @@ def run(a):
                 status = "dropped"
             else:
                 srt = sorted(dets, key=lambda d: d.t)
+                tm = track_map.get(cum, {}) if track_map else {}
                 for d, tup in zip(srt, carry_names(srt, nm, conf)):
+                    for (ta, tb, uu, _act) in tm.get(d.track, ()):
+                        if ta <= d.t <= tb:
+                            tup = (uu, tup[1], False)
+                            break
                     assign_by_id[id(d)] = tup
         legend = [(a.legend_a, TEAM_COLORS["A"]),
                   (a.legend_b, TEAM_COLORS["B"])] \
@@ -353,6 +367,8 @@ def main():
     ap.add_argument("--swaps", default="",
                     help="identity_swaps CSV (coverage_appearance "
                          "--audit)")
+    ap.add_argument("--track-map", default="",
+                    help="identity_track_map CSV (--stage2)")
     ap.add_argument("--legend-a", default="",
                     help="jersey-description line drawn in team A's "
                          "label color (match-specific, so a flag)")

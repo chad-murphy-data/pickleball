@@ -86,7 +86,7 @@ import csv
 import json
 import subprocess
 import sys
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 import numpy as np
@@ -1018,6 +1018,14 @@ def run(a, collect=None):
                     tuple(r["team"].split("|")))
         print(f"swap ledger: {sum(len(v) for v in swaps.values())} "
               f"team-rally swaps loaded from {a.swaps}")
+    track_map = defaultdict(lambda: defaultdict(list))
+    n_tm = Counter()
+    if getattr(a, "track_map", ""):
+        for r in csv.DictReader(open(a.track_map)):
+            track_map[int(r["rally_cum"])][int(r["track"])].append(
+                (float(r["t0"]), float(r["t1"]), r["uuid"], r["action"]))
+        print(f"track map: {sum(len(v) for m in track_map.values() for v in m.values())} "
+              f"spans loaded from {a.track_map}")
     # backend provenance: fleet numbers are not trusted until the spec's
     # pre-named A/B guard has run (vision/coverage_ab.py; ViTPose wins
     # disagreements) — so every row records which backend produced it
@@ -1126,6 +1134,19 @@ def run(a, collect=None):
                            srv_end or "?"))
         assign = carry_names(sorted(dets, key=lambda d: d.t), names_map, conf)
         dets_sorted = sorted(dets, key=lambda d: d.t)
+        # stage-2 appearance track map (coverage_appearance --stage2):
+        # rebind wrongly-carried names, name grey tracks, honor splits —
+        # applied AFTER the carry so the audit trail is span-exact
+        if cum in track_map:
+            tm = track_map[cum]
+            assign = list(assign)
+            for i, d in enumerate(dets_sorted):
+                for (ta, tb, uu, act) in tm.get(d.track, ()):
+                    if ta <= d.t <= tb:
+                        if assign[i][0] != uu:
+                            n_tm[act] += 1
+                        assign[i] = (uu, assign[i][1], False)
+                        break
         per_uuid = defaultdict(lambda: ([], [], [], []))  # ts, xy, w, hand
         for d, (u, c, hand) in zip(dets_sorted, assign):
             if u is None:
@@ -1307,6 +1328,8 @@ def run(a, collect=None):
           f"dropped: {dict(dropped)}")
     if swaps:
         print(f"anchor-identity swaps applied: {n_swapped}")
+    if track_map:
+        print(f"track-map overrides applied (detections): {dict(n_tm)}")
     if endmap_n:
         print(f"end-map consistency {endmap_n - endmap_viol}/{endmap_n}")
     if halves_tested:
@@ -1606,6 +1629,9 @@ def main():
     ap.add_argument("--swaps", default="",
                     help="identity_swaps CSV from coverage_appearance "
                          "--audit; anchor names swap back per ledger")
+    ap.add_argument("--track-map", default="",
+                    help="identity_track_map CSV from coverage_appearance "
+                         "--stage2; per-span rebind/rescue/split")
     ap.add_argument("--vod", default="")
     ap.add_argument("--event", default="")
     ap.add_argument("--date", default="")

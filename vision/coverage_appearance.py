@@ -445,6 +445,180 @@ def audit(a, samples, partner, names_full):
     print(f"-> {out}")
 
 
+
+class FourWay:
+    """4-way nearest centroid on z-scored Lab moments, trained on
+    EM-cleaned labels.  predict -> (uuid, margin)."""
+
+    def fit(self, F, labels):
+        self.mu = F.mean(0)
+        self.sd = F.std(0) + 1e-6
+        Z = (F - self.mu) / self.sd
+        self.cent = {u: Z[np.array(labels) == u].mean(0)
+                     for u in set(labels)}
+
+    def predict(self, f):
+        z = (f - self.mu) / self.sd
+        d = sorted((float(np.linalg.norm(z - c)), u)
+                   for u, c in self.cent.items())
+        return d[0][1], d[1][0] - d[0][0]
+
+
+def clean_labels(a, partner):
+    """EM-corrected anchor labels (the audit's verdicts applied)."""
+    z = np.load(ROOT / f"data/vision/appearance_crops_{a.vod}.npz")
+    crops, uuids, cums = z["crop"], z["uuid"], z["cum"]
+    kpts, kpcs, isos = z["kpt"], z["kpc"], z["iso"]
+    keep = [i for i in range(len(crops)) if isos[i] <= 0.05]
+    F = np.stack([moments_crop(crops[i], kpts[i], kpcs[i]) for i in keep])
+    lab = np.array([str(uuids[i]) for i in keep])
+    cum_k = np.array([int(cums[i]) for i in keep])
+    ok = ~np.isnan(F).any(1)
+    teams = sorted({tuple(sorted((u, partner[u]))) for u in set(lab)
+                    if partner.get(u)})
+    lab2 = lab.copy()
+    for ua, ub in teams:
+        m = ok & np.isin(lab, (ua, ub))
+        X, y = F[m], (lab[m] == ub).astype(int)
+        _w, _t, yy = team_lda_em(X, y, cum_k[m])
+        lab2[m] = np.where(yy == 1, ub, ua)
+    return F[ok], lab2[ok], cum_k[ok]
+
+
+def stage2(a, rallies, partner, names_full):
+    """Full mid-rally identity repair: 4-way appearance votes over
+    every detection -> per-track rebind / grey rescue / changepoint
+    split -> identity_track_map_<vod>.csv (consumed by coverage.run
+    --track-map on top of the anchor swap ledger)."""
+    F, lab, cum_k = clean_labels(a, partner)
+    fw = FourWay()
+    fw.fit(F, lab)
+    # leave-one-rally-out check on the cleaned labels
+    hits = tot = 0
+    for c in sorted(set(cum_k.tolist())):
+        m = cum_k != c
+        f2 = FourWay()
+        f2.fit(F[m], lab[m])
+        for i in np.nonzero(~m)[0]:
+            p, _ = f2.predict(F[i])
+            tot += 1
+            hits += p == lab[i]
+    print(f"4-way LORO on EM-cleaned labels: {hits/tot:.1%} on {tot}")
+
+    swaps = defaultdict(list)
+    led = ROOT / f"data/vision/identity_swaps_{a.vod}.csv"
+    if led.exists():
+        for r in csv.DictReader(open(led)):
+            if r["swap"] == "1" and float(r["unanimity"]) >= 0.8:
+                swaps[int(r["rally_cum"])].append(
+                    tuple(r["team"].split("|")))
+
+    rows = []
+    n_rebind = n_rescue = n_split = 0
+    for cum, win, dets, assign, t_serve, conf in rallies:
+        by_t = C.by_frame(dets)
+        det_times = np.array(sorted(by_t))
+        a_by_id = {id(d): u for d, (u, c, _h) in zip(dets, assign)}
+        # post-swap carried names (anchor ledger applied)
+        for (ua, ub) in swaps.get(cum, ()):
+            for k in a_by_id:
+                if a_by_id[k] == ua:
+                    a_by_id[k] = "__tmp__"
+            for k in a_by_id:
+                if a_by_id[k] == ub:
+                    a_by_id[k] = ua
+            for k in a_by_id:
+                if a_by_id[k] == "__tmp__":
+                    a_by_id[k] = ub
+        t0, t1 = float(win["t0s"]), float(win["t1s"])
+        votes = defaultdict(list)        # track -> [(t, uuid)]
+        carried = defaultdict(Counter)
+        sides = defaultdict(Counter)
+        for i, frame in enumerate(decode_window(a.video, t0, t1 - t0,
+                                                SCAN_FPS, WIDTH)):
+            t = t0 + i / SCAN_FPS
+            if t < t_serve or not len(det_times):
+                continue
+            j = int(np.argmin(np.abs(det_times - t)))
+            if abs(det_times[j] - t) > 0.6 / SCAN_FPS:
+                continue
+            ds = by_t[det_times[j]]
+            for d in ds:
+                if d.kpt is None or max_iou(d, ds) > 0.05:
+                    continue
+                got = crop_of(frame, d.box,
+                              np.asarray(d.kpt, np.float32),
+                              np.asarray(d.kpc, np.float32))
+                if got is None:
+                    continue
+                cr, k = got
+                f = moments_crop(cr, k, np.asarray(d.kpc, np.float32))
+                if np.isnan(f).any():
+                    continue
+                p, margin = fw.predict(f)
+                if margin >= 0.5:
+                    votes[d.track].append((float(d.t), p))
+                carried[d.track][a_by_id.get(id(d))] += 1
+                sides[d.track][d.side] += 1
+
+        for tr, vt in votes.items():
+            if len(vt) < 5:
+                continue
+            vt.sort()
+            us = [u for _t, u in vt]
+            car = carried[tr].most_common(1)[0][0]
+            cnt = Counter(us)
+            app, n_app = cnt.most_common(1)[0]
+            frac = n_app / len(us)
+            # changepoint: best split with both halves pure+different
+            split_at = None
+            if frac < 0.9 and len(us) >= 12:
+                best = 0.0
+                for s in range(6, len(us) - 6):
+                    c1, c2 = Counter(us[:s]), Counter(us[s:])
+                    (u1, n1), = c1.most_common(1)
+                    (u2, n2), = c2.most_common(1)
+                    if u1 != u2 and n1 / s >= 0.75 \
+                            and n2 / (len(us) - s) >= 0.75:
+                        pur = (n1 + n2) / len(us)
+                        if pur > best:
+                            best, split_at = pur, (s, u1, u2)
+            if split_at:
+                s, u1, u2 = split_at
+                t_mid = (vt[s - 1][0] + vt[s][0]) / 2
+                for (uu, ta, tb) in ((u1, t0, t_mid), (u2, t_mid, t1)):
+                    rows.append(dict(
+                        rally_cum=cum, track=tr, t0=f"{ta:.2f}",
+                        t1=f"{tb:.2f}", uuid=uu, action="split",
+                        frac=f"{best:.2f}", n=len(us)))
+                n_split += 1
+                continue
+            if frac < 0.7:
+                continue
+            if car is None:
+                # grey rescue: side must match the player's end majority
+                rows.append(dict(rally_cum=cum, track=tr, t0=f"{t0:.2f}",
+                                 t1=f"{t1:.2f}", uuid=app,
+                                 action="rescue", frac=f"{frac:.2f}",
+                                 n=len(us)))
+                n_rescue += 1
+            elif car != app:
+                rows.append(dict(rally_cum=cum, track=tr, t0=f"{t0:.2f}",
+                                 t1=f"{t1:.2f}", uuid=app,
+                                 action="rebind", frac=f"{frac:.2f}",
+                                 n=len(us)))
+                n_rebind += 1
+    out = ROOT / f"data/vision/identity_track_map_{a.vod}.csv"
+    with open(out, "w", newline="") as fh:
+        wr = csv.DictWriter(fh, fieldnames=["rally_cum", "track", "t0",
+                                            "t1", "uuid", "action",
+                                            "frac", "n"])
+        wr.writeheader()
+        wr.writerows(rows)
+    print(f"stage 2: {n_rebind} rebinds, {n_rescue} grey rescues, "
+          f"{n_split} track splits -> {out}")
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--video", type=Path)
@@ -458,6 +632,8 @@ def main():
                     help="harvest + LORO validation, skip the full scan")
     ap.add_argument("--audit", action="store_true",
                     help="anchor-identity audit -> swap ledger")
+    ap.add_argument("--stage2", action="store_true",
+                    help="full mid-rally repair -> track map")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -485,6 +661,9 @@ def main():
                       for u, n in per.most_common()))
     if a.audit:
         audit(a, samples, partner, names_full)
+        return
+    if a.stage2:
+        stage2(a, rallies, partner, names_full)
         return
     st, confusion = validate(samples, partner)
     print(f"leave-one-rally-out 4-way accuracy "
