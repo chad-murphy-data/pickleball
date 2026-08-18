@@ -93,6 +93,26 @@ def assemble_rallies(labels, pose_dir):
     return rallies
 
 
+def parse_drop(spec):
+    """--drop 'dsho' (or comma list) -> (dropped, reduced-BASE). Answers
+    the incremental question feature_check.py's per-channel AUCs cannot:
+    an AUC measures a channel ALONE vs nothing, not what it adds on top
+    of the channels already in the model — and dsho's detector slot has
+    never been re-measured since its confidence-vs-precision bug fix
+    (the v3-era lift was earned partly on artifact values)."""
+    dropped = tuple(s.strip() for s in spec.split(",") if s.strip())
+    if not dropped:
+        raise SystemExit("--drop given but empty")
+    bad = [c for c in dropped if c not in CHANNELS_BASE]
+    if bad:
+        raise SystemExit(f"--drop {','.join(bad)}: not in BASE "
+                         f"{'/'.join(CHANNELS_BASE)}")
+    reduced = tuple(c for c in CHANNELS_BASE if c not in dropped)
+    if not reduced:
+        raise SystemExit("--drop removed every channel; nothing to fit")
+    return dropped, reduced
+
+
 def print_result(name, overall, per_type, n, show_types=False):
     print(f"=== {name} ===")
     print(f"  coverage@2x overall: {overall:.1%}  (n={n})")
@@ -110,6 +130,10 @@ def main():
     ap.add_argument("--per-type", action="store_true",
                     help="also print the per-shot-type slices (noise at "
                          "this label count — debugging only)")
+    ap.add_argument("--drop", default=None, metavar="CH[,CH]",
+                    help="compare BASE-minus-these vs full BASE instead "
+                         "of BASE vs EXT (e.g. --drop dsho: does the "
+                         "channel still earn its detector slot?)")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -126,23 +150,35 @@ def main():
     print(f"channel_ablation: {len(rallies)} rallies, {n_contacts} "
           f"contacts (leave-one-rally-out; EXPLORATION, not a gate)\n")
 
-    ov_b, pt_b, n_b = loro_eval(rallies, CHANNELS_BASE)
-    print_result("BASE  (arm/lw/rw/le/re/dsho — re-measured post-fix, "
-                 "NOT the historical 56.2%)", ov_b, pt_b, n_b, a.per_type)
+    if a.drop:
+        dropped, reduced = parse_drop(a.drop)
+        set_a, name_a = reduced, (f"BASE minus {'+'.join(dropped)}  "
+                                  f"({'/'.join(reduced)})")
+        set_b, name_b = CHANNELS_BASE, "BASE  (full)"
+        delta_note = f"what {'+'.join(dropped)} currently adds"
+    else:
+        set_a, name_a = CHANNELS_BASE, ("BASE  (arm/lw/rw/le/re/dsho — "
+                                        "re-measured post-fix, NOT the "
+                                        "historical 56.2%)")
+        set_b, name_b = CHANNELS_EXT, "EXT   (BASE + leg + dgaze)"
+        delta_note = "what leg+dgaze add"
 
-    ov_e, pt_e, n_e = loro_eval(rallies, CHANNELS_EXT)
-    print_result("EXT   (BASE + leg + dgaze)", ov_e, pt_e, n_e, a.per_type)
+    ov_a, pt_a, n_a = loro_eval(rallies, set_a)
+    print_result(name_a, ov_a, pt_a, n_a, a.per_type)
 
-    d = ov_e - ov_b
-    print(f"delta: {d:+.1%} overall "
-          f"({'EXT ahead' if d > 0 else 'BASE ahead' if d < 0 else 'tied'})")
+    ov_b, pt_b, n_b = loro_eval(rallies, set_b)
+    print_result(name_b, ov_b, pt_b, n_b, a.per_type)
+
+    d = ov_b - ov_a
+    print(f"delta: {d:+.1%} overall = {delta_note} "
+          f"(positive = the extra channel(s) help)")
     if a.per_type:
-        for ty in sorted(set(pt_b) | set(pt_e)):
+        for ty in sorted(set(pt_a) | set(pt_b)):
+            ha, ba = pt_a.get(ty, (0, 0))
             hb, bb = pt_b.get(ty, (0, 0))
-            he, be = pt_e.get(ty, (0, 0))
-            if bb and be:
-                print(f"  {ty:<10} BASE {hb / bb:6.1%}  EXT {he / be:6.1%}  "
-                      f"({he / be - hb / bb:+.1%})")
+            if ba and bb:
+                print(f"  {ty:<10} A {ha / ba:6.1%}  B {hb / bb:6.1%}  "
+                      f"({hb / bb - ha / ba:+.1%})")
     print(f"\nn={n_contacts} contacts, 10 rallies — read any single-digit "
           f"delta as noise, not a verdict. A result worth believing "
           f"graduates to a fresh pre-registration on untouched holdout "
@@ -231,6 +267,36 @@ def selftest():
         "the new leg/dgaze columns should not be constant/degenerate"
     print(f"  plumbing: EXT adds exactly 14 columns "
           f"({Xb.shape[1]}->{Xe.shape[1]}), non-degenerate OK")
+
+    # --drop: parsing must validate against BASE, and a reduced set must
+    # genuinely fit a reduced feature space — dropping the entire arm
+    # family (all the synth's real signal) has to hurt vs full BASE, or
+    # loro_eval is silently ignoring the channel set it was handed
+    dropped, reduced = parse_drop("dsho")
+    assert dropped == ("dsho",) and "dsho" not in reduced
+    assert len(reduced) == len(CHANNELS_BASE) - 1
+    for bad in ("nope", "dsho,nope", ",".join(CHANNELS_BASE)):
+        try:
+            parse_drop(bad)
+            raise AssertionError(f"parse_drop({bad!r}) should have exited")
+        except SystemExit:
+            pass
+    Xd, _ = rally_instances(r1["rd"], r1["contacts"], r1["whiffs"], 0,
+                            channels=reduced)
+    assert np.stack(Xd).shape[1] == Xb.shape[1] - 7, \
+        "dropping one channel should remove exactly 7 columns"
+    ov_dsho_only, _, _ = loro_eval(rallies, ("dsho",))
+    print(f"  --drop: dsho-only synth coverage {ov_dsho_only:.1%} vs "
+          f"full BASE {ov_base:.1%}")
+    # the failure mode guarded here (loro_eval silently ignoring the
+    # channel set) would make the two EQUAL, so any deterministic gap is
+    # teeth; 5 points leaves margin (measured gap on this seeded synth:
+    # 8.3 points, 66.7% vs 75.0% — coverage@2x has a luck floor, garbage
+    # ranking still hits a fair fraction at a 2x budget)
+    assert ov_dsho_only <= ov_base - 0.05, \
+        "a channel set stripped of the synth's only real signal should " \
+        "do clearly worse — if it doesn't, loro_eval isn't honoring the " \
+        "channel set"
     print("SELFTEST OK")
 
 

@@ -27,7 +27,7 @@ gated channels emit exact zeros (a naive rank AUC would break ties by
 array order and bias the number). 0.5 = the channel tells the two
 classes apart not at all; 1.0 = perfectly.
 
-None of the three channels are new extraction — all ride on keypoints
+None of the candidate channels are new extraction — all ride on keypoints
 `pose_extract.py` already saves (COCO-17). `dsho` (shoulder-line
 angular velocity) already feeds the learned scorer as one of six
 channels; `leg` (hip-relative ankle/knee speed, same math as the arm
@@ -92,7 +92,14 @@ SWEEP_STARTS = [1.55, 1.35, 1.15, 0.95, 0.75]  # existing EARLY window
 # shoulder/gaze are about the STRIKE itself (core); footwork is about
 # GETTING READY to strike (early, prep arc) — both windows are always
 # collected either way, this just picks which one gets summarized first.
+# "arm" is the REFERENCE row: the detector's primary channel, included
+# so the candidates' AUCs are read against the yardstick they'd have to
+# add to, not against zero. (Mild caveat: track selection keys on arm
+# prep energy for BOTH classes, so arm's own AUC is the one number here
+# with a selection tailwind.)
 CHANNELS = {
+    "arm": ("max wrist/elbow speed — REFERENCE, already the detector's "
+            "primary channel", "core"),
     "dsho": ("shoulder rotation", "core"),
     "leg": ("footwork: ankle/knee speed", "early"),
     "dgaze": ("head/gaze rotation (ear line)", "core"),

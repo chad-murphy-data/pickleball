@@ -438,3 +438,20 @@ artifact-suspect cousin of a channel already in the model (dgaze).
 Three candidate channels tested end to end; feature engineering on
 this pose stream looks tapped out. Labels at scale remains the
 load-bearing lever.
+
+**Follow-up question (user, 2026-08-18): "so shoulders added something
+to arms/wrists?"** — flagged as not yet actually known. The AUCs above
+are MARGINAL (each channel alone vs nothing), not INCREMENTAL (on top
+of the channels already in the model); dsho's detector slot has never
+been re-measured since the MAX_ROT_RAD bug fix, so the v3-era lift was
+earned partly on artifact values. Two additions to answer it with
+data: (1) feature_check.py now prints an "arm" REFERENCE row (the
+detector's primary channel) so candidate AUCs read against the
+yardstick they'd have to add to — with the caveat printed that track
+selection keys on arm prep energy for both classes, so arm's own AUC
+has a selection tailwind; (2) channel_ablation.py --drop CH compares
+BASE-minus-CH vs full BASE under the same LORO (e.g. --drop dsho).
+Selftest teeth: a dsho-only channel set on the synth (whose signal
+lives in the arm family) must do clearly worse than full BASE, proving
+loro_eval honors the reduced set (measured 66.7% vs 75.0%,
+deterministic). Neither run against real data yet.
