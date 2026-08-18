@@ -807,3 +807,61 @@ jittering the synth times restored honest behavior (56/56, teams
 4/4). Second sighting same day — treat "synth on exact grid times +
 class repeated across rallies" as a banned combination in this
 codebase.
+
+## 2026-08-18 — phase_grader run 1: VERDICT — 2000 rallies NOT licensed by this evidence
+
+Run (user's Mac, fingerprints efb79d5003 / bce74d0f26, split
+respected): truth 10 rallies / 6 with paced fast / 5 boundary-
+uncertain (ff_n = 5 certain fast rallies — above the <4 deferral
+line, barely). LEVEL C (true times): per-contact GAP 63.1%
+(53/84), FULL 59.5% — FULL BELOW GAP, kitchen context added
+nothing; structure GAP hf 6/6, ff<=1s 3/5 (med 0.00 s), team 4/5,
+share corr −0.86; FULL hf 6/6, ff 4/5 (med 0.59 s), team 2/5, corr
++0.43. LEVEL B (decoded): 135 events across 10 rallies (one rally
+decoded 3), match rate 48/84 = 57.1%, matched-contact pace acc
+52.1/54.2% (gap/full — barely above coin), structure FULL hf 6/6,
+ff 2/5 (med 1.44 s), team 4/5, corr +0.39.
+
+BANDS (FULL): C cleared 2/4 (has_fast 100% ✓, ff 80% ✓; team 40% ✗,
+corr +0.43 ✗). B cleared a DIFFERENT 2/4 (hf ✓, team 80% ✓; ff 40%
+✗, corr ✗). Registered logic: C misses -> "structure not
+recoverable; counts-only product" -> 2000 rallies NOT justified.
+This OVERRULES the registered lean ("most likely C clears, B
+misses; leaning justified") — the bands beat the lean, which is
+what pre-registration is for.
+
+Prediction scorecard: uncertain 5 (band 5–8 ✓ at the edge); C GAP
+63.1 (58–66 ✓); C FULL 59.5 (62–70 ✗, and < GAP); match 57.1
+(55–70 ✓); B-below-C direction ✓ but size under-called (ff hit
+−40pp, predicted −10 to −20). Boundary-shot lesson (GAP
+misattributes initiator) INVERTED at Level C on real data (GAP 4/5
+vs FULL 2/5) while matching the prediction at Level B (1/5 vs 4/5)
+— i.e., at n=5 the team stat flips arm-to-arm; treat every
+structure row as ±20pp.
+
+What run 1 actually established: (1) THIRD independent confirmation
+that per-contact pace saturates ~60% on this stream — fastslow raw,
+fastslow POSE-N, and now FULL-with-kitchen all land 59–63% at TRUE
+times; kitchen context is a null addition (FULL < GAP at C).
+(2) Structure stats BEAT per-contact (aggregation forgives): hf
+6/6, ff medians 0.0–0.6 s at C. (3) The placement tax is real and
+specific: matched acc 63→52, ff med 0.59→1.44 s — decoded timing
+noise corrupts the gap features that ARE the signal. That is the
+only regime-2 evidence, and it is capped by (1): perfect placement
+buys back only the C ceiling, which itself missed bands.
+
+FORWARD (before ANY mass labeling — both cheap, both could overturn
+run 1): (a) tag the 58 'other' contacts fast/slow (~15 min):
+restores the 5 deferred rallies, roughly doubles paced n, rerun the
+SAME grader/bands; (b) sequence-level segmenter — the classifiers
+graded here are PER-CONTACT thresholds; the actual phase model is a
+2-state segmentation over the GAP SEQUENCE (run-length/HMM-style),
+buildable with zero new labels and gradeable by this same
+instrument. If C clears bands after (a)+(b), revisit the 2000-rally
+question with a real case. Standing hypothesis for the product
+regardless: CONTINUOUS tempo stats (share of sub-0.7 s gaps, tempo
+curves, rally length) sidestep classification entirely and need
+only decoded TIMING FIDELITY — which is also the one thing the
+temporal model demonstrably improves. If a labeling investment is
+ever justified, it will be by timing fidelity for continuous
+stats, not by the binary classifier.
