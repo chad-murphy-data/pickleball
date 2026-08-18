@@ -511,7 +511,11 @@ def stage2(a, rallies, partner, names_full):
     for g in sorted(set(gm.tolist())):
         fw[g] = FourWay()
         fw[g].fit(F[gm == g], lab[gm == g])
-    # leave-one-rally-out check per game on the cleaned labels
+    # leave-one-rally-out check per game on the cleaned labels;
+    # games below the adjudication bar contribute NO corrections
+    # (measured: game 3 at 54.8% — Alshon's gray game-3 shirt vs
+    # Bright's green is under-separable at this crop resolution)
+    LORO_BAR = 0.85
     for g in sorted(fw):
         hits = tot = 0
         for c in sorted(set(cum_k[gm == g].tolist())):
@@ -522,8 +526,13 @@ def stage2(a, rallies, partner, names_full):
                 p, _ = f2.predict(F[i])
                 tot += 1
                 hits += p == lab[i]
+        acc = hits / max(tot, 1)
         print(f"game {g} 4-way LORO on EM-cleaned labels: "
-              f"{hits/max(tot,1):.1%} on {tot}")
+              f"{acc:.1%} on {tot}")
+        if acc < LORO_BAR:
+            print(f"  game {g} BELOW the {LORO_BAR:.0%} bar — "
+                  f"no corrections will be emitted for it")
+            del fw[g]
 
     swaps = defaultdict(list)
     led = ROOT / f"data/vision/identity_swaps_{a.vod}.csv"
