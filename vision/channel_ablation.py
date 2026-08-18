@@ -113,6 +113,22 @@ def labels_fingerprint(rallies):
     return hashlib.md5(repr(parts).encode()).hexdigest()[:10]
 
 
+def pose_fingerprint(rallies):
+    """Companion to labels_fingerprint for the OTHER input: a cheap
+    content signature of the pose data actually loaded (per rally:
+    frame count + coordinate sums — catches a re-extraction or swapped
+    npz that a filename can't). Computed from arrays already in memory;
+    no extra I/O."""
+    parts = []
+    for cum in sorted(rallies):
+        z = rallies[cum]["rd"]["z"]
+        t = np.asarray(z["t"])
+        b = np.asarray(z["box"])
+        parts.append((cum, int(t.size), round(float(t.sum()), 3),
+                      round(float(b.sum()), 1)))
+    return hashlib.md5(repr(parts).encode()).hexdigest()[:10]
+
+
 def parse_drop(spec):
     """--drop 'dsho' (or comma list) -> (dropped, reduced-BASE). Answers
     the incremental question feature_check.py's per-channel AUCs cannot:
@@ -169,10 +185,12 @@ def main():
     n_contacts = sum(len(r["contacts"]) for r in rallies.values())
     print(f"channel_ablation: {len(rallies)} rallies, {n_contacts} "
           f"contacts (leave-one-rally-out; EXPLORATION, not a gate)")
-    print(f"labels fingerprint: {labels_fingerprint(rallies)} — numbers "
-          f"only compare across runs that print the SAME fingerprint; a "
-          f"changed value means the label rows changed (relabeling, "
-          f"re-export) and any delta vs an older run is void\n")
+    print(f"labels fingerprint: {labels_fingerprint(rallies)}   "
+          f"pose fingerprint: {pose_fingerprint(rallies)}")
+    print(f"(numbers only compare across runs that print the SAME two "
+          f"fingerprints; a changed value means that input changed — "
+          f"relabeling/re-export, or re-extracted/swapped pose npz — "
+          f"and any delta vs an older run is void)\n")
 
     if a.drop:
         dropped, reduced = parse_drop(a.drop)
@@ -334,6 +352,17 @@ def selftest():
     assert labels_fingerprint(r_edit) != fp1, \
         "a 10ms retime of one contact must change the fingerprint"
     print(f"  labels_fingerprint: stable {fp1}, flips on a 10ms edit OK")
+
+    pf1 = pose_fingerprint(rallies)
+    assert pf1 == pose_fingerprint(rallies), "must be deterministic"
+    r_pose = copy.deepcopy(rallies)
+    zb = np.asarray(r_pose[1]["rd"]["z"]["box"]).copy()
+    zb.flat[0] += 1.0
+    r_pose[1]["rd"]["z"] = dict(r_pose[1]["rd"]["z"])
+    r_pose[1]["rd"]["z"]["box"] = zb
+    assert pose_fingerprint(r_pose) != pf1, \
+        "a single moved box coordinate must change the pose fingerprint"
+    print(f"  pose_fingerprint: stable {pf1}, flips on a 1px box edit OK")
     print("SELFTEST OK")
 
 

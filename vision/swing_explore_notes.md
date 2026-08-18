@@ -483,3 +483,25 @@ inputs being compared, not just the code.
 Provisional channel picture on current labels, three instruments
 agreeing: the detector is carried by the arm/wrist family + tail
 features; dsho's slot adds ~0; leg/dgaze add ~0 or slightly negative.
+
+**Reproducibility hunt continued (2026-08-18)**: user reports labels
+NOT touched — which un-clears everything and forced the rigorous pass.
+Full unfiltered diff 67449e0..754bdac: genuinely CLI/print/selftest
+only. Nondeterminism grep over swing_explore + contact_ceiling: every
+default_rng is seeded, no glob/listdir (load_rally is exact-filename
+r{cum:04d}.npz), frozensets are membership-only. So no identified
+mechanism for 57.4% -> 54.3% on identical inputs. Added
+pose_fingerprint (frame counts + coordinate sums per rally, from
+arrays already in memory) next to labels_fingerprint so BOTH inputs
+are pinned from here on. Decisive battery handed to the user: (a)
+paste run 1's BASE block from terminal scrollback (verifies 57.4 was
+even real — cheapest check of all), (b) same --drop command twice
+back-to-back (flap = cross-process nondeterminism, e.g. BLAS; stable =
+one-time input/state change), (c) default mode once (does BASE
+first-position reproduce 54.3 or return to 57.4 — order sanity on real
+data; synth probes say order is innocent). Numbers involved: run 1
+BASE 93/162, EXT 89/162; run 2 minus-dsho 89/162, BASE 88/162 — a
+±5-contact band, so whatever this is, it moves borderline contacts,
+not the structure. The dsho conclusion (adds ~nothing) is robust to
+the whole band; the open question is instrument hygiene, not the
+finding.
