@@ -36,6 +36,7 @@ SELF-TEST (no files): python3 channel_ablation.py --selftest
 from __future__ import annotations
 
 import argparse
+import hashlib
 from pathlib import Path
 
 import numpy as np
@@ -93,6 +94,25 @@ def assemble_rallies(labels, pose_dir):
     return rallies
 
 
+def labels_fingerprint(rallies):
+    """Deterministic content hash of the label data actually evaluated
+    (contacts + whiffs of the pose-covered rallies). Printed in the run
+    header so cross-run comparability is VISIBLE: the 2026-08-18 real
+    runs printed BASE 57.4% and then 54.3% on 'the same' 162 contacts —
+    the code was cleared (diff + order/hash-seed probes all clean), so
+    the label rows themselves had changed between runs (ongoing labeling
+    edits/re-exports). A different fingerprint means any delta vs an
+    older run is void; only same-fingerprint runs compare."""
+    parts = []
+    for cum in sorted(rallies):
+        r = rallies[cum]
+        parts.append((cum,
+                      tuple((round(tc, 3), team, ty)
+                            for tc, team, ty in r["contacts"]),
+                      tuple(round(t, 3) for t, *_ in r["whiffs"])))
+    return hashlib.md5(repr(parts).encode()).hexdigest()[:10]
+
+
 def parse_drop(spec):
     """--drop 'dsho' (or comma list) -> (dropped, reduced-BASE). Answers
     the incremental question feature_check.py's per-channel AUCs cannot:
@@ -148,7 +168,11 @@ def main():
                          f"(found {len(rallies)}) — check --pose-dir")
     n_contacts = sum(len(r["contacts"]) for r in rallies.values())
     print(f"channel_ablation: {len(rallies)} rallies, {n_contacts} "
-          f"contacts (leave-one-rally-out; EXPLORATION, not a gate)\n")
+          f"contacts (leave-one-rally-out; EXPLORATION, not a gate)")
+    print(f"labels fingerprint: {labels_fingerprint(rallies)} — numbers "
+          f"only compare across runs that print the SAME fingerprint; a "
+          f"changed value means the label rows changed (relabeling, "
+          f"re-export) and any delta vs an older run is void\n")
 
     if a.drop:
         dropped, reduced = parse_drop(a.drop)
@@ -297,6 +321,19 @@ def selftest():
         "a channel set stripped of the synth's only real signal should " \
         "do clearly worse — if it doesn't, loro_eval isn't honoring the " \
         "channel set"
+
+    # labels_fingerprint: stable on identical rows, sensitive to a
+    # single retimed contact (the failure mode it exists to expose:
+    # label edits between runs silently voiding cross-run deltas)
+    fp1 = labels_fingerprint(rallies)
+    assert fp1 == labels_fingerprint(rallies), "must be deterministic"
+    import copy
+    r_edit = copy.deepcopy(rallies)
+    tc0, team0, ty0 = r_edit[1]["contacts"][0]
+    r_edit[1]["contacts"][0] = (tc0 + 0.01, team0, ty0)
+    assert labels_fingerprint(r_edit) != fp1, \
+        "a 10ms retime of one contact must change the fingerprint"
+    print(f"  labels_fingerprint: stable {fp1}, flips on a 10ms edit OK")
     print("SELFTEST OK")
 
 

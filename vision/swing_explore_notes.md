@@ -455,3 +455,31 @@ Selftest teeth: a dsho-only channel set on the synth (whose signal
 lives in the arm family) must do clearly worse than full BASE, proving
 loro_eval honors the reduced set (measured 66.7% vs 75.0%,
 deterministic). Neither run against real data yet.
+
+**--drop dsho real run + a reproducibility catch (2026-08-18)**: the
+user's run printed BASE-minus-dsho 54.9% vs BASE(full) 54.3% — dsho
+currently adds −0.6 points, i.e. nothing (noise around zero; its 0.745
+marginal AUC is evidently redundant with the arm family). BUT
+BASE(full) had printed 57.4% earlier the same day, and that discrepancy
+had to be run down before believing anything. Code CLEARED: git diff
+between the two runs' channel_ablation versions touches only
+print/CLI/selftest (loro_eval/assemble_rallies identical;
+swing_explore/contact_ceiling untouched since 67449e0), and
+deterministic probes on the handicapped synth show BASE repeat SAME
+in-process, BASE-after-reduced SAME as fresh, across two
+PYTHONHASHSEEDs — no order dependence, no state leak, no hash
+sensitivity. Remaining explanation: the LABEL ROWS changed between the
+runs (count constant at 162/10 pose-covered rallies, so retimed
+existing rows — consistent with ongoing labeling edits/re-exports;
+candidate suspect: an r9/r10 anomaly fix; unconfirmed, asked the
+user). Consequences: (1) WITHIN-run comparisons stay valid — run 2's
+−0.6 is apples-to-apples; (2) every cross-run delta involving the
+older 57.4/54.9 numbers is void; (3) channel_ablation now prints a
+LABELS FINGERPRINT (md5 of the evaluated contact/whiff rows, selftest
+covers determinism + 10ms-edit sensitivity) — only same-fingerprint
+runs compare. Echo of the measurement-frame lesson: validate the
+inputs being compared, not just the code.
+
+Provisional channel picture on current labels, three instruments
+agreeing: the detector is carried by the arm/wrist family + tail
+features; dsho's slot adds ~0; leg/dgaze add ~0 or slightly negative.
