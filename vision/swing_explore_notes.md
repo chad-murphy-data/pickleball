@@ -674,3 +674,76 @@ loud warning). Harmless TODAY — the 10 pose-covered labeled rallies
 are all in the frozen train block (game-1 rallies 1–21) — but it
 must be present before labels grow past rally 21; file sent
 alongside v2.
+
+## 2026-08-18 — fastslow v2 real run + LABEL SEMANTICS correction (user)
+
+V2 run (user's Mac; fingerprints efb79d5003 / bce74d0f26; split file
+now present, holdout untouched; the three v1-shared feature sets
+reproduce v1's numbers exactly, so the v2 edits moved nothing):
+- Descriptives: raw arm_cmax fast-vs-slow AUC **0.445 — INVERTED**
+  (slow med 0.5032 > fast 0.4745); arm_emax 0.485; leg_cmax 0.596
+  (best raw pose single feature); dsho/dgaze ~0.5. gap_prev 0.349 /
+  gap_next 0.242 as P(fast>slow) = 0.651 / **0.758 in the coded
+  direction — gap_next (time to NEXT contact) is the strongest single
+  feature anywhere in the instrument**. Within-side arm_cmax 0.433 /
+  0.459 ≈ pooled (no depth signature in the raw magnitudes). ALL gap
+  medians sub-1.3 s (dink 0.93 s) — real kitchen tempo; the 3.0 s cap
+  almost never binds and "quiet windows" barely exist, consistent
+  with feature_check's contamination sweep.
+- LORO (fold-honest): CADENCE 54.2%/0.600, POSE 55.6%/0.545,
+  POSE+CAD 58.3%/0.586, POSE-N 52.8%/0.571, **POSE-N+CAD 61.1%/0.632
+  (best; +4.2pp over the 56.9% majority)**.
+- CAVEAT, self-inflicted: the descriptive AUCs are POOLED, not
+  fold-honest — they can ride between-rally composition (fast-heavy
+  rallies are fast-tempo rallies everywhere), which LORO correctly
+  refuses to credit. gap_next 0.758 pooled vs CADENCE 0.600 LORO
+  quantifies exactly that gap. The docstring's "nothing to overfit"
+  oversold it; between-rally composition is a confound the pooled
+  number keeps.
+
+Prediction scorecard (registered pre-run): (1) arm_cmax 0.60–0.70 →
+WRONG — 0.445, inverted; magnitude deader than the registered floor.
+(2) smash/drive >=1.5x dink → WRONG (smash 1.05x; drive 0.49x, the
+LOWEST of all types); counter <1.3x dink → right (0.63x). (3) POSE-N
++3–8pp AUC → RIGHT (+4.6pp, 0.586→0.632). (4) within-side > pooled →
+WRONG (equal). (5) counter lowest gap_prev → RIGHT (0.61 s).
+
+**LABEL SEMANTICS (user, same day) — applies RETROACTIVELY to every
+per-type table in feature_check / channel_ablation / fastslow_check:**
+smash, counter, and speed-up were coded interchangeably ("basically
+the same for me" — no brightline attempted). Treat them as ONE class,
+kitchen-fast (n=36 here); differences among those three rows are
+uninterpretable — the "speed-up reads loud (0.81), initiation from
+stationary posture" detail from the first v2 read is RETRACTED as
+uninterpretable. drive = FAST FROM THE BASELINE; drop = SLOW FROM THE
+BASELINE. The taxonomy actually coded is PACE x LOCATION. The
+fast/slow BINARY was coded consistently, so the binary instrument is
+immune to the trio noise — the headline AUCs stand; per-type tables
+are the only casualty. Baseline shots (drive/drop) sit at the depth
+extremes of the frame, and that is precisely where POSE-N helped
+(drive 2/5 → 4/5 correct) — n tiny, direction consistent with the
+scale mechanism biting hardest at depth.
+
+Mechanism ranking after v2: (c) BLUR/TRACKING-AT-SPEED front-runner —
+fast contacts read no louder than slow at true windows, within sides
+too, which clipping-at-the-strike produces and scale variance alone
+does not; (a) scale variance real but modest (POSE-N gain inside the
+registered band; the drive fix); (b) tempo-vs-swing conflation now
+untestable at type level (labels interchangeable) and moot for the
+binary. NEW unmeasured confound (d): WRONG-HITTER-AT-SPEED — at
+0.6 s any-team gaps the partner's follow-through occupies the very
+prep window pick_hitter selects on, so fast-exchange rows may often
+measure the wrong player's track. Untested (tracks carry side, not
+within-side identity); cheap proxy if ever needed: pick-instability
+rate (prep-pick vs core-pick disagreement) as a function of gap_prev.
+
+Standing read: per-contact pace from pose on this stream ≈ 61%/0.63
+at TRUE times — a ceiling, before the placement tax. The live product
+path for firefight analytics is PHASE/TEMPO SEGMENTATION from decoder
+gap sequences (aggregates consecutive gaps; needs no per-contact
+pose); pose's remaining per-contact role gets re-tested after
+"other" tagging roughly doubles n. Labeling implication offered to
+user (not yet edited into labeling_protocol.md): bless the coarse
+vocabulary — the trio can be typed as any of its three words or just
+"fast"; drive/drop/lob/dink stay; literal fast/slow tags are enough
+for the "other" backlog.
