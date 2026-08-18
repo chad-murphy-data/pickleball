@@ -619,3 +619,58 @@ a function of slot index — synth nulls must randomize the LABEL
 channel, not just equalize the signal channel. Post-fix null: 57%
 acc / 0.56 AUC. Same family as the track_peaks incident: the rig
 telling the truth only after its own blind spot got a test.
+
+## 2026-08-18 — fastslow v1 real run: REGISTERED PREDICTIONS FALSIFIED; v2 diagnostics built
+
+**The v1 run (user's Mac, fingerprints efb79d5003 / bce74d0f26,
+n=72: 41 fast / 31 slow, majority 56.9%) falsified every registered
+number: POSE+CAD 58.3% (registered 85–95, point ~90) — ONE contact
+above majority; CADENCE 54.2% (registered ~75) — BELOW majority;
+pose AUC 0.545, cadence AUC 0.600, combined 0.586.** Confusion:
+model over-calls fast (45/72 predicted fast; true slow -> 17 fast /
+14 slow; dink only 10/25 correct). The registered predictions
+existed precisely so this moment is unambiguous: the "fast class
+rides the arm signature detection already finds" assumption DOES NOT
+TRANSFER from detection to type. Recorded as-is; no re-litigating
+the numbers.
+
+Candidate mechanisms (v2's job is to discriminate, not assume):
+(a) CROSS-TRACK SCALE VARIANCE — detection compares a moment against
+the SAME track's quiet moments; fast-vs-slow compares magnitudes
+ACROSS players/depths/tracking quality, which raw features were
+never built to survive. (b) TEMPO-FAST ≠ SWING-FAST — counters are
+18/41 of the fast class and a counter is a compact punch block,
+plausibly dink-like in arm speed; the mapping (frozen on tempo
+grounds) may have diluted the kinematic class. (c) MOTION BLUR AT
+CONTACT — the faster the swing, the worse the wrist tracking at the
+strike (POSTMORTEM's blur finding), biasing fast arm readings DOWN
+and compressing exactly the gap the classifier needs.
+
+v2 additions (selftested; layout-pin, scale-invariance, jitter-
+rescue, extended null all green): model-free per-feature descriptives
+(arm_cmax/arm_emax/dsho/leg/dgaze fast-vs-slow AUC + medians;
+gap_prev/gap_next AUC; per-TYPE arm_cmax + gap_prev medians;
+per-image-side arm_cmax AUC), and POSE-N — each speed stat divided by
+that channel's own track-level top-5% mean, plus POSE-N+CAD.
+
+REGISTERED PREDICTIONS FOR THE FIRST v2 RUN (before it exists):
+(1) primary diagnostic is raw arm_cmax fast-vs-slow AUC; I predict
+0.60–0.70 — weak but not dead. (2) mechanism (b) shows up: smash and
+drive arm_cmax medians >= 1.5x dink's, while COUNTER sits within
+~1.3x of dink — "fast" as mapped is two different things, and the
+kinematic signal is real but diluted. (3) POSE-N+CAD gains over
+POSE+CAD's 0.586 AUC by +3–8pp — a partial rescue, NOT a return to
+the falsified 85–95; if it gains >= +10pp, mechanism (a) was
+dominant. (4) within-side arm_cmax AUCs exceed the pooled arm_cmax
+AUC (depth/scale confound visible without POSE-N). (5) counters'
+gap_prev median is the lowest of any type (tempo IS their identity).
+If (2) holds, the likely end state is a TWO-AXIS story — swing size
+from pose (smash/drive put-aways), tempo from cadence/decoder
+(firefight segmentation) — and the product's "fast" for firefight
+analytics rides tempo, not pose. Decided by the run, not here.
+
+Practical: user's flat folder lacks label_split.csv (v1 printed the
+loud warning). Harmless TODAY — the 10 pose-covered labeled rallies
+are all in the frozen train block (game-1 rallies 1–21) — but it
+must be present before labels grow past rally 21; file sent
+alongside v2.

@@ -46,6 +46,23 @@ Three feature sets, because the answer directs the build:
 Train split only (label_split.csv), same rule as feature_check.py:
 holdout rallies are never loaded and burn on use.
 
+V2 (2026-08-18, hours after v1): the first real run FALSIFIED the
+registered predictions — POSE+CAD 58.3% vs registered 85-95, CADENCE
+54.2% vs ~75, pose AUC 0.545 (n=72, fingerprints efb79d5003 /
+bce74d0f26). v2 adds the diagnostics that discriminate between the
+candidate mechanisms (new predictions registered in
+swing_explore_notes.md BEFORE the first v2 run):
+  - per-feature descriptives: arm_cmax etc. fast-vs-slow AUC and
+    medians, plus per-TYPE arm_cmax / gap medians — is magnitude dead
+    at true times, or is the fast class DILUTED by compact-swing
+    counters (tempo-fast vs swing-fast are different things)?
+  - POSE-N: within-track normalized pose (each speed stat divided by
+    that channel's own track-level top-5% mean). Detection never had
+    to survive cross-track scale variance (near/far depth, player
+    size, tracking quality) — it compares a moment against the SAME
+    track's quiet moments. Cross-contact classification must.
+  - per-image-side arm_cmax AUC (depth proxy on this footage).
+
 RUN (same flat folder as swing_explore.py; numpy only, ~1 min):
     python3 fastslow_check.py
 
@@ -60,7 +77,7 @@ import numpy as np
 
 from contact_ceiling import load_rosters, load_labels
 from swing_explore import (window_feats, fit_logreg, predict,
-                           CHANNELS_EXT, PRE_S, track_series)
+                           CHANNELS_EXT, PRE_S, POST_S, track_series)
 from feature_check import load_split, pick_hitter, auc
 from channel_ablation import (assemble_rallies, labels_fingerprint,
                               pose_fingerprint)
@@ -78,7 +95,60 @@ MIN_PER_CLASS = 8
 
 FEATSETS = (("CADENCE  (label gaps only — no pose)", "cad"),
             ("POSE     (window_feats EXT at true time)", "pose"),
-            ("POSE+CAD (the deployable combination)", "both"))
+            ("POSE+CAD (v1 deployable candidate)", "both"),
+            ("POSE-N   (within-track normalized pose)", "posen"),
+            ("POSE-N+CAD", "posenc"))
+
+
+def pose_feature_names():
+    """Layout mirror of window_feats' CHANNELS_EXT vector. The
+    selftest pins this to the real thing by recomputing a named
+    feature independently from the raw series — a silent index drift
+    here would poison every per-feature diagnostic below."""
+    names = []
+    for ch in CHANNELS_EXT:
+        names += [f"{ch}_{s}" for s in
+                  ("emax", "emean", "cmax", "cmean", "cstd", "rise",
+                   "tpeak")]
+    names += ["hipv_max", "hipv_mean", "whi_max", "kconf_mean",
+              "side", "ynorm", "cx", "cad_proxy"]
+    return names
+
+
+POSE_NAMES = pose_feature_names()
+SPEED_SLOTS = (0, 1, 2, 3, 4, 5)   # per-channel stats that scale with
+# speed; slot 6 (tpeak) is a TIME and is never normalized
+
+
+def track_scale(ser, ch):
+    """This track's own typical peak level for channel `ch`: mean of
+    the top 5% of samples (at least 3). Deterministic in the track
+    data, so caching on ser is order-safe (track_peaks precedent —
+    and the determinism selftest would catch a violation)."""
+    cache = ser.setdefault("_fs_scale", {})
+    if ch not in cache:
+        v = np.asarray(ser[ch], float)
+        v = v[np.isfinite(v)]
+        if v.size == 0:
+            s = 1.0
+        else:
+            k = max(3, v.size // 20)
+            s = float(np.sort(v)[-k:].mean())
+        cache[ch] = s if s > 1e-9 else 1.0
+    return cache[ch]
+
+
+def normalize_pose(xp, ser):
+    """POSE-N: speed stats rescaled to the hitter track's own level,
+    so a feature reads 'how big was this window FOR THIS TRACK' —
+    cross-track scale (depth, player size, tracking quality) drops
+    out. Tail features and tpeak pass through unchanged."""
+    xpn = xp.copy()
+    for i, ch in enumerate(CHANNELS_EXT):
+        s = track_scale(ser, ch)
+        for j in SPEED_SLOTS:
+            xpn[i * 7 + j] /= s
+    return xpn
 
 
 def classify_type(ty):
@@ -100,7 +170,12 @@ def feat_vec(row, key):
         return row["cad"]
     if key == "pose":
         return row["pose"]
-    return np.concatenate([row["pose"], row["cad"]])
+    if key == "posen":
+        return row["posen"]
+    if key == "both":
+        return np.concatenate([row["pose"], row["cad"]])
+    assert key == "posenc", key
+    return np.concatenate([row["posen"], row["cad"]])
 
 
 def contact_rows(rallies):
@@ -138,7 +213,9 @@ def contact_rows(rallies):
                            else GAP_CAP_S])
             rows.append({"cum": cum, "tc": tc,
                          "ty": (ty or "").strip().lower(),
-                         "cls": cls, "pose": xp, "cad": xc})
+                         "cls": cls, "pose": xp,
+                         "posen": normalize_pose(xp, ser),
+                         "side": ser["side"], "cad": xc})
     return rows, excl
 
 
@@ -197,6 +274,55 @@ def confusion(rows, preds):
     return (ff, fs), (sf, ss)
 
 
+DESC_FEATS = ("arm_cmax", "arm_emax", "dsho_cmax", "leg_cmax",
+              "dgaze_cmax")
+
+
+def describe(rows):
+    """Model-free diagnostics: where (if anywhere) do fast and slow
+    actually differ. AUC = P(random fast reading > random slow) per
+    single feature — no classifier, no folds, nothing to overfit."""
+    X = np.stack([r["pose"] for r in rows])
+    fast = np.array([r["cls"] == "fast" for r in rows])
+    print("per-feature fast-vs-slow (raw values at true windows):")
+    for name in DESC_FEATS:
+        i = POSE_NAMES.index(name)
+        a = auc(X[fast, i], X[~fast, i])
+        print(f"    {name:<10} fast med {np.median(X[fast, i]):8.4f}   "
+              f"slow med {np.median(X[~fast, i]):8.4f}   AUC {a:.3f}")
+    G = np.stack([r["cad"] for r in rows])
+    for j, name in enumerate(("gap_prev", "gap_next")):
+        a = auc(G[fast, j], G[~fast, j])
+        print(f"    {name:<10} fast med {np.median(G[fast, j]):8.4f}   "
+              f"slow med {np.median(G[~fast, j]):8.4f}   AUC {a:.3f}  "
+              f"(fast should sit LOWER)")
+    i_arm = POSE_NAMES.index("arm_cmax")
+    print("  per true type (kinematics vs tempo — is 'fast' one "
+          "thing?):")
+    by_ty = {}
+    for r in rows:
+        by_ty.setdefault(r["ty"], []).append(r)
+    for ty, rs in sorted(by_ty.items(), key=lambda kv: -len(kv[1])):
+        am = np.median([r["pose"][i_arm] for r in rs])
+        gm = np.median([r["cad"][0] for r in rs])
+        print(f"    {ty:<10} n={len(rs):<3} arm_cmax {am:7.4f}   "
+              f"gap_prev {gm:5.2f}s")
+    for s in (0, 1):
+        sub = [r for r in rows if r["side"] == s]
+        nf_s = sum(1 for r in sub if r["cls"] == "fast")
+        ns_s = len(sub) - nf_s
+        if min(nf_s, ns_s) >= 5:
+            v = np.array([r["pose"][i_arm] for r in sub])
+            fs_ = np.array([r["cls"] == "fast" for r in sub])
+            a = auc(v[fs_], v[~fs_])
+            print(f"  arm_cmax AUC within image side {s}: {a:.3f}  "
+                  f"({nf_s} fast / {ns_s} slow)")
+        else:
+            print(f"  arm_cmax AUC within image side {s}: n/a  "
+                  f"({nf_s} fast / {ns_s} slow)")
+    print()
+
+
 def report(rows, excl, n_holdout):
     nf, ns = class_guard(rows)
     n = len(rows)
@@ -212,19 +338,21 @@ def report(rows, excl, n_holdout):
               f"frozen mapping deliberately, don't let vocabulary "
               f"drift eat rows")
     print()
-    preds_both = None
+    describe(rows)
+    preds_by = {}
     for name, key in FEATSETS:
         acc, auc_val, preds = loro(rows, key)
         print(f"  {name:<44} acc {acc:6.1%}   AUC {auc_val:.3f}")
-        if key == "both":
-            preds_both = preds
-    (ff, fs), (sf, ss) = confusion(rows, preds_both)
-    print(f"\nPOSE+CAD confusion:  true fast -> {ff} fast / {fs} slow"
-          f"     true slow -> {sf} fast / {ss} slow")
-    print("POSE+CAD per true type:")
-    for ty, (ok, b) in sorted(per_type_table(rows, preds_both).items(),
-                              key=lambda kv: -kv[1][1]):
-        print(f"    {ty:<10} {ok:>3}/{b:<3} {ok / b:6.1%}")
+        preds_by[key] = preds
+    for key, label in (("both", "POSE+CAD"), ("posenc", "POSE-N+CAD")):
+        preds_k = preds_by[key]
+        (ff, fs), (sf, ss) = confusion(rows, preds_k)
+        print(f"\n{label} confusion:  true fast -> {ff} fast / {fs} "
+              f"slow     true slow -> {sf} fast / {ss} slow")
+        print(f"{label} per true type:")
+        for ty, (ok, b) in sorted(per_type_table(rows, preds_k).items(),
+                                  key=lambda kv: -kv[1][1]):
+            print(f"    {ty:<10} {ok:>3}/{b:<3} {ok / b:6.1%}")
     print(f"\nn={n} — one contact is {1 / n:.1%}; read differences in "
           f"~5pp grains. True-time features = a CEILING for step 2, "
           f"not deployed accuracy (placement error comes on top). A "
@@ -342,6 +470,22 @@ def selftest():
     assert classify_type("fast") == "fast" and classify_type("slow") == "slow"
     print("selftest: mapping OK")
 
+    # ---- POSE_NAMES layout pinned to window_feats reality: recompute
+    # arm_cmax independently from the raw series and require the named
+    # index to match bit-exactly. A silent index drift (e.g. someone
+    # changes window_feats' per-channel stat order) would otherwise
+    # poison every per-feature diagnostic while everything still runs.
+    ser_pin = _mk_track(100.0, 106.0, 0, bursts=[(103.0, 30.0)])
+    xp_pin = window_feats(ser_pin, 103.0, channels=CHANNELS_EXT)
+    assert xp_pin is not None and len(xp_pin) == len(POSE_NAMES), \
+        (len(xp_pin), len(POSE_NAMES))
+    t_pin = ser_pin["t"]
+    m_core = (t_pin >= 103.0 - 0.35) & (t_pin <= 103.0 + POST_S)
+    want = float(ser_pin["arm"][m_core].max())
+    got = float(xp_pin[POSE_NAMES.index("arm_cmax")])
+    assert got == want and want > 0, (got, want)
+    print("selftest: POSE_NAMES layout pinned OK")
+
     # ---- separable synth: fast bursts 4x slow bursts, uniform gaps.
     # Each rally is BRACKETED by a serve and an 'other' (both excluded
     # from classification, like real rallies) so the first/last
@@ -418,8 +562,69 @@ def selftest():
     acc_n, auc_n, _ = loro(rows_n, "both")
     assert acc_n <= 0.72, f"null synth separated at {acc_n:.0%}"
     assert 0.28 <= auc_n <= 0.72, auc_n
-    print(f"selftest: null synth OK (acc {acc_n:.0%}, AUC {auc_n:.2f} "
-          f"— chance-level as required)")
+    acc_nn, auc_nn, _ = loro(rows_n, "posenc")
+    assert acc_nn <= 0.72, f"null (POSE-N) separated at {acc_nn:.0%}"
+    assert 0.28 <= auc_nn <= 0.72, auc_nn
+    print(f"selftest: null synth OK (acc {acc_n:.0%}/{acc_nn:.0%} "
+          f"raw/normalized, AUC {auc_n:.2f}/{auc_nn:.2f} — "
+          f"chance-level as required)")
+
+    # ---- POSE-N invariance: the same rally with every burst
+    # amplitude x3 must produce IDENTICAL normalized vectors while the
+    # raw ones move — cross-track scale is a nuisance POSE-N exists to
+    # kill, and this pins that property without a classifier in the
+    # loop.
+    def one_rally(scale):
+        contacts = [(103.0 + 2.2 * k, k % 2,
+                     "serve" if k == 0 else
+                     "other" if k == 11 else _cycle_types(k))
+                    for k in range(12)]
+        return {1: _mk_rally(
+            1, contacts,
+            lambda ty: scale * (40.0 if classify_type(ty) == "fast"
+                                else 10.0))}
+
+    ra, _ = contact_rows(one_rally(1.0))
+    rb, _ = contact_rows(one_rally(3.0))
+    assert len(ra) == len(rb) == 10
+    for a_, b_ in zip(ra, rb):
+        assert np.allclose(a_["posen"], b_["posen"], rtol=1e-6), \
+            float(np.max(np.abs(a_["posen"] - b_["posen"])))
+        assert not np.allclose(a_["pose"], b_["pose"])
+    print("selftest: POSE-N scale invariance OK")
+
+    # ---- POSE-N recovers signal under per-rally scale jitter: the
+    # 4x fast/slow burst ratio holds everywhere, but each rally's
+    # absolute scale spans 10x, so cross-rally RAW magnitudes overlap
+    # across classes while the within-track ratio does not. This is
+    # the synthetic version of mechanism (a) for the v1 falsification
+    # (near/far depth, player size, tracking quality). No assertion
+    # on raw pose failing — standardization may partially cope; the
+    # claim under test is only that POSE-N survives.
+    def jit_rallies():
+        rallies = {}
+        for cum, s in ((1, 0.3), (2, 1.0), (3, 3.0), (4, 0.55)):
+            contacts = [(103.0 + 2.2 * k, k % 2,
+                         "serve" if k == 0 else
+                         "other" if k == 11 else _cycle_types(k))
+                        for k in range(12)]
+            rallies[cum] = _mk_rally(
+                cum, contacts,
+                lambda ty, s=s: s * (40.0 if classify_type(ty) ==
+                                     "fast" else 10.0))
+        return rallies
+
+    rows_j, _ = contact_rows(jit_rallies())
+    acc_jn, auc_jn, _ = loro(rows_j, "posen")
+    assert acc_jn >= 0.9 and auc_jn >= 0.95, (acc_jn, auc_jn)
+    print(f"selftest: POSE-N scale-jitter rescue OK ({acc_jn:.0%})")
+
+    # ---- describe() runs end-to-end on real-shaped rows (output is
+    # informational; the assert is that the diagnostics never crash
+    # on legitimate inputs)
+    print("--- describe() smoke on separable synth ---")
+    describe(rows)
+    print("--- end smoke ---")
 
     # ---- cadence synth: identical bursts, but fast contacts arrive in
     # a tight exchange (0.45 s gaps) after a 2.2 s dink phase. CADENCE
