@@ -541,3 +541,26 @@ not reproduce them exactly; (2) BOTH printed ablation deltas (EXT
 −2.5, dsho −0.6) were cross-regime comparisons and are VOID — re-run
 both with fixed swing_explore.py; (3) registered prediction for the
 re-run: BASE prints the SAME number in default and --drop mode.
+
+**Post-fix re-run (2026-08-18, user's Mac, fingerprints efb79d5003 /
+bce74d0f26 both runs): prediction CONFIRMED, ablations final at this
+label count.** BASE prints 54.3% (88/162) in BOTH default and --drop
+mode — first and second position — so order independence holds on the
+real data that exposed the bug. The apples-to-apples channel answers:
+dsho −0.6 (removing it gains exactly one contact: 88 -> 89), leg+dgaze
++0.6 (adding them gains exactly one contact: 88 -> 89). Every delta is
+±1 contact of 162 — noise by the file's own footer. Note the flatness:
+5 channels (minus-dsho) 54.9, 6 channels (BASE) 54.3, 8 channels (EXT)
+54.9. Channel picture, now on a clean instrument: the detector is the
+arm/wrist family; dsho, leg, and dgaze are each within one contact of
+irrelevant at 162 labels. dsho STAYS in BASE — a 1-contact "gain" from
+dropping it licenses nothing under the house rule (changes graduate
+via fresh pre-registration on untouched holdout), and the channel set
+gets re-chosen from scratch when the temporal model class is
+pre-registered anyway. Post-fix BASE 54.3 vs the void first-position
+57.4: the lower number is the INTENDED estimator (all tracks
+contribute hard negatives); the higher one was the accidental cold
+mixture. Feature-engineering round closed for real this time: three
+instruments (marginal AUCs, clean incremental ablation, shot-vs-
+non-shot descriptives) agree — the lever is labels at scale, not more
+channels.
