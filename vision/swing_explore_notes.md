@@ -993,3 +993,33 @@ make_contact_audit.py / contact_audit_chicago0725.html:
   auto-exit, exact 'other' restore on undo, serve/return rule
   intact, done() semantics, stamp gating, prefilled-core no-op.
   Build banner bumped 2026-08-17a -> 2026-08-18a.
+
+## 2026-08-18 — LUNGE RULE (user policy, implemented as its own word; tool build 2026-08-18b)
+
+User policy: "lunged for a ball but made a forced error" must not
+contaminate the pace dataset. Implemented WITH one modification,
+explained to the user: the exclusion is right, but coding it "other"
+would (a) fight the pace-pass UX (the F/S badge and armed queue treat
+'other' as awaiting judgment — no skip exists) and (b) destroy the
+unjudged-vs-judged distinction right after the workflow was built to
+drain 'other' to zero. So: new first-class type **lunge** = contact
+WITHOUT a real swing (desperate reach/stretch/stab, usually a forced
+error). Semantics wired end to end:
+- audit tool 2026-08-18b: X during the pace pass (and a row X button
+  + dropdown entry); lunge rows are settled — no badge, done() ok;
+  node test extended to 15 assertions (tag, un-tag restoring 'other',
+  not-paceable) — green.
+- fastslow_check: classify_type gains 'nonswing' (NONSWING =
+  {lunge}); excluded from pace classes, counted separately in the
+  exclusion line, never nudged, never an unknown-vocabulary warning.
+- phase_grader truth_structure: lunges carry pace None but are
+  JUDGMENTS — they never create boundary uncertainty (a lunge cannot
+  be the rally's first attack), unlike untyped holes; n_nonswing
+  reported; selftest cases added (lunge before first fast -> certain;
+  all-slow + lunge -> certain). gap fitting already excludes None
+  labels; lunge contacts still count for gaps/counts/alternation —
+  they are real contacts and the decoder depends on them.
+Detector-training note: rally_instances POSITIVES deliberately keep
+lunge contacts (contact events are what step 1 detects; dropping them
+would corrupt counts). The distinct word preserves the option to
+filter them from any future swing-KINEMATICS training set.

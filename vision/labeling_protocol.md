@@ -62,6 +62,17 @@ Open `contact_audit_chicago0725.html`, load the video
    `fast`/`slow`; the CSV format and every consumer are unchanged.
    ⌫ in pace mode un-tags; the orange **F/S** badge in the rally list
    marks rallies still owing the pass.
+6. **Lunge rule** (user policy 2026-08-18, given its own word rather
+   than overloading "other"): a contact WITHOUT a real swing —
+   desperate lunge/stretch/stab, usually a forced error — is typed
+   **lunge** (**X** during the pace pass, or the dropdown/X button in
+   pass 1). Still stamp it: it is a real contact and shot counts /
+   alternation depend on it. It is excluded from fast/slow so weird
+   lunges can't contaminate the pace classes, and it can be filtered
+   from any future swing-kinematics training. Unlike "other" it is a
+   judgment, not a backlog — no badge nag, and in phase_grader it
+   never makes a rally boundary-uncertain (a lunge can't be the
+   rally's first attack). "other" keeps meaning "haven't judged yet".
 
 **Chained seek** (new in build 2026-08-17a): rallies without a hand pin
 now auto-seek off YOUR previous labels — the previous rally's last

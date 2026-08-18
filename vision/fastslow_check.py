@@ -27,6 +27,11 @@ comparisons across runs):
     untyped  = "", "other"     (excluded, counted; tag them 'fast' or
                'slow' in the type column — coarse tags accepted here —
                to add them)
+    nonswing = "lunge"         (user rule 2026-08-18: contact without
+               a real swing — desperate reach/stab, usually a forced
+               error. Excluded from pace like untyped, but it is a
+               JUDGMENT, not a backlog: no tag-me nudge, and in
+               phase_grader it never creates boundary uncertainty)
 Unknown type words are excluded and printed LOUDLY so a vocabulary
 drift never silently vanishes rows.
 
@@ -90,6 +95,12 @@ SPLIT = "label_split.csv"
 FAST = frozenset({"smash", "speed-up", "drive", "counter", "fast"})
 SLOW = frozenset({"dink", "drop", "lob", "reset", "slow"})
 POSITION = frozenset({"serve", "return"})
+# deliberate non-swings (user rule 2026-08-18): contact WITHOUT a real
+# swing — desperate lunge/stretch/stab, usually a forced error. A real
+# contact (counts/alternation keep it) but never a pace class, and
+# unlike "other" it is a JUDGMENT, not a hole — it doesn't belong in
+# any tag-the-backlog nudge.
+NONSWING = frozenset({"lunge"})
 GAP_CAP_S = 3.0        # matches window_feats' own cadence-proxy cap
 MIN_PER_CLASS = 8
 
@@ -152,7 +163,8 @@ def normalize_pose(xp, ser):
 
 
 def classify_type(ty):
-    """'fast' | 'slow' | 'position' | 'untyped' | 'unknown'."""
+    """'fast' | 'slow' | 'position' | 'nonswing' | 'untyped' |
+    'unknown'."""
     ty = (ty or "").strip().lower()
     if ty in FAST:
         return "fast"
@@ -160,6 +172,8 @@ def classify_type(ty):
         return "slow"
     if ty in POSITION:
         return "position"
+    if ty in NONSWING:
+        return "nonswing"
     if ty in ("", "other"):
         return "untyped"
     return "unknown"
@@ -186,15 +200,15 @@ def contact_rows(rallies):
     labeled contact (serves included): they are real rally events and
     the tempo measure must reflect them."""
     rows = []
-    excl = {"position": 0, "untyped": 0, "unknown": 0, "no_pose": 0,
-            "unknown_words": set()}
+    excl = {"position": 0, "untyped": 0, "unknown": 0, "nonswing": 0,
+            "no_pose": 0, "unknown_words": set()}
     for cum in sorted(rallies):
         r = rallies[cum]
         tracks = list(r["rd"]["tracks"].values())
         all_ct = sorted(t for t, *_ in r["contacts"])
         for tc, team, ty in r["contacts"]:
             cls = classify_type(ty)
-            if cls in ("position", "untyped", "unknown"):
+            if cls in ("position", "untyped", "unknown", "nonswing"):
                 excl[cls] += 1
                 if cls == "unknown":
                     excl["unknown_words"].add((ty or "").strip().lower())
@@ -330,7 +344,8 @@ def report(rows, excl, n_holdout):
           f"baseline {max(nf, ns) / n:.1%})")
     print(f"excluded: {excl['position']} serve/return (position-"
           f"identified downstream), {excl['untyped']} untyped/'other' "
-          f"(tag them fast/slow to add), {excl['no_pose']} without pose "
+          f"(tag them fast/slow to add), {excl['nonswing']} lunges "
+          f"(deliberate non-swings), {excl['no_pose']} without pose "
           f"coverage, {n_holdout} holdout (untouched)")
     if excl["unknown"]:
         print(f"!! {excl['unknown']} contacts with UNKNOWN type words "
@@ -400,7 +415,8 @@ def main():
     print(f"({split_note}; numbers only compare across runs printing "
           f"the SAME two fingerprints)")
     print(f"mapping: fast={'/'.join(sorted(FAST))}  "
-          f"slow={'/'.join(sorted(SLOW))}\n")
+          f"slow={'/'.join(sorted(SLOW))}  "
+          f"nonswing={'/'.join(sorted(NONSWING))}\n")
     rows, excl = contact_rows(rallies)
     report(rows, excl, n_holdout)
 
@@ -466,6 +482,8 @@ def selftest():
     assert classify_type("") == "untyped"
     assert classify_type(None) == "untyped"
     assert classify_type("other") == "untyped"
+    assert classify_type("lunge") == "nonswing"
+    assert classify_type(" Lunge ") == "nonswing"
     assert classify_type("banana") == "unknown"
     assert classify_type("fast") == "fast" and classify_type("slow") == "slow"
     print("selftest: mapping OK")
@@ -652,11 +670,13 @@ def selftest():
     # never scored
     mixed = {1: _mk_rally(1, [(103.0, 0, "serve"), (104.5, 1, "return"),
                               (106.7, 0, "other"), (108.9, 1, "banana"),
-                              (111.1, 0, "dink"), (113.3, 1, "smash")],
+                              (111.1, 0, "dink"), (113.3, 1, "smash"),
+                              (115.5, 0, "lunge")],
                           lambda ty: 25.0)}
     rows_m, excl_m = contact_rows(mixed)
     assert [r["ty"] for r in rows_m] == ["dink", "smash"]
     assert excl_m["position"] == 2 and excl_m["untyped"] == 1
+    assert excl_m["nonswing"] == 1
     assert excl_m["unknown"] == 1 and \
         excl_m["unknown_words"] == {"banana"}
     # gaps computed over ALL labeled contacts, serves included

@@ -126,31 +126,39 @@ def truth_structure(contacts):
     """One rally's ground-truth structure from its labels.
     contacts: [(t, team, ty)]. Returns dict:
       seq: [(t, team, pace)] non-opening contacts, pace in
-           {'fast','slow',None}; t_serve; n_fast/n_slow/n_unpaced;
-      has_fast; first_fast: (t, team) | None;
-      uncertain: True if an unpaced contact could change first_fast
-                 (one precedes it, or has_fast is False with holes)."""
+           {'fast','slow',None}; t_serve; n_fast/n_slow/n_unpaced/
+           n_nonswing; has_fast; first_fast: (t, team) | None;
+      uncertain: True if an UNJUDGED contact could change first_fast
+                 (one precedes it, or has_fast is False with holes).
+    Deliberate non-swings ('lunge', user rule 2026-08-18) carry pace
+    None like untyped rows, but they are a JUDGMENT: a lunge cannot
+    be the rally's first attack, so unlike an unjudged hole it never
+    makes the boundary uncertain."""
     evs = sorted(contacts)
     t_serve = evs[0][0] if evs else None
-    seq = []
+    seq, unjudged_t = [], []
+    n_nonswing = 0
     for t, team, ty in evs:
         cls = classify_type(ty)
         if cls == "position":
             continue
-        seq.append((t, team,
-                    cls if cls in ("fast", "slow") else None))
+        pace = cls if cls in ("fast", "slow") else None
+        if cls == "nonswing":
+            n_nonswing += 1
+        elif pace is None:
+            unjudged_t.append(t)
+        seq.append((t, team, pace))
     n_fast = sum(1 for *_, p in seq if p == "fast")
     n_slow = sum(1 for *_, p in seq if p == "slow")
-    n_unpaced = sum(1 for *_, p in seq if p is None)
     first_fast = next(((t, team) for t, team, p in seq if p == "fast"),
                       None)
     if first_fast is not None:
-        uncertain = any(p is None and t < first_fast[0]
-                        for t, _, p in seq)
+        uncertain = any(u < first_fast[0] for u in unjudged_t)
     else:
-        uncertain = n_unpaced > 0
+        uncertain = len(unjudged_t) > 0
     return {"seq": seq, "t_serve": t_serve, "n_fast": n_fast,
-            "n_slow": n_slow, "n_unpaced": n_unpaced,
+            "n_slow": n_slow, "n_unpaced": len(unjudged_t),
+            "n_nonswing": n_nonswing,
             "has_fast": first_fast is not None,
             "first_fast": first_fast, "uncertain": uncertain}
 
@@ -835,7 +843,19 @@ def selftest():
     ts3 = truth_structure([(10.0, 0, "serve"), (12.0, 1, "dink"),
                            (14.0, 0, "other")])
     assert not ts3["has_fast"] and ts3["uncertain"]
-    print("selftest: truth builder OK")
+    # lunge = judged non-swing: excluded from pace, counted apart, and
+    # NEVER a boundary hole (a lunge cannot be the first attack) —
+    # unlike 'other' in the identical position
+    ts4 = truth_structure([(10.0, 0, "serve"), (11.5, 1, "return"),
+                           (13.0, 0, "dink"), (14.0, 1, "lunge"),
+                           (15.0, 0, "smash")])
+    assert ts4["first_fast"] == (15.0, 0) and not ts4["uncertain"]
+    assert (ts4["n_fast"], ts4["n_slow"], ts4["n_unpaced"],
+            ts4["n_nonswing"]) == (1, 1, 0, 1)
+    ts5 = truth_structure([(10.0, 0, "serve"), (12.0, 1, "dink"),
+                           (14.0, 0, "lunge")])
+    assert not ts5["has_fast"] and not ts5["uncertain"]
+    print("selftest: truth builder OK (incl. lunge rule)")
 
     # ---- ghost-aware ordinals and gaps
     path = [(10.0, 0, 0.9, 0), (10.9, 1, 0.8, 0), (12.7, 0, 0.7, 1)]

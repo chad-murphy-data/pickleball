@@ -72,6 +72,10 @@ TYPES = SHOT_TYPES + [
                   "counter/drive family, coded coarse"),
     ("s2", "slow", "PACE (pass 2): soft ball — the dink/drop/lob/reset "
                    "family, coded coarse"),
+    ("x", "lunge", "contact WITHOUT a real swing — desperate lunge/"
+                   "stretch/stab, usually a forced error (user rule "
+                   "2026-08-18). A real contact (stamp it!) but never "
+                   "fast/slow"),
     ("w", "whiff", "swing-and-miss or full swing at a fake — a SWING but "
                    "not a contact (stamped, contact=0, own class)"),
 ]
@@ -274,7 +278,7 @@ HTML = r"""<!doctype html>
 <div id="toast"></div>
 <script>
 const DATA = __PAYLOAD__;
-const BUILD = "2026-08-18a (pace pass)";
+const BUILD = "2026-08-18b (pace pass + lunge)";
 const LSK = "contact_audit_chicago0725";
 let store = JSON.parse(localStorage.getItem(LSK) || "{}");
 let prefs = JSON.parse(localStorage.getItem(LSK + "_prefs") || "{}");
@@ -649,7 +653,7 @@ function panel(){
       const pai = paceArmed(cur);
       if (pai === null) return "pace pass complete";
       const px = rs[pai], pn = ps.find(pp => pp.uuid === px.tp.h);
-      return `PACE #${pai + 1} @ ${fmts(px.tp.tr ?? px.tp.t)}: <span class="hitter t${pn ? pn.team : 1}">${pn ? pn.name.split(" ").slice(-1)[0] : "?"}</span> — <kbd>F</kbd> fast · <kbd>S</kbd> slow (${paceableIdx(cur).length} left)`;
+      return `PACE #${pai + 1} @ ${fmts(px.tp.tr ?? px.tp.t)}: <span class="hitter t${pn ? pn.team : 1}">${pn ? pn.name.split(" ").slice(-1)[0] : "?"}</span> — <kbd>F</kbd> fast · <kbd>S</kbd> slow · <kbd>X</kbd> lunge (${paceableIdx(cur).length} left)`;
     }
     if (whiffArmed) return "next stamp = WHIFF (press 1-4)";
     if (exp) return `NEXT ⏎ #${(rs.filter(x=>!x.tp.w).length)+1}: <span class="hitter t${expName ? expName.team : 1}">${expName ? expName.name : "?"}</span> — ${exp.t || "?"}`;
@@ -679,7 +683,7 @@ function panel(){
     for (const [k2, lab] of DATA.types)
       h += `<option ${x.ty === lab ? "selected" : ""}>${lab}</option>`;
     h += `</select>
-      ${paceNeeds(x) ? `<button class="stepb" onclick="setType(${i},'fast')" title="tag fast">F</button><button class="stepb" onclick="setType(${i},'slow')" title="tag slow">S</button>` : ""}
+      ${paceNeeds(x) ? `<button class="stepb" onclick="setType(${i},'fast')" title="tag fast">F</button><button class="stepb" onclick="setType(${i},'slow')" title="tag slow">S</button><button class="stepb" onclick="setType(${i},'lunge')" title="lunge — contact without a real swing (forced-error reach); excluded from fast/slow">X</button>` : ""}
       ${x.tp.w ? '<span class="badge whiff">whiff</span>' : ""}
       ${x.div ? `<span class="badge div" title="prefill says ${(ps.find(pp=>pp.uuid===x.pf.h)||{}).name}">≠ prefill</span>
         <button class="stepb" onclick="setHitter(${i},'${x.pf.h}')">accept prefill</button>` : ""}
@@ -709,7 +713,10 @@ function helprow(r){
   rally rewinds and replays (1× is fine for this); hit <kbd>F</kbd> fast /
   <kbd>S</kbd> slow for the highlighted contact as you watch. Coarse IS the
   contract: fast = attacked ball, slow = soft ball — never agonize over
-  smash-vs-counter-vs-speed-up. Serves, returns, whiffs, and shots that
+  smash-vs-counter-vs-speed-up. <kbd>X</kbd> = <b>lunge</b>: a contact
+  WITHOUT a real swing (desperate reach/stab, usually a forced error) —
+  still a real contact, but excluded from fast/slow so it can't
+  contaminate the pace classes. Serves, returns, whiffs, and shots that
   already have a type are skipped automatically (on old rallies the pass is
   exactly the "other" backlog). <kbd>⌫</kbd> in pace mode un-tags;
   <kbd>P</kbd> again exits. The orange <b>F/S</b> badge in the list marks
@@ -812,6 +819,7 @@ function wireVideo(){
     else if (e.key === "p" || e.key === "P"){ paceStart(); }
     else if ((e.key === "f" || e.key === "F") && paceMode){ paceTag("fast"); }
     else if ((e.key === "s" || e.key === "S") && paceMode){ paceTag("slow"); }
+    else if ((e.key === "x" || e.key === "X") && paceMode){ paceTag("lunge"); }
     else if (e.key === "w" || e.key === "W"){ whiffArmed = !whiffArmed; panel(); }
     else if (e.key === "Backspace" || e.key === "z"){ e.preventDefault();
       paceMode ? paceUndoLast() : undo(); }
