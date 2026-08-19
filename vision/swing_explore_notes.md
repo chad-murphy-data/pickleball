@@ -1241,6 +1241,38 @@ definition is part of the frozen bars, so adopting attack-onset
 means SUPERSEDING temporal_gate v1 with a dated v2 (no temporal
 code exists, holdout untouched — supersession now is clean; a
 strained "amendment" would not be). USER DECISION pending.
+→ RESOLVED same day: user approved ("Agreed"); v2 CUT — see the
+next entry.
+
+## 2026-08-19 — TEMPORAL GATE v2 CUT (user-approved) + attack-onset wired into phase_grader
+
+`vision/temporal_gate.md` v2 supersedes v1 same day (v1 preserved
+at 479c7e6; still zero temporal code, holdout untouched, all
+evidence train-only). Three changes, logged in the doc's changelog:
+(1) S1–S3 graded on ATTACK-ONSET (frozen definition = the
+prototyped rule: fast runs bridge lunges/whiffs; attack iff ender,
+len≥2 @ord≥4, or len≥3 @ord3); (2) C's readout = best-of
+{gap,full,seq} by train per-contact accuracy at verdict time
+(deterministic, train-only — resolves the C-readout question);
+(3) pre-check refined to ≥2-of-3 bars per division (wholesale
+exclusion was built for collapsed ceilings; womens' single soft
+stat — onset 0.57 — now narrows the verdict via the informative
+guard instead of evicting the division). First-fast demoted to a
+secondary continuity stat.
+
+phase_grader implementation (same commit): attack_onset() +
+truth_attack() (grade()-compatible key names, documented);
+Catt/Batt outputs at both levels for all three classifiers
+(decoded ordinals ghost-aware, ord+1 = shot number); report()
+prints an attack-onset block under each level + rewritten verdict
+guide pointing at the gate. Selftests: 9 unit cases (meta
+exclusion, escalation, enders incl. shot-3 putaway and
+trailing-lunge enderhood, lone-reset skip, attack-the-3rd,
+lunge-bridge, uncertainty rules) + end-to-end synth asserts (gap
+reset errors append to the run and cannot move the onset; all-dink
+rally attack-free) + determinism extended to Catt. Module verified
+to reproduce the prototype EXACTLY on real train labels (15/19,
+8/14 med 0.00, 10/14). ALL OK.
 
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 

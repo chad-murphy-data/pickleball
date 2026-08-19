@@ -163,6 +163,75 @@ def truth_structure(contacts):
             "first_fast": first_fast, "uncertain": uncertain}
 
 
+# ------------------------------------- attack onset (temporal_gate v2)
+
+
+def attack_onset(calls):
+    """First ATTACK of a rally under the 2026-08-19 semantics (user
+    taxonomy call, temporal_gate.md v2): the drive exchange is
+    transition pace, not the rally's break — the meta is 3: drive,
+    4: counter, 5: dink (measured 4/6 exact on train, plus one ender
+    and one escalation). calls = time-ordered PACED contacts
+    [(ordinal, t, team, cls)], cls in fast/slow; ordinals count every
+    contact (serve = 1); lunges/whiffs are absent from calls, so fast
+    runs bridge them. A maximal fast run is an ATTACK iff it ends the
+    rally (its last contact is the last paced contact — a trailing
+    lunge doesn't break enderhood), OR length >= 2 starting at
+    ordinal >= 4, OR length >= 3 starting at ordinal 3 (an ESCALATED
+    drive exchange — the drive got smashed back and it stayed hot;
+    data support n=1, r3). A lone drive-counter (len-2 at ordinal 3)
+    and a lone mid-rally fast that gets reset (len-1, non-ending) are
+    NOT attacks. Returns (t, team) of the attack run's first contact,
+    else None."""
+    runs, cur = [], []
+    for o, t, team, k in calls:
+        if k == "fast":
+            cur.append((o, t, team))
+        else:
+            if cur:
+                runs.append(cur)
+                cur = []
+    if cur:
+        runs.append(cur)
+    last_t = calls[-1][1] if calls else None
+    for run in runs:
+        ends = run[-1][1] == last_t
+        o0 = run[0][0]
+        if ends or (len(run) >= 2 and o0 >= 4) or \
+                (len(run) >= 3 and o0 == 3):
+            return (run[0][1], run[0][2])
+    return None
+
+
+def truth_attack(contacts):
+    """Ground-truth attack structure. KEY NAMES MIRROR truth_structure
+    so grade() is reused verbatim: 'has_fast' here MEANS has_attack
+    and 'first_fast' MEANS the attack onset. Uncertainty: an UNJUDGED
+    contact before the found onset (or anywhere, when no attack was
+    found) could create or shift an earlier qualifying run; lunges
+    are judgments and never make the boundary uncertain (frozen rule
+    2026-08-18)."""
+    evs = sorted(contacts)
+    calls, unjudged_t = [], []
+    n_fast = n_slow = 0
+    for i, (t, team, ty) in enumerate(evs):
+        cls = classify_type(ty)
+        if cls in ("fast", "slow"):
+            calls.append((i + 1, t, team, cls))
+            n_fast += cls == "fast"
+            n_slow += cls == "slow"
+        elif cls not in ("position", "nonswing"):
+            unjudged_t.append(t)
+    onset = attack_onset(calls)
+    if onset is not None:
+        uncertain = any(u < onset[0] for u in unjudged_t)
+    else:
+        uncertain = len(unjudged_t) > 0
+    return {"has_fast": onset is not None, "first_fast": onset,
+            "uncertain": uncertain, "n_fast": n_fast,
+            "n_slow": n_slow}
+
+
 # ----------------------------------------------------- kitchen context
 
 
@@ -469,15 +538,16 @@ def predict_structure(evs, rd, m, th, model):
         row = pace_row(rd, m, e["t"], e["team"], e["gp"], e["gn"],
                        y_net, span)
         gc, fc = classify(row, th, model)
-        calls["gap"].append((e["t"], e["team"], gc))
-        calls["full"].append((e["t"], e["team"], fc))
+        calls["gap"].append((e["ord"] + 1, e["t"], e["team"], gc))
+        calls["full"].append((e["ord"] + 1, e["t"], e["team"], fc))
     out = {}
     for k, seq in calls.items():
-        ff = next(((t, team) for t, team, c in seq if c == "fast"),
-                  None)
+        ff = next(((t, team) for _o, t, team, c in seq
+                   if c == "fast"), None)
         out[k] = {"has_fast": ff is not None, "first_fast": ff,
                   "n_fast": sum(1 for *_, c in seq if c == "fast"),
-                  "n_slow": sum(1 for *_, c in seq if c == "slow")}
+                  "n_slow": sum(1 for *_, c in seq if c == "slow"),
+                  "_calls": seq}
     return out
 
 
@@ -565,6 +635,9 @@ def run_all(rallies):
               for cum, r in rallies.items()}
     KS = ("gap", "full", "seq")
     out = {"C": {k: {} for k in KS}, "B": {k: {} for k in KS},
+           "Catt": {k: {} for k in KS}, "Batt": {k: {} for k in KS},
+           "truths_att": {cum: truth_attack(r["contacts"])
+                          for cum, r in rallies.items()},
            "acc": {"C": {k: [0, 0] for k in KS},
                    "A": {k: [0, 0] for k in KS}},
            "match": [0, 0], "decoded_n": {}, "no_decode": []}
@@ -601,10 +674,16 @@ def run_all(rallies):
         for k, calls in c_calls.items():
             ff = next(((t, tm) for t, tm, c in calls if c == "fast"),
                       None)
+            nf = sum(1 for *_, c in calls if c == "fast")
+            ns = sum(1 for *_, c in calls if c == "slow")
             out["C"][k][held] = {
                 "has_fast": ff is not None, "first_fast": ff,
-                "n_fast": sum(1 for *_, c in calls if c == "fast"),
-                "n_slow": sum(1 for *_, c in calls if c == "slow")}
+                "n_fast": nf, "n_slow": ns}
+            on = attack_onset([(idx_of[t] + 1, t, tm, c)
+                               for t, tm, c in calls])
+            out["Catt"][k][held] = {
+                "has_fast": on is not None, "first_fast": on,
+                "n_fast": nf, "n_slow": ns}
 
         # ---- LEVEL B: scorer -> decoder -> pace
         Xtr, ytr = [], []
@@ -624,22 +703,30 @@ def run_all(rallies):
         if not evs:
             out["no_decode"].append(held)
             for k in KS:
-                out["B"][k][held] = {"has_fast": False,
-                                     "first_fast": None,
-                                     "n_fast": 0, "n_slow": 0}
+                empty = {"has_fast": False, "first_fast": None,
+                         "n_fast": 0, "n_slow": 0}
+                out["B"][k][held] = dict(empty)
+                out["Batt"][k][held] = dict(empty)
             continue
         stats = predict_structure(evs, r["rd"], r["m"], th, model)
         states_b = seq_states([e["t"] for e in evs], hmm, th,
                               gaps=[e["gn"] for e in evs])
-        b_seq = [(e["t"], e["team"], states_b[i])
+        b_seq = [(e["ord"] + 1, e["t"], e["team"], states_b[i])
                  for i, e in enumerate(evs) if e["ord"] not in (0, 1)]
-        ffb = next(((t, tm) for t, tm, c in b_seq if c == "fast"),
+        ffb = next(((t, tm) for _o, t, tm, c in b_seq if c == "fast"),
                    None)
         stats["seq"] = {
             "has_fast": ffb is not None, "first_fast": ffb,
             "n_fast": sum(1 for *_, c in b_seq if c == "fast"),
-            "n_slow": sum(1 for *_, c in b_seq if c == "slow")}
+            "n_slow": sum(1 for *_, c in b_seq if c == "slow"),
+            "_calls": b_seq}
         for k in KS:
+            acalls = stats[k].pop("_calls")
+            on = attack_onset(acalls)
+            out["Batt"][k][held] = {
+                "has_fast": on is not None, "first_fast": on,
+                "n_fast": stats[k]["n_fast"],
+                "n_slow": stats[k]["n_slow"]}
             out["B"][k][held] = stats[k]
         # ---- LEVEL A: matched-contact pace accuracy at decoded times
         idxs = [i for i, e in enumerate(evs) if e["ord"] not in (0, 1)]
@@ -723,20 +810,23 @@ def report(rallies, truths, out):
                           f"{ok}/{n} = {ok / n:.1%}")
         for k in ("gap", "full", "seq"):
             print_grade(k, grade(truths, out[lvl][k]))
+        print("    -- attack-onset (temporal_gate v2: the drive "
+              "exchange is not the break) --")
+        for k in ("gap", "full", "seq"):
+            print_grade(k, grade(out["truths_att"],
+                                 out[lvl + "att"][k]))
         print()
     print_seq_prior(rallies)
-    print("VERDICT GUIDE (bands pre-registered in "
-          "swing_explore_notes.md; read in ~10pp grains at this n):\n"
-          "  bands: has_fast >=80%, first-fast<=1s >=70% of certain "
-          "fast rallies,\n"
-          "         init-team >=75%, share corr >=+0.6 (FULL "
-          "classifier)\n"
-          "  B clears        -> ship on current decoder; 2000 rallies "
-          "not needed for training\n"
-          "  C clears, B not -> placement binds; temporal model "
-          "justified, 2000 rallies are its fuel\n"
-          "  C misses        -> structure not recoverable on this "
-          "footage; counts-only product")
+    print("VERDICT GUIDE: the 2026-08-19 routing is settled (Regime "
+          "2 — placement binds).\n"
+          "  Structure verdicts now live in vision/temporal_gate.md "
+          "v2: ATTACK-ONSET rows\n"
+          "  are the gate's stats (has_fast there means has_attack); "
+          "first-fast rows stay\n"
+          "  for continuity with the checkpoint record. The verdict "
+          "run itself happens\n"
+          "  once, on the Chicago holdout, per the gate — nothing "
+          "printed here is it.")
 
 
 def main():
@@ -878,6 +968,39 @@ def selftest():
                            (14.0, 0, "lunge")])
     assert not ts5["has_fast"] and not ts5["uncertain"]
     print("selftest: truth builder OK (incl. lunge rule)")
+
+    # ---- attack-onset semantics (gate v2): the drive exchange is
+    # excluded, escalation/ender clauses fire, lone resets are
+    # skipped, lunges bridge runs and never create uncertainty
+    def _mk_calls(seq):
+        return [(o, 100.0 + o, o % 2, k) for o, k in seq]
+
+    F, S = "fast", "slow"
+    assert attack_onset(_mk_calls(
+        [(3, F), (4, F), (5, S), (6, S), (7, F), (8, F)]))[0] == 107.0
+    assert attack_onset(_mk_calls(
+        [(3, F), (4, F), (5, S), (6, S)])) is None      # meta: 3 drive
+    assert attack_onset(_mk_calls(
+        [(3, F), (4, F), (5, F), (6, S)]))[0] == 103.0  # escalation
+    assert attack_onset(_mk_calls(
+        [(3, S), (4, S), (5, F)]))[0] == 105.0          # ender
+    assert attack_onset(_mk_calls([(3, F)]))[0] == 103.0
+    assert attack_onset(_mk_calls(
+        [(3, S), (4, F), (5, S), (6, F), (7, F)]))[0] == 106.0
+    assert attack_onset(_mk_calls(
+        [(3, S), (4, F), (5, F), (6, S)]))[0] == 104.0  # attack the 3rd
+    assert attack_onset(_mk_calls([(3, S), (4, S), (5, S)])) is None
+    assert attack_onset([]) is None
+    ta = truth_attack([(0.0, 0, "serve"), (1.4, 1, "return"),
+                       (3.6, 0, "dink"), (4.5, 1, "fast"),
+                       (5.0, 0, "lunge"), (5.6, 1, "fast")])
+    assert ta["has_fast"] and ta["first_fast"] == (4.5, 1) \
+        and not ta["uncertain"]
+    tb = truth_attack([(0.0, 0, "serve"), (1.4, 1, "return"),
+                       (3.6, 0, "other"), (4.5, 1, "fast"),
+                       (5.2, 0, "fast")])
+    assert tb["first_fast"] == (4.5, 1) and tb["uncertain"]
+    print("selftest: attack-onset semantics OK")
 
     # ---- ghost-aware ordinals and gaps
     path = [(10.0, 0, 0.9, 0), (10.9, 1, 0.8, 0), (12.7, 0, 0.7, 1)]
@@ -1079,6 +1202,20 @@ def selftest():
           f"reset errors as derived; full {okF}/68; seq 68/68 — "
           f"the reset and the rally-ending shot both land right)")
 
+    # ---- attack-onset at C on the same synth: the firefight starts
+    # at ordinal 9 (len 6, >=4 clause), the gap classifier's reset
+    # error only APPENDS to the run and cannot move the onset, and
+    # the all-dink rally is correctly attack-free
+    for k in ("gap", "seq"):
+        ga = grade(out["truths_att"], out["Catt"][k])
+        assert ga["hf_ok"] == ga["hf_n"] == 5, (k, ga)
+        assert ga["ff_hit"] == ga["ff_n"] == 4, (k, ga)
+        assert ga["team_ok"] == 4, (k, ga)
+    gaF = grade(out["truths_att"], out["Catt"]["full"])
+    assert gaF["hf_ok"] >= 4 and gaF["ff_hit"] >= 3, gaF
+    print("selftest: end-to-end attack-onset at C OK (reset errors "
+          "don't move the onset)")
+
     # ---- Level B ran end-to-end on the same synth (scorer -> decoder
     # -> pace incl. SEQ over ghost-adjusted gaps); structure output
     # exists for every rally and the no-decode list is empty
@@ -1086,6 +1223,8 @@ def selftest():
     # aren't the claim under test)
     assert not out["no_decode"]
     assert set(out["B"]["gap"]) == set(out["B"]["seq"]) == set(rallies)
+    assert set(out["Batt"]["gap"]) == set(out["Batt"]["seq"]) \
+        == set(rallies)
     assert all(out["decoded_n"][c] > 0 for c in rallies)
     print(f"selftest: end-to-end Level B smoke OK (decoded "
           f"{[out['decoded_n'][c] for c in sorted(rallies)]} events)")
@@ -1106,6 +1245,7 @@ def selftest():
     _truths2, out2 = run_all(_synth_set())
     assert out2["acc"] == out["acc"] and out2["match"] == out["match"]
     assert out2["decoded_n"] == out["decoded_n"]
+    assert out2["Catt"] == out["Catt"]
     print("selftest: determinism OK")
 
     print("\nselftest: ALL OK")

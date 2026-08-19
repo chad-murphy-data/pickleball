@@ -724,7 +724,8 @@ train / 76 holdout; tuning scripts read train ONLY; holdout burns on
 use), audit tool has chained seek (build 2026-08-17a) so machine-window
 drift no longer forces hunts; full Chicago ≈ 3k contacts feeding a
 TEMPORAL model class under a FRESH pre-registration (not a Gate C
-knob-turn) — FROZEN 2026-08-19 in `vision/temporal_gate.md` (checkpoint
+knob-turn) — FROZEN 2026-08-19 in `vision/temporal_gate.md`, v2 same
+day (attack-onset semantics, user-approved) (checkpoint
 routed Regime 2: placement binds; bars, panel = full Chicago holdout,
 burn rules, and consequences all pre-committed there — read it before
 any temporal-model work); (2) new footage. OPEN ANOMALY: r9/r10 label spans exceed
