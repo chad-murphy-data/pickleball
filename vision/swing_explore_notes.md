@@ -1518,6 +1518,46 @@ sees a whole rally, knows its span, and carries an alternation prior,
 while a 1.2s window has no context and no alternation. So beating
 45.7% is strong evidence; failing to is AMBIGUOUS, not a kill.
 
+## 2026-08-19 — PACE IS DOWNSTREAM ARITHMETIC, and frame-counting is AT its information ceiling
+
+User pitch, repeated and under-credited by me until now: "go through
+every frame, count the frames between swings — 10 frames = fast, 25 =
+slow." I had been hearing this as a restatement of the GAP classifier
+(which it is) and missing the consequence (which is the point).
+
+THE CONSEQUENCE I MISSED: if pace is read off the frame count BETWEEN
+DETECTED SWINGS, then no instrument ever has to JUDGE pace. The VLM's
+measured pace weakness (60% on truth-fast, every miss an attack from a
+defensive posture) does not block the pipeline, because pace is not
+the VLM's job — placement is, and pace falls out as arithmetic. That
+collapses two problems into one and makes localization the whole game.
+Corollary, and it is quantitative: placement errors map into pace
+errors deterministically — a MISSED swing merges two gaps and reads
+SLOW where the truth was fast-fast; a SPURIOUS swing splits a gap and
+reads FAST where the truth was slow. So the localization metric IS the
+pace metric, transformed. There is no separate pace evaluation to run.
+
+THE USER'S INTUITION IS CALIBRATED (again — cf. the 80% transition
+prior guess vs the fitted 0.73). Fitted from the 25-rally archive at
+30 fps: threshold **20 frames**, their bracket midpoint 17.5. Gap after
+a fast shot 0.65 s = **20 frames**; after a slow shot 1.00 s = **30
+frames**. The real separation is TIGHTER than 10-vs-25, and that
+tightness is the whole story.
+
+CEILING COMPUTED (new, and it settles a standing question): with
+log-normal gaps at mu_fast=ln 0.65 / mu_slow=ln 1.00 and log-sd ~0.35,
+the BAYES-OPTIMAL accuracy of any rule that sees only the gap is
+**73.2%**. The fitted threshold measures 74.6% LORO. **Frame-counting
+is already at its information ceiling** — the distributions simply
+overlap, and no smarter gap rule, HMM, or learned tempo model can beat
+it. This retroactively justifies the MODEL-ITERATION FREEZE on pace
+classifiers (it was preventing knob-turning on an exhausted channel,
+which is exactly right) and it bounds the temporal model: better
+placement improves pace only by making the gaps CORRECT, never by
+classifying them better. Improving pace past ~75% requires a
+DIFFERENT channel — position (drive vs dink from the same tempo) or
+the ball's post-contact trajectory — not a better tempo rule.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
