@@ -20,3 +20,22 @@ BALL = {
      5:(0.687,0.411), 6:(0.679,0.292), 7:(0.658,0.208), 8:(0.613,0.236),
      9:(0.672,0.194)},
 }
+
+# ---------------------------------------------------------------- AUDIT
+# User verification, 2026-08-19 (their eyes on the same rendered grids):
+#   w01  6/9 correct of 8 circles. TWO WRONG:
+#          cell 7 - ball was OCCLUDED BY THE PLAYER; I marked where the
+#                   trajectory said it should be. Inferred, not seen.
+#          cell 9 - circled a SHOE (light shoe on blue court).
+#          cell 8 ("can't see") agreed to be genuinely hard.
+#   w13  4/4 circles correct; the 5 I skipped were probably findable.
+#   w24  6/6 circles correct; ~2 skipped were findable, 1 genuinely not.
+#   w27  9/9 perfect.
+# TALLY: 25/27 circles correct (93% precision); ~8 findable balls marked
+# "can't see" (recall ~76% of findable); human findability on these
+# contiguous in-play frames ~33/36 (~92%).
+# CAVEAT THAT BOUNDS ALL OF IT: I CHOSE these four windows, and chose
+# them from ones whose ball trajectory I had already traced while
+# scoring localization. That selection biases findability UP. The
+# unbiased version is free - the 30 localization windows were drawn at
+# random and the user already has them.
