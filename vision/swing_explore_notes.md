@@ -1332,6 +1332,75 @@ speed up labeling (the bottleneck is watching and tapping, which a
 hitter pre-fill never touches) — the value would be as a component
 inside the temporal model, not an assistant beside the labeler.
 
+## 2026-08-19 — LABEL SEMANTICS DISCLOSURE (user, unprompted): ambiguous contacts were coded by OUTCOME, and it re-frames the whole pace channel
+
+During the blind VLM test the user disclosed how the hard cases were
+coded: "if it successfully took the pace off the ball it was slow but
+if it popped up it was fast. That's not really discernible." This
+applies to the defensive-reach subclass — stretched, low, off-balance
+contacts where the physical action is identical either way. It was
+volunteered AFTER my calls were locked and BEFORE the key was sent, so
+it cannot have been shaped by scoring.
+
+Four consequences, in order of how much they matter.
+
+1. **THE PACE LABEL IS NOT A STROKE LABEL — IT IS RALLY STATE.** The
+   user's rule is, independently, EXACTLY the produced-gap semantics
+   frozen in phase_grader ("a contact's pace = the state of the gap it
+   PRODUCES"): pace taken off ⇒ long next gap ⇒ slow; popped up ⇒
+   opponent attacks immediately ⇒ short next gap ⇒ fast. A human
+   arrived at the frozen definition without being told it — good
+   evidence the definition matches what "fast" means to someone
+   watching. But stop calling this shot classification in any writeup;
+   it is rally-state estimation, and the honest name matters because
+   of (2).
+
+2. **PARTIAL CIRCULARITY IN THE GAP RESULT, now on the record.** For
+   this subclass the LABEL is derived from the outcome and the GAP
+   FEATURE is the gap that outcome produces — two views of one latent
+   quantity, so agreement there is partly definitional rather than
+   independent validation. Scale: the subclass looked like ~4/20 of
+   the blind sample (~20%), so the pooled Level-C 74.6% is plausibly
+   a few points optimistic as a measure of "reading the shot". It is
+   NOT wrong as a measure of "recovering rally state", which is what
+   the product ships. Both readings should be quoted with their
+   scope. Does not disturb the Regime-2 routing (that turned on the
+   B-vs-C gap, and the circularity applies equally to both levels).
+
+3. **IT IS A HARD CEILING ON EVERY INSTANT-BASED INSTRUMENT — and an
+   argument FOR the temporal model.** If the label is a function of
+   the ball's subsequent trajectory, then no pose quality, backbone,
+   resolution, or VLM at the contact instant can recover it: the
+   information is not in the frame, it is in the future. That single
+   fact retro-explains Gate C's fast-shot deficit, the pose channel's
+   arm inversion on fast tags, and my own blind-test skew (7 fast
+   called where 10 exist). The temporal model is the FIRST instrument
+   in this program whose input actually contains the label's
+   information. Registered as the strongest a-priori argument yet for
+   temporal_gate v2's program.
+
+4. **OPEN SEMANTIC QUESTION for attack-onset (S3), flagged not
+   resolved.** A pop-up is coded fast, so pop-up → opponent putaway
+   is a length-2 fast run and attack_onset attributes the ONSET to
+   the team that popped it up. Defensible as "when the rally turned"
+   (the product's question), misleading as "who attacked". The two
+   are distinguishable in principle — a fast contact struck from full
+   stretch is a pop-up, one struck from a balanced kitchen position is
+   a speed-up, and the kitchen/position features already in pace_row
+   carry that — but that is a post-hoc refinement needing data, NOT a
+   change to the frozen v2 definition. Revisit only with the full
+   Chicago corpus, under an amendment, before the verdict run.
+
+PRE-REGISTERED SCORING STRATIFICATION for the blind VLM test, fixed
+BEFORE the key is seen: primary metrics stay as registered (4-way
+hitter accuracy, overall pace accuracy, fast-vs-slow gap). SECONDARY,
+clearly labelled: pace accuracy split by whether the truth row is a
+defensive-reach/outcome-coded type versus a plainly-struck one. The
+prediction that follows from (3): my pace accuracy should be near
+chance on the outcome-coded subclass and materially better elsewhere;
+hitter accuracy should NOT vary between them, since who touched the
+ball is visible in the frame either way.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio

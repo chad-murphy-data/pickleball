@@ -64,6 +64,19 @@ Open `contact_audit_chicago0725.html`, load the video
    `fast`/`slow`; the CSV format and every consumer are unchanged.
    ⌫ in pace mode un-tags; the orange **F/S** badge in the rally list
    marks rallies still owing the pass.
+   **Ambiguous defensive contacts — the tie-break rule** (user
+   practice, made explicit 2026-08-19): on a stretched, low or
+   off-balance reach the action looks identical either way, so code
+   the OUTCOME — if it successfully took the pace off, **slow**; if it
+   popped up and invited the attack, **fast**. Keep doing this. It is
+   already what the analysis means by pace (a contact's pace is the
+   state of the gap it PRODUCES), so the rule agrees with every
+   downstream consumer. Two things follow, both recorded in
+   swing_explore_notes 2026-08-19: the label for this subclass is
+   genuinely NOT visible at the contact instant — a finding about the
+   sport, not a flaw in the labeling — and it is the one place where
+   the label and a tempo feature share a cause, so pace accuracy on
+   these rows is never independent validation of a tempo classifier.
 6. **Lunge rule** (user policy 2026-08-18, given its own word rather
    than overloading "other"): a contact WITHOUT a real swing —
    desperate lunge/stretch/stab, usually a forced error — is typed
