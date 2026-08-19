@@ -488,3 +488,50 @@ single mis-identified rally, which is also the rally Gate A scores at
 0%. That is why a segment must hold MIN_END_SEG = 3 rallies of evidence
 before it is believed; the selftest plants exactly that outlier and
 asserts it is not promoted to a switch.
+
+### The appearance channel is a TEAM detector, not a player detector
+
+Why partner separation is weak, measured rather than guessed (reviewer
+question 2026-08-19: "colour of clothes seems to be the big difference
+here?" — yes, and that is precisely the problem).
+
+Mean 8-bit Lab of the torso region, games 1-2 (a = b = 128 is neutral):
+
+    Alshon      L 91   a 165   b  77      <- saturated red
+    Black       L 92   a 156   b  83      <- saturated red
+    Bright      L 99   a 130   b 129      <- essentially NEUTRAL
+    Patriquin   L 75   a 134   b 129      <- essentially NEUTRAL
+
+Team A's red survives compression and distance (a ~160, far off
+neutral).  Team B's green top and black top BOTH collapse to a ~132 /
+b ~129 — colorimetrically almost the same garment — so only lightness
+(99 vs 75) separates that pair at all.  Hence the pattern in the
+separability table: the cross-team gap is enormous and the within-team
+gap is tiny.  Doubles partners wear matching kit BY DESIGN, so the
+strongest signal the feature carries is the one that cannot answer the
+question the pipeline actually needs answered.
+
+Consequences, all measured:
+  * Fisher LDA does NOT beat nearest centroid on the partner call
+    (-0.4% Alshon/Black, -1.4% Bright/Patriquin).  The signal is weak,
+    not badly weighted — do not go looking for a better classifier.
+  * What separates partners is INCIDENTAL, not team colour.  Best
+    region for Alshon vs Black is LEGS (78.0%, vs torso 65.4%) — she
+    wears a skirt, he wears shorts.  For Bright vs Patriquin it is
+    torso LIGHTNESS (71.1%).  Both are match-specific accidents.
+  * AGGREGATION is the working ingredient, and it needs INDEPENDENT
+    looks.  Per-crop partner accuracy ~75%; averaged over a track of
+    >=8 mid-rally frames it reaches the 96.1%/100.0% Gate A numbers;
+    but averaging the 4-8 SAME-INSTANT anchor crops of one rally only
+    reaches 80.9%/66.3%, because correlated samples do not average
+    down.  Any future aggregation must pool across TIME, not within a
+    frame.
+
+SCALE-OUT WARNING: MLP teammates wear IDENTICAL numbered uniforms, so
+the within-team colour gap there will be smaller than this match's, not
+larger — while the cross-team gap this feature is good at is already
+free from the geometry side constraint.  Expect partner separation by
+colour to degrade on MLP.  The generalizable channel is JERSEY NUMBER
+OCR (numbers survive matching kit, and the scorebug OCR machinery in
+this repo is the obvious starting point) — specced here, deliberately
+not built, because it is a build and not a tweak.
