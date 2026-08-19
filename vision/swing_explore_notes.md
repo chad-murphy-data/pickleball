@@ -1101,3 +1101,31 @@ amendment cycle + final shot on future-VOD holdout; KILL falls back
 to the labeled-matches (Level C) product with labels keeping full
 value. Registered design input carried over: joint decode where the
 pace state sets the expected next-gap distribution.
+
+## 2026-08-19 — REGISTERED PREDICTIONS: pose-doubling stability run (before the user runs it)
+
+User labeled through rally 27; **rallies 11–12 are not in the VOD**
+(user report), so the pre-registered core-16 tops out at 14 in
+practice — the fast-heavy pair the dev set hoped for doesn't exist
+in this footage; fast coverage now comes from the wider train corpus.
+Plan: pose_extract the newly labeled rallies (13–21 train; 22–27
+holdout may be extracted too — mechanical data prep, scripts never
+read holdout rows), then rerun phase_grader → train panel doubles to
+~19 pose rallies.
+
+Registered BEFORE the run (Level C = GAP classifier of record):
+- per-contact pace: 68–80% (checkpoint 74.6)
+- has_fast ≥ 0.85; first-fast ≤1 s 0.60–0.90; init-team 0.60–0.90
+- fast-share corr +0.35 to +0.70 (se shrinks ~0.3 → ~0.2)
+- SEQ prior printout: P(fast→fast) 0.70–0.88 (center 0.80 — the
+  user guessed 80% cold), P(slow→slow) 0.80–0.92; median gap after
+  a fast shot 0.4–0.7 s, after a slow shot 1.2–2.0 s
+- Level B match rate 40–55% (same regime, no reason to move)
+
+STABILITY READING (registered): C structure holding Regime-2 levels
+(has_fast ≥ 0.85 AND ff ≥ 0.6 AND teams ≥ 0.6 AND GAP ≥ 65%) =
+STABLE → labeling + temporal build proceed as planned. Any stat
+collapsing below its floor = pause and diagnose before further
+labeling investment. This is a monitoring read on the ROUTING
+decision, not a verdict — the only verdict instrument for the
+temporal model is temporal_gate.md.

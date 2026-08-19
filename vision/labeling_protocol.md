@@ -89,6 +89,8 @@ chain re-anchors.
 
 1. **Rallies 11–16** — completes the pre-registered core-16
    (11–12 are the fast-heavy ones the dev set is short on).
+   *2026-08-19: rallies 11–12 turned out not to be in the VOD (the ⛔
+   case) — the core set tops out at 14 of 16 in practice.*
 2. **Forward from 17 in video order.** Sequential order is what makes
    the chained seek accurate; it also fills train blocks before holdout
    blocks in games 1–2, which is the useful order anyway.
