@@ -1401,6 +1401,64 @@ chance on the outcome-coded subclass and materially better elsewhere;
 hitter accuracy should NOT vary between them, since who touched the
 ball is visible in the frame either way.
 
+## 2026-08-19 — BLIND VLM TEST SCORED (key: data/vision/vlm_test_key_20260819.csv; reproduce with `python3 vision/vlm_score.py <key>`)
+
+Calls locked in-thread before the key was uploaded; predictions
+registered before any blind frame was seen. Effectively a 3-player
+field — Allyce Jones was never drawn (0/20), a luck-of-the-draw fact,
+not a design choice.
+
+RESULT (verifiable halves):
+  SIDE / TEAM   **19/20 = 95%** (chance 50%). The one miss is q19,
+    rally 20 shot 4 — a post-end-switch frame where a far player's
+    big overhead motion pulled the call away from the true near-side
+    hitter. Note the failure mode: I was seduced by the LARGEST motion
+    in the frame, which is exactly what a magnitude-based pose feature
+    does. Same bug, different substrate.
+  PACE          **15/20 = 75%**, and the split is the finding:
+    truth-slow 9/10 (90%), truth-fast 6/10 (60%), a 30pp gap.
+    REGISTERED: "15-25pp worse on fast" — DIRECTION RIGHT, MAGNITUDE
+    UNDERESTIMATED (30pp, outside the band).
+
+THE FIVE PACE ERRORS ARE ONE MECHANISM, and it is the label-semantics
+finding made visible: FOUR of five are "called slow, truly fast", and
+every one is an attack launched from a low or defensive-looking body
+position — q18 a speed-up from a dink stance, q05/q09 low counters,
+q10 the THIRD-SHOT DRIVE (the modal gap-invisible type from the same
+day's blind-spot decomposition). The fifth (q04) is the mirror: an
+upward lift read as a smash windup. At the contact instant a speed-up
+and a dink are the same picture; what separates them is what the ball
+does next. Registered prediction from the semantics entry — "near
+chance on the outcome-coded subclass" — holds in spirit: 60% on fast.
+
+WITHIN-TEAM LEFT/RIGHT — DISCRIMINATION ESTABLISHED, ORIENTATION NOT.
+The key names hitters; the calls name court positions; no committed
+artifact maps between them. But the calls partition players
+near-bijectively: Tuionetoa near-left 7/8, Wei far-right 6/7, Nelson
+far-left 4/5. On the 10 far-side (Chicago) questions — 5 Nelson,
+5 Wei — all 4 of my "far-left" calls landed on Nelson,
+hypergeometric **p = 0.024**. So the left/right split carries real
+identity information; I was tracking individuals, not guessing.
+Whether my "left" is their left cannot be settled from the key: 4-way
+accuracy is ~85% if correctly oriented, ~15% if consistently mirrored.
+TRAP RECORDED: serve geometry does NOT resolve it — the score-parity
+rule fixes the SERVER's court, but MLP teams STACK, so post-serve
+positions routinely invert it. Rally 8 (Chicago at 1, odd → server
+camera-right) contradicts my read; rally 1 agrees with it. Both
+inferences are void. Resolution costs one human glance at one frame.
+
+READING. The hitter question is answered well above the registered
+60-80% on its verifiable half (95% side), and the pace question is
+answered at 75% with the miss concentrated exactly where the theory
+says it must be. This does NOT license VLM labeling at scale: the test
+handed me pre-located contacts, so it measured recognition given
+placement, and placement is the binder. What it DOES license is the
+narrower claim: a VLM reads individual identity out of these frames at
+better than chance, which is the channel the pose stack throws away
+(pick_hitter featurizes one track of four). Next question, unbuilt and
+un-run: give it windows NOT centred on contacts and ask how many
+contacts they contain and when. That measures the binder directly.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
