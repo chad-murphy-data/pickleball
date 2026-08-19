@@ -464,10 +464,23 @@ class FourWay:
         self.cent = {u: Z[np.array(labels) == u].mean(0)
                      for u in set(labels)}
 
-    def predict(self, f):
+    def predict(self, f, candidates=None):
+        """candidates = restrict the call to these uuids.  Partners
+        stand on the SAME side, so a track's near/far assignment plus
+        the per-game team->end map narrows a 4-way call to the two
+        partners it could possibly be.  Measured on this match: only
+        32 of 340 4-way errors were cross-team, so this removes a
+        small but structurally impossible error class (the other 308
+        are partner confusions, which side knowledge cannot touch)."""
         z = (f - self.mu) / self.sd
-        d = sorted((float(np.linalg.norm(z - c)), u)
-                   for u, c in self.cent.items())
+        pool = (self.cent.items() if candidates is None
+                else [(u, self.cent[u]) for u in candidates
+                      if u in self.cent])
+        d = sorted((float(np.linalg.norm(z - c)), u) for u, c in pool)
+        if not d:
+            return None, 0.0
+        if len(d) == 1:
+            return d[0][1], np.inf
         return d[0][1], d[1][0] - d[0][0]
 
 
@@ -534,6 +547,18 @@ def stage2(a, rallies, partner, names_full):
                   f"no corrections will be emitted for it")
             del fw[g]
 
+    # team -> end per game, from the anchor labels themselves: which
+    # two players hold side 0 (near) and side 1 (far) in each game
+    end_by_game = defaultdict(lambda: defaultdict(Counter))
+    for cum, _w, dets, assign, _ts, _cf in rallies:
+        g = game_of.get(cum, -1)
+        for d, (u, _c, _h) in zip(dets, assign):
+            if u and d.side in (0, 1):
+                end_by_game[g][d.side][u] += 1
+    endmap = {g: {s: [u for u, _ in c.most_common(2)]
+                  for s, c in by_s.items()}
+              for g, by_s in end_by_game.items()}
+
     swaps = defaultdict(list)
     led = ROOT / f"data/vision/identity_swaps_{a.vod}.csv"
     if led.exists():
@@ -588,8 +613,9 @@ def stage2(a, rallies, partner, names_full):
                 f = moments_crop(cr, k, np.asarray(d.kpc, np.float32))
                 if np.isnan(f).any():
                     continue
-                p, margin = fwg.predict(f)
-                if margin >= 0.5:
+                cands = endmap.get(g, {}).get(d.side)
+                p, margin = fwg.predict(f, cands)
+                if p is not None and margin >= 0.5:
                     votes[d.track].append((float(d.t), p))
                 carried[d.track][a_by_id.get(id(d))] += 1
                 sides[d.track][d.side] += 1
@@ -784,6 +810,19 @@ def selftest():
     fr, d = person((25, 210, 25), (210, 25, 25))
     p, _ = m.predict(embed(fr, d))
     assert p == "green"
+    # side-restricted predict: the far pair can never win a near call
+    fw = FourWay()
+    fw.fit(np.array([[0.0, 0], [0.2, 0], [9.0, 0], [9.2, 0]], np.float32),
+           ["nearA", "nearB", "farA", "farB"])
+    p4, _ = fw.predict(np.array([8.9, 0], np.float32))
+    assert p4 == "farA", p4                      # unconstrained
+    p2, m2 = fw.predict(np.array([8.9, 0], np.float32), ["nearA", "nearB"])
+    assert p2 in ("nearA", "nearB") and m2 >= 0, (p2, m2)
+    p1, m1 = fw.predict(np.array([0.0, 0], np.float32), ["nearA"])
+    assert p1 == "nearA" and np.isinf(m1)        # lone candidate
+    pn, mn = fw.predict(np.array([0.0, 0], np.float32), ["ghost"])
+    assert pn is None and mn == 0.0              # unknown candidate
+    print("  side-restricted predict + lone/unknown candidates OK")
     print("SELFTEST OK (skeleton sampling ignores floor + partner bleed)")
 
 
