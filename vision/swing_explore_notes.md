@@ -1079,3 +1079,25 @@ has_fast 7/10 vs Viterbi's 1/6, C ff found 10/10 med 0.39 s).
 model-iteration freeze STANDS for pace classifiers; the temporal
 model is the placement program under fresh pre-registration, which
 the freeze explicitly allows.
+
+## 2026-08-19 — TEMPORAL GATE FROZEN (`vision/temporal_gate.md`) — before any temporal code exists
+
+The fresh pre-registration the checkpoint called for, written same
+day, while the label archive is still the checkpoint's 25 rallies
+and pose still covers only 1–10 — i.e. before any data the temporal
+model will train on beyond what the routing decision already saw,
+and before a single line of temporal-model code. One verdict run on
+the full Chicago holdout (76 rallies; BURNS it for the whole swing
+thread), three systems same panel same run (C ceiling / B baseline
+refit on final train / T frozen), per-stat closure bars
+(PASS = match ≥65% + ≥2 of 3 structure closures ≥2/3;
+KILL = match <55% or median closure <1/3), a train-only per-division
+pre-check so an untested mixed-division ceiling can't masquerade as
+decoder failure, and a <40-rally power clause that caps small panels
+at MIDDLE. The S4-floor rationale is recorded in the gate: structure
+gains without placement gains = the decoder painting its own prior.
+Consequences pre-committed: PASS licenses multi-VOD; MIDDLE gets one
+amendment cycle + final shot on future-VOD holdout; KILL falls back
+to the labeled-matches (Level C) product with labels keeping full
+value. Registered design input carried over: joint decode where the
+pace state sets the expected next-gap distribution.

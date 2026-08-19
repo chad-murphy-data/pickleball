@@ -32,7 +32,9 @@ Hard rules:
   mean something (see the circularity traps in CLAUDE.md findings 1, 10).
 - A holdout block is **burned once used**: after a pre-registered
   evaluation scores on it, subsequent verdicts need fresh holdout
-  (future VODs).
+  (future VODs). The Chicago holdout's registered consumer is the
+  temporal-model verdict (`vision/temporal_gate.md`, frozen
+  2026-08-19) — one run, all four blocks.
 - **Future VODs**: assign each whole match to train or holdout at
   acquisition time, before labeling, by appending to this protocol.
 
