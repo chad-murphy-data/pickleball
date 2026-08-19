@@ -337,7 +337,9 @@ def main():
         if not getattr(a, req):
             ap.error(f"--{req} required")
     got = {}
-    C.run(a, collect=lambda rt: got.update(rt))
+    # collect-only: dominance writes its OWN csv and must not touch the
+    # committed coverage tables
+    C.run(a, collect=lambda rt: got.update(rt), write=False)
     per, rally_rows = compute(got)
     rows = summarize(per)
     names = names_from_players_csv()

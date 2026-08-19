@@ -1048,7 +1048,15 @@ def player_meta():
     return g, nm
 
 
-def run(a, collect=None):
+def run(a, collect=None, write=True):
+    """write=False runs the whole chain but persists NOTHING.
+
+    run() writing the committed CSVs as a side effect is a real footgun
+    for collect-only callers: a diagnostic script run with a placeholder
+    --vod appended 13 junk rows to data/coverage_players.csv under
+    vod="X" (the upsert keys on vod, so they did not even overwrite).
+    Anything that only wants the collect hook should pass write=False.
+    """
     """collect: optional callback handed rally_tracks_by_game after the
     resolution loop — lets sibling instruments (coverage_dominance.py)
     compute on EXACTLY the frame set the shipped metrics used, without
@@ -1453,10 +1461,11 @@ def run(a, collect=None):
         "spotcheck_swaps": sum(1 for v in spot.values() if v > 0),
         "thin_player_games": n_thin,
     }
-    upsert_csv(DATA / "coverage_players.csv", prow,
-               ("vod", "match_id", "game", "player_uuid"))
-    upsert_csv(DATA / "coverage_events.csv", [ecount],
-               ("vod", "match_id"))
+    if write:
+        upsert_csv(DATA / "coverage_players.csv", prow,
+                   ("vod", "match_id", "game", "player_uuid"))
+        upsert_csv(DATA / "coverage_events.csv", [ecount],
+                   ("vod", "match_id"))
     print(f"covered {n_covered}/{len(windows)} rallies; "
           f"dropped: {dict(dropped)}")
     if swaps:
@@ -1469,7 +1478,10 @@ def run(a, collect=None):
         print(f"lineup-halves check {halves_ok}/{halves_tested}")
     if gender_tested:
         print(f"mixed gender-height check {gender_agree}/{gender_tested}")
-    print(f"{len(prow)} player-game rows -> data/coverage_players.csv")
+    print(f"{len(prow)} player-game rows -> data/coverage_players.csv"
+          if write else
+          f"{len(prow)} player-game rows computed (write=False, "
+          f"nothing persisted)")
     return prow, ecount
 
 
@@ -1754,6 +1766,15 @@ def selftest():
         "a 2-rally segment is below the floor and must not count"
     print("  end segments: switch found, lone outlier + short segment "
           "rejected")
+    # write=False must persist nothing: guards collect-only callers
+    import inspect
+    src = inspect.getsource(run)
+    assert "if write:" in src, "run() lost its write guard"
+    assert src.index("if write:") < src.index('coverage_players.csv"'), \
+        "the players upsert is no longer inside the write guard"
+    assert "write=True" in inspect.signature(run).__str__().replace(" ", "") \
+        or run.__defaults__ == (None, True), run.__defaults__
+    print("  run(write=False) guard in place")
     print("SELFTEST OK")
 
 
