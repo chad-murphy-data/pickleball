@@ -1274,6 +1274,64 @@ rally attack-free) + determinism extended to Catt. Module verified
 to reproduce the prototype EXACTLY on real train labels (15/19,
 8/14 med 0.00, 10/14). ALL OK.
 
+## 2026-08-19 — VLM/API CHANNEL OPENED (user question): registered predictions + blind test kit
+
+User: "could we run this through an AI API to detect things? ... if I
+showed you screenshots could you tell who was hitting a ball?" Grep of
+vision/ + vision_adjudication: NEVER CONSIDERED — a real gap, not
+settled ground.
+
+ASSESSMENT (what the record already licenses): (a) DETECTION is walled
+for any pixel instrument, API or not — the user found no ball in 36% of
+in-play frames with a loupe and unlimited time, so a model cannot detect
+what is not in the pixels; (b) the binder is PLACEMENT (temporal
+localization over ~145k frames) and VLMs are recognition engines —
+video-native APIs sample ~1 fps against 0.45 s firefight gaps, i.e.
+structurally blind to the shots that matter most; (c) HF models solve
+step 2 (stroke classification on segmented strokes, ball tracking on
+visible balls) while we are stuck on step 1, and the transfer is
+measured (TrackNet 46% probe). BUT (d) the pose channel may be failing
+on FEATURE CRUDENESS, not information: our features are wrist velocity
+in a window; a VLM reads whole-body configuration. Live hypothesis
+worth testing: a VLM is a better SWING-READER than our engineered
+features, usable as a scorer over candidate windows (gate-legal — the
+temporal model MAY use any model class).
+
+EASY-CASE DEMO (user-run, 2026-08-19): a pre-serve screenshot, hitter
+called correctly (near-left, serving) — but the reasoning that settled
+it was RULES, not vision: Chicago at 5 (odd) must serve from the left,
+which pins the server, and the diagonal pins the receiver; the Utah-
+serving alternative was ruled out because it requires a deep receiver
+on the near right and nobody is standing there. LESSON, and it is the
+reason the test kit excludes serves: serve/return hitters are inferable
+from score parity + the lineup state machine (99.25%, no camera), so
+scoring them would inflate any VLM result with cases no model is needed
+for.
+
+REGISTERED BEFORE ANY BLIND FRAME IS SEEN: 4-way hitter call 60-80%
+(chance 25%; 50% treating team as given), and specifically 15-25pp
+WORSE on fast contacts than slow — the predicted failure mechanism is
+motion blur plus posture ambiguity in kitchen exchanges, i.e. the SAME
+mechanism that killed the pose channel (finding: pose alone 0.493 AUC,
+arm inversion deepest in fast tags). If the fast/slow gap is small AND
+overall clears 80%, the VLM sees something the engineered features do
+not and the scorer hypothesis is live. If it lands ~65% with a big fast
+hole, the VLM inherits the same wall — cost: a few screenshots.
+
+KIT: `vision/vlm_frame_sample.py` — seeded balanced draw (default 20,
+10 fast / 10 slow) from TRAIN rallies only, serves/returns/whiffs/
+lunges excluded, third shots deliberately kept (the gap-invisible
+drive is the population of interest), each question cut as a 3-frame
+vstacked strip (t-0.1/t/t+0.1 — a lone contact frame is often
+blurred), shuffled question order, answer key written to a separate
+file. Dry-run against the committed labels: 187 eligible contacts (89
+fast / 98 slow) over 16 rallies; draw is deterministic, dupe-free,
+seed-sensitive, and asserted to leak neither holdout rows nor
+openings. NOTE the honest limit on value: even at 90% this does not
+speed up labeling (the bottleneck is watching and tapping, which a
+hitter pre-fill never touches) — the value would be as a component
+inside the temporal model, not an assistant beside the labeler.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
