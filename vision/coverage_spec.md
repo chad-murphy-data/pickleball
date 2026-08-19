@@ -374,3 +374,62 @@ Consequences for anyone planning work here:
   * autonomy = an auto-accept gate (appearance-vs-geometry agreement,
     the LORO >= 0.85 bar) routing only below-bar matches to a human, NOT
     a higher yield per VOD.
+
+## Anchor-free identity — BUILT 2026-08-19 (user's idea), 63 -> 90 rallies
+
+If the broadcast never showed the serve there is no anchor, and the
+geometry chain has nothing to name the players with.  The user's
+proposal: learn each player's appearance FROM THEIR SERVICE POINTS —
+the rallies that DO have anchors, where geometry names them for free —
+then carry that model into the anchor-less ones.  No hand labelling:
+the training labels are the geometry chain's own output.
+`vision/coverage_anchorfree.py`, consumed by `coverage.py --anchor-free`,
+`coverage_dominance.py`, and `coverage_overlay.py`.
+
+What makes it tractable is a structural constraint, not a better model:
+partners stand on the SAME side, so the near/far split already in the
+pose npz partitions tracks into TEAMS, and the per-game team->end map
+turns a 4-way identification into two 2-way ones.
+
+GATE A (pre-registered at 0.90 before the first number): hold out a
+resolved rally, refit on that game's others, name the held-out rally
+from MID-RALLY appearance alone under the side->team constraint, and
+compare to geometry.  Measured: **game 1 96.1%** (5,577 dets),
+**game 2 100.0%** (15,253), **game 3 46.7%** (4,935) — g3 fails exactly
+as its kit change predicts and contributes NOTHING, by construction.
+Result: 27 rallies admitted, coverage 63 -> **90 of 141**.
+
+RESIDUAL ERROR MODE, and it is not caught by the margin gate: two
+game-1 rallies (r16, r39) come back ~50% right, i.e. one team correctly
+named and the other swapped — and they carry LARGE margins (2.46, 2.58).
+Both are rallies where the swap audit itself was a coin flip
+(unanimity 0.50/0.60) on exactly that team.  Confidence margin does not
+predict a whole-team swap; nothing internal can, since a coherent A<->B
+swap is self-consistent.  This is the same non-identifiability the
+project keeps meeting, and it is the price of these rallies.
+
+WHAT THE BIGGER SAMPLE DID TO THE EARLIER CLAIMS (this is the point of
+adding it — the extra data tested them):
+  * width shares HELD.  Largest move 0.018 (Alshon g1 .567 -> .549,
+    Black .433 -> .451, complements); games 2 and 3 moved <= 0.003.
+    The 0.56/0.44 men-vs-women split is robust to a 43% larger sample.
+  * deep-poach ordering FLIPPED and was therefore noise: Alshon 26.2%
+    -> 23.3%, Patriquin 20.0% -> 24.7%.  Do NOT quote "Alshon poaches
+    deeper than Patriquin"; peak share is what held (0.671 vs 0.662).
+  * solo-vs-paired crossings weakened but survived at TEAM level:
+    Alshon 16/0 -> 19/1 solo/paired, Patriquin 9/3 -> 17/4.  The
+    defensible statement is the pair contrast — Bright/Patriquin
+    switch together 8 times to Black/Alshon's 2 — not "all solo".
+
+Serve-phase handling: the serve instant is unknown by construction, so
+the frozen "first SERVE_PHASE_S after the serve" mask cannot be
+evaluated.  Anchor-free rallies exclude the first SERVE_PHASE_S of
+RETAINED frames instead — deliberately conservative (it discards good
+mid-rally play rather than admit serve-stance frames), and no
+serve-phase ellipse is claimed for them.
+
+Every row carries `anchor_free_rallies` and `anchor_free_frac`, so any
+number can be recomputed without them; publication must state which.
+These rallies are additions to the SAMPLE and never evidence about the
+chain — a rally named by appearance has no geometry to disagree with,
+so it must never feed the appearance-vs-geometry swap audit.

@@ -320,6 +320,7 @@ def main():
     ap.add_argument("--spotcheck", default="/nonexistent.csv")
     ap.add_argument("--swaps", default="")
     ap.add_argument("--track-map", default="")
+    ap.add_argument("--anchor-free", default="")
     ap.add_argument("--vod", default="")
     ap.add_argument("--event", default="")
     ap.add_argument("--date", default="")

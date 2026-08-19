@@ -111,6 +111,9 @@ DEEP_FT = 9.0                  # serving-end pair stands at least this deep
 RCV_KITCHEN_FT = 4.0           # receiving end has a player this close
 OFFCOURT_FT = 7.0              # projected foot beyond court+this = dropped
 CONF_MIN = 0.5
+AF_CONF = 0.80        # confidence stamped on anchor-free rallies: above
+                      # CONF_MIN so they are kept, below a clean geometric
+                      # anchor so they never outrank one
 HANDOFF_DT, HANDOFF_FT = 1.2, 6.0
 CAM_NCC_MAIN = 0.55
 MIN_FRAMES_PLAYER_GAME = 150   # ~15 s of observation before a row is real
@@ -887,6 +890,8 @@ class PlayerGame:
         self.speed_n = 0
         self.trips = 0
         self.handoff_n = 0
+        self.af_rallies = set()   # rallies named without a serve anchor
+        self.af_det_n = 0
         self.det_n = 0
         self.conf_sum = 0.0
         self.share_num = 0.0   # width share accumulator (frame count)
@@ -896,9 +901,12 @@ class PlayerGame:
         self.partner_area_pts = None   # filled at game level
 
     def add_rally(self, ts, xy, conf, wts, handoffs, phase_mask, serve_mask,
-                  end):
+                  end, cum=None, anchor_free=False):
         """ts sorted; xy (n,2); phase_mask = rally-phase frames."""
         self.rallies.add(True)
+        if anchor_free:
+            self.af_rallies.add(cum)
+            self.af_det_n += int(phase_mask.sum())
         for i in np.nonzero(phase_mask)[0]:
             self.pts.append((xy[i, 0], xy[i, 1], wts[i]))
         for i in np.nonzero(serve_mask)[0]:
@@ -1026,6 +1034,15 @@ def run(a, collect=None):
                 (float(r["t0"]), float(r["t1"]), r["uuid"], r["action"]))
         print(f"track map: {sum(len(v) for m in track_map.values() for v in m.values())} "
               f"spans loaded from {a.track_map}")
+    anchor_free = defaultdict(dict)
+    n_anchor_free = 0
+    if getattr(a, "anchor_free", ""):
+        for r in csv.DictReader(open(a.anchor_free)):
+            anchor_free[int(r["rally_cum"])][int(r["track"])] = \
+                r["player_uuid"]
+        print(f"anchor-free ledger: {len(anchor_free)} rallies, "
+              f"{sum(len(v) for v in anchor_free.values())} track names "
+              f"from {a.anchor_free}")
     # backend provenance: fleet numbers are not trusted until the spec's
     # pre-named A/B guard has run (vision/coverage_ab.py; ViTPose wins
     # disagreements) — so every row records which backend produced it
@@ -1075,23 +1092,44 @@ def run(a, collect=None):
         t0, t1 = float(win["t0s"]), float(win["t1s"])
         lead = float(win["lead_s"]) if win.get("lead_s") else 0.0
         t_serve, qual, srv_end = find_serve(dets, t0, t1, lead)
-        if qual == 0.0:
+        # ANCHOR-FREE fallback (coverage_anchorfree --emit): a rally whose
+        # serve the broadcast never showed has no anchor, but the players
+        # are still identifiable from an appearance model trained on the
+        # rallies that DO have serves.  Only games clearing that module's
+        # Gate A reach this ledger, and the rally is flagged so every
+        # downstream number can be recomputed without them.
+        af_avail = anchor_free.get(cum)
+        af_names = af_avail if qual == 0.0 else None
+        if qual == 0.0 and af_names is None:
             # no anchor found: the fallback guess cannot place the serve
             # (in start-marked logs dur ~= lead, so t0+lead sits at the
             # rally END).  Ambiguous spans are dropped, not guessed.
             dropped["anchor_not_found"] += 1
             continue
-        anchor_offsets.append(t_serve - t0)
+        if af_names is None:
+            anchor_offsets.append(t_serve - t0)
         lin, id8 = lineup_for(win, lineup_by, lineup_ids)
         heights = defaultdict(list)
         for d in dets:
             heights[d.track].append(d.h_ft or d.h_px)
         heights = {tr: float(np.median(v)) for tr, v in heights.items()}
-        names_map, conf, checks = anchor_identity(
-            dets, t_serve, win, lin, genders, heights)
+        if af_names is not None:
+            names_map, conf, checks = dict(af_names), AF_CONF, {}
+        else:
+            names_map, conf, checks = anchor_identity(
+                dets, t_serve, win, lin, genders, heights)
+            if (names_map is None or conf < CONF_MIN) and af_avail:
+                # an anchor exists but geometry cannot resolve the
+                # configuration (stacking, a missing track).  Appearance
+                # does not need the serving geometry, so it can still
+                # name the rally — same ledger, same Gate A.
+                names_map, conf, checks = dict(af_avail), AF_CONF, {}
+                af_names = af_avail
         if names_map is None or conf < CONF_MIN:
             dropped["identity_" + checks.get("reason", "lowconf")] += 1
             continue
+        if af_names is not None:
+            n_anchor_free += 1
         # appearance-audited anchor swaps (coverage_appearance --audit):
         # the geometry chain's server/partner pick can swap a TEAM's two
         # names for a whole rally (stacking ambiguity; measured 12/63 +
@@ -1105,7 +1143,7 @@ def run(a, collect=None):
         # lineup-halves consistency (report-only): predicted lateral half
         # of the server vs observed, weighted by the machine's local
         # receiver_ok agreement around this rally
-        if lin is not None:
+        if lin is not None and af_names is None:
             rel = lineup_reliability(lineup_rows, id8, win["game"],
                                      win["rally_in_game"])
             if rel >= 0.99:
@@ -1128,10 +1166,11 @@ def run(a, collect=None):
             gender_agree += int(agree)
             gender_tested += int(tested)
 
-        endmap_obs.append((id8, win["game"], int(cum),
-                           "A" if win["server_uuid"].lower() in
-                           (lin["team_A_R"], lin["team_A_L"]) else "B",
-                           srv_end or "?"))
+        if af_names is None:
+            endmap_obs.append((id8, win["game"], int(cum),
+                               "A" if win["server_uuid"].lower() in
+                               (lin["team_A_R"], lin["team_A_L"]) else "B",
+                               srv_end or "?"))
         assign = carry_names(sorted(dets, key=lambda d: d.t), names_map, conf)
         dets_sorted = sorted(dets, key=lambda d: d.t)
         # stage-2 appearance track map (coverage_appearance --stage2):
@@ -1197,11 +1236,26 @@ def run(a, collect=None):
             xy = np.array(xy)
             wts = np.array(wts)
             hand = np.array(hand, bool)
-            phase = ts >= t_serve + SERVE_PHASE_S
-            serve_m = (ts >= t_serve) & (ts < t_serve + SERVE_PHASE_S)
+            if af_names is None:
+                phase = ts >= t_serve + SERVE_PHASE_S
+                serve_m = (ts >= t_serve) & (ts < t_serve + SERVE_PHASE_S)
+            else:
+                # ANCHOR-FREE: the serve instant is unknown by
+                # construction (find_serve's qual-0 fallback is the very
+                # guess the drop rule exists to refuse), so the frozen
+                # "first SERVE_PHASE_S after the serve" mask cannot be
+                # evaluated.  Excluding the first SERVE_PHASE_S of the
+                # RETAINED frames instead is deliberately conservative:
+                # if the camera was away at the serve it discards good
+                # mid-rally play rather than risk admitting serve-stance
+                # frames into an occupancy statistic.  No serve-phase
+                # ellipse is claimed for these rallies.
+                phase = ts >= (ts[0] + SERVE_PHASE_S) if len(ts) else ts
+                serve_m = np.zeros(len(ts), bool)
             end = "near" if float(np.median(xy[:, 1])) > NET_Y else "far"
             games[game][u].add_rally(ts, xy, conf, wts, hand, phase,
-                                     serve_m, end)
+                                     serve_m, end, cum=cum,
+                                     anchor_free=af_names is not None)
             rally_data[u] = (ts[phase], xy[phase], end)
         rally_tracks_by_game[game].append((cum, rally_data, lin))
 
@@ -1294,6 +1348,9 @@ def run(a, collect=None):
                                 if pg.speed_n else ""),
                 "kitchen_trips_per_rally": f"{pg.trips / max(n_r, 1):.2f}",
                 "identity_conf": f"{pg.conf_sum / max(pg.det_n, 1):.3f}",
+                "anchor_free_rallies": len(pg.af_rallies),
+                "anchor_free_frac": (f"{pg.af_det_n / pg.det_n:.3f}"
+                                     if pg.det_n else ""),
                 "handoff_frac": f"{pg.handoff_n / max(pg.det_n, 1):.3f}",
                 "identity_err_rate": (
                     f"{sum(v > 0 for v in spot.values()) / len(spot):.3f}"
@@ -1660,6 +1717,12 @@ def main():
     ap.add_argument("--swaps", default="",
                     help="identity_swaps CSV from coverage_appearance "
                          "--audit; anchor names swap back per ledger")
+    ap.add_argument("--anchor-free", default="",
+                    help="identity_anchorfree_<vod>.csv — names rallies "
+                         "whose serve was never shown, from an appearance "
+                         "model trained on the rallies that DO have "
+                         "serves (coverage_anchorfree.py). Flagged "
+                         "identity_source=appearance downstream.")
     ap.add_argument("--track-map", default="",
                     help="identity_track_map CSV from coverage_appearance "
                          "--stage2; per-span rebind/rescue/split")

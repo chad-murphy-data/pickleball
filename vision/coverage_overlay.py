@@ -41,7 +41,8 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from coverage import (CONF_MIN, L_FT, NET_Y, SERVE_PHASE_S, W_FT,
-                      anchor_identity, by_frame, carry_names, find_serve,
+                      AF_CONF, anchor_identity, by_frame, carry_names,
+                      find_serve,
                       is_main_at, lineup_for, load_camera, load_court,
                       load_lineup, load_rally, load_windows, player_meta)
 from swing_probe import decode_window, ffmpeg_bin
@@ -207,6 +208,15 @@ def run(a):
                     tuple(r["team"].split("|")))
         print(f"swap ledger: {sum(len(v) for v in swaps.values())} "
               f"team-rally swaps")
+    anchor_free = {}
+    if getattr(a, "anchor_free", ""):
+        import csv as _csv2
+        from collections import defaultdict as _dd2
+        anchor_free = _dd2(dict)
+        for r in _csv2.DictReader(open(a.anchor_free)):
+            anchor_free[int(r["rally_cum"])][int(r["track"])] = \
+                r["player_uuid"]
+        print(f"anchor-free ledger: {len(anchor_free)} rallies")
     track_map = {}
     if getattr(a, "track_map", ""):
         import csv as _csv
@@ -292,11 +302,19 @@ def run(a):
                     inv = {u: tr for tr, u in nm.items()}
                     if ua in inv and ub in inv:
                         nm[inv[ua]], nm[inv[ub]] = ub, ua
-            if qual == 0.0:
+            af_names = anchor_free.get(cum)
+            if af_names and (qual == 0.0 or nm is None
+                             or conf < CONF_MIN):
+                # named without a serve anchor (coverage_anchorfree):
+                # rendered so these rallies can be eyeball-verified like
+                # any other — the banner says which they are
+                nm, conf = dict(af_names), AF_CONF
+                status = "anchor-free"
+            elif qual == 0.0:
                 status = "anchor"
             elif nm is None or conf < CONF_MIN:
                 status = "dropped"
-            else:
+            if status not in ("approx", "anchor", "dropped"):
                 srt = sorted(dets, key=lambda d: d.t)
                 tm = track_map.get(cum, {}) if track_map else {}
                 for d, tup in zip(srt, carry_names(srt, nm, conf)):
@@ -367,6 +385,9 @@ def main():
     ap.add_argument("--swaps", default="",
                     help="identity_swaps CSV (coverage_appearance "
                          "--audit)")
+    ap.add_argument("--anchor-free", default="",
+                    help="identity_anchorfree ledger — render the "
+                         "rallies named without a serve anchor")
     ap.add_argument("--track-map", default="",
                     help="identity_track_map CSV (--stage2)")
     ap.add_argument("--legend-a", default="",
