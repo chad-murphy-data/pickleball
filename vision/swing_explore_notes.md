@@ -1719,6 +1719,68 @@ explicit user call and a fresh pre-registration, exactly as the
 temporal gate did — not a drift back in on the strength of 36
 self-selected frames.
 
+## 2026-08-19 — THE 64% RE-EXAMINED AGAINST ITS OWN DATA: dead time was already excluded, but the number is still too low, for TWO other reasons
+
+User: "my 64% was WAY too low because so many of the frames were bad —
+sloppy frames with players walking around, very few were 'the ball
+should be here but I don't see it'." Recomputed from
+data/vision/ball_labels_chicago0725.csv rather than either memory.
+
+THE STATED REASON DOES NOT HOLD — the correction was already applied.
+Findability by seconds-since-window-open:
+    0-3 s   52/146 = 36%   <- pre-serve dead time
+    3-6 s   36/67  = 54%   <- still the ~6 s log lead
+    6-10 s  55/77  = 71%
+   10-20 s  62/102 = 61%
+   20+  s   12/24  = 50%
+  IN-PLAY (>=6 s): 129/203 = **63.5%** [57, 70] — this IS the 64.1% on
+  record. The walking-around frames are the 0-6 s bins and they were
+  already binned out.
+
+BUT THE NUMBER IS STILL TOO LOW, on two grounds the closure missed:
+ (1) THE MIRROR CONTAMINATION. Windows were built as t0 = t1 - duration,
+     so the dead-time lead sits at the START — which the binning caught.
+     Nothing caught the END: the 20+ s bin runs 50% and 10-20 s runs
+     61%, against 71% in the most confidently in-play 6-10 s bin. A
+     declining tail is what post-rally dead time looks like. The
+     headline pools all of it. Best-confidence in-play is ~71%, not 64%.
+ (2) ISOLATION, and this is the big one. All 416 frames were judged
+     ALONE, scattered 3-5 s apart. Finding a ball in an isolated frame
+     is a SEARCH; finding it in frame k+1 having seen it in frame k is a
+     LOOKUP. The contiguous grids ran ~92% (user-audited, n=36, my
+     window selection). The user's original argument was exactly this
+     and it survives its own data.
+NULL RESULT WORTH KEEPING: no stratum effect in play — fast 81/127 =
+64%, random 48/76 = 63%. The closure's suspicion that true fast frames
+would be worse is NOT visible here.
+Unbiased test unchanged and still free: mark visible/not across the 30
+RANDOM localization windows.
+
+## 2026-08-19 — SCOPE CALL (user): interpolation is acceptable, and the wanted outputs are "who's next to hit" + "fast/slow", NOT ball position
+
+Two consequences, one of which cuts against the ball thread.
+ (a) THE INTERPOLATION OBJECTION LARGELY DISSOLVES, for a precise
+     reason. Interpolating BETWEEN two confident observations is
+     bounded; EXTRAPOLATING past the last one is not, and the
+     dangerous case was always the contact itself — the ball vanishes
+     into the player exactly at the discontinuity you are trying to
+     detect, so smoothing through it erases the event. But we no
+     longer need the ball to find contacts: VLM localization does that
+     at 93% recall. With contact times supplied by another channel,
+     the ball is only ever asked a BETWEEN-CONTACTS question, anchored
+     at both ends. That is the safe kind of interpolation. The
+     seen/inferred flag still stands as hygiene.
+ (b) HONEST TWIST — the ball got LESS urgent today, not more. For the
+     two outputs the user actually named, both are already served:
+     "fast/slow" is downstream ARITHMETIC of contact times (and
+     frame-counting is at its Bayes ceiling, 73.2% optimal vs 74.6%
+     measured, so a ball adds nothing there), and "who's next to hit"
+     is the hitter-ID channel measured at 95% side / 85% four-way.
+     What a ball uniquely adds is WHERE SHOTS LAND — depth, direction,
+     placement quality — which is precisely the thing the user said
+     they do not need. Recorded so nobody re-opens the ball thread on
+     the strength of an argument whose payload is already delivered.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
