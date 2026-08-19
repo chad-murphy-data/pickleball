@@ -82,6 +82,30 @@ GAP_S = 0.6           # a track survives a detection gap up to this
 MIN_TRACK_DET = 5     # shorter tracks get side=-1 (junk fragments)
 MAX_PERSONS = 6       # per frame, by detection confidence
 
+# ---------------------------------------------------------- appearance
+# OPT-IN (--track-appearance).  Gate C pre-registers THIS FILE's tracker
+# as greedy-IoU (contact_gate.md line 48), so the flag defaults OFF and
+# the no-flag code path is unchanged, expression for expression.
+# Rationale for the option: at 10 fps a fast lateral move carries a far
+# player's box clear of its predecessor (IoU -> 0 against a ~40 px box),
+# so the track dies exactly during the movement coverage wants to
+# measure — measured 16 track ids per rally for 4 players, median track
+# lifetime 7% of the rally.  Appearance answers "same body?" when
+# overlap cannot.
+APP_W = 0.45          # appearance share of the association score
+APP_SIGMA = 14.0      # Lab units: per-dim RMS distance -> similarity
+APP_EMA = 0.7         # track descriptor memory (higher = longer)
+APP_MIN_DIMS = 6      # co-valid dims needed before appearance is used
+APP_SCORE_MIN = 0.30  # blended-score floor (appearance mode only)
+APP_GATE_DIAG = 1.6   # centre may move this many box diagonals per step
+APP_GAP_S = 1.2       # appearance can bridge a longer occlusion than IoU
+
+# skeleton regions sampled for the descriptor (COCO indices), identical
+# to coverage_appearance.moments_crop
+TORSO = [(5, 11), (6, 12), (5, 6)]
+LEGS = [(11, 13), (13, 15), (12, 14), (14, 16)]
+ARMS = [(5, 7), (6, 8)]
+
 
 def parse_ffmpeg_banner(text):
     """(fps, duration_s) from an `ffmpeg -i` stderr banner; None where
@@ -187,6 +211,53 @@ def windows_from_v4(path: Path):
     return win
 
 
+# ---------------------------------------------------------- descriptor
+
+
+def descriptor(lab, kpt, kpc):
+    """18-dim Lab colour moments (mean+std of L,a,b for torso/legs/arms)
+    sampled ALONG THE SKELETON in frame coordinates.
+
+    Same construction as coverage_appearance.moments_crop, which beat
+    raw box crops because sampling on limbs keeps floor and partner
+    pixels out of the statistic.  NaN marks a region with too few
+    visible joints; comparisons then use co-valid dims only.
+    """
+    Hh, Ww = lab.shape[:2]
+    out = []
+    for segs in (TORSO, LEGS, ARMS):
+        cols = []
+        for a, b in segs:
+            if kpc[a] < 0.3 or kpc[b] < 0.3:
+                continue
+            pa, pb = kpt[a], kpt[b]
+            for f in np.linspace(0.15, 0.85, 8):
+                x = int(pa[0] + f * (pb[0] - pa[0]))
+                y = int(pa[1] + f * (pb[1] - pa[1]))
+                if 1 <= x < Ww - 1 and 1 <= y < Hh - 1:
+                    cols.append(lab[y - 1:y + 2, x - 1:x + 2]
+                                .reshape(-1, 3).mean(0))
+        if len(cols) < 4:
+            out.extend([np.nan] * 6)
+        else:
+            arr = np.array(cols)
+            out.extend(arr.mean(0).tolist() + arr.std(0).tolist())
+    return np.array(out, np.float32)
+
+
+def app_sim(da, db):
+    """Similarity in [0, 1] on co-valid dims; None when the two
+    descriptors do not overlap enough to judge (caller falls back to
+    IoU alone rather than guessing)."""
+    if da is None or db is None:
+        return None
+    m = np.isfinite(da) & np.isfinite(db)
+    if int(m.sum()) < APP_MIN_DIMS:
+        return None
+    d = float(np.sqrt(np.mean((da[m] - db[m]) ** 2)))
+    return float(np.exp(-0.5 * (d / APP_SIGMA) ** 2))
+
+
 # ------------------------------------------------------------- tracker
 
 
@@ -214,25 +285,67 @@ class IoUTracker:
     PRED_CLAMP_S = 0.2
     VEL_EMA = 0.5
 
-    def __init__(self, gap_s=GAP_S):
+    def __init__(self, gap_s=GAP_S, appearance=False):
         self.gap_s = gap_s
+        self.appearance = appearance
         self.next_id = 0
         self.live = {}        # id -> (t, box, vel)
+        self.desc = {}        # id -> descriptor (appearance mode only)
 
-    def feed(self, t, boxes):
+    @staticmethod
+    def _near(p, b):
+        """Motion gate: a detection may only claim a track whose
+        predicted centre is within APP_GATE_DIAG box diagonals.  Without
+        this, appearance alone could match two same-kit teammates across
+        the width of the court."""
+        pc = ((p[0] + p[2]) / 2, (p[1] + p[3]) / 2)
+        bc = ((b[0] + b[2]) / 2, (b[1] + b[3]) / 2)
+        diag = float(np.hypot(b[2] - b[0], b[3] - b[1]))
+        return float(np.hypot(pc[0] - bc[0], pc[1] - bc[1])) \
+            <= APP_GATE_DIAG * max(diag, 1.0)
+
+    def _pairs_app(self, preds, boxes, descs):
+        """Blended (IoU, appearance) candidate pairs, pre-filtered.
+        Falls back to the plain IoU floor whenever the two descriptors
+        cannot be compared, so appearance never LOOSENS the tracker on
+        evidence it does not have."""
+        out = []
+        for i, p in preds.items():
+            for k, b in enumerate(boxes):
+                if not self._near(p, b):
+                    continue
+                ov = iou(p, b)
+                s = app_sim(self.desc.get(i),
+                            None if descs is None else descs[k])
+                if s is None:
+                    if ov >= IOU_MIN:
+                        out.append((ov, i, k))
+                    continue
+                sc = (1 - APP_W) * ov + APP_W * s
+                if sc >= APP_SCORE_MIN:
+                    out.append((sc, i, k))
+        return out
+
+    def feed(self, t, boxes, descs=None):
         """boxes: (N,4) array. Returns a track id per box."""
         self.live = {i: v for i, v in self.live.items()
                      if t - v[0] <= self.gap_s}
+        self.desc = {i: d for i, d in self.desc.items() if i in self.live}
         preds = {i: b + v * min(t - tl, self.PRED_CLAMP_S)
                  for i, (tl, b, v) in self.live.items()}
         ids = [-1] * len(boxes)
-        pairs = [(iou(p, b), i, k)
-                 for i, p in preds.items()
-                 for k, b in enumerate(boxes)]
+        if self.appearance:
+            pairs = self._pairs_app(preds, boxes, descs)
+            floor = 0.0                      # already filtered above
+        else:
+            pairs = [(iou(p, b), i, k)
+                     for i, p in preds.items()
+                     for k, b in enumerate(boxes)]
+            floor = IOU_MIN
         pairs.sort(key=lambda x: -x[0])
         used_t, used_d = set(), set()
         for ov, i, k in pairs:
-            if ov < IOU_MIN or i in used_t or k in used_d:
+            if ov < floor or i in used_t or k in used_d:
                 continue
             ids[k] = i
             used_t.add(i)
@@ -249,6 +362,21 @@ class IoUTracker:
                 inst = (b - prev[1]) / (t - prev[0])
                 vel = self.VEL_EMA * prev[2] + (1 - self.VEL_EMA) * inst
             self.live[ids[k]] = (t, b, vel)
+        if self.appearance and descs is not None:
+            for k in range(len(boxes)):
+                d = descs[k]
+                if d is None:
+                    continue
+                cur = self.desc.get(ids[k])
+                if cur is None:
+                    self.desc[ids[k]] = np.asarray(d, np.float32).copy()
+                    continue
+                nd = cur.copy()
+                both = np.isfinite(cur) & np.isfinite(d)
+                nd[both] = APP_EMA * cur[both] + (1 - APP_EMA) * d[both]
+                fresh = ~np.isfinite(cur) & np.isfinite(d)
+                nd[fresh] = d[fresh]        # adopt newly visible regions
+                self.desc[ids[k]] = nd
         return ids
 
 
@@ -454,15 +582,22 @@ def make_infer(a):
 # ------------------------------------------------------------- extract
 
 
-def extract_rally(infer, video, cum, t0, t1, fps, width):
-    trk = IoUTracker()
+def extract_rally(infer, video, cum, t0, t1, fps, width,
+                  appearance=False):
+    trk = IoUTracker(gap_s=APP_GAP_S if appearance else GAP_S,
+                     appearance=appearance)
     rows = []          # (t, tid, conf, box, kpt, kpc)
     H = W = None
     for i, frame in enumerate(decode_window(video, t0, t1 - t0, fps, width)):
         t = t0 + i / fps
         H, W = frame.shape[:2]
         kept = infer(frame, H, W)
-        ids = trk.feed(t, [k[1] for k in kept])
+        descs = None
+        if appearance and kept:
+            import cv2
+            lab = cv2.cvtColor(frame, cv2.COLOR_RGB2LAB).astype(np.float32)
+            descs = [descriptor(lab, k[2], k[3]) for k in kept]
+        ids = trk.feed(t, [k[1] for k in kept], descs)
         for tid, (cf, box, kpt, kpc) in zip(ids, kept):
             rows.append((t, tid, cf, box, kpt, kpc))
     side = assign_sides([r[1] for r in rows], [r[3] for r in rows]) \
@@ -526,7 +661,8 @@ def run(a):
             print(f"rally #{cum}: no window anywhere — skipped")
             continue
         rows, side, hw = extract_rally(infer, a.video, cum, t0, t1,
-                                       a.fps, a.width)
+                                       a.fps, a.width,
+                                       appearance=a.track_appearance)
         n = save_rally(out_dir, cum, rows, side, hw, a.fps)
         n_tracks = len({r[1] for r in rows})
         n_sided = len({tid for tid, s in side.items() if s >= 0})
@@ -541,7 +677,9 @@ def run(a):
 
     meta = {"video": str(a.video), "backend": backend,
             "fps": a.fps, "width": a.width, "device": a.device or "auto",
-            "iou_min": IOU_MIN, "gap_s": GAP_S,
+            "iou_min": IOU_MIN,
+            "gap_s": APP_GAP_S if a.track_appearance else GAP_S,
+            "track_appearance": bool(a.track_appearance),
             "runtime_s": round(time.time() - t_start, 1), "rallies": counts}
     old = {}
     mp = out_dir / "meta.json"
@@ -630,6 +768,55 @@ def selftest():
     before = [s for i, s in seq2 if i / fps < 5.0][-1]
     after = [s for i, s in seq2 if i / fps > 5.4][0]
     assert before == after, "0.4s dropout re-badged the track"
+
+    # ---- appearance-aware association (opt-in) ------------------------
+    # descriptor maths first
+    dA = np.arange(18, dtype=np.float32) + 100.0
+    dB = dA + 40.0                       # a clearly different-looking body
+    assert app_sim(dA, dA) > 0.99, app_sim(dA, dA)
+    assert app_sim(dA, dB) < 0.05, app_sim(dA, dB)
+    part = dA.copy(); part[6:] = np.nan   # only torso visible
+    assert app_sim(part, dA) > 0.99       # co-valid dims only
+    thin = dA.copy(); thin[3:] = np.nan   # 3 dims < APP_MIN_DIMS
+    assert app_sim(thin, dA) is None      # cannot judge -> IoU alone
+    assert app_sim(None, dA) is None
+
+    # THE failure mode this option exists for: a lateral burst that
+    # carries the box clear of its predecessor.  IoU-only re-badges the
+    # track (that is the 16-ids-per-rally shattering); appearance holds.
+    def _run(appearance):
+        trk = IoUTracker(appearance=appearance)
+        seq = [(0.0, 100.0), (0.1, 160.0), (0.2, 220.0)]   # 1.5 widths/step
+        got = []
+        for t, xa in seq:
+            boxes = [np.array([xa, 0.0, xa + 40, 100.0]),
+                     np.array([400.0, 0.0, 440.0, 100.0])]
+            got.append(trk.feed(t, boxes, [dA, dB] if appearance else None))
+        return got
+
+    iou_only = _run(False)
+    assert iou_only[0][0] != iou_only[1][0], \
+        "selftest premise broken: the jump should defeat plain IoU"
+    app = _run(True)
+    assert app[0][0] == app[1][0] == app[2][0], \
+        f"appearance failed to hold the moving track: {app}"
+    assert app[0][1] == app[1][1] == app[2][1], "static track lost"
+    assert app[0][0] != app[0][1], "the two players share a track id"
+    print("  appearance association: holds a burst that defeats IoU, "
+          "keeps the pair distinct")
+
+    # appearance must never LOOSEN association on evidence it lacks:
+    # with no descriptors it stays inside the IoU floor + motion gate
+    trk = IoUTracker(appearance=True)
+    far = [np.array([0.0, 0.0, 40.0, 100.0])]
+    trk.feed(0.0, far, None)
+    jumped = [np.array([900.0, 0.0, 940.0, 100.0])]
+    a0 = trk.feed(0.1, far, None)[0]
+    trk2 = IoUTracker(appearance=True)
+    trk2.feed(0.0, far, None)
+    assert trk2.feed(0.1, jumped, None)[0] != a0, \
+        "motion gate let a cross-court jump keep its id"
+    print("  appearance mode: motion gate + IoU floor still enforced")
 
     side = assign_sides(all_ids, [np.array(b) for b in all_boxes])
     for pi, cnt in enumerate(ids_by_player):
@@ -729,6 +916,12 @@ def main():
                     help="yolo backend only")
     ap.add_argument("--imgsz", type=int, default=960,
                     help="yolo backend only")
+    ap.add_argument("--track-appearance", action="store_true",
+                    help="blend a skeleton-sampled Lab descriptor into "
+                         "track association (coverage path). OFF by "
+                         "default: Gate C pre-registers the plain "
+                         "greedy-IoU tracker, and the no-flag path is "
+                         "unchanged.")
     ap.add_argument("--fps", type=float, default=0.0,
                     help="0 = detect the VOD's native rate (the gate "
                          "runs at native fps, no subsampling)")

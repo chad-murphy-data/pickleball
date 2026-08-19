@@ -41,7 +41,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from coverage import foot_point, load_court, project
 import pose_extract as PE
-from pose_extract import IoUTracker, assign_sides, make_infer, save_rally
+from pose_extract import (APP_GAP_S, GAP_S, IoUTracker, assign_sides,
+                          descriptor, make_infer, save_rally)
 from swing_probe import decode_window
 
 MAX_KEEP = 8
@@ -113,9 +114,10 @@ def extract(a):
           f"{len(todo)} rallies to extract")
     t_start = time.time()
     counts = {}
+    app = not a.no_appearance
     for k, cum in enumerate(todo):
         t0, t1 = wins[cum]
-        trk = IoUTracker()
+        trk = IoUTracker(gap_s=APP_GAP_S if app else GAP_S, appearance=app)
         rows = []
         Hf = Wf = None
         edge = off = 0
@@ -127,7 +129,13 @@ def extract(a):
             persons, ne, no = court_filter(persons, court, Hf, Wf)
             edge += ne
             off += no
-            ids = trk.feed(t, [p[1] for p in persons])
+            descs = None
+            if app and persons:
+                import cv2
+                lab = cv2.cvtColor(frame,
+                                   cv2.COLOR_RGB2LAB).astype(np.float32)
+                descs = [descriptor(lab, p[2], p[3]) for p in persons]
+            ids = trk.feed(t, [p[1] for p in persons], descs)
             for tid, (cf, box, kpt, kpc) in zip(ids, persons):
                 rows.append((t, tid, cf, box, kpt, kpc))
         side = assign_sides([r[1] for r in rows], [r[3] for r in rows]) \
@@ -146,6 +154,7 @@ def extract(a):
             "width": a.width, "court": str(a.court),
             "filter": {"max_keep": MAX_KEEP, "edge_px": EDGE_PX,
                        "x": [X_LO, X_HI], "y": [Y_LO, Y_HI]},
+            "track_appearance": app,
             "runtime_s": round(time.time() - t_start, 1),
             "rallies": {str(c): v for c, v in counts.items()}}
     mp = out_dir / "meta.json"
@@ -211,6 +220,11 @@ def main():
     ap.add_argument("--det-thresh", type=float, default=0.3)
     ap.add_argument("--model", default="yolov8s-pose.pt")
     ap.add_argument("--imgsz", type=int, default=960)
+    ap.add_argument("--no-appearance", action="store_true",
+                    help="disable appearance-aware association (the "
+                         "pre-2026-08-19 greedy-IoU behaviour). Coverage "
+                         "defaults it ON: at 10 fps IoU-only shattered "
+                         "4 players into a median 16 tracks per rally.")
     ap.add_argument("--fps", type=float, default=10.0)
     ap.add_argument("--width", type=int, default=1280)
     ap.add_argument("--device", default="")
