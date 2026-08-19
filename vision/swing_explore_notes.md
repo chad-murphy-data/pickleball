@@ -1459,6 +1459,65 @@ better than chance, which is the channel the pose stack throws away
 un-run: give it windows NOT centred on contacts and ask how many
 contacts they contain and when. That measures the binder directly.
 
+## 2026-08-19 — ORIENTATION CONFIRMED (4-way 85%) + LOCALIZATION TEST BUILT, PREDICTIONS REGISTERED
+
+User eyeballed the frames and confirmed the position calls are
+correctly oriented, settling the one thing the key could not:
+**4-way hitter = 17/20 = 85%** (misses q11, q13, q19), against a
+REGISTERED 60-80% — falsified in the FLATTERING direction, which gets
+the same suspicion as the unflattering ones. Chance is ~33% (three
+players actually drawn).
+
+WHAT THE HITTER TEST LICENSES — narrow, and worth stating exactly:
+  YES: on this footage a VLM recovers WHO struck a contact, given the
+    contact's location, at 95% side / 85% four-way. That is the
+    attribution channel the pose stack THROWS AWAY — pick_hitter
+    featurizes one track of four and the scorer is a per-candidate
+    binary, so "which of these four is swinging" cannot even be
+    expressed. Identity is recoverable from these pixels; the failure
+    was never that the frames are empty.
+  YES: a bounded negative on pace — 60% on truth-fast, with every miss
+    an attack from a defensive-looking posture. A VLM must NOT be
+    trusted for pace on ambiguous contacts, for the reason already on
+    the record: the label is a function of the ball's future.
+  NO: labeling at scale. The test handed over pre-located contacts, so
+    it measured recognition GIVEN placement. Placement is the binder.
+  NO: AI labels as training data. My errors are SYSTEMATIC (fast
+    under-call, largest-motion capture), which is the poisoning shape,
+    not averaging noise.
+  NO: anything about temporal_gate v2. Exploration only; holdout
+    untouched.
+
+DIVISION OF LABOUR THIS SUGGESTS (design input, not a decision): the
+decoder/temporal model owns WHEN (placement) and pace (needs the
+future); a VLM owns WHO (attribution). WHO is also exactly what the
+user's track-identity thread is chasing, and what upgrades every
+team-level product stat to an individual one. Two threads, one target.
+
+`vision/vlm_localize_sample.py` (built, selftested, NOT yet run) asks
+the unanswered question — user proposal: "was there a shot or not,
+strip by strip". 3x3 grid of 9 frames at 0.15s (1.2s window), cropped
+to the playing area; grid not strip because a 9-frame vertical stack
+renders each cell ~30px tall after the ~1568px downscale, while a
+square grid keeps players ~80-100px. Windows are drawn uniformly from
+[first_contact - 4s, last_contact] and are NOT centred on contacts;
+the pre-serve dead time is deliberate, because only 0-contact windows
+measure hallucinated shots. Default n=30 draws 7 empty / 18 single /
+5 double = 28 true contacts (placement recall se ~9pp).
+
+REGISTERED BEFORE ANY WINDOW IS SEEN:
+  - exact contact COUNT right in 50-70% of windows
+  - 0-contact windows correctly called empty in 70-90% (dead time
+    should look obviously different — players walking, no rally)
+  - per-contact PLACEMENT recall at +/-0.5s: 45-65%
+  - errors concentrate in the 2-contact windows (fast exchanges),
+    same axis as every other failure in this program
+READING RULE, fixed now: the decoder's 45.7% match rate is the
+reference, but the comparison is NOT fair to the VLM — the decoder
+sees a whole rally, knows its span, and carries an alternation prior,
+while a 1.2s window has no context and no alternation. So beating
+45.7% is strong evidence; failing to is AMBIGUOUS, not a kill.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
