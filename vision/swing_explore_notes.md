@@ -1023,3 +1023,59 @@ Detector-training note: rally_instances POSITIVES deliberately keep
 lunge contacts (contact events are what step 1 detects; dropping them
 would corrupt counts). The distinct word preserves the option to
 filter them from any future swing-KINEMATICS training set.
+
+## 2026-08-19 — POST-TAGGING CHECKPOINT RUN (fingerprint a0d9248a35): REGIME 2 FIRES — placement binds, the labeling program is justified
+
+The pre-registered decision run (user's Mac; 10 pose rallies, backlog
+fully drained: 0 untyped, 3 lunges, 0 boundary-uncertain — the pace
+pass + lunge rule worked exactly as designed on first contact; 82
+holdout rows quarantined automatically; 25 rallies labeled total,
+11-21 awaiting pose extraction, 22-25 holdout).
+
+LEVEL C (true times), n=138 paced: **GAP 74.6%** (from 63.1), SEQ
+71.7%, FULL 58.7. Structure GAP: has_fast 10/10, ff<=1s 8/10 with
+**median 0.00 s**, init-team 8/10, share corr +0.55. BANDS
+ADJUDICATION (pre-registered: >=80 / >=70 / >=75 / >=+0.6 on the
+best classifier): three HARD CLEARS (100%, 80%, 80%) and share corr
+0.55 vs 0.60 — at n=10 rallies a correlation carries se ~0.3, and
+the guide's own grain warning covers it. CALLED AS A CLEAR, with the
+marginal criterion noted here permanently.
+
+LEVEL B (decoded): match rate **45.7%** (down from 57.1 — the tagged
+backlog is disproportionately the hard-to-see contacts, including
+the 32 no-pose rows, exactly where the decoder struggles), matched
+pace acc 41-56%, structure ff<=1s <=4/10 with medians 0.79-5.04 s,
+init-team <=4/10. B misses the bands decisively under every
+classifier.
+
+**=> Pre-registered routing: C clears, B misses — PLACEMENT BINDS.
+The temporal-model labeling program is justified; the 2000-rally
+answer flips to a scoped YES.** Scope per the standing plan: start
+with full Chicago (~188 windowed rallies / ~3k contacts — at the
+user's measured 25 rallies/day, about a week of casual labeling)
+feeding a temporal model class under a FRESH pre-registration whose
+success metric is now measured, not aspirational: CLOSE THE B->C
+STRUCTURE GAP (ff<=1s 4/10 -> ~8/10, init-team -> ~8/10, match rate
+45.7% -> toward the C ceiling). Multi-VOD 2000-rally scale stays
+CONTINGENT on the Chicago-trained model actually closing that gap.
+Before the big push: pose_extract rallies 11-21 and rerun — a free
+stability check of the C structure stats on 2x rallies, no new
+labels needed.
+
+Supporting findings, now at n=106-138: (1) POSE IS TRIPLE-DEAD for
+pace — alone 0.493 AUC (coin), SUBTRACTS when added to cadence
+(0.689 -> 0.578), and the arm inversion DEEPENED in the fresh coarse
+tags (newly tagged 'fast' others: arm_cmax 0.265, the lowest of any
+type; 'slow' others: 0.628, the highest — the ambiguous contacts are
+fast-exchange touches where tracking fails hardest, consistent with
+the blur/wrong-hitter mechanisms). gap_next strengthened to 0.778 in
+the coded direction. (2) SIMPLICITY WON: the fitted min-gap
+threshold now BEATS the HMM at C (74.6/8-teams vs 71.7/6) — GAP is
+the pace classifier of record; SEQ retired from that role (the
+posterior readout did fix the run-2 suppression pathology: B
+has_fast 7/10 vs Viterbi's 1/6, C ff found 10/10 med 0.39 s).
+(3) Prior SEQ registrations: C 66-74 predicted -> 71.7 IN BAND;
+"B SEQ matched >= GAP" -> missed (50.8 vs 55.6). (4) The
+model-iteration freeze STANDS for pace classifiers; the temporal
+model is the placement program under fresh pre-registration, which
+the freeze explicitly allows.
