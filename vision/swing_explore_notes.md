@@ -1202,3 +1202,66 @@ temporal-model DESIGN INPUT + gate bookkeeping):
      5/6 hitters swapped breaks team alternation twice; swapping
      restores parity. Flagged to the user for a tool fix +
      re-export; pace content not read.
+
+## 2026-08-19 — USER TAXONOMY INSIGHT CONFIRMED: the drive exchange is not the attack; ATTACK-ONSET semantics prototyped (train only)
+
+User claim: "3rd-shot drives shouldn't count as first-fast — the meta
+is 3: drive, 4: counter, 5: dink." MEASURED on train (fast shot-3
+rallies, n=6): 4 follow the meta EXACTLY (fast-fast-slow: r2 drive/
+drive/drop, r5 drive/counter/lob, r14 drive/counter/drop, r20), one
+is a shot-3 ender (r18), one ESCALATES (r3: the drive gets SMASHED
+back — shots 3-6 all fast, a genuine drive-ignited firefight). ZERO
+drives are answered slow — the counter is forced, which is exactly
+why drive-counter is transition pace, not a kitchen break. Bonus
+pattern preserved: shot-4 fast by the RETURNING team after a slow 3
+= attacking the weak third-shot drop (r6/r8/r9/r17/r21) — a real
+attack, not transition.
+
+ATTACK-ONSET definition prototyped (scratch; not yet in the
+grader): fast runs over paced contacts (lunges/whiffs transparent);
+a run is an ATTACK iff it ends the rally, OR length>=2 starting at
+ordinal>=4, OR length>=3 starting at ordinal 3 (escalation clause —
+data support n=1, r3). Onset = first attack run's first contact.
+Applied symmetrically to truth and to classifier calls at true
+times (GAP, LORO): has_attack agreement 15/19, onset<=1s 8/14,
+init-team 10/14. Headline rates ~unchanged vs first-fast (0.57/0.71
+vs 0.56/0.69) BUT the misses change character: r2 flips to an EXACT
+hit (truth now the shot-8 speed-up the classifier always found —
+the 4.4s "miss" was the truth definition, not the model); r5 and
+r20 become correctly attack-free (drive exchange + lone lob-smash /
+dink marathon); remaining misses are the ENDERS (r14/r18/r21) plus
+a new small mode (r20 pred: two quick dinks under threshold form a
+fake length-2 run). Net: the semantics change grades the thing the
+product cares about and EXPOSES the ender blind spot cleanly
+instead of burying it in definition mismatch. It does not rescue
+the rates — enders need a non-tempo channel regardless.
+
+GATE IMPLICATION queued with the C-readout question: S2's truth
+definition is part of the frozen bars, so adopting attack-onset
+means SUPERSEDING temporal_gate v1 with a dated v2 (no temporal
+code exists, holdout untouched — supersession now is clean; a
+strained "amendment" would not be). USER DECISION pending.
+
+## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
+
+Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
+court fit (0.21 px), Kalman + chi-squared adaptive gating ball
+track (90% coverage through 18-frame occlusions), self-trained
+3-frame-stack ball detector, contacts from silhouette proximity +
+AUDIO spectral flux (28 impacts, ±0.07 s), alternating hit-bounce
+physics constraint, 3D height from parabolic fits between contacts.
+Relevance map for THIS project: homography we already have (0.06
+ft); their physics-constraint decoding is our alternation-prior
+decoder independently reinvented (validating); their offline
+smoother framing matches the temporal-model plan. Their AUDIO
+success does NOT transfer — tennis = sparse loud impacts in quiet
+gaps at 60 fps vs our measured pickleball result (pop counts
+uncorrelated with shots, r~0-0.2, audio gate retracted); their
+self-training-on-own-detections is exactly the auto-label poisoning
+trap we measured (42% kitchen-band vs 14%), acknowledged in their
+own limitations (per-clip retraining). STEALABLE IF the new-footage
+door ever opens (1080p60 uncondensed): their ball recipe (adaptive
+gating + motion stacking) is the right restart point for the closed
+ball thread. Changes nothing now — every lean of their pipeline
+(loud sparse impacts, high-contrast ball, 2 players) is precisely
+where pickleball broadcast is hard mode.
