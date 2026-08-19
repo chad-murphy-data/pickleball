@@ -1558,6 +1558,69 @@ classifying them better. Improving pace past ~75% requires a
 DIFFERENT channel — position (drive vs dink from the same tempo) or
 the ball's post-contact trajectory — not a better tempo rule.
 
+## 2026-08-19 — LOCALIZATION TEST SCORED: 93% recall, 30/30 play-detection — the binder is NOT what we thought
+
+Reproduce: `python3 vision/vlm_loc_score.py data/vision/vlm_loc_key_20260819.csv`
+
+CONTAMINATION DISCLOSED FIRST (my error): the realized
+contacts-per-window distribution ({0:7, 1:18, 2:5}) was PRINTED while
+sizing the draw for power, so the counts were known before looking.
+Should have computed power without printing realized counts. Discount
+accordingly; the calls diverge sharply from what was known (37 called
+vs 28 real, 14 doubles called vs 5), which argues against anchoring,
+and the headline metric (placement recall) is not a count metric.
+
+RESULT vs REGISTERED:
+  play / no-play decision   **30/30 = 100%** — all 7 dead-time windows
+    called empty, all 23 live windows called live. Registered 70-90%
+    on the empty arm; got 100% with zero hallucinated rallies.
+  exact contact COUNT       19/30 = 63%  (registered 50-70%) IN BAND
+  placement RECALL +/-0.5s  **26/28 = 93%**  (registered 45-65%)
+    — FALSIFIED, flatteringly and by a wide margin
+  precision                 26/37 = 70%
+  median timing error       **0.15 s** = one cell
+  tighter tolerances        75% at +/-0.3s, 57% at +/-0.2s
+  serves/returns            5/5 recall (the 'position' rows)
+  1-contact windows         recall 18/18 — every single contact found
+
+THE COMPARISON THAT MATTERS: the decoded pipeline matches **45.7%** of
+labeled contacts. This is **93%** — roughly double — and it was done
+UNDER the handicap registered before the run: no rally context, no
+alternation prior, no knowledge of the rally span, 1.2 s of video per
+judgement, against a decoder that sees a whole rally and decodes
+globally. The registered reading rule said beating 45.7% is strong
+evidence. It is beaten by 2x.
+
+PRECISION IS A WINDOWING ARTIFACT, NOT A DETECTION FAILURE — and this
+was predicted BEFORE scoring, from the calls alone (43% of calls sat
+at a window edge). **10 of the 11 false positives are at 0.00 or
+>=1.05**: a ball arriving at a player in the last cell, or departing
+in the first, cannot be assigned to inside-or-outside the window from
+1.2 s of isolated context. The fix is OVERLAPPING windows in a tiling
+scan — a contact at one window's edge sits mid-window in its
+neighbour — NOT dropping edge calls (that trades to 71% recall / 95%
+precision, the wrong direction for a channel whose job is to find
+events).
+
+CONSEQUENCE FOR THE PROGRAM. Regime 2 said "placement binds", and the
+temporal-model gate exists to fix placement. That routing was correct
+about WHERE the problem was and possibly wrong about WHAT SOLVES IT:
+placement appears to be recoverable at 93% from short frame grids by a
+general vision model, with no training, no labels at inference, and no
+ball tracker. This does NOT touch temporal_gate v2 (exploration; the
+holdout is untouched; the gate's verdict instrument is unchanged) and
+it is n=28 contacts on one match with a disclosed contamination. But
+it is the strongest single result in the swing thread, and it makes
+one question urgent: what does a VLM-placed contact stream score on
+the gate's own stats? That is answerable on TRAIN without burning
+anything.
+
+ALSO OBSERVED: w18 was a BROADCAST CLOSE-UP — the camera cut off the
+court entirely to a tight shot of a player preparing to serve. Called
+empty, correctly (truth 0). Any production scan must detect and skip
+cutaways; a court-geometry check is the obvious gate and we already
+have homography at 0.06 ft.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
