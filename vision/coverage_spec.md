@@ -433,3 +433,58 @@ number can be recomputed without them; publication must state which.
 These rallies are additions to the SAMPLE and never evidence about the
 chain — a rally named by appearance has no geometry to disagree with,
 so it must never feed the appearance-vs-geometry swap audit.
+
+## Where identity is actually hard (2026-08-19, reviewer questions)
+
+Two reviewer points, both tested. One was right about the model, the
+other found a forward-looking bug.
+
+**"If we can tell Tyra from Bright we should be able to tell Alshon from
+Patriquin."** Correct, and the model already does. Pairwise
+leave-one-out separability on anchor crops:
+
+    Alshon vs Patriquin  opponents   98.6% / 97.4% / 91.8%  (g1/g2/g3)
+    Bright vs Black      opponents  100.0% / 97.1% / 89.9%
+    Alshon vs Bright     opponents   98.5% / 98.4% / 86.8%
+    Patriquin vs Black   opponents  100.0% / 97.7% / 89.0%
+    Alshon vs Black      PARTNERS    82.0% / 76.0% / 88.2%
+    Bright vs Patriquin  PARTNERS    64.7% / 73.6% / 58.7%
+
+Every CROSS-TEAM pair is 97-100%; the whole problem is PARTNERS, and
+Bright-vs-Patriquin is barely above chance. This is why the side->team
+constraint bought only +1.1pp: it removes calls the model already got
+right and leaves the ones it cannot.
+CAVEAT on those cross-team numbers: near/far is itself 77% predictable
+from the colour descriptor alone, so part of that separability is the
+IMAGING difference (a near body is large and bright, a far one small and
+dim), not the person. Partners are imaged identically — same side, same
+instant, same distance — so their comparison is the honest one.
+
+**HEIGHT DOES NOT RESCUE PARTNERS — do not retry it.** The obvious idea
+(a man and a woman on the same team differ in stature) fails on measured
+data. Depth-corrected h_ft medians: Black 5.34, Patriquin 5.23,
+Bright 5.17, Alshon 5.09 ft — absolute values wrong for pro athletes,
+and the WOMAN measures taller than her male partner in BOTH teams.
+Per-rally, the taller-of-the-two matches the taller-overall 56% and 49%
+of the time, i.e. chance. Bounding-box height measures POSTURE (players
+are crouched and split-stepping), not stature. This is also why
+coverage's mixed gender-height check reads 59/126.
+
+**END SWITCHES ARE NOW FITTED, NOT ASSUMED** (the reviewer's second
+point). Teams change ends mid-game under rules consistent WITHIN a
+league and different BETWEEN them — MLP switches at 6 in every game,
+PPA only in a decider. The team->end map was keyed per GAME, which
+would be wrong for half of every MLP game once this runs on MLP
+footage. `coverage.fit_end_segments` now splits a game into at most two
+segments by fitting the changepoint from the data (side comes from box
+heights, names from geometry, so neither owes anything to the appearance
+model the map constrains), and both `coverage_appearance.stage2` and
+`coverage_anchorfree` key on (game, segment).
+
+On THIS match the fitter correctly finds NO mid-game switch, and Gate A
+is unchanged (96.1% / 100.0% / 46.7%). What looked like a switch in
+game 3 was rally 107 alone disagreeing with the eleven after it — a
+single mis-identified rally, which is also the rally Gate A scores at
+0%. That is why a segment must hold MIN_END_SEG = 3 rallies of evidence
+before it is believed; the selftest plants exactly that outlier and
+asserts it is not promoted to a switch.

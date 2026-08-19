@@ -549,15 +549,33 @@ def stage2(a, rallies, partner, names_full):
 
     # team -> end per game, from the anchor labels themselves: which
     # two players hold side 0 (near) and side 1 (far) in each game
-    end_by_game = defaultdict(lambda: defaultdict(Counter))
+    # (game, end-segment) -> side -> pair.  Segments are FITTED, not
+    # assumed: teams change ends mid-game under league-specific rules
+    # (MLP at 6 every game, PPA only in a decider), and a per-game map
+    # would be wrong for half of every MLP game.
+    per_game = defaultdict(list)
     for cum, _w, dets, assign, _ts, _cf in rallies:
-        g = game_of.get(cum, -1)
+        cnt = defaultdict(Counter)
         for d, (u, _c, _h) in zip(dets, assign):
             if u and d.side in (0, 1):
-                end_by_game[g][d.side][u] += 1
-    endmap = {g: {s: [u for u, _ in c.most_common(2)]
-                  for s, c in by_s.items()}
-              for g, by_s in end_by_game.items()}
+                cnt[u][d.side] += 1
+        near = tuple(sorted(u for u, c in cnt.items() if c[0] > c[1]))
+        per_game[game_of.get(cum, -1)].append((cum, near))
+    seg_of = {}
+    for g, obs in per_game.items():
+        for cum, seg in C.fit_end_segments(obs).items():
+            seg_of[cum] = (g, seg)
+    end_by_seg = defaultdict(lambda: defaultdict(Counter))
+    for cum, _w, dets, assign, _ts, _cf in rallies:
+        gs = seg_of.get(cum)
+        if gs is None:
+            continue
+        for d, (u, _c, _h) in zip(dets, assign):
+            if u and d.side in (0, 1):
+                end_by_seg[gs][d.side][u] += 1
+    endmap = {gs: {s: [u for u, _ in c.most_common(2)]
+                   for s, c in by_s.items()}
+              for gs, by_s in end_by_seg.items()}
 
     swaps = defaultdict(list)
     led = ROOT / f"data/vision/identity_swaps_{a.vod}.csv"
@@ -613,7 +631,8 @@ def stage2(a, rallies, partner, names_full):
                 f = moments_crop(cr, k, np.asarray(d.kpc, np.float32))
                 if np.isnan(f).any():
                     continue
-                cands = endmap.get(g, {}).get(d.side)
+                cands = endmap.get(seg_of.get(cum, (g, 0)),
+                                   {}).get(d.side)
                 p, margin = fwg.predict(f, cands)
                 if p is not None and margin >= 0.5:
                     votes[d.track].append((float(d.t), p))

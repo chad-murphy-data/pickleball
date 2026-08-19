@@ -992,6 +992,51 @@ def load_windows(path):
     return {int(r["rally_cum"]): r for r in csv.DictReader(open(path))}
 
 
+MIN_END_SEG = 3       # rallies a mid-game end segment must hold to be
+                      # believed; below this a lone odd rally is an
+                      # identity error, not a switch
+
+
+def fit_end_segments(per_rally, min_seg=MIN_END_SEG):
+    """Split one game's rallies into at most TWO end segments.
+
+    Teams change ends mid-game under rules that are consistent WITHIN a
+    league and differ BETWEEN them (user, 2026-08-19): MLP switches at 6
+    in every game, PPA only in a decider.  Rather than hard-code a
+    league, fit the switch from the data — the side (near/far) channel
+    is box-height clustering and the names are geometry, so neither owes
+    anything to the appearance model this map goes on to constrain.
+
+    per_rally: [(cum, key)] in any order, key = whatever identifies the
+    near-side pair.  Returns {cum: segment index 0/1}.
+
+    A segment must hold min_seg rallies to count.  Without that floor a
+    single mis-identified rally at a game boundary manufactures a
+    spurious switch — exactly what rally 107 of the mixed final would
+    have done (one rally disagreeing with the eleven after it).
+    """
+    seq = sorted(per_rally)
+    if len(seq) < 2 * min_seg:
+        return {c: 0 for c, _ in seq}
+    keys = [k for _, k in seq]
+    best, best_cut = -1, None
+    for cut in range(min_seg, len(keys) - min_seg + 1):
+        a_k = Counter(keys[:cut]).most_common(1)[0]
+        b_k = Counter(keys[cut:]).most_common(1)[0]
+        if a_k[0] == b_k[0]:
+            continue                      # not a switch, just noise
+        if a_k[1] < min_seg or b_k[1] < min_seg:
+            continue                      # the floor is on the EVIDENCE
+        score = a_k[1] + b_k[1]           # for each end, not on where
+                                          # the cut happens to fall
+        if score > best:
+            best, best_cut = score, cut
+    flat = Counter(keys).most_common(1)[0][1]
+    if best_cut is None or best <= flat:
+        return {c: 0 for c, _ in seq}     # one end all game
+    return {c: (0 if i < best_cut else 1) for i, (c, _) in enumerate(seq)}
+
+
 def player_meta():
     g, nm = {}, {}
     f = DATA / "players.csv"
@@ -1693,6 +1738,22 @@ def selftest():
     v = np.linalg.norm(np.diff(sm, axis=0), axis=1) / np.diff(tt)
     assert np.median(v) < STATIC_FTS, "smoothing insufficient for static"
     print("  static detection under 10 Hz foot noise OK")
+    # end-segment fitting: a real mid-game switch is found, a lone odd
+    # rally is NOT promoted to a segment (the rally-107 failure mode)
+    switch = [(i, "AB" if i < 10 else "CD") for i in range(20)]
+    segs = fit_end_segments(switch)
+    assert segs[0] == 0 and segs[19] == 1, segs
+    assert sum(v == 0 for v in segs.values()) == 10, segs
+    outlier = [(0, "CD")] + [(i, "AB") for i in range(1, 12)]
+    segs2 = fit_end_segments(outlier)
+    assert set(segs2.values()) == {0}, "a lone odd rally faked a switch"
+    steady = [(i, "AB") for i in range(20)]
+    assert set(fit_end_segments(steady).values()) == {0}
+    short = [(i, "AB" if i < 2 else "CD") for i in range(8)]
+    assert set(fit_end_segments(short).values()) == {0}, \
+        "a 2-rally segment is below the floor and must not count"
+    print("  end segments: switch found, lone outlier + short segment "
+          "rejected")
     print("SELFTEST OK")
 
 

@@ -76,19 +76,41 @@ MIN_SIDE_TRACKS = 1   # named tracks required per side
 
 
 def team_end_map(rallies, assign_by_cum, game_of):
-    """Per game: side (0 near / 1 far) -> the pair of uuids that plays
-    it.  Built from the resolved rallies' own geometry names, majority
-    vote; teams swap ends between games, which is why it is per game."""
-    tally = defaultdict(Counter)
+    """(game, end-segment) -> {side: the pair of uuids playing it}.
+
+    Teams change ends BETWEEN games and, under rules that are consistent
+    within a league but differ between them (MLP switches at 6 every
+    game; PPA only in a decider), sometimes WITHIN one.  The segment is
+    fitted from the data by C.fit_end_segments rather than hard-coded to
+    a league, so this is correct for either without being told which.
+    Also returns {cum: (game, segment)} so callers can look a rally up.
+    """
+    near_key, tally = {}, defaultdict(Counter)
+    per_game = defaultdict(list)
     for cum, _w, dets, assign, _ts, _cf in rallies:
         g = game_of.get(cum, -1)
+        cnt = defaultdict(Counter)
         for d, (u, _c, _h) in zip(dets, assign):
             if u and d.side in (0, 1):
-                tally[(g, d.side)][u] += 1
+                cnt[u][d.side] += 1
+        near = tuple(sorted(u for u, c in cnt.items() if c[0] > c[1]))
+        near_key[cum] = near
+        per_game[g].append((cum, near))
+    seg_of = {}
+    for g, obs in per_game.items():
+        for cum, seg in C.fit_end_segments(obs).items():
+            seg_of[cum] = (g, seg)
+    for cum, _w, dets, assign, _ts, _cf in rallies:
+        gs = seg_of.get(cum)
+        if gs is None:
+            continue
+        for d, (u, _c, _h) in zip(dets, assign):
+            if u and d.side in (0, 1):
+                tally[(gs, d.side)][u] += 1
     out = {}
-    for (g, side), cnt in tally.items():
-        out.setdefault(g, {})[side] = [u for u, _ in cnt.most_common(2)]
-    return out
+    for (gs, side), cnt in tally.items():
+        out.setdefault(gs, {})[side] = [u for u, _ in cnt.most_common(2)]
+    return out, seg_of
 
 
 def det_descriptor(frame, d):
@@ -200,7 +222,7 @@ def validate(a):
     """GATE A: name resolved rallies from mid-rally appearance ALONE
     (model refit without that rally) and compare to geometry."""
     rallies, game_of, F, lab, cum_k, gm, partner, names = build(a)
-    endmap = team_end_map(rallies, None, game_of)
+    endmap, seg_of = team_end_map(rallies, None, game_of)
     swaps = load_swaps(a.vod)
     print(f"{len(rallies)} resolved rallies; team->end map: "
           + "; ".join(f"g{g}: near={[names.get(u,u[:6]) for u in v.get(0,[])]}"
@@ -209,7 +231,8 @@ def validate(a):
     detail = []
     for cum, win, dets, assign, _ts, _cf in rallies:
         g = game_of.get(cum, -1)
-        if g not in endmap:
+        gs = seg_of.get(cum)
+        if gs not in endmap:
             continue
         m = (gm == g) & (cum_k != cum)          # leave THIS rally out
         if m.sum() < 24:
@@ -222,7 +245,7 @@ def validate(a):
         if not descs:
             continue
         side_by = {d.track: d.side for d in dets}
-        got = name_rally(fw, descs, side_by, endmap[g])
+        got = name_rally(fw, descs, side_by, endmap[gs])
         truth = truth_names(dets, assign, swaps.get(cum, ()))
         hit = tot = 0
         for d in dets:
@@ -261,7 +284,7 @@ def emit(a):
         print("no game qualifies — nothing emitted (by design)")
         return
     rallies, game_of, F, lab, cum_k, gm, partner, names = build(a)
-    endmap = team_end_map(rallies, None, game_of)
+    endmap, seg_of = team_end_map(rallies, None, game_of)
     resolved = {cum for cum, *_ in rallies}
     court = C.load_court(a.court)
     cam = C.load_camera(a.cam)
@@ -294,7 +317,13 @@ def emit(a):
             stats["no_descriptors"] += 1
             continue
         side_by = {d.track: d.side for d in dets}
-        got = name_rally(fw[g], descs, side_by, endmap[g])
+        gs = seg_of.get(cum, (g, 0))
+        if gs not in endmap:
+            gs = (g, 0)
+        if gs not in endmap:
+            stats["no_end_segment"] += 1
+            continue
+        got = name_rally(fw[g], descs, side_by, endmap[gs])
         keep = {tr: (u, m) for tr, (u, m) in got.items()
                 if m >= MARGIN_MIN and ndet.get(tr, 0) >= MIN_DETS}
         per_side = Counter(side_by.get(tr, -1) for tr in keep)
@@ -369,8 +398,19 @@ def selftest():
             s.side, s.track = side, tr
     dets = [D(0, 1), D(0, 1), D(1, 2)]
     assign = [("u_near", 1, 0), ("u_near", 1, 0), ("u_far", 1, 0)]
-    em = team_end_map([(7, {}, dets, assign, 0, 1)], None, {7: 1})
-    assert em[1][0] == ["u_near"] and em[1][1] == ["u_far"], em
+    em, seg = team_end_map([(7, {}, dets, assign, 0, 1)], None, {7: 1})
+    assert em[(1, 0)][0] == ["u_near"], em
+    assert em[(1, 0)][1] == ["u_far"], em
+    assert seg[7] == (1, 0), seg
+    # a mid-game switch splits one game into two keyed segments
+    def _r(cum, near_u, far_u):
+        return (cum, {}, [D(0, 1), D(1, 2)],
+                [(near_u, 1, 0), (far_u, 1, 0)], 0, 1)
+    rr = [_r(i, "X", "Y") for i in range(6)] + \
+         [_r(i, "Y", "X") for i in range(6, 12)]
+    em2, seg2 = team_end_map(rr, None, {i: 1 for i in range(12)})
+    assert seg2[0] == (1, 0) and seg2[11] == (1, 1), seg2
+    assert em2[(1, 0)][0] == ["X"] and em2[(1, 1)][0] == ["Y"], em2
     print("SELFTEST OK (side restriction, lone candidate, end map)")
 
 
