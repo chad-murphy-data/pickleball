@@ -125,7 +125,10 @@ def extract(a):
                                                 a.fps, a.width)):
             t = t0 + i / a.fps
             Hf, Wf = frame.shape[:2]
-            persons = infer(frame, Hf, Wf)
+            # pose_extract's infer returns (kept, gate-rejected) since
+            # the --debug-frames work on main; coverage wants the kept
+            # set and does its own court filtering on top.
+            persons, _rej = infer(frame, Hf, Wf)
             persons, ne, no = court_filter(persons, court, Hf, Wf)
             edge += ne
             off += no
@@ -218,6 +221,9 @@ def main():
     ap.add_argument("--pose-model",
                     default="usyd-community/vitpose-plus-huge")
     ap.add_argument("--det-thresh", type=float, default=0.3)
+    ap.add_argument("--det-size", type=int, default=0,
+                    help="square person-detector input size (mirrors "
+                         "pose_extract; 0 = the backend default)")
     ap.add_argument("--model", default="yolov8s-pose.pt")
     ap.add_argument("--imgsz", type=int, default=960)
     ap.add_argument("--no-appearance", action="store_true",
