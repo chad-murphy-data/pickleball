@@ -1621,6 +1621,55 @@ empty, correctly (truth 0). Any production scan must detect and skip
 cutaways; a court-geometry check is the obvious gate and we already
 have homography at 0.06 ft.
 
+## 2026-08-19 — BALL FINDABILITY BY VLM: 27/36 cells (75%), and the slow/fast split is 94% vs 56%
+
+User question after the localization result: "would you be able to
+identify the ball in these stills, circle it or say I can't see — I
+feel like I'm able to see the ball in most of these." Marked four
+localization grids cell by cell (36 frames), positions recorded as
+in-cell fractions (`vision/vlm_ball_calls.py`), rendered with circles
+and sent for audit. UNVERIFIED — a wrong circle is worse than a
+missing one, so these are claims pending the user's check.
+
+  w27 (one slow contact)      9/9
+  w01 (one slow contact)      8/9
+  w24 (fast + a lunge)        6/9
+  w13 (two FAST contacts)     4/9
+  TOTAL                       27/36 = 75%
+  slow-contact windows 17/18 = 94%  |  fast-contact windows 10/18 = 56%
+
+WHY THIS MATTERS AGAINST THE CLOSED BALL THREAD. The closure rests on
+64.1% [59, 69] in-play per-frame findability by a human with a loupe,
+against a pre-registered 0.8 kill line. Two things this adds:
+  (1) 75% here is not directly comparable — different sample, different
+      observer, n=36 vs 306, and the human panel was a scattered draw
+      across the match while these are four contiguous 1.2 s windows.
+      It is NOT a refutation of 64%.
+  (2) But the closure's ARGUMENT was per-frame ("a perfect detector
+      returns ~64% of positions with the misses piled at the
+      contacts"), and the user's counter-framing is TRAJECTORY: a
+      contact is the direction change between two fitted segments and
+      needs no ball AT the contact. On contiguous frames that
+      distinction is now visible: w27 gives 9 consecutive positions
+      over 1.2 s and w01 gives 8 — trivially fittable — while even the
+      firefight (w13, 4/9) yields ~2 points per inter-contact segment,
+      which is a line. The frames the trajectory framing needs are the
+      ones between contacts, and those are exactly the ones that are
+      findable.
+CAVEAT that keeps this honest: this measures what a VLM can SEE, not
+what a detector can FIND, and the two are different instruments; the
+auto-label poisoning result stands. Same 720p condensed VOD the thread
+was closed on. n=36. And the fast/slow split (94/56) is the same axis
+every other failure in this program runs along.
+
+FORWARD (unbuilt, not licensed): the honest next step remains the
+ORACLE test specced earlier — label the ball in EVERY frame of ~10
+contiguous inter-contact intervals and ask whether trajectory fitting
+recovers the known contact times from human-quality positions. That is
+decisive in the negative and needs no detector. What is new is that a
+VLM could now supply the candidate positions for that test cheaply,
+instead of a labelling session.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
