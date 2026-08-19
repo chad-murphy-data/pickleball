@@ -1670,6 +1670,55 @@ decisive in the negative and needs no detector. What is new is that a
 VLM could now supply the candidate positions for that test cheaply,
 instead of a labelling session.
 
+## 2026-08-19 — BALL CIRCLES AUDITED BY THE USER: 93% precision, conservative recall, and TWO DIAGNOSTIC ERRORS
+
+The user checked every circle. Result: **25 of 27 circles correct
+(93%)**, ~8 findable balls marked "can't see" (so recall ~76% of what
+is actually there), and human findability on these contiguous in-play
+frames ~33/36 (~92%). Per window: w27 perfect 9/9, w24 6/6 circles
+right, w13 4/4 right, w01 6/9 with the two errors below.
+
+I DO NOT HALLUCINATE BALLS — the failure mode is the opposite,
+under-calling. That flips the reading of the 75% self-report: the
+pixels contain MORE than I claimed, not less.
+
+THE TWO WRONG CIRCLES ARE BOTH WORTH KEEPING, because each names a
+failure class any ball tracker will hit:
+  (1) w01 cell 7 — the ball was OCCLUDED BY THE PLAYER and I marked
+      where the TRAJECTORY said it should be. I inferred a position and
+      reported it as an observation. This is the dangerous one: a
+      Kalman/gating tracker does exactly this by construction, the
+      output looks like a clean detection, and nothing downstream can
+      tell an interpolated point from a seen one. Any trajectory work
+      must carry a seen/inferred flag per point and never fit on
+      inferred points.
+  (2) w01 cell 9 — circled a SHOE. Light shoe on blue court is the
+      classic ball false-positive class and would fool a colour/blob
+      detector identically. Argues for motion-differenced candidates
+      over appearance alone (which is what the Tennis Vision writeup
+      does with 3-frame stacking).
+
+WHAT THIS DOES AND DOES NOT SAY ABOUT THE CLOSED BALL THREAD. ~92%
+human findability on contiguous in-play frames vs the closure's 64.1%
+[59, 69] per-frame figure is a big gap, and the plausible mechanism is
+exactly the user's original argument: CONTIGUITY. Finding a ball in an
+isolated frame is a search; finding it in frame k+1 when you saw it in
+frame k is a lookup. But the gap is CONFOUNDED and I will not quote it
+as a refutation: I selected these four windows, and selected them from
+ones whose trajectory I had already traced while scoring localization.
+That biases findability up by an unknown amount.
+THE UNBIASED TEST IS FREE AND ALREADY IN THE USER'S HANDS: the 30
+localization windows were drawn at RANDOM (seeded, dead time included).
+Marking ball-visible / not-visible on those 270 cells — or a random 10
+windows = 90 cells — gives a contiguous-frame findability estimate
+directly comparable to the 64%, with no selection by me.
+PROCESS NOTE: the ball thread's frozen re-entry condition is NEW
+FOOTAGE. This is not new footage; it is a new FRAMING (contiguous vs
+isolated). Re-opening on a reframing is legitimate but needs an
+explicit user call and a fresh pre-registration, exactly as the
+temporal gate did — not a drift back in on the strength of 36
+self-selected frames.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
