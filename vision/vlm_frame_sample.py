@@ -44,12 +44,11 @@ call, 50% if the team is treated as given.
 import argparse
 import csv
 import random
-import shutil
 import subprocess
-import sys
 from pathlib import Path
 
 from fastslow_check import classify_type
+from swing_probe import ffmpeg_bin        # imageio-ffmpeg, then PATH
 
 LABELS = "contact_labels_chicago0725.csv"
 SPLIT = "label_split.csv"
@@ -106,7 +105,7 @@ def draw(cands, n, seed):
 
 def cut_strip(video, t, out_path, width):
     """Three seeks, scaled and vstacked into one image."""
-    cmd = ["ffmpeg", "-y", "-loglevel", "error"]
+    cmd = [ffmpeg_bin(), "-y", "-loglevel", "error"]
     for off in OFFSETS:
         cmd += ["-ss", f"{max(t + off, 0.0):.3f}", "-i", str(video)]
     chain = ";".join(f"[{i}:v]scale={width}:-2[s{i}]"
@@ -131,8 +130,15 @@ def main():
                     help="per-frame width in the stacked strip")
     a = ap.parse_args()
 
-    if not shutil.which("ffmpeg"):
-        raise SystemExit("ffmpeg not on PATH")
+    try:
+        subprocess.run([ffmpeg_bin(), "-version"], capture_output=True,
+                       check=True)
+    except (OSError, subprocess.CalledProcessError):
+        raise SystemExit(
+            "no usable ffmpeg. This uses the same resolver as the pose "
+            "pipeline (imageio-ffmpeg's bundled binary, then PATH), so "
+            "if pose_extract runs, this should too:\n"
+            "    pip install imageio-ffmpeg      # or: brew install ffmpeg")
     if not Path(a.video).exists():
         raise SystemExit(f"{a.video} not found")
 
