@@ -535,3 +535,55 @@ colour to degrade on MLP.  The generalizable channel is JERSEY NUMBER
 OCR (numbers survive matching kit, and the scorebug OCR machinery in
 this repo is the obvious starting point) — specced here, deliberately
 not built, because it is a build and not a tweak.
+
+## RETRACTION: "deep poach" counts crossings, not poaches (2026-08-19)
+
+The user watched the overlays and reported ZERO Tyra Black poaches. The
+measure said she deep-crossed in 13-16% of rallies. The user is right
+and the measure is wrong; recording why, because the geometry looks
+convincing and a future session will otherwise rebuild it.
+
+Measure 2/5's incursion test — both partners on one side of the
+centreline, the nearer one is the "incursor" — cannot distinguish
+    (a) I invaded your half and pushed you to the sideline, from
+    (b) you went wide and I slid across to cover the middle.
+They are the SAME GEOMETRY. Which one happened depends on who moved
+because of the ball, and there is no ball in this stack.
+
+Measured, at each player's deepest crossing, how far from the centreline
+the PARTNER was standing:
+
+    Black      8.9 ft   (86% of her crossings had him beyond 7 ft)
+    Alshon     9.0 ft   (65%)
+    Patriquin  7.9 ft   (62%)
+    Bright     7.0 ft   (33%)
+
+So most "deep poaches" happen while the partner is at the sideline —
+case (b), the player merely held the middle. For Black it is 86%, which
+is exactly why the eyeball saw none.
+
+INITIATION TEST, pre-registered before computing and REPORTED AS
+FAILING: over the 2.0 s ending at the peak, call the player who reaches
+50% of their own lateral displacement first the initiator (a poacher
+initiates; a court-holder reacts). It does not separate them —
+Alshon 27% initiated, Black 33%, Patriquin 53%, Bright 40%, with 7/18
+and 2/11 unclassified for too little movement. Do not resurrect this
+without a genuinely different signal.
+
+The user also identified a second false positive by eye: rally 19 at
+1:05 of the anchor-free overlay is Alshon poaching and Tyra COVERING
+BEHIND him, which scores as a 4.6 ft crossing for HER. Only 3 of her 14
+crossings are of that shape (Alshon crossed first in all 3), so
+cover-behind is a minority of the artifact; partner-went-wide is the
+bulk.
+
+WHAT SURVIVES — space, never intent:
+  * width share (time-average) — the finding-11 observable, no intent
+    claim, robust to the 63 -> 90 sample change;
+  * off-court fraction — Black 6.8% of frames beyond a sideline vs
+    Alshon 3.3%, a direct observation;
+  * occupancy ellipse and Voronoi share — direct.
+WHAT IS RETRACTED: "Alshon deep-poached in 26% of rallies", the
+Alshon-vs-Patriquin poach ordering (already noise), and any framing of
+incursion counts as poaching. Report them as CROSSINGS if at all.
+Intent needs the ball; the ball is closed (see POSTMORTEM).

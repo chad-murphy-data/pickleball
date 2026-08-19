@@ -181,6 +181,14 @@ def render_rally(video, cum, win, dets, assign_by_id, conf, t_serve,
         elif not is_main_at(cam, t):
             draw_banner(frame, "NON-MAIN CAMERA - frames excluded",
                         (0, 160, 255))
+        elif t_serve is None:
+            # anchor-free rally: the serve instant is unknown by
+            # construction, so claiming a pre-serve or serve phase here
+            # would be drawing find_serve's qual-0 fallback as if it
+            # were a measurement (user caught this on the overlay:
+            # "it says Serve phase when it's not").
+            draw_banner(frame, "ANCHOR-FREE - serve time unknown",
+                        (200, 140, 0))
         elif t < t_serve:
             draw_banner(frame, "PRE-SERVE - excluded from coverage",
                         (0, 200, 200))
@@ -309,6 +317,7 @@ def run(a):
                 # rendered so these rallies can be eyeball-verified like
                 # any other — the banner says which they are
                 nm, conf = dict(af_names), AF_CONF
+                t_serve = None          # unknown; suppress serve banners
                 status = "anchor-free"
             elif qual == 0.0:
                 status = "anchor"
