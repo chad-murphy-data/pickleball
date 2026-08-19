@@ -667,6 +667,27 @@ def run_all(rallies):
     return truths, out
 
 
+def print_seq_prior(rallies):
+    """The fitted pace prior in interpretable units (user question
+    2026-08-19: 'if t = fast, t+1 Pr(fast) = 80% or something' — this
+    prints the actual number from the labels). Fitted once on ALL
+    train rallies, display only — the graded SEQ numbers use per-fold
+    fits as always."""
+    hmm = fit_hmm([gap_truth_rows(r["contacts"])
+                   for r in rallies.values()])
+    if hmm is None:
+        print("SEQ prior: too few labeled gaps to fit\n")
+        return
+    pff = math.exp(hmm["logT"][("fast", "fast")])
+    pss = math.exp(hmm["logT"][("slow", "slow")])
+    print(f"fitted pace prior (all train rallies): "
+          f"P(fast->fast) = {pff:.2f}   P(slow->slow) = {pss:.2f}")
+    print(f"  gap AFTER a fast shot ~{math.exp(hmm['mu']['fast']):.2f}s "
+          f"(log-sd {hmm['sd']['fast']:.2f}); after a slow shot "
+          f"~{math.exp(hmm['mu']['slow']):.2f}s "
+          f"(log-sd {hmm['sd']['slow']:.2f})\n")
+
+
 def report(rallies, truths, out):
     n_unc = sum(1 for t in truths.values() if t["uncertain"])
     n_hf = sum(1 for t in truths.values() if t["has_fast"])
@@ -703,6 +724,7 @@ def report(rallies, truths, out):
         for k in ("gap", "full", "seq"):
             print_grade(k, grade(truths, out[lvl][k]))
         print()
+    print_seq_prior(rallies)
     print("VERDICT GUIDE (bands pre-registered in "
           "swing_explore_notes.md; read in ~10pp grains at this n):\n"
           "  bands: has_fast >=80%, first-fast<=1s >=70% of certain "
@@ -1067,6 +1089,17 @@ def selftest():
     assert all(out["decoded_n"][c] > 0 for c in rallies)
     print(f"selftest: end-to-end Level B smoke OK (decoded "
           f"{[out['decoded_n'][c] for c in sorted(rallies)]} events)")
+
+    # ---- prior printout runs and reads sane on the synth (sticky
+    # both directions, fast gaps shorter than slow)
+    print("--- print_seq_prior smoke ---")
+    print_seq_prior(rallies)
+    hmm_s = fit_hmm([gap_truth_rows(r["contacts"])
+                     for r in rallies.values()])
+    assert math.exp(hmm_s["logT"][("fast", "fast")]) > 0.5
+    assert math.exp(hmm_s["logT"][("slow", "slow")]) > 0.5
+    assert hmm_s["mu"]["fast"] < hmm_s["mu"]["slow"]
+    print("--- end smoke ---")
 
     # ---- determinism: full pipeline twice from fresh objects,
     # bit-identical aggregates (order-bug regression class)
