@@ -1129,3 +1129,76 @@ collapsing below its floor = pause and diagnose before further
 labeling investment. This is a monitoring read on the ROUTING
 decision, not a verdict — the only verdict instrument for the
 temporal model is temporal_gate.md.
+
+## 2026-08-19 — LABELS-ONLY C PREVIEW (labels committed, fingerprint 1165ddb642): floors grazed, diagnosed to TWO exhaustive blind spots; "C's ceiling is softer on the true rally mix"
+
+User shipped the 25-rally archive (323 contacts; 1–10, 13–27; ZERO
+untyped; committed to data/vision/). Since Level C + SEQ prior need
+only label times, the C side ran here ahead of the Mac run (scratch
+c_preview.py mirrors run_all's C loop verbatim, pose shimmed to
+empty tracks so FULL degrades to GAP per classify()'s documented
+fallback; Level B and FULL await the Mac run, which remains THE
+record). Holdout 22–27 quarantined from all stats; holdout rows were
+touched only by file-integrity QC (row counts, time monotonicity,
+team-alternation parity — no pace/structure content read).
+
+INSTRUMENT VALIDATED: restricted to rallies 1–10 the preview
+reproduces the checkpoint EXACTLY (74.6%, 10/10, 8/10 med 0.00,
+8/10, +0.55) — labels for 1–10 unchanged, shim faithful.
+
+ALL-TRAIN (19 rallies / 187 paced, th 0.597): GAP 73.8%, has_fast
+16/19 (0.84), ff≤1s 9/16 (0.56), init-team 11/16 (0.69), share corr
++0.01. SEQ: 73.3%, ff 11/16 — seq BEAT gap on ff on the doubled
+panel (checkpoint was the reverse); recorded, NO switching (freeze).
+vs REGISTERED: pace 73.8 IN 68–80; teams 0.69 IN; has_fast 0.84
+GRAZES the 0.85 floor; ff-gap 0.56 MISSES the 0.60 floor; share
+corr +0.01 FALSIFIES +0.35–0.70 badly. Prior: P(f→f) 0.73 (in band,
+user's cold 80% guess close), P(s→s) 0.74 FALSIFIES my 0.80–0.92;
+gap after fast 0.65 s in band; after slow 1.00 s FALSIFIES 1.2–2.0
+(real dink cadence is 1.0 s, my prior was wrong).
+
+DIAGNOSIS (per the registered pause-and-diagnose): the drop is the
+NEW COHORT (13–21: 65.3% pace, has_fast 6/9, corr −0.51), which
+adds 4 serve-out/tiny rallies + short broken rallies — the real
+rally mix, vs the structure-friendly curated core. On ≥5-paced
+rallies (13): 74.3%, has_fast 12/13, ff 8/13 (0.62), teams 10/13,
+corr +0.35 — near checkpoint except ff. The fast-miss decomposition
+is EXHAUSTIVE (36 misses of 89 truth-fast, zero unexplained):
+  (a) RALLY-ENDERS 6/10 missed — the putaway winner produces no
+      next gap; min-gap falls back to the arrival gap (often
+      dink-paced). The rally-ending smash is structurally invisible
+      to produced-gap logic.
+  (b) LONG-PRODUCED-GAP FASTS 30/45 missed — fully HALF of
+      truth-fast contacts produce a gap > th: baseline drives
+      (flight time ∝ distance), smashes absorbed by defensive
+      resets, exchange-ending counters. Not taxonomy (misses spread
+      counter 10 / fast 13 / smash 5 / drive 5 / speed-up 3) —
+      physics of the reply.
+  Sharpest form: the THIRD-SHOT DRIVE is the modal first-fast AND
+  exactly the gap-invisible type — that is why ff suffers most
+  (r14/r17 shapes). 15/45 long-gap fasts are rescued only because
+  they SIT on a fast arrival gap (mid-firefight min-gap).
+
+IMPLICATIONS (no classifier iteration — freeze stands; these are
+temporal-model DESIGN INPUT + gate bookkeeping):
+  1. C's tempo-only ceiling on the true mix: has_fast/teams/
+     per-contact hold; ff ~0.56–0.62 and share corr soften. The
+     checkpoint's 10 rallies over-stated ff/corr at C.
+  2. The temporal model should carry NON-tempo channels for the two
+     modes: position (kitchen feats — baseline-ness IS the drive
+     signal; FULL may already show this on the Mac run) and
+     rally-end context from logs (the ender's "no next gap" is
+     itself observable — last contact + short time-to-rally-end).
+  3. temporal_gate PRE-CHECK TENSION, flagged not resolved: womens
+     train ff at GAP = 0.56 < the 0.6 pre-check bar frozen
+     yesterday — as frozen, womens could fail its own ceiling
+     pre-check (on ≥5-paced it passes at 0.62). PENDING AMENDMENT
+     QUESTION (decide AFTER the Mac run shows FULL-at-C, BEFORE any
+     temporal code): whether C's readout in the gate should be the
+     best already-graded classifier on train (gap/full/seq) rather
+     than GAP-only. Recorded here so the amendment, if made, is
+     visibly pre-temporal-code.
+  4. Label-integrity: r26 (holdout) has a hitter mis-key — shots
+     5/6 hitters swapped breaks team alternation twice; swapping
+     restores parity. Flagged to the user for a tool fix +
+     re-export; pace content not read.
