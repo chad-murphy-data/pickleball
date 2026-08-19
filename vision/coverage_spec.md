@@ -322,3 +322,55 @@ contact-thread instruments were not touched.
   survive this: it consumes logged names + geometry only, and the R/L
   halves check weights itself by the machine's local receiver_ok
   agreement.
+
+## Yield ceiling — MEASURED 2026-08-19: it is the SOURCE VIDEO
+
+The first real run resolved 63 of 141 rallies and the obvious reading was
+"the instruments are weak". Three candidate fixes were tested against
+that reading. Two are now falsified and the third is redirected; record
+the numbers so no future session re-buys them.
+
+**The false diagnosis.** Cached tracks show a median 16 distinct track
+ids per rally for 4 players and a median track lifetime of 7% of the
+rally — which reads as catastrophic tracker shattering. It is not: the
+MEDIAN track is junk. The four biggest tracks already live 81% of the
+rally, and >=4 real tracks (alive >=1 s) are present in 92% of frames.
+Any per-track average over this population is dominated by fragments.
+Measure the top-4 tracks, never the median.
+
+**A — 30 fps (from 10).** NULL. Top-4 lifetime 81% -> 83%, junk share
+26% -> 25%, "4 alive" unchanged, at 3x the extraction cost. Do not.
+
+**B — appearance-aware association** (`pose_extract` APP_* constants,
+opt-in; `coverage_extract` defaults it on). REAL BUT SMALL: top-4
+lifetime 81% -> 84% at 10 fps, 86% with 30 fps, junk 26% -> 23%.
+Mechanism verified firing, not silently degrading: descriptors return
+18/18 valid dims on real far-court bodies, 1% of comparisons unusable,
+similarity median 0.18 across mixed pairs vs p90 0.98 same-body. Keep
+it; it is nearly free and reduces the repair burden. It is NOT a yield
+fix — on 16 rallies that failed in the baseline, A+B rescued 1
+(extrapolates to 63 -> ~66 of 141).
+
+**The real constraint.** Rallies that fail are the rallies the broadcast
+was not showing. Main-camera fraction over the first 4 s (the serve, and
+so the identity anchor):
+
+    FAILED  rallies (n=50)   mean 0.48   median 0.64   48% below half
+    COVERED rallies (n=91)   mean 0.67   median 0.74   22% below half
+
+Whole-VOD main-camera fraction is 0.49 — half of a condensed broadcast
+is replays, close-ups, crowd and graphics. A serve shown as a close-up
+has no anchor frame to find, and no pose model, frame rate, tracker or
+training set can recover a court that was never on screen. ~45% rally
+yield is close to the STRUCTURAL ceiling for condensed VODs.
+
+Consequences for anyone planning work here:
+  * yield scales with FOOTAGE, not compute — an uncondensed broadcast or
+    a fixed court camera is the only large lever;
+  * GPU/stronger backend remains worth testing for track QUALITY (that
+    is `coverage_ab.py`'s question) but must not be sold as a yield fix;
+  * hand labels buy nothing on this axis: identity naming is already
+    self-labelled from the serve anchors;
+  * autonomy = an auto-accept gate (appearance-vs-geometry agreement,
+    the LORO >= 0.85 bar) routing only below-bar matches to a human, NOT
+    a higher yield per VOD.
