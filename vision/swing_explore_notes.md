@@ -2153,3 +2153,73 @@ gating + motion stacking) is the right restart point for the closed
 ball thread. Changes nothing now — every lean of their pipeline
 (loud sparse impacts, high-contrast ball, 2 players) is precisely
 where pickleball broadcast is hard mode.
+
+## 2026-08-20 — PROFILE: where the classical tracker's time actually goes (and an 11x candidate speedup)
+
+Prompted by "can I run these free/cheap on a GPU?" — profiled instead
+of guessing, because my guess was that `track_all` dominated.
+
+    600 frames @ 60fps (10.0 s of video)
+      decode              8.24s   13.7 ms/frame   17%
+      candidates         20.03s   33.4 ms/frame   41%
+      track_ball  x1      0.45s
+      track_all  (x45)   20.40s                   42%   <- 46x one pass
+      TOTAL              48.67s = 4.9x realtime
+    -> ~3.8 h of CPU per match of rally time (~47 min play)
+
+The guess was HALF right. `track_all` is 42% and is algorithmically
+wasteful (it re-runs the whole beam search from scratch, up to 45
+times, over the same window, extracting one track per pass) — but
+`candidates` costs the same 41%, and that is pure implementation.
+
+Fixed the implementation half, since it is the one that cannot change
+any result. The 3-frame motion difference was numpy:
+
+    d = np.minimum(np.abs(cur.astype(np.int16) - prev),
+                   np.abs(cur.astype(np.int16) - nxt)).max(axis=2)
+
+cv2's saturating uint8 `absdiff` is exactly |a-b| on uint8, so
+
+    ch = cv2.split(cv2.min(cv2.absdiff(cur, prev), cv2.absdiff(cur, nxt)))
+    d  = cv2.max(cv2.max(ch[0], ch[1]), ch[2])
+
+is BYTE-IDENTICAL (asserted on random noise in the selftest, where
+saturation and ties are actually exercised) at **2.5 vs 28.0 ms/frame,
+11x**. End-to-end on the clip: 24/36 = 67% recall, 24/54 = 44%
+precision, per-rally 14/28 and 10/26 — every number identical to the
+frozen run, so the parameter selection closed on 2026-08-20 is
+undisturbed and the pending 19-rally baseline is unaffected.
+
+The `track_all` half is a BEHAVIOUR change (extracting top-K tracks
+from one beam pass is not the same search as K sequential passes), so
+it waits until after the 19-rally baseline exists. Worth roughly
+another 10-20x if it works out.
+
+ANSWER TO THE GPU QUESTION: none of this pipeline is GPU work. Decode,
+motion-differencing and beam search are all CPU/memory-bound. The only
+GPU steps in the whole program are pose extraction (already free on
+Colab T4, `gpu_runbook.md`) and training a ball detector if that ever
+happens (Kaggle: 30 free GPU-hours/week). The cost problem here was
+algorithmic, and no hardware would have addressed it.
+
+## 2026-08-20 — SELFTEST REPAIR: two synthetic assertions were single-draw coin flips
+
+`ball_track.py --selftest` was failing at HEAD (pre-existing, verified
+by stashing) on `dropout broke kinks: [1.33] vs [0.7, 1.3]`. The cause
+was not the tracker: both the dropout and the structured-blackout
+cases asserted a CERTAINTY (`hit == len(kinks)`, `near` non-empty) on
+ONE seeded draw of a stochastic process. Graded over ten draws
+instead, which is what the quantity actually is:
+
+    24% dropout:            kinks 13/20 = 65%, spurious 0
+    blackout across a kink: single track 0/10, segment joins 4/10
+                            (all flagged inferred), kinks 13/20
+
+So the design claim the blackout test exists to defend — a single
+track cannot cross an occluded contact, segment joins can — holds
+10/10 in ORDERING (0 vs 4) while being false about half the time as a
+per-draw certainty. Assertions now cover the invariants (track always
+splits, single track never crosses, joins always flagged inferred,
+recall floor 60%) and the rates are printed. The 65% synthetic kink
+recall under measured-rate dropout sits right next to the 67% measured
+on real video, which is a mild coherence check on the synth.

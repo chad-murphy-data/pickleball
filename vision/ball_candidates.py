@@ -74,10 +74,15 @@ def candidates(prev, cur, nxt, min_a=2, max_a=120):
     Deliberately dumb: no colour model, no shape prior, no learning.
     Motion-differencing is what kills the shoe false-positive class —
     a shoe travels with its player, the ball does not."""
-    d = np.minimum(np.abs(cur.astype(np.int16) - prev),
-                   np.abs(cur.astype(np.int16) - nxt)).max(axis=2)
-    m = (d > 28).astype(np.uint8)
     import cv2
+    # cv2 rather than numpy here: BYTE-IDENTICAL output (asserted in
+    # selftest) at 2.5 vs 28.0 ms/frame. Worth the ugliness because a
+    # profile put this step at 41% of pipeline runtime — the saturating
+    # uint8 absdiff is exactly |a-b| for uint8, so nothing is lost.
+    m3 = cv2.min(cv2.absdiff(cur, prev), cv2.absdiff(cur, nxt))
+    b, g, r = cv2.split(m3)
+    d = cv2.max(cv2.max(b, g), r)
+    m = (d > 28).astype(np.uint8)
     m = cv2.morphologyEx(m, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
     n, _lab, stats, cent = cv2.connectedComponentsWithStats(m, 8)
     out = []
@@ -130,7 +135,20 @@ def selftest():
         f"ball not in top-5: {top}"
     assert not any(abs(c[1] - 120) < 10 and abs(c[2] - 200) < 10
                    for c in cs), "static shoe fired — motion gate broken"
-    print("selftest: crop maths, cell timing, ball found, shoe rejected OK")
+    # the cv2 difference must be BYTE-IDENTICAL to the numpy one it
+    # replaced — this is the only thing standing between a speedup and a
+    # silent change to a frozen parameter selection. Random noise, not a
+    # clean synthetic, so saturation and ties are actually exercised.
+    rng = np.random.default_rng(7)
+    a3, b3, c3 = (rng.integers(0, 256, (64, 64, 3), dtype=np.uint8)
+                  for _ in range(3))
+    ref = np.minimum(np.abs(b3.astype(np.int16) - a3),
+                     np.abs(b3.astype(np.int16) - c3)).max(axis=2)
+    ch = cv2.split(cv2.min(cv2.absdiff(b3, a3), cv2.absdiff(b3, c3)))
+    got = cv2.max(cv2.max(ch[0], ch[1]), ch[2])
+    assert np.array_equal(ref.astype(np.uint8), got), "cv2 diff diverged"
+    print("selftest: crop maths, cell timing, ball found, shoe rejected, "
+          "cv2==numpy OK")
 
 
 def main():
