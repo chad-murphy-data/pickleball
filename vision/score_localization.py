@@ -98,6 +98,32 @@ def null(calls, key, tol, draws, seed):
     return rates
 
 
+def shift_null(calls, key, tol, draws, seed):
+    """CIRCULAR-SHIFT null: rotate the caller's OWN calls by a random
+    offset mod n_cells. Preserves their exact rhythm and spacing and
+    destroys only the alignment.
+
+    This is the null that matters when the caller has a tempo prior.
+    Dinking rallies are quasi-periodic, so a caller who simply spaced
+    calls every ~5 cells without reading anything would beat the
+    uniform null. Beating the shift null is evidence of LOCALISATION;
+    beating only the uniform null is evidence of knowing that
+    pickleball has a rhythm."""
+    rng = random.Random(seed)
+    rates = []
+    for _ in range(draws):
+        hit = tru = 0
+        for w, k in key.items():
+            n = k["cells"]
+            off = rng.randrange(n)
+            cc = [((c - 1 + off) % n) + 1 for c in calls.get(w, [])]
+            m, _ = match(cc, k["offsets"], tol)
+            hit += m; tru += len(k["offsets"])
+        rates.append(hit / tru if tru else 0.0)
+    rates.sort()
+    return rates
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--calls")
@@ -128,6 +154,15 @@ def main():
         if pct < 95:
             print("  -> NOT distinguishable from placing the same number "
                   "of calls at random")
+        sr = shift_null(calls, key, tol, a.draws, a.seed + 1)
+        smean = sum(sr) / len(sr)
+        spct = 100.0 * sum(1 for r in sr if r < obs) / len(sr)
+        slo, shi = sr[int(.025 * len(sr))], sr[int(.975 * len(sr))]
+        print(f"  shift-null {smean:.1%}  [{slo:.1%}, {shi:.1%}] "
+              f"(same calls, random phase)")
+        print(f"  LIFT-vs-shift {obs - smean:+.1%}   {spct:.1f}th "
+              f"percentile" + ("" if spct >= 95 else
+              "   -> rhythm alone explains it"))
 
     # miss decomposition: was the ball marked where I missed?
     anymark = any(key[w]["marked"] for w in key)
