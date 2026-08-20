@@ -664,7 +664,29 @@ port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
 push to main, nightly data refresh); one-time setup = repo Settings →
 Pages → Source "GitHub Actions".
 Vision (2026-08-11 → CLOSED 2026-08-15 → **SWING THREAD REOPENED later
-the same day, user call**) — **READ `vision/POSTMORTEM.md` FIRST**: the
+the same day, user call**) — **READ `vision/STATUS.md` FIRST** (added
+2026-08-20): a committed per-channel ledger of what works, what is dead,
+and what is built, with every number next to its null. It exists because
+summaries of this work kept regressing to whatever had been measured
+most recently; generate any "where are we" answer FROM that file, not
+from the most recent session's mood. Headline, 2026-08-20: **TIMESTAMP
+PLACEMENT IS DEAD on every instrument tried** — four VLM grid arms
+(3x3, 5x5, 6x6 marked, 6x6 marked re-run) and the classical tracker,
+all measured against a CIRCULAR-SHIFT null that rotates the caller's own
+calls to a random phase. Every arm posts 83-93% at ±0.5s, every one
+lands 27-53% at ±1 cell, and not one clears its own shifted calls at
+95%; ±0.5s is 3.3 cells wide at these packings, so it scores "roughly
+the right region", which a rhythm prior answers by itself. `+/-0.5s`
+therefore CANNOT discriminate at grid packings — score any future grid
+arm with `vision/score_localization.py`, never on raw recall.
+**What that did NOT touch, and the reason:** hitter side 95% / four-way
+85%, play-no-play 30/30, shot counts 161/162, ball circles 93% — all
+CLASSIFICATIONS with flat chance baselines, no tolerance to widen and no
+rhythm to exploit. Side alternation is EXACT (0 violations / 229
+contacts) and pooled 2-colouring recovers teams with no video and no
+timestamps, so per-shot SIDE is free and only the partner call is open.
+Attribution, counting and space all survive; only "when" died.
+Also **READ `vision/POSTMORTEM.md`**: the
 whole arc in order with the numbers, the surviving assets,
 and the six lessons. The rest of this entry and
 model/vision_adjudication.md are the layered technical record, written in
@@ -711,8 +733,35 @@ top-down at native fps per contact_gate.md Amendment 2 — user directive
 A/B, yolov8 diagnostic; --selftest'd) → `vision/contact_ceiling.py`
 (torso-relative candidate ceiling vs shifted-label null, verdict
 printed). Trainer deliberately UNBUILT until Gate C passes — building
-it first is the anti-pattern Gate A avoided. The BALL thread is
-unchanged: still closed, still needs new footage.
+it first is the anti-pattern Gate A avoided.
+**GATE C CLOSED 2026-08-17: KILL on BOTH instruments** (ViTPose-huge
+verdict 40.7% [33.5, 48.4] vs bar 85, fast 53.7 vs 75; RTMPose A/B
+45.1%; 10 rallies / 162 contacts — full addenda in contact_gate.md).
+The A/B ruled the BACKBONE out as the binding constraint (ViT ≤ RTM
+everywhere, worse on attacks; learned-scorer lift identical +11-12 pts
+on both streams — the stream sets the level). Final for this footage
+per the frozen escalation clause (KILL ≠ MIDDLE → no Sapiens shot).
+Licensed reading stays NARROW: the 2× height-budget candidate ceiling
+on this 720p condensed VOD is too low; "nothing in the stream" is NOT
+licensed (attacks near-ceiling, ceiling-any 66-71%). Exploration
+results (vision/swing_explore_notes.md): learned scorer 45→56%,
+alternation decoder gets shot COUNTS near-exact on RTM (161/162) at
+~51% placement precision — turn-order/shot-count analytics closer than
+timestamp attribution. Forward = (1) LABELS AT SCALE: user labels as an
+ongoing habit per `vision/labeling_protocol.md` — train/holdout split
+FROZEN 2026-08-17 in data/vision/label_split.csv (per-game 60/40, 117
+train / 76 holdout; tuning scripts read train ONLY; holdout burns on
+use), audit tool has chained seek (build 2026-08-17a) so machine-window
+drift no longer forces hunts; full Chicago ≈ 3k contacts feeding a
+TEMPORAL model class under a FRESH pre-registration (not a Gate C
+knob-turn) — FROZEN 2026-08-19 in `vision/temporal_gate.md`, v2 same
+day (attack-onset semantics, user-approved) (checkpoint
+routed Regime 2: placement binds; bars, panel = full Chicago holdout,
+burn rules, and consequences all pre-committed there — read it before
+any temporal-model work); (2) new footage. OPEN ANOMALY: r9/r10 label spans exceed
+log durations by ~24 s (verdict robust to excising both; asterisk for
+TRAINING use until the debug-frame scorebug check — gate addendum).
+The BALL thread is unchanged: still closed, still needs new footage.
 (A) BALL — CLOSED 2026-08-15, the wall is PHYSICAL and measured
 (`vision/ball_visibility.py`, `data/vision/ball_labels_chicago0725.csv`).
 The user hand-labeled all 416 sampled frames with a 5× loupe,
