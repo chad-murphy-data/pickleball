@@ -1,0 +1,21 @@
+question,rally_cum,shot_index,t_s,hitter_name,shot_type,pace
+q01.png,1,5,15.105,Ting Chieh Wei,dink,slow
+q02.png,1,19,25.966,Ting Chieh Wei,slow,slow
+q03.png,1,6,15.777,Etta Tuionetoa,slow,slow
+q04.png,8,5,194.637,Ting Chieh Wei,slow,slow
+q05.png,9,18,270.264,Emma Nelson,fast,fast
+q06.png,3,7,65.081,Etta Tuionetoa,dink,slow
+q07.png,14,8,366.836,Emma Nelson,dink,slow
+q08.png,4,9,98.294,Etta Tuionetoa,dink,slow
+q09.png,8,8,195.996,Emma Nelson,fast,fast
+q10.png,3,3,61.872,Etta Tuionetoa,drive,fast
+q11.png,9,25,277.372,Emma Nelson,fast,fast
+q12.png,10,9,304.033,Etta Tuionetoa,counter,fast
+q13.png,6,5,150.072,Etta Tuionetoa,fast,fast
+q14.png,17,12,437.944,Emma Nelson,fast,fast
+q15.png,7,3,168.372,Ting Chieh Wei,slow,slow
+q16.png,20,16,500.725,Ting Chieh Wei,slow,slow
+q17.png,10,24,316.000,Etta Tuionetoa,fast,fast
+q18.png,3,8,65.971,Ting Chieh Wei,speed-up,fast
+q19.png,20,4,488.479,Ting Chieh Wei,fast,fast
+q20.png,1,8,18.033,Etta Tuionetoa,dink,slow

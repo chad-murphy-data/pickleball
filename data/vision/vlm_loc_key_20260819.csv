@@ -1,0 +1,31 @@
+window,rally_cum,t0_s,n_contacts,offsets_s,hitters,paces
+w01.png,9,267.086,1,0.98,Etta Tuionetoa,slow
+w02.png,10,299.887,1,0.34,Etta Tuionetoa,fast
+w03.png,8,193.156,1,0.85,Etta Tuionetoa,fast
+w04.png,7,162.371,0,,,
+w05.png,2,46.785,1,0.94,Ting Chieh Wei,fast
+w06.png,9,258.802,2,0.40|1.09,Emma Nelson|Allyce Jones,slow|slow
+w07.png,17,424.630,0,,,
+w08.png,20,502.141,1,0.83,Ting Chieh Wei,slow
+w09.png,5,122.193,1,0.80,Allyce Jones,slow
+w10.png,3,55.551,0,,,
+w11.png,17,429.177,1,0.27,Etta Tuionetoa,position
+w12.png,9,259.442,1,0.46,Allyce Jones,slow
+w13.png,10,316.028,2,0.51|0.93,Ting Chieh Wei|Etta Tuionetoa,fast|fast
+w14.png,2,41.715,1,0.35,Emma Nelson,position
+w15.png,10,303.606,2,0.43|1.03,Etta Tuionetoa|Ting Chieh Wei,fast|fast
+w16.png,7,170.568,2,0.38|1.14,Etta Tuionetoa|Emma Nelson,fast|fast
+w17.png,9,276.624,1,0.75,Emma Nelson,fast
+w18.png,10,294.059,0,,,
+w19.png,4,87.380,0,,,
+w20.png,18,457.767,1,0.75,Allyce Jones,position
+w21.png,9,275.857,1,0.66,Allyce Jones,fast
+w22.png,14,367.727,1,0.39,Allyce Jones,slow
+w23.png,14,360.607,1,1.05,Etta Tuionetoa,fast
+w24.png,7,171.507,2,0.20|0.57,Emma Nelson|Etta Tuionetoa,fast|nonswing
+w25.png,3,63.843,1,0.30,Emma Nelson,fast
+w26.png,21,517.237,1,0.85,Emma Nelson,position
+w27.png,2,46.396,1,0.35,Allyce Jones,slow
+w28.png,1,7.517,0,,,
+w29.png,3,66.862,0,,,
+w30.png,5,118.639,1,0.14,Etta Tuionetoa,position

@@ -1,0 +1,89 @@
+{
+ "spec": {
+  "tol_s": 0.3,
+  "fallback_tol_s": 0.2,
+  "mult_primary": 2,
+  "bars": {
+   "overall": 0.85,
+   "fast": 0.75,
+   "kill": 0.75
+  },
+  "null_max": 0.55,
+  "n_null": 200
+ },
+ "tol_used": 0.3,
+ "fell_back": false,
+ "n_contacts": 162,
+ "n_fast": 41,
+ "ceiling_side": 0.4506172839506173,
+ "ceiling_side_ci": [
+  0.3760255595358415,
+  0.5274968377396311
+ ],
+ "ceiling_fast": 0.6097560975609756,
+ "per_type": {
+  "serve": [
+   6,
+   10
+  ],
+  "return": [
+   4,
+   10
+  ],
+  "drop": [
+   2,
+   3
+  ],
+  "dink": [
+   13,
+   32
+  ],
+  "other": [
+   20,
+   58
+  ],
+  "speed-up": [
+   9,
+   9
+  ],
+  "smash": [
+   9,
+   10
+  ],
+  "counter": [
+   7,
+   22
+  ],
+  "drive": [
+   2,
+   5
+  ],
+  "lob": [
+   1,
+   3
+  ]
+ },
+ "null_mean": 0.3043518518518518,
+ "null_p95": 0.345679012345679,
+ "ceiling_side_4x": 0.6419753086419753,
+ "ceiling_any": 0.7098765432098766,
+ "verdict": "KILL",
+ "jitter": {
+  "n": 9,
+  "median_abs": 19.810000000000002,
+  "p95_abs": 27.764599999999994,
+  "guard_band_s": 83.29379999999998
+ },
+ "rallies_scored": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10
+ ]
+}
