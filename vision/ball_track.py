@@ -704,8 +704,10 @@ def tol_sweep(panel, tols=(0.50, 0.30, 0.15, 0.08), draws=4000, seed=7):
               f"{mean:5.1%} [{rates[int(.025*len(rates))]:.1%},"
               f"{rates[int(.975*len(rates))]:.1%}]  {obs-mean:+6.1%}  "
               f"{pct:5.1f}{flag}")
-    print("\nreference at +/-0.5s: pose decoder 45.7%, VLM 3x3 92.9% "
-          "(both FAIL their nulls; at +/-0.15s they are 45.7% and 46.4%)")
+    print("\nreference at +/-0.5s: pose decoder 45.7%, VLM 3x3 92.9%.\n"
+          "  The 3x3 arm CLEARS its uniform null (78.6%, 98.1th pct) and\n"
+          "  falls short of its random-phase null (82.5%, 93.6th, bar 95).\n"
+          "  At +/-0.15s the two are 45.7% and 46.4% -- the same number.")
 
 
 if __name__ == "__main__":
