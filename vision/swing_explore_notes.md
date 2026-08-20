@@ -2032,6 +2032,64 @@ sized in FRAMES for a 30 fps assumption and is now clipping real
 flights in half. Constants that mean a physical thing (seconds, px/s)
 should not be stored in frames. Same bug class as the fps default.
 
+## 2026-08-20 — CLASSICAL PIPELINE ON REAL VIDEO: 67% recall, above the 45.7% decoder. Parameter selection CLOSED.
+
+Full arc of the day, measured on the user's 44 s clip (rallies 1-2,
+36 labeled contacts; clip in scratch, never committed):
+
+    user's run, --fps 30 on a 60 fps source ......  0/229 =  0%
+    native 60 fps, everything else unchanged ....  24/36 = 67%
+    "physically correct" frame->seconds constants  22/36 = 61%
+    segment cap restored to 0.85 s .............   23/36 = 64%
+    final, principled constants ................   24/36 = **67%**
+                                                   precision 44%
+Reference on the identical +/-0.5 s metric: decoded pose pipeline
+45.7%, VLM on frame grids 93%.
+
+ROOT CAUSE OF THE 0% WAS THE FRAME RATE, nothing subtler. The source is
+60 fps and `--fps 30` made decode_window resample. Replicating the
+user's own probe at the 9 verified ball positions: native 60 fps finds
+the ball **8/9** at ranks 1-9 with 72 candidates/frame; resampled to 30
+it finds **5/9** with 101. Both directions hurt at once — doubling the
+inter-frame interval means MORE of the scene differs (clutter +40%) and
+the ball STREAKS instead of staying a compact blob. Default is now
+native, read off the ffmpeg banner.
+
+A COUNTERINTUITIVE RESULT WORTH KEEPING: converting the frame-based
+constants to physical units made things WORSE (67 -> 61). The segment
+cap was doing REGULARISATION as well as physics — a short cap forces
+the beam to commit to short clean chains instead of growing the long
+wandering ones that caused the original failure. 1.6 s is the honest
+bound on a flight and it is the wrong value. Not every constant means
+only what its name says.
+
+PARAMETER SELECTION IS NOW CLOSED, and this is the important
+methodological line. The three configurations scored 24/36, 23/36,
+22/36. At n=36 the se is 8 pp and the 95% CIs run 45-82% — they are ONE
+number. Continuing to pick between them on this clip is fitting noise,
+which is the same proxy-optimisation trap already flagged for the
+candidate probe. Final constants are set on PHYSICAL grounds (coast and
+join windows are occlusion durations; min speed derives from court
+scale at ~40 px/ft; the cap carries a documented regularisation note),
+not on the 36-contact score. The measurement that can separate
+hypotheses is the user running 19 train rallies = 229 contacts, se ~3pp.
+
+TWO PROCESS FAILURES, both mine, both recorded because they nearly
+corrupted conclusions:
+ (1) A join patch SILENTLY NO-OPPED (index splice matched nothing). I
+     measured "no change" and concluded segment pairing was not the
+     bottleneck. That inference was drawn from an unchanged program and
+     is withdrawn.
+ (2) ball_track.py accumulated TWO definitions of contacts_from_tracks;
+     Python uses the last. They turned out identical so no number is
+     affected, but I was reasoning about code that might not have been
+     running. Stopped patching that file by string-splice; regions are
+     now rewritten wholesale and verified by grep.
+Precision (44%) is the open weakness — 54 detections for 36 contacts.
+Expected: segments end at contacts, so every clutter segment that finds
+a plausible successor manufactures one. Mutual-best matching is built
+but unmeasured.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
