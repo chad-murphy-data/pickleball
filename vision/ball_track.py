@@ -45,7 +45,16 @@ SPLIT = "label_split.csv"
 MATCH_TOL_S = 0.5          # same tolerance phase_grader uses
 
 # ---- tracker
-MAX_COAST = 6              # frames a track may survive with no detection
+# PHYSICAL CONSTANTS, in seconds and px/second. Storing these in FRAMES
+# and px/FRAME is what made the 60 fps source misbehave in three places
+# at once: the segment cap halved (0.8 s instead of 1.6), the coast
+# window halved, and the minimum ball speed DOUBLED in real terms, so
+# genuine slow flights were being rejected. Anything that means a
+# physical thing is stored physically and converted with fps.
+COAST_S = 0.20             # how long a track may fly with no detection
+MAX_SEG_S = 1.60           # a flight between contacts is short
+JOIN_MAX_S = 0.60          # gap that still counts as one contact
+MIN_SPEED_PXS = 240.0      # px/second: a ball outruns a limb
 BEAM = 60                  # hypotheses kept per frame
 SEED_TOP = 12              # candidates per frame that may start a track
 GATE_BASE = 10.0           # px, gate radius at zero speed. Was 26, which
@@ -84,9 +93,6 @@ STRAIGHT_MIN = 0.78        # |displacement| / path length. A flight
 TRAVEL_MIN = 55.0          # px a real segment must actually cover
 MAX_TRACKS = 45            # segments per rally: one per contact, plus
                            #   the clutter chains rejected on the way
-MAX_SEG_FRAMES = 48        # ~1.6 s. A flight between contacts is short;
-                           #   without a cap the beam grows chains that
-                           #   span the whole rally and win on LENGTH.
 STRAIGHT_AFTER = 6         # seen points before straightness is enforced
 STRAIGHT_BEAM = 0.75       # in-beam kill. A HARD FLOOR GETS SATURATED:
                            #   at 0.60 the beam produced chains sitting
@@ -94,10 +100,7 @@ STRAIGHT_BEAM = 0.75       # in-beam kill. A HARD FLOOR GETS SATURATED:
                            #   while still legal — which then all failed
                            #   the 0.78 final gate. Keep the two close so
                            #   the search cannot farm the gap.
-MIN_SPEED_PX = 8.0         # px/frame. The ball outruns a limb; this is
-                           #   what separates a flight from an arm swing.
-JOIN_MAX_FRAMES = 18       # a gap this short between two segments is a
-                           #   CONTACT, not two unrelated balls
+
 JOIN_SPEED_MULT = 1.6      # ...and the separation must be CONSISTENT WITH
 JOIN_BASE_PX = 70.0        #   FLIGHT, not under a fixed px cap: over a
                            #   12-frame gap a ball at 30 px/frame really
@@ -121,7 +124,7 @@ def _predict(pts):
     return x1 + vx, y1 + vy, vx, vy
 
 
-def track_ball(cand_by_frame):
+def track_ball(cand_by_frame, fps=30.0):
     """Beam-search one ball flight SEGMENT. Returns [(frame,x,y,seen)].
 
     Three things keep the beam honest, all of them learned from
@@ -136,13 +139,16 @@ def track_ball(cand_by_frame):
         candidates first. That is precisely what produced 0/229 on real
         video while every synthetic test passed.
     """
+    max_coast = max(1, int(round(COAST_S * fps)))
+    max_seg = max(8, int(round(MAX_SEG_S * fps)))
+    min_step = MIN_SPEED_PXS / fps
     hyps, best = [], None
     for f, cands in enumerate(cand_by_frame):
         arr = (np.array([[c[1], c[2], c[0]] for c in cands], dtype=float)
                if cands else np.zeros((0, 3)))
         nxt = []
         for h in hyps:
-            if len(h["pts"]) >= MAX_SEG_FRAMES:
+            if len(h["pts"]) >= max_seg:
                 continue                       # finished; `best` saw it
             px, py, vx, vy = _predict(h["pts"])
             sp = math.hypot(vx, vy)
@@ -160,7 +166,7 @@ def track_ball(cand_by_frame):
                         disp = math.hypot(x - h["fsx"], y - h["fsy"])
                         if disp / path < STRAIGHT_BEAM:
                             continue           # wanders: kill it here
-                        if path / (nseen - 1) < MIN_SPEED_PX:
+                        if path / (nseen - 1) < min_step:
                             continue           # crawls: not a ball
                     nxt.append({**h,
                                 "score": h["score"] + 1.0
@@ -169,7 +175,7 @@ def track_ball(cand_by_frame):
                                 "seen": h["seen"] + [True], "coast": 0,
                                 "path": path, "nseen": nseen,
                                 "lsx": x, "lsy": y})
-            if h["coast"] < MAX_COAST:
+            if h["coast"] < max_coast:
                 nxt.append({**h, "score": h["score"] - MISS_COST,
                             "pts": h["pts"] + [(f, px, py)],
                             "seen": h["seen"] + [False],
@@ -283,7 +289,7 @@ def _seg_speed(track):
                for a, b in zip(pts, pts[1:])) / (len(pts) - 1)
 
 
-def _ballistic_ok(track):
+def _ballistic_ok(track, fps=30.0):
     """Reject wandering chains: a ball in flight goes somewhere, in a
     line. Tortuosity is the cheap discriminator and needs no physics."""
     pts = [(x, y) for _f, x, y, s in track if s]
@@ -294,10 +300,11 @@ def _ballistic_ok(track):
     disp = math.hypot(pts[-1][0] - pts[0][0], pts[-1][1] - pts[0][1])
     speed = path / max(len(pts) - 1, 1)
     return (disp >= TRAVEL_MIN and path > 0
-            and disp / path >= STRAIGHT_MIN and speed >= MIN_SPEED_PX)
+            and disp / path >= STRAIGHT_MIN
+            and speed >= MIN_SPEED_PXS / fps)
 
 
-def track_all(cand_by_frame, max_tracks=MAX_TRACKS):
+def track_all(cand_by_frame, fps=30.0, max_tracks=MAX_TRACKS):
     """Extract several non-overlapping flight SEGMENTS, best first.
 
     Why not one long track: a ball is most likely to be occluded
@@ -311,10 +318,10 @@ def track_all(cand_by_frame, max_tracks=MAX_TRACKS):
     cands = [list(c) for c in cand_by_frame]
     out = []
     for _ in range(max_tracks):
-        tr = track_ball(cands)
+        tr = track_ball(cands, fps)
         if not tr:
             break
-        if _ballistic_ok(tr):
+        if _ballistic_ok(tr, fps):
             out.append(tr)
         for f, x, y, seen in tr:          # consume what this track used
             if seen and f < len(cands):
@@ -340,7 +347,7 @@ def contacts_from_tracks(tracks, fps):
                 continue
             fb, xb, yb, _s2 = b[0]
             gap = fb - fa
-            if not (0 < gap <= JOIN_MAX_FRAMES):
+            if not (0 < gap <= JOIN_MAX_S * fps):
                 continue
             sp = max(_seg_speed(a), _seg_speed(b))
             reach = JOIN_BASE_PX + JOIN_SPEED_MULT * sp * gap
@@ -355,7 +362,7 @@ def contacts_from_tracks(tracks, fps):
                 max(-1.0, min(1.0, float(np.dot(da, db))))))
             if ang < THETA_MIN:
                 continue
-            cost = dist / max(reach, 1.0) + gap / JOIN_MAX_FRAMES
+            cost = dist / max(reach, 1.0) + gap / (JOIN_MAX_S * fps)
             if best is None or cost < best[0]:
                 best = (cost, a, b, ang)
         if best is None:
@@ -416,7 +423,7 @@ def _seg_speed(track):
                for a, b in zip(pts, pts[1:])) / (len(pts) - 1)
 
 
-def _ballistic_ok(track):
+def _ballistic_ok(track, fps=30.0):
     """Reject wandering chains: a ball in flight goes somewhere, in a
     line. Tortuosity is the cheap discriminator and needs no physics."""
     pts = [(x, y) for _f, x, y, s in track if s]
@@ -427,10 +434,11 @@ def _ballistic_ok(track):
     disp = math.hypot(pts[-1][0] - pts[0][0], pts[-1][1] - pts[0][1])
     speed = path / max(len(pts) - 1, 1)
     return (disp >= TRAVEL_MIN and path > 0
-            and disp / path >= STRAIGHT_MIN and speed >= MIN_SPEED_PX)
+            and disp / path >= STRAIGHT_MIN
+            and speed >= MIN_SPEED_PXS / fps)
 
 
-def track_all(cand_by_frame, max_tracks=MAX_TRACKS):
+def track_all(cand_by_frame, fps=30.0, max_tracks=MAX_TRACKS):
     """Extract several non-overlapping flight SEGMENTS, best first.
 
     Why not one long track: a ball is most likely to be occluded
@@ -444,10 +452,10 @@ def track_all(cand_by_frame, max_tracks=MAX_TRACKS):
     cands = [list(c) for c in cand_by_frame]
     out = []
     for _ in range(max_tracks):
-        tr = track_ball(cands)
+        tr = track_ball(cands, fps)
         if not tr:
             break
-        if _ballistic_ok(tr):
+        if _ballistic_ok(tr, fps):
             out.append(tr)
         for f, x, y, seen in tr:          # consume what this track used
             if seen and f < len(cands):
@@ -461,27 +469,44 @@ def contacts_from_tracks(tracks, fps):
     out = []
     for tr in tracks:
         out += contacts_from_track(tr, fps)
-    for a, b in zip(tracks, tracks[1:]):
+    # Pair each segment with its best PHYSICAL successor, not merely
+    # the next one in sorted order: a rally yields dozens of segments
+    # (real flights plus surviving clutter), so "adjacent in the list"
+    # pairs unrelated things. NOTE: an earlier attempt at this patch
+    # silently no-opped, and the unchanged result was misread as
+    # "pairing is not the bottleneck". Verify your edits.
+    for ai, a in enumerate(tracks):
         fa, xa, ya, _s = a[-1]
-        fb, xb, yb, _s2 = b[0]
-        gap = fb - fa
-        if not (0 < gap <= JOIN_MAX_FRAMES):
+        best = None
+        for bi, b in enumerate(tracks):
+            if bi == ai:
+                continue
+            fb, xb, yb, _s2 = b[0]
+            gap = fb - fa
+            if not (0 < gap <= JOIN_MAX_S * fps):
+                continue
+            sp = max(_seg_speed(a), _seg_speed(b))
+            reach = JOIN_BASE_PX + JOIN_SPEED_MULT * sp * gap
+            dist = math.hypot(xb - xa, yb - ya)
+            if dist > reach:
+                continue
+            da = _dir([(x, y) for _f, x, y, _s in a[-K_FIT - 1:]])
+            db = _dir([(x, y) for _f, x, y, _s in b[:K_FIT + 1]])
+            if da is None or db is None:
+                continue
+            ang = math.degrees(math.acos(
+                max(-1.0, min(1.0, float(np.dot(da, db))))))
+            if ang < THETA_MIN:
+                continue
+            cost = dist / max(reach, 1.0) + gap / (JOIN_MAX_S * fps)
+            if best is None or cost < best[0]:
+                best = (cost, b, ang)
+        if best is None:
             continue
-        sp = max(_seg_speed(a), _seg_speed(b))
-        if math.hypot(xb - xa, yb - ya) > JOIN_BASE_PX + \
-                JOIN_SPEED_MULT * sp * gap:
-            continue
-        da = _dir([(x, y) for _f, x, y, _s in a[-K_FIT - 1:]])
-        db = _dir([(x, y) for _f, x, y, _s in b[:K_FIT + 1]])
-        if da is None or db is None:
-            continue
-        ang = math.degrees(math.acos(
-            max(-1.0, min(1.0, float(np.dot(da, db))))))
-        if ang < THETA_MIN:
-            continue
-        tj = _join_time(a, b)
+        _c, b2, ang = best
+        tj = _join_time(a, b2)
         if tj is None:
-            tj = (fa + fb) / 2.0
+            tj = (fa + b2[0][0]) / 2.0
         out.append((tj / fps, ang, True))       # inferred: inside a gap
     out.sort(key=lambda r: -r[1])
     kept = []
@@ -501,7 +526,7 @@ def rally_contacts(video, t0, t1, fps, width=1280):
             frames.pop(0)
     if not cand:
         return [], []
-    tracks = track_all(cand)
+    tracks = track_all(cand, fps)
     ks = contacts_from_tracks(tracks, fps)
     track = max(tracks, key=len) if tracks else []
     # candidate index i was built from the middle of frames i..i+2
@@ -572,14 +597,14 @@ def selftest():
     fps = 30
     # ---- clean-ish: recovers the path and both kinks
     cand, kinks, pts = _synth(drop=0.0, clutter=10)
-    tr = track_ball(cand)
+    tr = track_ball(cand, fps)
     assert tr, "no track on a clean synthetic"
     seen = [(f, x, y) for f, x, y, s in tr if s]
     truth = {f: (x, y) for f, x, y in pts}
     err = [math.hypot(x - truth[f][0], y - truth[f][1])
            for f, x, y in seen if f in truth]
     assert np.median(err) < 3.0, f"track drifted: median {np.median(err):.1f}px"
-    ks = [t for t, _a, _i in contacts_from_tracks(track_all(cand), fps)]
+    ks = [t for t, _a, _i in contacts_from_tracks(track_all(cand, fps), fps)]
     for kt in kinks:
         assert any(abs(kt - k) <= 0.1 for k in ks), (kt, ks)
     assert len(ks) <= len(kinks) + 1, f"spurious kinks: {ks}"
@@ -588,7 +613,7 @@ def selftest():
 
     # ---- measured conditions: 24% random dropout still works
     cand, kinks, _ = _synth(drop=0.24)
-    ks = [t for t, _a, _i in contacts_from_tracks(track_all(cand), fps)]
+    ks = [t for t, _a, _i in contacts_from_tracks(track_all(cand, fps), fps)]
     hit = sum(1 for kt in kinks if any(abs(kt - k) <= 0.15 for k in ks))
     assert hit == len(kinks), f"dropout broke kinks: {ks} vs {kinks}"
     assert len(ks) - hit <= 1, f"dropout spurious: {ks}"
@@ -602,10 +627,10 @@ def selftest():
     # rescue it. Asserting both, so this cannot pass by coincidence the
     # way the v1 test did.
     cand, kinks, _ = _synth(drop=0.24, gap=(20, 5))
-    one = track_ball(cand)
+    one = track_ball(cand, fps)
     single = [r for r in contacts_from_track(one, fps)
               if abs(r[0] - kinks[0]) <= 0.15]
-    trs = track_all(cand)
+    trs = track_all(cand, fps)
     res = contacts_from_tracks(trs, fps)
     near = [r for r in res if abs(r[0] - kinks[0]) <= 0.15]
     assert len(trs) >= 2, f"segments not split: {len(trs)}"
@@ -622,15 +647,15 @@ def selftest():
     rng = np.random.default_rng(11)
     noise = [[(40.0, float(rng.integers(0, 800)), float(rng.integers(0, 600)),
                6) for _ in range(14)] for _ in range(60)]
-    ks = contacts_from_tracks(track_all(noise), fps)
+    ks = contacts_from_tracks(track_all(noise, fps), fps)
     assert len(ks) <= 1, f"pure clutter produced {len(ks)} contacts"
     print(f"  pure clutter: {len(ks)} contacts (<=1)")
 
     # ---- matcher + determinism
     assert len(match([1.0, 2.0], [1.2, 5.0])) == 1
     assert len(match([1.0], [1.6])) == 0
-    a = track_ball(_synth(drop=0.24)[0])
-    b = track_ball(_synth(drop=0.24)[0])
+    a = track_ball(_synth(drop=0.24)[0], fps)
+    b = track_ball(_synth(drop=0.24)[0], fps)
     assert a == b, "not deterministic"
     print("  matcher + determinism OK")
     print("selftest: ALL OK")
