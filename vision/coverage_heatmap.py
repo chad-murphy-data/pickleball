@@ -37,6 +37,43 @@ FRAME B — RALLY-RELATIVE FRAME (the "controlled for side" one)
   poached, may have switched, may have been pulled there.  Nothing in a
   position density can separate those without shot data.
 
+  *** STACKING CONFOUND (user, 2026-08-20) — read before quoting any
+  frame-B crossing number. ***  "Where they lined up" is NOT a stable
+  reference when a team STACKS: stacking deliberately puts both
+  partners on one side before the serve, and they cross to their
+  preferred sides immediately after it.  Under a start-anchor that
+  scripted unwind reads as "crossed into the partner's half", and it
+  inflates the crossing statistic MOST for whichever pair stacks most.
+  Partial mitigation only: rally-phase frames already begin
+  SERVE_PHASE_S = 2.0 s after serve contact, so a fast unwind may
+  already be excluded -- but that is not guaranteed, and for anchor-free
+  rallies the serve instant is unknown so the 2 s runs from the first
+  retained frame instead.
+
+FRAME B-SETTLED — the stacking-robust anchor, PRE-REGISTERED 2026-08-20
+BEFORE computing any of it:
+  x_settled = median x' over ALL of that player's retained rally-phase
+  frames in the rally; mirror iff x_settled > W_FT/2.  A stack unwind
+  occupies the opening of a rally, so the median over the whole rally
+  reports the side actually played rather than the side lined up on.
+  This is an ORIENTATION choice only -- it decides which way to flip a
+  rally, never which frames count -- so the crossing statistic it feeds
+  (fraction of frames past x = 10) stays a statement about the court
+  centreline, not about the player's own average.
+  Pre-registered diagnostics, all reported whatever they show:
+    D1 DISAGREEMENT RATE: share of (rally, player) whose start-anchor
+       and settled-anchor disagree.  This IS the unwind rate; if the
+       start-anchor were safe it would be ~0.
+    D2 the same rate PER TEAM -- a stacking pair should separate.
+    D3 crossing fraction under BOTH anchors, per player, so the size of
+       the contamination is visible rather than argued.
+    D4 SAME-SIDE-AT-START: share of rallies whose first retained second
+       has both partners on one side of the centreline (the geometric
+       signature of a stack that has not finished unwinding).
+  AMBIGUOUS-ANCHOR LEDGER: |x_settled - 10| < SETTLE_DEAD_FT = 1.0 means
+  the player genuinely lives on the centreline and the mirror is a coin
+  flip; those are counted and reported, never silently oriented.
+
 CONTRAST PANELS (frame B, difference of normalised densities)
   Same-gender, opposite-team: Alshon - Patriquin and Black - Bright.
   Pre-registered as the only contrasts drawn, because cross-gender
@@ -83,6 +120,7 @@ D_LO, D_HI = 0.0, 26.0
 SIGMA_FT = 1.0
 START_S = 1.0
 START_MIN_FRAMES = 3
+SETTLE_DEAD_FT = 1.0
 NORM_PCT = 99.5
 
 NX = int(round((X_HI - X_LO) / GRID_FT))
@@ -180,13 +218,17 @@ def normalise(H, hi=None):
 
 
 def accumulate(rally_tracks_by_game):
-    """-> (per_player_frameA, per_player_frameB, ledger).
+    """-> (per_player_frameA, per_player_frameB, ledger, per_rally).
 
-    Both dicts are keyed by player uuid and hold (N,2) point stacks.
+    A/B are keyed by player uuid and hold (N,2) point stacks.  per_rally
+    keeps the (rally, player) structure that BOTH frames are derived
+    from, so an alternative anchor (see FRAME B-SETTLED) can be tested
+    without re-running the ~12-minute identity chain.
     """
     A = defaultdict(list)
     B = defaultdict(list)
     led = defaultdict(int)
+    per = []                       # (game, cum, uuid, ts, x_own, depth)
     for game, rallies in sorted(rally_tracks_by_game.items()):
         for cum, rd, lin in rallies:
             for u, (ts, xy, end) in rd.items():
@@ -196,6 +238,9 @@ def accumulate(rally_tracks_by_game):
                 p = own_frame(xy, end)
                 A[u].append(p)
                 led["rallies_A"] += 1
+                per.append((int(game), int(cum), u,
+                            np.asarray(ts, float), p[:, 0].copy(),
+                            p[:, 1].copy()))
                 ref = start_half(ts, p[:, 0])
                 if ref is None:
                     led["dropped_no_start"] += 1
@@ -208,7 +253,32 @@ def accumulate(rally_tracks_by_game):
                 led["rallies_B"] += 1
     A = {u: np.vstack(v) for u, v in A.items()}
     B = {u: np.vstack(v) for u, v in B.items()}
-    return A, B, led
+    return A, B, led, per
+
+
+def settled_half(x):
+    """Median x' over the WHOLE rally -- the side actually played."""
+    return float(np.median(np.asarray(x))) if len(x) else None
+
+
+def frame_settled(per):
+    """per_rally -> (per_player points, ledger) under the settled anchor."""
+    out = defaultdict(list)
+    led = defaultdict(int)
+    for game, cum, u, ts, x, d in per:
+        ref = settled_half(x)
+        if ref is None:
+            led["empty"] += 1
+            continue
+        if abs(ref - C.W_FT / 2) < SETTLE_DEAD_FT:
+            led["ambiguous_centre"] += 1      # counted, still oriented
+        q = np.column_stack([x, d])
+        if ref > C.W_FT / 2:
+            q[:, 0] = C.W_FT - q[:, 0]
+            led["mirrored"] += 1
+        out[u].append(q)
+        led["rallies"] += 1
+    return {u: np.vstack(v) for u, v in out.items()}, led
 
 
 # ---------------------------------------------------------------- svg
@@ -480,10 +550,89 @@ def order_players():
             {u: by[u]["player"] for u in seen})
 
 
-def save_cache(path, A, B, led):
+def stack_report(per, names, partner):
+    """The pre-registered D1-D4 stacking diagnostics. Prints, returns rows."""
+    from collections import defaultdict as dd
+    by_rp = {(c, u): (t, x, d) for (g, c, u, t, x, d) in per}
+    dis = dd(lambda: [0, 0])          # uuid -> [disagree, total]
+    cross = dd(lambda: [0, 0, 0])     # uuid -> [n, start_cross, settled_cross]
+    amb = dd(int)
+    for (g, c, u, t, x, d) in per:
+        sref = start_half(t, x)
+        tref = settled_half(x)
+        if sref is None or tref is None:
+            continue
+        s_side, t_side = sref > C.W_FT / 2, tref > C.W_FT / 2
+        dis[u][1] += 1
+        dis[u][0] += int(s_side != t_side)
+        if abs(tref - C.W_FT / 2) < SETTLE_DEAD_FT:
+            amb[u] += 1
+        xs = C.W_FT - x if s_side else x
+        xt = C.W_FT - x if t_side else x
+        cross[u][0] += len(x)
+        cross[u][1] += int(np.sum(xs > C.W_FT / 2))
+        cross[u][2] += int(np.sum(xt > C.W_FT / 2))
+
+    # D4: both partners on one side during the first retained second
+    same = dd(lambda: [0, 0])
+    rallies = dd(list)
+    for (g, c, u, t, x, d) in per:
+        rallies[c].append(u)
+    for c, us in rallies.items():
+        for u in us:
+            pu = partner.get(u)
+            if pu is None or pu not in us:
+                continue
+            t1, x1, _ = by_rp[(c, u)]
+            t2, x2, _ = by_rp[(c, pu)]
+            a, b = start_half(t1, x1), start_half(t2, x2)
+            if a is None or b is None:
+                continue
+            same[u][1] += 1
+            same[u][0] += int((a > C.W_FT / 2) == (b > C.W_FT / 2))
+
+    print("D1/D2  ANCHOR DISAGREEMENT  (start-anchor vs settled-anchor)")
+    print(f"  {'player':<22}{'disagree':>10}{'of':>6}{'rate':>9}"
+          f"{'ambiguous':>11}")
+    rows = []
+    for u in sorted(dis, key=lambda k: -dis[k][0] / max(dis[k][1], 1)):
+        dsg, tot = dis[u]
+        print(f"  {names.get(u, u[:8]):<22}{dsg:>10}{tot:>6}"
+              f"{dsg / max(tot, 1):>9.1%}{amb[u]:>11}")
+        rows.append((names.get(u, u[:8]), dsg, tot, amb[u]))
+    print()
+    print("D3  CROSSING FRACTION under each anchor (frames past x=10)")
+    print(f"  {'player':<22}{'start':>9}{'settled':>10}{'change':>10}")
+    for u in cross:
+        n, cs, ct = cross[u]
+        print(f"  {names.get(u, u[:8]):<22}{cs / n:>9.2%}{ct / n:>10.2%}"
+              f"{(ct - cs) / n:>+10.2f}pp".replace("pp", " pp"))
+    print()
+    print("D4  BOTH PARTNERS ONE SIDE at the start of retained frames")
+    print("    (geometric signature of a stack still unwinding)")
+    for u in same:
+        a, b = same[u]
+        print(f"  {names.get(u, u[:8]):<22}{a}/{b} = {a / max(b, 1):.1%}")
+    return rows
+
+
+def save_cache(path, A, B, led, per):
     d = {f"A:{u}": v for u, v in A.items()}
     d.update({f"B:{u}": v for u, v in B.items()})
     d["__led__"] = np.array(sorted(led.items()), dtype=object)
+    # per-rally table, flattened: one row per detection plus a rally
+    # index, so any anchor can be recomputed from the cache alone
+    if per:
+        idx, game, cum, uu, ts, xs, ds = [], [], [], [], [], [], []
+        for i, (g, c, u, t, x, dd) in enumerate(per):
+            idx.append(np.full(len(t), i))
+            game.append(g), cum.append(c), uu.append(u)
+            ts.append(t), xs.append(x), ds.append(dd)
+        d["__idx__"] = np.concatenate(idx)
+        d["__t__"] = np.concatenate(ts)
+        d["__x__"] = np.concatenate(xs)
+        d["__d__"] = np.concatenate(ds)
+        d["__meta__"] = np.array(list(zip(game, cum, uu)), dtype=object)
     np.savez_compressed(path, **d)
 
 
@@ -494,7 +643,17 @@ def load_cache(path):
     led = defaultdict(int)
     for k, v in z["__led__"]:
         led[k] = int(v)
-    return A, B, led
+    per = []
+    if "__idx__" in z.files:
+        idx, t, x, d = z["__idx__"], z["__t__"], z["__x__"], z["__d__"]
+        meta = z["__meta__"]
+        order = np.argsort(idx, kind="stable")
+        idx, t, x, d = idx[order], t[order], x[order], d[order]
+        bounds = np.searchsorted(idx, np.arange(len(meta) + 1))
+        for i, (g, c, u) in enumerate(meta):
+            lo, hi = bounds[i], bounds[i + 1]
+            per.append((int(g), int(c), u, t[lo:hi], x[lo:hi], d[lo:hi]))
+    return A, B, led, per
 
 
 def selftest():
@@ -531,7 +690,7 @@ def selftest():
                              np.full(4, C.NET_Y + 8.0)])   # near, x'=5
     rt = {1: [(1, {"hi": (ts_ok, xy_hi, "near"),
                    "lo": (ts_ok, xy_lo, "near")}, None)]}
-    A, B, led = accumulate(rt)
+    A, B, led, per = accumulate(rt)
     chk(abs(A["hi"][:, 0].mean() - 15.0) < 1e-9,
         "frame A keeps the physical half (15 stays 15)")
     chk(abs(B["hi"][:, 0].mean() - 5.0) < 1e-9,
@@ -543,7 +702,7 @@ def selftest():
         f"{led['rallies_B']})")
     short = np.array([0.0, 0.05])
     rt2 = {1: [(1, {"hi": (short, xy_hi[:2], "near")}, None)]}
-    A2, B2, led2 = accumulate(rt2)
+    A2, B2, led2, _ = accumulate(rt2)
     chk("hi" in A2 and "hi" not in B2 and led2["dropped_no_start"] == 1,
         "short-start rally: in frame A, dropped from frame B, ledgered")
 
@@ -594,14 +753,48 @@ def selftest():
     import tempfile, os
     fd, cp = tempfile.mkstemp(suffix=".npz")
     os.close(fd)
-    save_cache(cp, A, B, led)
-    A2, B2, led2 = load_cache(cp)
+    save_cache(cp, A, B, led, per)
+    A2, B2, led2, per2 = load_cache(cp)
     os.unlink(cp)
     chk(set(A2) == set(A) and np.allclose(A2["hi"], A["hi"]),
         "frame A survives the cache unchanged")
     chk(led2["mirrored"] == led["mirrored"]
         and led2["rallies_B"] == led["rallies_B"],
         "the drop ledger survives the cache")
+    chk(len(per2) == len(per)
+        and all(np.allclose(a[4], b[4]) and a[2] == b[2]
+                for a, b in zip(sorted(per, key=lambda r: (r[1], r[2])),
+                                sorted(per2, key=lambda r: (r[1], r[2])))),
+        "the per-rally table survives the cache (any anchor recomputable)")
+
+    print("settled anchor vs start anchor")
+    # a STACK: starts on the right, plays the whole rally on the left
+    ts_s = np.arange(0.0, 4.0, 0.2)
+    x_s = np.where(ts_s < 1.0, 15.0, 5.0)
+    d_s = np.full(len(ts_s), 8.0)
+    per_stack = [(1, 1, "p", ts_s, x_s, d_s)]
+    Bs, led_s = frame_settled(per_stack)
+    start_ref = start_half(ts_s, x_s)
+    chk(start_ref > 10 and settled_half(x_s) < 10,
+        f"the two anchors DISAGREE on a stack "
+        f"(start {start_ref:.0f}, settled {settled_half(x_s):.0f})")
+    chk(abs(np.median(Bs["p"][:, 0]) - 5.0) < 1e-9,
+        "settled anchor leaves the played side alone (no phantom crossing)")
+    q = np.column_stack([x_s, d_s]).copy()
+    q[:, 0] = C.W_FT - q[:, 0]          # what the START anchor would do
+    c_start = float(np.mean(q[:, 0] > 10))
+    c_settled = float(np.mean(Bs["p"][:, 0] > 10))
+    # NOTE: settled REDUCES the phantom crossing but cannot remove it --
+    # during the unwind the player really is past the centreline.  Only
+    # dropping the unwind frames would zero it, and that is a different
+    # (data-losing) choice, deliberately not made here.
+    chk(c_start > 0.7 and 0.2 < c_settled < 0.3 and c_settled < c_start / 2,
+        f"start anchor reports {c_start:.0%} crossing on this stack vs "
+        f"settled {c_settled:.0%} -- reduced 3x, not eliminated")
+    per_mid = [(1, 1, "p", ts_s, np.full(len(ts_s), 10.2), d_s)]
+    _, led_m = frame_settled(per_mid)
+    chk(led_m["ambiguous_centre"] == 1,
+        "a centreline-dweller is ledgered as an ambiguous anchor")
 
     print("orientation: net at the panel top")
 
@@ -664,12 +857,14 @@ def main():
     ap.add_argument("--cache", default="",
                     help="npz of accumulated points; read if it exists, "
                          "else written after the run")
+    ap.add_argument("--stack-report", action="store_true",
+                    help="pre-registered D1-D4 stacking diagnostics")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
         raise SystemExit(selftest())
     if a.cache and Path(a.cache).exists():
-        A, B, led = load_cache(a.cache)
+        A, B, led, per = load_cache(a.cache)
         print(f"cache HIT {a.cache} — pipeline skipped")
     else:
         for req in ("pose_dir", "court", "windows", "lineup"):
@@ -679,11 +874,18 @@ def main():
         # collect-only: this instrument renders a picture and must never
         # touch the committed coverage tables
         C.run(a, collect=lambda rt: got.update(rt), write=False)
-        A, B, led = accumulate(got)
+        A, B, led, per = accumulate(got)
         if a.cache:
-            save_cache(a.cache, A, B, led)
+            save_cache(a.cache, A, B, led, per)
             print(f"cache WRITTEN {a.cache}")
     order, names = order_players()
+    if a.stack_report:
+        partner = {}
+        import csv as _csv
+        for r in _csv.DictReader(open(ROOT / "data/coverage_players.csv")):
+            partner[r["player_uuid"]] = r["partner_uuid"]
+        stack_report(per, names, partner)
+        return
     svg = render(A, B, order, names, led, a.title)
     out = a.out or str(ROOT / "data/vision/coverage_heatmap.svg")
     Path(out).write_text(svg)
