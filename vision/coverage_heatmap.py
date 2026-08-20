@@ -156,11 +156,26 @@ def smooth(H, sigma_ft=SIGMA_FT):
     return A
 
 
-def normalise(H):
+def norm_level(H):
+    """The p99.5 of a panel's own non-zero density."""
     nz = H[H > 0]
-    if nz.size == 0:
-        return H
-    hi = np.percentile(nz, NORM_PCT)
+    return float(np.percentile(nz, NORM_PCT)) if nz.size else 0.0
+
+
+def normalise(H, hi=None):
+    """Scale to a reference density.
+
+    hi=None keeps each panel on its OWN p99.5, which is only valid for
+    reading one panel at a time.  Small multiples get compared across
+    panels -- that is what they are for -- so render() passes a SHARED
+    hi per row.  Measured on the mixed final, the per-panel normalisers
+    ranged 14.3 (Alshon) to 28.7 (Bright), a 2.0x spread: under
+    per-panel scaling the same amount of blue meant twice as much time
+    in one panel as the next, which silently exaggerates whoever has
+    the flattest distribution.
+    """
+    if hi is None:
+        hi = norm_level(H)
     return H / hi if hi > 0 else H
 
 
@@ -308,7 +323,7 @@ def panel(H, ox, oy, title, sub, diverging=False):
 
 def legend(ox, oy, w=150.0):
     g = [f'<text x="{ox:.1f}" y="{oy - 6:.1f}" fill="{INK2}"'
-         f' font-size="10.5">time spent (share of own 99.5th pct)</text>']
+         f' font-size="10.5">time spent — ONE scale across the row</text>']
     step = w / len(BLUE)
     for i, c in enumerate(BLUE):
         g.append(f'<rect x="{ox + i * step:.1f}" y="{oy:.1f}"'
@@ -386,11 +401,19 @@ def render(A, B, order, names, led, title):
                  f' font-weight="700">{_esc(lab)}</text>')
         g.append(f'<text x="{PAD_L:.1f}" y="{oy - ROW_SUB_DY:.1f}"'
                  f' fill="{INK2}" font-size="10.5">{_esc(sub)}</text>')
+        dens = {u: smooth(hist2d(dat.get(u, np.zeros((0, 2)))))
+                for u in order}
+        # ONE scale for the whole row: these are small multiples and get
+        # read against each other, so a colour must mean the same time
+        # in every panel
+        hi = max(norm_level(D) for D in dens.values()) or None
         for ci, u in enumerate(order):
             ox = PAD_L + ci * (PW + GAP_X)
             pts = dat.get(u, np.zeros((0, 2)))
-            g += panel(normalise(smooth(hist2d(pts))), ox, oy,
-                       names.get(u, u[:8]), f"{len(pts):,} frames")
+            area = C.ellipse_area(pts, np.ones(len(pts))) if len(pts) else 0
+            g += panel(normalise(dens[u], hi), ox, oy,
+                       names.get(u, u[:8]),
+                       f"{len(pts):,} frames · {area:,.0f} ft² (90%)")
             if ci == 0:
                 g += _depth_axis(ox + (0 - X_LO) * PX_FT, oy)
 
@@ -402,10 +425,12 @@ def render(A, B, order, names, led, title):
              f'women only: a men-vs-women map would show a ROLE '
              f'difference in mixed, not a player difference.</text>')
     pairs = [(order[0], order[2]), (order[1], order[3])]
+    densB = {u: smooth(hist2d(B.get(u, np.zeros((0, 2))))) for u in order}
+    hiB = max(norm_level(D) for D in densB.values()) or None
     for ci, (ua, ub) in enumerate(pairs):
         ox = PAD_L + ci * (PW + GAP_X)
-        Ha = normalise(smooth(hist2d(B.get(ua, np.zeros((0, 2))))))
-        Hb = normalise(smooth(hist2d(B.get(ub, np.zeros((0, 2))))))
+        Ha = normalise(densB[ua], hiB)
+        Hb = normalise(densB[ub], hiB)
         g += panel(Ha - Hb, ox, contrast_y,
                    f"{short_name(names.get(ua, ua[:8]))} − "
                    f"{short_name(names.get(ub, ub[:8]))}",
@@ -551,6 +576,19 @@ def selftest():
     d = _div_levels(np.array([[-2.0, 0.0, 2.0]]), len(BLUE_ARM))
     chk(d[0, 0] == -len(BLUE_ARM) and d[0, 1] == 0
         and d[0, 2] == len(BLUE_ARM), "diverging clips both arms, 0 neutral")
+
+    print("shared normalisation makes panels comparable")
+    Hbig = smooth(hist2d(np.repeat([[10.0, 11.0]], 40, axis=0)))
+    Hsml = smooth(hist2d(np.repeat([[10.0, 11.0]], 10, axis=0)))
+    hi = max(norm_level(Hbig), norm_level(Hsml))
+    la = _levels(normalise(Hbig, hi), BLUE).max()
+    lb = _levels(normalise(Hsml, hi), BLUE).max()
+    chk(lb < la, f"a 4x-sparser panel reads LIGHTER on a shared scale "
+                 f"(levels {lb} vs {la})")
+    la2 = _levels(normalise(Hbig), BLUE).max()
+    lb2 = _levels(normalise(Hsml), BLUE).max()
+    chk(la2 == lb2, f"...whereas per-panel scaling makes them identical "
+                    f"({lb2} vs {la2}) -- the bug shared scaling fixes")
 
     print("cache round-trip")
     import tempfile, os
