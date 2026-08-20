@@ -2590,3 +2590,39 @@ TWO SAMPLING ARTEFACTS worth fixing before any further arm:
       One window in nine. The cells are still 0.15 s apart, so the
       time mapping holds, but no court-frame contact can be read from
       them.
+
+## 2026-08-20 — the 3x3 "93%" ALSO fails the null. Retroactive correction.
+
+The null was built today, so it had never been applied to the result it
+most needed to be applied to. Re-scored the 2026-08-19 localization
+test from its own locked CALLS (preserved in vlm_loc_score.py) and key:
+
+  3x3, 30 windows, 28 contacts, 37 calls
+    +/-0.5s   recall 92.9%  prec 70.3%  unif 78.6%  +14.3% @98.1
+              shift 82.5%  +10.4% **@93.6 — short of 95**
+    +/-1 cell recall 46.4%  prec 35.1%  unif 35.3%  +11.1% @86.6
+              shift 37.3%  +9.2% @79.7
+
+So the project's headline VLM number is NOT ESTABLISHED. Worse, the
+specific claim it carried — "double the decoded pipeline's 45.7%" —
+evaporates at the sharp tolerance: 46.4% vs 45.7% is the SAME NUMBER.
+The doubling was the +/-0.5s tolerance being 3.3 cells wide on a 9-cell
+window, not the model seeing more than the pose decoder.
+
+This is the same failure across all four arms now measured (3x3, 5x5,
+6x6 marked, 6x6 marked re-run): every one posts 83-93% at +/-0.5s,
+every one lands 27-53% at +/-1 cell, and not one clears its own
+random-phase null at 95%. The consistent story is that +/-0.5s cannot
+discriminate at these packings and never could — it is 3.3 cells wide,
+so it measures "did you call roughly the right region", which rhythm
+alone answers.
+
+WHAT THIS DOES NOT OVERTURN. The hitter test (side 19/20, four-way
+17/20) is a CLASSIFICATION with a flat 25%/50% chance baseline and is
+untouched by any of this. Play/no-play 30/30 likewise. The alternation
+decoder's shot COUNTS (161/162) are untouched. What is overturned is
+specifically TIMESTAMP PLACEMENT, on every instrument tried.
+
+ANY FUTURE PLACEMENT CLAIM must report +/-1 cell against the shift
+null. The +/-0.5s metric of record stays for cross-instrument
+comparability but must never again be quoted alone.
