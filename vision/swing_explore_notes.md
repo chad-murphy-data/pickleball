@@ -2626,3 +2626,50 @@ specifically TIMESTAMP PLACEMENT, on every instrument tried.
 ANY FUTURE PLACEMENT CLAIM must report +/-1 cell against the shift
 null. The +/-0.5s metric of record stays for cross-instrument
 comparability but must never again be quoted alone.
+
+## 2026-08-20 — 19-RALLY BASELINE IN: 68% / 39% / median error 0.08s
+
+    CONTACT RECALL (+/-0.5s)   155/229 = 68%
+    precision                  155/395 = 39%
+    median timing error        0.08s
+    inferred (inside a coasted gap)  90 of 395
+
+FIRST READ IS A TRAP AND THE NULL CATCHES IT. 68% looks like a pass
+against the pose decoder's 45.7%. It is not: 395 detections over 238s
+of searchable span is 1.66/s, and each contact carries a 1.0s-wide
+acceptance window, so a UNIFORM null placing the same 395 detections at
+random recovers **78.5% [74.2, 83.0]**. Observed 67.7% is BELOW its own
+null, at the 0th percentile. On the project's metric of record this
+detector is worse than sprinkling.
+
+BUT THE MEDIAN TIMING ERROR SAYS THE OPPOSITE, AND IT IS THE MORE
+INFORMATIVE NUMBER. 0.08s is HALF A CELL of the VLM grids and a sixth
+of the tolerance it is being scored at. A null's matched detections sit
+roughly uniform inside +/-0.5s (median error ~0.25s). This detector's
+sit at 0.08s. Those are different distributions and +/-0.5s cannot see
+the difference — it is the same tolerance-too-wide failure that
+inflated every VLM arm, arriving from the other direction.
+
+Tight-tolerance nulls on the same panel: +/-0.15s -> 39.3%
+[33.6, 45.0]; +/-0.08s -> 23.3% [18.3, 28.4]. The median error alone
+BOUNDS the detector at >= 77 of 155 matches inside 0.08s, i.e. >= 33.8%
+recall at +/-0.08s against a 23.3% null. So the tight-tolerance read is
+plausibly positive where the loose one is negative. It needs measuring,
+not arguing.
+
+WHY BELOW-NULL AT +/-0.5s IS ITSELF A DIAGNOSIS. Uniform placement
+spreads; this detector CLUSTERS. Contacts are emitted at segment joins,
+segments survive where tracking survives, and tracking dropout was
+already measured as BURSTY (0.6s runs with no surviving track at all,
+2026-08-20). A clustered set of 395 covers less timeline than a spread
+set of 395, which is exactly how you land under a uniform null while
+being individually precise. 90 of 395 sitting inside coasted gaps is
+the same story. So the binding constraint is COVERAGE, not precision —
+the opposite of the VLM arms, where precision was the constraint and
+coverage was fine.
+
+ball_track.py now prints a TOLERANCE SWEEP (0.50/0.30/0.15/0.08) with a
+uniform null at each, and takes --dump to write detections+truth so
+this never needs re-tracking to re-score. Smoke-tested on a synthetic
+detector with sd 0.08s jitter: separates +35.9% over null at +/-0.15s,
+which is the shape a genuinely precise detector makes.

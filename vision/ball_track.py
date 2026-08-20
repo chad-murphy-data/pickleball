@@ -596,6 +596,9 @@ def main():
                     help="seconds of context each side of a rally")
     ap.add_argument("--rallies", default="",
                     help="comma-separated rally_cum; default = all train")
+    ap.add_argument("--dump", default="",
+                    help="write detections+truth to CSV so "
+                         "scoring never needs a re-track")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -618,6 +621,7 @@ def main():
             else sorted(truth))
     tp = fp = fn = 0
     errs, inf_n = [], 0
+    panel = []                     # (cum, detections, truth) for re-scoring
     for cum in want:
         ts = truth.get(cum)
         if not ts:
@@ -626,6 +630,7 @@ def main():
                                     a.fps, a.width)
         dt = [d for d, _a, _i in det]
         inf_n += sum(1 for _d, _a, i in det if i)
+        panel.append((cum, det, ts))
         m = match(dt, ts)
         tp += len(m); fp += len(dt) - len(m); fn += len(ts) - len(m)
         errs += [abs(d - t) for d, t in m]
@@ -644,8 +649,63 @@ def main():
         print(f"median timing error           "
               f"{errs[len(errs)//2]:.2f}s")
     print(f"contacts reported inside a coasted gap (inferred): {inf_n}")
-    print("\nreference on the same metric: decoded pose pipeline 45.7%, "
-          "VLM 93%")
+
+    if a.dump:
+        with open(a.dump, "w") as fh:
+            fh.write("rally_cum,kind,t_s,angle_deg,inferred\n")
+            for cum, det, ts in panel:
+                for d, ang, i in det:
+                    fh.write(f"{cum},det,{d:.4f},{ang:.1f},{int(i)}\n")
+                for t in ts:
+                    fh.write(f"{cum},truth,{t:.4f},,\n")
+        print(f"\ndetections dumped to {a.dump} — re-score at any "
+              f"tolerance without re-tracking")
+
+    tol_sweep(panel)
+
+
+def tol_sweep(panel, tols=(0.50, 0.30, 0.15, 0.08), draws=4000, seed=7):
+    """Recall at several tolerances, each against a UNIFORM PLACEMENT NULL.
+
+    WHY (2026-08-20). +/-0.5s is the project's metric of record but it is
+    far wider than this detector's own median timing error (0.08s), and
+    at ~1.7 detections per second of searchable video a null that just
+    sprinkles the SAME NUMBER of detections at random already recovers
+    ~78% of contacts. A raw +/-0.5s recall therefore says almost nothing
+    about placement. The tight tolerances are where a precise detector
+    can actually separate from chance, so they are printed with their
+    own nulls rather than left to be computed by hand later."""
+    import random
+    rng = random.Random(seed)
+    n_c = sum(len(ts) for _c, _d, ts in panel)
+    if not n_c:
+        return
+    print("\nRECALL vs UNIFORM PLACEMENT NULL (same detection count, "
+          "same spans)")
+    print("  tol      recall            null              lift    pct")
+    for tol in tols:
+        hit = sum(len(match([d for d, _a, _i in det], ts, tol))
+                  for _c, det, ts in panel)
+        obs = hit / n_c
+        rates = []
+        for _ in range(draws):
+            h = 0
+            for _c, det, ts in panel:
+                lo, hi = ts[0] - 1.0, ts[-1] + 1.0
+                pts = [rng.uniform(lo, hi) for _ in range(len(det))]
+                h += len(match(pts, ts, tol))
+            rates.append(h / n_c)
+        rates.sort()
+        mean = sum(rates) / len(rates)
+        pct = 100.0 * sum(1 for r in rates if r < obs) / len(rates)
+        flag = "" if pct >= 95 else "   <- at/below chance" if pct < 50 \
+            else "   <- n.s."
+        print(f"  +/-{tol:.2f}s  {hit:>3}/{n_c} = {obs:5.1%}   "
+              f"{mean:5.1%} [{rates[int(.025*len(rates))]:.1%},"
+              f"{rates[int(.975*len(rates))]:.1%}]  {obs-mean:+6.1%}  "
+              f"{pct:5.1f}{flag}")
+    print("\nreference at +/-0.5s: pose decoder 45.7%, VLM 3x3 92.9% "
+          "(both FAIL their nulls; at +/-0.15s they are 45.7% and 46.4%)")
 
 
 if __name__ == "__main__":
