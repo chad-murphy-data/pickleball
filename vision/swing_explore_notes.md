@@ -2090,6 +2090,46 @@ Expected: segments end at contacts, so every clutter segment that finds
 a plausible successor manufactures one. Mutual-best matching is built
 but unmeasured.
 
+## 2026-08-20 — THE CLASSICAL TRACKER IS THE ONE CHANNEL THAT DOESN'T COLLAPSE ON FAST SHOTS
+
+Ran the miss profile on the clip (rallies 1-2, 36 contacts), splitting
+the tracker's recall by the PACE of the contact it missed:
+
+    fast   12/18 = 67%
+    slow   11/14 = 79%
+    other   2/4  = 50%
+    TOTAL  25/36 = 69%
+
+**A 12 pp fast/slow gap.** Compare every other channel in this thread:
+    VLM pace calls ........ 90% slow vs 60% fast = 30 pp
+    ball findable by eye .. 94% dink windows vs 56% firefight = 38 pp
+    pose .................. actively INVERTED on fast (arm_cmax 0.265
+                            on fast tags vs 0.628 on slow)
+Everything appearance-based degrades hard on fast; motion differencing
+barely notices. The mechanism is clean and it is the OPPOSITE of the
+others: **fast motion produces MORE inter-frame displacement, which is
+a STRONGER motion-difference signal.** Speed helps this detector and
+hurts every other instrument we have.
+
+WHY THIS MATTERS BEYOND THE NUMBER. The standing worry about
+ensembling was CORRELATED FAILURE — every channel in this program
+degrades on fast, occluded, cluttered moments, so an ensemble might
+inherit the failure rather than average it away. This is direct
+evidence against that worry for the ball channel specifically: its
+error profile runs almost flat where the others fall off a cliff. That
+is real orthogonality, and it is the strongest argument yet that
+pose + ball is worth ensembling. It also sharpens the earlier
+complementarity argument (the ball vanishes behind the body that pose
+sees best) with a second, independent axis.
+
+CONSEQUENCE FOR WHAT THE BALL CHANNEL IS FOR: contact recall is the
+WRONG metric for judging its data value. The SEGMENTS are the product
+— ball position over time. With the court homography already solved at
+0.06 ft, positions convert to SHOT SPEED IN MPH, landing location and
+direction. Nothing else in this project can produce any of those, and
+per the profile above, this is the only channel that still works on
+the fast shots where speed is the interesting number.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
