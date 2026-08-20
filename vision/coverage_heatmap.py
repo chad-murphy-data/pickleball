@@ -194,6 +194,71 @@ def smooth(H, sigma_ft=SIGMA_FT):
     return A
 
 
+# ellipse overlay: 4 hues validated ALL-PAIRS by the dataviz validator
+# (the default slot order fails -- yellow beside orange is normal-vision
+# dE 13.7, under the 15 floor).  Aqua sits under 3:1 on this surface, so
+# direct labels are REQUIRED, not optional.
+ELL_COLOURS = ["#2a78d6", "#eb6834", "#1baf7a", "#4a3aa7"]
+
+
+def ellipse_params(pts, wts=None):
+    """(mu, cov, area) for the 90% occupancy ellipse.
+
+    Mirrors coverage.ellipse_area EXACTLY -- same one-3-sigma trim, same
+    chi^2 -- so the drawn ellipse is the shipped number made visible and
+    not a second, subtly different, estimate.  Selftested against it.
+    """
+    P = np.asarray(pts, float)
+    w = np.ones(len(P)) if wts is None else np.asarray(wts, float)
+    if len(P) < 20:
+        return None, None, float("nan")
+    for _ in range(2):
+        mu = (P * w[:, None]).sum(0) / w.sum()
+        d = P - mu
+        cov = (d * w[:, None]).T @ d / w.sum()
+        cov += np.eye(2) * 1e-6
+        m = np.einsum("ij,jk,ik->i", d, np.linalg.inv(cov), d)
+        keep = m < 9.0
+        if keep.all():
+            break
+        P, w = P[keep], w[keep]
+        if len(P) < 20:
+            return None, None, float("nan")
+    area = float(np.pi * C.ELLIPSE_CHI2 * np.sqrt(max(np.linalg.det(cov), 0.0)))
+    return mu, cov, area
+
+
+def ellipse_svg(mu, cov, ox, oy, stroke, width=1.8, halo=True, dash=""):
+    """The 90% ellipse drawn in panel pixels."""
+    if mu is None:
+        return []
+    ev, evec = np.linalg.eigh(cov)
+    ev = np.maximum(ev, 1e-9)
+    order = np.argsort(ev)[::-1]
+    ev, evec = ev[order], evec[:, order]
+    rx = float(np.sqrt(C.ELLIPSE_CHI2 * ev[0])) * PX_FT
+    ry = float(np.sqrt(C.ELLIPSE_CHI2 * ev[1])) * PX_FT
+    # court (x, depth) maps to svg (x right, y down) with the SAME sign
+    # on both axes, so the rotation carries over unchanged
+    ang = float(np.degrees(np.arctan2(evec[1, 0], evec[0, 0])))
+    cx = ox + (mu[0] - X_LO) * PX_FT
+    cy = oy + (mu[1] - D_LO) * PX_FT
+    tf = f'rotate({ang:.2f} {cx:.1f} {cy:.1f})'
+    g = []
+    if halo:                       # 2px surface ring keeps it legible on ink
+        g.append(f'<ellipse cx="{cx:.1f}" cy="{cy:.1f}" rx="{rx:.1f}" '
+                 f'ry="{ry:.1f}" transform="{tf}" fill="none" '
+                 f'stroke="{SURFACE}" stroke-width="{width + 2:.1f}" '
+                 f'stroke-opacity="0.85"/>')
+    g.append(f'<ellipse cx="{cx:.1f}" cy="{cy:.1f}" rx="{rx:.1f}" '
+             f'ry="{ry:.1f}" transform="{tf}" fill="none" '
+             f'stroke="{stroke}" stroke-width="{width:.1f}"'
+             + (f' stroke-dasharray="{dash}"' if dash else "") + '/>')
+    g.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="2.4" '
+             f'fill="{stroke}" stroke="{SURFACE}" stroke-width="1"/>')
+    return g
+
+
 def norm_level(H):
     """The p99.5 of a panel's own non-zero density."""
     nz = H[H > 0]
@@ -238,7 +303,9 @@ def accumulate(rally_tracks_by_game):
                 p = own_frame(xy, end)
                 A[u].append(p)
                 led["rallies_A"] += 1
-                per.append((int(game), int(cum), u,
+                # game is a (match_id, game_no) TUPLE in production --
+                # keep it opaque, never coerce it to int
+                per.append((str(game), int(cum), u,
                             np.asarray(ts, float), p[:, 0].copy(),
                             p[:, 1].copy()))
                 ref = start_half(ts, p[:, 0])
@@ -445,7 +512,7 @@ def render(A, B, order, names, led, title):
     rows_y = [PAD_T + 78]
     rows_y.append(rows_y[0] + PH + GAP_Y)
     contrast_y = rows_y[1] + PH + GAP_Y
-    H_total = contrast_y + PH + 34
+    H_total = contrast_y + PH + 60
 
     g = [f'<rect width="{W:.0f}" height="{H_total:.0f}" fill="{SURFACE}"/>']
     g.append(f'<text x="{PAD_L:.1f}" y="{PAD_T:.1f}" fill="{INK}"'
@@ -480,10 +547,11 @@ def render(A, B, order, names, led, title):
         for ci, u in enumerate(order):
             ox = PAD_L + ci * (PW + GAP_X)
             pts = dat.get(u, np.zeros((0, 2)))
-            area = C.ellipse_area(pts, np.ones(len(pts))) if len(pts) else 0
+            mu, cov, area = ellipse_params(pts)
             g += panel(normalise(dens[u], hi), ox, oy,
                        names.get(u, u[:8]),
                        f"{len(pts):,} frames · {area:,.0f} ft² (90%)")
+            g += ellipse_svg(mu, cov, ox, oy, INK, width=1.6)
             if ci == 0:
                 g += _depth_axis(ox + (0 - X_LO) * PX_FT, oy)
 
@@ -508,16 +576,42 @@ def render(A, B, order, names, led, title):
         if ci == 0:
             g += _depth_axis(ox + (0 - X_LO) * PX_FT, contrast_y)
 
-    # legends live in the difference row's two empty columns
-    lx = PAD_L + 2 * (PW + GAP_X)
-    g += legend(lx, contrast_y + 24)
-    g += div_legend(lx, contrast_y + 92, "second player", "first player")
+    # column 2 of the difference row: all four 90% ellipses on one court,
+    # which is the only panel where the areas can be compared directly
+    ox = PAD_L + 2 * (PW + GAP_X)
+    g.append(f'<rect x="{ox:.1f}" y="{contrast_y:.1f}" width="{PW:.1f}" '
+             f'height="{PH:.1f}" fill="{SURFACE}"/>')
+    g += _court(ox, contrast_y)
+    ell = []
+    for i, u in enumerate(order):
+        mu, cov, area = ellipse_params(B.get(u, np.zeros((0, 2))))
+        g += ellipse_svg(mu, cov, ox, contrast_y, ELL_COLOURS[i], width=1.9)
+        ell.append((names.get(u, u[:8]), area, ELL_COLOURS[i]))
+    g.append(f'<text x="{ox:.1f}" y="{contrast_y - PANEL_TITLE_DY:.1f}"'
+             f' fill="{INK}" font-size="12.5" font-weight="700">'
+             f'All four, one court</text>')
+    g.append(f'<text x="{ox:.1f}" y="{contrast_y - PANEL_SUB_DY:.1f}"'
+             f' fill="{INK2}" font-size="9.5">90% ellipses, '
+             f'rally-relative</text>')
+    # direct labels: REQUIRED relief, aqua is under 3:1 on this surface
+    lx = PAD_L + 3 * (PW + GAP_X)
+    for i, (nm, area, col) in enumerate(sorted(ell, key=lambda r: -r[1])):
+        yy = contrast_y + 12 + i * 15
+        g.append(f'<rect x="{lx:.1f}" y="{yy - 7:.1f}" width="14" '
+                 f'height="3" fill="{col}"/>')
+        g.append(f'<text x="{lx + 20:.1f}" y="{yy - 2:.1f}" fill="{INK}"'
+                 f' font-size="10">{_esc(nm)}</text>')
+        g.append(f'<text x="{lx + PW - 20:.1f}" y="{yy - 2:.1f}"'
+                 f' fill="{INK2}" font-size="10" text-anchor="end">'
+                 f'{area:,.0f} ft²</text>')
+    g += legend(lx, contrast_y + 100)
+    g += div_legend(lx, contrast_y + 150, "second player", "first player")
     note = (f'{led["rallies_A"]} player-rallies mapped · '
             f'{led["dropped_no_start"]} dropped from the relative frame '
             f'(start half unreadable)')
-    g.append(f'<text x="{lx:.1f}" y="{contrast_y + 148:.1f}"'
+    g.append(f'<text x="{lx:.1f}" y="{contrast_y + 208:.1f}"'
              f' fill="{INK2}" font-size="9.5">{_esc(note)}</text>')
-    g.append(f'<text x="{lx:.1f}" y="{contrast_y + 163:.1f}"'
+    g.append(f'<text x="{lx:.1f}" y="{contrast_y + 223:.1f}"'
              f' fill="{INK2}" font-size="9.5">Position density measures '
              f'SPACE, never intent.</text>')
 
@@ -652,7 +746,7 @@ def load_cache(path):
         bounds = np.searchsorted(idx, np.arange(len(meta) + 1))
         for i, (g, c, u) in enumerate(meta):
             lo, hi = bounds[i], bounds[i + 1]
-            per.append((int(g), int(c), u, t[lo:hi], x[lo:hi], d[lo:hi]))
+            per.append((str(g), int(c), u, t[lo:hi], x[lo:hi], d[lo:hi]))
     return A, B, led, per
 
 
@@ -688,8 +782,11 @@ def selftest():
                              np.full(4, C.NET_Y + 8.0)])   # near, x'=15
     xy_lo = np.column_stack([np.full(4, 5.0),
                              np.full(4, C.NET_Y + 8.0)])   # near, x'=5
-    rt = {1: [(1, {"hi": (ts_ok, xy_hi, "near"),
-                   "lo": (ts_ok, xy_lo, "near")}, None)]}
+    # production keys rally_tracks_by_game by a (match_id, game) TUPLE,
+    # not an int -- an int fixture here passed while real data crashed
+    GK = ("c4eb30d0", "1")
+    rt = {GK: [(1, {"hi": (ts_ok, xy_hi, "near"),
+                    "lo": (ts_ok, xy_lo, "near")}, None)]}
     A, B, led, per = accumulate(rt)
     chk(abs(A["hi"][:, 0].mean() - 15.0) < 1e-9,
         "frame A keeps the physical half (15 stays 15)")
@@ -701,7 +798,7 @@ def selftest():
         f"ledger: 1 mirrored, 2 kept (got {led['mirrored']},"
         f"{led['rallies_B']})")
     short = np.array([0.0, 0.05])
-    rt2 = {1: [(1, {"hi": (short, xy_hi[:2], "near")}, None)]}
+    rt2 = {GK: [(1, {"hi": (short, xy_hi[:2], "near")}, None)]}
     A2, B2, led2, _ = accumulate(rt2)
     chk("hi" in A2 and "hi" not in B2 and led2["dropped_no_start"] == 1,
         "short-start rally: in frame A, dropped from frame B, ledgered")
@@ -772,7 +869,7 @@ def selftest():
     ts_s = np.arange(0.0, 4.0, 0.2)
     x_s = np.where(ts_s < 1.0, 15.0, 5.0)
     d_s = np.full(len(ts_s), 8.0)
-    per_stack = [(1, 1, "p", ts_s, x_s, d_s)]
+    per_stack = [(str(GK), 1, "p", ts_s, x_s, d_s)]
     Bs, led_s = frame_settled(per_stack)
     start_ref = start_half(ts_s, x_s)
     chk(start_ref > 10 and settled_half(x_s) < 10,
@@ -791,10 +888,42 @@ def selftest():
     chk(c_start > 0.7 and 0.2 < c_settled < 0.3 and c_settled < c_start / 2,
         f"start anchor reports {c_start:.0%} crossing on this stack vs "
         f"settled {c_settled:.0%} -- reduced 3x, not eliminated")
-    per_mid = [(1, 1, "p", ts_s, np.full(len(ts_s), 10.2), d_s)]
+    per_mid = [(str(GK), 1, "p", ts_s, np.full(len(ts_s), 10.2), d_s)]
     _, led_m = frame_settled(per_mid)
     chk(led_m["ambiguous_centre"] == 1,
         "a centreline-dweller is ledgered as an ambiguous anchor")
+
+    print("90% ellipse: drawn == shipped")
+    rng2 = np.random.default_rng(7)
+    P = rng2.multivariate_normal([9.0, 12.0], [[6.0, 2.0], [2.0, 14.0]], 900)
+    mu, cov, area = ellipse_params(P)
+    ref = C.ellipse_area(P, np.ones(len(P)))
+    chk(abs(area - ref) < 1e-9,
+        f"ellipse_params area == coverage.ellipse_area ({area:.4f} vs "
+        f"{ref:.4f}) -- the drawing IS the shipped number")
+    ev = np.linalg.eigvalsh(cov)
+    chk(abs(np.pi * np.sqrt(C.ELLIPSE_CHI2 * ev[0])
+            * np.sqrt(C.ELLIPSE_CHI2 * ev[1]) - area) < 1e-6,
+        "pi*a*b of the drawn semi-axes reproduces the area")
+    svg = ellipse_svg(mu, cov, 0.0, 0.0, "#000")
+    cx = float(svg[1].split('cx="')[1].split('"')[0])
+    cy = float(svg[1].split('cy="')[1].split('"')[0])
+    # the svg prints 1 decimal, so 0.05 px is the exact-match tolerance
+    chk(abs(cx - (mu[0] - X_LO) * PX_FT) <= 0.05
+        and abs(cy - (mu[1] - D_LO) * PX_FT) <= 0.05,
+        "the ellipse centre lands on the centroid in panel pixels")
+    circ = ellipse_svg(np.array([10.0, 10.0]), np.eye(2) * 4.0, 0.0, 0.0, "#000")
+    rx = float(circ[1].split('rx="')[1].split('"')[0])
+    ry = float(circ[1].split('ry="')[1].split('"')[0])
+    chk(abs(rx - ry) <= 0.05
+        and abs(rx - np.sqrt(C.ELLIPSE_CHI2 * 4.0) * PX_FT) <= 0.05,
+        "an isotropic cloud draws a CIRCLE of the right radius")
+    tall = ellipse_svg(np.array([10.0, 10.0]),
+                       np.array([[1.0, 0.0], [0.0, 25.0]]), 0.0, 0.0, "#000")
+    ang = float(tall[1].split("rotate(")[1].split()[0])
+    chk(abs(abs(ang) - 90.0) < 1e-6,
+        f"a depth-elongated cloud draws its long axis DOWN the court "
+        f"(rotation {ang:.1f} deg)")
 
     print("orientation: net at the panel top")
 
