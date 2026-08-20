@@ -1830,6 +1830,56 @@ IS in the candidate set and everything downstream is geometry; low
 recall means the classical route needs a learned detector and the
 probe said so for the price of one script.
 
+## 2026-08-20 — CLASSICAL BALL-CANDIDATE PROBE RUN: 76% presence, ranks bimodal, misses STRUCTURED
+
+User ran `ball_candidates.py` (1280x720 source, 25 user-verified
+positions). Headline as printed: top-1 36%, top-5 64%, top-25 76%,
+median 103 candidates/frame.
+
+**36% TOP-1 IS THE WRONG NUMBER TO READ.** Rank only matters to a
+detector that must pick blind. A tracker gates: given the previous
+positions it predicts a small region and asks only whether the ball is
+in the candidate set NEAR THERE. So the operative figure is PRESENCE
+AT ANY RANK = **19/25 = 76%**, and 103 candidates/frame collapses to
+~1-3 inside a gate.
+
+SIGNATURE WORTH KEEPING — the ranks are BIMODAL: of the 19 found,
+**14 sit at rank <=2**, and the rest of the mass is misses, not
+mid-ranks. The dumb detector either sees the ball cleanly or not at
+all; it is rarely "confused". That is the profile of an occlusion /
+motion-blur limit, not of a weak scoring function — and it means
+better SCORING buys little while better VISIBILITY buys a lot.
+
+THE REAL WORRY, and it is specific: per window 5/6, 4/4, **3/6**, 7/9
+— and w24's three misses are CONSECUTIVE cells (0.45/0.60/0.75 s).
+Under independent 24% misses, the chance that ANY of the four windows
+shows a 3-run is ~5.4% (simulated). So the misses are STRUCTURED: the
+ball is genuinely undetectable for a stretch, not randomly dropped.
+Structured gaps are exactly the case where interpolation stops being
+bounded — which is the failure mode already on record from my own w01
+cell-7 error. w24 is the fast window; same axis as everything else.
+
+TWO LIMITS OF THE PROBE, both stated before any next step:
+ (1) it samples every 0.15 s; a tracker runs at 30 fps and gets 4.5x
+     more chances per second. Per-frame recall at native rate is
+     UNMEASURED and could be better (more shots at a moving ball) or
+     worse (motion blur between sampled instants).
+ (2) the detector uses **NO COLOUR MODEL AT ALL** — the ball is bright
+     yellow-green on a blue court and nothing in the code knows that.
+     This is the largest untried lever and it is ~5 lines.
+
+DECISION — DO NOT TUNE THE DETECTOR ON THESE 25. Two reasons: it
+optimises a PROXY (candidate recall) rather than the thing we care
+about, and it burns the only hand-verified ball positions we have. The
+disciplined move is END-TO-END: build the tracker + direction-change
+contact detector and score it on CONTACT TIMES against the 323 labeled
+contacts already in the repo, using the same +/-0.5 s match rate that
+gives the decoder 45.7% and the VLM 93%. That metric exists, has
+independent ground truth, needs NO new labeling, and burns NO holdout.
+If the classical pipeline lands near 93% it replaces the VLM locally;
+if it lands near 45% it is the decoder again with extra steps; either
+way the answer is a number, not an argument.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
