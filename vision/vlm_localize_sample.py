@@ -147,7 +147,9 @@ def cut_grid(video, t0, out_path, grid, crop, markers=False):
         from ball_track import track_all
         cand = [candidates(buf[i - 1], buf[i], buf[i + 1])
                 for i in range(1, len(buf) - 1)]
-        for tr in track_all(cand, fps):
+        # keyword, not positional: an older ball_track.py on disk has
+        # (cand, max_tracks, fps) and silently takes fps as max_tracks
+        for tr in track_all(cand, fps=fps):
             for f, x, y, seen in tr:
                 if seen:
                     pos.setdefault(f, (x, y))

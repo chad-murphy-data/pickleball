@@ -2306,3 +2306,30 @@ adjudicate rather than to trust). This is the version to test.
 Sizing, from the TRAIN budget (19 rallies, 229 contacts, 276 s of
 drawable video incl. pre-pad) at ~55 contacts per arm (se ~7pp):
 3x3 36 windows, 4x4 20, 5x5 13, 6x6 9. Marked 6x6 renders in ~15 s.
+
+## 2026-08-20 — marker arm crashed on a STALE ball_track.py (and a dedup)
+
+`--markers` died with `'float' object cannot be interpreted as an
+integer` at `range(max_tracks)`. Not a logic bug: the traceback's line
+numbers place track_all ~200 lines earlier than this repo has it, so
+the local copy is an OLDER ball_track.py whose signature was
+`(cand, max_tracks, fps)`. Calling `track_all(cand, fps)` positionally
+put fps=60.0 into max_tracks. Fixed by calling with a KEYWORD, which
+is correct under either signature.
+
+Worth flagging beyond this crash: a stale ball_track.py also predates
+the native-fps detection, which is the single thing that took the
+tracker from 0% to 67%. Any run of the 19-rally baseline on that copy
+would have been measuring the wrong code.
+
+Separately, `ball_track.py` carried FIVE duplicated top-level defs
+(_seg_vel, _join_time, _seg_speed, _ballistic_ok, track_all) from
+botched string-splices — Python used the second copy, so nothing was
+ever wrong, but the file had 84 lines of code that could silently
+diverge on the next edit. Verified line-for-line identical before
+removing the first copies; selftest and the clip run are unchanged
+(24/36 recall, 24/54 precision, same per-rally splits).
+
+Exclusion verified by reproducing both draws: arm5 opens on rally 20 @
+492.96s, arm6 on rally 10 @ 309.39s, zero overlapping windows, 94s of
+the 276s train budget spent.
