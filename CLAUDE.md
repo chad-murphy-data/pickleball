@@ -656,7 +656,29 @@ port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
 push to main, nightly data refresh); one-time setup = repo Settings →
 Pages → Source "GitHub Actions".
 Vision (2026-08-11 → CLOSED 2026-08-15 → **SWING THREAD REOPENED later
-the same day, user call**) — **READ `vision/POSTMORTEM.md` FIRST**: the
+the same day, user call**) — **READ `vision/STATUS.md` FIRST** (added
+2026-08-20): a committed per-channel ledger of what works, what is dead,
+and what is built, with every number next to its null. It exists because
+summaries of this work kept regressing to whatever had been measured
+most recently; generate any "where are we" answer FROM that file, not
+from the most recent session's mood. Headline, 2026-08-20: **TIMESTAMP
+PLACEMENT IS DEAD on every instrument tried** — four VLM grid arms
+(3x3, 5x5, 6x6 marked, 6x6 marked re-run) and the classical tracker,
+all measured against a CIRCULAR-SHIFT null that rotates the caller's own
+calls to a random phase. Every arm posts 83-93% at ±0.5s, every one
+lands 27-53% at ±1 cell, and not one clears its own shifted calls at
+95%; ±0.5s is 3.3 cells wide at these packings, so it scores "roughly
+the right region", which a rhythm prior answers by itself. `+/-0.5s`
+therefore CANNOT discriminate at grid packings — score any future grid
+arm with `vision/score_localization.py`, never on raw recall.
+**What that did NOT touch, and the reason:** hitter side 95% / four-way
+85%, play-no-play 30/30, shot counts 161/162, ball circles 93% — all
+CLASSIFICATIONS with flat chance baselines, no tolerance to widen and no
+rhythm to exploit. Side alternation is EXACT (0 violations / 229
+contacts) and pooled 2-colouring recovers teams with no video and no
+timestamps, so per-shot SIDE is free and only the partner call is open.
+Attribution, counting and space all survive; only "when" died.
+Also **READ `vision/POSTMORTEM.md`**: the
 whole arc in order with the numbers, the surviving assets,
 and the six lessons. The rest of this entry and
 model/vision_adjudication.md are the layered technical record, written in
