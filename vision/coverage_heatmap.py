@@ -139,12 +139,19 @@ def _kernel(sigma_cells):
 
 
 def smooth(H, sigma_ft=SIGMA_FT):
-    """Separable Gaussian; edge-padded so mass is not lost at the rim."""
+    """Separable Gaussian, ZERO-padded.
+
+    Zero padding is the honest boundary: there were no observations
+    outside the grid, so the density should fade there.  An earlier
+    edge-padded version replicated the rim values outward and drew
+    visible uniform bands down the panel edges -- structure that came
+    from the padding, not the match.
+    """
     k = _kernel(sigma_ft / GRID_FT)
     r = (len(k) - 1) // 2
-    A = np.pad(H, ((0, 0), (r, r)), mode="edge")
+    A = np.pad(H, ((0, 0), (r, r)), mode="constant")
     A = np.apply_along_axis(lambda m: np.convolve(m, k, "valid"), 1, A)
-    A = np.pad(A, ((r, r), (0, 0)), mode="edge")
+    A = np.pad(A, ((r, r), (0, 0)), mode="constant")
     A = np.apply_along_axis(lambda m: np.convolve(m, k, "valid"), 0, A)
     return A
 
@@ -192,8 +199,11 @@ def accumulate(rally_tracks_by_game):
 # ---------------------------------------------------------------- svg
 
 PX_FT = 7.0
-PAD_L, PAD_T = 46.0, 34.0
-GAP_X, GAP_Y = 26.0, 44.0
+PAD_L, PAD_T = 60.0, 28.0
+GAP_X, GAP_Y = 34.0, 62.0
+# text baselines, measured up from a panel's top edge
+ROW_HEAD_DY, ROW_SUB_DY = 44.0, 31.0
+PANEL_TITLE_DY, PANEL_SUB_DY = 17.0, 5.0
 SURFACE = "#fcfcfb"          # committed to a single light look, painted
 INK = "#0b0b0b"              # explicitly (no unvalidated dark ramp)
 INK2 = "#52514e"
@@ -288,10 +298,11 @@ def panel(H, ox, oy, title, sub, diverging=False):
             return None if lv == 0 else BLUE[lv]
     g += _cells(idx, ox, oy, colour_of)
     g += _court(ox, oy)
-    g.append(f'<text x="{ox:.1f}" y="{oy - 14:.1f}" fill="{INK}"'
-             f' font-size="13" font-weight="600">{_esc(title)}</text>')
-    g.append(f'<text x="{ox:.1f}" y="{oy - 2:.1f}" fill="{INK2}"'
-             f' font-size="10.5">{_esc(sub)}</text>')
+    g.append(f'<text x="{ox:.1f}" y="{oy - PANEL_TITLE_DY:.1f}"'
+             f' fill="{INK}" font-size="12.5"'
+             f' font-weight="700">{_esc(title)}</text>')
+    g.append(f'<text x="{ox:.1f}" y="{oy - PANEL_SUB_DY:.1f}"'
+             f' fill="{INK2}" font-size="9.5">{_esc(sub)}</text>')
     return g
 
 
@@ -337,67 +348,85 @@ def _depth_axis(ox, oy):
     return g
 
 
+def short_name(n):
+    """Last token -- difference-panel titles pair two names and the full
+    ones overflow the panel width."""
+    return n.split()[-1] if n else n
+
+
 def render(A, B, order, names, led, title):
     cols = len(order)
     W = PAD_L + cols * PW + (cols - 1) * GAP_X + 24
-    rows_y = []
-    y = PAD_T + 46
-    for _ in range(2):
-        rows_y.append(y)
-        y += PH + GAP_Y
-    contrast_y = y
-    H_total = contrast_y + PH + 76
+    rows_y = [PAD_T + 78]
+    rows_y.append(rows_y[0] + PH + GAP_Y)
+    contrast_y = rows_y[1] + PH + GAP_Y
+    H_total = contrast_y + PH + 34
+
     g = [f'<rect width="{W:.0f}" height="{H_total:.0f}" fill="{SURFACE}"/>']
     g.append(f'<text x="{PAD_L:.1f}" y="{PAD_T:.1f}" fill="{INK}"'
              f' font-size="17" font-weight="700">{_esc(title)}</text>')
-    g.append(f'<text x="{PAD_L:.1f}" y="{PAD_T + 17:.1f}" fill="{INK2}"'
-             f' font-size="11">Net at the top of every panel; each panel is '
-             f'one player’s own half, ends folded and mirrored to their '
-             f'own perspective.</text>')
+    g.append(f'<text x="{PAD_L:.1f}" y="{PAD_T + 18:.1f}" fill="{INK2}"'
+             f' font-size="11">Each panel is one player’s own half, net '
+             f'at the top. Ends are folded and the far end mirrored, so '
+             f'left/right is the player’s own.</text>')
 
-    for ri, (dat, lab, sub) in enumerate(
-            ((A, "COURT FRAME — where they actually stood",
-              "physical half, ends folded"),
-             (B, "RALLY-RELATIVE — controlled for which half they "
-              "lined up in",
-              "left of the dashed line = own start half, right = "
-              "partner’s"))):
+    ROWS = ((A, "COURT FRAME — where they actually stood",
+             "The physical half of the court, ends folded. A player who "
+             "rotates through both service halves reads double-humped "
+             "here; that is real, not an artefact."),
+            (B, "RALLY-RELATIVE — controlled for which half they lined "
+             "up in",
+             "Each rally mirrored so the half the player STARTED in is "
+             "always left of the dotted line. Right of it is the half "
+             "the partner started in."))
+    for ri, (dat, lab, sub) in enumerate(ROWS):
         oy = rows_y[ri]
-        g.append(f'<text x="{PAD_L:.1f}" y="{oy - 26:.1f}" fill="{INK}"'
-                 f' font-size="12.5" font-weight="700">{_esc(lab)}</text>')
+        g.append(f'<text x="{PAD_L:.1f}" y="{oy - ROW_HEAD_DY:.1f}"'
+                 f' fill="{INK}" font-size="13"'
+                 f' font-weight="700">{_esc(lab)}</text>')
+        g.append(f'<text x="{PAD_L:.1f}" y="{oy - ROW_SUB_DY:.1f}"'
+                 f' fill="{INK2}" font-size="10.5">{_esc(sub)}</text>')
         for ci, u in enumerate(order):
             ox = PAD_L + ci * (PW + GAP_X)
-            H = normalise(smooth(hist2d(dat.get(u, np.zeros((0, 2))))))
-            n = len(dat.get(u, ()))
-            g += panel(H, ox, oy, names.get(u, u[:8]),
-                       f"{n:,} frames · {sub}")
+            pts = dat.get(u, np.zeros((0, 2)))
+            g += panel(normalise(smooth(hist2d(pts))), ox, oy,
+                       names.get(u, u[:8]), f"{len(pts):,} frames")
             if ci == 0:
                 g += _depth_axis(ox + (0 - X_LO) * PX_FT, oy)
 
-    g.append(f'<text x="{PAD_L:.1f}" y="{contrast_y - 26:.1f}" fill="{INK}"'
-             f' font-size="12.5" font-weight="700">DIFFERENCE — '
-             f'same gender, opposite team (rally-relative frame)</text>')
+    g.append(f'<text x="{PAD_L:.1f}" y="{contrast_y - ROW_HEAD_DY:.1f}"'
+             f' fill="{INK}" font-size="13" font-weight="700">DIFFERENCE '
+             f'— same gender, opposite team (rally-relative)</text>')
+    g.append(f'<text x="{PAD_L:.1f}" y="{contrast_y - ROW_SUB_DY:.1f}"'
+             f' fill="{INK2}" font-size="10.5">Men vs men and women vs '
+             f'women only: a men-vs-women map would show a ROLE '
+             f'difference in mixed, not a player difference.</text>')
     pairs = [(order[0], order[2]), (order[1], order[3])]
     for ci, (ua, ub) in enumerate(pairs):
         ox = PAD_L + ci * (PW + GAP_X)
         Ha = normalise(smooth(hist2d(B.get(ua, np.zeros((0, 2))))))
         Hb = normalise(smooth(hist2d(B.get(ub, np.zeros((0, 2))))))
-        D = Ha - Hb
-        g += panel(D, ox, contrast_y,
-                   f"{names.get(ua, ua[:8])} − {names.get(ub, ub[:8])}",
-                   "blue = first player more often, red = second",
+        g += panel(Ha - Hb, ox, contrast_y,
+                   f"{short_name(names.get(ua, ua[:8]))} − "
+                   f"{short_name(names.get(ub, ub[:8]))}",
+                   "where the first stands more than the second",
                    diverging=True)
         if ci == 0:
             g += _depth_axis(ox + (0 - X_LO) * PX_FT, contrast_y)
 
-    ly = contrast_y + PH + 26
-    g += legend(PAD_L, ly)
-    g += div_legend(PAD_L + 2 * (PW + GAP_X), ly, "second player", "first")
-    g.append(f'<text x="{PAD_L + PW + GAP_X:.1f}" y="{ly + 9:.1f}"'
-             f' fill="{INK2}" font-size="9.5">'
-             f'{led["rallies_A"]} player-rallies mapped; '
-             f'{led["dropped_no_start"]} dropped from the relative frame '
-             f'(start half unknown)</text>')
+    # legends live in the difference row's two empty columns
+    lx = PAD_L + 2 * (PW + GAP_X)
+    g += legend(lx, contrast_y + 24)
+    g += div_legend(lx, contrast_y + 92, "second player", "first player")
+    note = (f'{led["rallies_A"]} player-rallies mapped · '
+            f'{led["dropped_no_start"]} dropped from the relative frame '
+            f'(start half unreadable)')
+    g.append(f'<text x="{lx:.1f}" y="{contrast_y + 148:.1f}"'
+             f' fill="{INK2}" font-size="9.5">{_esc(note)}</text>')
+    g.append(f'<text x="{lx:.1f}" y="{contrast_y + 163:.1f}"'
+             f' fill="{INK2}" font-size="9.5">Position density measures '
+             f'SPACE, never intent.</text>')
+
     body = "\n".join(g)
     return (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W:.0f}" '
             f'height="{H_total:.0f}" viewBox="0 0 {W:.0f} {H_total:.0f}" '
@@ -425,6 +454,23 @@ def order_players():
     w1 = [w for w in women if w != w0][0]
     return ([men[0], w0, men[1], w1],
             {u: by[u]["player"] for u in seen})
+
+
+def save_cache(path, A, B, led):
+    d = {f"A:{u}": v for u, v in A.items()}
+    d.update({f"B:{u}": v for u, v in B.items()})
+    d["__led__"] = np.array(sorted(led.items()), dtype=object)
+    np.savez_compressed(path, **d)
+
+
+def load_cache(path):
+    z = np.load(path, allow_pickle=True)
+    A = {k[2:]: z[k] for k in z.files if k.startswith("A:")}
+    B = {k[2:]: z[k] for k in z.files if k.startswith("B:")}
+    led = defaultdict(int)
+    for k, v in z["__led__"]:
+        led[k] = int(v)
+    return A, B, led
 
 
 def selftest():
@@ -484,9 +530,15 @@ def selftest():
         "duplicate points stack in one cell")
     chk(hist2d([[99.0, 99.0]]).sum() == 0, "out-of-grid point dropped")
     S = smooth(H)
-    chk(S.min() >= 0 and abs(S.sum() - H.sum()) < 0.35 * H.sum(),
-        f"smoothing stays non-negative, mass ~preserved "
+    chk(S.min() >= 0 and S.sum() <= H.sum() + 1e-9,
+        f"smoothing stays non-negative and never ADDS mass "
         f"({S.sum():.2f} vs {H.sum():.0f})")
+    mid = hist2d([[10.0, 11.0]])            # far from every boundary
+    chk(abs(smooth(mid).sum() - 1.0) < 1e-6,
+        "an interior point keeps all its mass under zero padding")
+    rim = smooth(hist2d([[10.0, 0.0]]))     # on the net edge
+    chk(rim[:, 0].sum() == 0.0 and rim.sum() < 1.0,
+        "a rim point fades outward instead of banding along the edge")
     off = hist2d([[-1.0, 3.0]])
     chk(off.sum() == 1, "off-court x=-1 is inside the padded grid")
 
@@ -500,6 +552,19 @@ def selftest():
     d = _div_levels(np.array([[-2.0, 0.0, 2.0]]), len(BLUE_ARM))
     chk(d[0, 0] == -len(BLUE_ARM) and d[0, 1] == 0
         and d[0, 2] == len(BLUE_ARM), "diverging clips both arms, 0 neutral")
+
+    print("cache round-trip")
+    import tempfile, os
+    fd, cp = tempfile.mkstemp(suffix=".npz")
+    os.close(fd)
+    save_cache(cp, A, B, led)
+    A2, B2, led2 = load_cache(cp)
+    os.unlink(cp)
+    chk(set(A2) == set(A) and np.allclose(A2["hi"], A["hi"]),
+        "frame A survives the cache unchanged")
+    chk(led2["mirrored"] == led["mirrored"]
+        and led2["rallies_B"] == led["rallies_B"],
+        "the drop ledger survives the cache")
 
     print("orientation: net at the panel top")
 
@@ -556,18 +621,31 @@ def main():
     ap.add_argument("--match-id", default="")
     ap.add_argument("--title", default="Court occupancy")
     ap.add_argument("--out", default="")
+    # the identity chain takes ~12 min on a full match; the renderer is
+    # instant.  Cache the accumulated points so layout work does not pay
+    # for the pipeline every time.
+    ap.add_argument("--cache", default="",
+                    help="npz of accumulated points; read if it exists, "
+                         "else written after the run")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
         raise SystemExit(selftest())
-    for req in ("pose_dir", "court", "windows", "lineup"):
-        if not getattr(a, req):
-            ap.error(f"--{req} required")
-    got = {}
-    # collect-only: this instrument renders a picture and must never
-    # touch the committed coverage tables
-    C.run(a, collect=lambda rt: got.update(rt), write=False)
-    A, B, led = accumulate(got)
+    if a.cache and Path(a.cache).exists():
+        A, B, led = load_cache(a.cache)
+        print(f"cache HIT {a.cache} — pipeline skipped")
+    else:
+        for req in ("pose_dir", "court", "windows", "lineup"):
+            if not getattr(a, req):
+                ap.error(f"--{req} required")
+        got = {}
+        # collect-only: this instrument renders a picture and must never
+        # touch the committed coverage tables
+        C.run(a, collect=lambda rt: got.update(rt), write=False)
+        A, B, led = accumulate(got)
+        if a.cache:
+            save_cache(a.cache, A, B, led)
+            print(f"cache WRITTEN {a.cache}")
     order, names = order_players()
     svg = render(A, B, order, names, led, a.title)
     out = a.out or str(ROOT / "data/vision/coverage_heatmap.svg")
