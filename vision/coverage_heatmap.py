@@ -409,8 +409,7 @@ def render(A, B, order, names, led, title):
         g += panel(Ha - Hb, ox, contrast_y,
                    f"{short_name(names.get(ua, ua[:8]))} − "
                    f"{short_name(names.get(ub, ub[:8]))}",
-                   "where the first stands more than the second",
-                   diverging=True)
+                   "first minus second", diverging=True)
         if ci == 0:
             g += _depth_axis(ox + (0 - X_LO) * PX_FT, contrast_y)
 
