@@ -2480,3 +2480,50 @@ real null) and so is the 0.15 s median timing error.
 3. Running arm6 and arm5 as-specified will not answer the packing
    question — the metric saturates before the packing does. Fix the
    scoring rule first, then rescore all three arms under it.
+
+## 2026-08-20 — the arm6m metric was broken; re-scored against a null
+
+arm6m came back 28/32 = **87.5% at +/-0.5s**, above the registered
+70-85% band. The registration would have been graded a HIT. It is not
+one, and the scoring rule is why.
+
+Re-scored with `vision/score_localization.py` (written after the fact,
+selftested, and committed BEFORE the next arm's grids were opened):
+
+    +/-0.5s   recall 87.5%  precision 37.3%   null 80.2% [68.8, 90.6]
+              LIFT +7.3%   -> 85.7th percentile, NOT significant
+    +/-1 cell recall 53.1%  precision 22.7%   null 42.2% [28.1, 56.2]
+              LIFT +10.9%  -> 89.0th percentile, NOT significant
+
+The null places the SAME 75 calls uniformly at random on distinct
+cells. At +/-0.5s each call covers +/-3.3 cells of a 36-cell window, so
+75 random calls already recover four fifths of the contacts. The
+measurement had no way to distinguish reading the grid from spraying
+calls at it, and 87.5% was mostly tolerance and call volume.
+
+Both lifts are POSITIVE and neither clears 95% on 32 contacts. Honest
+read: not established, direction favourable, underpowered.
+
+WHAT THE RULE CHANGES GOING FORWARD. Under a call-count-indexed null,
+over-calling is self-punishing — every extra call raises the null it is
+measured against. Optimal play is FEWER, BETTER calls, which is also
+the honest way to read a grid. The old free-call regime rewarded the
+opposite. Two tolerances are reported because +/-0.5s is the project's
+metric of record (the only number comparable to the pose pipeline's
+45.7%, the 3x3 VLM's 93% and the tracker's 67%) but is +/-3.3 cells at
+this packing, so a sharp +/-1 cell read sits beside it.
+
+MISS DECOMPOSITION (first use of the marked_cells column): of 4 misses,
+3 sat where the tracker had NO mark and 1 where it did — tracker-bound,
+consistent with the registered 60/40 call, but 4 events is no evidence.
+
+BURNED: arm6m's key is now seen, so those nine windows can never be
+re-called under the fixed rule, and the arm6-vs-arm6m pairing is dead —
+one half would be scored blind and the other with the answers known.
+arm5 and arm6 are untouched and stay valid; a fresh marked draw
+(arm6m2, seed 20260821) restores the pairing against arm6.
+
+GENERAL LESSON, and it is the same shape as the 2026-08-15 measurement-
+frame bug: a metric with no null and a detector that works are
+observationally identical when the tolerance is loose. Build the null
+BEFORE the arm, not after it looks good.
