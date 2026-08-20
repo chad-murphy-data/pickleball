@@ -745,4 +745,54 @@ man/woman. In MEN'S or WOMEN'S doubles TV_true collapses to ~0.25, this
 test loses ~3x of its power, and the human eye loses power for the same
 reason at the same time. Both checks weaken together exactly where MLP's
 identical numbered uniforms already make identity hardest — which is an
-argument for jersey-number OCR, not for trusting either check there.
+argument for jersey NAME OCR, not for trusting either check there.
+
+## Two big men on one MLP team is the worst case — measured (2026-08-20)
+
+User concern: an MLP team with two large men who may be hard to tell
+apart even by eye. Roster check against the full game log: **Dekel Bar
+and Jack Sock have never partnered (0 games)**. Bar's men's partner is
+Tyson McGuffin — 133 games, Palm Beach Royals. Sock plays Orlando
+Squeeze with Federico Staksrud. Both of those ARE hard pairs.
+
+WHY IT IS THE WORST CASE — all three discriminating channels fail at
+once, and they fail together rather than independently:
+  * same team -> matching kit, and the Lab descriptor is a TEAM-COLOUR
+    detector (cross-team 97-100%, partners 59-88%);
+  * same gender -> the occupancy-geometry check collapses from TV 0.79
+    to ~0.25, losing ~3x of its power;
+  * similar build -> height is already useless for partners.
+
+WHAT STILL WORKS, and it is most of the job: the SERVE ANCHOR does not
+use appearance at all. The referee log names the server and `lineup.py`
+resolves all four positions at 99.25% over 45,689 rallies with no camera
+involved. Appearance is needed ONLY for anchor-free rallies — 27 of 90
+on the PPA match — and MLP men's doubles is one match of four.
+
+JERSEY NAMES (not numbers — MLP prints surnames). Legibility measured
+from real box heights on the 1280-wide condensed PPA VOD, 22k detections:
+body height median 128 px at the far end and 210 px near, so a surname
+band at 6-9% of standing height is ~8-12 px far and ~13-19 px near,
+against ~16 px cap-height for reliable OCR and 10-12 px marginal. So on
+THIS source: marginal at the near end, unreadable at the far end. It
+scales linearly with source resolution — 1080p would give ~19-28 px near
+and ~12-17 far.
+
+THE ENCOURAGING PART: OCR does not need to work per FRAME. Identity has
+to be established once per track and is then carried by the tracker, and
+the same aggregation-across-time property that turns ~75%-per-crop into
+96-100%-per-rally applies to weak repeated reads. Intermittent
+legibility at the near end may well be enough. Untested.
+
+UNTESTED CHANNELS worth trying before OCR, cheapest first: a HEAD-region
+colour descriptor (the current one samples torso/legs/arms only, so it
+is blind to hats and hair — McGuffin habitually wears a cap);
+handedness from the pose skeleton (free, but only separates a
+mixed-handed pair); and true standing height in feet via the homography
+(`Det.h_ft` is already computed and unused for identity — pixel height
+failed, but feet-on-the-court-plane height is a different measurement).
+
+FALLBACK, and it is the house rule: if a pair cannot be separated, do
+NOT report per-player numbers for them. Report the TEAM and ledger the
+reason. Drop-don't-guess applies to identity exactly as it applies to
+ambiguous rallies.
