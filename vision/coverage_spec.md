@@ -587,3 +587,45 @@ WHAT IS RETRACTED: "Alshon deep-poached in 26% of rallies", the
 Alshon-vs-Patriquin poach ordering (already noise), and any framing of
 incursion counts as poaching. Report them as CROSSINGS if at all.
 Intent needs the ball; the ball is closed (see POSTMORTEM).
+
+## Identity ledgers are keyed to a gitignored pose dir (2026-08-20)
+
+Found while wiring the heat map: `coverage.py` crashed with
+`KeyError` inside `carry_names` on a ledger/pose mismatch.
+
+The three identity ledgers — `identity_swaps_*.csv`,
+`identity_track_map_*.csv`, `identity_anchorfree_*.csv` — are committed,
+but they are keyed on `(rally_cum, track)` where `track` is a POSE TRACK
+ID. Track ids are assigned by `coverage_extract.py` and live only inside
+`data/vision/pose_*/`, which is gitignored (correctly — it is derived
+from broadcast video). So the committed ledgers reference identifiers
+that the repo does not contain, and any re-extraction renumbers them.
+Three ways that bites, in increasing order of nastiness:
+
+  1. the named track is absent from the new extraction -> KeyError
+     (loud, which is the good case);
+  2. the named track exists but is a DIFFERENT person -> silently wrong
+     names on real frames, and nothing in the output says so;
+  3. a partial match -> some names right, some wrong, in one rally.
+
+Two guards added, neither of which is a real fix:
+
+  * `carry_names` now skips a name whose track has no detections in the
+    rally (it has no position, so it cannot hand off) instead of
+    crashing;
+  * `run()` refuses a mismatched anchor-free or track-map entry WHOLE
+    and counts it in `stale_ledger`, because applying the subset that
+    happens to resolve is failure mode 3 by construction.
+
+THE REAL FIX, unbuilt: stamp each ledger with a fingerprint of the pose
+extraction it was built against (backend + fps + per-rally detection
+counts is enough to be unique) and have `run()` refuse a ledger whose
+fingerprint does not match the pose dir. Until then, a pose dir and its
+ledgers are a matched set that must travel together.
+
+Operationally this also means the shipped numbers are NOT reproducible
+from the repo alone: they need the exact pose extraction. The one behind
+the current CSVs is `pose_ppa0125c` (rtmpose-balanced, 10 fps, 113
+rallies, ~2 h CPU), which is a scratch directory, not a repo path — it
+does not survive a fresh container. Re-deriving it is mechanical but
+invalidates all three ledgers, so it changes the numbers under review.

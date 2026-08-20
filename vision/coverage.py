@@ -811,6 +811,11 @@ def carry_names(dets, names0, conf0):
         best = None
         xy_new = first_seen[tr_new][1]
         for tr_old, uuid in list(open_names.items()):
+            if tr_old not in last_seen:
+                # a name for a track with no detections in this rally
+                # (stale identity ledger).  It has no position, so it
+                # cannot hand off; skipping beats crashing.
+                continue
             t_old, xy_old = last_seen[tr_old]
             if t_old >= t_new or t_new - t_old > HANDOFF_DT:
                 continue
@@ -1115,6 +1120,7 @@ def run(a, collect=None, write=True):
     games = defaultdict(lambda: defaultdict(PlayerGame))
     endmap_obs = []                   # (id8, game, cum, serving team, end)
     dropped = defaultdict(int)        # rally-level drops, by reason
+    stale_ledger = defaultdict(int)   # ledger entries refused as stale
     det_drops = defaultdict(int)      # detection-level gate drops
     frames_kept = 0
     anchor_offsets = []
@@ -1152,6 +1158,25 @@ def run(a, collect=None, write=True):
         # Gate A reach this ledger, and the rally is flagged so every
         # downstream number can be recomputed without them.
         af_avail = anchor_free.get(cum)
+        # STALE-LEDGER GUARD.  The identity ledgers (--anchor-free,
+        # --track-map) are keyed on pose TRACK IDS, and those ids live
+        # only inside the gitignored pose dir: re-extracting poses
+        # renumbers them, so a ledger built against an older extraction
+        # points at different people.  Refuse a mismatched entry WHOLE --
+        # applying the subset that happens to resolve is exactly the
+        # silent mis-bind this guard exists to prevent.  (Found
+        # 2026-08-20: a mismatch crashed carry_names with a KeyError,
+        # which at least failed loudly; a partial match would not have.)
+        present_tracks = {d.track for d in dets}
+        if af_avail is not None and any(tr not in present_tracks
+                                        for tr in af_avail):
+            stale_ledger["anchor_free"] += 1
+            af_avail = None
+        tm_ok = True
+        if cum in track_map and any(tr not in present_tracks
+                                    for tr in track_map[cum]):
+            stale_ledger["track_map"] += 1
+            tm_ok = False
         af_names = af_avail if qual == 0.0 else None
         if qual == 0.0 and af_names is None:
             # no anchor found: the fallback guess cannot place the serve
@@ -1229,7 +1254,7 @@ def run(a, collect=None, write=True):
         # stage-2 appearance track map (coverage_appearance --stage2):
         # rebind wrongly-carried names, name grey tracks, honor splits —
         # applied AFTER the carry so the audit trail is span-exact
-        if cum in track_map:
+        if cum in track_map and tm_ok:
             tm = track_map[cum]
             assign = list(assign)
             action = [None] * len(assign)
@@ -1721,6 +1746,20 @@ def selftest():
     assert all(u == "rcv" for d, (u, c, h) in zip(rows2, assign)
                if d.track == 9)
     print("  name handoff across a track break OK")
+
+    # STALE LEDGER: a name for a track id with no detections in this
+    # rally must be ignored, not crash.  Identity ledgers are keyed on
+    # pose track ids that only exist inside the gitignored pose dir, so
+    # a re-extraction makes exactly this shape of input (2026-08-20:
+    # it raised KeyError in carry_names).
+    nm_stale = dict(nm)
+    nm_stale[9999] = "ghost"
+    assign = carry_names(rows2, nm_stale, conf)
+    assert all(u != "ghost" for (u, c, h) in assign), \
+        "a name for an absent track leaked onto real detections"
+    got2 = {(d.track, u) for d, (u, c, h) in zip(rows2, assign)}
+    assert (9, "rcv") in got2, "stale entry broke a legitimate handoff"
+    print("  stale ledger entry (named track with no detections) ignored OK")
 
     # speed gate: teleporting detection dropped
     class Z:                            # minimal npz stand-in
