@@ -52,7 +52,17 @@ MATCH_TOL_S = 0.5          # same tolerance phase_grader uses
 # genuine slow flights were being rejected. Anything that means a
 # physical thing is stored physically and converted with fps.
 COAST_S = 0.20             # how long a track may fly with no detection
-MAX_SEG_S = 1.60           # a flight between contacts is short
+MAX_SEG_S = 0.85           # a flight between contacts is short. This
+                           #   cap is NOT purely physical: 1.6 s is the
+                           #   honest upper bound on a flight, and
+                           #   setting it there MEASURABLY HURT (rally 1
+                           #   fell 60% -> 44% recall, segments 33 -> 11).
+                           #   The cap also does REGULARISATION work — a
+                           #   short cap forces the beam to commit to
+                           #   short clean chains instead of growing long
+                           #   wandering ones. 0.85 s still spans the
+                           #   fitted gap distribution (fast 0.65 s,
+                           #   slow 1.00 s) for all but the slowest.
 JOIN_MAX_S = 0.60          # gap that still counts as one contact
 MIN_SPEED_PXS = 240.0      # px/second: a ball outruns a limb
 BEAM = 60                  # hypotheses kept per frame
@@ -328,56 +338,6 @@ def track_all(cand_by_frame, fps=30.0, max_tracks=MAX_TRACKS):
                 cands[f] = [c for c in cands[f]
                             if math.hypot(c[1] - x, c[2] - y) > 6.0]
     return sorted(out, key=lambda t: t[0][0])
-
-
-def contacts_from_tracks(tracks, fps):
-    """Kinks WITHIN segments plus JOINS BETWEEN them."""
-    out = []
-    for tr in tracks:
-        out += contacts_from_track(tr, fps)
-    # Pair every segment with its best PHYSICAL successor, not merely
-    # the next one in sorted order: a rally yields dozens of segments
-    # (real flights plus surviving clutter), so "adjacent in the list"
-    # pairs unrelated things and loses most real contacts.
-    for ai, a in enumerate(tracks):
-        fa, xa, ya, _s = a[-1]
-        best = None
-        for bi, b in enumerate(tracks):
-            if bi == ai:
-                continue
-            fb, xb, yb, _s2 = b[0]
-            gap = fb - fa
-            if not (0 < gap <= JOIN_MAX_S * fps):
-                continue
-            sp = max(_seg_speed(a), _seg_speed(b))
-            reach = JOIN_BASE_PX + JOIN_SPEED_MULT * sp * gap
-            dist = math.hypot(xb - xa, yb - ya)
-            if dist > reach:
-                continue
-            da = _dir([(x, y) for _f, x, y, _s in a[-K_FIT - 1:]])
-            db = _dir([(x, y) for _f, x, y, _s in b[:K_FIT + 1]])
-            if da is None or db is None:
-                continue
-            ang = math.degrees(math.acos(
-                max(-1.0, min(1.0, float(np.dot(da, db))))))
-            if ang < THETA_MIN:
-                continue
-            cost = dist / max(reach, 1.0) + gap / (JOIN_MAX_S * fps)
-            if best is None or cost < best[0]:
-                best = (cost, a, b, ang)
-        if best is None:
-            continue
-        _c, a2, b2, ang = best
-        tj = _join_time(a2, b2)
-        if tj is None:
-            tj = (a2[-1][0] + b2[0][0]) / 2.0
-        out.append((tj / fps, ang, True))       # inferred: inside a gap
-    out.sort(key=lambda r: -r[1])          # non-max suppression by angle
-    kept = []
-    for t, ang, inf in out:
-        if all(abs(t - k[0]) > NMS_S for k in kept):
-            kept.append((t, ang, inf))
-    return sorted(kept)
 
 
 def _seg_vel(track, tail=True):
