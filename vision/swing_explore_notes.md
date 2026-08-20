@@ -2673,3 +2673,42 @@ uniform null at each, and takes --dump to write detections+truth so
 this never needs re-tracking to re-score. Smoke-tested on a synthetic
 detector with sd 0.08s jitter: separates +35.9% over null at +/-0.15s,
 which is the shape a genuinely precise detector makes.
+
+## 2026-08-20 — side preference: 14/14 stable, and two corrections
+
+User claim: at the top level a player occupies ONE half of her team's
+court for the whole match. That is a much stronger identity constraint
+than appearance, and it is exactly what would rescue the ANCHOR-FREE
+rallies on the coverage branch, where the serve was never televised and
+appearance is the only channel.
+
+MEASURED on the local clip (rallies 1-2, `vision/side_preference.py`):
+8 instants in rally 1 + 6 in rally 2, both bands, **zero swaps in 14**.
+Far pair holds dark-hair-left / white-visor-right in all 14; near pair
+is equally stable wherever both are in frame. Two rallies of one game
+is not the claim's test -- the tool tiles one mid-rally frame per rally
+across a whole match for a human scan -- but nothing here contradicts
+it and the within-rally stability is total.
+
+CORRECTION 1, to this session's own claim. I wrote that in same-gender
+doubles "both partners match on silhouette, on kit, and on body type --
+every channel is gone at once." FALSE on this footage. The far pair
+differ by a WHITE VISOR vs no headwear: stable, high-contrast, and
+almost certainly a better feature than the torso-lightness signal that
+gave the mixed match 71.1%. The near pair differ in hair colour. The
+coverage doc's pessimism about partner separation is a MIXED-MATCH
+result and should not be generalised to same-gender without measuring.
+Also: surnames are printed on the kit back and are PARTLY legible at
+720p near-side (most of "JONES" readable at t=45.5) -- jersey OCR may
+be nearer than "specced, not built" implies.
+
+CORRECTION 2, to the PR body. It said alternation plus the referee log
+gives "exact per-rally turn order". Alternation is indeed EXACT --
+measured 0 consecutive-same-hitter violations and 0 2-colouring
+contradictions over 19 rallies / 229 contacts, teams resolving to
+Jones+Tuionetoa vs Nelson+Wei with no video and no timestamps. But
+teams are a MATCH-level fact recovered by POOLING: 5 of 19 rallies
+cannot name all four players alone (three are 2-shot rallies; rally 7
+runs nine shots and Jones never touches it). A first selftest here
+demanded per-rally resolution, failed at 14/19, and looked like an
+alternation failure. It was missing data. Pool, then 2-colour.
