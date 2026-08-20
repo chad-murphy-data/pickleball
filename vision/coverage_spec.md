@@ -702,3 +702,47 @@ panels drew upside-down against their own "net at the top" caption; and
 each panel was normalised to ITS OWN p99.5, so with normalisers ranging
 14.3-28.7 the same blue meant twice the dwell time in one panel as the
 next. Small multiples exist to be compared — one shared scale per row.
+
+## Occupancy geometry as an INDEPENDENT identity check (2026-08-20)
+
+The user reported the heat maps look face-valid — "all four players
+looked like what I'd expect in a pickleball match". That is worth
+something, but it is blind to the failure mode that matters, so
+`vision/coverage_idcheck.py` turns it into a measurement.
+
+Swapping two players' labels in a fraction q of rallies makes each
+attributed map the mixture (1-q)*own + q*other, so
+    TV_observed = |1 - 2q| * TV_true
+for total-variation distance between mass-normalised occupancy grids.
+PARTNERS are the confusable pair (the appearance channel is a
+team-colour detector; 308/340 errors are partner confusions), while
+CROSS-TEAM pairs resolve at 97-100% and are effectively clean — so a
+cross-team man/woman pair estimates TV_true and q becomes identifiable.
+
+  partners    Alshon/Black 0.8060   Patriquin/Bright 0.7716
+  clean M/W   Alshon/Bright 0.8197  Patriquin/Black 0.7643 (mean 0.7920)
+  implied q   -0.9%                 +1.3%
+
+NO DETECTABLE PARTNER SWAP, from occupancy geometry alone — independent
+of Gate A and of the appearance classifier that produced the labels.
+Degradation is steep enough to be a real test: a 10% swap already costs
+18% of the observed separation, 20% costs 36%.
+
+THE TWO CHECKS ARE COMPLEMENTARY, which is the useful part:
+  * a PARTIAL swap is invisible to the eye — both panels remain
+    plausible pickleball patterns, and averaging toward the pair mean
+    makes them look MORE typical, not less — but TV sees it;
+  * a TOTAL swap (q = 1) is invisible to TV — the distance returns to
+    TV_true with the names exchanged (selftested) — but a human who
+    knows the players sees it instantly, because the man's panel would
+    show the woman's pattern.
+Neither check subsumes the other. Run both.
+
+POWER WARNING — this is the scale-out story. It works here because
+mixed partners differ by ROLE. Same-gender pairs sit at TV ~0.25
+(Alshon/Patriquin 0.2537, Black/Bright 0.2565) against 0.79 for
+man/woman. In MEN'S or WOMEN'S doubles TV_true collapses to ~0.25, this
+test loses ~3x of its power, and the human eye loses power for the same
+reason at the same time. Both checks weaken together exactly where MLP's
+identical numbered uniforms already make identity hardest — which is an
+argument for jersey-number OCR, not for trusting either check there.
