@@ -2397,3 +2397,86 @@ REGISTERED (placement recall at +/-0.5 s, top tier):
 Unchanged and still pending: the 19-rally classical baseline is the
 number everything here is measured against, and it must be run on the
 current ball_track.py.
+
+## 2026-08-20 — arm6m SCORED: recall 87.5% and it means NOTHING (the metric saturated)
+
+Marked 6x6, nine windows, 32 true contacts, 75 calls locked in
+`vision/calls/arm6m_calls.md` before the key.
+
+  recall     28/32 = 87.5%   (registered 70-85% — "beaten")
+  precision  28/75 = 37.3%
+
+BOTH NUMBERS ARE AT CHANCE. Placement null = same number of calls per
+window, times randomised, 4,000 draws:
+
+    tol      recall     placement null        verdict
+    0.500    87.5%   76.8% [65.6%, 87.5%]   inside (exactly on the bound)
+    0.375    84.4%   68.5% [56.2%, 81.2%]   marginal
+    0.300    75.0%   61.4% [46.9%, 75.0%]   inside
+    0.225    59.4%   51.2% [37.5%, 65.6%]   inside
+    0.150    53.1%   38.2% [25.0%, 53.1%]   inside
+    precision 37.3% vs null 32.8%
+
+One marginal clear out of six tolerances is what chance gives. Same
+verdict under the canonical `vlm_loc_score.match`. **arm6m's placement
+is not distinguishable from scattering 75 calls at random.**
+
+WHY, and it is not the markers: TOL is 0.5 s on a 0.15 s grid, so one
+call covers +/-3.3 cells. Recall is then bought with call COUNT. I made
+2.3 calls per true contact; the 3x3 test made 1.3. The null rose with
+me. **This is registered falsifier 3 firing** — not yet on
+precision-vs-arm6 (that still needs arm6) but on the behaviour it was
+written to catch: I called at MARK density rather than shot cadence.
+Tightening 91 -> 75 before scoring was not nearly enough.
+
+THE MARKERS WORKED. Tracker coverage 225/324 cells = 69% overall, but
+**94% within +/-0.45 s of a true contact** (30/32) — the coverage is
+concentrated exactly where it matters. The marker channel delivered;
+the reading and the metric did not.
+
+MISS DECOMPOSITION 2/4 tracker-bound, 2/4 reading-bound against a
+registered 60/40. n=4. Uninformative; do not score this as a hit.
+
+HITTER SIDE 16/28 = 57%, best of the three possible team splits (the
+key gives names, not sides, so that is an upper bound; chance 50%)
+against a registered >=90%. But the pairing it is computed on is
+near-random, so the side claim is UNTESTABLE in this arm rather than
+falsified — when placement is at chance, everything conditioned on
+placement is noise.
+
+COUNT SHORTFALL confirmed and worse than the images suggested: 32
+contacts realized vs 53 planned (60%), se 7.1% on a 0.8 recall. The
+fixed 4.0 s PRE_PAD at a 5.25 s span is the cause, as called before
+scoring.
+
+### The 3x3 headline SURVIVES — but it is 16pp, not 40pp
+
+Re-scored `data/vision/vlm_loc_key_20260819.csv` against the same
+placement null (calls-per-window held EXACTLY as called, including the
+seven correct empties, so the null gets the play/no-play decision free;
+only times randomised):
+
+    tol 0.500   92.9%  vs null 77.3% [64.3%, 89.3%]   CLEARS
+    tol 0.300   75.0%  vs null 56.8% [39.3%, 71.4%]   CLEARS
+
+So it is real. But "93% against a registered 45-65%" overstated it by
+~2.5x, because **a registered band is a PRIOR, not a chance floor.**
+The honest sentence is "93% against a 77% placement null". The PR body
+and the 2026-08-19 entry should be read with that correction; the
+play/no-play 30/30 result is untouched (a real binary decision with a
+real null) and so is the 0.15 s median timing error.
+
+### Consequences
+
+1. **TOL = 0.5 s is the wrong metric for a GRID scanner.** It was
+   calibrated for a continuous-stream detector where a false call costs
+   something. On a 0.15 s grid it makes recall purchasable with call
+   volume. Any future grid arm scores against a PLACEMENT NULL, or with
+   the call budget pinned to the true count (forced choice), or at
+   +/-1 cell. Preferably the null, always.
+2. **Registered bands are not nulls.** Every registration in this file
+   that compares a rate to a prior band rather than to a chance floor
+   is weaker than it reads. This one cost a session to notice.
+3. Running arm6 and arm5 as-specified will not answer the packing
+   question — the metric saturates before the packing does. Fix the
+   scoring rule first, then rescore all three arms under it.
