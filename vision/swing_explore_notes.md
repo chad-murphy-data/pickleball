@@ -1880,6 +1880,60 @@ If the classical pipeline lands near 93% it replaces the VLM locally;
 if it lands near 45% it is the decoder again with extra steps; either
 way the answer is a number, not an argument.
 
+## 2026-08-20 — CLASSICAL CONTACT DETECTOR BUILT (`vision/ball_track.py`): three design failures on the way, predictions registered
+
+End-to-end classical pipeline, no model and no labels at inference:
+stream frames -> motion-difference candidates -> velocity-gated beam
+tracker -> flight SEGMENTS -> contact = the JOIN between consecutive
+segments -> scored against the 323 labeled contacts at +/-0.5 s, the
+same metric that gives the decoded pose pipeline 45.7% and the VLM 93%.
+
+THREE DESIGN FAILURES, each found by a test and each worth keeping:
+ (1) GATE TOO TIGHT TO CROSS THE EVENT. v1 sized the association gate
+     for smooth flight, so at a reversal the ball sat ~2x speed from
+     the constant-velocity prediction and every track died at every
+     kink. The tracker could not survive the one event it existed to
+     detect.
+ (2) EARLY-ENDING TRACKS DISCARDED. track_ball only returned
+     hypotheses alive at the FINAL frame, so a segment that ends at a
+     contact — i.e. every segment — was thrown away. Fixed by keeping
+     the best track ending ANYWHERE.
+ (3) LENGTH BEAT QUALITY. Scoring the association gain as a fraction
+     of the gate let a 35-frame wandering clutter chain (straightness
+     0.16) outscore the real ball AND consume its candidates. Fixed by
+     scoring departure from the constant-velocity prediction in
+     ABSOLUTE px (ACC_SCALE), plus a tortuosity gate on kept segments.
+ RESOLUTION OF (1) vs the tortuosity gate: they were incompatible — a
+ track spanning several legs is by construction not straight. The
+ physics settles it. A segment IS one flight between contacts; tracks
+ END at contacts by design, and the contact is the join. That also
+ makes the straightness test meaningful instead of self-defeating.
+Discipline kept: a coasted stretch is linear by construction, so a
+contact inside one is reported at the gap midpoint and FLAGGED
+inferred, never quoted as a precise time (the w01 cell-7 lesson).
+
+SELFTESTS WITH TEETH (synthetic paths with planted kinks, degraded to
+the measured conditions): clean 2/2 kinks 0 spurious; 24% dropout 2/2
+0 spurious; 5-frame blackout ACROSS a kink — asserted that the
+single-track path FAILS there (0/1) and the segment-join path rescues
+it (2/2, flagged inferred), so it cannot pass by coincidence the way
+the first version of that test did; pure clutter 0 contacts.
+
+KNOWN LIMIT, stated before the run: synthetic clutter is UNIFORM, real
+motion-difference clutter is CONCENTRATED ON THE PLAYERS. At real
+candidate density (~103/frame over 1280x720 = 1.1e-4/px2) the uniform
+synth degrades badly (40-clutter -> 0/2 kinks). Whether reality is
+kinder — a ball over empty court has few nearby competitors — or
+harsher is exactly what the run measures. Do not tune on the synth.
+
+REGISTERED BEFORE THE RUN: contact recall 35-65% at +/-0.5 s;
+precision 30-60% (over-segmentation is the expected failure);
+detected contacts outnumbering true ones. Meaningful bars: beating
+45.7% means the classical route matches the pose decoder for free and
+locally; approaching 93% means it replaces the VLM. Below ~30% means
+candidate quality binds and the colour lever (still unpulled) is the
+next thing to try.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
