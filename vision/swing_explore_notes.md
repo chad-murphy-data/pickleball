@@ -1934,6 +1934,63 @@ locally; approaching 93% means it replaces the VLM. Below ~30% means
 candidate quality binds and the colour lever (still unpulled) is the
 next thing to try.
 
+## 2026-08-20 — ball_track.py ON REAL VIDEO: 0/229. Six real bugs found; then STOPPED, because I was tuning against a clutter model I invented
+
+User ran it: **0% recall, every rally "track 0 seen pts"**. Not a
+performance number — a plumbing/behaviour failure, and the signature
+(tracks formed, none kept) pointed straight at the tortuosity gate
+rejecting everything.
+
+FIRST, THE PROCESS FAILURE THAT CAUSED IT. The selftests exercised the
+ALGORITHM on a 60-frame synthetic and never the CONDITIONS: 700-frame
+windows, ~103 candidates/frame, and clutter that MOVES SMOOTHLY
+(limbs). "Length beats quality" had already been found and fixed once
+— at 60 frames it is a mild bug, at 700 frames with dense clutter it
+is fatal, because a smooth 300-frame arm chain scores ~200 while a
+real 20-frame ball flight scores ~18, wins the greedy extraction, and
+MAX_TRACKS ran out before reaching the ball. Same class as the
+vision-postmortem lesson: validate the inner layer, assume the outer
+one, get an observationally identical failure.
+
+REPRODUCED FIRST, THEN FIXED (a realistic synth — 600 frames, 106
+cand/frame, smoothly-moving limb distractors — reproduces 0/22 exactly).
+Six bugs, all real, all now covered:
+ (1) MAX_TRACKS=10 exhausted by clutter before reaching the ball -> 45.
+ (2) No length cap: chains spanned whole rallies and won on score ->
+     MAX_SEG_FRAMES=48 (~1.6 s), which is what a flight actually is.
+ (3) Straightness applied only AFTER extraction -> moved INSIDE the
+     beam, so wanderers die instead of being filtered later.
+ (4) **A HARD FLOOR GETS SATURATED.** With the in-beam floor at 0.60
+     the beam produced chains at exactly 0.60-0.74 — maximally
+     wandering while still legal — which then all failed the 0.78
+     final gate. The search farms any gap you leave between a
+     constraint and a filter. Floor raised to 0.75.
+ (5) GATE_BASE 26 px was enormous next to one frame of ball motion, so
+     a SLOW hypothesis had a gate in which any nearby clutter looked
+     consistent; the beam grew chains crawling at 1.3-2.2 px/frame ->
+     10 px, ACC_SCALE 12 -> 6, plus an in-beam MIN_SPEED floor. A ball
+     outruns a limb; that is the cheapest real discriminator.
+ (6) Joins used a fixed 220 px cap and the gap MIDPOINT. Both wrong: a
+     12-frame gap at 30 px/frame is a legitimate ~360 px of travel, and
+     the midpoint mis-timed a contact by 0.17 s. Reach is now physical
+     (speed x gap) and the time is the INTERSECTION of the two flight
+     lines — where the ball actually turned. Joins are also now
+     best-physical-successor rather than adjacent-in-sorted-order.
+
+RESULT ON THE REALISTIC SYNTH: 0% -> **18% recall at 100% precision**
+(17/95 over four seeds; nothing false in three of four). Real
+improvement, still far from the 45.7% decoder bar, and the honest read
+is that candidate ASSOCIATION in dense clutter is the binder, not the
+join logic (fixing the pairing changed nothing).
+
+STOPPING HERE ON PURPOSE. Six rounds of fixes have been made against a
+synthetic whose clutter model I INVENTED — uniform random blobs plus
+hand-rolled limb tracks. Optimising that is optimising my own guess.
+The user has the video; a 60-90 s clip covering labeled rallies turns
+this from blind tuning into measurement, and is the same move that has
+resolved every other ambiguity in this thread. Requested rather than
+guessed at further.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio

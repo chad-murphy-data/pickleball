@@ -48,7 +48,14 @@ MATCH_TOL_S = 0.5          # same tolerance phase_grader uses
 MAX_COAST = 6              # frames a track may survive with no detection
 BEAM = 60                  # hypotheses kept per frame
 SEED_TOP = 12              # candidates per frame that may start a track
-GATE_BASE = 26.0           # px, gate radius at zero speed
+GATE_BASE = 10.0           # px, gate radius at zero speed. Was 26, which
+                           #   is huge next to one frame of ball motion:
+                           #   a SLOW hypothesis then had a gate big
+                           #   enough that any nearby clutter looked
+                           #   consistent, and the beam duly grew chains
+                           #   crawling at 1.3-2.2 px/frame. A gate should
+                           #   be sized by detection noise plus one
+                           #   frame of gravity, not by the search
 GATE_SLOPE = 0.55          # smooth-flight gate: px per px/frame of speed
 # NOTE, arrived at by two failed designs: do NOT let a track cross a
 # contact. v1 had a tight gate and died at every kink. v2 added a wide
@@ -58,7 +65,7 @@ GATE_SLOPE = 0.55          # smooth-flight gate: px per px/frame of speed
 # it: a segment IS one flight between contacts, and the contact is the
 # JOIN between consecutive segments. Tracks now end at contacts by
 # design, which is also what makes the straightness test meaningful.
-ACC_SCALE = 12.0           # px of departure from the constant-velocity
+ACC_SCALE = 6.0            # px of departure from the constant-velocity
                            #   prediction that costs a full point. Gain
                            #   must be scored in ABSOLUTE px, not as a
                            #   fraction of the gate: gate-relative gain
@@ -75,10 +82,27 @@ STRAIGHT_MIN = 0.78        # |displacement| / path length. A flight
                            #   multi-segment extraction manufactured 7
                            #   contacts out of pure noise (measured).
 TRAVEL_MIN = 55.0          # px a real segment must actually cover
-MAX_TRACKS = 10            # segments extracted per rally window
-JOIN_MAX_FRAMES = 14       # a gap this short between two segments is a
+MAX_TRACKS = 45            # segments per rally: one per contact, plus
+                           #   the clutter chains rejected on the way
+MAX_SEG_FRAMES = 48        # ~1.6 s. A flight between contacts is short;
+                           #   without a cap the beam grows chains that
+                           #   span the whole rally and win on LENGTH.
+STRAIGHT_AFTER = 6         # seen points before straightness is enforced
+STRAIGHT_BEAM = 0.75       # in-beam kill. A HARD FLOOR GETS SATURATED:
+                           #   at 0.60 the beam produced chains sitting
+                           #   at exactly 0.60-0.74 — maximally wandering
+                           #   while still legal — which then all failed
+                           #   the 0.78 final gate. Keep the two close so
+                           #   the search cannot farm the gap.
+MIN_SPEED_PX = 8.0         # px/frame. The ball outruns a limb; this is
+                           #   what separates a flight from an arm swing.
+JOIN_MAX_FRAMES = 18       # a gap this short between two segments is a
                            #   CONTACT, not two unrelated balls
-JOIN_MAX_PX = 220          # ...and the ball cannot teleport further
+JOIN_SPEED_MULT = 1.6      # ...and the separation must be CONSISTENT WITH
+JOIN_BASE_PX = 70.0        #   FLIGHT, not under a fixed px cap: over a
+                           #   12-frame gap a ball at 30 px/frame really
+                           #   does travel ~360 px, and a 220 px cap threw
+                           #   away exactly those joins (measured).
 
 # ---- kink detector
 K_FIT = 3                  # points each side used for the direction fit
@@ -98,53 +122,75 @@ def _predict(pts):
 
 
 def track_ball(cand_by_frame):
-    """Beam-search the best ball track. Returns [(frame, x, y, seen)].
+    """Beam-search one ball flight SEGMENT. Returns [(frame,x,y,seen)].
 
-    Each hypothesis extends to its best gated candidate, and ALSO
-    survives as a coast, so a track can cross an occlusion without a
-    detection. Score rewards detections and penalises coasting, so the
-    winner is the longest physically-consistent chain of real
-    observations."""
-    hyps = []            # (score, pts, coast, seen_flags)
-    best = None          # best track ENDING ANYWHERE, not just at the end
+    Three things keep the beam honest, all of them learned from
+    failures rather than designed up front:
+      * gain is scored in ABSOLUTE px of departure from the
+        constant-velocity prediction, not as a fraction of the gate;
+      * a hypothesis that WANDERS is killed inside the beam once it has
+        enough points, rather than being filtered afterwards;
+      * segments are LENGTH-CAPPED, because score grows with length and
+        on a 700-frame rally a smooth clutter chain (a swinging arm)
+        otherwise outscores every real 20-frame flight and consumes its
+        candidates first. That is precisely what produced 0/229 on real
+        video while every synthetic test passed.
+    """
+    hyps, best = [], None
     for f, cands in enumerate(cand_by_frame):
-        arr = np.array([[c[1], c[2], c[0]] for c in cands],
-                       dtype=float) if cands else np.zeros((0, 3))
+        arr = (np.array([[c[1], c[2], c[0]] for c in cands], dtype=float)
+               if cands else np.zeros((0, 3)))
         nxt = []
-        for score, pts, coast, seen in hyps:
-            px, py, vx, vy = _predict(pts)
+        for h in hyps:
+            if len(h["pts"]) >= MAX_SEG_FRAMES:
+                continue                       # finished; `best` saw it
+            px, py, vx, vy = _predict(h["pts"])
             sp = math.hypot(vx, vy)
-            g_smooth = (SEED_GATE if len(pts) == 1
-                        else GATE_BASE + GATE_SLOPE * sp)
+            gate = (SEED_GATE if len(h["pts"]) == 1
+                    else GATE_BASE + GATE_SLOPE * sp)
             if len(arr):
                 d = np.hypot(arr[:, 0] - px, arr[:, 1] - py)
-                order = np.argsort(d)[:4]
-                for i in order:
-                    if d[i] > g_smooth:
+                for i in np.argsort(d)[:4]:
+                    if d[i] > gate:
                         continue
-                    gain = 1.0 - min(1.0, d[i] / ACC_SCALE)
-                    nxt.append((score + gain,
-                                pts + [(f, arr[i, 0], arr[i, 1])],
-                                0, seen + [True]))
-            if coast < MAX_COAST:      # coast: keep flying, pay for it
-                nxt.append((score - MISS_COST, pts + [(f, px, py)],
-                            coast + 1, seen + [False]))
-        for c in cands[:SEED_TOP]:     # new tracks may start any frame
-            nxt.append((0.0, [(f, c[1], c[2])], 0, [True]))
-        nxt.sort(key=lambda h: -h[0])
+                    x, y = float(arr[i, 0]), float(arr[i, 1])
+                    path = h["path"] + math.hypot(x - h["lsx"], y - h["lsy"])
+                    nseen = h["nseen"] + 1
+                    if nseen >= STRAIGHT_AFTER and path > 0:
+                        disp = math.hypot(x - h["fsx"], y - h["fsy"])
+                        if disp / path < STRAIGHT_BEAM:
+                            continue           # wanders: kill it here
+                        if path / (nseen - 1) < MIN_SPEED_PX:
+                            continue           # crawls: not a ball
+                    nxt.append({**h,
+                                "score": h["score"] + 1.0
+                                         - min(1.0, d[i] / ACC_SCALE),
+                                "pts": h["pts"] + [(f, x, y)],
+                                "seen": h["seen"] + [True], "coast": 0,
+                                "path": path, "nseen": nseen,
+                                "lsx": x, "lsy": y})
+            if h["coast"] < MAX_COAST:
+                nxt.append({**h, "score": h["score"] - MISS_COST,
+                            "pts": h["pts"] + [(f, px, py)],
+                            "seen": h["seen"] + [False],
+                            "coast": h["coast"] + 1})
+        for c in cands[:SEED_TOP]:
+            nxt.append({"score": 0.0, "pts": [(f, c[1], c[2])],
+                        "seen": [True], "coast": 0, "path": 0.0,
+                        "nseen": 1, "fsx": c[1], "fsy": c[2],
+                        "lsx": c[1], "lsy": c[2]})
+        nxt.sort(key=lambda h: -h["score"])
         hyps = nxt[:BEAM]
-        # A track that DIES mid-window is still a track. v1 only ever
-        # returned hypotheses alive at the final frame, so a segment
-        # ending at a contact — i.e. every segment — was thrown away.
-        for score, pts, _c, seen in hyps:
-            p2, s2 = pts, seen
-            while s2 and not s2[-1]:
-                p2, s2 = p2[:-1], s2[:-1]
-            if sum(s2) >= MIN_TRACK and (best is None or score > best[0]):
-                best = (score, p2, s2)
+        for h in hyps:
+            pts, seen = h["pts"], h["seen"]
+            while seen and not seen[-1]:
+                pts, seen = pts[:-1], seen[:-1]
+            if sum(seen) >= MIN_TRACK and (best is None
+                                           or h["score"] > best[0]):
+                best = (h["score"], pts, seen)
     if best is None:
         return []
-    _score, pts, seen = best
+    _sc, pts, seen = best
     return [(f, x, y, s) for (f, x, y), s in zip(pts, seen)]
 
 
@@ -194,6 +240,49 @@ def contacts_from_track(track, fps):
     return sorted(kept)
 
 
+def _seg_vel(track, tail=True):
+    """(f, x, y, vx, vy) at a segment's end (tail) or start (head),
+    from its last/first few SEEN points."""
+    pts = [(f, x, y) for f, x, y, s in track if s]
+    if len(pts) < 2:
+        return None
+    run = pts[-K_FIT - 1:] if tail else pts[:K_FIT + 1]
+    (f0, x0, y0), (f1, x1, y1) = run[0], run[-1]
+    df = max(f1 - f0, 1)
+    anchor = run[-1] if tail else run[0]
+    return (anchor[0], anchor[1], anchor[2],
+            (x1 - x0) / df, (y1 - y0) / df)
+
+
+def _join_time(a, b):
+    """Frame at which two flight segments' lines come closest — i.e.
+    where the ball actually turned. The gap MIDPOINT is a poor stand-in
+    when segments end early (measured 0.17 s off on a 12-frame gap);
+    the intersection is what the geometry says."""
+    va, vb = _seg_vel(a, True), _seg_vel(b, False)
+    if va is None or vb is None:
+        return None
+    fa, xa, ya, ax, ay = va
+    fb, xb, yb, bx, by = vb
+    cx = (xa - ax * fa) - (xb - bx * fb)
+    cy = (ya - ay * fa) - (yb - by * fb)
+    dx, dy = ax - bx, ay - by
+    den = dx * dx + dy * dy
+    if den < 1e-9:
+        return (fa + fb) / 2.0
+    t = -(cx * dx + cy * dy) / den
+    return min(max(t, fa), fb)          # never outside the gap
+
+
+def _seg_speed(track):
+    """Mean px/frame between a segment's SEEN points."""
+    pts = [(x, y) for _f, x, y, s in track if s]
+    if len(pts) < 2:
+        return 0.0
+    return sum(math.hypot(b[0] - a[0], b[1] - a[1])
+               for a, b in zip(pts, pts[1:])) / (len(pts) - 1)
+
+
 def _ballistic_ok(track):
     """Reject wandering chains: a ball in flight goes somewhere, in a
     line. Tortuosity is the cheap discriminator and needs no physics."""
@@ -203,7 +292,142 @@ def _ballistic_ok(track):
     path = sum(math.hypot(b[0] - a[0], b[1] - a[1])
                for a, b in zip(pts, pts[1:]))
     disp = math.hypot(pts[-1][0] - pts[0][0], pts[-1][1] - pts[0][1])
-    return disp >= TRAVEL_MIN and path > 0 and disp / path >= STRAIGHT_MIN
+    speed = path / max(len(pts) - 1, 1)
+    return (disp >= TRAVEL_MIN and path > 0
+            and disp / path >= STRAIGHT_MIN and speed >= MIN_SPEED_PX)
+
+
+def track_all(cand_by_frame, max_tracks=MAX_TRACKS):
+    """Extract several non-overlapping flight SEGMENTS, best first.
+
+    Why not one long track: a ball is most likely to be occluded
+    exactly AT a contact, because a player is swinging at it there. A
+    coast predicts the old direction, so a blackout spanning a reversal
+    leaves the re-acquired ball ~2x speed x gap away — unbridgeable,
+    and measured breaking the single-track version. Segments sidestep
+    it: the contact becomes the JOIN between consecutive segments,
+    which is what the physics actually shows (ball vanishes into the
+    player, reappears going the other way)."""
+    cands = [list(c) for c in cand_by_frame]
+    out = []
+    for _ in range(max_tracks):
+        tr = track_ball(cands)
+        if not tr:
+            break
+        if _ballistic_ok(tr):
+            out.append(tr)
+        for f, x, y, seen in tr:          # consume what this track used
+            if seen and f < len(cands):
+                cands[f] = [c for c in cands[f]
+                            if math.hypot(c[1] - x, c[2] - y) > 6.0]
+    return sorted(out, key=lambda t: t[0][0])
+
+
+def contacts_from_tracks(tracks, fps):
+    """Kinks WITHIN segments plus JOINS BETWEEN them."""
+    out = []
+    for tr in tracks:
+        out += contacts_from_track(tr, fps)
+    # Pair every segment with its best PHYSICAL successor, not merely
+    # the next one in sorted order: a rally yields dozens of segments
+    # (real flights plus surviving clutter), so "adjacent in the list"
+    # pairs unrelated things and loses most real contacts.
+    for ai, a in enumerate(tracks):
+        fa, xa, ya, _s = a[-1]
+        best = None
+        for bi, b in enumerate(tracks):
+            if bi == ai:
+                continue
+            fb, xb, yb, _s2 = b[0]
+            gap = fb - fa
+            if not (0 < gap <= JOIN_MAX_FRAMES):
+                continue
+            sp = max(_seg_speed(a), _seg_speed(b))
+            reach = JOIN_BASE_PX + JOIN_SPEED_MULT * sp * gap
+            dist = math.hypot(xb - xa, yb - ya)
+            if dist > reach:
+                continue
+            da = _dir([(x, y) for _f, x, y, _s in a[-K_FIT - 1:]])
+            db = _dir([(x, y) for _f, x, y, _s in b[:K_FIT + 1]])
+            if da is None or db is None:
+                continue
+            ang = math.degrees(math.acos(
+                max(-1.0, min(1.0, float(np.dot(da, db))))))
+            if ang < THETA_MIN:
+                continue
+            cost = dist / max(reach, 1.0) + gap / JOIN_MAX_FRAMES
+            if best is None or cost < best[0]:
+                best = (cost, a, b, ang)
+        if best is None:
+            continue
+        _c, a2, b2, ang = best
+        tj = _join_time(a2, b2)
+        if tj is None:
+            tj = (a2[-1][0] + b2[0][0]) / 2.0
+        out.append((tj / fps, ang, True))       # inferred: inside a gap
+    out.sort(key=lambda r: -r[1])          # non-max suppression by angle
+    kept = []
+    for t, ang, inf in out:
+        if all(abs(t - k[0]) > NMS_S for k in kept):
+            kept.append((t, ang, inf))
+    return sorted(kept)
+
+
+def _seg_vel(track, tail=True):
+    """(f, x, y, vx, vy) at a segment's end (tail) or start (head),
+    from its last/first few SEEN points."""
+    pts = [(f, x, y) for f, x, y, s in track if s]
+    if len(pts) < 2:
+        return None
+    run = pts[-K_FIT - 1:] if tail else pts[:K_FIT + 1]
+    (f0, x0, y0), (f1, x1, y1) = run[0], run[-1]
+    df = max(f1 - f0, 1)
+    anchor = run[-1] if tail else run[0]
+    return (anchor[0], anchor[1], anchor[2],
+            (x1 - x0) / df, (y1 - y0) / df)
+
+
+def _join_time(a, b):
+    """Frame at which two flight segments' lines come closest — i.e.
+    where the ball actually turned. The gap MIDPOINT is a poor stand-in
+    when segments end early (measured 0.17 s off on a 12-frame gap);
+    the intersection is what the geometry says."""
+    va, vb = _seg_vel(a, True), _seg_vel(b, False)
+    if va is None or vb is None:
+        return None
+    fa, xa, ya, ax, ay = va
+    fb, xb, yb, bx, by = vb
+    cx = (xa - ax * fa) - (xb - bx * fb)
+    cy = (ya - ay * fa) - (yb - by * fb)
+    dx, dy = ax - bx, ay - by
+    den = dx * dx + dy * dy
+    if den < 1e-9:
+        return (fa + fb) / 2.0
+    t = -(cx * dx + cy * dy) / den
+    return min(max(t, fa), fb)          # never outside the gap
+
+
+def _seg_speed(track):
+    """Mean px/frame between a segment's SEEN points."""
+    pts = [(x, y) for _f, x, y, s in track if s]
+    if len(pts) < 2:
+        return 0.0
+    return sum(math.hypot(b[0] - a[0], b[1] - a[1])
+               for a, b in zip(pts, pts[1:])) / (len(pts) - 1)
+
+
+def _ballistic_ok(track):
+    """Reject wandering chains: a ball in flight goes somewhere, in a
+    line. Tortuosity is the cheap discriminator and needs no physics."""
+    pts = [(x, y) for _f, x, y, s in track if s]
+    if len(pts) < 3:
+        return False
+    path = sum(math.hypot(b[0] - a[0], b[1] - a[1])
+               for a, b in zip(pts, pts[1:]))
+    disp = math.hypot(pts[-1][0] - pts[0][0], pts[-1][1] - pts[0][1])
+    speed = path / max(len(pts) - 1, 1)
+    return (disp >= TRAVEL_MIN and path > 0
+            and disp / path >= STRAIGHT_MIN and speed >= MIN_SPEED_PX)
 
 
 def track_all(cand_by_frame, max_tracks=MAX_TRACKS):
@@ -243,7 +467,9 @@ def contacts_from_tracks(tracks, fps):
         gap = fb - fa
         if not (0 < gap <= JOIN_MAX_FRAMES):
             continue
-        if math.hypot(xb - xa, yb - ya) > JOIN_MAX_PX:
+        sp = max(_seg_speed(a), _seg_speed(b))
+        if math.hypot(xb - xa, yb - ya) > JOIN_BASE_PX + \
+                JOIN_SPEED_MULT * sp * gap:
             continue
         da = _dir([(x, y) for _f, x, y, _s in a[-K_FIT - 1:]])
         db = _dir([(x, y) for _f, x, y, _s in b[:K_FIT + 1]])
@@ -253,7 +479,10 @@ def contacts_from_tracks(tracks, fps):
             max(-1.0, min(1.0, float(np.dot(da, db))))))
         if ang < THETA_MIN:
             continue
-        out.append(((fa + fb) / 2.0 / fps, ang, True))   # time is a guess
+        tj = _join_time(a, b)
+        if tj is None:
+            tj = (fa + fb) / 2.0
+        out.append((tj / fps, ang, True))       # inferred: inside a gap
     out.sort(key=lambda r: -r[1])
     kept = []
     for t, ang, inf in out:
