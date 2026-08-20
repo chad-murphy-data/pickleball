@@ -2278,3 +2278,31 @@ every level through 6x6; small tier at 3x3 55-75%. Predicted dominant
 timing error, not as missed contacts — a different failure than
 resolution loss, and separable by whether the miss is off-by-a-cell or
 absent.
+
+## 2026-08-20 — PACKING LADDER HARNESS + the marker arm's first surprise
+
+`vlm_localize_sample.py` generalised from the hardcoded 3x3 to `--grid
+N`, with `--markers` and `--exclude` (draw FRESH of an earlier draw's
+ANSWER_KEY, so a new arm never rescores spent windows). Renderer moved
+from ffmpeg to cv2: the marker arm has to draw on the frames, and one
+renderer keeps the rungs comparable to each other. Cell width is now
+LONG_EDGE//N, so every arm is delivered exactly at the downscale cap.
+
+Also REMOVED the realized contacts-per-window print. That is the leak
+the 2026-08-19 run had to disclose — a scorer who knows the count
+distribution has a prior on how many shots to call.
+
+MARKER ARM, first attempt WRONG and worth recording: drawing the top-12
+raw candidates per cell makes the image WORSE. The candidates cluster
+on player limb motion and crowd movement — exactly where the eye
+already goes — so the ball's marker is buried among a dozen others and
+the cell reads as noise. Switched to the TRACKER's surviving segments:
+one mark per frame, 32 of 36 cells marked on the probe window, and the
+sequence reads as a ball-like path with a few marks visibly on a paddle
+or hip (the 44%-precision false positives, and they LOOK like false
+positives — which is the point, since the model is being asked to
+adjudicate rather than to trust). This is the version to test.
+
+Sizing, from the TRAIN budget (19 rallies, 229 contacts, 276 s of
+drawable video incl. pre-pad) at ~55 contacts per arm (se ~7pp):
+3x3 36 windows, 4x4 20, 5x5 13, 6x6 9. Marked 6x6 renders in ~15 s.

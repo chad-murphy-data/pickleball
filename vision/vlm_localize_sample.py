@@ -43,8 +43,10 @@ from swing_probe import ffmpeg_bin
 
 LABELS = "contact_labels_chicago0725.csv"
 SPLIT = "label_split.csv"
-N_CELLS, STEP_S = 9, 0.15
+STEP_S = 0.15
 PRE_PAD = 4.0          # sample this far before the serve (dead time)
+LONG_EDGE = 1568       # where the API downscales to; see vlm_pack.py
+MARK_BGR = (255, 0, 255)   # magenta: not the ball, not the court
 
 
 def load_train_contacts(labels_path, split_path):
@@ -97,30 +99,110 @@ def contacts_in(contacts, cum, t0, dur):
             if t0 <= t < t0 + dur]
 
 
-def cut_grid(video, t0, out_path, width, crop):
-    """Nine seeks -> cropped, scaled, 1px-padded cells -> 3x3 grid."""
-    cmd = [ffmpeg_bin(), "-y", "-loglevel", "error"]
-    for i in range(N_CELLS):
-        cmd += ["-ss", f"{max(t0 + i * STEP_S, 0.0):.3f}", "-i", str(video)]
-    cw, ch, cx, cy = crop
-    parts = [f"[{i}:v]crop=iw*{cw}:ih*{ch}:iw*{cx}:ih*{cy},"
-             f"scale={width}:-2,pad=iw+4:ih+4:2:2:gray[c{i}]"
-             for i in range(N_CELLS)]
-    for r in range(3):
-        parts.append("".join(f"[c{r*3+j}]" for j in range(3)) +
-                     f"hstack=inputs=3[r{r}]")
-    parts.append("[r0][r1][r2]vstack=inputs=3")
-    cmd += ["-filter_complex", ";".join(parts), "-frames:v", "1",
-            str(out_path)]
-    subprocess.run(cmd, check=True)
+def cut_grid(video, t0, out_path, grid, crop, markers=False):
+    """grid x grid cells at STEP_S spacing, assembled to exactly the
+    LONG_EDGE the API downscales to, so the file IS what the model sees.
+
+    cv2 rather than ffmpeg: the marker arm has to draw on the frames,
+    and routing every arm through one renderer keeps the ladder's rungs
+    comparable. Frames are read sequentially — seeking per cell is
+    several times slower and the marker arm needs the whole window
+    decoded anyway.
+
+    MARKERS COME FROM THE TRACKER, NOT THE CANDIDATE SET. Drawing the
+    top-12 raw candidates was tried first and is actively harmful: they
+    cluster on player limb motion and crowd movement, i.e. exactly
+    where the eye already looks, and the ball's marker is lost among
+    them. The tracker's surviving segments give ONE mark per frame that
+    follows a ball-like path. Marks are drawn AFTER the downscale — a
+    1 px stroke at source would vanish at 0.29x, which is the whole
+    problem they exist to solve."""
+    import cv2
+    import numpy as np
+    cap = cv2.VideoCapture(str(video))
+    fps = cap.get(cv2.CAP_PROP_FPS)
+    W = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    H = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    cw_f, ch_f, cx_f, cy_f = crop
+    x0, y0 = int(cx_f * W), int(cy_f * H)
+    cw, ch = int(cw_f * W), int(ch_f * H)
+    n_cells = grid * grid
+    f_lo = max(int(round(t0 * fps)) - 1, 0)
+    n_f = int(round((n_cells - 1) * STEP_S * fps)) + 3
+
+    cap.set(cv2.CAP_PROP_POS_FRAMES, f_lo)
+    buf = []
+    for _ in range(n_f):
+        ok, fr = cap.read()
+        if not ok:
+            break
+        buf.append(fr[y0:y0 + ch, x0:x0 + cw])
+    cap.release()
+    if len(buf) < n_f:
+        raise SystemExit(f"ran off the end of the video at t0={t0:.2f}s")
+
+    pos = {}
+    if markers:
+        from ball_candidates import candidates
+        from ball_track import track_all
+        cand = [candidates(buf[i - 1], buf[i], buf[i + 1])
+                for i in range(1, len(buf) - 1)]
+        for tr in track_all(cand, fps):
+            for f, x, y, seen in tr:
+                if seen:
+                    pos.setdefault(f, (x, y))
+
+    cell_w = LONG_EDGE // grid
+    cell_h = int(round(cell_w * ch / cw))
+    sx, sy = cell_w / cw, cell_h / ch
+    cells = []
+    for i in range(n_cells):
+        fi = int(round(i * STEP_S * fps))       # index into cand/pos
+        small = cv2.resize(buf[fi + 1], (cell_w, cell_h),
+                           interpolation=cv2.INTER_AREA)
+        if fi in pos:
+            x, y = pos[fi]
+            cv2.circle(small, (int(x * sx), int(y * sy)), 8,
+                       MARK_BGR, 1)
+        cells.append(cv2.copyMakeBorder(small, 2, 2, 2, 2,
+                                        cv2.BORDER_CONSTANT, value=(128,) * 3))
+    g = np.vstack([np.hstack(cells[r * grid:(r + 1) * grid])
+                   for r in range(grid)])
+    cv2.imwrite(str(out_path), g)
+
+
+def load_used(paths):
+    """[(rally_cum, t0, span)] already spent on an earlier draw, so a new
+    arm can be drawn off FRESH video instead of rescoring seen windows."""
+    used = []
+    for p in paths:
+        for r in csv.DictReader(open(p)):
+            used.append((int(r["rally_cum"]), float(r["t0_s"]),
+                         float(r.get("span_s") or 1.2)))
+    return used
+
+
+def overlaps(cum, t0, dur, used):
+    return any(c == cum and t0 < ut + us and ut < t0 + dur
+               for c, ut, us in used)
 
 
 def selftest():
     cs = {1: [(10.0, "A", "slow"), (11.0, "B", "slow"), (11.4, "A", "fast"),
               (11.8, "B", "fast")],
           2: [(50.0, "C", "slow"), (58.0, "D", "slow")]}
-    dur = (N_CELLS - 1) * STEP_S
+    dur = (3 * 3 - 1) * STEP_S
     assert abs(dur - 1.2) < 1e-9, dur
+    # packing: cells scale as n^2, delivered pixels per cell as 1/n
+    for n in (3, 4, 5, 6):
+        assert abs((n * n - 1) * STEP_S - {3: 1.2, 4: 2.25, 5: 3.6,
+                                           6: 5.25}[n]) < 1e-9, n
+        assert LONG_EDGE // n * n <= LONG_EDGE
+    # exclusion is half-open interval overlap, per rally
+    used = [(1, 10.0, 1.2)]
+    assert overlaps(1, 10.5, 1.2, used) and overlaps(1, 9.5, 1.2, used)
+    assert not overlaps(1, 11.2, 1.2, used)
+    assert not overlaps(2, 10.5, 1.2, used)      # different rally
     # containment is half-open and offsets are relative
     got = contacts_in(cs, 1, 11.0, 1.2)
     assert [g[0] for g in got] == [0.0, 0.4, 0.8], got
@@ -153,8 +235,14 @@ def main():
     ap.add_argument("--out-dir", default="vlm_loc")
     ap.add_argument("--n", type=int, default=30)
     ap.add_argument("--seed", type=int, default=20260819)
-    ap.add_argument("--width", type=int, default=520,
-                    help="per-cell width in the 3x3 grid")
+    ap.add_argument("--grid", type=int, default=3,
+                    help="cells per side; 3=the 93%% test, 6=4x cheaper")
+    ap.add_argument("--markers", action="store_true",
+                    help="draw the free classical TRACKER's ball position "
+                         "on each cell — the arm that could rescue the "
+                         "ball at high packing (slower: it tracks first)")
+    ap.add_argument("--exclude", action="append", default=[],
+                    help="an earlier ANSWER_KEY to draw FRESH of; repeatable")
     ap.add_argument("--crop", default="0.70,0.85,0.15,0.10",
                     help="w,h,x,y as fractions of the source frame — the "
                          "playing area; widen if players get clipped")
@@ -165,39 +253,51 @@ def main():
         return
     if not a.video:
         raise SystemExit("--video is required (or use --selftest)")
-    try:
-        subprocess.run([ffmpeg_bin(), "-version"], capture_output=True,
-                       check=True)
-    except (OSError, subprocess.CalledProcessError):
-        raise SystemExit("no usable ffmpeg (same resolver as pose_extract)")
 
-    dur = (N_CELLS - 1) * STEP_S
+    cells = a.grid * a.grid
+    dur = (cells - 1) * STEP_S
     crop = tuple(float(x) for x in a.crop.split(","))
     contacts = load_train_contacts(a.labels, a.split)
-    wins = sample_windows(contacts, a.n, a.seed, dur)
+    used = load_used(a.exclude)
+    # over-draw, then reject windows that overlap spent video
+    wins, seen = [], 0
+    for cum, t0 in sample_windows(contacts, a.n * 40, a.seed, dur):
+        seen += 1
+        if overlaps(cum, t0, dur, used) or overlaps(cum, t0, dur, wins):
+            continue
+        wins.append((cum, t0, dur))
+        if len(wins) == a.n:
+            break
+    if len(wins) < a.n:
+        print(f"only {len(wins)} non-overlapping windows left in TRAIN "
+              f"at this packing — scoring what there is")
+
     out = Path(a.out_dir)
     out.mkdir(exist_ok=True)
     key = out / "ANSWER_KEY_LOC.csv"
-    hist = {}
     with open(key, "w", newline="") as fh:
         w = csv.writer(fh)
-        w.writerow(["window", "rally_cum", "t0_s", "n_contacts",
-                    "offsets_s", "hitters", "paces"])
-        for i, (cum, t0) in enumerate(wins, 1):
+        w.writerow(["window", "rally_cum", "t0_s", "span_s", "grid",
+                    "markers", "n_contacts", "offsets_s", "hitters", "paces"])
+        for i, (cum, t0, _d) in enumerate(wins, 1):
             name = f"w{i:02d}.png"
             cs = contacts_in(contacts, cum, t0, dur)
-            hist[len(cs)] = hist.get(len(cs), 0) + 1
-            print(f"  {name}  rally {cum} @ {t0:.2f}s  "
-                  f"({len(cs)} contacts)")
-            cut_grid(a.video, t0, out / name, a.width, crop)
-            w.writerow([name, cum, f"{t0:.3f}", len(cs),
+            print(f"  {name}  rally {cum} @ {t0:.2f}s")
+            cut_grid(a.video, t0, out / name, a.grid, crop, a.markers)
+            w.writerow([name, cum, f"{t0:.3f}", f"{dur:.2f}", a.grid,
+                        int(a.markers), len(cs),
                         "|".join(f"{o:.2f}" for o, _, _ in cs),
                         "|".join(h for _, h, _ in cs),
                         "|".join(p for _, _, p in cs)])
-    print(f"\n{len(wins)} windows in {out}/  ({dur:.1f}s each, "
-          f"{N_CELLS} cells at {STEP_S}s, seed {a.seed})")
-    print(f"contacts-per-window distribution: "
-          f"{dict(sorted(hist.items()))}")
+    # NOTE: the realized contacts-per-window distribution is deliberately
+    # NOT printed. The 2026-08-19 run printed it and had to disclose the
+    # contamination — a scorer who knows the count distribution has a
+    # prior on how many shots to call.
+    print(f"\n{len(wins)} windows in {out}/  ({dur:.2f}s each, "
+          f"{cells} cells at {STEP_S}s, grid {a.grid}x{a.grid}, "
+          f"markers {'on' if a.markers else 'off'}, seed {a.seed})")
+    print(f"covers {len(wins) * dur:.0f}s of TRAIN video"
+          + (f", drawn clear of {len(used)} spent windows" if used else ""))
     print(f"Paste w*.png. Do NOT paste {key.name} until the calls are in.")
 
 
