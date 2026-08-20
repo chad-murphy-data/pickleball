@@ -44,6 +44,15 @@ LABELS = "contact_labels_chicago0725.csv"
 SPLIT = "label_split.csv"
 MATCH_TOL_S = 0.5          # same tolerance phase_grader uses
 
+# PARAMETER SELECTION IS CLOSED (2026-08-20). Three configurations were
+# measured on a 2-rally clip: 24/36, 23/36, 22/36 recall. At n=36 the
+# standard error is 8 pp and the 95% CIs run 45-82% — those are ONE
+# number, and picking between them on that sample is fitting noise. The
+# values below are chosen on physical grounds (occlusion durations, ball
+# speed, and one documented regularisation), not on the 36-contact
+# score. The real measurement is 19 train rallies = 229 contacts, where
+# se ~3 pp can actually separate hypotheses.
+
 # ---- tracker
 # PHYSICAL CONSTANTS, in seconds and px/second. Storing these in FRAMES
 # and px/FRAME is what made the 60 fps source misbehave in three places
@@ -51,7 +60,10 @@ MATCH_TOL_S = 0.5          # same tolerance phase_grader uses
 # window halved, and the minimum ball speed DOUBLED in real terms, so
 # genuine slow flights were being rejected. Anything that means a
 # physical thing is stored physically and converted with fps.
-COAST_S = 0.20             # how long a track may fly with no detection
+COAST_S = 0.12             # how long a track may fly with no detection.
+                           #   Sized as an OCCLUSION duration (a few
+                           #   frames while the ball passes a body), not
+                           #   as a free parameter.
 MAX_SEG_S = 0.85           # a flight between contacts is short. This
                            #   cap is NOT purely physical: 1.6 s is the
                            #   honest upper bound on a flight, and
@@ -63,8 +75,15 @@ MAX_SEG_S = 0.85           # a flight between contacts is short. This
                            #   wandering ones. 0.85 s still spans the
                            #   fitted gap distribution (fast 0.65 s,
                            #   slow 1.00 s) for all but the slowest.
-JOIN_MAX_S = 0.60          # gap that still counts as one contact
-MIN_SPEED_PXS = 240.0      # px/second: a ball outruns a limb
+JOIN_MAX_S = 0.35          # gap that still counts as one contact.
+                           #   Segments END at contacts by design, so
+                           #   this is again an occlusion duration, not
+                           #   the length of a flight.
+MIN_SPEED_PXS = 300.0      # px/second: a ball outruns a limb. At 60 fps
+                           #   on this 1280-wide frame the court runs
+                           #   ~40 px/ft, so a dink at ~14 ft/s is
+                           #   ~560 px/s near court and roughly half
+                           #   that when compressed at the far end.
 BEAM = 60                  # hypotheses kept per frame
 SEED_TOP = 12              # candidates per frame that may start a track
 GATE_BASE = 10.0           # px, gate radius at zero speed. Was 26, which
