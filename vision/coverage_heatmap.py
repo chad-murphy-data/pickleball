@@ -228,8 +228,16 @@ def ellipse_params(pts, wts=None):
     return mu, cov, area
 
 
+def _clip(ox, oy):
+    """A panel-sized clip path; an ellipse can be wider than its panel
+    and would otherwise draw over the neighbouring player."""
+    cid = f"clip{int(round(ox))}_{int(round(oy))}"
+    return cid, (f'<clipPath id="{cid}"><rect x="{ox:.1f}" y="{oy:.1f}" '
+                 f'width="{PW:.1f}" height="{PH:.1f}"/></clipPath>')
+
+
 def ellipse_svg(mu, cov, ox, oy, stroke, width=1.8, halo=True, dash=""):
-    """The 90% ellipse drawn in panel pixels."""
+    """The 90% ellipse drawn in panel pixels, clipped to its panel."""
     if mu is None:
         return []
     ev, evec = np.linalg.eigh(cov)
@@ -256,7 +264,50 @@ def ellipse_svg(mu, cov, ox, oy, stroke, width=1.8, halo=True, dash=""):
              + (f' stroke-dasharray="{dash}"' if dash else "") + '/>')
     g.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="2.4" '
              f'fill="{stroke}" stroke="{SURFACE}" stroke-width="1"/>')
-    return g
+    cid, defs = _clip(ox, oy)
+    return [defs, f'<g clip-path="url(#{cid})">'] + g + ["</g>"]
+
+
+def density_threshold(H, frac):
+    """Density level whose super-level set holds `frac` of the mass."""
+    flat = np.sort(H.ravel())[::-1]
+    c = np.cumsum(flat)
+    if c[-1] <= 0:
+        return np.inf, 0.0
+    c = c / c[-1]
+    k = int(np.searchsorted(c, frac)) + 1
+    return float(flat[min(k, len(flat)) - 1]), k * GRID_FT ** 2
+
+
+def region_outline(H, thr, ox, oy):
+    """Staircase boundary of {H >= thr}, as SVG line segments.
+
+    Non-parametric: unlike the Gaussian ellipse this follows a bimodal
+    distribution instead of spanning the gap between its two modes.
+    """
+    M = H >= thr
+    seg = []
+    s = GRID_FT * PX_FT
+    rows, cols = M.shape
+    for r in range(rows):
+        for c in range(cols):
+            if not M[r, c]:
+                continue
+            x0 = ox + c * s
+            y0 = oy + r * s
+            if r == 0 or not M[r - 1, c]:
+                seg.append((x0, y0, x0 + s, y0))
+            if r == rows - 1 or not M[r + 1, c]:
+                seg.append((x0, y0 + s, x0 + s, y0 + s))
+            if c == 0 or not M[r, c - 1]:
+                seg.append((x0, y0, x0, y0 + s))
+            if c == cols - 1 or not M[r, c + 1]:
+                seg.append((x0 + s, y0, x0 + s, y0 + s))
+    if not seg:
+        return []
+    d = " ".join(f"M{a:.1f} {b:.1f}L{cc:.1f} {dd:.1f}" for a, b, cc, dd in seg)
+    return [f'<path d="{d}" fill="none" stroke="{INK}" stroke-width="1.1" '
+            f'stroke-dasharray="3 2" stroke-opacity="0.85"/>']
 
 
 def norm_level(H):
@@ -460,7 +511,7 @@ def panel(H, ox, oy, title, sub, diverging=False):
 
 def legend(ox, oy, w=150.0):
     g = [f'<text x="{ox:.1f}" y="{oy - 6:.1f}" fill="{INK2}"'
-         f' font-size="10.5">time spent — ONE scale across the row</text>']
+         f' font-size="10.5">time spent (one shared scale)</text>']
     step = w / len(BLUE)
     for i, c in enumerate(BLUE):
         g.append(f'<rect x="{ox + i * step:.1f}" y="{oy:.1f}"'
@@ -508,7 +559,7 @@ def short_name(n):
 
 def render(A, B, order, names, led, title):
     cols = len(order)
-    W = PAD_L + cols * PW + (cols - 1) * GAP_X + 24
+    W = PAD_L + cols * PW + (cols - 1) * GAP_X + 40
     rows_y = [PAD_T + 78]
     rows_y.append(rows_y[0] + PH + GAP_Y)
     contrast_y = rows_y[1] + PH + GAP_Y
@@ -548,9 +599,15 @@ def render(A, B, order, names, led, title):
             ox = PAD_L + ci * (PW + GAP_X)
             pts = dat.get(u, np.zeros((0, 2)))
             mu, cov, area = ellipse_params(pts)
+            thr, a90 = density_threshold(dens[u], 0.90)
             g += panel(normalise(dens[u], hi), ox, oy,
                        names.get(u, u[:8]),
-                       f"{len(pts):,} frames · {area:,.0f} ft² (90%)")
+                       f"{len(pts):,} fr · 90%: {a90:,.0f} ft² obs "
+                       f"/ {area:,.0f} ellipse")
+            cid, defs = _clip(ox, oy)
+            g += [defs, f'<g clip-path="url(#{cid})">']
+            g += region_outline(dens[u], thr, ox, oy)
+            g += ["</g>"]
             g += ellipse_svg(mu, cov, ox, oy, INK, width=1.6)
             if ci == 0:
                 g += _depth_axis(ox + (0 - X_LO) * PX_FT, oy)
@@ -700,7 +757,7 @@ def stack_report(per, names, partner):
     for u in cross:
         n, cs, ct = cross[u]
         print(f"  {names.get(u, u[:8]):<22}{cs / n:>9.2%}{ct / n:>10.2%}"
-              f"{(ct - cs) / n:>+10.2f}pp".replace("pp", " pp"))
+              f"{100 * (ct - cs) / n:>+8.1f} pp")
     print()
     print("D4  BOTH PARTNERS ONE SIDE at the start of retained frames")
     print("    (geometric signature of a stack still unwinding)")
@@ -905,25 +962,51 @@ def selftest():
     chk(abs(np.pi * np.sqrt(C.ELLIPSE_CHI2 * ev[0])
             * np.sqrt(C.ELLIPSE_CHI2 * ev[1]) - area) < 1e-6,
         "pi*a*b of the drawn semi-axes reproduces the area")
-    svg = ellipse_svg(mu, cov, 0.0, 0.0, "#000")
+    svg = [e for e in ellipse_svg(mu, cov, 0.0, 0.0, "#000")
+           if e.startswith("<ellipse")]
     cx = float(svg[1].split('cx="')[1].split('"')[0])
     cy = float(svg[1].split('cy="')[1].split('"')[0])
     # the svg prints 1 decimal, so 0.05 px is the exact-match tolerance
     chk(abs(cx - (mu[0] - X_LO) * PX_FT) <= 0.05
         and abs(cy - (mu[1] - D_LO) * PX_FT) <= 0.05,
         "the ellipse centre lands on the centroid in panel pixels")
-    circ = ellipse_svg(np.array([10.0, 10.0]), np.eye(2) * 4.0, 0.0, 0.0, "#000")
+    circ = [e for e in ellipse_svg(np.array([10.0, 10.0]),
+            np.eye(2) * 4.0, 0.0, 0.0, "#000") if e.startswith("<ellipse")]
     rx = float(circ[1].split('rx="')[1].split('"')[0])
     ry = float(circ[1].split('ry="')[1].split('"')[0])
     chk(abs(rx - ry) <= 0.05
         and abs(rx - np.sqrt(C.ELLIPSE_CHI2 * 4.0) * PX_FT) <= 0.05,
         "an isotropic cloud draws a CIRCLE of the right radius")
-    tall = ellipse_svg(np.array([10.0, 10.0]),
-                       np.array([[1.0, 0.0], [0.0, 25.0]]), 0.0, 0.0, "#000")
+    tall = [e for e in ellipse_svg(np.array([10.0, 10.0]),
+            np.array([[1.0, 0.0], [0.0, 25.0]]), 0.0, 0.0, "#000")
+            if e.startswith("<ellipse")]
     ang = float(tall[1].split("rotate(")[1].split()[0])
     chk(abs(abs(ang) - 90.0) < 1e-6,
         f"a depth-elongated cloud draws its long axis DOWN the court "
         f"(rotation {ang:.1f} deg)")
+
+    print("ellipse vs observed contour")
+    rng3 = np.random.default_rng(11)
+    uni = rng3.multivariate_normal([10.0, 11.0], [[4.0, 0.0], [0.0, 4.0]], 4000)
+    Hu = smooth(hist2d(uni))
+    _, au = density_threshold(Hu, 0.90)
+    _, _, eu = ellipse_params(uni)
+    chk(0.6 < au / eu < 1.6,
+        f"on a single Gaussian blob the two agree within ~1.5x "
+        f"(obs {au:.0f} vs ellipse {eu:.0f})")
+    # bimodal: two clusters with a gap, exactly what a court produces
+    bim = np.vstack([rng3.multivariate_normal([10, 5], np.eye(2) * 2.0, 2000),
+                     rng3.multivariate_normal([10, 21], np.eye(2) * 2.0, 2000)])
+    Hb = smooth(hist2d(bim))
+    _, ab = density_threshold(Hb, 0.90)
+    _, _, eb = ellipse_params(bim)
+    chk(ab < eb * 0.8,
+        f"on a BIMODAL cloud the ellipse over-states badly "
+        f"(obs {ab:.0f} vs ellipse {eb:.0f}, {eb / ab:.2f}x) -- it spans "
+        f"the empty gap between the two modes")
+    thr_b, _ = density_threshold(Hb, 0.90)
+    chk(len(region_outline(Hb, thr_b, 0.0, 0.0)) > 0,
+        "the observed contour draws for a bimodal cloud")
 
     print("orientation: net at the panel top")
 
