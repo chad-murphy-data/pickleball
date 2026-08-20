@@ -1991,6 +1991,47 @@ this from blind tuning into measurement, and is the same move that has
 resolved every other ambiguity in this thread. Requested rather than
 guessed at further.
 
+## 2026-08-20 — VIDEO CLIP IN HAND: the 0% had a ROOT CAUSE, and it was the frame rate. Rally 1 now 60%.
+
+User supplied a 44 s clip (rallies 1-2, 36 labeled contacts). First
+time in this thread the pipeline could be measured rather than guessed
+at. Clip stays in scratch, never committed (house rule).
+
+**THE SOURCE IS 60 fps, NOT 30.** `ball_track.py` defaulted to
+`--fps 30`, and decode_window passes `-r`, so every run RESAMPLED a
+60 fps source to 30. Measured cost, replicating the user's own probe at
+the 9 verified ball positions in w27:
+
+    adjacent frames at native 60 fps : ball found **8/9**, ranks 1-9,
+                                       median **72** candidates/frame
+    resampled to 30 fps              : ball found **5/9**, worse ranks,
+                                       median **101** candidates/frame
+
+Both directions hurt at once, and both are obvious in hindsight: bigger
+inter-frame motion means MORE of the scene differences (clutter up 40%)
+and the ball STREAKS instead of staying a compact blob (recall down).
+Fixed by defaulting `--fps 0` = native, detected from the ffmpeg banner.
+
+RESULT ON REAL VIDEO, rally 1 (25 labeled contacts, 1357 frames at
+60 fps, median 58 candidates/frame):
+    segments kept 33, detected 25, **matched 15/25 = 60% recall at
+    60% precision**
+0% -> 60%, and **above the decoded pose pipeline's 45.7%** on the same
++/-0.5 s metric. Not yet the VLM's 93%. First honest number for the
+classical route.
+
+METHOD NOTE FOR THIS SESSION: no ffmpeg binary exists in the remote
+environment, so the local harness decodes with cv2 (5.0.0) — same
+candidates() and track_all() as production, different frame source.
+Anything measured here must be re-run on the user's machine through
+the ffmpeg path before it counts as a production number.
+
+OBSERVATION TO CHASE, not yet acted on: every kept segment is pinned at
+the 48-frame cap, which at 60 fps is only 0.8 s — MAX_SEG_FRAMES was
+sized in FRAMES for a 30 fps assumption and is now clipping real
+flights in half. Constants that mean a physical thing (seconds, px/s)
+should not be stored in frames. Same bug class as the fps default.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio

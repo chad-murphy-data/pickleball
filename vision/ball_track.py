@@ -641,7 +641,13 @@ def main():
     ap.add_argument("--video")
     ap.add_argument("--labels", default=LABELS)
     ap.add_argument("--split", default=SPLIT)
-    ap.add_argument("--fps", type=float, default=30.0)
+    ap.add_argument("--fps", type=float, default=0.0,
+                    help="0 = use the video's NATIVE rate. Resampling a "
+                         "60 fps source to 30 measurably costs recall "
+                         "(ball found 5/9 vs 8/9 at verified positions) "
+                         "AND adds clutter (101 vs 72 candidates/frame): "
+                         "bigger inter-frame motion means more of the "
+                         "scene differences, and the ball streaks.")
     ap.add_argument("--width", type=int, default=1280)
     ap.add_argument("--pad", type=float, default=1.0,
                     help="seconds of context each side of a rally")
@@ -654,6 +660,15 @@ def main():
         return
     if not a.video:
         raise SystemExit("--video required (or --selftest)")
+
+    if a.fps <= 0:
+        import subprocess as _sp
+        err = _sp.run([ffmpeg_bin(), "-i", str(a.video)],
+                      capture_output=True).stderr.decode(errors="replace")
+        import re as _re
+        m = _re.search(r"(\d+(?:\.\d+)?)\s*fps", err)
+        a.fps = float(m.group(1)) if m else 30.0
+        print(f"native frame rate: {a.fps:g} fps")
 
     truth = load_truth(a.labels, a.split)
     want = ([int(x) for x in a.rallies.split(",")] if a.rallies
