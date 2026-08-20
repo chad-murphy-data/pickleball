@@ -2223,3 +2223,58 @@ splits, single track never crosses, joins always flagged inferred,
 recall floor 60%) and the rates are printed. The 65% synthetic kink
 recall under measured-rate dropout sits right next to the 67% measured
 on real video, which is a mild coherence check on the synth.
+
+## 2026-08-20 — VLM SCAN COST: the bill is per IMAGE, not per frame (`vlm_pack.py`)
+
+User: "I like the accuracy, don't like the cost." Repriced from the
+geometry we actually shipped, and the arithmetic has a lever in it I
+had missed.
+
+Images are downscaled to ~1568 px on the long edge before tokenising
+(~w*h/750). The shipped 3x3 grid is 1572 px wide — ALREADY AT THE CAP.
+So a 4x4, 5x5 or 6x6 grid of the same crop downscales to the same
+1568 px and costs the same **2239 tokens** while covering 1.8x, 2.8x or
+4x more video. Packing is nearly free in tokens. It is paid for in
+PIXELS PER FRAME, which is a different currency:
+
+     grid  cells   span   cell px   imgs/match   top     mid    small
+     3x3      9   1.35s  522x357        2089   $44.35  $8.87   $2.96
+     4x4     16   2.40s  392x268        1175   $25.57  $5.11   $1.70
+     5x5     25   3.75s  313x214         752   $16.88  $3.38   $1.13
+     6x6     36   5.40s  261x178         522   $12.16  $2.43   $0.81
+
+(per 47 min of RALLY time, batch pricing; dead time is never tiled
+because rally spans come free from the referee logs.) Two independent
+levers, 3.6x from packing and 15x from model tier, 55x combined.
+
+MECHANISM PROBE (`vlm_pack.py --video`, rally 1, TRAIN, rendered at
+exactly the delivered pixel size so what I looked at is what a model
+would see): **the ball channel and the posture channel do NOT degrade
+at the same rate.**
+
+  ball     3x3 clear -> 4x4 workable -> 5x5 degraded but present
+           -> 6x6 mostly gone (a ~7 px ball at source is ~2 px)
+  posture  fully readable at ALL FOUR — swings, lunges, kitchen
+           position and paddle attitude are obvious even at 261x178
+
+This is a look-at-it probe on one window, decisive in the negative
+only; it is not an accuracy measurement. But the split it shows lines
+up with what the user said the data is actually for ("not even 'where
+is the ball' data, but 'who's next to hit' and 'fast/slow' data") —
+and that is the channel that survives packing. The expensive channel
+and the wanted channel are not the same channel.
+
+HYBRID WORTH TESTING: overlay the free classical candidates
+(`ball_candidates.py`, ball present at some rank 76%) as drawn markers
+before packing. A drawn circle survives a 0.29x downscale when a 2 px
+ball does not, which converts "find a 3 px dot" into "pick which
+marked dot moves like a ball" — a task the VLM already demonstrated,
+having rejected a shoe and flagged an occlusion unprompted.
+
+REGISTERED, before any of it is run (placement recall at +/-0.5s):
+top tier 4x4 85-93%, 5x5 70-85%, 6x6 50-70%; hitter SIDE >=90% at
+every level through 6x6; small tier at 3x3 55-75%. Predicted dominant
+6x6 failure mode is cell INDEXING (naming cell 23 of 36) showing up as
+timing error, not as missed contacts — a different failure than
+resolution loss, and separable by whether the miss is off-by-a-cell or
+absent.
