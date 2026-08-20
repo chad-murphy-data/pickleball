@@ -116,7 +116,16 @@ def cut_grid(video, t0, out_path, grid, crop, markers=False):
     them. The tracker's surviving segments give ONE mark per frame that
     follows a ball-like path. Marks are drawn AFTER the downscale — a
     1 px stroke at source would vanish at 0.29x, which is the whole
-    problem they exist to solve."""
+    problem they exist to solve.
+
+    Returns a per-cell '1'/'0' string of WHERE THE TRACKER PUT A MARK
+    (empty when markers are off). Stored raw in the answer key rather
+    than as a derived per-contact flag, so the tolerance used to join
+    marks to contacts stays a scoring-time choice. This is what makes
+    a miss attributable: a contact the tracker HAD and the reader still
+    missed indicts the reading, one the tracker never had indicts the
+    tracker, and a contact placed with no mark nearby was carried by
+    posture alone."""
     import cv2
     import numpy as np
     cap = cv2.VideoCapture(str(video))
@@ -157,11 +166,12 @@ def cut_grid(video, t0, out_path, grid, crop, markers=False):
     cell_w = LONG_EDGE // grid
     cell_h = int(round(cell_w * ch / cw))
     sx, sy = cell_w / cw, cell_h / ch
-    cells = []
+    cells, marked = [], []
     for i in range(n_cells):
         fi = int(round(i * STEP_S * fps))       # index into cand/pos
         small = cv2.resize(buf[fi + 1], (cell_w, cell_h),
                            interpolation=cv2.INTER_AREA)
+        marked.append("1" if fi in pos else "0")
         if fi in pos:
             x, y = pos[fi]
             cv2.circle(small, (int(x * sx), int(y * sy)), 8,
@@ -171,6 +181,7 @@ def cut_grid(video, t0, out_path, grid, crop, markers=False):
     g = np.vstack([np.hstack(cells[r * grid:(r + 1) * grid])
                    for r in range(grid)])
     cv2.imwrite(str(out_path), g)
+    return "".join(marked) if markers else ""
 
 
 def load_used(paths):
@@ -280,17 +291,19 @@ def main():
     with open(key, "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["window", "rally_cum", "t0_s", "span_s", "grid",
-                    "markers", "n_contacts", "offsets_s", "hitters", "paces"])
+                    "markers", "n_contacts", "offsets_s", "hitters",
+                    "paces", "marked_cells"])
         for i, (cum, t0, _d) in enumerate(wins, 1):
             name = f"w{i:02d}.png"
             cs = contacts_in(contacts, cum, t0, dur)
             print(f"  {name}  rally {cum} @ {t0:.2f}s")
-            cut_grid(a.video, t0, out / name, a.grid, crop, a.markers)
+            bits = cut_grid(a.video, t0, out / name, a.grid, crop,
+                            a.markers)
             w.writerow([name, cum, f"{t0:.3f}", f"{dur:.2f}", a.grid,
                         int(a.markers), len(cs),
                         "|".join(f"{o:.2f}" for o, _, _ in cs),
                         "|".join(h for _, h, _ in cs),
-                        "|".join(p for _, _, p in cs)])
+                        "|".join(p for _, _, p in cs), bits])
     # NOTE: the realized contacts-per-window distribution is deliberately
     # NOT printed. The 2026-08-19 run printed it and had to disclose the
     # contamination — a scorer who knows the count distribution has a

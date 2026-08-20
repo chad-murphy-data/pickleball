@@ -2333,3 +2333,67 @@ removing the first copies; selftest and the clip run are unchanged
 Exclusion verified by reproducing both draws: arm5 opens on rally 20 @
 492.96s, arm6 on rally 10 @ 309.39s, zero overlapping windows, 94s of
 the 276s train budget spent.
+
+## 2026-08-20 — MARKER ARM: registered before the grids land
+
+The marker arm had no prediction on record and is about to be run, so
+it goes in writing first. Three things established while setting it up.
+
+**The comparison is PAIRED, which I had not noticed when specifying it.**
+The draw is a deterministic function of (contacts, n, seed, span,
+exclusions), and arm6 and arm6m share all five — so they are the SAME
+NINE WINDOWS, plain and marked. Verified by reproducing both draws:
+identical, and disjoint from arm5's thirteen. The marker effect is
+therefore a within-window contrast, not a difference of two ~55-contact
+samples, and the noise on it is far smaller than the ~7pp per-arm se
+would imply. arm5 (5x5, plain, 13 windows) stays the independent rung.
+
+**Why the hybrid's ceiling is ABOVE the tracker's 67%.** The marker arm
+does not need the tracker to FIND the contact, only to carry the ball
+THROUGH it — the VLM re-does the hard part, deciding where the path
+bends. That is a weaker requirement than the kink detection the 67% was
+measured on, so ball-path coverage is the binding number, not contact
+recall. On the probe window coverage was 28/36 cells = 78%.
+
+**The dropout is BURSTY, not scattered** — and that is the worse shape.
+The two blank runs on the probe window are frames 87-124 and 216-246,
+~0.6 s each, where track_all returns no surviving track at all. A
+contact inside a blank run has no neighbouring marks to read a
+trajectory from, so the marker channel contributes nothing there and
+posture has to carry it alone. Scattered dropout at the same rate would
+leave every contact with usable context.
+
+`cut_grid` now returns a per-cell 1/0 string of where the tracker put a
+mark, stored raw in the answer key (`marked_cells`). Raw rather than a
+derived per-contact flag so the mark-to-contact tolerance stays a
+scoring-time choice. It makes a miss ATTRIBUTABLE, which is the whole
+point: a contact the tracker had and the reader still missed indicts the
+reading; one the tracker never had indicts the tracker; one placed with
+no mark nearby was carried by posture alone.
+
+REGISTERED (placement recall at +/-0.5 s, top tier):
+
+  1. arm6m lands **70-85%**, i.e. up a full packing rung from plain 6x6
+     (50-70%) to roughly plain 5x5. Marked 6x6 at 5x5 accuracy is
+     $12.16 vs $16.88 per match — real but modest. The result that
+     would matter is arm6m reaching plain 4x4's 85-93% band, making it
+     $12 against $26.
+  2. FALSIFIER, hybrid dead in this form: **arm6m <= arm6 + 5pp.**
+  3. FALSIFIER, and the one I am most exposed on: **arm6m precision
+     BELOW arm6 precision.** The notes claim the tracker's false marks
+     "LOOK like false positives" and will be adjudicated rather than
+     trusted. That is a claim about a model I have not tested. If
+     precision falls, the markers are being believed and the arm is
+     worse than useless — it launders a 44%-precision tracker through a
+     confident reader.
+  4. Miss decomposition, **60/40 tracker-bound over reading-bound**,
+     because the dropout is bursty. If it comes back reading-bound the
+     next move is the prompt or a rung of model tier; if tracker-bound
+     it is tracker work, and the tracker is the cheap half.
+  5. Cell INDEXING stays the predicted dominant 6x6 failure on both
+     arms — off-by-a-cell timing error rather than absent contacts,
+     separable at scoring by whether the miss is displaced or missing.
+
+Unchanged and still pending: the 19-rally classical baseline is the
+number everything here is measured against, and it must be run on the
+current ball_track.py.
