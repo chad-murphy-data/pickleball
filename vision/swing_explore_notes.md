@@ -1781,6 +1781,55 @@ Two consequences, one of which cuts against the ball thread.
      they do not need. Recorded so nobody re-opens the ball thread on
      the strength of an argument whose payload is already delivered.
 
+## 2026-08-20 — "COULD A LOCAL MODEL / A REGULAR CLASSIFIER DO THIS?" — honest decomposition, and a probe
+
+User question, at a natural reflection point. Answered by decomposing
+what the VLM actually did rather than by asserting.
+
+WHAT WAS ACTUALLY MAGIC, AND WHAT WAS NOT. Re-reading my own
+localization work: **the ball was the primary cue in nearly every
+window; posture was corroboration.** Stated at the time and it holds up
+("the single most useful cue was, by a wide margin, the ball"). So the
+93% recall decomposes into:
+  find a small bright blob -> follow it across frames -> its direction
+  reverses -> that is a contact
+Steps 2-4 are geometry we can already write. Step 1 is a detector. NONE
+of that requires a language model. The parts that genuinely used
+learned visual priors were secondary: reading a paddle blur, judging
+"is this a ready stance or a walk", spotting the broadcast cutaway.
+
+CONSEQUENT ARCHITECTURE for a fully local pipeline, all classical:
+  motion-differenced candidates -> trajectory linking -> direction
+  change = CONTACT TIME -> nearest player to the ball at contact
+  (we already have all four pose tracks) = HITTER -> gap between
+  contacts = PACE (already at its Bayes ceiling)
+Note what this fixes: pick_hitter currently guesses the hitter from
+wrist-velocity within one side and is the weakest link in the stack.
+NEAREST-PLAYER-TO-BALL is a far better estimator and it is arithmetic —
+but it needs the ball.
+
+SELF-CORRECTION vs yesterday. I wrote that the ball had become
+REDUNDANT because the VLM supplies hitter ID at 85% and pace is
+arithmetic. That is true GIVEN A VLM IN THE LOOP. For a LOCAL,
+VLM-free pipeline the ball is not redundant, it is load-bearing: it is
+how contacts are found AND how the hitter is attributed. The ball
+thread's value depends on which architecture is chosen, and yesterday's
+"less urgent" verdict was scoped to the wrong one.
+
+`vision/ball_candidates.py` (built, selftested, NOT run — needs the
+video) probes the ONE step that could fail outright: at each of the 25
+USER-VERIFIED ball positions, does a plain 3-frame motion difference
+put the ball in the top-K candidates? No training, no weights, no
+labels at inference. Deliberately dumb — no colour model, no shape
+prior. Motion differencing is also the principled fix for my own worst
+false positive: a SHOE travels with its player, the ball does not, so
+the class that fooled me is gated out by construction (asserted in the
+selftest with a synthetic static-shoe/moving-ball scene).
+READING RULE, fixed before the run: high top-25 recall means the ball
+IS in the candidate set and everything downstream is geometry; low
+recall means the classical route needs a learned detector and the
+probe said so for the price of one script.
+
 ## 2026-08-19 — EXTERNAL REFERENCE: "Tennis Vision" (note.com/ai_driven, 3D tennis from broadcast)
 
 Read on user pointer. Single 22 s ATP clip, 1080p60: cross-ratio
