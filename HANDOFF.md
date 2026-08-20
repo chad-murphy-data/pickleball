@@ -1,5 +1,93 @@
 # HANDOFF — live-listener launch & receipts
 
+## ► 2026-08-20 — COURT COVERAGE (PR #58, branch `claude/court-coverage-model-8rg94l`) — NEWEST, read before the 08-11 entry
+
+Court occupancy per player from broadcast video, on the SOLVED layers
+only (pose tracks + court homography + referee-log identity; no ball, no
+contacts, no training). This does NOT re-open the vision program stopped
+on 08-11 — it deliberately avoids the layer that failed. Canonical
+technical record: `vision/coverage_spec.md` (read its last four sections
+first, they are the corrections). Full narrative: PR #58 description.
+
+**STATUS: code done, selftests green, waiting on THREE user
+verifications. Numbers are provisional until those close.**
+
+### Run it
+```
+bash vision/coverage_pipeline.sh <vod.mp4> <match_uuid> <vod_id>
+python3 vision/coverage_heatmap.py --cache <npz> --out <svg>   # instant re-render
+python3 vision/coverage_heatmap.py --cache <npz> --stack-report
+```
+Every module ships `--selftest`; all pass (heat map alone runs 41 checks).
+
+### The one real run — 2026-01-25 PPA Indoor mixed final (`c4eb30d0`)
+Bright/Patriquin vs Black/Alshon. 113/141 rallies score-verified ->
+**63 by geometry, 90 after anchor-free identity**. End-map 63/63.
+Outputs: `data/coverage_players.csv`, `coverage_dominance{,_rallies}.csv`,
+`coverage_events.csv`, `data/vision/coverage_heatmap_ppa0125.svg`.
+
+WHAT SURVIVES (space, never intent): width share — Alshon 0.552,
+Patriquin 0.561, Bright 0.440, Black 0.448, the first DIRECT observation
+of finding 11's coverage dial; off-court fraction Black 4.7% / Alshon
+3.5% / Bright 3.0% / Patriquin 1.5%; observed 90% occupancy areas
+Alshon 261 > Black 232 > Patriquin 204 > Bright 188 ft^2; and the depth
+split — Patriquin owns the kitchen (28.8% of frames in the band, median
+10.7 ft from net) while Alshon plays deep (14.8%, median 15.5 ft, 53.4%
+beyond 14 ft). Depth results do not depend on any mirroring choice.
+
+### THREE THINGS WERE RETRACTED OR WITHDRAWN — do not re-quote them
+1. **"Deep poach"** is retracted entirely as a poaching measure. It
+   counts CROSSINGS. At each player's deepest crossing the PARTNER is
+   already wide (Black 8.9 ft, 86% of hers) — she held the middle while
+   he went wide. The pre-registered initiation test FAILED to separate.
+   Intent needs the ball; the ball is closed.
+2. **"Alshon crosses 22.8%, double everyone else"** is withdrawn. That
+   anchor mistook STACK UNWIND for crossing; robust anchor gives 12.8%
+   vs Patriquin 11.0%.
+3. **"Black 6.8% off court vs Alshon 3.3%"** was a stale 63-rally figure;
+   committed data says 4.73% vs 3.51%.
+Pattern worth internalising: all three came from the USER looking at
+overlays or questioning a definition, not from the code.
+
+### REPRODUCIBILITY HAZARD — read before touching anything
+The identity ledgers (`identity_{swaps,track_map,anchorfree}_*.csv`) are
+committed but keyed on POSE TRACK IDS, which live only in gitignored
+`data/vision/pose_*/`. Re-extracting renumbers them. A mismatch now
+fails loudly (guards in `carry_names` + `run()`), but the shipped numbers
+need the exact extraction `pose_ppa0125c` (rtmpose-balanced, 10 fps, 113
+rallies, ~2 h CPU) which is a SCRATCH dir that does not survive a fresh
+container. Re-deriving it invalidates all three ledgers and moves the
+numbers. Real fix (unbuilt): fingerprint each ledger against its
+extraction.
+
+### OPEN GATES — user actions, nothing to code
+1. Check B first half: watch `overlay_anchorfree_sm.mp4` rallies
+   3,5,11,19,21,23,25,26,27,28,40,41,48,52 — gates 90 vs 63 rallies.
+2. Check A: `coverage_overlay_ppa0125_v4_sm.mp4` — gates the 63; game 3
+   is the risky part (kit change, Gate A 46.7%).
+3. Match watch: grade `poach_watchlist_af.csv` as CROSSINGS, not poaches.
+
+### Traps a fresh session will otherwise re-learn
+* Yield is capped by SOURCE VIDEO, not compute/model/labels. Failed
+  rallies average 0.48 main-camera fraction at the serve vs 0.67 covered;
+  the VOD is 49% main camera. 30 fps null, appearance rescued 1 of 16.
+* The appearance descriptor is a TEAM-COLOUR detector. Cross-team pairs
+  separate 97-100%, PARTNERS 59-88%. Partners wear matching kit by
+  design. MLP will be worse (identical numbered uniforms) — jersey-number
+  OCR is the generalizable channel, specced and unbuilt.
+* Identity comes from aggregating across TIME (~75%/crop -> 96-100%/rally),
+  not from a better same-instant classifier.
+* End switches must be FITTED, not assumed per game (MLP switches at 6 in
+  every game; PPA only in a decider).
+* `coverage.run(write=False)` for any collect-only caller — diagnostic
+  scripts with a placeholder `--vod` once appended 13 junk rows to the
+  committed CSVs.
+* Two crashes this session came from SELFTEST FIXTURES not matching
+  production shape (a tuple game key read as int; a ledger naming an
+  absent track). A synthetic input that does not match production shape
+  is not a test of production.
+
+
 ## ► 2026-08-11 — VISION MVP BUILT, MEASURED, AND STOPPED (read this first)
 
 **STOPPED.** Shot-level vision is capped — see the top of

@@ -629,3 +629,76 @@ the current CSVs is `pose_ppa0125c` (rtmpose-balanced, 10 fps, 113
 rallies, ~2 h CPU), which is a scratch directory, not a repo path — it
 does not survive a fresh container. Re-deriving it is mechanical but
 invalidates all three ledgers, so it changes the numbers under review.
+
+## Stacking contaminates the rally-relative anchor (2026-08-20, user)
+
+`coverage_heatmap.py` renders occupancy in a RALLY-RELATIVE frame that
+mirrors each rally so "the half the player lined up in" is always on the
+left. The user asked whether that is a reference at all, or just
+STACKING. It is largely stacking.
+
+Stacking deliberately puts both partners on one side before the serve;
+they cross to their preferred sides right after it. A start-anchor reads
+that scripted unwind as "crossed into the partner's half", and inflates
+the statistic MOST for whichever pair stacks most — precisely the
+comparison the frame exists to support. Rally-phase frames already begin
+SERVE_PHASE_S = 2.0 s after serve contact, which may exclude a fast
+unwind, but that is not guaranteed and anchor-free rallies do not know
+their serve instant at all.
+
+FRAME B-SETTLED anchors on the median x over the WHOLE rally instead.
+`coverage_heatmap.py --stack-report` prints the pre-registered D1-D4:
+
+  player      disagreement   crossing(start)  crossing(settled)  change
+  Alshon         15.1%           22.79%            12.76%        -10.0 pp
+  Patriquin       7.0%           12.97%            10.98%         -2.0 pp
+  Black           4.6%           10.26%             5.15%         -5.1 pp
+  Bright          2.3%            6.74%             2.34%         -4.4 pp
+
+D4 (both partners one side at the start of retained frames):
+Alshon/Black 31.8% of rallies, Bright/Patriquin 18.8% — the OPPOSITE of
+the initial suspicion, and why Alshon's number moves most.
+
+WITHDRAWN: "Alshon crosses into his partner's half 22.8% of frames,
+roughly double everyone else." Under the robust anchor it is 12.8% vs
+Patriquin's 11.0%, a 1.16x edge not 1.76x.
+
+Settled reduces the artifact ~3x but CANNOT remove it — during an unwind
+the player really is past the centreline. Zeroing it means dropping the
+unwind frames, a data-losing choice deliberately not made. DEPTH results
+(median depth, kitchen-band occupancy) do not depend on the mirror and
+are untouched.
+
+## The 90% ellipse overstates court coverage (2026-08-20)
+
+Drawing the pre-registered ellipse showed it is a poor summary of THIS
+distribution. `coverage_heatmap.ellipse_params()` mirrors
+`coverage.ellipse_area` exactly (same one-3-sigma trim, same chi^2,
+selftested to 1e-9), so the drawing IS the shipped number; both it and a
+non-parametric 90% contour now print on every panel.
+
+Nominal coverage is roughly honest — 85.5-92.1% of frames really fall
+inside. Two things are not:
+
+  * 17-35% of the ellipse AREA lies off the physical court, and the bias
+    runs WITH the ranking: Black 35.1%, Alshon 32.7%, Patriquin 18.7%,
+    Bright 16.9%. An "area" that is mostly not court overstates court
+    coverage most for the players it ranks highest.
+  * a court produces a BIMODAL cloud (kitchen cluster, baseline cluster,
+    gap between) and one Gaussian spans the gap. Selftest plants that
+    shape: ellipse over-states 1.87x, while agreeing within 1.5x on a
+    single blob.
+
+Observed 90% areas, rally-relative: Alshon 261 > Black 232 >
+Patriquin 204 > Bright 188 ft^2, vs ellipses 403/295/256/214. The
+ORDERING survives; the Alshon-to-Bright gap shrinks 1.88x -> 1.39x. Use
+the observed contour for any area claim; keep the ellipse only for
+continuity with the frozen metric.
+
+RENDERING TRAPS, all found by looking at the picture and all now
+selftested: the smoother was EDGE-padded and drew uniform bands down
+every panel rim (structure from padding, not the match — zero-pad);
+panels drew upside-down against their own "net at the top" caption; and
+each panel was normalised to ITS OWN p99.5, so with normalisers ranging
+14.3-28.7 the same blue meant twice the dwell time in one panel as the
+next. Small multiples exist to be compared — one shared scale per row.
