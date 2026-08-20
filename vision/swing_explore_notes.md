@@ -2527,3 +2527,66 @@ GENERAL LESSON, and it is the same shape as the 2026-08-15 measurement-
 frame bug: a metric with no null and a detector that works are
 observationally identical when the tolerance is loose. Build the null
 BEFORE the arm, not after it looks good.
+
+## 2026-08-20 — arm5 and arm6m2 scored: RESOLUTION binds, markers do not rescue 6x6
+
+Calls locked at 69b5e1b before either key was requested.
+
+  arm5    5x5 plain,  13 win, 65 calls, 45 contacts
+    +/-0.5s   recall 91.1%  prec 63.1%  unif 76.6%  +14.5% @99.8
+              shift 88.5%  +2.6% @66.8
+    +/-1 cell recall 53.3%  prec 36.9%  unif 38.7%  +14.6% @98.4
+              shift 42.0%  **+11.4% @93.0**
+
+  arm6m2  6x6 marked,  9 win, 45 calls, 30 contacts
+    +/-0.5s   recall 83.3%  prec 55.6%  unif 65.8%  +17.5% @99.1
+              shift 79.1%  +4.2% @68.4
+    +/-1 cell recall 26.7%  prec 17.8%  unif 29.0%  **-2.3% @29.9**
+              shift 31.4%  -4.8% @19.7
+
+THE HEADLINE. At the loose tolerance both arms clear the uniform null
+and neither clears the shift null — i.e. at +/-0.5s the whole result is
+call volume plus knowing the sport has a tempo, on both rungs. The
+arms only separate at +/-1 cell, and there they separate hard: arm5
+carries +11.4% over its own random-phase calls (93rd percentile, the
+only positive shift-lift any arm has produced), while marked 6x6 sits
+BELOW its null in both directions. Packed to 36 cells the timing
+information is gone, and drawing the ball on does not put it back.
+
+MISS DECOMPOSITION FLIPS THE REGISTERED CALL, and the flip is the
+mechanism. Registered 60/40 tracker-bound. Actual: of 5 arm6m2 misses,
+**5 were MARKED and 0 unmarked** — and 24 of 25 hits were marked too.
+The tracker put the ball within a cell of essentially every contact.
+So ball-FINDING is solved on this rung and ball-READING is not: the
+binding constraint is cell resolution, not the tracker. That also
+explains why markers bought nothing — they answer a question that was
+not the one being failed.
+
+SCORECARD against the 2026-08-20 registration:
+  1. arm6m 70-85%: FAILED under the fixed metric (no localisation
+     signal at 6x6 on either the spent arm or the clean re-run).
+  2. falsifier arm6m <= arm6 + 5pp: UNRESOLVABLE, my error — arm6 was
+     burned by sharing arm6m's windows.
+  3. falsifier marked precision < plain: UNRESOLVABLE, same cause.
+  4. 60/40 tracker-bound: WRONG, decisively, 5/5 the other way.
+  5. cell INDEXING the dominant 6x6 failure: SUPPORTED. 83.3% -> 26.7%
+     between the two tolerances is a pure timing collapse; the
+     contacts are being seen and mis-placed, not missed.
+
+CONSEQUENCE FOR THE COST TABLE. The $12.16/match 6x6 rung is dead for
+placement — it buys a play/no-play detector and a shot COUNT, not
+timestamps. 5x5 at $16.88 is the cheapest rung with any localisation
+signal, and even that clears only its rhythm null at 93rd percentile
+on 45 contacts. 3x3's measured 93% (2026-08-19, n=28) remains the only
+arm that was ever convincing, at $44.35.
+
+TWO SAMPLING ARTEFACTS worth fixing before any further arm:
+  (a) ~4 of 9 arm6m2 windows are majority DEAD TIME, because PRE_PAD
+      is 4.0 s of a 5.25 s span. Production would tile rally spans
+      contiguously and not pay this, so measured recall here is on an
+      unrepresentative window mix.
+  (b) arm6m2 w06 straddles a BROADCAST CUT: its first 13 cells are a
+      tight close-up of a pre-serve routine with no court in frame.
+      One window in nine. The cells are still 0.15 s apart, so the
+      time mapping holds, but no court-frame contact can be read from
+      them.
