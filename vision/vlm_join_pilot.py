@@ -317,11 +317,16 @@ def print_dry(decoded, truths, names):
           f"this table only predicts it.")
 
 
-def escape_tool(name_a, name_b):
-    """Partner call + the two escapes the dry run demanded: DEAD rides
-    the measured 30/30 play/no-play channel and filters defect A's
-    trailing junk; OTHER rides the 95% side channel and flags defect
-    C's wrong-team offerings instead of forcing a coin flip."""
+def escape_tool(offered):
+    """Hitter call over the OFFERED names plus the two escapes. DEAD
+    rides the measured 30/30 play/no-play channel and filters defect
+    A's trailing junk; OTHER catches a hitter outside the offered set.
+
+    `offered` is 2 names in --names team mode, 4 in all4 mode. The
+    2-name form makes OTHER load-bearing for defect C (wrong-team
+    offering); the 4-name form removes that failure entirely and turns
+    parity into something we CHECK rather than something we assume —
+    see the 2026-08-21 API findings below."""
     return {
         "name": "call_shot",
         "description": ("Report who hit the shot shown, or that no live "
@@ -331,15 +336,13 @@ def escape_tool(name_a, name_b):
             "properties": {
                 "answer": {
                     "type": "string",
-                    "enum": [name_a, name_b, OTHER, DEAD],
+                    "enum": list(offered) + [OTHER, DEAD],
                     "description": (
-                        f"'{name_a}' or '{name_b}' if that player is "
-                        f"hitting the ball in these frames. "
-                        f"'{OTHER}' if someone IS hitting but it is "
-                        f"clearly neither of those two players. "
-                        f"'{DEAD}' if no one is hitting — players "
-                        f"walking, resetting, celebrating, between "
-                        f"points."),
+                        "The named player hitting the ball in these "
+                        f"frames; '{OTHER}' if someone IS hitting but "
+                        f"it is none of the named players; '{DEAD}' if "
+                        "no one is hitting — players walking, "
+                        "resetting, celebrating, between points."),
                 },
             },
             "required": ["answer"],
@@ -348,14 +351,16 @@ def escape_tool(name_a, name_b):
     }
 
 
-def escape_prompt(name_a, name_b):
+def escape_prompt(offered):
+    who = " or ".join([", ".join(offered[:-1]), offered[-1]]) \
+        if len(offered) > 2 else " or ".join(offered)
     return (
         "This is a strip of 3 frames (0.1 s apart) from a pro "
         "pickleball broadcast. If a shot is being hit in these frames "
-        f"by {name_a} or {name_b}, name the hitter. If someone else "
-        f"is hitting, answer '{OTHER}'. If no shot is happening — "
-        f"players between points, resetting, celebrating — answer "
-        f"'{DEAD}'. Use the call_shot tool."
+        f"by {who}, name the hitter. If someone else is hitting, "
+        f"answer '{OTHER}'. If no shot is happening — players between "
+        f"points, resetting, celebrating — answer '{DEAD}'. Use the "
+        "call_shot tool."
     )
 
 
@@ -380,25 +385,89 @@ def time_join(events, truths_by_team, tol=TIME_TOL):
     return out
 
 
-def run_api(decoded, truths, names, video, model, out_dir, limit, width):
+def rescore(calls_path, labels_path, windows_path, split_path):
+    """Re-read an existing join_pilot_calls.csv and test the PARITY
+    HYPOTHESIS for free — no API, no video. Costs nothing, so it runs
+    before any re-spend.
+
+    The 2026-08-21 run answered OTHER 73 times out of 186. Two readings:
+    (a) the model hedges when unsure, or (b) we OFFERED THE WRONG TEAM
+    and it correctly refused both names. They are distinguishable: for
+    each OTHER answer that has a time-joined truth, ask whether that
+    true hitter sits on the offered team or the other one. Under (b)
+    the true hitter is overwhelmingly on the OTHER team."""
+    import csv as _csv
+    rows = list(_csv.DictReader(open(calls_path)))
+    train = train_only(split_path)
+    names = name_map(labels_path)
+    from contact_ceiling import load_rosters
+    rosters = load_rosters(Path(windows_path))
+
+    tally = Counter()
+    per_rally = defaultdict(Counter)
+    for r in rows:
+        cum = int(r["rally_cum"])
+        if cum not in train:
+            continue
+        truth = r.get("time_truth") or r.get("order_truth") or ""
+        if not truth:
+            tally["no truth to check"] += 1
+            continue
+        team = int(r["team"])
+        offered = set(team_names(rosters[cum], names, team))
+        on_offered = truth in offered
+        ans = r["answer"]
+        kind = ("named" if ans not in (OTHER, DEAD) else
+                "OTHER" if ans == OTHER else "DEAD")
+        tally[f"{kind}: truth {'ON' if on_offered else 'OFF'} offered team"] += 1
+        if kind == "OTHER":
+            per_rally[cum]["off" if not on_offered else "on"] += 1
+
+    print(f"PARITY DIAGNOSTIC — {len(rows)} calls, "
+          f"{sum(tally.values())} classifiable\n")
+    for k in sorted(tally):
+        print(f"  {k:<45} {tally[k]:>4}")
+    off = tally["OTHER: truth OFF offered team"]
+    on = tally["OTHER: truth ON offered team"]
+    if off + on:
+        print(f"\nOf {off + on} OTHER answers with a known truth, "
+              f"{off} ({off / (off + on):.0%}) had the true hitter on "
+              f"the team we did NOT offer.")
+        if off > on:
+            print("  -> PARITY IS THE CULPRIT. The model was refusing "
+                  "wrong-team offerings, not hedging. Fix: --names all4 "
+                  "(offer every player, check parity instead of "
+                  "assuming it).")
+        else:
+            print("  -> parity is NOT the main story; OTHER is mostly "
+                  "genuine hedging or off-camera hitters.")
+    if per_rally:
+        print("\nper-rally OTHER split (off/on offered team):")
+        for cum in sorted(per_rally):
+            c = per_rally[cum]
+            print(f"  r{cum:<4} off={c['off']:<3} on={c['on']}")
+
+
+def run_api(decoded, truths, names, video, model, out_dir, limit, width,
+            mode="team"):
     from vlm_frame_sample import cut_strip
     from vlm_tier_test import PRICE, image_media_type
     import base64
     import anthropic
     client = anthropic.Anthropic()
 
-    def ask(img, na, nb):
+    def ask(img, offered):
         b64 = base64.standard_b64encode(Path(img).read_bytes()).decode()
         resp = client.messages.create(
             model=model, max_tokens=256,
-            tools=[escape_tool(na, nb)],
+            tools=[escape_tool(offered)],
             tool_choice={"type": "tool", "name": "call_shot"},
             messages=[{"role": "user", "content": [
                 {"type": "image",
                  "source": {"type": "base64",
                             "media_type": image_media_type(img),
                             "data": b64}},
-                {"type": "text", "text": escape_prompt(na, nb)},
+                {"type": "text", "text": escape_prompt(offered)},
             ]}],
         )
         call = next(b for b in resp.content if b.type == "tool_use")
@@ -407,7 +476,7 @@ def run_api(decoded, truths, names, video, model, out_dir, limit, width):
     out = Path(out_dir)
     out.mkdir(exist_ok=True)
     rows, done = [], 0
-    answers = Counter()
+    answers, parity = Counter(), Counter()
     o_ok = o_n = t_ok = t_n = 0
     ok_by_bin, n_by_bin = Counter(), Counter()
     touch_pipe, touch_true = Counter(), Counter()
@@ -428,11 +497,13 @@ def run_api(decoded, truths, names, video, model, out_dir, limit, width):
             if limit and done >= limit:
                 break
             done += 1
-            na, nb = team_names(d["teams"], names, team)
+            own = team_names(d["teams"], names, team)
+            offered = (own if mode == "team" else
+                       sorted(own + team_names(d["teams"], names, team ^ 1)))
             img = out / f"r{cum:03d}_e{i:02d}_t{t_dec:07.2f}.png"
             if not img.exists():
                 cut_strip(video, t_dec, img, width)
-            ans, usage = ask(img, na, nb)
+            ans, usage = ask(img, offered)
             in_tok += usage.input_tokens
             out_tok += usage.output_tokens
             answers[ans] += 1
@@ -454,8 +525,17 @@ def run_api(decoded, truths, names, video, model, out_dir, limit, width):
             if t_truth and named:
                 t_ok += ans == t_truth[1]
                 t_n += 1
+            # PARITY CHECK (all4 only): the decoder said this event
+            # belonged to `team`; the model named someone. Agreement is
+            # now measurable per event instead of assumed — and a
+            # disagreement rate near 50% would mean the decoder's team
+            # assignment is noise, which the 2-name mode could only see
+            # as an unexplained pile of OTHER answers.
+            if mode == "all4" and named:
+                parity[("agree" if ans in own else "flip")] += 1
             rows.append([
                 cum, i, team, f"{t_dec:.3f}", ans,
+                "|".join(offered),
                 o_truth[1] if o_truth else "",
                 f"{o_truth[2]:.3f}" if o_truth else "",
                 t_truth[1] if t_truth else "",
@@ -465,7 +545,7 @@ def run_api(decoded, truths, names, video, model, out_dir, limit, width):
     with open(calls_csv, "w", newline="") as fh:
         w = csv.writer(fh)
         w.writerow(["rally_cum", "event", "team", "t_decoded", "answer",
-                    "order_truth", "order_dt", "time_truth"])
+                    "offered", "order_truth", "order_dt", "time_truth"])
         w.writerows(rows)
 
     i_, o_ = PRICE[model]
@@ -484,6 +564,12 @@ def run_api(decoded, truths, names, video, model, out_dir, limit, width):
         print(f"  time-join accuracy  {t_ok}/{t_n} = {t_ok / t_n:.0%}  "
               f"(nearest same-team truth within {TIME_TOL}s — reads "
               f"through defect C's ordinal slips)")
+    if parity:
+        tot = sum(parity.values())
+        print(f"  DECODER PARITY: {parity['agree']}/{tot} = "
+              f"{parity['agree'] / tot:.0%} of named calls landed on the "
+              f"team the decoder assigned (50% would mean the team "
+              f"assignment carries no information)")
     heavy = [c for c, k in dead_by_rally.items()
              if k >= max(2, len(decoded[c]['events']) // 2)]
     if heavy:
@@ -513,12 +599,23 @@ def main():
                     help="per-frame strip width, same as the 90%% test")
     ap.add_argument("--limit", type=int,
                     help="cap API calls for a smoke run")
+    ap.add_argument("--names", choices=["team", "all4"], default="all4",
+                    help="team = offer the decoded team's 2 players "
+                         "(2026-08-21 run: 73/186 answered OTHER); "
+                         "all4 = offer every player and CHECK the "
+                         "decoder's parity instead of assuming it")
     ap.add_argument("--dry", action="store_true",
                     help="decode + join only; no video, no API, free")
+    ap.add_argument("--rescore",
+                    help="path to an existing join_pilot_calls.csv: "
+                         "runs the parity diagnostic on calls already "
+                         "paid for; no API, no video, free")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
         return selftest()
+    if a.rescore:
+        return rescore(a.rescore, a.labels, a.windows, a.split)
 
     train = train_only(a.split)
     names = name_map(a.labels)
@@ -534,7 +631,7 @@ def main():
         raise SystemExit("\n--video required for the API stage "
                          "(or pass --dry)")
     run_api(decoded, truths, names, a.video, a.model, a.out_dir,
-            a.limit, a.width)
+            a.limit, a.width, a.names)
 
 
 def selftest():
@@ -579,11 +676,17 @@ def selftest():
     assert tj[2] == (11.0, "Cal")
     assert 3 not in tj                    # out of tolerance
 
-    # escape tool: both names + both escapes, nothing else
-    et = escape_tool("Ann", "Bea")
+    # escape tool: offered names + both escapes, nothing else
+    et = escape_tool(["Ann", "Bea"])
     assert et["input_schema"]["properties"]["answer"]["enum"] == \
         ["Ann", "Bea", OTHER, DEAD]
-    assert OTHER in escape_prompt("Ann", "Bea")
+    assert OTHER in escape_prompt(["Ann", "Bea"])
+    # all4 form: every player offered, escapes still present
+    e4 = escape_tool(["Ann", "Bea", "Cal", "Dee"])
+    assert e4["input_schema"]["properties"]["answer"]["enum"] == \
+        ["Ann", "Bea", "Cal", "Dee", OTHER, DEAD]
+    p4 = escape_prompt(["Ann", "Bea", "Cal", "Dee"])
+    assert all(n in p4 for n in ("Ann", "Bea", "Cal", "Dee")), p4
     print("selftest OK: team split, order join, extras/missing, dt bins, "
           "trailing trim, time join, escape tool")
 
