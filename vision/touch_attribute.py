@@ -966,7 +966,7 @@ def run(a):
             ends_switch)
         tnames, ok_lab = labeller(
             rd, anchor_time(rd, dets_by_rally[cum][0][0]
-                            if dets_by_rally[cum] else 0.0),
+                            if dets_by_rally[cum] else 0.0, settle),
             rec, nt, flip, names_by_uuid, events=decoded.get(cum))
         sel = player_tracks(rd)
         t_anc_c = anchor_time(rd, dets_by_rally[cum][0][0]
