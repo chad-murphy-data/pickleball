@@ -137,6 +137,45 @@ def serve_anchor(rec, team_of_name):
 
 
 # ------------------------------------------------------- attribution
+def label_tracks_at_serve(rd, t_serve, rec, near_team, flip, name_of):
+    """{track_id: name} for all four players, fixed AT THE SERVE.
+
+    THIS IS WHAT THE TRACKER IS FOR (lineup.py: "four blobs, four known
+    labels, no appearance model, no hand labelling"). The lineup halves
+    are only defined at the serve — mid-rally the players poach, switch
+    and cross — so left/right may be read ONCE, at the serve instant,
+    and thereafter identity rides the track id. Re-deriving left/right
+    per contact (the first version of this module) silently swaps two
+    partners for the rest of any rally containing a switch, which is
+    common and is exactly the case touch share cares about.
+
+    Returns ({tid: name}, ok) where ok is False if a side did not show
+    exactly two tracks — the geometry was unreadable and the rally
+    should be skipped rather than guessed at."""
+    labels = {}
+    for side in (0, 1):
+        present = []
+        for tid, ser in rd["tracks"].items():
+            if ser["side"] != side:
+                continue
+            c = box_at(ser, t_serve)
+            if c is None or abs(_nearest_dt(ser, t_serve)) > 0.5:
+                continue
+            present.append((c[0], tid))
+        if len(present) != 2:
+            return labels, False
+        present.sort()                      # by cx: left first
+        for (_cx, tid), img_right in zip(present, (False, True)):
+            team, half = invert_image_quadrant(side == 0, img_right,
+                                               near_team, flip)
+            uuid = rec.get(f"team_{team}_{half}", "")
+            nm = name_of.get(uuid.lower())
+            if nm is None:
+                return labels, False
+            labels[tid] = nm
+    return labels, True
+
+
 def assign_names(events, rec, near_team, flip):
     """events = [(t, is_near, is_image_right)] -> [name].
 
@@ -181,17 +220,28 @@ def score_rally_tracked(model, rd):
     return dets
 
 
+def _nearest_i(ser, t):
+    """Index of this track's sample nearest time t, or None.
+
+    Deliberately pure python (it indexes numpy arrays just as happily):
+    the geometry helpers are the part worth unit-testing, and a numpy
+    import here would make the selftest need the whole pose stack."""
+    tt = ser["t"]
+    n = len(tt)
+    if not n:
+        return None
+    return min(range(n), key=lambda i: abs(float(tt[i]) - t))
+
+
 def box_at(ser, t):
     """(cx, y_bottom) of this track nearest time t, or None.
 
     track_series exposes 'cx' (box centre x) and 'ynorm' (box bottom)
     rather than raw boxes — cx is precisely the quantity the left/right
     comparison needs, so nothing is reconstructed here."""
-    import numpy as np
-    tt = np.asarray(ser["t"])
-    if not len(tt):
+    i = _nearest_i(ser, t)
+    if i is None:
         return None
-    i = int(np.argmin(np.abs(tt - t)))
     return float(ser["cx"][i]), float(ser["ynorm"][i])
 
 
@@ -217,9 +267,8 @@ def is_image_right_of_pair(rd, side, tid, t):
 
 
 def _nearest_dt(ser, t):
-    import numpy as np
-    tt = np.asarray(ser["t"])
-    return float(tt[int(np.argmin(np.abs(tt - t)))] - t) if len(tt) else 9e9
+    i = _nearest_i(ser, t)
+    return 9e9 if i is None else float(ser["t"][i]) - t
 
 
 # ------------------------------------------------------------ report
@@ -345,7 +394,8 @@ def run(a):
 
     # ---- attribute, with alternation + serve anchor
     tot = ok = 0
-    alt_changed = no_geom = 0
+    alt_changed = no_geom = unreadable = 0
+    serve_checked = serve_agree = 0
     per_player = defaultdict(lambda: [0, 0])   # name -> [pipeline, truth]
     for cum in sorted(decoded):
         w = wrows[cum]
@@ -357,21 +407,29 @@ def run(a):
         sides = [s for _t, s, _tid in evs]
         fixed, ch = alternation_fix(sides, sides[0])
         alt_changed += ch
-        triples = []
-        for (t, _s, tid), s_fix in zip(evs, fixed):
-            right = (is_image_right_of_pair(rd, s_fix, tid, t)
-                     if tid is not None else None)
-            if right is None:
-                no_geom += 1
-                triples.append(None)
-                continue
-            triples.append((t, bool(s_fix == 0), bool(right)))
+        # LABEL ONCE AT THE SERVE, then ride the track ids: halves are
+        # only defined at the serve, so a mid-rally switch must not be
+        # allowed to rename anyone.
+        tnames, geom_ok = label_tracks_at_serve(
+            rd, evs[0][0], rec, near_team, flip, names_by_uuid)
+        if not geom_ok:
+            unreadable += 1
+            continue
         called = []
-        for tr in triples:
-            called.append(None if tr is None else
-                          assign_names([tr], rec, near_team, flip)[0])
-        # serve anchor: contact 1 is the logged server, full stop
+        for (t, _s, tid), _s_fix in zip(evs, fixed):
+            nm = tnames.get(tid)
+            if nm is None:
+                no_geom += 1
+            called.append(nm)
+        # FREE PER-RALLY CHECK: the serve's track should already carry
+        # the logged server's name. Disagreement means the orientation
+        # or the serve geometry is wrong for this rally, and it is
+        # counted before the anchor overwrites the evidence.
         srv = names_by_uuid.get(rec["server_uuid"].lower())
+        if srv and called:
+            serve_checked += 1
+            serve_agree += (called[0] == srv)
+        # serve anchor: contact 1 is the logged server, full stop
         if called and srv:
             called[0] = srv
         for nm in called:
@@ -388,8 +446,16 @@ def run(a):
 
     print(f"\nALTERNATION overwrote {alt_changed} decoded sides "
           f"(tracker/decoder disagreements with the exact constraint)")
-    print(f"geometry unavailable on {no_geom} events (partner not "
-          f"visible)")
+    print(f"rallies skipped, serve geometry unreadable: {unreadable} "
+          f"(a side did not show exactly two tracks)")
+    print(f"events on an unlabelled track: {no_geom}")
+    if serve_checked:
+        print(f"SERVE CHECK: {serve_agree}/{serve_checked} = "
+              f"{serve_agree / serve_checked:.0%} of rallies had the "
+              f"serve track already carrying the logged server's name "
+              f"BEFORE the anchor was applied\n  (this is the honest "
+              f"read on the whole geometry chain — orientation, side "
+              f"and left/right — measured for free on every rally)")
     if tot:
         print(f"\nATTRIBUTION (no API, no appearance model): "
               f"{ok}/{tot} = {ok / tot:.0%}")
@@ -452,8 +518,42 @@ def selftest():
                        rec, "A", 0)
     assert got == ["Ann", "Dee"], got
 
+    # LABEL-AT-SERVE vs the mid-rally switch it exists to survive.
+    # Fake rd: two tracks per side; the near pair SWAPS image x
+    # partway through the rally, as poaching/stacking really does.
+    class _S(dict):
+        pass
+
+    def mk(side, xs, ts):
+        s = _S(t=list(ts), cx=list(xs), ynorm=[0.0] * len(ts))
+        s["side"] = side
+        return s
+
+    ts = [0.0, 1.0, 2.0]
+    rd = {"tracks": {
+        1: mk(0, [100.0, 100.0, 900.0], ts),   # near, starts LEFT, crosses
+        2: mk(0, [900.0, 900.0, 100.0], ts),   # near, starts RIGHT
+        3: mk(1, [100.0, 100.0, 100.0], ts),   # far, steady
+        4: mk(1, [900.0, 900.0, 900.0], ts)}}
+    rec = {"team_A_R": "ua", "team_A_L": "ub",
+           "team_B_R": "uc", "team_B_L": "ud"}
+    nm = {"ua": "Ann", "ub": "Bea", "uc": "Cal", "ud": "Dee"}
+    lab, ok = label_tracks_at_serve(rd, 0.0, rec, "A", 0, nm)
+    assert ok and lab[1] == "Bea" and lab[2] == "Ann", lab
+    # after the crossing, track 1 is on the RIGHT — re-deriving
+    # left/right at t=2 would now call it Ann, renaming both partners.
+    # Track identity must not move.
+    assert is_image_right_of_pair(rd, 0, 1, 2.0) is True
+    assert lab[1] == "Bea", "identity must ride the track, not the side"
+    # a side missing a player is reported, never guessed
+    rd_bad = {"tracks": {1: rd["tracks"][1], 3: rd["tracks"][3],
+                         4: rd["tracks"][4]}}
+    _lab2, ok2 = label_tracks_at_serve(rd_bad, 0.0, rec, "A", 0, nm)
+    assert ok2 is False
+
     print("selftest OK: quadrant round trip, end mirroring, orientation "
-          "voting (clean + noisy), alternation overwrite, name assignment")
+          "voting (clean + noisy), alternation overwrite, name "
+          "assignment, label-at-serve survives a mid-rally switch")
 
 
 if __name__ == "__main__":
