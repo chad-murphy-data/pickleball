@@ -48,11 +48,21 @@ Two stages, cheapest first:
   (full)    also needs --video + ANTHROPIC_API_KEY: cuts strips at
             DECODED times with the SAME cut_strip as vlm_frame_sample
             (identical instrument to the 90% test — the only changed
-            variable is the timestamp source), calls the partner tool,
-            and reports: partner accuracy on joined pairs (compare to
-            90%), accuracy binned by |dt|, and the product metric —
-            per-player touch counts, pipeline vs truth. Calls CSV is
-            written next to the strips so nothing needs re-spending.
+            variable is the timestamp source) and asks ONE call per
+            decoded event: name A / name B / '{OTHER}' / '{DEAD}'.
+            The two escapes are the dry run's defect counters riding
+            channels already measured to work (play/no-play 30/30,
+            side 95%) — DEAD filters trailing-junk events, OTHER
+            flags wrong-team offerings from ordinal slips. Reports:
+            answer mix, accuracy under the order-join AND a
+            time-tolerant join (separating join slips from VLM
+            error), accuracy by |dt| bin, DEAD-heavy rallies to
+            re-decode, and the product metric — per-player touch
+            counts vs truth. Calls CSV is written next to the strips
+            so nothing needs re-spending. Note the benchmark caveat:
+            the 90% was forced-choice; the escapes give the model a
+            hedge, so watch the answer mix for over-hedging on
+            good-|dt| events.
 
 Run on the Mac (pose_rtm/ + video live there):
     python3 vlm_join_pilot.py --dry
@@ -77,6 +87,29 @@ POSE_DIR = "pose_rtm"
 EXCLUDE = {9, 10}          # contact_gate.md span anomaly — timing suspect
 STRIP_OFFS = (-0.10, 0.0, 0.10)   # vlm_frame_sample's OFFSETS, frozen
 DT_BINS = ((0.0, 0.2), (0.2, 0.5), (0.5, float("inf")))
+TRAIL_PAD = 1.5    # events later than last true contact + this = trailing
+TIME_TOL = 0.5     # secondary time-join tolerance (diagnostic)
+OTHER = "other player"      # escape: hitter is neither offered name
+DEAD = "no live shot"       # escape: between points / no rally shown
+
+# DRY-RUN FINDINGS 2026-08-21 (15 train rallies) that shaped the API
+# stage — three defects, each with machinery already on the shelf:
+#   A TRAILING JUNK: v4 windows carry 7-13s of post-rally dead time and
+#     the decoder's span constraint marches into it (2-contact rallies
+#     decode 6-8 events; over-count rallies still join at 82-100%
+#     <=0.2s — real contacts found, junk appended). Counter: the DEAD
+#     escape below (play/no-play measured 30/30) drops junk events in
+#     the same paid call.
+#   B WRONG-SEGMENT (r5/r6/r17): weak-dink rallies lose the scoring
+#     contest to that same trailing movement — decode lands 8-11s away
+#     wholesale. DEAD-heavy rallies are flagged for re-decode;
+#     scorebug flip-sync end-clipping is the reserve fix.
+#   C OFF-BY-ONE CASCADES (r1/r3/r4/r16): one mid-rally slip shifts
+#     every later ordinal (median |dt| ~ one dink gap) and flips the
+#     decoded parity, so the partner question offers the WRONG TEAM's
+#     names. Counter: the OTHER escape (side is a 95% call for the
+#     VLM) turns forced-wrong answers into detectable flags; the
+#     time-join secondary scoring separates join slips from VLM error.
 
 
 def train_only(split_path):
@@ -219,10 +252,20 @@ def dt_bin(dt):
     return "?"
 
 
+def trim_trailing(events, last_true_t, pad=TRAIL_PAD):
+    """(kept, dropped): events later than last_true + pad are trailing.
+    Diagnostic only — it peeks at truth. Its production analog is the
+    DEAD escape (play/no-play, 30/30) or a scorebug end-clip."""
+    kept = [(t, team) for t, team in events if t <= last_true_t + pad]
+    return kept, len(events) - len(kept)
+
+
 def print_dry(decoded, truths, names):
-    all_dt, tot_true, tot_dec, tot_ghost = [], 0, 0, 0
+    all_dt, trim_dt = [], []
+    tot_true = tot_dec = tot_ghost = tot_trail = 0
     print(f"{'rally':>5} {'true':>5} {'dec':>4} {'ghost':>5} "
-          f"{'extra':>5} {'miss':>4}  joined |dt|: med / p90 / frac<=0.2s")
+          f"{'extra':>5} {'miss':>4} {'trail':>5}  "
+          f"joined |dt| med/frac<=0.2  ->  TRIMMED med/frac<=0.2")
     for cum in sorted(decoded):
         d = decoded[cum]
         tbt = split_truth_by_team(truths[cum], d["teams"], names)
@@ -230,105 +273,225 @@ def print_dry(decoded, truths, names):
         dts = sorted(p[5] for p in pairs)
         all_dt += dts
         n_true = sum(len(v) for v in tbt.values())
+        last_true = max(t for t, _n in truths[cum])
+        kept, n_trail = trim_trailing(d["events"], last_true)
+        tpairs, _te, _tm = order_join(kept, tbt)
+        tdts = sorted(p[5] for p in tpairs)
+        trim_dt += tdts
         tot_true += n_true
         tot_dec += len(d["events"])
         tot_ghost += d["ghosts"]
-        med = dts[len(dts) // 2] if dts else float("nan")
-        p90 = dts[int(0.9 * len(dts))] if dts else float("nan")
-        fr = (sum(1 for x in dts if x <= 0.2) / len(dts)) if dts else 0.0
+        tot_trail += n_trail
+
+        def stat(xs):
+            if not xs:
+                return "   -  /  - "
+            fr = sum(1 for x in xs if x <= 0.2) / len(xs)
+            return f"{xs[len(xs) // 2]:5.2f} / {fr:3.0%}"
+
         print(f"{cum:>5} {n_true:>5} {len(d['events']):>4} "
-              f"{d['ghosts']:>5} {len(extra):>5} {len(missing):>4}  "
-              f"{med:>7.2f} / {p90:.2f} / {fr:.0%}")
+              f"{d['ghosts']:>5} {len(extra):>5} {len(missing):>4} "
+              f"{n_trail:>5}  {stat(dts)}       ->  {stat(tdts)}")
     all_dt.sort()
+    trim_dt.sort()
     n = len(all_dt)
     print(f"\nTOTAL {tot_true} true / {tot_dec} decoded "
-          f"(+{tot_ghost} ghosts) — {n} joined pairs")
+          f"(+{tot_ghost} ghosts, {tot_trail} trailing) — "
+          f"{n} joined pairs")
     if n:
         print(f"|dt|  median {all_dt[n // 2]:.2f}s   "
               f"p90 {all_dt[int(0.9 * n)]:.2f}s")
         for lo, hi in DT_BINS:
             c = sum(1 for x in all_dt if lo <= x < hi)
             print(f"      {dt_bin(lo):>9}: {c:>4}  ({c / n:.0%})")
-        near = sum(1 for x in all_dt if x <= 0.2) / n
-        print(f"\nA strip spans t+/-0.1s; |dt|<=0.2s means the true "
-              f"contact is inside or adjacent to it ({near:.0%} of "
-              f"pairs). The API stage measures whether the VLM's call "
-              f"survives the rest — this table only predicts it.")
+    if trim_dt:
+        m = len(trim_dt)
+        near = sum(1 for x in trim_dt if x <= 0.2) / m
+        print(f"TRIMMED (drop events > last true contact + {TRAIL_PAD}s "
+              f"— truth-informed upper bound on the DEAD-escape filter): "
+              f"{m} pairs, median {trim_dt[m // 2]:.2f}s, "
+              f"{near:.0%} <=0.2s")
+    print(f"\nA strip spans t+/-0.1s; |dt|<=0.2s means the true "
+          f"contact is inside or adjacent to it. The API stage "
+          f"measures whether the VLM's call survives the rest — "
+          f"this table only predicts it.")
+
+
+def escape_tool(name_a, name_b):
+    """Partner call + the two escapes the dry run demanded: DEAD rides
+    the measured 30/30 play/no-play channel and filters defect A's
+    trailing junk; OTHER rides the 95% side channel and flags defect
+    C's wrong-team offerings instead of forcing a coin flip."""
+    return {
+        "name": "call_shot",
+        "description": ("Report who hit the shot shown, or that no live "
+                        "shot is shown."),
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "answer": {
+                    "type": "string",
+                    "enum": [name_a, name_b, OTHER, DEAD],
+                    "description": (
+                        f"'{name_a}' or '{name_b}' if that player is "
+                        f"hitting the ball in these frames. "
+                        f"'{OTHER}' if someone IS hitting but it is "
+                        f"clearly neither of those two players. "
+                        f"'{DEAD}' if no one is hitting — players "
+                        f"walking, resetting, celebrating, between "
+                        f"points."),
+                },
+            },
+            "required": ["answer"],
+            "additionalProperties": False,
+        },
+    }
+
+
+def escape_prompt(name_a, name_b):
+    return (
+        "This is a strip of 3 frames (0.1 s apart) from a pro "
+        "pickleball broadcast. If a shot is being hit in these frames "
+        f"by {name_a} or {name_b}, name the hitter. If someone else "
+        f"is hitting, answer '{OTHER}'. If no shot is happening — "
+        f"players between points, resetting, celebrating — answer "
+        f"'{DEAD}'. Use the call_shot tool."
+    )
+
+
+def time_join(events, truths_by_team, tol=TIME_TOL):
+    """Secondary diagnostic join: nearest same-team true contact within
+    tol, greedy one-to-one by |dt|. Separates 'the VLM read the strip
+    wrong' from 'the order-join paired it against the wrong truth row'
+    when defect C shifts ordinals. Returns {event_index: (t, name)}."""
+    cands = []
+    for i, (t, team) in enumerate(events):
+        for j, (tt, name) in enumerate(truths_by_team.get(team, [])):
+            if abs(t - tt) <= tol:
+                cands.append((abs(t - tt), i, j, team, tt, name))
+    cands.sort()
+    used_i, used_j, out = set(), set(), {}
+    for _d, i, j, team, tt, name in cands:
+        if i in used_i or (team, j) in used_j:
+            continue
+        used_i.add(i)
+        used_j.add((team, j))
+        out[i] = (tt, name)
+    return out
 
 
 def run_api(decoded, truths, names, video, model, out_dir, limit, width):
     from vlm_frame_sample import cut_strip
-    from vlm_tier_test import PRICE, call_partner
+    from vlm_tier_test import PRICE, image_media_type
+    import base64
     import anthropic
     client = anthropic.Anthropic()
+
+    def ask(img, na, nb):
+        b64 = base64.standard_b64encode(Path(img).read_bytes()).decode()
+        resp = client.messages.create(
+            model=model, max_tokens=256,
+            tools=[escape_tool(na, nb)],
+            tool_choice={"type": "tool", "name": "call_shot"},
+            messages=[{"role": "user", "content": [
+                {"type": "image",
+                 "source": {"type": "base64",
+                            "media_type": image_media_type(img),
+                            "data": b64}},
+                {"type": "text", "text": escape_prompt(na, nb)},
+            ]}],
+        )
+        call = next(b for b in resp.content if b.type == "tool_use")
+        return call.input["answer"], resp.usage
 
     out = Path(out_dir)
     out.mkdir(exist_ok=True)
     rows, done = [], 0
+    answers = Counter()
+    o_ok = o_n = t_ok = t_n = 0
     ok_by_bin, n_by_bin = Counter(), Counter()
     touch_pipe, touch_true = Counter(), Counter()
-    in_tok = out_tok = ok = n = 0
+    dead_by_rally = Counter()
+    in_tok = out_tok = 0
     for cum in sorted(decoded):
         d = decoded[cum]
         tbt = split_truth_by_team(truths[cum], d["teams"], names)
-        pairs, extra, _missing = order_join(d["events"], tbt)
+        events = d["events"]
+        opairs, _extra, _missing = order_join(events, tbt)
+        omap = {}
+        for t_dec, team, k, t_true, name_true, dt in opairs:
+            omap.setdefault((t_dec, team), (t_true, name_true, dt))
+        tmap = time_join(events, tbt)
         for t, name in truths[cum]:
             touch_true[name] += 1
-        for t_dec, team, k, t_true, name_true, dt in pairs:
+        for i, (t_dec, team) in enumerate(events):
             if limit and done >= limit:
                 break
             done += 1
             na, nb = team_names(d["teams"], names, team)
-            img = out / f"r{cum:03d}_k{k:02d}_t{t_dec:07.2f}.png"
+            img = out / f"r{cum:03d}_e{i:02d}_t{t_dec:07.2f}.png"
             if not img.exists():
                 cut_strip(video, t_dec, img, width)
-            called, usage = call_partner(client, model, img, na, nb)
+            ans, usage = ask(img, na, nb)
             in_tok += usage.input_tokens
             out_tok += usage.output_tokens
-            hit = called == name_true
-            ok += hit
-            n += 1
-            b = dt_bin(dt)
-            ok_by_bin[b] += hit
-            n_by_bin[b] += 1
-            touch_pipe[called] += 1
-            rows.append([cum, k, team, f"{t_dec:.3f}", f"{t_true:.3f}",
-                         f"{dt:.3f}", called, name_true, int(hit)])
-        # extras still produce touches in production — attribute them too
-        for t_dec, team, k in extra:
-            if limit and done >= limit:
-                break
-            done += 1
-            na, nb = team_names(d["teams"], names, team)
-            img = out / f"r{cum:03d}_x{k:02d}_t{t_dec:07.2f}.png"
-            if not img.exists():
-                cut_strip(video, t_dec, img, width)
-            called, usage = call_partner(client, model, img, na, nb)
-            in_tok += usage.input_tokens
-            out_tok += usage.output_tokens
-            touch_pipe[called] += 1
-            rows.append([cum, k, team, f"{t_dec:.3f}", "", "", called,
-                         "", ""])
+            answers[ans] += 1
+            named = ans not in (OTHER, DEAD)
+            if named:
+                touch_pipe[ans] += 1
+            if ans == DEAD:
+                dead_by_rally[cum] += 1
+            o_truth = omap.get((t_dec, team))
+            t_truth = tmap.get(i)
+            if o_truth and named:
+                _tt, name_true, dt = o_truth
+                hit = ans == name_true
+                o_ok += hit
+                o_n += 1
+                b = dt_bin(dt)
+                ok_by_bin[b] += hit
+                n_by_bin[b] += 1
+            if t_truth and named:
+                t_ok += ans == t_truth[1]
+                t_n += 1
+            rows.append([
+                cum, i, team, f"{t_dec:.3f}", ans,
+                o_truth[1] if o_truth else "",
+                f"{o_truth[2]:.3f}" if o_truth else "",
+                t_truth[1] if t_truth else "",
+            ])
 
     calls_csv = out / "join_pilot_calls.csv"
     with open(calls_csv, "w", newline="") as fh:
         w = csv.writer(fh)
-        w.writerow(["rally_cum", "k", "team", "t_decoded", "t_true",
-                    "dt", "called", "truth", "ok"])
+        w.writerow(["rally_cum", "event", "team", "t_decoded", "answer",
+                    "order_truth", "order_dt", "time_truth"])
         w.writerows(rows)
 
-    i, o = PRICE[model]
-    print(f"\nPARTNER ON DECODED FRAMES ({model}, {n} joined pairs)")
-    print(f"  accuracy {ok}/{n} = {ok / n:.0%}    "
-          f"(true-frame benchmark: 90%; chance: 50%)")
-    for lo, hi in DT_BINS:
-        b = dt_bin(lo)
-        if n_by_bin[b]:
-            print(f"  |dt| {b:>9}: {ok_by_bin[b]}/{n_by_bin[b]} = "
-                  f"{ok_by_bin[b] / n_by_bin[b]:.0%}")
-    print(f"  spend ${in_tok * i / 1e6 + out_tok * o / 1e6:.3f} "
+    i_, o_ = PRICE[model]
+    print(f"\nPARTNER ON DECODED FRAMES ({model}, {done} events)")
+    print(f"  answers: " + ", ".join(f"{k} x{v}"
+                                     for k, v in answers.most_common()))
+    if o_n:
+        print(f"  order-join accuracy {o_ok}/{o_n} = {o_ok / o_n:.0%}  "
+              f"(named answers only; true-frame benchmark 90%, chance 50%)")
+        for lo, hi in DT_BINS:
+            b = dt_bin(lo)
+            if n_by_bin[b]:
+                print(f"    |dt| {b:>9}: {ok_by_bin[b]}/{n_by_bin[b]} = "
+                      f"{ok_by_bin[b] / n_by_bin[b]:.0%}")
+    if t_n:
+        print(f"  time-join accuracy  {t_ok}/{t_n} = {t_ok / t_n:.0%}  "
+              f"(nearest same-team truth within {TIME_TOL}s — reads "
+              f"through defect C's ordinal slips)")
+    heavy = [c for c, k in dead_by_rally.items()
+             if k >= max(2, len(decoded[c]['events']) // 2)]
+    if heavy:
+        print(f"  DEAD-heavy rallies (re-decode candidates): "
+              f"{sorted(heavy)}")
+    print(f"  spend ${in_tok * i_ / 1e6 + out_tok * o_ / 1e6:.3f} "
           f"({in_tok} in / {out_tok} out tok)")
-    print(f"\nTOUCH COUNTS (product metric, pipeline vs truth)")
+    print(f"\nTOUCH COUNTS (product metric; named answers only)")
     for name in sorted(set(touch_true) | set(touch_pipe)):
         tp, tt = touch_pipe[name], touch_true[name]
         print(f"  {name:<22} pipeline {tp:>3}  true {tt:>3}  "
@@ -403,7 +566,26 @@ def selftest():
     # dt binning covers the line
     assert dt_bin(0.0) == "0.0-0.2s" and dt_bin(0.35) == "0.2-0.5s"
     assert dt_bin(0.5) == ">0.5s" and dt_bin(4.0) == ">0.5s"
-    print("selftest OK: team split, order join, extras/missing, dt bins")
+
+    # trailing trim: junk after last true contact + pad drops; play stays
+    ev = [(10.1, 0), (11.4, 1), (13.3, 0), (15.5, 1), (16.8, 0)]
+    kept, n_trail = trim_trailing(ev, last_true_t=13.2)
+    assert n_trail == 2 and [t for t, _s in kept] == [10.1, 11.4, 13.3]
+
+    # time-join: greedy nearest within tol, one-to-one, same team only
+    tj = time_join([(10.15, 0), (10.3, 0), (11.35, 1), (99.0, 1)], tbt)
+    assert tj[0] == (10.0, "Ann")        # nearest claims it
+    assert 1 not in tj                    # one-to-one: 10.3 loses to 10.15
+    assert tj[2] == (11.0, "Cal")
+    assert 3 not in tj                    # out of tolerance
+
+    # escape tool: both names + both escapes, nothing else
+    et = escape_tool("Ann", "Bea")
+    assert et["input_schema"]["properties"]["answer"]["enum"] == \
+        ["Ann", "Bea", OTHER, DEAD]
+    assert OTHER in escape_prompt("Ann", "Bea")
+    print("selftest OK: team split, order join, extras/missing, dt bins, "
+          "trailing trim, time join, escape tool")
 
 
 if __name__ == "__main__":
