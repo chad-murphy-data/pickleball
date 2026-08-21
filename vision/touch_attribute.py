@@ -425,20 +425,22 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
         votes.append(("halves", right_tid if want_right else left_tid))
         # CONTACT ORDER: the k-th contact belongs to this person.
         #
-        # Taking ev[k] blindly is fragile: the decoder OVER-COUNTS (186
-        # events against 148 true contacts), so one spurious early
-        # event shifts both anchors and silences this voter — and the
-        # voter-vs-truth table made it the best one (88% overall, 73%
-        # on disputed) AND silent a fifth of the time, so widening it
-        # is worth more than any new channel.
+        # INDEX-BASED, and that is a MEASURED choice. Taking the
+        # earliest event landing on the pair was tried (2026-08-21) to
+        # widen this voter past its 20% silence, and it lost: geometry
+        # 89% -> 84%, disputed accuracy 73% -> 67%, and r5 collapsed
+        # 14/14 -> 7/14. Firing more often is worthless if the extra
+        # firings are wrong — a spurious pre-serve event on the serving
+        # pair becomes "the serve" and outranks the real one, which is
+        # exactly the failure the selftest below documents.
         #
-        # The serving pair hits first and the receiving pair second, so
-        # take the EARLIEST event landing on this pair rather than a
-        # fixed index. That survives extra events before or between the
-        # first two, and it can only fire on a legal track.
-        cand = next((e for e in ev if e[2] in (a[2], b[2])), None)
-        if cand is not None:
-            votes.append(("contact", cand[2]))
+        # The decoder's FIRST events are usually right even though it
+        # over-counts overall, so the index is the better anchor and
+        # this voter should stay silent rather than guess.
+        if contact_idx < len(ev):
+            tid_c = ev[contact_idx][2]
+            if tid_c in (a[2], b[2]):
+                votes.append(("contact", tid_c))
         if votes_out is not None:
             votes_out[who] = list(votes)
         if order:
@@ -1552,18 +1554,20 @@ def selftest():
                                  order=["depth", "halves", "contact"])
     assert lab_dep[2] == "Ann", ("depth-first must follow depth even "
                                  f"when outvoted: {lab_dep}")
-    # ROBUST CONTACT VOTER: a spurious event before the serve must not
-    # silence or misdirect it. Prepend an event on the RECEIVING pair
-    # (track 3) and the serving-pair vote must still find track 1.
+    # CONTACT VOTER STAYS SILENT RATHER THAN GUESSING. With a spurious
+    # event prepended, ev[0] is no longer the serve, so this voter must
+    # ABSTAIN on the serving pair and let the cascade fall through to
+    # halves. The alternative — take the earliest event on the pair —
+    # was measured and lost (geometry 89% -> 84%, r5 14/14 -> 7/14),
+    # because firing more often is worthless when the extra firings are
+    # wrong. Silence is a legitimate answer for a voter this trusted.
     evs_noise = [(-0.3, 1, 3)] + evs_v
     vo_n = {}
     label_by_vote(rd_v, 0.0, rec_v, "A", 0, nm, events=evs_noise,
                   votes_out=vo_n)
-    got_c = dict(vo_n["Ann"])["contact"]
-    assert got_c == 1, f"noise event misdirected the contact voter: {got_c}"
-    # and an extra event on the serving pair BEFORE the serve is the
-    # case it cannot survive — documented, not silently wrong
-    assert dict(vo_n["Cal"])["contact"] == 3
+    assert "contact" not in dict(vo_n["Ann"]), dict(vo_n["Ann"])
+    # the other two voters still speak, so the bit is still decided
+    assert {"depth", "halves"} <= set(dict(vo_n["Ann"]))
 
     # votes_out exposes every voter for the truth table
     vo = {}
