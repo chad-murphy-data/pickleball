@@ -86,7 +86,18 @@ SPLIT = "label_split.csv"
 POSE_DIR = "pose_rtm"
 EXCLUDE = {9, 10}          # contact_gate.md span anomaly — timing suspect
 STRIP_OFFS = (-0.10, 0.0, 0.10)   # vlm_frame_sample's OFFSETS, frozen
-DT_BINS = ((0.0, 0.2), (0.2, 0.5), (0.5, float("inf")))
+# <=0.1s is the bin that matters: the strip spans t+/-0.1s, so only
+# there is the contact actually INSIDE one of the three frames. The
+# 0.1-0.2 band is "adjacent but not shown", which the old 0.0-0.2 bin
+# silently mixed in with genuine hits.
+DT_BINS = ((0.0, 0.1), (0.1, 0.2), (0.2, 0.5), (0.5, float("inf")))
+PLAY_CROP = (0.70, 0.85, 0.15, 0.10)   # w,h,x,y as source fractions —
+# the SAME playing-area crop vlm_localize_sample/vlm_pack already use.
+# vlm_frame_sample's cut_strip never cropped, so every strip scored in
+# this thread shipped crowd, sky and scorebug through the API's 1568px
+# downscale, leaving players ~60-80px tall. Cropping to the court makes
+# them ~40% bigger at identical token cost (the grid arms have been
+# doing this all along; the strip arm silently was not).
 TRAIL_PAD = 1.5    # events later than last true contact + this = trailing
 TIME_TOL = 0.5     # secondary time-join tolerance (diagnostic)
 OTHER = "other player"      # escape: hitter is neither offered name
@@ -250,6 +261,28 @@ def dt_bin(dt):
         if lo <= dt < hi:
             return f"{lo:.1f}-{hi:.1f}s" if hi < 9 else f">{lo:.1f}s"
     return "?"
+
+
+def cut_strip_cropped(video, t, out_path, width, crop=PLAY_CROP):
+    """vlm_frame_sample.cut_strip + a playing-area crop.
+
+    Kept here rather than patched into vlm_frame_sample because that
+    module rendered the strips behind the earlier partner numbers —
+    changing it in place would silently move the comparison baseline.
+    Same 3 offsets, same vstack, same width; only the crop is new."""
+    from swing_probe import ffmpeg_bin
+    cw, ch, cx, cy = crop
+    cmd = [ffmpeg_bin(), "-y", "-loglevel", "error"]
+    for off in STRIP_OFFS:
+        cmd += ["-ss", f"{max(t + off, 0.0):.3f}", "-i", str(video)]
+    chain = ";".join(
+        f"[{i}:v]crop=iw*{cw}:ih*{ch}:iw*{cx}:ih*{cy},"
+        f"scale={width}:-2[s{i}]" for i in range(len(STRIP_OFFS)))
+    stack = "".join(f"[s{i}]" for i in range(len(STRIP_OFFS)))
+    cmd += ["-filter_complex",
+            f"{chain};{stack}vstack=inputs={len(STRIP_OFFS)}",
+            "-frames:v", "1", str(out_path)]
+    subprocess.run(cmd, check=True)
 
 
 def trim_trailing(events, last_true_t, pad=TRAIL_PAD):
@@ -558,9 +591,11 @@ def rescore(calls_path, labels_path, windows_path, split_path):
 
 
 def run_api(decoded, truths, names, video, model, out_dir, limit, width,
-            mode="team", with_other=False):
-    from vlm_frame_sample import cut_strip
+            mode="team", with_other=False, crop=True):
+    from vlm_frame_sample import cut_strip as cut_plain
     from vlm_tier_test import PRICE, image_media_type
+    cut_strip = ((lambda v, t, p, w: cut_strip_cropped(v, t, p, w))
+                 if crop else cut_plain)
     import base64
     import anthropic
     client = anthropic.Anthropic()
@@ -610,7 +645,11 @@ def run_api(decoded, truths, names, video, model, out_dir, limit, width,
             own = team_names(d["teams"], names, team)
             offered = (own if mode == "team" else
                        sorted(own + team_names(d["teams"], names, team ^ 1)))
-            img = out / f"r{cum:03d}_e{i:02d}_t{t_dec:07.2f}.png"
+            # the crop tag is load-bearing: strips are only cut when the
+            # file is absent, so without it a cropped run would silently
+            # re-score the previous run's uncropped images
+            tag = "c" if crop else "f"
+            img = out / f"r{cum:03d}_e{i:02d}_t{t_dec:07.2f}{tag}.png"
             if not img.exists():
                 cut_strip(video, t_dec, img, width)
             ans, usage = ask(img, offered)
@@ -709,11 +748,17 @@ def main():
                     help="per-frame strip width, same as the 90%% test")
     ap.add_argument("--limit", type=int,
                     help="cap API calls for a smoke run")
-    ap.add_argument("--names", choices=["team", "all4"], default="all4",
-                    help="team = offer the decoded team's 2 players "
-                         "(2026-08-21 run: 73/186 answered OTHER); "
-                         "all4 = offer every player and CHECK the "
-                         "decoder's parity instead of assuming it")
+    ap.add_argument("--names", choices=["team", "all4"], default="team",
+                    help="team (default) = offer the decoded team's 2 "
+                         "players. The decoder's side matched truth "
+                         "79%% vs the VLM's 70%%, so asking the model "
+                         "for side costs accuracy; all4 = offer every "
+                         "player, for re-measuring that gap")
+    ap.add_argument("--no-crop", action="store_true",
+                    help="ship full broadcast frames like the earlier "
+                         "runs. Default crops to the playing area — the "
+                         "same crop the grid arms always used and the "
+                         "strip arm never did")
     ap.add_argument("--with-other", action="store_true",
                     help="re-enable the 'other player' escape. OFF by "
                          "default: the 2026-08-21 rescore showed it "
@@ -747,7 +792,7 @@ def main():
         raise SystemExit("\n--video required for the API stage "
                          "(or pass --dry)")
     run_api(decoded, truths, names, a.video, a.model, a.out_dir,
-            a.limit, a.width, a.names, a.with_other)
+            a.limit, a.width, a.names, a.with_other, not a.no_crop)
 
 
 def selftest():
@@ -777,7 +822,8 @@ def selftest():
     assert {(m[0], m[1]) for m in missing} == {(0, 1), (0, 2)}
 
     # dt binning covers the line
-    assert dt_bin(0.0) == "0.0-0.2s" and dt_bin(0.35) == "0.2-0.5s"
+    assert dt_bin(0.0) == "0.0-0.1s" and dt_bin(0.05) == "0.0-0.1s"
+    assert dt_bin(0.15) == "0.1-0.2s" and dt_bin(0.35) == "0.2-0.5s"
     assert dt_bin(0.5) == ">0.5s" and dt_bin(4.0) == ">0.5s"
 
     # trailing trim: junk after last true contact + pad drops; play stays
