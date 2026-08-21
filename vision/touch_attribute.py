@@ -446,7 +446,7 @@ def run(a):
         raise SystemExit("no train rallies with pose — check --pose-dir")
 
     # ---- decode every rally (leave-one-rally-out, as swing_explore)
-    decoded = {}
+    decoded, dets_by_rally = {}, {}
     for held in sorted(rallies):
         Xtr, ytr = [], []
         for cum, r in rallies.items():
@@ -466,6 +466,7 @@ def run(a):
         for t, s, _sc, _g in path:
             evs.append((t, s, tid_of.get((round(t, 3), s))))
         decoded[held] = evs
+        dets_by_rally[held] = dets
 
     # ---- orientation: vote on SERVES, where the log knows the hitter
     samples, name_team = [], {}
@@ -561,6 +562,73 @@ def run(a):
                 continue
             tot += 1
             ok += nm == truth[cum][k][1]
+
+    # ---- TRUTH-ANCHORED GEOMETRY TEST (free, and the one that
+    # separates the two failures the serve check conflates).
+    #
+    # SERVE CHECK asks "does the FIRST DECODED EVENT's track carry the
+    # server's name", which fails both when the geometry is wrong and
+    # when the decoder's first event is not the serve — and the dry run
+    # showed that second case is common (median |dt| 0.49s, and 1.4-1.7s
+    # on the long rallies). So it cannot say which link is broken.
+    #
+    # This test hands the decoder's PLACEMENT job to the labels: for
+    # each TRUE contact, take the best-scoring detection near that true
+    # time, and ask only whether the geometric labelling names its track
+    # correctly. Placement error is removed by construction, so what is
+    # left is the geometry chain alone. Reported beside placement
+    # recall, which is the other half of the same picture.
+    print("\nTRUTH-ANCHORED GEOMETRY TEST (decoder placement removed: "
+          "true contact times, geometric names)")
+    g_ok = g_n = miss = 0
+    census = []
+    for cum in sorted(decoded):
+        w = wrows[cum]
+        rec = lineup_by_rally.get(
+            (w["match_id"], int(w["game"]), int(w["rally_in_game"])))
+        if rec is None or cum not in dets_by_rally:
+            continue
+        rd = rd_of(rallies, cum)
+        nt = effective_near_team(
+            near_team, epoch_of_score(rec.get("start_score", "")),
+            ends_switch)
+        tnames, ok_lab = label_tracks_at_serve(
+            rd, anchor_time(rd, dets_by_rally[cum][0][0]
+                            if dets_by_rally[cum] else 0.0),
+            rec, nt, flip, names_by_uuid)
+        durs = sorted((len(s["t"]) for s in rd["tracks"].values()),
+                      reverse=True)
+        census.append((cum, len(rd["tracks"]), durs[:4], ok_lab))
+        if not ok_lab:
+            continue
+        for t_true, nm_true in truth[cum]:
+            near = [d for d in dets_by_rally[cum]
+                    if abs(d[0] - t_true) <= 0.35]
+            if not near:
+                miss += 1
+                continue
+            best = max(near, key=lambda d: d[2])
+            nm = tnames.get(best[3])
+            if nm is None:
+                miss += 1
+                continue
+            g_n += 1
+            g_ok += nm == nm_true
+    if g_n:
+        print(f"  geometry names the right player on "
+              f"{g_ok}/{g_n} = {g_ok / g_n:.0%} of truth-anchored "
+              f"contacts   (chance 25%)")
+    print(f"  placement recall: {miss} true contacts had no scored "
+          f"detection within 0.35s (or landed on an unlabelled track)")
+    print("\n  Read: geometry high here but attribution low => the "
+          "decoder's PLACEMENT is the binding\n  constraint. Geometry "
+          "low here too => the tracks themselves are not cleanly\n  "
+          "four players at the anchor, which the census below shows.")
+    print("\nTRACK CENSUS (rally: n_tracks, 4 longest sample counts, "
+          "labelled?)")
+    for cum, n_tr, durs, ok_lab in census:
+        print(f"  r{cum:<4} tracks {n_tr:<3} longest {durs}  "
+              f"{'ok' if ok_lab else 'UNREADABLE'}")
 
     print(f"\nALTERNATION overwrote {alt_changed} decoded sides "
           f"(tracker/decoder disagreements with the exact constraint)")
