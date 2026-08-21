@@ -924,7 +924,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21e  + bit roles, touch-count decomposition"
+BUILD = "2026-08-21f  + shadowing fix (ATTRIBUTION was corrupted in d/e)"
 
 
 def main():
@@ -1265,6 +1265,15 @@ def run(a):
             tot += 1
             ok += nm == truth[cum][k][1]
 
+    # FREEZE THE HEADLINE. ok/tot are finished here, and everything
+    # below is diagnostics. An order-sweep loop rebinding `ok` once
+    # made ATTRIBUTION print 21/118 instead of 85/118 with every other
+    # number on the page unchanged - the most dangerous shape of bug
+    # this file can have, since it looks exactly like a regression.
+    # Diagnostics must not be able to move a result; snapshot, and the
+    # assert makes any future rebinding loud instead of plausible.
+    attr_ok, attr_tot = ok, tot
+
     # ---- TRUTH-ANCHORED GEOMETRY TEST (free, and the one that
     # separates the two failures the serve check conflates).
     #
@@ -1483,6 +1492,11 @@ def run(a):
                              None)
             _pk = picks_by_rally.get(cum, {}).get(who)
             picked = _pk[0] if _pk else None
+            # contact 0 is the serve, contact 1 the return, so the bit's
+            # parity IS its role. Every error is one of these two by
+            # construction: the cascade decides only the server and the
+            # receiver, and alternation carries the rest of the rally.
+            role = ("server", "receiver")[_pk[1] % 2] if _pk else "?"
             if truth_tid is None or picked is None or picked == truth_tid:
                 continue
             fails.append((cum, who, truth_tid, picked, votes, role))
@@ -1573,10 +1587,17 @@ def run(a):
               f"orderings)")
         scored = []
         for perm in itertools.permutations(names):
-            ok, n, wok, wn = _run(perm)
-            scored.append((wok, ok, perm))
+            # NOTE THE UNDERSCORES, they are load-bearing. `ok` and `n`
+            # are run()'s ATTRIBUTION counters, and an earlier version
+            # of this loop rebound them - so ATTRIBUTION reported the
+            # last permutation's bit score (21/118) rather than the
+            # real 85/118, with every other number on the page
+            # unchanged. A diagnostic must never be able to move a
+            # headline result; see the snapshot at the print site.
+            _ok, _n, _wok, _wn = score_order(perm, bits)
+            scored.append((_wok, _ok, perm))
         scored.sort(key=lambda r: (-r[0], -r[1]))
-        _wn = sum(w for *_r, w in bits)
+        _wn_tot = sum(w for *_r, w in bits)
         # HOW MANY ORDERINGS ACTUALLY DIFFER. Most permutations are
         # observationally identical here: reordering voters that never
         # fire on the same bit changes nothing. Printing the count of
@@ -1590,17 +1611,17 @@ def run(a):
               f"{n_best} orderings tie for best")
         print("  best orderings (contact-weighted, then bits):")
         seen_p = set()
-        for wok, ok, perm in scored[:400]:
-            key = (wok, ok)
+        for _wok, _ok, perm in scored[:400]:
+            key = (_wok, _ok)
             if key in seen_p:
                 continue
             seen_p.add(key)
             if len(seen_p) > 6:
                 break
-            print(f"    {wok:>4}/{_wn} contacts  {ok:>2}/{len(bits)} bits"
-                  f"   {','.join(perm)}")
+            print(f"    {_wok:>4}/{_wn_tot} contacts  "
+                  f"{_ok:>2}/{len(bits)} bits   {','.join(perm)}")
         if cur:
-            ok_c, n_c, wok_c, wn_c = _run(cur)
+            ok_c, n_c, wok_c, wn_c = score_order(cur, bits)
             rank = 1 + sum(1 for r in scored if r[0] > wok_c)
             print(f"  CURRENT --cascade {','.join(cur)}: "
                   f"{wok_c}/{wn_c} contacts, {ok_c}/{n_c} bits "
@@ -1615,7 +1636,7 @@ def run(a):
             ok_m += got == truth_tid
             wok_m += w * (got == truth_tid)
         print(f"  MAJORITY of all voters (no precedence): "
-              f"{wok_m}/{_wn} contacts, {ok_m}/{len(bits)} bits "
+              f"{wok_m}/{_wn_tot} contacts, {ok_m}/{len(bits)} bits "
               f"— the gap to the best cascade is DILUTION")
 
         # ---- PER-VOTER: the three pathologies, under the CURRENT order
@@ -1687,7 +1708,7 @@ def run(a):
                 continue
             b = max(_run(pm)[2] for pm in itertools.permutations(rest))
             flag = "  <- removing it HELPS" if b > full_best else ""
-            print(f"    without {v:<10} {b:>4}/{_wn} contacts "
+            print(f"    without {v:<10} {b:>4}/{_wn_tot} contacts "
                   f"(best with all = {full_best}){flag}")
         print("  NOTE ON SELECTION: with "
               f"{len(bits)} bits, argmax over {len(scored)} orderings "
@@ -1749,9 +1770,12 @@ def run(a):
               f"BEFORE the anchor was applied\n  (this is the honest "
               f"read on the whole geometry chain — orientation, side "
               f"and left/right — measured for free on every rally)")
-    if tot:
+    assert (ok, tot) == (attr_ok, attr_tot), (
+        "a diagnostic below the grading loop rebound the attribution "
+        f"counters: {(ok, tot)} != {(attr_ok, attr_tot)}")
+    if attr_tot:
         print(f"\nATTRIBUTION (no API, no appearance model): "
-              f"{ok}/{tot} = {ok / tot:.0%}")
+              f"{attr_ok}/{attr_tot} = {attr_ok / attr_tot:.0%}")
         print(f"  VLM comparison on the same rallies: identity 44%, "
               f"side 70% (2026-08-21, $2.59)")
     print("\nTOUCH COUNTS (pipeline vs truth)")
