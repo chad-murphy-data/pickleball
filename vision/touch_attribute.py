@@ -1002,12 +1002,21 @@ def run(a):
     if getattr(a, "video", None):
         import ball_voter as BV
         for cum, evs in decoded.items():
-            w = wrows.get(cum)
-            if not w or len(evs) < 2:
+            if len(evs) < 2:
+                continue
+            # WINDOW FROM THE CONTACTS, NOT FROM THE WINDOWS FILE.
+            # v4's t0s/t1s are misaligned with the label times for
+            # rallies 3+ (r3's window starts at 89.7s while its
+            # contacts run 59.4-75.8s), which fed ffmpeg negative
+            # durations and killed 29 of 30 ball lookups. The decoded
+            # events are by construction where the contacts are.
+            t_lo = min(e[0] for e in evs) - 2.0
+            t_hi = max(e[0] for e in evs) + 2.0
+            if t_hi - t_lo < 1.0:
                 continue
             try:
                 segs = BV.dedupe(BV.flight_segments(
-                    a.video, float(w["t0s"]), float(w["t1s"])))
+                    a.video, max(0.0, t_lo), t_hi))
             except Exception as e:                 # noqa: BLE001
                 print(f"ball: rally {cum} failed ({e})")
                 continue
