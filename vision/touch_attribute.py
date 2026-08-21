@@ -1072,7 +1072,44 @@ def same_side_policy(evs, path, mode, typical_gap):
     return keep, sides, dele, ins
 
 
-def score_rally_tracked(model, rd):
+def geom_sides(rd, t_anchor):
+    """{track_id: side} in the TRACKER's 0/1 space, but derived from
+    image y instead of from the tracker's own side field.
+
+    THE INTEGRATION the user asked for (2026-08-21), and it closes a
+    real inconsistency. side_map's near/far split is the channel the
+    permutation diagnosis measured at ZERO whole-rally errors, and
+    label_tracks_at_serve already refuses to use ser["side"] because
+    "the tracker's own side field is a frame-local split and the vision
+    postmortem measured it corrupting 42% of FAR labels". Yet
+    score_rally_tracked hands exactly that field to the DP as each
+    detection's side - so the alternating chain, the spine of the whole
+    decoder, is built on the channel we distrust while the reliable one
+    is used only downstream for elimination.
+
+    ser["side"] is worse than "a classification": it is
+    int(side[m][0]), ONE frame's answer frozen for the track's whole
+    life. A track that starts in a crowded or ambiguous frame carries
+    that mistake through every contact it ever makes.
+
+    The 0/1 labelling itself is arbitrary, so the near/far -> 0/1
+    mapping is recovered by majority agreement with ser["side"] across
+    the four player tracks. That works precisely because the field is
+    wrong on a MINORITY of tracks; if it were wrong more than half the
+    time the mapping would invert, which the caller can detect by the
+    agreement fraction returned alongside."""
+    near = side_map(rd, t_anchor)
+    if not near:
+        return {}, 0.0
+    agree = sum(1 for tid, is_near in near.items()
+                if rd["tracks"][tid]["side"] == int(is_near))
+    flip = agree < len(near) / 2.0
+    frac = max(agree, len(near) - agree) / len(near)
+    return {tid: int(is_near) ^ int(flip)
+            for tid, is_near in near.items()}, frac
+
+
+def score_rally_tracked(model, rd, side_of=None):
     """swing_explore.score_rally, but KEEPING the track id.
 
     score_rally drops tid on the floor — it only ever needed side. We
@@ -1095,8 +1132,16 @@ def score_rally_tracked(model, rd):
         p = SE.predict(model, np.stack(feats))
         cands = [(ts[i], float(p[i])) for i in range(1, len(p) - 1)
                  if p[i] >= p[i - 1] and p[i] >= p[i + 1] and p[i] > 0.02]
+        # SIDE FROM GEOMETRY WHEN OFFERED. A candidate stamped with
+        # the wrong side is invisible to the alternating chain when it
+        # is that side's turn (-> a ghost) and available when it is not
+        # (-> junk), so one defect produces both symptoms the decoder
+        # audit is chasing.
+        _sd = ser["side"] if side_of is None else side_of.get(tid)
+        if _sd is None:
+            continue
         for tt, sc in SE.strongest_first(cands, SE.REFRACTORY_S):
-            dets.append((tt, ser["side"], sc, tid))
+            dets.append((tt, _sd, sc, tid))
     dets.sort()
     return dets
 
@@ -1153,7 +1198,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21l  + sequential passes (--passes) with a per-stage funnel"
+BUILD = "2026-08-21m  + side channel audit, --geom-side"
 
 
 def main():
@@ -1195,6 +1240,11 @@ def main():
                          "HARMFUL 2026-08-21 (geometry 89%% -> 74%%); "
                          "off by default, kept only so the null "
                          "stays reproducible")
+    ap.add_argument("--geom-side", action="store_true",
+                    help="give the decoder its detection SIDES from "
+                         "the image-y split (side_map) instead of the "
+                         "tracker's frozen ser['side'], which the "
+                         "naming layer already refuses to trust")
     ap.add_argument("--passes", action="store_true",
                     help="decode in SEQUENTIAL PASSES (candidates -> "
                          "cluster merge -> window trim -> chain) with "
@@ -1346,7 +1396,12 @@ def run(a):
             ytr += y
         model = SE.fit_logreg(np.stack(Xtr), np.array(ytr, float))
         r = rallies[held]
-        dets = score_rally_tracked(model, r["rd"])
+        _side_of, _side_frac = (None, 0.0)
+        if a.geom_side:
+            _t_anc = anchor_time(r["rd"], 0.0, not a.no_settle)
+            _side_of, _side_frac = geom_sides(r["rd"], _t_anc)
+            side_frac.append(_side_frac)
+        dets = score_rally_tracked(model, r["rd"], _side_of or None)
         tid_of = {(round(t, 3), s): tid for t, s, _sc, tid in dets}
         _s0 = r["contacts"][0][1] ^ r["m"]
         if a.passes:
@@ -1456,6 +1511,7 @@ def run(a):
     t_ok = t_tot = 0
     n_deleted = n_inserted = 0
     funnel = {}
+    side_frac = []
     extra_where = Counter()
     extra_dt = []
     # this footage's own inter-contact interval, not a constant
@@ -2200,6 +2256,53 @@ def run(a):
               "stage that drops it is\n    destroying real contacts, "
               "and nothing downstream can get them back.")
 
+    # ---- SIDE CHANNEL AUDIT. Placement recall says a scored
+    # candidate sits within 0.35s of EVERY true contact, yet the DP
+    # emits ghosts — contacts it asserts but cannot place. Those two
+    # facts can only coexist if something between the candidate pool
+    # and the DP is losing candidates, and the side stamp is the prime
+    # suspect: the chain can only ever consume a candidate whose side
+    # matches whose turn it is.
+    #
+    # Measured directly. For each true contact, find the nearest
+    # candidate and ask whether the side the DP SEES equals the side
+    # truth says it was (truth_side ^ m, m being the rally's mirror
+    # flag). Wrong here means the chain could not use that candidate
+    # even though it existed, and had to ghost the contact instead —
+    # while the same candidate sat available at the wrong turn as junk.
+    side_ok = side_n = side_none = 0
+    for cum, r in rallies.items():
+        ds = dets_by_rally.get(cum, [])
+        if not ds:
+            continue
+        for t_true, s_true in r["contacts"]:
+            near = [d for d in ds if abs(d[0] - t_true) <= 0.35]
+            if not near:
+                side_none += 1
+                continue
+            best = min(near, key=lambda d: abs(d[0] - t_true))
+            side_n += 1
+            side_ok += (best[1] == (s_true ^ r["m"]))
+    if side_n:
+        print(f"\nSIDE CHANNEL AUDIT — can the chain even USE the "
+              f"candidate that is there?")
+        print(f"  the nearest candidate to a true contact carries the "
+              f"RIGHT side on {side_ok}/{side_n} = "
+              f"{side_ok / side_n:.0%} of contacts"
+              f"{f' ({side_none} had no candidate at all)' if side_none else ''}")
+        print(f"  a wrong side is invisible to the chain when it is "
+              f"that side's turn (-> ghost) and\n  available when it "
+              f"is not (-> junk): ONE defect, both symptoms.")
+        if side_frac:
+            _sf = sum(side_frac) / len(side_frac)
+            print(f"  --geom-side is ON: near/far -> 0/1 mapping "
+                  f"recovered with mean {_sf:.0%} track agreement "
+                  f"(below 50% would mean the mapping inverted)")
+        else:
+            print(f"  currently using the tracker's frozen ser['side'] "
+                  f"— try --geom-side to feed the chain the image-y "
+                  f"split instead")
+
     # ---- DECODER AUDIT. The event list is the binding constraint (70
     # of 170 emitted are spurious, 48 of 148 true contacts carry no
     # event), and placement recall says a scored DETECTION sits within
@@ -2770,6 +2873,42 @@ def selftest():
     assert score_order(("x", "y"), three)[0] == 2
     assert score_order(("y", "x"), three)[0] == 1, \
         "order sweep cannot distinguish orderings — vacuous"
+    # GEOM_SIDES. The near/far -> 0/1 mapping is recovered by majority
+    # agreement with the very field it is replacing, which is only
+    # sound while that field is wrong on a MINORITY of tracks. Pin both
+    # directions, because a silent inversion would relabel every
+    # detection in the rally and look like a decoder collapse.
+    def _rd(sides, ys):
+        class _S(dict):
+            pass
+        tr = {}
+        ts = [0.0, 0.5, 1.0, 1.5]
+        for tid, (sd, y) in enumerate(zip(sides, ys)):
+            ser = _S(t=list(ts),
+                     cx=[100.0 + 10 * tid + k for k in range(len(ts))],
+                     ynorm=[float(y)] * len(ts))
+            ser["side"] = sd
+            tr[tid] = ser
+        return {"tracks": tr, "fps": 30.0}
+
+    #   The 0/1 LABELS are not free: m, the rally's mirror flag, is
+    #   computed in the tracker's side space, so geom_sides must align
+    #   to ser["side"] rather than invent its own polarity. What it
+    #   replaces is the per-track ERRORS, not the convention.
+    #   clean field: partition from y, labels already aligned
+    _m, _f = geom_sides(_rd([0, 0, 1, 1], [100, 120, 700, 720]), 0.0)
+    assert _f == 1.0 and _m == {0: 0, 1: 0, 2: 1, 3: 1}, (_m, _f)
+    #   wholly inverted field: it REPRODUCES ser["side"], because that
+    #   is the space m lives in — picking the other polarity here would
+    #   relabel every detection and read as a decoder collapse
+    _m2, _f2 = geom_sides(_rd([1, 1, 0, 0], [100, 120, 700, 720]), 0.0)
+    assert _f2 == 1.0 and _m2 == {0: 1, 1: 1, 2: 0, 3: 0}, (_m2, _f2)
+    #   one corrupt track — the case this exists for. The partition
+    #   comes from y, so tid1 is CORRECTED 1 -> 0, and the agreement
+    #   fraction reports 0.75 so a caller can see the field is dirty.
+    _m3, _f3 = geom_sides(_rd([0, 1, 1, 1], [100, 120, 700, 720]), 0.0)
+    assert _m3 == {0: 0, 1: 0, 2: 1, 3: 1} and _f3 == 0.75, (_m3, _f3)
+
     # PASS FUNNEL. Two properties, both of which a staged decoder can
     # silently violate.
     #   1 NO PASS MAY READ TRUTH — decode_passes takes truth_ts only to
@@ -2883,7 +3022,8 @@ def selftest():
     ok_y, _n2, w_y, _w2 = score_order(("y", "x"), heavy)
     assert ok_x < ok_y and w_x > w_y, "weighting must be able to flip it"
 
-    print("selftest OK: pass funnel (truth-blind, monotone), "
+    print("selftest OK: geom_sides (mapping + inversion), "
+          "pass funnel (truth-blind, monotone), "
           "same-side policy (delete/insert/auto), "
           "diagonal (cross-court serve), order sweep "
           "(precedence, order-sensitivity, "
