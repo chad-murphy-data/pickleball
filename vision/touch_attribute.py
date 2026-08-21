@@ -95,25 +95,65 @@ def other_team(t):
     return "B" if t == "A" else "A"
 
 
-def vote_orientation(samples):
-    """samples = [(team, half, is_near, is_image_right)] from SERVES,
-    where the hitter is known from the log. Returns
-    (near_team, flip, agreement, n). Four hypotheses, majority wins;
-    ~30 serves over-identify two bits, so a healthy match should come
-    back near 1.0 and a low score means the observations are noise."""
+SWITCH_AT = 6      # MLP switches ends at 6 in ALL games (house rule)
+
+
+def epoch_of_score(start_score, switch_at=SWITCH_AT):
+    """0 before the end change, 1 after. start_score is the log's
+    'serving-receiving-server#' triple, so the ends have swapped once
+    either side has reached switch_at.
+
+    THE 2026-08-21 BUG THIS EXISTS FOR: orientation was solved once per
+    match, so every rally after the switch was predicted backwards and
+    agreement pinned near 50% — the exact signature of a missing state
+    transition rather than of noisy geometry."""
+    parts = str(start_score).split("-")
+    vals = [int(p) for p in parts[:2] if p.isdigit()]
+    return 1 if vals and max(vals) >= switch_at else 0
+
+
+def vote_orientation(samples, ends_switch=True):
+    """samples = [(team, half, is_near, is_image_right)] or the same
+    with a trailing epoch. Returns (near_team, flip, agreement, n).
+
+    With ends_switch, the near team INVERTS in epoch 1, so all serves
+    still inform the same two bits rather than splitting the sample —
+    which matters when a match yields only ~15 serves. Four hypotheses,
+    majority wins."""
+    norm = [(s if len(s) == 5 else tuple(s) + (0,)) for s in samples]
     best = None
     for near_team in ("A", "B"):
         for flip in (0, 1):
-            ok = sum(
-                predict_image_quadrant(tm, hf, near_team, flip)
-                == (near, right)
-                for tm, hf, near, right in samples)
+            ok = 0
+            for tm, hf, near, right, ep in norm:
+                nt = (other_team(near_team)
+                      if (ends_switch and ep) else near_team)
+                ok += predict_image_quadrant(tm, hf, nt, flip) == \
+                    (near, right)
             cand = (ok, near_team, flip)
             if best is None or cand > best:
                 best = cand
     ok, near_team, flip = best
-    n = len(samples)
+    n = len(norm)
     return near_team, flip, (ok / n if n else 0.0), n
+
+
+def best_orientation_model(samples):
+    """Fit orientation WITH and WITHOUT an end change and report both.
+
+    The switch is a house rule, not something to take on faith for a
+    given clip, so it is tested rather than assumed: if the switching
+    model wins clearly the ends really do change here, and if the two
+    tie the clip never crossed the switch."""
+    a = vote_orientation(samples, ends_switch=True)
+    b = vote_orientation(samples, ends_switch=False)
+    use_switch = a[2] >= b[2]
+    return (a if use_switch else b), use_switch, a[2], b[2]
+
+
+def effective_near_team(near_team, epoch, ends_switch):
+    return (other_team(near_team)
+            if (ends_switch and epoch) else near_team)
 
 
 # ------------------------------------------------------- alternation
@@ -152,28 +192,78 @@ def label_tracks_at_serve(rd, t_serve, rec, near_team, flip, name_of):
     Returns ({tid: name}, ok) where ok is False if a side did not show
     exactly two tracks — the geometry was unreadable and the rally
     should be skipped rather than guessed at."""
+    seen = []
+    for tid, ser in rd["tracks"].items():
+        c = box_at(ser, t_serve)
+        if c is None or abs(_nearest_dt(ser, t_serve)) > 0.5:
+            continue
+        seen.append((c[1], c[0], tid))       # (y_bottom, cx, tid)
+    if len(seen) != 4:
+        return {}, False
+    # SIDE FROM GEOMETRY, NOT FROM ser["side"]. The tracker's own side
+    # field is a frame-local split and the vision postmortem measured
+    # it corrupting 42% of FAR labels — trusting it put per-track
+    # errors straight into the names. Image y is unambiguous instead:
+    # the two players lower in frame are at the near end. Only the
+    # RANKING is used, so zoom and camera height never enter.
+    seen.sort()                              # by y: far (higher) first
     labels = {}
-    for side in (0, 1):
-        present = []
-        for tid, ser in rd["tracks"].items():
-            if ser["side"] != side:
-                continue
-            c = box_at(ser, t_serve)
-            if c is None or abs(_nearest_dt(ser, t_serve)) > 0.5:
-                continue
-            present.append((c[0], tid))
-        if len(present) != 2:
-            return labels, False
-        present.sort()                      # by cx: left first
-        for (_cx, tid), img_right in zip(present, (False, True)):
-            team, half = invert_image_quadrant(side == 0, img_right,
+    for pair, is_near in ((seen[:2], False), (seen[2:], True)):
+        for (_y, _cx, tid), img_right in zip(sorted(pair, key=lambda r: r[1]),
+                                             (False, True)):
+            team, half = invert_image_quadrant(is_near, img_right,
                                                near_team, flip)
-            uuid = rec.get(f"team_{team}_{half}", "")
-            nm = name_of.get(uuid.lower())
+            nm = name_of.get(rec.get(f"team_{team}_{half}", "").lower())
             if nm is None:
-                return labels, False
+                return {}, False
             labels[tid] = nm
     return labels, True
+
+
+def observe_quadrant(rd, t, tid):
+    """(is_near, is_image_right) for track `tid` at time t, or None.
+
+    Same geometry as label_tracks_at_serve and deliberately so: the
+    orientation vote must observe the world exactly the way the
+    labeller will, or it solves bits for a mapping nobody uses."""
+    seen = []
+    for other_tid, ser in rd["tracks"].items():
+        c = box_at(ser, t)
+        if c is None or abs(_nearest_dt(ser, t)) > 0.5:
+            continue
+        seen.append((c[1], c[0], other_tid))
+    if len(seen) != 4 or tid not in [s[2] for s in seen]:
+        return None
+    seen.sort()
+    near_ids = [s[2] for s in seen[2:]]
+    is_near = tid in near_ids
+    pair = seen[2:] if is_near else seen[:2]
+    pair = sorted(pair, key=lambda r: r[1])
+    return is_near, pair[1][2] == tid
+
+
+def player_tracks(rd, k=4):
+    """The k longest tracks — the four players, as against fragments."""
+    order = sorted(rd["tracks"].items(),
+                   key=lambda kv: -len(kv[1]["t"]))
+    return [tid for tid, _ser in order[:k]]
+
+
+def anchor_time(rd, fallback):
+    """When all four players are first simultaneously on screen.
+
+    The decoder's FIRST EVENT is a poor stand-in for the serve — the
+    dry run put it 1.4-1.7s from the true first contact on the long
+    rallies — and labelling "at the serve" from the wrong instant
+    scrambles the lineup mapping. The moment the four tracks first
+    coexist is serve formation by construction and needs no decode at
+    all."""
+    firsts = []
+    for tid in player_tracks(rd):
+        t = rd["tracks"][tid]["t"]
+        if len(t):
+            firsts.append(float(t[0]))
+    return max(firsts) if len(firsts) == 4 else fallback
 
 
 def assign_names(events, rec, near_team, flip):
@@ -394,17 +484,27 @@ def run(a):
         t0, s0, tid0 = evs[0]
         if srv is None or tid0 is None:
             continue
-        right = is_image_right_of_pair(rd_of(rallies, cum), s0, tid0, t0)
-        if right is None:
+        rd_o = rd_of(rallies, cum)
+        t_anc = anchor_time(rd_o, t0)
+        obs = observe_quadrant(rd_o, t_anc, tid0)
+        if obs is None:
             continue
+        is_near, right = obs
         half = rec["server_half"]
         team = rec["server_team"]
-        samples.append((team, half, bool(s0 == 0), bool(right)))
-    near_team, flip, agree, n_s = vote_orientation(samples)
-    print(f"\norientation from {n_s} serves: near team {near_team}, "
-          f"flip {flip}, agreement {agree:.0%} "
-          f"(two bits, over-identified — low agreement means the "
-          f"geometry is noise, not that the bits are wrong)")
+        samples.append((team, half, bool(is_near), bool(right),
+                        epoch_of_score(rec.get("start_score", ""))))
+    (near_team, flip, agree, n_s), ends_switch, ag_sw, ag_no = \
+        best_orientation_model(samples)
+    print(f"\norientation from {n_s} serves: near team {near_team} "
+          f"(epoch 0), flip {flip}, agreement {agree:.0%}")
+    print(f"  end-change model: switching {ag_sw:.0%} vs fixed "
+          f"{ag_no:.0%} -> using {'SWITCHING' if ends_switch else 'FIXED'}"
+          f" ends")
+    n_ep1 = sum(1 for s in samples if len(s) == 5 and s[4])
+    print(f"  {n_ep1} of {n_s} serves are past the switch (score >= "
+          f"{SWITCH_AT}); two bits, over-identified, so agreement well "
+          f"under 100% means the geometry reads are noisy")
 
     # ---- attribute, with alternation + serve anchor
     tot = ok = 0
@@ -425,8 +525,11 @@ def run(a):
         # LABEL ONCE AT THE SERVE, then ride the track ids: halves are
         # only defined at the serve, so a mid-rally switch must not be
         # allowed to rename anyone.
+        nt = effective_near_team(
+            near_team, epoch_of_score(rec.get("start_score", "")),
+            ends_switch)
         tnames, geom_ok = label_tracks_at_serve(
-            rd, evs[0][0], rec, near_team, flip, names_by_uuid)
+            rd, anchor_time(rd, evs[0][0]), rec, nt, flip, names_by_uuid)
         if not geom_ok:
             unreadable += 1
             continue
@@ -588,6 +691,29 @@ def selftest():
     _nt, _fl, agree_n, _n = vote_orientation(noisy)
     assert agree_n < 1.0
 
+    # END CHANGE: the 2026-08-21 failure. Build serves either side of
+    # the switch with the near team genuinely inverted after it; the
+    # fixed-ends model must land near 50% while the switching model
+    # recovers the bits exactly.
+    ep0 = [(tm, hf) + predict_image_quadrant(tm, hf, "B", 0) + (0,)
+           for tm in ("A", "B") for hf in (RIGHT, LEFT)] * 3
+    ep1 = [(tm, hf) + predict_image_quadrant(tm, hf, "A", 0) + (1,)
+           for tm in ("A", "B") for hf in (RIGHT, LEFT)] * 3
+    mixed = ep0 + ep1
+    (nt2, fl2, ag2, n2), used, ag_sw, ag_no = \
+        best_orientation_model(mixed)
+    assert used is True and (nt2, fl2) == ("B", 0), (nt2, fl2, used)
+    assert ag2 == 1.0 and ag_no <= 0.5, (ag2, ag_no)
+    assert n2 == 24
+    # epoch parsing off the log's score triple
+    assert epoch_of_score("0-0-2") == 0 and epoch_of_score("5-3-1") == 0
+    assert epoch_of_score("6-2-1") == 1 and epoch_of_score("3-9-2") == 1
+    assert effective_near_team("A", 1, True) == "B"
+    assert effective_near_team("A", 1, False) == "A"
+    # a clip that never crosses the switch must not be penalised
+    (_n3, _f3, ag3, _c3), used3, _s3, no3 = best_orientation_model(ep0)
+    assert ag3 == 1.0 and no3 == 1.0 and used3 is True
+
     # alternation: phase from the anchor, exact overwrite, honest count
     fixed, ch = alternation_fix([0, 1, 0, 1], 0)
     assert fixed == [0, 1, 0, 1] and ch == 0
@@ -613,22 +739,33 @@ def selftest():
     class _S(dict):
         pass
 
-    def mk(side, xs, ts):
-        s = _S(t=list(ts), cx=list(xs), ynorm=[0.0] * len(ts))
+    def mk(side, xs, ts, y):
+        # y matters now: near/far is read off image y, so a fixture
+        # with a flat y would be testing nothing
+        s = _S(t=list(ts), cx=list(xs), ynorm=[y] * len(ts))
         s["side"] = side
         return s
 
     ts = [0.0, 1.0, 2.0]
     rd = {"tracks": {
-        1: mk(0, [100.0, 100.0, 900.0], ts),   # near, starts LEFT, crosses
-        2: mk(0, [900.0, 900.0, 100.0], ts),   # near, starts RIGHT
-        3: mk(1, [100.0, 100.0, 100.0], ts),   # far, steady
-        4: mk(1, [900.0, 900.0, 900.0], ts)}}
+        1: mk(0, [100.0, 100.0, 900.0], ts, 600.0),  # near, LEFT, crosses
+        2: mk(0, [900.0, 900.0, 100.0], ts, 600.0),  # near, RIGHT
+        3: mk(1, [100.0, 100.0, 100.0], ts, 200.0),  # far, steady
+        4: mk(1, [900.0, 900.0, 900.0], ts, 200.0)}}
     rec = {"team_A_R": "ua", "team_A_L": "ub",
            "team_B_R": "uc", "team_B_L": "ud"}
     nm = {"ua": "Ann", "ub": "Bea", "uc": "Cal", "ud": "Dee"}
     lab, ok = label_tracks_at_serve(rd, 0.0, rec, "A", 0, nm)
     assert ok and lab[1] == "Bea" and lab[2] == "Ann", lab
+    # side now comes from image y, not ser["side"]: corrupt the
+    # tracker's field entirely and the labels must not move
+    for _t, _s in rd["tracks"].items():
+        _s["side"] = 0
+    lab_y, ok_y = label_tracks_at_serve(rd, 0.0, rec, "A", 0, nm)
+    assert ok_y and lab_y == lab, (lab_y, lab)
+    # observe_quadrant must agree with the labeller's own geometry
+    assert observe_quadrant(rd, 0.0, 2) == (True, True)
+    assert observe_quadrant(rd, 0.0, 3) == (False, False)
     # after the crossing, track 1 is on the RIGHT — re-deriving
     # left/right at t=2 would now call it Ann, renaming both partners.
     # Track identity must not move.
@@ -636,7 +773,7 @@ def selftest():
     assert lab[1] == "Bea", "identity must ride the track, not the side"
     # a side missing a player is reported, never guessed
     rd_bad = {"tracks": {1: rd["tracks"][1], 3: rd["tracks"][3],
-                         4: rd["tracks"][4]}}
+                         4: rd["tracks"][4]}}   # only three on court
     _lab2, ok2 = label_tracks_at_serve(rd_bad, 0.0, rec, "A", 0, nm)
     assert ok2 is False
 
