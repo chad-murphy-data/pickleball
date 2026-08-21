@@ -450,6 +450,52 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
     return labels, True
 
 
+def side_map(rd, t_anchor):
+    """{track_id: is_near} from the 2/2 image-y split at the anchor.
+
+    Near/far is the channel the permutation diagnosis measured at zero
+    whole-rally errors, so this is the trustworthy half of the geometry
+    and is what the alternation constraint gets to act on."""
+    seen = []
+    for tid in player_tracks(rd):
+        ser = rd["tracks"][tid]
+        c = box_at(ser, t_anchor)
+        if c is None or abs(_nearest_dt(ser, t_anchor)) > 0.5:
+            continue
+        seen.append((c[1], tid))
+    if len(seen) != 4:
+        return {}
+    seen.sort()
+    return {tid: (i >= 2) for i, (_y, tid) in enumerate(seen)}
+
+
+def pick_contact_track(dets, t, want_near, sides, tol=0.35):
+    """Which track hit the contact at time t, GIVEN which side must
+    have hit it.
+
+    THE USER'S "VOTER ON EACH PLAYER" / ELIMINATION IDEA (2026-08-21),
+    and the numbers asked for it: partner-given-team reached 86% while
+    TEAM sat at 79% with ZERO whole-rally inversions — so team errors
+    are individual contacts being credited to a track on the WRONG SIDE
+    OF THE NET. The scorer's single best peak was taken on trust.
+
+    Alternation already fixes the side of every contact exactly (0
+    violations / 229 contacts). That makes two of the four players
+    IMPOSSIBLE for this contact, which is elimination rather than
+    preference: score every candidate, strike the impossible ones,
+    and let the best survivor win. Falls back to the unconstrained
+    best only when the legal side offers nothing at all, so a missing
+    track degrades to the old behaviour instead of dropping a contact."""
+    near = [d for d in dets if abs(d[0] - t) <= tol]
+    if not near:
+        return None, False
+    legal = [d for d in near
+             if d[3] in sides and sides[d[3]] == want_near]
+    if legal:
+        return max(legal, key=lambda d: d[2]), True
+    return max(near, key=lambda d: d[2]), False
+
+
 def player_tracks(rd, k=4, min_frac=0.25, static_frac=0.15):
     """The k tracks most likely to BE the four players.
 
@@ -762,7 +808,7 @@ def run(a):
 
     # ---- attribute, with alternation + serve anchor
     tot = ok = 0
-    alt_changed = no_geom = unreadable = 0
+    alt_changed = no_geom = unreadable = reassigned = 0
     serve_checked = serve_agree = 0
     per_player = defaultdict(lambda: [0, 0])   # name -> [pipeline, truth]
     for cum in sorted(decoded):
@@ -788,8 +834,20 @@ def run(a):
         if not geom_ok:
             unreadable += 1
             continue
+        # PRODUCTION PATH gets the same elimination: the decoded event
+        # names a track, but alternation says which side must have hit,
+        # so a track on the illegal side is re-picked from that side's
+        # own candidates rather than trusted.
+        sides_p = side_map(rd, anchor_time(rd, evs[0][0]))
         called = []
-        for (t, _s, tid), _s_fix in zip(evs, fixed):
+        for (t, _s, tid), s_fix in zip(evs, fixed):
+            want_near = (s_fix == 0)
+            if sides_p and tid in sides_p and sides_p[tid] != want_near:
+                alt, _c = pick_contact_track(
+                    dets_by_rally.get(cum, []), t, want_near, sides_p)
+                if alt is not None:
+                    tid = alt[3]
+                    reassigned += 1
             nm = tnames.get(tid)
             if nm is None:
                 no_geom += 1
@@ -836,6 +894,8 @@ def run(a):
           f"(decoder placement removed: true contact times)")
     g_ok = g_n = miss = g_team = g_partner = 0
     per_rally_geom = defaultdict(lambda: [0, 0])
+    g_unc = [0, 0]
+    n_constrained = 0
     truth_vote = defaultdict(lambda: defaultdict(Counter))
     label_of = {}
     census = []
@@ -872,13 +932,29 @@ def run(a):
         if not ok_lab:
             continue
         label_of[cum] = dict(tnames)
-        for t_true, nm_true in truth[cum]:
+        # side each contact MUST be on: the serving team hits contact 1,
+        # and alternation fixes every one after it.
+        srv_is_near_c = (rec.get("server_team") == nt)
+        sides_c = side_map(rd, anchor_time(
+            rd, dets_by_rally[cum][0][0] if dets_by_rally[cum] else 0.0))
+        for k_c, (t_true, nm_true) in enumerate(truth[cum]):
+            want_near = srv_is_near_c if (k_c % 2 == 0) else \
+                (not srv_is_near_c)
+            best_u = None
             near = [d for d in dets_by_rally[cum]
                     if abs(d[0] - t_true) <= 0.35]
-            if not near:
+            if near:
+                best_u = max(near, key=lambda d: d[2])
+            best, constrained = pick_contact_track(
+                dets_by_rally[cum], t_true, want_near, sides_c)
+            if best is None:
                 miss += 1
                 continue
-            best = max(near, key=lambda d: d[2])
+            if best_u is not None and tnames.get(best_u[3]) is not None:
+                g_unc[1] += 1
+                g_unc[0] += tnames.get(best_u[3]) == nm_true
+            if constrained:
+                n_constrained += 1
             nm = tnames.get(best[3])
             if nm is None:
                 miss += 1
@@ -904,6 +980,13 @@ def run(a):
               f"contacts   (chance 25%)")
         print(f"    TEAM (near/far end) right   {g_team}/{g_n} = "
               f"{g_team / g_n:.0%}   (chance 50%)")
+        if g_unc[1]:
+            print(f"    [ablation] same test WITHOUT the alternation "
+                  f"side constraint: {g_unc[0]}/{g_unc[1]} = "
+                  f"{g_unc[0] / g_unc[1]:.0%}")
+            print(f"    the constraint was applicable on "
+                  f"{n_constrained} contacts (elsewhere it fell back "
+                  f"to the unconstrained best)")
         if g_team:
             print(f"    partner GIVEN team right    {g_partner}/{g_team}"
                   f" = {g_partner / g_team:.0%}   (chance 50%)")
@@ -983,6 +1066,8 @@ def run(a):
     print(f"rallies skipped, serve geometry unreadable: {unreadable} "
           f"(a side did not show exactly two tracks)")
     print(f"events on an unlabelled track: {no_geom}")
+    print(f"contacts re-assigned to the legal side by elimination: "
+          f"{reassigned}")
     if serve_checked:
         print(f"SERVE CHECK: {serve_agree}/{serve_checked} = "
               f"{serve_agree / serve_checked:.0%} of rallies had the "
@@ -1270,6 +1355,25 @@ def selftest():
     label_by_vote(rd_v, 0.0, rec_v, "A", 0, nm, events=evs_v, tally=tal)
     assert set(tal) == {"depth", "halves", "contact"}, dict(tal)
     assert all(n > 0 for _ok, n in tal.values())
+
+    # ELIMINATION: the best-scoring detection on the ILLEGAL side must
+    # lose to a weaker one on the side alternation says must have hit.
+    sides_t = {1: True, 2: True, 3: False, 4: False}   # 1,2 near
+    dets_t = [(10.0, 0, 0.9, 3),      # strongest, but FAR
+              (10.02, 0, 0.4, 1)]     # weaker, NEAR
+    best_t, con_t = pick_contact_track(dets_t, 10.0, True, sides_t)
+    assert con_t and best_t[3] == 1, best_t
+    # unconstrained would have taken the far one
+    assert max(dets_t, key=lambda d: d[2])[3] == 3
+    # asking for the far side flips the winner
+    best_f, con_f = pick_contact_track(dets_t, 10.0, False, sides_t)
+    assert con_f and best_f[3] == 3, best_f
+    # nothing legal nearby -> fall back, flagged as unconstrained
+    only_far = [(10.0, 0, 0.9, 3)]
+    best_n, con_n = pick_contact_track(only_far, 10.0, True, sides_t)
+    assert best_n[3] == 3 and con_n is False
+    # nothing at all in tolerance -> None
+    assert pick_contact_track(dets_t, 99.0, True, sides_t)[0] is None
 
     # a side missing a player is reported, never guessed
     rd_bad = {"tracks": {1: rd["tracks"][1], 3: rd["tracks"][3],
