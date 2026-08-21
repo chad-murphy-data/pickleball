@@ -423,11 +423,22 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
         right_tid = (a if a[1] > b[1] else b)[2]
         left_tid = (b if a[1] > b[1] else a)[2]
         votes.append(("halves", right_tid if want_right else left_tid))
-        # CONTACT ORDER: the k-th contact belongs to this person
-        if contact_idx < len(ev):
-            tid_c = ev[contact_idx][2]
-            if tid_c in (a[2], b[2]):
-                votes.append(("contact", tid_c))
+        # CONTACT ORDER: the k-th contact belongs to this person.
+        #
+        # Taking ev[k] blindly is fragile: the decoder OVER-COUNTS (186
+        # events against 148 true contacts), so one spurious early
+        # event shifts both anchors and silences this voter — and the
+        # voter-vs-truth table made it the best one (88% overall, 73%
+        # on disputed) AND silent a fifth of the time, so widening it
+        # is worth more than any new channel.
+        #
+        # The serving pair hits first and the receiving pair second, so
+        # take the EARLIEST event landing on this pair rather than a
+        # fixed index. That survives extra events before or between the
+        # first two, and it can only fire on a legal track.
+        cand = next((e for e in ev if e[2] in (a[2], b[2])), None)
+        if cand is not None:
+            votes.append(("contact", cand[2]))
         if votes_out is not None:
             votes_out[who] = list(votes)
         if order:
@@ -1541,6 +1552,19 @@ def selftest():
                                  order=["depth", "halves", "contact"])
     assert lab_dep[2] == "Ann", ("depth-first must follow depth even "
                                  f"when outvoted: {lab_dep}")
+    # ROBUST CONTACT VOTER: a spurious event before the serve must not
+    # silence or misdirect it. Prepend an event on the RECEIVING pair
+    # (track 3) and the serving-pair vote must still find track 1.
+    evs_noise = [(-0.3, 1, 3)] + evs_v
+    vo_n = {}
+    label_by_vote(rd_v, 0.0, rec_v, "A", 0, nm, events=evs_noise,
+                  votes_out=vo_n)
+    got_c = dict(vo_n["Ann"])["contact"]
+    assert got_c == 1, f"noise event misdirected the contact voter: {got_c}"
+    # and an extra event on the serving pair BEFORE the serve is the
+    # case it cannot survive — documented, not silently wrong
+    assert dict(vo_n["Cal"])["contact"] == 3
+
     # votes_out exposes every voter for the truth table
     vo = {}
     label_by_vote(rd_v, 0.0, rec_v, "A", 0, nm, events=evs_v,
