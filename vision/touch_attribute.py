@@ -996,7 +996,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21i  diagonal OFF (measured harmful), decoder accounting"
+BUILD = "2026-08-21j  decoder audit: timing model vs labels, ghosts"
 
 
 def main():
@@ -1053,6 +1053,7 @@ def run(a):
     ball_by_rally = {}
     voter_tally = defaultdict(lambda: [0, 0])
     votes_by_rally = {}
+    paths = {}
     diag_fixes = []
     picks_by_rally = {}
     ctx_by_rally = {}
@@ -1160,6 +1161,16 @@ def run(a):
         for t, s, _sc, _g in path:
             evs.append((t, s, tid_of.get((round(t, 3), s))))
         decoded[held] = evs
+        # KEEP THE GHOSTS. decode_rally's 4th field is the number of
+        # contacts it asserts happened between this event and the last
+        # one but could not timestamp. Dropping it is not free: with
+        # ONE ghost between two emitted events parity flips twice, so
+        # the two emitted events are legitimately on the SAME side —
+        # and alternation_fix then forces them apart, overwriting a
+        # correct side with a wrong one. Ghosts are also the decoder's
+        # own account of the contacts it knows it missed, which is the
+        # first thing to check against the 48 unexplained true ones.
+        paths[held] = path
         dets_by_rally[held] = dets
 
     # ---- ball flights per rally, matched to the first two decoded
@@ -1912,6 +1923,87 @@ def run(a):
         print(f"  the gap between the two joins is OVER-COUNTING, not "
               f"naming: one spurious\n  detection shifts every later "
               f"index comparison in that rally")
+    # ---- DECODER AUDIT. The event list is the binding constraint (70
+    # of 170 emitted are spurious, 48 of 148 true contacts carry no
+    # event), and placement recall says a scored DETECTION sits within
+    # 0.35s of every true contact — so the candidates are there and
+    # decode_rally is not choosing them. Before touching a single
+    # constant, measure what the DP is assuming against what the labels
+    # actually contain.
+    #
+    # decode_rally's timing model is hand-guessed: min_gap 0.25,
+    # max_gap 3.0, and a gap bonus of 0 inside 0.45-2.2s, -1.2 in
+    # 0.3-0.45, -3.0 outside. Nothing was ever fitted to a real
+    # inter-contact interval, and we have 148 labelled contacts.
+    gaps, gaps_same = [], []
+    for cum in sorted(truth):
+        ts = [t for t, _nm in truth[cum]]
+        for i in range(1, len(ts)):
+            gaps.append(ts[i] - ts[i - 1])
+        for i in range(2, len(ts)):
+            gaps_same.append(ts[i] - ts[i - 2])
+    if gaps:
+        gs = sorted(gaps)
+        def q(v, f):
+            return v[min(len(v) - 1, int(f * len(v)))]
+        print(f"\nDECODER AUDIT — the DP's timing model vs the labels")
+        print(f"  TRUE inter-contact gap (n={len(gs)}): "
+              f"p01 {q(gs, .01):.2f}  p05 {q(gs, .05):.2f}  "
+              f"p25 {q(gs, .25):.2f}  med {q(gs, .50):.2f}  "
+              f"p75 {q(gs, .75):.2f}  p95 {q(gs, .95):.2f}  "
+              f"p99 {q(gs, .99):.2f}")
+        print(f"  decode_rally assumes: min_gap 0.25, free band "
+              f"0.45-2.2, penalised below 0.45, -3.0 outside 2.2")
+        below = sum(1 for g in gs if g < 0.45)
+        above = sum(1 for g in gs if g > 2.2)
+        print(f"  -> {below}/{len(gs)} = {below / len(gs):.0%} of REAL "
+              f"gaps fall in the penalised <0.45 band, and "
+              f"{above}/{len(gs)} = {above / len(gs):.0%} are past 2.2 "
+              f"where the DP charges -3.0")
+        if gaps_same:
+            gss = sorted(gaps_same)
+            print(f"  TRUE same-side gap (n={len(gss)}): p01 "
+                  f"{q(gss, .01):.2f}  med {q(gss, .50):.2f} — the "
+                  f"0.55s pre-merge window must sit under p01 or it "
+                  f"eats real contacts")
+    # GHOSTS: the decoder's own account of what it could not place.
+    gh = sum(g for pth in paths.values() for _t, _s, _sc, g in pth)
+    if paths:
+        print(f"  GHOSTS: {gh} contacts asserted but not timestamped "
+              f"across {len(paths)} rallies. Every ghost makes the two "
+              f"emitted events\n  around it legitimately SAME-side, "
+              f"which is the premise alternation_fix denies "
+              f"({alt_changed} overwrites).")
+    # WHY WAS THE CANDIDATE NOT CHOSEN? For each true contact with no
+    # event on it, find the best candidate that WAS available and say
+    # where it sat in that rally's score distribution. A missed contact
+    # whose candidate was strong is a DP-objective problem; one whose
+    # candidate was weak is a scorer problem. They need opposite fixes.
+    miss_pct, miss_n = [], 0
+    for cum in sorted(truth):
+        ev_ts = [t for t, _s, _tid in decoded.get(cum, [])]
+        scores = sorted(sc for _t, _s, sc, _tid in dets_by_rally.get(cum, []))
+        if not scores:
+            continue
+        for t_true, _nm in truth[cum]:
+            if any(abs(t_true - te) <= 0.35 for te in ev_ts):
+                continue
+            miss_n += 1
+            near = [sc for tt, _s, sc, _tid in dets_by_rally.get(cum, [])
+                    if abs(tt - t_true) <= 0.35]
+            if near:
+                best_sc = max(near)
+                rank = sum(1 for x in scores if x <= best_sc)
+                miss_pct.append(rank / len(scores))
+    if miss_n:
+        strong = sum(1 for p_ in miss_pct if p_ >= 0.70)
+        print(f"  MISSED CONTACTS: {miss_n} true contacts carry no "
+              f"event; {len(miss_pct)} of them had a candidate within "
+              f"0.35s.\n  {strong} of those candidates were at or above "
+              f"the 70th percentile the DP calls confident — a strong "
+              f"candidate\n  that was passed over is a DP-objective "
+              f"problem, a weak one is a scorer problem.")
+
     _r = sum(v[0] for v in per_player_kind.values())
     _w = sum(v[1] for v in per_player_kind.values())
     _x = sum(v[2] for v in per_player_kind.values())
