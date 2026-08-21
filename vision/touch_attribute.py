@@ -268,6 +268,78 @@ def track_motion(ser):
     return (max(cx) - min(cx)) + (max(y) - min(y))
 
 
+def label_by_depth(rd, t_serve, rec, near_team, flip, name_of):
+    """{track_id: name} from DEPTH plus the log — no left/right at all.
+
+    WHY THIS EXISTS (2026-08-21). The permutation diagnosis came back
+    TEAMS SWAPPED 0, PARTNERS SWAPPED 6 of 15: near/far is essentially
+    perfect and the entire error is one inverted left/right bit. The
+    cause is timing, not geometry — 5 of the 6 bad rallies FOLLOW A
+    POINT, and a serving team swaps halves after scoring, so the
+    lineup's halves describe where players stand AFTER a walk across
+    that our anchor catches them in the middle of.
+
+    Depth sidesteps it. At the serve the server stands behind their
+    baseline and the receiver stands deep to return; both partners are
+    up at the kitchen. The log names the server AND the receiver
+    exactly, so the deeper player on each side is a KNOWN person and
+    the shallower one is that person's partner. Left/right, the
+    lineup halves, and the swap timing all drop out of the problem.
+
+    Depth is also the more reliable read: it is a large separation
+    along the axis the camera foreshortens least, whereas left/right
+    at serve is a small separation that a mid-walk player crosses.
+
+    Returns ({tid: name}, ok)."""
+    seen = []
+    for tid in player_tracks(rd):
+        ser = rd["tracks"][tid]
+        c = box_at(ser, t_serve)
+        if c is None or abs(_nearest_dt(ser, t_serve)) > 0.5:
+            continue
+        seen.append((c[1], c[0], tid))       # (y_bottom, cx, tid)
+    if len(seen) != 4:
+        return {}, False
+    seen.sort()
+    far_pair, near_pair = seen[:2], seen[2:]
+
+    srv = name_of.get(rec.get("server_uuid", "").lower())
+    rcv = name_of.get(rec.get("receiver_uuid", "").lower())
+    if not srv or not rcv:
+        return {}, False
+    team_members = {}
+    for tm in ("A", "B"):
+        mem = [name_of.get(rec.get(f"team_{tm}_{h}", "").lower())
+               for h in (RIGHT, LEFT)]
+        if any(m is None for m in mem):
+            return {}, False
+        team_members[tm] = mem
+    srv_team = rec.get("server_team")
+    if srv_team not in team_members:
+        return {}, False
+    rcv_team = other_team(srv_team)
+    srv_mate = next(m for m in team_members[srv_team] if m != srv)
+    rcv_mate = next(m for m in team_members[rcv_team] if m != rcv)
+
+    # which image end is the serving team on? near/far is the channel
+    # that measured 0 errors, so this is the safe half of the mapping.
+    srv_is_near = (srv_team == near_team)
+    srv_pair = near_pair if srv_is_near else far_pair
+    rcv_pair = far_pair if srv_is_near else near_pair
+
+    def deep_first(pair, is_near):
+        # depth = distance from the net. The near end is LOW on screen,
+        # so its deeper player has the LARGER y; the far end mirrors.
+        return sorted(pair, key=lambda r: -r[0] if is_near else r[0])
+
+    labels = {}
+    sp = deep_first(srv_pair, srv_is_near)
+    labels[sp[0][2]], labels[sp[1][2]] = srv, srv_mate
+    rp = deep_first(rcv_pair, not srv_is_near)
+    labels[rp[0][2]], labels[rp[1][2]] = rcv, rcv_mate
+    return labels, True
+
+
 def player_tracks(rd, k=4, min_frac=0.25, static_frac=0.15):
     """The k tracks most likely to BE the four players.
 
@@ -423,6 +495,13 @@ def main():
     ap.add_argument("--timeline-dir",
                     help="folder holding rally_timeline_<mid8>.csv, if "
                          "it is somewhere the search does not cover")
+    ap.add_argument("--label", choices=["depth", "halves"],
+                    default="depth",
+                    help="depth (default) = server/receiver are the deep "
+                         "players, names straight from the log, no "
+                         "left/right; halves = the lineup R/L mapping, "
+                         "which inverts when a serving team swaps ends "
+                         "between points")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -431,6 +510,8 @@ def main():
 
 
 def run(a):
+    labeller = (label_by_depth if getattr(a, "label", "depth") == "depth"
+                else label_tracks_at_serve)
     import numpy as np
     import swing_explore as SE
     from contact_ceiling import (load_rosters, load_labels,
@@ -581,7 +662,7 @@ def run(a):
         nt = effective_near_team(
             near_team, epoch_of_score(rec.get("start_score", "")),
             ends_switch)
-        tnames, geom_ok = label_tracks_at_serve(
+        tnames, geom_ok = labeller(
             rd, anchor_time(rd, evs[0][0]), rec, nt, flip, names_by_uuid)
         if not geom_ok:
             unreadable += 1
@@ -630,8 +711,8 @@ def run(a):
     # correctly. Placement error is removed by construction, so what is
     # left is the geometry chain alone. Reported beside placement
     # recall, which is the other half of the same picture.
-    print("\nTRUTH-ANCHORED GEOMETRY TEST (decoder placement removed: "
-          "true contact times, geometric names)")
+    print(f"\nTRUTH-ANCHORED GEOMETRY TEST — labeller={a.label} "
+          f"(decoder placement removed: true contact times)")
     g_ok = g_n = miss = g_team = g_partner = 0
     per_rally_geom = defaultdict(lambda: [0, 0])
     truth_vote = defaultdict(lambda: defaultdict(Counter))
@@ -647,7 +728,7 @@ def run(a):
         nt = effective_near_team(
             near_team, epoch_of_score(rec.get("start_score", "")),
             ends_switch)
-        tnames, ok_lab = label_tracks_at_serve(
+        tnames, ok_lab = labeller(
             rd, anchor_time(rd, dets_by_rally[cum][0][0]
                             if dets_by_rally[cum] else 0.0),
             rec, nt, flip, names_by_uuid)
@@ -993,6 +1074,38 @@ def selftest():
     assert 9 not in sel, f"stationary official selected: {sel}"
     assert sel == {1, 2, 3, 4}, sel
     assert track_motion(rd_ref["tracks"][9]) == 0.0
+
+    # DEPTH LABELLER: server and receiver are the deep players, and the
+    # log names both. Near end is LOW on screen, so its deep player has
+    # the LARGER y; the far end mirrors. Critically this must be immune
+    # to left/right, which is the bit that inverts after a swap.
+    rec_d = {"team_A_R": "ua", "team_A_L": "ub",
+             "team_B_R": "uc", "team_B_L": "ud",
+             "server_uuid": "ua", "receiver_uuid": "uc",
+             "server_team": "A"}
+    tt2 = [0.0, 0.1]
+    def mk2(cx, y):
+        z = _S(t=list(tt2), cx=[cx, cx], ynorm=[y, y])
+        z["side"] = 0
+        return z
+    # team A near: Ann deep (y 760) serving, Bea at kitchen (y 470)
+    # team B far:  Cal deep (y 120) receiving, Dee at kitchen (y 330)
+    rd_d = {"tracks": {1: mk2(300.0, 760.0), 2: mk2(700.0, 470.0),
+                       3: mk2(700.0, 120.0), 4: mk2(300.0, 330.0)}}
+    lab_d, ok_d = label_by_depth(rd_d, 0.0, rec_d, "A", 0, nm)
+    assert ok_d, "depth labeller failed on a clean fixture"
+    assert lab_d == {1: "Ann", 2: "Bea", 3: "Cal", 4: "Dee"}, lab_d
+    # MIRRORING the x positions must change nothing: the whole point is
+    # that a post-point swap cannot invert this labeller.
+    rd_m = {"tracks": {1: mk2(700.0, 760.0), 2: mk2(300.0, 470.0),
+                       3: mk2(300.0, 120.0), 4: mk2(700.0, 330.0)}}
+    lab_m, ok_m = label_by_depth(rd_m, 0.0, rec_m := rec_d, "A", 0, nm)
+    assert ok_m and lab_m == lab_d, (lab_m, lab_d)
+    # and it must follow the log: swap who serves, names follow
+    rec_s = dict(rec_d, server_uuid="uc", receiver_uuid="ua",
+                 server_team="B")
+    lab_s, ok_s = label_by_depth(rd_d, 0.0, rec_s, "A", 0, nm)
+    assert ok_s and lab_s[3] == "Cal" and lab_s[1] == "Ann", lab_s
 
     # a side missing a player is reported, never guessed
     rd_bad = {"tracks": {1: rd["tracks"][1], 3: rd["tracks"][3],
