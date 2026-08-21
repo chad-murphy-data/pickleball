@@ -629,7 +629,39 @@ def decide_by_order(order, by):
     return Counter(by.values()).most_common(1)[0][0], "majority"
 
 
-def score_order(order, bits):
+def apply_veto(leader_tid, leader, by, k, mode):
+    """Let the voters BELOW the leader overturn it, or return None.
+
+    A pure cascade can only ever be as right as whichever voter speaks
+    first, which is the wrong shape when the leader is excellent in
+    general but wrong in a specific, detectable situation - exactly
+    what the 2026-08-21 trace showed for `contact` (88% overall, yet
+    wrong on 3 of the 4 broken bits, with a lower voter right in every
+    one).
+
+    Two modes, because they encode different beliefs and the data
+    should pick:
+      unan  every other firing voter agrees on ONE other answer. Very
+            conservative: it fires only when the leader is alone.
+      maj   a strict majority of the other voters agree on one other
+            answer. Fires more often, and can be wrong more often.
+    k is the minimum number of other voters required, so a veto is
+    never carried by a single dissenter."""
+    others = [t for name, t in by.items() if name != leader]
+    if len(others) < k or k <= 0:
+        return None
+    counts = Counter(others)
+    top, n_top = counts.most_common(1)[0]
+    if top == leader_tid:
+        return None
+    if mode == "unan" and n_top != len(others):
+        return None
+    if mode == "maj" and n_top * 2 <= len(others):
+        return None
+    return top
+
+
+def score_order(order, bits, k=0, mode="unan"):
     """(bits right, bits, contacts right, contacts) for one ordering.
 
     Contact weighting matters because a side bit renames both players
@@ -638,7 +670,11 @@ def score_order(order, bits):
     2-contact rally are not the same mistake."""
     ok = n = wok = wn = 0
     for _cum, _who, truth_tid, by, w in bits:
-        got, _v = decide_by_order(order, by)
+        got, v = decide_by_order(order, by)
+        if k and v is not None and v != "majority":
+            alt = apply_veto(got, v, by, k, mode)
+            if alt is not None:
+                got = alt
         n += 1
         wn += w
         if got == truth_tid:
@@ -888,6 +924,9 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
+BUILD = "2026-08-21d  order-sweep + veto rules + side-bit trace"
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--labels", default=LABELS)
@@ -930,6 +969,7 @@ def main():
 
 
 def run(a):
+    print(f"touch_attribute build {BUILD}")
     mode = getattr(a, "label", "vote")
     settle = not getattr(a, "no_settle", False)
     allow_movement = getattr(a, "with_movement", False)
@@ -1578,6 +1618,28 @@ def run(a):
             print("    sole rescue = decided RIGHT when every other "
                   "voter was wrong (irreplaceable)")
 
+        # ---- VETO GRID. The trace showed the binding failure is not
+        # an ordering problem at all: `contact` led and was wrong on 3
+        # of the 4 broken bits with a lower voter right each time, yet
+        # demoting it costs the 21 bits it gets right. A cascade cannot
+        # express "usually trust it, but not when the others gang up",
+        # so no permutation can fix that - which is exactly why this
+        # grid is scored beside the sweep rather than instead of it.
+        print("\n  VETO GRID — leader stands unless the voters below it "
+              "overturn it\n    (k = minimum dissenters; unan = they must "
+              "be unanimous, maj = strict majority)")
+        for tag, order in (("current", cur), ("best", best_perm)):
+            if not order:
+                continue
+            row = []
+            for mode in ("unan", "maj"):
+                for k in (2, 3):
+                    okv, _n, wv, _w = score_order(order, bits, k, mode)
+                    row.append(f"{mode}/k{k} {wv:>4}c {okv:>2}b")
+            base_ok, _n, base_w, _w = score_order(order, bits)
+            print(f"    {tag:<8} no veto {base_w:>4}c {base_ok:>2}b   "
+                  + "   ".join(row))
+
         # ---- LEAVE-ONE-OUT: is any voter net harmful at ANY position?
         print("\n  LEAVE-ONE-OUT (best achievable with this voter "
               "removed entirely)")
@@ -2117,6 +2179,29 @@ def selftest():
     assert score_order(("x", "y"), three)[0] == 2
     assert score_order(("y", "x"), three)[0] == 1, \
         "order sweep cannot distinguish orderings — vacuous"
+    # VETO: the leader stands unless the others overturn it. Pinned
+    # because it is the one rule in the panel that can make a GOOD
+    # voter's answer disappear, so its firing conditions have to be
+    # exactly as narrow as advertised.
+    #   lead is wrong (7), two others agree on the truth (8) -> veto
+    assert apply_veto(7, "x", {"x": 7, "y": 8, "z": 8}, 2, "unan") == 8
+    #   ...but not if a single dissenter is all there is
+    assert apply_veto(7, "x", {"x": 7, "y": 8}, 2, "unan") is None
+    #   ...and not if the others disagree among themselves
+    assert apply_veto(7, "x", {"x": 7, "y": 8, "z": 9}, 2, "unan") is None
+    #   majority mode fires there, which is the whole difference
+    assert apply_veto(7, "x", {"x": 7, "y": 8, "z": 8, "w": 9},
+                      2, "maj") == 8
+    assert apply_veto(7, "x", {"x": 7, "y": 8, "z": 9}, 2, "maj") is None
+    #   never overturn the leader with its own answer
+    assert apply_veto(7, "x", {"x": 7, "y": 7, "z": 7}, 2, "unan") is None
+    #   k=0 disables it entirely
+    assert apply_veto(7, "x", {"x": 7, "y": 8, "z": 8}, 0, "unan") is None
+    #   and it must be able to change a score, or the grid is vacuous
+    vb = [(9, "V", 8, {"x": 7, "y": 8, "z": 8}, 1)]
+    assert score_order(("x", "y", "z"), vb)[0] == 0
+    assert score_order(("x", "y", "z"), vb, 2, "unan")[0] == 1
+
     # weighting: one heavy bit outweighs two light ones going the other
     # way, so the weighted and unweighted rankings genuinely differ.
     heavy = [(4, "S", 70, {"x": 70, "y": 80}, 25),
@@ -2127,6 +2212,7 @@ def selftest():
     assert ok_x < ok_y and w_x > w_y, "weighting must be able to flip it"
 
     print("selftest OK: order sweep (precedence, order-sensitivity, "
+          "veto rules, "
           "weighting), quadrant round trip, end mirroring, orientation "
           "voting (clean + noisy), alternation overwrite, name "
           "assignment, label-at-serve survives a mid-rally switch")
