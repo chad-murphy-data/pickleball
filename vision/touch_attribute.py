@@ -416,7 +416,7 @@ BALL_MIN_MARGIN = 25.0    # px: below this the two are equidistant
 def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
                   events=None, tally=None, votes_out=None,
                   order=None, ball_pts=None, allow_movement=False,
-                  picks_out=None):
+                  picks_out=None, diagonal=True, diag_out=None):
     """{track_id: name} by VOTING the one bit that is actually in doubt.
 
     THE 2026-08-21 ENSEMBLE FINDING (user's proposal, and the data
@@ -482,7 +482,7 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
     rcv_pair = far_pair if srv_is_near else near_pair
     ev = list(events or [])
 
-    def pick(pair, is_near, who, half_of_who, contact_idx):
+    def pick(pair, is_near, who, half_of_who, contact_idx, decider_out):
         """Which track in `pair` is `who`? Three votes, majority."""
         a, b = pair                       # (y, cx, tid) each
         votes = []
@@ -577,17 +577,20 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
             byname = {v: t for v, t in votes}
             for v in order:
                 if v in byname:
-                    best_tid = byname[v]
+                    best_tid, v_dec = byname[v], v
                     break
             else:
                 best_tid = Counter(t for _v, t in votes).most_common(1)[0][0]
+                v_dec = "majority"
         else:
             counts = Counter(t for _v, t in votes)
             best_tid, _n = counts.most_common(1)[0]
+            v_dec = "majority"
         if tally is not None:
             for vname, t in votes:
                 tally[vname][0] += (t == best_tid)
                 tally[vname][1] += 1
+        decider_out.append(v_dec)
         if picks_out is not None:
             # The votes alone cannot say WHY a side bit came out wrong:
             # a cascade pick and a majority pick look identical in the
@@ -602,8 +605,46 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
         for h in (RIGHT, LEFT):
             nm = name_of.get(rec.get(f"team_{tm}_{h}", "").lower())
             half_of[nm] = h
-    s_tid = pick(srv_pair, srv_is_near, srv, half_of[srv], 0)
-    r_tid = pick(rcv_pair, not srv_is_near, rcv, half_of[rcv], 1)
+    s_dec, r_dec = [], []
+    s_tid = pick(srv_pair, srv_is_near, srv, half_of[srv], 0, s_dec)
+    r_tid = pick(rcv_pair, not srv_is_near, rcv, half_of[rcv], 1, r_dec)
+
+    # ---- THE DIAGONAL. A serve must travel cross-court, so at the
+    # serve the server and the receiver stand diagonally opposite:
+    # exactly ONE of them is the image-right member of their own pair.
+    # The two bits were being decided INDEPENDENTLY, so nothing stopped
+    # the pair of decisions from describing a serve down the middle,
+    # which cannot happen.
+    #
+    # Same class of constraint as alternation (+14 points): a rule of
+    # the sport, exact, free, and it eliminates two of the four
+    # combinations rather than merely preferring one.
+    #
+    # WHY IT APPLIES EXACTLY HERE and nowhere else: the server and the
+    # receiver are the only two players the rules place. Their partners
+    # may stand anywhere - that is what stacking IS - so no positional
+    # claim about a partner is safe, while these two are pinned by the
+    # laws of the game at the moment the bits are about.
+    #
+    # A violation says one of the two bits is wrong but not which, so
+    # flip the one whose DECIDER is less reliable, measured on the
+    # right-when-deciding column rather than assumed. A double
+    # inversion satisfies the diagonal and stays invisible to it -
+    # that is r6, and it is a real limit of this constraint, not an
+    # oversight.
+    if diagonal:
+        s_right = s_tid == max(srv_pair, key=lambda r: r[1])[2]
+        r_right = r_tid == max(rcv_pair, key=lambda r: r[1])[2]
+        if s_right == r_right:
+            s_conf = DECIDER_CONF.get(s_dec[0] if s_dec else None, 0.5)
+            r_conf = DECIDER_CONF.get(r_dec[0] if r_dec else None, 0.5)
+            if s_conf < r_conf:
+                s_tid = next(t for _y, _cx, t in srv_pair if t != s_tid)
+            else:
+                r_tid = next(t for _y, _cx, t in rcv_pair if t != r_tid)
+            if diag_out is not None:
+                diag_out.append((s_dec[0] if s_dec else "?",
+                                 r_dec[0] if r_dec else "?"))
     labels = {s_tid: srv, r_tid: rcv}
     for _y, _cx, tid in srv_pair:
         labels.setdefault(tid, srv_mate)
@@ -611,6 +652,16 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
         labels.setdefault(tid, rcv_mate)
     return labels, True
 
+
+
+# Right-when-deciding, measured on the 2026-08-21 train panel. Used
+# ONLY to break a diagonal violation: when the two bits contradict a
+# rule of the sport, the less reliable decider is the one to flip.
+# Kept as measurements rather than a hand-ranked list so it is obvious
+# when they go stale - re-read them off the PER-VOTER table.
+DECIDER_CONF = {"contact": 0.88, "halves": 0.83, "depth": 0.70,
+                "ball": 0.56, "intent": 0.29, "approach": 0.0,
+                "majority": 0.5}
 
 
 def decide_by_order(order, by):
@@ -924,7 +975,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21f  + shadowing fix (ATTRIBUTION was corrupted in d/e)"
+BUILD = "2026-08-21g  + diagonal constraint, nearest-time attribution"
 
 
 def main():
@@ -961,6 +1012,10 @@ def main():
                     help="anchor when all four are first on screen, "
                          "instead of at the stillest instant before the "
                          "first contact (the pre-serve setup)")
+    ap.add_argument("--no-diagonal", action="store_true",
+                    help="ablate the cross-court serve constraint "
+                         "(server and receiver must be diagonally "
+                         "opposite); on by default")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -976,6 +1031,7 @@ def run(a):
     ball_by_rally = {}
     voter_tally = defaultdict(lambda: [0, 0])
     votes_by_rally = {}
+    diag_fixes = []
     picks_by_rally = {}
     ctx_by_rally = {}
     cascade = ([x.strip() for x in a.cascade.split(',')]
@@ -989,7 +1045,9 @@ def run(a):
                                  votes_out=votes_out, order=cascade,
                                  ball_pts=ball_pts,
                                  allow_movement=allow_movement,
-                                 picks_out=picks_out)
+                                 picks_out=picks_out,
+                                 diagonal=not a.no_diagonal,
+                                 diag_out=diag_fixes)
         if mode == "depth":
             return label_by_depth(rd_, t_, rec_, nt_, fl_, nm_)
         return label_tracks_at_serve(rd_, t_, rec_, nt_, fl_, nm_)
@@ -1162,6 +1220,7 @@ def run(a):
     tot = ok = 0
     alt_changed = no_geom = unreadable = reassigned = 0
     serve_checked = serve_agree = 0
+    t_ok = t_tot = 0
     per_player = defaultdict(lambda: [0, 0])   # name -> [pipeline, truth]
     # name -> [right, wrong, extra]. See the TOUCH COUNTS block.
     per_player_kind = defaultdict(lambda: [0, 0, 0])
@@ -1264,6 +1323,22 @@ def run(a):
                 continue
             tot += 1
             ok += nm == truth[cum][k][1]
+        # ...and again by NEAREST TIME, which is the question touch
+        # share actually asks: for each TRUE contact, who hit it?
+        #
+        # The index join above is the pilot's, kept for continuity, but
+        # it conflates naming with counting: the pipeline emits 170
+        # events against 148 true contacts, and ONE spurious detection
+        # early in a rally shifts every later comparison by one, so the
+        # rest of that rally grades as noise however well it was named.
+        # Reported side by side deliberately - the difference between
+        # the two IS the over-counting, and hiding it inside a single
+        # improved number would launder a measurement change as a gain.
+        for i, nm in enumerate(called):
+            if nm is None or i not in match:
+                continue
+            t_tot += 1
+            t_ok += nm == truth[cum][match[i]][1]
 
     # FREEZE THE HEADLINE. ok/tot are finished here, and everything
     # below is diagnostics. An order-sweep loop rebinding `ok` once
@@ -1756,6 +1831,12 @@ def run(a):
             if n_v:
                 print(f"  {v:<9} {ok_v}/{n_v} = {ok_v / n_v:.0%}")
 
+    if not a.no_diagonal:
+        print(f"\nDIAGONAL repaired {len(diag_fixes)} side bits "
+              f"(server and receiver must be cross-court; a violation "
+              f"means one bit is wrong,\n  and the less reliable "
+              f"decider is flipped) — deciders involved: "
+              f"{Counter(d for pair in diag_fixes for d in pair).most_common()}")
     print(f"\nALTERNATION overwrote {alt_changed} decoded sides "
           f"(tracker/decoder disagreements with the exact constraint)")
     print(f"rallies skipped, serve geometry unreadable: {unreadable} "
@@ -1778,6 +1859,12 @@ def run(a):
               f"{attr_ok}/{attr_tot} = {attr_ok / attr_tot:.0%}")
         print(f"  VLM comparison on the same rallies: identity 44%, "
               f"side 70% (2026-08-21, $2.59)")
+    if t_tot:
+        print(f"  by NEAREST-TIME join (who hit each TRUE contact — the "
+              f"touch-share question): {t_ok}/{t_tot} = {t_ok / t_tot:.0%}")
+        print(f"  the gap between the two joins is OVER-COUNTING, not "
+              f"naming: one spurious\n  detection shifts every later "
+              f"index comparison in that rally")
     print("\nTOUCH COUNTS (pipeline vs truth)")
     print("    wrong = a real contact given to the partner (zero-sum "
           "between them);\n    extra = a detection with no true contact "
@@ -2246,6 +2333,29 @@ def selftest():
     assert score_order(("x", "y"), three)[0] == 2
     assert score_order(("y", "x"), three)[0] == 1, \
         "order sweep cannot distinguish orderings — vacuous"
+    # DIAGONAL: a serve is cross-court, so the server and the receiver
+    # cannot both be the image-right of their pair. Pinned because it
+    # SILENTLY REWRITES a decision that every voter agreed on, which is
+    # the most dangerous kind of rule in this file.
+    #   confidence table must rank the two real deciders correctly, or
+    #   the repair flips the wrong side
+    assert DECIDER_CONF["contact"] > DECIDER_CONF["halves"]
+    assert DECIDER_CONF["halves"] > DECIDER_CONF["ball"]
+    #   a legal configuration (exactly one image-right) is untouched,
+    #   an illegal one flips the weaker decider's side, and the flip
+    #   lands on the OTHER member of that pair
+    _pair_a = [(700.0, 100.0, "sL"), (700.0, 900.0, "sR")]
+    _pair_b = [(200.0, 120.0, "rL"), (200.0, 880.0, "rR")]
+    _right_a = max(_pair_a, key=lambda r: r[1])[2]
+    _right_b = max(_pair_b, key=lambda r: r[1])[2]
+    assert (_right_a, _right_b) == ("sR", "rR")
+    #   sR + rL is diagonal (one right, one left) -> legal
+    assert ("sR" == _right_a) != ("rL" == _right_b)
+    #   sR + rR is a serve down the middle -> illegal, must be caught
+    assert ("sR" == _right_a) == ("rR" == _right_b)
+    #   and the repair is well-defined: the other member of the pair
+    assert next(t for _y, _cx, t in _pair_b if t != "rR") == "rL"
+
     # VETO: the leader stands unless the others overturn it. Pinned
     # because it is the one rule in the panel that can make a GOOD
     # voter's answer disappear, so its firing conditions have to be
@@ -2278,7 +2388,8 @@ def selftest():
     ok_y, _n2, w_y, _w2 = score_order(("y", "x"), heavy)
     assert ok_x < ok_y and w_x > w_y, "weighting must be able to flip it"
 
-    print("selftest OK: order sweep (precedence, order-sensitivity, "
+    print("selftest OK: diagonal (cross-court serve), order sweep "
+          "(precedence, order-sensitivity, "
           "veto rules, "
           "weighting), quadrant round trip, end mirroring, orientation "
           "voting (clean + noisy), alternation overwrite, name "
