@@ -924,7 +924,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21d  order-sweep + veto rules + side-bit trace"
+BUILD = "2026-08-21e  + bit roles, touch-count decomposition"
 
 
 def main():
@@ -1163,6 +1163,8 @@ def run(a):
     alt_changed = no_geom = unreadable = reassigned = 0
     serve_checked = serve_agree = 0
     per_player = defaultdict(lambda: [0, 0])   # name -> [pipeline, truth]
+    # name -> [right, wrong, extra]. See the TOUCH COUNTS block.
+    per_player_kind = defaultdict(lambda: [0, 0, 0])
     for cum in sorted(decoded):
         w = wrows[cum]
         rec = lineup_by_rally.get(
@@ -1219,6 +1221,41 @@ def run(a):
         for nm in called:
             if nm:
                 per_player[nm][0] += 1
+        # WHERE A PLAYER'S SURPLUS COMES FROM. The 2026-08-21 run put
+        # the pipeline at 170 contacts against 148 true, with Allyce
+        # Jones absorbing +10 of the +22. A wrong side bit is ZERO-SUM
+        # between partners - one loses exactly what the other gains -
+        # so four simultaneously-positive deltas cannot be swaps, and
+        # the aggregate delta column cannot tell the two apart.
+        #
+        # Greedy nearest-time matching, closest event to each true
+        # contact first, so a genuine duplicate detection is charged as
+        # EXTRA rather than silently standing in for the real one:
+        #   right  matched a true contact and named it correctly
+        #   wrong  matched a true contact and named the partner
+        #   extra  matched no true contact - a detection with nothing
+        #          under it, which is over-counting, not misattribution
+        pairs = sorted(
+            ((abs(t - tt), i, j) for i, (t, _s, _tid) in enumerate(evs)
+             for j, (tt, _nt) in enumerate(truth[cum])
+             if abs(t - tt) <= 0.35))
+        used_e, used_t = set(), set()
+        match = {}
+        for _d, i, j in pairs:
+            if i in used_e or j in used_t:
+                continue
+            used_e.add(i)
+            used_t.add(j)
+            match[i] = j
+        for i, nm in enumerate(called):
+            if not nm:
+                continue
+            if i not in match:
+                per_player_kind[nm][2] += 1
+            elif truth[cum][match[i]][1] == nm:
+                per_player_kind[nm][0] += 1
+            else:
+                per_player_kind[nm][1] += 1
         for _t, nm in truth[cum]:
             per_player[nm][1] += 1
         # grade: k-th call vs k-th truth (same order-join as the pilot)
@@ -1448,13 +1485,13 @@ def run(a):
             picked = _pk[0] if _pk else None
             if truth_tid is None or picked is None or picked == truth_tid:
                 continue
-            fails.append((cum, who, truth_tid, picked, votes))
+            fails.append((cum, who, truth_tid, picked, votes, role))
     if fails:
         print("\nSIDE-BIT FAILURE TRACE (only the bits that came out "
               "wrong; * = this voter had it right)")
-        allv = sorted({v for _c, _w, _t, _p, vs in fails for v, _ in vs}
+        allv = sorted({v for f in fails for v, _ in f[4]}
                       | set(cascade or []))
-        for cum, who, truth_tid, picked, votes in fails:
+        for cum, who, truth_tid, picked, votes, role in fails:
             byname = {v: t for v, t in votes}
             cx = ctx_by_rally.get(cum, {})
             cells = []
@@ -1469,8 +1506,8 @@ def run(a):
                   f"srv={cx.get('srv_team')} near={cx.get('near')} "
                   f"srvhalf={cx.get('srv_half')}]")
             print(f"        {'  '.join(cells)}")
-        rescuable = sum(1 for _c, _w, t, _p, vs in fails
-                        if any(x == t for _v, x in vs))
+        rescuable = sum(1 for f in fails
+                        if any(x == f[2] for _v, x in f[4]))
         print(f"  {rescuable} of {len(fails)} broken bits had SOME voter "
               f"right (reachable by re-ordering);\n  {len(fails) - rescuable} "
               f"had every voter wrong or silent (needs a new witness, "
@@ -1718,10 +1755,16 @@ def run(a):
         print(f"  VLM comparison on the same rallies: identity 44%, "
               f"side 70% (2026-08-21, $2.59)")
     print("\nTOUCH COUNTS (pipeline vs truth)")
+    print("    wrong = a real contact given to the partner (zero-sum "
+          "between them);\n    extra = a detection with no true contact "
+          "under it (over-counting, not misattribution)")
+    print(f"    {'player':<22}{'pipe':>5}{'true':>6}{'delta':>7}"
+          f"{'right':>7}{'wrong':>7}{'extra':>7}")
     for nm in sorted(per_player):
         p, t_ = per_player[nm]
-        print(f"  {nm:<22} pipeline {p:>3}  true {t_:>3}  "
-              f"delta {p - t_:+d}")
+        r_, w_, x_ = per_player_kind[nm]
+        print(f"    {nm:<22}{p:>5}{t_:>6}{p - t_:>+7}"
+              f"{r_:>7}{w_:>7}{x_:>7}")
 
 
 def rd_of(rallies, cum):
