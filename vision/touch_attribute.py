@@ -192,8 +192,17 @@ def label_tracks_at_serve(rd, t_serve, rec, near_team, flip, name_of):
     Returns ({tid: name}, ok) where ok is False if a side did not show
     exactly two tracks — the geometry was unreadable and the rally
     should be skipped rather than guessed at."""
+    # ONLY THE PLAYER TRACKS. Rallies carry 5-25 tracks (referees,
+    # ball crew, crowd); r17 had 25. Accepting whoever happened to be
+    # on screen let a non-player displace a real one and silently
+    # rename people, and it also made three rallies "unreadable" for
+    # having a fifth body present. anchor_time already selects the
+    # four longest tracks as the players — labelling now uses that
+    # same set, so the two agree by construction.
+    players = set(player_tracks(rd))
     seen = []
-    for tid, ser in rd["tracks"].items():
+    for tid in players:
+        ser = rd["tracks"][tid]
         c = box_at(ser, t_serve)
         if c is None or abs(_nearest_dt(ser, t_serve)) > 0.5:
             continue
@@ -227,7 +236,8 @@ def observe_quadrant(rd, t, tid):
     orientation vote must observe the world exactly the way the
     labeller will, or it solves bits for a mapping nobody uses."""
     seen = []
-    for other_tid, ser in rd["tracks"].items():
+    for other_tid in player_tracks(rd):
+        ser = rd["tracks"][other_tid]
         c = box_at(ser, t)
         if c is None or abs(_nearest_dt(ser, t)) > 0.5:
             continue
@@ -580,7 +590,7 @@ def run(a):
     # recall, which is the other half of the same picture.
     print("\nTRUTH-ANCHORED GEOMETRY TEST (decoder placement removed: "
           "true contact times, geometric names)")
-    g_ok = g_n = miss = 0
+    g_ok = g_n = miss = g_team = g_partner = 0
     census = []
     for cum in sorted(decoded):
         w = wrows[cum]
@@ -614,10 +624,28 @@ def run(a):
                 continue
             g_n += 1
             g_ok += nm == nm_true
+            # DECOMPOSE: team wrong = the near/far read failed;
+            # team right but name wrong = left/right failed, which is
+            # the half that stacking would break (a stacked team lines
+            # up away from its nominal rules-half, so the state
+            # machine's R/L stops describing where anyone stands).
+            if name_team.get(nm) == name_team.get(nm_true):
+                g_team += 1
+                g_partner += nm == nm_true
     if g_n:
         print(f"  geometry names the right player on "
               f"{g_ok}/{g_n} = {g_ok / g_n:.0%} of truth-anchored "
               f"contacts   (chance 25%)")
+        print(f"    TEAM (near/far end) right   {g_team}/{g_n} = "
+              f"{g_team / g_n:.0%}   (chance 50%)")
+        if g_team:
+            print(f"    partner GIVEN team right    {g_partner}/{g_team}"
+                  f" = {g_partner / g_team:.0%}   (chance 50%)")
+        print("    team high + partner ~50% => left/right is the "
+              "failure, and STACKING is the\n      prime suspect: a "
+              "stacked team stands away from its nominal rules-half, "
+              "so\n      the state machine's R/L stops describing "
+              "where anybody actually is.")
     print(f"  placement recall: {miss} true contacts had no scored "
           f"detection within 0.35s (or landed on an unlabelled track)")
     print("\n  Read: geometry high here but attribution low => the "
