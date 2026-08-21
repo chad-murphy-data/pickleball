@@ -110,29 +110,74 @@ def nearest_track(rd, tids, t, pt, scale=1.0, box_at=None,
     return t0_, d0, d1 - d0
 
 
-def serve_flight_vote(rd, tids_serving, tids_receiving, video, t0, t1,
-                      box_at, scale=1.0, min_margin=20.0):
-    """(server_tid, receiver_tid) from the first ball flight, or Nones.
+def serve_flight_vote(*_a, **_k):
+    """RETIRED 2026-08-21 — its premise was falsified by real video.
 
-    The serve flight leaves the SERVER and arrives at the RECEIVER, and
-    the referee log names both people — so one trajectory votes on both
-    disputed bindings at once. Abstains (None) whenever the flight is
-    missing, too short, or the two candidates are within min_margin of
-    the endpoint, because a coin-flip vote from a trusted channel is
-    worse than no vote."""
-    segs = flight_segments(video, t0, t1)
-    if not segs:
-        return None, None
-    ta, pa, tb, pb, _n = segs[0]
-    srv, _d, m_s = nearest_track(rd, tids_serving, ta, pa, scale,
-                                 box_at=box_at)
-    rcv, _d2, m_r = nearest_track(rd, tids_receiving, tb, pb, scale,
-                                  box_at=box_at)
-    if m_s is not None and m_s < min_margin:
-        srv = None
-    if m_r is not None and m_r < min_margin:
-        rcv = None
-    return srv, rcv
+    It assumed the FIRST tracked flight was the serve. On rally 1 the
+    serve is at 10.24s and the first flight begins at 11.60s: the serve
+    flight is simply not acquired, so this would have named whoever
+    happened to be near an unrelated later flight. Use ball_at_contact,
+    which matches flights to the contact times we already know."""
+    raise NotImplementedError(
+        "serve_flight_vote assumed flight[0] is the serve; real video "
+        "disproved it (rally 1 serve 10.24s, first flight 11.60s). "
+        "Use ball_at_contact(segs, t_contact).")
+
+
+def dedupe(segs, t_tol=0.15, xy_tol=120.0):
+    """Collapse flights that are the same ball tracked twice.
+
+    MEASURED ON REAL VIDEO (2026-08-21, rally 1): track_all returned
+    11.60->12.37 and 11.60->12.43, and again at 12.47, 24.60 and 32.90 —
+    near-identical start times and endpoints. Left in, each duplicate
+    votes again and turns one observation into a false majority."""
+    out = []
+    for seg in sorted(segs):
+        ta, pa, tb, pb, n = seg
+        dup = False
+        for i, (ta2, pa2, tb2, pb2, n2) in enumerate(out):
+            if abs(ta - ta2) <= t_tol and \
+                    abs(pa[0] - pa2[0]) + abs(pa[1] - pa2[1]) <= xy_tol:
+                dup = True
+                if n > n2:          # keep the better-observed copy
+                    out[i] = seg
+                break
+        if not dup:
+            out.append(seg)
+    return out
+
+
+def ball_at_contact(segs, t_contact, tol=0.30):
+    """Where the ball was when the contact at t_contact happened.
+
+    THE FIX FOR THE SERVE-FLIGHT ASSUMPTION. This module first assumed
+    the FIRST flight was the serve; real video says otherwise — rally
+    1's serve is at 10.24s and the first tracked flight starts at
+    11.60s, so the serve flight was simply not acquired. But every
+    contact time is already known, so flights can be matched to
+    contacts instead of counted from the start:
+
+      a flight STARTING at t_contact  -> the ball is LEAVING that
+                                         hitter, so its origin is at
+                                         the hitter
+      a flight ENDING at t_contact    -> the ball is ARRIVING at that
+                                         hitter, so its endpoint is
+
+    Departure is preferred over arrival: the outgoing point is struck
+    at the hitter, whereas an incoming track can be lost early and end
+    short of them. Returns (point, kind) or (None, None) — abstention
+    when no flight is near, which is most of the value here."""
+    best = None
+    for ta, pa, tb, pb, _n in segs:
+        for t_e, pt, kind, rank in ((ta, pa, "leaves", 0),
+                                    (tb, pb, "arrives", 1)):
+            d = abs(t_e - t_contact)
+            if d > tol:
+                continue
+            key = (rank, d)
+            if best is None or key < best[0]:
+                best = (key, pt, kind)
+    return (best[1], best[2]) if best else (None, None)
 
 
 def selftest():
@@ -168,8 +213,46 @@ def selftest():
     # max_dist rejects a point nowhere near anybody
     assert nearest_track(rd, [1, 2], 0.5, (600.0, 5000.0),
                          box_at=box_at, max_dist=100.0)[0] is None
+    # DEDUPE: the real duplicate shape from rally 1
+    segs_d = [(11.60, (1148.0, 598.0), 12.37, (1019.0, 444.0), 24),
+              (11.60, (1155.0, 607.0), 12.43, (968.0, 409.0), 26),
+              (13.10, (596.0, 123.0), 13.93, (838.0, 330.0), 26)]
+    dd = dedupe(segs_d)
+    assert len(dd) == 2, dd
+    assert dd[0][4] == 26, "must keep the better-observed copy"
+
+    # BALL AT CONTACT — run on the DEDUPED list, which is the intended
+    # order: on raw input the duplicate pair ties exactly and the winner
+    # is arbitrary, which is precisely why dedupe comes first.
+    pt, kind = ball_at_contact(dd, 11.62)
+    assert kind == "leaves" and pt == (1155.0, 607.0), (pt, kind)
+    pt2, kind2 = ball_at_contact(dd, 12.41)
+    assert kind2 == "arrives", (pt2, kind2)
+    # rally 1's real serve at 10.24s has no flight — the case that broke
+    # the original "first flight is the serve" design. Must abstain.
+    pt3, kind3 = ball_at_contact(dd, 10.24)
+    assert pt3 is None and kind3 is None, (pt3, kind3)
+
     print("selftest OK: nearest_track picks, margins, abstention on a "
-          "tie, and rejection of a far point")
+          "tie, rejection of a far point, duplicate collapse, and "
+          "contact-matched ball points")
+
+
+def coverage(video, t0, t1, contacts, tol=0.30):
+    """How many known contacts have a ball flight at them.
+
+    THE GATE THIS CHANNEL HAS TO PASS BEFORE IT VOTES. A dense-looking
+    flight list means nothing if the flights sit between the contacts
+    we care about — rally 1 produced 27 flights and still missed the
+    serve. Prints per-contact hit/miss so the coverage is read rather
+    than assumed."""
+    segs = dedupe(flight_segments(video, t0, t1))
+    hits = []
+    for t in contacts:
+        pt, kind = ball_at_contact(segs, t, tol)
+        hits.append((t, pt, kind))
+    n_hit = sum(1 for _t, pt, _k in hits if pt is not None)
+    return segs, hits, n_hit
 
 
 def main():
@@ -177,12 +260,38 @@ def main():
     ap.add_argument("--video")
     ap.add_argument("--t0", type=float)
     ap.add_argument("--t1", type=float)
+    ap.add_argument("--rally", type=int,
+                    help="rally_cum: score ball coverage against that "
+                         "rally's hand-labelled contact times")
+    ap.add_argument("--labels", default="contact_labels_chicago0725.csv")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest or not a.video:
         return selftest()
-    segs = flight_segments(a.video, a.t0, a.t1)
-    print(f"{len(segs)} ball flights in [{a.t0}, {a.t1}]")
+    if a.rally:
+        import csv
+        cs = sorted(float(r["t_refined_s"] or r["t_tap_s"])
+                    for r in csv.DictReader(open(a.labels))
+                    if int(r["rally_cum"]) == a.rally
+                    and r.get("contact", "1") == "1")
+        if not cs:
+            raise SystemExit(f"no labelled contacts for rally {a.rally}")
+        t0 = a.t0 if a.t0 is not None else cs[0] - 2.0
+        t1 = a.t1 if a.t1 is not None else cs[-1] + 2.0
+        segs, hits, n_hit = coverage(a.video, t0, t1, cs)
+        print(f"rally {a.rally}: {len(cs)} labelled contacts, "
+              f"{len(segs)} flights after dedupe\n")
+        for t, pt, kind in hits:
+            where = f"{kind:<8} ({pt[0]:5.0f},{pt[1]:5.0f})" if pt \
+                else "-- no flight within 0.30s --"
+            print(f"  contact {t:7.2f}s   {where}")
+        print(f"\nBALL COVERAGE {n_hit}/{len(cs)} = {n_hit / len(cs):.0%}"
+              f" of contacts have a flight endpoint.\n  This is the "
+              f"channel's ceiling: it can only vote where it fires, and "
+              f"abstains elsewhere.")
+        return
+    segs = dedupe(flight_segments(a.video, a.t0, a.t1))
+    print(f"{len(segs)} ball flights (deduped) in [{a.t0}, {a.t1}]")
     for ta, pa, tb, pb, n in segs:
         print(f"  {ta:7.2f}s ({pa[0]:6.0f},{pa[1]:6.0f}) -> "
               f"{tb:7.2f}s ({pb[0]:6.0f},{pb[1]:6.0f})   "
