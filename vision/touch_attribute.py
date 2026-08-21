@@ -915,6 +915,110 @@ def assign_names(events, rec, near_team, flip):
 
 
 # --------------------------------------------------- numpy-side glue
+def _strongest_first(cands, refractory):
+    """swing_probe.strongest_first, inlined to keep passes 0-2 free of
+    the pose stack. Strongest-wins, not first-wins: a small noise bump
+    just before a real peak must not be allowed to eat it."""
+    keep = []
+    for c in sorted(cands, key=lambda x: -x[1]):
+        if all(abs(c[0] - k[0]) >= refractory for k in keep):
+            keep.append(c)
+    keep.sort()
+    return keep
+
+
+def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
+                  report=None, floor=0.02, chain=True):
+    """Contact decoding as SEQUENTIAL PASSES, each one measurable.
+
+    THE USER'S PROPOSAL (2026-08-21), and it is the right shape.
+    decode_rally settles the window, the serve anchor, the chaining and
+    the same-side repair SIMULTANEOUSLY inside one DP with hand-tuned
+    constants, so when it emits junk there is no way to say which of
+    those four decisions produced it. Split into passes and each one
+    gets its own precision and recall, which is the only way to know
+    where the 70 spurious events enter and where the 48 real ones are
+    lost.
+
+    NO PASS MAY READ TRUTH. truth_ts is used ONLY to score the funnel
+    afterwards; every threshold here comes from the candidates
+    themselves or from constants measured on the train labels and
+    passed in. That separation is the whole point - a stage tuned on
+    the answers would report a funnel that cannot be reproduced at
+    inference.
+
+    Returns (events, stages) where stages is [(name, kept)] for the
+    report.
+    """
+    # Passes 0-2 are pure python ON PURPOSE. The geometry helpers in
+    # this file already dropped numpy so the part worth unit-testing
+    # runs without the whole pose stack, and the same applies here: the
+    # cluster and window logic is where the reasoning lives, so it must
+    # be testable on a machine with no model on it. Only pass 3 needs
+    # swing_explore, and it is imported inside that branch.
+    stages = []
+
+    def snap(name, evs):
+        stages.append((name, list(evs)))
+
+    # ---- PASS 0: every scored peak. The ceiling: placement recall
+    # already says a candidate sits within 0.35s of every true contact,
+    # so no later pass can do better than what survives here.
+    cur = [d for d in sorted(dets) if d[2] >= floor]
+    snap("0 candidates", cur)
+
+    # ---- PASS 1: collapse CLUSTERS. Dense scoring sprouts a burst of
+    # peaks around one real swing. The merge window must sit under the
+    # p01 of the true SAME-SIDE gap or it eats real contacts - that is
+    # the constraint, and it is measured rather than assumed (the
+    # shipped 0.55s was a guess).
+    win = max(0.2, min(0.55, 0.8 * same_gap_p01))
+    merged = []
+    for side in (0, 1):
+        side_c = [(t, sc) for t, sd, sc, _tid in cur if sd == side]
+        keep_t = {round(t, 4) for t, _sc in
+                  _strongest_first(side_c, win)}
+        merged += [d for d in cur
+                   if d[1] == side and round(d[0], 4) in keep_t]
+    cur = sorted(merged)
+    snap(f"1 cluster merge ({win:.2f}s)", cur)
+
+    # ---- PASS 2: WINDOW. A rally runs from its serve to its last
+    # contact; anything outside is dead time, and dead time is where
+    # the VLM pilot's DEAD escape found junk sitting a median 5.01s
+    # from any contact. The bounds come from the candidates' own
+    # confident core, not from an external clock - the windows file's
+    # t0s/t1s are on a different clock from the labels for r3+, so
+    # trusting it would reintroduce a known misalignment.
+    scs = sorted(d[2] for d in cur)
+    conf = scs[int(0.70 * len(scs))] if scs else floor
+    strong = [d for d in cur if d[2] >= conf]
+    if strong:
+        # the serve is the FIRST contact and its side is known, so the
+        # window opens at the first confident candidate on that side
+        srv = [d for d in strong if d[1] == s0]
+        t_open = (srv[0][0] if srv else strong[0][0]) - 0.5 * typical_gap
+        t_close = strong[-1][0] + 1.5 * typical_gap
+        cur = [d for d in cur if t_open <= d[0] <= t_close]
+    snap("2 window trim", cur)
+
+    # ---- PASS 3: CHAIN. The alternating path, unchanged - this is the
+    # pass decode_rally was actually good at (near-exact counts), now
+    # fed a set that has already been de-clustered and trimmed instead
+    # of doing all three jobs at once.
+    if not chain:
+        return cur, stages, 0
+    import swing_explore as SE
+    path = SE.decode_rally([(t, s, sc) for t, s, sc, _tid in cur], s0)
+    tid_of = {(round(t, 3), s): tid for t, s, _sc, tid in cur}
+    chained = [(t, s, sc, tid_of.get((round(t, 3), s)))
+               for t, s, sc, _g in path]
+    ghosts = sum(g for _t, _s, _sc, g in path)
+    cur = chained
+    snap(f"3 chain ({ghosts} ghosts)", cur)
+    return cur, stages, ghosts
+
+
 def same_side_policy(evs, path, mode, typical_gap):
     """What to do when two CONSECUTIVE emitted events share a side.
 
@@ -1049,7 +1153,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21k  + same-side policy (delete/insert/auto), junk location"
+BUILD = "2026-08-21l  + sequential passes (--passes) with a per-stage funnel"
 
 
 def main():
@@ -1091,6 +1195,11 @@ def main():
                          "HARMFUL 2026-08-21 (geometry 89%% -> 74%%); "
                          "off by default, kept only so the null "
                          "stays reproducible")
+    ap.add_argument("--passes", action="store_true",
+                    help="decode in SEQUENTIAL PASSES (candidates -> "
+                         "cluster merge -> window trim -> chain) with "
+                         "a per-stage funnel, instead of one DP that "
+                         "settles all of it at once")
     ap.add_argument("--same-side",
                     choices=["overwrite", "delete", "insert", "auto"],
                     default="overwrite",
@@ -1166,6 +1275,27 @@ def run(a):
     for v in truth.values():
         v.sort()
 
+    # ---- TIMING CONSTANTS FROM THE LABELS, not from guesses.
+    # decode_rally's bands (min_gap 0.25, free 0.45-2.2, 0.55s
+    # pre-merge) were never fitted to a real inter-contact interval,
+    # and 148 labelled contacts have been sitting here the whole time.
+    # These are the ONLY place the passes may see the labels: they are
+    # constants measured once on TRAIN, exactly like a model's
+    # hyperparameters, and no pass reads a rally's own answers. That
+    # still makes any funnel measured on these same rallies in-sample -
+    # the holdout in label_split.csv is the out-of-sample test and it
+    # stays unburned.
+    _all_gap, _same_gap = [], []
+    for _c in truth:
+        _ts = [x[0] for x in truth[_c]]
+        _all_gap += [b - a_ for a_, b in zip(_ts, _ts[1:])]
+        _same_gap += [b - a_ for a_, b in zip(_ts, _ts[2:])]
+    _all_gap.sort()
+    _same_gap.sort()
+    pass_gap = _all_gap[len(_all_gap) // 2] if _all_gap else 0.8
+    pass_same_p01 = (_same_gap[max(0, int(0.01 * len(_same_gap)))]
+                     if _same_gap else 0.7)
+
     # ---- lineup state machine, per match, from the referee log alone
     match_ids = {w["match_id"] for c, w in wrows.items()
                  if c in train and c not in EXCLUDE}
@@ -1218,8 +1348,15 @@ def run(a):
         r = rallies[held]
         dets = score_rally_tracked(model, r["rd"])
         tid_of = {(round(t, 3), s): tid for t, s, _sc, tid in dets}
-        path = SE.decode_rally([(t, s, sc) for t, s, sc, _ in dets],
-                               r["contacts"][0][1] ^ r["m"])
+        _s0 = r["contacts"][0][1] ^ r["m"]
+        if a.passes:
+            _ev, _st, _gh = decode_passes(
+                dets, _s0, pass_gap, pass_same_p01)
+            path = [(t, sd, sc, 0) for t, sd, sc, _tid in _ev]
+            funnel[held] = _st
+        else:
+            path = SE.decode_rally(
+                [(t, s, sc) for t, s, sc, _ in dets], _s0)
         evs = []
         for t, s, _sc, _g in path:
             evs.append((t, s, tid_of.get((round(t, 3), s))))
@@ -1318,6 +1455,7 @@ def run(a):
     serve_checked = serve_agree = 0
     t_ok = t_tot = 0
     n_deleted = n_inserted = 0
+    funnel = {}
     extra_where = Counter()
     extra_dt = []
     # this footage's own inter-contact interval, not a constant
@@ -2019,6 +2157,49 @@ def run(a):
         print(f"  the gap between the two joins is OVER-COUNTING, not "
               f"naming: one spurious\n  detection shifts every later "
               f"index comparison in that rally")
+    # ---- PASS FUNNEL. One row per stage: how many events it holds,
+    # how many TRUE contacts still have something within 0.35s
+    # (recall — the ceiling every later stage inherits), and, once the
+    # set is a chain rather than a candidate pool, how many of its
+    # events land on a true contact (precision).
+    #
+    # Candidate stages have terrible precision BY CONSTRUCTION — a pool
+    # of peaks is not a claim about what happened — so precision is
+    # printed only where it means something. What matters in the early
+    # rows is that RECALL does not fall: a stage that drops recall is
+    # destroying real contacts, and nothing downstream can recover
+    # them.
+    if funnel:
+        names = [n for n, _k in next(iter(funnel.values()))]
+        print("\nPASS FUNNEL (sequential decode)")
+        print(f"    {'stage':<26}{'events':>8}{'recall':>9}"
+              f"{'precision':>11}")
+        for gi, nm in enumerate(names):
+            n_ev = tp = 0
+            covered = total_true = 0
+            for cum, stg in funnel.items():
+                kept = stg[gi][1]
+                ts = [d[0] for d in kept]
+                n_ev += len(kept)
+                tru = [x[0] for x in truth.get(cum, [])]
+                total_true += len(tru)
+                covered += sum(1 for x in tru
+                               if any(abs(x - t) <= 0.35 for t in ts))
+                used = set()
+                for t in ts:
+                    hit = [j for j, x in enumerate(tru)
+                           if abs(x - t) <= 0.35 and j not in used]
+                    if hit:
+                        used.add(hit[0])
+                        tp += 1
+            rc = f"{covered}/{total_true}" if total_true else "-"
+            pr = (f"{tp}/{n_ev} = {tp / n_ev:.0%}"
+                  if gi >= len(names) - 1 and n_ev else "")
+            print(f"    {nm:<26}{n_ev:>8}{rc:>9}{pr:>11}")
+        print("    recall is the ceiling every later stage inherits — a "
+              "stage that drops it is\n    destroying real contacts, "
+              "and nothing downstream can get them back.")
+
     # ---- DECODER AUDIT. The event list is the binding constraint (70
     # of 170 emitted are spurious, 48 of 148 true contacts carry no
     # event), and placement recall says a scored DETECTION sits within
@@ -2589,6 +2770,34 @@ def selftest():
     assert score_order(("x", "y"), three)[0] == 2
     assert score_order(("y", "x"), three)[0] == 1, \
         "order sweep cannot distinguish orderings — vacuous"
+    # PASS FUNNEL. Two properties, both of which a staged decoder can
+    # silently violate.
+    #   1 NO PASS MAY READ TRUTH — decode_passes takes truth_ts only to
+    #     score the funnel, so the same input must decode identically
+    #     with and without it. A stage that peeked would report a
+    #     funnel that cannot be reproduced at inference.
+    #   2 recall must be MONOTONE NON-INCREASING down the stages, since
+    #     no pass can invent a candidate it was not handed.
+    _d = [(0.0, 0, 0.9, "a"), (0.05, 0, 0.3, "dup"),
+          (0.8, 1, 0.8, "b"), (1.6, 0, 0.7, "c"),
+          (9.9, 1, 0.1, "junk")]
+    _e1, _s1, _g1 = decode_passes(_d, 0, 0.8, 1.4, chain=False)
+    _e2, _s2, _g2 = decode_passes(_d, 0, 0.8, 1.4, chain=False,
+                                  truth_ts=[0.0, 0.8, 1.6])
+    assert [x[:2] for x in _e1] == [x[:2] for x in _e2], \
+        "decode_passes changed its answer when shown truth"
+    _counts = [len(k) for _n, k in _s1]
+    assert _counts == sorted(_counts, reverse=True), \
+        f"a pass ADDED events: {_counts}"
+    #   the cluster merge must drop the 0.05s duplicate and keep the
+    #   real contacts, and the window trim must drop the 9.9s outlier
+    _by = {n: k for n, k in _s1}
+    _merge = next(k for n, k in _s1 if n.startswith("1 "))
+    assert not any(x[3] == "dup" for x in _merge), "cluster kept a dup"
+    _win = next(k for n, k in _s1 if n.startswith("2 "))
+    assert not any(x[3] == "junk" for x in _win), "window kept dead time"
+    assert {x[3] for x in _win} >= {"a", "b", "c"}, "window ate real"
+
     # SAME-SIDE POLICY. Pinned because delete and insert are opposite
     # actions on identical-looking input, and picking wrong either
     # invents contacts or destroys them.
@@ -2674,7 +2883,8 @@ def selftest():
     ok_y, _n2, w_y, _w2 = score_order(("y", "x"), heavy)
     assert ok_x < ok_y and w_x > w_y, "weighting must be able to flip it"
 
-    print("selftest OK: same-side policy (delete/insert/auto), "
+    print("selftest OK: pass funnel (truth-blind, monotone), "
+          "same-side policy (delete/insert/auto), "
           "diagonal (cross-court serve), order sweep "
           "(precedence, order-sensitivity, "
           "veto rules, "
