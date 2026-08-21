@@ -229,6 +229,23 @@ def label_tracks_at_serve(rd, t_serve, rec, near_team, flip, name_of):
     return labels, True
 
 
+def displacement(rd, tid, t, half=0.6):
+    """How far this track's body travels across a window centred on t.
+
+    THE USER'S POACHING SIGNAL (2026-08-21), applied to the binding.
+    Position (depth, halves) says where someone STANDS; displacement
+    says where they are GOING, which is a different measurement and
+    fails differently. At the serve the server steps in and swings
+    while the partner waits, and the receiver moves to return while
+    their partner holds the kitchen — so on each side the mover is the
+    log-named player."""
+    a, b = box_at(rd["tracks"][tid], t - half), \
+        box_at(rd["tracks"][tid], t + half)
+    if a is None or b is None:
+        return None
+    return abs(b[0] - a[0]) + abs(b[1] - a[1])
+
+
 def observe_quadrant(rd, t, tid):
     """(is_near, is_image_right) for track `tid` at time t, or None.
 
@@ -423,6 +440,14 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
         right_tid = (a if a[1] > b[1] else b)[2]
         left_tid = (b if a[1] > b[1] else a)[2]
         votes.append(("halves", right_tid if want_right else left_tid))
+        # MOVEMENT: who is going somewhere, as against who is standing
+        # where. Independent of depth and halves by construction — both
+        # read a position at one instant, this reads a change across a
+        # window — so its errors should not line up with theirs.
+        da = displacement(rd, a[2], t_serve)
+        db = displacement(rd, b[2], t_serve)
+        if da is not None and db is not None and abs(da - db) > 1.0:
+            votes.append(("movement", a[2] if da > db else b[2]))
         # CONTACT ORDER: the k-th contact belongs to this person.
         #
         # INDEX-BASED, and that is a MEASURED choice. Taking the
