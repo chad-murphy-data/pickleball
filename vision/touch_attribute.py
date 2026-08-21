@@ -634,6 +634,8 @@ def run(a):
           "true contact times, geometric names)")
     g_ok = g_n = miss = g_team = g_partner = 0
     per_rally_geom = defaultdict(lambda: [0, 0])
+    truth_vote = defaultdict(lambda: defaultdict(Counter))
+    label_of = {}
     census = []
     for cum in sorted(decoded):
         w = wrows[cum]
@@ -667,6 +669,7 @@ def run(a):
         census.append((cum, len(rd["tracks"]), stats, ok_lab))
         if not ok_lab:
             continue
+        label_of[cum] = dict(tnames)
         for t_true, nm_true in truth[cum]:
             near = [d for d in dets_by_rally[cum]
                     if abs(d[0] - t_true) <= 0.35]
@@ -682,6 +685,9 @@ def run(a):
             g_ok += nm == nm_true
             per_rally_geom[cum][1] += 1
             per_rally_geom[cum][0] += nm == nm_true
+            # TRUTH VOTE PER TRACK: which player does this track really
+            # belong to? Truth-anchored, so it needs no geometry at all.
+            truth_vote[cum][best[3]][nm_true] += 1
             # DECOMPOSE: team wrong = the near/far read failed;
             # team right but name wrong = left/right failed, which is
             # the half that stacking would break (a stacked team lines
@@ -720,6 +726,47 @@ def run(a):
         print(f"  r{cum:<4} tracks {n_tr:<3} geom {acc:>7}  "
               f"sel(len,motion,y) {durs}  "
               f"{'ok' if ok_lab else 'UNREADABLE'}")
+
+    # ---- PERMUTATION DIAGNOSIS. The per-rally geometry rates are
+    # BIMODAL (r2 91%, r5 93%, r13 100% against r14 27%, r4 38%,
+    # r6 43%), which is what a per-rally BINARY FLIP looks like and
+    # not what noise looks like — and averaging it into 79%/79% hides
+    # that completely. So name the flip: compare the geometric labels
+    # against each track's voted true identity and say whether the
+    # rally is correct, has its two PARTNERS swapped (a stack, or a
+    # wrong left/right read), has its two TEAMS swapped (near/far
+    # inverted), or is genuinely scrambled.
+    print("\nPERMUTATION DIAGNOSIS (geometric label vs each track's "
+          "voted true identity)")
+    kinds = Counter()
+    for cum in sorted(label_of):
+        got = label_of[cum]
+        real = {tid: v.most_common(1)[0][0]
+                for tid, v in truth_vote[cum].items() if v}
+        shared = [t for t in real if t in got]
+        if not shared:
+            continue
+        exact = sum(got[t] == real[t] for t in shared)
+        teams_got = {t: name_team.get(got[t]) for t in shared}
+        teams_real = {t: name_team.get(real[t]) for t in shared}
+        team_ok = sum(teams_got[t] == teams_real[t] for t in shared)
+        n = len(shared)
+        if exact == n:
+            kind = "correct"
+        elif team_ok == n:
+            kind = "PARTNERS SWAPPED (left/right)"
+        elif team_ok == 0:
+            kind = "TEAMS SWAPPED (near/far)"
+        else:
+            kind = "mixed/scrambled"
+        kinds[kind] += 1
+        print(f"  r{cum:<4} {n} tracks matched, {exact} named right, "
+              f"{team_ok} on the right team -> {kind}")
+    print("  " + ", ".join(f"{k}: {v}" for k, v in kinds.most_common()))
+    print("  A large PARTNERS-SWAPPED count means the left/right read "
+          "is inverted per rally\n  (stacking, or the anchor being read "
+          "before the players settle). A large\n  TEAMS-SWAPPED count "
+          "means the orientation bits are wrong for those rallies.")
 
     print(f"\nALTERNATION overwrote {alt_changed} decoded sides "
           f"(tracker/decoder disagreements with the exact constraint)")
