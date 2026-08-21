@@ -357,9 +357,12 @@ def label_by_depth(rd, t_serve, rec, near_team, flip, name_of):
     return labels, True
 
 
+BALL_MIN_MARGIN = 25.0    # px: below this the two are equidistant
+
+
 def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
                   events=None, tally=None, votes_out=None,
-                  order=None):
+                  order=None, ball_pts=None, allow_movement=False):
     """{track_id: name} by VOTING the one bit that is actually in doubt.
 
     THE 2026-08-21 ENSEMBLE FINDING (user's proposal, and the data
@@ -440,14 +443,47 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
         right_tid = (a if a[1] > b[1] else b)[2]
         left_tid = (b if a[1] > b[1] else a)[2]
         votes.append(("halves", right_tid if want_right else left_tid))
-        # MOVEMENT: who is going somewhere, as against who is standing
-        # where. Independent of depth and halves by construction — both
-        # read a position at one instant, this reads a change across a
-        # window — so its errors should not line up with theirs.
-        da = displacement(rd, a[2], t_serve)
-        db = displacement(rd, b[2], t_serve)
-        if da is not None and db is not None and abs(da - db) > 1.0:
-            votes.append(("movement", a[2] if da > db else b[2]))
+        # MOVEMENT (raw displacement) — MEASURED NULL, 2026-08-21:
+        # 59% overall, 50% on disputed calls. The user diagnosed why,
+        # and the diagnosis is the interesting part: PARTNERS MOVE
+        # TOGETHER. When one player intrudes toward the ball the other
+        # yields — backs out, cedes the space, covers elsewhere — so
+        # both are moving and magnitude cannot separate them. Kept
+        # behind --with-movement purely so the null stays reproducible.
+        if allow_movement:
+            da = displacement(rd, a[2], t_serve)
+            db = displacement(rd, b[2], t_serve)
+            if da is not None and db is not None and abs(da - db) > 1.0:
+                votes.append(("movement", a[2] if da > db else b[2]))
+
+        # BALL + APPROACH: what displacement was missing is a DIRECTION
+        # to measure against, and the ball supplies it (72% of contacts
+        # carry a flight endpoint, measured on rally 1).
+        #   ball     — who is nearer the ball where it was struck
+        #   approach — who is CLOSING on it across the window, which is
+        #              the intrude/yield asymmetry the user described:
+        #              the hitter shortens the gap, the partner opens it
+        bpt = (ball_pts or {}).get(contact_idx)
+        if bpt is not None:
+            ca, cb = box_at(rd["tracks"][a[2]], t_serve), \
+                box_at(rd["tracks"][b[2]], t_serve)
+            if ca and cb:
+                da_b = ((ca[0] - bpt[0]) ** 2 + (ca[1] - bpt[1]) ** 2) ** .5
+                db_b = ((cb[0] - bpt[0]) ** 2 + (cb[1] - bpt[1]) ** 2) ** .5
+                if abs(da_b - db_b) > BALL_MIN_MARGIN:
+                    votes.append(("ball", a[2] if da_b < db_b else b[2]))
+            appr = {}
+            for tid_x in (a[2], b[2]):
+                p0 = box_at(rd["tracks"][tid_x], t_serve - 0.6)
+                p1 = box_at(rd["tracks"][tid_x], t_serve)
+                if p0 and p1:
+                    d0 = ((p0[0] - bpt[0]) ** 2 + (p0[1] - bpt[1]) ** 2) ** .5
+                    d1 = ((p1[0] - bpt[0]) ** 2 + (p1[1] - bpt[1]) ** 2) ** .5
+                    appr[tid_x] = d0 - d1          # positive = closing
+            if len(appr) == 2:
+                (x1, v1), (x2, v2) = appr.items()
+                if abs(v1 - v2) > 5.0:
+                    votes.append(("approach", x1 if v1 > v2 else x2))
         # CONTACT ORDER: the k-th contact belongs to this person.
         #
         # INDEX-BASED, and that is a MEASURED choice. Taking the
@@ -766,6 +802,14 @@ def main():
                          "left/right; halves = the lineup R/L mapping, "
                          "which inverts when a serving team swaps ends "
                          "between points")
+    ap.add_argument("--video",
+                    help="enable the ball and approach voters: matches "
+                         "tracked ball flights to each rally's first two "
+                         "decoded contacts (72%% coverage measured)")
+    ap.add_argument("--with-movement", action="store_true",
+                    help="re-enable the raw-displacement voter, a "
+                         "measured null (50%% on disputed calls) kept "
+                         "only so the result stays reproducible")
     ap.add_argument("--cascade",
                     help="comma-separated voter precedence, e.g. "
                          "'contact,depth,halves'. The first voter that "
@@ -784,17 +828,21 @@ def main():
 def run(a):
     mode = getattr(a, "label", "vote")
     settle = not getattr(a, "no_settle", False)
+    allow_movement = getattr(a, "with_movement", False)
+    ball_by_rally = {}
     voter_tally = defaultdict(lambda: [0, 0])
     votes_by_rally = {}
     cascade = ([x.strip() for x in a.cascade.split(',')]
                if getattr(a, 'cascade', None) else None)
 
     def labeller(rd_, t_, rec_, nt_, fl_, nm_, events=None,
-                 votes_out=None):
+                 votes_out=None, ball_pts=None):
         if mode == "vote":
             return label_by_vote(rd_, t_, rec_, nt_, fl_, nm_,
                                  events=events, tally=voter_tally,
-                                 votes_out=votes_out, order=cascade)
+                                 votes_out=votes_out, order=cascade,
+                                 ball_pts=ball_pts,
+                                 allow_movement=allow_movement)
         if mode == "depth":
             return label_by_depth(rd_, t_, rec_, nt_, fl_, nm_)
         return label_tracks_at_serve(rd_, t_, rec_, nt_, fl_, nm_)
@@ -887,6 +935,34 @@ def run(a):
         decoded[held] = evs
         dets_by_rally[held] = dets
 
+    # ---- ball flights per rally, matched to the first two decoded
+    # contacts. Only contacts 0 and 1 are useful for the BINDING: the
+    # log names the server and the receiver and nobody else, so a ball
+    # point at any later contact identifies a track we already have and
+    # a name we still do not.
+    if getattr(a, "video", None):
+        import ball_voter as BV
+        for cum, evs in decoded.items():
+            w = wrows.get(cum)
+            if not w or len(evs) < 2:
+                continue
+            try:
+                segs = BV.dedupe(BV.flight_segments(
+                    a.video, float(w["t0s"]), float(w["t1s"])))
+            except Exception as e:                 # noqa: BLE001
+                print(f"ball: rally {cum} failed ({e})")
+                continue
+            pts = {}
+            for k in (0, 1):
+                pt, _kind = BV.ball_at_contact(segs, evs[k][0])
+                if pt is not None:
+                    pts[k] = pt
+            ball_by_rally[cum] = pts
+        got = sum(len(v) for v in ball_by_rally.values())
+        want = 2 * len(ball_by_rally)
+        print(f"\nball: {got}/{want} binding contacts have a flight "
+              f"endpoint across {len(ball_by_rally)} rallies")
+
     # ---- orientation: vote on SERVES, where the log knows the hitter
     samples, name_team = [], {}
     for cum, evs in decoded.items():
@@ -949,8 +1025,9 @@ def run(a):
             near_team, epoch_of_score(rec.get("start_score", "")),
             ends_switch)
         tnames, geom_ok = labeller(
-            rd, anchor_time(rd, evs[0][0], settle), rec, nt, flip, names_by_uuid,
-            events=evs)
+            rd, anchor_time(rd, evs[0][0], settle), rec, nt, flip,
+            names_by_uuid, events=evs,
+            ball_pts=ball_by_rally.get(cum))
         if not geom_ok:
             unreadable += 1
             continue
@@ -1035,7 +1112,7 @@ def run(a):
             rd, anchor_time(rd, dets_by_rally[cum][0][0]
                             if dets_by_rally[cum] else 0.0, settle),
             rec, nt, flip, names_by_uuid, events=decoded.get(cum),
-            votes_out=vout)
+            votes_out=vout, ball_pts=ball_by_rally.get(cum))
         votes_by_rally[cum] = vout
         sel = player_tracks(rd)
         t_anc_c = anchor_time(rd, dets_by_rally[cum][0][0]
@@ -1593,6 +1670,46 @@ def selftest():
     assert "contact" not in dict(vo_n["Ann"]), dict(vo_n["Ann"])
     # the other two voters still speak, so the bit is still decided
     assert {"depth", "halves"} <= set(dict(vo_n["Ann"]))
+
+    # BALL + APPROACH: the ball supplies the DIRECTION raw displacement
+    # lacked. Put the ball beside track 1 (Ann) and have BOTH players
+    # start equidistant, with Ann closing and Bea yielding — the
+    # intrude/yield asymmetry. Both voters must name Ann.
+    tb2 = [0.0, 0.3, 0.6]
+    def mover(xs, y):
+        z = _S(t=[-0.6, -0.3, 0.0], cx=list(xs), ynorm=[y, y, y])
+        z["side"] = 0
+        return z
+    rd_b = {"tracks": {
+        1: mover([500.0, 400.0, 320.0], 700.0),   # closes on the ball
+        2: mover([500.0, 600.0, 700.0], 700.0),   # yields away
+        3: mover([300.0, 300.0, 300.0], 200.0),
+        4: mover([900.0, 900.0, 900.0], 200.0)}}
+    vo_b = {}
+    label_by_vote(rd_b, 0.0, rec_v, "A", 0, nm, events=evs_v,
+                  votes_out=vo_b, ball_pts={0: (300.0, 700.0)})
+    vb = dict(vo_b["Ann"])
+    assert vb.get("ball") == 1, vb
+    assert vb.get("approach") == 1, vb
+    # symmetric case: equidistant and neither closing -> both abstain
+    rd_sym = {"tracks": {
+        1: mover([400.0, 400.0, 400.0], 700.0),
+        2: mover([800.0, 800.0, 800.0], 700.0),
+        3: mover([300.0, 300.0, 300.0], 200.0),
+        4: mover([900.0, 900.0, 900.0], 200.0)}}
+    vo_s = {}
+    label_by_vote(rd_sym, 0.0, rec_v, "A", 0, nm, events=evs_v,
+                  votes_out=vo_s, ball_pts={0: (600.0, 700.0)})
+    vs2 = dict(vo_s["Ann"])
+    assert "ball" not in vs2, "equidistant players must not get a ball vote"
+    assert "approach" not in vs2, "nobody closing must not get a vote"
+    # no ball point at all -> silent, not guessing
+    vo_n2 = {}
+    label_by_vote(rd_b, 0.0, rec_v, "A", 0, nm, events=evs_v,
+                  votes_out=vo_n2, ball_pts={})
+    assert "ball" not in dict(vo_n2["Ann"])
+    # raw movement stays OFF unless explicitly re-enabled
+    assert "movement" not in vb, vb
 
     # votes_out exposes every voter for the truth table
     vo = {}
