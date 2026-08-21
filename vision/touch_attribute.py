@@ -252,11 +252,42 @@ def observe_quadrant(rd, t, tid):
     return is_near, pair[1][2] == tid
 
 
-def player_tracks(rd, k=4):
-    """The k longest tracks — the four players, as against fragments."""
-    order = sorted(rd["tracks"].items(),
-                   key=lambda kv: -len(kv[1]["t"]))
-    return [tid for tid, _ser in order[:k]]
+def track_motion(ser):
+    """How far this track travels in image space (cx range + y range).
+
+    THE DISCRIMINATOR BETWEEN PLAYERS AND OFFICIALS. Referees, line
+    crew and courtside staff stand still for a whole rally, so they
+    produce LONG tracks — r17 held 25 tracks and a stationary official
+    can outlast a player. Selecting the four LONGEST therefore picked
+    officials and dropped players, which corrupts near/far and
+    left/right at once and is exactly the symmetric 79%/79% error the
+    2026-08-21 decomposition showed. Players run; officials do not."""
+    cx, y = ser["cx"], ser["ynorm"]
+    if not len(cx):
+        return 0.0
+    return (max(cx) - min(cx)) + (max(y) - min(y))
+
+
+def player_tracks(rd, k=4, pool=10, min_frac=0.10):
+    """The k tracks most likely to BE the four players.
+
+    Length alone is not evidence of being a player (see track_motion),
+    and motion alone would promote a 3-sample fragment that jumps. So:
+    keep tracks long enough to be a person present for the rally, then
+    rank those by distance travelled. The length gate is deliberately
+    LOW (10% of the longest): its job is to drop 3-sample fragments,
+    not to let a long official evict a player whose track is shorter."""
+    items = [(tid, ser) for tid, ser in rd["tracks"].items()
+             if len(ser["t"])]
+    if not items:
+        return []
+    longest = max(len(ser["t"]) for _t, ser in items)
+    live = [(tid, ser) for tid, ser in items
+            if len(ser["t"]) >= min_frac * longest]
+    live.sort(key=lambda kv: -len(kv[1]["t"]))
+    live = live[:pool]
+    live.sort(key=lambda kv: -track_motion(kv[1]))
+    return [tid for tid, _ser in live[:k]]
 
 
 def anchor_time(rd, fallback):
@@ -606,9 +637,11 @@ def run(a):
             rd, anchor_time(rd, dets_by_rally[cum][0][0]
                             if dets_by_rally[cum] else 0.0),
             rec, nt, flip, names_by_uuid)
-        durs = sorted((len(s["t"]) for s in rd["tracks"].values()),
-                      reverse=True)
-        census.append((cum, len(rd["tracks"]), durs[:4], ok_lab))
+        sel = player_tracks(rd)
+        stats = [(len(rd["tracks"][t]["t"]),
+                  round(track_motion(rd["tracks"][t])))
+                 for t in sel]
+        census.append((cum, len(rd["tracks"]), stats, ok_lab))
         if not ok_lab:
             continue
         for t_true, nm_true in truth[cum]:
@@ -652,10 +685,11 @@ def run(a):
           "decoder's PLACEMENT is the binding\n  constraint. Geometry "
           "low here too => the tracks themselves are not cleanly\n  "
           "four players at the anchor, which the census below shows.")
-    print("\nTRACK CENSUS (rally: n_tracks, 4 longest sample counts, "
-          "labelled?)")
+    print("\nTRACK CENSUS (rally: n_tracks, SELECTED players as "
+          "(samples, motion), labelled?)\n  a near-zero motion entry is "
+          "an official, i.e. a player was dropped")
     for cum, n_tr, durs, ok_lab in census:
-        print(f"  r{cum:<4} tracks {n_tr:<3} longest {durs}  "
+        print(f"  r{cum:<4} tracks {n_tr:<3} sel {durs}  "
               f"{'ok' if ok_lab else 'UNREADABLE'}")
 
     print(f"\nALTERNATION overwrote {alt_changed} decoded sides "
@@ -867,6 +901,23 @@ def selftest():
     # Track identity must not move.
     assert is_image_right_of_pair(rd, 0, 1, 2.0) is True
     assert lab[1] == "Bea", "identity must ride the track, not the side"
+    # OFFICIAL vs PLAYER: a stationary track that OUTLASTS every player
+    # must not be selected. This is the r17 case (25 tracks, a courtside
+    # official longer than the players) that corrupted both channels.
+    tp = [i * 0.1 for i in range(20)]          # players, well tracked
+    ts_long = [i * 0.1 for i in range(40)]      # official, tracked LONGER
+    rd_ref = {"tracks": {
+        1: mk(0, [100.0 + 12 * i for i in range(20)], tp, 600.0),
+        2: mk(0, [900.0 - 12 * i for i in range(20)], tp, 610.0),
+        3: mk(1, [120.0 + 9 * i for i in range(20)], tp, 200.0),
+        4: mk(1, [880.0 - 9 * i for i in range(20)], tp, 210.0),
+        9: _S(t=list(ts_long), cx=[20.0] * 40, ynorm=[400.0] * 40)}}
+    rd_ref["tracks"][9]["side"] = 0
+    sel = set(player_tracks(rd_ref))
+    assert 9 not in sel, f"stationary official selected: {sel}"
+    assert sel == {1, 2, 3, 4}, sel
+    assert track_motion(rd_ref["tracks"][9]) == 0.0
+
     # a side missing a player is reported, never guessed
     rd_bad = {"tracks": {1: rd["tracks"][1], 3: rd["tracks"][3],
                          4: rd["tracks"][4]}}   # only three on court
