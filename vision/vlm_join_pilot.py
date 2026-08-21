@@ -317,16 +317,33 @@ def print_dry(decoded, truths, names):
           f"this table only predicts it.")
 
 
-def escape_tool(offered):
+def escape_tool(offered, with_other=False):
     """Hitter call over the OFFERED names plus the two escapes. DEAD
     rides the measured 30/30 play/no-play channel and filters defect
     A's trailing junk; OTHER catches a hitter outside the offered set.
 
-    `offered` is 2 names in --names team mode, 4 in all4 mode. The
-    2-name form makes OTHER load-bearing for defect C (wrong-team
-    offering); the 4-name form removes that failure entirely and turns
-    parity into something we CHECK rather than something we assume —
-    see the 2026-08-21 API findings below."""
+    `offered` is 2 names in --names team mode, 4 in all4 mode.
+
+    OTHER IS OFF BY DEFAULT — measured harm, 2026-08-21 rescore. The
+    two escapes behaved completely differently:
+      DEAD  n=62, median nearest-contact 5.01s, 0% within 0.2s — a
+            flawless junk filter, exactly what play/no-play 30/30
+            promised. Keep it.
+      OTHER n=73, median 0.15s, 71% within 0.2s — statistically the
+            same frames as NAMED answers (0.13s, 69%), with the right
+            team offered 85% of the time. These were real contacts the
+            model declined to attribute. Forced choice on the same
+            instrument scored 90%; given an out, it took the out on
+            59% of real-contact events. 'Other player' reads as "not
+            certain it's one of these two", not "it is demonstrably a
+            third person", so it converts recoverable 90%-accurate
+            calls into nothing.
+    With all4 offered, a genuine none-of-the-above is nearly
+    impossible anyway (four players, four names), which is the other
+    reason OTHER earns its keep only as an opt-in diagnostic."""
+    enum = list(offered) + ([OTHER] if with_other else []) + [DEAD]
+    other_txt = (f"'{OTHER}' if someone IS hitting but it is none of "
+                 f"the named players; " if with_other else "")
     return {
         "name": "call_shot",
         "description": ("Report who hit the shot shown, or that no live "
@@ -336,13 +353,12 @@ def escape_tool(offered):
             "properties": {
                 "answer": {
                     "type": "string",
-                    "enum": list(offered) + [OTHER, DEAD],
+                    "enum": enum,
                     "description": (
                         "The named player hitting the ball in these "
-                        f"frames; '{OTHER}' if someone IS hitting but "
-                        f"it is none of the named players; '{DEAD}' if "
-                        "no one is hitting — players walking, "
-                        "resetting, celebrating, between points."),
+                        f"frames; {other_txt}'{DEAD}' if no one is "
+                        "hitting — players walking, resetting, "
+                        "celebrating, between points."),
                 },
             },
             "required": ["answer"],
@@ -351,16 +367,23 @@ def escape_tool(offered):
     }
 
 
-def escape_prompt(offered):
+def escape_prompt(offered, with_other=False):
     who = " or ".join([", ".join(offered[:-1]), offered[-1]]) \
         if len(offered) > 2 else " or ".join(offered)
+    other_txt = (f"If someone else entirely is hitting, answer "
+                 f"'{OTHER}'. " if with_other else "")
+    # "best judgement / do not decline" is deliberate: the rescore showed
+    # the model abstaining on frames where forced choice scored 90%.
+    # DEAD stays available because it is precise (0% of DEAD answers had
+    # a contact within 0.2 s) and it is the junk filter the decoder needs.
     return (
         "This is a strip of 3 frames (0.1 s apart) from a pro "
         "pickleball broadcast. If a shot is being hit in these frames "
-        f"by {who}, name the hitter. If someone else is hitting, "
-        f"answer '{OTHER}'. If no shot is happening — players between "
-        f"points, resetting, celebrating — answer '{DEAD}'. Use the "
-        "call_shot tool."
+        f"by {who}, name the hitter — give your best judgement even if "
+        f"the view is partly obscured; do not decline because you are "
+        f"unsure. {other_txt}Only if no shot is happening at all — "
+        "players walking between points, resetting, celebrating — "
+        f"answer '{DEAD}'. Use the call_shot tool."
     )
 
 
@@ -476,7 +499,7 @@ def rescore(calls_path, labels_path, windows_path, split_path):
 
 
 def run_api(decoded, truths, names, video, model, out_dir, limit, width,
-            mode="team"):
+            mode="team", with_other=False):
     from vlm_frame_sample import cut_strip
     from vlm_tier_test import PRICE, image_media_type
     import base64
@@ -487,14 +510,15 @@ def run_api(decoded, truths, names, video, model, out_dir, limit, width,
         b64 = base64.standard_b64encode(Path(img).read_bytes()).decode()
         resp = client.messages.create(
             model=model, max_tokens=256,
-            tools=[escape_tool(offered)],
+            tools=[escape_tool(offered, with_other)],
             tool_choice={"type": "tool", "name": "call_shot"},
             messages=[{"role": "user", "content": [
                 {"type": "image",
                  "source": {"type": "base64",
                             "media_type": image_media_type(img),
                             "data": b64}},
-                {"type": "text", "text": escape_prompt(offered)},
+                {"type": "text",
+                 "text": escape_prompt(offered, with_other)},
             ]}],
         )
         call = next(b for b in resp.content if b.type == "tool_use")
@@ -631,6 +655,12 @@ def main():
                          "(2026-08-21 run: 73/186 answered OTHER); "
                          "all4 = offer every player and CHECK the "
                          "decoder's parity instead of assuming it")
+    ap.add_argument("--with-other", action="store_true",
+                    help="re-enable the 'other player' escape. OFF by "
+                         "default: the 2026-08-21 rescore showed it "
+                         "firing on 73 REAL contacts (median 0.15s from "
+                         "truth, same frames as named answers) that "
+                         "forced choice scores at 90%%")
     ap.add_argument("--dry", action="store_true",
                     help="decode + join only; no video, no API, free")
     ap.add_argument("--rescore",
@@ -658,7 +688,7 @@ def main():
         raise SystemExit("\n--video required for the API stage "
                          "(or pass --dry)")
     run_api(decoded, truths, names, a.video, a.model, a.out_dir,
-            a.limit, a.width, a.names)
+            a.limit, a.width, a.names, a.with_other)
 
 
 def selftest():
@@ -703,15 +733,22 @@ def selftest():
     assert tj[2] == (11.0, "Cal")
     assert 3 not in tj                    # out of tolerance
 
-    # escape tool: offered names + both escapes, nothing else
+    # DEFAULT: names + DEAD only. OTHER must be absent unless asked for
+    # — it cost 73 real-contact attributions in the 2026-08-21 run.
     et = escape_tool(["Ann", "Bea"])
     assert et["input_schema"]["properties"]["answer"]["enum"] == \
+        ["Ann", "Bea", DEAD], et
+    assert OTHER not in escape_prompt(["Ann", "Bea"])
+    assert DEAD in escape_prompt(["Ann", "Bea"])
+    # opt-in restores it, in both tool and prompt
+    eo = escape_tool(["Ann", "Bea"], with_other=True)
+    assert eo["input_schema"]["properties"]["answer"]["enum"] == \
         ["Ann", "Bea", OTHER, DEAD]
-    assert OTHER in escape_prompt(["Ann", "Bea"])
-    # all4 form: every player offered, escapes still present
+    assert OTHER in escape_prompt(["Ann", "Bea"], with_other=True)
+    # all4 form: every player offered, DEAD still present
     e4 = escape_tool(["Ann", "Bea", "Cal", "Dee"])
     assert e4["input_schema"]["properties"]["answer"]["enum"] == \
-        ["Ann", "Bea", "Cal", "Dee", OTHER, DEAD]
+        ["Ann", "Bea", "Cal", "Dee", DEAD]
     p4 = escape_prompt(["Ann", "Bea", "Cal", "Dee"])
     assert all(n in p4 for n in ("Ann", "Bea", "Cal", "Dee")), p4
     # THE TEST THAT WOULD HAVE CAUGHT THE VACUOUS v1 DIAGNOSTIC: the
