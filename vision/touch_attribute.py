@@ -323,22 +323,20 @@ def run(a):
                  if c in train and c not in EXCLUDE}
     lineup_by_rally = {}
     for mid in sorted(match_ids):
-        rows, path = load_timeline(mid, a.timeline_dir)
-        if rows is None:
-            print(f"no rally_timeline_{mid[:8]}.csv found — searched "
-                  f"{', '.join(TIMELINE_DIRS)} (pass --timeline-dir)")
-            continue
         try:
-            rec_rows, diag = LU.walk_match(rows)
+            rec_rows, note = lineup_records(mid, a.timeline_dir,
+                                            LU.walk_match)
         except Exception as e:                     # noqa: BLE001
             print(f"lineup failed for {mid[:8]}: {e}")
             continue
-        acc = diag.get("acc") if isinstance(diag, dict) else None
-        print(f"lineup {mid[:8]} ({path}): receiver-prediction "
-              f"{acc if acc is None else format(acc, '.1%')} "
-              f"(its own free self-check)")
+        if rec_rows is None:
+            print(f"{mid[:8]}: no lineup_{mid[:8]}.csv and no "
+                  f"rally_timeline_{mid[:8]}.csv — searched "
+                  f"{', '.join(TIMELINE_DIRS)} (pass --timeline-dir)")
+            continue
+        print(f"lineup {mid[:8]}: {note}")
         for rr in rec_rows:
-            lineup_by_rally[(mid, int(rr["rally"]))] = rr
+            lineup_by_rally[(mid, int(rr["game"]), int(rr["rally"]))] = rr
 
     # ---- rallies with pose + labels (same loader as swing_explore)
     rallies = {}
@@ -383,7 +381,8 @@ def run(a):
     samples, name_team = [], {}
     for cum, evs in decoded.items():
         w = wrows[cum]
-        rec = lineup_by_rally.get((w["match_id"], int(w["rally_in_game"])))
+        rec = lineup_by_rally.get(
+            (w["match_id"], int(w["game"]), int(w["rally_in_game"])))
         if rec is None or not evs:
             continue
         for tm in ("A", "B"):
@@ -414,7 +413,8 @@ def run(a):
     per_player = defaultdict(lambda: [0, 0])   # name -> [pipeline, truth]
     for cum in sorted(decoded):
         w = wrows[cum]
-        rec = lineup_by_rally.get((w["match_id"], int(w["rally_in_game"])))
+        rec = lineup_by_rally.get(
+            (w["match_id"], int(w["game"]), int(w["rally_in_game"])))
         evs = decoded[cum]
         if rec is None or not evs:
             continue
@@ -517,6 +517,48 @@ def load_timeline(match_id, extra=None):
     if p is None:
         return None, None
     return list(csv.DictReader(open(p))), p
+
+
+def find_lineup(match_id, extra=None):
+    """Path to a PRECOMPUTED lineup_<mid8>.csv, if one is committed.
+
+    lineup.py writes its walk_match output to data/vision/lineup_*.csv,
+    and those files carry exactly the columns needed here (team_A_R/L,
+    team_B_R/L, server_half, server_team). Preferring them matters in
+    practice: the committed rally_timeline_*.csv files cover DIFFERENT
+    matches than the Chicago windows reference, so re-deriving from a
+    timeline fails for the very rallies this module runs on, while the
+    lineup CSV for that match is right there."""
+    name = f"lineup_{match_id[:8]}.csv"
+    here = Path(__file__).resolve().parent
+    roots = [Path(d) for d in ([extra] if extra else [])]
+    roots += [Path(d) for d in TIMELINE_DIRS]
+    roots += [here / d for d in TIMELINE_DIRS]
+    for r in roots:
+        p = r / name
+        if p.exists():
+            return p
+    return None
+
+
+def lineup_records(match_id, extra, walk_match):
+    """Per-rally lineup records: the committed CSV when present, else
+    the state machine re-walked over a timeline. Returns (recs, note)."""
+    p = find_lineup(match_id, extra)
+    if p is not None:
+        recs = list(csv.DictReader(open(p)))
+        ok = sum(int(r.get("receiver_ok") or 0) for r in recs)
+        n = sum(1 for r in recs if r.get("receiver_ok") not in (None, ""))
+        note = (f"{p} (precomputed; receiver-prediction "
+                f"{ok}/{n} = {ok / n:.1%})" if n else f"{p} (precomputed)")
+        return recs, note
+    rows, tp = load_timeline(match_id, extra)
+    if rows is None:
+        return None, None
+    recs, diag = walk_match(rows)
+    acc = diag.get("acc")
+    return recs, (f"{tp} (re-walked; receiver-prediction "
+                  f"{acc:.1%})" if acc == acc else f"{tp} (re-walked)")
 
 
 def selftest():
