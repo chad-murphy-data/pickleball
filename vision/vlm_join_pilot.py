@@ -392,55 +392,82 @@ def rescore(calls_path, labels_path, windows_path, split_path):
 
     The 2026-08-21 run answered OTHER 73 times out of 186. Two readings:
     (a) the model hedges when unsure, or (b) we OFFERED THE WRONG TEAM
-    and it correctly refused both names. They are distinguishable: for
-    each OTHER answer that has a time-joined truth, ask whether that
-    true hitter sits on the offered team or the other one. Under (b)
-    the true hitter is overwhelmingly on the OTHER team."""
+    and it correctly refused both names.
+
+    VERSION 1 OF THIS CHECK WAS VACUOUS and its 0-of-65 result must not
+    be quoted. It read the truth out of the CSV's order_truth/time_truth
+    columns — but BOTH joins are same-team-constrained by construction
+    (each looks up truths_by_team[event's own team]), so the attached
+    truth is ALWAYS from the offered team and 'OFF' was unreachable.
+    A test that cannot fail measures nothing.
+
+    The fix: join each decoded event to the nearest true contact in the
+    WHOLE rally, ignoring team, then ask whose it was. That can land on
+    either team, so (b) is now falsifiable. Nearest-|dt| is reported
+    alongside, because the third reading the vacuous version could not
+    see is that OTHER answers sit on frames with no contact nearby at
+    all — junk the DEAD escape should have caught."""
     import csv as _csv
     rows = list(_csv.DictReader(open(calls_path)))
     train = train_only(split_path)
     names = name_map(labels_path)
+    truths = true_hitters(labels_path, train)
     from contact_ceiling import load_rosters
     rosters = load_rosters(Path(windows_path))
 
     tally = Counter()
+    dts = defaultdict(list)
     per_rally = defaultdict(Counter)
     for r in rows:
         cum = int(r["rally_cum"])
-        if cum not in train:
+        if cum not in train or cum not in truths:
+            tally["rally not in train/labels"] += 1
             continue
-        truth = r.get("time_truth") or r.get("order_truth") or ""
-        if not truth:
-            tally["no truth to check"] += 1
-            continue
+        t_dec = float(r["t_decoded"])
+        tt, tname = min(truths[cum], key=lambda x: abs(x[0] - t_dec))
+        dt = abs(tt - t_dec)
         team = int(r["team"])
         offered = set(team_names(rosters[cum], names, team))
-        on_offered = truth in offered
+        on_offered = tname in offered
         ans = r["answer"]
         kind = ("named" if ans not in (OTHER, DEAD) else
                 "OTHER" if ans == OTHER else "DEAD")
-        tally[f"{kind}: truth {'ON' if on_offered else 'OFF'} offered team"] += 1
+        tally[f"{kind}: nearest truth {'ON' if on_offered else 'OFF'} "
+              f"offered team"] += 1
+        dts[kind].append(dt)
         if kind == "OTHER":
             per_rally[cum]["off" if not on_offered else "on"] += 1
+        if kind == "named":
+            tally["named: model agreed with nearest truth"] += (ans == tname)
 
-    print(f"PARITY DIAGNOSTIC — {len(rows)} calls, "
-          f"{sum(tally.values())} classifiable\n")
+    print(f"PARITY DIAGNOSTIC v2 — {len(rows)} calls "
+          f"(nearest contact in the rally, TEAM-BLIND)\n")
     for k in sorted(tally):
-        print(f"  {k:<45} {tally[k]:>4}")
-    off = tally["OTHER: truth OFF offered team"]
-    on = tally["OTHER: truth ON offered team"]
+        print(f"  {k:<50} {tally[k]:>4}")
+    print("\nnearest-truth |dt| by answer kind (how close a real "
+          "contact was):")
+    for kind in ("named", "OTHER", "DEAD"):
+        v = sorted(dts[kind])
+        if not v:
+            continue
+        n = len(v)
+        near = sum(1 for x in v if x <= 0.2) / n
+        print(f"  {kind:<6} n={n:<4} median {v[n // 2]:6.2f}s   "
+              f"{near:.0%} within 0.2s")
+    off = tally["OTHER: nearest truth OFF offered team"]
+    on = tally["OTHER: nearest truth ON offered team"]
     if off + on:
-        print(f"\nOf {off + on} OTHER answers with a known truth, "
-              f"{off} ({off / (off + on):.0%}) had the true hitter on "
-              f"the team we did NOT offer.")
+        print(f"\nOf {off + on} OTHER answers, {off} "
+              f"({off / (off + on):.0%}) had the nearest true contact "
+              f"on the team we did NOT offer.")
         if off > on:
-            print("  -> PARITY IS THE CULPRIT. The model was refusing "
-                  "wrong-team offerings, not hedging. Fix: --names all4 "
-                  "(offer every player, check parity instead of "
-                  "assuming it).")
+            print("  -> PARITY IS A REAL CULPRIT: the model was refusing "
+                  "wrong-team offerings. --names all4 removes it.")
         else:
-            print("  -> parity is NOT the main story; OTHER is mostly "
-                  "genuine hedging or off-camera hitters.")
+            print("  -> parity is NOT the main story. Check the |dt| "
+                  "table above: if OTHER sits far from any contact, "
+                  "those are junk frames (a DEAD-escape miss, not a "
+                  "recognition failure).")
     if per_rally:
         print("\nper-rally OTHER split (off/on offered team):")
         for cum in sorted(per_rally):
@@ -687,8 +714,22 @@ def selftest():
         ["Ann", "Bea", "Cal", "Dee", OTHER, DEAD]
     p4 = escape_prompt(["Ann", "Bea", "Cal", "Dee"])
     assert all(n in p4 for n in ("Ann", "Bea", "Cal", "Dee")), p4
+    # THE TEST THAT WOULD HAVE CAUGHT THE VACUOUS v1 DIAGNOSTIC: the
+    # parity check must be able to return OFF. v1 read truth from the
+    # same-team-constrained join columns, so OFF was unreachable and it
+    # reported a guaranteed 0. Any future rewrite has to keep this
+    # property: a decoded event whose nearest real contact belongs to
+    # the OTHER team must be classifiable as such.
+    rally_truth = [(10.0, "Ann"), (11.0, "Cal"), (11.8, "Bea")]
+    teams_by_name = {"Ann": 0, "Bea": 0, "Cal": 1, "Dee": 1}
+    for t_dec, team, want_on in ((10.05, 0, True),    # Ann, offered 0
+                                 (11.05, 0, False),   # Cal, offered 0
+                                 (11.05, 1, True)):   # Cal, offered 1
+        _tt, tname = min(rally_truth, key=lambda x: abs(x[0] - t_dec))
+        assert (teams_by_name[tname] == team) is want_on, (t_dec, tname)
     print("selftest OK: team split, order join, extras/missing, dt bins, "
-          "trailing trim, time join, escape tool")
+          "trailing trim, time join, escape tool, team-blind parity "
+          "check can return OFF")
 
 
 if __name__ == "__main__":
