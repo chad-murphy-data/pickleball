@@ -632,6 +632,27 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
     # inversion satisfies the diagonal and stays invisible to it -
     # that is r6, and it is a real limit of this constraint, not an
     # oversight.
+    # MEASURED HARMFUL, 2026-08-21, and the user's own description of
+    # stacking is why: geometry 89% -> 74%, and it fired on 8 of 15
+    # rallies when only 4 bits were ever wrong, so it was breaking
+    # CORRECT ones (r4 14/16 -> 6/16, r8 7/7 -> 4/7, r14 11/11 -> 6/11).
+    #
+    # The constraint is true about COURT HALVES. This tests WITHIN-PAIR
+    # IMAGE ORDER, which only stands in for court halves when the two
+    # players straddle the centreline - and "stacking when serving
+    # usually just involves two people hanging out on the same side of
+    # the court" (user, 2026-08-21). Both players in one half, and
+    # which is image-right says nothing about service courts.
+    #
+    # Second defect, independent of the first: the deciders were
+    # `contact` on 14 of 16 sides, so both bits usually came from the
+    # SAME voter, s_conf < r_conf was false, and the repair silently
+    # always flipped the receiver. An arbitrary tie-break on top of a
+    # constraint that should not have fired.
+    #
+    # A correct version needs ABSOLUTE court halves - a centreline in
+    # image x - and must abstain whenever a pair does not straddle it.
+    # Kept behind --diagonal so the null is reproducible, not deleted.
     if diagonal:
         s_right = s_tid == max(srv_pair, key=lambda r: r[1])[2]
         r_right = r_tid == max(rcv_pair, key=lambda r: r[1])[2]
@@ -975,7 +996,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21h  + all-track census (dropped-player check)"
+BUILD = "2026-08-21i  diagonal OFF (measured harmful), decoder accounting"
 
 
 def main():
@@ -1012,10 +1033,11 @@ def main():
                     help="anchor when all four are first on screen, "
                          "instead of at the stillest instant before the "
                          "first contact (the pre-serve setup)")
-    ap.add_argument("--no-diagonal", action="store_true",
-                    help="ablate the cross-court serve constraint "
-                         "(server and receiver must be diagonally "
-                         "opposite); on by default")
+    ap.add_argument("--diagonal", action="store_true",
+                    help="cross-court serve constraint. MEASURED "
+                         "HARMFUL 2026-08-21 (geometry 89%% -> 74%%); "
+                         "off by default, kept only so the null "
+                         "stays reproducible")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -1046,7 +1068,7 @@ def run(a):
                                  ball_pts=ball_pts,
                                  allow_movement=allow_movement,
                                  picks_out=picks_out,
-                                 diagonal=not a.no_diagonal,
+                                 diagonal=a.diagonal,
                                  diag_out=diag_fixes)
         if mode == "depth":
             return label_by_depth(rd_, t_, rec_, nt_, fl_, nm_)
@@ -1856,7 +1878,7 @@ def run(a):
             if n_v:
                 print(f"  {v:<9} {ok_v}/{n_v} = {ok_v / n_v:.0%}")
 
-    if not a.no_diagonal:
+    if a.diagonal:
         print(f"\nDIAGONAL repaired {len(diag_fixes)} side bits "
               f"(server and receiver must be cross-court; a violation "
               f"means one bit is wrong,\n  and the less reliable "
@@ -1890,6 +1912,17 @@ def run(a):
         print(f"  the gap between the two joins is OVER-COUNTING, not "
               f"naming: one spurious\n  detection shifts every later "
               f"index comparison in that rally")
+    _r = sum(v[0] for v in per_player_kind.values())
+    _w = sum(v[1] for v in per_player_kind.values())
+    _x = sum(v[2] for v in per_player_kind.values())
+    _true = sum(v[1] for v in per_player.values())
+    print(f"\nDECODER EVENTS — the binding constraint, and it is not "
+          f"naming:\n  {_r + _w + _x} emitted, {_r + _w} matched a true "
+          f"contact, {_x} spurious ({_x / max(1, _r + _w + _x):.0%});"
+          f"\n  {_true - (_r + _w)} of {_true} true contacts have no "
+          f"event on them.\n  Placement recall says a scored DETECTION "
+          f"exists within 0.35s of every true contact,\n  so this is "
+          f"the decoder's event SELECTION, not the detector.")
     print("\nTOUCH COUNTS (pipeline vs truth)")
     print("    wrong = a real contact given to the partner (zero-sum "
           "between them);\n    extra = a detection with no true contact "
