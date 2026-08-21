@@ -975,7 +975,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21g  + diagonal constraint, nearest-time attribution"
+BUILD = "2026-08-21h  + all-track census (dropped-player check)"
 
 
 def main():
@@ -1414,7 +1414,23 @@ def run(a):
         stats = [(len(rd["tracks"][t]["t"]),
                   round(track_motion(rd["tracks"][t])), y)
                  for t, y in zip(sel, ys)]
-        census.append((cum, len(rd["tracks"]), stats, ok_lab))
+        # ALL tracks at the anchor, not just the chosen four. The
+        # census could not show a DROPPED PLAYER, which is the failure
+        # the user described (2026-08-21): the far receiver stands
+        # several feet behind the baseline to take serve, and if the
+        # detector loses them there the four-track selection quietly
+        # substitutes a referee or the near kitchen player. That breaks
+        # the 2/2 near/far split, leaves the serving pair without its
+        # server so `contact` cannot fire at all, and lets both
+        # geometry voters agree on the same wrong answer - which is
+        # exactly r16's signature.
+        allt = []
+        for tid, ser in rd["tracks"].items():
+            c = box_at(ser, t_anc_c)
+            allt.append((None if c is None else round(c[1]),
+                         len(ser["t"]), tid in sel))
+        allt.sort(key=lambda r: (r[0] is None, r[0]))
+        census.append((cum, len(rd["tracks"]), stats, ok_lab, allt))
         if not ok_lab:
             continue
         label_of[cum] = dict(tnames)
@@ -1489,15 +1505,24 @@ def run(a):
           "low here too => the tracks themselves are not cleanly\n  "
           "four players at the anchor, which the census below shows.")
     print("\nTRACK CENSUS — per rally: geometry hits/total, then the "
-          "SELECTED four as\n  (samples, motion, y_at_anchor). A clean "
-          "near/far split shows two low y and\n  two high y with a wide "
-          "gap; interleaved y means the split is guessing.")
-    for cum, n_tr, durs, ok_lab in census:
+          "SELECTED four as\n  (samples, motion, y_at_anchor), then "
+          "EVERY track at the anchor as y*len, with\n  * marking the "
+          "selected ones. At a serve the formation is one deep player "
+          "and\n  one kitchen player PER SIDE, so expect roughly two "
+          "low y and two high y —\n  a DROPPED far player shows up as "
+          "an unselected deep track, or as no track\n  at all above "
+          "the far kitchen band.")
+    for cum, n_tr, durs, ok_lab, allt in census:
         gk, gt = per_rally_geom[cum]
         acc = f"{gk}/{gt}" if gt else "-"
         print(f"  r{cum:<4} tracks {n_tr:<3} geom {acc:>7}  "
               f"sel(len,motion,y) {durs}  "
               f"{'ok' if ok_lab else 'UNREADABLE'}")
+        cells = []
+        for y, ln, is_sel in allt:
+            ytxt = "--" if y is None else str(y)
+            cells.append(f"{'*' if is_sel else ' '}{ytxt}x{ln}")
+        print(f"        all: {'  '.join(cells)}")
 
     # ---- PERMUTATION DIAGNOSIS. The per-rally geometry rates are
     # BIMODAL (r2 91%, r5 93%, r13 100% against r14 27%, r4 38%,
