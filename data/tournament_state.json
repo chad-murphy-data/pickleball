@@ -1,45 +1,9 @@
 {
- "generated": "2026-08-20",
+ "generated": "2026-08-21",
  "mlp": {
   "group": "dd80aae9-52f9-4c7b-a1cf-7b4ab63cd281",
   "event": "Toray MLP Playoffs Newport Beach",
   "completed": [
-   {
-    "uuid": "1ca91f9f-9528-4c29-be33-e743d781b942",
-    "date": "2026-08-14",
-    "start": "2026-08-14T21:00:00Z",
-    "team1": "St. Louis Shock",
-    "team2": "Texas Ranchers",
-    "abbr1": "STL",
-    "abbr2": "TEX",
-    "pool": "faf53b2f",
-    "bracket": null,
-    "round": null,
-    "mnum": null,
-    "games1": 3,
-    "games2": 0,
-    "pts1": 33,
-    "pts2": 9,
-    "winner": 1
-   },
-   {
-    "uuid": "cafea10e-26d4-492d-83ff-81a7f78c78cd",
-    "date": "2026-08-14",
-    "start": "2026-08-14T23:00:00Z",
-    "team1": "Los Angeles Mad Drops",
-    "team2": "Dallas Flash",
-    "abbr1": "LA",
-    "abbr2": "DAL",
-    "pool": "faf53b2f",
-    "bracket": null,
-    "round": null,
-    "mnum": null,
-    "games1": 3,
-    "games2": 1,
-    "pts1": 41,
-    "pts2": 32,
-    "winner": 1
-   },
    {
     "uuid": "a7d2efe6-bfa8-465e-b5ae-dec1061c79fd",
     "date": "2026-08-15",
