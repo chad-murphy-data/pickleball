@@ -450,6 +450,49 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
     return labels, True
 
 
+def total_speed(rd, tids, t, dt=0.2):
+    """Summed image-space speed of `tids` around time t."""
+    tot = 0.0
+    for tid in tids:
+        ser = rd["tracks"][tid]
+        a, b = box_at(ser, t - dt), box_at(ser, t + dt)
+        if a is None or b is None:
+            return None
+        tot += abs(b[0] - a[0]) + abs(b[1] - a[1])
+    return tot
+
+
+def settled_anchor(rd, t_first, back=6.0, step=0.2):
+    """The instant before the first contact when the four players are
+    most STILL — i.e. set up to serve.
+
+    WHY (2026-08-21). After elimination fixed TEAM at 100%, the residual
+    is the partner bit, wrong in 5 rallies — and all three voters agree
+    ~85% with the final call while those rallies stay wrong, meaning the
+    voters agree WITH EACH OTHER on a wrong answer. Their shared
+    dependency is the anchor instant: fire it during the post-point walk
+    and depth is wrong (nobody is deep yet), halves is wrong (nobody is
+    in their half yet) and contact-order is wrong (the first event is
+    not the serve). One bad moment corrupts all three at once, which is
+    why more voters reading the same instant could not help.
+
+    Players are stationary just before a serve and moving during the
+    walk across, so minimum total speed picks the settled moment.
+    Searches only BACKWARD from the first contact, never past it, so a
+    mid-rally lull can never be mistaken for the serve."""
+    tids = player_tracks(rd)
+    if len(tids) != 4:
+        return t_first
+    best_t, best_v = None, None
+    t = t_first
+    while t >= t_first - back:
+        v = total_speed(rd, tids, t)
+        if v is not None and (best_v is None or v < best_v):
+            best_t, best_v = t, v
+        t -= step
+    return t_first if best_t is None else best_t
+
+
 def side_map(rd, t_anchor):
     """{track_id: is_near} from the 2/2 image-y split at the anchor.
 
@@ -529,7 +572,7 @@ def player_tracks(rd, k=4, min_frac=0.25, static_frac=0.15):
     return [tid for tid, _ser in live[:k]]
 
 
-def anchor_time(rd, fallback):
+def anchor_time(rd, fallback, settle=True):
     """When all four players are first simultaneously on screen.
 
     The decoder's FIRST EVENT is a poor stand-in for the serve — the
@@ -543,7 +586,13 @@ def anchor_time(rd, fallback):
         t = rd["tracks"][tid]["t"]
         if len(t):
             firsts.append(float(t[0]))
-    return max(firsts) if len(firsts) == 4 else fallback
+    base = max(firsts) if len(firsts) == 4 else fallback
+    if not settle:
+        return base
+    # search back from the first CONTACT, but never earlier than the
+    # moment all four are on screen
+    hi = max(base, fallback)
+    return max(base, settled_anchor(rd, hi, back=max(0.0, hi - base)))
 
 
 def assign_names(events, rec, near_team, flip):
@@ -660,6 +709,10 @@ def main():
                          "left/right; halves = the lineup R/L mapping, "
                          "which inverts when a serving team swaps ends "
                          "between points")
+    ap.add_argument("--no-settle", action="store_true",
+                    help="anchor when all four are first on screen, "
+                         "instead of at the stillest instant before the "
+                         "first contact (the pre-serve setup)")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -669,6 +722,7 @@ def main():
 
 def run(a):
     mode = getattr(a, "label", "vote")
+    settle = not getattr(a, "no_settle", False)
     voter_tally = defaultdict(lambda: [0, 0])
 
     def labeller(rd_, t_, rec_, nt_, fl_, nm_, events=None):
@@ -785,7 +839,7 @@ def run(a):
         if srv is None or tid0 is None:
             continue
         rd_o = rd_of(rallies, cum)
-        t_anc = anchor_time(rd_o, t0)
+        t_anc = anchor_time(rd_o, t0, settle)
         obs = observe_quadrant(rd_o, t_anc, tid0)
         if obs is None:
             continue
@@ -829,7 +883,7 @@ def run(a):
             near_team, epoch_of_score(rec.get("start_score", "")),
             ends_switch)
         tnames, geom_ok = labeller(
-            rd, anchor_time(rd, evs[0][0]), rec, nt, flip, names_by_uuid,
+            rd, anchor_time(rd, evs[0][0], settle), rec, nt, flip, names_by_uuid,
             events=evs)
         if not geom_ok:
             unreadable += 1
@@ -838,7 +892,7 @@ def run(a):
         # names a track, but alternation says which side must have hit,
         # so a track on the illegal side is re-picked from that side's
         # own candidates rather than trusted.
-        sides_p = side_map(rd, anchor_time(rd, evs[0][0]))
+        sides_p = side_map(rd, anchor_time(rd, evs[0][0], settle))
         called = []
         for (t, _s, tid), s_fix in zip(evs, fixed):
             want_near = (s_fix == 0)
@@ -890,7 +944,8 @@ def run(a):
     # correctly. Placement error is removed by construction, so what is
     # left is the geometry chain alone. Reported beside placement
     # recall, which is the other half of the same picture.
-    print(f"\nTRUTH-ANCHORED GEOMETRY TEST — labeller={a.label} "
+    print(f"\nTRUTH-ANCHORED GEOMETRY TEST — labeller={a.label}, "
+          f"anchor={'settled' if settle else 'first-coexist'} "
           f"(decoder placement removed: true contact times)")
     g_ok = g_n = miss = g_team = g_partner = 0
     per_rally_geom = defaultdict(lambda: [0, 0])
@@ -915,7 +970,7 @@ def run(a):
             rec, nt, flip, names_by_uuid, events=decoded.get(cum))
         sel = player_tracks(rd)
         t_anc_c = anchor_time(rd, dets_by_rally[cum][0][0]
-                              if dets_by_rally[cum] else 0.0)
+                              if dets_by_rally[cum] else 0.0, settle)
         # y AT THE ANCHOR is what the 2/2 near/far split actually rests
         # on, so print it: a clean split shows two low and two high
         # values with a wide gap, and an ambiguous one shows them
@@ -936,7 +991,8 @@ def run(a):
         # and alternation fixes every one after it.
         srv_is_near_c = (rec.get("server_team") == nt)
         sides_c = side_map(rd, anchor_time(
-            rd, dets_by_rally[cum][0][0] if dets_by_rally[cum] else 0.0))
+            rd, dets_by_rally[cum][0][0] if dets_by_rally[cum] else 0.0,
+            settle))
         for k_c, (t_true, nm_true) in enumerate(truth[cum]):
             want_near = srv_is_near_c if (k_c % 2 == 0) else \
                 (not srv_is_near_c)
@@ -1374,6 +1430,30 @@ def selftest():
     assert best_n[3] == 3 and con_n is False
     # nothing at all in tolerance -> None
     assert pick_contact_track(dets_t, 99.0, True, sides_t)[0] is None
+
+    # SETTLED ANCHOR: with players walking early and standing still
+    # just before the contact, the chosen instant must be the still one.
+    ts_w = [i * 0.2 for i in range(25)]          # 0 .. 4.8s
+    def walker(x0, y0, still_from):
+        cx, yy = [], []
+        for i, t in enumerate(ts_w):
+            k = min(i, still_from)               # moves, then stops
+            cx.append(x0 + 30.0 * k)
+            yy.append(y0 + 10.0 * k)
+        z = _S(t=list(ts_w), cx=cx, ynorm=yy)
+        z["side"] = 0
+        return z
+    rd_w = {"tracks": {i: walker(100.0 * i, 200.0 * (i % 2), 10)
+                       for i in (1, 2, 3, 4)}}
+    t_set = settled_anchor(rd_w, t_first=4.6, back=4.6, step=0.2)
+    assert t_set > 2.0, f"picked a moving instant: {t_set}"
+    # never searches past the first contact
+    assert t_set <= 4.6
+    # and with everyone moving throughout, it still returns something
+    rd_mv = {"tracks": {i: walker(100.0 * i, 200.0 * (i % 2), 99)
+                        for i in (1, 2, 3, 4)}}
+    t_mv = settled_anchor(rd_mv, t_first=4.6, back=4.6, step=0.2)
+    assert 0.0 <= t_mv <= 4.6
 
     # a side missing a player is reported, never guessed
     rd_bad = {"tracks": {1: rd["tracks"][1], 3: rd["tracks"][3],
