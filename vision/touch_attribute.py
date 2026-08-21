@@ -413,7 +413,8 @@ BALL_MIN_MARGIN = 25.0    # px: below this the two are equidistant
 
 def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
                   events=None, tally=None, votes_out=None,
-                  order=None, ball_pts=None, allow_movement=False):
+                  order=None, ball_pts=None, allow_movement=False,
+                  picks_out=None):
     """{track_id: name} by VOTING the one bit that is actually in doubt.
 
     THE 2026-08-21 ENSEMBLE FINDING (user's proposal, and the data
@@ -585,6 +586,13 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
             for vname, t in votes:
                 tally[vname][0] += (t == best_tid)
                 tally[vname][1] += 1
+        if picks_out is not None:
+            # The votes alone cannot say WHY a side bit came out wrong:
+            # a cascade pick and a majority pick look identical in the
+            # vote list. Recording the WINNER separates "every voter was
+            # wrong" from "the right voter was outranked" — which need
+            # opposite fixes, and which the aggregate tables conflate.
+            picks_out[who] = best_tid
         return best_tid
 
     half_of = {}
@@ -891,17 +899,20 @@ def run(a):
     ball_by_rally = {}
     voter_tally = defaultdict(lambda: [0, 0])
     votes_by_rally = {}
+    picks_by_rally = {}
+    ctx_by_rally = {}
     cascade = ([x.strip() for x in a.cascade.split(',')]
                if getattr(a, 'cascade', None) else None)
 
     def labeller(rd_, t_, rec_, nt_, fl_, nm_, events=None,
-                 votes_out=None, ball_pts=None):
+                 votes_out=None, ball_pts=None, picks_out=None):
         if mode == "vote":
             return label_by_vote(rd_, t_, rec_, nt_, fl_, nm_,
                                  events=events, tally=voter_tally,
                                  votes_out=votes_out, order=cascade,
                                  ball_pts=ball_pts,
-                                 allow_movement=allow_movement)
+                                 allow_movement=allow_movement,
+                                 picks_out=picks_out)
         if mode == "depth":
             return label_by_depth(rd_, t_, rec_, nt_, fl_, nm_)
         return label_tracks_at_serve(rd_, t_, rec_, nt_, fl_, nm_)
@@ -1175,13 +1186,21 @@ def run(a):
         nt = effective_near_team(
             near_team, epoch_of_score(rec.get("start_score", "")),
             ends_switch)
-        vout = {}
+        vout, pout = {}, {}
         tnames, ok_lab = labeller(
             rd, anchor_time(rd, dets_by_rally[cum][0][0]
                             if dets_by_rally[cum] else 0.0, settle),
             rec, nt, flip, names_by_uuid, events=decoded.get(cum),
-            votes_out=vout, ball_pts=ball_by_rally.get(cum))
+            votes_out=vout, ball_pts=ball_by_rally.get(cum),
+            picks_out=pout)
         votes_by_rally[cum] = vout
+        picks_by_rally[cum] = pout
+        ctx_by_rally[cum] = {
+            "score": rec.get("start_score", ""),
+            "srv_team": rec.get("server_team"),
+            "near": nt,
+            "srv_half": rec.get("server_half"),
+        }
         sel = player_tracks(rd)
         t_anc_c = anchor_time(rd, dets_by_rally[cum][0][0]
                               if dets_by_rally[cum] else 0.0, settle)
@@ -1329,6 +1348,55 @@ def run(a):
         print("  Precedence for --cascade should follow the DISPUTED "
               "column: that is the\n  only place a voter's ordering "
               "changes any answer.")
+
+    # ---- SIDE-BIT FAILURE TRACE. The aggregate tables say WHICH
+    # voter is unreliable; they cannot say what went wrong in a given
+    # rally, and the 2026-08-21 run showed 16 of 17 geometry errors
+    # concentrated in 5 rallies diagnosed as whole-side inversions.
+    # That shape is a handful of BITS, not per-contact noise, so the
+    # useful view is one line per BROKEN BIT with every voter's call
+    # beside the truth. Silence is printed explicitly ("-") because an
+    # abstention and a wrong answer are different failures: the first
+    # is fixed by widening a voter, the second by demoting it.
+    fails = []
+    for cum in sorted(votes_by_rally):
+        real = {tid: v.most_common(1)[0][0]
+                for tid, v in truth_vote[cum].items() if v}
+        if not real:
+            continue
+        for who, votes in votes_by_rally[cum].items():
+            truth_tid = next((t for t, nm in real.items() if nm == who),
+                             None)
+            picked = picks_by_rally.get(cum, {}).get(who)
+            if truth_tid is None or picked is None or picked == truth_tid:
+                continue
+            fails.append((cum, who, truth_tid, picked, votes))
+    if fails:
+        print("\nSIDE-BIT FAILURE TRACE (only the bits that came out "
+              "wrong; * = this voter had it right)")
+        allv = sorted({v for _c, _w, _t, _p, vs in fails for v, _ in vs}
+                      | set(cascade or []))
+        for cum, who, truth_tid, picked, votes in fails:
+            byname = {v: t for v, t in votes}
+            cx = ctx_by_rally.get(cum, {})
+            cells = []
+            for v in allv:
+                t = byname.get(v)
+                if t is None:
+                    cells.append(f"{v}=-")
+                else:
+                    cells.append(f"{v}={t}{'*' if t == truth_tid else ''}")
+            print(f"  r{cum:<4} {who:<22} truth=track {truth_tid} "
+                  f"picked={picked}  [score {cx.get('score','?')} "
+                  f"srv={cx.get('srv_team')} near={cx.get('near')} "
+                  f"srvhalf={cx.get('srv_half')}]")
+            print(f"        {'  '.join(cells)}")
+        rescuable = sum(1 for _c, _w, t, _p, vs in fails
+                        if any(x == t for _v, x in vs))
+        print(f"  {rescuable} of {len(fails)} broken bits had SOME voter "
+              f"right (reachable by re-ordering);\n  {len(fails) - rescuable} "
+              f"had every voter wrong or silent (needs a new witness, "
+              f"not a new order).")
 
     print("\nPERMUTATION DIAGNOSIS (geometric label vs each track's "
           "voted true identity)")
