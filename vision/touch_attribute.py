@@ -229,6 +229,57 @@ def label_tracks_at_serve(rd, t_serve, rec, near_team, flip, name_of):
     return labels, True
 
 
+def intent_score(rd, tid, t, partner_x, is_near, half=0.6, step=0.1):
+    """How much this track COMMITS toward hitting, as against yielding.
+
+    THE USER'S REFINEMENT (2026-08-21), and it is ball-free, which is
+    the point: the ball abstains on ~28% of contacts and this covers
+    exactly those. Raw displacement failed because partners move
+    together; what separates them is not how far but HOW and WHERE:
+
+      INTRUSION    moving into the partner's half is a commitment to
+                   hit. "When Alshon goes into Tyra's half, he's
+                   probably hitting" — measured as motion toward the
+                   partner's starting x, signed, so yielding scores
+                   negative rather than merely small.
+      PURPOSE      a hitter's move is direct; clearing out wanders.
+                   Straightness = net displacement / path length, in
+                   [0,1], and it MULTIPLIES the rest so that a big
+                   aimless shuffle cannot outscore a short committed
+                   step.
+      NETWARD      the hitter steps into the court; the yielder backs
+                   off and outward. Near players approach the net as y
+                   falls, far players as y rises.
+
+    Returns None when the window is not covered. The score is only ever
+    compared BETWEEN the two players on a side — it has no absolute
+    meaning, which is deliberate: partners moving together cancels."""
+    pts = []
+    k = -half
+    while k <= 1e-9:
+        c = box_at(rd["tracks"][tid], t + k)
+        if c is None:
+            return None
+        pts.append(c)
+        k += step
+    if len(pts) < 3:
+        return None
+    path = sum(((pts[i + 1][0] - pts[i][0]) ** 2 +
+                (pts[i + 1][1] - pts[i][1]) ** 2) ** 0.5
+               for i in range(len(pts) - 1))
+    dx = pts[-1][0] - pts[0][0]
+    dy = pts[-1][1] - pts[0][1]
+    net_disp = (dx * dx + dy * dy) ** 0.5
+    if path < 1e-6:
+        return 0.0
+    straightness = net_disp / path
+    # toward the partner's territory: positive if closing on their x
+    intrusion = dx if partner_x > pts[0][0] else -dx
+    # toward the net: near end is LOW on screen, so netward is -dy
+    netward = -dy if is_near else dy
+    return straightness * (intrusion + netward)
+
+
 def displacement(rd, tid, t, half=0.6):
     """How far this track's body travels across a window centred on t.
 
@@ -455,6 +506,14 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
             db = displacement(rd, b[2], t_serve)
             if da is not None and db is not None and abs(da - db) > 1.0:
                 votes.append(("movement", a[2] if da > db else b[2]))
+
+        # INTENT: intrusion + purpose + netward, contrasted between the
+        # two partners. Ball-free by design — it is the channel that
+        # covers the contacts where no flight was tracked.
+        ia = intent_score(rd, a[2], t_serve, b[1], is_near)
+        ib = intent_score(rd, b[2], t_serve, a[1], is_near)
+        if ia is not None and ib is not None and abs(ia - ib) > 5.0:
+            votes.append(("intent", a[2] if ia > ib else b[2]))
 
         # BALL + APPROACH: what displacement was missing is a DIRECTION
         # to measure against, and the ball supplies it (72% of contacts
@@ -1710,6 +1769,37 @@ def selftest():
     assert "ball" not in dict(vo_n2["Ann"])
     # raw movement stays OFF unless explicitly re-enabled
     assert "movement" not in vb, vb
+
+    # INTENT, the ball-free channel. The user's exact scenario: Alshon
+    # crosses into Tyra's half, straight and committed; Tyra steps back
+    # and out, slower and wandering. Track 1 must win WITHOUT any ball.
+    def path_track(xs, ys):
+        z = _S(t=[-0.6 + 0.1 * i for i in range(7)],
+               cx=list(xs), ynorm=list(ys))
+        z["side"] = 0
+        return z
+    # 1 = intruder: straight run toward the partner's x, into the net
+    intr_x = [400.0, 430.0, 460.0, 490.0, 520.0, 550.0, 580.0]
+    intr_y = [740.0, 733.0, 726.0, 719.0, 712.0, 705.0, 698.0]
+    # 2 = yielder: backs off, outward, and wanders
+    yld_x = [800.0, 812.0, 806.0, 820.0, 814.0, 828.0, 822.0]
+    yld_y = [700.0, 706.0, 712.0, 719.0, 726.0, 733.0, 740.0]
+    rd_i = {"tracks": {1: path_track(intr_x, intr_y),
+                       2: path_track(yld_x, yld_y),
+                       3: path_track([300.0] * 7, [200.0] * 7),
+                       4: path_track([900.0] * 7, [200.0] * 7)}}
+    s_intr = intent_score(rd_i, 1, 0.0, partner_x=800.0, is_near=True)
+    s_yld = intent_score(rd_i, 2, 0.0, partner_x=400.0, is_near=True)
+    assert s_intr > s_yld, (s_intr, s_yld)
+    assert s_yld < 0, f"yielding must score NEGATIVE, not merely small: {s_yld}"
+    # straightness must matter: the same net move, wandered, scores less
+    wander_x = [400.0, 500.0, 420.0, 540.0, 450.0, 570.0, 580.0]
+    rd_w = {"tracks": {**rd_i["tracks"],
+                       1: path_track(wander_x, intr_y)}}
+    s_wander = intent_score(rd_w, 1, 0.0, partner_x=800.0, is_near=True)
+    assert s_wander < s_intr, (s_wander, s_intr)
+    # and the far side mirrors: netward is +y there
+    assert intent_score(rd_i, 1, 0.0, 800.0, is_near=False) < s_intr
 
     # votes_out exposes every voter for the truth table
     vo = {}
