@@ -915,6 +915,59 @@ def assign_names(events, rec, near_team, flip):
 
 
 # --------------------------------------------------- numpy-side glue
+def same_side_policy(evs, path, mode, typical_gap):
+    """What to do when two CONSECUTIVE emitted events share a side.
+
+    THE USER'S QUESTION (2026-08-21), and both of their instincts are
+    right in different cases. The shipped behaviour, `overwrite`, is
+    the worst of the three: alternation_fix relabels the second event's
+    SIDE to force alternation, which keeps a possibly-spurious event
+    AND corrupts the one field we were most confident about.
+
+    A same-side pair means one of exactly two things:
+      DELETE  one of the two is a duplicate of the other - dense
+              scoring sprouts peak clusters around a real swing, and
+              two survivors of one swing sit much CLOSER than a real
+              exchange. Drop the weaker; this is what reduces junk.
+      INSERT  a real contact between them was missed, so the pair sits
+              about TWO exchanges apart. Restoring it keeps the count
+              honest, but a ghost carries no timestamp, so it can be
+              charged to a SIDE and never to a player.
+
+    The discriminator is the gap, measured against this footage's own
+    typical inter-contact interval rather than a guessed constant - and
+    the DP already votes: a ghost between the two events IS decode_rally
+    asserting the second case. Returns (events, fixed_sides, n_deleted,
+    n_inserted).
+    """
+    ghost_after = {}
+    if path:
+        for i, (_t, _s, _sc, g) in enumerate(path):
+            ghost_after[i] = g
+    keep, ins, dele = [], 0, 0
+    for i, ev in enumerate(evs):
+        if not keep or ev[1] != keep[-1][1]:
+            keep.append(ev)
+            continue
+        # same side as the previous KEPT event
+        dt = ev[0] - keep[-1][0]
+        said_ghost = ghost_after.get(i, 0) > 0
+        if mode == "insert" or (mode == "auto" and
+                                (said_ghost or dt > 1.5 * typical_gap)):
+            ins += 1
+            keep.append(ev)          # parity restored by the ghost
+        elif mode in ("delete", "auto"):
+            dele += 1                # weaker of a cluster pair: the
+            continue                 # later one, having lost the DP's
+        else:                        # own strongest-first merge
+            keep.append(ev)
+    sides = [s for _t, s, _tid in keep]
+    if mode == "overwrite":
+        fixed, _ch = alternation_fix(sides, sides[0] if sides else 0)
+        return keep, fixed, 0, 0
+    return keep, sides, dele, ins
+
+
 def score_rally_tracked(model, rd):
     """swing_explore.score_rally, but KEEPING the track id.
 
@@ -996,7 +1049,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21j  decoder audit: timing model vs labels, ghosts"
+BUILD = "2026-08-21k  + same-side policy (delete/insert/auto), junk location"
 
 
 def main():
@@ -1038,6 +1091,16 @@ def main():
                          "HARMFUL 2026-08-21 (geometry 89%% -> 74%%); "
                          "off by default, kept only so the null "
                          "stays reproducible")
+    ap.add_argument("--same-side",
+                    choices=["overwrite", "delete", "insert", "auto"],
+                    default="overwrite",
+                    help="what to do with two consecutive emitted "
+                         "events on the SAME side. overwrite (shipped) "
+                         "relabels the side; delete drops the weaker "
+                         "as a cluster duplicate; insert keeps both "
+                         "and accepts a missed contact between them; "
+                         "auto picks per pair on the gap and the DP's "
+                         "own ghost")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -1254,6 +1317,14 @@ def run(a):
     alt_changed = no_geom = unreadable = reassigned = 0
     serve_checked = serve_agree = 0
     t_ok = t_tot = 0
+    n_deleted = n_inserted = 0
+    extra_where = Counter()
+    extra_dt = []
+    # this footage's own inter-contact interval, not a constant
+    _g = sorted(t2 - t1 for c in truth
+                for t1, t2 in zip([x[0] for x in truth[c]],
+                                  [x[0] for x in truth[c]][1:]))
+    typical_gap = _g[len(_g) // 2] if _g else 0.8
     per_player = defaultdict(lambda: [0, 0])   # name -> [pipeline, truth]
     # name -> [right, wrong, extra]. See the TOUCH COUNTS block.
     per_player_kind = defaultdict(lambda: [0, 0, 0])
@@ -1265,9 +1336,14 @@ def run(a):
         if rec is None or not evs:
             continue
         rd = rd_of(rallies, cum)
-        sides = [s for _t, s, _tid in evs]
-        fixed, ch = alternation_fix(sides, sides[0])
-        alt_changed += ch
+        evs, fixed, _d, _i = same_side_policy(
+            evs, paths.get(cum), a.same_side, typical_gap)
+        n_deleted += _d
+        n_inserted += _i
+        if a.same_side == "overwrite":
+            alt_changed += sum(
+                1 for x, y in zip([s for _t, s, _tid in evs], fixed)
+                if x != y)
         # LABEL ONCE AT THE SERVE, then ride the track ids: halves are
         # only defined at the serve, so a mid-rally switch must not be
         # allowed to rename anyone.
@@ -1339,11 +1415,26 @@ def run(a):
             used_e.add(i)
             used_t.add(j)
             match[i] = j
+        _tt = [x[0] for x in truth[cum]]
         for i, nm in enumerate(called):
             if not nm:
                 continue
             if i not in match:
                 per_player_kind[nm][2] += 1
+                # WHERE the junk is, which decides whether it is cheap
+                # to remove. The VLM pilot's DEAD escape fired on 62
+                # frames at a median 5.01s from any contact, so a large
+                # share of it may simply be dead time - before the
+                # serve or after the last contact - and window trimming
+                # would take it for free. Junk INSIDE the rally is the
+                # expensive kind: it needs the scorer or the DP.
+                _te = evs[i][0]
+                if _tt:
+                    _d = min(abs(_te - x) for x in _tt)
+                    where = ("before" if _te < _tt[0] - 0.35 else
+                             "after" if _te > _tt[-1] + 0.35 else "mid")
+                    extra_where[where] += 1
+                    extra_dt.append(_d)
             elif truth[cum][match[i]][1] == nm:
                 per_player_kind[nm][0] += 1
             else:
@@ -1895,6 +1986,11 @@ def run(a):
               f"means one bit is wrong,\n  and the less reliable "
               f"decider is flipped) — deciders involved: "
               f"{Counter(d for pair in diag_fixes for d in pair).most_common()}")
+    print(f"\nSAME-SIDE POLICY '{a.same_side}': deleted "
+          f"{n_deleted} cluster duplicates, kept {n_inserted} pairs "
+          f"with a missed contact between them\n  (typical true "
+          f"inter-contact gap {typical_gap:.2f}s, measured from the "
+          f"labels)")
     print(f"\nALTERNATION overwrote {alt_changed} decoded sides "
           f"(tracker/decoder disagreements with the exact constraint)")
     print(f"rallies skipped, serve geometry unreadable: {unreadable} "
@@ -2015,6 +2111,16 @@ def run(a):
           f"event on them.\n  Placement recall says a scored DETECTION "
           f"exists within 0.35s of every true contact,\n  so this is "
           f"the decoder's event SELECTION, not the detector.")
+    if extra_dt:
+        _sd = sorted(extra_dt)
+        print(f"  WHERE THE JUNK IS: {extra_where['before']} before the "
+              f"first true contact, {extra_where['after']} after the "
+              f"last,\n  {extra_where['mid']} inside the rally. "
+              f"Distance to the nearest true contact: med "
+              f"{_sd[len(_sd) // 2]:.2f}s, p90 "
+              f"{_sd[int(.9 * len(_sd))]:.2f}s.\n  Dead-time junk is "
+              f"free to remove (trim the window); junk INSIDE the "
+              f"rally needs the scorer or the DP.")
     print("\nTOUCH COUNTS (pipeline vs truth)")
     print("    wrong = a real contact given to the partner (zero-sum "
           "between them);\n    extra = a detection with no true contact "
@@ -2483,6 +2589,36 @@ def selftest():
     assert score_order(("x", "y"), three)[0] == 2
     assert score_order(("y", "x"), three)[0] == 1, \
         "order sweep cannot distinguish orderings — vacuous"
+    # SAME-SIDE POLICY. Pinned because delete and insert are opposite
+    # actions on identical-looking input, and picking wrong either
+    # invents contacts or destroys them.
+    #   a clean alternating sequence is untouched by every mode
+    _alt = [(0.0, 0, "a"), (0.8, 1, "b"), (1.6, 0, "c")]
+    for _m in ("overwrite", "delete", "insert", "auto"):
+        _k, _f, _d, _i = same_side_policy(_alt, None, _m, 0.8)
+        assert len(_k) == 3 and _f == [0, 1, 0], (_m, _k, _f)
+        assert (_d, _i) == (0, 0)
+    #   a CLUSTER duplicate (far closer than one exchange) is dropped
+    #   by delete and by auto, and the survivor is the EARLIER one
+    _dup = [(0.0, 0, "a"), (0.15, 0, "dup"), (0.9, 1, "b")]
+    for _m in ("delete", "auto"):
+        _k, _f, _d, _i = same_side_policy(_dup, None, _m, 0.8)
+        assert [x[2] for x in _k] == ["a", "b"], (_m, _k)
+        assert (_d, _i) == (1, 0), (_m, _d, _i)
+    #   a MISSED contact (about two exchanges apart) is kept by auto
+    _miss = [(0.0, 0, "a"), (1.7, 0, "c"), (2.5, 1, "d")]
+    _k, _f, _d, _i = same_side_policy(_miss, None, "auto", 0.8)
+    assert [x[2] for x in _k] == ["a", "c", "d"], _k
+    assert (_d, _i) == (0, 1), (_d, _i)
+    #   ...and delete would have thrown that real contact away, which
+    #   is exactly why the two modes are not interchangeable
+    _k2, _f2, _d2, _i2 = same_side_policy(_miss, None, "delete", 0.8)
+    assert len(_k2) == 2 and _d2 == 1
+    #   overwrite keeps everything and relabels, which is the shipped
+    #   behaviour and the one that can corrupt a correct side
+    _k3, _f3, _d3, _i3 = same_side_policy(_dup, None, "overwrite", 0.8)
+    assert len(_k3) == 3 and _f3 == [0, 1, 0], (_k3, _f3)
+
     # DIAGONAL: a serve is cross-court, so the server and the receiver
     # cannot both be the image-right of their pair. Pinned because it
     # SILENTLY REWRITES a decision that every voter agreed on, which is
@@ -2538,7 +2674,8 @@ def selftest():
     ok_y, _n2, w_y, _w2 = score_order(("y", "x"), heavy)
     assert ok_x < ok_y and w_x > w_y, "weighting must be able to flip it"
 
-    print("selftest OK: diagonal (cross-court serve), order sweep "
+    print("selftest OK: same-side policy (delete/insert/auto), "
+          "diagonal (cross-court serve), order sweep "
           "(precedence, order-sensitivity, "
           "veto rules, "
           "weighting), quadrant round trip, end mirroring, orientation "
