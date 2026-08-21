@@ -340,6 +340,116 @@ def label_by_depth(rd, t_serve, rec, near_team, flip, name_of):
     return labels, True
 
 
+def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
+                  events=None, tally=None):
+    """{track_id: name} by VOTING the one bit that is actually in doubt.
+
+    THE 2026-08-21 ENSEMBLE FINDING (user's proposal, and the data
+    agreed). Depth and halves score 58% and 62% overall but fail on
+    DISJOINT rallies: halves wins r1/r2/r7/r15, depth wins r4/r14/r19,
+    and only r4/r6/r16/r17/r8 defeat both. Union of correct rallies is
+    10 of 15 against 8 and 6 alone — so the information is there, in
+    two channels whose errors are uncorrelated.
+
+    Both labellers already agree on TEAM (near/far measured identical,
+    and the permutation diagnosis put TEAMS SWAPPED at 0). What they
+    disagree about is ONE BIT PER SIDE: which of the two players is the
+    server, and which is the receiver. The referee log names both of
+    those people exactly, so that bit has three independent witnesses:
+
+      CONTACT ORDER  the track that hits contact 1 IS the server, and
+                     contact 2 IS the receiver. Independent of all
+                     geometry; costs a decoder placement, which the
+                     placement test showed exists for every contact.
+      DEPTH          server and receiver stand deep at the serve.
+                     Independent of left/right, immune to the
+                     post-point swap.
+      HALVES         the lineup's R/L mapping. Independent of depth,
+                     but inverts when a serving team just swapped.
+
+    Majority of three. Ensembling the BIT rather than the labelling is
+    strictly better than picking a labeller per rally: the serving and
+    receiving sides get decided separately, so a rally can take depth's
+    answer on one end and halves' on the other.
+
+    tally, if given, counts each voter's agreement with the final call
+    so a dead or harmful voter is visible rather than assumed useful."""
+    seen = []
+    for tid in player_tracks(rd):
+        ser = rd["tracks"][tid]
+        c = box_at(ser, t_serve)
+        if c is None or abs(_nearest_dt(ser, t_serve)) > 0.5:
+            continue
+        seen.append((c[1], c[0], tid))
+    if len(seen) != 4:
+        return {}, False
+    seen.sort()
+    far_pair, near_pair = seen[:2], seen[2:]
+
+    srv = name_of.get(rec.get("server_uuid", "").lower())
+    rcv = name_of.get(rec.get("receiver_uuid", "").lower())
+    srv_team = rec.get("server_team")
+    if not srv or not rcv or srv_team not in ("A", "B"):
+        return {}, False
+    members = {}
+    for tm in ("A", "B"):
+        mem = [name_of.get(rec.get(f"team_{tm}_{h}", "").lower())
+               for h in (RIGHT, LEFT)]
+        if any(m is None for m in mem):
+            return {}, False
+        members[tm] = mem
+    rcv_team = other_team(srv_team)
+    srv_mate = next(m for m in members[srv_team] if m != srv)
+    rcv_mate = next(m for m in members[rcv_team] if m != rcv)
+
+    srv_is_near = (srv_team == near_team)
+    srv_pair = near_pair if srv_is_near else far_pair
+    rcv_pair = far_pair if srv_is_near else near_pair
+    ev = list(events or [])
+
+    def pick(pair, is_near, who, half_of_who, contact_idx):
+        """Which track in `pair` is `who`? Three votes, majority."""
+        a, b = pair                       # (y, cx, tid) each
+        votes = []
+        # DEPTH: near end is low on screen, so deeper = larger y
+        deep = a if ((a[0] > b[0]) == is_near) else b
+        votes.append(("depth", deep[2]))
+        # HALVES: whose half maps to which image side
+        _tm, _hf = None, None
+        want_right = predict_image_quadrant(
+            srv_team if who in members[srv_team] else rcv_team,
+            half_of_who, near_team, flip)[1]
+        right_tid = (a if a[1] > b[1] else b)[2]
+        left_tid = (b if a[1] > b[1] else a)[2]
+        votes.append(("halves", right_tid if want_right else left_tid))
+        # CONTACT ORDER: the k-th contact belongs to this person
+        if contact_idx < len(ev):
+            tid_c = ev[contact_idx][2]
+            if tid_c in (a[2], b[2]):
+                votes.append(("contact", tid_c))
+        counts = Counter(t for _v, t in votes)
+        best_tid, _n = counts.most_common(1)[0]
+        if tally is not None:
+            for vname, t in votes:
+                tally[vname][0] += (t == best_tid)
+                tally[vname][1] += 1
+        return best_tid
+
+    half_of = {}
+    for tm in ("A", "B"):
+        for h in (RIGHT, LEFT):
+            nm = name_of.get(rec.get(f"team_{tm}_{h}", "").lower())
+            half_of[nm] = h
+    s_tid = pick(srv_pair, srv_is_near, srv, half_of[srv], 0)
+    r_tid = pick(rcv_pair, not srv_is_near, rcv, half_of[rcv], 1)
+    labels = {s_tid: srv, r_tid: rcv}
+    for _y, _cx, tid in srv_pair:
+        labels.setdefault(tid, srv_mate)
+    for _y, _cx, tid in rcv_pair:
+        labels.setdefault(tid, rcv_mate)
+    return labels, True
+
+
 def player_tracks(rd, k=4, min_frac=0.25, static_frac=0.15):
     """The k tracks most likely to BE the four players.
 
@@ -495,9 +605,11 @@ def main():
     ap.add_argument("--timeline-dir",
                     help="folder holding rally_timeline_<mid8>.csv, if "
                          "it is somewhere the search does not cover")
-    ap.add_argument("--label", choices=["depth", "halves"],
-                    default="depth",
-                    help="depth (default) = server/receiver are the deep "
+    ap.add_argument("--label", choices=["vote", "depth", "halves"],
+                    default="vote",
+                    help="vote (default) = majority of contact-order, "
+                         "depth and halves on the one bit per side; "
+                         "depth = server/receiver are the deep "
                          "players, names straight from the log, no "
                          "left/right; halves = the lineup R/L mapping, "
                          "which inverts when a serving team swaps ends "
@@ -510,8 +622,16 @@ def main():
 
 
 def run(a):
-    labeller = (label_by_depth if getattr(a, "label", "depth") == "depth"
-                else label_tracks_at_serve)
+    mode = getattr(a, "label", "vote")
+    voter_tally = defaultdict(lambda: [0, 0])
+
+    def labeller(rd_, t_, rec_, nt_, fl_, nm_, events=None):
+        if mode == "vote":
+            return label_by_vote(rd_, t_, rec_, nt_, fl_, nm_,
+                                 events=events, tally=voter_tally)
+        if mode == "depth":
+            return label_by_depth(rd_, t_, rec_, nt_, fl_, nm_)
+        return label_tracks_at_serve(rd_, t_, rec_, nt_, fl_, nm_)
     import numpy as np
     import swing_explore as SE
     from contact_ceiling import (load_rosters, load_labels,
@@ -663,7 +783,8 @@ def run(a):
             near_team, epoch_of_score(rec.get("start_score", "")),
             ends_switch)
         tnames, geom_ok = labeller(
-            rd, anchor_time(rd, evs[0][0]), rec, nt, flip, names_by_uuid)
+            rd, anchor_time(rd, evs[0][0]), rec, nt, flip, names_by_uuid,
+            events=evs)
         if not geom_ok:
             unreadable += 1
             continue
@@ -731,7 +852,7 @@ def run(a):
         tnames, ok_lab = labeller(
             rd, anchor_time(rd, dets_by_rally[cum][0][0]
                             if dets_by_rally[cum] else 0.0),
-            rec, nt, flip, names_by_uuid)
+            rec, nt, flip, names_by_uuid, events=decoded.get(cum))
         sel = player_tracks(rd)
         t_anc_c = anchor_time(rd, dets_by_rally[cum][0][0]
                               if dets_by_rally[cum] else 0.0)
@@ -848,6 +969,14 @@ def run(a):
           "is inverted per rally\n  (stacking, or the anchor being read "
           "before the players settle). A large\n  TEAMS-SWAPPED count "
           "means the orientation bits are wrong for those rallies.")
+
+    if voter_tally:
+        print("\nVOTER AGREEMENT with the ensemble's final call "
+              "(a voter near 50% is dead weight; near 100% means it is "
+              "deciding)")
+        for v, (ok_v, n_v) in sorted(voter_tally.items()):
+            if n_v:
+                print(f"  {v:<9} {ok_v}/{n_v} = {ok_v / n_v:.0%}")
 
     print(f"\nALTERNATION overwrote {alt_changed} decoded sides "
           f"(tracker/decoder disagreements with the exact constraint)")
@@ -1106,6 +1235,41 @@ def selftest():
                  server_team="B")
     lab_s, ok_s = label_by_depth(rd_d, 0.0, rec_s, "A", 0, nm)
     assert ok_s and lab_s[3] == "Cal" and lab_s[1] == "Ann", lab_s
+
+    # ENSEMBLE: two of three voters must carry the bit. Build a case
+    # where DEPTH is wrong (server standing shallow) but contact-order
+    # and halves both point at the true server, and require the vote to
+    # override depth — the whole reason for majority rather than a
+    # fixed preference.
+    # Ann holds team A's LEFT half, so halves points image-left at
+    # track 1 while depth points at the deep track 2 — the voters must
+    # genuinely split or the fixture proves nothing.
+    rec_v = {"team_A_R": "ub", "team_A_L": "ua",
+             "team_B_R": "uc", "team_B_L": "ud",
+             "server_uuid": "ua", "receiver_uuid": "uc",
+             "server_team": "A"}
+    # near = team A. Ann (ua, half R) is the server but stands SHALLOW.
+    rd_v = {"tracks": {1: mk2(300.0, 470.0),   # Ann: shallow, image-left
+                       2: mk2(700.0, 760.0),   # Bea: deep,  image-right
+                       3: mk2(700.0, 120.0),   # Cal: deep
+                       4: mk2(300.0, 330.0)}}  # Dee: shallow
+    # contact 0 is on track 1 (Ann serving), contact 1 on track 3 (Cal)
+    evs_v = [(0.0, 0, 1), (0.5, 1, 3)]
+    lab_v, ok_v = label_by_vote(rd_v, 0.0, rec_v, "A", 0, nm,
+                                events=evs_v)
+    assert ok_v, "vote labeller failed on a clean fixture"
+    assert lab_v[1] == "Ann", ("depth alone would say Bea; the majority "
+                               f"must override it: {lab_v}")
+    assert lab_v[2] == "Bea" and lab_v[3] == "Cal", lab_v
+    # depth alone really would have been wrong here — proving the
+    # fixture tests the override rather than agreeing by luck
+    lab_d2, _ok = label_by_depth(rd_v, 0.0, rec_v, "A", 0, nm)
+    assert lab_d2[1] == "Bea", lab_d2
+    # tally counts every voter, so a dead voter stays visible
+    tal = defaultdict(lambda: [0, 0])
+    label_by_vote(rd_v, 0.0, rec_v, "A", 0, nm, events=evs_v, tally=tal)
+    assert set(tal) == {"depth", "halves", "contact"}, dict(tal)
+    assert all(n > 0 for _ok, n in tal.values())
 
     # a side missing a player is reported, never guessed
     rd_bad = {"tracks": {1: rd["tracks"][1], 3: rd["tracks"][3],
