@@ -268,15 +268,22 @@ def track_motion(ser):
     return (max(cx) - min(cx)) + (max(y) - min(y))
 
 
-def player_tracks(rd, k=4, pool=10, min_frac=0.10):
+def player_tracks(rd, k=4, min_frac=0.25, static_frac=0.15):
     """The k tracks most likely to BE the four players.
 
-    Length alone is not evidence of being a player (see track_motion),
-    and motion alone would promote a 3-sample fragment that jumps. So:
-    keep tracks long enough to be a person present for the rally, then
-    rank those by distance travelled. The length gate is deliberately
-    LOW (10% of the longest): its job is to drop 3-sample fragments,
-    not to let a long official evict a player whose track is shorter."""
+    LENGTH IS PRIMARY, and that is an empirical finding, not a guess.
+    The 2026-08-21 census showed four near-identical full-rally tracks
+    in most rallies (r1 1789/1789/1789/1787, r2 1103x4, r6 929x4,
+    r14 1380x4) — that shape IS the four players. Ranking by motion
+    instead scored worse across the board (geometry 62% -> 53%,
+    attribution 60% -> 54%) because it promoted SHORT high-motion
+    fragments: r2 took a 242-sample track over a 1103, r5 a 215, r8 a
+    289. Pieces of a player, or crowd.
+
+    Motion survives only as a FLOOR, to drop the case it was introduced
+    for: a referee or line judge who stands still through a whole rally
+    and so outlasts the players. Static bodies are excluded; among what
+    remains, longest wins."""
     items = [(tid, ser) for tid, ser in rd["tracks"].items()
              if len(ser["t"])]
     if not items:
@@ -284,9 +291,13 @@ def player_tracks(rd, k=4, pool=10, min_frac=0.10):
     longest = max(len(ser["t"]) for _t, ser in items)
     live = [(tid, ser) for tid, ser in items
             if len(ser["t"]) >= min_frac * longest]
+    if live:
+        top_motion = max(track_motion(ser) for _t, ser in live)
+        moving = [(tid, ser) for tid, ser in live
+                  if track_motion(ser) >= static_frac * top_motion]
+        if len(moving) >= k:
+            live = moving
     live.sort(key=lambda kv: -len(kv[1]["t"]))
-    live = live[:pool]
-    live.sort(key=lambda kv: -track_motion(kv[1]))
     return [tid for tid, _ser in live[:k]]
 
 
@@ -622,6 +633,7 @@ def run(a):
     print("\nTRUTH-ANCHORED GEOMETRY TEST (decoder placement removed: "
           "true contact times, geometric names)")
     g_ok = g_n = miss = g_team = g_partner = 0
+    per_rally_geom = defaultdict(lambda: [0, 0])
     census = []
     for cum in sorted(decoded):
         w = wrows[cum]
@@ -638,9 +650,20 @@ def run(a):
                             if dets_by_rally[cum] else 0.0),
             rec, nt, flip, names_by_uuid)
         sel = player_tracks(rd)
+        t_anc_c = anchor_time(rd, dets_by_rally[cum][0][0]
+                              if dets_by_rally[cum] else 0.0)
+        # y AT THE ANCHOR is what the 2/2 near/far split actually rests
+        # on, so print it: a clean split shows two low and two high
+        # values with a wide gap, and an ambiguous one shows them
+        # interleaved. Inferring this from accuracy alone is what led
+        # to a wrong motion-based "fix".
+        ys = []
+        for t in sel:
+            c = box_at(rd["tracks"][t], t_anc_c)
+            ys.append(None if c is None else round(c[1]))
         stats = [(len(rd["tracks"][t]["t"]),
-                  round(track_motion(rd["tracks"][t])))
-                 for t in sel]
+                  round(track_motion(rd["tracks"][t])), y)
+                 for t, y in zip(sel, ys)]
         census.append((cum, len(rd["tracks"]), stats, ok_lab))
         if not ok_lab:
             continue
@@ -657,6 +680,8 @@ def run(a):
                 continue
             g_n += 1
             g_ok += nm == nm_true
+            per_rally_geom[cum][1] += 1
+            per_rally_geom[cum][0] += nm == nm_true
             # DECOMPOSE: team wrong = the near/far read failed;
             # team right but name wrong = left/right failed, which is
             # the half that stacking would break (a stacked team lines
@@ -685,11 +710,15 @@ def run(a):
           "decoder's PLACEMENT is the binding\n  constraint. Geometry "
           "low here too => the tracks themselves are not cleanly\n  "
           "four players at the anchor, which the census below shows.")
-    print("\nTRACK CENSUS (rally: n_tracks, SELECTED players as "
-          "(samples, motion), labelled?)\n  a near-zero motion entry is "
-          "an official, i.e. a player was dropped")
+    print("\nTRACK CENSUS — per rally: geometry hits/total, then the "
+          "SELECTED four as\n  (samples, motion, y_at_anchor). A clean "
+          "near/far split shows two low y and\n  two high y with a wide "
+          "gap; interleaved y means the split is guessing.")
     for cum, n_tr, durs, ok_lab in census:
-        print(f"  r{cum:<4} tracks {n_tr:<3} sel {durs}  "
+        gk, gt = per_rally_geom[cum]
+        acc = f"{gk}/{gt}" if gt else "-"
+        print(f"  r{cum:<4} tracks {n_tr:<3} geom {acc:>7}  "
+              f"sel(len,motion,y) {durs}  "
               f"{'ok' if ok_lab else 'UNREADABLE'}")
 
     print(f"\nALTERNATION overwrote {alt_changed} decoded sides "
