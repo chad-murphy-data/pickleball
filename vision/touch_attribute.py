@@ -341,7 +341,8 @@ def label_by_depth(rd, t_serve, rec, near_team, flip, name_of):
 
 
 def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
-                  events=None, tally=None):
+                  events=None, tally=None, votes_out=None,
+                  order=None):
     """{track_id: name} by VOTING the one bit that is actually in doubt.
 
     THE 2026-08-21 ENSEMBLE FINDING (user's proposal, and the data
@@ -427,8 +428,26 @@ def label_by_vote(rd, t_serve, rec, near_team, flip, name_of,
             tid_c = ev[contact_idx][2]
             if tid_c in (a[2], b[2]):
                 votes.append(("contact", tid_c))
-        counts = Counter(t for _v, t in votes)
-        best_tid, _n = counts.most_common(1)[0]
+        if votes_out is not None:
+            votes_out[who] = list(votes)
+        if order:
+            # CASCADE: precedence rather than majority. The first
+            # listed voter that fired decides; the rest are consulted
+            # only when it is silent. Exists because `contact` is not
+            # really a vote — the track that hits contact 1 IS the
+            # server per the log — so being outvoted 2-1 by geometry
+            # throws away a near-deduction. Precedence must be earned
+            # by the voter-vs-truth table, never assumed.
+            byname = {v: t for v, t in votes}
+            for v in order:
+                if v in byname:
+                    best_tid = byname[v]
+                    break
+            else:
+                best_tid = Counter(t for _v, t in votes).most_common(1)[0][0]
+        else:
+            counts = Counter(t for _v, t in votes)
+            best_tid, _n = counts.most_common(1)[0]
         if tally is not None:
             for vname, t in votes:
                 tally[vname][0] += (t == best_tid)
@@ -709,6 +728,10 @@ def main():
                          "left/right; halves = the lineup R/L mapping, "
                          "which inverts when a serving team swaps ends "
                          "between points")
+    ap.add_argument("--cascade",
+                    help="comma-separated voter precedence, e.g. "
+                         "'contact,depth,halves'. The first voter that "
+                         "fired decides; omit for a flat majority")
     ap.add_argument("--no-settle", action="store_true",
                     help="anchor when all four are first on screen, "
                          "instead of at the stillest instant before the "
@@ -724,11 +747,16 @@ def run(a):
     mode = getattr(a, "label", "vote")
     settle = not getattr(a, "no_settle", False)
     voter_tally = defaultdict(lambda: [0, 0])
+    votes_by_rally = {}
+    cascade = ([x.strip() for x in a.cascade.split(',')]
+               if getattr(a, 'cascade', None) else None)
 
-    def labeller(rd_, t_, rec_, nt_, fl_, nm_, events=None):
+    def labeller(rd_, t_, rec_, nt_, fl_, nm_, events=None,
+                 votes_out=None):
         if mode == "vote":
             return label_by_vote(rd_, t_, rec_, nt_, fl_, nm_,
-                                 events=events, tally=voter_tally)
+                                 events=events, tally=voter_tally,
+                                 votes_out=votes_out, order=cascade)
         if mode == "depth":
             return label_by_depth(rd_, t_, rec_, nt_, fl_, nm_)
         return label_tracks_at_serve(rd_, t_, rec_, nt_, fl_, nm_)
@@ -964,10 +992,13 @@ def run(a):
         nt = effective_near_team(
             near_team, epoch_of_score(rec.get("start_score", "")),
             ends_switch)
+        vout = {}
         tnames, ok_lab = labeller(
             rd, anchor_time(rd, dets_by_rally[cum][0][0]
                             if dets_by_rally[cum] else 0.0, settle),
-            rec, nt, flip, names_by_uuid, events=decoded.get(cum))
+            rec, nt, flip, names_by_uuid, events=decoded.get(cum),
+            votes_out=vout)
+        votes_by_rally[cum] = vout
         sel = player_tracks(rd)
         t_anc_c = anchor_time(rd, dets_by_rally[cum][0][0]
                               if dets_by_rally[cum] else 0.0, settle)
@@ -1077,6 +1108,45 @@ def run(a):
     # rally is correct, has its two PARTNERS swapped (a stack, or a
     # wrong left/right read), has its two TEAMS swapped (near/far
     # inverted), or is genuinely scrambled.
+    # ---- VOTER vs TRUTH. The earlier tally compared each voter to the
+    # ensemble's own call, which is CIRCULAR: a voter that dominates the
+    # majority scores high by construction, so it measured
+    # self-consistency and not accuracy. This scores every voter against
+    # the truth-voted identity of the track it picked, and separately on
+    # the DISPUTED cases — which is the table a cascade's precedence has
+    # to be earned from.
+    vt = defaultdict(lambda: [0, 0])
+    vt_disp = defaultdict(lambda: [0, 0])
+    for cum, vout in votes_by_rally.items():
+        real = {tid: v.most_common(1)[0][0]
+                for tid, v in truth_vote[cum].items() if v}
+        if not real or not vout:
+            continue
+        for who, votes in vout.items():
+            truth_tid = next((t for t, nm in real.items() if nm == who),
+                             None)
+            if truth_tid is None:
+                continue
+            disputed = len({t for _v, t in votes}) > 1
+            for vname, tid in votes:
+                vt[vname][1] += 1
+                vt[vname][0] += tid == truth_tid
+                if disputed:
+                    vt_disp[vname][1] += 1
+                    vt_disp[vname][0] += tid == truth_tid
+    if vt:
+        print("\nVOTER ACCURACY vs TRUTH (not vs the ensemble — the "
+              "earlier tally was circular)")
+        for v in sorted(vt):
+            ok_v, n_v = vt[v]
+            d_ok, d_n = vt_disp[v]
+            d = f"   on disputed calls {d_ok}/{d_n} = {d_ok / d_n:.0%}" \
+                if d_n else "   never disputed"
+            print(f"  {v:<9} {ok_v}/{n_v} = {ok_v / n_v:>4.0%}{d}")
+        print("  Precedence for --cascade should follow the DISPUTED "
+              "column: that is the\n  only place a voter's ordering "
+              "changes any answer.")
+
     print("\nPERMUTATION DIAGNOSIS (geometric label vs each track's "
           "voted true identity)")
     kinds = Counter()
@@ -1454,6 +1524,29 @@ def selftest():
                         for i in (1, 2, 3, 4)}}
     t_mv = settled_anchor(rd_mv, t_first=4.6, back=4.6, step=0.2)
     assert 0.0 <= t_mv <= 4.6
+
+    # CASCADE: precedence must override the majority. Depth+halves
+    # agree on track 2 here while contact says track 1, so a flat
+    # majority picks 2 and a contact-first cascade must pick 1.
+    lab_maj, _o1 = label_by_vote(rd_v, 0.0, rec_v, "A", 0, nm,
+                                 events=evs_v)
+    lab_cas, _o2 = label_by_vote(rd_v, 0.0, rec_v, "A", 0, nm,
+                                 events=evs_v,
+                                 order=["halves", "depth", "contact"])
+    assert lab_maj[1] == "Ann", lab_maj
+    # halves-first cascade follows halves, which named track 1 too
+    assert lab_cas[1] == "Ann", lab_cas
+    lab_dep, _o3 = label_by_vote(rd_v, 0.0, rec_v, "A", 0, nm,
+                                 events=evs_v,
+                                 order=["depth", "halves", "contact"])
+    assert lab_dep[2] == "Ann", ("depth-first must follow depth even "
+                                 f"when outvoted: {lab_dep}")
+    # votes_out exposes every voter for the truth table
+    vo = {}
+    label_by_vote(rd_v, 0.0, rec_v, "A", 0, nm, events=evs_v,
+                  votes_out=vo)
+    assert set(vo) == {"Ann", "Cal"}, vo
+    assert {v for v, _t in vo["Ann"]} == {"depth", "halves", "contact"}
 
     # a side missing a player is reported, never guessed
     rd_bad = {"tracks": {1: rd["tracks"][1], 3: rd["tracks"][3],
