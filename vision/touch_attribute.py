@@ -278,6 +278,9 @@ def main():
     ap.add_argument("--windows", default=WINDOWS_V4)
     ap.add_argument("--split", default=SPLIT)
     ap.add_argument("--pose-dir", default=POSE_DIR)
+    ap.add_argument("--timeline-dir",
+                    help="folder holding rally_timeline_<mid8>.csv, if "
+                         "it is somewhere the search does not cover")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -288,9 +291,16 @@ def main():
 def run(a):
     import numpy as np
     import swing_explore as SE
-    import lineup as LU
     from contact_ceiling import (load_rosters, load_labels,
                                  rally_candidates, rally_coverage)
+    try:
+        import lineup as LU
+    except ModuleNotFoundError:
+        raise SystemExit(
+            "lineup.py not found next to this script.\n"
+            "It is the state machine that turns court positions into "
+            "names (vision/lineup.py in the repo); only its walk_match "
+            "is used here, and it needs no paths of its own.")
 
     rosters = load_rosters(Path(a.windows))
     labels = load_labels(Path(a.labels), rosters)
@@ -313,13 +323,18 @@ def run(a):
                  if c in train and c not in EXCLUDE}
     lineup_by_rally = {}
     for mid in sorted(match_ids):
+        rows, path = load_timeline(mid, a.timeline_dir)
+        if rows is None:
+            print(f"no rally_timeline_{mid[:8]}.csv found — searched "
+                  f"{', '.join(TIMELINE_DIRS)} (pass --timeline-dir)")
+            continue
         try:
-            rec_rows, diag = LU.walk_match(LU.load_rallies(mid))
+            rec_rows, diag = LU.walk_match(rows)
         except Exception as e:                     # noqa: BLE001
-            print(f"lineup unavailable for {mid[:8]}: {e}")
+            print(f"lineup failed for {mid[:8]}: {e}")
             continue
         acc = diag.get("acc") if isinstance(diag, dict) else None
-        print(f"lineup {mid[:8]}: receiver-prediction "
+        print(f"lineup {mid[:8]} ({path}): receiver-prediction "
               f"{acc if acc is None else format(acc, '.1%')} "
               f"(its own free self-check)")
         for rr in rec_rows:
@@ -470,6 +485,38 @@ def run(a):
 
 def rd_of(rallies, cum):
     return rallies[cum]["rd"]
+
+
+TIMELINE_DIRS = (".", "data/vision", "../data/vision", "vision",
+                 "../data", "data")
+
+
+def find_timeline(match_id, extra=None):
+    """Path to rally_timeline_<mid8>.csv, searched across layouts.
+
+    lineup.py resolves its own paths as <module>/../data/vision, which
+    is right in the repo and wrong in the flat working folder this
+    project is actually driven from. Only walk_match is needed from
+    that module and it is a pure function over rally rows, so the file
+    is located here instead and lineup.py's constants never come into
+    it."""
+    name = f"rally_timeline_{match_id[:8]}.csv"
+    here = Path(__file__).resolve().parent
+    roots = [Path(d) for d in ([extra] if extra else [])]
+    roots += [Path(d) for d in TIMELINE_DIRS]
+    roots += [here / d for d in TIMELINE_DIRS]
+    for r in roots:
+        p = r / name
+        if p.exists():
+            return p
+    return None
+
+
+def load_timeline(match_id, extra=None):
+    p = find_timeline(match_id, extra)
+    if p is None:
+        return None, None
+    return list(csv.DictReader(open(p))), p
 
 
 def selftest():
