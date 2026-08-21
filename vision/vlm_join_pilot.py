@@ -463,6 +463,65 @@ def rescore(calls_path, labels_path, windows_path, split_path):
         if kind == "named":
             tally["named: model agreed with nearest truth"] += (ans == tname)
 
+    # NAMED-ANSWER DECOMPOSITION (free; the 2026-08-21 all4 run's real
+    # question). A 4-way call fails two different ways and they need
+    # completely different fixes: wrong SIDE means the strip does not
+    # show us which end is hitting (a placement/framing problem), wrong
+    # PARTNER given the right side means we cannot tell teammates apart
+    # (a resolution/identity problem, and precisely what touch share
+    # needs). Aggregate accuracy cannot distinguish them; this can.
+    side_ok = ident_ok = named_n = 0
+    strata = defaultdict(lambda: [0, 0, 0])   # bin -> [n, side, ident]
+    for r in rows:
+        cum = int(r["rally_cum"])
+        ans = r["answer"]
+        if cum not in truths or ans in (OTHER, DEAD):
+            continue
+        t_dec = float(r["t_decoded"])
+        tt, tname = min(truths[cum], key=lambda x: abs(x[0] - t_dec))
+        dt = abs(tt - t_dec)
+        by_name = {}
+        for team_i in (0, 1):
+            for nm in team_names(rosters[cum], names, team_i):
+                by_name[nm] = team_i
+        if ans not in by_name or tname not in by_name:
+            continue
+        s_ok = by_name[ans] == by_name[tname]
+        i_ok = ans == tname
+        named_n += 1
+        side_ok += s_ok
+        ident_ok += i_ok
+        b = dt_bin(dt)
+        strata[b][0] += 1
+        strata[b][1] += s_ok
+        strata[b][2] += i_ok
+
+    if named_n:
+        print(f"NAMED-ANSWER DECOMPOSITION — {named_n} named calls vs "
+              f"the nearest contact (team-blind)\n")
+        print(f"  SIDE correct      {side_ok}/{named_n} = "
+              f"{side_ok / named_n:.0%}   (chance 50%; the blind "
+              f"true-frame test read 95%)")
+        print(f"  IDENTITY correct  {ident_ok}/{named_n} = "
+              f"{ident_ok / named_n:.0%}   (chance 25% over 4 names)")
+        if side_ok:
+            print(f"  partner GIVEN side right  {ident_ok}/{side_ok} = "
+                  f"{ident_ok / side_ok:.0%}   (chance 50% — THE touch"
+                  f"-share number)")
+        print("\n  by nearest-truth |dt|:")
+        for lo, hi in DT_BINS:
+            b = dt_bin(lo)
+            n_b, s_b, i_b = strata[b]
+            if n_b:
+                print(f"    {b:>9} n={n_b:<4} side {s_b / n_b:>4.0%}   "
+                      f"identity {i_b / n_b:>4.0%}   partner|side "
+                      + (f"{i_b / s_b:.0%}" if s_b else "  -"))
+        print("\n  Read: side near 50% => the strips do not show which "
+              "end is hitting (placement/framing).\n  Side high but "
+              "partner|side near 50% => teammates are not "
+              "distinguishable at this\n  resolution — the touch-share "
+              "product's real ceiling, and a crop/zoom question.\n")
+
     print(f"PARITY DIAGNOSTIC v2 — {len(rows)} calls "
           f"(nearest contact in the rally, TEAM-BLIND)\n")
     for k in sorted(tally):
