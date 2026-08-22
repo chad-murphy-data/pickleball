@@ -915,6 +915,76 @@ def assign_names(events, rec, near_team, flip):
 
 
 # --------------------------------------------------- numpy-side glue
+def rally_end_motion(rd, t_open, step=0.2, tail=1.2, frac=0.45,
+                     hold=1.0):
+    """When the four players stop contesting the point.
+
+    THE USER'S IDEA (2026-08-21), and it is the only uncontaminated
+    channel available for this. The candidate stream cannot answer it:
+    2529 candidates cover 148 contacts, so peaks are dense EVERYWHERE
+    including dead time, and a gap rule over candidates never fires -
+    the version that tried it made the window LOOSER (687 kept, up
+    from 637). Confident candidates cannot answer it either, because
+    between-point knocks score exactly as confidently as real shots.
+
+    Player motion is a different instrument, on tracks measured at
+    99%+, and rally-end is a whole-court state change rather than a
+    per-frame judgement: during a point somebody is always reacting
+    hard, and once it is over all four settle into walking.
+
+    Self-calibrating, because absolute speed means nothing across
+    zooms: the reference is this rally's OWN early motion, taken from
+    the first seconds after the serve, which are in-play by
+    construction. The rally is over at the last moment motion is still
+    a real fraction of that, sustained for `hold` seconds so a single
+    still frame mid-rally cannot end it early.
+
+    Returns None when there are not four tracks - never a guess."""
+    tids = player_tracks(rd)
+    if len(tids) != 4:
+        return None
+    lo, hi = None, None
+    for tid in tids:
+        t = rd["tracks"][tid]["t"]
+        if not len(t):
+            continue
+        lo = float(t[0]) if lo is None else min(lo, float(t[0]))
+        hi = float(t[-1]) if hi is None else max(hi, float(t[-1]))
+    if lo is None or hi is None or hi - lo < 2.0:
+        return None
+    t0 = max(lo, t_open)
+    samples = []
+    t = t0
+    while t <= hi:
+        sp = total_speed(rd, tids, t)
+        if sp is not None:
+            samples.append((t, sp))
+        t += step
+    if len(samples) < 10:
+        return None
+    early = [sp for t, sp in samples if t <= t0 + 3.0]
+    if not early:
+        return None
+    early.sort()
+    ref = early[len(early) // 2]
+    if ref <= 0:
+        return None
+    thr = frac * ref
+    # last instant still moving like a rally, requiring the quiet that
+    # follows it to PERSIST - a momentary lull between shots is common
+    # and must not be read as the end of the point
+    last = None
+    for i, (t, sp) in enumerate(samples):
+        if sp < thr:
+            continue
+        quiet = [x for x in samples[i + 1:] if x[0] <= t + hold]
+        if quiet and all(x[1] < thr for x in quiet):
+            last = t
+            break
+        last = t
+    return None if last is None else last + tail
+
+
 def _strongest_first(cands, refractory):
     """swing_probe.strongest_first, inlined to keep passes 0-2 free of
     the pose stack. Strongest-wins, not first-wins: a small noise bump
@@ -928,7 +998,8 @@ def _strongest_first(cands, refractory):
 
 
 def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
-                  report=None, floor=0.02, chain=True, gap_p99=2.1):
+                  report=None, floor=0.02, chain=True, gap_p99=2.1,
+                  t_end=None):
     """Contact decoding as SEQUENTIAL PASSES, each one measurable.
 
     THE USER'S PROPOSAL (2026-08-21), and it is the right shape.
@@ -1031,6 +1102,12 @@ def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
         if t_close is None:
             t_close = (prev if prev is not None
                        else strong[-1][0]) + 0.5 * typical_gap
+        # MOTION WINS when it has an answer. The gap rule above is a
+        # fallback and a weak one - it cannot see past candidate
+        # density - while the players stopping is a direct observation
+        # of the thing being asked.
+        if t_end is not None:
+            t_close = min(t_close, t_end)
         cur = [d for d in cur if t_open <= d[0] <= t_close]
     snap("2 window trim", cur)
 
@@ -1230,7 +1307,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21s  window closes at the first impossible gap"
+BUILD = "2026-08-21t  rally end from player motion (user idea)"
 
 
 def main():
@@ -1475,7 +1552,8 @@ def run(a):
         if a.passes:
             _ev, _st, _gh = decode_passes(
                 dets, _s0, pass_gap, pass_same_p01,
-                gap_p99=pass_gap_p99)
+                gap_p99=pass_gap_p99,
+                t_end=rally_end_motion(r["rd"], _t_anc))
             path = [(t, sd, sc, 0) for t, sd, sc, _tid in _ev]
             funnel[held] = _st
         else:
@@ -3075,6 +3153,52 @@ def selftest():
     _m3, _f3 = geom_sides(_rd([0, 1, 1, 1], [100, 120, 700, 720]), 0.0)
     assert _m3 == {0: 0, 1: 0, 2: 1, 3: 1} and _f3 == 0.75, (_m3, _f3)
 
+    # RALLY END FROM MOTION. This can only fail in one direction that
+    # matters - cutting the window ON TOP of real contacts, which no
+    # later stage can undo - so pin both the detection and the
+    # abstention.
+    class _S2(dict):
+        pass
+
+    def _rd_motion(active_until, hi=8.0, step=0.1):
+        """4 players moving steadily until `active_until`, then still.
+
+        SMOOTH motion on purpose. The first version of this fixture
+        was a square wave, which aliased against the 0.2s sampling so
+        that half the samples read zero and the early-motion MEDIAN
+        came out 0 - and rally_end_motion correctly abstained. The
+        function was right and the test was wrong, which is worth
+        keeping in the fixture rather than the commit message: a rally
+        whose early motion medians to zero gets no answer here, by
+        design.
+        """
+        tr = {}
+        ts = [round(k * step, 3) for k in range(int(hi / step) + 1)]
+        for tid in range(4):
+            cx, yn = [], []
+            for t in ts:
+                m = min(t, active_until)
+                cx.append(100.0 + tid * 50 + 300.0 * m)
+                yn.append(300.0 + tid * 100 + 200.0 * m)
+            ser = _S2(t=list(ts), cx=cx, ynorm=yn)
+            ser["side"] = 0 if tid < 2 else 1
+            tr[tid] = ser
+        return {"tracks": tr, "fps": 30.0}
+    #   motion stops at 3.0s -> the window closes shortly after, and
+    #   NEVER before the play it is meant to contain
+    _end = rally_end_motion(_rd_motion(3.0), 0.0)
+    assert _end is not None, "motion end must fire on a clean fixture"
+    assert 3.0 <= _end <= 5.0, _end
+    #   a rally that never quiets must not be truncated early
+    _end2 = rally_end_motion(_rd_motion(8.0), 0.0)
+    assert _end2 is None or _end2 >= 8.0, _end2
+    #   fewer than four tracks: abstain, never guess. A wrong end here
+    #   deletes contacts silently, so None must reach the caller and
+    #   let the gap fallback stand.
+    _bad = _rd_motion(3.0)
+    del _bad["tracks"][3]
+    assert rally_end_motion(_bad, 0.0) is None
+
     # PASS FUNNEL. Two properties, both of which a staged decoder can
     # silently violate.
     #   1 NO PASS MAY READ TRUTH — decode_passes takes truth_ts only to
@@ -3188,7 +3312,8 @@ def selftest():
     ok_y, _n2, w_y, _w2 = score_order(("y", "x"), heavy)
     assert ok_x < ok_y and w_x > w_y, "weighting must be able to flip it"
 
-    print("selftest OK: geom_sides (mapping + inversion), "
+    print("selftest OK: rally-end from motion, "
+          "geom_sides (mapping + inversion), "
           "pass funnel (truth-blind, monotone), "
           "same-side policy (delete/insert/auto), "
           "diagonal (cross-court serve), order sweep "
