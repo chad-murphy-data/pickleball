@@ -38,6 +38,8 @@ import itertools
 import json
 import statistics
 
+BUILD = "2026-08-22f  cross_pad family"
+
 EARLY_COST = 10.0          # seconds of play destroyed, per second
 LATE_COST = 1.0            # seconds of dead time admitted, per second
 
@@ -322,6 +324,7 @@ def main():
         selftest()
         return
 
+    print(f"end_sweep build {BUILD}")
     with open(a.dump) as fh:
         blob = json.load(fh)
     rallies = {int(k): v for k, v in blob["rallies"].items()}
