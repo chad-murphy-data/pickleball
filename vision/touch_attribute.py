@@ -915,6 +915,48 @@ def assign_names(events, rec, near_team, flip):
 
 
 # --------------------------------------------------- numpy-side glue
+def rally_motion_dump(rd, t_open, step=0.2):
+    """Every motion quantity an end-of-point rule could want, sampled.
+
+    NOT a detector - an OBSERVER. rally_end_motion is measured (fires
+    15/15, median +8.97s late) and stays untouched; this walks the same
+    tracks and records what it saw so a rule can be swept offline
+    instead of re-running the pose stack for every threshold.
+
+    Per sample: summed speed (what rally_end_motion thresholds), and
+    per-player (cx, y_bottom) so the user's OTHER idea - all four
+    retreating from the kitchen - can be tested from the same dump
+    without touching video again. Kitchen distance is deliberately NOT
+    precomputed: which y is 'toward the net' depends on side, and
+    baking that in would freeze a choice the sweep should be free to
+    make."""
+    tids = player_tracks(rd)
+    if len(tids) != 4:
+        return None
+    lo = hi = None
+    for tid in tids:
+        t = rd["tracks"][tid]["t"]
+        if not len(t):
+            continue
+        lo = float(t[0]) if lo is None else min(lo, float(t[0]))
+        hi = float(t[-1]) if hi is None else max(hi, float(t[-1]))
+    if lo is None or hi is None or hi - lo < 2.0:
+        return None
+    out = {"t": [], "speed": [], "xy": {str(tid): [] for tid in tids}}
+    t = max(lo, t_open)
+    while t <= hi:
+        sp = total_speed(rd, tids, t)
+        if sp is not None:
+            out["t"].append(round(t, 3))
+            out["speed"].append(round(sp, 4))
+            for tid in tids:
+                b = box_at(rd["tracks"][tid], t)
+                out["xy"][str(tid)].append(
+                    None if b is None else [round(b[0], 2), round(b[1], 2)])
+        t += step
+    return out if len(out["t"]) >= 10 else None
+
+
 def rally_end_motion(rd, t_open, step=0.2, tail=1.2, frac=0.45,
                      hold=1.0):
     """When the four players stop contesting the point.
@@ -1394,7 +1436,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22d  resume rule tuned on the measured gap distribution"
+BUILD = "2026-08-22e  --dump-events: record once, sweep offline"
 
 
 def main():
@@ -1469,6 +1511,16 @@ def main():
                          "and accepts a missed contact between them; "
                          "auto picks per pair on the gap and the DP's "
                          "own ghost")
+    ap.add_argument("--dump-events", default=None, metavar="PATH",
+                    help="record every per-rally observation an "
+                         "end-of-point rule could read - crossing "
+                         "times, raw flight segments, the net line, "
+                         "the motion series, per-player positions, "
+                         "decoded events and the true contacts - to "
+                         "JSON. Then vision/end_sweep.py sweeps rules "
+                         "against it in seconds with no video and no "
+                         "pose stack, instead of spending a full run "
+                         "per threshold")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -1492,6 +1544,7 @@ def run(a):
     # keeping the declarations together and above everything.
     votes_by_rally = {}
     paths = {}
+    event_dump = {}
     side_frac = []
     cross_count = {}
     anchor_by_rally = {}
@@ -1677,6 +1730,20 @@ def run(a):
         paths[held] = path
         dets_by_rally[held] = dets
 
+        if a.dump_events:
+            # RECORD, do not judge. Five window rules have now been
+            # tried and every one cost a full run of the pose stack to
+            # find out it was wrong - the sweep that finally tuned the
+            # resume rule only worked because contact labels were
+            # already on disk. Crossings and motion are not, so they
+            # get written down once and swept offline thereafter.
+            event_dump[held] = {
+                "anchor": round(_t_anc, 3),
+                "motion": rally_motion_dump(r["rd"], _t_anc),
+                "events": [[round(t, 3), int(s)] for t, s, _sc, _g in path],
+                "true_contacts": [round(c[0], 3) for c in r["contacts"]],
+            }
+
     # ---- ball flights per rally, matched to the first two decoded
     # contacts. Only contacts 0 and 1 are useful for the BINDING: the
     # log names the server and the receiver and nobody else, so a ball
@@ -1718,6 +1785,22 @@ def run(a):
             if _nl is not None:
                 _nx, _cts = BV.crossings(segs, _nl[0])
                 cross_count[cum] = (_nx, len(segs), _nl, _cts)
+            if a.dump_events and cum in event_dump:
+                # the RAW segments, not just the crossing times. A
+                # crossing is one reading of a segment; direction,
+                # height at the net and how many frames actually saw
+                # the ball are all thrown away by the count, and a
+                # better rule may well need them. Dumping the reading
+                # and not the observation is how a sweep ends up
+                # re-running the video anyway.
+                event_dump[cum]["net_y"] = (
+                    None if _nl is None else round(float(_nl[0]), 2))
+                event_dump[cum]["crossings"] = (
+                    [round(t, 3) for t in _cts] if _nl is not None else [])
+                event_dump[cum]["segments"] = [
+                    [round(s[0], 3), round(s[1][0], 2), round(s[1][1], 2),
+                     round(s[2], 3), round(s[3][0], 2), round(s[3][1], 2),
+                     int(s[4])] for s in segs]
             pts = {}
             for k in (0, 1):
                 pt, _kind = BV.ball_at_contact(segs, evs[k][0])
@@ -2880,6 +2963,23 @@ def run(a):
         r_, w_, x_ = per_player_kind[nm]
         print(f"    {nm:<22}{p:>5}{t_:>6}{p - t_:>+7}"
               f"{r_:>7}{w_:>7}{x_:>7}")
+
+    if a.dump_events:
+        import json as _json
+        with open(a.dump_events, "w") as fh:
+            _json.dump({"build": BUILD,
+                        "gap_p99": pass_gap_p99,
+                        "typical_gap": pass_gap,
+                        "rallies": event_dump}, fh)
+        _wx = sum(1 for v in event_dump.values() if v.get("crossings"))
+        _wm = sum(1 for v in event_dump.values() if v.get("motion"))
+        print(f"\ndump: {len(event_dump)} rallies -> {a.dump_events} "
+              f"({_wx} with crossings, {_wm} with motion)")
+        print("  sweep it with: python vision/end_sweep.py "
+              f"{a.dump_events}")
+        if not _wx:
+            print("  NO CROSSINGS RECORDED - pass --video or the sweep "
+                  "can only see motion")
 
 
 def rd_of(rallies, cum):
