@@ -1128,6 +1128,34 @@ def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
     return cur, stages, ghosts
 
 
+def trim_tail(evs, gap_p99, slack=1.25):
+    """Drop the trailing events separated from play by an impossible gap.
+
+    THE GAP RULE, MOVED TO WHERE IT WORKS. Applied to CANDIDATES it did
+    nothing: 2529 of them cover 148 contacts, so peaks are dense
+    everywhere and a rally-sized hole never appears. The DECODED list
+    is sparse - 184 events - and a break in it is real.
+
+    Post-hoc on purpose. This runs AFTER the chain, so it can only
+    remove events from the tail; it can never prevent one from being
+    found, which is the failure mode the funnel's recall column exists
+    to catch and the one no later stage can undo.
+
+    The threshold comes from the labels: real contacts are never more
+    than ~2.07s apart (p99 of 286 measured gaps), so a larger break
+    means play stopped. Roughly 1% of genuine gaps exceed p99, which is
+    the price, and it is paid at the END of a rally where a lost
+    contact costs one touch rather than a whole side bit.
+    """
+    if len(evs) < 2:
+        return list(evs), 0
+    cut = max(2.5, slack * gap_p99)
+    for i in range(1, len(evs)):
+        if evs[i][0] - evs[i - 1][0] > cut:
+            return list(evs[:i]), len(evs) - i
+    return list(evs), 0
+
+
 def same_side_policy(evs, path, mode, typical_gap):
     """What to do when two CONSECUTIVE emitted events share a side.
 
@@ -1307,7 +1335,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21u  MEASURE the rally-end detector against truth"
+BUILD = "2026-08-21v  + --trim-tail (gap rule where it works)"
 
 
 def main():
@@ -1367,6 +1395,11 @@ def main():
                          "cluster merge -> window trim -> chain) with "
                          "a per-stage funnel, instead of one DP that "
                          "settles all of it at once")
+    ap.add_argument("--trim-tail", action="store_true",
+                    help="drop decoded events separated from play by a "
+                         "gap no rally could contain. Post-hoc, so it "
+                         "can only remove from the tail and never "
+                         "prevent a contact being found")
     ap.add_argument("--same-side",
                     choices=["overwrite", "delete", "insert", "auto"],
                     default="overwrite",
@@ -1404,6 +1437,7 @@ def run(a):
     cross_count = {}
     anchor_by_rally = {}
     end_audit = []
+    n_trimmed = 0
     funnel = {}
     extra_where = Counter()
     extra_dt = []
@@ -1695,6 +1729,9 @@ def run(a):
         if rec is None or not evs:
             continue
         rd = rd_of(rallies, cum)
+        if a.trim_tail:
+            evs, _nt = trim_tail(evs, pass_gap_p99)
+            n_trimmed += _nt
         evs, fixed, _d, _i = same_side_policy(
             evs, paths.get(cum), a.same_side, typical_gap)
         n_deleted += _d
@@ -2361,6 +2398,11 @@ def run(a):
                   f"means one bit is wrong,\n  and the less reliable "
                   f"decider is flipped) — deciders involved: "
                   f"{Counter(d for pair in diag_fixes for d in pair).most_common()}")
+    if a.trim_tail:
+        print(f"\nTAIL TRIM: dropped {n_trimmed} decoded events past "
+              f"an impossible gap\n  (threshold "
+              f"{max(2.5, 1.25 * pass_gap_p99):.2f}s, from the labels' "
+              f"p99 inter-contact gap of {pass_gap_p99:.2f}s)")
     print(f"\nSAME-SIDE POLICY '{a.same_side}': deleted "
           f"{n_deleted} cluster duplicates, kept {n_inserted} pairs "
           f"with a missed contact between them\n  (typical true "
@@ -3188,6 +3230,29 @@ def selftest():
     _m3, _f3 = geom_sides(_rd([0, 1, 1, 1], [100, 120, 700, 720]), 0.0)
     assert _m3 == {0: 0, 1: 0, 2: 1, 3: 1} and _f3 == 0.75, (_m3, _f3)
 
+    # TAIL TRIM. It can only ever REMOVE events, and only from the
+    # tail, so the properties worth pinning are that it stops at the
+    # FIRST break rather than the largest, and that it is inert on a
+    # clean rally - a trim that fires on normal play would delete real
+    # contacts at the exact place they are hardest to notice.
+    _ev = [(0.0, 0, "a"), (0.9, 1, "b"), (1.8, 0, "c"),
+           (9.0, 1, "junk1"), (10.0, 0, "junk2")]
+    _kept, _n = trim_tail(_ev, 2.07)
+    assert [x[2] for x in _kept] == ["a", "b", "c"], _kept
+    assert _n == 2, _n
+    #   inert on continuous play, even with gaps at the p99 edge
+    _clean = [(0.0, 0, "a"), (2.0, 1, "b"), (4.0, 0, "c")]
+    _k2, _n2 = trim_tail(_clean, 2.07)
+    assert _n2 == 0 and len(_k2) == 3, (_k2, _n2)
+    #   stops at the FIRST break: a later, larger gap must not be the
+    #   one chosen, or events after a short break would survive
+    _two = [(0.0, 0, "a"), (5.0, 1, "x"), (30.0, 0, "y")]
+    _k3, _n3 = trim_tail(_two, 2.07)
+    assert [x[2] for x in _k3] == ["a"] and _n3 == 2, (_k3, _n3)
+    #   degenerate inputs return unchanged rather than raising
+    assert trim_tail([], 2.07) == ([], 0)
+    assert trim_tail([(0.0, 0, "a")], 2.07) == ([(0.0, 0, "a")], 0)
+
     # RALLY END FROM MOTION. This can only fail in one direction that
     # matters - cutting the window ON TOP of real contacts, which no
     # later stage can undo - so pin both the detection and the
@@ -3347,7 +3412,7 @@ def selftest():
     ok_y, _n2, w_y, _w2 = score_order(("y", "x"), heavy)
     assert ok_x < ok_y and w_x > w_y, "weighting must be able to flip it"
 
-    print("selftest OK: rally-end from motion, "
+    print("selftest OK: tail trim, rally-end from motion, "
           "geom_sides (mapping + inversion), "
           "pass funnel (truth-blind, monotone), "
           "same-side policy (delete/insert/auto), "
