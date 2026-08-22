@@ -1198,7 +1198,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21p  one anchor per rally (decoder + naming agree)"
+BUILD = "2026-08-21q  hoist accumulators; anchor fix was a NULL"
 
 
 def main():
@@ -1282,8 +1282,23 @@ def run(a):
     allow_movement = getattr(a, "with_movement", False)
     ball_by_rally = {}
     voter_tally = defaultdict(lambda: [0, 0])
+    # ---- EVERY per-run accumulator, declared in ONE place above any
+    # loop that fills it. Three separate UnboundLocalErrors in this
+    # thread (side_frac, funnel, and this pattern again) all had the
+    # same shape: a dict introduced next to the code that READS it
+    # while the code that WRITES it runs earlier. --selftest cannot
+    # catch it because it never enters run(), so the only defence is
+    # keeping the declarations together and above everything.
     votes_by_rally = {}
     paths = {}
+    side_frac = []
+    cross_count = {}
+    anchor_by_rally = {}
+    funnel = {}
+    extra_where = Counter()
+    extra_dt = []
+    t_ok = t_tot = 0
+    n_deleted = n_inserted = 0
     diag_fixes = []
     picks_by_rally = {}
     ctx_by_rally = {}
@@ -1392,9 +1407,6 @@ def run(a):
         raise SystemExit("no train rallies with pose — check --pose-dir")
 
     # ---- decode every rally (leave-one-rally-out, as swing_explore)
-    side_frac = []
-    cross_count = {}
-    anchor_by_rally = {}
     decoded, dets_by_rally = {}, {}
     for held in sorted(rallies):
         Xtr, ytr = [], []
@@ -1543,11 +1555,6 @@ def run(a):
     tot = ok = 0
     alt_changed = no_geom = unreadable = reassigned = 0
     serve_checked = serve_agree = 0
-    t_ok = t_tot = 0
-    n_deleted = n_inserted = 0
-    funnel = {}
-    extra_where = Counter()
-    extra_dt = []
     # this footage's own inter-contact interval, not a constant
     _g = sorted(t2 - t1 for c in truth
                 for t1, t2 in zip([x[0] for x in truth[c]],
