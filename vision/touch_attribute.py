@@ -1588,7 +1588,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22i  --chain soft + --segs-from: the loop moves off your machine"
+BUILD = "2026-08-22j  --eval-split: the certification arm"
 
 
 def main():
@@ -1725,6 +1725,14 @@ def main():
                          "against it in seconds with no video and no "
                          "pose stack, instead of spending a full run "
                          "per threshold")
+    ap.add_argument("--eval-split", choices=["train", "holdout", "all"],
+                    default="train",
+                    help="which side of label_split.csv to grade. "
+                         "train (default) = the tuning set, every "
+                         "number so far. holdout = the sealed rallies "
+                         "- run ONLY with a frozen configuration, and "
+                         "after looking, relabel them dev: a seen "
+                         "holdout is not a holdout")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
@@ -1809,8 +1817,13 @@ def run(a):
 
     rosters = load_rosters(Path(a.windows))
     labels = load_labels(Path(a.labels), rosters)
+    # --eval-split holdout is the certification arm. Every number this
+    # script has ever printed is train-side; the sealed rallies are
+    # graded ONLY when a configuration is frozen, and any holdout look
+    # is logged (a set that has been seen is a dev set, whatever the
+    # file calls it - relabel in label_split.csv after looking).
     train = {int(r["rally_cum"]) for r in csv.DictReader(open(a.split))
-             if r["split"] == "train"}
+             if r["split"] == a.eval_split or a.eval_split == "all"}
     wrows = {int(r["rally_cum"]): r
              for r in csv.DictReader(open(a.windows))}
     names_by_uuid = {}
