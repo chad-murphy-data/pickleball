@@ -1198,7 +1198,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21o  + ball net-crossing count (independent witness)"
+BUILD = "2026-08-21p  one anchor per rally (decoder + naming agree)"
 
 
 def main():
@@ -1394,6 +1394,7 @@ def run(a):
     # ---- decode every rally (leave-one-rally-out, as swing_explore)
     side_frac = []
     cross_count = {}
+    anchor_by_rally = {}
     decoded, dets_by_rally = {}, {}
     for held in sorted(rallies):
         Xtr, ytr = [], []
@@ -1406,9 +1407,18 @@ def run(a):
             ytr += y
         model = SE.fit_logreg(np.stack(Xtr), np.array(ytr, float))
         r = rallies[held]
+        # ONE ANCHOR PER RALLY, computed here and reused everywhere.
+        # The decode loop used fallback 0.0 while the production path
+        # used evs[0][0], so side_map could return DIFFERENT near/far
+        # assignments in the two places - the decoder and the naming
+        # layer silently disagreeing about which side is which. That is
+        # what drove elimination re-assignments 7 -> 41 under
+        # --geom-side and cost 14 points of attribution while every
+        # other number improved.
+        _t_anc = anchor_time(r["rd"], 0.0, not a.no_settle)
+        anchor_by_rally[held] = _t_anc
         _side_of, _side_frac = (None, 0.0)
         if a.geom_side:
-            _t_anc = anchor_time(r["rd"], 0.0, not a.no_settle)
             _side_of, _side_frac = geom_sides(r["rd"], _t_anc)
             side_frac.append(_side_frac)
         dets = score_rally_tracked(model, r["rd"], _side_of or None)
@@ -1568,8 +1578,10 @@ def run(a):
         nt = effective_near_team(
             near_team, epoch_of_score(rec.get("start_score", "")),
             ends_switch)
+        _t_anc_p = anchor_by_rally.get(
+            cum, anchor_time(rd, evs[0][0], settle))
         tnames, geom_ok = labeller(
-            rd, anchor_time(rd, evs[0][0], settle), rec, nt, flip,
+            rd, _t_anc_p, rec, nt, flip,
             names_by_uuid, events=evs,
             ball_pts=ball_by_rally.get(cum))
         if not geom_ok:
@@ -1579,7 +1591,7 @@ def run(a):
         # names a track, but alternation says which side must have hit,
         # so a track on the illegal side is re-picked from that side's
         # own candidates rather than trusted.
-        sides_p = side_map(rd, anchor_time(rd, evs[0][0], settle))
+        sides_p = side_map(rd, _t_anc_p)
         called = []
         for (t, _s, tid), s_fix in zip(evs, fixed):
             want_near = (s_fix == 0)
