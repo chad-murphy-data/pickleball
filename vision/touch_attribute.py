@@ -1198,7 +1198,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21m  + side channel audit, --geom-side"
+BUILD = "2026-08-21n  two crash fixes; diagnostics behind --full"
 
 
 def main():
@@ -1240,6 +1240,14 @@ def main():
                          "HARMFUL 2026-08-21 (geometry 89%% -> 74%%); "
                          "off by default, kept only so the null "
                          "stays reproducible")
+    ap.add_argument("--full", action="store_true",
+                    help="print every diagnostic block. The default is "
+                         "the headline numbers plus the failure trace; "
+                         "the track census, order sweep, per-voter "
+                         "tables, permutation diagnosis and voter "
+                         "agreement are investigation tools, and "
+                         "printing all of them every run made the "
+                         "output hard to read or paste")
     ap.add_argument("--geom-side", action="store_true",
                     help="give the decoder its detection SIDES from "
                          "the image-y split (side_map) instead of the "
@@ -1384,6 +1392,7 @@ def run(a):
         raise SystemExit("no train rallies with pose — check --pose-dir")
 
     # ---- decode every rally (leave-one-rally-out, as swing_explore)
+    side_frac = []
     decoded, dets_by_rally = {}, {}
     for held in sorted(rallies):
         Xtr, ytr = [], []
@@ -1511,7 +1520,6 @@ def run(a):
     t_ok = t_tot = 0
     n_deleted = n_inserted = 0
     funnel = {}
-    side_frac = []
     extra_where = Counter()
     extra_dt = []
     # this footage's own inter-contact interval, not a constant
@@ -1822,25 +1830,27 @@ def run(a):
           "decoder's PLACEMENT is the binding\n  constraint. Geometry "
           "low here too => the tracks themselves are not cleanly\n  "
           "four players at the anchor, which the census below shows.")
-    print("\nTRACK CENSUS — per rally: geometry hits/total, then the "
-          "SELECTED four as\n  (samples, motion, y_at_anchor), then "
-          "EVERY track at the anchor as y*len, with\n  * marking the "
-          "selected ones. At a serve the formation is one deep player "
-          "and\n  one kitchen player PER SIDE, so expect roughly two "
-          "low y and two high y —\n  a DROPPED far player shows up as "
-          "an unselected deep track, or as no track\n  at all above "
-          "the far kitchen band.")
-    for cum, n_tr, durs, ok_lab, allt in census:
-        gk, gt = per_rally_geom[cum]
-        acc = f"{gk}/{gt}" if gt else "-"
-        print(f"  r{cum:<4} tracks {n_tr:<3} geom {acc:>7}  "
-              f"sel(len,motion,y) {durs}  "
-              f"{'ok' if ok_lab else 'UNREADABLE'}")
-        cells = []
-        for y, ln, is_sel in allt:
-            ytxt = "--" if y is None else str(y)
-            cells.append(f"{'*' if is_sel else ' '}{ytxt}x{ln}")
-        print(f"        all: {'  '.join(cells)}")
+    if a.full:
+        # track census — investigation tool, not a headline
+        print("\nTRACK CENSUS — per rally: geometry hits/total, then the "
+              "SELECTED four as\n  (samples, motion, y_at_anchor), then "
+              "EVERY track at the anchor as y*len, with\n  * marking the "
+              "selected ones. At a serve the formation is one deep player "
+              "and\n  one kitchen player PER SIDE, so expect roughly two "
+              "low y and two high y —\n  a DROPPED far player shows up as "
+              "an unselected deep track, or as no track\n  at all above "
+              "the far kitchen band.")
+        for cum, n_tr, durs, ok_lab, allt in census:
+            gk, gt = per_rally_geom[cum]
+            acc = f"{gk}/{gt}" if gt else "-"
+            print(f"  r{cum:<4} tracks {n_tr:<3} geom {acc:>7}  "
+                  f"sel(len,motion,y) {durs}  "
+                  f"{'ok' if ok_lab else 'UNREADABLE'}")
+            cells = []
+            for y, ln, is_sel in allt:
+                ytxt = "--" if y is None else str(y)
+                cells.append(f"{'*' if is_sel else ' '}{ytxt}x{ln}")
+            print(f"        all: {'  '.join(cells)}")
 
     # ---- PERMUTATION DIAGNOSIS. The per-rally geometry rates are
     # BIMODAL (r2 91%, r5 93%, r13 100% against r14 27%, r4 38%,
@@ -1945,241 +1955,245 @@ def run(a):
               f"had every voter wrong or silent (needs a new witness, "
               f"not a new order).")
 
-    # ---- ORDER SWEEP (user question, 2026-08-21): are some voter
-    # permutations better than others, and is any voter OVERRIDING or
-    # DILUTING a better one while still carrying real signal?
-    #
-    # This is answerable exactly and for free. pick() computes every
-    # voter's call BEFORE applying the order, so the recorded vote
-    # lists do not depend on the cascade at all — every permutation can
-    # be replayed offline against the same recorded truth. No re-run,
-    # no video, no API.
-    #
-    # THREE DIFFERENT PATHOLOGIES, deliberately not pooled:
-    #   OVERRIDE   the voter decided and was wrong while a LOWER-ranked
-    #              voter had it right. Pure ordering damage — free to
-    #              fix, and invisible in any overall accuracy column.
-    #   DILUTION   only exists under majority: a wrong voter pulls the
-    #              count off a correct one. Cascade cannot dilute, so
-    #              the majority baseline below is what measures it.
-    #   BURIED     accurate WHEN IT DECIDES but ranked too low ever to
-    #              decide. This is why accuracy-when-deciding, not
-    #              overall accuracy, is the statistic precedence should
-    #              be earned from: a voter is only consulted where
-    #              everything above it stayed silent, so its overall
-    #              rate is measured on the wrong population.
-    #
-    # Bits are also weighted by CONTACTS RENAMED. A side bit flips the
-    # names of both players on one side for the whole rally, so under
-    # alternation it costs every contact of that parity — a bit in a
-    # 25-contact rally is not worth the same as one in a 2-contact
-    # rally, and unweighted bit counts hide that.
-    bits = []
-    for cum in sorted(votes_by_rally):
-        real = {tid: v.most_common(1)[0][0]
-                for tid, v in truth_vote[cum].items() if v}
-        if not real:
-            continue
-        for who, votes in votes_by_rally[cum].items():
-            truth_tid = next((t for t, nm in real.items() if nm == who),
-                             None)
-            meta = picks_by_rally.get(cum, {}).get(who)
-            if truth_tid is None or meta is None:
+    if a.full:
+        # order sweep + per-voter + veto + leave-one-out — investigation tool, not a headline
+        # ---- ORDER SWEEP (user question, 2026-08-21): are some voter
+        # permutations better than others, and is any voter OVERRIDING or
+        # DILUTING a better one while still carrying real signal?
+        #
+        # This is answerable exactly and for free. pick() computes every
+        # voter's call BEFORE applying the order, so the recorded vote
+        # lists do not depend on the cascade at all — every permutation can
+        # be replayed offline against the same recorded truth. No re-run,
+        # no video, no API.
+        #
+        # THREE DIFFERENT PATHOLOGIES, deliberately not pooled:
+        #   OVERRIDE   the voter decided and was wrong while a LOWER-ranked
+        #              voter had it right. Pure ordering damage — free to
+        #              fix, and invisible in any overall accuracy column.
+        #   DILUTION   only exists under majority: a wrong voter pulls the
+        #              count off a correct one. Cascade cannot dilute, so
+        #              the majority baseline below is what measures it.
+        #   BURIED     accurate WHEN IT DECIDES but ranked too low ever to
+        #              decide. This is why accuracy-when-deciding, not
+        #              overall accuracy, is the statistic precedence should
+        #              be earned from: a voter is only consulted where
+        #              everything above it stayed silent, so its overall
+        #              rate is measured on the wrong population.
+        #
+        # Bits are also weighted by CONTACTS RENAMED. A side bit flips the
+        # names of both players on one side for the whole rally, so under
+        # alternation it costs every contact of that parity — a bit in a
+        # 25-contact rally is not worth the same as one in a 2-contact
+        # rally, and unweighted bit counts hide that.
+        bits = []
+        for cum in sorted(votes_by_rally):
+            real = {tid: v.most_common(1)[0][0]
+                    for tid, v in truth_vote[cum].items() if v}
+            if not real:
                 continue
-            par = meta[1] % 2
-            w = sum(1 for k in range(len(truth[cum])) if k % 2 == par)
-            bits.append((cum, who, truth_tid,
-                         {v: t for v, t in votes}, w))
-
-    def _decide(order, by):
-        return decide_by_order(order, by)
-
-    def _run(order):
-        return score_order(order, bits)
-
-    if bits:
-        names = sorted({v for _c, _w, _t, by, _x in bits for v in by})
-        print(f"\nORDER SWEEP — {len(bits)} side bits, "
-              f"{sum(w for *_r, w in bits)} contacts at stake, "
-              f"{len(names)} voters ({math.factorial(len(names))} "
-              f"orderings)")
-        scored = []
-        for perm in itertools.permutations(names):
-            # NOTE THE UNDERSCORES, they are load-bearing. `ok` and `n`
-            # are run()'s ATTRIBUTION counters, and an earlier version
-            # of this loop rebound them - so ATTRIBUTION reported the
-            # last permutation's bit score (21/118) rather than the
-            # real 85/118, with every other number on the page
-            # unchanged. A diagnostic must never be able to move a
-            # headline result; see the snapshot at the print site.
-            _ok, _n, _wok, _wn = score_order(perm, bits)
-            scored.append((_wok, _ok, perm))
-        scored.sort(key=lambda r: (-r[0], -r[1]))
-        _wn_tot = sum(w for *_r, w in bits)
-        # HOW MANY ORDERINGS ACTUALLY DIFFER. Most permutations are
-        # observationally identical here: reordering voters that never
-        # fire on the same bit changes nothing. Printing the count of
-        # DISTINCT outcomes keeps "the best of 720" from sounding like
-        # 720 independent chances to win.
-        distinct = len({r[0] for r in scored})
-        best_w = scored[0][0]
-        n_best = sum(1 for r in scored if r[0] == best_w)
-        cur = tuple(cascade) if cascade else None
-        print(f"  {distinct} distinct outcomes across all orderings; "
-              f"{n_best} orderings tie for best")
-        print("  best orderings (contact-weighted, then bits):")
-        seen_p = set()
-        for _wok, _ok, perm in scored[:400]:
-            key = (_wok, _ok)
-            if key in seen_p:
-                continue
-            seen_p.add(key)
-            if len(seen_p) > 6:
-                break
-            print(f"    {_wok:>4}/{_wn_tot} contacts  "
-                  f"{_ok:>2}/{len(bits)} bits   {','.join(perm)}")
-        if cur:
-            ok_c, n_c, wok_c, wn_c = score_order(cur, bits)
-            rank = 1 + sum(1 for r in scored if r[0] > wok_c)
-            print(f"  CURRENT --cascade {','.join(cur)}: "
-                  f"{wok_c}/{wn_c} contacts, {ok_c}/{n_c} bits "
-                  f"(rank {rank} of {len(scored)})")
-        # MAJORITY BASELINE — the dilution test. Cascade cannot dilute;
-        # if majority scores worse, the gap IS dilution.
-        ok_m = wok_m = 0
-        for _cum, _who, truth_tid, by, w in bits:
-            if not by:
-                continue
-            got = Counter(by.values()).most_common(1)[0][0]
-            ok_m += got == truth_tid
-            wok_m += w * (got == truth_tid)
-        print(f"  MAJORITY of all voters (no precedence): "
-              f"{wok_m}/{_wn_tot} contacts, {ok_m}/{len(bits)} bits "
-              f"— the gap to the best cascade is DILUTION")
-
-        # ---- PER-VOTER: the three pathologies, under the CURRENT order
-        best_perm = scored[0][2]
-        for tag, order in (("current", cur), ("best", best_perm)):
-            if not order:
-                continue
-            dec = defaultdict(lambda: [0, 0])      # decided / right
-            over = defaultdict(int)                # wrong, someone below right
-            solo = defaultdict(int)                # right, everyone else wrong
-            for _cum, _who, truth_tid, by, w in bits:
-                got, v = _decide(order, by)
-                if v is None:
+            for who, votes in votes_by_rally[cum].items():
+                truth_tid = next((t for t, nm in real.items() if nm == who),
+                                 None)
+                meta = picks_by_rally.get(cum, {}).get(who)
+                if truth_tid is None or meta is None:
                     continue
-                dec[v][0] += 1
-                dec[v][1] += got == truth_tid
-                others = [t for k, t in by.items() if k != v]
-                if got != truth_tid and any(t == truth_tid
-                                            for t in others):
-                    over[v] += 1
-                if got == truth_tid and others and not any(
-                        t == truth_tid for t in others):
-                    solo[v] += 1
-            print(f"\n  PER-VOTER under the {tag} order "
-                  f"({','.join(order)})")
-            print(f"    {'voter':<10}{'fires':>6}{'decides':>9}"
-                  f"{'right when deciding':>21}{'overrides':>11}"
-                  f"{'sole rescue':>13}")
+                par = meta[1] % 2
+                w = sum(1 for k in range(len(truth[cum])) if k % 2 == par)
+                bits.append((cum, who, truth_tid,
+                             {v: t for v, t in votes}, w))
+
+        def _decide(order, by):
+            return decide_by_order(order, by)
+
+        def _run(order):
+            return score_order(order, bits)
+
+        if bits:
+            names = sorted({v for _c, _w, _t, by, _x in bits for v in by})
+            print(f"\nORDER SWEEP — {len(bits)} side bits, "
+                  f"{sum(w for *_r, w in bits)} contacts at stake, "
+                  f"{len(names)} voters ({math.factorial(len(names))} "
+                  f"orderings)")
+            scored = []
+            for perm in itertools.permutations(names):
+                # NOTE THE UNDERSCORES, they are load-bearing. `ok` and `n`
+                # are run()'s ATTRIBUTION counters, and an earlier version
+                # of this loop rebound them - so ATTRIBUTION reported the
+                # last permutation's bit score (21/118) rather than the
+                # real 85/118, with every other number on the page
+                # unchanged. A diagnostic must never be able to move a
+                # headline result; see the snapshot at the print site.
+                _ok, _n, _wok, _wn = score_order(perm, bits)
+                scored.append((_wok, _ok, perm))
+            scored.sort(key=lambda r: (-r[0], -r[1]))
+            _wn_tot = sum(w for *_r, w in bits)
+            # HOW MANY ORDERINGS ACTUALLY DIFFER. Most permutations are
+            # observationally identical here: reordering voters that never
+            # fire on the same bit changes nothing. Printing the count of
+            # DISTINCT outcomes keeps "the best of 720" from sounding like
+            # 720 independent chances to win.
+            distinct = len({r[0] for r in scored})
+            best_w = scored[0][0]
+            n_best = sum(1 for r in scored if r[0] == best_w)
+            cur = tuple(cascade) if cascade else None
+            print(f"  {distinct} distinct outcomes across all orderings; "
+                  f"{n_best} orderings tie for best")
+            print("  best orderings (contact-weighted, then bits):")
+            seen_p = set()
+            for _wok, _ok, perm in scored[:400]:
+                key = (_wok, _ok)
+                if key in seen_p:
+                    continue
+                seen_p.add(key)
+                if len(seen_p) > 6:
+                    break
+                print(f"    {_wok:>4}/{_wn_tot} contacts  "
+                      f"{_ok:>2}/{len(bits)} bits   {','.join(perm)}")
+            if cur:
+                ok_c, n_c, wok_c, wn_c = score_order(cur, bits)
+                rank = 1 + sum(1 for r in scored if r[0] > wok_c)
+                print(f"  CURRENT --cascade {','.join(cur)}: "
+                      f"{wok_c}/{wn_c} contacts, {ok_c}/{n_c} bits "
+                      f"(rank {rank} of {len(scored)})")
+            # MAJORITY BASELINE — the dilution test. Cascade cannot dilute;
+            # if majority scores worse, the gap IS dilution.
+            ok_m = wok_m = 0
+            for _cum, _who, truth_tid, by, w in bits:
+                if not by:
+                    continue
+                got = Counter(by.values()).most_common(1)[0][0]
+                ok_m += got == truth_tid
+                wok_m += w * (got == truth_tid)
+            print(f"  MAJORITY of all voters (no precedence): "
+                  f"{wok_m}/{_wn_tot} contacts, {ok_m}/{len(bits)} bits "
+                  f"— the gap to the best cascade is DILUTION")
+
+            # ---- PER-VOTER: the three pathologies, under the CURRENT order
+            best_perm = scored[0][2]
+            for tag, order in (("current", cur), ("best", best_perm)):
+                if not order:
+                    continue
+                dec = defaultdict(lambda: [0, 0])      # decided / right
+                over = defaultdict(int)                # wrong, someone below right
+                solo = defaultdict(int)                # right, everyone else wrong
+                for _cum, _who, truth_tid, by, w in bits:
+                    got, v = _decide(order, by)
+                    if v is None:
+                        continue
+                    dec[v][0] += 1
+                    dec[v][1] += got == truth_tid
+                    others = [t for k, t in by.items() if k != v]
+                    if got != truth_tid and any(t == truth_tid
+                                                for t in others):
+                        over[v] += 1
+                    if got == truth_tid and others and not any(
+                            t == truth_tid for t in others):
+                        solo[v] += 1
+                print(f"\n  PER-VOTER under the {tag} order "
+                      f"({','.join(order)})")
+                print(f"    {'voter':<10}{'fires':>6}{'decides':>9}"
+                      f"{'right when deciding':>21}{'overrides':>11}"
+                      f"{'sole rescue':>13}")
+                for v in names:
+                    fires = sum(1 for b in bits if v in b[3])
+                    d, r = dec[v]
+                    rate = f"{r}/{d} = {r / d:.0%}" if d else "never decides"
+                    print(f"    {v:<10}{fires:>6}{d:>9}{rate:>21}"
+                          f"{over[v]:>11}{solo[v]:>13}")
+                print("    overrides = decided WRONG while a voter below it "
+                      "had the answer (free to fix)")
+                print("    sole rescue = decided RIGHT when every other "
+                      "voter was wrong (irreplaceable)")
+
+            # ---- VETO GRID. The trace showed the binding failure is not
+            # an ordering problem at all: `contact` led and was wrong on 3
+            # of the 4 broken bits with a lower voter right each time, yet
+            # demoting it costs the 21 bits it gets right. A cascade cannot
+            # express "usually trust it, but not when the others gang up",
+            # so no permutation can fix that - which is exactly why this
+            # grid is scored beside the sweep rather than instead of it.
+            print("\n  VETO GRID — leader stands unless the voters below it "
+                  "overturn it\n    (k = minimum dissenters; unan = they must "
+                  "be unanimous, maj = strict majority)")
+            for tag, order in (("current", cur), ("best", best_perm)):
+                if not order:
+                    continue
+                row = []
+                for mode in ("unan", "maj"):
+                    for k in (2, 3):
+                        okv, _n, wv, _w = score_order(order, bits, k, mode)
+                        row.append(f"{mode}/k{k} {wv:>4}c {okv:>2}b")
+                base_ok, _n, base_w, _w = score_order(order, bits)
+                print(f"    {tag:<8} no veto {base_w:>4}c {base_ok:>2}b   "
+                      + "   ".join(row))
+
+            # ---- LEAVE-ONE-OUT: is any voter net harmful at ANY position?
+            print("\n  LEAVE-ONE-OUT (best achievable with this voter "
+                  "removed entirely)")
+            full_best = scored[0][0]
             for v in names:
-                fires = sum(1 for b in bits if v in b[3])
-                d, r = dec[v]
-                rate = f"{r}/{d} = {r / d:.0%}" if d else "never decides"
-                print(f"    {v:<10}{fires:>6}{d:>9}{rate:>21}"
-                      f"{over[v]:>11}{solo[v]:>13}")
-            print("    overrides = decided WRONG while a voter below it "
-                  "had the answer (free to fix)")
-            print("    sole rescue = decided RIGHT when every other "
-                  "voter was wrong (irreplaceable)")
+                rest = [x for x in names if x != v]
+                if not rest:
+                    continue
+                b = max(_run(pm)[2] for pm in itertools.permutations(rest))
+                flag = "  <- removing it HELPS" if b > full_best else ""
+                print(f"    without {v:<10} {b:>4}/{_wn_tot} contacts "
+                      f"(best with all = {full_best}){flag}")
+            print("  NOTE ON SELECTION: with "
+                  f"{len(bits)} bits, argmax over {len(scored)} orderings "
+                  "overfits. Prefer the\n  ordering justified by the "
+                  "right-when-deciding and overrides columns, and treat "
+                  "ties as ties.")
 
-        # ---- VETO GRID. The trace showed the binding failure is not
-        # an ordering problem at all: `contact` led and was wrong on 3
-        # of the 4 broken bits with a lower voter right each time, yet
-        # demoting it costs the 21 bits it gets right. A cascade cannot
-        # express "usually trust it, but not when the others gang up",
-        # so no permutation can fix that - which is exactly why this
-        # grid is scored beside the sweep rather than instead of it.
-        print("\n  VETO GRID — leader stands unless the voters below it "
-              "overturn it\n    (k = minimum dissenters; unan = they must "
-              "be unanimous, maj = strict majority)")
-        for tag, order in (("current", cur), ("best", best_perm)):
-            if not order:
+    if a.full:
+        # permutation diagnosis + voter agreement — investigation tool, not a headline
+        print("\nPERMUTATION DIAGNOSIS (geometric label vs each track's "
+              "voted true identity)")
+        kinds = Counter()
+        for cum in sorted(label_of):
+            got = label_of[cum]
+            real = {tid: v.most_common(1)[0][0]
+                    for tid, v in truth_vote[cum].items() if v}
+            shared = [t for t in real if t in got]
+            if not shared:
                 continue
-            row = []
-            for mode in ("unan", "maj"):
-                for k in (2, 3):
-                    okv, _n, wv, _w = score_order(order, bits, k, mode)
-                    row.append(f"{mode}/k{k} {wv:>4}c {okv:>2}b")
-            base_ok, _n, base_w, _w = score_order(order, bits)
-            print(f"    {tag:<8} no veto {base_w:>4}c {base_ok:>2}b   "
-                  + "   ".join(row))
+            exact = sum(got[t] == real[t] for t in shared)
+            teams_got = {t: name_team.get(got[t]) for t in shared}
+            teams_real = {t: name_team.get(real[t]) for t in shared}
+            team_ok = sum(teams_got[t] == teams_real[t] for t in shared)
+            n = len(shared)
+            if exact == n:
+                kind = "correct"
+            elif team_ok == n:
+                kind = "PARTNERS SWAPPED (left/right)"
+            elif team_ok == 0:
+                kind = "TEAMS SWAPPED (near/far)"
+            else:
+                kind = "mixed/scrambled"
+            kinds[kind] += 1
+            print(f"  r{cum:<4} {n} tracks matched, {exact} named right, "
+                  f"{team_ok} on the right team -> {kind}")
+        print("  " + ", ".join(f"{k}: {v}" for k, v in kinds.most_common()))
+        print("  A large PARTNERS-SWAPPED count means the left/right read "
+              "is inverted per rally\n  (stacking, or the anchor being read "
+              "before the players settle). A large\n  TEAMS-SWAPPED count "
+              "means the orientation bits are wrong for those rallies.")
 
-        # ---- LEAVE-ONE-OUT: is any voter net harmful at ANY position?
-        print("\n  LEAVE-ONE-OUT (best achievable with this voter "
-              "removed entirely)")
-        full_best = scored[0][0]
-        for v in names:
-            rest = [x for x in names if x != v]
-            if not rest:
-                continue
-            b = max(_run(pm)[2] for pm in itertools.permutations(rest))
-            flag = "  <- removing it HELPS" if b > full_best else ""
-            print(f"    without {v:<10} {b:>4}/{_wn_tot} contacts "
-                  f"(best with all = {full_best}){flag}")
-        print("  NOTE ON SELECTION: with "
-              f"{len(bits)} bits, argmax over {len(scored)} orderings "
-              "overfits. Prefer the\n  ordering justified by the "
-              "right-when-deciding and overrides columns, and treat "
-              "ties as ties.")
+        if voter_tally:
+            print("\nVOTER AGREEMENT with the ensemble's final call "
+                  "(a voter near 50% is dead weight; near 100% means it is "
+                  "deciding)")
+            for v, (ok_v, n_v) in sorted(voter_tally.items()):
+                if n_v:
+                    print(f"  {v:<9} {ok_v}/{n_v} = {ok_v / n_v:.0%}")
 
-    print("\nPERMUTATION DIAGNOSIS (geometric label vs each track's "
-          "voted true identity)")
-    kinds = Counter()
-    for cum in sorted(label_of):
-        got = label_of[cum]
-        real = {tid: v.most_common(1)[0][0]
-                for tid, v in truth_vote[cum].items() if v}
-        shared = [t for t in real if t in got]
-        if not shared:
-            continue
-        exact = sum(got[t] == real[t] for t in shared)
-        teams_got = {t: name_team.get(got[t]) for t in shared}
-        teams_real = {t: name_team.get(real[t]) for t in shared}
-        team_ok = sum(teams_got[t] == teams_real[t] for t in shared)
-        n = len(shared)
-        if exact == n:
-            kind = "correct"
-        elif team_ok == n:
-            kind = "PARTNERS SWAPPED (left/right)"
-        elif team_ok == 0:
-            kind = "TEAMS SWAPPED (near/far)"
-        else:
-            kind = "mixed/scrambled"
-        kinds[kind] += 1
-        print(f"  r{cum:<4} {n} tracks matched, {exact} named right, "
-              f"{team_ok} on the right team -> {kind}")
-    print("  " + ", ".join(f"{k}: {v}" for k, v in kinds.most_common()))
-    print("  A large PARTNERS-SWAPPED count means the left/right read "
-          "is inverted per rally\n  (stacking, or the anchor being read "
-          "before the players settle). A large\n  TEAMS-SWAPPED count "
-          "means the orientation bits are wrong for those rallies.")
-
-    if voter_tally:
-        print("\nVOTER AGREEMENT with the ensemble's final call "
-              "(a voter near 50% is dead weight; near 100% means it is "
-              "deciding)")
-        for v, (ok_v, n_v) in sorted(voter_tally.items()):
-            if n_v:
-                print(f"  {v:<9} {ok_v}/{n_v} = {ok_v / n_v:.0%}")
-
-    if a.diagonal:
-        print(f"\nDIAGONAL repaired {len(diag_fixes)} side bits "
-              f"(server and receiver must be cross-court; a violation "
-              f"means one bit is wrong,\n  and the less reliable "
-              f"decider is flipped) — deciders involved: "
-              f"{Counter(d for pair in diag_fixes for d in pair).most_common()}")
+        if a.diagonal:
+            print(f"\nDIAGONAL repaired {len(diag_fixes)} side bits "
+                  f"(server and receiver must be cross-court; a violation "
+                  f"means one bit is wrong,\n  and the less reliable "
+                  f"decider is flipped) — deciders involved: "
+                  f"{Counter(d for pair in diag_fixes for d in pair).most_common()}")
     print(f"\nSAME-SIDE POLICY '{a.same_side}': deleted "
           f"{n_deleted} cluster duplicates, kept {n_inserted} pairs "
           f"with a missed contact between them\n  (typical true "
@@ -2275,7 +2289,8 @@ def run(a):
         ds = dets_by_rally.get(cum, [])
         if not ds:
             continue
-        for t_true, s_true in r["contacts"]:
+        for _c in r["contacts"]:
+            t_true, s_true = _c[0], _c[1]   # (t, team, shot_type)
             near = [d for d in ds if abs(d[0] - t_true) <= 0.35]
             if not near:
                 side_none += 1
