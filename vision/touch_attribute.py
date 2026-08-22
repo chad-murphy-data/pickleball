@@ -1041,7 +1041,8 @@ def _strongest_first(cands, refractory):
 
 def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
                   report=None, floor=0.02, chain=True, gap_p99=2.1,
-                  t_end=None, chain_mode="hard"):
+                  t_end=None, chain_mode="hard", side_pen=-0.9,
+                  event_bonus=0.0):
     """Contact decoding as SEQUENTIAL PASSES, each one measurable.
 
     THE USER'S PROPOSAL (2026-08-21), and it is the right shape.
@@ -1160,7 +1161,8 @@ def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
     if not chain:
         return cur, stages, 0
     if chain_mode == "soft":
-        path = chain_soft(cur, s0)
+        path = chain_soft(cur, s0, side_pen=side_pen,
+                          event_bonus=event_bonus)
         chained = [(t, s, sc, tid) for t, s, sc, _g, tid in path]
         ghosts = sum(g for _t, _s, _sc, g, _tid in path)
         cur = chained
@@ -1179,7 +1181,7 @@ def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
 
 def chain_soft(cands, s0, min_gap=0.25, max_gap=3.0,
                ghost_pen=-3.2, max_ghost=2, side_pen=-0.9,
-               attach_tol=0.35):
+               attach_tol=0.35, event_bonus=0.0):
     """The alternating chain with sides as PARITY, not eligibility.
 
     WHY (2026-08-22, the g-run). The side-channel audit reads 51% at
@@ -1211,7 +1213,7 @@ def chain_soft(cands, s0, min_gap=0.25, max_gap=3.0,
         return []
     scs = sorted(c[2] for c in cands)
     ref = max(scs[int(0.70 * len(scs))], 0.05)
-    logp = [math.log(max(sc, 1e-6)) - math.log(ref)
+    logp = [math.log(max(sc, 1e-6)) - math.log(ref) + event_bonus
             for _t, _tag, sc, _tid in cands]
     n = len(cands)
     NEG = -1e18
@@ -1655,6 +1657,11 @@ def main():
                          "mismatch pays a penalty instead of being "
                          "illegal; tid comes from the strongest "
                          "agreeing candidate nearby, else None")
+    ap.add_argument("--side-pen", type=float, default=0.9,
+                    help="soft-chain penalty for a tag/parity mismatch")
+    ap.add_argument("--event-bonus", type=float, default=0.0,
+                    help="soft-chain reward per emitted event; >0 makes "
+                         "covering a real contact beat free-hopping it")
     ap.add_argument("--end-rule", choices=["motion", "cross"],
                     default="motion",
                     help="how --passes closes the rally window. motion "
@@ -1955,7 +1962,9 @@ def run(a):
             _ev, _st, _gh = decode_passes(
                 dets, _s0, pass_gap, pass_same_p01,
                 gap_p99=pass_gap_p99,
-                t_end=_t_end, chain_mode=a.chain)
+                t_end=_t_end, chain_mode=a.chain,
+                side_pen=-abs(a.side_pen),
+                event_bonus=a.event_bonus)
             path = [(t, sd, sc, 0) for t, sd, sc, _tid in _ev]
             funnel[held] = _st
             # the passes already resolved each event's tid (under
