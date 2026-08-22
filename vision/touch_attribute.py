@@ -1335,7 +1335,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22a  can the BALL say when the point ended?"
+BUILD = "2026-08-22b  crossing gap, self-calibrated per rally"
 
 
 def main():
@@ -2502,8 +2502,9 @@ def run(a):
         print("  positive = after the last true contact (junk "
               "survives); negative = before it (play destroyed)")
         print(f"    {'rally':<7}{'last cross':>12}{'before gap':>12}"
-              f"{'true last':>11}{'d(last)':>9}{'d(gap)':>9}")
-        d_last, d_gap = [], []
+              f"{'self-cal':>12}{'true last':>11}{'d(last)':>9}"
+              f"{'d(gap)':>9}{'d(sc)':>9}")
+        d_last, d_gap, d_sc = [], [], []
         for cum in sorted(cross_count):
             v = cross_count[cum]
             cts = v[3] if len(v) > 3 else []
@@ -2511,20 +2512,41 @@ def run(a):
                       default=None)
             if not cts or tru is None:
                 continue
-            # sparse-sequence gap rule: walk the crossings and stop at
-            # the first break no rally could contain
+            # v1 used the CONTACT gap p99 (2.07s) as the threshold
+            # and was disqualified by its own minimum: -17.78s on r1,
+            # which would cut 17 seconds out of a 21-second rally.
+            # Wrong distribution. Crossings cover only ~50-60% of
+            # contacts (r1: 14 crossings for 25 contacts), so three
+            # consecutive misses open a hole that looks exactly like
+            # the end of a point.
+            #
+            # Self-calibrate on THIS rally's own crossing spacing, the
+            # same move that makes the motion reference work across
+            # zooms: a rally whose crossings are dense ends at a small
+            # break, one whose crossings are sparse needs a big one.
             cut = max(2.5, 1.25 * pass_gap_p99)
+            _cg = sorted(cts[i] - cts[i - 1] for i in range(1, len(cts)))
+            cut_sc = (max(cut, 3.0 * _cg[len(_cg) // 2]) if _cg else cut)
             stop = cts[0]
             for i in range(1, len(cts)):
                 if cts[i] - cts[i - 1] > cut:
                     break
                 stop = cts[i]
+            stop_sc = cts[0]
+            for i in range(1, len(cts)):
+                if cts[i] - cts[i - 1] > cut_sc:
+                    break
+                stop_sc = cts[i]
             d_last.append(cts[-1] - tru)
             d_gap.append(stop - tru)
+            d_sc.append(stop_sc - tru)
             print(f"    r{cum:<6}{cts[-1]:>12.2f}{stop:>12.2f}"
-                  f"{tru:>11.2f}{cts[-1] - tru:>+9.2f}{stop - tru:>+9.2f}")
+                  f"{stop_sc:>12.2f}{tru:>11.2f}"
+                  f"{cts[-1] - tru:>+9.2f}{stop - tru:>+9.2f}"
+                  f"{stop_sc - tru:>+9.2f}")
         for nm, d in (("last crossing", d_last),
-                      ("last before gap", d_gap)):
+                      ("last before gap", d_gap),
+                      ("self-calibrated", d_sc)):
             if d:
                 ds = sorted(d)
                 n = len(ds)
