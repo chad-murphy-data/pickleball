@@ -233,7 +233,64 @@ def selftest():
     pt3, kind3 = ball_at_contact(dd, 10.24)
     assert pt3 is None and kind3 is None, (pt3, kind3)
 
-    print("selftest OK: nearest_track picks, margins, abstention on a "
+    # ---- CROSSINGS. Pinned because a miscounted crossing is worse
+    # than none: the whole value of this channel is being INDEPENDENT
+    # of the pose decoder, so if it silently inherits an error it
+    # becomes a second opinion that is really the same opinion.
+    #   a flight from far (y=200) to near (y=700) crosses a net at 450
+    n, ts = crossings([(0.0, (100.0, 200.0), 0.4, (300.0, 700.0), 9)],
+                      450.0)
+    assert n == 1 and 0.0 < ts[0] < 0.4, (n, ts)
+    #   the interpolated instant is proportional, not the midpoint
+    assert abs(ts[0] - 0.2) < 1e-9, ts
+    n2, _ = crossings([(0.0, (100.0, 200.0), 0.4, (300.0, 300.0), 9)],
+                      450.0)
+    assert n2 == 0, "a flight that stays on one side must not count"
+    #   direction is irrelevant — near to far counts the same
+    n3, _ = crossings([(0.0, (100.0, 700.0), 0.4, (300.0, 200.0), 9)],
+                      450.0)
+    assert n3 == 1, n3
+    #   a segment ENDING exactly on the line is not a crossing: the
+    #   product is 0, not negative, so ambiguous cases abstain
+    n4, _ = crossings([(0.0, (100.0, 200.0), 0.4, (300.0, 450.0), 9)],
+                      450.0)
+    assert n4 == 0, "a segment landing on the line must abstain"
+
+    # ---- NET LINE. The bracket is a rule of the sport (nobody crosses
+    # the net), so the only way it fails is a bad 2/2 split, and it
+    # must say so rather than return a number.
+    class _S(dict):
+        pass
+
+    def _rd(ys):
+        tr = {}
+        for tid, band in enumerate(ys):
+            ser = _S(t=[0.0, 1.0], cx=[100.0 + tid, 101.0 + tid],
+                     ynorm=list(band))
+            ser["side"] = 0
+            tr[tid] = ser
+        return {"tracks": tr, "fps": 30.0}
+
+    def _sm_ok(rd, t):
+        return {0: False, 1: False, 2: True, 3: True}
+
+    def _sm_bad(rd, t):
+        return {}
+    #   far players top out at 300, near players bottom out at 600 ->
+    #   the net is bracketed in (300, 600) and reported at the midpoint
+    rd = _rd([[100, 300], [150, 280], [600, 750], [650, 740]])
+    got = net_line(rd, None, None, _sm_ok, 0.0)
+    assert got is not None and got[1:] == (300, 600) and got[0] == 450.0, got
+    #   an unreadable split returns None instead of guessing
+    assert net_line(rd, None, None, _sm_bad, 0.0) is None
+    #   OVERLAPPING bands mean the split is wrong (someone was put on
+    #   the wrong side), and a net cannot be placed — must be None, not
+    #   a number that silently reverses every crossing in the rally
+    rd_x = _rd([[100, 700], [150, 280], [600, 750], [650, 740]])
+    assert net_line(rd_x, None, None, _sm_ok, 0.0) is None
+
+    print("selftest OK: crossings + net-line bracket, "
+          "nearest_track picks, margins, abstention on a "
           "tie, rejection of a far point, duplicate collapse, and "
           "contact-matched ball points")
 
@@ -296,6 +353,80 @@ def main():
         print(f"  {ta:7.2f}s ({pa[0]:6.0f},{pa[1]:6.0f}) -> "
               f"{tb:7.2f}s ({pb[0]:6.0f},{pb[1]:6.0f})   "
               f"{n} observed points, {tb - ta:.2f}s")
+
+
+
+# ------------------------------------------------------- crossings
+
+
+def net_line(rd, box_at, player_tracks, side_map, t_anchor):
+    """Image y of the net, bracketed by a fact players cannot break.
+
+    THE SANDWICH: nobody crosses the net. So over a whole rally the
+    deepest a FAR player's feet ever get and the shallowest a NEAR
+    player's feet ever get bracket the net line exactly, with no court
+    model, no homography and no calibration. Returns (net_y, lo, hi)
+    or None when the 2/2 split is unreadable.
+
+    Deliberately NOT court.py: the homography is solved (0.06 ft) but
+    needs a frame and a fit per rally, and this needs one number that
+    only has to separate two sides. A bracket from a rule of the sport
+    beats a fitted model that can fail silently.
+    """
+    near = side_map(rd, t_anchor)
+    if not near:
+        return None
+    far_max, near_min = None, None
+    for tid, is_near in near.items():
+        ser = rd["tracks"][tid]
+        ys = [float(y) for y in ser["ynorm"]]
+        if not ys:
+            continue
+        if is_near:
+            near_min = min(ys) if near_min is None else min(near_min, min(ys))
+        else:
+            far_max = max(ys) if far_max is None else max(far_max, max(ys))
+    if far_max is None or near_min is None or far_max >= near_min:
+        return None
+    return (0.5 * (far_max + near_min), far_max, near_min)
+
+
+def crossings(segs, net_y):
+    """How many flight segments CROSS the net, and their times.
+
+    THE POINT OF THIS CHANNEL (user, 2026-08-21). Every other count we
+    have is downstream of the same pose decoder; this one is not, so it
+    is an independent witness on the one number that is wrong (170
+    emitted against 148 true).
+
+    And it asks the ball only what the ball is good at. ball_voter's
+    premise is that the contact instant is the WORST frame in the rally
+    - fastest, most occluded, a player swinging through it - while the
+    flight between contacts is unoccluded and against open court. A net
+    crossing happens mid-flight, the easiest moment there is.
+
+    THE 64% IN-PLAY FINDABILITY DOES NOT TRANSFER. That number is
+    per-FRAME (ball_visibility.py, 416 hand-labelled frames). A
+    crossing needs the ball seen ONCE on each side of a line, anywhere
+    in a 15-30 frame flight, which is a far weaker requirement - the
+    same reason a human tracks a ball that is invisible in any single
+    still. Treating 64% as a ceiling here would be a category error.
+
+    A segment that does NOT cross is a fragment, a bounce-free dink
+    kept on one side by a tracking break, or junk; counting only
+    crossers is what makes this a count rather than a segment tally.
+    """
+    n, ts = 0, []
+    for t0, p0, t1, p1, _seen in segs:
+        if (p0[1] - net_y) * (p1[1] - net_y) < 0:
+            n += 1
+            # linear interpolation to the instant of crossing; the ball
+            # is fastest here so the error is small in time even when
+            # the arc makes it wrong in space
+            span = (p1[1] - p0[1])
+            f = 0.0 if span == 0 else (net_y - p0[1]) / span
+            ts.append(t0 + max(0.0, min(1.0, f)) * (t1 - t0))
+    return n, sorted(ts)
 
 
 if __name__ == "__main__":

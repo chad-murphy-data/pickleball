@@ -1198,7 +1198,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21n  two crash fixes; diagnostics behind --full"
+BUILD = "2026-08-21o  + ball net-crossing count (independent witness)"
 
 
 def main():
@@ -1393,6 +1393,7 @@ def run(a):
 
     # ---- decode every rally (leave-one-rally-out, as swing_explore)
     side_frac = []
+    cross_count = {}
     decoded, dets_by_rally = {}, {}
     for held in sorted(rallies):
         Xtr, ytr = [], []
@@ -1463,6 +1464,21 @@ def run(a):
             except Exception as e:                 # noqa: BLE001
                 print(f"ball: rally {cum} failed ({e})")
                 continue
+            # ---- CROSSING COUNT. An INDEPENDENT witness on the one
+            # number that is wrong. Every other count in this pipeline
+            # descends from the same pose decoder, so when it says 170
+            # and truth says 148 there is nothing to check it against.
+            # The ball is a separate instrument, and counting net
+            # crossings asks it only what it is good at: a crossing
+            # happens mid-flight, unoccluded, against open court -
+            # never at the contact instant, which ball_voter exists
+            # because it is the worst frame in the rally.
+            _rd_c = rd_of(rallies, cum)
+            _nl = BV.net_line(_rd_c, box_at, player_tracks, side_map,
+                              anchor_time(_rd_c, evs[0][0], settle))
+            if _nl is not None:
+                _nx, _cts = BV.crossings(segs, _nl[0])
+                cross_count[cum] = (_nx, len(segs), _nl)
             pts = {}
             for k in (0, 1):
                 pt, _kind = BV.ball_at_contact(segs, evs[k][0])
@@ -2398,6 +2414,31 @@ def run(a):
               f"the 70th percentile the DP calls confident — a strong "
               f"candidate\n  that was passed over is a DP-objective "
               f"problem, a weak one is a scorer problem.")
+
+    if cross_count:
+        print("\nBALL CROSSING COUNT — an independent witness on the "
+              "event count\n  (every other count here descends from "
+              "the same pose decoder; this one does not)")
+        print(f"    {'rally':<8}{'true':>6}{'decoder':>9}{'crossings':>11}"
+              f"{'segments':>10}{'net y':>8}")
+        _ct = _cd = _cx = 0
+        for cum in sorted(cross_count):
+            nx, nseg, nl = cross_count[cum]
+            nt = len(truth.get(cum, []))
+            nd = len(decoded.get(cum, []))
+            _ct += nt
+            _cd += nd
+            _cx += nx
+            print(f"    r{cum:<7}{nt:>6}{nd:>9}{nx:>11}{nseg:>10}"
+                  f"{nl[0]:>8.0f}")
+        print(f"    {'TOTAL':<8}{_ct:>6}{_cd:>9}{_cx:>11}")
+        print(f"  the decoder is {_cd - _ct:+d} against truth; "
+              f"crossings are {_cx - _ct:+d}.")
+        print("  crossings UNDERCOUNT by construction (the ball is not "
+              "always findable) — what\n  matters is whether they "
+              "undercount where the decoder OVERCOUNTS, since a rally\n"
+              "  the decoder inflates and the ball does not is a rally "
+              "the decoder invented.")
 
     _r = sum(v[0] for v in per_player_kind.values())
     _w = sum(v[1] for v in per_player_kind.values())
