@@ -1128,7 +1128,7 @@ def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
     return cur, stages, ghosts
 
 
-def end_by_resume(ts, gap=2.0, look=5.0, need=2):
+def end_by_resume(ts, gap=4.0, look=8.0, need=1):
     """Last event before a gap that play never resumes after.
 
     THE USER'S RULE (2026-08-22), and it is the piece every previous
@@ -1142,12 +1142,29 @@ def end_by_resume(ts, gap=2.0, look=5.0, need=2):
     ~50-60% of contacts, so holes are expected and must not be
     terminal; what is NOT expected is a hole with no play after it.
 
-    `need` is why this is more than a bigger threshold. With need=1,
-    "a 2s gap that does not restart within 5s" is just a 5s threshold
-    written differently. Requiring TWO crossings to count as a
-    resumption means a single stray knock between points cannot
-    resurrect a rally that is over, which is the failure mode a plain
-    threshold has no defence against.
+DEFAULTS ARE MEASURED, not argued. Thinning the 314 labelled
+    contacts at realistic crossing coverage (p ~ 0.55) gives
+    live-play crossing gaps of med 1.21s, p95 3.76s, p99 5.53s - so
+    a 2s gap is not suspicious at all, it is ordinary play with a
+    couple of crossings missed, and 26% of live gaps exceed it. gap=4
+    sits just above p95: ordinary gaps pass untouched, rare ones go to
+    the lookahead, and look=8 is long enough for real play to resume
+    while staying under the 10-20s between points.
+
+    NEED=1, and the first version of this was wrong to argue
+    otherwise. "Requiring two crossings means a stray knock cannot
+    resurrect a dead rally" sounds right and measures terribly:
+    false-end rate 47.5% at need=2 against 11.9% at need=1 with the
+    same gap and look, because demanding two crossings QUICKLY is
+    something thin coverage often cannot supply during live play.
+
+    CAVEAT ON THOSE NUMBERS: the sweep can only see FALSE ends, since
+    the labels contain no dead-time crossings. A rule that never ends
+    anything scores 0% and is useless - the look=12 rows are exactly
+    that, one of them posting 0.0% while losing a median 25s of play
+    on the rare occasions it does fire. Only the run, graded against
+    the true last contact with dead time present, tests the other
+    side.
 
     Returns the last timestamp of live play, or ts[-1] if play never
     stops."""
@@ -1377,7 +1394,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22c  + resume rule: a gap only ends play if play stops"
+BUILD = "2026-08-22d  resume rule tuned on the measured gap distribution"
 
 
 def main():
@@ -3364,15 +3381,22 @@ def selftest():
     #   seconds of play. Every earlier rule stopped at the hole.
     _r1 = [0.0, 1.0, 2.0, 6.0, 7.0, 8.0, 9.0, 10.0]
     assert end_by_resume(_r1) == 10.0, end_by_resume(_r1)
-    #   a hole with nothing after it ends the rally at the hole
-    _end = [0.0, 1.0, 2.0, 9.0]
-    assert end_by_resume(_end) == 2.0, end_by_resume(_end)
-    #   NEED=2 is the whole point: one stray knock is not a
-    #   resumption, and with need=1 this rule would be nothing but a
-    #   larger threshold written differently
+    #   a hole with nothing after it ends the rally at the hole. The
+    #   hole has to clear the LOOKAHEAD, not just the gap: at the
+    #   measured defaults (gap 4, look 8) a lone crossing 7s later is
+    #   a resumption, and only a hole longer than the lookahead ends
+    #   anything. Dead time between points runs 10-20s, which is what
+    #   makes that separation work.
+    assert end_by_resume([0.0, 1.0, 2.0, 15.0]) == 2.0
+    assert end_by_resume([0.0, 1.0, 2.0, 9.0]) == 9.0
+    #   need=1 is the DEFAULT and the measured winner (false-end
+    #   11.9% vs 47.5% at need=2); need=2 is still pinned because the
+    #   difference is the whole reason the parameter exists
     _stray = [0.0, 1.0, 2.0, 6.5]
-    assert end_by_resume(_stray, need=2) == 2.0, end_by_resume(_stray)
-    assert end_by_resume(_stray, need=1) == 6.5
+    assert end_by_resume(_stray, gap=2.0, look=5.0, need=2) == 2.0
+    assert end_by_resume(_stray, gap=2.0, look=5.0, need=1) == 6.5
+    #   at the shipped defaults a 4s gap is ordinary play, not an end
+    assert end_by_resume([0.0, 1.0, 2.0, 5.5, 6.5]) == 6.5
     #   continuous play is never cut
     _cont = [0.0, 1.0, 2.0, 3.0, 4.0]
     assert end_by_resume(_cont) == 4.0
