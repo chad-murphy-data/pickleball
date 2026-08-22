@@ -1335,7 +1335,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21v  + --trim-tail (gap rule where it works)"
+BUILD = "2026-08-22a  can the BALL say when the point ended?"
 
 
 def main():
@@ -1658,7 +1658,7 @@ def run(a):
                               anchor_time(_rd_c, evs[0][0], settle))
             if _nl is not None:
                 _nx, _cts = BV.crossings(segs, _nl[0])
-                cross_count[cum] = (_nx, len(segs), _nl)
+                cross_count[cum] = (_nx, len(segs), _nl, _cts)
             pts = {}
             for k in (0, 1):
                 pt, _kind = BV.ball_at_contact(segs, evs[k][0])
@@ -2479,6 +2479,65 @@ def run(a):
               "stage that drops it is\n    destroying real contacts, "
               "and nothing downstream can get them back.")
 
+    # ---- CAN THE BALL SAY WHEN THE POINT ENDED? The junk is
+    # entirely at the END (0 spurious before the first true contact,
+    # 59 after the last), so the window problem is ONE number per
+    # rally. Motion answered it 15/15 but a median +8.97s too late.
+    #
+    # Crossings are the natural instrument for the question and are
+    # independent of the pose decoder that produces the junk. They are
+    # also SPARSE - 5 to 14 per rally against 2529 candidates - which
+    # is the property the gap rule needed and never had: a break in a
+    # sequence this thin is real, where a break in the candidate
+    # stream never occurs at all.
+    #
+    # Two readings, because they fail differently. LAST CROSSING is
+    # the ball's own last word, and it is contaminated by the same
+    # dead time (the flight window is derived from decoded events, so
+    # it already extends past the point). LAST BEFORE A GAP applies
+    # the sparse-sequence gap rule first, and should track the true
+    # end if between-point knocks are separated from play.
+    if cross_count and any(len(v) > 3 and v[3] for v in cross_count.values()):
+        print("\nBALL: WHERE DOES THE POINT END?")
+        print("  positive = after the last true contact (junk "
+              "survives); negative = before it (play destroyed)")
+        print(f"    {'rally':<7}{'last cross':>12}{'before gap':>12}"
+              f"{'true last':>11}{'d(last)':>9}{'d(gap)':>9}")
+        d_last, d_gap = [], []
+        for cum in sorted(cross_count):
+            v = cross_count[cum]
+            cts = v[3] if len(v) > 3 else []
+            tru = max((c[0] for c in rallies[cum]["contacts"]),
+                      default=None)
+            if not cts or tru is None:
+                continue
+            # sparse-sequence gap rule: walk the crossings and stop at
+            # the first break no rally could contain
+            cut = max(2.5, 1.25 * pass_gap_p99)
+            stop = cts[0]
+            for i in range(1, len(cts)):
+                if cts[i] - cts[i - 1] > cut:
+                    break
+                stop = cts[i]
+            d_last.append(cts[-1] - tru)
+            d_gap.append(stop - tru)
+            print(f"    r{cum:<6}{cts[-1]:>12.2f}{stop:>12.2f}"
+                  f"{tru:>11.2f}{cts[-1] - tru:>+9.2f}{stop - tru:>+9.2f}")
+        for nm, d in (("last crossing", d_last),
+                      ("last before gap", d_gap)):
+            if d:
+                ds = sorted(d)
+                n = len(ds)
+                print(f"  {nm:<16} med {ds[n // 2]:+6.2f}s   "
+                      f"min {ds[0]:+6.2f}   max {ds[-1]:+6.2f}   "
+                      f"|d|<=2s on {sum(1 for x in d if abs(x) <= 2.0)}"
+                      f"/{n}")
+        print("  compare motion: fires 15/15, median +8.97s late. A "
+              "median near 0 with a\n  tight range is a solved window; "
+              "a large NEGATIVE min disqualifies it outright,\n  since "
+              "closing early destroys contacts nothing downstream can "
+              "recover.")
+
     if end_audit:
         print("\nRALLY-END DETECTOR vs the true last contact")
         print("  positive = the window closes AFTER the last real "
@@ -2642,7 +2701,7 @@ def run(a):
               f"{'segments':>10}{'net y':>8}")
         _ct = _cd = _cx = 0
         for cum in sorted(cross_count):
-            nx, nseg, nl = cross_count[cum]
+            nx, nseg, nl, _cts = cross_count[cum]
             nt = len(truth.get(cum, []))
             nd = len(decoded.get(cum, []))
             _ct += nt
