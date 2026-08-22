@@ -222,3 +222,32 @@ immediately.
 when only 4 bits were ever wrong. A constraint that fires more often
 than there are errors is refuted by its own behaviour before any
 accuracy number is needed.
+
+---
+
+## Sweep results (2026-08-22, replay harness — do not re-run these)
+
+All on the train split, full pipeline via `--segs-from dump4.json`
+(no video), baseline = `--geom-side --end-rule cross --chain soft`
+at 25 missed / 47 junk / 82% nearest-time / shares +4.4 / +3.0.
+
+1. **Fast-gap hypothesis: DEAD.** Missed contacts sit at median
+   0.78s from their true neighbours — same as hits (0.80s), with
+   FEWER sub-0.45s gaps (8% vs 15%). The DP does not skip firefight
+   partners.
+2. **The misses are rally-clustered ADJACENT SPANS** (r1 ×7, r17 ×5,
+   r5 ×4): skipping two-in-a-row keeps parity across one ~1.3s FREE
+   gap, while including the pair costs two tag penalties.
+3. **Flat emission bonus (`--event-bonus`): bad trade.** Buys recall
+   at ~2 junk per recovered contact (bonus 1.0: 12 missed, 94 junk).
+   Lowering `--side-pen` below 0.9 is pure loss at every bonus.
+4. **Ball-corroborated bonus (`--ball-bonus`): NULL BY SATURATION.**
+   796 segment endpoints / 287s = one per 0.36s, so a ±0.5s gate is
+   true everywhere and the knob degenerates to the flat bonus
+   (bb 0.4 → 25/65 vs eb 0.4 → 24/66). A sparse ball event
+   (crossings, ~7/rally) could still discriminate; endpoints cannot.
+
+Conclusion: the recall/junk frontier does not move by constant
+tuning. Defaults stay neutral (the 82% / ±4.4 / ±3.0 build). The
+next lever on the event list is the temporal model
+(vision/temporal_gate.md), not another DP knob.
