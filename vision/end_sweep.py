@@ -112,6 +112,27 @@ def r_resume(r, p, meta):
     return last
 
 
+def r_cross_pad(r, p, meta):
+    """Last crossing plus a fixed pad. The 2026-08-22e run said the
+    resume rule collapses to the last crossing at every sane setting -
+    after the point the ball gets picked up and flights just STOP, so
+    there was nothing for a gap rule to defend against. That leaves one
+    early close (r14, -0.79s, one contact destroyed) and the question
+    of whether a small pad that rescues it is worth +pad of junk
+    everywhere else. That is a loss-function question, so it goes in
+    the sweep, not in an argument. fb=1 falls back to motion when the
+    rally has no crossings at all - without it the family abstains on
+    any crossing-less rally and is disqualified from the winner's
+    table."""
+    cts = r.get("crossings") or []
+    if cts:
+        return cts[-1] + p["pad"]
+    if p.get("fb"):
+        return r_motion(r, {"frac": 0.45, "hold": 1.0, "tail": 1.2},
+                        meta)
+    return None
+
+
 def r_motion(r, p, meta):
     """rally_end_motion, replayed from the dumped series. Identical
     logic, so a parameter found here transfers to the real detector
@@ -210,6 +231,9 @@ RULES = {
     "resume": (r_resume, _grid(gap=[2.0, 3.0, 4.0, 5.0, 6.0],
                                look=[5.0, 8.0, 10.0, 12.0],
                                need=[1, 2])),
+    "cross_pad": (r_cross_pad, _grid(pad=[0.0, 0.5, 0.8, 1.0, 1.5,
+                                          2.0, 3.0],
+                                     fb=[0, 1])),
     "motion": (r_motion, _grid(frac=[0.30, 0.45, 0.60, 0.75],
                                hold=[0.6, 1.0, 1.5],
                                tail=[0.0, 0.6, 1.2])),
@@ -384,6 +408,11 @@ def selftest():
     assert r_resume(r, p, {}) == 2.0
     r2 = {"crossings": [0.0, 1.0, 2.0, 9.0]}
     assert r_resume(r2, p, {}) == 9.0
+
+    # cross_pad: pad shifts the last crossing; no crossings -> abstain
+    # unless fb, in which case motion answers
+    assert r_cross_pad({"crossings": [1.0, 4.0]}, {"pad": 0.8}, {}) == 4.8
+    assert r_cross_pad({"crossings": []}, {"pad": 0.8}, {}) is None
 
     # retreat, on a rally shape: all four CLOSE on the net for the
     # first two seconds, then all four walk off. The end is the

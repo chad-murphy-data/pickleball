@@ -1436,7 +1436,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22e  --dump-events: record once, sweep offline"
+BUILD = "2026-08-22f  --end-rule cross: the ball closes the window"
 
 
 def main():
@@ -1511,6 +1511,23 @@ def main():
                          "and accepts a missed contact between them; "
                          "auto picks per pair on the gap and the DP's "
                          "own ghost")
+    ap.add_argument("--end-rule", choices=["motion", "cross"],
+                    default="motion",
+                    help="how --passes closes the rally window. motion "
+                         "(shipped) = rally_end_motion, measured med "
+                         "+8.97s late. cross = last ball crossing + "
+                         "--end-pad, med +3.97s / min -0.79s on the "
+                         "2026-08-22e dump - the ball simply STOPS "
+                         "flying when the point is over, which no "
+                         "pose-derived signal does. Needs --video; "
+                         "falls back to motion on a rally with no "
+                         "crossings")
+    ap.add_argument("--end-pad", type=float, default=1.0,
+                    help="seconds added past the last crossing under "
+                         "--end-rule cross. The one early close on "
+                         "record is -0.79s (r14), so the default "
+                         "covers it; tune with end_sweep.py --rule "
+                         "cross_pad, not by argument")
     ap.add_argument("--dump-events", default=None, metavar="PATH",
                     help="record every per-rally observation an "
                          "end-of-point rule could read - crossing "
@@ -1545,6 +1562,7 @@ def run(a):
     votes_by_rally = {}
     paths = {}
     event_dump = {}
+    segs_cache = {}
     side_frac = []
     cross_count = {}
     anchor_by_rally = {}
@@ -1703,6 +1721,33 @@ def run(a):
             # compared against the thing it claims to find. The true
             # last contact is right here.
             _t_end = rally_end_motion(r["rd"], _t_anc)
+            if a.end_rule == "cross" and getattr(a, "video", None):
+                # THE BALL SETS THE WINDOW (user thread, 2026-08-22).
+                # After the point the ball gets picked up and flights
+                # just stop, so the last crossing bounds the rally at
+                # med +3.97s / min -0.79s where motion runs med +8.97s
+                # late - and 59 of 68 junk events live in exactly that
+                # gap. The det span bounds the scan (dets exist before
+                # any decode, so no chicken-and-egg with the events);
+                # segments are cached for the ball-voter loop below.
+                import ball_voter as BV
+                _dt = [t for t, _s, _sc, _tid in dets]
+                if _dt:
+                    try:
+                        segs = BV.dedupe(BV.flight_segments(
+                            a.video, max(0.0, min(_dt) - 2.0),
+                            max(_dt) + 2.0))
+                    except Exception as e:         # noqa: BLE001
+                        print(f"ball: rally {held} end-rule failed "
+                              f"({e}); motion fallback")
+                        segs = []
+                    segs_cache[held] = segs
+                    _nl = BV.net_line(r["rd"], box_at, player_tracks,
+                                      side_map, _t_anc)
+                    if _nl is not None and segs:
+                        _nx, _cts = BV.crossings(segs, _nl[0])
+                        if _cts:
+                            _t_end = _cts[-1] + a.end_pad
             _true_last = max((c[0] for c in r["contacts"]), default=None)
             end_audit.append((held, _t_end, _true_last))
             _ev, _st, _gh = decode_passes(
@@ -1764,12 +1809,17 @@ def run(a):
             t_hi = max(e[0] for e in evs) + 2.0
             if t_hi - t_lo < 1.0:
                 continue
-            try:
-                segs = BV.dedupe(BV.flight_segments(
-                    a.video, max(0.0, t_lo), t_hi))
-            except Exception as e:                 # noqa: BLE001
-                print(f"ball: rally {cum} failed ({e})")
-                continue
+            if cum in segs_cache:
+                # decoded once for the end rule over the wider det
+                # span, which contains this events window
+                segs = segs_cache[cum]
+            else:
+                try:
+                    segs = BV.dedupe(BV.flight_segments(
+                        a.video, max(0.0, t_lo), t_hi))
+                except Exception as e:             # noqa: BLE001
+                    print(f"ball: rally {cum} failed ({e})")
+                    continue
             # ---- CROSSING COUNT. An INDEPENDENT witness on the one
             # number that is wrong. Every other count in this pipeline
             # descends from the same pose decoder, so when it says 170
