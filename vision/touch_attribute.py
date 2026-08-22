@@ -1307,7 +1307,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21t  rally end from player motion (user idea)"
+BUILD = "2026-08-21u  MEASURE the rally-end detector against truth"
 
 
 def main():
@@ -1403,6 +1403,7 @@ def run(a):
     side_frac = []
     cross_count = {}
     anchor_by_rally = {}
+    end_audit = []
     funnel = {}
     extra_where = Counter()
     extra_dt = []
@@ -1550,10 +1551,18 @@ def run(a):
         tid_of = {(round(t, 3), s): tid for t, s, _sc, tid in dets}
         _s0 = r["contacts"][0][1] ^ r["m"]
         if a.passes:
+            # MEASURE THE DETECTOR, do not tune it blind. Four window
+            # attempts have now moved the junk 70 -> 68 while the
+            # product metric got worse, and not one of them was ever
+            # compared against the thing it claims to find. The true
+            # last contact is right here.
+            _t_end = rally_end_motion(r["rd"], _t_anc)
+            _true_last = max((c[0] for c in r["contacts"]), default=None)
+            end_audit.append((held, _t_end, _true_last))
             _ev, _st, _gh = decode_passes(
                 dets, _s0, pass_gap, pass_same_p01,
                 gap_p99=pass_gap_p99,
-                t_end=rally_end_motion(r["rd"], _t_anc))
+                t_end=_t_end)
             path = [(t, sd, sc, 0) for t, sd, sc, _tid in _ev]
             funnel[held] = _st
         else:
@@ -2427,6 +2436,32 @@ def run(a):
         print("    recall is the ceiling every later stage inherits — a "
               "stage that drops it is\n    destroying real contacts, "
               "and nothing downstream can get them back.")
+
+    if end_audit:
+        print("\nRALLY-END DETECTOR vs the true last contact")
+        print("  positive = the window closes AFTER the last real "
+              "contact (junk survives);\n  negative = it closes BEFORE "
+              "it (real contacts destroyed, which nothing downstream "
+              "can undo)")
+        _ab = sum(1 for _c, e, _t in end_audit if e is None)
+        _d = [(e - t) for _c, e, t in end_audit
+              if e is not None and t is not None]
+        for cum, e, t in end_audit:
+            if e is None:
+                print(f"    r{cum:<5} ABSTAINED (fell back to the gap "
+                      f"rule)")
+            else:
+                print(f"    r{cum:<5} end {e:7.2f}s   last true contact "
+                      f"{t:7.2f}s   {e - t:+6.2f}s")
+        if _d:
+            _ds = sorted(_d)
+            print(f"  fired on {len(_d)}/{len(end_audit)} rallies "
+                  f"({_ab} abstained); overshoot med "
+                  f"{_ds[len(_ds) // 2]:+.2f}s, min {_ds[0]:+.2f}s, "
+                  f"max {_ds[-1]:+.2f}s")
+            print(f"  a large positive median means the threshold is "
+                  f"too LOW — players walking between\n  points still "
+                  f"clear it, so the point never looks over")
 
     # ---- SIDE CHANNEL AUDIT. Placement recall says a scored
     # candidate sits within 0.35s of EVERY true contact, yet the DP
