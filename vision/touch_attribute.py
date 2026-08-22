@@ -1310,7 +1310,7 @@ def same_side_policy(evs, path, mode, typical_gap):
     return keep, sides, dele, ins
 
 
-def geom_sides(rd, t_anchor):
+def geom_sides(rd, t_anchor, flip=None):
     """{track_id: side} in the TRACKER's 0/1 space, but derived from
     image y instead of from the tracker's own side field.
 
@@ -1341,7 +1341,17 @@ def geom_sides(rd, t_anchor):
         return {}, 0.0
     agree = sum(1 for tid, is_near in near.items()
                 if rd["tracks"][tid]["side"] == int(is_near))
-    flip = agree < len(near) / 2.0
+    if flip is None:
+        # PER-RALLY vote — the 2026-08-22 defect. Four tracks against
+        # a ~53% field means the majority is wrong or tied on roughly
+        # a third of rallies, and a wrong majority inverts the WHOLE
+        # rally: every contact named to the partner, elimination
+        # re-assigning wholesale (7 -> 41), naming 88 -> 72 while
+        # geometry itself measured BETTER. Callers should vote once
+        # across all rallies (~60 track-votes drowns the field noise)
+        # and pass the result in; this branch stays only for the
+        # selftest and as the no-context fallback.
+        flip = agree < len(near) / 2.0
     frac = max(agree, len(near) - agree) / len(near)
     return {tid: int(is_near) ^ int(flip)
             for tid, is_near in near.items()}, frac
@@ -1436,7 +1446,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22f  --end-rule cross: the ball closes the window"
+BUILD = "2026-08-22g  one global polarity bit; per-rally naming trace"
 
 
 def main():
@@ -1522,12 +1532,16 @@ def main():
                          "pose-derived signal does. Needs --video; "
                          "falls back to motion on a rally with no "
                          "crossings")
-    ap.add_argument("--end-pad", type=float, default=1.0,
+    ap.add_argument("--end-pad", type=float, default=1.5,
                     help="seconds added past the last crossing under "
-                         "--end-rule cross. The one early close on "
-                         "record is -0.79s (r14), so the default "
-                         "covers it; tune with end_sweep.py --rule "
-                         "cross_pad, not by argument")
+                         "--end-rule cross. 1.0 was the sweep's safe "
+                         "pick and the very next run destroyed r14's "
+                         "last contact anyway (-0.27): the flight scan "
+                         "window shifted between runs and moved the "
+                         "last crossing by 0.5s, so the pad must cover "
+                         "measured JITTER, not just the measured "
+                         "distribution. 1.5 = sweep margin + observed "
+                         "jitter")
     ap.add_argument("--dump-events", default=None, metavar="PATH",
                     help="record every per-rally observation an "
                          "end-of-point rule could read - crossing "
@@ -1563,6 +1577,7 @@ def run(a):
     paths = {}
     event_dump = {}
     segs_cache = {}
+    per_rally_name = {}
     side_frac = []
     cross_count = {}
     anchor_by_rally = {}
@@ -1684,6 +1699,32 @@ def run(a):
     if not rallies:
         raise SystemExit("no train rallies with pose — check --pose-dir")
 
+    # ---- ONE polarity bit for the whole game. The near/far -> 0/1
+    # mapping was voted PER RALLY over 4 tracks against ser["side"], a
+    # ~53% field — wrong or tied on ~1/3 of rallies, and a wrong vote
+    # inverts the entire rally (every contact to the partner; the
+    # 88 -> 72 naming regression under --geom-side was 2-3 such
+    # inversions, not a geometry problem). Voting once across every
+    # rally's tracks (~60 votes) drowns the same noise; per-rally
+    # inversion becomes impossible by construction because there is
+    # no per-rally decision left.
+    geom_flip = None
+    if a.geom_side:
+        _agree = _tot_v = 0
+        for _h in sorted(rallies):
+            _r = rallies[_h]
+            _nearm = side_map(_r["rd"],
+                              anchor_time(_r["rd"], 0.0, not a.no_settle))
+            for _tid, _isn in _nearm.items():
+                _agree += int(_r["rd"]["tracks"][_tid]["side"]
+                              == int(_isn))
+                _tot_v += 1
+        geom_flip = _tot_v > 0 and _agree < _tot_v / 2.0
+        print(f"geom polarity: ONE global flip={int(bool(geom_flip))} "
+              f"from {_tot_v} track-votes "
+              f"({max(_agree, _tot_v - _agree)}/{_tot_v} majority); "
+              f"per-rally votes retired")
+
     # ---- decode every rally (leave-one-rally-out, as swing_explore)
     decoded, dets_by_rally = {}, {}
     for held in sorted(rallies):
@@ -1709,7 +1750,8 @@ def run(a):
         anchor_by_rally[held] = _t_anc
         _side_of, _side_frac = (None, 0.0)
         if a.geom_side:
-            _side_of, _side_frac = geom_sides(r["rd"], _t_anc)
+            _side_of, _side_frac = geom_sides(r["rd"], _t_anc,
+                                              flip=geom_flip)
             side_frac.append(_side_frac)
         dets = score_rally_tracked(model, r["rd"], _side_of or None)
         tid_of = {(round(t, 3), s): tid for t, s, _sc, tid in dets}
@@ -2060,7 +2102,10 @@ def run(a):
             if nm is None or i not in match:
                 continue
             t_tot += 1
-            t_ok += nm == truth[cum][match[i]][1]
+            _hit = nm == truth[cum][match[i]][1]
+            t_ok += _hit
+            _po, _pt = per_rally_name.get(cum, (0, 0))
+            per_rally_name[cum] = (_po + int(_hit), _pt + 1)
 
     # FREEZE THE HEADLINE. ok/tot are finished here, and everything
     # below is diagnostics. An order-sweep loop rebinding `ok` once
@@ -2628,6 +2673,20 @@ def run(a):
         print(f"  the gap between the two joins is OVER-COUNTING, not "
               f"naming: one spurious\n  detection shifts every later "
               f"index comparison in that rally")
+        # PER RALLY, because a whole-rally polarity inversion averages
+        # into a plausible-looking 72% — the exact shape the
+        # --geom-side regression hid in. A rally near 0% here is an
+        # inversion, full stop; one near 50% is a broken side bit.
+        if per_rally_name:
+            _cells = "  ".join(
+                f"r{c}:{o}/{t}"
+                for c, (o, t) in sorted(per_rally_name.items()))
+            print(f"  per rally: {_cells}")
+            _inv = [c for c, (o, t) in per_rally_name.items()
+                    if t >= 4 and o <= t * 0.25]
+            if _inv:
+                print(f"  SUSPECTED INVERSIONS (<=25% within rally): "
+                      f"{', '.join('r%d' % c for c in sorted(_inv))}")
     # ---- PASS FUNNEL. One row per stage: how many events it holds,
     # how many TRUE contacts still have something within 0.35s
     # (recall — the ceiling every later stage inherits), and, once the
@@ -3520,6 +3579,16 @@ def selftest():
     #   one corrupt track — the case this exists for. The partition
     #   comes from y, so tid1 is CORRECTED 1 -> 0, and the agreement
     #   fraction reports 0.75 so a caller can see the field is dirty.
+    # a majority-wrong rally inverts under the per-rally vote but is
+    # RESCUED by a caller-supplied global flip — the 2026-08-22g fix:
+    # sides [1,0,0,0] are wrong on 3 of 4 tracks, so the local vote
+    # flips the mapping; flip=False (the global truth) must win.
+    _bad = _rd([1, 0, 0, 0], [100, 120, 700, 720])
+    _mL, _fL = geom_sides(_bad, 0.0)
+    _mG, _fG = geom_sides(_bad, 0.0, flip=False)
+    assert _mL != _mG, "local vote should invert on a majority-wrong rally"
+    _mRef, _ = geom_sides(_rd([0, 0, 1, 1], [100, 120, 700, 720]), 0.0)
+    assert _mG == _mRef, (_mG, _mRef)
     _m3, _f3 = geom_sides(_rd([0, 1, 1, 1], [100, 120, 700, 720]), 0.0)
     assert _m3 == {0: 0, 1: 0, 2: 1, 3: 1} and _f3 == 0.75, (_m3, _f3)
 
@@ -3737,7 +3806,7 @@ def selftest():
     assert ok_x < ok_y and w_x > w_y, "weighting must be able to flip it"
 
     print("selftest OK: resume rule, tail trim, rally-end from motion, "
-          "geom_sides (mapping + inversion), "
+          "geom_sides (mapping + inversion + global-flip override), "
           "pass funnel (truth-blind, monotone), "
           "same-side policy (delete/insert/auto), "
           "diagonal (cross-court serve), order sweep "
