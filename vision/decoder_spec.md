@@ -251,3 +251,28 @@ Conclusion: the recall/junk frontier does not move by constant
 tuning. Defaults stay neutral (the 82% / ±4.4 / ±3.0 build). The
 next lever on the event list is the temporal model
 (vision/temporal_gate.md), not another DP knob.
+
+5. **Order sweep (720 orderings, g-build votes): KEEP the current
+   cascade.** The argmax ordering (`contact,approach,depth,ball,...`)
+   gains +1 bit / +2 contacts over `contact,halves,depth` — inside
+   selection noise on 30 bits, per the sweep's own warning. The
+   columns that generalize: `contact` is the ONLY irreplaceable voter
+   (LOO 127/148 without it vs 141 with; 22/22 when deciding);
+   every other voter is fungible (LOO 141 regardless). **`ball` never
+   decides under any competitive ordering** — the bits it gets right
+   are decided above it, and ball-first orderings are strictly worse
+   (131). The "promote ball" idea is priced: no. Veto grids lose
+   again (4th confirmation).
+6. **r6 is NOT a polarity inversion** — the permutation diagnosis
+   reads it PARTNERS SWAPPED (one left/right bit), same ordinary
+   failure as r4/r16/r17/r19; its 1/4 naming line is that bit plus
+   event-list misses on a 7-contact rally with only 4 matched. The
+   SUSPECTED INVERSIONS guard over-flags at n<=4 — treat it as a
+   flag, not a verdict. r3's soft-chain regression is event-list
+   (3 of the 25 misses), not naming.
+
+**Holdout burn is blocked on data, not analysis**: pose_rtm holds 18
+rally npz (the train game). The 76 frozen holdout rallies have no
+extracted pose streams — one `pose_extract.py` run on the user's
+machine over the holdout windows unblocks it; everything after that
+is replayable here.
