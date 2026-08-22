@@ -1,0 +1,92 @@
+{
+ "video": "full_match.mp4.webm",
+ "backend": "rtmpose-balanced",
+ "fps": 60.0,
+ "width": 1280,
+ "device": "auto",
+ "iou_min": 0.15,
+ "gap_s": 0.6,
+ "runtime_s": 52624.4,
+ "rallies": {
+  "1": {
+   "detections": 7170,
+   "tracks": 7,
+   "sided_tracks": 5,
+   "window": "labels",
+   "t0": 8.74,
+   "t1": 38.54
+  },
+  "2": {
+   "detections": 4655,
+   "tracks": 6,
+   "sided_tracks": 5,
+   "window": "labels",
+   "t0": 39.04,
+   "t1": 57.43
+  },
+  "3": {
+   "detections": 7585,
+   "tracks": 8,
+   "sided_tracks": 6,
+   "window": "labels",
+   "t0": 57.93,
+   "t1": 89.16
+  },
+  "4": {
+   "detections": 6518,
+   "tracks": 7,
+   "sided_tracks": 6,
+   "window": "labels",
+   "t0": 89.66,
+   "t1": 116.78
+  },
+  "5": {
+   "detections": 6326,
+   "tracks": 12,
+   "sided_tracks": 11,
+   "window": "labels",
+   "t0": 117.28,
+   "t1": 144.34
+  },
+  "6": {
+   "detections": 3994,
+   "tracks": 8,
+   "sided_tracks": 8,
+   "window": "labels",
+   "t0": 144.84,
+   "t1": 161.84
+  },
+  "7": {
+   "detections": 4638,
+   "tracks": 7,
+   "sided_tracks": 6,
+   "window": "labels",
+   "t0": 164.53,
+   "t1": 184.53
+  },
+  "8": {
+   "detections": 3974,
+   "tracks": 8,
+   "sided_tracks": 7,
+   "window": "labels",
+   "t0": 189.07,
+   "t1": 206.07
+  },
+  "9": {
+   "detections": 9921,
+   "tracks": 25,
+   "sided_tracks": 20,
+   "window": "labels",
+   "t0": 252.56,
+   "t1": 293.68
+  },
+  "10": {
+   "detections": 10901,
+   "tracks": 20,
+   "sided_tracks": 14,
+   "window": "labels",
+   "t0": 294.18,
+   "t1": 341.18
+  }
+ }
+}
