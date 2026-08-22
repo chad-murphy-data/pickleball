@@ -1198,7 +1198,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21q  hoist accumulators; anchor fix was a NULL"
+BUILD = "2026-08-21r  + touch share WITHIN TEAM (the product metric)"
 
 
 def main():
@@ -1299,6 +1299,7 @@ def run(a):
     extra_dt = []
     t_ok = t_tot = 0
     n_deleted = n_inserted = 0
+    team_of_player = {}
     diag_fixes = []
     picks_by_rally = {}
     ctx_by_rally = {}
@@ -1678,6 +1679,14 @@ def run(a):
                 per_player_kind[nm][1] += 1
         for _t, nm in truth[cum]:
             per_player[nm][1] += 1
+        # team membership, straight from the lineup record - never
+        # inferred from the counts
+        for _tm in ("A", "B"):
+            for _h in (RIGHT, LEFT):
+                _n = names_by_uuid.get(
+                    rec.get(f"team_{_tm}_{_h}", "").lower())
+                if _n:
+                    team_of_player[_n] = _tm
         # grade: k-th call vs k-th truth (same order-join as the pilot)
         for k, nm in enumerate(called):
             if nm is None or k >= len(truth[cum]):
@@ -2480,6 +2489,52 @@ def run(a):
               f"{_sd[int(.9 * len(_sd))]:.2f}s.\n  Dead-time junk is "
               f"free to remove (trim the window); junk INSIDE the "
               f"rally needs the scorer or the DP.")
+    # ---- TOUCH SHARE, WITHIN TEAM. The user's correction
+    # (2026-08-21), and it changes the metric's character rather than
+    # just its denominator.
+    #
+    # WHY THIS IS THE RIGHT DENOMINATOR: sides alternate exactly (0
+    # violations / 229), so each side's total is essentially fixed by
+    # the rally structure and carries no information about the players.
+    # The only quantity actually being estimated is how a PAIR divided
+    # its own touches, which is exactly what the geometry layer decides
+    # and what "who is carrying this team" means.
+    #
+    # AND IT IS HARDER THAN THE OVERALL SHARE, which is worth stating
+    # plainly because the overall number flatters us. Overall share
+    # survives a 41%-junk event list at ~1.7pp mean error only because
+    # junk spreads across all four players and cancels in the ratio.
+    # Within a pair there is no such cancellation: a naming error moves
+    # a touch FROM one partner TO the other, so every mistake counts
+    # twice. The errors are also lumpy rather than smooth - a single
+    # wrong side bit moves a whole rally's worth of one side's contacts
+    # at once, ~12 of them in a 25-contact rally - so a couple of bits
+    # are worth several points of share.
+    if team_of_player:
+        print("\nTOUCH SHARE WITHIN TEAM (the product metric)")
+        print("  sides alternate exactly, so each side's TOTAL is fixed "
+              "by the rally structure;\n  the only thing being "
+              "estimated is how a pair split its own touches")
+        by_team = defaultdict(list)
+        for nm, tm in team_of_player.items():
+            if nm in per_player:
+                by_team[tm].append(nm)
+        print(f"    {'team':<6}{'player':<22}{'pipe %':>9}"
+              f"{'true %':>9}{'error':>9}")
+        for tm in sorted(by_team):
+            mem = sorted(by_team[tm])
+            p_tot = sum(per_player[n][0] for n in mem)
+            t_tot_ = sum(per_player[n][1] for n in mem)
+            for nm in mem:
+                ps = 100.0 * per_player[nm][0] / p_tot if p_tot else 0.0
+                ts = 100.0 * per_player[nm][1] / t_tot_ if t_tot_ else 0.0
+                print(f"    {tm:<6}{nm:<22}{ps:>8.1f}%{ts:>8.1f}%"
+                      f"{ps - ts:>+8.1f}")
+        print("  a naming error is ZERO-SUM inside a pair, so it moves "
+              "share by twice its own size —\n  which is why this "
+              "number, not the count, is the one the broken bits show "
+              "up in")
+
     print("\nTOUCH COUNTS (pipeline vs truth)")
     print("    wrong = a real contact given to the partner (zero-sum "
           "between them);\n    extra = a detection with no true contact "
