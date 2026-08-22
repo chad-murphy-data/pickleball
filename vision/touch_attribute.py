@@ -1568,7 +1568,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22h  --chain soft: parity assigns the side, tags are evidence"
+BUILD = "2026-08-22i  --chain soft + --segs-from: the loop moves off your machine"
 
 
 def main():
@@ -1676,6 +1676,14 @@ def main():
                          "measured JITTER, not just the measured "
                          "distribution. 1.5 = sweep margin + observed "
                          "jitter")
+    ap.add_argument("--segs-from", default=None, metavar="PATH",
+                    help="replay ball flight segments from a previous "
+                         "run's --dump-events JSON instead of decoding "
+                         "the video. This is what lets the decoder be "
+                         "iterated on a machine with NO video and NO "
+                         "pose model weights: the pose npz + a dump "
+                         "carry everything the pipeline consumes, and "
+                         "the video is only needed to CREATE them")
     ap.add_argument("--dump-events", default=None, metavar="PATH",
                     help="record every per-rally observation an "
                          "end-of-point rule could read - crossing "
@@ -1712,6 +1720,18 @@ def run(a):
     event_dump = {}
     segs_cache = {}
     per_rally_name = {}
+    if getattr(a, "segs_from", None):
+        import json as _json
+        with open(a.segs_from) as _fh:
+            _blob = _json.load(_fh)
+        for _k, _v in _blob.get("rallies", {}).items():
+            _sg = _v.get("segments")
+            if _sg:
+                segs_cache[int(_k)] = [
+                    (s[0], (s[1], s[2]), s[3], (s[4], s[5]), s[6])
+                    for s in _sg]
+        print(f"segs: replaying ball flights for {len(segs_cache)} "
+              f"rallies from {a.segs_from} (no video decode)")
     side_frac = []
     cross_count = {}
     anchor_by_rally = {}
@@ -1897,7 +1917,8 @@ def run(a):
             # compared against the thing it claims to find. The true
             # last contact is right here.
             _t_end = rally_end_motion(r["rd"], _t_anc)
-            if a.end_rule == "cross" and getattr(a, "video", None):
+            if a.end_rule == "cross" and (getattr(a, "video", None)
+                                          or held in segs_cache):
                 # THE BALL SETS THE WINDOW (user thread, 2026-08-22).
                 # After the point the ball gets picked up and flights
                 # just stop, so the last crossing bounds the rally at
@@ -1908,7 +1929,9 @@ def run(a):
                 # segments are cached for the ball-voter loop below.
                 import ball_voter as BV
                 _dt = [t for t, _s, _sc, _tid in dets]
-                if _dt:
+                if held in segs_cache:
+                    segs = segs_cache[held]
+                elif _dt:
                     try:
                         segs = BV.dedupe(BV.flight_segments(
                             a.video, max(0.0, min(_dt) - 2.0),
@@ -1918,6 +1941,9 @@ def run(a):
                               f"({e}); motion fallback")
                         segs = []
                     segs_cache[held] = segs
+                else:
+                    segs = []
+                if segs:
                     _nl = BV.net_line(r["rd"], box_at, player_tracks,
                                       side_map, _t_anc)
                     if _nl is not None and segs:
@@ -1975,7 +2001,7 @@ def run(a):
     # log names the server and the receiver and nobody else, so a ball
     # point at any later contact identifies a track we already have and
     # a name we still do not.
-    if getattr(a, "video", None):
+    if getattr(a, "video", None) or segs_cache:
         import ball_voter as BV
         for cum, evs in decoded.items():
             if len(evs) < 2:
