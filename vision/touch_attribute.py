@@ -928,7 +928,7 @@ def _strongest_first(cands, refractory):
 
 
 def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
-                  report=None, floor=0.02, chain=True):
+                  report=None, floor=0.02, chain=True, gap_p99=2.1):
     """Contact decoding as SEQUENTIAL PASSES, each one measurable.
 
     THE USER'S PROPOSAL (2026-08-21), and it is the right shape.
@@ -998,7 +998,39 @@ def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
         # window opens at the first confident candidate on that side
         srv = [d for d in strong if d[1] == s0]
         t_open = (srv[0][0] if srv else strong[0][0]) - 0.5 * typical_gap
-        t_close = strong[-1][0] + 1.5 * typical_gap
+        # THE RALLY ENDS AT THE FIRST IMPOSSIBLE GAP, not at the last
+        # confident candidate. v1 closed the window on strong[-1] and
+        # left 62 junk events past the last true contact, because
+        # players knock the ball around between points and those
+        # knocks score as confidently as real shots - the window's own
+        # evidence is contaminated by exactly what it is meant to
+        # exclude.
+        #
+        # The labels give a bound that dead time cannot fake: real
+        # contacts are never more than ~2.07s apart (p99 of 286
+        # measured gaps). Walk the confident candidates forward from
+        # the serve and cut at the first gap that no rally could
+        # contain. Junk sits a median 3.18s from any true contact, so
+        # it is on the far side of that line by construction.
+        # Walk EVERY candidate, not just the confident ones. The
+        # selftest caught this: a weak-but-real contact does not extend
+        # a strong-only walk, so the window closes on top of it and the
+        # pass destroys a contact no later stage can recover. Junk
+        # cannot bridge the gap either way - it sits a median 3.18s
+        # from any true contact, past the cut by construction.
+        cut = max(2.5, 1.2 * gap_p99)
+        t_close = None
+        prev = None
+        for d in cur:
+            if d[0] < t_open:
+                continue
+            if prev is not None and d[0] - prev > cut:
+                t_close = prev + 0.5 * typical_gap
+                break
+            prev = d[0]
+        if t_close is None:
+            t_close = (prev if prev is not None
+                       else strong[-1][0]) + 0.5 * typical_gap
         cur = [d for d in cur if t_open <= d[0] <= t_close]
     snap("2 window trim", cur)
 
@@ -1198,7 +1230,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-21r  + touch share WITHIN TEAM (the product metric)"
+BUILD = "2026-08-21s  window closes at the first impossible gap"
 
 
 def main():
@@ -1369,6 +1401,9 @@ def run(a):
     pass_gap = _all_gap[len(_all_gap) // 2] if _all_gap else 0.8
     pass_same_p01 = (_same_gap[max(0, int(0.01 * len(_same_gap)))]
                      if _same_gap else 0.7)
+    pass_gap_p99 = (_all_gap[min(len(_all_gap) - 1,
+                                 int(0.99 * len(_all_gap)))]
+                    if _all_gap else 2.1)
 
     # ---- lineup state machine, per match, from the referee log alone
     match_ids = {w["match_id"] for c, w in wrows.items()
@@ -1439,7 +1474,8 @@ def run(a):
         _s0 = r["contacts"][0][1] ^ r["m"]
         if a.passes:
             _ev, _st, _gh = decode_passes(
-                dets, _s0, pass_gap, pass_same_p01)
+                dets, _s0, pass_gap, pass_same_p01,
+                gap_p99=pass_gap_p99)
             path = [(t, sd, sc, 0) for t, sd, sc, _tid in _ev]
             funnel[held] = _st
         else:
@@ -2309,7 +2345,7 @@ def run(a):
             rc = f"{covered}/{total_true}" if total_true else "-"
             pr = (f"{tp}/{n_ev} = {tp / n_ev:.0%}"
                   if gi >= len(names) - 1 and n_ev else "")
-            print(f"    {nm:<26}{n_ev:>8}{rc:>9}{pr:>11}")
+            print(f"    {nm:<26}{n_ev:>8}{rc:>10}{pr:>15}")
         print("    recall is the ceiling every later stage inherits — a "
               "stage that drops it is\n    destroying real contacts, "
               "and nothing downstream can get them back.")
