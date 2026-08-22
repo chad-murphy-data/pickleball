@@ -1128,6 +1128,48 @@ def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
     return cur, stages, ghosts
 
 
+def end_by_resume(ts, gap=2.0, look=5.0, need=2):
+    """Last event before a gap that play never resumes after.
+
+    THE USER'S RULE (2026-08-22), and it is the piece every previous
+    attempt was missing. All of them stopped at the FIRST gap over a
+    threshold, with no lookahead - so a coverage hole mid-rally ended
+    the point. On r1 that cut at 13.09s while crossings carried on to
+    32.51s: play resumed for another nineteen seconds and the rule
+    could not see it.
+
+    A gap only ends a rally if nothing comes back. Crossings cover
+    ~50-60% of contacts, so holes are expected and must not be
+    terminal; what is NOT expected is a hole with no play after it.
+
+    `need` is why this is more than a bigger threshold. With need=1,
+    "a 2s gap that does not restart within 5s" is just a 5s threshold
+    written differently. Requiring TWO crossings to count as a
+    resumption means a single stray knock between points cannot
+    resurrect a rally that is over, which is the failure mode a plain
+    threshold has no defence against.
+
+    Returns the last timestamp of live play, or ts[-1] if play never
+    stops."""
+    if not ts:
+        return None
+    last = ts[0]
+    i = 1
+    while i < len(ts):
+        if ts[i] - ts[i - 1] <= gap:
+            last = ts[i]
+            i += 1
+            continue
+        # a suspicious hole. Does play come back?
+        resumed = [t for t in ts[i:] if t <= ts[i - 1] + look]
+        if len(resumed) >= need:
+            last = ts[i]
+            i += 1
+            continue
+        return last
+    return last
+
+
 def trim_tail(evs, gap_p99, slack=1.25):
     """Drop the trailing events separated from play by an impossible gap.
 
@@ -1335,7 +1377,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22b  crossing gap, self-calibrated per rally"
+BUILD = "2026-08-22c  + resume rule: a gap only ends play if play stops"
 
 
 def main():
@@ -2502,9 +2544,9 @@ def run(a):
         print("  positive = after the last true contact (junk "
               "survives); negative = before it (play destroyed)")
         print(f"    {'rally':<7}{'last cross':>12}{'before gap':>12}"
-              f"{'self-cal':>12}{'true last':>11}{'d(last)':>9}"
-              f"{'d(gap)':>9}{'d(sc)':>9}")
-        d_last, d_gap, d_sc = [], [], []
+              f"{'self-cal':>12}{'resume':>10}{'true last':>11}"
+              f"{'d(last)':>9}{'d(gap)':>9}{'d(sc)':>9}{'d(res)':>9}")
+        d_last, d_gap, d_sc, d_rs = [], [], [], []
         for cum in sorted(cross_count):
             v = cross_count[cum]
             cts = v[3] if len(v) > 3 else []
@@ -2537,16 +2579,19 @@ def run(a):
                 if cts[i] - cts[i - 1] > cut_sc:
                     break
                 stop_sc = cts[i]
+            stop_rs = end_by_resume(cts)
             d_last.append(cts[-1] - tru)
             d_gap.append(stop - tru)
             d_sc.append(stop_sc - tru)
+            d_rs.append(stop_rs - tru)
             print(f"    r{cum:<6}{cts[-1]:>12.2f}{stop:>12.2f}"
-                  f"{stop_sc:>12.2f}{tru:>11.2f}"
+                  f"{stop_sc:>12.2f}{stop_rs:>10.2f}{tru:>11.2f}"
                   f"{cts[-1] - tru:>+9.2f}{stop - tru:>+9.2f}"
-                  f"{stop_sc - tru:>+9.2f}")
+                  f"{stop_sc - tru:>+9.2f}{stop_rs - tru:>+9.2f}")
         for nm, d in (("last crossing", d_last),
                       ("last before gap", d_gap),
-                      ("self-calibrated", d_sc)):
+                      ("self-calibrated", d_sc),
+                      ("resume rule", d_rs)):
             if d:
                 ds = sorted(d)
                 n = len(ds)
@@ -3311,6 +3356,30 @@ def selftest():
     _m3, _f3 = geom_sides(_rd([0, 1, 1, 1], [100, 120, 700, 720]), 0.0)
     assert _m3 == {0: 0, 1: 0, 2: 1, 3: 1} and _f3 == 0.75, (_m3, _f3)
 
+    # RESUME RULE. The property that distinguishes it from a plain
+    # threshold is the lookahead, so pin exactly that: a hole with
+    # play after it must NOT end the rally, and a hole with nothing
+    # after it must.
+    #   r1's actual shape: crossings, a hole, then nineteen more
+    #   seconds of play. Every earlier rule stopped at the hole.
+    _r1 = [0.0, 1.0, 2.0, 6.0, 7.0, 8.0, 9.0, 10.0]
+    assert end_by_resume(_r1) == 10.0, end_by_resume(_r1)
+    #   a hole with nothing after it ends the rally at the hole
+    _end = [0.0, 1.0, 2.0, 9.0]
+    assert end_by_resume(_end) == 2.0, end_by_resume(_end)
+    #   NEED=2 is the whole point: one stray knock is not a
+    #   resumption, and with need=1 this rule would be nothing but a
+    #   larger threshold written differently
+    _stray = [0.0, 1.0, 2.0, 6.5]
+    assert end_by_resume(_stray, need=2) == 2.0, end_by_resume(_stray)
+    assert end_by_resume(_stray, need=1) == 6.5
+    #   continuous play is never cut
+    _cont = [0.0, 1.0, 2.0, 3.0, 4.0]
+    assert end_by_resume(_cont) == 4.0
+    #   degenerate inputs
+    assert end_by_resume([]) is None
+    assert end_by_resume([3.0]) == 3.0
+
     # TAIL TRIM. It can only ever REMOVE events, and only from the
     # tail, so the properties worth pinning are that it stops at the
     # FIRST break rather than the largest, and that it is inert on a
@@ -3493,7 +3562,7 @@ def selftest():
     ok_y, _n2, w_y, _w2 = score_order(("y", "x"), heavy)
     assert ok_x < ok_y and w_x > w_y, "weighting must be able to flip it"
 
-    print("selftest OK: tail trim, rally-end from motion, "
+    print("selftest OK: resume rule, tail trim, rally-end from motion, "
           "geom_sides (mapping + inversion), "
           "pass funnel (truth-blind, monotone), "
           "same-side policy (delete/insert/auto), "
