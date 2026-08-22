@@ -1041,7 +1041,7 @@ def _strongest_first(cands, refractory):
 
 def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
                   report=None, floor=0.02, chain=True, gap_p99=2.1,
-                  t_end=None):
+                  t_end=None, chain_mode="hard"):
     """Contact decoding as SEQUENTIAL PASSES, each one measurable.
 
     THE USER'S PROPOSAL (2026-08-21), and it is the right shape.
@@ -1159,6 +1159,13 @@ def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
     # of doing all three jobs at once.
     if not chain:
         return cur, stages, 0
+    if chain_mode == "soft":
+        path = chain_soft(cur, s0)
+        chained = [(t, s, sc, tid) for t, s, sc, _g, tid in path]
+        ghosts = sum(g for _t, _s, _sc, g, _tid in path)
+        cur = chained
+        snap(f"3 chain-soft ({ghosts} ghosts)", cur)
+        return cur, stages, ghosts
     import swing_explore as SE
     path = SE.decode_rally([(t, s, sc) for t, s, sc, _tid in cur], s0)
     tid_of = {(round(t, 3), s): tid for t, s, _sc, tid in cur}
@@ -1168,6 +1175,121 @@ def decode_passes(dets, s0, typical_gap, same_gap_p01, truth_ts=None,
     cur = chained
     snap(f"3 chain ({ghosts} ghosts)", cur)
     return cur, stages, ghosts
+
+
+def chain_soft(cands, s0, min_gap=0.25, max_gap=3.0,
+               ghost_pen=-3.2, max_ghost=2, side_pen=-0.9,
+               attach_tol=0.35):
+    """The alternating chain with sides as PARITY, not eligibility.
+
+    WHY (2026-08-22, the g-run). The side-channel audit reads 51% at
+    contact instants EVEN with the track mapping fixed at 87% — the
+    nearest candidate to a true contact is often the OPPONENT'S
+    reaction swing, a real peak on the physically wrong side. Hard
+    alternation over side TAGS therefore conflicts with reality on
+    half the contacts, and that is how a DP walks past 24 candidates
+    it itself rates confident: when it is a side's turn, the evidence
+    at that instant is tagged to the other side and is illegal by
+    construction.
+
+    Here the turn structure (exact — 0 violations in 229 labelled
+    contacts) assigns the SIDE, and the tag is demoted to evidence: a
+    candidate whose tag matches its slot's parity collects a small
+    bonus, a mismatch pays side_pen instead of being vetoed. Ghosts
+    keep parity honest across gaps exactly as before. The emitted side
+    is the PARITY side; the tid is the candidate's own when its tag
+    agrees, else the strongest agreeing candidate within attach_tol,
+    else None (the naming layer already treats a None tid as
+    unlabelled and lets elimination decide).
+
+    Pure python on purpose - same policy as passes 0-2: the reasoning
+    lives here, so it must run under --selftest with no pose stack.
+    cands: [(t, tag, sc, tid)] sorted. Returns [(t, side, sc, ghosts,
+    tid)]."""
+    import math
+    if not cands:
+        return []
+    scs = sorted(c[2] for c in cands)
+    ref = max(scs[int(0.70 * len(scs))], 0.05)
+    logp = [math.log(max(sc, 1e-6)) - math.log(ref)
+            for _t, _tag, sc, _tid in cands]
+    n = len(cands)
+    NEG = -1e18
+    best = [[NEG, NEG] for _ in range(n)]
+    prev = [[None, None] for _ in range(n)]
+    gh = [[0, 0] for _ in range(n)]
+
+    def tag_cost(j, par):
+        return 0.0 if cands[j][1] == par else side_pen
+
+    t0 = cands[0][0]
+    for i in range(n):
+        if cands[i][0] - t0 < 8.0:
+            v = logp[i] + tag_cost(i, s0)
+            if v > best[i][s0]:
+                best[i][s0] = v
+            v2 = logp[i] + tag_cost(i, 1 - s0) + ghost_pen
+            if v2 > best[i][1 - s0]:
+                best[i][1 - s0] = v2
+                gh[i][1 - s0] = 1
+    for j in range(n):
+        tj = cands[j][0]
+        for i in range(j):
+            dt = tj - cands[i][0]
+            if dt < min_gap:
+                continue
+            if dt > max_gap * (max_ghost + 1):
+                continue
+            for pi in (0, 1):
+                if best[i][pi] <= NEG / 2:
+                    continue
+                for g in range(0, max_ghost + 1):
+                    if dt > max_gap * (g + 1) or dt < min_gap * (g + 1):
+                        continue
+                    pj = pi ^ ((1 + g) % 2)
+                    per = dt / (g + 1)
+                    gap_bonus = (0.0 if 0.45 <= per <= 2.2 else
+                                 -1.2 if 0.3 <= per < 0.45 else
+                                 -3.0)
+                    cand = (best[i][pi] + logp[j] + tag_cost(j, pj)
+                            + g * ghost_pen + gap_bonus)
+                    if cand > best[j][pj]:
+                        best[j][pj] = cand
+                        prev[j][pj] = (i, pi)
+                        gh[j][pj] = g
+    conf_ts = [c[0] for c, lp in zip(cands, logp) if lp >= 0.0]
+    t_late = max(conf_ts) if conf_ts else cands[-1][0]
+    end = None
+    for j in range(n):
+        for pj in (0, 1):
+            if best[j][pj] <= NEG / 2:
+                continue
+            if cands[j][0] < t_late - 1.0:
+                continue
+            if end is None or best[j][pj] > best[end[0]][end[1]]:
+                end = (j, pj)
+    if end is None:
+        for j in range(n):
+            for pj in (0, 1):
+                if best[j][pj] > NEG / 2 and (
+                        end is None
+                        or best[j][pj] > best[end[0]][end[1]]):
+                    end = (j, pj)
+    if end is None:
+        return []
+    path = []
+    cur = end
+    while cur is not None:
+        j, pj = cur
+        t, tag, sc, tid = cands[j]
+        if tag != pj:
+            # attach the strongest AGREEING candidate nearby, else None
+            near = [c for c in cands
+                    if c[1] == pj and abs(c[0] - t) <= attach_tol]
+            tid = max(near, key=lambda c: c[2])[3] if near else None
+        path.append((t, pj, sc, gh[j][pj], tid))
+        cur = prev[j][pj]
+    return path[::-1]
 
 
 def end_by_resume(ts, gap=4.0, look=8.0, need=1):
@@ -1446,7 +1568,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22g  one global polarity bit; per-rally naming trace"
+BUILD = "2026-08-22h  --chain soft: parity assigns the side, tags are evidence"
 
 
 def main():
@@ -1521,6 +1643,18 @@ def main():
                          "and accepts a missed contact between them; "
                          "auto picks per pair on the gap and the DP's "
                          "own ghost")
+    ap.add_argument("--chain", choices=["hard", "soft"],
+                    default="hard",
+                    help="pass-3 chain. hard (shipped) = alternation "
+                         "over side TAGS, which vetoes real candidates "
+                         "whose nearest peak is the opponent's "
+                         "reaction (side channel 51%% at contact "
+                         "instants even with the track mapping at "
+                         "87%%). soft = the turn structure assigns the "
+                         "SIDE (parity, exact by rule) and a tag "
+                         "mismatch pays a penalty instead of being "
+                         "illegal; tid comes from the strongest "
+                         "agreeing candidate nearby, else None")
     ap.add_argument("--end-rule", choices=["motion", "cross"],
                     default="motion",
                     help="how --passes closes the rally window. motion "
@@ -1795,15 +1929,20 @@ def run(a):
             _ev, _st, _gh = decode_passes(
                 dets, _s0, pass_gap, pass_same_p01,
                 gap_p99=pass_gap_p99,
-                t_end=_t_end)
+                t_end=_t_end, chain_mode=a.chain)
             path = [(t, sd, sc, 0) for t, sd, sc, _tid in _ev]
             funnel[held] = _st
+            # the passes already resolved each event's tid (under
+            # --chain soft it can differ from the tag-keyed lookup:
+            # the side is the PARITY side, and the tid is the
+            # strongest agreeing candidate or None)
+            evs = [(t, s, tid) for t, s, _sc, tid in _ev]
         else:
             path = SE.decode_rally(
                 [(t, s, sc) for t, s, sc, _ in dets], _s0)
-        evs = []
-        for t, s, _sc, _g in path:
-            evs.append((t, s, tid_of.get((round(t, 3), s))))
+            evs = []
+            for t, s, _sc, _g in path:
+                evs.append((t, s, tid_of.get((round(t, 3), s))))
         decoded[held] = evs
         # KEEP THE GHOSTS. decode_rally's 4th field is the number of
         # contacts it asserts happened between this event and the last
@@ -3805,7 +3944,52 @@ def selftest():
     ok_y, _n2, w_y, _w2 = score_order(("y", "x"), heavy)
     assert ok_x < ok_y and w_x > w_y, "weighting must be able to flip it"
 
-    print("selftest OK: resume rule, tail trim, rally-end from motion, "
+    # ---- chain_soft: parity assigns sides, tags are only evidence.
+    # Six true contacts, 1s apart, alternating serve-side-first — but
+    # tags flipped on every third one (the opponent's reaction peak is
+    # the nearest candidate, the g-run's 51% finding). The hard chain
+    # vetoes those slots; the soft chain must recover all six times
+    # with the PARITY sides, and hand back a tid only where a tag
+    # agrees. A weak-candidate background is part of the fixture, not
+    # decoration: the DP's per-event value is log(sc/ref) with ref =
+    # its own 70th percentile, so with no background every logp is 0
+    # and a fresh start at the window tail BEATS any chain that paid a
+    # tag penalty — skipping is free exactly when nothing outscores
+    # the reference, which is the f-run recall collapse in miniature
+    # and a live suspect for the remaining misses.
+    _cs = []
+    for _i in range(6):
+        _true_side = _i % 2          # s0=0 serves first
+        _tag = _true_side if _i % 3 != 2 else 1 - _true_side
+        _cs.append((float(_i), _tag, 0.9, 100 + _i))
+    for _k in range(15):             # background: weak, ignorable
+        _cs.append((0.2 + 0.31 * _k, 0, 0.03, 900 + _k))
+    _out = [e for e in chain_soft(sorted(_cs), 0) if e[2] >= 0.5]
+    _ts = [round(t) for t, _p, _sc, _g, _tid in _out]
+    assert _ts == [0, 1, 2, 3, 4, 5], _out
+    for _k, (_t, _p, _sc, _g, _tid) in enumerate(_out):
+        assert _p == _k % 2, ("parity side wrong", _k, _out)
+        if _k % 3 != 2:
+            assert _tid == 100 + _k, ("agreeing tag keeps its tid", _out)
+        else:
+            # a mismatched slot must NEVER keep the flipped candidate's
+            # own tid — it attaches an agreeing neighbour when one is
+            # within reach (slot 2: a background tid) or abstains
+            # (slot 5: no agreeing neighbour exists)
+            assert _tid != 100 + _k, ("flipped tid must not survive",
+                                      _out)
+    assert _out[5][4] is None, _out
+    # with an AGREEING candidate right next to a mismatched slot, the
+    # DP takes the agreeing one (or attaches its tid) instead of None
+    _cs2 = [(0.0, 0, 0.9, 1), (1.0, 0, 0.9, 2), (1.1, 1, 0.5, 3),
+            (2.0, 0, 0.9, 4)]
+    _cs2 += [(0.25 + 0.2 * _k, 1, 0.03, 800 + _k) for _k in range(8)]
+    _out2 = chain_soft(sorted(_cs2), 0)
+    _mid = [e for e in _out2 if abs(e[0] - 1.0) < 0.2 and e[1] == 1]
+    assert _mid and _mid[0][4] == 3, _out2
+
+    print("selftest OK: chain_soft (parity sides, tag-flip recovery, "
+          "tid attach), resume rule, tail trim, rally-end from motion, "
           "geom_sides (mapping + inversion + global-flip override), "
           "pass funnel (truth-blind, monotone), "
           "same-side policy (delete/insert/auto), "
