@@ -276,3 +276,68 @@ rally npz (the train game). The 76 frozen holdout rallies have no
 extracted pose streams — one `pose_extract.py` run on the user's
 machine over the holdout windows unblocks it; everything after that
 is replayable here.
+
+---
+
+## Holdout certification, session 2 (2026-08-23) — one real bug found and fixed
+
+First holdout run (6 rallies / 82 contacts, rallies 22-27): geometry
+collapsed 90%->49%, nearest-time attribution 82%->20%, while TEAM
+stayed 98% right both times. Four hypotheses tested and ruled out
+with direct evidence before landing on the real one:
+
+1. **Near/far swap** — ruled out. TEAM is checked against real ground
+   truth (roster names, not an internal convention); 98% both splits.
+2. **Stacking** (teammates lined up close together) — ruled out.
+   Measured teammate x-separation at the serve anchor directly; broken
+   rallies aren't the closest-together ones. r27 (broken) has the
+   WIDEST separation in the entire dataset (623px), r22 (broken) the
+   2nd-widest (551px).
+3. **Roster CSV inconsistency** — ruled out. `team_A/B_R/L` vs
+   `server_uuid`/`server_half` checked for internal consistency across
+   every labeled rally: 34/34 consistent, holdout included.
+4. **Orientation (`flip`) mis-fit from a tiny sample** — ruled out.
+   `flip=0` identical across train-only (n=15), holdout-only (n=6),
+   and pooled (n=21) fits. Near/far resolves to the same effective
+   team under every fit (the switch-model tie is a real degeneracy
+   when every sample is post-switch, but it cancels out - confirmed
+   by hand-tracing `effective_near_team` through all three fits).
+
+**The real bug: straggler tracks drag the anchor.** `anchor_time`'s
+`base` was `max(firsts)` unconditionally - wait for all four player
+tracks to have started. A track fragmented by occlusion that starts
+well after the other three (not evidence the serve happened late) drags
+the WHOLE anchor forward to match it, confidently mislabelling the
+rally from the wrong instant. Confirmed by direct per-track start
+times: r17 (train) `[426.81, 426.81, 426.81, 436.74]`, r23 (holdout)
+`[546.68, 546.68, 546.68, 554.11]`, r24 (holdout, two-track version)
+`[570.74, 570.74, 580.09, 580.94]` — against healthy rallies where all
+four start within ~1s. This was NOT a seeding bug (the diagnostic
+geometry test's own separate anchor, seeded from
+`dets_by_rally[cum][0][0]`, is a red herring — never consumed by
+ATTRIBUTION; production's real anchor, seed=0.0, drifted identically,
+which is what pointed at the settling logic itself).
+
+Fixed: a track starting >2s after the third-earliest is treated as
+not-there-yet, routing into the SAME safety valve the <4-tracks case
+already has (`label_tracks_at_serve` returns unreadable rather than
+guessing). Selftested both directions (straggler discarded, genuine
+small gap still waited for).
+
+**Effect, measured, same flags before/after:**
+- train: max drift +8.43s→+0.47s, geometry 90%→92%
+- holdout: max drift +8.70s (r24 unchanged — see below), geometry
+  49%→50%, nearest-time attribution 16%→21%
+
+**Real but small.** r17/r23 are cleanly fixed. r24 still shows +8.70s
+drift — its gap is split unevenly across TWO tracks (`580.09, 580.94`
+vs `570.74, 570.74`), which the current single-outlier threshold
+doesn't fully catch; flagged for a closer look, not claimed fixed.
+**r22, r25, r26, r27 remain completely unexplained** by anything
+tested this session — holdout geometry is still 50%, chance. r25 is
+separately known to carry a contaminated 28-track pose extraction
+(vs 5-8 typical) and holds 39% of the holdout's contacts.
+
+Per the project's holdout policy: rallies 22-27 are now `dev`, not
+holdout (they've been looked at, twice). The next labeled game is the
+new sealed holdout.
