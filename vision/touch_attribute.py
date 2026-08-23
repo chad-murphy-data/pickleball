@@ -1588,7 +1588,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22j  --eval-split: the certification arm"
+BUILD = "2026-08-22k  anchor-drift diagnostic"
 
 
 def main():
@@ -1759,6 +1759,7 @@ def run(a):
     event_dump = {}
     segs_cache = {}
     per_rally_name = {}
+    anchor_drift = {}
     if getattr(a, "segs_from", None):
         import json as _json
         with open(a.segs_from) as _fh:
@@ -2385,6 +2386,20 @@ def run(a):
         sel = player_tracks(rd)
         t_anc_c = anchor_time(rd, dets_by_rally[cum][0][0]
                               if dets_by_rally[cum] else 0.0, settle)
+        # ANCHOR DRIFT (2026-08-23 holdout investigation). The seed
+        # fed to anchor_time is dets_by_rally[cum][0][0] - the EARLIEST
+        # scored candidate in the WHOLE rally (dets.sort() makes index
+        # 0 the min by time), which can sit well before the true serve
+        # (pre-serve movement scores above the floor too). If the
+        # settled search anchors on the wrong instant, near/far (coarse,
+        # stable all rally) can still read right while left/right
+        # (fine, changes as players move) goes to chance - the exact
+        # shape of the holdout collapse (TEAM 98%, partner ~51%).
+        # Measured against the TRUE first contact time, never used to
+        # decide anything, only to grade the anchor itself.
+        _t_true0 = truth[cum][0][0] if truth.get(cum) else None
+        if _t_true0 is not None:
+            anchor_drift[cum] = t_anc_c - _t_true0
         # y AT THE ANCHOR is what the 2/2 near/far split actually rests
         # on, so print it: a clean split shows two low and two high
         # values with a wide gap, and an ambiguous one shows them
@@ -2464,6 +2479,17 @@ def run(a):
         print(f"  geometry names the right player on "
               f"{g_ok}/{g_n} = {g_ok / g_n:.0%} of truth-anchored "
               f"contacts   (chance 25%)")
+        if anchor_drift:
+            _d = sorted(anchor_drift.values())
+            _n = len(_d)
+            print(f"  ANCHOR DRIFT vs true first contact: "
+                  f"med {_d[_n // 2]:+.2f}s  min {_d[0]:+.2f}  "
+                  f"max {_d[-1]:+.2f}  (n={_n})")
+            _bad = [c for c, d in anchor_drift.items() if abs(d) > 2.0]
+            if _bad:
+                print(f"    >2s drift: "
+                      + ", ".join(f"r{c}:{anchor_drift[c]:+.2f}s"
+                                  for c in sorted(_bad)))
         print(f"    TEAM (near/far end) right   {g_team}/{g_n} = "
               f"{g_team / g_n:.0%}   (chance 50%)")
         if g_unc[1]:
