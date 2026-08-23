@@ -1742,14 +1742,19 @@ def main():
                          "against it in seconds with no video and no "
                          "pose stack, instead of spending a full run "
                          "per threshold")
-    ap.add_argument("--eval-split", choices=["train", "holdout", "all"],
+    ap.add_argument("--eval-split",
+                    choices=["train", "holdout", "dev", "all"],
                     default="train",
                     help="which side of label_split.csv to grade. "
                          "train (default) = the tuning set, every "
                          "number so far. holdout = the sealed rallies "
                          "- run ONLY with a frozen configuration, and "
                          "after looking, relabel them dev: a seen "
-                         "holdout is not a holdout")
+                         "holdout is not a holdout. dev = a spent "
+                         "holdout, freely re-runnable for further "
+                         "investigation (rallies 22-27 as of "
+                         "2026-08-23) without touching the next sealed "
+                         "set")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
