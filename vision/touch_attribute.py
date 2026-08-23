@@ -891,7 +891,24 @@ def anchor_time(rd, fallback, settle=True):
         t = rd["tracks"][tid]["t"]
         if len(t):
             firsts.append(float(t[0]))
-    base = max(firsts) if len(firsts) == 4 else fallback
+    # A STRAGGLER TRACK must not drag the anchor to match it. base was
+    # max(firsts) unconditionally - "wait for all four" - and a track
+    # fragmented by occlusion that only starts well after the others
+    # (measured 2026-08-23: r17 +8.4s, r23 +5.9s, r24 +8.7s, always
+    # exactly one or two outlier tracks against three that agree)
+    # dragged the WHOLE anchor that far forward, confidently
+    # mislabelling the rally from the wrong instant instead of from
+    # the serve. Treating a >STRAGGLER_GAP-late track as simply not
+    # there yet routes into the SAME safety valve label_tracks_at_serve
+    # already has for <4 tracks present (returns ok=False, the rally
+    # is marked unreadable) - an honest skip beats a confident wrong
+    # answer, which is this file's standing rule everywhere else.
+    STRAGGLER_GAP = 2.0
+    if len(firsts) == 4:
+        srt = sorted(firsts)
+        base = srt[2] if srt[3] - srt[2] > STRAGGLER_GAP else srt[3]
+    else:
+        base = fallback
     if not settle:
         return base
     # search back from the first CONTACT, but never earlier than the
@@ -1588,7 +1605,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22k  anchor-drift diagnostic"
+BUILD = "2026-08-22l  production anchor-drift diagnostic (the anchor that actually matters)"
 
 
 def main():
@@ -1760,6 +1777,7 @@ def run(a):
     segs_cache = {}
     per_rally_name = {}
     anchor_drift = {}
+    prod_anchor_drift = {}
     if getattr(a, "segs_from", None):
         import json as _json
         with open(a.segs_from) as _fh:
@@ -1947,6 +1965,13 @@ def run(a):
         # other number improved.
         _t_anc = anchor_time(r["rd"], 0.0, not a.no_settle)
         anchor_by_rally[held] = _t_anc
+        # PRODUCTION ANCHOR DRIFT vs the true serve time. Separate
+        # question from the geometry TEST's own anchor (which seeds
+        # from dets_by_rally[cum][0][0] and is diagnostic-only, never
+        # consumed by ATTRIBUTION) - this is the anchor that actually
+        # names every contact, so this is the number that matters.
+        if r["contacts"]:
+            prod_anchor_drift[held] = _t_anc - r["contacts"][0][0]
         _side_of, _side_frac = (None, 0.0)
         if a.geom_side:
             _side_of, _side_frac = geom_sides(r["rd"], _t_anc,
@@ -2905,6 +2930,20 @@ def run(a):
         "a diagnostic below the grading loop rebound the attribution "
         f"counters: {(ok, tot)} != {(attr_ok, attr_tot)}")
     if attr_tot:
+        if prod_anchor_drift:
+            _pd = sorted(prod_anchor_drift.values())
+            _pn = len(_pd)
+            print(f"\nPRODUCTION ANCHOR DRIFT vs true serve time (this "
+                  f"is the anchor ATTRIBUTION actually uses,\n  "
+                  f"seed=0.0 per rally, NOT the geometry test's own "
+                  f"separate anchor above): med {_pd[_pn // 2]:+.2f}s  "
+                  f"min {_pd[0]:+.2f}  max {_pd[-1]:+.2f}  (n={_pn})")
+            _pbad = [c for c, d in prod_anchor_drift.items()
+                     if abs(d) > 2.0]
+            if _pbad:
+                print(f"    >2s drift: "
+                      + ", ".join(f"r{c}:{prod_anchor_drift[c]:+.2f}s"
+                                  for c in sorted(_pbad)))
         print(f"\nATTRIBUTION (no API, no appearance model): "
               f"{attr_ok}/{attr_tot} = {attr_ok / attr_tot:.0%}")
         print(f"  VLM comparison on the same rallies: identity 44%, "
@@ -3412,6 +3451,30 @@ def lineup_records(match_id, extra, walk_match):
 
 
 def selftest():
+    # anchor_time: a STRAGGLER track (2026-08-23) must not drag the
+    # anchor to match it. Three tracks start at t=10, a fourth doesn't
+    # appear until t=20 (a 10s occlusion gap) - the anchor must land
+    # near t=10 (using the 3 that agree), not t=20.
+    class _Straggler:
+        def __init__(self, starts):
+            self.tracks = {i: {"t": [float(s), float(s) + 5.0]}
+                           for i, s in enumerate(starts)}
+
+        def __getitem__(self, k):
+            return self.tracks if k == "tracks" else None
+    import unittest.mock as _mock
+    with _mock.patch.object(
+            sys.modules[__name__], "player_tracks",
+            lambda rd: list(rd["tracks"].keys())):
+        _rd_s = {"tracks": {i: {"t": [float(s), float(s) + 5.0]}
+                            for i, s in enumerate([10.0, 10.0, 10.0, 20.0])}}
+        assert anchor_time(_rd_s, 0.0, settle=False) == 10.0
+        # a SMALL, genuine gap (all four settling in near together)
+        # must still wait for the fourth rather than discard it
+        _rd_ok = {"tracks": {i: {"t": [float(s), float(s) + 5.0]}
+                            for i, s in enumerate([10.0, 10.2, 10.5, 11.0])}}
+        assert anchor_time(_rd_ok, 0.0, settle=False) == 11.0
+
     # quadrant round trip under every hypothesis — the inverse must be
     # exact or names silently land on the wrong player
     for near_team in ("A", "B"):
@@ -4091,7 +4154,9 @@ def selftest():
     _mid = [e for e in _out2 if abs(e[0] - 1.0) < 0.2 and e[1] == 1]
     assert _mid and _mid[0][4] == 3, _out2
 
-    print("selftest OK: chain_soft (parity sides, tag-flip recovery, "
+    print("selftest OK: anchor_time (straggler track discarded, genuine "
+          "gap still waited for), "
+          "chain_soft (parity sides, tag-flip recovery, "
           "tid attach), resume rule, tail trim, rally-end from motion, "
           "geom_sides (mapping + inversion + global-flip override), "
           "pass funnel (truth-blind, monotone), "
