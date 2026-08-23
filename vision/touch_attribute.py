@@ -903,7 +903,16 @@ def anchor_time(rd, fallback, settle=True):
     # already has for <4 tracks present (returns ok=False, the rally
     # is marked unreadable) - an honest skip beats a confident wrong
     # answer, which is this file's standing rule everywhere else.
-    STRAGGLER_GAP = 2.0
+    #
+    # 5.0s, not 2.0: the full gap distribution (2026-08-23, every
+    # rally with pose) is bimodal - genuine stragglers sit at 7.4-9.9s
+    # (r17, r23), everything else tops out at 2.05s (r22). 2.0 sat
+    # exactly on r22's 2.05s gap and flipped it from "readable, small
+    # +0.55s drift" to "unreadable" for no real benefit - caught only
+    # by building the review viewer and noticing r22 had vanished.
+    # 5.0 clears every benign gap with margin and still catches both
+    # real stragglers with margin on the other side.
+    STRAGGLER_GAP = 5.0
     if len(firsts) == 4:
         srt = sorted(firsts)
         base = srt[2] if srt[3] - srt[2] > STRAGGLER_GAP else srt[3]
@@ -1605,7 +1614,7 @@ def _nearest_dt(ser, t):
 
 
 # ------------------------------------------------------------ report
-BUILD = "2026-08-22l  production anchor-drift diagnostic (the anchor that actually matters)"
+BUILD = "2026-08-23a  --review-html: watch what the pipeline saw, in your own video"
 
 
 def main():
@@ -1732,6 +1741,14 @@ def main():
                          "pose model weights: the pose npz + a dump "
                          "carry everything the pipeline consumes, and "
                          "the video is only needed to CREATE them")
+    ap.add_argument("--review-html", default=None, metavar="PATH",
+                    help="write a self-contained HTML viewer: load your "
+                         "OWN local video (nothing uploaded, same "
+                         "pattern as make_contact_audit.py) and watch "
+                         "the pipeline's tracked players (colored dot "
+                         "+ predicted name) move with a rally selector "
+                         "and a per-contact timeline (green=matched "
+                         "truth, red=wrong, gray=extra/junk)")
     ap.add_argument("--dump-events", default=None, metavar="PATH",
                     help="record every per-rally observation an "
                          "end-of-point rule could read - crossing "
@@ -1782,6 +1799,8 @@ def run(a):
     segs_cache = {}
     per_rally_name = {}
     anchor_drift = {}
+    review_tracks = {}
+    review_events = {}
     prod_anchor_drift = {}
     if getattr(a, "segs_from", None):
         import json as _json
@@ -2236,12 +2255,14 @@ def run(a):
         if not geom_ok:
             unreadable += 1
             continue
+        review_tracks[cum] = (dict(tnames), _t_anc_p)
         # PRODUCTION PATH gets the same elimination: the decoded event
         # names a track, but alternation says which side must have hit,
         # so a track on the illegal side is re-picked from that side's
         # own candidates rather than trusted.
         sides_p = side_map(rd, _t_anc_p)
         called = []
+        _rev_evs = []
         for (t, _s, tid), s_fix in zip(evs, fixed):
             want_near = (s_fix == 0)
             if sides_p and tid in sides_p and sides_p[tid] != want_near:
@@ -2254,6 +2275,8 @@ def run(a):
             if nm is None:
                 no_geom += 1
             called.append(nm)
+            _rev_evs.append((t, s_fix, tid, nm))
+        review_events[cum] = _rev_evs
         # FREE PER-RALLY CHECK: the serve's track should already carry
         # the logged server's name. Disagreement means the orientation
         # or the serve geometry is wrong for this rally, and it is
@@ -3375,6 +3398,189 @@ def run(a):
         if not _wx:
             print("  NO CROSSINGS RECORDED - pass --video or the sweep "
                   "can only see motion")
+
+
+
+    if a.review_html:
+        import json as _json
+        review_data = {}
+        for cum in sorted(review_tracks):
+            names, t_anc = review_tracks[cum]
+            rd = rd_of(rallies, cum)
+            tracks_out = []
+            for tid, nm in names.items():
+                ser = rd["tracks"].get(tid)
+                if ser is None:
+                    continue
+                ts = ser["t"]
+                # thin to ~5Hz - plenty for a moving dot, keeps the
+                # HTML small enough to stay a single file
+                step = max(1, int(round(len(ts) / max(1, (ts[-1] - ts[0]) * 5))))
+                samples = [[round(float(ts[i]), 2),
+                            round(float(ser["cx"][i]), 1),
+                            round(float(ser["ynorm"][i]), 1)]
+                           for i in range(0, len(ts), step)]
+                tracks_out.append({
+                    "tid": int(tid), "name": nm,
+                    "team": name_team.get(nm),
+                    "samples": samples})
+            evs_out = [{"t": round(t, 2), "side": s, "name": nm}
+                       for t, s, _tid, nm in review_events.get(cum, [])]
+            truth_out = [{"t": round(t, 2), "name": nm}
+                         for t, nm in truth.get(cum, [])]
+            review_data[cum] = {
+                "anchor": round(t_anc, 2), "tracks": tracks_out,
+                "events": evs_out, "truth": truth_out,
+                "t0": round(rd["bounds"][0], 2),
+                "t1": round(rd["bounds"][1], 2)}
+        _html = _build_review_html(review_data, BUILD)
+        with open(a.review_html, "w") as fh:
+            fh.write(_html)
+        print(f"\nreview: {len(review_data)} rallies -> {a.review_html}")
+        print("  open it, load YOUR OWN local video file (nothing is "
+              "uploaded), pick a rally,\n  and watch the tracked "
+              "players move with their predicted names")
+
+
+def _build_review_html(review_data, build):
+    """Self-contained viewer: the user loads their OWN local video
+    (same pattern as make_contact_audit.py - a file input + createObjectURL,
+    nothing leaves the browser) and watches this run's own tracked
+    players and predicted names move against it. Every number on
+    screen comes from the SAME dicts (review_tracks/review_events) that
+    produced the printed ATTRIBUTION numbers - this is a picture of
+    that run, not a re-derivation, so what you see is what was graded."""
+    import json as _json
+    data_json = _json.dumps(review_data)
+    rally_ids = sorted(review_data, key=int)
+    options = "".join(f'<option value="{c}">rally {c}</option>'
+                      for c in rally_ids)
+    return f"""<!doctype html><html><head><meta charset="utf-8">
+<title>touch_attribute review — {build}</title>
+<style>
+  body {{ font-family: -apple-system, sans-serif; background: #111;
+          color: #eee; margin: 0; padding: 12px; }}
+  #wrap {{ max-width: 960px; margin: 0 auto; }}
+  #stage {{ position: relative; background: #000; }}
+  video {{ width: 100%; display: block; }}
+  canvas {{ position: absolute; top: 0; left: 0; width: 100%;
+            height: 100%; pointer-events: none; }}
+  #bar {{ display: flex; gap: 10px; align-items: center; margin: 8px 0; }}
+  #timeline {{ position: relative; height: 34px; background: #222;
+               margin-top: 6px; border-radius: 4px; overflow: hidden; }}
+  .mark {{ position: absolute; top: 3px; width: 3px; height: 28px;
+           cursor: pointer; }}
+  .ok {{ background: #4caf50; }}
+  .bad {{ background: #e53935; }}
+  .extra {{ background: #888; }}
+  #legend span {{ margin-right: 14px; }}
+  input[type=file] {{ color: #eee; }}
+  select {{ font-size: 14px; }}
+</style></head><body><div id="wrap">
+<h3>touch_attribute review — build {build}</h3>
+<p>Load your own local match video (nothing is uploaded), pick a rally,
+and play. Colored dots are the pipeline's tracked players, each labeled
+with its predicted name. The strip below is every contact: green =
+matched the true hitter, red = wrong, gray = an extra/junk detection.
+Click a mark to jump there.</p>
+<div id="bar">
+  <input type="file" id="vid-file" accept="video/*">
+  <select id="rally-pick">{options}</select>
+  <span id="status"></span>
+</div>
+<div id="stage">
+  <video id="vid" controls></video>
+  <canvas id="ov"></canvas>
+</div>
+<div id="timeline"></div>
+<div id="legend" style="margin-top:8px">
+  <span><span class="mark ok" style="position:static;display:inline-block;
+    width:10px;height:10px"></span> matched truth</span>
+  <span><span class="mark bad" style="position:static;display:inline-block;
+    width:10px;height:10px"></span> wrong</span>
+  <span><span class="mark extra" style="position:static;display:inline-block;
+    width:10px;height:10px"></span> extra/junk</span>
+</div>
+</div>
+<script>
+const DATA = {data_json};
+const COLORS = ["#42a5f5", "#ffb300", "#ab47bc", "#26a69a"];
+const vid = document.getElementById("vid");
+const cv = document.getElementById("ov");
+const ctx = cv.getContext("2d");
+const pick = document.getElementById("rally-pick");
+const timeline = document.getElementById("timeline");
+const statusEl = document.getElementById("status");
+let cur = null, colorOf = {{}};
+
+document.getElementById("vid-file").addEventListener("change", (e) => {{
+  const f = e.target.files[0];
+  if (f) vid.src = URL.createObjectURL(f);
+}});
+
+function nearestSample(samples, t) {{
+  // samples sorted by time; simple linear scan is plenty at ~5Hz
+  let best = null, bestDt = 1e9;
+  for (const s of samples) {{
+    const dt = Math.abs(s[0] - t);
+    if (dt < bestDt) {{ bestDt = dt; best = s; }}
+  }}
+  return bestDt <= 0.6 ? best : null;
+}}
+
+function loadRally(cum) {{
+  cur = DATA[cum];
+  if (!cur) return;
+  colorOf = {{}};
+  cur.tracks.forEach((tr, i) => {{ colorOf[tr.tid] = COLORS[i % 4]; }});
+  vid.currentTime = Math.max(0, cur.t0 - 1);
+  statusEl.textContent =
+    `anchor ${{cur.anchor}}s · ${{cur.tracks.length}} tracks · ` +
+    `${{cur.events.length}} events · ${{cur.truth.length}} true contacts`;
+  buildTimeline();
+}}
+
+function buildTimeline() {{
+  timeline.innerHTML = "";
+  if (!cur) return;
+  const span = Math.max(1, cur.t1 - cur.t0);
+  const truthNames = cur.truth.map(x => x.name);
+  cur.events.forEach(ev => {{
+    const d = document.createElement("div");
+    const matched = truthNames.includes(ev.name);
+    d.className = "mark " + (ev.name == null ? "extra" :
+                             matched ? "ok" : "bad");
+    d.style.left = (100 * (ev.t - cur.t0) / span) + "%";
+    d.title = `${{ev.t}}s — ${{ev.name || "(no name)"}}`;
+    d.addEventListener("click", () => {{ vid.currentTime = ev.t; }});
+    timeline.appendChild(d);
+  }});
+}}
+
+function draw() {{
+  requestAnimationFrame(draw);
+  if (!cur || !vid.videoWidth) return;
+  cv.width = vid.clientWidth; cv.height = vid.clientHeight;
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  const sx = cv.width / 1280, sy = cv.height / 720;
+  const t = vid.currentTime;
+  for (const tr of cur.tracks) {{
+    const s = nearestSample(tr.samples, t);
+    if (!s) continue;
+    const x = s[1] * sx, y = s[2] * sy;
+    ctx.fillStyle = colorOf[tr.tid];
+    ctx.beginPath(); ctx.arc(x, y, 7, 0, 2 * Math.PI); ctx.fill();
+    ctx.font = "13px sans-serif"; ctx.fillStyle = "#fff";
+    ctx.strokeStyle = "#000"; ctx.lineWidth = 3;
+    ctx.strokeText(tr.name || "?", x + 10, y - 6);
+    ctx.fillText(tr.name || "?", x + 10, y - 6);
+  }}
+}}
+
+pick.addEventListener("change", () => loadRally(pick.value));
+loadRally(pick.value);
+requestAnimationFrame(draw);
+</script></body></html>"""
 
 
 def rd_of(rallies, cum):
