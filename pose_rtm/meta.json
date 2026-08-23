@@ -6,7 +6,7 @@
  "device": "auto",
  "iou_min": 0.15,
  "gap_s": 0.6,
- "runtime_s": 52624.4,
+ "runtime_s": 11201.6,
  "rallies": {
   "1": {
    "detections": 7170,
@@ -87,6 +87,54 @@
    "window": "labels",
    "t0": 294.18,
    "t1": 341.18
+  },
+  "22": {
+   "detections": 3304,
+   "tracks": 8,
+   "sided_tracks": 7,
+   "window": "labels",
+   "t0": 527.64,
+   "t1": 541.64
+  },
+  "23": {
+   "detections": 5409,
+   "tracks": 9,
+   "sided_tracks": 8,
+   "window": "labels",
+   "t0": 546.68,
+   "t1": 569.68
+  },
+  "24": {
+   "detections": 5834,
+   "tracks": 9,
+   "sided_tracks": 8,
+   "window": "labels",
+   "t0": 570.74,
+   "t1": 595.24
+  },
+  "25": {
+   "detections": 13242,
+   "tracks": 40,
+   "sided_tracks": 30,
+   "window": "labels",
+   "t0": 603.2,
+   "t1": 656.28
+  },
+  "26": {
+   "detections": 4133,
+   "tracks": 8,
+   "sided_tracks": 5,
+   "window": "labels",
+   "t0": 656.78,
+   "t1": 678.59
+  },
+  "27": {
+   "detections": 5238,
+   "tracks": 8,
+   "sided_tracks": 7,
+   "window": "labels",
+   "t0": 679.09,
+   "t1": 702.09
   }
  }
 }
