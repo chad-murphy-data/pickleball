@@ -1,125 +1,103 @@
 # Is Haworth's 2026 DreamBreaker record bad luck or a real weak spot? (first pass, 2026-08-24)
 
-Started late-night off a vibe check ("his DBs have not been great") — this
-is a first pass, not a frozen finding. Reproduce with
+Started late-night off a vibe check ("his DBs have not been great"). This
+is a first pass, not a frozen finding — and the first version of it
+contained a real error, corrected below. Reproduce with
 `model/haworth_db_2026.py`.
 
-## Setup
+## CORRECTION (same session)
 
-Brooklyn played **4 DreamBreakers in 2026** (found by joining
-`data/dreambreakers.csv` on matchup_id against `data/mlp_matchups_2026.csv`):
+The original version of this analysis claimed MLP's DreamBreaker format
+changed mid-season — rotating 4-player quartet through 6/28, then a
+single winner-take-all 1v1 champion from 7/23 on — based on the referee
+logs for the 7/23 and 7/26 matches showing only two player uuids
+(Haworth + his opponent) for the entire match, with an exact score match.
 
-| date | opponent | Brooklyn score | result |
-|---|---|---|---|
-| 2026-06-28 | Dallas Flash | 23-21 | W |
-| 2026-07-09 | Chicago Slice | 21-23 | L |
-| 2026-07-23 | Miami Pickleball Club | 21-14 | W |
-| 2026-07-26 | Dallas Flash | 10-21 | L |
+**That claim was wrong.** Caught by the user: "it was always rotating, we
+just calculated it wrong." Checked directly against the matchup API's own
+tie-breaker configuration fields:
 
-Team record: 2-2. Nothing damning at the team level — this is really about
-whether Haworth specifically is dragging on his slice of it.
+```
+tieBreakerTeamRotation = TEAM_ROTATION_COMBINED_SCORE_EQUALS_POINTS
+tieBreakerRotationCombinedPoints = 4
+```
 
-**Player-level attribution required reconstructing referee logs**, since
-DreamBreakers never carry player IDs in the official score record. Pulled
-fresh (network) for this session:
+**Identical** on the 6/28 match (where rotation is independently confirmed
+— explicit `log_type=32` substitution log rows name all 4 players per
+side, matching `data/db_rosters.csv`'s Brooklyn roster) and on the 7/23 /
+7/26 matches. The rotate-every-4-combined-points rule was never turned
+off.
 
-- **6/28**: reused the existing cached reconstruction
-  (`data/db_rallies.csv`, built by `model/db_impute.py`). This DB used the
-  **old rotating-lineup format** — 4 players per team rotate on court, subs
-  logged as separate `log_type=32` rows. Haworth's slice was 12 of that
-  match's ~42-44 points.
-- **7/23 and 7/26**: fetched live via `PBClient.match_logs` — these use a
-  **different, newer log schema** with no `log_type=32` rows at all.
-  Instead `log_type=14` POINT rows carry `server_uuid`/`receiver_uuid`
-  inline, and — this is the interesting bit — **both matches are a single
-  continuous 1v1 the entire way, no rotation**. Haworth's opponent never
-  changes, and his personal rally count matches the *entire* official
-  score (35 rallies on 7/23 = the full 21-14; 31 on 7/26 = the full
-  21-10). That's consistent with a **rule change mid-season**: DreamBreaker
-  moved from "rotating quartet" to "one designated champion per team plays
-  the whole thing." Worth confirming against the rulebook/broadcast, but
-  the log format alone (no more per-point substitution to track) is a
-  pretty strong tell. **This is a new finding, not previously in
-  CLAUDE.md** — flagging it here since it changes what a DB even *is*
-  strategically (one player now carries 100% of it, not ~25%).
-- **7/09** (the other loss): **no digital referee log at all** — excluded.
-  So this analysis covers 3 of Haworth's 4 DBs, all we can currently
-  attribute at the player level.
+What actually changed: MLP's referee-logging schema, sometime around
+7/23, **stopped emitting `log_type=32` substitution events at all** (0 of
+them in either newer match's full log, checked exhaustively — every uuid
+appearing anywhere in the raw log JSON for the 7/23 match is either
+Haworth, his opponent, or a team/referee/group id; no other player ever
+appears). Without those events, `server_uuid`/`receiver_uuid` on the
+`log_type=14` POINT rows apparently just stay pinned to the **opening**
+pair for the whole match, rather than tracking real substitutions. The
+log still validates cleanly against the official final score (side-out
+alternation looks completely normal) — it's *self-consistent*, just not
+*true*. There is currently no way to tell, from this log stream, whether
+Haworth played the entire 7/23 and 7/26 DBs or rotated out after the
+first 4 points like the format says he should have.
 
-Total: **78 rallies**, 2 opponents (JW Johnson twice, James Delgado once).
+**Consequence**: the 62 rallies drawn from the 7/23 and 7/26 matches are
+not usable for player attribution and have been dropped. That leaves only
+the 6/28 match — 12 rallies, one opponent — which collapses the sample
+from "thin but suggestive" to "not enough to say anything." The whole
+headline of the original version (delta −0.32 logit, ~92% posterior
+probability of underperformance) doesn't survive this correction.
 
-## Expectation
+## What's left
 
-Used the house DB rally model (`model/db_model.md` v2): per-rally
-`P(win) = sigmoid(K · (singles_Haworth − singles_opponent))`, `K = 0.42`
-(the league-wide fit, held fixed — refitting K on Haworth's own 78 rallies
-would be circular). Haworth's singles value is **+1.87** on 290 ranked
-games — clearly the strongest singles player in any of these three
-matchups (opponents: JW Johnson +1.37, James Delgado +0.81). So yes, the
-premise "he's playing tough competition" undersells it a little — by the
-singles model he should be *favored* in all three, 55-61% per rally.
+Brooklyn played **4 DreamBreakers in 2026** (record: 2-2), but only one —
+**6/28 vs Dallas Flash (JW Johnson), W 23-21** — has referee logs that
+reliably attribute rallies to Haworth specifically (old logging schema,
+substitution events present, reconstruction validated exactly against the
+official score).
 
 | date | opponent | model p(win) | actual |
 |---|---|---|---|
-| 06-28 | JW Johnson (+1.37) | 0.553 | 8-4 (.667) |
-| 07-23 | James Delgado (+0.81) | 0.610 | 21-14 (.600) |
-| 07-26 | JW Johnson (+1.37) | 0.553 | 10-21 (.323) |
+| 06-28 | JW Johnson (+1.37 singles) | 0.553 | 8-4 (.667) |
 
-Combined observed: **39-39 (.500)**. Combined model-implied baseline:
-**45.1/78 (.578)**. That's the shortfall driving the "not great" feeling —
-and it's almost entirely the 7/26 rematch: he beat Johnson 8-4 a month
-earlier, then lost to the same guy 10-21.
+Fitting the same Haworth-specific-offset model as before, now on just
+these 12 rallies: **delta = +0.48 ± 0.61 logit** (z = 0.79, p = 0.43, 95%
+CI [−0.72, +1.68]). That's not evidence he's *good* at DBs either — it's
+a coin flip's worth of data. The honest statement is: **we currently have
+no usable signal on Haworth's 2026 DreamBreaker performance beyond one
+match against one opponent, which he won**.
 
-## Is that signal or noise?
+## Why this matters beyond just Haworth
 
-Fit a single Haworth-specific offset `delta` on top of the fixed-`K`
-baseline (1-parameter logistic MLE, same shape as the clutch/gap-exploit
-player estimators elsewhere in this repo):
+This bug would silently corrupt **any** future player-level DB query that
+uses referee logs from July 2026 onward, not just this one. The rotation
+rule is unchanged; the *data* is unreliable for that period specifically
+because of the missing substitution events, not because the game changed.
+Anyone re-running `model/db_impute.py`-style reconstruction should check
+for `log_type=32` presence before trusting `server_uuid`/`receiver_uuid`
+attribution — its absence isn't "no rotation happened," it's "we can't
+see who's on court."
 
-- **delta = −0.317 ± 0.227 logit** (z = −1.40, two-sided p = 0.16)
-- 95% CI: **[−0.76, +0.13]** — includes zero
-- Flat-prior posterior **P(true offset < 0 | data) ≈ 0.92**
-- Scale: −0.317 logit ≈ **−7.9 percentage points** of rally win probability
-  at an even matchup — a real-sized effect *if* it's real
+## What would actually resolve the original question
 
-**Read**: more likely than not he's underperforming his singles-implied DB
-expectation, but the 95% interval still touches zero and the two-sided
-p-value doesn't clear conventional significance. This is NOT a confident
-finding — it's "lean yes, can't rule out chance," and `db_model.md`
-already warned that player-level DB effects are close to hopeless at this
-sample size league-wide, let alone for one player with 3 matches and 2
-opponents.
-
-## What would actually resolve this
-
-- **The 7/09 loss is unattributed** — if Haworth played it and it went
-  badly too, the real shortfall is worse than what's measured here; if he
-  sat it out, irrelevant. Worth checking whether that match ever gets a
-  digital log (older matches sometimes backfill) or whether box-score-only
-  reconstruction is possible.
-- **Only 2 distinct opponents** (Johnson ×2, Delgado ×1) — the negative
-  read is disproportionately one bad rematch vs Johnson. A specific
-  Haworth–Johnson matchup problem (scouting, style) reads very differently
-  than a general Haworth DB weakness. Can't separate those with n=2
-  opponents.
-- **The format change matters going forward**: if DBs really are now
-  winner-take-all singles instead of a rotating quartet, every future
-  Brooklyn DB rides on whoever they send out (presumably Haworth, per his
-  `data/db_rosters.csv` M1 slot) — so this question gets *much* easier to
-  answer with a few more weeks of games, and matters more (100% of the DB
-  now, not ~25%).
-- Extending `model/db_impute.py` / `scraper/harvest_logs.py` to natively
-  handle the new no-SUB-log schema (it's actually simpler — no
-  reconstruction needed, just read `log_type=14` rows directly) would
-  make this a five-minute query instead of a bespoke script next time.
-  Left as a follow-up rather than done here since it touches shared
-  scraper code and this was meant to be a quick look.
+- **A different data source for player identity in the new-schema
+  matches** — broadcast footage, box-score-by-player if pickleball.com
+  publishes one elsewhere, or a support request to MLP/pickleball.com
+  about the logging gap.
+- **The 7/09 loss remains completely unattributed** (no digital log at
+  all, old or new schema).
+- If/when the logging gap gets fixed (or backfilled), rerun this with the
+  full season. Until then, this is a one-match, one-opponent data point —
+  db_model.md's existing caution that "player-level DB effects are
+  hopeless at this sample size" applies in full force here.
 
 ## Bottom line
 
-Slight lean toward "he's actually been a bit below where his singles
-rating says he should be" (delta −0.32 logit, ~92% posterior probability
-of a true deficit), but the sample (78 rallies, 3 matches, 2 opponents) is
-too thin to call it proven, and it's driven mostly by one bad rematch
-against JW Johnson. Not "just noise, don't worry about it" and not "yes,
-he has a DreamBreaker problem" either — genuinely 60/40 pending more data.
+**Retracted**: the earlier "Haworth is probably underperforming his
+DreamBreaker expectation" read. The data behind it was corrupted by a
+referee-logging gap that made two matches look like clean 1v1 data when
+they weren't. What's left (one match, 12 rallies, an 8-4 win) is not
+enough to conclude anything about whether Haworth's 2026 DreamBreaker
+play is good, bad, or average. This needs either a different data source
+for the two unattributable matches or more games before it's answerable.
