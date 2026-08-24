@@ -51,11 +51,31 @@ probability of underperformance) doesn't survive this correction.
 
 ## What's left
 
-Brooklyn played **4 DreamBreakers in 2026** (record: 2-2), but only one —
-**6/28 vs Dallas Flash (JW Johnson), W 23-21** — has referee logs that
-reliably attribute rallies to Haworth specifically (old logging schema,
-substitution events present, reconstruction validated exactly against the
-official score).
+Brooklyn played **4 DreamBreakers in 2026** (record: 2-2), and Haworth is
+the listed opening/starting player of record for **all 4** — confirmed via
+the matchup record's `teamOnePlayerOneUuid` field, which is populated
+independent of the referee logs (so even the one match with zero digital
+log still tells us he was slotted in):
+
+| date | opponent | Brooklyn result |
+|---|---|---|
+| 06-28 | JW Johnson | W 23-21 |
+| 07-09 | John Lucian Goins | **L 21-23** |
+| 07-23 | James Delgado | W 21-14 |
+| 07-26 | JW Johnson (rematch) | L 10-21 |
+
+He started every one of them. What's *not* known is how much of each
+rotating DB he actually played beyond the opening 4-point block, and only
+**one of the four — 6/28 vs Dallas Flash (JW Johnson), W 23-21** — has
+referee logs that reliably attribute rallies to him specifically (old
+logging schema, substitution events present, reconstruction validated
+exactly against the official score). The other three are unusable for
+different reasons: 7/09 has no digital referee log at all (can't even
+attempt reconstruction), and 7/23 / 7/26 have logs but hit the
+substitution-logging gap described above. The 7/09 loss is the one most
+worth flagging — it's a loss, we have zero visibility into it, and if
+he played heavy minutes there it would cut against the one data point we
+do trust.
 
 | date | opponent | model p(win) | actual |
 |---|---|---|---|
@@ -85,8 +105,11 @@ see who's on court."
   matches** — broadcast footage, box-score-by-player if pickleball.com
   publishes one elsewhere, or a support request to MLP/pickleball.com
   about the logging gap.
-- **The 7/09 loss remains completely unattributed** (no digital log at
-  all, old or new schema).
+- **The 7/09 loss (21-23 team score) remains completely unattributed** —
+  Haworth started it (per the matchup record) but there's no digital log,
+  old or new schema, so his actual rally record in that match is unknown.
+  This is the one to chase first if more visibility is wanted, since it's
+  a loss and could pull the picture in either direction.
 - If/when the logging gap gets fixed (or backfilled), rerun this with the
   full season. Until then, this is a one-match, one-opponent data point —
   db_model.md's existing caution that "player-level DB effects are
