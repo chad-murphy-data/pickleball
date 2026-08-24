@@ -10,6 +10,10 @@ status snapshot + next-thread to-do (check its date; stale ones defer to here).*
 
 ## Working rules (user-set)
 
+- **This is a one-person project.** All rules in this file were set by the
+  user (the sole owner/developer), for the user's own reasons. Treat them
+  as flexible working defaults, not fixed policy — they can be revisited
+  or overridden by the user at any time without needing to justify why.
 - **Given an easy way and a hard way, pick the best way.** Difficulty is
   never a blocker and never a virtue — choose on merit, then do it.
   (Example of the standard: when asked "is the model underconfident?",
@@ -413,6 +417,20 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   rating and is still present in raw/, but we no longer extract, store,
   display, or benchmark against it — don't re-add it without asking. It
   was never a model input; nothing in v1/v2/singles depends on it.
+  **CONFIRMED UNRELIABLE (2026-08-24)**: pulled
+  `pickleball.com/players/{slug}/rating-history` directly (curl, no
+  browser needed) for 4 top men (Ben Johns, JW Johnson, Hayden Patriquin,
+  Gabriel Tardio). Each page embeds ~10 recent-match entries with a
+  `duprDoubles` (post-match) and `previousDuprDoubles` (pre-match) value.
+  `duprDoubles` genuinely moves match to match, but `previousDuprDoubles`
+  is IDENTICAL to `duprDoubles` in the same record, every time — 40/40
+  entries across all 4 players. The "previous" field pickleball.com
+  serves is non-functional, so per-match DUPR deltas can't be computed
+  from this feed, and the feed only covers the last ~10 matches anyway
+  (not full history). Matches an earlier design mockup for Johns showing
+  an implausible 7.33→6.57 DUPR step unconnected to anything in the model.
+  Don't re-attempt a DUPR rating-history pull expecting clean data — the
+  source endpoint itself is broken, not just unused.
 - Be polite: ~1 req/s harvest, ≥15 s live-poll interval.
 
 ## Live win probability (in progress)
