@@ -12,11 +12,24 @@ still has to move to make contact, so paddle POSITION might not be.
 
 This is the test BEFORE building anything permanent: a zero-shot
 open-vocabulary detector (OWL-ViT, no training, no new labels) run on
-a short frame sequence cropped around the same wrist point already
-used for the wrist-speed channel - same discipline as paddle_probe.py,
+a short frame sequence cropped around the LABELED HITTER's own wrist
+at the LABELED true contact time - same discipline as paddle_probe.py,
 one step further. If paddle-centroid speed beats wrist speed on the
 soft-shot sample specifically, a trained detector is worth building.
 If it doesn't, the paddle idea is a real, tested null, not a hunch.
+
+FIX (2026-08-24): the first version centered the search window on
+t_wrist (wrist-speed's own guess), not t_true (the label) - so on a
+shot where wrist speed is a bad estimator (the whole premise for
+testing dinks), paddle position never got an independent look at the
+real event; it just chased whatever wrist-speed already (possibly
+wrongly) pointed at, sometimes on the wrong player entirely. First run
+showed paddle getting WORSE than wrist specifically on dink/lob, and
+the extracted crops confirmed it: full dynamic swings, not soft
+touches - proof the window had drifted off the labeled event. Now
+requires --review-html (a touch_attribute.py --review-html file) to
+look up the hitter's own track id and anchors both the crop location
+and the extraction window on t_true directly.
 
 Needs the real video + ffmpeg (runs on the user's machine, same as
 every --video step) AND a zero-shot detector:
@@ -24,7 +37,7 @@ every --video step) AND a zero-shot detector:
 
 RUN:
     python vision/paddle_timing_probe.py --video full_match.mp4.webm \
-        --pose-dir pose_rtm --n 24
+        --pose-dir pose_rtm --review-html review_train.html --n 24
 """
 from __future__ import annotations
 
@@ -41,7 +54,7 @@ import swing_explore as SE            # noqa: E402
 import paddle_probe as PP             # noqa: E402
 
 LABELS = Path(__file__).parent.parent / "data/vision/contact_labels_chicago0725.csv"
-BUILD = "2026-08-23  paddle_timing_probe: paddle position vs wrist speed"
+BUILD = "2026-08-24  paddle_timing_probe: anchor search on t_true, not t_wrist"
 
 # the soft shots are the whole bet; a few fast ones ride along as a
 # control - if paddle timing made THOSE worse, that would be a warning
@@ -176,6 +189,14 @@ def main():
     ap.add_argument("--video", required=True)
     ap.add_argument("--pose-dir", default="pose_rtm")
     ap.add_argument("--labels", default=str(LABELS))
+    ap.add_argument("--review-html", required=True,
+                    help="an already-generated touch_attribute.py "
+                         "--review-html file. Needed to look up the "
+                         "LABELED HITTER'S OWN track at the labeled "
+                         "contact time, so the paddle search gets an "
+                         "independent shot at the real event instead "
+                         "of inheriting whatever track/time wrist-speed "
+                         "already (possibly wrongly) picked.")
     ap.add_argument("--n", type=int, default=24,
                     help="total contacts, split across FOCUS_TYPES "
                          "(3/4) and CONTROL_TYPES (1/4)")
@@ -205,6 +226,10 @@ def main():
     tmp_dir = Path(a.tmp_dir)
     tmp_dir.mkdir(exist_ok=True)
 
+    track_names = PP.load_track_names(a.review_html)
+    print(f"loaded track names for {len(track_names)} rallies from "
+          f"{a.review_html}")
+
     rd_cache, rows = {}, []
     for k, (cum, t_true, hitter, shot_type) in enumerate(samples):
         if cum not in rd_cache:
@@ -215,25 +240,39 @@ def main():
         tids = TA.player_tracks(rd)
         if len(tids) != 4:
             continue
+
+        # baseline: the ORIGINAL, unconstrained wrist-speed estimate -
+        # whichever track has peak arm speed near t_true, same method
+        # already used to measure the session's standing wrist numbers.
+        # Left untouched: this is what paddle position is being compared
+        # AGAINST, not what it should search around.
         wp = wrist_peak(rd, t_true, tids)
-        if wp is None:
+        wrist_err = None if wp is None else wp[1] - t_true
+
+        # paddle search: anchored on the LABELED HITTER's own track, at
+        # the LABELED true contact time - independent of whatever track/
+        # time wrist-speed guessed, so a wrist miss on a soft shot can't
+        # drag the paddle search down with it.
+        name_to_tid = {nm: tid for tid, nm in
+                      track_names.get(cum, {}).items()}
+        hit_tid = name_to_tid.get(hitter)
+        if hit_tid is None or hit_tid not in tids:
             continue
-        tid, t_wrist = wp
-        kp = PP.nearest_kpt(rd, tid, t_wrist)
+        kp = PP.nearest_kpt(rd, hit_tid, t_true)
         if kp is None:
             continue
         cx, cy, _conf = kp
-        frames = extract_sequence(a.video, t_wrist, cx, cy, sx, sy,
+        frames = extract_sequence(a.video, t_true, cx, cy, sx, sy,
                                   tmp_dir, f"r{cum}_{k}")
         traj = detect_paddle(proc, model, torch, frames)
         t_paddle = paddle_peak(traj)
-        wrist_err = t_wrist - t_true
         paddle_err = None if t_paddle is None else t_paddle - t_true
         rows.append((cum, t_true, hitter, shot_type, wrist_err, paddle_err,
                     len(traj), len(frames)))
+        we = f"{wrist_err:+.3f}s" if wrist_err is not None else "n/a"
         pe = f"{paddle_err:+.3f}s" if paddle_err is not None else "n/a"
         print(f"  [{k + 1}/{len(samples)}] r{cum} {hitter} ({shot_type}): "
-              f"wrist {wrist_err:+.3f}s  paddle {pe}  "
+              f"wrist {we}  paddle {pe}  "
               f"({len(traj)}/{len(frames)} frames detected)")
 
     _report(rows, a.out)
@@ -241,7 +280,7 @@ def main():
 
 def _report(rows, out_path):
     lines = ["paddle vs wrist contact-timing comparison", ""]
-    have_both = [r for r in rows if r[5] is not None]
+    have_both = [r for r in rows if r[4] is not None and r[5] is not None]
     lines.append(f"{len(rows)} contacts attempted, {len(have_both)} had a "
                  "paddle detection to compare")
 
