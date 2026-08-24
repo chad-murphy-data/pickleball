@@ -22,7 +22,7 @@
     epsFloor: 0.021,         // display floor (winprob.py EPS_FLOOR)
     cal: { a: 0.0, b: 1.0, eps: 0.0 },   // race.py set_calibration
     kDbSingles: 0.42,        // make_forecast.py K_DB_SINGLES
-    singlesImpute: [0.28, 1.14],         // make_forecast.py SINGLES_IMPUTE
+    singlesImpute: [-0.07, 1.14],        // fallback; CFG overrides from model/singles_model.json
   };
   const C = Object.assign({}, DEFAULTS);
 

@@ -464,7 +464,8 @@ for (const b of document.querySelectorAll('.themetog')) {
   });
 }})()</script>"""
 
-NAV = [("rankings.html", "Rankings"), ("players/index.html", "Players"),
+NAV = [("rankings.html", "Rankings"), ("singles.html", "Singles"),
+       ("players/index.html", "Players"),
        ("live.html", "Live"),
        ("forecast.html", "Forecasts"),
        ("results.html", "Results"),

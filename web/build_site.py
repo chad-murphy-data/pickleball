@@ -11,6 +11,7 @@ book pages.
 """
 from __future__ import annotations
 
+import csv
 import json
 import math
 import re
@@ -305,6 +306,221 @@ values; ▲/▼ = 6-month form change beyond ±0.25 pts.</div>
                                       body, "rankings.html", "", updated))
 
 
+# ---------------------------------------------------------------- singles
+
+def load_singles_suite(games):
+    """Everything the singles pages need in one pass: the suite table
+    (data/singles_players.csv, model/fit_singles.py), per-player singles
+    W-L + last date from singles_games.csv, DreamBreaker appearances/team
+    record from db_rallies.csv + dreambreakers.csv, and the 2026
+    MLP-active player set (who the projected tier is for)."""
+    suite = {}
+    for r in csv.DictReader((ROOT / "data" / "singles_players.csv").open()):
+        suite[r["player_id"]] = {
+            "name": r["full_name"], "gender": r["gender"],
+            "games": int(r["singles_games"]),
+            "dbr": int(r["db_rallies"]), "dbw": int(r["db_rally_wins"]),
+            "value": float(r["singles_value"]),
+            "sd": float(r["singles_sd"]), "tier": r["tier"],
+        }
+    rec = {}                                   # pid -> [w, l, last_date]
+    for r in csv.DictReader((ROOT / "data" / "singles_games.csv").open()):
+        if r["is_forfeit"] != "False":
+            continue
+        won = int(r["s1"]) > int(r["s2"])
+        for u, w in ((r["p1"], won), (r["p2"], not won)):
+            e = rec.setdefault(u, [0, 0, ""])
+            e[0 if w else 1] += 1
+            e[2] = max(e[2], r["date"])
+    dbmeta = {}
+    for r in csv.DictReader((ROOT / "data" / "dreambreakers.csv").open()):
+        if len(r.get("match_id") or "") == 36:
+            try:
+                t1, t2 = int(r["t1_score"]), int(r["t2_score"])
+            except ValueError:
+                continue
+            dbmeta[r["match_id"].lower()] = t1 > t2
+    sides = {}                                 # (pid, match) -> side index
+    for r in csv.DictReader((ROOT / "data" / "db_rallies.csv").open()):
+        m = r["match_id"].lower()
+        if m in dbmeta:
+            sides[(r["player_team1"].lower(), m)] = 0
+            sides[(r["player_team2"].lower(), m)] = 1
+    dbrec = {}                                 # pid -> [db_apps, db_team_wins]
+    for (u, m), side in sides.items():
+        won = dbmeta[m] if side == 0 else not dbmeta[m]
+        e = dbrec.setdefault(u, [0, 0])
+        e[0] += 1
+        e[1] += 1 if won else 0
+    mlp26 = set()
+    for g in games:
+        if g["tour"] == "MLP" and g["date"] >= "2026-01-01":
+            for k in ("t1_p1", "t1_p2", "t2_p1", "t2_p2"):
+                if g[k]:
+                    mlp26.add(g[k])
+    return {"suite": suite, "rec": rec, "dbrec": dbrec, "mlp26": mlp26}
+
+
+def build_singles(players, games, updated):
+    S = load_singles_suite(games)
+    suite, rec, dbrec, mlp26 = S["suite"], S["rec"], S["dbrec"], S["mlp26"]
+    sm = json.loads((ROOT / "model" / "singles_model.json").read_text())
+
+    def is_active_s(u):
+        return rec.get(u, ("", "", ""))[2] >= "2026-01-01" or u in mlp26
+
+    # display baseline: mean suite value of 2026-active fitted players,
+    # per gender (the singles twin of "vs an average pairing")
+    base = {}
+    for g_ in ("M", "F"):
+        pool = [e["value"] for u, e in suite.items() if e["gender"] == g_
+                and e["tier"] == "fitted" and is_active_s(u)]
+        base[g_] = sum(pool) / len(pool)
+
+    def spts(v, g_):
+        return race_dist(round(sigmoid(v - base[g_]), 4), 11)["exp_margin"]
+
+    S["base"], S["spts"] = base, spts
+
+    def pl(u, e, root=""):
+        q = players.get(u)
+        return plink(q, root) if q else esc(e["name"])
+
+    tabs, panels = [], []
+    for sec, g_, label, low in (("A", "F", "Women", "women"),
+                                ("B", "M", "Men", "men")):
+        rated = sorted(((u, e) for u, e in suite.items()
+                        if e["gender"] == g_ and e["tier"] != "imputed"
+                        and is_active_s(u)),
+                       key=lambda t: -t[1]["value"])[:100]
+        pts = {u: (spts(e["value"] - 1.645 * e["sd"], g_),
+                   spts(e["value"], g_),
+                   spts(e["value"] + 1.645 * e["sd"], g_))
+               for u, e in rated}
+        xmin = min(v[0] for v in pts.values()) - 0.3
+        xmax = max(v[2] for v in pts.values()) + 0.3
+        rows = []
+        for i, (u, e) in enumerate(rated, start=1):
+            lo, mid, hi = pts[u]
+            w_, l_, last = rec.get(u, (0, 0, ""))
+            apps, tw = dbrec.get(u, (0, 0))
+            badge = ("" if e["tier"] == "fitted" else
+                     ' <span class="gray" title="thin singles record — '
+                     'doubles-informed prior, DreamBreaker rallies count '
+                     'as evidence">◐</span>')
+            db_txt = (f'{e["dbw"]}–{e["dbr"] - e["dbw"]}' if e["dbr"] else
+                      '<span class="gray">—</span>')
+            rows.append(
+                f'<tr><td class="num">{i}</td><td>{pl(u, e)}{badge}</td>'
+                f'<td class="num"><strong>{mid:+.1f}</strong></td>'
+                f'<td>{charts.interval_cell(lo, mid, hi, xmin, xmax)}</td>'
+                f'<td class="num">{wl(w_, l_) if w_ + l_ else "—"}</td>'
+                f'<td class="num">{db_txt}</td>'
+                f'<td class="num gray">{(last or "—")[:7]}</td></tr>')
+        table = ('<div class="tblwrap"><table><tr><th class="num">#</th>'
+                 '<th>player</th><th class="num">pts</th>'
+                 '<th>90% interval (pts vs avg singles player)</th>'
+                 '<th class="num">singles W–L</th>'
+                 '<th class="num">DB rallies W–L</th>'
+                 '<th class="num">last singles</th></tr>'
+                 + "".join(rows) + "</table></div>")
+
+        proj = sorted(((u, e) for u, e in suite.items()
+                       if e["gender"] == g_ and e["tier"] == "imputed"
+                       and u in mlp26),
+                      key=lambda t: -t[1]["value"])
+        prows = []
+        for u, e in proj:
+            mid = spts(e["value"], g_)
+            spread = (spts(e["value"] + 1.645 * e["sd"], g_)
+                      - spts(e["value"] - 1.645 * e["sd"], g_)) / 2
+            prows.append(
+                f'<tr><td>{pl(u, e)}</td>'
+                f'<td class="num">{mid:+.1f} <span class="gray">±{spread:.1f}</span></td>'
+                f'</tr>')
+        proj_html = ""
+        if prows:
+            proj_html = (
+                f'<h3>Projected only — no singles record</h3>'
+                f'<p class="note">2026 MLP players who have never played a '
+                f'pro singles game and have no attributed DreamBreaker '
+                f'rally. Value = doubles-implied projection with the '
+                f'measured selection penalty (players who avoid singles '
+                f'underperform their doubles level by ~0.35 logit — '
+                f'model/db_impute.md). These are priors, not records; the '
+                f'error bar is the point.</p>'
+                '<div class="tblwrap"><table><tr><th>player</th>'
+                '<th class="num">projected pts</th></tr>'
+                + "".join(prows) + "</table></div>")
+
+        default = sec == "A"
+        tabs.append(f'<a class="gtab{" on" if default else ""}" href="#{low}"'
+                    + (' aria-current="true"' if default else "")
+                    + f'>{label}</a>')
+        panels.append(f'<section class="gsec{" on" if default else ""}" '
+                      f'id="sec-{low}"><h2><span class="secno">SEC. {sec}'
+                      f'</span>{label}</h2>{table}{proj_html}</section>')
+
+    # DreamBreaker record book — accounting, not modeling
+    book = sorted(((u, e) for u, e in suite.items() if e["dbr"] >= 30),
+                  key=lambda t: -t[1]["dbr"])[:50]
+    brows = []
+    for u, e in book:
+        apps, tw = dbrec.get(u, (0, 0))
+        share = e["dbw"] / e["dbr"]
+        brows.append(
+            f'<tr><td>{pl(u, e)}</td><td class="num">{apps}</td>'
+            f'<td class="num">{wl(tw, apps - tw)}</td>'
+            f'<td class="num">{wl(e["dbw"], e["dbr"] - e["dbw"])}</td>'
+            f'<td class="num">{pct(share)}</td></tr>')
+    book_html = (
+        '<h2><span class="secno">SEC. C</span>DreamBreaker record book</h2>'
+        '<p class="note">Pure accounting from the validated referee-log '
+        'reconstruction (model/db_impute.py): every rally a player '
+        'personally contested in an MLP DreamBreaker, and how their team\'s '
+        'DreamBreakers went. Minimum 30 rallies. Covers digitally-logged '
+        'DreamBreakers that reconstruct the official score exactly '
+        f'({sm["n_db_rallies_attributed"]:,} attributed rallies); '
+        'rally W–L includes the ~2% of rallies played cross-gender, which '
+        'never enter the ratings.</p>'
+        '<div class="tblwrap"><table><tr><th>player</th>'
+        '<th class="num">DBs</th><th class="num">team W–L</th>'
+        '<th class="num">rally W–L</th><th class="num">rally win%</th></tr>'
+        + "".join(brows) + "</table></div>")
+
+    hy = sm["hyper"]
+    body = f"""
+<h1 class="runtitle">Singles ratings</h1>
+<div class="runmeta">RUN {updated} :: BAYESIAN MAP + DOUBLES-INFORMED PRIOR :: PPA SINGLES 2024–26 + MLP DREAMBREAKERS</div>
+<p class="sub">Every 2026-active player with any singles evidence, rated on
+{sm["n_games"]:,} PPA pro singles games with MLP DreamBreaker rallies as
+direct evidence. <strong>pts</strong> = expected margin vs the average
+active rated singles player of the same gender, race to 11. Players with
+thin records lean on a doubles-informed prior (singles ≈
+{hy["M"]["a"]:+.2f} + {hy["M"]["b"]:.2f}·doubles for men,
+{hy["F"]["a"]:+.2f} + {hy["F"]["b"]:.2f}·doubles for women, r ≈ 0.7) —
+the ◐ badge marks them, and the interval is the point.</p>
+<div class="syscheck">
+ <div class="lrow"><span class="lk">PPA SINGLES GAMES IN THE MODEL</span><span class="ldot"></span><span class="lv">{sm["n_games"]:,}</span></div>
+ <div class="lrow"><span class="lk">DREAMBREAKER RALLIES AS EVIDENCE</span><span class="ldot"></span><span class="lv">{sm["n_db_rallies_used"]:,}</span></div>
+ <div class="lrow"><span class="lk">WINNER ACCURACY · 1,067 UNSEEN GAMES</span><span class="ldot"></span><span class="lv">72.2%</span></div>
+ <div class="lrow"><span class="lk">DATA THROUGH</span><span class="ldot"></span><span class="lv">{sm["ref_date"]}</span></div>
+</div>
+<div class="houserule"><span class="hrtag">HOUSE RULE</span>Men's and women's
+singles never meet, so the two scales are conventions — never compare a
+number across the lists. Projections are labeled as projections; nothing
+here is ever 0% or 100%; DreamBreaker rallies count toward ratings only
+within gender.</div>
+{TABS_BOOT}
+<nav class="gtabs" aria-label="Choose a singles list">{''.join(tabs)}</nav>
+{''.join(panels)}
+{book_html}
+""" + TABS_JS
+    write("singles.html", style.page("Singles ratings — PICKLES", body,
+                                     "singles.html", "", updated))
+    return S
+
+
 # ---------------------------------------------------------------- players
 
 def build_player_index(players, updated):
@@ -333,7 +549,47 @@ since 2024). Rank is within gender.</p>
                      "../", updated))
 
 
-def build_player_page(p, players, chem, updated):
+def singles_block(p, S, root):
+    """The singles card on a player page — value, evidence, records."""
+    e = S["suite"].get(p.pid)
+    if e is None or e["gender"] not in ("M", "F"):
+        return ""
+    mid = S["spts"](e["value"], e["gender"])
+    lo = S["spts"](e["value"] - 1.645 * e["sd"], e["gender"])
+    hi = S["spts"](e["value"] + 1.645 * e["sd"], e["gender"])
+    w_, l_, last = S["rec"].get(p.pid, (0, 0, ""))
+    apps, tw = S["dbrec"].get(p.pid, (0, 0))
+    basis = {"fitted": f"{e['games']} pro singles games",
+             "blended": (f"thin record ({e['games']} g, {e['dbr']} DB "
+                         "rallies) + doubles-informed prior"),
+             "imputed": ("no singles record — projected from doubles, "
+                         "selection-corrected")}[e["tier"]]
+    db_tile = ""
+    if e["dbr"]:
+        db_tile = (f'<div class="tile"><div class="v">'
+                   f'{wl(e["dbw"], e["dbr"] - e["dbw"])}</div>'
+                   f'<div class="k">DreamBreaker rallies · {apps} DBs, '
+                   f'team {wl(tw, apps - tw)}</div></div>')
+    rec_tile = ""
+    if w_ + l_:
+        rec_tile = (f'<div class="tile"><div class="v">{wl(w_, l_)}</div>'
+                    f'<div class="k">singles record · last '
+                    f'{(last or "—")[:7]}</div></div>')
+    return f"""
+<h2>Singles</h2>
+<div class="tiles">
+ <div class="tile"><div class="v">{mid:+.1f} <span class="note">({lo:+.1f}…{hi:+.1f})</span></div>
+   <div class="k">pts vs avg active {'men’s' if e['gender'] == 'M' else 'women’s'} singles player (90%)</div></div>
+ <div class="tile"><div class="v">{ {'fitted': 'rated', 'blended': 'blend', 'imputed': 'projected'}[e['tier']] }</div>
+   <div class="k">{basis}</div></div>
+ {rec_tile}
+ {db_tile}
+</div>
+<p class="note"><a href="{root}singles.html">Full singles ratings →</a></p>
+"""
+
+
+def build_player_page(p, players, chem, updated, S=None):
     st = p.stats
     root = "../"
     # enrich log entries with display names for chart tooltips
@@ -433,6 +689,7 @@ descriptive, not a frozen forecast).</p>
 </div><div>
 {clutch}
 </div></div>
+{singles_block(p, S, root) if S else ""}
 <h2>Partners</h2>
 <p class="note">Chemistry = pair effect beyond the two players' values, in
 points per game; almost everything here is honest noise — no pair in the
@@ -1836,7 +2093,7 @@ def receipt_teaser_rows(R, n=3):
     return rows
 
 
-def build_landing(players, games, updated, n_games, R):
+def build_landing(players, games, updated, n_games, R, S=None):
     from datetime import date
     val = R["validation"]
     acc = pct(val["accuracy"], 1)
@@ -1915,6 +2172,26 @@ def build_landing(players, games, updated, n_games, R):
     term = ("&gt; PICK ANY FOUR PROS<br>\n&gt; ANY PAIRING, ANY FORMAT<br>\n"
             "&gt; RUNNING 100,000 SIMS_<br>\n"
             '<span class="result">→ RATED, WITH ERROR BARS</span>')
+
+    # singles doorway — same source as singles.html (the suite ctx)
+    srows = ""
+    if S:
+        def _sact(u):
+            return (S["rec"].get(u, ("", "", ""))[2] >= "2026-01-01"
+                    or u in S["mlp26"])
+        cells = []
+        for g_, tag in (("F", "W"), ("M", "M")):
+            u, e = max(((u, e) for u, e in S["suite"].items()
+                        if e["gender"] == g_ and e["tier"] != "imputed"
+                        and _sact(u)),
+                       key=lambda t: t[1]["value"])
+            cells.append((f'{tag}#1 {esc(e["name"].split()[-1].upper())}',
+                          f'{S["spts"](e["value"], g_):+.1f} PTS'))
+        cells.append(("NO SINGLES RECORD?", "STILL PROJECTED"))
+        srows = "".join(
+            f'<div class="t-row"><span class="call"><strong>{c}</strong></span>'
+            f'<span class="lead"></span><span class="res">{r}</span></div>'
+            for c, r in cells)
     if feat:
         best = max((g for g in feat["games"] if g),
                    key=lambda g: max(g["p"], 1 - g["p"]), default=None)
@@ -1982,7 +2259,7 @@ def build_landing(players, games, updated, n_games, R):
 <header class="landing"><div class="bar">
  <span class="brandchip">PICKLES</span>
  <span class="brandsub">Probabilistic Inference of Competitive Kitchen-Line Expected Scores</span>
- <nav><a href="live.html" id="nav-live">LIVE</a><a href="rankings.html">RANKINGS</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="insights/">INSIGHTS</a><a href="methods.html">METHODS</a></nav>
+ <nav><a href="live.html" id="nav-live">LIVE</a><a href="rankings.html">RANKINGS</a><a href="singles.html">SINGLES</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="insights/">INSIGHTS</a><a href="methods.html">METHODS</a></nav>
  <button class="themetog" type="button" title="toggle light/dark">◐</button>
 </div></header>
 {slate}
@@ -2030,6 +2307,13 @@ numbers the receipts page grades.</p>
    <span class="doortag">POWER RANKINGS</span>
    <div class="t-bars">{"".join(bars)}</div>
    <p class="doorblurb">{rankings_blurb}</p>
+  </a>
+  <a class="door" href="singles.html">
+   <span class="doortag">SINGLES RATINGS</span>
+   <div class="t-rows">{srows}</div>
+   <p class="doorblurb">PPA singles games plus MLP DreamBreaker rallies as
+evidence — every 2026 player rated or projected, error bars included, with
+the DreamBreaker record book.</p>
   </a>
   <a class="door" href="forecast.html">
    <span class="doortag">MATCH FORECASTS</span>
@@ -2110,8 +2394,9 @@ def main():
         _sh.copytree(insights, SITE / "insights", dirs_exist_ok=True)
 
     R = D.load_receipts()
-    print("pages: landing, insights, rankings, forecasts, results, simulator, receipts, records, methods, data …")
-    build_landing(players, games, updated, len(games), R)
+    print("pages: landing, insights, rankings, singles, forecasts, results, simulator, receipts, records, methods, data …")
+    S = build_singles(players, games, updated)
+    build_landing(players, games, updated, len(games), R, S)
     build_insights_index(updated)
     build_rankings(players, updated, len(games), R["validation"])
     build_player_index(players, updated)
@@ -2129,7 +2414,7 @@ def main():
     dyn = [p for p in players.values() if p.dynamic and p.stats]
     print(f"player pages: {len(dyn)} …")
     for p in dyn:
-        build_player_page(p, players, chem, updated)
+        build_player_page(p, players, chem, updated, S)
     n = sum(1 for _ in SITE.rglob("*.html"))
     print(f"done: {n} pages in {SITE}")
 

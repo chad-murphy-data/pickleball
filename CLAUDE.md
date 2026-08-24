@@ -29,8 +29,11 @@ python scraper/parse.py                      # raw/ → data/games.csv etc.
 python scraper/build_model_data.py           # games → model tables (env-configurable)
 python model/fit_v2.py                       # THE model (dynamic + race likelihood)
 python model/report.py                       # regenerate analysis.md (v1 sections)
-python scraper/parse_singles.py              # raw/ → data/singles_games.csv (26k games)
-python model/fit_singles.py                  # singles MAP ratings (pure python, ~10 s)
+python scraper/parse_singles.py              # raw/ → data/singles_games.csv (27k games)
+python model/db_impute.py --parse-only       # DB referee logs → db_rallies/db_orders
+python model/fit_singles.py                  # singles SUITE: doubles-informed prior +
+                                             #   DB-rally evidence + tiers + sd (~30 s;
+                                             #   model/singles_suite.md)
 python scraper/live_poller.py                # live score JSONL during event days
 python web/make_forecast.py [--commit]       # price scheduled MLP matchups (network);
                                              #   --commit freezes into receipts.json
@@ -131,6 +134,26 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
    r = 0.74; imputation for never-plays-singles rosters ≈ 0.28+1.14·d.
    Waters +2.27 / Fahey +1.80 are the top two women's singles values.
    Wired into make_forecast (K_DB_SINGLES).
+   **2026-08-16 — the singles SUITE supersedes the consumer-side
+   imputation** (`model/singles_suite.md`; user-driven build after MLP
+   asked for singles stats on-broadcast). singles_players.csv now carries
+   a posterior value ± sd for EVERY tracked player, tiers
+   fitted/blended/imputed; DreamBreaker rallies are same-gender LIKELIHOOD
+   evidence (k = 0.49 measured; db_rallies refreshed to 114 validated DBs
+   / 4,173 rallies); the selection fade is calibrated per evidence bin and
+   does NOT vanish at 10 games (1-4g dabblers are penalized beyond c).
+   Consumers (make_forecast, livepage) just look values up — the livepage
+   0.28-intercept drift bug is dead; the zero-evidence closed form lives
+   in model/singles_model.json (per gender). Site: singles.html
+   (gender-separate rankings + projected tier + DB record book) and
+   player-page singles blocks. SCALE NOTE: suite values sit ~+0.2 above
+   the old pure scale (Waters +2.51 suite vs +2.31 pure); within-gender
+   gaps are the invariant, `singles_value_pure` keeps the doubles-blind
+   fit. Holdout gate (model/singles_holdout.py): beats status quo on
+   1,067 unseen singles games (Brier .188 vs .193, sd-integrated), TIES
+   on 50 unseen DBs — regrade at season end. Location-mode + fade lessons
+   are written down in singles_suite.md; read them before touching the
+   prior structure.
 7. **Specification shootout (2026-07-18; model/spec_shootout.md +
    spec_shootout.py, big_points.py)**: v2 survived ~35 challengers on the
    frozen June+ holdout (n=926). Min-only/max-only/men-only/chem-boost/
@@ -522,7 +545,9 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
 data/*.csv + model/receipts.json in ~4 s, stdlib-only (no pandas). Pages:
 PICKLES landing page (index.html — live doorway teasers + conditional
 "tonight" band off data/forecasts.json), live board (live.html — see the
-live-page bullet above), power rankings (rankings.html),
+live-page bullet above), power rankings (rankings.html), singles ratings
++ DreamBreaker record book (singles.html, gender-separate; player pages
+carry a Singles block),
 499 player pages (trajectory + game-log-vs-expectation SVGs), client-side
 matchup simulator (race DP + weakest link + uncertainty in embedded JS,
 shareable permalinks), receipts ledger + calibration, record book,

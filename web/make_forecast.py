@@ -53,36 +53,46 @@ SLOTS = ("WD", "MD", "MXD1", "MXD2")
 LOOKBACK_DAYS = 60
 
 # DreamBreaker model v2 (fit on all 101 historical DBs, model/db_model.md):
-# per-rally logit = K_DB_SINGLES * (mean roster SINGLES value gap). Singles
-# values from model/fit_singles.py; players with <10 singles games are
-# imputed from doubles via the fitted regression (singles ≈ 0.28 + 1.14*d).
-# Singles-gap model beats the doubles proxy by 3.1 nll on the 101 DBs.
+# per-rally logit = K_DB_SINGLES * (mean roster SINGLES value gap).
+# Singles values come straight from the Bayesian suite (model/fit_singles.py,
+# 2026-08-16): data/singles_players.csv carries a posterior value for EVERY
+# tracked player — fitted (real singles record), blended (thin record and/or
+# DreamBreaker rallies as direct evidence) or imputed (doubles-informed
+# prior with the selection correction already applied). Consumers just look
+# up; the per-gender closed form in model/singles_model.json (value =
+# a - c + b*d) remains only as a fallback for UUIDs missing from the CSV
+# (players who debut between fits).
 K_DB_SINGLES = 0.42
-# Intercept shrunk 0.28 -> -0.07 (2026-07-22): players without a real
-# singles record UNDERperform their doubles-implied imputation in
-# DreamBreaker singles points by ~0.35 logit (model/db_impute.md v2:
-# referee-log parser with explicit on-court tracking, 88/94 DBs validate
-# exactly against official finals; cluster-bootstrap 95% CI [0.02, 0.74],
-# P(no effect) ~= 1.9%; sensitivity thresholds agree). Refit as DBs accrue.
-SINGLES_IMPUTE = (-0.07, 1.14)
-SINGLES_IMPUTE_SHRINK = 0.35   # applied to the 0.28 intercept above
+
+
+def _singles_fallback():
+    try:
+        imp = json.loads((ROOT / "model" / "singles_model.json")
+                         .read_text())["impute"]
+        return {g: (imp[g]["a"], imp[g]["b"]) for g in ("M", "F")}
+    except (OSError, KeyError, ValueError):
+        return {"M": (-0.07, 1.14), "F": (-0.07, 1.14)}
+
+
+SINGLES_FALLBACK = _singles_fallback()
 
 
 def load_singles():
     path = DATA / "singles_players.csv"
     if not path.exists():
         return {}
-    return {r["player_id"]: (float(r["singles_value"]), int(r["singles_games"]))
+    return {r["player_id"]: float(r["singles_value"])
             for r in csv.DictReader(path.open())}
 
 
 def db_win_prob(roster1, roster2, vals, singles):
     """P(team1 wins DreamBreaker) from mean roster singles strength."""
     def s_of(u):
-        if u in singles and singles[u][1] >= 10:
-            return singles[u][0]
+        if u in singles:
+            return singles[u]
         if u in vals:
-            a, b = SINGLES_IMPUTE
+            a, b = SINGLES_FALLBACK.get(vals[u][2] or "M",
+                                        SINGLES_FALLBACK["M"])
             return a + b * vals[u][1]
         return None
     s1 = [s_of(u) for u in roster1]
