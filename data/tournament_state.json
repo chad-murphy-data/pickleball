@@ -1,5 +1,5 @@
 {
- "generated": "2026-08-24",
+ "generated": "2026-08-25",
  "mlp": {
   "group": "3fc5207f-f53e-41db-92d8-95655e684fcf",
   "event": "DoorDash MLP Finals New York City Powered by Toray",
@@ -39,6 +39,45 @@
     "team2": "Dallas Flash",
     "abbr1": "STL",
     "abbr2": "DAL",
+    "pool": "faf53b2f",
+    "bracket": null,
+    "round": null,
+    "mnum": null
+   },
+   {
+    "uuid": "8beee46b-c179-46ff-87d4-0d07301471fc",
+    "date": "2026-08-29",
+    "start": "2026-08-29T14:00:00Z",
+    "team1": "New Jersey 5s",
+    "team2": "Brooklyn Pickleball Team",
+    "abbr1": "NJ",
+    "abbr2": "BKLYN",
+    "pool": "faf53b2f",
+    "bracket": null,
+    "round": null,
+    "mnum": null
+   },
+   {
+    "uuid": "73c09f34-df84-4ce2-be67-4ba833ace73a",
+    "date": "2026-08-29",
+    "start": "2026-08-29T15:30:00Z",
+    "team1": "St. Louis Shock",
+    "team2": "Dallas Flash",
+    "abbr1": "STL",
+    "abbr2": "DAL",
+    "pool": "faf53b2f",
+    "bracket": null,
+    "round": null,
+    "mnum": null
+   },
+   {
+    "uuid": "e4b04206-35b1-49ce-a3ca-f7eaf9a3e4ba",
+    "date": "2026-08-29",
+    "start": "2026-08-29T17:00:00Z",
+    "team1": "New Jersey 5s",
+    "team2": "Brooklyn Pickleball Team",
+    "abbr1": "NJ",
+    "abbr2": "BKLYN",
     "pool": "faf53b2f",
     "bracket": null,
     "round": null,
