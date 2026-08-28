@@ -28,6 +28,7 @@ ships.*
 | DreamBreaker (mean roster singles, k=0.42) | **NJ 62%** (roster means 1.93 vs 1.71) |
 | Final if STL re-runs the WD ice-out (ALW → 10%) | **STL 55%** — the tactic flips the matchup favorite |
 | Final if NJ flips its mixed pairs to hunt the DB | NJ 55.7% vs 55.2% — **equity-neutral** (P(DB) 47%→50%) |
+| The one NJ–STL DreamBreaker this season (5/25 Dallas) | **STL won 21-15** (NJ played Howells, not Staksrud); STL leads series 2-1 |
 | Singles, if it goes to a DreamBreaker | ALW = model's **#1 woman**; Staksrud in a **dead heat for #1 man** |
 
 ## The narrative arc (~10 slides)
@@ -131,9 +132,16 @@ nobody does, it's a DreamBreaker, where New Jersey's singles roster
 makes them 62%. And the ice-out lever is live: if Bright and Fahey run
 it back successfully in the women's game, **St. Louis becomes the 55%
 favorite** — the tactic flips the entire matchup, not just one game.
-(Bonus silly math: NJ deliberately punting a mixed game to hunt the
-DreamBreaker doesn't help — 55.7% vs 55.2%, equity-neutral. The schedule
-already funnels there on its own.)
+(Bonus sweaty math: if the 5s *really* believe in their DreamBreaker
+edge, they could flip their mixed pairings — feed Jorja/Staksrud to
+Bright/Patriquin, unleash Waters/Khlif on Fahey/Tardio — and push the
+DB chance over 50%. The model calls it equity-neutral (55.7% vs 55.2%),
+an optimization for true believers only. And one receipt before anyone
+believes too hard: these teams already played a DreamBreaker this
+season — May 25 in Dallas — and **St. Louis won it 21-15**. New
+Jersey's lineup that night had Will Howells, not Staksrud, and Staksrud
+is a big part of the projected edge. St. Louis leads the season series
+2-1.)
 
 ## Honesty footnotes (keep these in the post, short)
 
