@@ -37,7 +37,7 @@ sys.path.insert(0, str(ROOT / "scraper"))
 sys.path.insert(0, str(ROOT / "web"))
 
 from live_poller import TOUR_TZ, is_mlp_league          # noqa: E402
-from pb_api import PBClient                             # noqa: E402
+from pb_api import UA_LIVE, PBClient  # noqa: E402
 from make_forecast import (db_win_prob, load_singles, load_values,  # noqa: E402
                            match_slot, matchup_lineups, matchup_tree,
                            price_game, SLOTS)
@@ -148,7 +148,7 @@ def main():
     path = OUT / f"lineup_freezes-{today.replace('-', '')}.jsonl"
     done = frozen_already(path)
     vals, singles = load_values(), load_singles()
-    c = PBClient()
+    c = PBClient(ua=UA_LIVE)
 
     idle = 0
     while True:

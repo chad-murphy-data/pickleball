@@ -1777,8 +1777,10 @@ at ~1 request/second; live polling never exceeds one sweep per 15 seconds
 fetched twice; and the live board's backend coalesces all viewers into a
 single shared sweep — more readers never means more load on the source.</li>
 <li><strong>Honest identity.</strong> Automated requests identify themselves
-as <code>pickles-app</code> with a link to this page, so the source operator
-always knows who is asking and can reach us or block us.</li>
+with a link to this page — <code>pickles-archive</code> for the nightly
+results harvest, <code>pickles-live</code> for event-day live scores — so
+the source operator always knows who is asking, can reach us, and can
+throttle or refuse either workload independently of the other.</li>
 <li><strong>No circumvention.</strong> No logins, paywalls or access
 controls are bypassed; endpoints that decline access are left alone;
 robots.txt is honored.</li>

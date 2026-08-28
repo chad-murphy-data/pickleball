@@ -114,7 +114,7 @@ let VALUES = null;                 // pid -> [name, gender, v, sd, singles, hasP
 let nameIndex = null;              // lower name -> pid (unambiguous only)
 let logsCache = new Map();         // match uuid -> {rows, done, fetchedAt}
 let snapStore = {};                // match uuid -> [[ts,a,b,state]]  (no-log fallback)
-let pollTimer = null, errBackoff = 0;
+let pollTimer = null, errBackoff = 0, failStreak = 0;
 
 function val(pid) { const r = pid && VALUES[pid]; return r ? { n: r[0], g: r[1], v: r[2], s: r[3], sv: r[4], pg: r[5] } : null; }
 function resolve(p) {              // {id, n} from the API -> value record
@@ -642,15 +642,27 @@ function render(state) {
 }
 
 async function tick() {
+  let delay = CFG.poll;
   try {
     const state = await fetchLive();
-    errBackoff = 0;
-    render(state);
+    errBackoff = 0; failStreak = 0;
+    if (state.paused) {
+      // backend circuit breaker: the data source is declining automated
+      // requests, so the proxy has stopped polling it. Check back slowly.
+      $asof.innerHTML = `<span class="note">live updates are paused — the scores source is currently declining our requests. This page will resume automatically when it clears.</span>`;
+      delay = 10 * 60e3;
+    } else {
+      render(state);
+    }
   } catch (e) {
+    failStreak += 1;
     errBackoff = Math.min((errBackoff || 1) * 2, 8);
-    $asof.innerHTML = `<span class="note">connection hiccup — retrying (${esc(e.message)})</span>`;
+    $asof.innerHTML = failStreak >= 5
+      ? `<span class="note">live scores are temporarily unavailable — still retrying quietly in the background (${esc(e.message)})</span>`
+      : `<span class="note">connection hiccup — retrying (${esc(e.message)})</span>`;
+    delay = CFG.poll * Math.max(1, errBackoff);
+    if (failStreak >= 5) delay = Math.max(delay, 120e3);
   }
-  const delay = CFG.poll * Math.max(1, errBackoff);
   pollTimer = setTimeout(() => { if (!document.hidden) tick(); else pollTimer = null; }, delay);
 }
 

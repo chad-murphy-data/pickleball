@@ -47,7 +47,7 @@ from pathlib import Path
 import httpx
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pb_api import UA
+from pb_api import UA_LIVE as UA
 from live_poller import Poller, ACTIVE, mlp_match_state, ppa_match_state, TOUR_TZ
 
 log = logging.getLogger("sse")

@@ -25,13 +25,23 @@ BASE = "https://pickleball.com"
 # the linked page). Verified 2026-07-17 that all endpoints serve this UA.
 # Renamed 2026-08-28: pickleball.com's CloudFront WAF started blocking any
 # UA containing "bot"/"crawler"/"spider" (confirmed via direct probing —
-# identical requests only differing in that word flip 403/200); "pickles-app"
-# clears the signature check while keeping an honest, self-identifying,
+# identical requests only differing in that word flip 403/200); these names
+# clear the signature check while keeping an honest, self-identifying,
 # non-browser UA that links back to this project.
-UA = (
-    "Mozilla/5.0 (compatible; pickles-app/1.0; "
+# TWO identities, Googlebot-style (Googlebot vs Googlebot-Image), so the
+# source operator can throttle or refuse one workload without the other:
+#   pickles-archive — the nightly results harvest + backfills (GitHub
+#     Actions / one-off analytical fetches).
+#   pickles-live — real-time event-day tooling (droplet live poller, SSE
+#     probe, lineup freeze; the browser-facing Supabase/Netlify proxies
+#     carry the same name in their own source).
+_UA_FMT = (
+    "Mozilla/5.0 (compatible; pickles-{}/1.0; "
     "+https://chad-murphy-data.github.io/pickleball/methods.html)"
 )
+UA_ARCHIVE = _UA_FMT.format("archive")
+UA_LIVE = _UA_FMT.format("live")
+UA = UA_ARCHIVE  # default identity for the harvest pipeline
 RAW = Path(__file__).resolve().parent.parent / "raw"
 
 # matchupStatus values that are final; a cached matchup detail whose payload
@@ -46,11 +56,11 @@ VOLATILE_DAYS = 3
 
 
 class PBClient:
-    def __init__(self, refresh_all: bool = False):
+    def __init__(self, refresh_all: bool = False, ua: str = UA_ARCHIVE):
         self.http = httpx.Client(
             base_url=BASE,
             timeout=45,
-            headers={"User-Agent": UA, "Accept": "application/json"},
+            headers={"User-Agent": ua, "Accept": "application/json"},
         )
         self.refresh_all = refresh_all
         self._last_hit = 0.0

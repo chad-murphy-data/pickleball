@@ -18,7 +18,7 @@
 // and testing; default = today in America/Los_Angeles, matching the poller).
 
 const BASE = "https://pickleball.com";
-const UA = "Mozilla/5.0 (compatible; pickles-app/1.0; +https://chad-murphy-data.github.io/pickleball/methods.html)";
+const UA = "Mozilla/5.0 (compatible; pickles-live/1.0; +https://chad-murphy-data.github.io/pickleball/methods.html)";
 const TZ = "America/Los_Angeles";
 
 const ORD = ["One", "Two", "Three", "Four", "Five"];
@@ -30,6 +30,37 @@ const doneMatchups = new Map();   // uuid -> {ts, data}
 const fmtCache = new Map();       // match uuid -> fmt object|null
 let sweepCache = { key: null, ts: 0, body: null };
 let inflight = null;
+
+// Upstream-block circuit breaker — twin of supabase/functions/live/index.ts
+// (2026-08-28: pickleball.com's CloudFront WAF briefly 403'd our UA). After
+// BREAKER_TRIP consecutive sweeps whose only outcome is upstream 403s, stop
+// touching upstream for BREAKER_HOLD and serve a "paused" payload instead.
+// In-memory, so an instance recycle re-probes naturally.
+const BREAKER = { fails: 0, until: 0 };
+const BREAKER_TRIP = 5;
+const BREAKER_HOLD = 24 * 3600e3;
+
+function upstreamBlocked(out, err) {
+  if (err) return /\b403\b/.test(String(err && err.message || err));
+  const errs = (out && out.errors) || [];
+  return errs.length > 0 && out.mlp.length + out.ppa.length === 0 &&
+    errs.every((s) => /\b403\b/.test(s));
+}
+
+function breakerNote(blocked) {
+  if (!blocked) { BREAKER.fails = 0; return; }
+  if (++BREAKER.fails >= BREAKER_TRIP) {
+    BREAKER.until = Date.now() + BREAKER_HOLD;
+    BREAKER.fails = 0;
+  }
+}
+
+const pausedBody = (date) => ({
+  paused: true,
+  until: new Date(BREAKER.until).toISOString(),
+  reason: "data source is declining automated requests (HTTP 403); polling paused",
+  date, mlp: [], ppa: [], next: [], errors: [],
+});
 
 async function bff(path) {
   const r = await fetch(BASE + path, {
@@ -259,17 +290,24 @@ export default async function handler(req) {
   let date = url.searchParams.get("date") || localDate();
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) date = localDate();
 
+  if (Date.now() < BREAKER.until) return json(pausedBody(date));
   if (sweepCache.key === date && Date.now() - sweepCache.ts < 12e3) {
     return json(sweepCache.body);
   }
   if (!inflight) {
     inflight = sweep(date)
-      .then((body) => { sweepCache = { key: date, ts: Date.now(), body }; return body; })
+      .then((body) => {
+        breakerNote(upstreamBlocked(body, null));
+        sweepCache = { key: date, ts: Date.now(), body };
+        return body;
+      })
+      .catch((e) => { breakerNote(upstreamBlocked(null, e)); throw e; })
       .finally(() => { inflight = null; });
   }
   try {
     return json(await inflight);
   } catch (e) {
+    if (Date.now() < BREAKER.until) return json(pausedBody(date));
     return json({ error: String(e && e.message || e) }, 502);
   }
 }
