@@ -30,6 +30,7 @@ ships.*
 | Final if STL re-runs the WD ice-out (ALW → 10%) | **STL 55%** — the tactic flips the matchup favorite |
 | Final if NJ flips its mixed pairs to hunt the DB | NJ 55.7% vs 55.2% — **equity-neutral** (P(DB) 47%→50%) |
 | The one NJ–STL DreamBreaker this season (5/25 Dallas) | **STL won 21-15** (NJ played Howells, not Staksrud); STL leads series 2-1 |
+| The Staksrud acquisition | NJ bought him from Orlando in late July (last Squeeze games 7/19, first 5s games 7/30) — right after the DB loss + Mid-Season final loss to STL |
 | Singles, if it goes to a DreamBreaker | ALW **#1 woman in >99% of posterior draws**; Staksrud **45% to be #1 man** (Haworth 48%, Duong 5%) |
 
 ## The narrative arc (~10 slides)
@@ -143,11 +144,17 @@ being the best men's singles player alive** (a photo finish with Chris
 Haworth at 48% — we're Bayesian here, not frequentist). The model
 scores the swap equity-neutral (55.7% vs 55.2%): an optimization for
 true believers only.
-And one receipt before anyone believes too hard: these teams already
-played a DreamBreaker this season — May 25 in Dallas — and **St. Louis
-won it 21-15**. New Jersey's lineup that night had Will Howells, not
-Staksrud, and Staksrud is a big part of the projected edge. St. Louis
-leads the season series 2-1.
+And one receipt that makes the sweaty lever look a lot less crazy:
+these teams already played a DreamBreaker this season — May 25 in
+Dallas — and **St. Louis won it 21-15**. New Jersey's lineup that night
+had Will Howells, not Staksrud. Then St. Louis beat them again for the
+Mid-Season title, and within weeks New Jersey went out and acquired
+Staksrud from the Orlando Squeeze (his last Squeeze games are July 19;
+his first 5s games are July 30). A 45%-to-be-the-best singles player on
+the planet, bought mid-season, right after two losses to this exact
+opponent — one of them in a DreamBreaker. That's not a coincidence.
+That's a roster move aimed at this exact scenario. St. Louis leads the
+season series 2-1; Staksrud is New Jersey's answer.
 
 ## Honesty footnotes (keep these in the post, short)
 
