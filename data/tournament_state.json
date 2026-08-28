@@ -1,10 +1,9 @@
 {
- "generated": "2026-08-27",
+ "generated": "2026-08-28",
  "mlp": {
   "group": "3fc5207f-f53e-41db-92d8-95655e684fcf",
   "event": "DoorDash MLP Finals New York City Powered by Toray",
-  "completed": [],
-  "remaining": [
+  "completed": [
    {
     "uuid": "4ea991f7-3436-4c26-b693-1c7267ec96c4",
     "date": "2026-08-28",
@@ -16,7 +15,12 @@
     "pool": "faf53b2f",
     "bracket": null,
     "round": null,
-    "mnum": null
+    "mnum": null,
+    "games1": 3,
+    "games2": 1,
+    "pts1": 38,
+    "pts2": 20,
+    "winner": 1
    },
    {
     "uuid": "ed9d150c-0cf3-460e-a64c-3ad1b6f52278",
@@ -29,21 +33,15 @@
     "pool": "faf53b2f",
     "bracket": null,
     "round": null,
-    "mnum": null
-   },
-   {
-    "uuid": "11d68e72-7c95-462d-a650-830153de40f8",
-    "date": "2026-08-28",
-    "start": "2026-08-28T19:00:00Z",
-    "team1": "St. Louis Shock",
-    "team2": "Dallas Flash",
-    "abbr1": "STL",
-    "abbr2": "DAL",
-    "pool": "faf53b2f",
-    "bracket": null,
-    "round": null,
-    "mnum": null
-   },
+    "mnum": null,
+    "games1": 3,
+    "games2": 0,
+    "pts1": 33,
+    "pts2": 16,
+    "winner": 1
+   }
+  ],
+  "remaining": [
    {
     "uuid": "8beee46b-c179-46ff-87d4-0d07301471fc",
     "date": "2026-08-29",
@@ -86,31 +84,31 @@
   ],
   "matrix": {
    "Brooklyn Pickleball Team|Dallas Flash": {
-    "p_win": 0.8256,
+    "p_win": 0.8261,
     "p_40": 0.2275,
     "p_31": 0.4322,
     "p_db": 0.2705,
     "p_13": 0.0646,
     "p_04": 0.0052,
-    "p_db_win": 0.6133
+    "p_db_win": 0.6153
    },
    "Brooklyn Pickleball Team|New Jersey 5s": {
-    "p_win": 0.2057,
+    "p_win": 0.2065,
     "p_40": 0.0066,
     "p_31": 0.1045,
     "p_db": 0.4104,
     "p_13": 0.3816,
     "p_04": 0.0969,
-    "p_db_win": 0.2305
+    "p_db_win": 0.2325
    },
    "Brooklyn Pickleball Team|St. Louis Shock": {
-    "p_win": 0.2142,
+    "p_win": 0.2148,
     "p_40": 0.0128,
     "p_31": 0.1018,
     "p_db": 0.3009,
     "p_13": 0.3931,
     "p_04": 0.1914,
-    "p_db_win": 0.3309
+    "p_db_win": 0.3329
    },
    "Dallas Flash|New Jersey 5s": {
     "p_win": 0.0609,
@@ -119,25 +117,25 @@
     "p_db": 0.2139,
     "p_13": 0.5025,
     "p_04": 0.2555,
-    "p_db_win": 0.1531
+    "p_db_win": 0.1534
    },
    "Dallas Flash|St. Louis Shock": {
-    "p_win": 0.0476,
+    "p_win": 0.0475,
     "p_40": 0.0007,
     "p_31": 0.0164,
     "p_db": 0.13,
     "p_13": 0.4117,
     "p_04": 0.4412,
-    "p_db_win": 0.2345
+    "p_db_win": 0.2341
    },
    "New Jersey 5s|St. Louis Shock": {
-    "p_win": 0.5519,
+    "p_win": 0.5517,
     "p_40": 0.0287,
     "p_31": 0.2298,
     "p_db": 0.4745,
     "p_13": 0.2396,
     "p_04": 0.0273,
-    "p_db_win": 0.6183
+    "p_db_win": 0.6178
    }
   }
  },
