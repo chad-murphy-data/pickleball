@@ -23,7 +23,8 @@ ships.*
 | Stacked: ice-out + Jorja playing like #5 / #10 / #13 | Bright/Fahey **56% / 65% / 78%** |
 | Lever 2 *alone* (normal shot mix) | Jorja must play like the **~#28 woman** just to reach even |
 | 2026 head-to-head | ALW/JJ **3-1** (11-4, 11-3, **6-11**, 11-5) |
-| **The final: NJ vs STL, traditional lineups** | **NJ 55%** — NJ 3+ games 26%, **2-2 DreamBreaker 47%**, STL 3+ games 27% |
+| **The final: NJ vs STL, traditional lineups** | **NJ 55%** per matchup — NJ 3+ games 26%, **2-2 DreamBreaker 47%**, STL 3+ games 27% |
+| If the final is a best-of-3 series | NJ **58%** (independent matchups; correlation pulls it slightly back toward 55) |
 | Game-by-game (NJ side) | WD **86%**, MD **16%**, MXD1 **66%**, MXD2 **31%** |
 | DreamBreaker (mean roster singles, k=0.42) | **NJ 62%** (roster means 1.93 vs 1.71) |
 | Final if STL re-runs the WD ice-out (ALW → 10%) | **STL 55%** — the tactic flips the matchup favorite |
@@ -119,14 +120,15 @@ find out what it was.
 
 **10 — The final: St. Louis vs New Jersey.**
 **"Half of this match funnels into a DreamBreaker."**
-The collision happened. And the final is nothing like the pool rounds:
-**New Jersey 55%, St. Louis 45%** — with a **47% chance it goes 2-2**
-into a DreamBreaker. The structure is almost perfectly mirrored: NJ is
-heavily favored in Waters' two games (86% in the WD rematch, 66% in
-mixed), STL is heavily favored in the other two (84% in men's, 69% in
-the Fahey/Tardio mixed). Chalk on both sides lands at 2-2, where the
-model gives New Jersey the DreamBreaker 62%. Which means each team is
-holding a lever:
+The final is a virtual coin flip, with New Jersey a **slight** favorite
+at 55% over St. Louis at 45%. Not much separates these teams — the
+structure is almost perfectly mirrored: NJ heavily favored in Waters'
+two games (86% in the WD rematch, 66% in mixed), STL heavily favored in
+the other two (84% in men's, 69% in the Fahey/Tardio mixed). Chalk on
+both sides lands at 2-2 — a 47% chance — and in regulation the model
+actually leans *St. Louis* 27-26. New Jersey's entire edge lives in the
+DreamBreaker, where their singles stars get it 62%. Which means each
+team is holding a lever:
 **St. Louis' lever is the big one: the ice-out.** Run it back
 successfully in the women's game and the whole matchup flips — St.
 Louis goes from 45% to 55%, a ten-point swing in title odds from one
