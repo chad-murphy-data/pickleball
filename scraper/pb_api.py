@@ -23,8 +23,13 @@ BASE = "https://pickleball.com"
 # Honest bot identity (standard crawler convention): who we are, where to
 # read about the project, and implicitly how to reach us (GitHub issues via
 # the linked page). Verified 2026-07-17 that all endpoints serve this UA.
+# Renamed 2026-08-28: pickleball.com's CloudFront WAF started blocking any
+# UA containing "bot"/"crawler"/"spider" (confirmed via direct probing —
+# identical requests only differing in that word flip 403/200); "pickles-app"
+# clears the signature check while keeping an honest, self-identifying,
+# non-browser UA that links back to this project.
 UA = (
-    "Mozilla/5.0 (compatible; pickles-bot/1.0; "
+    "Mozilla/5.0 (compatible; pickles-app/1.0; "
     "+https://chad-murphy-data.github.io/pickleball/methods.html)"
 )
 RAW = Path(__file__).resolve().parent.parent / "raw"

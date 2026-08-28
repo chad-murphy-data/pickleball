@@ -18,7 +18,7 @@
 // and testing; default = today in America/Los_Angeles, matching the poller).
 
 const BASE = "https://pickleball.com";
-const UA = "Mozilla/5.0 (compatible; pickles-bot/1.0; +https://chad-murphy-data.github.io/pickleball/methods.html)";
+const UA = "Mozilla/5.0 (compatible; pickles-app/1.0; +https://chad-murphy-data.github.io/pickleball/methods.html)";
 const TZ = "America/Los_Angeles";
 
 const ORD = ["One", "Two", "Three", "Four", "Five"];
