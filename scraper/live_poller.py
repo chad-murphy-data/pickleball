@@ -43,7 +43,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from pb_api import PBClient
+from pb_api import UA_LIVE, PBClient
 from harvest import is_mlp_league, is_ppa_tournament
 
 log = logging.getLogger("live")
@@ -101,7 +101,7 @@ def ppa_match_state(m):
 
 class Poller:
     def __init__(self):
-        self.c = PBClient()
+        self.c = PBClient(ua=UA_LIVE)
         self.state = {}       # match_uuid -> last serialized state
         self.targets = None   # discovered once per day
         OUT.mkdir(exist_ok=True)

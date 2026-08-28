@@ -12,7 +12,7 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 
 const BASE = "https://pickleball.com";
-const UA = "Mozilla/5.0 (compatible; pickles-bot/1.0; +https://chad-murphy-data.github.io/pickleball/methods.html)";
+const UA = "Mozilla/5.0 (compatible; pickles-live/1.0; +https://chad-murphy-data.github.io/pickleball/methods.html)";
 const TZ = "America/Los_Angeles";
 
 const ORD = ["One", "Two", "Three", "Four", "Five"];
@@ -26,6 +26,40 @@ const doneMatchups = new Map<string, { ts: number; data: J }>();
 const fmtCache = new Map<string, J>();
 let sweepCache: { key: string | null; ts: number; body: J } = { key: null, ts: 0, body: null };
 let inflight: Promise<J> | null = null;
+
+// Upstream-block circuit breaker (2026-08-28: pickleball.com's CloudFront
+// WAF briefly 403'd our UA). After BREAKER_TRIP consecutive sweeps whose
+// only outcome is upstream 403s, stop touching upstream for BREAKER_HOLD
+// and serve a "paused" payload instead — retry-spamming a WAF that has
+// made up its mind is pointless and impolite. State is in-memory, so an
+// isolate recycle re-probes naturally (a fresh isolate makes at most
+// BREAKER_TRIP attempts before re-tripping), which doubles as recovery
+// detection well before the full hold elapses.
+const BREAKER = { fails: 0, until: 0 };
+const BREAKER_TRIP = 5;
+const BREAKER_HOLD = 24 * 3600e3;
+
+function upstreamBlocked(out: J, err: unknown): boolean {
+  if (err) return /\b403\b/.test(String((err as Error)?.message || err));
+  const errs: string[] = out?.errors || [];
+  return errs.length > 0 && out.mlp.length + out.ppa.length === 0 &&
+    errs.every((s) => /\b403\b/.test(s));
+}
+
+function breakerNote(blocked: boolean) {
+  if (!blocked) { BREAKER.fails = 0; return; }
+  if (++BREAKER.fails >= BREAKER_TRIP) {
+    BREAKER.until = Date.now() + BREAKER_HOLD;
+    BREAKER.fails = 0;
+  }
+}
+
+const pausedBody = (date: string) => ({
+  paused: true,
+  until: new Date(BREAKER.until).toISOString(),
+  reason: "data source is declining automated requests (HTTP 403); polling paused",
+  date, mlp: [], ppa: [], next: [], errors: [],
+});
 
 async function bff(path: string): Promise<J> {
   const r = await fetch(BASE + path, { headers: { "User-Agent": UA, Accept: "application/json" } });
@@ -250,17 +284,24 @@ Deno.serve(async (req: Request) => {
   let date = url.searchParams.get("date") || localDate();
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) date = localDate();
 
+  if (Date.now() < BREAKER.until) return json(pausedBody(date));
   if (sweepCache.key === date && Date.now() - sweepCache.ts < 15e3) {
     return json(sweepCache.body);
   }
   if (!inflight) {
     inflight = sweep(date)
-      .then((body) => { sweepCache = { key: date, ts: Date.now(), body }; return body; })
+      .then((body) => {
+        breakerNote(upstreamBlocked(body, null));
+        sweepCache = { key: date, ts: Date.now(), body };
+        return body;
+      })
+      .catch((e) => { breakerNote(upstreamBlocked(null, e)); throw e; })
       .finally(() => { inflight = null; });
   }
   try {
     return json(await inflight);
   } catch (e) {
+    if (Date.now() < BREAKER.until) return json(pausedBody(date));
     return json({ error: String((e as Error).message || e) }, 502);
   }
 });
