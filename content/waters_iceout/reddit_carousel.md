@@ -29,7 +29,7 @@ ships.*
 | Final if STL re-runs the WD ice-out (ALW → 10%) | **STL 55%** — the tactic flips the matchup favorite |
 | Final if NJ flips its mixed pairs to hunt the DB | NJ 55.7% vs 55.2% — **equity-neutral** (P(DB) 47%→50%) |
 | The one NJ–STL DreamBreaker this season (5/25 Dallas) | **STL won 21-15** (NJ played Howells, not Staksrud); STL leads series 2-1 |
-| Singles, if it goes to a DreamBreaker | ALW = model's **#1 woman**; Staksrud in a **dead heat for #1 man** |
+| Singles, if it goes to a DreamBreaker | ALW **#1 woman in >99% of posterior draws**; Staksrud **45% to be #1 man** (Haworth 48%, Duong 5%) |
 
 ## The narrative arc (~10 slides)
 
@@ -124,24 +124,27 @@ The collision happened. And the final is nothing like the pool rounds:
 into a DreamBreaker. The structure is almost perfectly mirrored: NJ is
 heavily favored in Waters' two games (86% in the WD rematch, 66% in
 mixed), STL is heavily favored in the other two (84% in men's, 69% in
-the Fahey/Tardio mixed). Each side's two favored games only get them to
-2-2 — so to win in regulation, St. Louis has to beat Waters somewhere,
-and New Jersey has to steal a game from St. Louis' half of the draw. If
-nobody does, it's a DreamBreaker, where New Jersey's singles roster
-(Waters is my model's #1 woman, Staksrud in a dead heat for #1 man)
-makes them 62%. And the ice-out lever is live: if Bright and Fahey run
-it back successfully in the women's game, **St. Louis becomes the 55%
-favorite** — the tactic flips the entire matchup, not just one game.
-(Bonus sweaty math: if the 5s *really* believe in their DreamBreaker
-edge, they could flip their mixed pairings — feed Jorja/Staksrud to
-Bright/Patriquin, unleash Waters/Khlif on Fahey/Tardio — and push the
-DB chance over 50%. The model calls it equity-neutral (55.7% vs 55.2%),
-an optimization for true believers only. And one receipt before anyone
-believes too hard: these teams already played a DreamBreaker this
-season — May 25 in Dallas — and **St. Louis won it 21-15**. New
-Jersey's lineup that night had Will Howells, not Staksrud, and Staksrud
-is a big part of the projected edge. St. Louis leads the season series
-2-1.)
+the Fahey/Tardio mixed). Chalk on both sides lands at 2-2, where the
+model gives New Jersey the DreamBreaker 62%. Which means each team is
+holding a lever:
+**St. Louis' lever is the big one: the ice-out.** Run it back
+successfully in the women's game and the whole matchup flips — St.
+Louis becomes the 55% favorite. The tactic that won them the Mid-Season
+title is worth the entire final.
+**New Jersey's lever is the sweaty one: swap the mixed lineups.** Feed
+Jorja/Staksrud to Bright/Patriquin, unleash Waters/Khlif on
+Fahey/Tardio, and push even more of the match into the DreamBreaker —
+where you're capitalizing on the best women's singles player in the
+world and on Federico Staksrud, who my model gives a **45% chance of
+being the best men's singles player alive** (a photo finish with Chris
+Haworth at 48% — we're Bayesian here, not frequentist). The model
+scores the swap equity-neutral (55.7% vs 55.2%): an optimization for
+true believers only.
+And one receipt before anyone believes too hard: these teams already
+played a DreamBreaker this season — May 25 in Dallas — and **St. Louis
+won it 21-15**. New Jersey's lineup that night had Will Howells, not
+Staksrud, and Staksrud is a big part of the projected edge. St. Louis
+leads the season series 2-1.
 
 ## Honesty footnotes (keep these in the post, short)
 
@@ -170,8 +173,10 @@ stacked lever 2: p from 2·v vs 2.363 at v = 1.139 (#5 Todd) → .443,
   1.081 (#10 Fahey-level) → .347, 0.992 (#13 Humberg) → .219
 lever 2 alone: Δv = (2.858−2.363)/(1−γ) = 0.42 → Jorja at 0.75 ≈ #28
 H2H from data/games.csv
-singles: data/singles_players.csv — ALW 2.51 (#1 W);
-  Staksrud 2.07 ≈ Haworth 2.07 (co-#1 M); Khlif 1.69, Jorja 1.46
+singles: data/singles_players.csv — ALW 2.514±.051 (#1 W in >99% of
+  50k posterior draws over the top-20 field, independent normals);
+  Staksrud 2.067±.034 vs Haworth 2.068±.041 → P(#1 M) .45/.48
+  (Duong .05); Khlif 1.69, Jorja 1.46
 FINAL (NJ = ALW/JJ/Staksrud/Khlif vs STL = AB/KF/Patriquin/Tardio),
   make_forecast pipeline exactly (calibrated game probs → 4-game tree,
   p_win = p40 + p31 + p22·p_db; DB = race-to-21 at k·mean-singles-gap,
