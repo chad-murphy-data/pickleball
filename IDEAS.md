@@ -25,7 +25,9 @@ See also: `CLAUDE.md` "Open threads", `ROADMAP.md`, and open PRs.
   Jorja Johnsons" → an 88% game becomes a coin flip. Honest caveat: the logs
   can't prove the ice-out *happened* (serve target is rotation-constrained).
   Bundle: `content/waters_iceout/` (reddit, threads, dossier, explainer,
-  infographic).
+  infographic). **SHIP VERSION 2026-08-28: `reddit_carousel.md`** — verified
+  numbers + 10-slide arc (Fleming hook → 59/41 → coin-flip → two levers →
+  Finals-weekend rematch); the older bundle files are the long version.
 
 ## DRAFTABLE (analysis validated; needs write-up / merge)
 
