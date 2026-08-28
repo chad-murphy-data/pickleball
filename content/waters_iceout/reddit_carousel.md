@@ -1,47 +1,61 @@
 # Ice-out — Reddit post / carousel (the simple version)
 
-*Drafted 2026-08-28 against current v2 values (`data/v2_players.csv`),
-γ = −0.1829, race-to-11 DP + site calibration. Numbers verified; repro at
-the bottom. This supersedes nothing — the dossier/explainer in this folder
-stay as the long version. This is the one that ships.*
+*Drafted 2026-08-28, revised same day with author notes. All numbers
+verified against current v2 values (`data/v2_players.csv`), γ = −0.1829,
+race-to-11 DP + site calibration; repro at the bottom. The dossier/
+explainer in this folder stay as the long version. This is the one that
+ships.*
 
 ## The numbers (all verified today)
 
 | Fact | Number |
 |---|---|
 | Current women's ranks (v2) | ALW **#1**, Bright **#2**, Jorja **#3**, Fahey **#10** |
-| ALW's lead over #2 Bright | ~2× the entire gap from Bright down to #10 Fahey |
-| Partner weighting (optimal over ~37,000 pro games) | **59% weaker / 41% stronger** |
+| The gap ladder (per-point logit) | ALW→Bright **0.47** ≫ Bright→Jorja **0.15** > Jorja→#10 Fahey **0.09** |
+| Same ladder, display scale (exp. margin vs avg pair) | +8.5 / +7.3 / +6.8 / +6.4 |
+| Bright's edge over #3 | bigger than the whole gap from #3 down to #10 |
+| Partner weighting (best fit over ~37,000 pro games) | **59% weaker / 41% stronger** |
 | ALW+JJ vs AB+KF, normal strategy | **86%** ALW/JJ (modal score 11-6) |
 | Mid-Season final, frozen pre-match receipt | **88%** ALW/JJ → **lost 6-11** (graded MISS) |
 | Full ice-out (team = "two Jorja Johnsons") | 2.35 vs 2.36 team value → **50.1%. A coin flip.** |
 | Give ALW back just 10% of the action | 61% ALW/JJ |
 | Give her back 20% | 70% |
-| Lever 2 equivalent (normal shot mix) | Jorja must play like the **~#28 woman** to make it even |
+| Stacked: ice-out + Jorja playing like #5 / #10 / #13 | Bright/Fahey **56% / 65% / 78%** |
+| Lever 2 *alone* (normal shot mix) | Jorja must play like the **~#28 woman** just to reach even |
 | 2026 head-to-head | ALW/JJ **3-1** (11-4, 11-3, **6-11**, 11-5) |
-| This weekend (MLP Finals NYC) | STL 96% / NJ 82% to advance → rematch is the likely final |
+| This weekend (MLP Finals NYC) | STL 96% / NJ 82% to advance Friday |
+| Singles, if it goes to a DreamBreaker | ALW = model's **#1 woman**; Staksrud in a **dead heat for #1 man** |
 
 ## The narrative arc (~10 slides)
 
 **1 — Hook.**
+**"My model said 88%. They lost 11-6."**
 On July 12 my model made Anna Leigh Waters & Jorja Johnson 88% favorites
-over Anna Bright & Kate Fahey. They lost 11-6. Dave Fleming called me out
-on Threads for not pricing in the strategy. He had a point — and it's a
-more interesting point than either of us made at the time.
+over Anna Bright & Kate Fahey in the Mid-Season final. Dave Fleming
+called me out on Threads for not pricing in the strategy. Was this an
+upset? Or did Anna Bright and Kate Fahey do something to change the math?
 
 **2 — The four players.**
-Current model ranks: Waters #1 (by a mile — her lead over #2 is about
-twice the entire gap from #2 down to #10), Bright a clear #2, Jorja
-Johnson #3, and Kate Fahey has climbed into the top 10. This is the best
-women's doubles rivalry the sport has, and it's still not close on paper.
+**"On paper, this isn't close."**
+Current model ranks: Waters #1, Bright #2, Jorja Johnson #3, Kate Fahey
+#10. Waters is #1 *by a mile* — her lead over Bright is about twice the
+entire gap from #2 down to #10. But give Anna Bright her due: she's a
+*clear* #2. Her edge over Jorja is bigger than the whole gap from Jorja
+down to #10. The ladder isn't evenly spaced, and that matters later.
 
-**3 — How the model prices a doubles team.**
-Not the sum, not the average. Sweeping ~37,000 pro games, the best fit
-weights the *weaker* partner 59% and the stronger 41%. Why? Because your
-opponents get to choose who to hit at. That's the weakest-link rule, and
-it's the whole story of what happened next.
+**3 — How you price a doubles team.**
+**"Your team is 59% your weaker player."**
+The model rates every player from ~37,000 pro doubles games. Then the
+question: how do two ratings combine into a team? Not the sum, not the
+average — sweep every weighting from 50/50 to 100/0 and score each one on
+how well it predicts actual point-by-point results. The fit peaks at
+**59% weaker / 41% stronger**, decisively better than a pure sum.
+Equivalent form: team = sum of ratings − 0.18 × the gap between partners.
+The reason is strategic, not mystical: your opponents choose who to hit
+at, so the gap between you and your partner is itself a target.
 
 **4 — The strategy.**
+**"Two Jorja Johnsons."**
 At the Mid-Season final, Bright and Fahey took the weakest-link rule to
 its logical extreme: they iced Waters out almost completely. Every serve,
 every third shot, every speed-up — at Jorja. In the stylized limit, the
@@ -49,50 +63,67 @@ every third shot, every speed-up — at Jorja. In the stylized limit, the
 is no longer Waters + Johnson. It's two Jorja Johnsons.
 
 **5 — The math.**
-Two Jorja Johnsons: team value 2.35. Bright + Fahey: 2.36. The 86%
-favorite becomes a **coin flip** — actually a hair *under* 50%. Sit with
-that: Jorja is the #3 women's doubles player in the world, and duplicating
-her still only draws even, because Bright is a clear #2 and Fahey is
-top-10. That's how good the ice-out is on paper — and how good you have
-to be to run it.
+**"86% → 50.1%. A literal coin flip."**
+Two Jorja Johnsons: team value 2.35. Bright + Fahey: 2.36. Why does
+deleting one player flip 86% to even? Because of where the gaps live:
+**#1 ≫≫ #2 ≫ #3 > #10**. The drop from Waters to Bright (0.47) is three
+times the drop from Bright to Jorja (0.15), which is itself bigger than
+Jorja down to Fahey (0.09). The ice-out doesn't swap one star for
+another — it deletes the single biggest gap in women's pickleball, and
+everything left over is bunched together. Jorja is a monster, and it's
+*still* only a coin flip. That's how good the tactic is on paper — and
+how good you have to be to run it.
 
 **6 — The knife edge.**
-The lever only works if it's near-total. Give Waters back 10% of the
-action and it's 61/39. Give her 20% and it's 70/30. That's why the
-execution looked so extreme — open courts conceded, awkward angles taken —
-anything to keep the ball away from the best player alive.
+**"Let her touch 10% of the balls and you've already lost the edge."**
+Give Waters back just 10% of the action: 61/39. Give her 20%: 70/30. The
+lever only works near-total — which is why the execution looked so
+extreme. Open courts conceded, ugly angles taken, anything to keep the
+ball away from the best player alive.
 
 **7 — The other lever.**
-Icing someone out changes *who plays*. The second lever is making someone
-*play worse than their rating* — which is what Bright tried in the Orlando
-rematch, lobbing Jorja relentlessly. The math on that lever is brutal: at
-a normal shot mix, Jorja has to be dragged from #3 down to roughly the
-#28 woman in the world just to make the match even. It didn't happen:
-11-5, Waters/Johnson.
+**"The ice-out buys you a coin flip. Then you go get more."**
+Lever 1 changes *who plays*. Lever 2 makes someone *play below their
+rating* — lobs, awkward resets, body pressure. Once the ice-out holds,
+every notch you shave off Jorja converts directly into equity: if she's
+forced to play like the #5 woman, Bright/Fahey are 56%. Like the #10:
+65%. Like the #13: 78%. (For contrast, lever 2 *alone* is hopeless — at
+a normal shot mix you'd have to drag Jorja all the way to ~#28 in the
+world just to reach even.) The plan isn't ice-out OR make-her-worse.
+It's ice-out, *then* make-her-worse.
 
-**8 — The catch: levers cost.**
-The levers interact, and both charge rent. Hitting everything at one
-player makes you predictable and forces low-percentage balls (lever 2
-recoiling on yourself). Overloading Jorja's side warps your own court
-coverage. The 2026 ledger says the price is usually too high: head-to-head
-it's Waters/Johnson 3-1, and the ice-out game is the 1.
+**8 — The counter.**
+**"A longer point is a leaky point."**
+The Orlando rematch: 11-5, Waters/Johnson — and Bright/Fahey were still
+plenty icy. What changed? Jorja played closer to her best, points ran
+longer, and every extra shot in a rally is another chance for the ball to
+find Waters' paddle. The ice-out has to survive the whole point, every
+point; Jorja at her best makes the points long. 2026 head-to-head:
+Waters/Johnson 3-1. The 6-11 is the one where everything held at once.
 
 **9 — So what does a prediction mean?**
-Fleming's real question. My 88% was the win rate under *typical* strategy,
-averaged over everything in 37,000 games — and 88% favorites lose one time
-in eight with nothing weird happening at all. A great game plan isn't
-outside the model; it's one of the ways the 12% happens. Strategy can
-genuinely move the number — the ice-out provably moves this matchup from
-86% to 50% *if executed perfectly and if the counter never lands*. On
-average, though? On average Waters and Johnson are virtually unbeatable.
+**"This is why they play the matches on a court and not a spreadsheet."**
+My 88% was the win rate under typical strategy — an average over
+everything that usually happens across 37,000 games. A specific game plan
+against a specific team on a specific day has its own true number, and
+nobody — not me, not the players — can compute it exactly. Precise
+numbers are tough. But "hard to calculate" is not "doesn't exist": the
+ice-out demonstrably moves this matchup from ~86% toward a coin flip, and
+execution decides the rest. The number is real. The court is where you
+find out what it was.
 
 **10 — This weekend.**
-MLP Finals, New York. Model has St. Louis (Bright/Fahey) 96% and New
-Jersey (Waters/Johnson) 82% to win their Friday matchups — the rematch is
-the likely final. Normal-strategy price: 86% Waters/Johnson, modal score
-11-6. Bright and Fahey's job is to make it a coin flip again. Either way,
-the prediction is frozen before first serve and graded after — receipts
-at [site link].
+**"The uncertainty is the point."**
+MLP Finals, New York. Model: St. Louis (Bright/Fahey) 96% and New Jersey
+(Waters/Johnson) 82% to win Friday — a collision course for the final.
+And here's the mountain St. Louis would be climbing: to beat the 5s you
+have to find equity against the GOAT. If Waters wins her two matches,
+you're trying to play through Federico Staksrud, Noe Khlif, and Jorja
+Johnson just to force a DreamBreaker — where Waters is my model's #1
+women's singles player and Staksrud is in a dead heat for #1 among the
+men. I'm deliberately not pricing the rematch today. There's time for
+that Saturday afternoon, if it happens. For now, the uncertainty is the
+point.
 
 ## Honesty footnotes (keep these in the post, short)
 
@@ -103,19 +134,25 @@ at [site link].
   before the match; 86% is the same matchup at current values. Both are
   calibrated (no displayed probability ever reaches 0% or 100% —
   about 1% of ≥99% favorites lose).
-- The "coin flip" is the model's own weakest-link structure evaluated at
-  an extreme weighting — a what-if inside the model, not a fitted result.
+- The "coin flip" and the stacked-lever numbers are the model's own
+  weakest-link structure evaluated at extreme settings — what-ifs inside
+  the model, not fitted results.
 
 ## Repro
 
 ```
 values (data/v2_players.csv, per-point logit): ALW 1.799, Bright 1.327,
   Jorja 1.173, Fahey 1.081;  γ = −0.1829
+gap ladder: ALW→AB 0.473, AB→JJ 0.154, JJ→KF 0.092
 team = v1 + v2 + γ|v1−v2|  ⇔  2·(0.41·stronger + 0.59·weaker)
 ALW/JJ 2.858 vs AB/KF 2.363 → race-to-11 DP → calibrate → 0.861
 ice-out: 2·Jorja = 2.346 vs 2.363 → 0.501
 share sweep: p(s) from team = 2·(s·ALW + (1−s)·JJ)
-lever 2: Δv = (2.858−2.363)/(1−γ) = 0.42 → Jorja at 0.75 ≈ #28 woman
+stacked lever 2: p from 2·v vs 2.363 at v = 1.139 (#5 Todd) → .443,
+  1.081 (#10 Fahey-level) → .347, 0.992 (#13 Humberg) → .219
+lever 2 alone: Δv = (2.858−2.363)/(1−γ) = 0.42 → Jorja at 0.75 ≈ #28
 H2H from data/games.csv; weekend prices from data/forecasts.json
   (generated 2026-08-27, best-lineup tier)
+singles: data/singles_players.csv — ALW 2.51 (#1 W);
+  Staksrud 2.07 ≈ Haworth 2.07 (co-#1 M); Khlif 1.69, Jorja 1.46
 ```
