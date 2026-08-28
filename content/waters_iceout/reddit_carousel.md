@@ -129,8 +129,9 @@ model gives New Jersey the DreamBreaker 62%. Which means each team is
 holding a lever:
 **St. Louis' lever is the big one: the ice-out.** Run it back
 successfully in the women's game and the whole matchup flips — St.
-Louis becomes the 55% favorite. The tactic that won them the Mid-Season
-title is worth the entire final.
+Louis goes from 45% to 55%, a ten-point swing in title odds from one
+tactical choice in one game. That's the tactic that won them the
+Mid-Season title, priced for this final.
 **New Jersey's lever is the sweaty one: swap the mixed lineups.** Feed
 Jorja/Staksrud to Bright/Patriquin, unleash Waters/Khlif on
 Fahey/Tardio, and push even more of the match into the DreamBreaker —
