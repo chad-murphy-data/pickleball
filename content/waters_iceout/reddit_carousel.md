@@ -23,7 +23,11 @@ ships.*
 | Stacked: ice-out + Jorja playing like #5 / #10 / #13 | Bright/Fahey **56% / 65% / 78%** |
 | Lever 2 *alone* (normal shot mix) | Jorja must play like the **~#28 woman** just to reach even |
 | 2026 head-to-head | ALW/JJ **3-1** (11-4, 11-3, **6-11**, 11-5) |
-| This weekend (MLP Finals NYC) | STL 96% / NJ 82% to advance Friday |
+| **The final: NJ vs STL, traditional lineups** | **NJ 55%** — NJ 3+ games 26%, **2-2 DreamBreaker 47%**, STL 3+ games 27% |
+| Game-by-game (NJ side) | WD **86%**, MD **16%**, MXD1 **66%**, MXD2 **31%** |
+| DreamBreaker (mean roster singles, k=0.42) | **NJ 62%** (roster means 1.93 vs 1.71) |
+| Final if STL re-runs the WD ice-out (ALW → 10%) | **STL 55%** — the tactic flips the matchup favorite |
+| Final if NJ flips its mixed pairs to hunt the DB | NJ 55.7% vs 55.2% — **equity-neutral** (P(DB) 47%→50%) |
 | Singles, if it goes to a DreamBreaker | ALW = model's **#1 woman**; Staksrud in a **dead heat for #1 man** |
 
 ## The narrative arc (~10 slides)
@@ -112,18 +116,24 @@ ice-out demonstrably moves this matchup from ~86% toward a coin flip, and
 execution decides the rest. The number is real. The court is where you
 find out what it was.
 
-**10 — This weekend.**
-**"The uncertainty is the point."**
-MLP Finals, New York. Model: St. Louis (Bright/Fahey) 96% and New Jersey
-(Waters/Johnson) 82% to win Friday — a collision course for the final.
-And here's the mountain St. Louis would be climbing: to beat the 5s you
-have to find equity against the GOAT. If Waters wins her two matches,
-you're trying to play through Federico Staksrud, Noe Khlif, and Jorja
-Johnson just to force a DreamBreaker — where Waters is my model's #1
-women's singles player and Staksrud is in a dead heat for #1 among the
-men. I'm deliberately not pricing the rematch today. There's time for
-that Saturday afternoon, if it happens. For now, the uncertainty is the
-point.
+**10 — The final: St. Louis vs New Jersey.**
+**"Half of this match funnels into a DreamBreaker."**
+The collision happened. And the final is nothing like the pool rounds:
+**New Jersey 55%, St. Louis 45%** — with a **47% chance it goes 2-2**
+into a DreamBreaker. The structure is almost perfectly mirrored: NJ is
+heavily favored in Waters' two games (86% in the WD rematch, 66% in
+mixed), STL is heavily favored in the other two (84% in men's, 69% in
+the Fahey/Tardio mixed). Each side's two favored games only get them to
+2-2 — so to win in regulation, St. Louis has to beat Waters somewhere,
+and New Jersey has to steal a game from St. Louis' half of the draw. If
+nobody does, it's a DreamBreaker, where New Jersey's singles roster
+(Waters is my model's #1 woman, Staksrud in a dead heat for #1 man)
+makes them 62%. And the ice-out lever is live: if Bright and Fahey run
+it back successfully in the women's game, **St. Louis becomes the 55%
+favorite** — the tactic flips the entire matchup, not just one game.
+(Bonus silly math: NJ deliberately punting a mixed game to hunt the
+DreamBreaker doesn't help — 55.7% vs 55.2%, equity-neutral. The schedule
+already funnels there on its own.)
 
 ## Honesty footnotes (keep these in the post, short)
 
@@ -151,8 +161,18 @@ share sweep: p(s) from team = 2·(s·ALW + (1−s)·JJ)
 stacked lever 2: p from 2·v vs 2.363 at v = 1.139 (#5 Todd) → .443,
   1.081 (#10 Fahey-level) → .347, 0.992 (#13 Humberg) → .219
 lever 2 alone: Δv = (2.858−2.363)/(1−γ) = 0.42 → Jorja at 0.75 ≈ #28
-H2H from data/games.csv; weekend prices from data/forecasts.json
-  (generated 2026-08-27, best-lineup tier)
+H2H from data/games.csv
 singles: data/singles_players.csv — ALW 2.51 (#1 W);
   Staksrud 2.07 ≈ Haworth 2.07 (co-#1 M); Khlif 1.69, Jorja 1.46
+FINAL (NJ = ALW/JJ/Staksrud/Khlif vs STL = AB/KF/Patriquin/Tardio),
+  make_forecast pipeline exactly (calibrated game probs → 4-game tree,
+  p_win = p40 + p31 + p22·p_db; DB = race-to-21 at k·mean-singles-gap,
+  k = 0.42, gap +0.217 → NJ .618):
+  A traditional  WD .86 MD .16 MX1 .66 MX2 .31 → NJ 3+ .258 / 2-2 .475 /
+    STL 3+ .267, overall NJ .552
+  B WD ice-out (ALW share 10%): WD .61 → overall NJ .446
+  C flip mixed (Jorja+Fede sac vs Bright/Patriquin .25; ALW+Khlif
+    vs Fahey/Tardio .72): 2-2 rises to .504, overall NJ .557 (~neutral;
+    game-prob sums nearly equal: .66+.31 ≈ .25+.72)
+  B+C both: NJ .447
 ```
