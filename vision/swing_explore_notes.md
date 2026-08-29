@@ -2863,3 +2863,66 @@ firefight the previous hitter's follow-through and the current
 hitter's swing coexist within 0.4 s, so "the one who's leaned over
 with a blurry paddle" can be TWO players). Any bar must be split
 fast/slow, TRAIN rallies only, frozen before training.
+
+## 2026-08-29 — USER'S "FANCIEST MODEL" SKETCH: per-frame hitter-belief with contacts read off STATE HANDOFFS — and the labeling-economics answer
+
+User's design, paraphrased: a stateful model walks frames; at each
+frame it scores all four players on "looks like they're about to hit"
+(posture, paddle blur, ball/tracer evidence), carries the belief
+forward, and infers a CONTACT when the hitter-belief hands off across
+the net ("player 3 now looks like a hitter and player 1 no longer
+does — did player 1 strike?"). Follow-through persists past impact,
+so the hitter-look is an EPISODE (wind-up → impact → follow-through),
+not an instant.
+
+WHY THIS IS THE RIGHT SHAPE, mapped to the record:
+- It IS the registered temporal-model brief (temporal_gate.md: joint
+  decode of contact times and pace states + non-tempo channels), with
+  a richer emission set — per-player visual state — and the
+  alternation prior as the transition structure. "Or better" was
+  registered; this qualifies.
+- Contacts as STATE TRANSITIONS instead of point events is the escape
+  from the trap that killed placement: every dead instrument hunted a
+  spike at t against a rhythm-proof null; an episode HANDOFF is wide,
+  structured, and side-alternating (exact, 0/229). The event is
+  derived from the boundary between episodes, not detected at a
+  frame.
+- The per-frame observables are the existing assets: pose tracks ARE
+  a per-frame posture record (17 kpts, native fps, already
+  extracted); paddle-blur/attitude crops are feasible per the
+  2026-08-29 probe; ball evidence = the classical tracker's segments
+  (median 0.08 s precision, bursty coverage — usable as an EMISSION,
+  fatal as the sole channel). No VLM in the loop at decode time.
+
+THE LABELING QUESTION — user proposal: code what every player looks
+like FRAME BY FRAME to kill click imprecision and measure exactly when
+"looks like hitter" starts/stops. ECONOMICS SAY NO AT SCALE, YES AS A
+SMALL CALIBRATION SET:
+- Per-frame per-player at 30 fps: a 15 s rally = ~450 frames x 4 =
+  ~1,800 judgments vs ~16 taps today — ~100x the cost. The gate needs
+  71 more train rallies; dense coding would eat the label budget that
+  everything else depends on. Even 2 fps sampling is ~8x.
+- The INFORMATION wanted is much cheaper than the labels proposed:
+  (a) EPISODE BOUNDARIES: 2 extra taps per contact (swing-look start,
+  follow-through end) around the existing impact click ≈ 3x per-rally
+  cost, gives onset/offset/duration distributions directly;
+  (b) a FRAME-EXACT gold subset: on ~5-10 TRAIN rallies, step
+  frame-by-frame and mark the exact impact frame — this measures the
+  user's own tap jitter (the "imprecision of when I clicked") as a
+  distribution, which the model then absorbs as a known label-noise
+  term instead of the labels needing to be perfect;
+  (c) between labeled impacts, the sequence model LEARNS the latent
+  states from pose+crops under weak supervision — dense human states
+  would mostly duplicate what the skeleton already records, and add
+  human signal only where pose fails (blur/occlusion), which the
+  gold subset samples anyway.
+- So: keep the 16-tap habit as the corpus; add the two-boundary
+  episode taps only if they stay painless; spend one sitting on the
+  frame-exact gold subset. Do NOT convert the habit to dense coding.
+
+GATE HYGIENE (unchanged but now load-bearing): new label TYPES
+(episode boundaries, frame-exact impacts) and the visual-state
+emission channel need a dated pre-code amendment note on
+temporal_gate.md BEFORE any temporal-model code exists — legal today,
+locked the moment T is written. The truth definition (attack-onset,
+bars, panel) does not move.
