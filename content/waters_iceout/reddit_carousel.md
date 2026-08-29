@@ -120,7 +120,8 @@ execution decides the rest. The number is real. The court is where you
 find out what it was.
 
 **10 — The final: St. Louis vs New Jersey.**
-**"Half of this match funnels into a DreamBreaker."**
+**"New Jersey is a slight favorite — and their most likely win runs
+through a DreamBreaker."**
 The final is a virtual coin flip, with New Jersey a **slight** favorite
 at 55% over St. Louis at 45%. Not much separates these teams — the
 structure is almost perfectly mirrored: NJ heavily favored in Waters'
@@ -137,24 +138,16 @@ tactical choice in one game. That's the tactic that won them the
 Mid-Season title, priced for this final.
 **New Jersey's lever is the sweaty one: swap the mixed lineups.** Feed
 Jorja/Staksrud to Bright/Patriquin, unleash Waters/Khlif on
-Fahey/Tardio, and push even more of the match into the DreamBreaker —
-where you're capitalizing on the best women's singles player in the
-world and on Federico Staksrud, who my model gives a **45% chance of
-being the best men's singles player alive** (a photo finish with Chris
-Haworth at 48% — we're Bayesian here, not frequentist). The model
-scores the swap equity-neutral (55.7% vs 55.2%): an optimization for
-true believers only.
-And one receipt that makes the sweaty lever look a lot less crazy:
-these teams already played a DreamBreaker this season — May 25 in
-Dallas — and **St. Louis won it 21-15**. New Jersey's lineup that night
-had Will Howells, not Staksrud. Then St. Louis beat them again for the
-Mid-Season title, and within weeks New Jersey went out and acquired
-Staksrud from the Orlando Squeeze (his last Squeeze games are July 19;
-his first 5s games are July 30). A 45%-to-be-the-best singles player on
-the planet, bought mid-season, right after two losses to this exact
-opponent — one of them in a DreamBreaker. That's not a coincidence.
-That's a roster move aimed at this exact scenario. St. Louis leads the
-season series 2-1; Staksrud is New Jersey's answer.
+Fahey/Tardio, and push even more of the match into the DreamBreaker.
+The model scores the swap equity-neutral (55.7% vs 55.2%) — an
+optimization for true believers only.
+But believing isn't crazy. The DreamBreaker is where New Jersey's whole
+edge lives, and it's built on two people: Anna Leigh Waters, the best
+women's singles player in the world, and Federico Staksrud, an eyelash
+short of Chris Haworth as the best men's. Staksrud was signed from
+Orlando in late July — weeks after St. Louis beat the 5s in the teams'
+only DreamBreaker this season. That roster move was aimed at exactly
+this scenario.
 
 ## Honesty footnotes (keep these in the post, short)
 
