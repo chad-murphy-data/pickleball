@@ -2771,3 +2771,50 @@ channel is not on it. No temporal code exists yet, so adding one is
 legal — but it is a user decision to record as a dated pre-code
 amendment/supersession note on the gate BEFORE any temporal code is
 written, not something to slide in later.
+
+## 2026-08-29 — PADDLE PROBE RUN (user's Mac, eyeball read of the n=24 contact sheet): SANITY GATE PASSED
+
+User ran PR #65's `paddle_probe.py` (default n=24, unmarked mode) and
+scored the sheet by eye. Reported verdict, verbatim substance:
+
+- Paddles visible in essentially ALL crops, hitters and non-hitters.
+- ALL BUT 2 hitters have the paddle in frame — and both misses are
+  WRONG-WRIST CROPS (the probe centers on the more-confident wrist,
+  which was the non-paddle hand; the paddle got clipped, it was not
+  invisible). The predicted centering limitation, confirmed at ~2/24;
+  fix = crop the box spanning BOTH wrists, unbuilt.
+- Hitters' paddles are MOSTLY BLURRY at the contact instant.
+- The BALL is not visible in the vast majority of contact-instant
+  crops.
+
+READINGS, in order of confidence:
+
+1. **The bounded-search premise holds.** A paddle is findable near an
+   already-tracked wrist ~always on this footage — the opposite of the
+   ball at the same pre-build stage. A small paddle detector is
+   FEASIBLE; whether it is USEFUL is untested and is the next question,
+   not a conclusion.
+2. **Presence is non-discriminative.** All four players hold paddles
+   and all are visible — the channel's signal, if any, is POSITION /
+   ATTITUDE / BLUR, never mere detection.
+3. **Blur cuts both ways.** It degrades precise paddle-tip kinematics
+   at exactly the contact instant (same axis every instrument fails
+   along), BUT blur magnitude is itself a stroke-speed cue. CAUTION,
+   already on the record: motion blur co-predicted the interval
+   histogram's gender split (the "never publish from that stream"
+   entry), and the pace LABEL is rally-state (produced gap), not
+   stroke speed — a drive blurs like a smash, a defensive reach may
+   not blur at all. Blur is a legitimate FEATURE candidate; it is not
+   validation for anything.
+4. **Ball absence at contacts** reconfirms the ball closure's central
+   claim ("misses pile at the contacts") from an independent draw —
+   and means the paddle channel cannot lean on ball-paddle proximity.
+
+IF PURSUED (not scheduled ahead of labeling): pre-register a bar
+BEFORE building the detector — the candidate product question is
+whether paddle position/blur features beat wrist velocity on TRAIN
+pace classification. Process constraints already on record: any TIMING
+claim from a paddle instrument is scored by score_localization.py
+against the shift null like every other instrument; and feeding paddle
+features into the temporal model T needs a user-recorded pre-code
+amendment (temporal_gate.md MAY-list is enumerated).
