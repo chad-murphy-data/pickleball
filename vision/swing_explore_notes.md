@@ -2926,3 +2926,28 @@ emission channel need a dated pre-code amendment note on
 temporal_gate.md BEFORE any temporal-model code exists — legal today,
 locked the moment T is written. The truth definition (attack-onset,
 bars, panel) does not move.
+
+## 2026-08-29 — STATE-AUDIT PILOT COMMISSIONED (user go) + draft gate amendment
+
+User answered the economics with revealed preference ("easy and
+mindless work"), scoped to the gold subset first. Tool built:
+`vision/make_state_audit.py` (selftested; boundaries-not-frames
+coding, B/I/E/X per player episode, rally-level R = routine start and
+D = point dead, both user additions). Protocol addendum in
+labeling_protocol.md same date. Scale-up to a "massive set" is
+DEFERRED until the pilot returns minutes-per-rally and the episode
+stats prove informative — decision by number, not enthusiasm.
+
+DRAFT AMENDMENT for temporal_gate.md (append only on the user's
+explicit freeze, and only while no temporal-model code exists):
+
+  "Amendment (2026-08-29, user-approved): T MAY additionally use, from
+  TRAIN rallies only: (a) hitter-episode state labels
+  (start/impact/end, no-contact flag) and rally-level routine-start /
+  point-dead marks per data/vision/state_labels_chicago0725.csv;
+  (b) frame-exact impact times from the same file, including as a
+  label-noise calibration for the tap-based contact times; (c) visual
+  emission channels computed from the video around tracked-wrist crops
+  (paddle position/attitude/blur features). Truth definitions, bars,
+  panel, burn rules, and the holdout quarantine are unchanged; C and B
+  do not gain these inputs (the ceiling and baseline stay as frozen)."

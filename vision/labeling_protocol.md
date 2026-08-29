@@ -121,3 +121,35 @@ and evaluate with ±2–3 pp CIs.
   swing_explore consume that name), and share it in-thread so it lands
   in `data/vision/` — timestamps and names only, no imagery. The
   broadcast video itself is never committed (house rule).
+
+## Addendum 2026-08-29 — the state-audit pilot (hitter episodes, gold subset)
+
+User go: "I'm not mad at doing a massive coding set myself… especially
+if we just start with the 5-10 training rallies." Scoped per the
+economics in swing_explore_notes.md 2026-08-29: step every frame, tap
+only BOUNDARIES — the interval inherits, so per-frame states derive
+complete at ~10x fewer judgments than literal per-frame coding.
+
+- Tool: `python3 vision/make_state_audit.py` →
+  `data/vision/state_audit_chicago0725.html`. Pilot rallies
+  PRE-SPECIFIED: 1-8, 13, 14 (train only, r9/r10 quarantined, 124
+  contacts, fast-heavy r1/r3 included).
+- Per player episode: **B** start ("looks like about to hit"), **I**
+  frame-exact impact (the old tap shows as a tick — navigate by it,
+  never snap to it), **E** end (follow-through done), **X** =
+  no-contact episode (fake / both-went-for-it / aborted — the hard
+  negatives). Rally-level: **R** service routine starts, **D** point
+  dead (user addition, same day).
+- Export every sitting as `state_labels_chicago0725.csv` into
+  data/vision/ — same hygiene as the contact CSV.
+- What the pilot buys before any scale-up decision: episode onset/
+  offset distributions vs impact; the user's own tap-jitter
+  distribution (frame-exact I vs old tap); no-contact episode rate;
+  R/D vs referee-log lead/end times; and measured minutes-per-rally,
+  so "massive set: worth it?" is answered with a number, not a mood.
+- These are NEW LABEL TYPES: before any temporal-model code exists,
+  temporal_gate.md needs a dated amendment recording them as permitted
+  T inputs (draft in swing_explore_notes.md; user freezes it
+  explicitly). Holdout rules unchanged: pilot is train-only; if state
+  labeling ever extends to holdout rallies, label identically and keep
+  tuning scripts out, exactly as with contacts.
