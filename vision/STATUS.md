@@ -62,16 +62,35 @@ polices itself.
 
 **Touch share** — how many balls each player actually hits. Needs no
 timestamps: alternation gives every shot's SIDE exactly, so the only
-open call per shot is WHICH PARTNER, a 50/50 the VLM makes at ~89%.
-Direct complement to coverage: coverage measures SPACE, touch share
-measures BALLS, and where they diverge is the "who is carrying this
-team" question. Costs the 3x3 rung.
+open call per shot is WHICH PARTNER, a 50/50 the VLM makes at ~89%
+(re-measured 2026-08-21 through the real API, `vlm_tier_test.py
+--mode partner`: Sonnet 5 90%, the chosen tier). Direct complement to
+coverage: coverage measures SPACE, touch share measures BALLS, and
+where they diverge is the "who is carrying this team" question. Costs
+the 3x3 rung. THE UNMEASURED LINK is the join: 90% was measured on
+strips cut at TRUE label times; production cuts at DECODER times
+(counts 161/162 but placement ~51% at +/-0.30s). `vlm_join_pilot.py`
+measures whether the partner call survives decoder placement, on
+labeled train rallies (order-join, leave-one-out, r9/r10 excluded) —
+run its --dry stage first (free), then the API stage (~$1-3). A
+whole-match run on fresh footage is licensed by that pilot's number,
+not by the 90%.
 
 ## Cost, and how soft it is
 
-$44/match for 3x3 = 5.5M input tokens. MEASURED: the 1568px downscale
-cap and the /750 token rule, the 0.15s step, 1.13 contacts/s.
-ASSUMED: 47 min of rally time per match, $15/$75 per M tokens, batch at
-half price. UNPRICED: retries, and the 30-40% of a condensed VOD that
-is not main camera — which the coverage work measured and this model
+$30/match for 3x3 at the top tier (Claude Fable 5, $10/$50 per M) = 5.5M
+input tokens. CORRECTED 2026-08-21: the prior $44 figure assumed a
+$15/$75 placeholder guessed before real top-tier pricing existed; Fable
+5 turned out cheaper than the guess. Sonnet 5 ($3/$15) and Haiku 4.5
+($1/$5) already matched real tiers exactly and are unchanged: ~$9/match
+and ~$3/match respectively (`vlm_pack.py`, `vlm_tier_test.py`).
+MEASURED: the 1568px downscale cap and the /750 token rule, the 0.15s
+step, 1.13 contacts/s. ASSUMED: 47 min of rally time per match, batch
+pricing. UNPRICED: retries, and the 30-40% of a condensed VOD that is
+not main camera — which the coverage work measured and this model
 bills as usable anyway. Order of magnitude, plausibly 1.5x low.
+Accuracy-vs-tier is still UNMEASURED — the 89%/95%/85% numbers on this
+channel all came from one manual in-thread run at an unrecorded model;
+`vlm_tier_test.py` runs the same test through the real API per tier so
+cost and accuracy can be weighed together instead of assuming the top
+tier is needed.
