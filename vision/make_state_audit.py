@@ -22,6 +22,12 @@ Then you just answer, whenever it changes, "what is SHE doing?":
              follow-through is done (auto-returns to watching).
              X toggles NO-CONTACT on the episode (fake /
              both-went-for-it / aborted — never struck).
+             After I: F = forehand, H = backhand (user-approved
+             2026-08-29; fills the fh/bh label gap the dink-rotation
+             question was blocked on). P toggles POACH on the episode
+             (took a ball on the partner's side — direct observation
+             of the channel the retracted intent measures needed the
+             ball for; the aggressive twin of C).
 
 Rally-level marks (kept from v1): R = service routine starts,
 D = point dead. N = pass done -> next player / next rally.
@@ -171,6 +177,9 @@ HTML = r"""<!doctype html><html><head><meta charset="utf-8">
  .run.hit{background:#2d4d2d;border:1px solid #4a7}
  .run.hit.nc{background:#4d3d2d;border-color:#a74}
  .run.hit.open{border-style:dashed}
+ .run.hit.poach{border-color:#c7c;box-shadow:0 0 0 1px #c7c}
+ .run .hl{position:absolute;left:2px;top:3px;font-size:9px;color:#bfb;
+          pointer-events:none}
  .run.clear{background:#28405c;border:1px solid #58a}
  .imp{position:absolute;top:0;width:2px;height:26px;background:#8f8;z-index:1}
  .tick{position:absolute;top:20px;width:1px;height:6px;background:#666}
@@ -205,8 +214,9 @@ HTML = r"""<!doctype html><html><head><meta charset="utf-8">
 Default = <b>ball-watching</b> (zero clicks — every state returns
 here). <kbd>C</kbd> clearing for partner (again/<kbd>W</kbd> = back to
 watching) · <kbd>B</kbd> beginning to hit · <kbd>I</kbd> exact impact
-frame · <kbd>E</kbd> follow-through done · <kbd>X</kbd> no-contact
-episode (fake / never struck) · <kbd>R</kbd> service routine starts ·
+frame · <kbd>F</kbd>/<kbd>H</kbd> forehand/backhand ·
+<kbd>P</kbd> poach (took partner's ball) · <kbd>E</kbd> follow-through
+done · <kbd>X</kbd> no-contact episode (fake / never struck) · <kbd>R</kbd> service routine starts ·
 <kbd>D</kbd> point dead · <kbd>N</kbd> pass done ·
 <kbd>←</kbd>/<kbd>→</kbd> ±1 frame · <kbd>,</kbd>/<kbd>.</kbd> ±10 ·
 <kbd>space</kbd> play/pause · <kbd>⌫</kbd> delete this player's
@@ -355,11 +365,13 @@ function render(){
       const s = h.s ?? h.i, e = h.e ?? h.i ?? h.s;
       const d = document.createElement("div");
       d.className = "run hit" + (h.nc ? " nc" : "") +
-        (h.e == null ? " open" : "");
+        (h.poach ? " poach" : "") + (h.e == null ? " open" : "");
+      if (h.hand) d.innerHTML = `<span class="hl">${h.hand}</span>`;
       d.style.left = X(s);
       d.style.width = Math.max(0.4, 100 * (e - s) / span) + "%";
       d.title = `hit ep${j + 1} ${h.s?.toFixed(2)}–${h.e?.toFixed(2)}` +
-        (h.i ? ` impact ${h.i.toFixed(2)}` : "") + (h.nc ? " NO-CONTACT" : "");
+        (h.i ? ` impact ${h.i.toFixed(2)}` : "") + (h.nc ? " NO-CONTACT" : "") +
+        (h.hand ? " " + h.hand.toUpperCase() : "") + (h.poach ? " POACH" : "");
       d.onclick = ev => { ev.stopPropagation();
         V.currentTime = h.i ?? s; };
       if (h.i != null){ const m = document.createElement("div");
@@ -412,12 +424,21 @@ document.addEventListener("keydown", e => {
   else if (k === "w") { if (openClear) openClear.e = +t.toFixed(3); }
   else if (k === "b") {
     if (openClear) openClear.e = +t.toFixed(3);
-    p.hits.push({s: +t.toFixed(3), i: null, e: null, nc: false});
+    p.hits.push({s: +t.toFixed(3), i: null, e: null, nc: false,
+                 hand: null, poach: false});
   }
   else if (k === "i" && openHit) openHit.i = +t.toFixed(3);
   else if (k === "e" && openHit) openHit.e = +t.toFixed(3);
   else if (k === "x" && p.hits.length)
     p.hits[p.hits.length - 1].nc = !p.hits[p.hits.length - 1].nc;
+  else if (k === "f" && p.hits.length)
+    p.hits[p.hits.length - 1].hand =
+      p.hits[p.hits.length - 1].hand === "fh" ? null : "fh";
+  else if (k === "h" && p.hits.length)
+    p.hits[p.hits.length - 1].hand =
+      p.hits[p.hits.length - 1].hand === "bh" ? null : "bh";
+  else if (k === "p" && p.hits.length)
+    p.hits[p.hits.length - 1].poach = !p.hits[p.hits.length - 1].poach;
   else if (k === "r") { const m = D()._rally;
     m.routine = m.routine == null ? +t.toFixed(3) : null; }
   else if (k === "d") { const m = D()._rally;
@@ -436,7 +457,8 @@ document.addEventListener("keydown", e => {
         { bd = Math.abs(c[f] - t); best = ["clears", c, f]; } }));
     if (best) { best[1][best[2]] = null;
       const L = p[best[0]];
-      if (Object.values(best[1]).every(v => v == null || v === false))
+      const times = ["s","i","e"].filter(f => f in best[1]);
+      if (times.every(f => best[1][f] == null))
         L.splice(L.indexOf(best[1]), 1); }
   } else return;
   save(); render(); e.preventDefault();
@@ -455,7 +477,10 @@ bexp.onclick = () => {
         if (h.s != null) out += `${r.rally_cum},${p},${j + 1},start,${h.s}\n`;
         if (h.i != null) out += `${r.rally_cum},${p},${j + 1},impact,${h.i}\n`;
         if (h.e != null) out += `${r.rally_cum},${p},${j + 1},end,${h.e}\n`;
-        if (h.nc) out += `${r.rally_cum},${p},${j + 1},no_contact,\n`; });
+        if (h.nc) out += `${r.rally_cum},${p},${j + 1},no_contact,\n`;
+        if (h.hand) out += `${r.rally_cum},${p},${j + 1},` +
+          (h.hand === "fh" ? "forehand" : "backhand") + `,\n`;
+        if (h.poach) out += `${r.rally_cum},${p},${j + 1},poach,\n`; });
       pd.clears.forEach((c, j) => {
         if (c.s != null) out += `${r.rally_cum},${p},${j + 1},clear_start,${c.s}\n`;
         if (c.e != null) out += `${r.rally_cum},${p},${j + 1},clear_end,${c.e}\n`; });
@@ -484,9 +509,13 @@ csvpick.onchange = () => {
       const L = isClear ? p.clears : p.hits;
       while (L.length < +epn)
         L.push(isClear ? {s: null, e: null}
-                       : {s: null, i: null, e: null, nc: false});
+                       : {s: null, i: null, e: null, nc: false,
+                          hand: null, poach: false});
       const ep = L[+epn - 1];
       if (kind === "no_contact") ep.nc = true;
+      else if (kind === "forehand") ep.hand = "fh";
+      else if (kind === "backhand") ep.hand = "bh";
+      else if (kind === "poach") ep.poach = true;
       else ep[{start: "s", impact: "i", end: "e", clear_start: "s",
                clear_end: "e"}[kind]] = +ts;
     });
