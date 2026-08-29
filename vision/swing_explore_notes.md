@@ -2818,3 +2818,48 @@ claim from a paddle instrument is scored by score_localization.py
 against the shift null like every other instrument; and feeding paddle
 features into the temporal model T needs a user-recorded pre-code
 amendment (temporal_gate.md MAY-list is enumerated).
+
+## 2026-08-29 — USER OBSERVATION ON THE PROBE PANELS: the 4-crop CONTRAST reads the hitter by itself — posture + paddle blur
+
+User, scrolling the sheet (r1@18.81 speed-up panel as the exhibit):
+"Even without the names I can tell you who is doing the hitting —
+three players are mostly standing up straight, doing nothing, and the
+player who is hitting is leaned over weirdly and has a blurry paddle."
+(In that exhibit the ball is ALSO sitting on the hitter's paddle —
+second time in this session's screenshots the ball shows up precisely
+at a contact crop; anecdotal against the "misses pile at contacts"
+expectation, worth counting properly if this goes anywhere.)
+
+WHY THIS IS A DESIGN INSIGHT, not just a nice panel: it recasts the
+hitter call as a RELATIVE judgment over four SAME-INSTANT crops
+(which-of-4, a contrast) rather than an absolute per-crop detection.
+Same lesson as blink-compare vs isolated frames — contrast is the
+cheap robustness. And the task it attacks is the measured weak link:
+
+- pick_hitter (wrist-speed-within-side) is on record (2026-08-20) as
+  "the weakest link in the stack"; the fix proposed there
+  (nearest-player-to-ball) NEEDS THE BALL. Posture+blur contrast does
+  not.
+- The which-partner 50/50 is the ONLY open call in touch share
+  (STATUS.md "Buildable now"); VLM does it at ~89% with cost. A local
+  4-crop classifier would do it free.
+- The labels already manufacture the training set as a side effect:
+  every labeled contact = 1 positive crop + 3 same-instant negatives,
+  cut around tracked wrists (paddle_probe's own extraction). 323
+  contacts ≈ 1.3k crops today, growing ~64/rally labeled. Nothing new
+  to click.
+
+WHAT IT DOES NOT TOUCH: timing. Crops are cut AT a contact time, so
+this is attribution GIVEN t — the surviving-channel shape
+(classification, flat chance baseline), not a resurrection of
+placement. Deployment-time t comes from the decoder's candidates,
+which are imprecise; robustness of the posture cue to ±0.3 s crop
+error is a required arm of any test.
+
+PRE-REGISTERED CAUTION that must be honored if this is ever built: the
+2026-08-19 blind-VLM registration predicted hitter calls 15-25pp WORSE
+on fast contacts (blur + posture ambiguity in kitchen exchanges — in a
+firefight the previous hitter's follow-through and the current
+hitter's swing coexist within 0.4 s, so "the one who's leaned over
+with a blurry paddle" can be TWO players). Any bar must be split
+fast/slow, TRAIN rallies only, frozen before training.
