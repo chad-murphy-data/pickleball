@@ -2712,3 +2712,43 @@ cannot name all four players alone (three are 2-shot rallies; rally 7
 runs nine shots and Jones never touches it). A first selftest here
 demanded per-rally resolution, failed at 14/19, and looked like an
 alternation failure. It was missing data. Pool, then 2-colour.
+
+## 2026-08-29 — PADDLE TRACKING (idea recovered from user memory; was never in the record)
+
+User recollection: "watching the paddle might be better than watching
+wrists." Grep of vision/ + the gate docs confirms this was NEVER
+WRITTEN DOWN — recording it here so it stops living only in memory.
+Status: IDEA, unmeasured, not scheduled ahead of the labeling program.
+
+What the record already holds that makes it plausible:
+
+- The feature-crudeness hypothesis (2026-08-19, this file ~line 1294):
+  the pose channel may fail on features, not information — "wrist
+  velocity in a window" is the crudest possible swing-reader. The
+  paddle is the actual contact implement, a rigid ~1.4x lever off the
+  wrist, so paddle-tip speed is amplified and paddle direction
+  reversal IS the stroke, where wrist velocity only correlates with it.
+- The 6x6 VLM probe (this file ~line 2258): "kitchen position and
+  paddle attitude are obvious even at 261x178" — the paddle is big
+  (~30-40 px at 720p vs ~7 px for the ball) and survives packings that
+  erase the ball. The ball-findability wall (36% of in-play frames,
+  loupe test) measured the BALL; paddle findability at contact is
+  UNMEASURED and is almost certainly far higher.
+- The pose stack carries 17 COCO keypoints (pose_extract.py) — no
+  hand, no implement. Nothing pretrained points at a paddle; a paddle
+  channel means a small custom detector, which means clicks.
+
+Cheapest honest probe, if ever picked up (pre-register a bar first,
+per house practice): sample frames at ±3 around already-labeled TRAIN
+contacts, user clicks paddle-visible yes/no (+ position when visible)
+— measures paddle findability at exactly the moments that killed every
+other instrument, reusing the existing archive, no new video watching.
+If findability clears where the ball's 64% failed, a detector trained
+on targeted paddle clicks becomes a temporal-model feature candidate.
+
+GATE NOTE, load-bearing: temporal_gate v2's MAY list enumerates the
+feature stack (pose, kitchen, cadence, track candidates); a paddle
+channel is not on it. No temporal code exists yet, so adding one is
+legal — but it is a user decision to record as a dated pre-code
+amendment/supersession note on the gate BEFORE any temporal code is
+written, not something to slide in later.
