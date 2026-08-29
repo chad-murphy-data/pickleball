@@ -2713,12 +2713,31 @@ runs nine shots and Jones never touches it). A first selftest here
 demanded per-rally resolution, failed at 14/19, and looked like an
 alternation failure. It was missing data. Pool, then 2-colour.
 
-## 2026-08-29 — PADDLE TRACKING (idea recovered from user memory; was never in the record)
+## 2026-08-29 — PADDLE TRACKING (idea recovered from user memory)
 
 User recollection: "watching the paddle might be better than watching
-wrists." Grep of vision/ + the gate docs confirms this was NEVER
-WRITTEN DOWN — recording it here so it stops living only in memory.
-Status: IDEA, unmeasured, not scheduled ahead of the labeling program.
+wrists." Grep of vision/ + the gate docs on MAIN found nothing and this
+entry first claimed the idea was never written down.
+
+**CORRECTION, same day (user: "PR #65 has the paddle stuff"):** it IS
+in the record — on PR #65's branch
+(`claude/alshon-black-patriquin-bright-model-0kcsrg`, the
+touch-attribution thread), as `vision/paddle_probe.py`, dated
+2026-08-23. Born from the user watching the touch_attribute review
+viewer catch a missed serve. The probe is exactly the cheap
+pre-detector sanity check sketched below, already built: sample
+labeled contacts across all shot types (dinks included — the pitch is
+that paddle POSITION may beat wrist SPEED where the wrist barely
+moves), crop 130 px around the labeled hitter's already-tracked wrist
+at contact, crop the three NON-hitters at the same instant as a
+same-frame baseline, emit a base64-embedded HTML contact sheet.
+Bounded search around a trusted keypoint — explicitly not a
+re-litigation of whole-frame ball tracking. STATUS: BUILT, NEVER RUN —
+needs the user's machine (video + ffmpeg + pose_rtm npz). Lesson for
+this file: branch-only work is invisible to main greps; anything
+STATUS.md-worthy should land a pointer on main when its PR is opened.
+Status of the idea: INSTRUMENT EXISTS, unmeasured, still not scheduled
+ahead of the labeling program.
 
 What the record already holds that makes it plausible:
 
