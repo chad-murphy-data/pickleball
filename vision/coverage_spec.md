@@ -171,10 +171,12 @@ Pre-register the formulas BEFORE the first real number is looked at
 
 Committed: data/coverage_players.csv (one row per player-game:
 ellipse area, width share, depth range, distance, phase splits,
-identity-error rate from the overlay spot-check, frames kept/dropped
-by each gate) + data/coverage_events.csv (per-VOD ledger: homography
-calibration residual, main-camera gate stats, rallies covered/excluded
-with reasons). Pose npz and overlay renders stay local (gitignored /
+identity-error rate from the overlay spot-check) +
+data/coverage_events.csv (per-VOD ledger: homography calibration
+residual, main-camera gate stats, rallies covered/excluded with
+reasons, and the per-gate FRAME drop counts — frame gating precedes
+identity resolution, so dropped frames cannot be attributed to a
+player and live at the event level; build decision 2026-08-16). Pose npz and overlay renders stay local (gitignored /
 broadcast-imagery rule).
 
 ## Verification overlay (user-requested, 2026-08-16 — build it FIRST)
@@ -212,7 +214,585 @@ imagery: LOCAL ONLY, never committed (same rule as data/vision/*.png).
 - Camera-side occlusion inflates near-pair uncertainty slightly;
   aggregate metrics + confidence weighting absorb it.
 
-**Status**: specced, unbuilt. Sequenced BEHIND the Gate C evening (do
-not preempt the contact thread's labeling/verdict). Natural build
-moment: right after the Gate C verdict, either way — coverage does not
-depend on it.
+**Status**: BUILT 2026-08-16 (branch claude/court-coverage-model-8rg94l;
+first real-VOD run pending — see the PR + build record below). The
+contact-thread instruments were not touched.
+
+## Build record (2026-08-16)
+
+- WINDOWS INSTRUMENT **SOLVED** (2026-08-17 night;
+  bug_state_windows.py): 113/141 rallies with SCORE-VERIFIED windows
+  (g1 36/48, g2 51/56, g3 26/37), orientation margin 113:16, all five
+  check anchors frame-verified (r8 2-2·1 at 376-384, r10 3-2·2 at
+  411-416, r74 5-2·1 at 1979-1984, r83 6-6·1 at 2163-2181, r84 7-6·1
+  at 2180-2199). What it took, in order (each measured, none guessed):
+  (1) canonical per-layout boxes — the locator wobbles ±2 px on a
+  static overlay and every windowed-median drift faked a state change;
+  the bug's three x0 modes (370/400/428) are COMPLETED-GAME COLUMNS
+  appended after each game, so LAYOUT INDEX = GAME, and one canonical
+  box per layout makes plateau crops pixel-identical (566→85 runs);
+  (2) raw crop cache (.crops3.npz, gray+greenmask region stream) so
+  every later iteration is offline; (3) dots are NAME-ANCHORED AND
+  STATIC (region x 45-105), not score-column-relative — the relative
+  band read the wrong place in 2 of 3 layouts; width fallback for
+  touching dots (single 4-6 cols, double 8-13); (4) per-game ABSOLUTE
+  value matching replaces global symbol alignment — leader-cluster the
+  cell states, rank clusters by WEIGHTED INTERVAL SCHEDULING (true
+  score states occupy disjoint time blocks; junk score-flash clusters
+  recur across blocks and drop out — first-appearance ranking let one
+  junk cluster shift every later value one off), rank k = k-th
+  distinct logged value, rallies match by (top,bot,row,server#) dict
+  key, so drift is structurally impossible; (5) dot-changepoint run
+  splitting recovers side-out/second rallies (~half the match) whose
+  only on-bug change is the dots; runs carry REAL per-frame timestamps
+  and close at >8 s absences (linear interpolation over gap-spanning
+  sparse runs fabricated overlapping pieces — a 67→12 collapse traced
+  to exactly that). The 28 unmatched rallies stay approx=1/unmatched
+  and are EXCLUDED from extraction (drop-don't-guess).
+  LESSON THAT INVALIDATED OLD 'TRUTHS': the spacing-window positions
+  for r8/r10 were ~100 s off, yet identity hand-checks 'confirmed'
+  them — the same four players serve nearby rallies in similar
+  directions, so identity checks CANNOT validate rally IDENTITY; only
+  score reads off the bug can.
+
+- ANCHOR-FINDER VALIDATION (2026-08-17, vs the Chicago serve pins,
+  court-gated extractor at 10 fps): now resolves 14/15; median +1.41 s,
+  IQR [+0.62, +2.57], 8/14 within 2 s. Upgrades that got there:
+  serving_config3 (relaxed 2+1/1+2 config, FINDER ONLY — 5/15 true
+  freezes run with ≤3 tracks and the strict 2+2 never saw them),
+  post-freeze signatures gating every candidate (receiver return-rush
+  surge ≥4.5 ft net-ward within 4 s; sustained play-onset motion when
+  no receiver track survives; two-bounce hold-deep — the serving pair
+  must stay deep 1.5 s after a real serve), and a signatureless
+  fallback that reruns the OLD rule on strict-config runs only at half
+  qual. Residual: 3 late anchors (+12..27 s) on the WIDE tuning
+  windows, whose tails contain the next rally's pre-serve period by
+  construction — production bug-state windows end at the score flip
+  and structurally exclude that class; the survivors ride at reduced
+  qual for downstream drop rules. Also: the frozen Gate C extractor
+  anchors only 4/15 here (far-baseline starvation, see the 0.30 H
+  cross-finding above) — anchor validation MUST run on
+  coverage_extract output.
+- CROSS-FINDING for the contact thread (2026-08-17, from the anchor
+  validation): pose_extract's pixel gate rejects persons whose box
+  bottom sits above 0.30 H, and BOTH test broadcasts frame the far
+  baseline at ~0.26 H — far-baseline players (the server or receiver
+  of every rally) never reach the pose model until they step forward.
+  Chicago anchor validation only worked on the court-projection-gated
+  coverage extractor. May bear on Gate C's 33% serve recall tell
+  (v1 measured through the same gate); noted, instrument untouched.
+
+
+- `vision/coverage_windows.py` — flip-train x referee-timeline windows
+  for ANY fresh VOD (scorebug_windows.align reused; approx flags carry
+  missed-flip neighbourhoods, DP instability, and claimed replay
+  inserts). `--selftest`.
+- `vision/coverage.py` — camera gate (`--scan-camera`), off-court +
+  speed gates, anchor-frame finder (last pre-flip freeze, motion over a
+  0.5 s baseline, per-window adaptive quiet threshold), serve-anchor
+  identity chain (geometry + logged names only; lineup halves, mixed
+  height prior, and the per-game end-map are report-only checks),
+  pre-registered metrics (frozen in its docstring BEFORE any real
+  number existed), committed-CSV writers. `--selftest` covers the
+  previous-rally-freeze trap, handoffs, the 0.30/0.70 width-share
+  reproduction, and the ellipse against the analytic value.
+- `vision/coverage_overlay.py` — the verification instrument (built
+  first per this spec): names/boxes/skeletons/court-inset, dimmed
+  low-confidence labels, exclusion banners, `--sample N` + spotcheck
+  template that coverage.py folds back in as the identity error rate.
+- `vision/coverage_ab.py` — the backend agreement guard, mechanical
+  (run before any scale-out; ViTPose wins disagreements); every
+  players/events row records backend provenance off the pose dir's
+  meta.json.
+- `vision/coverage.py --validate-anchor` — the anchor finder's
+  ground-truth check against the 15 Chicago serve pins (rally 3
+  excluded; needs the Gate C pose npzs + a Chicago court fit, i.e. the
+  machine that holds the Chicago VOD). Numbers are an UPPER bound:
+  label windows open 1.5 s pre-serve vs 6-20 s in coverage windows.
+- `bash vision/coverage_pipeline.sh <vod> <match_uuid> <vod_id> ...`
+  runs the whole chain idempotently (test target: the 2026-01-25 PPA
+  Indoor Nationals mixed final, YouTube SQg2mHBPHC0, match c4eb30d0 —
+  Bright/Patriquin vs Black/Alshon, three of the spec's named cuts in
+  one match).
+- FOUND while wiring: PPA referee logs can DESYNC the lineup state
+  machine (c4eb30d0: receiver prediction 65.2% overall, but the misses
+  are two long runs — games 1-2 — with game 3 at 36/37 and only one
+  impossible row, so the LOGGED server/receiver names stay sound; the
+  99.25% figure is MLP-2026-measured). The identity chain is built to
+  survive this: it consumes logged names + geometry only, and the R/L
+  halves check weights itself by the machine's local receiver_ok
+  agreement.
+
+## Yield ceiling — MEASURED 2026-08-19: it is the SOURCE VIDEO
+
+The first real run resolved 63 of 141 rallies and the obvious reading was
+"the instruments are weak". Three candidate fixes were tested against
+that reading. Two are now falsified and the third is redirected; record
+the numbers so no future session re-buys them.
+
+**The false diagnosis.** Cached tracks show a median 16 distinct track
+ids per rally for 4 players and a median track lifetime of 7% of the
+rally — which reads as catastrophic tracker shattering. It is not: the
+MEDIAN track is junk. The four biggest tracks already live 81% of the
+rally, and >=4 real tracks (alive >=1 s) are present in 92% of frames.
+Any per-track average over this population is dominated by fragments.
+Measure the top-4 tracks, never the median.
+
+**A — 30 fps (from 10).** NULL. Top-4 lifetime 81% -> 83%, junk share
+26% -> 25%, "4 alive" unchanged, at 3x the extraction cost. Do not.
+
+**B — appearance-aware association** (`pose_extract` APP_* constants,
+opt-in; `coverage_extract` defaults it on). REAL BUT SMALL: top-4
+lifetime 81% -> 84% at 10 fps, 86% with 30 fps, junk 26% -> 23%.
+Mechanism verified firing, not silently degrading: descriptors return
+18/18 valid dims on real far-court bodies, 1% of comparisons unusable,
+similarity median 0.18 across mixed pairs vs p90 0.98 same-body. Keep
+it; it is nearly free and reduces the repair burden. It is NOT a yield
+fix — on 16 rallies that failed in the baseline, A+B rescued 1
+(extrapolates to 63 -> ~66 of 141).
+
+**The real constraint.** Rallies that fail are the rallies the broadcast
+was not showing. Main-camera fraction over the first 4 s (the serve, and
+so the identity anchor):
+
+    FAILED  rallies (n=50)   mean 0.48   median 0.64   48% below half
+    COVERED rallies (n=91)   mean 0.67   median 0.74   22% below half
+
+Whole-VOD main-camera fraction is 0.49 — half of a condensed broadcast
+is replays, close-ups, crowd and graphics. A serve shown as a close-up
+has no anchor frame to find, and no pose model, frame rate, tracker or
+training set can recover a court that was never on screen. ~45% rally
+yield is close to the STRUCTURAL ceiling for condensed VODs.
+
+Consequences for anyone planning work here:
+  * yield scales with FOOTAGE, not compute — an uncondensed broadcast or
+    a fixed court camera is the only large lever;
+  * GPU/stronger backend remains worth testing for track QUALITY (that
+    is `coverage_ab.py`'s question) but must not be sold as a yield fix;
+  * hand labels buy nothing on this axis: identity naming is already
+    self-labelled from the serve anchors;
+  * autonomy = an auto-accept gate (appearance-vs-geometry agreement,
+    the LORO >= 0.85 bar) routing only below-bar matches to a human, NOT
+    a higher yield per VOD.
+
+## Anchor-free identity — BUILT 2026-08-19 (user's idea), 63 -> 90 rallies
+
+If the broadcast never showed the serve there is no anchor, and the
+geometry chain has nothing to name the players with.  The user's
+proposal: learn each player's appearance FROM THEIR SERVICE POINTS —
+the rallies that DO have anchors, where geometry names them for free —
+then carry that model into the anchor-less ones.  No hand labelling:
+the training labels are the geometry chain's own output.
+`vision/coverage_anchorfree.py`, consumed by `coverage.py --anchor-free`,
+`coverage_dominance.py`, and `coverage_overlay.py`.
+
+What makes it tractable is a structural constraint, not a better model:
+partners stand on the SAME side, so the near/far split already in the
+pose npz partitions tracks into TEAMS, and the per-game team->end map
+turns a 4-way identification into two 2-way ones.
+
+GATE A (pre-registered at 0.90 before the first number): hold out a
+resolved rally, refit on that game's others, name the held-out rally
+from MID-RALLY appearance alone under the side->team constraint, and
+compare to geometry.  Measured: **game 1 96.1%** (5,577 dets),
+**game 2 100.0%** (15,253), **game 3 46.7%** (4,935) — g3 fails exactly
+as its kit change predicts and contributes NOTHING, by construction.
+Result: 27 rallies admitted, coverage 63 -> **90 of 141**.
+
+RESIDUAL ERROR MODE, and it is not caught by the margin gate: two
+game-1 rallies (r16, r39) come back ~50% right, i.e. one team correctly
+named and the other swapped — and they carry LARGE margins (2.46, 2.58).
+Both are rallies where the swap audit itself was a coin flip
+(unanimity 0.50/0.60) on exactly that team.  Confidence margin does not
+predict a whole-team swap; nothing internal can, since a coherent A<->B
+swap is self-consistent.  This is the same non-identifiability the
+project keeps meeting, and it is the price of these rallies.
+
+WHAT THE BIGGER SAMPLE DID TO THE EARLIER CLAIMS (this is the point of
+adding it — the extra data tested them):
+  * width shares HELD.  Largest move 0.018 (Alshon g1 .567 -> .549,
+    Black .433 -> .451, complements); games 2 and 3 moved <= 0.003.
+    The 0.56/0.44 men-vs-women split is robust to a 43% larger sample.
+  * deep-poach ordering FLIPPED and was therefore noise: Alshon 26.2%
+    -> 23.3%, Patriquin 20.0% -> 24.7%.  Do NOT quote "Alshon poaches
+    deeper than Patriquin"; peak share is what held (0.671 vs 0.662).
+  * solo-vs-paired crossings weakened but survived at TEAM level:
+    Alshon 16/0 -> 19/1 solo/paired, Patriquin 9/3 -> 17/4.  The
+    defensible statement is the pair contrast — Bright/Patriquin
+    switch together 8 times to Black/Alshon's 2 — not "all solo".
+
+Serve-phase handling: the serve instant is unknown by construction, so
+the frozen "first SERVE_PHASE_S after the serve" mask cannot be
+evaluated.  Anchor-free rallies exclude the first SERVE_PHASE_S of
+RETAINED frames instead — deliberately conservative (it discards good
+mid-rally play rather than admit serve-stance frames), and no
+serve-phase ellipse is claimed for them.
+
+Every row carries `anchor_free_rallies` and `anchor_free_frac`, so any
+number can be recomputed without them; publication must state which.
+These rallies are additions to the SAMPLE and never evidence about the
+chain — a rally named by appearance has no geometry to disagree with,
+so it must never feed the appearance-vs-geometry swap audit.
+
+## Where identity is actually hard (2026-08-19, reviewer questions)
+
+Two reviewer points, both tested. One was right about the model, the
+other found a forward-looking bug.
+
+**"If we can tell Tyra from Bright we should be able to tell Alshon from
+Patriquin."** Correct, and the model already does. Pairwise
+leave-one-out separability on anchor crops:
+
+    Alshon vs Patriquin  opponents   98.6% / 97.4% / 91.8%  (g1/g2/g3)
+    Bright vs Black      opponents  100.0% / 97.1% / 89.9%
+    Alshon vs Bright     opponents   98.5% / 98.4% / 86.8%
+    Patriquin vs Black   opponents  100.0% / 97.7% / 89.0%
+    Alshon vs Black      PARTNERS    82.0% / 76.0% / 88.2%
+    Bright vs Patriquin  PARTNERS    64.7% / 73.6% / 58.7%
+
+Every CROSS-TEAM pair is 97-100%; the whole problem is PARTNERS, and
+Bright-vs-Patriquin is barely above chance. This is why the side->team
+constraint bought only +1.1pp: it removes calls the model already got
+right and leaves the ones it cannot.
+CAVEAT on those cross-team numbers: near/far is itself 77% predictable
+from the colour descriptor alone, so part of that separability is the
+IMAGING difference (a near body is large and bright, a far one small and
+dim), not the person. Partners are imaged identically — same side, same
+instant, same distance — so their comparison is the honest one.
+
+**HEIGHT DOES NOT RESCUE PARTNERS — do not retry it.** The obvious idea
+(a man and a woman on the same team differ in stature) fails on measured
+data. Depth-corrected h_ft medians: Black 5.34, Patriquin 5.23,
+Bright 5.17, Alshon 5.09 ft — absolute values wrong for pro athletes,
+and the WOMAN measures taller than her male partner in BOTH teams.
+Per-rally, the taller-of-the-two matches the taller-overall 56% and 49%
+of the time, i.e. chance. Bounding-box height measures POSTURE (players
+are crouched and split-stepping), not stature. This is also why
+coverage's mixed gender-height check reads 59/126.
+
+**END SWITCHES ARE NOW FITTED, NOT ASSUMED** (the reviewer's second
+point). Teams change ends mid-game under rules consistent WITHIN a
+league and different BETWEEN them — MLP switches at 6 in every game,
+PPA only in a decider. The team->end map was keyed per GAME, which
+would be wrong for half of every MLP game once this runs on MLP
+footage. `coverage.fit_end_segments` now splits a game into at most two
+segments by fitting the changepoint from the data (side comes from box
+heights, names from geometry, so neither owes anything to the appearance
+model the map constrains), and both `coverage_appearance.stage2` and
+`coverage_anchorfree` key on (game, segment).
+
+On THIS match the fitter correctly finds NO mid-game switch, and Gate A
+is unchanged (96.1% / 100.0% / 46.7%). What looked like a switch in
+game 3 was rally 107 alone disagreeing with the eleven after it — a
+single mis-identified rally, which is also the rally Gate A scores at
+0%. That is why a segment must hold MIN_END_SEG = 3 rallies of evidence
+before it is believed; the selftest plants exactly that outlier and
+asserts it is not promoted to a switch.
+
+### The appearance channel is a TEAM detector, not a player detector
+
+Why partner separation is weak, measured rather than guessed (reviewer
+question 2026-08-19: "colour of clothes seems to be the big difference
+here?" — yes, and that is precisely the problem).
+
+Mean 8-bit Lab of the torso region, games 1-2 (a = b = 128 is neutral):
+
+    Alshon      L 91   a 165   b  77      <- saturated red
+    Black       L 92   a 156   b  83      <- saturated red
+    Bright      L 99   a 130   b 129      <- essentially NEUTRAL
+    Patriquin   L 75   a 134   b 129      <- essentially NEUTRAL
+
+Team A's red survives compression and distance (a ~160, far off
+neutral).  Team B's green top and black top BOTH collapse to a ~132 /
+b ~129 — colorimetrically almost the same garment — so only lightness
+(99 vs 75) separates that pair at all.  Hence the pattern in the
+separability table: the cross-team gap is enormous and the within-team
+gap is tiny.  Doubles partners wear matching kit BY DESIGN, so the
+strongest signal the feature carries is the one that cannot answer the
+question the pipeline actually needs answered.
+
+Consequences, all measured:
+  * Fisher LDA does NOT beat nearest centroid on the partner call
+    (-0.4% Alshon/Black, -1.4% Bright/Patriquin).  The signal is weak,
+    not badly weighted — do not go looking for a better classifier.
+  * What separates partners is INCIDENTAL, not team colour.  Best
+    region for Alshon vs Black is LEGS (78.0%, vs torso 65.4%) — she
+    wears a skirt, he wears shorts.  For Bright vs Patriquin it is
+    torso LIGHTNESS (71.1%).  Both are match-specific accidents.
+  * AGGREGATION is the working ingredient, and it needs INDEPENDENT
+    looks.  Per-crop partner accuracy ~75%; averaged over a track of
+    >=8 mid-rally frames it reaches the 96.1%/100.0% Gate A numbers;
+    but averaging the 4-8 SAME-INSTANT anchor crops of one rally only
+    reaches 80.9%/66.3%, because correlated samples do not average
+    down.  Any future aggregation must pool across TIME, not within a
+    frame.
+
+SCALE-OUT WARNING: MLP teammates wear IDENTICAL numbered uniforms, so
+the within-team colour gap there will be smaller than this match's, not
+larger — while the cross-team gap this feature is good at is already
+free from the geometry side constraint.  Expect partner separation by
+colour to degrade on MLP.  The generalizable channel is JERSEY NUMBER
+OCR (numbers survive matching kit, and the scorebug OCR machinery in
+this repo is the obvious starting point) — specced here, deliberately
+not built, because it is a build and not a tweak.
+
+## RETRACTION: "deep poach" counts crossings, not poaches (2026-08-19)
+
+The user watched the overlays and reported ZERO Tyra Black poaches. The
+measure said she deep-crossed in 13-16% of rallies. The user is right
+and the measure is wrong; recording why, because the geometry looks
+convincing and a future session will otherwise rebuild it.
+
+Measure 2/5's incursion test — both partners on one side of the
+centreline, the nearer one is the "incursor" — cannot distinguish
+    (a) I invaded your half and pushed you to the sideline, from
+    (b) you went wide and I slid across to cover the middle.
+They are the SAME GEOMETRY. Which one happened depends on who moved
+because of the ball, and there is no ball in this stack.
+
+Measured, at each player's deepest crossing, how far from the centreline
+the PARTNER was standing:
+
+    Black      8.9 ft   (86% of her crossings had him beyond 7 ft)
+    Alshon     9.0 ft   (65%)
+    Patriquin  7.9 ft   (62%)
+    Bright     7.0 ft   (33%)
+
+So most "deep poaches" happen while the partner is at the sideline —
+case (b), the player merely held the middle. For Black it is 86%, which
+is exactly why the eyeball saw none.
+
+INITIATION TEST, pre-registered before computing and REPORTED AS
+FAILING: over the 2.0 s ending at the peak, call the player who reaches
+50% of their own lateral displacement first the initiator (a poacher
+initiates; a court-holder reacts). It does not separate them —
+Alshon 27% initiated, Black 33%, Patriquin 53%, Bright 40%, with 7/18
+and 2/11 unclassified for too little movement. Do not resurrect this
+without a genuinely different signal.
+
+The user also identified a second false positive by eye: rally 19 at
+1:05 of the anchor-free overlay is Alshon poaching and Tyra COVERING
+BEHIND him, which scores as a 4.6 ft crossing for HER. Only 3 of her 14
+crossings are of that shape (Alshon crossed first in all 3), so
+cover-behind is a minority of the artifact; partner-went-wide is the
+bulk.
+
+WHAT SURVIVES — space, never intent:
+  * width share (time-average) — the finding-11 observable, no intent
+    claim, robust to the 63 -> 90 sample change;
+  * off-court fraction — Black 6.8% of frames beyond a sideline vs
+    Alshon 3.3%, a direct observation;
+  * occupancy ellipse and Voronoi share — direct.
+WHAT IS RETRACTED: "Alshon deep-poached in 26% of rallies", the
+Alshon-vs-Patriquin poach ordering (already noise), and any framing of
+incursion counts as poaching. Report them as CROSSINGS if at all.
+Intent needs the ball; the ball is closed (see POSTMORTEM).
+
+## Identity ledgers are keyed to a gitignored pose dir (2026-08-20)
+
+Found while wiring the heat map: `coverage.py` crashed with
+`KeyError` inside `carry_names` on a ledger/pose mismatch.
+
+The three identity ledgers — `identity_swaps_*.csv`,
+`identity_track_map_*.csv`, `identity_anchorfree_*.csv` — are committed,
+but they are keyed on `(rally_cum, track)` where `track` is a POSE TRACK
+ID. Track ids are assigned by `coverage_extract.py` and live only inside
+`data/vision/pose_*/`, which is gitignored (correctly — it is derived
+from broadcast video). So the committed ledgers reference identifiers
+that the repo does not contain, and any re-extraction renumbers them.
+Three ways that bites, in increasing order of nastiness:
+
+  1. the named track is absent from the new extraction -> KeyError
+     (loud, which is the good case);
+  2. the named track exists but is a DIFFERENT person -> silently wrong
+     names on real frames, and nothing in the output says so;
+  3. a partial match -> some names right, some wrong, in one rally.
+
+Two guards added, neither of which is a real fix:
+
+  * `carry_names` now skips a name whose track has no detections in the
+    rally (it has no position, so it cannot hand off) instead of
+    crashing;
+  * `run()` refuses a mismatched anchor-free or track-map entry WHOLE
+    and counts it in `stale_ledger`, because applying the subset that
+    happens to resolve is failure mode 3 by construction.
+
+THE REAL FIX, unbuilt: stamp each ledger with a fingerprint of the pose
+extraction it was built against (backend + fps + per-rally detection
+counts is enough to be unique) and have `run()` refuse a ledger whose
+fingerprint does not match the pose dir. Until then, a pose dir and its
+ledgers are a matched set that must travel together.
+
+Operationally this also means the shipped numbers are NOT reproducible
+from the repo alone: they need the exact pose extraction. The one behind
+the current CSVs is `pose_ppa0125c` (rtmpose-balanced, 10 fps, 113
+rallies, ~2 h CPU), which is a scratch directory, not a repo path — it
+does not survive a fresh container. Re-deriving it is mechanical but
+invalidates all three ledgers, so it changes the numbers under review.
+
+## Stacking contaminates the rally-relative anchor (2026-08-20, user)
+
+`coverage_heatmap.py` renders occupancy in a RALLY-RELATIVE frame that
+mirrors each rally so "the half the player lined up in" is always on the
+left. The user asked whether that is a reference at all, or just
+STACKING. It is largely stacking.
+
+Stacking deliberately puts both partners on one side before the serve;
+they cross to their preferred sides right after it. A start-anchor reads
+that scripted unwind as "crossed into the partner's half", and inflates
+the statistic MOST for whichever pair stacks most — precisely the
+comparison the frame exists to support. Rally-phase frames already begin
+SERVE_PHASE_S = 2.0 s after serve contact, which may exclude a fast
+unwind, but that is not guaranteed and anchor-free rallies do not know
+their serve instant at all.
+
+FRAME B-SETTLED anchors on the median x over the WHOLE rally instead.
+`coverage_heatmap.py --stack-report` prints the pre-registered D1-D4:
+
+  player      disagreement   crossing(start)  crossing(settled)  change
+  Alshon         15.1%           22.79%            12.76%        -10.0 pp
+  Patriquin       7.0%           12.97%            10.98%         -2.0 pp
+  Black           4.6%           10.26%             5.15%         -5.1 pp
+  Bright          2.3%            6.74%             2.34%         -4.4 pp
+
+D4 (both partners one side at the start of retained frames):
+Alshon/Black 31.8% of rallies, Bright/Patriquin 18.8% — the OPPOSITE of
+the initial suspicion, and why Alshon's number moves most.
+
+WITHDRAWN: "Alshon crosses into his partner's half 22.8% of frames,
+roughly double everyone else." Under the robust anchor it is 12.8% vs
+Patriquin's 11.0%, a 1.16x edge not 1.76x.
+
+Settled reduces the artifact ~3x but CANNOT remove it — during an unwind
+the player really is past the centreline. Zeroing it means dropping the
+unwind frames, a data-losing choice deliberately not made. DEPTH results
+(median depth, kitchen-band occupancy) do not depend on the mirror and
+are untouched.
+
+## The 90% ellipse overstates court coverage (2026-08-20)
+
+Drawing the pre-registered ellipse showed it is a poor summary of THIS
+distribution. `coverage_heatmap.ellipse_params()` mirrors
+`coverage.ellipse_area` exactly (same one-3-sigma trim, same chi^2,
+selftested to 1e-9), so the drawing IS the shipped number; both it and a
+non-parametric 90% contour now print on every panel.
+
+Nominal coverage is roughly honest — 85.5-92.1% of frames really fall
+inside. Two things are not:
+
+  * 17-35% of the ellipse AREA lies off the physical court, and the bias
+    runs WITH the ranking: Black 35.1%, Alshon 32.7%, Patriquin 18.7%,
+    Bright 16.9%. An "area" that is mostly not court overstates court
+    coverage most for the players it ranks highest.
+  * a court produces a BIMODAL cloud (kitchen cluster, baseline cluster,
+    gap between) and one Gaussian spans the gap. Selftest plants that
+    shape: ellipse over-states 1.87x, while agreeing within 1.5x on a
+    single blob.
+
+Observed 90% areas, rally-relative: Alshon 261 > Black 232 >
+Patriquin 204 > Bright 188 ft^2, vs ellipses 403/295/256/214. The
+ORDERING survives; the Alshon-to-Bright gap shrinks 1.88x -> 1.39x. Use
+the observed contour for any area claim; keep the ellipse only for
+continuity with the frozen metric.
+
+RENDERING TRAPS, all found by looking at the picture and all now
+selftested: the smoother was EDGE-padded and drew uniform bands down
+every panel rim (structure from padding, not the match — zero-pad);
+panels drew upside-down against their own "net at the top" caption; and
+each panel was normalised to ITS OWN p99.5, so with normalisers ranging
+14.3-28.7 the same blue meant twice the dwell time in one panel as the
+next. Small multiples exist to be compared — one shared scale per row.
+
+## Occupancy geometry as an INDEPENDENT identity check (2026-08-20)
+
+The user reported the heat maps look face-valid — "all four players
+looked like what I'd expect in a pickleball match". That is worth
+something, but it is blind to the failure mode that matters, so
+`vision/coverage_idcheck.py` turns it into a measurement.
+
+Swapping two players' labels in a fraction q of rallies makes each
+attributed map the mixture (1-q)*own + q*other, so
+    TV_observed = |1 - 2q| * TV_true
+for total-variation distance between mass-normalised occupancy grids.
+PARTNERS are the confusable pair (the appearance channel is a
+team-colour detector; 308/340 errors are partner confusions), while
+CROSS-TEAM pairs resolve at 97-100% and are effectively clean — so a
+cross-team man/woman pair estimates TV_true and q becomes identifiable.
+
+  partners    Alshon/Black 0.8060   Patriquin/Bright 0.7716
+  clean M/W   Alshon/Bright 0.8197  Patriquin/Black 0.7643 (mean 0.7920)
+  implied q   -0.9%                 +1.3%
+
+NO DETECTABLE PARTNER SWAP, from occupancy geometry alone — independent
+of Gate A and of the appearance classifier that produced the labels.
+Degradation is steep enough to be a real test: a 10% swap already costs
+18% of the observed separation, 20% costs 36%.
+
+THE TWO CHECKS ARE COMPLEMENTARY, which is the useful part:
+  * a PARTIAL swap is invisible to the eye — both panels remain
+    plausible pickleball patterns, and averaging toward the pair mean
+    makes them look MORE typical, not less — but TV sees it;
+  * a TOTAL swap (q = 1) is invisible to TV — the distance returns to
+    TV_true with the names exchanged (selftested) — but a human who
+    knows the players sees it instantly, because the man's panel would
+    show the woman's pattern.
+Neither check subsumes the other. Run both.
+
+POWER WARNING — this is the scale-out story. It works here because
+mixed partners differ by ROLE. Same-gender pairs sit at TV ~0.25
+(Alshon/Patriquin 0.2537, Black/Bright 0.2565) against 0.79 for
+man/woman. In MEN'S or WOMEN'S doubles TV_true collapses to ~0.25, this
+test loses ~3x of its power, and the human eye loses power for the same
+reason at the same time. Both checks weaken together exactly where MLP's
+identical numbered uniforms already make identity hardest — which is an
+argument for jersey NAME OCR, not for trusting either check there.
+
+## Two big men on one MLP team is the worst case — measured (2026-08-20)
+
+User concern: an MLP team with two large men who may be hard to tell
+apart even by eye. Roster check against the full game log: **Dekel Bar
+and Jack Sock have never partnered (0 games)**. Bar's men's partner is
+Tyson McGuffin — 133 games, Palm Beach Royals. Sock plays Orlando
+Squeeze with Federico Staksrud. Both of those ARE hard pairs.
+
+WHY IT IS THE WORST CASE — all three discriminating channels fail at
+once, and they fail together rather than independently:
+  * same team -> matching kit, and the Lab descriptor is a TEAM-COLOUR
+    detector (cross-team 97-100%, partners 59-88%);
+  * same gender -> the occupancy-geometry check collapses from TV 0.79
+    to ~0.25, losing ~3x of its power;
+  * similar build -> height is already useless for partners.
+
+WHAT STILL WORKS, and it is most of the job: the SERVE ANCHOR does not
+use appearance at all. The referee log names the server and `lineup.py`
+resolves all four positions at 99.25% over 45,689 rallies with no camera
+involved. Appearance is needed ONLY for anchor-free rallies — 27 of 90
+on the PPA match — and MLP men's doubles is one match of four.
+
+JERSEY NAMES (not numbers — MLP prints surnames). Legibility measured
+from real box heights on the 1280-wide condensed PPA VOD, 22k detections:
+body height median 128 px at the far end and 210 px near, so a surname
+band at 6-9% of standing height is ~8-12 px far and ~13-19 px near,
+against ~16 px cap-height for reliable OCR and 10-12 px marginal. So on
+THIS source: marginal at the near end, unreadable at the far end. It
+scales linearly with source resolution — 1080p would give ~19-28 px near
+and ~12-17 far.
+
+THE ENCOURAGING PART: OCR does not need to work per FRAME. Identity has
+to be established once per track and is then carried by the tracker, and
+the same aggregation-across-time property that turns ~75%-per-crop into
+96-100%-per-rally applies to weak repeated reads. Intermittent
+legibility at the near end may well be enough. Untested.
+
+UNTESTED CHANNELS worth trying before OCR, cheapest first: a HEAD-region
+colour descriptor (the current one samples torso/legs/arms only, so it
+is blind to hats and hair — McGuffin habitually wears a cap);
+handedness from the pose skeleton (free, but only separates a
+mixed-handed pair); and true standing height in feet via the homography
+(`Det.h_ft` is already computed and unused for identity — pixel height
+failed, but feet-on-the-court-plane height is a different measurement).
+
+FALLBACK, and it is the house rule: if a pair cannot be separated, do
+NOT report per-player numbers for them. Report the TEAM and ledger the
+reason. Drop-don't-guess applies to identity exactly as it applies to
+ambiguous rallies.

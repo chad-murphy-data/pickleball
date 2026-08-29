@@ -28,6 +28,15 @@ data/clutch_pergame.npz
 # vision probe renders (broadcast-derived imagery stays out of the public
 # repo; regenerable from any clip via vision/probe_clip_*.py)
 data/vision/*.png
+data/vision/*.mp4
 # full-skeleton pose streams (vision/pose_extract.py; regenerable from
 # the VOD, ~0.2 MB/rally compressed)
-data/vision/pose/
+data/vision/pose*/
+# scorebug_verify crop caches (broadcast imagery, regenerable)
+data/vision/*.crops.npz
+# scorebug state caches (bug_state_windows.py; regenerable from the VOD)
+data/vision/*.states.npz
+data/vision/*.states2.npz
+data/vision/*.states3.npz
+data/vision/*.crops3.npz
+data/vision/appearance_crops_*.npz

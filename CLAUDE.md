@@ -596,8 +596,16 @@ court occupancy: 90% ellipse ft², width share at the kitchen (= the
 DIRECT observation of finding 11's w = 0.4085 dial that gap_exploit
 could only test through scores), mixed gender split, Alshon, the
 Waters-partner freeze-out geometry. Robust to tracking blips
-(aggregate). Sequenced after the Gate C verdict; depends on it not at
-all.
+(aggregate). **BUILT 2026-08-16** (spec's Build record section has the
+module map; entry point `bash vision/coverage_pipeline.sh <vod>
+<match_uuid> <vod_id>`; verification overlay watches FIRST, metrics
+frozen pre-data). First real-VOD run pending: this remote container
+cannot download YouTube media (egress gateway signs stream URLs to an
+unreachable internal IP — extraction works, bytes 403) — run the
+pipeline wherever a VOD file exists (droplet/laptop). Test target
+picked + prepped: 2026-01-25 PPA Indoor Nationals mixed final
+(YouTube SQg2mHBPHC0, match c4eb30d0, Bright/Patriquin vs Black/
+Alshon; timeline + lineup CSVs committed).
 
 Weather (2026-07-28) — **full session narrative + open threads in
 `model/weather_thread.md`; read that first if picking this back up.**

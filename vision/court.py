@@ -279,6 +279,26 @@ def refine(corners, resp, iters=300, seed=0, leash=0.06):
     return best, bs
 
 
+def refine_multi(c0, resp, leash=0.10, scales=(1.0, 0.94, 0.88, 0.82)):
+    """Refine from a ladder of concentric shrinks of the colour init,
+    keep the best-scoring fit.  PPA Indoor Nationals (2026-01) paints
+    the blue mat larger than the lined court WITH white trim at its
+    edge, so the colour hull can initialise on a concentric impostor
+    ~10-15% too big; the true court out-scores it (measured 0.538 vs
+    0.485 on that VOD) but sits outside a tight leash.  Shrunk starts
+    put one ladder rung near the truth and the score picks the winner;
+    on venues where surface = court (Chicago), the 1.0 rung wins
+    unchanged."""
+    best, bs = None, -1.0
+    cen = c0.mean(axis=0)
+    for s in scales:
+        start = cen + (c0 - cen) * s
+        c, sc = refine(start, resp, leash=leash)
+        if sc > bs:
+            best, bs = c, sc
+    return best, bs
+
+
 def residual_ft(corners, resp, thresh=None):
     """Median distance from projected model lines to real line pixels, FEET.
 
@@ -307,11 +327,28 @@ def residual_ft(corners, resp, thresh=None):
 
 
 # --------------------------------------------------------------------------
-def fit(video, n=40, t0=0.0, t1=None, out=None, overlay=None, size=None):
+def fit(video, n=40, t0=0.0, t1=None, out=None, overlay=None, size=None,
+        leash=0.06):
     w0, h0, fps, dur = probe(video)
     w, h = size or (w0, h0)
     frames = sample_frames(video, n=n, w=w, h=h, t0=t0, t1=t1)
-    bg = np.median(frames, axis=0)
+    # Two-pass background: broadcasts cut to replays/close-ups/graphics,
+    # and enough such frames in the sample skew the median locally —
+    # measured on PPA Indoor Nationals 2026-01, where a 40-frame median
+    # blew two colour-hull corners ~100 px out and the fit locked onto
+    # the mat's white trim.  Median once, keep only the frames that
+    # correlate with it (the static main camera dominates), median again.
+    med0 = np.median(frames, axis=0).mean(axis=2)
+    m0 = med0 - med0.mean()
+    m0n = np.sqrt((m0 * m0).sum()) + 1e-9
+    ncc = np.empty(len(frames))
+    for i, f in enumerate(frames):
+        fz = f.mean(axis=2) - f.mean()
+        ncc[i] = (fz * m0).sum() / ((np.sqrt((fz * fz).sum()) + 1e-9) * m0n)
+    keep = ncc >= min(np.percentile(ncc, 40), 0.9)
+    bg = np.median(frames[keep], axis=0)
+    print(f"  background: kept {keep.sum()}/{len(frames)} main-camera "
+          f"frames (ncc median {np.median(ncc):.3f})")
     mask, seed = surface_mask(bg)
     # Confine the line search to the court itself.  Every real court line is
     # inside the surface hull (the boundary lines sit on its edge, hence the
@@ -322,7 +359,7 @@ def fit(video, n=40, t0=0.0, t1=None, out=None, overlay=None, size=None):
 
     resp = line_response(bg) * ndimage.binary_dilation(mask, iterations=6)
     c0 = init_corners(mask)
-    c1, s1 = refine(c0, resp)
+    c1, s1 = refine_multi(c0, resp, leash=max(leash, 0.10))
     s0 = score(c0, peak_distance(resp)[0], model_points())
     med_ft, within = residual_ft(c1, resp)
     H = homography([(0, 0), (W_FT, 0), (W_FT, L_FT), (0, L_FT)], c1)
@@ -369,10 +406,17 @@ def main():
     ap.add_argument("--t1", type=float)
     ap.add_argument("--width", type=int)
     ap.add_argument("--height", type=int)
+    ap.add_argument("--leash", type=float, default=0.06,
+                    help="max corner travel from the colour init, as a "
+                         "fraction of image diagonal. Raise when the "
+                         "painted surface extends past the lined court "
+                         "(PPA Indoor Nationals paints the blue mat "
+                         "larger than the court) so the colour-hull "
+                         "init sits far from the true corners.")
     a = ap.parse_args()
     size = (a.width, a.height) if a.width and a.height else None
     r = fit(a.video, n=a.frames, t0=a.t0, t1=a.t1, out=a.out,
-            overlay=a.overlay, size=size)
+            overlay=a.overlay, size=size, leash=a.leash)
     print(f"court fit on {Path(a.video).name}  ({r['w']}x{r['h']} @ {r['fps']}fps)")
     print(f"  corners  {[[round(v) for v in c] for c in r['corners_img']]}")
     print(f"  residual {r['residual_ft_median']:.2f} ft median   "
