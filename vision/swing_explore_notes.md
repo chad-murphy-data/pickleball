@@ -2712,3 +2712,242 @@ cannot name all four players alone (three are 2-shot rallies; rally 7
 runs nine shots and Jones never touches it). A first selftest here
 demanded per-rally resolution, failed at 14/19, and looked like an
 alternation failure. It was missing data. Pool, then 2-colour.
+
+## 2026-08-29 — PADDLE TRACKING (idea recovered from user memory)
+
+User recollection: "watching the paddle might be better than watching
+wrists." Grep of vision/ + the gate docs on MAIN found nothing and this
+entry first claimed the idea was never written down.
+
+**CORRECTION, same day (user: "PR #65 has the paddle stuff"):** it IS
+in the record — on PR #65's branch
+(`claude/alshon-black-patriquin-bright-model-0kcsrg`, the
+touch-attribution thread), as `vision/paddle_probe.py`, dated
+2026-08-23. Born from the user watching the touch_attribute review
+viewer catch a missed serve. The probe is exactly the cheap
+pre-detector sanity check sketched below, already built: sample
+labeled contacts across all shot types (dinks included — the pitch is
+that paddle POSITION may beat wrist SPEED where the wrist barely
+moves), crop 130 px around the labeled hitter's already-tracked wrist
+at contact, crop the three NON-hitters at the same instant as a
+same-frame baseline, emit a base64-embedded HTML contact sheet.
+Bounded search around a trusted keypoint — explicitly not a
+re-litigation of whole-frame ball tracking. STATUS: BUILT, NEVER RUN —
+needs the user's machine (video + ffmpeg + pose_rtm npz). Lesson for
+this file: branch-only work is invisible to main greps; anything
+STATUS.md-worthy should land a pointer on main when its PR is opened.
+Status of the idea: INSTRUMENT EXISTS, unmeasured, still not scheduled
+ahead of the labeling program.
+
+What the record already holds that makes it plausible:
+
+- The feature-crudeness hypothesis (2026-08-19, this file ~line 1294):
+  the pose channel may fail on features, not information — "wrist
+  velocity in a window" is the crudest possible swing-reader. The
+  paddle is the actual contact implement, a rigid ~1.4x lever off the
+  wrist, so paddle-tip speed is amplified and paddle direction
+  reversal IS the stroke, where wrist velocity only correlates with it.
+- The 6x6 VLM probe (this file ~line 2258): "kitchen position and
+  paddle attitude are obvious even at 261x178" — the paddle is big
+  (~30-40 px at 720p vs ~7 px for the ball) and survives packings that
+  erase the ball. The ball-findability wall (36% of in-play frames,
+  loupe test) measured the BALL; paddle findability at contact is
+  UNMEASURED and is almost certainly far higher.
+- The pose stack carries 17 COCO keypoints (pose_extract.py) — no
+  hand, no implement. Nothing pretrained points at a paddle; a paddle
+  channel means a small custom detector, which means clicks.
+
+Cheapest honest probe, if ever picked up (pre-register a bar first,
+per house practice): sample frames at ±3 around already-labeled TRAIN
+contacts, user clicks paddle-visible yes/no (+ position when visible)
+— measures paddle findability at exactly the moments that killed every
+other instrument, reusing the existing archive, no new video watching.
+If findability clears where the ball's 64% failed, a detector trained
+on targeted paddle clicks becomes a temporal-model feature candidate.
+
+GATE NOTE, load-bearing: temporal_gate v2's MAY list enumerates the
+feature stack (pose, kitchen, cadence, track candidates); a paddle
+channel is not on it. No temporal code exists yet, so adding one is
+legal — but it is a user decision to record as a dated pre-code
+amendment/supersession note on the gate BEFORE any temporal code is
+written, not something to slide in later.
+
+## 2026-08-29 — PADDLE PROBE RUN (user's Mac, eyeball read of the n=24 contact sheet): SANITY GATE PASSED
+
+User ran PR #65's `paddle_probe.py` (default n=24, unmarked mode) and
+scored the sheet by eye. Reported verdict, verbatim substance:
+
+- Paddles visible in essentially ALL crops, hitters and non-hitters.
+- ALL BUT 2 hitters have the paddle in frame — and both misses are
+  WRONG-WRIST CROPS (the probe centers on the more-confident wrist,
+  which was the non-paddle hand; the paddle got clipped, it was not
+  invisible). The predicted centering limitation, confirmed at ~2/24;
+  fix = crop the box spanning BOTH wrists, unbuilt.
+- Hitters' paddles are MOSTLY BLURRY at the contact instant.
+- The BALL is not visible in the vast majority of contact-instant
+  crops.
+
+READINGS, in order of confidence:
+
+1. **The bounded-search premise holds.** A paddle is findable near an
+   already-tracked wrist ~always on this footage — the opposite of the
+   ball at the same pre-build stage. A small paddle detector is
+   FEASIBLE; whether it is USEFUL is untested and is the next question,
+   not a conclusion.
+2. **Presence is non-discriminative.** All four players hold paddles
+   and all are visible — the channel's signal, if any, is POSITION /
+   ATTITUDE / BLUR, never mere detection.
+3. **Blur cuts both ways.** It degrades precise paddle-tip kinematics
+   at exactly the contact instant (same axis every instrument fails
+   along), BUT blur magnitude is itself a stroke-speed cue. CAUTION,
+   already on the record: motion blur co-predicted the interval
+   histogram's gender split (the "never publish from that stream"
+   entry), and the pace LABEL is rally-state (produced gap), not
+   stroke speed — a drive blurs like a smash, a defensive reach may
+   not blur at all. Blur is a legitimate FEATURE candidate; it is not
+   validation for anything.
+4. **Ball absence at contacts** reconfirms the ball closure's central
+   claim ("misses pile at the contacts") from an independent draw —
+   and means the paddle channel cannot lean on ball-paddle proximity.
+
+IF PURSUED (not scheduled ahead of labeling): pre-register a bar
+BEFORE building the detector — the candidate product question is
+whether paddle position/blur features beat wrist velocity on TRAIN
+pace classification. Process constraints already on record: any TIMING
+claim from a paddle instrument is scored by score_localization.py
+against the shift null like every other instrument; and feeding paddle
+features into the temporal model T needs a user-recorded pre-code
+amendment (temporal_gate.md MAY-list is enumerated).
+
+## 2026-08-29 — USER OBSERVATION ON THE PROBE PANELS: the 4-crop CONTRAST reads the hitter by itself — posture + paddle blur
+
+User, scrolling the sheet (r1@18.81 speed-up panel as the exhibit):
+"Even without the names I can tell you who is doing the hitting —
+three players are mostly standing up straight, doing nothing, and the
+player who is hitting is leaned over weirdly and has a blurry paddle."
+(In that exhibit the ball is ALSO sitting on the hitter's paddle —
+second time in this session's screenshots the ball shows up precisely
+at a contact crop; anecdotal against the "misses pile at contacts"
+expectation, worth counting properly if this goes anywhere.)
+
+WHY THIS IS A DESIGN INSIGHT, not just a nice panel: it recasts the
+hitter call as a RELATIVE judgment over four SAME-INSTANT crops
+(which-of-4, a contrast) rather than an absolute per-crop detection.
+Same lesson as blink-compare vs isolated frames — contrast is the
+cheap robustness. And the task it attacks is the measured weak link:
+
+- pick_hitter (wrist-speed-within-side) is on record (2026-08-20) as
+  "the weakest link in the stack"; the fix proposed there
+  (nearest-player-to-ball) NEEDS THE BALL. Posture+blur contrast does
+  not.
+- The which-partner 50/50 is the ONLY open call in touch share
+  (STATUS.md "Buildable now"); VLM does it at ~89% with cost. A local
+  4-crop classifier would do it free.
+- The labels already manufacture the training set as a side effect:
+  every labeled contact = 1 positive crop + 3 same-instant negatives,
+  cut around tracked wrists (paddle_probe's own extraction). 323
+  contacts ≈ 1.3k crops today, growing ~64/rally labeled. Nothing new
+  to click.
+
+WHAT IT DOES NOT TOUCH: timing. Crops are cut AT a contact time, so
+this is attribution GIVEN t — the surviving-channel shape
+(classification, flat chance baseline), not a resurrection of
+placement. Deployment-time t comes from the decoder's candidates,
+which are imprecise; robustness of the posture cue to ±0.3 s crop
+error is a required arm of any test.
+
+PRE-REGISTERED CAUTION that must be honored if this is ever built: the
+2026-08-19 blind-VLM registration predicted hitter calls 15-25pp WORSE
+on fast contacts (blur + posture ambiguity in kitchen exchanges — in a
+firefight the previous hitter's follow-through and the current
+hitter's swing coexist within 0.4 s, so "the one who's leaned over
+with a blurry paddle" can be TWO players). Any bar must be split
+fast/slow, TRAIN rallies only, frozen before training.
+
+## 2026-08-29 — USER'S "FANCIEST MODEL" SKETCH: per-frame hitter-belief with contacts read off STATE HANDOFFS — and the labeling-economics answer
+
+User's design, paraphrased: a stateful model walks frames; at each
+frame it scores all four players on "looks like they're about to hit"
+(posture, paddle blur, ball/tracer evidence), carries the belief
+forward, and infers a CONTACT when the hitter-belief hands off across
+the net ("player 3 now looks like a hitter and player 1 no longer
+does — did player 1 strike?"). Follow-through persists past impact,
+so the hitter-look is an EPISODE (wind-up → impact → follow-through),
+not an instant.
+
+WHY THIS IS THE RIGHT SHAPE, mapped to the record:
+- It IS the registered temporal-model brief (temporal_gate.md: joint
+  decode of contact times and pace states + non-tempo channels), with
+  a richer emission set — per-player visual state — and the
+  alternation prior as the transition structure. "Or better" was
+  registered; this qualifies.
+- Contacts as STATE TRANSITIONS instead of point events is the escape
+  from the trap that killed placement: every dead instrument hunted a
+  spike at t against a rhythm-proof null; an episode HANDOFF is wide,
+  structured, and side-alternating (exact, 0/229). The event is
+  derived from the boundary between episodes, not detected at a
+  frame.
+- The per-frame observables are the existing assets: pose tracks ARE
+  a per-frame posture record (17 kpts, native fps, already
+  extracted); paddle-blur/attitude crops are feasible per the
+  2026-08-29 probe; ball evidence = the classical tracker's segments
+  (median 0.08 s precision, bursty coverage — usable as an EMISSION,
+  fatal as the sole channel). No VLM in the loop at decode time.
+
+THE LABELING QUESTION — user proposal: code what every player looks
+like FRAME BY FRAME to kill click imprecision and measure exactly when
+"looks like hitter" starts/stops. ECONOMICS SAY NO AT SCALE, YES AS A
+SMALL CALIBRATION SET:
+- Per-frame per-player at 30 fps: a 15 s rally = ~450 frames x 4 =
+  ~1,800 judgments vs ~16 taps today — ~100x the cost. The gate needs
+  71 more train rallies; dense coding would eat the label budget that
+  everything else depends on. Even 2 fps sampling is ~8x.
+- The INFORMATION wanted is much cheaper than the labels proposed:
+  (a) EPISODE BOUNDARIES: 2 extra taps per contact (swing-look start,
+  follow-through end) around the existing impact click ≈ 3x per-rally
+  cost, gives onset/offset/duration distributions directly;
+  (b) a FRAME-EXACT gold subset: on ~5-10 TRAIN rallies, step
+  frame-by-frame and mark the exact impact frame — this measures the
+  user's own tap jitter (the "imprecision of when I clicked") as a
+  distribution, which the model then absorbs as a known label-noise
+  term instead of the labels needing to be perfect;
+  (c) between labeled impacts, the sequence model LEARNS the latent
+  states from pose+crops under weak supervision — dense human states
+  would mostly duplicate what the skeleton already records, and add
+  human signal only where pose fails (blur/occlusion), which the
+  gold subset samples anyway.
+- So: keep the 16-tap habit as the corpus; add the two-boundary
+  episode taps only if they stay painless; spend one sitting on the
+  frame-exact gold subset. Do NOT convert the habit to dense coding.
+
+GATE HYGIENE (unchanged but now load-bearing): new label TYPES
+(episode boundaries, frame-exact impacts) and the visual-state
+emission channel need a dated pre-code amendment note on
+temporal_gate.md BEFORE any temporal-model code exists — legal today,
+locked the moment T is written. The truth definition (attack-onset,
+bars, panel) does not move.
+
+## 2026-08-29 — STATE-AUDIT PILOT COMMISSIONED (user go) + draft gate amendment
+
+User answered the economics with revealed preference ("easy and
+mindless work"), scoped to the gold subset first. Tool built:
+`vision/make_state_audit.py` (selftested; boundaries-not-frames
+coding, B/I/E/X per player episode, rally-level R = routine start and
+D = point dead, both user additions). Protocol addendum in
+labeling_protocol.md same date. Scale-up to a "massive set" is
+DEFERRED until the pilot returns minutes-per-rally and the episode
+stats prove informative — decision by number, not enthusiasm.
+
+DRAFT AMENDMENT for temporal_gate.md (append only on the user's
+explicit freeze, and only while no temporal-model code exists):
+
+  "Amendment (2026-08-29, user-approved): T MAY additionally use, from
+  TRAIN rallies only: (a) hitter-episode state labels
+  (start/impact/end, no-contact flag) and rally-level routine-start /
+  point-dead marks per data/vision/state_labels_chicago0725.csv;
+  (b) frame-exact impact times from the same file, including as a
+  label-noise calibration for the tap-based contact times; (c) visual
+  emission channels computed from the video around tracked-wrist crops
+  (paddle position/attitude/blur features). Truth definitions, bars,
+  panel, burn rules, and the holdout quarantine are unchanged; C and B
+  do not gain these inputs (the ceiling and baseline stay as frozen)."

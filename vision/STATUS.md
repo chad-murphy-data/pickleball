@@ -58,6 +58,20 @@ kitchen-band occupancy. Three findings already withdrawn by its own
 checks (deep poach, crossing rate, ellipse area) — the instrument
 polices itself.
 
+## Measured, not yet a channel
+
+**Paddle visibility near a tracked wrist** (2026-08-29, user eyeball
+of PR #65's `paddle_probe.py` n=24 contact sheet — the pre-build
+sanity check): paddles visible in ~all crops; all but 2 hitters in
+frame and both misses are the probe's own wrong-wrist centering, not
+invisibility; hitters' paddles mostly motion-blurred at contact; ball
+absent from the vast majority of contact-instant crops (independent
+corroboration of the ball closure's "misses pile at contacts").
+Sanity gate PASSED — a bounded paddle detector is feasible; usefulness
+untested. Presence is non-discriminative (everyone holds one): any
+signal is position/attitude/blur. Full reading + process constraints:
+swing_explore_notes.md 2026-08-29.
+
 ## Buildable now, glue unbuilt
 
 **Touch share** — how many balls each player actually hits. Needs no

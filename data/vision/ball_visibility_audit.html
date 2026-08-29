@@ -1,0 +1,119 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>ball visibility — contiguous unbiased test</title>
+<style>
+ body{font:14px system-ui;margin:0;background:#111;color:#ddd}
+ #wrap{max-width:980px;margin:0 auto;padding:12px}
+ video{width:100%;background:#000;border-radius:6px}
+ #drop{border:2px dashed #555;border-radius:8px;padding:24px;text-align:center;
+       cursor:pointer;margin:10px 0}
+ .bar{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:8px 0}
+ #cellinfo{font-size:18px}
+ kbd{background:#333;border-radius:4px;padding:1px 6px;border:1px solid #555}
+ button{background:#2a2a2a;color:#ddd;border:1px solid #555;border-radius:5px;
+        padding:4px 10px;cursor:pointer}
+ #strip{display:grid;grid-template-columns:repeat(30,1fr);gap:2px;margin:8px 0}
+ .w{height:16px;border-radius:2px;background:#333;font-size:8px;text-align:center;
+    cursor:pointer;line-height:16px;color:#999}
+ .w.done{background:#265b26}.w.part{background:#5b5426}.w.cur{outline:2px solid #8cf}
+ .call-V{color:#7c7}.call-I{color:#cc7}.call-N{color:#c77}
+ #note{color:#999;font-size:12px;line-height:1.5}
+</style></head><body><div id="wrap">
+<h3>Contiguous-frame ball findability — 270 cells, unbiased draw</h3>
+<div id="drop">🎬 <b>Load the match video</b> (full_match.mp4.webm) — click or drag it in
+<input type="file" id="fpick" accept="video/*,.webm,.mp4,.mkv" hidden></div>
+<video id="v" controls preload="auto"></video>
+<div class="bar">
+ <span id="cellinfo">—</span>
+ <span style="flex:1"></span>
+ <label>offset s <input type="number" id="voff" step="0.05" value="0"
+   style="width:70px;background:#222;color:#ddd;border:1px solid #555"></label>
+ <button id="bexp">⬇ export CSV</button>
+ <button id="bimp">⬆ import</button>
+ <input type="file" id="csvpick" accept=".csv" hidden>
+</div>
+<div id="strip"></div>
+<div id="note">
+<b>Protocol (from the 2026-08-19 thread):</b> work each window's 9 cells
+<b>in order, 1→9</b> — seeing cell k before judging k+1 IS the treatment
+being measured. Per cell: <kbd>V</kbd> ball visible · <kbd>I</kbd> can't
+see it but you know where it is (occluded / pure smear) · <kbd>N</kbd>
+not visible, position unknown. <kbd>←</kbd>/<kbd>→</kbd> move without
+calling; <kbd>Backspace</kbd> clears the call; a call auto-advances.
+Judge honestly per frame — I is not a failure, it's the occlusion
+decomposition the closure never had. Export at the end of every sitting
+and drop the CSV in the thread. Score with:
+<code>python3 vision/make_ball_visibility_audit.py --score ball_visibility_contiguous_calls.csv</code>
+</div>
+</div><script>
+const CELLS = [{"window": "w01", "rally_cum": 9, "cell": 1, "t_s": 267.086}, {"window": "w01", "rally_cum": 9, "cell": 2, "t_s": 267.236}, {"window": "w01", "rally_cum": 9, "cell": 3, "t_s": 267.386}, {"window": "w01", "rally_cum": 9, "cell": 4, "t_s": 267.536}, {"window": "w01", "rally_cum": 9, "cell": 5, "t_s": 267.686}, {"window": "w01", "rally_cum": 9, "cell": 6, "t_s": 267.836}, {"window": "w01", "rally_cum": 9, "cell": 7, "t_s": 267.986}, {"window": "w01", "rally_cum": 9, "cell": 8, "t_s": 268.136}, {"window": "w01", "rally_cum": 9, "cell": 9, "t_s": 268.286}, {"window": "w02", "rally_cum": 10, "cell": 1, "t_s": 299.887}, {"window": "w02", "rally_cum": 10, "cell": 2, "t_s": 300.037}, {"window": "w02", "rally_cum": 10, "cell": 3, "t_s": 300.187}, {"window": "w02", "rally_cum": 10, "cell": 4, "t_s": 300.337}, {"window": "w02", "rally_cum": 10, "cell": 5, "t_s": 300.487}, {"window": "w02", "rally_cum": 10, "cell": 6, "t_s": 300.637}, {"window": "w02", "rally_cum": 10, "cell": 7, "t_s": 300.787}, {"window": "w02", "rally_cum": 10, "cell": 8, "t_s": 300.937}, {"window": "w02", "rally_cum": 10, "cell": 9, "t_s": 301.087}, {"window": "w03", "rally_cum": 8, "cell": 1, "t_s": 193.156}, {"window": "w03", "rally_cum": 8, "cell": 2, "t_s": 193.306}, {"window": "w03", "rally_cum": 8, "cell": 3, "t_s": 193.456}, {"window": "w03", "rally_cum": 8, "cell": 4, "t_s": 193.606}, {"window": "w03", "rally_cum": 8, "cell": 5, "t_s": 193.756}, {"window": "w03", "rally_cum": 8, "cell": 6, "t_s": 193.906}, {"window": "w03", "rally_cum": 8, "cell": 7, "t_s": 194.056}, {"window": "w03", "rally_cum": 8, "cell": 8, "t_s": 194.206}, {"window": "w03", "rally_cum": 8, "cell": 9, "t_s": 194.356}, {"window": "w04", "rally_cum": 7, "cell": 1, "t_s": 162.371}, {"window": "w04", "rally_cum": 7, "cell": 2, "t_s": 162.521}, {"window": "w04", "rally_cum": 7, "cell": 3, "t_s": 162.671}, {"window": "w04", "rally_cum": 7, "cell": 4, "t_s": 162.821}, {"window": "w04", "rally_cum": 7, "cell": 5, "t_s": 162.971}, {"window": "w04", "rally_cum": 7, "cell": 6, "t_s": 163.121}, {"window": "w04", "rally_cum": 7, "cell": 7, "t_s": 163.271}, {"window": "w04", "rally_cum": 7, "cell": 8, "t_s": 163.421}, {"window": "w04", "rally_cum": 7, "cell": 9, "t_s": 163.571}, {"window": "w05", "rally_cum": 2, "cell": 1, "t_s": 46.785}, {"window": "w05", "rally_cum": 2, "cell": 2, "t_s": 46.935}, {"window": "w05", "rally_cum": 2, "cell": 3, "t_s": 47.085}, {"window": "w05", "rally_cum": 2, "cell": 4, "t_s": 47.235}, {"window": "w05", "rally_cum": 2, "cell": 5, "t_s": 47.385}, {"window": "w05", "rally_cum": 2, "cell": 6, "t_s": 47.535}, {"window": "w05", "rally_cum": 2, "cell": 7, "t_s": 47.685}, {"window": "w05", "rally_cum": 2, "cell": 8, "t_s": 47.835}, {"window": "w05", "rally_cum": 2, "cell": 9, "t_s": 47.985}, {"window": "w06", "rally_cum": 9, "cell": 1, "t_s": 258.802}, {"window": "w06", "rally_cum": 9, "cell": 2, "t_s": 258.952}, {"window": "w06", "rally_cum": 9, "cell": 3, "t_s": 259.102}, {"window": "w06", "rally_cum": 9, "cell": 4, "t_s": 259.252}, {"window": "w06", "rally_cum": 9, "cell": 5, "t_s": 259.402}, {"window": "w06", "rally_cum": 9, "cell": 6, "t_s": 259.552}, {"window": "w06", "rally_cum": 9, "cell": 7, "t_s": 259.702}, {"window": "w06", "rally_cum": 9, "cell": 8, "t_s": 259.852}, {"window": "w06", "rally_cum": 9, "cell": 9, "t_s": 260.002}, {"window": "w07", "rally_cum": 17, "cell": 1, "t_s": 424.63}, {"window": "w07", "rally_cum": 17, "cell": 2, "t_s": 424.78}, {"window": "w07", "rally_cum": 17, "cell": 3, "t_s": 424.93}, {"window": "w07", "rally_cum": 17, "cell": 4, "t_s": 425.08}, {"window": "w07", "rally_cum": 17, "cell": 5, "t_s": 425.23}, {"window": "w07", "rally_cum": 17, "cell": 6, "t_s": 425.38}, {"window": "w07", "rally_cum": 17, "cell": 7, "t_s": 425.53}, {"window": "w07", "rally_cum": 17, "cell": 8, "t_s": 425.68}, {"window": "w07", "rally_cum": 17, "cell": 9, "t_s": 425.83}, {"window": "w08", "rally_cum": 20, "cell": 1, "t_s": 502.141}, {"window": "w08", "rally_cum": 20, "cell": 2, "t_s": 502.291}, {"window": "w08", "rally_cum": 20, "cell": 3, "t_s": 502.441}, {"window": "w08", "rally_cum": 20, "cell": 4, "t_s": 502.591}, {"window": "w08", "rally_cum": 20, "cell": 5, "t_s": 502.741}, {"window": "w08", "rally_cum": 20, "cell": 6, "t_s": 502.891}, {"window": "w08", "rally_cum": 20, "cell": 7, "t_s": 503.041}, {"window": "w08", "rally_cum": 20, "cell": 8, "t_s": 503.191}, {"window": "w08", "rally_cum": 20, "cell": 9, "t_s": 503.341}, {"window": "w09", "rally_cum": 5, "cell": 1, "t_s": 122.193}, {"window": "w09", "rally_cum": 5, "cell": 2, "t_s": 122.343}, {"window": "w09", "rally_cum": 5, "cell": 3, "t_s": 122.493}, {"window": "w09", "rally_cum": 5, "cell": 4, "t_s": 122.643}, {"window": "w09", "rally_cum": 5, "cell": 5, "t_s": 122.793}, {"window": "w09", "rally_cum": 5, "cell": 6, "t_s": 122.943}, {"window": "w09", "rally_cum": 5, "cell": 7, "t_s": 123.093}, {"window": "w09", "rally_cum": 5, "cell": 8, "t_s": 123.243}, {"window": "w09", "rally_cum": 5, "cell": 9, "t_s": 123.393}, {"window": "w10", "rally_cum": 3, "cell": 1, "t_s": 55.551}, {"window": "w10", "rally_cum": 3, "cell": 2, "t_s": 55.701}, {"window": "w10", "rally_cum": 3, "cell": 3, "t_s": 55.851}, {"window": "w10", "rally_cum": 3, "cell": 4, "t_s": 56.001}, {"window": "w10", "rally_cum": 3, "cell": 5, "t_s": 56.151}, {"window": "w10", "rally_cum": 3, "cell": 6, "t_s": 56.301}, {"window": "w10", "rally_cum": 3, "cell": 7, "t_s": 56.451}, {"window": "w10", "rally_cum": 3, "cell": 8, "t_s": 56.601}, {"window": "w10", "rally_cum": 3, "cell": 9, "t_s": 56.751}, {"window": "w11", "rally_cum": 17, "cell": 1, "t_s": 429.177}, {"window": "w11", "rally_cum": 17, "cell": 2, "t_s": 429.327}, {"window": "w11", "rally_cum": 17, "cell": 3, "t_s": 429.477}, {"window": "w11", "rally_cum": 17, "cell": 4, "t_s": 429.627}, {"window": "w11", "rally_cum": 17, "cell": 5, "t_s": 429.777}, {"window": "w11", "rally_cum": 17, "cell": 6, "t_s": 429.927}, {"window": "w11", "rally_cum": 17, "cell": 7, "t_s": 430.077}, {"window": "w11", "rally_cum": 17, "cell": 8, "t_s": 430.227}, {"window": "w11", "rally_cum": 17, "cell": 9, "t_s": 430.377}, {"window": "w12", "rally_cum": 9, "cell": 1, "t_s": 259.442}, {"window": "w12", "rally_cum": 9, "cell": 2, "t_s": 259.592}, {"window": "w12", "rally_cum": 9, "cell": 3, "t_s": 259.742}, {"window": "w12", "rally_cum": 9, "cell": 4, "t_s": 259.892}, {"window": "w12", "rally_cum": 9, "cell": 5, "t_s": 260.042}, {"window": "w12", "rally_cum": 9, "cell": 6, "t_s": 260.192}, {"window": "w12", "rally_cum": 9, "cell": 7, "t_s": 260.342}, {"window": "w12", "rally_cum": 9, "cell": 8, "t_s": 260.492}, {"window": "w12", "rally_cum": 9, "cell": 9, "t_s": 260.642}, {"window": "w13", "rally_cum": 10, "cell": 1, "t_s": 316.028}, {"window": "w13", "rally_cum": 10, "cell": 2, "t_s": 316.178}, {"window": "w13", "rally_cum": 10, "cell": 3, "t_s": 316.328}, {"window": "w13", "rally_cum": 10, "cell": 4, "t_s": 316.478}, {"window": "w13", "rally_cum": 10, "cell": 5, "t_s": 316.628}, {"window": "w13", "rally_cum": 10, "cell": 6, "t_s": 316.778}, {"window": "w13", "rally_cum": 10, "cell": 7, "t_s": 316.928}, {"window": "w13", "rally_cum": 10, "cell": 8, "t_s": 317.078}, {"window": "w13", "rally_cum": 10, "cell": 9, "t_s": 317.228}, {"window": "w14", "rally_cum": 2, "cell": 1, "t_s": 41.715}, {"window": "w14", "rally_cum": 2, "cell": 2, "t_s": 41.865}, {"window": "w14", "rally_cum": 2, "cell": 3, "t_s": 42.015}, {"window": "w14", "rally_cum": 2, "cell": 4, "t_s": 42.165}, {"window": "w14", "rally_cum": 2, "cell": 5, "t_s": 42.315}, {"window": "w14", "rally_cum": 2, "cell": 6, "t_s": 42.465}, {"window": "w14", "rally_cum": 2, "cell": 7, "t_s": 42.615}, {"window": "w14", "rally_cum": 2, "cell": 8, "t_s": 42.765}, {"window": "w14", "rally_cum": 2, "cell": 9, "t_s": 42.915}, {"window": "w15", "rally_cum": 10, "cell": 1, "t_s": 303.606}, {"window": "w15", "rally_cum": 10, "cell": 2, "t_s": 303.756}, {"window": "w15", "rally_cum": 10, "cell": 3, "t_s": 303.906}, {"window": "w15", "rally_cum": 10, "cell": 4, "t_s": 304.056}, {"window": "w15", "rally_cum": 10, "cell": 5, "t_s": 304.206}, {"window": "w15", "rally_cum": 10, "cell": 6, "t_s": 304.356}, {"window": "w15", "rally_cum": 10, "cell": 7, "t_s": 304.506}, {"window": "w15", "rally_cum": 10, "cell": 8, "t_s": 304.656}, {"window": "w15", "rally_cum": 10, "cell": 9, "t_s": 304.806}, {"window": "w16", "rally_cum": 7, "cell": 1, "t_s": 170.568}, {"window": "w16", "rally_cum": 7, "cell": 2, "t_s": 170.718}, {"window": "w16", "rally_cum": 7, "cell": 3, "t_s": 170.868}, {"window": "w16", "rally_cum": 7, "cell": 4, "t_s": 171.018}, {"window": "w16", "rally_cum": 7, "cell": 5, "t_s": 171.168}, {"window": "w16", "rally_cum": 7, "cell": 6, "t_s": 171.318}, {"window": "w16", "rally_cum": 7, "cell": 7, "t_s": 171.468}, {"window": "w16", "rally_cum": 7, "cell": 8, "t_s": 171.618}, {"window": "w16", "rally_cum": 7, "cell": 9, "t_s": 171.768}, {"window": "w17", "rally_cum": 9, "cell": 1, "t_s": 276.624}, {"window": "w17", "rally_cum": 9, "cell": 2, "t_s": 276.774}, {"window": "w17", "rally_cum": 9, "cell": 3, "t_s": 276.924}, {"window": "w17", "rally_cum": 9, "cell": 4, "t_s": 277.074}, {"window": "w17", "rally_cum": 9, "cell": 5, "t_s": 277.224}, {"window": "w17", "rally_cum": 9, "cell": 6, "t_s": 277.374}, {"window": "w17", "rally_cum": 9, "cell": 7, "t_s": 277.524}, {"window": "w17", "rally_cum": 9, "cell": 8, "t_s": 277.674}, {"window": "w17", "rally_cum": 9, "cell": 9, "t_s": 277.824}, {"window": "w18", "rally_cum": 10, "cell": 1, "t_s": 294.059}, {"window": "w18", "rally_cum": 10, "cell": 2, "t_s": 294.209}, {"window": "w18", "rally_cum": 10, "cell": 3, "t_s": 294.359}, {"window": "w18", "rally_cum": 10, "cell": 4, "t_s": 294.509}, {"window": "w18", "rally_cum": 10, "cell": 5, "t_s": 294.659}, {"window": "w18", "rally_cum": 10, "cell": 6, "t_s": 294.809}, {"window": "w18", "rally_cum": 10, "cell": 7, "t_s": 294.959}, {"window": "w18", "rally_cum": 10, "cell": 8, "t_s": 295.109}, {"window": "w18", "rally_cum": 10, "cell": 9, "t_s": 295.259}, {"window": "w19", "rally_cum": 4, "cell": 1, "t_s": 87.38}, {"window": "w19", "rally_cum": 4, "cell": 2, "t_s": 87.53}, {"window": "w19", "rally_cum": 4, "cell": 3, "t_s": 87.68}, {"window": "w19", "rally_cum": 4, "cell": 4, "t_s": 87.83}, {"window": "w19", "rally_cum": 4, "cell": 5, "t_s": 87.98}, {"window": "w19", "rally_cum": 4, "cell": 6, "t_s": 88.13}, {"window": "w19", "rally_cum": 4, "cell": 7, "t_s": 88.28}, {"window": "w19", "rally_cum": 4, "cell": 8, "t_s": 88.43}, {"window": "w19", "rally_cum": 4, "cell": 9, "t_s": 88.58}, {"window": "w20", "rally_cum": 18, "cell": 1, "t_s": 457.767}, {"window": "w20", "rally_cum": 18, "cell": 2, "t_s": 457.917}, {"window": "w20", "rally_cum": 18, "cell": 3, "t_s": 458.067}, {"window": "w20", "rally_cum": 18, "cell": 4, "t_s": 458.217}, {"window": "w20", "rally_cum": 18, "cell": 5, "t_s": 458.367}, {"window": "w20", "rally_cum": 18, "cell": 6, "t_s": 458.517}, {"window": "w20", "rally_cum": 18, "cell": 7, "t_s": 458.667}, {"window": "w20", "rally_cum": 18, "cell": 8, "t_s": 458.817}, {"window": "w20", "rally_cum": 18, "cell": 9, "t_s": 458.967}, {"window": "w21", "rally_cum": 9, "cell": 1, "t_s": 275.857}, {"window": "w21", "rally_cum": 9, "cell": 2, "t_s": 276.007}, {"window": "w21", "rally_cum": 9, "cell": 3, "t_s": 276.157}, {"window": "w21", "rally_cum": 9, "cell": 4, "t_s": 276.307}, {"window": "w21", "rally_cum": 9, "cell": 5, "t_s": 276.457}, {"window": "w21", "rally_cum": 9, "cell": 6, "t_s": 276.607}, {"window": "w21", "rally_cum": 9, "cell": 7, "t_s": 276.757}, {"window": "w21", "rally_cum": 9, "cell": 8, "t_s": 276.907}, {"window": "w21", "rally_cum": 9, "cell": 9, "t_s": 277.057}, {"window": "w22", "rally_cum": 14, "cell": 1, "t_s": 367.727}, {"window": "w22", "rally_cum": 14, "cell": 2, "t_s": 367.877}, {"window": "w22", "rally_cum": 14, "cell": 3, "t_s": 368.027}, {"window": "w22", "rally_cum": 14, "cell": 4, "t_s": 368.177}, {"window": "w22", "rally_cum": 14, "cell": 5, "t_s": 368.327}, {"window": "w22", "rally_cum": 14, "cell": 6, "t_s": 368.477}, {"window": "w22", "rally_cum": 14, "cell": 7, "t_s": 368.627}, {"window": "w22", "rally_cum": 14, "cell": 8, "t_s": 368.777}, {"window": "w22", "rally_cum": 14, "cell": 9, "t_s": 368.927}, {"window": "w23", "rally_cum": 14, "cell": 1, "t_s": 360.607}, {"window": "w23", "rally_cum": 14, "cell": 2, "t_s": 360.757}, {"window": "w23", "rally_cum": 14, "cell": 3, "t_s": 360.907}, {"window": "w23", "rally_cum": 14, "cell": 4, "t_s": 361.057}, {"window": "w23", "rally_cum": 14, "cell": 5, "t_s": 361.207}, {"window": "w23", "rally_cum": 14, "cell": 6, "t_s": 361.357}, {"window": "w23", "rally_cum": 14, "cell": 7, "t_s": 361.507}, {"window": "w23", "rally_cum": 14, "cell": 8, "t_s": 361.657}, {"window": "w23", "rally_cum": 14, "cell": 9, "t_s": 361.807}, {"window": "w24", "rally_cum": 7, "cell": 1, "t_s": 171.507}, {"window": "w24", "rally_cum": 7, "cell": 2, "t_s": 171.657}, {"window": "w24", "rally_cum": 7, "cell": 3, "t_s": 171.807}, {"window": "w24", "rally_cum": 7, "cell": 4, "t_s": 171.957}, {"window": "w24", "rally_cum": 7, "cell": 5, "t_s": 172.107}, {"window": "w24", "rally_cum": 7, "cell": 6, "t_s": 172.257}, {"window": "w24", "rally_cum": 7, "cell": 7, "t_s": 172.407}, {"window": "w24", "rally_cum": 7, "cell": 8, "t_s": 172.557}, {"window": "w24", "rally_cum": 7, "cell": 9, "t_s": 172.707}, {"window": "w25", "rally_cum": 3, "cell": 1, "t_s": 63.843}, {"window": "w25", "rally_cum": 3, "cell": 2, "t_s": 63.993}, {"window": "w25", "rally_cum": 3, "cell": 3, "t_s": 64.143}, {"window": "w25", "rally_cum": 3, "cell": 4, "t_s": 64.293}, {"window": "w25", "rally_cum": 3, "cell": 5, "t_s": 64.443}, {"window": "w25", "rally_cum": 3, "cell": 6, "t_s": 64.593}, {"window": "w25", "rally_cum": 3, "cell": 7, "t_s": 64.743}, {"window": "w25", "rally_cum": 3, "cell": 8, "t_s": 64.893}, {"window": "w25", "rally_cum": 3, "cell": 9, "t_s": 65.043}, {"window": "w26", "rally_cum": 21, "cell": 1, "t_s": 517.237}, {"window": "w26", "rally_cum": 21, "cell": 2, "t_s": 517.387}, {"window": "w26", "rally_cum": 21, "cell": 3, "t_s": 517.537}, {"window": "w26", "rally_cum": 21, "cell": 4, "t_s": 517.687}, {"window": "w26", "rally_cum": 21, "cell": 5, "t_s": 517.837}, {"window": "w26", "rally_cum": 21, "cell": 6, "t_s": 517.987}, {"window": "w26", "rally_cum": 21, "cell": 7, "t_s": 518.137}, {"window": "w26", "rally_cum": 21, "cell": 8, "t_s": 518.287}, {"window": "w26", "rally_cum": 21, "cell": 9, "t_s": 518.437}, {"window": "w27", "rally_cum": 2, "cell": 1, "t_s": 46.396}, {"window": "w27", "rally_cum": 2, "cell": 2, "t_s": 46.546}, {"window": "w27", "rally_cum": 2, "cell": 3, "t_s": 46.696}, {"window": "w27", "rally_cum": 2, "cell": 4, "t_s": 46.846}, {"window": "w27", "rally_cum": 2, "cell": 5, "t_s": 46.996}, {"window": "w27", "rally_cum": 2, "cell": 6, "t_s": 47.146}, {"window": "w27", "rally_cum": 2, "cell": 7, "t_s": 47.296}, {"window": "w27", "rally_cum": 2, "cell": 8, "t_s": 47.446}, {"window": "w27", "rally_cum": 2, "cell": 9, "t_s": 47.596}, {"window": "w28", "rally_cum": 1, "cell": 1, "t_s": 7.517}, {"window": "w28", "rally_cum": 1, "cell": 2, "t_s": 7.667}, {"window": "w28", "rally_cum": 1, "cell": 3, "t_s": 7.817}, {"window": "w28", "rally_cum": 1, "cell": 4, "t_s": 7.967}, {"window": "w28", "rally_cum": 1, "cell": 5, "t_s": 8.117}, {"window": "w28", "rally_cum": 1, "cell": 6, "t_s": 8.267}, {"window": "w28", "rally_cum": 1, "cell": 7, "t_s": 8.417}, {"window": "w28", "rally_cum": 1, "cell": 8, "t_s": 8.567}, {"window": "w28", "rally_cum": 1, "cell": 9, "t_s": 8.717}, {"window": "w29", "rally_cum": 3, "cell": 1, "t_s": 66.862}, {"window": "w29", "rally_cum": 3, "cell": 2, "t_s": 67.012}, {"window": "w29", "rally_cum": 3, "cell": 3, "t_s": 67.162}, {"window": "w29", "rally_cum": 3, "cell": 4, "t_s": 67.312}, {"window": "w29", "rally_cum": 3, "cell": 5, "t_s": 67.462}, {"window": "w29", "rally_cum": 3, "cell": 6, "t_s": 67.612}, {"window": "w29", "rally_cum": 3, "cell": 7, "t_s": 67.762}, {"window": "w29", "rally_cum": 3, "cell": 8, "t_s": 67.912}, {"window": "w29", "rally_cum": 3, "cell": 9, "t_s": 68.062}, {"window": "w30", "rally_cum": 5, "cell": 1, "t_s": 118.639}, {"window": "w30", "rally_cum": 5, "cell": 2, "t_s": 118.789}, {"window": "w30", "rally_cum": 5, "cell": 3, "t_s": 118.939}, {"window": "w30", "rally_cum": 5, "cell": 4, "t_s": 119.089}, {"window": "w30", "rally_cum": 5, "cell": 5, "t_s": 119.239}, {"window": "w30", "rally_cum": 5, "cell": 6, "t_s": 119.389}, {"window": "w30", "rally_cum": 5, "cell": 7, "t_s": 119.539}, {"window": "w30", "rally_cum": 5, "cell": 8, "t_s": 119.689}, {"window": "w30", "rally_cum": 5, "cell": 9, "t_s": 119.839}];
+const LSK = "ballvis_contig_20260819";
+let store = JSON.parse(localStorage.getItem(LSK) || "{}");
+const save = () => localStorage.setItem(LSK, JSON.stringify(store));
+let idx = +(localStorage.getItem(LSK + "_idx") || 0);
+const V = document.getElementById("v"), voff = document.getElementById("voff");
+const key = c => c.window + ":" + c.cell;
+document.getElementById("drop").onclick = () => fpick.click();
+document.getElementById("drop").ondragover = e => e.preventDefault();
+document.getElementById("drop").ondrop = e => {e.preventDefault(); loadf(e.dataTransfer.files[0]);};
+fpick.onchange = () => loadf(fpick.files[0]);
+function loadf(f){ if(f){ V.src = URL.createObjectURL(f); seek(); } }
+function seek(){
+  const c = CELLS[idx];
+  if (V.src) { V.currentTime = c.t_s + (+voff.value || 0); V.pause(); }
+  const cur = store[key(c)] || "·";
+  cellinfo.innerHTML = `<b>${c.window}</b> cell <b>${c.cell}</b>/9 ` +
+    `(rally ${c.rally_cum}, t=${c.t_s.toFixed(2)}s) — call: ` +
+    `<b class="call-${cur}">${cur}</b> · ` +
+    `${Object.keys(store).length}/${CELLS.length} marked`;
+  strip();
+  localStorage.setItem(LSK + "_idx", idx);
+}
+function strip(){
+  const el = document.getElementById("strip"); el.innerHTML = "";
+  const wins = [...new Set(CELLS.map(c => c.window))];
+  wins.forEach(w => {
+    const cs = CELLS.filter(c => c.window === w);
+    const n = cs.filter(c => store[key(c)]).length;
+    const d = document.createElement("div");
+    d.className = "w" + (n === 9 ? " done" : n ? " part" : "") +
+      (CELLS[idx].window === w ? " cur" : "");
+    d.textContent = w.replace("w", ""); d.title = `${w}: ${n}/9`;
+    d.onclick = () => { idx = CELLS.indexOf(cs[0]); seek(); };
+    el.appendChild(d);
+  });
+}
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT") return;
+  const k = e.key.toLowerCase();
+  if (k === "arrowright") { idx = Math.min(idx + 1, CELLS.length - 1); seek(); }
+  else if (k === "arrowleft") { idx = Math.max(idx - 1, 0); seek(); }
+  else if (k === "v" || k === "i" || k === "n") {
+    store[key(CELLS[idx])] = k.toUpperCase(); save();
+    idx = Math.min(idx + 1, CELLS.length - 1); seek();
+  } else if (k === "backspace") {
+    delete store[key(CELLS[idx])]; save(); seek();
+  } else return;
+  e.preventDefault();
+});
+bexp.onclick = () => {
+  let out = "window,cell,t_s,call\n";
+  CELLS.forEach(c => { if (store[key(c)])
+    out += `${c.window},${c.cell},${c.t_s},${store[key(c)]}\n`; });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([out], {type: "text/csv"}));
+  a.download = "ball_visibility_contiguous_calls.csv"; a.click();
+};
+bimp.onclick = () => csvpick.click();
+csvpick.onchange = () => {
+  const r = new FileReader();
+  r.onload = () => {
+    r.result.trim().split("\n").slice(1).forEach(line => {
+      const [w, c, , call] = line.split(",");
+      if (call) store[w + ":" + (+c)] = call.trim().toUpperCase();
+    });
+    save(); seek();
+  };
+  r.readAsText(csvpick.files[0]);
+};
+seek();
+</script></body></html>
