@@ -272,10 +272,13 @@ function svgStep(series, opts) {
     `<line x1="${X(i).toFixed(1)}" y1="${BOT + 2}" x2="${X(i).toFixed(1)}" y2="${BOT + 9}" stroke="var(--muted)" stroke-width="1.5"/>` +
     `<text x="${X(i).toFixed(1)}" y="${H - 2}" font-size="8" fill="var(--muted)" text-anchor="middle">${lab}</text>`).join('');
   // favorite badge pinned to the line's end (computed first so the pole
-  // labels can dodge it)
+  // labels can dodge it); once the result is in, the badge names the
+  // winner instead of a probability — a decided match is a result, not
+  // a forecast, so no more "99%"
   const t = opts.teams || null;
   const lastP = disp[disp.length - 1][1], fav1 = lastP >= 0.5;
-  const favTxt = t ? `${esc(t[fav1 ? 0 : 1]).toUpperCase()} ${PKL.fp(fav1 ? lastP : 1 - lastP)}%` : `${PKL.fp(lastP)}%`;
+  const favTxt = opts.finalText
+    || (t ? `${esc(t[fav1 ? 0 : 1]).toUpperCase()} ${PKL.fp(fav1 ? lastP : 1 - lastP)}%` : `${PKL.fp(lastP)}%`);
   const ex = X(disp[disp.length - 1][0]), ey = Y(lastP);
   const bw = 8 + favTxt.length * 6.6;
   const bx = Math.min(ex + 6, R - bw), by = Math.max(TOP + 2, Math.min(ey - 8, BOT - 18));
@@ -520,15 +523,22 @@ async function fillTrack(mu) {
   }
   track.sampled = sampledAny;
   const anyLive = mu.matches.some(m => m.st === 2);
+  const muFinal = mu.status === 'COMPLETED_MATCHUP_STATUS'
+    ? `✓ ${esc(teams[mu.s1 > mu.s2 ? 0 : 1]).toUpperCase()} WON ${Math.max(mu.s1, mu.s2)}–${Math.min(mu.s1, mu.s2)}`
+    : null;
   let html = `<p class="note lp-tracklab">Matchup win probability, rally by rally — line toward a team = that team winning</p>` +
-    svgStep(track, { h: 175, teams, live: anyLive, bounds });
+    svgStep(track, { h: 175, teams, live: anyLive, bounds, finalText: muFinal });
   // per-game mini charts for games with real rally logs
   const minis = [];
   for (const item of seq) {
     if (!item.s.pts.length || item.s.sampled) continue;
     const label = item.db ? 'DB' : SLOT_LABEL(item.m);
+    const [ga, gb] = item.m.g[0];
+    const gFinal = item.m.st === 4 && item.m.win
+      ? `✓ ${esc(teams[item.m.win - 1]).toUpperCase()} WON ${Math.max(ga, gb)}–${Math.min(ga, gb)}`
+      : null;
     minis.push(`<div class="lp-mini"><span class="note">${label}</span>` +
-      svgStep(item.s, { h: 96, teams, live: item.m.st === 2 }) + '</div>');
+      svgStep(item.s, { h: 96, teams, live: item.m.st === 2, finalText: gFinal }) + '</div>');
   }
   if (minis.length) html += `<details class="lp-minis"><summary class="note">per-game curves (${minis.length})</summary>${minis.join('')}</details>`;
   el.innerHTML = html;
