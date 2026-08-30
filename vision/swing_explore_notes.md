@@ -3168,3 +3168,37 @@ state labels' track_assign rows name every track. Anchor each arc
 endpoint to within reach (~3 ft) of the labeled hitter's (x,y) at the
 impact time, z free in [0.5, 8] — that kills the deep+high branch
 outright. Unbuilt; next iteration of court3d.py.
+
+## 2026-08-30 — PLAYERS PLACED IN THE 3D COURT: player-geometry anchors eliminate every same-side artifact
+
+Built on the user's ask ("Can we try to place the players in that
+space?"): r0001.npz pulled from Drive, ankles -> ground homography
+(feet are ON the floor: exact depth, zero ambiguity) -> committed
+data/vision/player_positions_r1.csv (4 players, 20 fps, median-
+smoothed; extract_player_positions.py, selftested to cm on the plane
+inversion). Identities from the user's track_assign clicks. Face-
+valid instantly: Jones/Tuionetoa hover at y~31 (behind the near
+kitchen line), Nelson/Wei mirror at the far side, Nelson serves from
+10 ft behind the far baseline.
+
+Then the anchors: each arc endpoint hinged to within 3 ft (paddle
+reach) of the labeled hitter's floor position at the impact time, z
+into [0.3, 8.5]. BEFORE -> AFTER:
+- net-crossing spans: 15/24 -> **23/23 drawn segments cross** (CHECK 4,
+  new permanent check). The "double hit on the same side" artifact the
+  user spotted is fully eliminated — the deep+high monocular branch is
+  dead once feet pin the depth.
+- contact heights: [-30, +15] -> **[-1.1, 4.9] ft, median 2.0 ft**
+  (paddle height!), 3 barely-out.
+- degenerates: 3 -> 2 (the rms-10 drop segment and the final
+  fall-and-roll; both honest).
+- serve box PASS unchanged; clearances 2.6-6.0 ft except two LOW at
+  face-plausible spots.
+The viewer now draws all four players as team-colored stick markers
+with names, moving on their pose tracks. Full chain runs from
+committed CSVs alone — no video, no npz needed at render time.
+
+The arc of the evening, for the record: the user's corner-kick
+intuition -> 11 calibration clicks -> ball path -> "cross the net" +
+"player geometry" priors -> a 3D rally where every constraint that
+could be checked against the rules of the sport now passes.
