@@ -3271,3 +3271,31 @@ registered claim):
   the X labels are gold — no threshold separates this; only
   trajectory/context (did the ball actually arrive and leave?) can,
   which is precisely the temporal model's job description.
+
+## 2026-08-30 — user's top-2 question: hypothesis rejected, but the misses exposed the bias, and the fix ties the paid VLM
+
+User asked whether the top-2 wrists at impact are the same side
+(partner-lunge story). NO — 40%. But the miss pattern was the real
+find: 9 of 10 out-rankings were by the same player (Jones), and the
+random-time baselines explain it — the NEAR pair run 2-3x the
+normalized wrist speed of the far pair (3.4-3.8 vs 1.1-1.7
+box-heights/s): a systematic near/far tracking bias (far wrists are
+few pixels; smoothing flattens their motion), NOT a kinetic-player
+fact. Second contaminant: a symmetric ±0.25 s window catches the NEXT
+hitter's wind-up (handoffs start +0.27 s after impact — the state
+labels predicted this collision).
+
+Fixes, measured (rally 1, n=25, exploratory):
+- per-player baseline normalization + asymmetric window (-0.25,+0.10):
+  hitter top-1 60% -> 72%, top-2 84% -> 92-96%.
+- **WHICH-PARTNER given side (side is FREE from exact alternation):
+  hitter beats partner on normalized wrist speed 22/25 = 88%
+  (chance 50%) — one crude feature, no learning, $0. The VLM does
+  this call at ~89% for money (STATUS "touch share ... costs the 3x3
+  rung"). The rung may be free.**
+
+Chain worth noting for method: hypothesis -> rejection -> the
+rejection's residue diagnosed two instrument biases -> both fixes
+measured -> a product-relevant number. All on committed data, no
+video. Next label sittings grow n; a learned combo (episodes as
+training data) has obvious headroom past 88%.
