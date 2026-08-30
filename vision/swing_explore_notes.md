@@ -3014,3 +3014,55 @@ Rally 1, all four passes, scored against the frozen contact labels:
 - Convention suggestion for next rallies: close X episodes with E too,
   so the negative class gets durations (rally 1's nc episodes are
   start-only).
+
+## 2026-08-30 — THE ORACLE TEST PASSED. Human ball positions recover contact times on this footage.
+
+Rally 1 ball pass complete: 683/685 frames answered
+(data/vision/ball_path_r1.csv), scored by the pre-registered
+instrument (make_ball_audit.py, bar frozen before the first click).
+
+**PRIMARY: PASS.** Direction-change events on VISIBLE-only positions:
+recall 23/25 = 92.0% at ±0.15 s vs circular-shift null median 64%,
+95th percentile 76% — observed at the 100th percentile. Bar was
+≥80% AND clear the null; both met with room. Matched-event timing:
+median |Δ| ≈ 0.02–0.05 s (≈1 frame). Per the frozen consequence:
+**human ball positions are a licensed channel on this footage —
+train rallies only, pending the temporal_gate amendment.** The
+DETECTOR question stays closed; this licenses labels, not a tracker.
+
+**The two misses are both mechanisms, not noise:**
+- The SERVE — direction-change is ill-posed at the trajectory's
+  start (no incoming leg). Serves are free from rules/logs anyway.
+- Jones's dink @25.23 — sits inside the longest occlusion run
+  (25.02–25.36 all inferred, behind the near-court player's body:
+  the user's own noted case). The gap rule correctly refused to
+  claim it; the event surfaced +0.26 s late when the ball re-emerged.
+  The closure's central mechanism in miniature — real, and worth ONE
+  impact in 25, not the majority it was feared to be.
+
+**Visibility, dense and selection-free (the numbers the 2026-08-19
+thread wanted):** V 86%, S 6%, I 6%, N 2% ⇒ **ball in the pixels 92%
+of frames** vs the isolated-frame 64% the closure rests on. Isolation
+was load-bearing: finding in frame k+1 after frame k is a lookup.
+- Occlusions (I) DO pile at contacts — median 0.10 s from the nearest
+  impact, 64% within ±0.15 s vs 33% baseline. The closure's mechanism
+  was real; contiguity + trajectory anchoring is what defeats it.
+- Smears (S) are drive/serve creatures, exactly as the user called
+  while labeling: every smear run follows the serve, return, drops or
+  the final falling smash; the 19–22 s kitchen firefight (speed-ups,
+  smashes, counters) produced ~one smear frame — net exchanges are
+  short-travel, low angular blur. Fast-at-net is EASIER to see than
+  a baseline drive, not harder.
+- User-reported confuser inventory (recorded for any future
+  instrument): balls hide behind the near player's torso and paddles;
+  white-on-white kills findability — net tape, shoes, sponsor text.
+  The one long torso occlusion cost the one real miss.
+
+Cost: one rally ≈ 685 frames of clicking in a single sitting, called
+"pretty straightforward" by the labeler. What it buys, beyond the
+verdict: a full 2D ball path anchored to frame-exact contacts — with
+the 0.06 ft homography this is the raw material for 3D lift
+(piecewise-ballistic fits between contacts), i.e. shot depth, net
+clearance, and placement WITHOUT any detector. Scale decision (more
+ball rallies vs more state rallies) is the user's; state rallies
+remain the gate's binding fuel.

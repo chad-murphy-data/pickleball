@@ -21,6 +21,7 @@ mood.
 | team assignment from alternation | 0 contradictions | — | **exact, pooled** |
 | court homography | 0.06 ft median residual | — | **solved** |
 | player identity from referee logs | 99.25% / 45,689 rallies | — | **solved** |
+| HUMAN ball path -> contact times (oracle) | 23/25 = 92% @ ±0.15s | shift-null 95th: 76% | **PASSED, licensed** |
 
 These share one property: **a flat chance baseline, or no tolerance to
 widen.** That is exactly why the 2026-08-20 null work could not touch
@@ -31,7 +32,7 @@ them. It killed placement in TIME; none of these is a timing claim.
 | thing | verdict | why |
 |---|---|---|
 | contact TIMESTAMPS, every instrument | dead | see below |
-| ball detection / tracking | closed | 64% in-play findability, physical |
+| ball detection / tracking (DETECTOR) | closed | 64% was isolated-frame; dense contiguous = 92% in-pixels (2026-08-30), but the detector question stays closed — the oracle licenses HUMAN labels only |
 | poach / intent measures | retracted | needs the ball |
 
 Timestamp placement, all four grid arms measured against a
