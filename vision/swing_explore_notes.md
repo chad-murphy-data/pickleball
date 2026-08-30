@@ -3140,3 +3140,31 @@ Effect, before -> after (rally 1):
   noise; worth eyeballing in the video someday).
 Cost: full pipeline now ~4-5 min on this machine (multi-start pass 1
 + two anchored refit sweeps).
+
+## 2026-08-30 — USER SPOTTED IT IN THE VIEWER: 9/24 spans never cross the net — the residual monocular ambiguity, diagnosed
+
+User: "there were a couple areas where it double hit on the same
+side?" Measured on their regenerated viewer data: 9 of 24 inter-impact
+spans have y-ranges that never cross y=22 (alternation in the LABELS
+is exact, so every one is a reconstruction error). They cluster in the
+firefight (20.60-22.90, four consecutive) and the smash exchange
+(28.93-30.04) — the short fast arcs.
+
+MECHANISM, and it is the textbook one: along a camera ray from
+(9.5, 97.6, 26.1), a contact at the kitchen line at paddle height
+projects identically to a contact DEEPER and HIGHER. On long floaty
+arcs gravity disambiguates; on 0.3-0.5 s volley arcs (10-15 frames,
+several at the net) it cannot, so the solver picked "deep+high" —
+Jones smashing from y=44-47 at z~9.7 ft, physically absurd for a
+kitchen firefight — and the consensus anchors then made consecutive
+arcs CONSISTENTLY wrong together. Ends hug y=22.2-22.9 without
+formally crossing: the same-side look.
+
+THE FIX IS THE USER'S OWN SECOND PRIOR, now with data: PLAYER
+GEOMETRY. Contacts happen at the hitter's paddle; the hitter's feet
+are on the floor, where the homography gives EXACT depth. Pose tracks
+for rally 1 exist (Drive pickleball-gate/pose/r0001.npz) and the
+state labels' track_assign rows name every track. Anchor each arc
+endpoint to within reach (~3 ft) of the labeled hitter's (x,y) at the
+impact time, z free in [0.5, 8] — that kills the deep+high branch
+outright. Unbuilt; next iteration of court3d.py.
