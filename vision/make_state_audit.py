@@ -586,13 +586,22 @@ def main():
                     help="pose_rtm/ dir with r*.npz — embeds per-track "
                          "boxes so the tool can highlight the tracked "
                          "player (omit: tool works, no boxes)")
+    ap.add_argument("--rallies", default=None,
+                    help="comma-separated rally_cum list overriding the "
+                         "pilot (e.g. 6,7,8,9,10 for a track-assign-only "
+                         "sprint). NOTE: r9/r10 STATE labels stay "
+                         "quarantined for training use (contact_gate.md "
+                         "span anomaly); track_assign identity clicks "
+                         "are fine and wanted there.")
     ap.add_argument("--out", default=str(OUT_HTML))
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
         selftest()
         return
-    rallies = build_rallies(a.labels)
+    pilot = ([int(x) for x in a.rallies.split(",")] if a.rallies
+             else PILOT)
+    rallies = build_rallies(a.labels, pilot)
     n_boxed = embed_tracks(rallies, a.pose_dir) if a.pose_dir else 0
     Path(a.out).write_text(HTML.replace("__RALLIES__", json.dumps(rallies)))
     n = sum(len(r["contacts"]) for r in rallies)
