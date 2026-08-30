@@ -167,3 +167,14 @@ complete at ~10x fewer judgments than literal per-frame coding.
   the player, and stacking it here would split attention.
 - Vocabulary freezes after ~2 pilot rallies of practice (same
   convention path as the lunge and pace-tie-break rules).
+
+### Convention, user-set 2026-08-29 (during rally-1 coding): both-went-for-it = X episode
+
+When the tracked player makes an athletic move TOWARD the ball but her
+partner takes it: a hitting episode with **X** (no-contact) — she read
+as a potential hitter, which is exactly the hard-negative class the
+handoff decoder needs. The X/C line is what the movement LOOKS like,
+not intent: toward the ball as if to play it = B…E+X; moving aside to
+vacate space for the partner = C. Consistent with the 2026-08-16
+contact-tool convention (both-went-for-it recorded as the non-hitter's
+whiff) — same event family, now with state boundaries.
