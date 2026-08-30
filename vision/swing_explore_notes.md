@@ -3066,3 +3066,54 @@ the 0.06 ft homography this is the raw material for 3D lift
 clearance, and placement WITHOUT any detector. Scale decision (more
 ball rallies vs more state rallies) is the user's; state rallies
 remain the gate's binding fuel.
+
+## 2026-08-30 — 3D COURT PROTOTYPE (vision/court3d.py): the rally reconstructs, and the free checks mostly pass
+
+User idea ("depth on a 2D screen is unknowable — what would a 3D
+court look like?") built same-day from existing assets only: 11
+clicked landmarks (court_landmarks_chicago0725.csv) -> DLT camera;
+oracle-passed ball path + frame-exact impacts -> piecewise flight
+fits (linear-drag ballistics, zero-centered drag prior, bounce splits
+at grid-refined detector events, multi-start GN; V clicks w=1, S=0.5,
+I excluded).
+
+- **CAMERA: median reprojection 1.0 px** from the user's clicks;
+  recovered center (9.5, 97.6, 26.1) ft — dead-center, 26 ft up,
+  54 ft behind the near baseline. Textbook broadcast position, found
+  from geometry alone.
+- **CHECK 1 (serve, double-bounce rule): PASS** — serve bounce at
+  (17.0, 36.2), inside the correct (near-right) service box; return
+  bounce (5.4, 4.6), deep far court. The rally's mandatory bounce
+  pattern reconstructed without being told the rules.
+- **Bounce placements are face-valid throughout**: the third-shot
+  drop lands AT the far kitchen line (15.2, 15.1); seven dink bounces
+  all fall in/near kitchen depths (y 12-28); the final smash-out's
+  floor bounce lands at the near baseline (9.0, 43.5) — the rally
+  note says "ended on smash out".
+- Net clearances mostly 2.7-6.2 ft; 4 of 18 crossings flag LOW —
+  fast-exchange segments have few frames per arc, and one crossing
+  sits at x=-2 (outside the sideline: either an around-the-post path
+  or sideline noise). Not yet trustworthy per-shot.
+- **Honest weak spot: contact heights.** 9 of 22 implausible — arc
+  ENDS are where monocular depth is worst (selftest: ~1.3 ft median
+  3D error mid-arc even for a clean synthetic; ends worse), and
+  impact-adjacent frames were trimmed. Needs adjacent-segment
+  reconciliation (end of arc k = start of arc k+1 at the paddle)
+  before any contact-height claim.
+- Precision context (selftest, synthetic): camera to 1 ft, bounce
+  location to ~0.3 ft, mid-arc 3D ~1-1.3 ft at this focal/range/1px
+  noise. The service box is 10x15 ft — placement analytics are
+  comfortably inside the budget; inch-level claims are not available
+  from this geometry and never will be.
+- Viewer: `python3 vision/court3d.py --viewer` ->
+  data/vision/court3d_r1.html (self-contained canvas, drag orbits,
+  space plays). Everything runs from CSVs — no video needed.
+
+User's question, answered for the record: the depth information IS
+the converging lines — perspective foreshortening of KNOWN geometry
+(20x44 ft spacing) fixes the camera; the net verticals fix the last
+degrees of freedom; and between contacts GRAVITY supplies the depth a
+static single camera cannot (parallax proper would need camera
+motion). The same ambiguity that makes corner kicks unreadable to a
+human on a flat screen is why "screen-nearest player" misattributes
+hitters — and the 3D lift is the principled fix.

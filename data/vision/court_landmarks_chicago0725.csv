@@ -1,0 +1,12 @@
+name,X_ft,Y_ft,Z_ft,px_x,px_y,t_s
+far_left_corner,0,0,0,406.9,184.8,9.5
+far_right_corner,20,0,0,839.2,182.4,9.5
+near_left_corner,0,44,0,201.7,658.4,9.5
+near_right_corner,20,44,0,1065.1,654.8,9.5
+far_kitchen_left,0,15,0,365.9,281.5,9.5
+far_kitchen_right,20,15,0,882.7,280.3,9.5
+near_kitchen_left,0,29,0,307.9,416.8,9.5
+near_kitchen_right,20,29,0,947.9,411.9,9.5
+left_post_top,-1,22,3,315.2,260.9,9.5
+right_post_top,21,22,3,935.8,257.3,9.5
+net_center_top,10,22,2.833,626.7,264.6,9.5
