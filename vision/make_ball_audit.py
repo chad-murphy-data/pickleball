@@ -44,10 +44,19 @@ for the match-wide draw; this is the one-rally dense version).
 ## The labeling protocol (tool below)
 
 Every frame from 1 s before the serve impact to point-dead, ~30 fps:
-  CLICK on the ball  = VISIBLE position (V)
-  I then click       = INFERRED position (you know where it is —
-                       occluded/smeared — but cannot see it)
+  CLICK on the ball  = VISIBLE position (V) — a clean ball
+  S then click       = SMEAR (a streak/blur that IS the ball; click
+                       the streak's center). Ball in the pixels —
+                       detector-reachable in principle.
+  I then click       = INFERRED (occluded behind a body/paddle; you
+                       know where it must be but it is NOT in the
+                       pixels — detector-unreachable, the seen/
+                       inferred trap class).
   N                  = not visible, position unknown
+AMENDMENT 2026-08-30 (before any label existed): S/I split added at
+the user's suggestion, subdividing the non-clean-visible space; V's
+meaning and the frozen V-only primary bar are untouched. V+S recall
+becomes a pre-declared SECONDARY (reported, never decisive).
   arrows navigate, backspace clears the frame, auto-advance on answer.
 A dotted trail of your recent positions is drawn — contiguity is the
 treatment; the trail is the lookup the isolated-frame test lacked.
@@ -152,13 +161,14 @@ def score_events(events, impacts, span, tol=TOL_S, n_null=N_NULL, seed=1):
 def run_score(path, state_path=STATE):
     impacts, dead = load_impacts(state_path)
     rows = list(csv.DictReader(open(path)))
-    vis = [(float(r["t_s"]), float(r["x"]), float(r["y"]))
-           for r in rows if r["vis"] == "V" and r["x"]]
-    counts = {k: sum(1 for r in rows if r["vis"] == k) for k in "VIN"}
+    def pts(classes):
+        return [(float(r["t_s"]), float(r["x"]), float(r["y"]))
+                for r in rows if r["vis"] in classes and r["x"]]
+    vis = pts("V")
+    counts = {k: sum(1 for r in rows if r["vis"] == k) for k in "VSIN"}
     n = len(rows)
-    print(f"frames answered: {n}  V {counts['V']} ({100*counts['V']/n:.0f}%)"
-          f"  I {counts['I']} ({100*counts['I']/n:.0f}%)"
-          f"  N {counts['N']} ({100*counts['N']/n:.0f}%)")
+    print(f"frames answered: {n}  " + "  ".join(
+        f"{k} {counts[k]} ({100*counts[k]/n:.0f}%)" for k in "VSIN"))
     events = detect_events(vis)
     span = (impacts[0] - PRE_S, dead)
     obs, p95, pct, med = score_events(events, impacts, span)
@@ -166,6 +176,10 @@ def run_score(path, state_path=STATE):
     print(f"recall @ +/-{TOL_S}s: {100*obs:.1f}%  "
           f"(shift-null median {100*med:.1f}%, 95th {100*p95:.1f}%, "
           f"observed at {100*pct:.0f}th pct)")
+    ev2 = detect_events(pts("VS"))
+    obs2, p952, *_ = score_events(ev2, impacts, span, seed=2)
+    print(f"secondary (never decisive) V+S recall: {100*obs2:.1f}% "
+          f"(null 95th {100*p952:.1f}%) — what smear positions add")
     passed = obs >= RECALL_BAR and obs > p95
     print(f"FROZEN BAR (>= {100*RECALL_BAR:.0f}% AND clears null 95th): "
           f"{'PASS' if passed else 'FAIL'}")
@@ -202,7 +216,7 @@ HTML = r"""<!doctype html><html><head><meta charset="utf-8">
 <div id="vbox"><video id="v" preload="auto"></video><canvas id="ov"></canvas></div>
 <div class="bar">
  <span id="status">—</span>
- <span id="imode">INFERRED mode — click where it must be</span>
+ <span id="imode">—</span>
  <span style="flex:1"></span>
  <label>fps <input id="fps" type="number" value="30" step="0.01" style="width:60px"></label>
  <button id="bexp">⬇ export</button>
@@ -211,9 +225,10 @@ HTML = r"""<!doctype html><html><head><meta charset="utf-8">
 </div>
 <div id="prog"><div id="progfill"></div></div>
 <div id="note">
-Per frame: <b>click the ball</b> (visible) · <kbd>I</kbd> then click =
-inferred (occluded/smeared but you know where) · <kbd>N</kbd> = can't
-place it · <kbd>←</kbd>/<kbd>→</kbd> move without answering ·
+Per frame: <b>click the ball</b> (clean, visible) · <kbd>S</kbd> then
+click = smear (a streak that IS the ball — click its center) ·
+<kbd>I</kbd> then click = inferred (behind a body/paddle; click where
+it must be) · <kbd>N</kbd> = can't place it · <kbd>←</kbd>/<kbd>→</kbd> move without answering ·
 <kbd>,</kbd>/<kbd>.</kbd> ±10 frames · <kbd>⌫</kbd> clear this frame.
 Answering auto-advances. The dotted trail is your last second of
 positions — that continuity is the treatment being measured, use it.
@@ -227,7 +242,7 @@ let store = JSON.parse(localStorage.getItem(LSK) || "{}");
 const save = () => localStorage.setItem(LSK, JSON.stringify(store));
 const V = document.getElementById("v"), OV = document.getElementById("ov");
 const fpsEl = document.getElementById("fps");
-let k = +(localStorage.getItem(LSK + "_k") || 0), imode = false;
+let k = +(localStorage.getItem(LSK + "_k") || 0), mode = "V";
 const fps = () => (+fpsEl.value || 30);
 const NF = Math.round((CFG.t1 - CFG.t0) * 30);
 const tOf = j => CFG.t0 + j / fps();
@@ -250,7 +265,11 @@ function render(){
   status.innerHTML = `frame <b>${k + 1}</b>/${NF} (t=${tOf(k).toFixed(2)}s)` +
     ` — this frame: <b>${a ? a.vis : "·"}</b> — answered ${done}/${NF}`;
   progfill.style.width = (100 * done / NF) + "%";
-  imodeEl.style.visibility = imode ? "visible" : "hidden";
+  imodeEl.style.visibility = mode === "V" ? "hidden" : "visible";
+  imodeEl.textContent = mode === "I"
+    ? "INFERRED mode — click where it must be (behind the body)"
+    : "SMEAR mode — click the streak's center";
+  imodeEl.style.color = mode === "I" ? "#cc7" : "#7ac";
   draw();
 }
 const imodeEl = document.getElementById("imode");
@@ -266,8 +285,8 @@ function draw(){
     const r = j === k ? 6 : 2.5;
     c.beginPath();
     c.arc(a.x * sx, a.y * sy, r, 0, 7);
-    c.fillStyle = a.vis === "V" ? (j === k ? "#4caf50" : "#4caf5088")
-                                : (j === k ? "#cc7722" : "#cc772288");
+    c.fillStyle = ({V: "#4caf50", S: "#55aacc", I: "#cc7722"}[a.vis]
+                   || "#888") + (j === k ? "" : "88");
     c.fill();
   }
 }
@@ -279,8 +298,8 @@ OV.onclick = e => {
   if (!V.videoWidth) return;
   const x = e.offsetX * V.videoWidth / OV.width;
   const y = e.offsetY * V.videoHeight / OV.height;
-  store[k] = {vis: imode ? "I" : "V", x: Math.round(x), y: Math.round(y)};
-  imode = false; save(); go(k + 1);
+  store[k] = {vis: mode, x: Math.round(x), y: Math.round(y)};
+  mode = "V"; save(); go(k + 1);
 };
 document.addEventListener("keydown", e => {
   if (e.target.tagName === "INPUT") return;
@@ -289,8 +308,9 @@ document.addEventListener("keydown", e => {
   else if (key === "arrowleft") go(k - 1);
   else if (key === ".") go(k + 10);
   else if (key === ",") go(k - 10);
-  else if (key === "i") { imode = !imode; render(); }
-  else if (key === "n") { store[k] = {vis: "N"}; imode = false; save(); go(k + 1); }
+  else if (key === "i") { mode = mode === "I" ? "V" : "I"; render(); }
+  else if (key === "s") { mode = mode === "S" ? "V" : "S"; render(); }
+  else if (key === "n") { store[k] = {vis: "N"}; mode = "V"; save(); go(k + 1); }
   else if (key === "backspace") { delete store[k]; save(); render(); }
   else return;
   e.preventDefault();
