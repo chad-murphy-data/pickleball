@@ -1,198 +1,313 @@
 <!doctype html><html><head><meta charset="utf-8">
-<title>state audit — hitter episodes (pilot)</title>
+<title>state audit — hitter episodes (pilot v2)</title>
 <style>
  body{font:14px system-ui;margin:0;background:#111;color:#ddd}
- #wrap{max-width:1020px;margin:0 auto;padding:12px}
- video{width:100%;background:#000;border-radius:6px}
- #drop{border:2px dashed #555;border-radius:8px;padding:20px;text-align:center;
+ #wrap{max-width:1040px;margin:0 auto;padding:12px}
+ #vbox{position:relative}
+ video{width:100%;display:block;background:#000;border-radius:6px}
+ #ov{position:absolute;left:0;top:0;pointer-events:auto}
+ #drop{border:2px dashed #555;border-radius:8px;padding:18px;text-align:center;
        cursor:pointer;margin:8px 0}
+ #banner{font-size:17px;margin:8px 0;padding:8px 12px;background:#1d2b1d;
+         border:1px solid #4a7;border-radius:6px}
+ #banner b{color:#8f8}
+ #banner.assign{background:#2b241d;border-color:#a74}
  .bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:6px 0}
  button{background:#2a2a2a;color:#ddd;border:1px solid #555;border-radius:5px;
         padding:4px 10px;cursor:pointer}
- button.sel{background:#365;border-color:#7c7}
  kbd{background:#333;border-radius:4px;padding:1px 6px;border:1px solid #555}
  .lane{position:relative;height:26px;background:#1a1a1a;border-radius:4px;
        margin:3px 0}
- .lane .nm{position:absolute;left:6px;top:4px;font-size:12px;color:#888;
-           pointer-events:none}
- .ep{position:absolute;top:3px;height:20px;background:#2d4d2d;
-     border:1px solid #4a7;border-radius:3px;cursor:pointer}
- .ep.nc{background:#4d3d2d;border-color:#a74}
- .ep.open{border-style:dashed}
- .imp{position:absolute;top:0;width:2px;height:26px;background:#8f8}
+ .lane.dim{opacity:.45;height:14px}
+ .lane .nm{position:absolute;left:6px;top:4px;font-size:12px;color:#999;
+           pointer-events:none;z-index:2}
+ .run{position:absolute;top:3px;height:20px;border-radius:3px;cursor:pointer}
+ .run.hit{background:#2d4d2d;border:1px solid #4a7}
+ .run.hit.nc{background:#4d3d2d;border-color:#a74}
+ .run.hit.open{border-style:dashed}
+ .run.hit.poach{border-color:#c7c;box-shadow:0 0 0 1px #c7c}
+ .run .hl{position:absolute;left:2px;top:3px;font-size:9px;color:#bfb;
+          pointer-events:none}
+ .run.clear{background:#28405c;border:1px solid #58a}
+ .imp{position:absolute;top:0;width:2px;height:26px;background:#8f8;z-index:1}
  .tick{position:absolute;top:20px;width:1px;height:6px;background:#666}
  .tick.f{background:#c66}
- .cursor{position:absolute;top:0;width:1px;height:26px;background:#8cf}
- .rmark{position:absolute;top:0;width:2px;height:26px;background:#d93}
- .dmark{position:absolute;top:0;width:2px;height:26px;background:#d44}
- #note{color:#999;font-size:12px;line-height:1.5;margin-top:8px}
+ .cursor{position:absolute;top:0;width:1px;height:100%;background:#8cf}
+ .rmark{position:absolute;top:0;width:2px;height:100%;background:#d93}
+ .dmark{position:absolute;top:0;width:2px;height:100%;background:#d44}
+ #note{color:#999;font-size:12px;line-height:1.6;margin-top:8px}
  select,input{background:#222;color:#ddd;border:1px solid #555;border-radius:4px}
+ #statebadge{padding:2px 10px;border-radius:10px;background:#333}
+ #statebadge.hit{background:#2d5d2d}#statebadge.clear{background:#28507c}
 </style></head><body><div id="wrap">
-<h3>State audit — hitter episodes (pilot, 10 train rallies)</h3>
 <div id="drop">🎬 <b>Load the match video</b> (full_match.mp4.webm) — click or drag
 <input type="file" id="fpick" accept="video/*,.webm,.mp4,.mkv" hidden></div>
-<video id="v" controls preload="auto"></video>
+<div id="vbox"><video id="v" preload="auto"></video><canvas id="ov"></canvas></div>
+<div id="banner">—</div>
 <div class="bar">
  <label>rally <select id="rsel"></select></label>
- <label>fps <input id="fps" type="number" value="30" step="0.01" style="width:64px"></label>
- <span id="pbtns"></span>
+ <label>pass <select id="psel"></select></label>
+ <label>fps <input id="fps" type="number" value="30" step="0.01" style="width:60px"></label>
+ <span>state: <span id="statebadge">watching</span></span>
  <span style="flex:1"></span>
  <span id="status">—</span>
- <button id="bexp">⬇ export CSV</button>
+ <button id="bnext">N next pass ▸</button>
+ <button id="bexp">⬇ export</button>
  <button id="bimp">⬆ import</button>
  <input type="file" id="csvpick" accept=".csv" hidden>
 </div>
 <div id="lanes"></div>
 <div id="note">
+<b>Per pass, answer "what is she doing?" whenever it changes.</b>
+Default = <b>ball-watching</b> (zero clicks — every state returns
+here). <kbd>C</kbd> clearing for partner (again/<kbd>W</kbd> = back to
+watching) · <kbd>B</kbd> beginning to hit · <kbd>I</kbd> exact impact
+frame · <kbd>F</kbd>/<kbd>H</kbd> forehand/backhand ·
+<kbd>P</kbd> poach (took partner's ball) · <kbd>E</kbd> follow-through
+done · <kbd>X</kbd> no-contact episode (fake / never struck) · <kbd>R</kbd> service routine starts ·
+<kbd>D</kbd> point dead · <kbd>N</kbd> pass done ·
 <kbd>←</kbd>/<kbd>→</kbd> ±1 frame · <kbd>,</kbd>/<kbd>.</kbd> ±10 ·
-<kbd>space</kbd> play/pause · <kbd>1</kbd>–<kbd>4</kbd> pick player ·
-<kbd>B</kbd> episode start · <kbd>I</kbd> impact frame ·
-<kbd>E</kbd> episode end · <kbd>X</kbd> toggle no-contact ·
-<kbd>R</kbd> service routine starts · <kbd>D</kbd> point dead
-(rally-level, orange/red lines) ·
-<kbd>⌫</kbd> delete selected player's nearest mark.
-Gray ticks under each lane = your existing contact taps (red = fast) —
-navigation aid only; find the exact impact frame yourself, don't snap
-to the tick. An episode needs B and E; I inside it if a strike
-happened, X if it never did. Work rallies in order; export every
-sitting as <code>state_labels_chicago0725.csv</code> into data/vision/.
+<kbd>space</kbd> play/pause · <kbd>⌫</kbd> delete this player's
+nearest mark. Gray ticks = your old taps (red = fast): navigate by
+them, <b>never snap to them</b>. If boxes are embedded, click your
+player once when asked (orange banner) — the green box then follows
+her; <kbd>A</kbd> re-assigns. Export every sitting as
+<code>state_labels_chicago0725.csv</code> into data/vision/.
 </div>
 </div><script>
-const RALLIES = [{"rally_cum": 1, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 2.243, "t1": 35.421, "contacts": [{"t": 10.243, "hitter": "Emma Nelson", "type": "serve", "whiff": false}, {"t": 11.35, "hitter": "Allyce Jones", "type": "return", "whiff": false}, {"t": 12.736, "hitter": "Emma Nelson", "type": "drop", "whiff": false}, {"t": 13.937, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 15.105, "hitter": "Ting Chieh Wei", "type": "dink", "whiff": false}, {"t": 15.777, "hitter": "Etta Tuionetoa", "type": "slow", "whiff": false}, {"t": 16.898, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 18.033, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 18.812, "hitter": "Emma Nelson", "type": "speed-up", "whiff": false}, {"t": 19.213, "hitter": "Allyce Jones", "type": "smash", "whiff": false}, {"t": 19.616, "hitter": "Emma Nelson", "type": "counter", "whiff": false}, {"t": 20.573, "hitter": "Allyce Jones", "type": "smash", "whiff": false}, {"t": 21.134, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 21.587, "hitter": "Allyce Jones", "type": "smash", "whiff": false}, {"t": 22.048, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 22.912, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 24.236, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 25.29, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 25.966, "hitter": "Ting Chieh Wei", "type": "slow", "whiff": false}, {"t": 27.142, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 28.478, "hitter": "Ting Chieh Wei", "type": "speed-up", "whiff": false}, {"t": 28.932, "hitter": "Allyce Jones", "type": "counter", "whiff": false}, {"t": 29.369, "hitter": "Ting Chieh Wei", "type": "smash", "whiff": false}, {"t": 30.02, "hitter": "Etta Tuionetoa", "type": "counter", "whiff": false}, {"t": 30.869, "hitter": "Ting Chieh Wei", "type": "smash", "whiff": false}, {"t": 31.421, "hitter": "Etta Tuionetoa", "type": "whiff", "whiff": true}]}, {"rally_cum": 2, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 32.544, "t1": 53.471, "contacts": [{"t": 40.544, "hitter": "Allyce Jones", "type": "serve", "whiff": false}, {"t": 42.07, "hitter": "Emma Nelson", "type": "return", "whiff": false}, {"t": 43.325, "hitter": "Etta Tuionetoa", "type": "drive", "whiff": false}, {"t": 44.034, "hitter": "Emma Nelson", "type": "drive", "whiff": false}, {"t": 44.889, "hitter": "Allyce Jones", "type": "drop", "whiff": false}, {"t": 45.821, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 46.747, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 47.729, "hitter": "Ting Chieh Wei", "type": "speed-up", "whiff": false}, {"t": 48.267, "hitter": "Allyce Jones", "type": "counter", "whiff": false}, {"t": 49.146, "hitter": "Ting Chieh Wei", "type": "smash", "whiff": false}, {"t": 49.471, "hitter": "Etta Tuionetoa", "type": "counter", "whiff": false}]}, {"rally_cum": 3, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 51.427, "t1": 79.81, "contacts": [{"t": 59.427, "hitter": "Etta Tuionetoa", "type": "serve", "whiff": false}, {"t": 60.591, "hitter": "Ting Chieh Wei", "type": "return", "whiff": false}, {"t": 61.872, "hitter": "Etta Tuionetoa", "type": "drive", "whiff": false}, {"t": 62.462, "hitter": "Ting Chieh Wei", "type": "smash", "whiff": false}, {"t": 63.167, "hitter": "Allyce Jones", "type": "counter", "whiff": false}, {"t": 64.14, "hitter": "Emma Nelson", "type": "counter", "whiff": false}, {"t": 65.081, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 65.971, "hitter": "Ting Chieh Wei", "type": "speed-up", "whiff": false}, {"t": 66.597, "hitter": "Allyce Jones", "type": "lob", "whiff": false}, {"t": 68.99, "hitter": "Ting Chieh Wei", "type": "lob", "whiff": false}, {"t": 71.063, "hitter": "Etta Tuionetoa", "type": "smash", "whiff": false}, {"t": 71.869, "hitter": "Ting Chieh Wei", "type": "drive", "whiff": false}, {"t": 72.669, "hitter": "Etta Tuionetoa", "type": "counter", "whiff": false}, {"t": 73.608, "hitter": "Emma Nelson", "type": "counter", "whiff": false}, {"t": 74.586, "hitter": "Etta Tuionetoa", "type": "speed-up", "whiff": false}, {"t": 75.152, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 75.81, "hitter": "Allyce Jones", "type": "smash", "whiff": false}]}, {"rally_cum": 4, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 83.155, "t1": 107.686, "contacts": [{"t": 91.155, "hitter": "Etta Tuionetoa", "type": "serve", "whiff": false}, {"t": 92.318, "hitter": "Emma Nelson", "type": "return", "whiff": false}, {"t": 93.441, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 94.265, "hitter": "Emma Nelson", "type": "speed-up", "whiff": false}, {"t": 94.724, "hitter": "Etta Tuionetoa", "type": "counter", "whiff": false}, {"t": 95.642, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 96.696, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 97.6, "hitter": "Ting Chieh Wei", "type": "dink", "whiff": false}, {"t": 98.294, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 99.158, "hitter": "Emma Nelson", "type": "speed-up", "whiff": false}, {"t": 99.579, "hitter": "Allyce Jones", "type": "counter", "whiff": false}, {"t": 100.627, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 101.005, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 102.213, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 102.866, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 103.686, "hitter": "Ting Chieh Wei", "type": "dink", "whiff": false}]}, {"rally_cum": 5, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 110.779, "t1": 136.464, "contacts": [{"t": 118.779, "hitter": "Etta Tuionetoa", "type": "serve", "whiff": false}, {"t": 119.938, "hitter": "Ting Chieh Wei", "type": "return", "whiff": false}, {"t": 121.298, "hitter": "Etta Tuionetoa", "type": "drive", "whiff": false}, {"t": 121.876, "hitter": "Emma Nelson", "type": "counter", "whiff": false}, {"t": 122.991, "hitter": "Allyce Jones", "type": "lob", "whiff": false}, {"t": 124.391, "hitter": "Emma Nelson", "type": "smash", "whiff": false}, {"t": 125.106, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 126.331, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 127.163, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 128.696, "hitter": "Ting Chieh Wei", "type": "dink", "whiff": false}, {"t": 129.443, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 130.707, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 131.416, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 132.464, "hitter": "Ting Chieh Wei", "type": "dink", "whiff": false}]}, {"rally_cum": 6, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 138.34, "t1": 154.873, "contacts": [{"t": 146.34, "hitter": "Etta Tuionetoa", "type": "serve", "whiff": false}, {"t": 147.476, "hitter": "Emma Nelson", "type": "return", "whiff": false}, {"t": 148.62, "hitter": "Etta Tuionetoa", "type": "slow", "whiff": false}, {"t": 149.559, "hitter": "Emma Nelson", "type": "fast", "whiff": false}, {"t": 150.072, "hitter": "Etta Tuionetoa", "type": "fast", "whiff": false}, {"t": 150.137, "hitter": "Allyce Jones", "type": "whiff", "whiff": true}, {"t": 150.499, "hitter": "Ting Chieh Wei", "type": "fast", "whiff": false}, {"t": 150.873, "hitter": "Allyce Jones", "type": "lunge", "whiff": false}]}, {"rally_cum": 7, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 158.03, "t1": 178.145, "contacts": [{"t": 166.03, "hitter": "Emma Nelson", "type": "serve", "whiff": false}, {"t": 167.047, "hitter": "Etta Tuionetoa", "type": "return", "whiff": false}, {"t": 168.372, "hitter": "Ting Chieh Wei", "type": "slow", "whiff": false}, {"t": 169.205, "hitter": "Etta Tuionetoa", "type": "slow", "whiff": false}, {"t": 170.482, "hitter": "Ting Chieh Wei", "type": "fast", "whiff": false}, {"t": 170.95, "hitter": "Etta Tuionetoa", "type": "fast", "whiff": false}, {"t": 171.706, "hitter": "Emma Nelson", "type": "fast", "whiff": false}, {"t": 172.077, "hitter": "Etta Tuionetoa", "type": "lunge", "whiff": false}, {"t": 173.25, "hitter": "Ting Chieh Wei", "type": "fast", "whiff": false}, {"t": 174.145, "hitter": "Allyce Jones", "type": "whiff", "whiff": true}]}, {"rally_cum": 8, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 182.572, "t1": 201.466, "contacts": [{"t": 190.572, "hitter": "Emma Nelson", "type": "serve", "whiff": false}, {"t": 191.703, "hitter": "Allyce Jones", "type": "return", "whiff": false}, {"t": 193.079, "hitter": "Emma Nelson", "type": "slow", "whiff": false}, {"t": 194.008, "hitter": "Etta Tuionetoa", "type": "fast", "whiff": false}, {"t": 194.637, "hitter": "Ting Chieh Wei", "type": "slow", "whiff": false}, {"t": 195.424, "hitter": "Etta Tuionetoa", "type": "fast", "whiff": false}, {"t": 195.546, "hitter": "Allyce Jones", "type": "whiff", "whiff": true}, {"t": 195.996, "hitter": "Emma Nelson", "type": "fast", "whiff": false}, {"t": 197.466, "hitter": "Etta Tuionetoa", "type": "whiff", "whiff": true}]}, {"rally_cum": 13, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 324.009, "t1": 337.827, "contacts": [{"t": 332.009, "hitter": "Allyce Jones", "type": "serve", "whiff": false}, {"t": 333.827, "hitter": "Emma Nelson", "type": "return", "whiff": false}]}, {"rally_cum": 14, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 350.946, "t1": 375.543, "contacts": [{"t": 358.946, "hitter": "Allyce Jones", "type": "serve", "whiff": false}, {"t": 360.113, "hitter": "Ting Chieh Wei", "type": "return", "whiff": false}, {"t": 361.661, "hitter": "Etta Tuionetoa", "type": "drive", "whiff": false}, {"t": 362.456, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 363.38, "hitter": "Etta Tuionetoa", "type": "drop", "whiff": false}, {"t": 364.441, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 365.644, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 366.836, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 368.113, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 369.292, "hitter": "Ting Chieh Wei", "type": "lob", "whiff": false}, {"t": 371.543, "hitter": "Etta Tuionetoa", "type": "drive", "whiff": false}]}];
-const LSK = "state_audit_chicago0725";
+const RALLIES = [{"rally_cum": 1, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 2.243, "t1": 35.421, "contacts": [{"t": 10.243, "hitter": "Emma Nelson", "type": "serve", "whiff": false}, {"t": 11.35, "hitter": "Allyce Jones", "type": "return", "whiff": false}, {"t": 12.736, "hitter": "Emma Nelson", "type": "drop", "whiff": false}, {"t": 13.937, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 15.105, "hitter": "Ting Chieh Wei", "type": "dink", "whiff": false}, {"t": 15.777, "hitter": "Etta Tuionetoa", "type": "slow", "whiff": false}, {"t": 16.898, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 18.033, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 18.812, "hitter": "Emma Nelson", "type": "speed-up", "whiff": false}, {"t": 19.213, "hitter": "Allyce Jones", "type": "smash", "whiff": false}, {"t": 19.616, "hitter": "Emma Nelson", "type": "counter", "whiff": false}, {"t": 20.573, "hitter": "Allyce Jones", "type": "smash", "whiff": false}, {"t": 21.134, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 21.587, "hitter": "Allyce Jones", "type": "smash", "whiff": false}, {"t": 22.048, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 22.912, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 24.236, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 25.29, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 25.966, "hitter": "Ting Chieh Wei", "type": "slow", "whiff": false}, {"t": 27.142, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 28.478, "hitter": "Ting Chieh Wei", "type": "speed-up", "whiff": false}, {"t": 28.932, "hitter": "Allyce Jones", "type": "counter", "whiff": false}, {"t": 29.369, "hitter": "Ting Chieh Wei", "type": "smash", "whiff": false}, {"t": 30.02, "hitter": "Etta Tuionetoa", "type": "counter", "whiff": false}, {"t": 30.869, "hitter": "Ting Chieh Wei", "type": "smash", "whiff": false}, {"t": 31.421, "hitter": "Etta Tuionetoa", "type": "whiff", "whiff": true}], "tracks": {}}, {"rally_cum": 2, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 32.544, "t1": 53.471, "contacts": [{"t": 40.544, "hitter": "Allyce Jones", "type": "serve", "whiff": false}, {"t": 42.07, "hitter": "Emma Nelson", "type": "return", "whiff": false}, {"t": 43.325, "hitter": "Etta Tuionetoa", "type": "drive", "whiff": false}, {"t": 44.034, "hitter": "Emma Nelson", "type": "drive", "whiff": false}, {"t": 44.889, "hitter": "Allyce Jones", "type": "drop", "whiff": false}, {"t": 45.821, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 46.747, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 47.729, "hitter": "Ting Chieh Wei", "type": "speed-up", "whiff": false}, {"t": 48.267, "hitter": "Allyce Jones", "type": "counter", "whiff": false}, {"t": 49.146, "hitter": "Ting Chieh Wei", "type": "smash", "whiff": false}, {"t": 49.471, "hitter": "Etta Tuionetoa", "type": "counter", "whiff": false}], "tracks": {}}, {"rally_cum": 3, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 51.427, "t1": 79.81, "contacts": [{"t": 59.427, "hitter": "Etta Tuionetoa", "type": "serve", "whiff": false}, {"t": 60.591, "hitter": "Ting Chieh Wei", "type": "return", "whiff": false}, {"t": 61.872, "hitter": "Etta Tuionetoa", "type": "drive", "whiff": false}, {"t": 62.462, "hitter": "Ting Chieh Wei", "type": "smash", "whiff": false}, {"t": 63.167, "hitter": "Allyce Jones", "type": "counter", "whiff": false}, {"t": 64.14, "hitter": "Emma Nelson", "type": "counter", "whiff": false}, {"t": 65.081, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 65.971, "hitter": "Ting Chieh Wei", "type": "speed-up", "whiff": false}, {"t": 66.597, "hitter": "Allyce Jones", "type": "lob", "whiff": false}, {"t": 68.99, "hitter": "Ting Chieh Wei", "type": "lob", "whiff": false}, {"t": 71.063, "hitter": "Etta Tuionetoa", "type": "smash", "whiff": false}, {"t": 71.869, "hitter": "Ting Chieh Wei", "type": "drive", "whiff": false}, {"t": 72.669, "hitter": "Etta Tuionetoa", "type": "counter", "whiff": false}, {"t": 73.608, "hitter": "Emma Nelson", "type": "counter", "whiff": false}, {"t": 74.586, "hitter": "Etta Tuionetoa", "type": "speed-up", "whiff": false}, {"t": 75.152, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 75.81, "hitter": "Allyce Jones", "type": "smash", "whiff": false}], "tracks": {}}, {"rally_cum": 4, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 83.155, "t1": 107.686, "contacts": [{"t": 91.155, "hitter": "Etta Tuionetoa", "type": "serve", "whiff": false}, {"t": 92.318, "hitter": "Emma Nelson", "type": "return", "whiff": false}, {"t": 93.441, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 94.265, "hitter": "Emma Nelson", "type": "speed-up", "whiff": false}, {"t": 94.724, "hitter": "Etta Tuionetoa", "type": "counter", "whiff": false}, {"t": 95.642, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 96.696, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 97.6, "hitter": "Ting Chieh Wei", "type": "dink", "whiff": false}, {"t": 98.294, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 99.158, "hitter": "Emma Nelson", "type": "speed-up", "whiff": false}, {"t": 99.579, "hitter": "Allyce Jones", "type": "counter", "whiff": false}, {"t": 100.627, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 101.005, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 102.213, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 102.866, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 103.686, "hitter": "Ting Chieh Wei", "type": "dink", "whiff": false}], "tracks": {}}, {"rally_cum": 5, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 110.779, "t1": 136.464, "contacts": [{"t": 118.779, "hitter": "Etta Tuionetoa", "type": "serve", "whiff": false}, {"t": 119.938, "hitter": "Ting Chieh Wei", "type": "return", "whiff": false}, {"t": 121.298, "hitter": "Etta Tuionetoa", "type": "drive", "whiff": false}, {"t": 121.876, "hitter": "Emma Nelson", "type": "counter", "whiff": false}, {"t": 122.991, "hitter": "Allyce Jones", "type": "lob", "whiff": false}, {"t": 124.391, "hitter": "Emma Nelson", "type": "smash", "whiff": false}, {"t": 125.106, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 126.331, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 127.163, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 128.696, "hitter": "Ting Chieh Wei", "type": "dink", "whiff": false}, {"t": 129.443, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 130.707, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 131.416, "hitter": "Etta Tuionetoa", "type": "dink", "whiff": false}, {"t": 132.464, "hitter": "Ting Chieh Wei", "type": "dink", "whiff": false}], "tracks": {}}, {"rally_cum": 6, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 138.34, "t1": 154.873, "contacts": [{"t": 146.34, "hitter": "Etta Tuionetoa", "type": "serve", "whiff": false}, {"t": 147.476, "hitter": "Emma Nelson", "type": "return", "whiff": false}, {"t": 148.62, "hitter": "Etta Tuionetoa", "type": "slow", "whiff": false}, {"t": 149.559, "hitter": "Emma Nelson", "type": "fast", "whiff": false}, {"t": 150.072, "hitter": "Etta Tuionetoa", "type": "fast", "whiff": false}, {"t": 150.137, "hitter": "Allyce Jones", "type": "whiff", "whiff": true}, {"t": 150.499, "hitter": "Ting Chieh Wei", "type": "fast", "whiff": false}, {"t": 150.873, "hitter": "Allyce Jones", "type": "lunge", "whiff": false}], "tracks": {}}, {"rally_cum": 7, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 158.03, "t1": 178.145, "contacts": [{"t": 166.03, "hitter": "Emma Nelson", "type": "serve", "whiff": false}, {"t": 167.047, "hitter": "Etta Tuionetoa", "type": "return", "whiff": false}, {"t": 168.372, "hitter": "Ting Chieh Wei", "type": "slow", "whiff": false}, {"t": 169.205, "hitter": "Etta Tuionetoa", "type": "slow", "whiff": false}, {"t": 170.482, "hitter": "Ting Chieh Wei", "type": "fast", "whiff": false}, {"t": 170.95, "hitter": "Etta Tuionetoa", "type": "fast", "whiff": false}, {"t": 171.706, "hitter": "Emma Nelson", "type": "fast", "whiff": false}, {"t": 172.077, "hitter": "Etta Tuionetoa", "type": "lunge", "whiff": false}, {"t": 173.25, "hitter": "Ting Chieh Wei", "type": "fast", "whiff": false}, {"t": 174.145, "hitter": "Allyce Jones", "type": "whiff", "whiff": true}], "tracks": {}}, {"rally_cum": 8, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 182.572, "t1": 201.466, "contacts": [{"t": 190.572, "hitter": "Emma Nelson", "type": "serve", "whiff": false}, {"t": 191.703, "hitter": "Allyce Jones", "type": "return", "whiff": false}, {"t": 193.079, "hitter": "Emma Nelson", "type": "slow", "whiff": false}, {"t": 194.008, "hitter": "Etta Tuionetoa", "type": "fast", "whiff": false}, {"t": 194.637, "hitter": "Ting Chieh Wei", "type": "slow", "whiff": false}, {"t": 195.424, "hitter": "Etta Tuionetoa", "type": "fast", "whiff": false}, {"t": 195.546, "hitter": "Allyce Jones", "type": "whiff", "whiff": true}, {"t": 195.996, "hitter": "Emma Nelson", "type": "fast", "whiff": false}, {"t": 197.466, "hitter": "Etta Tuionetoa", "type": "whiff", "whiff": true}], "tracks": {}}, {"rally_cum": 13, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 324.009, "t1": 337.827, "contacts": [{"t": 332.009, "hitter": "Allyce Jones", "type": "serve", "whiff": false}, {"t": 333.827, "hitter": "Emma Nelson", "type": "return", "whiff": false}], "tracks": {}}, {"rally_cum": 14, "players": ["Allyce Jones", "Emma Nelson", "Etta Tuionetoa", "Ting Chieh Wei"], "t0": 350.946, "t1": 375.543, "contacts": [{"t": 358.946, "hitter": "Allyce Jones", "type": "serve", "whiff": false}, {"t": 360.113, "hitter": "Ting Chieh Wei", "type": "return", "whiff": false}, {"t": 361.661, "hitter": "Etta Tuionetoa", "type": "drive", "whiff": false}, {"t": 362.456, "hitter": "Ting Chieh Wei", "type": "counter", "whiff": false}, {"t": 363.38, "hitter": "Etta Tuionetoa", "type": "drop", "whiff": false}, {"t": 364.441, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 365.644, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 366.836, "hitter": "Emma Nelson", "type": "dink", "whiff": false}, {"t": 368.113, "hitter": "Allyce Jones", "type": "dink", "whiff": false}, {"t": 369.292, "hitter": "Ting Chieh Wei", "type": "lob", "whiff": false}, {"t": 371.543, "hitter": "Etta Tuionetoa", "type": "drive", "whiff": false}], "tracks": {}}];
+const LSK = "state_audit_chicago0725_v2";
 let store = JSON.parse(localStorage.getItem(LSK) || "{}");
-// store: {rally_cum: {player: [{s,i,e,nc}]}}  times in video seconds
+// store[cum] = {players:{name:{hits:[{s,i,e,nc}],clears:[{s,e}],tid}},
+//               _rally:{routine,dead}}
 const save = () => localStorage.setItem(LSK, JSON.stringify(store));
-const V = document.getElementById("v");
-let R = RALLIES[0], selP = 0;
+const V = document.getElementById("v"), OV = document.getElementById("ov");
 const fpsEl = document.getElementById("fps");
 const frame = () => 1 / (+fpsEl.value || 30);
+let R = RALLIES[0], passI = 0, assigning = false;
+
+function D(){ const d = store[R.rally_cum] = store[R.rally_cum] ||
+  {players: {}, _rally: {routine: null, dead: null}};
+  d.players = d.players || {}; d._rally = d._rally || {routine:null,dead:null};
+  return d; }
+function P(name){ const d = D();
+  return d.players[name] = d.players[name] ||
+    {hits: [], clears: [], tid: null}; }
+const curName = () => R.players[passI];
 
 drop.onclick = () => fpick.click();
 drop.ondragover = e => e.preventDefault();
 drop.ondrop = e => {e.preventDefault(); loadf(e.dataTransfer.files[0]);};
 fpick.onchange = () => loadf(fpick.files[0]);
-function loadf(f){ if(f){ V.src = URL.createObjectURL(f); go(R); } }
+function loadf(f){ if(f){ V.src = URL.createObjectURL(f); goPass(0); } }
 
-const rsel = document.getElementById("rsel");
-RALLIES.forEach((r, i) => {
-  const o = document.createElement("option");
-  o.value = i; o.textContent = "rally " + r.rally_cum +
-    " (" + r.contacts.length + " contacts)";
-  rsel.appendChild(o);
-});
-rsel.onchange = () => go(RALLIES[+rsel.value]);
-function go(r){ R = r; if (V.src) V.currentTime = r.t0; render(); }
+const rsel = document.getElementById("rsel"), psel = document.getElementById("psel");
+RALLIES.forEach((r, i) => { const o = document.createElement("option");
+  o.value = i; o.textContent = "rally " + r.rally_cum; rsel.appendChild(o); });
+rsel.onchange = () => { R = RALLIES[+rsel.value]; goPass(0); };
+function fillPsel(){ psel.innerHTML = "";
+  R.players.forEach((p, i) => { const o = document.createElement("option");
+    o.value = i; o.textContent = (i + 1) + ": " + p; psel.appendChild(o); }); }
+psel.onchange = () => goPass(+psel.value);
 
-function eps(p){
-  const d = store[R.rally_cum] = store[R.rally_cum] || {};
-  return d[p] = d[p] || [];
+function goPass(i){
+  passI = i; fillPsel(); psel.value = i;
+  const has = Object.keys(R.tracks || {}).length > 0;
+  assigning = has && P(curName()).tid == null;
+  if (V.src) { V.pause();
+    V.currentTime = assigning ? R.contacts[0].t : R.t0; }
+  render();
 }
-function rmarks(){
-  const d = store[R.rally_cum] = store[R.rally_cum] || {};
-  return d._rally = d._rally || {routine: null, dead: null};
+bnext.onclick = next;
+function next(){
+  if (passI < 3) goPass(passI + 1);
+  else { const ri = RALLIES.indexOf(R);
+    if (ri < RALLIES.length - 1) { R = RALLIES[ri + 1];
+      rsel.value = ri + 1; goPass(0); } }
 }
-function pbtns(){
-  const el = document.getElementById("pbtns"); el.innerHTML = "";
-  R.players.forEach((p, i) => {
-    const b = document.createElement("button");
-    b.textContent = (i + 1) + " " + p.split(" ").pop();
-    b.className = i === selP ? "sel" : "";
-    b.onclick = () => { selP = i; render(); };
-    el.appendChild(b);
-  });
+
+function boxAt(tid, t){
+  const rows = (R.tracks || {})[tid]; if (!rows) return null;
+  let best = null, bd = 0.35;
+  for (const r of rows){ const d = Math.abs(r[0] - t);
+    if (d < bd) { bd = d; best = r; } }
+  return best;
 }
+function drawOverlay(){
+  OV.width = V.clientWidth; OV.height = V.clientHeight;
+  const ctx = OV.getContext("2d");
+  ctx.clearRect(0, 0, OV.width, OV.height);
+  if (!V.videoWidth) return;
+  const sx = OV.width / 1280, sy = OV.height / 720, t = V.currentTime;
+  if (assigning){
+    ctx.font = "13px system-ui";
+    for (const tid of Object.keys(R.tracks || {})){
+      const b = boxAt(+tid, t); if (!b) continue;
+      ctx.strokeStyle = "#d93"; ctx.lineWidth = 2;
+      ctx.strokeRect(b[1] * sx, b[2] * sy, b[3] * sx, b[4] * sy);
+    }
+  } else {
+    const tid = P(curName()).tid;
+    if (tid != null){ const b = boxAt(tid, t);
+      if (b){ ctx.strokeStyle = "#4caf50"; ctx.lineWidth = 3;
+        ctx.strokeRect(b[1] * sx, b[2] * sy, b[3] * sx, b[4] * sy);
+        ctx.fillStyle = "#4caf50"; ctx.font = "bold 13px system-ui";
+        ctx.fillText(curName(), b[1] * sx, Math.max(12, b[2] * sy - 5)); } }
+  }
+}
+OV.onclick = e => {
+  if (assigning){
+    const sx = OV.width / 1280, sy = OV.height / 720, t = V.currentTime;
+    for (const tid of Object.keys(R.tracks || {})){
+      const b = boxAt(+tid, t); if (!b) continue;
+      if (e.offsetX >= b[1] * sx && e.offsetX <= (b[1] + b[3]) * sx &&
+          e.offsetY >= b[2] * sy && e.offsetY <= (b[2] + b[4]) * sy){
+        P(curName()).tid = +tid; assigning = false;
+        if (V.src) V.currentTime = R.t0;
+        save(); render(); return;
+      }
+    }
+  } else { if (V.paused) V.play(); else V.pause(); }
+};
+
+function stateAt(name, t){
+  const p = P(name);
+  for (const h of p.hits)
+    if (h.s != null && t >= h.s && (h.e == null || t <= h.e)) return "hit";
+  for (const c of p.clears)
+    if (c.s != null && t >= c.s && (c.e == null || t <= c.e)) return "clear";
+  return "watching";
+}
+
 function render(){
-  pbtns();
+  const b = document.getElementById("banner");
+  if (assigning){
+    b.className = "assign";
+    b.innerHTML = `Rally ${R.rally_cum} — pass ${passI + 1}/4: ` +
+      `<b>click the box on ${curName()}</b> (orange boxes; paused at the serve)`;
+  } else {
+    b.className = "";
+    b.innerHTML = `Rally ${R.rally_cum} — pass ${passI + 1}/4: tracking ` +
+      `<b>${curName()}</b>. What is she doing?`;
+  }
+  const st = stateAt(curName(), V.currentTime || 0);
+  const sb = document.getElementById("statebadge");
+  sb.textContent = {watching: "ball-watching", clear: "clearing",
+                    hit: "hitting"}[st];
+  sb.className = st === "watching" ? "" : st;
+
   const lanes = document.getElementById("lanes"); lanes.innerHTML = "";
   const span = R.t1 - R.t0, X = t => (100 * (t - R.t0) / span) + "%";
   R.players.forEach((p, i) => {
-    const lane = document.createElement("div"); lane.className = "lane";
+    const lane = document.createElement("div");
+    lane.className = "lane" + (i === passI ? "" : " dim");
     lane.innerHTML = `<span class="nm">${i + 1} ${p}</span>`;
-    eps(p).forEach((ep, j) => {
-      const s = ep.s ?? ep.i ?? ep.e, e = ep.e ?? ep.i ?? ep.s;
-      if (s == null) return;
+    const pd = P(p);
+    pd.clears.forEach(c => { if (c.s == null) return;
+      const d = document.createElement("div"); d.className = "run clear";
+      d.style.left = X(c.s);
+      d.style.width = Math.max(0.4, 100 * ((c.e ?? c.s) - c.s) / span) + "%";
+      d.title = `clearing ${c.s.toFixed(2)}–${c.e ? c.e.toFixed(2) : "…"}`;
+      lane.appendChild(d); });
+    pd.hits.forEach((h, j) => { if (h.s == null && h.i == null) return;
+      const s = h.s ?? h.i, e = h.e ?? h.i ?? h.s;
       const d = document.createElement("div");
-      d.className = "ep" + (ep.nc ? " nc" : "") + (ep.e == null ? " open" : "");
+      d.className = "run hit" + (h.nc ? " nc" : "") +
+        (h.poach ? " poach" : "") + (h.e == null ? " open" : "");
+      if (h.hand) d.innerHTML = `<span class="hl">${h.hand}</span>`;
       d.style.left = X(s);
       d.style.width = Math.max(0.4, 100 * (e - s) / span) + "%";
-      d.title = `ep${j + 1} ${ep.s?.toFixed(2)}–${ep.e?.toFixed(2)}` +
-        (ep.i ? ` impact ${ep.i.toFixed(2)}` : "") + (ep.nc ? " NO-CONTACT" : "");
-      d.onclick = ev => { ev.stopPropagation(); selP = i;
-        V.currentTime = ep.i ?? s; render(); };
-      if (ep.i != null){
-        const m = document.createElement("div"); m.className = "imp";
-        m.style.left = X(ep.i); lane.appendChild(m);
-      }
-      lane.appendChild(d);
-    });
+      d.title = `hit ep${j + 1} ${h.s?.toFixed(2)}–${h.e?.toFixed(2)}` +
+        (h.i ? ` impact ${h.i.toFixed(2)}` : "") + (h.nc ? " NO-CONTACT" : "") +
+        (h.hand ? " " + h.hand.toUpperCase() : "") + (h.poach ? " POACH" : "");
+      d.onclick = ev => { ev.stopPropagation();
+        V.currentTime = h.i ?? s; };
+      if (h.i != null){ const m = document.createElement("div");
+        m.className = "imp"; m.style.left = X(h.i); lane.appendChild(m); }
+      lane.appendChild(d); });
     R.contacts.filter(c => c.hitter === p).forEach(c => {
       const t = document.createElement("div");
       t.className = "tick" + (["smash","speed-up","drive","counter","fast"]
         .includes(c.type) ? " f" : "");
       t.style.left = X(c.t); t.title = c.type + " @" + c.t;
-      lane.appendChild(t);
-    });
-    const rm = rmarks();
-    if (rm.routine != null){
-      const m = document.createElement("div"); m.className = "rmark";
-      m.style.left = X(rm.routine); m.title = "routine " + rm.routine.toFixed(2);
-      lane.appendChild(m);
-    }
-    if (rm.dead != null){
-      const m = document.createElement("div"); m.className = "dmark";
-      m.style.left = X(rm.dead); m.title = "dead " + rm.dead.toFixed(2);
-      lane.appendChild(m);
-    }
+      lane.appendChild(t); });
+    const rm = D()._rally;
+    if (rm.routine != null){ const m = document.createElement("div");
+      m.className = "rmark"; m.style.left = X(rm.routine); lane.appendChild(m); }
+    if (rm.dead != null){ const m = document.createElement("div");
+      m.className = "dmark"; m.style.left = X(rm.dead); lane.appendChild(m); }
     const cu = document.createElement("div"); cu.className = "cursor";
     cu.style.left = X(Math.min(Math.max(V.currentTime || R.t0, R.t0), R.t1));
     lane.appendChild(cu);
-    lane.onclick = ev => {
-      const r = lane.getBoundingClientRect();
-      V.currentTime = R.t0 + span * (ev.clientX - r.left) / r.width;
-      selP = i; render();
-    };
+    lane.onclick = ev => { const r = lane.getBoundingClientRect();
+      V.currentTime = R.t0 + span * (ev.clientX - r.left) / r.width; };
     lanes.appendChild(lane);
   });
-  const done = RALLIES.filter(r => {
-    const d = store[r.rally_cum] || {};
-    return Object.values(d).some(l => l.length);
-  }).length;
-  status.textContent = `player: ${R.players[selP]} · t=` +
-    `${(V.currentTime || 0).toFixed(2)}s · rallies touched ${done}/${RALLIES.length}`;
+  const marked = RALLIES.filter(r => { const d = store[r.rally_cum];
+    return d && Object.values(d.players || {}).some(
+      p => p.hits.length || p.clears.length); }).length;
+  status.textContent = `t=${(V.currentTime || 0).toFixed(2)}s · ` +
+    `rallies touched ${marked}/${RALLIES.length}`;
+  drawOverlay();
 }
 V.ontimeupdate = render;
+new ResizeObserver(drawOverlay).observe(V);
 
 document.addEventListener("keydown", e => {
   if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
-  const k = e.key.toLowerCase(), p = R.players[selP], t = V.currentTime;
-  const L = eps(p), open = L.length && L[L.length - 1].e == null
-    ? L[L.length - 1] : null;
+  const k = e.key.toLowerCase(), t = V.currentTime, p = P(curName());
+  const openHit = p.hits.length && p.hits[p.hits.length - 1].e == null
+    ? p.hits[p.hits.length - 1] : null;
+  const openClear = p.clears.length && p.clears[p.clears.length - 1].e == null
+    ? p.clears[p.clears.length - 1] : null;
   if (k === "arrowright") V.currentTime = t + frame();
   else if (k === "arrowleft") V.currentTime = Math.max(0, t - frame());
   else if (k === ".") V.currentTime = t + 10 * frame();
   else if (k === ",") V.currentTime = Math.max(0, t - 10 * frame());
-  else if (k === " ") { if (V.paused) { V.playbackRate = 1; V.play(); } else V.pause(); }
-  else if (["1","2","3","4"].includes(k)) selP = +k - 1;
-  else if (k === "b") L.push({s: +t.toFixed(3), i: null, e: null, nc: false});
-  else if (k === "i" && open) open.i = +t.toFixed(3);
-  else if (k === "e" && open) open.e = +t.toFixed(3);
-  else if (k === "x" && L.length) L[L.length - 1].nc = !L[L.length - 1].nc;
-  else if (k === "r") { const m = rmarks();
+  else if (k === " ") { if (V.paused) V.play(); else V.pause(); }
+  else if (k === "c") {
+    if (openClear) openClear.e = +t.toFixed(3);
+    else p.clears.push({s: +t.toFixed(3), e: null});
+  }
+  else if (k === "w") { if (openClear) openClear.e = +t.toFixed(3); }
+  else if (k === "b") {
+    if (openClear) openClear.e = +t.toFixed(3);
+    p.hits.push({s: +t.toFixed(3), i: null, e: null, nc: false,
+                 hand: null, poach: false});
+  }
+  else if (k === "i" && openHit) openHit.i = +t.toFixed(3);
+  else if (k === "e" && openHit) openHit.e = +t.toFixed(3);
+  else if (k === "x" && p.hits.length)
+    p.hits[p.hits.length - 1].nc = !p.hits[p.hits.length - 1].nc;
+  else if (k === "f" && p.hits.length)
+    p.hits[p.hits.length - 1].hand =
+      p.hits[p.hits.length - 1].hand === "fh" ? null : "fh";
+  else if (k === "h" && p.hits.length)
+    p.hits[p.hits.length - 1].hand =
+      p.hits[p.hits.length - 1].hand === "bh" ? null : "bh";
+  else if (k === "p" && p.hits.length)
+    p.hits[p.hits.length - 1].poach = !p.hits[p.hits.length - 1].poach;
+  else if (k === "r") { const m = D()._rally;
     m.routine = m.routine == null ? +t.toFixed(3) : null; }
-  else if (k === "d") { const m = rmarks();
+  else if (k === "d") { const m = D()._rally;
     m.dead = m.dead == null ? +t.toFixed(3) : null; }
+  else if (k === "n") { next(); e.preventDefault(); return; }
+  else if (k === "a") { if (Object.keys(R.tracks || {}).length){
+    p.tid = null; assigning = true;
+    V.currentTime = R.contacts[0].t; } }
   else if (k === "backspace") {
     let best = null, bd = 1e9;
-    L.forEach(ep => ["s","i","e"].forEach(f => {
-      if (ep[f] != null && Math.abs(ep[f] - t) < bd)
-        { bd = Math.abs(ep[f] - t); best = [ep, f]; }
-    }));
-    if (best) {
-      best[0][best[1]] = null;
-      if (best[0].s == null && best[0].i == null && best[0].e == null)
-        L.splice(L.indexOf(best[0]), 1);
-    }
+    p.hits.forEach(h => ["s","i","e"].forEach(f => {
+      if (h[f] != null && Math.abs(h[f] - t) < bd)
+        { bd = Math.abs(h[f] - t); best = ["hits", h, f]; } }));
+    p.clears.forEach(c => ["s","e"].forEach(f => {
+      if (c[f] != null && Math.abs(c[f] - t) < bd)
+        { bd = Math.abs(c[f] - t); best = ["clears", c, f]; } }));
+    if (best) { best[1][best[2]] = null;
+      const L = p[best[0]];
+      const times = ["s","i","e"].filter(f => f in best[1]);
+      if (times.every(f => best[1][f] == null))
+        L.splice(L.indexOf(best[1]), 1); }
   } else return;
   save(); render(); e.preventDefault();
 });
@@ -200,18 +315,24 @@ document.addEventListener("keydown", e => {
 bexp.onclick = () => {
   let out = "rally_cum,player,episode,kind,t_s\n";
   RALLIES.forEach(r => {
-    const d = store[r.rally_cum] || {};
+    const d = store[r.rally_cum]; if (!d) return;
     const rm = d._rally || {};
-    if (rm.routine != null)
-      out += `${r.rally_cum},,0,routine_start,${rm.routine}\n`;
-    if (rm.dead != null)
-      out += `${r.rally_cum},,0,point_dead,${rm.dead}\n`;
-    r.players.forEach(p => (d[p] || []).forEach((ep, j) => {
-      if (ep.s != null) out += `${r.rally_cum},${p},${j + 1},start,${ep.s}\n`;
-      if (ep.i != null) out += `${r.rally_cum},${p},${j + 1},impact,${ep.i}\n`;
-      if (ep.e != null) out += `${r.rally_cum},${p},${j + 1},end,${ep.e}\n`;
-      if (ep.nc) out += `${r.rally_cum},${p},${j + 1},no_contact,\n`;
-    }));
+    if (rm.routine != null) out += `${r.rally_cum},,0,routine_start,${rm.routine}\n`;
+    if (rm.dead != null) out += `${r.rally_cum},,0,point_dead,${rm.dead}\n`;
+    r.players.forEach(p => { const pd = (d.players || {})[p]; if (!pd) return;
+      if (pd.tid != null) out += `${r.rally_cum},${p},0,track_assign,${pd.tid}\n`;
+      pd.hits.forEach((h, j) => {
+        if (h.s != null) out += `${r.rally_cum},${p},${j + 1},start,${h.s}\n`;
+        if (h.i != null) out += `${r.rally_cum},${p},${j + 1},impact,${h.i}\n`;
+        if (h.e != null) out += `${r.rally_cum},${p},${j + 1},end,${h.e}\n`;
+        if (h.nc) out += `${r.rally_cum},${p},${j + 1},no_contact,\n`;
+        if (h.hand) out += `${r.rally_cum},${p},${j + 1},` +
+          (h.hand === "fh" ? "forehand" : "backhand") + `,\n`;
+        if (h.poach) out += `${r.rally_cum},${p},${j + 1},poach,\n`; });
+      pd.clears.forEach((c, j) => {
+        if (c.s != null) out += `${r.rally_cum},${p},${j + 1},clear_start,${c.s}\n`;
+        if (c.e != null) out += `${r.rally_cum},${p},${j + 1},clear_end,${c.e}\n`; });
+    });
   });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([out], {type: "text/csv"}));
@@ -223,23 +344,32 @@ csvpick.onchange = () => {
   rd.onload = () => {
     store = {};
     rd.result.trim().split("\n").slice(1).forEach(line => {
-      const [cum, p, epn, kind, ts] = line.split(",");
+      const [cum, pn, epn, kind, ts] = line.split(",");
       const r = RALLIES.find(x => x.rally_cum === +cum); if (!r) return;
-      const d = store[+cum] = store[+cum] || {};
-      if (kind === "routine_start" || kind === "point_dead") {
-        const rm = d._rally = d._rally || {routine: null, dead: null};
-        rm[kind === "routine_start" ? "routine" : "dead"] = +ts;
-        return;
-      }
-      const L = d[p] = (d[p] || []);
-      while (L.length < +epn) L.push({s:null,i:null,e:null,nc:false});
+      const d = store[+cum] = store[+cum] ||
+        {players: {}, _rally: {routine: null, dead: null}};
+      if (kind === "routine_start") { d._rally.routine = +ts; return; }
+      if (kind === "point_dead") { d._rally.dead = +ts; return; }
+      const p = d.players[pn] = d.players[pn] ||
+        {hits: [], clears: [], tid: null};
+      if (kind === "track_assign") { p.tid = +ts; return; }
+      const isClear = kind.startsWith("clear_");
+      const L = isClear ? p.clears : p.hits;
+      while (L.length < +epn)
+        L.push(isClear ? {s: null, e: null}
+                       : {s: null, i: null, e: null, nc: false,
+                          hand: null, poach: false});
       const ep = L[+epn - 1];
       if (kind === "no_contact") ep.nc = true;
-      else ep[{start:"s",impact:"i",end:"e"}[kind]] = +ts;
+      else if (kind === "forehand") ep.hand = "fh";
+      else if (kind === "backhand") ep.hand = "bh";
+      else if (kind === "poach") ep.poach = true;
+      else ep[{start: "s", impact: "i", end: "e", clear_start: "s",
+               clear_end: "e"}[kind]] = +ts;
     });
     save(); render();
   };
   rd.readAsText(csvpick.files[0]);
 };
-render();
+fillPsel(); render();
 </script></body></html>

@@ -153,3 +153,17 @@ complete at ~10x fewer judgments than literal per-frame coding.
   explicitly). Holdout rules unchanged: pilot is train-only; if state
   labeling ever extends to holdout rallies, label identically and keep
   tuning scripts out, exactly as with contacts.
+
+### Vocabulary additions, user-approved 2026-08-29 (state audit v2)
+
+- **F/H at impact = forehand/backhand** — fills the fh/bh label gap
+  the record flagged (dink-rotation mechanics was blocked on it).
+  Press again to clear; wrong one just press the other.
+- **P = poach flag** on a hitting episode — took a ball on the
+  partner's side. Direct observation of the channel the retracted
+  intent measures needed the ball for; the aggressive twin of C.
+- Shot DIRECTION (cross/line/middle) considered and DEFERRED to its
+  own dedicated pass — it means watching the ball after impact, not
+  the player, and stacking it here would split attention.
+- Vocabulary freezes after ~2 pilot rallies of practice (same
+  convention path as the lunge and pace-tie-break rules).
