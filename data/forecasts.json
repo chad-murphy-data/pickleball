@@ -1,13 +1,13 @@
 {
- "generated": "2026-08-29",
+ "generated": "2026-08-30",
  "note": "Lineups: official when published, else each team's best lineup from its season roster (last-matchup fallback); DreamBreaker from the singles model; calibrated probabilities.",
  "forecasts": [
   {
-   "date": "2026-08-29",
-   "start": "2026-08-29T17:00:00Z",
+   "date": "2026-08-30",
+   "start": "2026-08-30T15:00:00Z",
    "event": "DoorDash MLP Finals New York City Powered by Toray",
    "team1": "New Jersey 5s",
-   "team2": "Brooklyn Pickleball Team",
+   "team2": "St. Louis Shock",
    "lineups_from": {
     "team1": "best lineup",
     "team2": "best lineup"
@@ -15,69 +15,147 @@
    "games": [
     {
      "slot": "WD",
-     "p": 0.9205,
-     "modal": "11-5",
-     "margin": 5.27,
+     "p": 0.8606,
+     "modal": "11-6",
+     "margin": 4.22,
      "t1_pair": [
       "Anna Leigh Waters",
       "Jorja Johnson"
      ],
      "t2_pair": [
-      "Rachel Rohrabacher",
-      "Jackie Kawamoto"
+      "Anna Bright",
+      "Kate Fahey"
      ]
     },
     {
      "slot": "MD",
-     "p": 0.3296,
-     "modal": "8-11",
-     "margin": -2.05,
+     "p": 0.1647,
+     "modal": "6-11",
+     "margin": -4.07,
      "t1_pair": [
       "Federico Staksrud",
       "Noe Khlif"
      ],
      "t2_pair": [
-      "Christian Alshon",
-      "Riley Newman"
+      "Hayden Patriquin",
+      "Gabriel Tardio"
      ]
     },
     {
      "slot": "MXD1",
-     "p": 0.8273,
-     "modal": "11-6",
-     "margin": 3.73,
+     "p": 0.6622,
+     "modal": "11-8",
+     "margin": 1.66,
      "t1_pair": [
       "Anna Leigh Waters",
       "Federico Staksrud"
      ],
      "t2_pair": [
-      "Rachel Rohrabacher",
-      "Christian Alshon"
+      "Anna Bright",
+      "Hayden Patriquin"
      ]
     },
     {
      "slot": "MXD2",
-     "p": 0.4597,
-     "modal": "9-11",
-     "margin": -0.61,
+     "p": 0.3054,
+     "modal": "7-11",
+     "margin": -2.33,
      "t1_pair": [
       "Jorja Johnson",
       "Noe Khlif"
      ],
      "t2_pair": [
-      "Jackie Kawamoto",
-      "Riley Newman"
+      "Kate Fahey",
+      "Gabriel Tardio"
      ]
     }
    ],
    "tree": {
-    "p_win": 0.8169,
-    "p_40": 0.1154,
-    "p_31": 0.4044,
-    "p_db": 0.3872,
-    "p_13": 0.0881,
-    "p_04": 0.005,
-    "p_db_win": 0.7675
+    "p_win": 0.5524,
+    "p_40": 0.0287,
+    "p_31": 0.2298,
+    "p_db": 0.4745,
+    "p_13": 0.2396,
+    "p_04": 0.0273,
+    "p_db_win": 0.6193
+   }
+  },
+  {
+   "date": "2026-08-30",
+   "start": "2026-08-30T18:00:00Z",
+   "event": "DoorDash MLP Finals New York City Powered by Toray",
+   "team1": "New Jersey 5s",
+   "team2": "St. Louis Shock",
+   "lineups_from": {
+    "team1": "best lineup",
+    "team2": "best lineup"
+   },
+   "games": [
+    {
+     "slot": "WD",
+     "p": 0.8606,
+     "modal": "11-6",
+     "margin": 4.22,
+     "t1_pair": [
+      "Anna Leigh Waters",
+      "Jorja Johnson"
+     ],
+     "t2_pair": [
+      "Anna Bright",
+      "Kate Fahey"
+     ]
+    },
+    {
+     "slot": "MD",
+     "p": 0.1647,
+     "modal": "6-11",
+     "margin": -4.07,
+     "t1_pair": [
+      "Federico Staksrud",
+      "Noe Khlif"
+     ],
+     "t2_pair": [
+      "Hayden Patriquin",
+      "Gabriel Tardio"
+     ]
+    },
+    {
+     "slot": "MXD1",
+     "p": 0.6622,
+     "modal": "11-8",
+     "margin": 1.66,
+     "t1_pair": [
+      "Anna Leigh Waters",
+      "Federico Staksrud"
+     ],
+     "t2_pair": [
+      "Anna Bright",
+      "Hayden Patriquin"
+     ]
+    },
+    {
+     "slot": "MXD2",
+     "p": 0.3054,
+     "modal": "7-11",
+     "margin": -2.33,
+     "t1_pair": [
+      "Jorja Johnson",
+      "Noe Khlif"
+     ],
+     "t2_pair": [
+      "Kate Fahey",
+      "Gabriel Tardio"
+     ]
+    }
+   ],
+   "tree": {
+    "p_win": 0.5524,
+    "p_40": 0.0287,
+    "p_31": 0.2298,
+    "p_db": 0.4745,
+    "p_13": 0.2396,
+    "p_04": 0.0273,
+    "p_db_win": 0.6193
    }
   }
  ]

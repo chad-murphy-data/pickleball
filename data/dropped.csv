@@ -41,6 +41,10 @@ mixed,2026-08-08,a0ab9ccc-eb1c-40bd-9649-943a876a7c55,MLP Playoffs Dallas Presen
 mixed,2026-08-08,a0ab9ccc-eb1c-40bd-9649-943a876a7c55,MLP Playoffs Dallas Presented By EisnerAmper,,d913a0ef-7b25-4d28-a655-449292b5fc6b,match not completed (status=1),RR,MLP
 mixed,2026-07-11,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,6d757f70-2ed2-4e26-b7f7-f92271dbc3c9,no played games (forfeit/walkover),Quarter Finals W,MLP
 mixed,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,433b7e4d-7f31-4707-9429-d1c2d3b93277,no played games (forfeit/walkover),Round 4 L1,MLP
+womens,2026-08-30,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,da2d0853-e276-4889-ad09-a7dba65654c1,match not completed (status=1),RR,MLP
+mens,2026-08-30,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,48a9385b-c006-4be8-aaff-ae11b6b9e5b3,match not completed (status=1),RR,MLP
+mixed,2026-08-30,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,acb9d506-3f0a-455b-9330-f0fe6a8edc2c,match not completed (status=1),RR,MLP
+mixed,2026-08-30,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,fc6e3aba-0d43-43a7-87a4-f48b58c32c70,match not completed (status=1),RR,MLP
 mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,9de36581-9ee4-4eb7-8d31-fecd779048ee,no played games (forfeit/walkover),Round 1 L1,MLP
 ,2026-06-04,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,46026cf4-1f2a-4a1d-b202-2b74b3adcc07,bye matchup (no opponent),,MLP
 mixed,2026-07-09,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season Tournament,,3a435232-0fa9-43c6-b819-2ed4b1da30d0,no played games (forfeit/walkover),Round 16 W,MLP
@@ -79,9 +83,7 @@ mens,2026-08-09,a0ab9ccc-eb1c-40bd-9649-943a876a7c55,MLP Playoffs Dallas Present
 mixed,2026-08-09,a0ab9ccc-eb1c-40bd-9649-943a876a7c55,MLP Playoffs Dallas Presented By EisnerAmper,,e25e214a-01f1-4f10-8cd7-1d775f5c23bf,match not completed (status=1),RR,MLP
 mixed,2026-08-09,a0ab9ccc-eb1c-40bd-9649-943a876a7c55,MLP Playoffs Dallas Presented By EisnerAmper,,61f999da-a925-4c6f-9adc-79979fd44ed8,match not completed (status=1),RR,MLP
 mixed,2025-08-22,5d9d8bbd-845b-4607-94bd-c48748c61946,"DoorDash MLP Finals NYC, powered by Toray",,4600afa9-9d36-4933-aa85-a1a8d69238c0,no played games (forfeit/walkover),RR,MLP
-mens,2026-08-29,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,2236e344-0510-40f5-b1ee-8bcb6c4200d5,match not completed (status=2),RR,MLP
-mixed,2026-08-29,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,90047488-611d-47b1-aeaa-f9676fd5032e,match not completed (status=1),RR,MLP
-mixed,2026-08-29,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,a9ff0edc-3b23-45b7-920e-70444b2d31a1,match not completed (status=1),RR,MLP
+mixed,2026-08-29,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,a9ff0edc-3b23-45b7-920e-70444b2d31a1,no played games (forfeit/walkover),RR,MLP
 ,2026-06-25,39695d6b-c680-4ee8-82a0-51e03901f6f5,MLP New York,,8d4d62bf-f156-4cb0-926f-4bf56e5e7e9a,bye matchup (no opponent),,MLP
 ,2026-06-17,fdea9cee-bdd5-4cff-9c9f-1e2050c1c05f,MLP St. Petersburg,,8db81016-9f54-485a-818e-9e07dd7c63ca,bye matchup (no opponent),,MLP
 ,2026-05-28,5e469584-e821-4b40-bccd-3b1fa54a2e05,MLP Columbus,,8f9f914f-c867-49ad-a2bf-a2d628b24a8e,bye matchup (no opponent),,MLP
@@ -119,6 +121,10 @@ mixed,2026-07-11,7c8e927f-13f3-4073-8871-4aaeb68d511b,Edward Jones Mid-Season To
 mixed,2025-08-16,141fe139-b4d2-4846-ac9f-a36b5dd6db41,Toray MLP Playoffs - San Diego,,25b0ec6a-0577-4f50-a1da-8dc288f7c251,no played games (forfeit/walkover),RR,MLP
 mixed,2026-06-07,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,f240559c-a128-46fb-aa1e-52f6c854d899,no played games (forfeit/walkover),One and Done - Playoff W,MLP
 ,2026-06-11,9df489ec-31ac-4bd8-9df7-4fe508439d71,MLP Austin,,d93a9d7d-bfbc-46da-93d2-49c4f3ba7ffa,bye matchup (no opponent),,MLP
+womens,2026-08-30,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,c4ab66cd-ac5a-472c-b18d-b0d32a7aa786,match not completed (status=1),RR,MLP
+mens,2026-08-30,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,564ebd0d-afd4-4eae-a59c-19f8bfe07cbf,match not completed (status=1),RR,MLP
+mixed,2026-08-30,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,41d7992e-eccd-43c7-9f6d-842b1cf51ce5,match not completed (status=1),RR,MLP
+mixed,2026-08-30,3fc5207f-f53e-41db-92d8-95655e684fcf,DoorDash MLP Finals New York City Powered by Toray,,5691111e-9e13-4a16-a349-07a5e5913487,match not completed (status=1),RR,MLP
 ,2025-10-31,280169bb-803c-474b-b2f9-933c9ffc8b29,2025 Edward Jones MLP Cup,,e094dfe1-749d-4526-82b0-3f2bad56af5d,bye matchup (no opponent),,MLP
 mixed,2025-07-12,dc18fb1f-c9ca-4b8b-947d-aa1558ff113e,Edward Jones MLP Mid-Season Tournament,,4edcc71c-da5e-4ba4-88aa-c25643c27b7b,no played games (forfeit/walkover),Round 4 L1,MLP
 mixed,2026-06-07,24053d7f-1e91-454a-8e57-e13c51fc32ac,MLP St. Louis,,c92b7e56-e444-46cc-81f5-174984467d6d,no played games (forfeit/walkover),One and Done - Playoff W,MLP
@@ -716,50 +722,44 @@ mens,2025-05-24,c437ce67-98a9-4719-9da8-0b7293e40c2d,Punta Gorda PPA Challenger,
 mens,2025-05-10,c99d3632-36f8-4b0d-a8a7-2292f9529ea6,New England PPA Challenger,,e546e91b-2b88-42fe-a026-d42242a1aaf5,no played games (forfeit/walkover),,PPA
 mixed,2025-04-06,cd075e2c-056f-472e-97b8-d0990abeab98,Baton Rouge PPA Challenger,,2ba3315c-6267-4e68-979e-487159086fe1,no played games (forfeit/walkover),,PPA
 mixed,2025-04-06,cd075e2c-056f-472e-97b8-d0990abeab98,Baton Rouge PPA Challenger,,3271ca40-bf16-478b-ac22-b0e2e212f4ac,no played games (forfeit/walkover),Round 16,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,089f5420-9858-4c6b-abfe-3da0eff2c053,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,a430b80a-201b-4c16-9ea1-ebad28a22e5f,match not completed (status=1),Round 16,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,501d386e-f685-4c7f-900a-13e0927c0ac1,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,970c59f5-e7f4-42a4-9591-5b40118ebef1,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,530fc970-9356-4ba8-a1cb-3c68d4df8968,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,40a16f5e-4e87-47e1-bc50-bfc3269f5879,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,4e1485f2-a161-4519-9fc9-3735448cce23,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,210cafc1-cb5f-495a-a010-502531effd17,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,2c51ad29-5390-4275-b23e-37ead3648b7b,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,fd9d98d4-8779-4c59-a1fe-f66d7439d451,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,31df841b-feab-4b54-830f-96adb4e57eb5,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,46468783-bbad-48e9-8553-8910023b4565,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,4e710cf5-0ede-419e-bb83-7915aed4c949,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,a93027c5-7c00-4dbf-98e4-f9f056de6fa5,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,451d2ef4-cdae-4185-a774-385eeac45a3b,match not completed (status=1),Round 32,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,66b4b4c6-3698-450f-9002-c20aedebb719,match not completed (status=1),Round 32,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,4a8b371f-a220-4810-8045-803d163f399f,match not completed (status=1),Round 32,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,20a57686-b99b-4ff2-82f9-2bd8d1a936d9,match not completed (status=1),Round 32,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,2a206d22-e57f-46ee-92d3-ea2bc51b2814,match not completed (status=1),Round 32,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,973d0dc1-5abf-41cc-84c7-254778b5a135,match not completed (status=1),Round 32,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,58538a87-8902-493c-b19f-bfd47f163f81,match not completed (status=1),Round 16,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,20a4c5fc-cae5-433e-9606-d70d4079ba27,match not completed (status=1),,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,fd05ea6e-25a1-4b41-8525-3a20c493fa49,match not completed (status=1),Round 16,PPA
-womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,a5f0e0bb-0b95-4a04-917c-29de89421cfd,match not completed (status=1),Round 16,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,cd28798d-eceb-4f0e-8217-72b4cf59a4c5,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,b46c8d16-f864-42d7-9831-4904d2476bad,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,7c8fed04-d68c-4cb2-8485-78f1996e82f5,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,5fb76fb8-338c-44ce-a0f4-13ca864d5562,match not completed (status=1),Round 16,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,c3c70e8c-2fed-4816-9025-be70d81aed25,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,7fdd9603-d71f-4b06-8d66-fac027da8058,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,1f548dd4-3e93-4249-9349-2b2e663578b9,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,4cb07dc6-71c7-4b33-bfe5-a019afaa67ed,match not completed (status=1),Round 16,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,b90a05fb-0038-48f5-b171-ee955dceaae3,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,bff0f698-aa0a-4656-ab8f-c2a150955b5e,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,1999795c-1334-401d-83a1-2a9ab587ff64,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,a9b6ee93-3324-4196-a9be-ff4f428eee9e,match not completed (status=1),Round 16,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,36b72819-0e45-477a-8497-f6c69033fb9e,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,27eef941-58fb-4871-9594-d99cc393fffa,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,c7ec210b-f537-45a7-9efe-3668987378e6,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,af0a31bd-e617-42b4-b6a2-fa6e02f213df,match not completed (status=1),,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,6c4bcd6e-1544-422d-b3d4-252d13b07f59,match not completed (status=1),Round 16,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,4458d974-cd77-4571-8839-b2722fcd96dd,match not completed (status=1),Round 16,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,463f3cd7-d30c-44e2-b35d-2568097ed254,match not completed (status=1),Round 16,PPA
-mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,6deab1f2-423a-44dd-843c-512296ea7d17,match not completed (status=1),,PPA
+mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,7371497f-d81c-41e5-b3dc-90ee6d633a27,no played games (forfeit/walkover),,PPA
+mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,8c885202-ad39-4d95-ba7b-8200ade3a500,no played games (forfeit/walkover),,PPA
+mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,e689646f-601a-4624-ac56-979b71fa1c21,no played games (forfeit/walkover),,PPA
+mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,1f548dd4-3e93-4249-9349-2b2e663578b9,no played games (forfeit/walkover),,PPA
+mens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,9dd02de2-9bcf-4c9c-bcd2-aec07777328d,"bracket bye/shell (empty side, no scores)",,PPA
+womens,2026-08-29,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,96486fae-d6d0-4ee6-bf1b-3a94ba2c6d74,"bracket bye/shell (empty side, no scores)",,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,eaeed47b-bf1b-4441-ab2a-b981220ee6fe,match not completed (status=2),Round 16,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,cb4e6bc7-637a-47b3-b091-b9424bed7e77,match not completed (status=1),Round 32,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,54676b15-e1f8-45ed-a36d-42a9ddf6d444,match not completed (status=1),Round 16,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,eb64c640-8cc8-466c-ad99-2041a9bb93ee,match not completed (status=1),Round 16,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,dc0d212b-ab29-4fa4-84e1-e519e3a2e0f6,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,71544c21-452e-467a-98cd-ad0fb9c453bd,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,68df5981-1656-4a77-b4a2-4da5fe8e18f1,match not completed (status=1),Round 32,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,c74df254-a12b-4060-af4f-4dc69581e381,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,2c138d70-d9a1-4666-9ee5-cbeb5faccc31,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,2f66e7bc-a078-4372-90e0-a7024b0b062f,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,6421f14e-87f3-494c-8650-116920226145,match not completed (status=1),Round 32,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,d0f4e611-2bcc-40a6-bb15-44b66fba9bcc,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,62f9ac6a-4b05-4160-a81d-472997a41f31,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,3e77a199-cb50-43a4-b71a-74a5970feda0,match not completed (status=1),Round 32,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,059e1852-e434-4444-8a1d-2d643da01f9a,match not completed (status=1),Round 32,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,e8f770a8-457d-4d68-b93f-b4acc8aff312,no played games (forfeit/walkover),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,67c33937-abec-459c-8e06-f4c993fda2b2,no played games (forfeit/walkover),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,ec911524-18b0-4087-b236-82648b0e115e,match not completed (status=1),Round 32,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,ed7e9b9b-ec8b-4256-a904-1897dd563c9f,match not completed (status=1),Round 16,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,ef341eb1-3b96-43e6-ae65-cf5743925dd4,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,188ffd92-44c4-41af-b00c-d2cf7fcdb225,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,6af78b38-5551-4d9c-bb64-1b3830a370d4,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,27591fc8-1626-465f-9a94-d2d44788e4dc,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,e987b5d1-8239-416f-bab0-60b76fe4e1c5,match not completed (status=1),Round 16,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,8be560cd-1288-4388-82ac-bd7579908619,match not completed (status=1),Round 16,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,23cfd601-79d2-4d7a-83f5-7ea4c0aeb755,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,33a9ec64-a401-426e-9b5e-abd4ddb840b1,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,35151673-c571-4e27-832f-d665374b82d3,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,c491fcd0-e515-4494-84da-a70437cb8fb6,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,c46be5ef-1b04-48c1-99f6-b1f66e6438a5,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,b20f30db-5886-4f7a-9bfd-622322132d01,match not completed (status=1),,PPA
+mixed,2026-08-30,cd808ec7-e9a9-4647-b226-173889c0145e,Atlanta PPA Challenger,,a17e3c5f-5fe3-43b9-9c26-1d3147883703,match not completed (status=1),,PPA
 womens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,f2a853a0-77ec-43bb-9453-8c7e72c5ed62,no played games (forfeit/walkover),,PPA
 mens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,312d3cba-cd51-4673-8def-c1c7296661bf,"bracket bye/shell (empty side, no scores)",,PPA
 womens,2026-05-02,ceb8b74c-641d-400e-bff2-689820c7e0ed,Black Desert PPA Challenger,,6267902b-c77a-4345-885e-ef28cbc0f4b6,"bracket bye/shell (empty side, no scores)",,PPA
