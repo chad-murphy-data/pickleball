@@ -3381,3 +3381,51 @@ and tracks the ball to contact, and within a side the near/far bias
 cancels. Second-best partner feature after reach (100%), failing
 independently of it in principle — a natural second witness for the
 partner call when reach's perfect score regresses on new rallies.
+
+## 2026-08-30 — the recursive ball↔hitter idea has a name (several), and we already run one iteration of it
+
+User's shower thought: a model that uses the ball to identify the
+hitter and the hitter to constrain the ball, "over-steering and
+correcting". This is a named, theorem-backed family — recording it so
+the concept doesn't get lost before the temporal-gate work starts:
+
+- **Alternating optimization / coordinate ascent**: freeze one
+  unknown, solve the other, swap, repeat. **EM** is the probabilistic
+  version — E-step: given the current ball track, a BELIEF
+  distribution over who hit (soft, not a verdict); M-step: refit the
+  track weighted by those beliefs. Guarantee: joint likelihood never
+  decreases (the spiral converges inward).
+- **Data association** (JPDAF / multi-hypothesis tracking): radar
+  literature; "which object owns this blob" solved jointly with
+  "where is the object". **Factor graphs / belief propagation**
+  generalize: ball nodes, hitter nodes, edges for every coupling
+  constraint (contact anchors, exact alternation parity, arm reach),
+  message-pass to convergence. Modern SLAM is this; our problem is a
+  tiny SLAM (ball = robot, hitters = landmarks).
+- **We already run one sweep**: court3d's two-pass fit — pass-1 arcs
+  independently, then consensus contact anchors + player-geometry
+  anchors feed the hitter answer back into pass-2 arc refits. The
+  same-side double hits dying (9/24 → 23/23 crossing) was the
+  correction step working. The per-frame hitter-belief state-label
+  design is the other half of the loop.
+- **Failure modes the house rules already guard**: (i) alternation
+  converges to A self-consistent story, not necessarily the RIGHT
+  one — internal consistency stops being evidence once the halves may
+  agree with each other (same lesson as finding 2's shared-error
+  split-half fakes); holdout discipline matters MORE for joint
+  models. (ii) Hard assignments oscillate; soft beliefs converge —
+  the fractional hitter-belief representation is the mathematically
+  correct choice, not just a labeling convenience.
+- **User follow-up idea, also named**: run TWO chains, one seeded
+  ball-first and one hitter-first, and compare. That's multi-start /
+  co-training-style agreement checking: agreement of independently
+  seeded chains is evidence of a well-identified optimum (not proof —
+  both can share a basin); DISAGREEMENT is the operational gold —
+  it flags exactly the rallies/spans where the joint model is
+  ambiguous, i.e. where the next human label buys the most. Natural
+  active-learning loop for the labeling program: label where the
+  chains fight.
+
+Status: concept note only. Any implementation is temporal-gate
+territory (pre-registration first); the constrained ball tracker
+remains logged-not-licensed.
