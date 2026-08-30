@@ -320,7 +320,7 @@ def net_crossings(seg):
 
 
 def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
-        out_html=OUT_HTML):
+        out_html=OUT_HTML, dump_show=False):
     import sys
     sys.path.insert(0, str(Path(__file__).parent))
     from make_ball_audit import detect_events
@@ -553,6 +553,50 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
                 path += sample_path(seg)
         write_viewer(path, impacts, out_html, players)
         print(f"\nwrote {out_html} — orbitable 3D rally")
+    if dump_show:
+        types = {}
+        for r in csv.DictReader(open(DATA / "contact_labels_chicago0725.csv")):
+            if r["rally_cum"] == "1" and r.get("contact", "1") == "1":
+                tt = float(r["t_refined_s"] or r["t_tap_s"])
+                types[min(impacts, key=lambda i: abs(i - tt))] = r["shot_type"]
+        TEAMS = {"Allyce Jones": "UTA", "Etta Tuionetoa": "UTA",
+                 "Emma Nelson": "CHI", "Ting Chieh Wei": "CHI"}
+        show = {
+            "meta": {"rally": 1, "event": "MLP Chicago — Group B",
+                     "division": "Women's Doubles",
+                     "teams": {"UTA": "Utah Black Diamonds",
+                               "CHI": "Chicago Slice"},
+                     "camera": [round(float(v), 2) for v in C]},
+            "path": [], "players": {}, "impacts": [], "bounces": [],
+            "crossings": [], "dead": dead,
+        }
+        for k, seg in enumerate(segs):
+            if seg and seg["ok"]:
+                show["path"] += [[round(v, 3) for v in p]
+                                 for p in sample_path(seg)]
+                for (tt, x, zz) in net_crossings(seg):
+                    show["crossings"].append(
+                        {"t": round(tt, 2), "x": round(x, 1),
+                         "z": round(zz, 2)})
+                if seg["kind"] == "bounce":
+                    show["bounces"].append(
+                        {"t": round(seg["ts"], 2),
+                         "x": round(float(seg["bounce_xy"][0]), 1),
+                         "y": round(float(seg["bounce_xy"][1]), 1)})
+        if players:
+            for name, (ts, xs, ys) in players.items():
+                show["players"][name] = [
+                    [round(float(ts[i]), 2), round(float(xs[i]), 2),
+                     round(float(ys[i]), 2)]
+                    for i in range(0, len(ts), 2)]
+        for k, tt in enumerate(impacts):
+            show["impacts"].append(
+                {"t": round(tt, 3), "hitter": hitters[k],
+                 "team": TEAMS.get(hitters[k], "?"),
+                 "type": types.get(tt, "shot")})
+        out = DATA / "rally1_show.json"
+        out.write_text(json.dumps(show))
+        print(f"wrote {out} ({out.stat().st_size//1024} KB show data)")
     return P, segs
 
 
@@ -745,13 +789,17 @@ def main():
     ap.add_argument("--ball", default=str(BALL))
     ap.add_argument("--state", default=str(STATE))
     ap.add_argument("--viewer", action="store_true")
+    ap.add_argument("--dump-show", action="store_true",
+                    help="write data/vision/rally1_show.json for the "
+                         "PICKLES Replay artifact")
     ap.add_argument("--out", default=str(OUT_HTML))
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
         selftest()
         return
-    run(a.landmarks, a.ball, a.state, viewer=a.viewer, out_html=a.out)
+    run(a.landmarks, a.ball, a.state, viewer=a.viewer, out_html=a.out,
+        dump_show=a.dump_show)
 
 
 if __name__ == "__main__":
