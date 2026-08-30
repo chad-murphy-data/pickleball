@@ -238,8 +238,10 @@ is NOT in the pixels; your trajectory sense supplies the position.<br>
 ⚫ <b>Genuinely can't place it → press <kbd>N</kbd>.</b> No click, no
 guess — an honest N is data too.<br><br>
 After <kbd>S</kbd> or <kbd>I</kbd> a colored banner shows the armed
-mode; it resets to plain-click after each answer. The dotted trail is
-your last second of positions — losing the ball? follow the trail.
+mode; it resets to plain-click after each answer. Dots are HIDDEN by
+default so they never sit on the ball — lost it? press <kbd>T</kbd> to
+show your last second of positions, follow the trail, <kbd>T</kbd>
+again to hide.
 <b>Accuracy bar:</b> center-of-blob is fine, don't agonize; be
 consistent on streaks (always the center).<br><br>
 <b>Navigation:</b> <kbd>←</kbd>/<kbd>→</kbd> step ±1 frame without
@@ -259,6 +261,7 @@ const save = () => localStorage.setItem(LSK, JSON.stringify(store));
 const V = document.getElementById("v"), OV = document.getElementById("ov");
 const fpsEl = document.getElementById("fps");
 let k = +(localStorage.getItem(LSK + "_k") || 0), mode = "V";
+let trail = localStorage.getItem(LSK + "_trail") === "1";
 const fps = () => (+fpsEl.value || 30);
 const NF = Math.round((CFG.t1 - CFG.t0) * 30);
 const tOf = j => CFG.t0 + j / fps();
@@ -293,7 +296,7 @@ function draw(){
   OV.width = V.clientWidth; OV.height = V.clientHeight;
   const c = OV.getContext("2d");
   c.clearRect(0, 0, OV.width, OV.height);
-  if (!V.videoWidth) return;
+  if (!V.videoWidth || !trail) return;
   const sx = OV.width / V.videoWidth, sy = OV.height / V.videoHeight;
   for (let j = k - 30; j <= k; j++){
     const a = store[j];
@@ -326,6 +329,8 @@ document.addEventListener("keydown", e => {
   else if (key === ",") go(k - 10);
   else if (key === "i") { mode = mode === "I" ? "V" : "I"; render(); }
   else if (key === "s") { mode = mode === "S" ? "V" : "S"; render(); }
+  else if (key === "t") { trail = !trail;
+    localStorage.setItem(LSK + "_trail", trail ? "1" : "0"); render(); }
   else if (key === "n") { store[k] = {vis: "N"}; mode = "V"; save(); go(k + 1); }
   else if (key === "backspace") { delete store[k]; save(); render(); }
   else return;
