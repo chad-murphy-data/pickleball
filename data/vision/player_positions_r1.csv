@@ -1,0 +1,2307 @@
+t_s,player,x_ft,y_ft
+8.743,Emma Nelson,3.84,-4.26
+8.743,Etta Tuionetoa,6.14,31.12
+8.743,Ting Chieh Wei,13.24,-5.27
+8.793,Emma Nelson,3.79,-4.23
+8.793,Etta Tuionetoa,6.15,31.08
+8.793,Ting Chieh Wei,13.25,-5.27
+8.843,Emma Nelson,3.78,-4.19
+8.843,Etta Tuionetoa,6.16,31.03
+8.843,Ting Chieh Wei,13.25,-5.27
+8.893,Emma Nelson,3.76,-4.14
+8.893,Etta Tuionetoa,6.17,30.96
+8.893,Ting Chieh Wei,13.25,-5.28
+8.943,Emma Nelson,3.68,-3.98
+8.943,Etta Tuionetoa,6.18,30.9
+8.943,Ting Chieh Wei,13.26,-5.28
+8.993,Emma Nelson,3.59,-3.88
+8.993,Etta Tuionetoa,6.2,30.82
+8.993,Ting Chieh Wei,13.26,-5.29
+9.043,Emma Nelson,3.51,-3.73
+9.043,Etta Tuionetoa,6.21,30.7
+9.043,Ting Chieh Wei,13.26,-5.29
+9.093,Emma Nelson,3.48,-3.66
+9.093,Etta Tuionetoa,6.21,30.67
+9.093,Ting Chieh Wei,13.26,-5.31
+9.143,Emma Nelson,3.46,-3.61
+9.143,Etta Tuionetoa,6.21,30.65
+9.143,Ting Chieh Wei,13.26,-5.33
+9.193,Emma Nelson,3.44,-3.58
+9.193,Etta Tuionetoa,6.21,30.64
+9.193,Ting Chieh Wei,13.26,-5.34
+9.243,Emma Nelson,3.44,-3.56
+9.243,Etta Tuionetoa,6.21,30.63
+9.243,Ting Chieh Wei,13.26,-5.34
+9.293,Emma Nelson,3.44,-3.56
+9.293,Etta Tuionetoa,6.2,30.62
+9.293,Ting Chieh Wei,13.26,-5.34
+9.343,Emma Nelson,3.44,-3.55
+9.343,Etta Tuionetoa,6.19,30.61
+9.343,Ting Chieh Wei,13.26,-5.34
+9.393,Emma Nelson,3.44,-3.53
+9.393,Etta Tuionetoa,6.16,30.6
+9.393,Ting Chieh Wei,13.26,-5.34
+9.443,Emma Nelson,3.44,-3.53
+9.443,Etta Tuionetoa,6.16,30.59
+9.443,Ting Chieh Wei,13.26,-5.34
+9.493,Emma Nelson,3.44,-3.53
+9.493,Etta Tuionetoa,6.16,30.58
+9.493,Ting Chieh Wei,13.26,-5.34
+9.543,Emma Nelson,3.44,-3.53
+9.543,Etta Tuionetoa,6.15,30.54
+9.543,Ting Chieh Wei,13.26,-5.34
+9.593,Emma Nelson,3.44,-3.53
+9.593,Etta Tuionetoa,6.14,30.5
+9.593,Ting Chieh Wei,13.26,-5.34
+9.643,Emma Nelson,3.44,-3.53
+9.643,Etta Tuionetoa,6.12,30.45
+9.643,Ting Chieh Wei,13.26,-5.34
+9.693,Emma Nelson,3.44,-3.53
+9.693,Etta Tuionetoa,6.11,30.43
+9.693,Ting Chieh Wei,13.26,-5.34
+9.743,Emma Nelson,3.44,-3.55
+9.743,Etta Tuionetoa,6.08,30.43
+9.743,Ting Chieh Wei,13.27,-5.34
+9.793,Emma Nelson,3.44,-3.57
+9.793,Etta Tuionetoa,6.05,30.43
+9.793,Ting Chieh Wei,13.28,-5.35
+9.843,Emma Nelson,3.45,-3.57
+9.843,Etta Tuionetoa,6.01,30.43
+9.843,Ting Chieh Wei,13.28,-5.37
+9.893,Emma Nelson,3.45,-3.57
+9.893,Etta Tuionetoa,5.96,30.43
+9.893,Ting Chieh Wei,13.28,-5.38
+9.943,Emma Nelson,3.45,-3.58
+9.943,Etta Tuionetoa,5.92,30.43
+9.943,Ting Chieh Wei,13.28,-5.41
+9.993,Emma Nelson,3.47,-3.59
+9.993,Etta Tuionetoa,5.91,30.46
+9.993,Ting Chieh Wei,13.28,-5.41
+10.043,Emma Nelson,3.47,-3.59
+10.043,Etta Tuionetoa,5.9,30.49
+10.043,Ting Chieh Wei,13.28,-5.41
+10.093,Emma Nelson,3.47,-3.59
+10.093,Etta Tuionetoa,5.9,30.53
+10.093,Ting Chieh Wei,13.28,-5.41
+10.143,Emma Nelson,3.47,-3.59
+10.143,Etta Tuionetoa,5.9,30.55
+10.143,Ting Chieh Wei,13.28,-5.41
+10.193,Emma Nelson,3.47,-3.58
+10.193,Etta Tuionetoa,5.9,30.59
+10.193,Ting Chieh Wei,13.29,-5.4
+10.243,Emma Nelson,3.45,-3.57
+10.243,Etta Tuionetoa,5.9,30.59
+10.243,Ting Chieh Wei,13.29,-5.36
+10.293,Emma Nelson,3.35,-3.54
+10.293,Etta Tuionetoa,5.9,30.59
+10.293,Ting Chieh Wei,13.29,-5.36
+10.343,Emma Nelson,3.24,-3.37
+10.343,Etta Tuionetoa,5.9,30.59
+10.343,Ting Chieh Wei,13.29,-5.36
+10.393,Emma Nelson,3.14,-3.23
+10.393,Etta Tuionetoa,5.9,30.59
+10.393,Ting Chieh Wei,13.28,-5.36
+10.443,Emma Nelson,3.02,-3.18
+10.443,Etta Tuionetoa,5.9,30.59
+10.443,Ting Chieh Wei,13.28,-5.35
+10.493,Emma Nelson,2.95,-3.18
+10.493,Etta Tuionetoa,5.89,30.56
+10.493,Ting Chieh Wei,13.27,-5.33
+10.543,Emma Nelson,2.94,-3.18
+10.543,Etta Tuionetoa,5.88,30.55
+10.543,Ting Chieh Wei,13.25,-5.32
+10.593,Emma Nelson,2.94,-3.18
+10.593,Etta Tuionetoa,5.88,30.54
+10.593,Ting Chieh Wei,13.24,-5.32
+10.643,Emma Nelson,2.94,-3.19
+10.643,Etta Tuionetoa,5.88,30.53
+10.643,Ting Chieh Wei,13.21,-5.29
+10.693,Emma Nelson,2.94,-3.19
+10.693,Etta Tuionetoa,5.88,30.53
+10.693,Ting Chieh Wei,13.19,-4.96
+10.743,Emma Nelson,2.94,-3.44
+10.743,Etta Tuionetoa,5.88,30.53
+10.743,Ting Chieh Wei,13.15,-4.59
+10.793,Emma Nelson,2.95,-3.7
+10.793,Etta Tuionetoa,5.88,30.53
+10.793,Ting Chieh Wei,13.15,-4.22
+10.843,Emma Nelson,2.97,-3.97
+10.843,Etta Tuionetoa,5.88,30.53
+10.843,Ting Chieh Wei,13.15,-4.19
+10.893,Emma Nelson,3.01,-4.12
+10.893,Etta Tuionetoa,5.88,30.53
+10.893,Ting Chieh Wei,13.15,-4.15
+10.943,Emma Nelson,3.03,-4.14
+10.943,Etta Tuionetoa,5.88,30.53
+10.943,Ting Chieh Wei,13.15,-4.09
+10.993,Emma Nelson,3.05,-4.2
+10.993,Etta Tuionetoa,5.88,30.53
+10.993,Ting Chieh Wei,13.15,-4.04
+11.043,Emma Nelson,3.1,-4.23
+11.043,Etta Tuionetoa,5.88,30.54
+11.043,Ting Chieh Wei,13.21,-3.97
+11.093,Emma Nelson,3.23,-4.33
+11.093,Etta Tuionetoa,5.88,30.54
+11.093,Ting Chieh Wei,13.26,-3.87
+11.143,Emma Nelson,3.36,-4.59
+11.143,Etta Tuionetoa,5.89,30.54
+11.143,Ting Chieh Wei,13.31,-3.63
+11.193,Emma Nelson,3.55,-4.85
+11.193,Etta Tuionetoa,5.89,30.54
+11.193,Ting Chieh Wei,13.32,-3.57
+11.243,Emma Nelson,3.73,-5.0
+11.243,Etta Tuionetoa,5.89,30.54
+11.243,Ting Chieh Wei,13.32,-3.57
+11.293,Emma Nelson,3.84,-5.05
+11.293,Etta Tuionetoa,5.89,30.54
+11.293,Ting Chieh Wei,13.32,-3.57
+11.343,Emma Nelson,3.93,-5.14
+11.343,Etta Tuionetoa,5.89,30.54
+11.343,Ting Chieh Wei,13.32,-3.57
+11.393,Emma Nelson,4.01,-5.14
+11.393,Etta Tuionetoa,5.89,30.53
+11.393,Ting Chieh Wei,13.32,-3.57
+11.443,Emma Nelson,4.11,-5.14
+11.443,Etta Tuionetoa,5.89,30.52
+11.443,Ting Chieh Wei,13.29,-3.73
+11.493,Emma Nelson,4.23,-5.1
+11.493,Etta Tuionetoa,5.89,30.5
+11.493,Ting Chieh Wei,13.23,-3.74
+11.543,Allyce Jones,22.14,46.26
+11.543,Emma Nelson,4.39,-5.03
+11.543,Etta Tuionetoa,5.89,30.49
+11.543,Ting Chieh Wei,13.14,-3.76
+11.593,Allyce Jones,22.2,46.02
+11.593,Emma Nelson,4.56,-4.95
+11.593,Etta Tuionetoa,5.89,30.48
+11.593,Ting Chieh Wei,13.07,-3.84
+11.643,Allyce Jones,22.23,45.81
+11.643,Emma Nelson,4.69,-4.55
+11.643,Etta Tuionetoa,5.89,30.48
+11.643,Ting Chieh Wei,13.03,-3.87
+11.693,Allyce Jones,22.21,45.47
+11.693,Emma Nelson,4.73,-4.34
+11.693,Etta Tuionetoa,5.89,30.48
+11.693,Ting Chieh Wei,13.02,-3.89
+11.743,Allyce Jones,22.2,45.17
+11.743,Emma Nelson,4.74,-4.3
+11.743,Etta Tuionetoa,5.89,30.48
+11.743,Ting Chieh Wei,13.0,-3.89
+11.793,Allyce Jones,22.18,44.79
+11.793,Emma Nelson,4.75,-4.24
+11.793,Etta Tuionetoa,5.89,30.45
+11.793,Ting Chieh Wei,12.94,-3.89
+11.843,Allyce Jones,22.14,44.41
+11.843,Emma Nelson,4.75,-4.21
+11.843,Etta Tuionetoa,5.89,30.43
+11.843,Ting Chieh Wei,12.86,-3.79
+11.893,Allyce Jones,22.14,43.79
+11.893,Emma Nelson,4.78,-4.09
+11.893,Etta Tuionetoa,5.89,30.41
+11.893,Ting Chieh Wei,12.74,-3.74
+11.943,Allyce Jones,22.14,42.91
+11.943,Emma Nelson,4.85,-4.04
+11.943,Etta Tuionetoa,5.89,30.37
+11.943,Ting Chieh Wei,12.62,-3.61
+11.993,Allyce Jones,22.11,42.22
+11.993,Emma Nelson,4.94,-4.03
+11.993,Etta Tuionetoa,5.89,30.34
+11.993,Ting Chieh Wei,12.52,-3.21
+12.043,Allyce Jones,22.04,41.54
+12.043,Emma Nelson,4.98,-3.99
+12.043,Etta Tuionetoa,5.87,30.3
+12.043,Ting Chieh Wei,12.41,-3.04
+12.093,Allyce Jones,21.85,41.08
+12.093,Emma Nelson,5.0,-3.93
+12.093,Etta Tuionetoa,5.84,30.28
+12.093,Ting Chieh Wei,12.33,-2.91
+12.143,Allyce Jones,21.47,40.64
+12.143,Emma Nelson,5.05,-3.92
+12.143,Etta Tuionetoa,5.8,30.21
+12.143,Ting Chieh Wei,12.27,-2.85
+12.193,Allyce Jones,21.01,39.93
+12.193,Emma Nelson,5.14,-3.89
+12.193,Etta Tuionetoa,5.77,30.14
+12.193,Ting Chieh Wei,12.23,-2.69
+12.243,Allyce Jones,20.57,39.27
+12.243,Emma Nelson,5.22,-3.86
+12.243,Etta Tuionetoa,5.75,30.08
+12.243,Ting Chieh Wei,12.22,-2.66
+12.293,Allyce Jones,20.25,38.43
+12.293,Emma Nelson,5.26,-3.86
+12.293,Etta Tuionetoa,5.74,29.96
+12.293,Ting Chieh Wei,12.21,-2.64
+12.343,Allyce Jones,19.84,37.94
+12.343,Emma Nelson,5.26,-3.86
+12.343,Etta Tuionetoa,5.73,29.69
+12.343,Ting Chieh Wei,12.21,-2.55
+12.393,Allyce Jones,19.41,37.47
+12.393,Emma Nelson,5.26,-3.86
+12.393,Etta Tuionetoa,5.72,29.4
+12.393,Ting Chieh Wei,12.2,-2.32
+12.443,Allyce Jones,18.86,36.85
+12.443,Emma Nelson,5.26,-3.86
+12.443,Etta Tuionetoa,5.71,29.26
+12.443,Ting Chieh Wei,12.19,-1.83
+12.493,Allyce Jones,18.31,35.9
+12.493,Emma Nelson,5.26,-3.85
+12.493,Etta Tuionetoa,5.68,29.24
+12.493,Ting Chieh Wei,12.19,-1.37
+12.543,Allyce Jones,17.77,35.18
+12.543,Emma Nelson,5.25,-3.81
+12.543,Etta Tuionetoa,5.66,29.21
+12.543,Ting Chieh Wei,12.19,-1.01
+12.593,Allyce Jones,17.29,34.63
+12.593,Emma Nelson,5.22,-3.85
+12.593,Etta Tuionetoa,5.66,29.2
+12.593,Ting Chieh Wei,12.19,-0.58
+12.643,Allyce Jones,16.92,34.25
+12.643,Emma Nelson,5.17,-3.89
+12.643,Etta Tuionetoa,5.66,28.95
+12.643,Ting Chieh Wei,12.19,-0.32
+12.693,Allyce Jones,16.52,33.89
+12.693,Emma Nelson,5.09,-3.92
+12.693,Etta Tuionetoa,5.66,28.95
+12.693,Ting Chieh Wei,12.2,-0.15
+12.743,Allyce Jones,16.09,33.27
+12.743,Emma Nelson,5.02,-3.93
+12.743,Etta Tuionetoa,5.66,28.95
+12.743,Ting Chieh Wei,12.21,-0.04
+12.793,Allyce Jones,15.62,32.43
+12.793,Emma Nelson,4.95,-3.92
+12.793,Etta Tuionetoa,5.66,28.95
+12.793,Ting Chieh Wei,12.23,-0.03
+12.843,Allyce Jones,15.14,31.87
+12.843,Emma Nelson,4.91,-3.91
+12.843,Etta Tuionetoa,5.68,28.95
+12.843,Ting Chieh Wei,12.26,0.11
+12.893,Allyce Jones,14.62,31.59
+12.893,Emma Nelson,4.85,-3.87
+12.893,Etta Tuionetoa,5.76,28.96
+12.893,Ting Chieh Wei,12.32,0.44
+12.943,Allyce Jones,14.15,31.24
+12.943,Emma Nelson,4.81,-3.81
+12.943,Etta Tuionetoa,5.77,28.96
+12.943,Ting Chieh Wei,12.39,1.08
+12.993,Allyce Jones,13.9,30.87
+12.993,Emma Nelson,4.77,-3.8
+12.993,Etta Tuionetoa,5.78,28.96
+12.993,Ting Chieh Wei,12.46,1.64
+13.043,Allyce Jones,13.85,30.7
+13.043,Emma Nelson,4.7,-3.52
+13.043,Etta Tuionetoa,5.78,28.96
+13.043,Ting Chieh Wei,12.55,2.08
+13.093,Allyce Jones,13.85,30.49
+13.093,Emma Nelson,4.64,-3.06
+13.093,Etta Tuionetoa,5.8,28.96
+13.093,Ting Chieh Wei,12.6,2.37
+13.143,Allyce Jones,13.85,30.46
+13.143,Emma Nelson,4.58,-2.44
+13.143,Etta Tuionetoa,5.84,28.95
+13.143,Ting Chieh Wei,12.61,2.61
+13.193,Allyce Jones,13.85,30.32
+13.193,Emma Nelson,4.56,-1.83
+13.193,Etta Tuionetoa,5.94,28.95
+13.193,Ting Chieh Wei,12.63,2.69
+13.243,Allyce Jones,13.85,29.99
+13.243,Emma Nelson,4.56,-1.61
+13.243,Etta Tuionetoa,6.07,28.95
+13.243,Ting Chieh Wei,12.71,2.76
+13.293,Allyce Jones,13.89,29.97
+13.293,Emma Nelson,4.54,-1.23
+13.293,Etta Tuionetoa,6.26,28.95
+13.293,Ting Chieh Wei,12.81,2.98
+13.343,Allyce Jones,14.05,29.97
+13.343,Emma Nelson,4.52,-0.92
+13.343,Etta Tuionetoa,6.46,28.95
+13.343,Ting Chieh Wei,12.89,3.56
+13.393,Allyce Jones,14.25,29.97
+13.393,Emma Nelson,4.51,-0.84
+13.393,Etta Tuionetoa,6.63,28.95
+13.393,Ting Chieh Wei,12.99,4.25
+13.443,Allyce Jones,14.4,29.97
+13.443,Emma Nelson,4.49,-0.55
+13.443,Etta Tuionetoa,6.67,29.21
+13.443,Ting Chieh Wei,13.1,4.84
+13.493,Allyce Jones,14.6,29.97
+13.493,Emma Nelson,4.48,-0.12
+13.493,Etta Tuionetoa,6.68,29.31
+13.493,Ting Chieh Wei,13.23,5.26
+13.543,Allyce Jones,14.85,30.12
+13.543,Emma Nelson,4.48,0.87
+13.543,Etta Tuionetoa,6.68,29.35
+13.543,Ting Chieh Wei,13.36,5.4
+13.593,Allyce Jones,15.03,30.26
+13.593,Emma Nelson,4.48,1.37
+13.593,Etta Tuionetoa,6.69,29.39
+13.593,Ting Chieh Wei,13.48,5.69
+13.643,Allyce Jones,15.1,30.42
+13.643,Emma Nelson,4.48,1.64
+13.643,Etta Tuionetoa,6.69,29.44
+13.643,Ting Chieh Wei,13.62,6.05
+13.693,Allyce Jones,15.2,30.48
+13.693,Emma Nelson,4.49,2.23
+13.693,Etta Tuionetoa,6.7,29.55
+13.693,Ting Chieh Wei,13.82,6.7
+13.743,Allyce Jones,15.33,30.53
+13.743,Emma Nelson,4.5,3.28
+13.743,Etta Tuionetoa,6.7,29.69
+13.743,Ting Chieh Wei,14.01,7.33
+13.793,Allyce Jones,15.45,30.66
+13.793,Emma Nelson,4.68,4.05
+13.793,Etta Tuionetoa,6.7,29.83
+13.793,Ting Chieh Wei,14.22,7.64
+13.843,Allyce Jones,15.55,30.79
+13.843,Emma Nelson,4.93,4.53
+13.843,Etta Tuionetoa,6.7,29.91
+13.843,Ting Chieh Wei,14.3,7.7
+13.893,Allyce Jones,15.66,30.84
+13.893,Emma Nelson,5.18,4.98
+13.893,Etta Tuionetoa,6.7,29.96
+13.893,Ting Chieh Wei,14.35,7.77
+13.943,Allyce Jones,15.74,30.92
+13.943,Emma Nelson,5.39,5.25
+13.943,Etta Tuionetoa,6.7,30.0
+13.943,Ting Chieh Wei,14.43,7.87
+13.993,Allyce Jones,15.81,30.97
+13.993,Emma Nelson,5.61,5.77
+13.993,Etta Tuionetoa,6.7,30.11
+13.993,Ting Chieh Wei,14.51,7.89
+14.043,Allyce Jones,15.85,31.03
+14.043,Emma Nelson,5.87,6.45
+14.043,Etta Tuionetoa,6.7,30.24
+14.043,Ting Chieh Wei,14.58,7.97
+14.093,Allyce Jones,15.91,31.1
+14.093,Emma Nelson,6.12,7.21
+14.093,Etta Tuionetoa,6.67,30.34
+14.093,Ting Chieh Wei,14.63,8.56
+14.143,Allyce Jones,15.93,31.23
+14.143,Emma Nelson,6.31,8.09
+14.143,Etta Tuionetoa,6.65,30.47
+14.143,Ting Chieh Wei,14.64,9.02
+14.193,Allyce Jones,15.93,31.46
+14.193,Emma Nelson,6.39,8.36
+14.193,Etta Tuionetoa,6.65,30.6
+14.193,Ting Chieh Wei,14.65,9.1
+14.243,Allyce Jones,15.93,31.65
+14.243,Emma Nelson,6.4,8.37
+14.243,Etta Tuionetoa,6.65,30.63
+14.243,Ting Chieh Wei,14.67,9.19
+14.293,Allyce Jones,15.93,31.77
+14.293,Emma Nelson,6.41,8.46
+14.293,Etta Tuionetoa,6.65,30.65
+14.293,Ting Chieh Wei,14.7,9.22
+14.343,Allyce Jones,15.93,31.87
+14.343,Emma Nelson,6.42,8.51
+14.343,Etta Tuionetoa,6.64,30.71
+14.343,Ting Chieh Wei,14.83,9.22
+14.393,Allyce Jones,15.91,31.87
+14.393,Emma Nelson,6.44,8.55
+14.393,Etta Tuionetoa,6.63,30.71
+14.393,Ting Chieh Wei,15.09,9.22
+14.443,Allyce Jones,15.88,31.87
+14.443,Emma Nelson,6.45,8.58
+14.443,Etta Tuionetoa,6.62,30.71
+14.443,Ting Chieh Wei,15.42,9.22
+14.493,Allyce Jones,15.84,31.87
+14.493,Emma Nelson,6.48,8.6
+14.493,Etta Tuionetoa,6.62,30.71
+14.493,Ting Chieh Wei,15.7,9.22
+14.543,Allyce Jones,15.77,31.87
+14.543,Emma Nelson,6.53,8.77
+14.543,Etta Tuionetoa,6.62,30.71
+14.543,Ting Chieh Wei,15.82,9.16
+14.593,Allyce Jones,15.68,31.81
+14.593,Emma Nelson,6.53,8.98
+14.593,Etta Tuionetoa,6.62,30.69
+14.593,Ting Chieh Wei,16.0,9.02
+14.643,Allyce Jones,15.57,31.68
+14.643,Emma Nelson,6.53,9.0
+14.643,Etta Tuionetoa,6.6,30.46
+14.643,Ting Chieh Wei,16.18,8.83
+14.693,Allyce Jones,15.49,31.55
+14.693,Emma Nelson,6.53,9.01
+14.693,Etta Tuionetoa,6.53,30.18
+14.693,Ting Chieh Wei,16.32,8.69
+14.743,Allyce Jones,15.43,31.37
+14.743,Emma Nelson,6.53,9.01
+14.743,Etta Tuionetoa,6.47,29.95
+14.743,Ting Chieh Wei,16.38,8.66
+14.793,Allyce Jones,15.38,31.31
+14.793,Emma Nelson,6.52,9.01
+14.793,Etta Tuionetoa,6.43,29.71
+14.793,Ting Chieh Wei,16.51,8.64
+14.843,Allyce Jones,15.37,31.17
+14.843,Emma Nelson,6.47,9.01
+14.843,Etta Tuionetoa,6.39,29.66
+14.843,Ting Chieh Wei,16.66,8.51
+14.893,Allyce Jones,15.37,30.8
+14.893,Emma Nelson,6.42,9.01
+14.893,Etta Tuionetoa,6.35,29.65
+14.893,Ting Chieh Wei,16.77,8.4
+14.943,Allyce Jones,15.37,30.4
+14.943,Emma Nelson,6.4,9.0
+14.943,Etta Tuionetoa,6.33,29.61
+14.943,Ting Chieh Wei,16.87,8.3
+14.993,Allyce Jones,15.37,30.1
+14.993,Emma Nelson,6.4,9.0
+14.993,Etta Tuionetoa,6.33,29.51
+14.993,Ting Chieh Wei,16.97,8.18
+15.043,Allyce Jones,15.37,29.7
+15.043,Emma Nelson,6.4,9.0
+15.043,Etta Tuionetoa,6.33,29.4
+15.043,Ting Chieh Wei,17.05,8.06
+15.093,Allyce Jones,15.39,29.59
+15.093,Emma Nelson,6.4,8.98
+15.093,Etta Tuionetoa,6.33,29.38
+15.093,Ting Chieh Wei,17.11,7.96
+15.143,Allyce Jones,15.39,29.54
+15.143,Emma Nelson,6.4,8.94
+15.143,Etta Tuionetoa,6.33,29.33
+15.143,Ting Chieh Wei,17.14,7.87
+15.193,Allyce Jones,15.39,29.53
+15.193,Emma Nelson,6.4,8.92
+15.193,Etta Tuionetoa,6.36,29.27
+15.193,Ting Chieh Wei,17.15,7.75
+15.243,Allyce Jones,15.39,29.53
+15.243,Emma Nelson,6.4,8.88
+15.243,Etta Tuionetoa,6.36,29.26
+15.243,Ting Chieh Wei,17.15,7.54
+15.293,Allyce Jones,15.39,29.53
+15.293,Emma Nelson,6.4,8.88
+15.293,Etta Tuionetoa,6.36,29.26
+15.293,Ting Chieh Wei,17.15,7.26
+15.343,Allyce Jones,15.39,29.56
+15.343,Emma Nelson,6.4,8.88
+15.343,Etta Tuionetoa,6.36,29.27
+15.343,Ting Chieh Wei,17.15,7.25
+15.393,Allyce Jones,15.35,29.58
+15.393,Emma Nelson,6.4,8.88
+15.393,Etta Tuionetoa,6.36,29.27
+15.393,Ting Chieh Wei,17.15,7.25
+15.443,Allyce Jones,15.26,29.6
+15.443,Emma Nelson,6.38,8.88
+15.443,Etta Tuionetoa,6.35,29.27
+15.443,Ting Chieh Wei,17.15,7.25
+15.493,Allyce Jones,15.18,29.63
+15.493,Emma Nelson,6.35,8.88
+15.493,Etta Tuionetoa,6.32,29.27
+15.493,Ting Chieh Wei,17.1,7.22
+15.543,Allyce Jones,15.12,29.64
+15.543,Emma Nelson,6.3,8.95
+15.543,Etta Tuionetoa,6.29,29.27
+15.543,Ting Chieh Wei,17.01,7.14
+15.593,Allyce Jones,15.08,29.66
+15.593,Emma Nelson,6.25,8.98
+15.593,Etta Tuionetoa,6.26,29.27
+15.593,Ting Chieh Wei,16.96,7.14
+15.643,Allyce Jones,15.04,29.67
+15.643,Emma Nelson,6.22,9.02
+15.643,Etta Tuionetoa,6.23,29.27
+15.643,Ting Chieh Wei,16.93,7.2
+15.693,Allyce Jones,15.02,29.68
+15.693,Emma Nelson,6.2,9.05
+15.693,Etta Tuionetoa,6.19,29.29
+15.693,Ting Chieh Wei,16.86,7.26
+15.743,Allyce Jones,14.96,29.68
+15.743,Emma Nelson,6.17,9.06
+15.743,Etta Tuionetoa,6.11,29.32
+15.743,Ting Chieh Wei,16.78,7.29
+15.793,Allyce Jones,14.89,29.69
+15.793,Emma Nelson,6.1,9.08
+15.793,Etta Tuionetoa,6.04,29.32
+15.793,Ting Chieh Wei,16.62,7.32
+15.843,Allyce Jones,14.79,29.71
+15.843,Emma Nelson,6.03,9.12
+15.843,Etta Tuionetoa,5.99,29.35
+15.843,Ting Chieh Wei,16.41,7.34
+15.893,Allyce Jones,14.67,29.72
+15.893,Emma Nelson,5.96,9.14
+15.893,Etta Tuionetoa,5.91,29.35
+15.893,Ting Chieh Wei,16.18,7.55
+15.943,Allyce Jones,14.52,29.73
+15.943,Emma Nelson,5.9,9.4
+15.943,Etta Tuionetoa,5.79,29.35
+15.943,Ting Chieh Wei,15.83,8.3
+15.993,Allyce Jones,14.38,29.74
+15.993,Emma Nelson,5.85,9.95
+15.993,Etta Tuionetoa,5.69,29.35
+15.993,Ting Chieh Wei,15.7,8.83
+16.043,Allyce Jones,14.28,29.82
+16.043,Emma Nelson,5.81,10.57
+16.043,Etta Tuionetoa,5.56,29.35
+16.043,Ting Chieh Wei,15.69,8.89
+16.093,Allyce Jones,14.24,29.84
+16.093,Emma Nelson,5.81,10.67
+16.093,Etta Tuionetoa,5.41,29.37
+16.093,Ting Chieh Wei,15.64,8.94
+16.143,Allyce Jones,14.18,29.84
+16.143,Emma Nelson,5.81,10.71
+16.143,Etta Tuionetoa,5.26,29.39
+16.143,Ting Chieh Wei,15.54,9.01
+16.193,Allyce Jones,14.06,29.85
+16.193,Emma Nelson,5.81,10.76
+16.193,Etta Tuionetoa,5.12,29.39
+16.193,Ting Chieh Wei,15.45,9.07
+16.243,Allyce Jones,13.91,29.88
+16.243,Emma Nelson,5.81,10.77
+16.243,Etta Tuionetoa,4.95,29.39
+16.243,Ting Chieh Wei,15.31,9.15
+16.293,Allyce Jones,13.73,29.9
+16.293,Emma Nelson,5.81,10.77
+16.293,Etta Tuionetoa,4.8,29.39
+16.293,Ting Chieh Wei,15.03,9.25
+16.343,Allyce Jones,13.64,29.9
+16.343,Emma Nelson,5.84,10.77
+16.343,Etta Tuionetoa,4.65,29.62
+16.343,Ting Chieh Wei,14.71,9.33
+16.393,Allyce Jones,13.61,29.9
+16.393,Emma Nelson,5.92,10.75
+16.393,Etta Tuionetoa,4.47,29.87
+16.393,Ting Chieh Wei,14.37,9.57
+16.443,Allyce Jones,13.58,29.9
+16.443,Emma Nelson,6.05,10.75
+16.443,Etta Tuionetoa,4.3,29.92
+16.443,Ting Chieh Wei,14.06,9.73
+16.493,Allyce Jones,13.54,29.9
+16.493,Emma Nelson,6.18,10.72
+16.493,Etta Tuionetoa,4.18,29.96
+16.493,Ting Chieh Wei,13.91,9.79
+16.543,Allyce Jones,13.51,29.78
+16.543,Emma Nelson,6.26,10.7
+16.543,Etta Tuionetoa,4.12,29.99
+16.543,Ting Chieh Wei,13.85,9.83
+16.593,Allyce Jones,13.48,29.69
+16.593,Emma Nelson,6.27,10.67
+16.593,Etta Tuionetoa,4.12,29.99
+16.593,Ting Chieh Wei,13.79,9.87
+16.643,Allyce Jones,13.44,29.65
+16.643,Emma Nelson,6.27,10.64
+16.643,Etta Tuionetoa,4.12,29.99
+16.643,Ting Chieh Wei,13.72,9.89
+16.693,Allyce Jones,13.43,29.65
+16.693,Emma Nelson,6.27,10.63
+16.693,Etta Tuionetoa,4.12,29.99
+16.693,Ting Chieh Wei,13.6,9.98
+16.743,Allyce Jones,13.43,29.63
+16.743,Emma Nelson,6.27,10.57
+16.743,Etta Tuionetoa,4.12,29.95
+16.743,Ting Chieh Wei,13.49,10.21
+16.793,Allyce Jones,13.43,29.62
+16.793,Emma Nelson,6.27,10.49
+16.793,Etta Tuionetoa,4.17,29.92
+16.793,Ting Chieh Wei,13.4,10.28
+16.843,Allyce Jones,13.43,29.62
+16.843,Emma Nelson,6.27,10.3
+16.843,Etta Tuionetoa,4.24,29.87
+16.843,Ting Chieh Wei,13.4,10.28
+16.893,Allyce Jones,13.43,29.62
+16.893,Emma Nelson,6.27,10.24
+16.893,Etta Tuionetoa,4.4,29.66
+16.893,Ting Chieh Wei,13.4,10.28
+16.943,Allyce Jones,13.46,29.64
+16.943,Emma Nelson,6.26,10.1
+16.943,Etta Tuionetoa,4.63,29.59
+16.943,Ting Chieh Wei,13.4,10.28
+16.993,Allyce Jones,13.46,29.65
+16.993,Emma Nelson,6.25,9.92
+16.993,Etta Tuionetoa,4.92,29.58
+16.993,Ting Chieh Wei,13.4,10.28
+17.043,Allyce Jones,13.46,29.69
+17.043,Emma Nelson,6.22,9.67
+17.043,Etta Tuionetoa,5.29,29.58
+17.043,Ting Chieh Wei,13.41,10.27
+17.093,Allyce Jones,13.46,29.94
+17.093,Emma Nelson,6.21,9.53
+17.093,Etta Tuionetoa,5.31,29.57
+17.093,Ting Chieh Wei,13.44,10.2
+17.143,Allyce Jones,13.46,30.08
+17.143,Emma Nelson,6.21,9.52
+17.143,Etta Tuionetoa,5.31,29.56
+17.143,Ting Chieh Wei,13.47,10.18
+17.193,Allyce Jones,13.45,30.25
+17.193,Emma Nelson,6.19,9.5
+17.193,Etta Tuionetoa,5.31,29.55
+17.193,Ting Chieh Wei,13.51,10.18
+17.243,Allyce Jones,13.41,30.37
+17.243,Emma Nelson,6.16,9.39
+17.243,Etta Tuionetoa,5.31,29.55
+17.243,Ting Chieh Wei,13.51,10.18
+17.293,Allyce Jones,13.4,30.42
+17.293,Emma Nelson,6.08,9.39
+17.293,Etta Tuionetoa,5.31,29.56
+17.293,Ting Chieh Wei,13.51,10.18
+17.343,Allyce Jones,13.37,30.46
+17.343,Emma Nelson,5.98,9.39
+17.343,Etta Tuionetoa,5.14,29.56
+17.343,Ting Chieh Wei,13.51,10.17
+17.393,Allyce Jones,13.36,30.56
+17.393,Emma Nelson,5.82,9.39
+17.393,Etta Tuionetoa,5.0,29.56
+17.393,Ting Chieh Wei,13.51,10.17
+17.443,Allyce Jones,13.36,30.75
+17.443,Emma Nelson,5.63,9.39
+17.443,Etta Tuionetoa,4.74,29.57
+17.443,Ting Chieh Wei,13.51,10.19
+17.493,Allyce Jones,13.35,30.78
+17.493,Emma Nelson,5.48,9.45
+17.493,Etta Tuionetoa,4.37,29.58
+17.493,Ting Chieh Wei,13.5,10.2
+17.543,Allyce Jones,13.34,30.78
+17.543,Emma Nelson,5.35,9.6
+17.543,Etta Tuionetoa,3.93,29.59
+17.543,Ting Chieh Wei,13.49,10.23
+17.593,Allyce Jones,13.33,30.78
+17.593,Emma Nelson,5.22,9.64
+17.593,Etta Tuionetoa,3.66,29.89
+17.593,Ting Chieh Wei,13.48,10.24
+17.643,Allyce Jones,13.33,30.78
+17.643,Emma Nelson,5.14,9.73
+17.643,Etta Tuionetoa,3.37,30.12
+17.643,Ting Chieh Wei,13.48,10.3
+17.693,Allyce Jones,13.32,30.78
+17.693,Emma Nelson,5.11,9.82
+17.693,Etta Tuionetoa,3.06,30.36
+17.693,Ting Chieh Wei,13.47,10.55
+17.743,Allyce Jones,13.3,30.71
+17.743,Emma Nelson,5.05,9.85
+17.743,Etta Tuionetoa,2.89,30.56
+17.743,Ting Chieh Wei,13.42,10.84
+17.793,Allyce Jones,13.29,30.62
+17.793,Emma Nelson,4.99,9.9
+17.793,Etta Tuionetoa,2.74,30.7
+17.793,Ting Chieh Wei,13.39,11.07
+17.843,Allyce Jones,13.27,30.57
+17.843,Emma Nelson,4.91,9.95
+17.843,Etta Tuionetoa,2.61,30.83
+17.843,Ting Chieh Wei,13.39,11.16
+17.893,Allyce Jones,13.25,30.54
+17.893,Emma Nelson,4.84,10.1
+17.893,Etta Tuionetoa,2.48,30.95
+17.893,Ting Chieh Wei,13.39,11.19
+17.943,Allyce Jones,13.2,30.52
+17.943,Emma Nelson,4.75,10.46
+17.943,Etta Tuionetoa,2.34,31.04
+17.943,Ting Chieh Wei,13.39,11.26
+17.993,Allyce Jones,13.11,30.47
+17.993,Emma Nelson,4.74,10.77
+17.993,Etta Tuionetoa,2.18,31.11
+17.993,Ting Chieh Wei,13.39,11.31
+18.043,Allyce Jones,13.05,30.44
+18.043,Emma Nelson,4.74,10.94
+18.043,Etta Tuionetoa,2.06,31.21
+18.043,Ting Chieh Wei,13.45,11.33
+18.093,Allyce Jones,13.05,30.42
+18.093,Emma Nelson,4.74,11.15
+18.093,Etta Tuionetoa,1.96,31.24
+18.093,Ting Chieh Wei,13.55,11.44
+18.143,Allyce Jones,13.05,30.4
+18.143,Emma Nelson,4.74,11.6
+18.143,Etta Tuionetoa,1.91,31.25
+18.143,Ting Chieh Wei,13.65,11.59
+18.193,Allyce Jones,13.05,30.34
+18.193,Emma Nelson,4.74,12.3
+18.193,Etta Tuionetoa,1.91,31.25
+18.193,Ting Chieh Wei,13.7,11.69
+18.243,Allyce Jones,13.05,30.09
+18.243,Emma Nelson,4.78,12.84
+18.243,Etta Tuionetoa,1.91,31.27
+18.243,Ting Chieh Wei,13.73,11.85
+18.293,Allyce Jones,13.07,29.83
+18.293,Emma Nelson,4.8,12.94
+18.293,Etta Tuionetoa,1.91,31.33
+18.293,Ting Chieh Wei,13.73,11.91
+18.343,Allyce Jones,13.12,29.61
+18.343,Emma Nelson,4.83,12.97
+18.343,Etta Tuionetoa,1.91,31.42
+18.343,Ting Chieh Wei,13.73,11.91
+18.393,Allyce Jones,13.16,29.54
+18.393,Emma Nelson,4.9,12.98
+18.393,Etta Tuionetoa,1.94,31.51
+18.393,Ting Chieh Wei,13.73,11.91
+18.443,Allyce Jones,13.24,29.5
+18.443,Emma Nelson,5.04,13.0
+18.443,Etta Tuionetoa,2.1,31.69
+18.443,Ting Chieh Wei,13.73,11.91
+18.493,Allyce Jones,13.34,29.44
+18.493,Emma Nelson,5.24,13.04
+18.493,Etta Tuionetoa,2.32,31.75
+18.493,Ting Chieh Wei,13.71,11.91
+18.543,Allyce Jones,13.49,29.37
+18.543,Emma Nelson,5.38,13.05
+18.543,Etta Tuionetoa,2.49,31.75
+18.543,Ting Chieh Wei,13.58,11.71
+18.593,Allyce Jones,13.57,29.31
+18.593,Emma Nelson,5.54,13.02
+18.593,Etta Tuionetoa,2.61,31.75
+18.593,Ting Chieh Wei,13.51,11.46
+18.643,Allyce Jones,13.58,29.31
+18.643,Emma Nelson,5.64,13.02
+18.643,Etta Tuionetoa,2.7,31.77
+18.643,Ting Chieh Wei,13.51,11.4
+18.693,Allyce Jones,13.6,29.37
+18.693,Emma Nelson,5.84,13.02
+18.693,Etta Tuionetoa,2.9,31.87
+18.693,Ting Chieh Wei,13.51,11.31
+18.743,Allyce Jones,13.71,29.43
+18.743,Emma Nelson,6.07,13.02
+18.743,Etta Tuionetoa,3.25,31.92
+18.743,Ting Chieh Wei,13.51,11.08
+18.793,Allyce Jones,13.87,29.49
+18.793,Emma Nelson,6.26,12.98
+18.793,Etta Tuionetoa,3.65,31.92
+18.793,Ting Chieh Wei,13.51,10.88
+18.843,Allyce Jones,14.01,29.54
+18.843,Emma Nelson,6.39,12.89
+18.843,Etta Tuionetoa,4.07,31.92
+18.843,Ting Chieh Wei,13.6,10.68
+18.893,Allyce Jones,14.14,29.63
+18.893,Emma Nelson,6.48,12.74
+18.893,Etta Tuionetoa,4.46,31.92
+18.893,Ting Chieh Wei,13.63,10.62
+18.943,Allyce Jones,14.21,30.02
+18.943,Emma Nelson,6.59,12.6
+18.943,Etta Tuionetoa,4.74,31.98
+18.943,Ting Chieh Wei,13.67,10.59
+18.993,Allyce Jones,14.21,30.02
+18.993,Emma Nelson,6.72,12.5
+18.993,Etta Tuionetoa,4.95,32.07
+18.993,Ting Chieh Wei,13.74,10.47
+19.043,Allyce Jones,14.21,30.02
+19.043,Emma Nelson,6.91,12.48
+19.043,Etta Tuionetoa,5.12,32.21
+19.043,Ting Chieh Wei,13.84,10.18
+19.093,Allyce Jones,14.21,30.02
+19.093,Emma Nelson,7.07,12.45
+19.093,Etta Tuionetoa,5.35,32.44
+19.093,Ting Chieh Wei,13.93,9.87
+19.143,Allyce Jones,14.21,30.02
+19.143,Emma Nelson,7.07,12.25
+19.143,Etta Tuionetoa,5.58,32.66
+19.143,Ting Chieh Wei,13.93,9.79
+19.193,Allyce Jones,14.21,30.05
+19.193,Emma Nelson,7.07,11.91
+19.193,Etta Tuionetoa,5.74,32.71
+19.193,Ting Chieh Wei,13.93,9.77
+19.243,Allyce Jones,14.07,30.05
+19.243,Emma Nelson,7.07,11.84
+19.243,Etta Tuionetoa,5.95,32.81
+19.243,Ting Chieh Wei,13.93,9.77
+19.293,Allyce Jones,13.81,30.05
+19.293,Emma Nelson,7.07,11.8
+19.293,Etta Tuionetoa,6.14,32.85
+19.293,Ting Chieh Wei,13.93,9.77
+19.343,Allyce Jones,13.48,30.07
+19.343,Emma Nelson,7.05,11.77
+19.343,Etta Tuionetoa,6.28,32.87
+19.343,Ting Chieh Wei,13.93,9.77
+19.393,Allyce Jones,13.12,30.09
+19.393,Emma Nelson,7.02,11.73
+19.393,Etta Tuionetoa,6.28,32.96
+19.393,Ting Chieh Wei,13.9,9.77
+19.443,Allyce Jones,12.71,30.45
+19.443,Emma Nelson,7.01,11.7
+19.443,Etta Tuionetoa,6.28,33.1
+19.443,Ting Chieh Wei,13.88,9.87
+19.493,Allyce Jones,12.56,31.15
+19.493,Emma Nelson,6.97,11.68
+19.493,Etta Tuionetoa,6.28,33.11
+19.493,Ting Chieh Wei,13.87,9.92
+19.543,Allyce Jones,12.56,31.33
+19.543,Emma Nelson,6.9,11.59
+19.543,Etta Tuionetoa,6.28,33.15
+19.543,Ting Chieh Wei,13.87,9.92
+19.593,Allyce Jones,12.56,31.37
+19.593,Emma Nelson,6.75,11.31
+19.593,Etta Tuionetoa,6.26,33.21
+19.593,Ting Chieh Wei,13.87,9.92
+19.643,Allyce Jones,12.56,31.44
+19.643,Emma Nelson,6.61,11.29
+19.643,Etta Tuionetoa,6.14,33.24
+19.643,Ting Chieh Wei,13.87,9.92
+19.693,Allyce Jones,12.56,31.5
+19.693,Emma Nelson,6.6,11.24
+19.693,Etta Tuionetoa,6.01,33.3
+19.693,Ting Chieh Wei,13.86,9.92
+19.743,Allyce Jones,12.62,31.55
+19.743,Emma Nelson,6.6,11.16
+19.743,Etta Tuionetoa,5.9,33.33
+19.743,Ting Chieh Wei,13.84,9.91
+19.793,Allyce Jones,12.74,31.58
+19.793,Emma Nelson,6.6,11.11
+19.793,Etta Tuionetoa,5.83,33.46
+19.793,Ting Chieh Wei,13.83,9.89
+19.843,Allyce Jones,12.75,31.77
+19.843,Emma Nelson,6.6,11.07
+19.843,Etta Tuionetoa,5.82,33.64
+19.843,Ting Chieh Wei,13.8,9.86
+19.893,Allyce Jones,12.75,31.88
+19.893,Emma Nelson,6.6,11.06
+19.893,Etta Tuionetoa,5.81,33.64
+19.893,Ting Chieh Wei,13.75,9.84
+19.943,Allyce Jones,12.75,31.88
+19.943,Emma Nelson,6.6,10.93
+19.943,Etta Tuionetoa,5.8,33.64
+19.943,Ting Chieh Wei,13.68,9.82
+19.993,Allyce Jones,12.76,31.88
+19.993,Emma Nelson,6.6,10.6
+19.993,Etta Tuionetoa,5.79,33.64
+19.993,Ting Chieh Wei,13.63,9.8
+20.043,Allyce Jones,12.79,31.88
+20.043,Emma Nelson,6.6,10.32
+20.043,Etta Tuionetoa,5.79,33.64
+20.043,Ting Chieh Wei,13.63,9.78
+20.093,Allyce Jones,12.79,31.88
+20.093,Emma Nelson,6.6,10.12
+20.093,Etta Tuionetoa,5.79,33.54
+20.093,Ting Chieh Wei,13.63,9.77
+20.143,Allyce Jones,12.79,31.82
+20.143,Emma Nelson,6.58,9.46
+20.143,Etta Tuionetoa,5.8,33.28
+20.143,Ting Chieh Wei,13.63,9.77
+20.193,Allyce Jones,12.79,31.68
+20.193,Emma Nelson,6.49,9.07
+20.193,Etta Tuionetoa,5.81,33.09
+20.193,Ting Chieh Wei,13.63,9.69
+20.243,Allyce Jones,12.79,31.41
+20.243,Emma Nelson,6.47,9.01
+20.243,Etta Tuionetoa,5.82,33.03
+20.243,Ting Chieh Wei,13.66,9.43
+20.293,Allyce Jones,12.84,31.13
+20.293,Emma Nelson,6.42,8.92
+20.293,Etta Tuionetoa,5.83,33.0
+20.293,Ting Chieh Wei,13.75,9.19
+20.343,Allyce Jones,12.91,30.96
+20.343,Emma Nelson,6.39,8.51
+20.343,Etta Tuionetoa,5.96,32.97
+20.343,Ting Chieh Wei,13.82,9.09
+20.393,Allyce Jones,13.01,30.77
+20.393,Emma Nelson,6.35,7.91
+20.393,Etta Tuionetoa,6.14,32.85
+20.393,Ting Chieh Wei,13.84,9.02
+20.443,Allyce Jones,13.16,30.56
+20.443,Emma Nelson,6.32,7.11
+20.443,Etta Tuionetoa,6.18,32.6
+20.443,Ting Chieh Wei,13.84,8.97
+20.493,Allyce Jones,13.31,30.28
+20.493,Emma Nelson,6.3,6.33
+20.493,Etta Tuionetoa,6.18,32.24
+20.493,Ting Chieh Wei,13.84,8.64
+20.543,Allyce Jones,13.42,30.13
+20.543,Emma Nelson,6.27,5.91
+20.543,Etta Tuionetoa,6.18,31.94
+20.543,Ting Chieh Wei,13.84,8.32
+20.593,Allyce Jones,13.44,30.08
+20.593,Emma Nelson,6.21,5.66
+20.593,Etta Tuionetoa,6.18,31.72
+20.593,Ting Chieh Wei,13.84,7.82
+20.643,Allyce Jones,13.45,29.94
+20.643,Emma Nelson,6.19,5.27
+20.643,Etta Tuionetoa,6.18,31.48
+20.643,Ting Chieh Wei,13.84,7.36
+20.693,Allyce Jones,13.48,29.68
+20.693,Emma Nelson,6.17,5.11
+20.693,Etta Tuionetoa,6.15,31.19
+20.693,Ting Chieh Wei,13.83,6.9
+20.743,Allyce Jones,13.55,29.46
+20.743,Emma Nelson,6.17,5.06
+20.743,Etta Tuionetoa,6.07,30.74
+20.743,Ting Chieh Wei,13.83,6.85
+20.793,Allyce Jones,13.7,29.38
+20.793,Emma Nelson,6.17,5.02
+20.793,Etta Tuionetoa,5.95,30.35
+20.793,Ting Chieh Wei,13.83,6.84
+20.843,Allyce Jones,13.88,29.33
+20.843,Emma Nelson,6.17,4.93
+20.843,Etta Tuionetoa,5.84,30.0
+20.843,Ting Chieh Wei,13.83,6.81
+20.893,Allyce Jones,14.05,29.32
+20.893,Emma Nelson,6.17,4.68
+20.893,Etta Tuionetoa,5.78,29.73
+20.893,Ting Chieh Wei,13.83,6.76
+20.943,Allyce Jones,14.15,29.29
+20.943,Emma Nelson,6.18,4.39
+20.943,Etta Tuionetoa,5.73,29.55
+20.943,Ting Chieh Wei,13.84,6.74
+20.993,Allyce Jones,14.15,29.28
+20.993,Emma Nelson,6.25,4.02
+20.993,Etta Tuionetoa,5.69,29.44
+20.993,Ting Chieh Wei,13.84,6.74
+21.043,Allyce Jones,14.15,29.24
+21.043,Emma Nelson,6.25,3.58
+21.043,Etta Tuionetoa,5.69,29.34
+21.043,Ting Chieh Wei,13.88,6.73
+21.093,Allyce Jones,14.15,29.24
+21.093,Emma Nelson,6.25,3.36
+21.093,Etta Tuionetoa,5.69,29.1
+21.093,Ting Chieh Wei,13.99,6.63
+21.143,Allyce Jones,14.15,29.24
+21.143,Emma Nelson,6.25,3.24
+21.143,Etta Tuionetoa,5.69,29.05
+21.143,Ting Chieh Wei,14.12,6.54
+21.193,Allyce Jones,14.09,29.25
+21.193,Emma Nelson,6.25,2.96
+21.193,Etta Tuionetoa,5.69,29.04
+21.193,Ting Chieh Wei,14.3,6.54
+21.243,Allyce Jones,13.98,29.27
+21.243,Emma Nelson,6.25,2.91
+21.243,Etta Tuionetoa,5.7,29.03
+21.243,Ting Chieh Wei,14.42,6.54
+21.293,Allyce Jones,13.89,29.21
+21.293,Emma Nelson,6.19,2.87
+21.293,Etta Tuionetoa,5.83,29.0
+21.293,Ting Chieh Wei,14.58,6.54
+21.343,Allyce Jones,13.87,29.12
+21.343,Emma Nelson,6.14,2.81
+21.343,Etta Tuionetoa,5.87,28.97
+21.343,Ting Chieh Wei,14.7,6.54
+21.393,Allyce Jones,13.86,29.12
+21.393,Emma Nelson,6.1,2.74
+21.393,Etta Tuionetoa,5.89,28.95
+21.393,Ting Chieh Wei,14.71,6.54
+21.443,Allyce Jones,13.84,29.12
+21.443,Emma Nelson,6.1,2.74
+21.443,Etta Tuionetoa,5.91,28.95
+21.443,Ting Chieh Wei,14.71,6.54
+21.493,Allyce Jones,13.83,29.12
+21.493,Emma Nelson,6.1,2.77
+21.493,Etta Tuionetoa,5.95,28.98
+21.493,Ting Chieh Wei,14.71,6.54
+21.543,Allyce Jones,13.79,29.03
+21.543,Emma Nelson,6.1,2.84
+21.543,Etta Tuionetoa,6.05,29.01
+21.543,Ting Chieh Wei,14.71,6.54
+21.593,Allyce Jones,13.69,28.92
+21.593,Emma Nelson,6.1,2.89
+21.593,Etta Tuionetoa,6.21,29.01
+21.593,Ting Chieh Wei,14.71,6.54
+21.643,Allyce Jones,13.54,28.92
+21.643,Emma Nelson,6.11,2.94
+21.643,Etta Tuionetoa,6.41,29.01
+21.643,Ting Chieh Wei,14.65,6.51
+21.693,Allyce Jones,13.32,28.92
+21.693,Emma Nelson,6.13,3.26
+21.693,Etta Tuionetoa,6.62,29.01
+21.693,Ting Chieh Wei,14.49,6.51
+21.743,Allyce Jones,13.12,28.86
+21.743,Emma Nelson,6.13,3.69
+21.743,Etta Tuionetoa,6.81,29.16
+21.743,Ting Chieh Wei,14.32,6.51
+21.793,Allyce Jones,13.05,28.72
+21.793,Emma Nelson,6.14,3.94
+21.793,Etta Tuionetoa,6.9,29.4
+21.793,Ting Chieh Wei,14.25,6.51
+21.843,Allyce Jones,13.05,28.65
+21.843,Emma Nelson,6.14,3.95
+21.843,Etta Tuionetoa,6.95,29.43
+21.843,Ting Chieh Wei,14.23,6.51
+21.893,Allyce Jones,13.05,28.68
+21.893,Emma Nelson,6.14,3.95
+21.893,Etta Tuionetoa,7.0,29.43
+21.893,Ting Chieh Wei,14.22,6.5
+21.943,Allyce Jones,13.05,28.79
+21.943,Emma Nelson,6.15,3.95
+21.943,Etta Tuionetoa,7.01,29.43
+21.943,Ting Chieh Wei,14.22,6.5
+21.993,Allyce Jones,13.05,28.93
+21.993,Emma Nelson,6.16,3.95
+21.993,Etta Tuionetoa,7.02,29.43
+21.993,Ting Chieh Wei,14.22,6.5
+22.043,Allyce Jones,13.1,29.06
+22.043,Emma Nelson,6.17,3.95
+22.043,Etta Tuionetoa,7.02,29.43
+22.043,Ting Chieh Wei,14.22,6.5
+22.093,Allyce Jones,13.2,29.06
+22.093,Emma Nelson,6.2,3.97
+22.093,Etta Tuionetoa,7.04,29.31
+22.093,Ting Chieh Wei,14.22,6.5
+22.143,Allyce Jones,13.24,29.02
+22.143,Emma Nelson,6.25,3.97
+22.143,Etta Tuionetoa,7.09,29.29
+22.143,Ting Chieh Wei,14.22,6.5
+22.193,Allyce Jones,13.24,29.01
+22.193,Emma Nelson,6.32,3.97
+22.193,Etta Tuionetoa,7.19,29.27
+22.193,Ting Chieh Wei,14.23,6.48
+22.243,Allyce Jones,13.24,29.02
+22.243,Emma Nelson,6.4,3.97
+22.243,Etta Tuionetoa,7.31,29.26
+22.243,Ting Chieh Wei,14.25,6.43
+22.293,Allyce Jones,13.24,29.05
+22.293,Emma Nelson,6.51,3.99
+22.293,Etta Tuionetoa,7.34,29.22
+22.293,Ting Chieh Wei,14.3,6.38
+22.343,Allyce Jones,13.24,29.08
+22.343,Emma Nelson,6.58,4.14
+22.343,Etta Tuionetoa,7.35,29.17
+22.343,Ting Chieh Wei,14.46,6.18
+22.393,Allyce Jones,13.19,29.09
+22.393,Emma Nelson,6.6,4.31
+22.393,Etta Tuionetoa,7.43,29.17
+22.393,Ting Chieh Wei,14.71,6.08
+22.443,Allyce Jones,13.09,29.11
+22.443,Emma Nelson,6.6,4.33
+22.443,Etta Tuionetoa,7.57,29.2
+22.443,Ting Chieh Wei,14.95,6.08
+22.493,Allyce Jones,13.04,29.11
+22.493,Emma Nelson,6.6,4.33
+22.493,Etta Tuionetoa,7.75,29.19
+22.493,Ting Chieh Wei,14.99,6.08
+22.543,Allyce Jones,12.99,29.11
+22.543,Emma Nelson,6.6,4.36
+22.543,Etta Tuionetoa,7.99,29.18
+22.543,Ting Chieh Wei,14.99,6.08
+22.593,Allyce Jones,12.83,29.14
+22.593,Emma Nelson,6.6,4.37
+22.593,Etta Tuionetoa,8.25,29.17
+22.593,Ting Chieh Wei,14.99,6.08
+22.643,Allyce Jones,12.53,29.32
+22.643,Emma Nelson,6.49,4.38
+22.643,Etta Tuionetoa,8.4,29.17
+22.643,Ting Chieh Wei,14.99,6.15
+22.693,Allyce Jones,12.13,29.36
+22.693,Emma Nelson,6.36,4.41
+22.693,Etta Tuionetoa,8.45,29.17
+22.693,Ting Chieh Wei,14.99,6.28
+22.743,Allyce Jones,11.73,29.4
+22.743,Emma Nelson,6.28,4.55
+22.743,Etta Tuionetoa,8.5,29.19
+22.743,Ting Chieh Wei,14.93,6.42
+22.793,Allyce Jones,11.35,29.61
+22.793,Emma Nelson,6.21,4.91
+22.793,Etta Tuionetoa,8.55,29.19
+22.793,Ting Chieh Wei,14.89,6.51
+22.843,Allyce Jones,11.2,29.99
+22.843,Emma Nelson,6.19,5.38
+22.843,Etta Tuionetoa,8.58,29.2
+22.843,Ting Chieh Wei,14.86,6.58
+22.893,Allyce Jones,11.1,30.13
+22.893,Emma Nelson,6.18,5.79
+22.893,Etta Tuionetoa,8.59,29.21
+22.893,Ting Chieh Wei,14.85,6.75
+22.943,Allyce Jones,11.0,30.2
+22.943,Emma Nelson,6.17,6.07
+22.943,Etta Tuionetoa,8.6,29.21
+22.943,Ting Chieh Wei,14.85,6.95
+22.993,Allyce Jones,10.89,30.26
+22.993,Emma Nelson,6.13,6.36
+22.993,Etta Tuionetoa,8.61,29.23
+22.993,Ting Chieh Wei,14.81,7.26
+23.043,Allyce Jones,10.8,30.35
+23.043,Emma Nelson,6.09,6.4
+23.043,Etta Tuionetoa,8.61,29.23
+23.043,Ting Chieh Wei,14.74,7.69
+23.093,Allyce Jones,10.72,30.51
+23.093,Emma Nelson,6.07,6.45
+23.093,Etta Tuionetoa,8.61,29.26
+23.093,Ting Chieh Wei,14.62,8.5
+23.143,Allyce Jones,10.72,30.84
+23.143,Emma Nelson,6.03,6.9
+23.143,Etta Tuionetoa,8.61,29.36
+23.143,Ting Chieh Wei,14.53,9.19
+23.193,Allyce Jones,10.72,30.87
+23.193,Emma Nelson,5.93,7.9
+23.193,Etta Tuionetoa,8.61,29.57
+23.193,Ting Chieh Wei,14.41,9.57
+23.243,Allyce Jones,10.72,30.88
+23.243,Emma Nelson,5.8,8.93
+23.243,Etta Tuionetoa,8.61,29.78
+23.243,Ting Chieh Wei,14.36,9.67
+23.293,Allyce Jones,10.72,30.88
+23.293,Emma Nelson,5.52,9.23
+23.293,Etta Tuionetoa,8.6,30.01
+23.293,Ting Chieh Wei,14.28,9.7
+23.343,Allyce Jones,10.73,30.88
+23.343,Emma Nelson,5.32,9.33
+23.343,Etta Tuionetoa,8.48,30.18
+23.343,Ting Chieh Wei,14.16,9.77
+23.393,Allyce Jones,10.8,30.88
+23.393,Emma Nelson,5.23,9.45
+23.393,Etta Tuionetoa,8.24,30.4
+23.393,Ting Chieh Wei,13.97,9.84
+23.443,Allyce Jones,10.86,30.87
+23.443,Emma Nelson,4.98,9.48
+23.443,Etta Tuionetoa,7.95,30.48
+23.443,Ting Chieh Wei,13.73,10.12
+23.493,Allyce Jones,11.0,30.83
+23.493,Emma Nelson,4.64,9.54
+23.493,Etta Tuionetoa,7.69,30.49
+23.493,Ting Chieh Wei,13.48,10.42
+23.543,Allyce Jones,11.21,30.76
+23.543,Emma Nelson,4.14,9.58
+23.543,Etta Tuionetoa,7.42,30.63
+23.543,Ting Chieh Wei,13.31,10.42
+23.593,Allyce Jones,11.48,30.71
+23.593,Emma Nelson,3.73,9.62
+23.593,Etta Tuionetoa,7.11,31.1
+23.593,Ting Chieh Wei,13.28,10.42
+23.643,Allyce Jones,11.78,30.69
+23.643,Emma Nelson,3.3,9.71
+23.643,Etta Tuionetoa,6.77,31.47
+23.643,Ting Chieh Wei,13.25,10.44
+23.693,Allyce Jones,11.94,30.66
+23.693,Emma Nelson,2.94,10.11
+23.693,Etta Tuionetoa,6.43,31.54
+23.693,Ting Chieh Wei,13.19,10.44
+23.743,Allyce Jones,12.11,30.64
+23.743,Emma Nelson,2.61,10.36
+23.743,Etta Tuionetoa,6.15,31.54
+23.743,Ting Chieh Wei,13.11,10.45
+23.793,Allyce Jones,12.26,30.59
+23.793,Emma Nelson,2.3,10.51
+23.793,Etta Tuionetoa,5.93,31.54
+23.793,Ting Chieh Wei,13.03,10.45
+23.843,Allyce Jones,12.37,30.52
+23.843,Emma Nelson,2.11,10.88
+23.843,Etta Tuionetoa,5.72,31.54
+23.843,Ting Chieh Wei,12.95,10.43
+23.893,Allyce Jones,12.43,30.41
+23.893,Emma Nelson,1.99,11.19
+23.893,Etta Tuionetoa,5.53,31.54
+23.893,Ting Chieh Wei,12.89,10.42
+23.943,Allyce Jones,12.45,30.34
+23.943,Emma Nelson,1.81,11.5
+23.943,Etta Tuionetoa,5.35,31.38
+23.943,Ting Chieh Wei,12.87,10.42
+23.993,Allyce Jones,12.47,30.33
+23.993,Emma Nelson,1.69,11.85
+23.993,Etta Tuionetoa,5.1,31.3
+23.993,Ting Chieh Wei,12.87,10.41
+24.043,Allyce Jones,12.49,30.31
+24.043,Emma Nelson,1.59,11.9
+24.043,Etta Tuionetoa,4.83,31.24
+24.043,Ting Chieh Wei,12.87,10.41
+24.093,Allyce Jones,12.51,30.22
+24.093,Emma Nelson,1.53,11.92
+24.093,Etta Tuionetoa,4.61,31.2
+24.093,Ting Chieh Wei,12.86,10.41
+24.143,Allyce Jones,12.57,30.1
+24.143,Emma Nelson,1.5,11.95
+24.143,Etta Tuionetoa,4.44,31.11
+24.143,Ting Chieh Wei,12.84,10.34
+24.193,Allyce Jones,12.67,30.05
+24.193,Emma Nelson,1.5,11.95
+24.193,Etta Tuionetoa,4.4,31.08
+24.193,Ting Chieh Wei,12.83,10.26
+24.243,Allyce Jones,12.83,30.05
+24.243,Emma Nelson,1.5,11.95
+24.243,Etta Tuionetoa,4.36,31.08
+24.243,Ting Chieh Wei,12.83,10.22
+24.293,Allyce Jones,13.03,30.05
+24.293,Emma Nelson,1.5,11.95
+24.293,Etta Tuionetoa,4.35,31.08
+24.293,Ting Chieh Wei,12.83,10.18
+24.343,Allyce Jones,13.24,30.05
+24.343,Emma Nelson,1.5,11.94
+24.343,Etta Tuionetoa,4.35,31.07
+24.343,Ting Chieh Wei,12.83,10.17
+24.393,Allyce Jones,13.48,30.05
+24.393,Emma Nelson,1.51,11.88
+24.393,Etta Tuionetoa,4.35,30.96
+24.393,Ting Chieh Wei,12.83,10.16
+24.443,Allyce Jones,13.7,30.12
+24.443,Emma Nelson,1.57,11.74
+24.443,Etta Tuionetoa,4.35,30.86
+24.443,Ting Chieh Wei,12.85,10.16
+24.493,Allyce Jones,13.87,30.14
+24.493,Emma Nelson,1.75,11.61
+24.493,Etta Tuionetoa,4.35,30.86
+24.493,Ting Chieh Wei,12.88,10.16
+24.543,Allyce Jones,13.94,30.14
+24.543,Emma Nelson,2.02,11.32
+24.543,Etta Tuionetoa,4.38,30.86
+24.543,Ting Chieh Wei,12.93,10.16
+24.593,Allyce Jones,13.96,30.14
+24.593,Emma Nelson,2.4,10.99
+24.593,Etta Tuionetoa,4.41,30.86
+24.593,Ting Chieh Wei,13.0,10.16
+24.643,Allyce Jones,14.13,30.14
+24.643,Emma Nelson,2.84,10.92
+24.643,Etta Tuionetoa,4.49,30.78
+24.643,Ting Chieh Wei,13.08,10.2
+24.693,Allyce Jones,14.43,30.14
+24.693,Emma Nelson,3.28,10.91
+24.693,Etta Tuionetoa,4.6,30.66
+24.693,Ting Chieh Wei,13.17,10.27
+24.743,Allyce Jones,14.84,30.18
+24.743,Emma Nelson,3.72,10.89
+24.743,Etta Tuionetoa,4.78,30.51
+24.743,Ting Chieh Wei,13.25,10.32
+24.793,Allyce Jones,15.35,30.2
+24.793,Emma Nelson,4.1,10.86
+24.793,Etta Tuionetoa,5.0,30.44
+24.793,Ting Chieh Wei,13.31,10.44
+24.843,Allyce Jones,15.98,30.21
+24.843,Emma Nelson,4.46,10.84
+24.843,Etta Tuionetoa,5.27,30.4
+24.843,Ting Chieh Wei,13.34,10.56
+24.893,Allyce Jones,16.59,30.21
+24.893,Emma Nelson,4.76,10.83
+24.893,Etta Tuionetoa,5.55,30.38
+24.893,Ting Chieh Wei,13.38,10.61
+24.943,Allyce Jones,17.1,30.37
+24.943,Emma Nelson,4.95,10.83
+24.943,Etta Tuionetoa,5.86,30.27
+24.943,Ting Chieh Wei,13.43,10.62
+24.993,Allyce Jones,17.51,30.65
+24.993,Emma Nelson,5.02,10.83
+24.993,Etta Tuionetoa,6.15,30.11
+24.993,Ting Chieh Wei,13.54,10.68
+25.043,Allyce Jones,17.87,30.8
+25.043,Emma Nelson,5.09,10.79
+25.043,Etta Tuionetoa,6.38,30.11
+25.043,Ting Chieh Wei,13.73,10.7
+25.093,Allyce Jones,18.05,30.9
+25.093,Emma Nelson,5.21,10.71
+25.093,Etta Tuionetoa,6.54,30.11
+25.093,Ting Chieh Wei,13.94,10.78
+25.143,Allyce Jones,18.16,30.93
+25.143,Emma Nelson,5.34,10.46
+25.143,Etta Tuionetoa,6.68,30.11
+25.143,Ting Chieh Wei,14.12,11.18
+25.193,Allyce Jones,18.26,30.96
+25.193,Emma Nelson,5.53,10.12
+25.193,Etta Tuionetoa,6.89,30.11
+25.193,Ting Chieh Wei,14.27,11.45
+25.243,Allyce Jones,18.37,30.97
+25.243,Emma Nelson,5.74,9.91
+25.243,Etta Tuionetoa,7.05,30.15
+25.243,Ting Chieh Wei,14.37,11.5
+25.293,Allyce Jones,18.48,31.0
+25.293,Emma Nelson,5.95,9.91
+25.293,Etta Tuionetoa,7.13,30.26
+25.293,Ting Chieh Wei,14.5,11.54
+25.343,Allyce Jones,18.58,31.05
+25.343,Emma Nelson,6.14,9.91
+25.343,Etta Tuionetoa,7.13,30.29
+25.343,Ting Chieh Wei,14.62,11.61
+25.393,Allyce Jones,18.67,31.07
+25.393,Emma Nelson,6.31,9.91
+25.393,Etta Tuionetoa,7.13,30.3
+25.393,Ting Chieh Wei,14.73,11.71
+25.443,Allyce Jones,18.81,31.13
+25.443,Emma Nelson,6.48,9.84
+25.443,Etta Tuionetoa,7.13,30.33
+25.443,Ting Chieh Wei,14.8,11.79
+25.493,Allyce Jones,18.96,31.25
+25.493,Emma Nelson,6.56,9.8
+25.493,Etta Tuionetoa,7.13,30.4
+25.493,Ting Chieh Wei,14.85,12.07
+25.543,Allyce Jones,19.05,31.46
+25.543,Emma Nelson,6.59,9.8
+25.543,Etta Tuionetoa,7.13,30.5
+25.543,Ting Chieh Wei,14.99,12.22
+25.593,Allyce Jones,19.05,31.85
+25.593,Emma Nelson,6.62,9.8
+25.593,Etta Tuionetoa,7.12,30.63
+25.593,Ting Chieh Wei,15.1,12.26
+25.643,Allyce Jones,19.05,32.14
+25.643,Emma Nelson,6.66,9.8
+25.643,Etta Tuionetoa,7.1,30.66
+25.643,Ting Chieh Wei,15.21,12.38
+25.693,Allyce Jones,19.05,32.14
+25.693,Emma Nelson,6.74,9.67
+25.693,Etta Tuionetoa,7.1,30.7
+25.693,Ting Chieh Wei,15.34,12.55
+25.743,Allyce Jones,19.05,32.14
+25.743,Emma Nelson,6.83,9.41
+25.743,Etta Tuionetoa,7.08,30.7
+25.743,Ting Chieh Wei,15.42,12.65
+25.793,Allyce Jones,19.04,32.14
+25.793,Emma Nelson,6.88,9.38
+25.793,Etta Tuionetoa,7.07,30.7
+25.793,Ting Chieh Wei,15.52,12.67
+25.843,Allyce Jones,18.99,32.14
+25.843,Emma Nelson,6.89,9.38
+25.843,Etta Tuionetoa,7.07,30.7
+25.843,Ting Chieh Wei,15.6,12.67
+25.893,Allyce Jones,18.91,32.03
+25.893,Emma Nelson,6.89,9.36
+25.893,Etta Tuionetoa,7.04,30.68
+25.893,Ting Chieh Wei,15.68,12.67
+25.943,Allyce Jones,18.74,31.78
+25.943,Emma Nelson,6.89,9.35
+25.943,Etta Tuionetoa,6.97,30.68
+25.943,Ting Chieh Wei,15.77,12.67
+25.993,Allyce Jones,18.5,31.47
+25.993,Emma Nelson,6.89,9.35
+25.993,Etta Tuionetoa,6.91,30.3
+25.993,Ting Chieh Wei,15.83,12.67
+26.043,Allyce Jones,18.23,31.09
+26.043,Emma Nelson,6.89,9.36
+26.043,Etta Tuionetoa,6.89,29.81
+26.043,Ting Chieh Wei,15.89,12.66
+26.093,Allyce Jones,17.94,30.84
+26.093,Emma Nelson,6.88,9.38
+26.093,Etta Tuionetoa,6.88,29.69
+26.093,Ting Chieh Wei,15.97,12.63
+26.143,Allyce Jones,17.64,30.81
+26.143,Emma Nelson,6.87,9.38
+26.143,Etta Tuionetoa,6.85,29.62
+26.143,Ting Chieh Wei,16.02,12.57
+26.193,Allyce Jones,17.32,30.75
+26.193,Emma Nelson,6.85,9.39
+26.193,Etta Tuionetoa,6.84,29.59
+26.193,Ting Chieh Wei,16.07,12.45
+26.243,Allyce Jones,17.0,30.69
+26.243,Emma Nelson,6.83,9.49
+26.243,Etta Tuionetoa,6.82,29.57
+26.243,Ting Chieh Wei,16.14,12.31
+26.293,Allyce Jones,16.76,30.67
+26.293,Emma Nelson,6.81,9.54
+26.293,Etta Tuionetoa,6.8,29.56
+26.293,Ting Chieh Wei,16.23,12.17
+26.343,Allyce Jones,16.62,30.64
+26.343,Emma Nelson,6.78,9.63
+26.343,Etta Tuionetoa,6.79,29.54
+26.343,Ting Chieh Wei,16.34,12.09
+26.393,Allyce Jones,16.51,30.54
+26.393,Emma Nelson,6.76,9.73
+26.393,Etta Tuionetoa,6.72,29.4
+26.393,Ting Chieh Wei,16.45,12.07
+26.443,Allyce Jones,16.38,30.36
+26.443,Emma Nelson,6.75,9.78
+26.443,Etta Tuionetoa,6.46,29.26
+26.443,Ting Chieh Wei,16.54,12.03
+26.493,Allyce Jones,16.18,30.27
+26.493,Emma Nelson,6.74,9.8
+26.493,Etta Tuionetoa,6.04,29.22
+26.493,Ting Chieh Wei,16.54,12.01
+26.543,Allyce Jones,15.89,30.14
+26.543,Emma Nelson,6.71,9.81
+26.543,Etta Tuionetoa,5.55,29.16
+26.543,Ting Chieh Wei,16.54,11.94
+26.593,Allyce Jones,15.57,30.01
+26.593,Emma Nelson,6.6,9.83
+26.593,Etta Tuionetoa,5.04,29.1
+26.593,Ting Chieh Wei,16.54,11.89
+26.643,Allyce Jones,15.23,29.9
+26.643,Emma Nelson,6.45,9.9
+26.643,Etta Tuionetoa,4.67,29.05
+26.643,Ting Chieh Wei,16.54,11.88
+26.693,Allyce Jones,14.88,29.9
+26.693,Emma Nelson,6.24,10.04
+26.693,Etta Tuionetoa,4.3,29.03
+26.693,Ting Chieh Wei,16.52,11.88
+26.743,Allyce Jones,14.59,29.9
+26.743,Emma Nelson,6.04,10.25
+26.743,Etta Tuionetoa,3.92,28.98
+26.743,Ting Chieh Wei,16.4,11.87
+26.793,Allyce Jones,14.32,29.9
+26.793,Emma Nelson,5.86,10.53
+26.793,Etta Tuionetoa,3.64,28.98
+26.793,Ting Chieh Wei,16.27,11.85
+26.843,Allyce Jones,14.02,29.9
+26.843,Emma Nelson,5.69,10.93
+26.843,Etta Tuionetoa,3.43,28.98
+26.843,Ting Chieh Wei,16.17,11.83
+26.893,Allyce Jones,13.79,29.92
+26.893,Emma Nelson,5.47,11.25
+26.893,Etta Tuionetoa,3.25,28.94
+26.893,Ting Chieh Wei,16.05,11.8
+26.943,Allyce Jones,13.67,29.99
+26.943,Emma Nelson,5.44,11.31
+26.943,Etta Tuionetoa,3.06,28.9
+26.943,Ting Chieh Wei,15.93,11.74
+26.993,Allyce Jones,13.57,30.02
+26.993,Emma Nelson,5.44,11.36
+26.993,Etta Tuionetoa,2.9,28.88
+26.993,Ting Chieh Wei,15.82,11.73
+27.043,Allyce Jones,13.52,30.02
+27.043,Emma Nelson,5.44,11.39
+27.043,Etta Tuionetoa,2.74,28.83
+27.043,Ting Chieh Wei,15.74,11.73
+27.093,Allyce Jones,13.47,30.05
+27.093,Emma Nelson,5.44,11.43
+27.093,Etta Tuionetoa,2.62,28.73
+27.093,Ting Chieh Wei,15.66,11.75
+27.143,Allyce Jones,13.39,30.05
+27.143,Emma Nelson,5.44,11.49
+27.143,Etta Tuionetoa,2.51,28.65
+27.143,Ting Chieh Wei,15.5,11.82
+27.193,Allyce Jones,13.29,30.05
+27.193,Emma Nelson,5.47,11.5
+27.193,Etta Tuionetoa,2.5,28.6
+27.193,Ting Chieh Wei,15.26,11.84
+27.243,Allyce Jones,13.2,30.05
+27.243,Emma Nelson,5.55,11.51
+27.243,Etta Tuionetoa,2.5,28.59
+27.243,Ting Chieh Wei,14.94,11.91
+27.293,Allyce Jones,13.14,30.05
+27.293,Emma Nelson,5.64,11.81
+27.293,Etta Tuionetoa,2.5,28.59
+27.293,Ting Chieh Wei,14.68,12.03
+27.343,Allyce Jones,13.14,30.05
+27.343,Emma Nelson,5.7,12.32
+27.343,Etta Tuionetoa,2.5,28.59
+27.343,Ting Chieh Wei,14.68,12.04
+27.393,Allyce Jones,13.14,30.04
+27.393,Emma Nelson,5.73,12.64
+27.393,Etta Tuionetoa,2.5,28.59
+27.393,Ting Chieh Wei,14.68,12.05
+27.443,Allyce Jones,13.14,29.83
+27.443,Emma Nelson,5.74,12.64
+27.443,Etta Tuionetoa,2.52,28.6
+27.443,Ting Chieh Wei,14.68,12.06
+27.493,Allyce Jones,13.14,29.69
+27.493,Emma Nelson,5.74,12.64
+27.493,Etta Tuionetoa,2.54,28.6
+27.493,Ting Chieh Wei,14.68,12.06
+27.543,Allyce Jones,13.17,29.69
+27.543,Emma Nelson,5.75,12.64
+27.543,Etta Tuionetoa,2.6,28.79
+27.543,Ting Chieh Wei,14.69,12.06
+27.593,Allyce Jones,13.26,29.69
+27.593,Emma Nelson,5.79,12.64
+27.593,Etta Tuionetoa,2.68,29.01
+27.593,Ting Chieh Wei,14.78,12.03
+27.643,Allyce Jones,13.43,29.69
+27.643,Emma Nelson,5.9,12.64
+27.643,Etta Tuionetoa,2.85,29.16
+27.643,Ting Chieh Wei,14.8,12.03
+27.693,Allyce Jones,13.61,29.69
+27.693,Emma Nelson,6.1,12.37
+27.693,Etta Tuionetoa,3.16,29.28
+27.693,Ting Chieh Wei,14.81,12.02
+27.743,Allyce Jones,13.7,29.8
+27.743,Emma Nelson,6.42,12.15
+27.743,Etta Tuionetoa,3.5,29.39
+27.743,Ting Chieh Wei,14.92,12.0
+27.793,Allyce Jones,13.74,29.86
+27.793,Emma Nelson,6.73,12.14
+27.793,Etta Tuionetoa,3.82,29.42
+27.793,Ting Chieh Wei,15.16,11.99
+27.843,Allyce Jones,13.83,29.89
+27.843,Emma Nelson,6.99,12.07
+27.843,Etta Tuionetoa,4.16,29.87
+27.843,Ting Chieh Wei,15.52,11.97
+27.893,Allyce Jones,13.95,29.94
+27.893,Emma Nelson,7.16,12.03
+27.893,Etta Tuionetoa,4.42,30.08
+27.893,Ting Chieh Wei,16.0,11.93
+27.943,Allyce Jones,14.12,30.0
+27.943,Emma Nelson,7.3,11.93
+27.943,Etta Tuionetoa,4.75,30.29
+27.943,Ting Chieh Wei,16.48,11.83
+27.993,Allyce Jones,14.37,30.12
+27.993,Emma Nelson,7.42,11.86
+27.993,Etta Tuionetoa,5.05,30.52
+27.993,Ting Chieh Wei,16.77,11.75
+28.043,Allyce Jones,14.62,30.31
+28.043,Emma Nelson,7.49,11.71
+28.043,Etta Tuionetoa,5.32,30.84
+28.043,Ting Chieh Wei,17.09,11.69
+28.093,Allyce Jones,14.85,30.72
+28.093,Emma Nelson,7.51,11.69
+28.093,Etta Tuionetoa,5.51,31.12
+28.093,Ting Chieh Wei,17.44,11.68
+28.143,Allyce Jones,14.99,30.97
+28.143,Emma Nelson,7.51,11.66
+28.143,Etta Tuionetoa,5.66,31.45
+28.143,Ting Chieh Wei,17.73,11.68
+28.193,Allyce Jones,15.07,30.97
+28.193,Emma Nelson,7.51,11.51
+28.193,Etta Tuionetoa,5.74,31.74
+28.193,Ting Chieh Wei,17.89,11.66
+28.243,Allyce Jones,15.11,30.97
+28.243,Emma Nelson,7.51,11.3
+28.243,Etta Tuionetoa,5.78,31.74
+28.243,Ting Chieh Wei,18.09,11.57
+28.293,Allyce Jones,15.19,30.97
+28.293,Emma Nelson,7.51,11.04
+28.293,Etta Tuionetoa,5.85,31.74
+28.293,Ting Chieh Wei,18.3,11.55
+28.343,Allyce Jones,15.35,30.97
+28.343,Emma Nelson,7.51,10.82
+28.343,Etta Tuionetoa,5.88,31.74
+28.343,Ting Chieh Wei,18.45,11.45
+28.393,Allyce Jones,15.53,30.77
+28.393,Emma Nelson,7.5,10.56
+28.393,Etta Tuionetoa,5.9,31.78
+28.393,Ting Chieh Wei,18.59,11.35
+28.443,Allyce Jones,15.68,30.74
+28.443,Emma Nelson,7.5,10.41
+28.443,Etta Tuionetoa,5.92,31.85
+28.443,Ting Chieh Wei,18.74,11.15
+28.493,Allyce Jones,15.84,30.74
+28.493,Emma Nelson,7.5,10.39
+28.493,Etta Tuionetoa,5.93,31.85
+28.493,Ting Chieh Wei,18.87,10.9
+28.543,Allyce Jones,15.97,30.74
+28.543,Emma Nelson,7.5,10.35
+28.543,Etta Tuionetoa,5.97,31.85
+28.543,Ting Chieh Wei,18.93,10.71
+28.593,Allyce Jones,16.1,30.74
+28.593,Emma Nelson,7.49,10.29
+28.593,Etta Tuionetoa,6.01,31.85
+28.593,Ting Chieh Wei,18.93,10.36
+28.643,Allyce Jones,16.12,30.71
+28.643,Emma Nelson,7.49,10.25
+28.643,Etta Tuionetoa,6.05,31.85
+28.643,Ting Chieh Wei,18.93,9.94
+28.693,Allyce Jones,16.13,30.73
+28.693,Emma Nelson,7.48,10.23
+28.693,Etta Tuionetoa,6.1,31.95
+28.693,Ting Chieh Wei,18.93,9.61
+28.743,Allyce Jones,16.13,30.74
+28.743,Emma Nelson,7.47,10.06
+28.743,Etta Tuionetoa,6.14,31.96
+28.743,Ting Chieh Wei,18.93,9.53
+28.793,Allyce Jones,16.14,30.76
+28.793,Emma Nelson,7.46,9.93
+28.793,Etta Tuionetoa,6.16,31.97
+28.793,Ting Chieh Wei,18.91,9.46
+28.843,Allyce Jones,16.14,30.8
+28.843,Emma Nelson,7.38,9.75
+28.843,Etta Tuionetoa,6.19,32.01
+28.843,Ting Chieh Wei,18.75,9.46
+28.893,Allyce Jones,16.21,30.89
+28.893,Emma Nelson,7.37,9.69
+28.893,Etta Tuionetoa,6.26,32.04
+28.893,Ting Chieh Wei,18.43,9.33
+28.943,Allyce Jones,16.3,30.91
+28.943,Emma Nelson,7.37,9.51
+28.943,Etta Tuionetoa,6.39,32.07
+28.943,Ting Chieh Wei,18.11,9.1
+28.993,Allyce Jones,16.36,30.91
+28.993,Emma Nelson,7.36,9.3
+28.993,Etta Tuionetoa,6.55,32.08
+28.993,Ting Chieh Wei,17.73,9.04
+29.043,Allyce Jones,16.36,30.93
+29.043,Emma Nelson,7.35,9.27
+29.043,Etta Tuionetoa,6.73,32.08
+29.043,Ting Chieh Wei,17.27,9.02
+29.093,Allyce Jones,16.37,31.05
+29.093,Emma Nelson,7.31,9.27
+29.093,Etta Tuionetoa,6.91,32.08
+29.093,Ting Chieh Wei,16.85,8.99
+29.143,Allyce Jones,16.38,31.05
+29.143,Emma Nelson,7.31,9.23
+29.143,Etta Tuionetoa,6.95,32.08
+29.143,Ting Chieh Wei,16.52,8.98
+29.193,Allyce Jones,16.4,31.05
+29.193,Emma Nelson,7.31,9.15
+29.193,Etta Tuionetoa,6.96,32.08
+29.193,Ting Chieh Wei,16.41,8.92
+29.243,Allyce Jones,16.41,31.1
+29.243,Emma Nelson,7.31,9.07
+29.243,Etta Tuionetoa,6.97,32.08
+29.243,Ting Chieh Wei,16.34,8.87
+29.293,Allyce Jones,16.44,31.15
+29.293,Emma Nelson,7.31,9.03
+29.293,Etta Tuionetoa,6.98,32.15
+29.293,Ting Chieh Wei,16.32,8.85
+29.343,Allyce Jones,16.45,31.22
+29.343,Emma Nelson,7.31,9.03
+29.343,Etta Tuionetoa,6.98,32.23
+29.343,Ting Chieh Wei,16.29,8.59
+29.393,Allyce Jones,16.45,31.22
+29.393,Emma Nelson,7.33,9.01
+29.393,Etta Tuionetoa,6.98,32.28
+29.393,Ting Chieh Wei,16.22,8.53
+29.443,Allyce Jones,16.45,31.22
+29.443,Emma Nelson,7.36,8.83
+29.443,Etta Tuionetoa,6.98,32.28
+29.443,Ting Chieh Wei,16.11,8.53
+29.493,Allyce Jones,16.45,31.27
+29.493,Emma Nelson,7.4,8.63
+29.493,Etta Tuionetoa,7.0,32.28
+29.493,Ting Chieh Wei,15.99,8.53
+29.543,Allyce Jones,16.45,31.49
+29.543,Emma Nelson,7.42,8.52
+29.543,Etta Tuionetoa,7.03,32.31
+29.543,Ting Chieh Wei,15.87,8.53
+29.593,Allyce Jones,16.44,31.5
+29.593,Emma Nelson,7.43,8.41
+29.593,Etta Tuionetoa,7.05,32.32
+29.593,Ting Chieh Wei,15.77,8.53
+29.643,Allyce Jones,16.44,31.51
+29.643,Emma Nelson,7.43,8.33
+29.643,Etta Tuionetoa,7.06,32.32
+29.643,Ting Chieh Wei,15.7,8.8
+29.693,Allyce Jones,16.43,31.51
+29.693,Emma Nelson,7.43,8.25
+29.693,Etta Tuionetoa,7.07,32.32
+29.693,Ting Chieh Wei,15.67,8.96
+29.743,Allyce Jones,16.42,31.51
+29.743,Emma Nelson,7.43,8.21
+29.743,Etta Tuionetoa,7.12,32.32
+29.743,Ting Chieh Wei,15.62,9.0
+29.793,Allyce Jones,16.4,31.5
+29.793,Emma Nelson,7.43,8.13
+29.793,Etta Tuionetoa,7.18,32.32
+29.793,Ting Chieh Wei,15.55,9.02
+29.843,Allyce Jones,16.39,31.5
+29.843,Emma Nelson,7.31,8.08
+29.843,Etta Tuionetoa,7.25,32.31
+29.843,Ting Chieh Wei,15.44,9.03
+29.893,Allyce Jones,16.37,31.49
+29.893,Emma Nelson,7.08,8.08
+29.893,Etta Tuionetoa,7.31,32.31
+29.893,Ting Chieh Wei,15.25,9.09
+29.943,Allyce Jones,16.33,31.43
+29.943,Emma Nelson,6.8,8.08
+29.943,Etta Tuionetoa,7.41,32.31
+29.943,Ting Chieh Wei,15.01,9.3
+29.993,Allyce Jones,16.3,31.35
+29.993,Emma Nelson,6.58,8.08
+29.993,Etta Tuionetoa,7.52,32.31
+29.993,Ting Chieh Wei,14.78,9.53
+30.043,Allyce Jones,16.24,31.26
+30.043,Emma Nelson,6.37,8.08
+30.043,Etta Tuionetoa,7.61,32.31
+30.043,Ting Chieh Wei,14.54,9.65
+30.093,Allyce Jones,16.16,31.22
+30.093,Emma Nelson,6.18,8.22
+30.093,Etta Tuionetoa,7.67,32.34
+30.093,Ting Chieh Wei,14.29,9.7
+30.143,Allyce Jones,16.07,31.15
+30.143,Emma Nelson,6.05,8.36
+30.143,Etta Tuionetoa,7.71,32.38
+30.143,Ting Chieh Wei,14.03,10.03
+30.193,Allyce Jones,15.97,31.06
+30.193,Emma Nelson,6.0,8.37
+30.193,Etta Tuionetoa,7.71,32.49
+30.193,Ting Chieh Wei,13.67,10.72
+30.243,Allyce Jones,15.87,31.04
+30.243,Emma Nelson,5.96,8.44
+30.243,Etta Tuionetoa,7.71,32.54
+30.243,Ting Chieh Wei,13.28,11.44
+30.293,Allyce Jones,15.78,31.02
+30.293,Emma Nelson,5.84,8.48
+30.293,Etta Tuionetoa,7.71,32.6
+30.293,Ting Chieh Wei,12.98,11.67
+30.343,Allyce Jones,15.66,30.98
+30.343,Emma Nelson,5.66,8.56
+30.343,Etta Tuionetoa,7.71,32.66
+30.343,Ting Chieh Wei,12.83,11.69
+30.393,Allyce Jones,15.53,30.98
+30.393,Emma Nelson,5.5,9.11
+30.393,Etta Tuionetoa,7.7,32.73
+30.393,Ting Chieh Wei,12.66,11.79
+30.443,Allyce Jones,15.47,30.96
+30.443,Emma Nelson,5.4,9.91
+30.443,Etta Tuionetoa,7.65,32.75
+30.443,Ting Chieh Wei,12.39,11.9
+30.493,Allyce Jones,15.39,30.7
+30.493,Emma Nelson,5.27,10.44
+30.493,Etta Tuionetoa,7.61,32.82
+30.493,Ting Chieh Wei,11.94,11.99
+30.543,Allyce Jones,15.25,30.62
+30.543,Emma Nelson,5.21,10.51
+30.543,Etta Tuionetoa,7.55,33.0
+30.543,Ting Chieh Wei,11.34,12.07
+30.593,Allyce Jones,15.04,30.6
+30.593,Emma Nelson,5.18,10.58
+30.593,Etta Tuionetoa,7.46,33.0
+30.593,Ting Chieh Wei,10.77,12.15
+30.643,Allyce Jones,14.81,30.58
+30.643,Emma Nelson,5.13,10.77
+30.643,Etta Tuionetoa,7.28,33.0
+30.643,Ting Chieh Wei,10.32,12.19
+30.693,Allyce Jones,14.7,30.55
+30.693,Emma Nelson,5.12,11.33
+30.693,Etta Tuionetoa,6.98,33.0
+30.693,Ting Chieh Wei,9.91,12.26
+30.743,Allyce Jones,14.67,30.51
+30.743,Emma Nelson,5.12,11.34
+30.743,Etta Tuionetoa,6.68,33.0
+30.743,Ting Chieh Wei,9.57,12.33
+30.793,Allyce Jones,14.61,30.49
+30.793,Emma Nelson,5.12,11.34
+30.793,Etta Tuionetoa,6.47,33.0
+30.793,Ting Chieh Wei,9.3,12.37
+30.843,Allyce Jones,14.5,30.49
+30.843,Emma Nelson,5.12,11.34
+30.843,Etta Tuionetoa,6.33,33.0
+30.843,Ting Chieh Wei,9.06,12.37
+30.893,Allyce Jones,14.37,30.49
+30.893,Emma Nelson,5.12,11.34
+30.893,Etta Tuionetoa,6.18,33.0
+30.893,Ting Chieh Wei,8.74,12.37
+30.943,Allyce Jones,14.23,30.54
+30.943,Emma Nelson,5.13,11.34
+30.943,Etta Tuionetoa,6.13,33.0
+30.943,Ting Chieh Wei,8.49,12.33
+30.993,Allyce Jones,14.12,30.54
+30.993,Emma Nelson,5.13,11.32
+30.993,Etta Tuionetoa,6.13,33.02
+30.993,Ting Chieh Wei,8.33,12.33
+31.043,Allyce Jones,14.02,30.76
+31.043,Emma Nelson,5.13,11.31
+31.043,Etta Tuionetoa,6.13,32.96
+31.043,Ting Chieh Wei,8.21,12.29
+31.093,Allyce Jones,13.9,31.04
+31.093,Emma Nelson,5.13,11.25
+31.093,Etta Tuionetoa,6.13,32.96
+31.093,Ting Chieh Wei,8.11,12.24
+31.143,Allyce Jones,13.79,31.2
+31.143,Emma Nelson,5.13,11.23
+31.143,Etta Tuionetoa,6.13,32.96
+31.143,Ting Chieh Wei,7.97,12.14
+31.193,Allyce Jones,13.73,31.2
+31.193,Emma Nelson,5.13,11.21
+31.193,Etta Tuionetoa,6.15,32.96
+31.193,Ting Chieh Wei,7.97,12.09
+31.243,Allyce Jones,13.71,31.21
+31.243,Emma Nelson,5.13,11.16
+31.243,Etta Tuionetoa,6.19,32.97
+31.243,Ting Chieh Wei,7.97,12.05
+31.293,Allyce Jones,13.69,31.22
+31.293,Emma Nelson,5.13,11.07
+31.293,Etta Tuionetoa,6.31,32.97
+31.293,Ting Chieh Wei,7.97,12.01
+31.343,Allyce Jones,13.67,31.23
+31.343,Emma Nelson,5.13,10.97
+31.343,Etta Tuionetoa,6.43,32.97
+31.343,Ting Chieh Wei,7.97,11.96
+31.393,Allyce Jones,13.66,31.24
+31.393,Emma Nelson,5.13,10.88
+31.393,Etta Tuionetoa,6.45,32.97
+31.393,Ting Chieh Wei,8.0,11.92
+31.443,Allyce Jones,13.64,31.25
+31.443,Emma Nelson,5.13,10.62
+31.443,Etta Tuionetoa,6.45,32.97
+31.443,Ting Chieh Wei,8.35,11.92
+31.493,Allyce Jones,13.63,31.25
+31.493,Emma Nelson,5.13,10.45
+31.493,Etta Tuionetoa,6.45,32.97
+31.493,Ting Chieh Wei,8.76,11.96
+31.543,Allyce Jones,13.63,31.25
+31.543,Emma Nelson,5.14,10.43
+31.543,Etta Tuionetoa,6.45,32.98
+31.543,Ting Chieh Wei,9.14,11.96
+31.593,Allyce Jones,13.63,31.28
+31.593,Emma Nelson,5.15,10.43
+31.593,Etta Tuionetoa,6.45,33.08
+31.593,Ting Chieh Wei,9.46,11.96
+31.643,Allyce Jones,13.63,31.28
+31.643,Emma Nelson,5.16,10.41
+31.643,Etta Tuionetoa,6.42,33.21
+31.643,Ting Chieh Wei,9.73,11.99
+31.693,Allyce Jones,13.63,31.29
+31.693,Emma Nelson,5.16,10.4
+31.693,Etta Tuionetoa,6.32,33.42
+31.693,Ting Chieh Wei,9.82,11.99
+31.743,Allyce Jones,13.68,31.3
+31.743,Emma Nelson,5.16,10.37
+31.743,Etta Tuionetoa,6.19,33.57
+31.743,Ting Chieh Wei,9.85,12.0
+31.793,Allyce Jones,13.75,31.3
+31.793,Emma Nelson,5.17,10.37
+31.793,Etta Tuionetoa,6.02,33.67
+31.793,Ting Chieh Wei,9.92,12.01
+31.843,Allyce Jones,13.9,31.3
+31.843,Emma Nelson,5.19,10.37
+31.843,Etta Tuionetoa,5.78,33.79
+31.843,Ting Chieh Wei,10.05,12.03
+31.893,Allyce Jones,14.07,31.29
+31.893,Emma Nelson,5.23,10.36
+31.893,Etta Tuionetoa,5.56,33.85
+31.893,Ting Chieh Wei,10.18,12.02
+31.943,Allyce Jones,14.08,31.28
+31.943,Emma Nelson,5.29,10.34
+31.943,Etta Tuionetoa,5.35,33.99
+31.943,Ting Chieh Wei,10.31,12.0
+31.993,Allyce Jones,14.08,31.28
+31.993,Emma Nelson,5.35,10.34
+31.993,Etta Tuionetoa,5.18,34.18
+31.993,Ting Chieh Wei,10.43,11.99
+32.043,Allyce Jones,14.08,31.3
+32.043,Emma Nelson,5.46,10.32
+32.043,Etta Tuionetoa,5.05,34.38
+32.043,Ting Chieh Wei,10.53,11.99
+32.093,Allyce Jones,14.08,31.3
+32.093,Emma Nelson,5.59,10.3
+32.093,Etta Tuionetoa,4.95,34.52
+32.093,Ting Chieh Wei,10.59,11.98
+32.143,Allyce Jones,14.08,31.3
+32.143,Emma Nelson,5.7,10.29
+32.143,Etta Tuionetoa,4.89,34.64
+32.143,Ting Chieh Wei,10.62,11.95
+32.193,Allyce Jones,13.97,31.3
+32.193,Emma Nelson,5.76,10.24
+32.193,Etta Tuionetoa,4.87,34.74
+32.193,Ting Chieh Wei,10.65,11.84
+32.243,Allyce Jones,13.83,31.41
+32.243,Emma Nelson,5.78,10.21
+32.243,Etta Tuionetoa,4.86,34.88
+32.243,Ting Chieh Wei,10.7,11.79
+32.293,Allyce Jones,13.63,31.65
+32.293,Emma Nelson,5.8,10.16
+32.293,Etta Tuionetoa,4.84,35.04
+32.293,Ting Chieh Wei,10.76,11.79
+32.343,Allyce Jones,13.41,32.04
+32.343,Emma Nelson,5.88,10.07
+32.343,Etta Tuionetoa,4.83,35.24
+32.343,Ting Chieh Wei,10.78,11.79
+32.393,Allyce Jones,13.18,32.39
+32.393,Emma Nelson,5.96,10.07
+32.393,Etta Tuionetoa,4.82,35.46
+32.393,Ting Chieh Wei,10.79,11.78
+32.443,Allyce Jones,12.97,32.59
+32.443,Emma Nelson,6.1,10.07
+32.443,Etta Tuionetoa,4.81,35.68
+32.443,Ting Chieh Wei,10.8,11.75
+32.493,Allyce Jones,12.79,32.72
+32.493,Emma Nelson,6.25,10.05
+32.493,Etta Tuionetoa,4.81,35.88
+32.493,Ting Chieh Wei,10.8,11.73
+32.543,Allyce Jones,12.69,32.82
+32.543,Emma Nelson,6.39,10.02
+32.543,Etta Tuionetoa,4.81,36.05
+32.543,Ting Chieh Wei,10.8,11.72
+32.593,Allyce Jones,12.64,32.84
+32.593,Emma Nelson,6.48,10.01
+32.593,Etta Tuionetoa,4.81,36.12
+32.593,Ting Chieh Wei,10.8,11.72
+32.643,Allyce Jones,12.53,32.88
+32.643,Emma Nelson,6.5,10.01
+32.643,Etta Tuionetoa,4.81,36.14
+32.643,Ting Chieh Wei,10.83,11.72
+32.693,Allyce Jones,12.4,32.89
+32.693,Emma Nelson,6.51,10.01
+32.693,Etta Tuionetoa,4.87,36.17
+32.693,Ting Chieh Wei,10.86,11.71
+32.743,Allyce Jones,12.23,32.94
+32.743,Emma Nelson,6.53,9.98
+32.743,Etta Tuionetoa,4.98,36.35
+32.743,Ting Chieh Wei,10.92,11.59
+32.793,Allyce Jones,12.03,33.28
+32.793,Emma Nelson,6.58,9.81
+32.793,Etta Tuionetoa,5.13,36.67
+32.793,Ting Chieh Wei,10.97,11.53
+32.843,Allyce Jones,11.84,33.62
+32.843,Emma Nelson,6.63,9.69
+32.843,Etta Tuionetoa,5.28,37.09
+32.843,Ting Chieh Wei,11.03,11.47
+32.893,Allyce Jones,11.68,34.06
+32.893,Emma Nelson,6.68,9.58
+32.893,Etta Tuionetoa,5.43,37.42
+32.893,Ting Chieh Wei,11.08,11.43
+32.943,Allyce Jones,11.56,34.35
+32.943,Emma Nelson,6.78,9.39
+32.943,Etta Tuionetoa,5.59,37.65
+32.943,Ting Chieh Wei,11.12,11.41
+32.993,Allyce Jones,11.48,34.52
+32.993,Emma Nelson,6.86,9.07
+32.993,Etta Tuionetoa,5.74,37.82
+32.993,Ting Chieh Wei,11.15,11.41
+33.043,Allyce Jones,11.41,34.66
+33.043,Emma Nelson,6.97,8.7
+33.043,Etta Tuionetoa,5.84,37.85
+33.043,Ting Chieh Wei,11.15,11.41
+33.093,Allyce Jones,11.34,34.69
+33.093,Emma Nelson,7.07,8.55
+33.093,Etta Tuionetoa,5.92,37.86
+33.093,Ting Chieh Wei,11.15,11.41
+33.143,Allyce Jones,11.28,34.75
+33.143,Emma Nelson,7.16,8.5
+33.143,Etta Tuionetoa,6.01,37.9
+33.143,Ting Chieh Wei,11.16,11.39
+33.193,Allyce Jones,11.24,34.81
+33.193,Emma Nelson,7.22,8.39
+33.193,Etta Tuionetoa,6.09,37.92
+33.193,Ting Chieh Wei,11.17,11.38
+33.243,Allyce Jones,11.05,34.95
+33.243,Emma Nelson,7.27,8.29
+33.243,Etta Tuionetoa,6.19,37.95
+33.243,Ting Chieh Wei,11.18,11.38
+33.293,Allyce Jones,10.96,35.34
+33.293,Emma Nelson,7.27,8.23
+33.293,Etta Tuionetoa,6.33,38.19
+33.293,Ting Chieh Wei,11.18,11.38
+33.343,Allyce Jones,10.85,35.8
+33.343,Emma Nelson,7.27,8.21
+33.343,Etta Tuionetoa,6.52,38.46
+33.343,Ting Chieh Wei,11.18,11.38
+33.393,Allyce Jones,10.78,36.21
+33.393,Emma Nelson,7.27,8.18
+33.393,Etta Tuionetoa,6.68,38.85
+33.393,Ting Chieh Wei,11.18,11.35
+33.443,Allyce Jones,10.72,36.54
+33.443,Emma Nelson,7.27,8.16
+33.443,Etta Tuionetoa,6.81,39.22
+33.443,Ting Chieh Wei,11.21,11.35
+33.493,Allyce Jones,10.7,36.81
+33.493,Emma Nelson,7.25,8.12
+33.493,Etta Tuionetoa,6.89,39.54
+33.493,Ting Chieh Wei,11.32,11.35
+33.543,Allyce Jones,10.7,37.01
+33.543,Emma Nelson,7.17,7.82
+33.543,Etta Tuionetoa,6.91,39.74
+33.543,Ting Chieh Wei,11.45,11.35
+33.593,Allyce Jones,10.7,37.15
+33.593,Emma Nelson,7.1,7.57
+33.593,Etta Tuionetoa,6.92,39.86
+33.593,Ting Chieh Wei,11.61,11.35
+33.643,Allyce Jones,10.7,37.2
+33.643,Emma Nelson,7.01,7.33
+33.643,Etta Tuionetoa,6.92,39.9
+33.643,Ting Chieh Wei,11.82,11.38
+33.693,Allyce Jones,10.7,37.31
+33.693,Emma Nelson,6.93,7.21
+33.693,Etta Tuionetoa,6.92,39.93
+33.693,Ting Chieh Wei,11.97,11.59
+33.743,Allyce Jones,10.7,37.57
+33.743,Emma Nelson,6.81,6.95
+33.743,Etta Tuionetoa,6.95,39.98
+33.743,Ting Chieh Wei,12.2,11.78
+33.793,Allyce Jones,10.76,37.91
+33.793,Emma Nelson,6.73,6.77
+33.793,Etta Tuionetoa,7.0,40.19
+33.793,Ting Chieh Wei,12.4,11.78
+33.843,Allyce Jones,10.89,38.3
+33.843,Emma Nelson,6.68,6.63
+33.843,Etta Tuionetoa,7.04,40.52
+33.843,Ting Chieh Wei,12.55,11.78
+33.893,Allyce Jones,11.06,38.65
+33.893,Emma Nelson,6.65,6.47
+33.893,Etta Tuionetoa,7.08,40.94
+33.893,Ting Chieh Wei,12.63,11.78
+33.943,Allyce Jones,11.24,38.92
+33.943,Emma Nelson,6.58,6.05
+33.943,Etta Tuionetoa,7.11,41.32
+33.943,Ting Chieh Wei,12.69,11.78
+33.993,Allyce Jones,11.38,39.11
+33.993,Emma Nelson,6.46,5.59
+33.993,Etta Tuionetoa,7.13,41.61
+33.993,Ting Chieh Wei,12.77,11.75
+34.043,Allyce Jones,11.47,39.28
+34.043,Emma Nelson,6.35,5.2
+34.043,Etta Tuionetoa,7.14,41.85
+34.043,Ting Chieh Wei,12.91,11.69
+34.093,Allyce Jones,11.52,39.5
+34.093,Emma Nelson,6.23,4.96
+34.093,Etta Tuionetoa,7.18,41.97
+34.093,Ting Chieh Wei,13.09,11.69
+34.143,Allyce Jones,11.59,39.6
+34.143,Emma Nelson,6.16,4.89
+34.143,Etta Tuionetoa,7.2,42.04
+34.143,Ting Chieh Wei,13.27,11.69
+34.193,Allyce Jones,11.65,39.64
+34.193,Emma Nelson,6.07,4.82
+34.193,Etta Tuionetoa,7.2,42.07
+34.193,Ting Chieh Wei,13.46,11.69
+34.243,Allyce Jones,11.67,39.74
+34.243,Emma Nelson,6.0,4.63
+34.243,Etta Tuionetoa,7.22,42.15
+34.243,Ting Chieh Wei,13.65,11.69
+34.293,Allyce Jones,11.7,39.76
+34.293,Emma Nelson,5.97,4.47
+34.293,Etta Tuionetoa,7.23,42.32
+34.293,Ting Chieh Wei,13.87,11.94
+34.343,Allyce Jones,11.75,39.78
+34.343,Emma Nelson,5.93,4.35
+34.343,Etta Tuionetoa,7.24,42.61
+34.343,Ting Chieh Wei,14.1,12.09
+34.393,Allyce Jones,11.8,39.79
+34.393,Emma Nelson,5.9,4.17
+34.393,Etta Tuionetoa,7.28,43.01
+34.393,Ting Chieh Wei,14.3,12.09
+34.443,Allyce Jones,11.85,39.84
+34.443,Emma Nelson,5.85,3.82
+34.443,Etta Tuionetoa,7.33,43.4
+34.443,Ting Chieh Wei,14.42,12.09
+34.493,Allyce Jones,11.91,39.86
+34.493,Emma Nelson,5.79,3.29
+34.493,Etta Tuionetoa,7.33,43.68
+34.493,Ting Chieh Wei,14.5,12.09
+34.543,Allyce Jones,11.98,39.86
+34.543,Emma Nelson,5.74,2.64
+34.543,Etta Tuionetoa,7.34,43.81
+34.543,Ting Chieh Wei,14.57,12.09
+34.593,Allyce Jones,12.07,39.93
+34.593,Emma Nelson,5.69,2.35
+34.593,Etta Tuionetoa,7.35,43.83
+34.593,Ting Chieh Wei,14.69,11.96
+34.643,Allyce Jones,12.16,39.99
+34.643,Emma Nelson,5.64,2.11
+34.643,Etta Tuionetoa,7.36,43.84
+34.643,Ting Chieh Wei,14.87,11.96
+34.693,Allyce Jones,12.16,40.17
+34.693,Emma Nelson,5.6,2.05
+34.693,Etta Tuionetoa,7.36,43.85
+34.693,Ting Chieh Wei,15.05,11.96
+34.743,Allyce Jones,12.16,40.46
+34.743,Emma Nelson,5.56,2.02
+34.743,Etta Tuionetoa,7.37,43.89
+34.743,Ting Chieh Wei,15.28,11.96
+34.793,Allyce Jones,12.16,40.73
+34.793,Emma Nelson,5.51,2.0
+34.793,Etta Tuionetoa,7.39,44.07
+34.793,Ting Chieh Wei,15.5,11.96
+34.843,Allyce Jones,12.16,41.04
+34.843,Emma Nelson,5.46,1.78
+34.843,Etta Tuionetoa,7.44,44.33
+34.843,Ting Chieh Wei,15.68,12.0
+34.893,Allyce Jones,12.15,41.35
+34.893,Emma Nelson,5.41,1.43
+34.893,Etta Tuionetoa,7.52,44.64
+34.893,Ting Chieh Wei,15.9,12.1
+34.943,Allyce Jones,12.09,41.56
+34.943,Emma Nelson,5.4,1.35
+34.943,Etta Tuionetoa,7.66,45.0
+34.943,Ting Chieh Wei,16.13,12.1
+34.993,Allyce Jones,12.04,41.81
+34.993,Emma Nelson,5.36,0.97
+34.993,Etta Tuionetoa,7.81,45.16
+34.993,Ting Chieh Wei,16.27,12.1
+35.043,Allyce Jones,12.03,41.94
+35.043,Emma Nelson,5.32,0.45
+35.043,Etta Tuionetoa,7.94,45.28
+35.043,Ting Chieh Wei,16.33,12.1
+35.093,Allyce Jones,12.01,42.03
+35.093,Emma Nelson,5.25,-0.19
+35.093,Etta Tuionetoa,7.95,45.4
+35.093,Ting Chieh Wei,16.4,12.1
+35.143,Allyce Jones,11.95,42.1
+35.143,Emma Nelson,5.2,-0.58
+35.143,Etta Tuionetoa,7.95,45.45
+35.143,Ting Chieh Wei,16.52,11.95
+35.193,Allyce Jones,11.86,42.26
+35.193,Emma Nelson,5.2,-0.66
+35.193,Etta Tuionetoa,7.95,45.52
+35.193,Ting Chieh Wei,16.72,11.79
+35.243,Allyce Jones,11.76,42.58
+35.243,Emma Nelson,5.19,-0.7
+35.243,Etta Tuionetoa,7.95,45.62
+35.243,Ting Chieh Wei,16.91,11.79
+35.293,Allyce Jones,11.7,42.91
+35.293,Emma Nelson,5.19,-0.73
+35.293,Etta Tuionetoa,7.95,45.83
+35.293,Ting Chieh Wei,17.09,11.79
+35.343,Allyce Jones,11.68,43.25
+35.343,Emma Nelson,5.18,-0.78
+35.343,Etta Tuionetoa,7.94,45.98
+35.343,Ting Chieh Wei,17.3,11.79
+35.393,Allyce Jones,11.68,43.48
+35.393,Emma Nelson,5.18,-1.06
+35.393,Etta Tuionetoa,7.88,46.17
+35.393,Ting Chieh Wei,17.47,11.79
+35.443,Allyce Jones,11.68,43.71
+35.443,Emma Nelson,5.18,-1.22
+35.443,Etta Tuionetoa,7.81,46.27
+35.443,Ting Chieh Wei,17.68,11.85
+35.493,Allyce Jones,11.68,43.89
+35.493,Emma Nelson,5.17,-1.4
+35.493,Etta Tuionetoa,7.7,46.33
+35.493,Ting Chieh Wei,17.87,11.85
+35.543,Allyce Jones,11.68,43.94
+35.543,Emma Nelson,5.14,-1.94
+35.543,Etta Tuionetoa,7.62,46.48
+35.543,Ting Chieh Wei,18.04,11.85
+35.593,Allyce Jones,11.73,43.97
+35.593,Emma Nelson,5.12,-2.46
+35.593,Etta Tuionetoa,7.53,46.53
+35.593,Ting Chieh Wei,18.11,11.85
+35.643,Allyce Jones,11.87,44.12
+35.643,Emma Nelson,5.11,-3.11
+35.643,Etta Tuionetoa,7.48,46.55
+35.643,Ting Chieh Wei,18.17,11.85
+35.693,Allyce Jones,12.03,44.33
+35.693,Emma Nelson,5.1,-3.45
+35.693,Etta Tuionetoa,7.42,46.55
+35.693,Ting Chieh Wei,18.27,11.71
+35.743,Allyce Jones,12.2,44.56
+35.743,Emma Nelson,5.09,-3.61
+35.743,Etta Tuionetoa,7.39,46.56
+35.743,Ting Chieh Wei,18.46,11.43
+35.793,Allyce Jones,12.34,44.76
+35.793,Emma Nelson,5.09,-3.68
+35.793,Etta Tuionetoa,7.35,46.57
+35.793,Ting Chieh Wei,18.66,11.43
+35.843,Allyce Jones,12.49,44.97
+35.843,Emma Nelson,5.09,-3.73
+35.843,Etta Tuionetoa,7.28,46.59
+35.843,Ting Chieh Wei,18.87,11.43
+35.893,Allyce Jones,12.61,45.15
+35.893,Emma Nelson,5.09,-3.8
+35.893,Etta Tuionetoa,7.19,46.59
+35.893,Ting Chieh Wei,19.04,11.43
+35.943,Allyce Jones,12.71,45.37
+35.943,Emma Nelson,5.08,-3.97
+35.943,Etta Tuionetoa,7.11,46.62
+35.943,Ting Chieh Wei,19.19,11.43
+35.993,Allyce Jones,12.77,45.59
+35.993,Emma Nelson,5.08,-4.08
+35.993,Etta Tuionetoa,6.95,46.61
+35.993,Ting Chieh Wei,19.43,11.39
+36.043,Allyce Jones,12.79,45.69
+36.043,Emma Nelson,5.07,-4.27
+36.043,Etta Tuionetoa,6.8,46.6
+36.043,Ting Chieh Wei,19.58,11.39
+36.093,Allyce Jones,12.82,45.8
+36.093,Emma Nelson,5.06,-4.64
+36.093,Etta Tuionetoa,6.64,46.57
+36.093,Ting Chieh Wei,19.72,11.39
+36.143,Allyce Jones,12.93,45.9
+36.143,Emma Nelson,5.05,-5.23
+36.143,Etta Tuionetoa,6.43,46.58
+36.143,Ting Chieh Wei,19.75,11.42
+36.193,Allyce Jones,13.12,45.99
+36.193,Emma Nelson,5.05,-5.72
+36.193,Etta Tuionetoa,6.29,46.61
+36.193,Ting Chieh Wei,19.81,11.42
+36.243,Allyce Jones,13.31,46.04
+36.243,Emma Nelson,5.05,-6.0
+36.243,Etta Tuionetoa,6.15,46.63
+36.243,Ting Chieh Wei,19.92,11.32
+36.293,Allyce Jones,13.53,46.08
+36.293,Emma Nelson,5.05,-6.04
+36.293,Etta Tuionetoa,6.02,46.63
+36.293,Ting Chieh Wei,20.11,10.95
+36.343,Allyce Jones,13.68,46.14
+36.343,Emma Nelson,5.03,-6.09
+36.343,Etta Tuionetoa,6.0,46.61
+36.343,Ting Chieh Wei,20.29,10.77
+36.393,Allyce Jones,13.82,46.37
+36.393,Emma Nelson,5.02,-6.16
+36.393,Etta Tuionetoa,5.97,46.61
+36.393,Ting Chieh Wei,20.49,10.76
+36.443,Allyce Jones,13.93,46.44
+36.443,Emma Nelson,5.02,-6.45
+36.443,Etta Tuionetoa,5.95,46.6
+36.443,Ting Chieh Wei,20.6,10.76
+36.493,Allyce Jones,14.0,46.46
+36.493,Emma Nelson,5.02,-6.55
+36.493,Etta Tuionetoa,5.93,46.6
+36.493,Ting Chieh Wei,20.76,10.76
+36.543,Allyce Jones,14.03,46.49
+36.543,Emma Nelson,5.02,-6.88
+36.543,Etta Tuionetoa,5.83,46.61
+36.543,Ting Chieh Wei,20.92,10.75
+36.593,Allyce Jones,14.09,46.5
+36.593,Emma Nelson,5.0,-7.52
+36.593,Etta Tuionetoa,5.74,46.64
+36.593,Ting Chieh Wei,21.03,10.76
+36.643,Allyce Jones,14.21,46.54
+36.643,Emma Nelson,4.95,-8.09
+36.643,Etta Tuionetoa,5.62,46.65
+36.643,Ting Chieh Wei,21.04,10.75
+36.693,Allyce Jones,14.32,46.56
+36.693,Emma Nelson,4.91,-8.4
+36.693,Etta Tuionetoa,5.51,46.68
+36.693,Ting Chieh Wei,21.04,10.75
+36.743,Allyce Jones,14.53,46.6
+36.743,Emma Nelson,4.88,-8.55
+36.743,Etta Tuionetoa,5.39,46.71
+36.743,Ting Chieh Wei,21.04,10.75
+36.793,Allyce Jones,14.69,46.64
+36.793,Emma Nelson,4.86,-8.7
+36.793,Etta Tuionetoa,5.26,46.71
+36.793,Ting Chieh Wei,21.04,10.75
+36.843,Allyce Jones,14.78,46.7
+36.843,Emma Nelson,4.85,-8.8
+36.843,Etta Tuionetoa,5.14,46.74
+36.843,Ting Chieh Wei,21.04,10.74
+36.893,Allyce Jones,14.86,46.76
+36.893,Emma Nelson,4.84,-8.84
+36.893,Etta Tuionetoa,5.1,46.75
+36.893,Ting Chieh Wei,21.02,10.64
+36.943,Allyce Jones,14.91,46.83
+36.943,Emma Nelson,4.84,-8.88
+36.943,Etta Tuionetoa,5.1,46.77
+36.943,Ting Chieh Wei,20.94,10.59
+36.993,Allyce Jones,14.96,46.85
+36.993,Emma Nelson,4.81,-8.9
+36.993,Etta Tuionetoa,5.1,46.77
+36.993,Ting Chieh Wei,20.86,10.44
+37.043,Allyce Jones,14.96,46.89
+37.043,Emma Nelson,4.77,-8.93
+37.043,Etta Tuionetoa,5.1,46.78
+37.043,Ting Chieh Wei,20.79,10.31
+37.093,Allyce Jones,14.97,46.91
+37.093,Emma Nelson,4.74,-9.0
+37.093,Etta Tuionetoa,5.1,46.79
+37.093,Ting Chieh Wei,20.74,10.19
+37.143,Allyce Jones,14.97,46.93
+37.143,Emma Nelson,4.69,-9.03
+37.143,Etta Tuionetoa,5.54,46.78
+37.143,Ting Chieh Wei,20.7,10.14
+37.193,Allyce Jones,14.98,46.94
+37.193,Emma Nelson,4.59,-9.12
+37.193,Etta Tuionetoa,5.55,46.77
+37.193,Ting Chieh Wei,20.68,10.12
+37.243,Allyce Jones,14.99,46.95
+37.243,Emma Nelson,4.46,-9.19
+37.243,Etta Tuionetoa,5.56,46.77
+37.243,Ting Chieh Wei,20.68,10.11
+37.293,Allyce Jones,15.0,46.96
+37.293,Emma Nelson,4.34,-9.22
+37.293,Etta Tuionetoa,5.56,46.77
+37.293,Ting Chieh Wei,20.67,10.07
+37.343,Allyce Jones,15.02,46.96
+37.343,Emma Nelson,4.17,-9.32
+37.343,Etta Tuionetoa,5.56,46.75
+37.343,Ting Chieh Wei,20.65,10.06
+37.393,Allyce Jones,15.02,46.97
+37.393,Emma Nelson,4.01,-9.36
+37.393,Etta Tuionetoa,5.55,46.73
+37.393,Ting Chieh Wei,20.64,10.0
+37.443,Emma Nelson,3.86,-9.43
+37.443,Etta Tuionetoa,5.55,46.73
+37.443,Ting Chieh Wei,20.62,9.88
+37.493,Emma Nelson,3.71,-9.59
+37.493,Etta Tuionetoa,5.53,46.7
+37.493,Ting Chieh Wei,20.56,9.78
+37.543,Emma Nelson,3.58,-9.75
+37.543,Etta Tuionetoa,5.53,46.67
+37.543,Ting Chieh Wei,20.46,9.77
+37.593,Emma Nelson,3.46,-9.8
+37.593,Etta Tuionetoa,5.53,46.67
+37.593,Ting Chieh Wei,20.33,9.77
+37.643,Emma Nelson,3.37,-9.8
+37.643,Etta Tuionetoa,5.55,46.67
+37.643,Ting Chieh Wei,20.17,9.77
+37.693,Emma Nelson,3.29,-9.8
+37.693,Etta Tuionetoa,5.56,46.8
+37.693,Ting Chieh Wei,19.96,9.77
+37.743,Emma Nelson,3.23,-9.8
+37.743,Etta Tuionetoa,5.57,46.85
+37.743,Ting Chieh Wei,19.76,9.77
+37.793,Emma Nelson,3.16,-9.8
+37.793,Etta Tuionetoa,5.59,46.85
+37.793,Ting Chieh Wei,19.54,9.92
+37.843,Emma Nelson,3.11,-9.68
+37.843,Etta Tuionetoa,5.59,46.86
+37.843,Ting Chieh Wei,19.33,9.92
+37.893,Emma Nelson,3.08,-9.6
+37.893,Etta Tuionetoa,5.59,46.86
+37.893,Ting Chieh Wei,19.15,9.92
+37.943,Emma Nelson,3.05,-9.59
+37.943,Etta Tuionetoa,5.59,46.86
+37.943,Ting Chieh Wei,19.02,9.92
+37.993,Emma Nelson,3.03,-9.57
+37.993,Etta Tuionetoa,5.59,46.86
+37.993,Ting Chieh Wei,18.96,9.92
+38.043,Emma Nelson,2.99,-9.55
+38.043,Etta Tuionetoa,5.59,46.86
+38.043,Ting Chieh Wei,18.92,9.9
+38.093,Emma Nelson,2.96,-9.53
+38.093,Etta Tuionetoa,5.59,46.86
+38.093,Ting Chieh Wei,18.86,9.8
+38.143,Emma Nelson,2.93,-9.53
+38.143,Etta Tuionetoa,5.59,46.85
+38.143,Ting Chieh Wei,18.76,9.64
+38.193,Emma Nelson,2.9,-9.53
+38.193,Etta Tuionetoa,5.59,46.85
+38.193,Ting Chieh Wei,18.63,9.64
+38.243,Emma Nelson,2.9,-9.52
+38.243,Etta Tuionetoa,5.59,46.85
+38.243,Ting Chieh Wei,18.49,9.64
+38.293,Emma Nelson,2.89,-9.51
+38.293,Etta Tuionetoa,5.59,46.85
+38.293,Ting Chieh Wei,18.31,9.64
+38.343,Emma Nelson,2.89,-9.48
+38.343,Etta Tuionetoa,5.59,46.85
+38.343,Ting Chieh Wei,18.19,9.62
+38.393,Emma Nelson,2.89,-9.46
+38.393,Etta Tuionetoa,5.59,46.85
+38.393,Ting Chieh Wei,18.08,9.56
+38.443,Emma Nelson,2.89,-9.43
+38.443,Etta Tuionetoa,5.59,46.84
+38.443,Ting Chieh Wei,17.98,9.62
+38.493,Emma Nelson,2.89,-9.39
+38.493,Etta Tuionetoa,5.59,46.84
+38.493,Ting Chieh Wei,17.87,9.7

@@ -47,6 +47,7 @@ DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
 LANDMARKS = DATA / "court_landmarks_chicago0725.csv"
 BALL = DATA / "ball_path_r1.csv"
 STATE = DATA / "state_labels_chicago0725.csv"
+PLAYERS = DATA / "player_positions_r1.csv"
 OUT_HTML = DATA / "court3d_r1.html"
 
 G = -32.174          # ft/s^2
@@ -130,6 +131,30 @@ def load_hitters(path=STATE, rally=1):
         if int(r["rally_cum"]) == rally and r["kind"] == "impact":
             out.append((float(r["t_s"]), r["player"]))
     return [h for _, h in sorted(out)]
+
+
+def load_players(path=PLAYERS):
+    """{player: (t[], x[], y[])} from the committed positions CSV,
+    or None if it does not exist."""
+    if not Path(path).exists():
+        return None
+    from collections import defaultdict
+    d = defaultdict(list)
+    for r in csv.DictReader(open(path)):
+        d[r["player"]].append((float(r["t_s"]), float(r["x_ft"]),
+                               float(r["y_ft"])))
+    return {k: tuple(np.array(c) for c in zip(*sorted(v)))
+            for k, v in d.items()}
+
+
+def player_at(players, name, t, tol=0.3):
+    if not players or name not in players:
+        return None
+    ts, xs, ys = players[name]
+    i = int(np.abs(ts - t).argmin())
+    if abs(ts[i] - t) > tol:
+        return None
+    return np.array([xs[i], ys[i]])
 
 
 def seg_endpoints(seg, t0, t1):
@@ -312,6 +337,9 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
     obs_all = load_ball(ball)
     impacts, dead = load_impacts(state)
     hitters = load_hitters(state)
+    players = load_players()
+    print(f"player positions: "
+          f"{'loaded (' + str(len(players)) + ' players)' if players else 'none'}")
     events = detect_events([(t, x, y) for t, x, y, w in obs_all
                             if w == 1.0])
     bounds = impacts + ([dead] if dead else [])
@@ -369,6 +397,13 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
             s_n = side.get(hitters[k + 1]) if k + 1 < len(hitters) else None
             c0 = cons[k] if cons[k] is not None else None
             c1 = cons[k + 1] if k + 1 < len(cons) else None
+            # PLAYER-GEOMETRY anchors (user prior): the contact happens
+            # at the hitter's paddle; her FEET give exact depth. Hinge:
+            # free within 3 ft reach, then 2.5 px/ft; z into paddle
+            # range [0.3, 8.5].
+            pa0 = player_at(players, hitters[k], t0)
+            pa1 = (player_at(players, hitters[k + 1], t1)
+                   if k + 1 < len(hitters) else None)
 
             def make_extra(base, at_start, at_end, dur):
                 def extra(th):
@@ -380,6 +415,12 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
                                 0.0, 0.5 - s_h * (pS[1] - NET_Y)))
                         if c0 is not None:
                             parts += list(1.5 * (pS - c0))
+                        if pa0 is not None:
+                            d = float(np.hypot(pS[0] - pa0[0],
+                                               pS[1] - pa0[1]))
+                            parts.append(2.5 * max(0.0, d - 3.0))
+                            parts.append(2.0 * max(0.0, 0.3 - pS[2]))
+                            parts.append(2.0 * max(0.0, pS[2] - 8.5))
                     if at_end:
                         pE = arc_pos(th, [dur])[0]
                         if s_n:
@@ -387,6 +428,12 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
                                 0.0, 0.5 - s_n * (pE[1] - NET_Y)))
                         if c1 is not None:
                             parts += list(1.5 * (pE - c1))
+                        if pa1 is not None:
+                            d = float(np.hypot(pE[0] - pa1[0],
+                                               pE[1] - pa1[1]))
+                            parts.append(2.5 * max(0.0, d - 3.0))
+                            parts.append(2.0 * max(0.0, 0.3 - pE[2]))
+                            parts.append(2.0 * max(0.0, pE[2] - 8.5))
                     return np.asarray(parts, float)
                 return extra
 
@@ -489,12 +536,22 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
           f"[{min(zs):.1f}, {max(zs):.1f}] ft, "
           f"median {np.median(zs):.1f} ft, implausible: {n_bad}")
 
+    n_cross = 0, 0
+    n_ok = sum(1 for x in segs if x and x["ok"])
+    n_x = 0
+    for k, seg in enumerate(segs):
+        if seg and seg["ok"]:
+            ys = np.array([pnt[2] for pnt in sample_path(seg)])
+            if ys.min() < NET_Y < ys.max():
+                n_x += 1
+    print(f"CHECK 4 — net-crossing spans: {n_x}/{n_ok} drawn segments "
+          f"cross (labels say all must)")
     if viewer:
         path = []
         for seg in segs:
             if seg and seg["ok"]:
                 path += sample_path(seg)
-        write_viewer(path, impacts, out_html)
+        write_viewer(path, impacts, out_html, players)
         print(f"\nwrote {out_html} — orbitable 3D rally")
     return P, segs
 
@@ -502,16 +559,24 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
 # ------------------------------------------------------------- viewer
 
 
-def write_viewer(path, impacts, out):
-    # canvas orbit viewer written as a template below (kept out of the
-    # docstring for size); PATH = [[t,x,y,z]...]
+def write_viewer(path, impacts, out, players=None):
+    # canvas orbit viewer; PATH = [[t,x,y,z]...], PLAYERS embedded at
+    # 10 fps as {name: [[t,x,y]...]}
+    pl = {}
+    if players:
+        for name, (ts, xs, ys) in players.items():
+            pl[name.split()[-1]] = [
+                [round(float(ts[i]), 2), round(float(xs[i]), 2),
+                 round(float(ys[i]), 2)]
+                for i in range(0, len(ts), 2)]
     html = _viewer_html(json.dumps([[round(v, 3) for v in p]
                                     for p in path]),
-                        json.dumps([round(t, 3) for t in impacts]))
+                        json.dumps([round(t, 3) for t in impacts]),
+                        json.dumps(pl))
     Path(out).write_text(html)
 
 
-def _viewer_html(path_json, impacts_json):
+def _viewer_html(path_json, impacts_json, players_json="{}"):
     return r"""<!doctype html><html><head><meta charset="utf-8">
 <title>rally 1 in 3D</title>
 <style>body{margin:0;background:#0c0c10;color:#ddd;font:13px system-ui;overflow:hidden}
@@ -522,6 +587,7 @@ def _viewer_html(path_json, impacts_json):
 <script>
 const PATH = """ + path_json + r""";
 const IMPACTS = """ + impacts_json + r""";
+const PLAYERS = """ + players_json + r""";
 const cv = document.getElementById("c"), g = cv.getContext("2d");
 const tt = document.getElementById("tt"), tl = document.getElementById("tl");
 let az = -2.4, el = 0.5, zoom = 13, playing = false;
@@ -558,6 +624,23 @@ function draw(){
   let last=null;
   for(let i=1;i<PATH.length && PATH[i][0]<=tcur;i++){
     line(PATH[i-1].slice(1),PATH[i].slice(1),"#ffd94a",2); last=PATH[i];}
+  // players: interpolated floor position at tcur, stick + name
+  const TEAM = {Jones:"#e05c5c",Tuionetoa:"#e05c5c",
+                Nelson:"#5ca8e0",Wei:"#5ca8e0"};
+  for(const nm in PLAYERS){
+    const tr = PLAYERS[nm];
+    let i = tr.findIndex(r=>r[0]>=tcur);
+    if(i<0) i=tr.length-1; if(i===0) i=1;
+    const a=tr[i-1], b=tr[i]||a;
+    const f=(b[0]>a[0])?(tcur-a[0])/(b[0]-a[0]):0;
+    const x=a[1]+(b[1]-a[1])*Math.max(0,Math.min(1,f));
+    const y=a[2]+(b[2]-a[2])*Math.max(0,Math.min(1,f));
+    const col=TEAM[nm]||"#999";
+    line([x,y,0],[x,y,5.3],col,3);
+    const h=proj(x,y,5.8); g.fillStyle=col;
+    g.beginPath(); g.arc(h[0],h[1],4,0,7); g.fill();
+    g.font="11px system-ui"; g.fillText(nm,h[0]+7,h[1]-4);
+  }
   if(last){const p=proj(last[1],last[2],last[3]);
     g.fillStyle="#ffd94a"; g.beginPath();
     g.arc(p[0],p[1],5,0,7); g.fill();
