@@ -64,11 +64,13 @@ here). <kbd>C</kbd> clearing for partner (again/<kbd>W</kbd> = back to
 watching) · <kbd>B</kbd> beginning to hit · <kbd>I</kbd> exact impact
 frame · <kbd>F</kbd>/<kbd>H</kbd> forehand/backhand ·
 <kbd>P</kbd> poach (took partner's ball) · <kbd>E</kbd> follow-through
-done · <kbd>X</kbd> no-contact episode (fake / never struck) · <kbd>R</kbd> service routine starts ·
+done · <kbd>X</kbd> no-contact episode (fake / never struck —
+close it with <kbd>E</kbd> too, so negatives get durations) · <kbd>R</kbd> service routine starts ·
 <kbd>D</kbd> point dead · <kbd>N</kbd> pass done ·
 <kbd>←</kbd>/<kbd>→</kbd> ±1 frame · <kbd>,</kbd>/<kbd>.</kbd> ±10 ·
 <kbd>space</kbd> play/pause · <kbd>⌫</kbd> delete this player's
-nearest mark. Gray ticks = your old taps (red = fast): navigate by
+nearest mark. Mark keys act on the episode <b>nearest the playhead</b>,
+so you can seek back into any old episode to close, flag, or fix it. Gray ticks = your old taps (red = fast): navigate by
 them, <b>never snap to them</b>. If boxes are embedded, click your
 player once when asked (orange banner) — the green box then follows
 her; <kbd>A</kbd> re-assigns. Export every sitting as
@@ -256,8 +258,20 @@ new ResizeObserver(drawOverlay).observe(V);
 document.addEventListener("keydown", e => {
   if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
   const k = e.key.toLowerCase(), t = V.currentTime, p = P(curName());
-  const openHit = p.hits.length && p.hits[p.hits.length - 1].e == null
-    ? p.hits[p.hits.length - 1] : null;
+  // I/E/X/F/H/P act on the episode NEAREST the playhead (within 3s),
+  // not just the latest — so old episodes can be revisited: seek into
+  // one and press the key (E closes it, X flags it, I re-marks impact).
+  const nearestHit = () => {
+    let best = null, bd = 3.0;
+    p.hits.forEach(h => {
+      if (h.s == null) return;
+      const d = (t >= h.s && (h.e == null || t <= h.e)) ? 0
+        : Math.min(Math.abs(t - h.s),
+                   h.e != null ? Math.abs(t - h.e) : 1e9);
+      if (d < bd) { bd = d; best = h; }
+    });
+    return best;
+  };
   const openClear = p.clears.length && p.clears[p.clears.length - 1].e == null
     ? p.clears[p.clears.length - 1] : null;
   if (k === "arrowright") V.currentTime = t + frame();
@@ -275,18 +289,18 @@ document.addEventListener("keydown", e => {
     p.hits.push({s: +t.toFixed(3), i: null, e: null, nc: false,
                  hand: null, poach: false});
   }
-  else if (k === "i" && openHit) openHit.i = +t.toFixed(3);
-  else if (k === "e" && openHit) openHit.e = +t.toFixed(3);
-  else if (k === "x" && p.hits.length)
-    p.hits[p.hits.length - 1].nc = !p.hits[p.hits.length - 1].nc;
-  else if (k === "f" && p.hits.length)
-    p.hits[p.hits.length - 1].hand =
-      p.hits[p.hits.length - 1].hand === "fh" ? null : "fh";
-  else if (k === "h" && p.hits.length)
-    p.hits[p.hits.length - 1].hand =
-      p.hits[p.hits.length - 1].hand === "bh" ? null : "bh";
-  else if (k === "p" && p.hits.length)
-    p.hits[p.hits.length - 1].poach = !p.hits[p.hits.length - 1].poach;
+  else if (k === "i") { const h = nearestHit();
+    if (h) h.i = +t.toFixed(3); }
+  else if (k === "e") { const h = nearestHit();
+    if (h) h.e = +t.toFixed(3); }
+  else if (k === "x") { const h = nearestHit();
+    if (h) h.nc = !h.nc; }
+  else if (k === "f") { const h = nearestHit();
+    if (h) h.hand = h.hand === "fh" ? null : "fh"; }
+  else if (k === "h") { const h = nearestHit();
+    if (h) h.hand = h.hand === "bh" ? null : "bh"; }
+  else if (k === "p") { const h = nearestHit();
+    if (h) h.poach = !h.poach; }
   else if (k === "r") { const m = D()._rally;
     m.routine = m.routine == null ? +t.toFixed(3) : null; }
   else if (k === "d") { const m = D()._rally;

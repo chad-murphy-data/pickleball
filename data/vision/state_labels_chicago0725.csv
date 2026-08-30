@@ -1,0 +1,124 @@
+rally_cum,player,episode,kind,t_s
+1,,0,routine_start,4.076
+1,,0,point_dead,32.066
+1,Allyce Jones,0,track_assign,1
+1,Allyce Jones,1,start,10.733
+1,Allyce Jones,1,impact,11.333
+1,Allyce Jones,1,end,11.833
+1,Allyce Jones,1,forehand,
+1,Allyce Jones,2,start,13.3
+1,Allyce Jones,2,impact,13.967
+1,Allyce Jones,2,end,14.367
+1,Allyce Jones,2,forehand,
+1,Allyce Jones,3,start,18.9
+1,Allyce Jones,3,impact,19.233
+1,Allyce Jones,3,end,19.533
+1,Allyce Jones,3,backhand,
+1,Allyce Jones,4,start,19.8
+1,Allyce Jones,4,impact,20.6
+1,Allyce Jones,4,end,20.733
+1,Allyce Jones,4,forehand,
+1,Allyce Jones,5,start,21.333
+1,Allyce Jones,5,impact,21.6
+1,Allyce Jones,5,end,21.867
+1,Allyce Jones,5,backhand,
+1,Allyce Jones,6,start,22.4
+1,Allyce Jones,6,impact,22.9
+1,Allyce Jones,6,end,23.133
+1,Allyce Jones,6,forehand,
+1,Allyce Jones,7,start,24.4
+1,Allyce Jones,7,impact,25.233
+1,Allyce Jones,7,end,25.566
+1,Allyce Jones,7,forehand,
+1,Allyce Jones,8,start,28.7
+1,Allyce Jones,8,impact,28.933
+1,Allyce Jones,8,backhand,
+1,Allyce Jones,9,start,29.566
+1,Allyce Jones,9,no_contact,
+1,Allyce Jones,10,start,31.066
+1,Allyce Jones,10,no_contact,
+1,Emma Nelson,0,track_assign,3
+1,Emma Nelson,1,start,8.957
+1,Emma Nelson,1,impact,10.224
+1,Emma Nelson,1,end,10.524
+1,Emma Nelson,1,forehand,
+1,Emma Nelson,2,start,11.891
+1,Emma Nelson,2,impact,12.691
+1,Emma Nelson,2,end,13.024
+1,Emma Nelson,2,forehand,
+1,Emma Nelson,3,start,16.224
+1,Emma Nelson,3,impact,16.891
+1,Emma Nelson,3,end,17.224
+1,Emma Nelson,3,forehand,
+1,Emma Nelson,4,start,18.357
+1,Emma Nelson,4,impact,18.791
+1,Emma Nelson,4,end,18.968
+1,Emma Nelson,4,backhand,
+1,Emma Nelson,5,start,19.335
+1,Emma Nelson,5,impact,19.635
+1,Emma Nelson,5,end,19.802
+1,Emma Nelson,5,backhand,
+1,Emma Nelson,6,start,23.235
+1,Emma Nelson,6,impact,24.201
+1,Emma Nelson,6,end,24.535
+1,Emma Nelson,6,forehand,
+1,Emma Nelson,7,start,30.568
+1,Emma Nelson,7,no_contact,
+1,Etta Tuionetoa,0,track_assign,0
+1,Etta Tuionetoa,1,start,15.41
+1,Etta Tuionetoa,1,impact,15.81
+1,Etta Tuionetoa,1,end,16.176
+1,Etta Tuionetoa,1,backhand,
+1,Etta Tuionetoa,2,start,17.243
+1,Etta Tuionetoa,2,impact,18.01
+1,Etta Tuionetoa,2,end,18.31
+1,Etta Tuionetoa,2,backhand,
+1,Etta Tuionetoa,3,start,19.01
+1,Etta Tuionetoa,3,no_contact,
+1,Etta Tuionetoa,4,start,19.91
+1,Etta Tuionetoa,4,no_contact,
+1,Etta Tuionetoa,5,start,21.31
+1,Etta Tuionetoa,5,no_contact,
+1,Etta Tuionetoa,6,start,22.31
+1,Etta Tuionetoa,6,no_contact,
+1,Etta Tuionetoa,7,start,26.376
+1,Etta Tuionetoa,7,impact,27.143
+1,Etta Tuionetoa,7,end,27.443
+1,Etta Tuionetoa,7,backhand,
+1,Etta Tuionetoa,8,start,28.643
+1,Etta Tuionetoa,8,no_contact,
+1,Etta Tuionetoa,9,start,29.576
+1,Etta Tuionetoa,9,impact,30.043
+1,Etta Tuionetoa,9,end,30.476
+1,Etta Tuionetoa,9,forehand,
+1,Etta Tuionetoa,10,start,31.143
+1,Etta Tuionetoa,10,no_contact,
+1,Ting Chieh Wei,0,track_assign,2
+1,Ting Chieh Wei,1,start,14.21
+1,Ting Chieh Wei,1,impact,15.076
+1,Ting Chieh Wei,1,end,15.543
+1,Ting Chieh Wei,1,backhand,
+1,Ting Chieh Wei,2,start,20.776
+1,Ting Chieh Wei,2,impact,21.143
+1,Ting Chieh Wei,2,end,21.543
+1,Ting Chieh Wei,2,backhand,
+1,Ting Chieh Wei,3,start,21.743
+1,Ting Chieh Wei,3,impact,22.01
+1,Ting Chieh Wei,3,end,22.31
+1,Ting Chieh Wei,3,backhand,
+1,Ting Chieh Wei,4,start,25.509
+1,Ting Chieh Wei,4,impact,25.976
+1,Ting Chieh Wei,4,end,26.443
+1,Ting Chieh Wei,4,backhand,
+1,Ting Chieh Wei,5,start,27.409
+1,Ting Chieh Wei,5,impact,28.476
+1,Ting Chieh Wei,5,end,28.709
+1,Ting Chieh Wei,5,backhand,
+1,Ting Chieh Wei,6,start,29.143
+1,Ting Chieh Wei,6,impact,29.376
+1,Ting Chieh Wei,6,end,29.743
+1,Ting Chieh Wei,6,backhand,
+1,Ting Chieh Wei,7,start,30.409
+1,Ting Chieh Wei,7,impact,30.943
+1,Ting Chieh Wei,7,end,31.209
+1,Ting Chieh Wei,7,forehand,
