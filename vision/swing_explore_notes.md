@@ -3202,3 +3202,47 @@ The arc of the evening, for the record: the user's corner-kick
 intuition -> 11 calibration clicks -> ball path -> "cross the net" +
 "player geometry" priors -> a 3D rally where every constraint that
 could be checked against the rules of the sport now passes.
+
+## 2026-08-30 — STATE OF THE PROGRAM after the big evening (roadmap consolidation)
+
+EARNED TODAY, in ledger form:
+1. Rally 1 fully state-coded; the user's tap timing proven frame-exact
+   (sd 0.029 s) — retroactively upgrading the whole 323-contact archive.
+2. The hard-negative class measured: 26% of hitter-looking episodes are
+   no-contact, all living in firefights. Episode structure validated
+   the handoff-decoder design before it exists (87% exactly-one-hitter,
+   +0.27 s sequential handoffs, wind-up length carries pace).
+3. ORACLE PASSED (pre-registered): human ball positions recover 92% of
+   contacts vs null 76%. Ball-in-pixels 92% of frames dense/unbiased —
+   the 64% closure number was an isolated-frame artifact. Human ball
+   labeling is a licensed train-only channel.
+4. 3D COURT: camera from 11 clicks (1.0 px), rally reconstructed with
+   drag ballistics + the user's two priors + player-geometry anchors:
+   serve in the correct box, 23/23 spans cross the net, contact heights
+   median 2.0 ft. Players placed from pose ankles (exact depth). All
+   renders from committed CSVs.
+
+ROADMAP (order matters):
+- PRIMARY, unchanged: state rallies 2-8, 13, 14 -> pilot analysis ->
+  scale decision -> 90 train rallies -> temporal-gate verdict. State
+  labels are the binding fuel; nothing tonight changed that.
+- Ball passes: optional, one sitting per rally, each compounds into 3D
+  (placement maps, net clearance, contact heights). Publishing-grade
+  novel stats once a few rallies exist.
+- 3D+players analytics now buildable: distance-to-ball at contact,
+  3D-nearest hitter attribution (fixes touch_attribute's weakest
+  link), poach geometry DIRECT (who took center balls).
+- Pending admin: temporal_gate amendment (state labels, ball
+  positions, paddle channels as T inputs) drafted, awaiting the
+  user's explicit freeze.
+- CONSTRAINED BALL TRACKER (user's late-night idea, logged not
+  licensed): 3D players + physics + court collapse the per-frame
+  search to a small ray-gated region, and visibility is 92%, not 64%
+  — the detection problem's SHAPE has changed since the August kills
+  (whole-frame, no dynamics, no 3D). The detector question stays
+  CLOSED per tonight's frozen registration; reopening needs an
+  explicit user call + fresh pre-registration, third of its kind. If
+  called: rally 1's dense human path is free ground truth, the old
+  tracker's 0.08 s median timing (STATUS's open question) is the
+  encouraging prior, and the prize is ball passes without the human —
+  3D at scale. A decision for a fresh day, not a tired one.
