@@ -117,10 +117,25 @@ def load_impacts(path=STATE, rally=1):
         if int(r["rally_cum"]) != rally:
             continue
         if r["kind"] == "impact":
-            imps.append(float(r["t_s"]))
+            imps.append((float(r["t_s"]), r["player"]))
         elif r["kind"] == "point_dead":
             dead = float(r["t_s"])
-    return sorted(imps), dead
+    imps.sort()
+    return [t for t, _ in imps], dead
+
+
+def load_hitters(path=STATE, rally=1):
+    out = []
+    for r in csv.DictReader(open(path)):
+        if int(r["rally_cum"]) == rally and r["kind"] == "impact":
+            out.append((float(r["t_s"]), r["player"]))
+    return [h for _, h in sorted(out)]
+
+
+def seg_endpoints(seg, t0, t1):
+    a0, _, th0 = seg["arcs"][0]
+    aL, _, thL = seg["arcs"][-1]
+    return (arc_pos(th0, [t0 - a0])[0], arc_pos(thL, [t1 - aL])[0])
 
 
 def arc_pos(theta, tau):
@@ -149,6 +164,15 @@ def _residuals(theta, P, obs, t0, extra):
         # mild zero-centered prior on drag: off unless the data insists
         # (kills the depth<->drag degeneracy on clean parabolic flights)
         res = np.concatenate([res, [2.0 * abs(float(theta[6]))]])
+    # weak containment prior: the ball is being played on a court. A
+    # depth-degenerate arc can match the pixels while racing away from
+    # the camera; penalize excursions outside a generous court volume.
+    ts = np.linspace(0, max(float(tau.max()), 1e-3), 5)
+    Xs = arc_pos(theta, ts)
+    lo = np.array([-10.0, -10.0, -2.0])
+    hi = np.array([30.0, 54.0, 30.0])
+    exc = np.maximum(lo - Xs, 0) + np.maximum(Xs - hi, 0)
+    res = np.concatenate([res, 0.5 * exc.ravel()])
     return np.concatenate([res, extra(theta)]) if extra else res
 
 
@@ -287,10 +311,12 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
 
     obs_all = load_ball(ball)
     impacts, dead = load_impacts(state)
+    hitters = load_hitters(state)
     events = detect_events([(t, x, y) for t, x, y, w in obs_all
                             if w == 1.0])
     bounds = impacts + ([dead] if dead else [])
     segs, contact_z = [], []
+    seg_obs = {}
     for k in range(len(bounds) - 1):
         t0, t1 = bounds[k], bounds[k + 1]
         obs = [o for o in obs_all
@@ -298,16 +324,130 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
         if len(obs) < 5:
             segs.append(None)
             continue
+        seg_obs[k] = obs
         seg = fit_segment(P, obs, t0, t1, events)
+        # plausibility gate: sampled path must stay near the court and
+        # under a sane speed, else the segment is DEGENERATE — reported
+        # but never drawn or measured
+        pts = np.array([p[1:] for p in sample_path(seg)])
+        v = np.diff(pts, axis=0) * 60.0
+        ok = (seg["rms"] < 8.0
+              and pts[:, 0].min() > -15 and pts[:, 0].max() < 35
+              and pts[:, 1].min() > -15 and pts[:, 1].max() < 60
+              and pts[:, 2].min() > -3 and pts[:, 2].max() < 40
+              and (np.linalg.norm(v, axis=1).max() < 176 if len(v)
+                   else True))
+        seg["ok"] = bool(ok)
         segs.append(seg)
-        # contact height: evaluate at the first OBSERVED frame, and
-        # only trust it when observation starts near the impact and
-        # the fit is tight — extrapolation on a loose fit explodes
-        t_first = obs[0][0]
-        if t_first - t0 <= 0.15 and seg["rms"] < 6.0:
-            a, b, th = seg["arcs"][0]
-            z0 = float(arc_pos(th, [t_first - a])[0][2])
-            contact_z.append((t0, z0))
+
+
+    # ---- pass 2 (user priors, 2026-08-30): every shot CROSSES THE
+    # NET (hitter sides voted from pass-1 good fits), and arc k's end
+    # = arc k+1's start = the same paddle (consensus contact anchors).
+    # Two refit sweeps; the anchors are what fix contact heights and
+    # rescue depth-degenerate arcs.
+    votes = {}
+    for k, seg in enumerate(segs):
+        if seg and seg["ok"]:
+            y0 = seg_endpoints(seg, bounds[k], bounds[k + 1])[0][1]
+            votes.setdefault(hitters[k], []).append(
+                1.0 if y0 > NET_Y else -1.0)
+    side = {h: (1.0 if sum(v) > 0 else -1.0) for h, v in votes.items()}
+    for _sweep in range(2):
+        cons = [None] * len(bounds)
+        for k, seg in enumerate(segs):
+            if seg and seg["ok"]:
+                p0, p1 = seg_endpoints(seg, bounds[k], bounds[k + 1])
+                for idx, pt in ((k, p0), (k + 1, p1)):
+                    cons[idx] = (pt if cons[idx] is None
+                                 else (cons[idx] + pt) / 2)
+        for k, seg in enumerate(segs):
+            if seg is None:
+                continue
+            t0, t1 = bounds[k], bounds[k + 1]
+            s_h = side.get(hitters[k])
+            s_n = side.get(hitters[k + 1]) if k + 1 < len(hitters) else None
+            c0 = cons[k] if cons[k] is not None else None
+            c1 = cons[k + 1] if k + 1 < len(cons) else None
+
+            def make_extra(base, at_start, at_end, dur):
+                def extra(th):
+                    parts = list(base(th)) if base else []
+                    if at_start:
+                        pS = arc_pos(th, [0.0])[0]
+                        if s_h:
+                            parts.append(3.0 * max(
+                                0.0, 0.5 - s_h * (pS[1] - NET_Y)))
+                        if c0 is not None:
+                            parts += list(1.5 * (pS - c0))
+                    if at_end:
+                        pE = arc_pos(th, [dur])[0]
+                        if s_n:
+                            parts.append(3.0 * max(
+                                0.0, 0.5 - s_n * (pE[1] - NET_Y)))
+                        if c1 is not None:
+                            parts += list(1.5 * (pE - c1))
+                    return np.asarray(parts, float)
+                return extra
+
+            obs = seg_obs[k]
+            if seg["kind"] == "arc":
+                th, rms = fit_best(
+                    P, obs, t0,
+                    [seg["arcs"][0][2], default_inits()[0]],
+                    extra=make_extra(None, True, True, t1 - t0))
+                seg2 = {"kind": "arc", "arcs": [(t0, t1, th)],
+                        "rms": rms}
+            else:
+                ts = seg["ts"]
+                o1 = [o for o in obs if o[0] <= ts]
+                o2 = [o for o in obs if o[0] >= ts]
+                pen = 8.0
+                a1, r1 = fit_best(
+                    P, o1, t0, [seg["arcs"][0][2], default_inits()[0]],
+                    extra=make_extra(
+                        lambda th: pen * np.array(
+                            [arc_pos(th, [ts - t0])[0][2]]),
+                        True, False, ts - t0))
+                xy = arc_pos(a1, [ts - t0])[0]
+                a2, r2 = fit_best(
+                    P, o2, ts, [seg["arcs"][-1][2], default_inits()[0]],
+                    extra=make_extra(
+                        lambda th: pen * np.concatenate(
+                            [[th[2]], th[:2] - xy[:2]]),
+                        False, True, t1 - ts))
+                rms = float(np.sqrt(
+                    (r1**2 * len(o1) + r2**2 * len(o2))
+                    / (len(o1) + len(o2))))
+                seg2 = {"kind": "bounce", "ts": ts,
+                        "bounce_xy": arc_pos(a1, [ts - t0])[0][:2],
+                        "arcs": [(t0, ts, a1), (ts, t1, a2)],
+                        "rms": rms}
+            pts = np.array([p[1:] for p in sample_path(seg2)])
+            v = np.diff(pts, axis=0) * 60.0
+            seg2["ok"] = bool(
+                seg2["rms"] < 8.0
+                and pts[:, 0].min() > -15 and pts[:, 0].max() < 35
+                and pts[:, 1].min() > -15 and pts[:, 1].max() < 60
+                and pts[:, 2].min() > -3 and pts[:, 2].max() < 40
+                and (np.linalg.norm(v, axis=1).max() < 176
+                     if len(v) else True))
+            if seg2["ok"] or not seg["ok"]:
+                segs[k] = seg2
+    # consensus contact heights from the anchored fits
+    cons = [None] * len(bounds)
+    for k, seg in enumerate(segs):
+        if seg and seg["ok"]:
+            p0, p1 = seg_endpoints(seg, bounds[k], bounds[k + 1])
+            for idx, pt in ((k, p0), (k + 1, p1)):
+                cons[idx] = (pt if cons[idx] is None
+                             else (cons[idx] + pt) / 2)
+    contact_z = [(bounds[k], float(c[2]))
+                 for k, c in enumerate(cons[:len(impacts)])
+                 if c is not None]
+    sides_str = ", ".join(f"{h.split()[-1]}:{'near' if v>0 else 'far'}"
+                          for h, v in side.items())
+    print(f"\nsides (voted from pass 1): {sides_str}")
 
     print("\nSEGMENTS (impact -> next):")
     for k, seg in enumerate(segs):
@@ -318,7 +458,8 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
         b = (f" BOUNCE@({seg['bounce_xy'][0]:.1f},"
              f"{seg['bounce_xy'][1]:.1f})" if seg["kind"] == "bounce"
              else "")
-        print(f"  {t0:6.2f}  rms {seg['rms']:5.1f}px  {seg['kind']}{b}")
+        d = "" if seg["ok"] else "  DEGENERATE (not drawn)"
+        print(f"  {t0:6.2f}  rms {seg['rms']:5.1f}px  {seg['kind']}{b}{d}")
 
     print("\nCHECK 1 — serve segment (double-bounce rule):")
     s0 = segs[0]
@@ -333,7 +474,7 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
     print("CHECK 2 — net crossings vs the 34in tape:")
     lo_cross = 0
     for k, seg in enumerate(segs):
-        if seg is None:
+        if seg is None or not seg["ok"]:
             continue
         for (t, x, z) in net_crossings(seg):
             flag = "" if z > TAPE_FT - 0.3 else "  LOW (!)"
@@ -351,7 +492,7 @@ def run(landmarks=LANDMARKS, ball=BALL, state=STATE, viewer=False,
     if viewer:
         path = []
         for seg in segs:
-            if seg:
+            if seg and seg["ok"]:
                 path += sample_path(seg)
         write_viewer(path, impacts, out_html)
         print(f"\nwrote {out_html} — orbitable 3D rally")

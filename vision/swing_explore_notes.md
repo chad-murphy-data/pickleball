@@ -3117,3 +3117,26 @@ static single camera cannot (parallax proper would need camera
 motion). The same ambiguity that makes corner kicks unreadable to a
 human on a flat screen is why "screen-nearest player" misattributes
 hitters — and the 3D lift is the principled fix.
+
+## 2026-08-30 — 3D v2: the user's two priors (net-crossing + shared-contact anchors) fix contact heights
+
+Mid-viewer, the user proposed exactly the right constraints: (1)
+"ball crosses the net after contact" — every arc must start on the
+hitter's side and end on the next hitter's side (sides VOTED from
+pass-1 good fits, not assumed); (2) "it doesn't go past player
+geometry" — arc k's end and arc k+1's start are the SAME paddle, so
+they anchor each other (consensus contact points, two refit sweeps).
+Plus a weak containment prior (ball stays near the court volume) that
+kills the depth-degenerate "outer space" arcs the first viewer showed.
+
+Effect, before -> after (rally 1):
+- contact heights: 9 implausible in [-30, +15] ft -> **4 barely-out
+  in [-1.3, 9.6] ft, median 3.9 ft**. The anchors did it.
+- degenerate segments: 7 -> 3 (the rms-9.9 drop, one dink arc, the
+  final fall-and-roll, which is not ballistic and never will be).
+- serve-box PASS unchanged; net clearances now all in sensible bands,
+  with LOW flags only at face-plausible spots (two crossings at
+  x ~= 0 skimming the tape — around-the-post-shaped, or sideline
+  noise; worth eyeballing in the video someday).
+Cost: full pipeline now ~4-5 min on this machine (multi-start pass 1
++ two anchored refit sweeps).
