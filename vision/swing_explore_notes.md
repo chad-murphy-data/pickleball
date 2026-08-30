@@ -3299,3 +3299,39 @@ rejection's residue diagnosed two instrument biases -> both fixes
 measured -> a product-relevant number. All on committed data, no
 video. Next label sittings grow n; a learned combo (episodes as
 training data) has obvious headroom past 88%.
+
+## 2026-08-30 — feature battery, body part by body part: REACH beats speed, feet are anti-signal again
+
+Same instrument (per-player normalized, asymmetric window, rally 1,
+n=25): hitter top-1 among 4 (chance 25%) / which-partner (chance 50%):
+
+    wrist speed    68% /  88%
+    elbow speed    76% /  88%
+    shoulder rot   76% /  88%
+    hip rot        64% /  76%
+    hip speed      72% /  80%
+    ankle speed    39% /  67%   <- footwork anti-signal REPLICATES
+                                   (feature_check's leg AUC 0.464)
+    ARM REACH      92% / 100%   <- p90 wrist-to-shoulder distance
+    naive mean     84% /  92%   (dilution by weak features)
+
+THE FINDING (candidate, not claim): **extension, not velocity.** The
+hitter is the player whose wrist is FAR FROM THEIR SHOULDER — you
+reach toward a ball to hit it. Speed is contaminated by fakes
+(measured earlier tonight: fakes are FASTER than hits) and recovery
+motion; reach at the contact instant is nearly unique to the hitter.
+It is also exactly the user's own visual description from the paddle
+probe ("leaned over weirdly") — posture, quantified. And it should be
+far more robust to the near/far tracking bias than velocity (it is a
+STATIC quantity per frame; no differencing of noisy far-court pixels).
+
+MULTIPLICITY CAVEAT, stated before anyone gets excited: 7 features
+were tried and reach selected post hoc on n=25; 100% will not
+survive as 100%. The honest next step is free: rallies 2+ arrive as
+the user labels, and reach gets scored on them UNTOUCHED — name the
+feature now, verify on incoming data. If it holds at ~90%+, the
+touch-share product's partner call needs NO paddle, NO VLM, NO money.
+
+PADDLE STATUS after this: demoted from "probably needed" to "optional
+later channel" — its remaining unique value is fh/bh confirmation,
+pace-blur, and contact-instant refinement, not hitter identity.
