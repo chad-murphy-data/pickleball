@@ -3363,3 +3363,21 @@ Are the features making the same errors? NO:
 n=25, one rally, exploratory throughout; the named candidates (reach
 primary, speed as the overhead specialist) get verified untouched on
 rallies 2+.
+
+## 2026-08-30 — head channels (the actual last one): nose speed is a partner-call specialist; dgaze's old suspicion confirmed
+
+Same battery, head features (n=25, exploratory):
+    nose speed          top1 60%  partner 96%   <- the keeper
+    gaze rot (swap-capped) 56% / 68%            <- weak once the
+                          ear-swap artifact is capped — CONFIRMS the
+                          record's 2026-08-18 suspicion that dgaze's
+                          0.680 AUC was partly swap garbage
+    head drop           56% / 60%
+    face-blur proxy     40% / 80%  (artifact channel, measured honestly)
+
+Nose speed is mediocre at the 4-way (near/far dilution, like all
+speed features) but 24/25 on WHICH-PARTNER — the head rides the lunge
+and tracks the ball to contact, and within a side the near/far bias
+cancels. Second-best partner feature after reach (100%), failing
+independently of it in principle — a natural second witness for the
+partner call when reach's perfect score regresses on new rallies.
