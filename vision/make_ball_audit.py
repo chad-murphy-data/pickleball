@@ -225,15 +225,31 @@ HTML = r"""<!doctype html><html><head><meta charset="utf-8">
 </div>
 <div id="prog"><div id="progfill"></div></div>
 <div id="note">
-Per frame: <b>click the ball</b> (clean, visible) · <kbd>S</kbd> then
-click = smear (a streak that IS the ball — click its center) ·
-<kbd>I</kbd> then click = inferred (behind a body/paddle; click where
-it must be) · <kbd>N</kbd> = can't place it · <kbd>←</kbd>/<kbd>→</kbd> move without answering ·
-<kbd>,</kbd>/<kbd>.</kbd> ±10 frames · <kbd>⌫</kbd> clear this frame.
-Answering auto-advances. The dotted trail is your last second of
-positions — that continuity is the treatment being measured, use it.
-Export as <code>ball_path_r1.csv</code> into data/vision/ every
-sitting.
+<b>One answer per frame — four kinds:</b><br>
+🟢 <b>See a clean ball → just click it.</b> Records visible (V) and
+auto-advances. When the ball moves cleanly you'll settle into
+click-click-click rhythm.<br>
+🔵 <b>See a streak/blur that IS the ball → press <kbd>S</kbd>, then
+click the streak's center.</b> "I know where it is… kinda" — the ball
+is in the pixels, just smeared.<br>
+🟠 <b>Ball hidden behind a body or paddle → press <kbd>I</kbd>, then
+click where it must be.</b> "I know it's right behind her" — the ball
+is NOT in the pixels; your trajectory sense supplies the position.<br>
+⚫ <b>Genuinely can't place it → press <kbd>N</kbd>.</b> No click, no
+guess — an honest N is data too.<br><br>
+After <kbd>S</kbd> or <kbd>I</kbd> a colored banner shows the armed
+mode; it resets to plain-click after each answer. The dotted trail is
+your last second of positions — losing the ball? follow the trail.
+<b>Accuracy bar:</b> center-of-blob is fine, don't agonize; be
+consistent on streaks (always the center).<br><br>
+<b>Navigation:</b> <kbd>←</kbd>/<kbd>→</kbd> step ±1 frame without
+answering · <kbd>,</kbd>/<kbd>.</kbd> jump ±10 · <kbd>⌫</kbd> clear
+this frame (then re-answer).<br>
+<b>Stopping:</b> anytime — progress autosaves in this browser. At the
+end of every sitting hit <b>⬇ export</b> and save as
+<code>ball_path_r1.csv</code> into data/vision/ (partial is fine;
+⬆ import restores it exactly). Score with:
+<code>python3 vision/make_ball_audit.py --score data/vision/ball_path_r1.csv</code>
 </div>
 </div><script>
 const CFG = __CFG__;
