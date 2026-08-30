@@ -3246,3 +3246,28 @@ ROADMAP (order matters):
   tracker's 0.08 s median timing (STATUS's open question) is the
   encouraging prior, and the prize is ball passes without the human —
   3D at scale. A decision for a fresh day, not a tired one.
+
+## 2026-08-30 — DO HITTERS LOOK DIFFERENT IN POSE? Yes — and the fakes look MORE like hitters than the hitters do
+
+Exploratory read on rally 1 (r0001.npz, 60 fps ViTPose; feature =
+p90 torso-normalized wrist speed in ±0.25 s; n=1 rally, not a
+registered claim):
+
+- Hitter has the FASTEST wrist of the four players at 15/25 impacts
+  (60% vs 25% chance); top-2 at 84% (vs 50%). Real signal, clearly
+  insufficient alone — the Gate C verdict in miniature.
+- Separation: hitter median 3.87 box-heights/s at impact vs 1.48 for
+  the other three AT THE SAME INSTANT vs 2.27 for anyone at random
+  times. Note the non-hitters are QUIETER than baseline at contact —
+  the ready stance is a measurable freeze, which sharpens the
+  exactly-one-mover structure the state labels found.
+- **THE NUMBER: fake-swing (X) players at their no-contact episodes
+  run median 5.82 — FASTER than real hitters (3.87).** The hard
+  negatives are not merely similar to the signal; on the raw
+  wrist-speed axis they EXCEED it (desperate reaches move the arm
+  fastest of anything on court). This is the cleanest one-number
+  explanation yet for why every velocity-threshold instrument died:
+  the detector's strongest firings are the non-events. And it is why
+  the X labels are gold — no threshold separates this; only
+  trajectory/context (did the ball actually arrive and leave?) can,
+  which is precisely the temporal model's job description.
