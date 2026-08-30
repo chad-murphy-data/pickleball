@@ -2986,3 +2986,31 @@ Rally 1, all four passes, scored against the frozen contact labels:
   absorbed the candidates; watch over the next rallies.
 - One mechanical slip: Jones ep8 (impact 28.933) is missing its E —
   the tool leaves it dashed-open; fixable in-place on her pass.
+
+## 2026-08-30 — RALLY 1 EXPLORATORY STRUCTURE (n=1, shape not significance)
+
+- **The handoff is sequential and tight — "exactly one hitter" nearly
+  holds.** Next hitter's episode start minus previous impact: median
+  +0.27 s, range [+0.10, +0.61], NEGATIVE 0/24 — nobody starts
+  hitter-looking before the opponent has struck. In-rally time with
+  exactly one player in a hitting episode: 87% (0 players 6%, two 7%).
+  For a handoff decoder this is close to a hard constraint: the state
+  sequence is a near-deterministic alternating cycle with 0.1-0.6 s
+  inter-episode gaps.
+- **Wind-up length IS a pace feature**: pre-impact episode length
+  median 0.35 s on fast contacts vs 0.77 s on slow. The episode
+  boundaries alone carry pace signal before any pixel is consulted.
+- **Alternation perfect** (CUCUC…, 0 same-team consecutive) — matches
+  the exact-alternation finding on its 26th rally.
+- **Backhand share tracks kitchen role**: Wei 6/7 bh, Tuionetoa 3/4 bh
+  (the firefight counters) vs Jones 5fh/3bh, Nelson 4fh/2bh.
+  Face-valid — kitchen exchanges are backhand-dominant.
+- **No-contact episodes are firefight creatures: 9/9 within 1 s of a
+  fast contact, most within 0.3 s.** The hard-negative class lives
+  exactly where placement is hardest — as suspected, now measured.
+- C (clearing) unused; user hypothesis recorded: clearing is a
+  space-negotiation behavior expected in mixed/men's play ("they take
+  up more space"), not women's doubles. Testable free on future VODs.
+- Convention suggestion for next rallies: close X episodes with E too,
+  so the negative class gets durations (rally 1's nc episodes are
+  start-only).
