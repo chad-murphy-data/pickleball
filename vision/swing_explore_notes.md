@@ -3429,3 +3429,72 @@ the concept doesn't get lost before the temporal-gate work starts:
 Status: concept note only. Any implementation is temporal-gate
 territory (pre-registration first); the constrained ball tracker
 remains logged-not-licensed.
+
+## 2026-08-30 — VERIFICATION RAN EARLY: the pilot rallies already had timestamped labels + Drive pose, so the named candidates got their untouched test today
+
+The "verify on incoming data" step didn't need to wait for new state
+labels: rallies 6-10 have manually timestamped, scorebug-verified
+contact labels with hitter names (117-train side of the frozen split;
+temporal-gate holdout untouched), and the Gate-C pose npz for all
+pilot rallies are on Drive. `vision/verify_hitter_features.py` scored
+the named candidates on 84 new contacts. Headline:
+
+    POOLED rallies 6-8 (clean, n=27)   top1-of-4   which-partner
+      wrist speed                        74%          85%
+      ARM REACH                          63%          74%
+      nose speed                         48%          78%
+    (chance 25% / 50%; rally-1 exploratory was 68/88, 92/100, -/96)
+
+- **The signal is real** — every feature far above chance on untouched
+  contacts — but **the post-hoc ranking did NOT replicate**: reach's
+  92/100 regressed exactly as the multiplicity caveat predicted, while
+  wrist speed held its rally-1 level almost unchanged (88→85 partner).
+  On new data the ORIGINAL feature ≥ the post-hoc winner. Textbook
+  selection effect, caught by doing the verification. Both remain
+  candidates; the learned-combiner headroom argument stands (these are
+  fast rallies — 8-10 shots in ~5-8 s — vs rally 1's 26-shot dink
+  battle, so some regression is regime, not just selection).
+- **Assignment, not features, is now the bottleneck.** With no
+  track_assign clicks for 6-10, tracks were named by a serve-geometry
+  cascade (serving side = side whose SHALLOWER member is deeper — the
+  receiver often stands DEEPER than the server; receiver via the
+  cross-court diagonal rule; decisive-motion fallback). Validated 4/4
+  against the user's rally-1 clicks. But within-pair naming stays
+  fragile when a pair stacks (r9's serve anchors: wrist 12.0 vs 8.2,
+  positions 46.8 vs 46.5 ft — nothing decisive), and r9/r10
+  as-assigned scores collapse to ~chance while their up-to-relabel
+  partner bounds sit at 86%/82% — good features under a (likely)
+  swapped pair name, on the two span-anomaly rallies. FIX IS CHEAP:
+  4 track_assign clicks per rally in the state-audit tool ends the
+  ambiguity; the labeling ask is ~30 seconds per rally.
+- **Forking-paths disclosure**: the assignment cascade was iterated
+  while new-rally scores were visible (three rounds: deepest-player
+  rule → shallower-member side rule → diagonal/motion cascade). The
+  feature DEFINITIONS were frozen from the notes and never touched,
+  and the relabel bound is naming-immune, but grade today's numbers
+  as instrument-limited verification, not gate-grade. A deliberately
+  NOT-taken step: r9 flips to 87/90 under a 1.4 motion threshold
+  (measured before the threshold was frozen at 1.5) — left flagged
+  UNSURE instead of tuned.
+- **This is the recursive theme live**: features are now good enough
+  to inform naming, naming determines feature scores — the ball↔hitter
+  loop's little sibling (identity↔features). Same rule applies:
+  resolve it with independent anchors (user clicks), not by letting
+  the halves agree with each other.
+- **New fact for the r9/r10 span-anomaly thread**: the v4 windows CSV
+  and the contact-labels/npz numbering DISAGREE by ~one rally from
+  rally 6 onward (rally-6 taps at 146-151 s sit inside v4's rally-5
+  window; npz r0006 covers 144.8-161.8 while v4's rally-6 window is
+  164.7-181.7; rally 1 aligns exactly, so the shift starts after 1).
+  Taps + npz are mutually consistent and label content is internally
+  valid (names typed while watching the video); which numbering
+  matches the referee log still needs the scorebug check on video.
+  This plausibly explains part of the "label spans exceed log
+  durations" anomaly.
+
+Roadmap adds (user, this morning): PICKLES Replay pose flourishes —
+per-contact badges from the pose data ("full stretch" when reach hits
+a high percentile of the hitter's own baseline, "ran a long way" from
+floor-track distance since the previous contact; both computable from
+already-committed CSVs + the npz-derived features). Not urgent;
+pairs naturally with the impact slow-mo moments.
