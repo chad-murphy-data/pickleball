@@ -3335,3 +3335,31 @@ touch-share product's partner call needs NO paddle, NO VLM, NO money.
 PADDLE STATUS after this: demoted from "probably needed" to "optional
 later channel" — its remaining unique value is fh/bh confirmation,
 pace-blur, and contact-instant refinement, not hitter identity.
+
+## 2026-08-30 — ensemble check (the nightcap): errors are COMPLEMENTARY, and naive pooling dilutes
+
+Are the features making the same errors? NO:
+- ZERO impacts are missed by all 5 features (n=25).
+- **reach shares ZERO errors with wrist and ZERO with elbow** — the
+  posture channel and the speed channel fail on disjoint sets. The
+  speed features correlate with each other (wrist+elbow share 5 of
+  6-8 misses); reach is the odd one out.
+- The disjointness is PHYSICAL, readable off the error matrix:
+  speed misses SOFT shots (dinks, drops, counters — low wrist
+  velocity) which reach nails; reach misses the serve and a smash —
+  the OVERHEAD class, where the arm is bent at contact and extension
+  compresses — which speed nails. Two channels, two mechanisms, two
+  failure modes.
+- Naive ensembles all score BELOW reach alone (mean 80%, weighted
+  84%, Borda 88% vs reach 92%): averaging a strong feature with
+  correlated weak ones dilutes. The headroom is real (complementary
+  errors ⇒ a selective/learned combiner could exceed 92%; ceiling on
+  this rally is 100%) but it belongs to a TRAINED rule on the growing
+  label corpus, not to pooling. Same lesson as the naive-mean row in
+  the battery: combination is a learning problem, not an averaging
+  problem.
+- (Serves are free from logs regardless — reach's serve miss costs
+  nothing in deployment.)
+n=25, one rally, exploratory throughout; the named candidates (reach
+primary, speed as the overhead specialist) get verified untouched on
+rallies 2+.
