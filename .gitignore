@@ -31,3 +31,9 @@ data/vision/*.png
 # full-skeleton pose streams (vision/pose_extract.py; regenerable from
 # the VOD, ~0.2 MB/rally compressed)
 data/vision/pose/
+
+# generated audit tool pages — rebuilt locally by their make_*.py; tracking them
+# made every local regeneration block git pull
+data/vision/state_audit_chicago0725.html
+data/vision/ball_audit_r1.html
+data/vision/ball_visibility_audit.html
