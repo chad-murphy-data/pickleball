@@ -2951,3 +2951,38 @@ explicit freeze, and only while no temporal-model code exists):
   (paddle position/attitude/blur features). Truth definitions, bars,
   panel, burn rules, and the holdout quarantine are unchanged; C and B
   do not gain these inputs (the ceiling and baseline stay as frozen)."
+
+## 2026-08-30 — STATE-AUDIT PILOT, RALLY 1 SCORED (first four-pass rally; data committed as data/vision/state_labels_chicago0725.csv)
+
+Rally 1, all four passes, scored against the frozen contact labels:
+
+- **Coverage 25/25** real contacts matched to a hitting episode with an
+  impact on the correct player. Zero extras, zero misses.
+- **THE HEADLINE — the old taps were already frame-accurate.**
+  Frame-exact I minus old tap: median +0.001 s, sd 0.029 s, max
+  |Δ| 0.074 s (n=25). One frame at 30 fps is 0.033 s, so the existing
+  323-contact archive's timestamps are ±1-frame quality. The pilot's
+  "measure the tap jitter" job is answered on rally 1: label noise is
+  NOT a binding problem, and the 0.25x-speed tapping protocol is
+  vindicated. (Caveat: nearest-time matching within hitter can't see a
+  systematic whole-shot swap, but 25/25 unique assignment leaves no
+  room for one here.)
+- **Episode shape**: hitter-look onset median 0.53 s before impact
+  [0.23, 1.27]; follow-through median 0.32 s [0.13, 0.50]. Episodes
+  ~0.85 s wide — a fat, decodable temporal signature vs the point
+  events every dead instrument hunted.
+- **Hard negatives are PLENTIFUL: 9 no-contact episodes vs 25 real**
+  (26% of hitter-looking episodes end with no strike; Tuionetoa alone
+  has 6 — the net player gets faked constantly). The old labels
+  carried ONE whiff row for this rally; the state pass sees nine
+  hitter-looking non-events. This class exists at scale and was
+  invisible until now — exactly the confuser a handoff decoder must
+  survive, now measured.
+- **Rally marks line up with the log story**: routine_start 6.15 s
+  before the serve impact (the known ~6 s log lead, seen from video);
+  point_dead +1.12 s after the final smash.
+- Hands recorded on all 25 (11 fh / 14 bh). C (clearing) unused in
+  rally 1 — either none occurred or the toward-ball convention (X)
+  absorbed the candidates; watch over the next rallies.
+- One mechanical slip: Jones ep8 (impact 28.933) is missing its E —
+  the tool leaves it dashed-open; fixable in-place on her pass.
