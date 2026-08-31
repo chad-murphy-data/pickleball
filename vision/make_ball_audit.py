@@ -117,7 +117,10 @@ def load_impacts(state_path=STATE, rally=RALLY):
     if rally != RALLY:
         for r in csv.DictReader(open(CONTACTS)):
             if (int(r["rally_cum"]) == rally
-                    and r["source"] in ("manual", "divergent")):
+                    and r["source"] in ("manual", "divergent")
+                    and r.get("contact", "1") != "0"):
+                # contact=0 rows are WHIFFS — no ball contact, so the
+                # path correctly has no turn there; never a recall target
                 imps.append(float(r["t_refined_s"] or r["t_tap_s"]))
     if not imps:
         raise SystemExit(f"no impacts for rally {rally}")
@@ -202,11 +205,17 @@ def run_score(path, state_path=STATE, rally=RALLY):
     passed = obs >= RECALL_BAR and obs > p95
     print(f"FROZEN BAR (>= {100*RECALL_BAR:.0f}% AND clears null 95th): "
           f"{'PASS' if passed else 'FAIL'}")
-    print("consequence per the registration: "
-          + ("human ball positions are a licensed channel (train-only, "
-             "gate amendment pending)." if passed else
-             "ball thread closed for good on this footage class, "
-             "human-label variant included."))
+    if rally == RALLY:
+        print("consequence per the registration: "
+              + ("human ball positions are a licensed channel (train-only, "
+                 "gate amendment pending)." if passed else
+                 "ball thread closed for good on this footage class, "
+                 "human-label variant included."))
+    else:
+        print("(reference score for ball_gate.md — the rally-1 consequence "
+              "clause above does NOT apply to this rally; NOTE the shift "
+              "null loses power below ~15 impacts: its 95th pct can equal "
+              "a perfect score)")
 
 
 HTML = r"""<!doctype html><html><head><meta charset="utf-8">

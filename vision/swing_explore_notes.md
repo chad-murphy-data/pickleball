@@ -3579,3 +3579,47 @@ shape: three checks on one tap-free graded run (V hit rate ≥70% /
 turns; court3d replication with impact agreement ≤3 ft), sealed
 rally 8, KILL closes ball tracking on this VOD again. Still DRAFT —
 awaiting the user's explicit freeze.
+
+## 2026-08-31 — ball passes 6/7/8 delivered; rally 8 SEALED; and the train rallies caught an instrument-power hole before anything burned
+
+The user labeled all three gate rallies in one sitting (~690 answered
+frames). Rally 8's pass is committed SEALED per the frozen gate (its
+raw CSV transited the assistant's context at upload — unavoidable —
+but no analysis touches it before grading). User labeling notes,
+recorded: (1) trailing unanswered frames in r7/r8 are DEAD TIME after
+the rally, not misses; (2) the V-vs-S smear boundary is "mostly vibes
+but consistent" — fine by design: both classes carry positions and
+only the scoring tolerance differs (25 vs 40 px), so V/S
+misclassification moves frames between tolerance bands, nothing more.
+
+TRAIN-SIDE FINDINGS (rallies 6-7, open):
+- **Answer-key bug found and fixed**: the --rally impacts loader
+  counted contact=0 WHIFF taps as required turns. A whiff is a
+  no-contact swing — the ball flies straight through and physics says
+  no turn exists. Both train rallies had one; excluded now (rally 1's
+  frozen key untouched).
+- **Whiffs excluded, the human path recovers 100% (7/7) of rally 6's
+  physical contacts and 7/9 on rally 7** (the misses: the serve —
+  which the gate GIVES the tracker as an input — and one +0.21 s
+  borderline in a smear-heavy fast exchange).
+- **THE REAL FINDING: the frozen turns battery has ZERO POWER on
+  7-9-impact rallies.** r6: observed 100%, shift-null 95th = 100%.
+  r7: observed 77.8%, null 95th = 77.8%. With ~14-17 events in a
+  5-10 s span and ±0.15 s tolerance, a random rotation matches
+  everything ≥5% of the time, and the discrete null's 95th lands on
+  the maximum. A PERFECT path cannot pass check 2 as frozen on short
+  rallies (rally 1 passed because 25 impacts over ~23 s gave the
+  null room to fail). Structural, not a label or tracker fact.
+- Visibility on the new rallies (secondary, as pre-declared): V 71-81%,
+  V+S 93-98%, N ≤2% — the dense-pass findability replicates.
+
+GATE DECISION NEEDED (user's, the gate is frozen): check 2 as
+written is unpassable on the sealed rally class. Proposed amendment
+(drafted, not applied): score check 2 HUMAN-MATCHED — the tracker's
+decoded path must (a) recall at least as many physical contacts as
+the human path does on the same rally under the same battery, and
+(b) sit at a null percentile >= the human path's on that rally
+(r6 human: 94th pct on a null whose p95 is saturated). True to the
+gate's stated intent ("the same test without the human") and usable
+on any rally length; pooling check 2 across sealed rallies as that
+set grows (r9/r10 have 27-30 taps) restores absolute power later.
