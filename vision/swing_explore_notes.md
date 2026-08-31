@@ -3542,3 +3542,19 @@ Naming is now ground truth on every scored rally:
   support for the numbering-shift hypothesis (2026-08-30 entry
   above). The video scorebug check is still owed before r9/r10 lose
   their training asterisk.
+
+## 2026-08-30 — BALL TRACKING REOPENING DRAFTED: vision/ball_gate.md (user call; awaiting explicit freeze)
+
+The user called for ball tracking ("draft away"). `vision/ball_gate.md`
+is the pre-registration DRAFT: constrained tracker (weak candidate
+stage + court3d arc decoding on labeled anchors) vs the anchors-only
+nulls, graded once on a SEALED rally-8 ball pass; train = rallies 6-7
+ball passes + the spent rally-1 path. Draft bars: PASS = V-frame hit
+rate ≥70% AND null+15; KILL = < null+5; MIDDLE = one iteration + one
+re-grade on a fresh sealed rally. I/N frames never scored (the
+fine-tune-poison lesson). No tracker code until the user says
+"freeze it". Labeling economics note from the user, worth recording:
+ball passes are the mentally cheap labels ("easy and relatively
+mindless... we can do more whenever we need"), hitter/state passes
+cost more attention — so future gate designs should spend ball labels
+freely and hitter labels carefully.
