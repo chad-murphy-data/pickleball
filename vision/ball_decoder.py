@@ -96,14 +96,19 @@ ANCHOR_TURN_FACTOR = 0.3  # turning near a predicted contact is cheap
 # junk AT contacts; anchors waive the turn cost where a contact is
 # plausible while hardening prices junk turns everywhere else.
 TIMING_HARD = 2.5       # turn-cost multiplier away from anchors
-TIMING_ANGLE = 60.0     # min turn angle (deg) to become a feedback anchor
+TIMING_ANGLE = 40.0     # min turn angle (deg) to become a feedback anchor
 TIMING_ROUNDS = 0       # extra feedback iterations beyond the first.
-# FROZEN 2026-08-31 from the train sweep (30 configs, scratch grids over
-# hard 1.5-4.0 x angle 40-80 x rounds 1-3, hardening ladders, fwd/rev
-# adaptive selection, intersection anchors): ONE feedback round at 2.5/60
-# passes the human-matched check on r6 (100@96.3 vs 100@94.5) and r7
-# (77.8@98.4 vs 77.8@91.4) and reaches r8 100@98.2 vs 100@98.5 (3 null
-# draws short; grade config adds hitter-chain anchors on top). Measured
+# FROZEN 2026-08-31 from the train sweep (33 configs, scratch grids over
+# hard 1.5-4.0 x angle 30-80 x rounds 1-3, hardening ladders, fwd/rev
+# adaptive selection, intersection anchors): ONE feedback round at 2.5/40
+# passes the human-matched check on ALL THREE train rallies — r6
+# 100@96.3 (human 100@94.5), r7 77.8@98.4 (77.8@91.4), r8 100@98.5
+# (100@98.5) — and screens 88@99.3 vs human 92@99.5 on dev rally 1
+# with NO pose anchors (angle 60 left r8 3 null draws short and r1 at
+# 84; angle 30 trades r1 back down for an r7 bump). Soft dink turns
+# need the 40-deg anchor gate: at 60 they get hardened away on long
+# rallies. Grade config unions hitter-chain anchors on top (r1
+# missile evidence: 72%-recall anchors carried turns to 96%). Measured
 # dead ends, do not retry: a SECOND feedback round drops r8 to 85.7
 # (over-steer); hardening LADDERS (soft round seeds anchors for a strict
 # round) fix r8 but break r6 — the soft round's junk turns get anchor

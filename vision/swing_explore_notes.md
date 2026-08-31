@@ -4038,3 +4038,25 @@ on record: r9 -> train (it teaches exactly this; also carries the
 log-span asterisk), seal r10/17/20. An off-frame-excursion edge
 (exit near frame top moving up, ballistic re-entry from the top) is
 the named next decoder capability, to build ONLY if r9 lands train.
+
+## 2026-08-31 (late evening) — angle screen closes the sweep: 40 deg, and the train goes 3/3
+
+The rally-1 screen exposed the frozen 60-deg anchor gate's cost on
+the long-rally class (timing 84@99.3 vs human 92@99.5 — hardening
+taxes real dink turns under 60 deg), which mattered because r10, the
+recommended sealed rally, is rally-1-shaped. Final screen, single
+round / hard=2.5, panel = r1+r6+r7+r8:
+
+    ang=60 | r1 84.0@99.3  | r6 100@96.3* | r7 77.8@98.4* | r8 100@98.2  | 2/4
+    ang=40 | r1 88.0@99.3  | r6 100@96.3* | r7 77.8@98.4* | r8 100@98.5* | 3/4
+    ang=30 | r1 84.0@99.3  | r6 100@96.3* | r7 88.9@99.1* | r8 100@98.5* | 3/4
+
+FROZEN FINAL: one round, hard=2.5, TIMING_ANGLE=40. The human-matched
+check passes on ALL THREE train rallies with zero pose anchors —
+including r8, the shape that failed the grade. r1 dev residual: 22/25
+vs the human's 23/25, before hitter-chain anchors (which measured 72%
+contact recall on r1 and carried the missile run to 96%). 30 deg is
+dominated: it trades r1 back down for an r7 bump. Total sweep: 33
+configs, ~3.5 h compute, every refuted mechanism written into the
+module docstring. Next: owner designates the sealed rally, readiness
+in full grade config (needs the Drive assets), one re-grade.

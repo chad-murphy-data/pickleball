@@ -324,8 +324,8 @@ one candidate stream, two decodes of it.
 - The **POSITION stream** is the graded-run production config,
   byte-for-byte unchanged. Checks 1 and 3 read it, exactly as before.
 - The **TIMING stream** re-decodes the same candidates with the
-  position stream's own high-angle turns (>= 60 deg, from the forward
-  AND reverse decodes, unioned) as additional turn anchors, plus a
+  position stream's own turns (>= 40 deg, from the forward AND
+  reverse decodes, unioned) as additional turn anchors, plus a
   turn-cost hardening factor 2.5x away from all anchors, ONE feedback
   round. At grade time the hitter-chain anchors union in as before.
   Check 2 reads this stream through the same frozen battery. Directly
@@ -341,16 +341,18 @@ human reference is scored on the full label span (what ball_grade.py
 and the graded run already did); score_train was panel-filtering and
 now matches.
 
-Train evidence for the frozen constants (sweep of 30 configs; full
+Train evidence for the frozen constants (sweep of 33 configs; full
 tables in swing_explore_notes 2026-08-31 evening): with NO pose
-anchors, the timing stream passes the human-matched check on r6
-(100@96.3 vs human 100@94.5) and r7 (77.8@98.4 vs 77.8@91.4) and
-reaches 100@98.2 vs 100@98.5 on r8 — recall at the human's level on
-the rally class that failed the grade, percentile 3 null draws short
-in a train configuration weaker than the grade one. Measured dead
+anchors, the timing stream passes the human-matched check on ALL
+THREE train rallies — r6 100@96.3 (human 100@94.5), r7 77.8@98.4
+(77.8@91.4), r8 100@98.5 (100@98.5) — the rally class that failed
+the grade now scores at the human path's own level. Dev rally 1
+(long-rally screen) reads 88@99.3 vs human 92@99.5 without pose
+anchors; the grade configuration unions the hitter-chain anchors in
+(on r1 those carried the missile run to 96% recall). Measured dead
 ends recorded in the module docstring (second feedback round,
-hardening ladders, intersection anchors, fwd/rev-adaptive hardness)
-so they are not re-tried.
+hardening ladders, intersection anchors, fwd/rev-adaptive hardness,
+30/60-deg anchor gates) so they are not re-tried.
 
 **Rally designations:**
 - Rally 8: spent -> train (SEALED sets cleared in all four

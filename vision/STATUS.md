@@ -69,17 +69,19 @@ PASS, r6 fails check 3.
 **Decoder fix BUILT + constants frozen (2026-08-31 evening,
 owner-approved addendum in ball_gate.md): TWO-REGIME decode.** Position
 stream = graded config unchanged (checks 1/3); timing stream re-decodes
-with the position stream's own >= 60-deg turns (fwd AND rev decodes,
+with the position stream's own >= 40-deg turns (fwd AND rev decodes,
 union) as turn anchors + 2.5x turn-cost hardening away from anchors,
-one feedback round (check 2). Train, with NO pose anchors: r6 100@96.3
-(human 100@94.5) PASS, r7 77.8@98.4 (human 77.8@91.4) PASS, r8
-100@98.2 (human 100@98.5) — recall at human level on the failed rally
-class, pct 3 null draws short, grade config adds hitter anchors.
+one feedback round (check 2). Train, with NO pose anchors: PASSES the
+human-matched check on ALL THREE train rallies — r6 100@96.3 (human
+100@94.5), r7 77.8@98.4 (77.8@91.4), r8 100@98.5 (100@98.5) — and
+screens 88@99.3 vs human 92@99.5 on long dev rally 1 (grade config
+adds hitter anchors; on r1 those carried the missile to 96%).
 Measured dead ends (do NOT re-try; module docstring + notes): a second
 feedback round (r8 -> 85.7), hardening ladders (fix r8, break r6 —
 soft-round junk gets anchor protection), INTERSECTION anchors (r8
 14.3@0.8 — fwd/rev disagree exactly at contacts, the co-location
-geometry), fwd/rev-agreement adaptive hardness (picks wrong on r8).
+geometry), fwd/rev-agreement adaptive hardness (picks wrong on r8),
+60-deg anchor gate (hardens dink turns away on long rallies).
 Awaiting: owner designation of the next sealed rally (r9's pass is
 delivered but committed UNPEEKED; recommendation r9 -> train for its
 off-frame lob regime — 34 frames N, 3x GAP_MAX, no train rally has
