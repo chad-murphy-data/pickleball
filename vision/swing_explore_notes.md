@@ -3623,3 +3623,27 @@ the human path does on the same rally under the same battery, and
 gate's stated intent ("the same test without the human") and usable
 on any rally length; pooling check 2 across sealed rallies as that
 set grows (r9/r10 have 27-30 taps) restores absolute power later.
+
+## 2026-08-31 — BUILD STARTS: candidate stage first numbers (train only)
+
+Clips r6/r7/r8 delivered via Drive (1280x720@60, windows exact to the
+frame; clip clock verified against the ball-pass clicks visually —
+crosshair ON the ball at slow moments; fast frames carry ±1-frame
+browser-vs-decoder seek jitter, tolerated in diagnostics). Rally 8's
+clip is NOT touched (seal). `vision/ball_candidates.py` = the first
+gated component: classical motion diff (min of ±0.1 s absdiffs,
+threshold 18, 4-600 px components, top-40/frame), no labels, no
+tuning yet. Candidate recall vs the user's train passes:
+
+    rally 6: V 81.1% (129/159), S 95.7%   (~40 cands/frame)
+    rally 7: V 92.1% (174/189), S 100.0%
+
+Smears — the fast ball, the frames the old isolated-frame test said
+were hopeless — are caught at 96-100%: motion diff loves fast movers.
+Miss anatomy differs by rally: r7 misses are SLOW frames (median 121
+px/s vs 348 for hits — the physics-interpolation-friendly case), r6
+misses skew to the serve-hold/player-merged region (~400 px/s, blob
+merged with the arm). Both are decoder-bridgeable classes in
+principle; that's the next component (arc decoding over candidates,
+court3d machinery). Sealed-rally guard is in the script (--graded-run
+required for rally 8, scoring against the sealed pass refused).
