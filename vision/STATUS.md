@@ -49,6 +49,23 @@ The classical tracker is the same story from the other side: 68% at
 error of 0.08s, which the tolerance cannot see. Its tight-tolerance
 recall is unmeasured and is the open question.
 
+## Graded and attributed
+
+**Automated ball tracker, ball_gate.md graded run (2026-08-31, rally 8
+sealed -> spent):** VERDICT FAIL by check 2's null clause — V 58.1%
+(bars 70/40), turns 85.7% vs human 100% and under its own shift-null
+(95th 100), **check 3 PASS** (3D replication: median impact agreement
+2.82 ft vs 3.0 bar, crossings 3/3, bounces 3v2). Autopsy attribution:
+**DECODER (association under clutter)** — oracle substitution 94.6% V /
+null-beating turns, person channel exonerated (auto tracks = user's
+assigns), frame sound, candidate recall 84.5%/100% on the sealed rally.
+Readiness had passed on rally 7 (V 82.3 / turns 100 at pct 99 /
+replication 1.70 ft); rally 8 is rally-6-shaped and failed the same way
+rally 6 does on train. Re-attempt licensed after a decoder fix, one new
+sealed ball pass required (gate record: ball_gate.md, graded-run note +
+result). Train state of record: r7 full battery PASS, r1 checks 1-2
+PASS, r6 fails check 3.
+
 ## Built, producing numbers
 
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
@@ -72,6 +89,15 @@ Sanity gate PASSED — a bounded paddle detector is feasible; usefulness
 untested. Presence is non-discriminative (everyone holds one): any
 signal is position/attitude/blur. Full reading + process constraints:
 swing_explore_notes.md 2026-08-29.
+**2026-08-31 follow-ups, measured:** ball goes invisible AT the paddle
+(I-frames 17-32 px from a wrist, 88-100% within 60 px); paddle point =
+wrist + 0.5*(wrist-elbow) beats the wrist as contact-position estimate
+(13.5-15 px vs 18-20; occluded 12.6-13.7 vs 18) — shipped as an anchors
+column; a full paddle DETECTOR is unnecessary for that use. Blur
+(smear mass near wrist) is a weak standalone contact channel
+(24-57% recall) but complementary — ships as gap-fill only.
+Forward/backward decode agreement is a label-free confidence map
+(agreeing frames err 4-7 px, disagreeing 32-34).
 
 ## Buildable now, glue unbuilt
 

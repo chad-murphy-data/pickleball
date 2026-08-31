@@ -230,3 +230,86 @@ not bind the OWNER, who may reopen any closure with an explicit call
 plus a fresh registration (this gate itself is the precedent: the
 ball thread was owner-reopened exactly that way). Reopening is never
 silent and never a knob-turn of the failed instrument.
+
+## Graded-run configuration note — 2026-08-31, recorded BEFORE the run
+
+Owner authorized breaking the seal ("let's break it", 2026-08-31,
+after the readiness report). Frozen here, before any rally-8 output
+exists:
+
+- **Serve pin** = t0s of the v4 windows row covering rally 8's time
+  (189.2 s; the CSV's rally_cum numbering is shifted by one from the
+  state labels for rallies >= 6 — mapping is BY TIME, the known
+  anomaly).
+- **Rally window end** = the user's point_dead mark (198.0 s).
+  Clarification of "the rally window (referee logs supply these)":
+  the windows CSV's t1s is NOT a log timestamp — it is the
+  serve_pin_windows.py estimate min(next_serve-2, serve+1.5*shots+5),
+  padded 6-12 s past the rally on every train rally (past the CLIP
+  end on rally 6). Deployment referee logs DO carry the rally-end
+  moment tightly. The point_dead mark is therefore the same stand-in
+  category as the serve pin, which the gate licenses on exactly this
+  reasoning ("logs carry serve timing"); it is not a contact tap,
+  which remain excluded. This also matches the train configuration
+  the readiness rule validated (decode trimmed at the dead mark).
+- Pipeline as merged on main at grading (PRs #106-#107): candidate
+  stage -> hitter chain (pose + blur gap-fill, wrist-position
+  anchors) -> decoder (full-gap edge search, serve/end trims) ->
+  arc refit; check 3 via ball_replicate (largest-angle anchor
+  claims, crossing demotion, automated ankle-floor anchors).
+  Anchor generation for rally 8 bypasses hitter_chain's train
+  score() so the sealed ball pass is read ONLY by the scoring
+  harness.
+- One run. Pre-stated expectation (from the rally-6-shaped
+  character of rally 8): MIDDLE is the modal outcome; check 3 is
+  the underdog.
+
+## GRADED RESULT — 2026-08-31, rally 8 (seal spent)
+
+One run, configuration as in the note above (`vision/ball_grade.py`;
+dry-run on rally 7 in the identical configuration passed end-to-end
+before the seal was touched).
+
+- **CHECK 1: 58.1%** V hit rate (75/129; S 54.3%) — between the
+  bars (PASS >= 70, FAIL < 40).
+- **CHECK 2: FAIL** — recall 85.7% vs the human path's 100% on the
+  same rally; null pct 85 vs the human's 98; and the decoded path
+  does NOT beat its own circular-shift null (85.7 vs 95th = 100).
+  The human path beat its own null on this rally, so this is a fair
+  loss under Amendment 1, not instrument saturation.
+- **CHECK 3: PASS** — 3/7 impact points matched at median 2.82 ft
+  (bar 3.0), net crossings 3/3, bounces 3 vs 2 (bar +/-1). The
+  deliverable check survived out of sample.
+- Pre-stated expectation (MIDDLE modal, check 3 the underdog) was
+  wrong in both directions; recorded.
+
+**VERDICT: FAIL, by check 2's null clause. Autopsy run same day:**
+
+1. Oracle substitution — the user's clicks through the same decoder:
+   V 94.6%, turns 85.7% at pct 98 beating its own null (95th 71.4).
+   Decoder SOUND on clean input.
+2. Person ablation — the automated 4-longest tracks were the SAME
+   four tracks as the user's assigns; curated anchors reproduce
+   V 58.1% exactly. PERSON channel exonerated.
+3. Frame checks — candidate recall 84.5% at +/-1 frame proves clock
+   alignment; window sane. Not VOID.
+4. Candidate stage on the sealed rally: V recall 84.5%, S 100% —
+   train-range. The arm-4 condition ("cannot find the ball in
+   pixels") is NOT met.
+
+**ATTRIBUTION: DECODER — association under clutter.** Every
+component passes in isolation; the failure is the decoder's
+selection among junk candidates, which arm 1 cannot test (no junk)
+and which the miss geography shows directly: misses cluster in
+5 runs during the fast exchange with candidates present (7/7,
+12/13 of missed frames had the true ball in the stream), the path
+sitting 39-161 px away on limb chains — the identical failure class
+measured on train rally 6, which is rally 8's shape. The ball
+channel itself is NOT killed (the autopsy's premise stands: arm 1
+re-confirmed the information is in the stream).
+
+**Consequence (per the frozen consequences): DECODER fix licensed;
+re-attempt under a short dated addendum naming what changed, graded
+once on a NEWLY labeled sealed rally.** Rally 8 is spent and is now
+train data. The user is the rate limiter: the re-grade costs one
+fresh sealed ball pass.

@@ -1,0 +1,177 @@
+"""The graded run of ball_gate.md — all three checks, one verdict.
+
+Runs the merged pipeline (candidates -> hitter chain with blur
+gap-fill -> decoder -> arc refit -> replication) on ONE rally using
+only the licensed grade-time inputs (serve pin, rally-window end,
+clip, pose npz, court calibration), then scores it against that
+rally's ball pass and taps — which are read ONLY here, as the answer
+key. Anchor generation calls predict_contacts/blur_gap_fill directly
+so hitter_chain's train score() never touches the sealed pass.
+
+Configuration and licensing interpretation: the dated graded-run
+note at the end of ball_gate.md, recorded before the run.
+
+Dry-run on a TRAIN rally first (readiness discipline); then the one
+sealed run:
+    python3 vision/ball_grade.py --rally 7 --serve 164.7 --end 175.2 \
+        --npz r0007.npz --clip r7_clip.mp4 --offset 164.50
+    python3 vision/ball_grade.py --rally 8 ... --graded-run
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import math
+import sys
+from pathlib import Path
+
+import numpy as np
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from make_ball_audit import detect_events, score_events, load_impacts  # noqa: E402
+import ball_decoder as bdec  # noqa: E402
+import ball_replicate as br  # noqa: E402
+import hitter_chain as hc  # noqa: E402
+import court3d as c3  # noqa: E402
+
+DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
+SEALED = {8}
+
+
+def make_anchors(npz, clip, offset, out_csv):
+    z = np.load(npz)
+    picked = hc.predict_contacts(npz, float(z["t"].min()),
+                                 float(z["t"].max()))
+    extra = hc.blur_gap_fill(npz, clip, offset, picked)
+    picked = sorted(picked + extra)
+    with open(out_csv, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["t_s", "excitement_z", "track", "wrist_x",
+                    "wrist_y", "paddle_x", "paddle_y"])
+        w.writerows([(round(e[0], 3), round(e[1], 2), e[2],
+                      round(e[3], 1), round(e[4], 1),
+                      round(e[5], 1), round(e[6], 1)) for e in picked])
+    print(f"anchors: {len(picked)} ({len(extra)} blur gap-fill) "
+          f"-> {out_csv}")
+    return out_csv
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--rally", type=int, required=True)
+    ap.add_argument("--serve", type=float, required=True)
+    ap.add_argument("--end", type=float, required=True)
+    ap.add_argument("--npz", required=True)
+    ap.add_argument("--clip", required=True)
+    ap.add_argument("--offset", type=float, required=True)
+    ap.add_argument("--workdir", default=".")
+    ap.add_argument("--graded-run", action="store_true")
+    a = ap.parse_args()
+    if a.rally in SEALED and not a.graded_run:
+        raise SystemExit(f"rally {a.rally} is SEALED — this harness "
+                         "runs it only as THE graded run (--graded-run)")
+
+    anchors_csv = make_anchors(
+        a.npz, a.clip, a.offset,
+        str(Path(a.workdir) / f"anchors_grade_r{a.rally}.csv"))
+    anchors = br.load_anchors(anchors_csv)
+
+    # ---- decode with licensed window only
+    byf, t0 = bdec.load_candidates(a.rally)
+    f_min = round((a.serve - 0.3 - t0) * bdec.FPS)
+    f_max = round((a.end + 0.3 - t0) * bdec.FPS)
+    byf = {f: c for f, c in byf.items() if f_min <= f <= f_max}
+    oflags = bdec.out_of_court_flags(byf, bdec.court_hull())
+    aflags = bdec.anchor_flags(byf, t0,
+                               [(t, x, y) for t, _, x, y in anchors])
+    visited = bdec.decode(byf, None, oflags, aflags)
+    refined = bdec.refine_arcs(visited, t0)
+    per_frame = {}
+    for t, x, y in refined:
+        per_frame[round((t - t0) * bdec.FPS)] = (t, x, y)
+    print(f"decoded {len(visited)} visited points, window "
+          f"{a.serve:.1f}-{a.end:.1f}s")
+
+    # ================= answer key opens here =================
+    imps, dead = load_impacts(rally=a.rally)
+    labels = list(csv.DictReader(open(DATA / f"ball_path_r{a.rally}.csv")))
+
+    # ---- CHECK 1: V hit rate on the gate panel
+    p_lo, p_hi = imps[0], imps[-1] + 0.5
+    rates = {}
+    for cls, tol in (("V", 25.0), ("S", 40.0)):
+        hit = tot = 0
+        for r in labels:
+            if not r["x"] or r["vis"] != cls:
+                continue
+            tt = float(r["t_s"])
+            if not (p_lo <= tt <= p_hi):
+                continue
+            tot += 1
+            f0 = round((tt - t0) * bdec.FPS)
+            best = min((math.hypot(per_frame[g][1] - float(r["x"]),
+                                   per_frame[g][2] - float(r["y"]))
+                        for g in (f0 - 1, f0, f0 + 1) if g in per_frame),
+                       default=1e9)
+            hit += int(best <= tol)
+        rates[cls] = 100 * hit / max(tot, 1)
+        print(f"CHECK 1 {cls}: {rates[cls]:.1f}% ({hit}/{tot})"
+              + (" [bars: PASS>=70, FAIL<40]" if cls == "V" else ""))
+    c1_pass = rates["V"] >= 70.0
+    c1_fail = rates["V"] < 40.0
+
+    # ---- CHECK 2: frozen battery, human-matched (Amendment 1)
+    span = (imps[0] - 1.0, dead)
+    hum_pts = [(float(r["t_s"]), float(r["x"]), float(r["y"]))
+               for r in labels if r["x"] and r["vis"] == "V"]
+    res = {}
+    for name, pts in (("tracker", refined), ("human", hum_pts)):
+        evs = detect_events(pts)
+        obs, p95, pct, med = score_events(evs, imps, span)
+        res[name] = (obs, pct, p95)
+        print(f"CHECK 2 turns[{name:7s}]: recall {100*obs:.1f}% at "
+              f"null pct {100*pct:.0f} (median {100*med:.1f}, "
+              f"95th {100*p95:.1f})")
+    c2_pass = (res["tracker"][0] >= res["human"][0]
+               and res["tracker"][1] >= res["human"][1])
+    c2_nullfail = res["tracker"][0] <= res["tracker"][2]
+    print(f"CHECK 2 human-matched: {'PASS' if c2_pass else 'no'} "
+          f"(recall {100*res['tracker'][0]:.0f} vs "
+          f"{100*res['human'][0]:.0f}, pct {100*res['tracker'][1]:.0f} "
+          f"vs {100*res['human'][1]:.0f}); "
+          f"beats own null 95th: {'no' if c2_nullfail else 'yes'}")
+
+    # ---- CHECK 3: replication (ball_replicate machinery)
+    pts = [(t0 + f / bdec.FPS, x, y) for f, x, y in visited]
+    turns = [e for e in detect_events(refined)
+             if a.serve - 0.3 <= e < a.end - 0.05]
+    angs = br.turn_angles(refined, turns)
+    claimed = set()
+    for ta, _, _, _ in anchors:
+        cand = [(angs[e], e) for e in turns if abs(e - ta) <= br.MATCH_S]
+        if cand:
+            claimed.add(max(cand)[1])
+    bounds = sorted(claimed) + [a.end]
+    bounce_evs = [e for e in turns if e not in claimed]
+    obs = [(t, x, y, 1.0) for t, x, y in pts]
+    X3, x2, _ = c3.load_landmarks()
+    P = c3.dlt(X3, x2)
+    floors = br.track_floor(a.npz, P)
+    c3_pass = br.compare(a.rally, (obs, bounds, bounce_evs),
+                         br.human_side(a.rally, a.end), P, floors,
+                         anchors)
+
+    # ---- verdict per the frozen bars
+    if c1_pass and c2_pass and c3_pass:
+        verdict = "PASS"
+    elif c1_fail or c2_nullfail:
+        verdict = "FAIL (autopsy required)"
+    else:
+        verdict = "MIDDLE (one train-only iteration, then one " \
+                  "re-grade on a NEWLY labeled sealed rally)"
+    print(f"\n=== GATE VERDICT, rally {a.rally}: {verdict} ===")
+
+
+if __name__ == "__main__":
+    main()
