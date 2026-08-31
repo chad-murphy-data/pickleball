@@ -3558,3 +3558,24 @@ ball passes are the mentally cheap labels ("easy and relatively
 mindless... we can do more whenever we need"), hitter/state passes
 cost more attention — so future gate designs should spend ball labels
 freely and hitter labels carefully.
+
+## 2026-08-30 — ball_gate v2: the research question is "Can we track the ball?" (user), and it subsumes the missile
+
+Design discussion worth keeping: v1 graded the tracker against
+anchors-only interpolation WITH contact taps given — the user asked
+whether it should instead "fit the heat-seeking missile idea", which
+exposed the misalignment: v1 tested the regime where the ball is
+least needed (perfect anchors), while the missile's value is the
+opposite regime (the ball supplies the timing Gate C killed). The
+user then cut to the actual question: "Can we track the ball?" — well
+enough to replicate the 3D model, nothing else needed. That is the
+STRICT version: the 3D model's skeleton is the arc structure, arcs
+are born at contacts, so replication forces turn recovery — the dead
+timestamp channel comes along as a byproduct. And with NO taps given
+at grade time the anchors-null dissolves; the only null needed is the
+circular-shift one the oracle battery already carries. v2 frozen
+shape: three checks on one tap-free graded run (V hit rate ≥70% /
+25 px; the unchanged make_ball_audit oracle battery on the decoded
+turns; court3d replication with impact agreement ≤3 ft), sealed
+rally 8, KILL closes ball tracking on this VOD again. Still DRAFT —
+awaiting the user's explicit freeze.
