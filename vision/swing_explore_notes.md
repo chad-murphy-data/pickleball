@@ -3759,3 +3759,66 @@ the server's body is exactly what motion diff can't see. No gate
 impact (panel starts at first contact; decode trims at serve-0.3s),
 but recorded for any future serve-routine analytics — that region
 needs an appearance-based candidate mode, not motion.
+
+## 2026-08-31 (overnight, autonomous) — READINESS: rally 7 passes the full battery
+
+Two decoder bugs found and fixed, the check-3 harness built and run
+for the first time, and the readiness rule of ball_gate.md is now
+SATISFIED on rally 7. The sealed rally-8 run remains unspent — that
+one is the owner's to trigger.
+
+**Bug 1 — the `got_close` early-stop was strangling the graph.**
+The edge search quit past 3-frame gaps whenever ANY candidate sat
+nearby, so the ball's own 4-6-frame candidate gaps could never be
+bridged whenever junk was close — which is precisely at contacts
+(the ball passes the players). Priced the true-ball chain through
+the decoder's own cost model on r6's 1.2 s dropout: it was CHEAPER
+than the limb chain the decoder chose (-761 vs -725), i.e. the
+decoder never saw it — five true-chain edges, every one of them the
+nearest candidate at its destination frame (rank 0), were pruned by
+the early-stop. Fix: always search to GAP_MAX, beam SUCC_MAX=8 near
+/ SUCC_FAR=4 far. V hit rates: r6 60.7→71.3, r7 66.5→82.3,
+r1 69.3→77.7. (Two plausible-sounding fixes measured FIRST and
+rejected: wider uniform beam 50.8-67.7, slow-penalty waiver near
+anchors 45.9-61.4 — the waiver licenses exactly the limb-hover the
+penalty exists to stop, because anchors sit on wrists.)
+
+**Bug 2 — post-rally events flooded the check-2 null.** The decoder
+tracked celebrations to the end of the clip; score_events wraps ALL
+events into the rally span under the circular shift, so r6 carried
+22 out-of-rally events into its null (median 100 → unwinnable).
+The rally-window END is as licensed as the serve pin (referee logs
+carry the window) — decode now trims at end+0.3 s, mirroring
+serve−0.3. Check 2 after both fixes: r7 PASS (recall 100 vs
+human 78, pct 99 vs 95), r1 PASS (96 vs 92, pct 100 vs 100, and it
+clears the frozen absolute bars outright), r6 near-miss (recall
+tied 86=86, pct 92 vs 96 — a few in-rally wobble events remain).
+
+**Check 3 built and run for the first time**
+(`vision/ball_replicate.py`): both sides lifted with court3d's
+two-pass machinery under one fully-automated anchor policy — the
+hitter chain's anchors carry a pose TRACK id, that track's ankle
+midpoint through the z=0 homography of the court calibration gives
+the hitter floor position (no names, no clicks). Tracked side
+segments itself: turns from the arc-refined path (the same stream
+check 2 scores — raw-path turns scrambled the claim), each anchor
+claims its LARGEST-ANGLE turn within 0.25 s (real contacts turn
+101-171°, wobbles hugging the same anchors 42-66°; nearest-in-time
+picked the wobble twice), unclaimed turns stay bounce candidates,
+and a crossing-demotion loop drops any claimed contact whose
+following segment never crosses the net (every real shot crosses —
+court3d's own prior). RALLY 7 PASSES: 7/8 impact points matched at
+median 1.70 ft (bar 3.0), net crossings 6/6, bounces 3 vs 2 (±1).
+Tried and rejected: promoting unclaimed ≥90° turns to contacts
+(rescues r6's missile-missed 148.6 contact but swallows r7's real
+bounces and flips it to FAIL — a contact bound requires an anchor,
+a missed anchor degrades to a longer segment, never a fake contact).
+
+**Where this leaves the seal.** Readiness is formally met (r7 full
+battery; r1 concurs on checks 1-2). The honest asterisk: rally 6
+still fails check 3 (its 147.5-149.4 stretch keeps mushy geometry
+even at V 71.3 — the missile also missed the 148.6 contact
+outright), and sealed rally 8 is rally-6-SHAPED (7 contacts in
+5.4 s) rather than rally-7-shaped (9 in 7.2 s). Spending the seal
+now is licensed; whether to spend it or first widen train coverage
+on short fast rallies is an owner call, not an agent one.
