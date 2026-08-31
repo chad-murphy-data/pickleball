@@ -3951,3 +3951,37 @@ Findings, in order of importance:
    two streams under one gate is within the registration's spirit is
    an OWNER call — it would go in the DECODER-fix addendum
    explicitly, bars unchanged, before any re-grade.
+
+## 2026-08-31 (afternoon) — PICKLES Replay: measured shot categories + pressure meter
+
+User direction: make the 3D replay as cool as possible, then hand to
+Claude Design for styling. Three things shipped to the artifact
+(same URL, version "pressure-meter"):
+
+1. **Measured shot categories** replace the hand labels on the shot
+   card (`vision/shot_categories.py`, rules frozen in its
+   docstring). User taxonomy: dink / speed-up / hand battle. Speeds
+   from the court3d path (median 0.05-0.30 s after contact); rally-1
+   distribution has a clean gap (dinks 13-21 mph, attacks 25-48);
+   FAST >= 24, speed-up needs HOT >= 30 or a fast follow-up (the
+   hard-dinking guard — shot 5's lone 28.6 mph push stays a dink,
+   matching the user's own label), battle hysteresis absorbs single
+   soft blocks. Derived categories reproduce the hand-label
+   structure EXACTLY on rally 1, including both labeled speed-ups.
+
+2. **"Who's winning?" pressure bar** — user request, with their
+   threshold caveat honored: ONLY speed-up/hand-battle shots move
+   it, weighted (mph-20), 2 s exponential decay. Dink rallies read
+   "all square"; the first battle reads Utah 79%, the last one a
+   contested 51/49 before Wei's miss; at point-dead it flips to
+   "Point: Utah" (receipt: side-out on Nelson's serve). The receipt
+   line on the plate says explicitly it is heat, not a calibrated
+   win probability.
+
+3. Category-colored shot card + timeline ticks (the rally's story
+   reads at a glance: yellow dink stretches, red battle clusters)
+   and a speed-tinted ball trail (gold -> battle red above ~20 mph).
+
+Verified headless (Playwright + the preinstalled Chromium): all
+meter states, categories, and the ending render correctly; no
+console errors beyond the sandbox's blocked font fetch.
