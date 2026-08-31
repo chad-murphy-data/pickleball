@@ -63,9 +63,17 @@ treatment; the trail is the lookup the isolated-frame test lacked.
 Export -> data/vision/ball_path_r1.csv (frame,t_s,x,y,vis; x,y in
 native video pixels; N rows have empty x,y).
 
+AMENDMENT 2026-08-31: --rally N added for the ball_gate.md train and
+holdout passes (rallies 6-8+). Rally 1's frozen oracle bar, its
+answer key (state-label impacts), and every grading constant are
+untouched; other rallies take their answer key from the manual
+contact taps (contact_labels_chicago0725.csv) and write
+ball_path_r{N}.csv, and their scoring runs the same frozen instrument
+in service of ball_gate.md rather than this file's rally-1 bar.
+
 Usage:
-    python3 vision/make_ball_audit.py                    # -> HTML tool
-    python3 vision/make_ball_audit.py --score data/vision/ball_path_r1.csv
+    python3 vision/make_ball_audit.py --rally 6          # -> HTML tool
+    python3 vision/make_ball_audit.py --rally 6 --score data/vision/ball_path_r6.csv
     python3 vision/make_ball_audit.py --selftest
 """
 
@@ -91,17 +99,28 @@ TURN_DEG = 25.0        # direction-change threshold, frozen
 MIN_SEP_S = 0.25       # min separation between detected events, frozen
 
 
+CONTACTS = DATA / "contact_labels_chicago0725.csv"
+
+
 def load_impacts(state_path=STATE, rally=RALLY):
+    """Answer key: rally 1 keeps its frozen state-label impacts; other
+    rallies use the manual contact taps (ball_gate.md's reference).
+    point_dead from the state labels bounds the window when present."""
     imps, dead = [], None
     for r in csv.DictReader(open(state_path)):
         if int(r["rally_cum"]) != rally:
             continue
-        if r["kind"] == "impact":
+        if r["kind"] == "impact" and rally == RALLY:
             imps.append(float(r["t_s"]))
         elif r["kind"] == "point_dead":
             dead = float(r["t_s"])
+    if rally != RALLY:
+        for r in csv.DictReader(open(CONTACTS)):
+            if (int(r["rally_cum"]) == rally
+                    and r["source"] in ("manual", "divergent")):
+                imps.append(float(r["t_refined_s"] or r["t_tap_s"]))
     if not imps:
-        raise SystemExit(f"no impacts for rally {rally} in {state_path}")
+        raise SystemExit(f"no impacts for rally {rally}")
     imps.sort()
     return imps, (dead if dead is not None else imps[-1] + 2.0)
 
@@ -158,8 +177,8 @@ def score_events(events, impacts, span, tol=TOL_S, n_null=N_NULL, seed=1):
     return obs, p95, pct, null[n_null // 2]
 
 
-def run_score(path, state_path=STATE):
-    impacts, dead = load_impacts(state_path)
+def run_score(path, state_path=STATE, rally=RALLY):
+    impacts, dead = load_impacts(state_path, rally)
     rows = list(csv.DictReader(open(path)))
     def pts(classes):
         return [(float(r["t_s"]), float(r["x"]), float(r["y"]))
@@ -191,7 +210,7 @@ def run_score(path, state_path=STATE):
 
 
 HTML = r"""<!doctype html><html><head><meta charset="utf-8">
-<title>ball audit — rally 1 oracle test</title>
+<title>ball audit — rally __RALLY__</title>
 <style>
  body{font:14px system-ui;margin:0;background:#111;color:#ddd}
  #wrap{max-width:1040px;margin:0 auto;padding:12px}
@@ -210,7 +229,7 @@ HTML = r"""<!doctype html><html><head><meta charset="utf-8">
  #progfill{height:100%;background:#4a7;width:0}
  input{background:#222;color:#ddd;border:1px solid #555;border-radius:4px}
 </style></head><body><div id="wrap">
-<h3>Ball audit — rally 1, every frame (the oracle test)</h3>
+<h3>Ball audit — rally __RALLY__, every frame</h3>
 <div id="drop">🎬 <b>Load the match video</b> — click or drag
 <input type="file" id="fpick" accept="video/*,.webm,.mp4,.mkv" hidden></div>
 <div id="vbox"><video id="v" preload="auto"></video><canvas id="ov"></canvas></div>
@@ -249,13 +268,13 @@ answering · <kbd>,</kbd>/<kbd>.</kbd> jump ±10 · <kbd>⌫</kbd> clear
 this frame (then re-answer).<br>
 <b>Stopping:</b> anytime — progress autosaves in this browser. At the
 end of every sitting hit <b>⬇ export</b> and save as
-<code>ball_path_r1.csv</code> into data/vision/ (partial is fine;
+<code>ball_path_r__RALLY__.csv</code> into data/vision/ (partial is fine;
 ⬆ import restores it exactly). Score with:
-<code>python3 vision/make_ball_audit.py --score data/vision/ball_path_r1.csv</code>
+<code>python3 vision/make_ball_audit.py --rally __RALLY__ --score data/vision/ball_path_r__RALLY__.csv</code>
 </div>
 </div><script>
 const CFG = __CFG__;
-const LSK = "ball_audit_r1";
+const LSK = "ball_audit_r" + __RALLY__;
 let store = JSON.parse(localStorage.getItem(LSK) || "{}");
 const save = () => localStorage.setItem(LSK, JSON.stringify(store));
 const V = document.getElementById("v"), OV = document.getElementById("ov");
@@ -344,7 +363,7 @@ bexp.onclick = () => {
   }
   const a = document.createElement("a");
   a.href = URL.createObjectURL(new Blob([out], {type: "text/csv"}));
-  a.download = "ball_path_r1.csv"; a.click();
+  a.download = "ball_path_r" + __RALLY__ + ".csv"; a.click();
 };
 bimp.onclick = () => csvpick.click();
 csvpick.onchange = () => {
@@ -394,31 +413,35 @@ def selftest():
     impacts_r, dead = load_impacts()
     assert len(impacts_r) == 25 and dead > impacts_r[-1]
     cfg = {"t0": round(impacts_r[0] - PRE_S, 3), "t1": round(dead, 3)}
-    html = HTML.replace("__CFG__", json.dumps(cfg))
-    assert "__CFG__" not in html
+    html = HTML.replace("__CFG__", json.dumps(cfg)).replace("__RALLY__", "1")
+    assert "__CFG__" not in html and "__RALLY__" not in html
     print(f"selftest OK — synthetic recall {obs:.0%} vs null95 {p95:.0%}; "
           f"gappy path drops to {obs2:.0%}; rally-1 cfg {cfg}")
 
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--rally", type=int, default=RALLY)
     ap.add_argument("--state", default=str(STATE))
     ap.add_argument("--score", metavar="BALL_CSV")
-    ap.add_argument("--out", default=str(OUT_HTML))
+    ap.add_argument("--out", default=None)
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
     if a.selftest:
         selftest()
         return
     if a.score:
-        run_score(a.score, a.state)
+        run_score(a.score, a.state, a.rally)
         return
-    impacts, dead = load_impacts(a.state)
+    out = a.out or str(DATA / f"ball_audit_r{a.rally}.html")
+    impacts, dead = load_impacts(a.state, a.rally)
     cfg = {"t0": round(impacts[0] - PRE_S, 3), "t1": round(dead, 3)}
     n = int((cfg["t1"] - cfg["t0"]) * FPS)
-    Path(a.out).write_text(HTML.replace("__CFG__", json.dumps(cfg)))
-    print(f"wrote {a.out} — {n} frames ({cfg['t0']}s to {cfg['t1']}s), "
-          f"{len(impacts)} known impacts as the sealed answer key.")
+    Path(out).write_text(HTML.replace("__CFG__", json.dumps(cfg))
+                         .replace("__RALLY__", str(a.rally)))
+    print(f"wrote {out} — rally {a.rally}: {n} frames "
+          f"({cfg['t0']}s to {cfg['t1']}s), "
+          f"{len(impacts)} known impacts as the answer key.")
 
 
 if __name__ == "__main__":

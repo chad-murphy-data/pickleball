@@ -1,9 +1,13 @@
 # Ball Gate — pre-registration for the automated ball tracker
 
-**STATUS: DRAFT v2 (2026-08-30).** Not frozen. No tracker code may
-exist until the user reviews this document and explicitly says
-"freeze it"; a dated FROZEN stamp is then committed and the bars
-become immutable. v1 (same day) graded the tracker against
+**STATUS: FROZEN 2026-08-31.** The user reviewed v2 with all
+amendments (tap-free grading, automated person channel, readiness
+rule, failure autopsy) and approved: "Done, I think we're good to do
+a few more rallies" (2026-08-31). Bars are now immutable; amendments
+follow the rule at the end of this document. Build order: train ball
+passes (rallies 6-7) may be labeled in any order, but rally 8's pass
+is committed and SEALED before the first tracker run on any rally.
+v1 (same day) graded the tracker against
 anchors-only interpolation with contact taps given — retired after
 discussion because it tested the regime where the ball is least
 needed. v2 encodes the user's actual research question:
