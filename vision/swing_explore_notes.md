@@ -3916,3 +3916,38 @@ Rally 8 is spent -> train data (a third short-rally training case,
 exactly the regime the decoder fails in). Re-attempt licensed after
 a decoder fix + dated addendum, graded on a NEWLY labeled sealed
 rally — one fresh ball pass when the owner is ready.
+
+## 2026-08-31 (afternoon) — first full recursive-missile experiments on spent r8
+
+Rally 8 is train data now; first closed-loop (EM) experiments, all
+label-scored on r6/r7/r8. Round-0 = graded config. Feedback = round-0
+turns (angle>=60) as extra time anchors at the turn location, plus a
+turn-cost hardening factor away from anchors.
+
+| config | r8 V / turns@pct | r6 | r7 |
+|---|---|---|---|
+| round0 | 58.1 / 85.7@85 | 71.3 / 85.7@88 | 82.3 / 100@99 |
+| feedback, hard=1.5 | 60.5 / 85.7@78 | 63.9 / 57.1@51 | 84.2 / 77.8@95 |
+| feedback, hard=2.5 | 44.2 / **100@99** | 55.7 / 71.4@78 | 79.1 / 88.9@98 |
+| targeted hard (fwd/rev disagree regions only), 2.5 | 54.3 / 57.1@44 | 65.6 / 42.9@49 | 81.6 / 88.9@99 |
+
+Findings, in order of importance:
+1. **The coupling has a real dial**: r8 feedback+hard=2.5 produces
+   turns 100% at pct 99 — it would pass check 2's human-matched bar
+   on the rally that just failed it. But V collapses to 44 and r6
+   degrades: no configuration found yet that wins one check without
+   paying elsewhere. Over-steer instability, as pre-worried.
+2. **Targeted hardening (only in fwd/rev disagree regions) is worse
+   everywhere** — contacts and junk CO-LOCATE. The ambiguous regions
+   are ambiguous because the ball is passing a player, which is also
+   where it turns; hardening there suppresses the real contacts too.
+   Reverse-agreement marks WHERE the path is unreliable, not where
+   it should be smoother.
+3. Candidate future shape: a TWO-REGIME decode — one tuning for the
+   contact/timing stream (hard smoothing + turn anchors), one for
+   the position stream (production config), consumed by check 2 and
+   check 1 respectively, as the 3D stage already conceptually splits
+   turns (segmentation) from positions (evidence). Whether scoring
+   two streams under one gate is within the registration's spirit is
+   an OWNER call — it would go in the DECODER-fix addendum
+   explicitly, bars unchanged, before any re-grade.
