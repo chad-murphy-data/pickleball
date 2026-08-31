@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from make_ball_audit import detect_events, score_events, load_impacts  # noqa: E402
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
-SEALED = {8}
+SEALED = set()       # r8 spent 2026-08-31 (graded, now train); next sealed rally added when labeled
 
 FPS = 60.0
 GAP_MAX = 21            # frames (0.35 s) — the battery's own blind-gap limit
@@ -83,6 +83,21 @@ ANCHOR_BONUS = 2.0      # edge-cost discount near an anchor. MEASURED
                         # turn waiver does the work and position pull stays
                         # nearly nil — the over-steer lesson, in numbers
 ANCHOR_TURN_FACTOR = 0.3  # turning near a predicted contact is cheap
+
+# ---- two-regime decode (ball_gate.md decoder-fix addendum,
+# 2026-08-31, owner-approved): ONE candidate stream, TWO decodes.
+# The POSITION stream is the production config above and feeds checks
+# 1 and 3. The TIMING stream re-decodes with the position stream's
+# own high-angle turns (forward AND reverse decode — the tie-breaks
+# flip exactly where evidence is ambiguous, so the union covers
+# contacts either direction sees) as extra time anchors, plus a
+# turn-cost hardening factor away from all anchors; check 2 reads it.
+# Rationale: the r8 autopsy localized the failure to selection among
+# junk AT contacts; anchors waive the turn cost where a contact is
+# plausible while hardening prices junk turns everywhere else.
+TIMING_HARD = 2.5       # turn-cost multiplier away from anchors
+TIMING_ANGLE = 60.0     # min turn angle (deg) to become a feedback anchor
+TIMING_ROUNDS = 1       # extra feedback iterations beyond the first
 
 
 def court_hull():
@@ -163,7 +178,7 @@ def anchor_flags(byf, t0, anchors):
     return out
 
 
-def decode(byf, flags=None, oflags=None, aflags=None):
+def decode(byf, flags=None, oflags=None, aflags=None, hard=1.0):
     frames = sorted(byf)
     nodes = [(f, i) for f in frames for i in range(len(byf[f]))]
     nid = {n: k for k, n in enumerate(nodes)}
@@ -226,6 +241,8 @@ def decode(byf, flags=None, oflags=None, aflags=None):
                 tc = min(math.hypot(dv[0], dv[1]) / ACCEL_SCALE, TURN_CAP)
                 if nanchor[a]:
                     tc *= ANCHOR_TURN_FACTOR
+                else:
+                    tc *= hard          # timing stream: junk turns priced up
                 cand_score = s0 + base[ei] + tc
                 if cand_score < score[ei]:
                     score[ei] = cand_score
@@ -244,6 +261,60 @@ def decode(byf, flags=None, oflags=None, aflags=None):
     path_nodes.reverse()
     return [(int(nframe[k]), float(pos[k, 0]), float(pos[k, 1]))
             for k in path_nodes]
+
+
+def decode_reversed(byf, flags=None, oflags=None, aflags=None, hard=1.0):
+    """Decode the time-mirrored problem; return the path in ORIGINAL
+    frame order. The Viterbi is a global optimum so this mostly
+    reproduces the forward path — the differences live exactly where
+    the evidence is ambiguous (see reverse_agreement)."""
+    fmax = max(byf)
+    rbyf = {fmax - f: c for f, c in byf.items()}
+    rflags = {fmax - f: v for f, v in flags.items()} if flags else None
+    roflags = {fmax - f: v for f, v in oflags.items()} if oflags else None
+    raflags = {fmax - f: v for f, v in aflags.items()} if aflags else None
+    rev = decode(rbyf, rflags, roflags, raflags, hard)
+    return sorted((fmax - f, x, y) for f, x, y in rev)
+
+
+def turn_anchor_list(refined, min_angle=None):
+    """(t, x, y) of a refined path's own turns with angle >= min_angle
+    — the feedback anchors of the timing stream."""
+    from ball_replicate import turn_angles     # lazy: replicate imports us
+    if min_angle is None:
+        min_angle = TIMING_ANGLE
+    evs = detect_events(refined)
+    angs = turn_angles(refined, evs)
+    pts = sorted(refined)
+    out = []
+    for e in evs:
+        if angs.get(e, 0.0) < min_angle:
+            continue
+        near = min(pts, key=lambda p: abs(p[0] - e))
+        out.append((e, near[1], near[2]))
+    return out
+
+
+def timing_decode(byf, flags, oflags, t0, anchor_pts):
+    """The timing stream: decode with feedback turn anchors (from the
+    forward AND reverse position decodes) unioned onto any provided
+    anchors (hitter-chain at grade time), turn cost hardened by
+    TIMING_HARD away from all anchors. Returns (visited, refined)."""
+    anc = list(anchor_pts)              # grows: turns are never forgotten
+    base_af = anchor_flags(byf, t0, anc) if anc else None
+    fwd = decode(byf, flags, oflags, base_af)
+    rev = decode_reversed(byf, flags, oflags, base_af)
+    for _ in range(1 + TIMING_ROUNDS):
+        for path in (fwd, rev):
+            for a in turn_anchor_list(refine_arcs(path, t0)):
+                if all(abs(a[0] - b[0]) > 0.08 or
+                       math.hypot(a[1] - b[1], a[2] - b[2]) > 20
+                       for b in anc):
+                    anc.append(a)
+        af = anchor_flags(byf, t0, anc)
+        fwd = decode(byf, flags, oflags, af, hard=TIMING_HARD)
+        rev = decode_reversed(byf, flags, oflags, af, hard=TIMING_HARD)
+    return fwd, refine_arcs(fwd, t0)
 
 
 def reverse_agreement(byf, flags, oflags, aflags, fwd, tol_px=10.0):
@@ -322,7 +393,7 @@ def to_per_frame(visited, t0):
     return {f: (t0 + f / FPS, x, y, vis) for f, (x, y, vis) in out.items()}
 
 
-def score_train(rally, per_frame, visited, t0, refined=None):
+def score_train(rally, per_frame, visited, t0, refined=None, timing=None):
     # gate panel: first physical contact to 0.5 s after the last
     imps_panel, _ = load_impacts(rally=rally)
     p_lo, p_hi = imps_panel[0], imps_panel[-1] + 0.5
@@ -348,8 +419,12 @@ def score_train(rally, per_frame, visited, t0, refined=None):
     # check 2, human-matched (Amendment 1): tracker vs human, same battery
     imps, dead = load_impacts(rally=rally)
     span = (imps[0] - 1.0, dead)
-    trk_pts = refined if refined is not None else [
-        (t0 + f / FPS, x, y) for f, x, y in visited]
+    trk_pts = (timing if timing is not None
+               else refined if refined is not None
+               else [(t0 + f / FPS, x, y) for f, x, y in visited])
+    if timing is not None:
+        print("  (check 2 scored on the TIMING stream — two-regime "
+              "decode per the decoder-fix addendum)")
     hum_pts = [(float(r["t_s"]), float(r["x"]), float(r["y"]))
                for r in labels if r["vis"] == "V"]
     res = {}
@@ -391,6 +466,11 @@ def main():
                          "forward/backward agreement (label-free "
                          "confidence; see reverse_agreement)")
     ap.add_argument("--graded-run", action="store_true")
+    ap.add_argument("--two-regime", action="store_true", default=True,
+                    help="score check 2 on the timing stream (default; "
+                         "--no-two-regime for the single-decode read)")
+    ap.add_argument("--no-two-regime", dest="two_regime",
+                    action="store_false")
     a = ap.parse_args()
     if a.rally in SEALED and not a.graded_run:
         raise SystemExit(f"rally {a.rally} is SEALED — refusing")
@@ -412,11 +492,12 @@ def main():
     if a.pose and BODY_PEN > 0:
         flags = in_body_flags(byf, t0, body_boxes(a.pose))
     oflags = out_of_court_flags(byf, court_hull())
-    aflags = None
+    aflags, anchor_pts = None, []
     if a.anchors:
-        anc = [(float(r["t_s"]), float(r["wrist_x"]), float(r["wrist_y"]))
-               for r in csv.DictReader(open(a.anchors))]
-        aflags = anchor_flags(byf, t0, anc)
+        anchor_pts = [(float(r["t_s"]), float(r["wrist_x"]),
+                       float(r["wrist_y"]))
+                      for r in csv.DictReader(open(a.anchors))]
+        aflags = anchor_flags(byf, t0, anchor_pts)
     visited = decode(byf, flags, oflags, aflags)
     if a.reverse_check:
         agree = reverse_agreement(byf, flags, oflags, aflags, visited)
@@ -425,12 +506,15 @@ def main():
               f"confirmed by the backward decode "
               f"({100*n_ok/max(len(agree),1):.0f}%)")
     refined = refine_arcs(visited, t0)
+    timing_ref = None
+    if a.two_regime:
+        _, timing_ref = timing_decode(byf, flags, oflags, t0, anchor_pts)
     # per-frame positions from the refit (check 1 uses these too)
     per_frame = {}
     for t, x, y in refined:
         per_frame[round((t - t0) * FPS)] = (t, x, y, True)
     if a.rally not in SEALED:
-        score_train(a.rally, per_frame, visited, t0, refined)
+        score_train(a.rally, per_frame, visited, t0, refined, timing_ref)
     if a.dump:
         with open(a.dump, "w", newline="") as f:
             w = csv.writer(f)
