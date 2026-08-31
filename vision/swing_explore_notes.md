@@ -3750,3 +3750,12 @@ provides; (3) B/E are literally the state transitions the handoff
 model trains on; (4) product stat waiting to exist: PREPARATION TIME
 (rushed vs set shots) — measurable per player per shot from labels,
 and eventually from pose alone.
+
+Addendum (user diagnostic question, same night): pre-serve ball
+clicks (the server's bounces/drops) — candidate recall there is
+0-69% vs 94-96% in-rally (r6's 0% is partly the closeup camera
+angle). Confirmed blind spot: slow small-amplitude motion against
+the server's body is exactly what motion diff can't see. No gate
+impact (panel starts at first contact; decode trims at serve-0.3s),
+but recorded for any future serve-routine analytics — that region
+needs an appearance-based candidate mode, not motion.
