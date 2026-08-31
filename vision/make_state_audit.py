@@ -232,7 +232,7 @@ her; <kbd>A</kbd> re-assigns. Export every sitting as
 const RALLIES = __RALLIES__;
 const LSK = "state_audit_chicago0725_v2";
 let store = JSON.parse(localStorage.getItem(LSK) || "{}");
-// store[cum] = {players:{name:{hits:[{s,i,e,nc}],clears:[{s,e}],tid}},
+// store[cum] = {players:{name:{hits:[{s,i,e,nc}],clears:[{s,e}],tids:[]}},
 //               _rally:{routine,dead}}
 const save = () => localStorage.setItem(LSK, JSON.stringify(store));
 const V = document.getElementById("v"), OV = document.getElementById("ov");
@@ -245,8 +245,10 @@ function D(){ const d = store[R.rally_cum] = store[R.rally_cum] ||
   d.players = d.players || {}; d._rally = d._rally || {routine:null,dead:null};
   return d; }
 function P(name){ const d = D();
-  return d.players[name] = d.players[name] ||
-    {hits: [], clears: [], tid: null}; }
+  const p = d.players[name] = d.players[name] ||
+    {hits: [], clears: [], tids: []};
+  if (!p.tids) p.tids = (p.tid != null) ? [p.tid] : [];
+  return p; }
 const curName = () => R.players[passI];
 
 drop.onclick = () => fpick.click();
@@ -267,7 +269,7 @@ psel.onchange = () => goPass(+psel.value);
 function goPass(i){
   passI = i; fillPsel(); psel.value = i;
   const has = Object.keys(R.tracks || {}).length > 0;
-  assigning = has && P(curName()).tid == null;
+  assigning = has && P(curName()).tids.length === 0;
   if (V.src) { V.pause();
     V.currentTime = assigning ? R.contacts[0].t : R.t0; }
   render();
@@ -280,6 +282,8 @@ function next(){
       rsel.value = ri + 1; goPass(0); } }
 }
 
+const JUNK_AREA = 1280 * 720 * 0.35;   // scattered-keypoint junk rows
+const boxOK = b => b && (b[3] * b[4]) < JUNK_AREA;
 function boxAt(tid, t){
   const rows = (R.tracks || {})[tid]; if (!rows) return null;
   let best = null, bd = 0.35;
@@ -296,13 +300,17 @@ function drawOverlay(){
   if (assigning){
     ctx.font = "13px system-ui";
     for (const tid of Object.keys(R.tracks || {})){
-      const b = boxAt(+tid, t); if (!b) continue;
+      const b = boxAt(+tid, t); if (!boxOK(b)) continue;
       ctx.strokeStyle = "#d93"; ctx.lineWidth = 2;
       ctx.strokeRect(b[1] * sx, b[2] * sy, b[3] * sx, b[4] * sy);
     }
   } else {
-    const tid = P(curName()).tid;
-    if (tid != null){ const b = boxAt(tid, t);
+    let b = null;
+    for (const tid of P(curName()).tids){
+      const c = boxAt(tid, t);
+      if (boxOK(c) && (!b || c[3] * c[4] < b[3] * b[4])) b = c;
+    }
+    {
       if (b){ ctx.strokeStyle = "#4caf50"; ctx.lineWidth = 3;
         ctx.strokeRect(b[1] * sx, b[2] * sy, b[3] * sx, b[4] * sy);
         ctx.fillStyle = "#4caf50"; ctx.font = "bold 13px system-ui";
@@ -312,14 +320,21 @@ function drawOverlay(){
 OV.onclick = e => {
   if (assigning){
     const sx = OV.width / 1280, sy = OV.height / 720, t = V.currentTime;
+    let hit = null;
     for (const tid of Object.keys(R.tracks || {})){
-      const b = boxAt(+tid, t); if (!b) continue;
+      const b = boxAt(+tid, t); if (!boxOK(b)) continue;
       if (e.offsetX >= b[1] * sx && e.offsetX <= (b[1] + b[3]) * sx &&
-          e.offsetY >= b[2] * sy && e.offsetY <= (b[2] + b[4]) * sy){
-        P(curName()).tid = +tid; assigning = false;
-        if (V.src) V.currentTime = R.t0;
-        save(); render(); return;
-      }
+          e.offsetY >= b[2] * sy && e.offsetY <= (b[2] + b[4]) * sy &&
+          (!hit || b[3] * b[4] < hit.b[3] * hit.b[4]))
+        hit = {tid: +tid, b};
+    }
+    if (hit){
+      const p = P(curName());
+      const first = p.tids.length === 0;
+      if (!p.tids.includes(hit.tid)) p.tids.push(hit.tid);
+      assigning = false;
+      if (V.src && first) V.currentTime = R.t0;
+      save(); render();
     }
   } else { if (V.paused) V.play(); else V.pause(); }
 };
@@ -338,11 +353,15 @@ function render(){
   if (assigning){
     b.className = "assign";
     b.innerHTML = `Rally ${R.rally_cum} — pass ${passI + 1}/4: ` +
-      `<b>click the box on ${curName()}</b> (orange boxes; paused at the serve)`;
+      `<b>click the box on ${curName()}</b> — arrow past camera cuts if ` +
+      `she isn't boxed here (orange boxes)`;
   } else {
     b.className = "";
     b.innerHTML = `Rally ${R.rally_cum} — pass ${passI + 1}/4: tracking ` +
-      `<b>${curName()}</b>. What is she doing?`;
+      `<b>${curName()}</b>. What is she doing? ` +
+      `<span style="opacity:.6">(box died / wrong person? press A on a ` +
+      `frame where she's visible and click her again — clicks add up; ` +
+      `Shift+A restarts her from scratch)</span>`;
   }
   const st = stateAt(curName(), V.currentTime || 0);
   const sb = document.getElementById("statebadge");
@@ -459,8 +478,9 @@ document.addEventListener("keydown", e => {
     m.dead = m.dead == null ? +t.toFixed(3) : null; }
   else if (k === "n") { next(); e.preventDefault(); return; }
   else if (k === "a") { if (Object.keys(R.tracks || {}).length){
-    p.tid = null; assigning = true;
-    V.currentTime = R.contacts[0].t; } }
+    if (e.shiftKey) p.tids = [];
+    assigning = true;
+    if (p.tids.length === 0) V.currentTime = R.contacts[0].t; } }
   else if (k === "backspace") {
     let best = null, bd = 1e9;
     p.hits.forEach(h => ["s","i","e"].forEach(f => {
@@ -486,7 +506,8 @@ bexp.onclick = () => {
     if (rm.routine != null) out += `${r.rally_cum},,0,routine_start,${rm.routine}\n`;
     if (rm.dead != null) out += `${r.rally_cum},,0,point_dead,${rm.dead}\n`;
     r.players.forEach(p => { const pd = (d.players || {})[p]; if (!pd) return;
-      if (pd.tid != null) out += `${r.rally_cum},${p},0,track_assign,${pd.tid}\n`;
+      (pd.tids || (pd.tid != null ? [pd.tid] : [])).forEach(tid =>
+        { out += `${r.rally_cum},${p},0,track_assign,${tid}\n`; });
       pd.hits.forEach((h, j) => {
         if (h.s != null) out += `${r.rally_cum},${p},${j + 1},start,${h.s}\n`;
         if (h.i != null) out += `${r.rally_cum},${p},${j + 1},impact,${h.i}\n`;
@@ -518,7 +539,8 @@ csvpick.onchange = () => {
       if (kind === "point_dead") { d._rally.dead = +ts; return; }
       const p = d.players[pn] = d.players[pn] ||
         {hits: [], clears: [], tid: null};
-      if (kind === "track_assign") { p.tid = +ts; return; }
+      if (kind === "track_assign") { p.tids = p.tids || [];
+        if (!p.tids.includes(+ts)) p.tids.push(+ts); return; }
       const isClear = kind.startsWith("clear_");
       const L = isClear ? p.clears : p.hits;
       while (L.length < +epn)
