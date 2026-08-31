@@ -3658,3 +3658,41 @@ reaches 20 physical contacts; and the owner-reopen clause — closures
 bind the process, not the owner, who can reopen with an explicit
 call + fresh registration (this gate is itself the precedent).
 Grading is now well-defined on rally 8. Next build: the arc decoder.
+
+## 2026-08-31 — arc decoder v1 (train iteration log): 0% → 60-67% V in five moves; the remaining gap is named
+
+`vision/ball_decoder.py` = gated component 2: Viterbi over candidate-
+pair states (velocity-aware, capped turn costs so real contacts are
+affordable, gap bridging to 0.35 s) + piecewise-quadratic arc refit at
+its own discovered turns. Train-only iteration, chronologically:
+
+  1. naive (coverage-greedy)      -> 0% V — locked onto the scorebug
+     (median 42 px/s, top-left corner; the cheapest smooth "track" in
+     the frame is always junk that never moves).
+  2. + slow-edge penalty          -> 52-55% V. Ball median ~330 px/s;
+     scorebug/crowd/lazy limbs < 150.
+  3. + whole-body box tax         -> HARMFUL, disabled with receipts:
+     the TRUE ball sits inside a person box 36-41% of its visible
+     frames (near players are huge). Taxing bodies taxes the ball.
+     (Wrist-radius variant left as a future knob.)
+  4. + court-volume prior (court footprint lifted to 16 ft, projected
+     through the one-time calibration) — kills bleacher/crowd flights
+     on principle, footage-general.
+  5. + gate-panel scoring (first contact -> last+0.5 s — I had been
+     charging the decoder for the pre-serve second where a ball in
+     hand is invisible to motion diff) + serve-pin decode trim (a
+     licensed input): r6 57.4%, r7 67.1% V (bar 70), S 74-75%.
+  6. + arc refit: r6 59.8 / r7 64.6 — roughly neutral so far; it
+     inherits the Viterbi path's over-segmentation.
+
+Turns (human-matched check 2): tracker RECALL 71-100% vs human 78-86%
+— at or above human on r7 — but the null PERCENTILE fails (1-43 vs
+95-96) because the tracker path still carries ~14-17 events where the
+human has 9-11: spurious excursion-turns saturate its own shift null.
+Diagnosis from the hit/miss timeline: the path is LOCKED-ON in long
+contiguous stretches; losses are (a) one ~1.2 s mid-rally dropout in
+r6 spanning contacts, (b) rally-tail segments. Next moves, in order:
+prune spurious events (arc-quality-driven segmentation instead of
+one detect_events pass), bridge the dropout with ballistic
+extrapolation instead of linear, revisit slow-frame candidates.
+The sealed rally remains untouched; no readiness claim yet.
