@@ -313,3 +313,57 @@ re-attempt under a short dated addendum naming what changed, graded
 once on a NEWLY labeled sealed rally.** Rally 8 is spent and is now
 train data. The user is the rate limiter: the re-grade costs one
 fresh sealed ball pass.
+
+## Decoder-fix addendum — 2026-08-31 (owner-approved re-attempt)
+
+Owner approved the two-regime split ("I'm good for two-regime split.
+Let's go ahead there", 2026-08-31). What changed, and only this:
+
+**Two-regime decode** (`ball_decoder.py`, wired into `ball_grade.py`):
+one candidate stream, two decodes of it.
+- The **POSITION stream** is the graded-run production config,
+  byte-for-byte unchanged. Checks 1 and 3 read it, exactly as before.
+- The **TIMING stream** re-decodes the same candidates with the
+  position stream's own high-angle turns (>= 60 deg, from the forward
+  AND reverse decodes, unioned) as additional turn anchors, plus a
+  turn-cost hardening factor 2.5x away from all anchors, ONE feedback
+  round. At grade time the hitter-chain anchors union in as before.
+  Check 2 reads this stream through the same frozen battery. Directly
+  aimed at the attributed failure: anchors waive the turn cost where a
+  contact is plausible, hardening prices the junk turns everywhere
+  else.
+
+Bars, panel, battery constants, licensed inputs, autopsy arms:
+unchanged. Scoring two streams was put to the owner explicitly (the
+registration's-spirit question flagged in the 2026-08-31 afternoon
+notes) and approved. Convention clarification recorded: check 2's
+human reference is scored on the full label span (what ball_grade.py
+and the graded run already did); score_train was panel-filtering and
+now matches.
+
+Train evidence for the frozen constants (sweep of 30 configs; full
+tables in swing_explore_notes 2026-08-31 evening): with NO pose
+anchors, the timing stream passes the human-matched check on r6
+(100@96.3 vs human 100@94.5) and r7 (77.8@98.4 vs 77.8@91.4) and
+reaches 100@98.2 vs 100@98.5 on r8 — recall at the human's level on
+the rally class that failed the grade, percentile 3 null draws short
+in a train configuration weaker than the grade one. Measured dead
+ends recorded in the module docstring (second feedback round,
+hardening ladders, intersection anchors, fwd/rev-adaptive hardness)
+so they are not re-tried.
+
+**Rally designations:**
+- Rally 8: spent -> train (SEALED sets cleared in all four
+  harnesses).
+- Rally 9's ball pass (delivered 2026-08-31, committed untouched;
+  885 frames, 66V/22S/6I/6N) — designation OWNER-PENDING. The agent
+  recommendation on the record: r9 -> TRAIN, because its 34-frame
+  off-frame lob excursion (~1.1 s, 3x the decoder's GAP_MAX) is a
+  regime no current train rally exhibits and the current decoder
+  structurally cannot bridge, and r9 carries the log-span-anomaly
+  asterisk; seal r10 (and/or 17/20) instead. Until the owner
+  designates, NO tracker run and no human-path scoring on r9 (its
+  human bar stays unpeeked so the choice of sealed rally cannot be
+  difficulty-selected).
+- The re-grade runs once, on the newly labeled sealed rally, after
+  the readiness rule passes in the full grade configuration.

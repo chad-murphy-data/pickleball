@@ -87,11 +87,15 @@ def main():
                                [(t, x, y) for t, _, x, y in anchors])
     visited = bdec.decode(byf, None, oflags, aflags)
     refined = bdec.refine_arcs(visited, t0)
+    # two-regime split (decoder-fix addendum): the TIMING stream feeds
+    # check 2; hitter-chain anchors union with its self-feedback turns
+    anchor_pts = [(t, x, y) for t, _, x, y in anchors]
+    _, timing_ref = bdec.timing_decode(byf, None, oflags, t0, anchor_pts)
     per_frame = {}
     for t, x, y in refined:
         per_frame[round((t - t0) * bdec.FPS)] = (t, x, y)
-    print(f"decoded {len(visited)} visited points, window "
-          f"{a.serve:.1f}-{a.end:.1f}s")
+    print(f"decoded {len(visited)} visited points (position stream), "
+          f"window {a.serve:.1f}-{a.end:.1f}s")
 
     # ================= answer key opens here =================
     imps, dead = load_impacts(rally=a.rally)
@@ -126,7 +130,7 @@ def main():
     hum_pts = [(float(r["t_s"]), float(r["x"]), float(r["y"]))
                for r in labels if r["x"] and r["vis"] == "V"]
     res = {}
-    for name, pts in (("tracker", refined), ("human", hum_pts)):
+    for name, pts in (("tracker", timing_ref), ("human", hum_pts)):
         evs = detect_events(pts)
         obs, p95, pct, med = score_events(evs, imps, span)
         res[name] = (obs, pct, p95)

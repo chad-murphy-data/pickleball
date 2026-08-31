@@ -97,7 +97,23 @@ ANCHOR_TURN_FACTOR = 0.3  # turning near a predicted contact is cheap
 # plausible while hardening prices junk turns everywhere else.
 TIMING_HARD = 2.5       # turn-cost multiplier away from anchors
 TIMING_ANGLE = 60.0     # min turn angle (deg) to become a feedback anchor
-TIMING_ROUNDS = 1       # extra feedback iterations beyond the first
+TIMING_ROUNDS = 0       # extra feedback iterations beyond the first.
+# FROZEN 2026-08-31 from the train sweep (30 configs, scratch grids over
+# hard 1.5-4.0 x angle 40-80 x rounds 1-3, hardening ladders, fwd/rev
+# adaptive selection, intersection anchors): ONE feedback round at 2.5/60
+# passes the human-matched check on r6 (100@96.3 vs 100@94.5) and r7
+# (77.8@98.4 vs 77.8@91.4) and reaches r8 100@98.2 vs 100@98.5 (3 null
+# draws short; grade config adds hitter-chain anchors on top). Measured
+# dead ends, do not retry: a SECOND feedback round drops r8 to 85.7
+# (over-steer); hardening LADDERS (soft round seeds anchors for a strict
+# round) fix r8 but break r6 — the soft round's junk turns get anchor
+# protection; INTERSECTION anchors (fwd AND rev must agree) strip the
+# real contacts (r8 14.3@0.8) because fwd/rev disagree exactly where the
+# ball passes a player, i.e. at contacts — the "contacts and junk
+# co-locate" geometry again; fwd/rev-agreement ADAPTIVE hard selection
+# picks wrong on r8 (agreement is not a quality signal across hard
+# values). r6 and r8 want opposite hardening at 2 rounds; 1 round at 2.5
+# is the stable point.
 
 
 def court_hull():

@@ -3985,3 +3985,56 @@ Claude Design for styling. Three things shipped to the artifact
 Verified headless (Playwright + the preinstalled Chromium): all
 meter states, categories, and the ending render correctly; no
 console errors beyond the sandbox's blocked font fetch.
+
+## 2026-08-31 (evening) — DECODER FIX BUILT: two-regime decode, constants frozen off a 30-config train sweep
+
+Owner approved the two-regime split same day ("I'm good for
+two-regime split. Let's go ahead there"); dated addendum in
+ball_gate.md. Build: `timing_decode()` in ball_decoder.py — position
+stream untouched (checks 1/3), timing stream re-decodes with the
+position stream's own >=60-deg turns (forward AND reverse decodes,
+union, accumulated) as turn anchors plus TIMING_HARD=2.5 turn-cost
+hardening away from anchors (check 2). ball_grade.py wired to score
+check 2 on the timing stream; hitter-chain anchors union in at grade
+time. Convention fix along the way: score_train's check-2 human bar
+was panel-filtered; ball_grade (and the graded run) score the full
+label span — score_train now matches (human bars r6 100@94.5, r7
+77.8@91.4, r8 100@98.5).
+
+Sweep results (3 scratch grids, ~2.5 h compute, train r6/7/8, NO
+pose anchors anywhere):
+- Grid 1, hard x angle x rounds (18 configs): r6 and r8 want OPPOSITE
+  hardening — r6 collapses soft (71.4@60 at hard=1.5), passes hard
+  (100@95-96 at 2.5-4.0); r8 is the mirror (100@96-98 at 1.5, decays
+  to 71.4 at 4.0/80). No config 3/3.
+- Grid 2: ONE feedback round beats two (grid 1 ran two: r8 85.7 ->
+  100@98.2 on dropping the second — over-steer, as pre-worried).
+  Hardening LADDERS (soft discovery round seeds anchors for a strict
+  round) fix r8 (100@98.7-99.2 PASS) but break r6: the soft round's
+  junk turns inherit anchor protection. Fwd/rev-agreement ADAPTIVE
+  hardness selection picks wrong on r8 (agreement 0.73 at hard=4.0 vs
+  0.56 at 2.5, but 2.5 scores better) — agreement is not a quality
+  signal ACROSS hardness values. Refuted.
+- Grid 3: INTERSECTION anchors (turn must appear in fwd AND rev)
+  are a disaster — r8 14.3@0.8. Fwd/rev disagree exactly where the
+  ball passes a player, which is where it turns: the "contacts and
+  junk co-locate" geometry, third independent confirmation.
+
+FROZEN: one round, hard=2.5, angle=60, union anchors. Train: r6
+100@96.3 PASS, r7 77.8@98.4 PASS, r8 100@98.2 vs bar 100@98.5 —
+recall at the human's level on the rally class that failed the
+grade; the pct gap is 3 draws of a 1000-draw null, in a config
+strictly weaker than grade (no hitter anchors). Dead ends recorded
+in the module docstring so they don't get re-tried.
+
+Rally 9's ball pass arrived mid-session (885 frames, 66V/22S/6I/6N)
+and is committed UNPEEKED — no tracker run, no human-path score —
+until the owner designates seal vs train. It contains the project's
+first off-frame lob: 34 consecutive N frames (~1.1 s, ball above the
+frame, x moved 330 px while invisible), 3x the decoder's GAP_MAX —
+a regime no train rally exhibits and the current decoder cannot
+bridge (it would junk-chain or drop half the rally). Recommendation
+on record: r9 -> train (it teaches exactly this; also carries the
+log-span asterisk), seal r10/17/20. An off-frame-excursion edge
+(exit near frame top moving up, ballistic re-entry from the top) is
+the named next decoder capability, to build ONLY if r9 lands train.

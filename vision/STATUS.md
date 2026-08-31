@@ -66,6 +66,26 @@ sealed ball pass required (gate record: ball_gate.md, graded-run note +
 result). Train state of record: r7 full battery PASS, r1 checks 1-2
 PASS, r6 fails check 3.
 
+**Decoder fix BUILT + constants frozen (2026-08-31 evening,
+owner-approved addendum in ball_gate.md): TWO-REGIME decode.** Position
+stream = graded config unchanged (checks 1/3); timing stream re-decodes
+with the position stream's own >= 60-deg turns (fwd AND rev decodes,
+union) as turn anchors + 2.5x turn-cost hardening away from anchors,
+one feedback round (check 2). Train, with NO pose anchors: r6 100@96.3
+(human 100@94.5) PASS, r7 77.8@98.4 (human 77.8@91.4) PASS, r8
+100@98.2 (human 100@98.5) — recall at human level on the failed rally
+class, pct 3 null draws short, grade config adds hitter anchors.
+Measured dead ends (do NOT re-try; module docstring + notes): a second
+feedback round (r8 -> 85.7), hardening ladders (fix r8, break r6 —
+soft-round junk gets anchor protection), INTERSECTION anchors (r8
+14.3@0.8 — fwd/rev disagree exactly at contacts, the co-location
+geometry), fwd/rev-agreement adaptive hardness (picks wrong on r8).
+Awaiting: owner designation of the next sealed rally (r9's pass is
+delivered but committed UNPEEKED; recommendation r9 -> train for its
+off-frame lob regime — 34 frames N, 3x GAP_MAX, no train rally has
+one — seal r10/17/20 instead), then readiness in grade config, then
+the one re-grade.
+
 ## Built, producing numbers
 
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
