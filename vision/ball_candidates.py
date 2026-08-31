@@ -1,216 +1,155 @@
-"""Can a DUMB classical detector propose the ball? (probe, 2026-08-20)
+"""Ball candidate stage — the first gated component of ball_gate.md.
 
-User question: could a local model — or just a regular classifier —
-replicate what the VLM did? Decomposing the 93%-recall localization
-result honestly, the ball was the primary cue in nearly every window
-and posture was corroboration. So the pipeline that matters is
-classical:
+BUILD LICENSE: ball_gate.md FROZEN 2026-08-31, sealed rally-8 ball
+pass committed first (PR #101). This stage runs on TRAIN rallies
+only during development; per the gate, NO tracker component touches
+rally 8's clip until the graded run.
 
-    motion-differenced candidates -> trajectory linking -> direction
-    change = contact -> nearest player = hitter -> gap = pace
+Recall over precision, per the gate: multiple or zero candidates per
+frame, the decoder does the choosing. Method — pure classical motion:
 
-Every step after the first is arithmetic we can already write. This
-script probes ONLY the first step, because it is the one that could
-fail outright: at each frame where a ball position was marked and
-USER-VERIFIED, does a plain 3-frame motion difference put the ball in
-the top-K candidates? No training, no weights, no labels at inference.
+  for frame i, d = min(|f_i - f_{i-L}|, |f_i - f_{i+L}|) over gray
+  frames (L = 0.1 s at the clip fps; the min kills both-direction
+  ghosting), threshold, dilate, connected components, size-filtered
+  (ball ~5-12 px at 720p, smears elongated), top-K by peak diff.
 
-Decisive in the negative: if the ball is not in the candidate set, no
-tracker built on this can find it, and the classical route is dead
-without a learned detector. If it IS there, the remaining work is
-geometry.
+Inputs: a rally clip (user-cut, known VOD offset) — nothing labeled.
+Output: data/vision/ball_candidates_r{N}.csv.gz
+  (frame, t_s [VOD clock], x, y, area, score) — multiple rows/frame.
 
-Ground truth = the 25 circles the user confirmed correct
-(vision/vlm_ball_calls.py), minus the two they rejected. Positions are
-recovered from cell fractions through the crop the grids were cut with,
-so this measures against hand-checked pixels, not against my memory.
+Diagnostic (train only): candidate RECALL vs the user's ball pass —
+fraction of V frames with a candidate within 25 px (S: 40 px),
+matched within +/-1 video frame (browser-vs-decoder seek jitter,
+measured on the alignment check 2026-08-31). This number decides
+whether the decoder has anything to decode; it is a development
+readout, not a gate check.
 
-    python3 vision/ball_candidates.py --video full_match.mp4.webm
-    python3 vision/ball_candidates.py --selftest
+Usage:
+    python3 vision/ball_candidates.py --clip r6_clip.mp4 --offset 144.80 --rally 6
+    python3 vision/ball_candidates.py ... --score   # + recall vs train labels
 """
+
+from __future__ import annotations
+
 import argparse
 import csv
-import subprocess
+import gzip
 import sys
 from pathlib import Path
 
+import cv2
 import numpy as np
 
-from swing_probe import ffmpeg_bin
+DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
 
-# the crop vlm_localize_sample.py used: w,h,x,y as fractions
-CROP_W, CROP_H, CROP_X, CROP_Y = 0.70, 0.85, 0.15, 0.10
-STEP_S = 0.15
-DIFF_DT = 1.0 / 30.0     # frame spacing for the 3-frame difference
-TOL_PX = 22              # a candidate counts as the ball within this
-KS = (1, 3, 5, 10, 25)
-
-# user-VERIFIED positions only (w01 cells 7 and 9 rejected: occlusion
-# and a shoe). (window, cell): (x_frac, y_frac) within the cell.
-VERIFIED = {
- (1, 1): (0.573, 0.244), (1, 2): (0.508, 0.264), (1, 3): (0.433, 0.286),
- (1, 4): (0.363, 0.361), (1, 5): (0.298, 0.422), (1, 6): (0.271, 0.486),
- (13, 1): (0.443, 0.361), (13, 4): (0.401, 0.181), (13, 5): (0.422, 0.181),
- (13, 8): (0.370, 0.208),
- (24, 1): (0.401, 0.089), (24, 4): (0.258, 0.486), (24, 5): (0.206, 0.583),
- (24, 6): (0.223, 0.444), (24, 7): (0.290, 0.278), (24, 9): (0.385, 0.125),
- (27, 1): (0.548, 0.436), (27, 2): (0.599, 0.561), (27, 3): (0.718, 0.694),
- (27, 4): (0.706, 0.583), (27, 5): (0.687, 0.411), (27, 6): (0.679, 0.292),
- (27, 7): (0.658, 0.208), (27, 8): (0.613, 0.236), (27, 9): (0.672, 0.194),
-}
+LAG_S = 0.10          # motion-diff lag
+THRESH = 18           # gray abs-diff threshold
+MIN_AREA, MAX_AREA = 4, 600
+TOP_K = 40
+SEALED = {8}          # gate holdout: --score refuses; extraction allowed
+                      # ONLY at the graded run (guarded in main)
 
 
-def cell_to_frame(xf, yf, W, H):
-    """Cell fraction -> full-frame pixel, through the grid's crop."""
-    return ((CROP_X + xf * CROP_W) * W, (CROP_Y + yf * CROP_H) * H)
-
-
-def cell_time(t0, cell):
-    return t0 + (cell - 1) * STEP_S
-
-
-def candidates(prev, cur, nxt, min_a=2, max_a=120):
-    """Small things that moved between BOTH neighbours and are bright.
-    Deliberately dumb: no colour model, no shape prior, no learning.
-    Motion-differencing is what kills the shoe false-positive class —
-    a shoe travels with its player, the ball does not."""
-    import cv2
-    # cv2 rather than numpy here: BYTE-IDENTICAL output (asserted in
-    # selftest) at 2.5 vs 28.0 ms/frame. Worth the ugliness because a
-    # profile put this step at 41% of pipeline runtime — the saturating
-    # uint8 absdiff is exactly |a-b| for uint8, so nothing is lost.
-    m3 = cv2.min(cv2.absdiff(cur, prev), cv2.absdiff(cur, nxt))
-    b, g, r = cv2.split(m3)
-    d = cv2.max(cv2.max(b, g), r)
-    m = (d > 28).astype(np.uint8)
-    m = cv2.morphologyEx(m, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
-    n, _lab, stats, cent = cv2.connectedComponentsWithStats(m, 8)
+def candidates_for_clip(clip, offset):
+    cap = cv2.VideoCapture(clip)
+    fps = cap.get(cv2.CAP_PROP_FPS) or 60.0
+    lag = max(1, round(LAG_S * fps))
+    frames = []
+    while True:
+        ok, fr = cap.read()
+        if not ok:
+            break
+        frames.append(cv2.cvtColor(fr, cv2.COLOR_BGR2GRAY))
+    cap.release()
+    n = len(frames)
     out = []
-    for i in range(1, n):
-        a = stats[i, cv2.CC_STAT_AREA]
-        w, h = stats[i, cv2.CC_STAT_WIDTH], stats[i, cv2.CC_STAT_HEIGHT]
-        if not (min_a <= a <= max_a) or max(w, h) > 26:
-            continue
-        if min(w, h) / max(max(w, h), 1) < 0.25:      # reject slivers
-            continue
-        x, y = cent[i]
-        # score: bright, compact, strongly-moving
-        patch = d[max(0, int(y) - 3):int(y) + 4, max(0, int(x) - 3):int(x) + 4]
-        out.append((float(patch.mean()), x, y, a))
-    out.sort(reverse=True)
-    return out
+    kern = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+    for i in range(n):
+        a = frames[max(0, i - lag)]
+        b = frames[min(n - 1, i + lag)]
+        d = cv2.min(cv2.absdiff(frames[i], a), cv2.absdiff(frames[i], b))
+        _, m = cv2.threshold(d, THRESH, 255, cv2.THRESH_BINARY)
+        m = cv2.dilate(m, kern)
+        ncc, lab, stats, cent = cv2.connectedComponentsWithStats(m)
+        cands = []
+        for c in range(1, ncc):
+            area = stats[c, cv2.CC_STAT_AREA]
+            if not (MIN_AREA <= area <= MAX_AREA):
+                continue
+            x, y = cent[c]
+            peak = float(d[lab == c].max())
+            cands.append((peak, float(x), float(y), int(area)))
+        cands.sort(reverse=True)
+        t = offset + i / fps
+        for peak, x, y, area in cands[:TOP_K]:
+            out.append((i, round(t, 3), round(x, 1), round(y, 1),
+                        area, round(peak, 1)))
+    return out, fps, n
 
 
-def grab(video, t, W):
-    import cv2
-    p = subprocess.run(
-        [ffmpeg_bin(), "-v", "error", "-ss", f"{max(t, 0):.3f}",
-         "-i", str(video), "-frames:v", "1", "-f", "image2pipe",
-         "-vcodec", "png", "-"], capture_output=True)
-    if not p.stdout:
-        return None
-    return cv2.imdecode(np.frombuffer(p.stdout, np.uint8), cv2.IMREAD_COLOR)
+def write_out(rows, path):
+    with gzip.open(path, "wt", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["frame", "t_s", "x", "y", "area", "score"])
+        w.writerows(rows)
 
 
-def selftest():
-    W, H = 1920, 1080
-    x, y = cell_to_frame(0.5, 0.5, W, H)
-    assert abs(x - (0.15 + 0.35) * W) < 1e-6, x
-    assert abs(y - (0.10 + 0.425) * H) < 1e-6, y
-    assert cell_to_frame(0, 0, W, H) == (0.15 * W, 0.10 * H)
-    assert abs(cell_time(10.0, 1) - 10.0) < 1e-9
-    assert abs(cell_time(10.0, 9) - 11.2) < 1e-9
-    # candidate finder: a synthetic 6px "ball" that moves, on a static
-    # background with a static bright blob (the "shoe") that must NOT fire
-    import cv2
-    def frame(bx):
-        im = np.full((300, 400, 3), 40, np.uint8)
-        cv2.circle(im, (120, 200), 7, (230, 230, 230), -1)   # static shoe
-        cv2.circle(im, (bx, 100), 3, (60, 240, 240), -1)     # moving ball
-        return im
-    cs = candidates(frame(150), frame(180), frame(210))
-    assert cs, "no candidates on a clean synthetic"
-    top = cs[:5]
-    assert any(abs(c[1] - 180) < 8 and abs(c[2] - 100) < 8 for c in top), \
-        f"ball not in top-5: {top}"
-    assert not any(abs(c[1] - 120) < 10 and abs(c[2] - 200) < 10
-                   for c in cs), "static shoe fired — motion gate broken"
-    # the cv2 difference must be BYTE-IDENTICAL to the numpy one it
-    # replaced — this is the only thing standing between a speedup and a
-    # silent change to a frozen parameter selection. Random noise, not a
-    # clean synthetic, so saturation and ties are actually exercised.
-    rng = np.random.default_rng(7)
-    a3, b3, c3 = (rng.integers(0, 256, (64, 64, 3), dtype=np.uint8)
-                  for _ in range(3))
-    ref = np.minimum(np.abs(b3.astype(np.int16) - a3),
-                     np.abs(b3.astype(np.int16) - c3)).max(axis=2)
-    ch = cv2.split(cv2.min(cv2.absdiff(b3, a3), cv2.absdiff(b3, c3)))
-    got = cv2.max(cv2.max(ch[0], ch[1]), ch[2])
-    assert np.array_equal(ref.astype(np.uint8), got), "cv2 diff diverged"
-    print("selftest: crop maths, cell timing, ball found, shoe rejected, "
-          "cv2==numpy OK")
+def score_recall(rows, rally, fps):
+    """Train-only diagnostic: candidate within tolerance of the user's
+    click, matched within +/-1 video frame."""
+    byf = {}
+    for fr, t, x, y, area, sc in rows:
+        byf.setdefault(fr, []).append((x, y))
+    labels = [r for r in csv.DictReader(
+        open(DATA / f"ball_path_r{rally}.csv")) if r["x"]]
+    stats = {}
+    for cls, tol in (("V", 25.0), ("S", 40.0)):
+        hit = tot = 0
+        offset_t0 = rows[0][1] - rows[0][0] / fps
+        for r in labels:
+            if r["vis"] != cls:
+                continue
+            tot += 1
+            f0 = round((float(r["t_s"]) - offset_t0) * fps)
+            cx, cy = float(r["x"]), float(r["y"])
+            found = any(
+                np.hypot(x - cx, y - cy) <= tol
+                for df in (-1, 0, 1)
+                for x, y in byf.get(f0 + df, ()))
+            hit += int(found)
+        stats[cls] = (hit, tot)
+    return stats
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--video")
-    ap.add_argument("--key", default="vlm_loc_key.csv",
-                    help="the localization ANSWER_KEY_LOC.csv (for t0)")
-    ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--clip", required=True)
+    ap.add_argument("--offset", type=float, required=True,
+                    help="VOD time of clip frame 0 (the ffmpeg -ss value)")
+    ap.add_argument("--rally", type=int, required=True)
+    ap.add_argument("--score", action="store_true",
+                    help="train-only: recall vs the user's ball pass")
+    ap.add_argument("--graded-run", action="store_true",
+                    help="unlock a SEALED rally for the one graded run")
     a = ap.parse_args()
-    if a.selftest:
-        selftest()
-        return
-    if not a.video:
-        raise SystemExit("--video required (or --selftest)")
-    import cv2
-
-    t0 = {}
-    for r in csv.DictReader(open(a.key)):
-        t0[int(r["window"].split(".")[0][1:])] = float(r["t0_s"])
-
-    probe = grab(a.video, 60.0, None)
-    if probe is None:
-        raise SystemExit("could not decode a frame")
-    H, W = probe.shape[:2]
-    print(f"video {W}x{H}; probing {len(VERIFIED)} user-verified ball "
-          f"positions\n")
-
-    hits = {k: 0 for k in KS}
-    ncand, n = [], 0
-    for (win, cell), (xf, yf) in sorted(VERIFIED.items()):
-        if win not in t0:
-            continue
-        t = cell_time(t0[win], cell)
-        cur = grab(a.video, t, W)
-        prv = grab(a.video, t - DIFF_DT, W)
-        nxt = grab(a.video, t + DIFF_DT, W)
-        if any(f is None for f in (cur, prv, nxt)):
-            print(f"  w{win:02d}c{cell}: decode failed")
-            continue
-        gx, gy = cell_to_frame(xf, yf, W, H)
-        cs = candidates(prv, cur, nxt)
-        ncand.append(len(cs))
-        rank = next((i for i, c in enumerate(cs)
-                     if abs(c[1] - gx) <= TOL_PX and abs(c[2] - gy) <= TOL_PX),
-                    None)
-        n += 1
-        for k in KS:
-            hits[k] += rank is not None and rank < k
-        print(f"  w{win:02d}c{cell}: {len(cs):>3} candidates, ball at rank "
-              + ("MISS" if rank is None else f"{rank + 1}"))
-
-    print(f"\nballs in top-K of a dumb motion-difference detector "
-          f"(n={n}):")
-    for k in KS:
-        print(f"   top-{k:<3} {hits[k]}/{n} = {hits[k]/max(n,1):.0%}")
-    if ncand:
-        ncand.sort()
-        print(f"median candidates per frame: {ncand[len(ncand)//2]}")
-    print("\nREADING: high top-25 recall = the ball IS in the candidate "
-          "set and\nthe rest is tracking geometry. Low = the classical "
-          "route needs a\nlearned detector, and this probe says so "
-          "cheaply.")
+    if a.rally in SEALED and not a.graded_run:
+        raise SystemExit(f"rally {a.rally} is the gate's SEALED holdout — "
+                         "refusing (pass --graded-run only for the one "
+                         "graded run, after readiness passes)")
+    if a.rally in SEALED and a.score:
+        raise SystemExit("scoring against the sealed ball pass happens in "
+                         "the grading harness, not here")
+    rows, fps, n = candidates_for_clip(a.clip, a.offset)
+    out = DATA / f"ball_candidates_r{a.rally}.csv.gz"
+    write_out(rows, out)
+    per = len(rows) / max(n, 1)
+    print(f"rally {a.rally}: {n} frames @ {fps:.0f} fps -> "
+          f"{len(rows)} candidates ({per:.1f}/frame) -> {out}")
+    if a.score:
+        st = score_recall(rows, a.rally, fps)
+        for cls, (hit, tot) in st.items():
+            pc = 100 * hit / tot if tot else 0
+            print(f"  {cls}-frame candidate recall: {pc:.1f}% ({hit}/{tot})")
 
 
 if __name__ == "__main__":
