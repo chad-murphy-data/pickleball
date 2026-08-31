@@ -65,6 +65,15 @@ KPT_CONF = 0.3
 COURT_PEN = 35.0        # per endpoint OUTSIDE the projected court volume
 COURT_MARGIN = 45.0     # px slack around the projected hull
 LOB_FT = 16.0           # court volume height for the hull
+ANCHOR_R = 60.0         # px radius of a hitter-chain anchor's influence
+ANCHOR_DT = 0.12        # s time window of an anchor
+ANCHOR_BONUS = 2.0      # edge-cost discount near an anchor. MEASURED
+                        # 2026-08-31: at 10.0 bad anchors GLUE the path to
+                        # wrists (r6 V 60%->7%) while good ones help (r7
+                        # 65->67); anchors carry TIME information, so the
+                        # turn waiver does the work and position pull stays
+                        # nearly nil — the over-steer lesson, in numbers
+ANCHOR_TURN_FACTOR = 0.3  # turning near a predicted contact is cheap
 
 
 def court_hull():
@@ -132,7 +141,20 @@ def load_candidates(rally):
     return byf, t0
 
 
-def decode(byf, flags=None, oflags=None):
+def anchor_flags(byf, t0, anchors):
+    """Per-candidate: near a hitter-chain predicted contact in both
+    space and time (the recursive coupling, priced not forced)."""
+    out = {}
+    for f, cands in byf.items():
+        t = t0 + f / FPS
+        near = [(x, y) for ta, xa, ya in anchors
+                if abs(t - ta) <= ANCHOR_DT for x, y in [(xa, ya)]]
+        out[f] = [any(math.hypot(x - xa, y - ya) <= ANCHOR_R
+                      for xa, ya in near) for x, y in cands]
+    return out
+
+
+def decode(byf, flags=None, oflags=None, aflags=None):
     frames = sorted(byf)
     nodes = [(f, i) for f in frames for i in range(len(byf[f]))]
     nid = {n: k for k, n in enumerate(nodes)}
@@ -142,6 +164,8 @@ def decode(byf, flags=None, oflags=None):
                       for f, i in nodes])
     ncourt = np.array([bool(oflags[f][i]) if oflags else False
                        for f, i in nodes])
+    nanchor = np.array([bool(aflags[f][i]) if aflags else False
+                        for f, i in nodes])
 
     # edges: a -> b within gap and speed gates
     by_frame_ids = defaultdict(list)
@@ -184,7 +208,8 @@ def decode(byf, flags=None, oflags=None):
     slow = SLOW_PEN * np.clip(1.0 - speed / SLOW_FLOOR, 0.0, 1.0)
     body = BODY_PEN * (nbody[ea].astype(float) + nbody[eb]) / 2.0
     court = COURT_PEN * (ncourt[ea].astype(float) + ncourt[eb]) / 2.0
-    base = SKIP_PEN * (ed - 1) - COVER_BONUS * ed + slow + body + court
+    anch = -ANCHOR_BONUS * (nanchor[ea].astype(float) + nanchor[eb]) / 2.0
+    base = SKIP_PEN * (ed - 1) - COVER_BONUS * ed + slow + body + court + anch
     score = base.astype(float).copy()          # start-anywhere
     prev = np.full(E, -1)
     # process edges grouped by arrival frame so predecessors are final
@@ -199,6 +224,8 @@ def decode(byf, flags=None, oflags=None):
                 s0, pe = best_in[a]
                 dv = vel[ei] - vel[pe]
                 tc = min(math.hypot(dv[0], dv[1]) / ACCEL_SCALE, TURN_CAP)
+                if nanchor[a]:
+                    tc *= ANCHOR_TURN_FACTOR
                 cand_score = s0 + base[ei] + tc
                 if cand_score < score[ei]:
                     score[ei] = cand_score
@@ -321,6 +348,7 @@ def main():
                     help="serve pin (VOD s) — licensed gate input; trims "
                          "decode start. Train default: first contact tap.")
     ap.add_argument("--pose", help="pose npz for body-box costs (automated channel)")
+    ap.add_argument("--anchors", help="hitter-chain anchors CSV (the missile coupling)")
     ap.add_argument("--dump")
     ap.add_argument("--graded-run", action="store_true")
     a = ap.parse_args()
@@ -337,7 +365,12 @@ def main():
     if a.pose and BODY_PEN > 0:
         flags = in_body_flags(byf, t0, body_boxes(a.pose))
     oflags = out_of_court_flags(byf, court_hull())
-    visited = decode(byf, flags, oflags)
+    aflags = None
+    if a.anchors:
+        anc = [(float(r["t_s"]), float(r["wrist_x"]), float(r["wrist_y"]))
+               for r in csv.DictReader(open(a.anchors))]
+        aflags = anchor_flags(byf, t0, anc)
+    visited = decode(byf, flags, oflags, aflags)
     refined = refine_arcs(visited, t0)
     # per-frame positions from the refit (check 1 uses these too)
     per_frame = {}

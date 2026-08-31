@@ -3696,3 +3696,57 @@ prune spurious events (arc-quality-driven segmentation instead of
 one detect_events pass), bridge the dropout with ballistic
 extrapolation instead of linear, revisit slow-frame candidates.
 The sealed rally remains untouched; no readiness claim yet.
+
+## 2026-08-31 (late) — THE MISSILE FLIES: recursive ball<->hitter loop re-creates rally 1 from scratch; first machine PASS of a gate check in program history
+
+User call: "take a stab at the heat-seeking missile approach, maybe
+two tracks, re-create a rally from scratch." Target: rally 1 — spent
+for the gate, but TRACKER-UNSEEN (candidates/decoder tuned on 6/7
+only) and the richest ground truth in the project. User cut the clip.
+
+Built `vision/hitter_chain.py` (the hitter-first track): pose npz
+alone — no labels, no track assigns, 4 longest tracks — per-track
+wrist-speed + reach excitement, peak-picked into predicted contacts
+with wrist anchor positions. Rally 1: 72% contact recall at ±0.15 s,
+anchors a median 39 px from the actual ball at contact. Wired into
+the decoder as PRICED HINTS (edge discount + cheap turning near an
+anchor).
+
+**THE OVER-STEER LESSON, MEASURED**: with position pull 10.0, bad
+anchors (r6, 73 px) GLUED the path to wrists — V 60%→7% — while good
+anchors (r7, 39 px) helped everything. Anchors carry TIME
+information; position pull cut to 2.0 (turn waiver does the work) and
+the collapse vanished. The EM doctrine (soft hints, ball evidence can
+veto) is now a measured constant, not a slogan.
+
+RALLY 1 FROM SCRATCH (video + pose + court calib; no labels):
+  candidates: V 90.8%, S 100.0%
+  ball-only:  V 69.3% (bar 70!), S 100%, turns 92% @ null pct 99
+  MISSILE:    V 63.5%, turns 96% recall @ pct 100 — BEATS the human
+              path's 92%, and CHECK 2 (human-matched) = **PASS**,
+              on a long rally where the null has real power
+              (median 68, 95th 84 — no saturation excuse)
+  path-vs-path: median 10-11 px from the user's hand path over 548
+              V frames (~one ball-width); p75 28-38 px
+The contact-time channel, dead since Gate C on every instrument
+tried, is recovered from scratch by physics + pixels + pose. DEMO
+grade, not gate grade: rally 1 is spent, and the hitter chain's r1
+score was seen before the missile ran (no tuning on it, but the eyes
+touched it). The gate's one graded run remains sealed rally 8,
+readiness rule first. Missile-vs-ball-only tradeoff to reconcile
+before readiness: missile wins timing, ball-only wins position —
+combine (missile turns to segment, ball-only positions within
+segments) as the next iteration.
+
+**B/E marks ("movement starts here" / "swing ends here") — user
+question, answered with rally-1 measurements**: 34 episodes, 9 fakes.
+Wind-up (B→I) median 534 ms, RANGE 233-1267 ms — the feature
+windows we guessed (−0.25 s) are wrong for slow wind-ups and the
+spread says windows should be shot-dependent; follow-through (I→E)
+median 316 ms. Four uses: (1) per-episode feature windows measured,
+not guessed; (2) the 9 fakes now have full TIME COURSES (B/E without
+contact) — timed hard negatives for the decoder class nothing else
+provides; (3) B/E are literally the state transitions the handoff
+model trains on; (4) product stat waiting to exist: PREPARATION TIME
+(rushed vs set shots) — measurable per player per shot from labels,
+and eventually from pose alone.
