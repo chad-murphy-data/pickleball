@@ -1,125 +1,131 @@
-# Ball Gate — pre-registration for the constrained ball tracker
+# Ball Gate — pre-registration for the automated ball tracker
 
-**STATUS: DRAFT (2026-08-30).** Not frozen. No tracker code may exist
-until the user reviews this document and explicitly says "freeze it",
-after which a dated FROZEN stamp is committed and the bars below become
-immutable. Building first is the anti-pattern every gate in this
-project exists to prevent.
+**STATUS: DRAFT v2 (2026-08-30).** Not frozen. No tracker code may
+exist until the user reviews this document and explicitly says
+"freeze it"; a dated FROZEN stamp is then committed and the bars
+become immutable. v1 (same day) graded the tracker against
+anchors-only interpolation with contact taps given — retired after
+discussion because it tested the regime where the ball is least
+needed. v2 encodes the user's actual research question:
+
+> **"Can we track the ball?"** — specifically, well enough to
+> replicate the 3D reconstruction (court3d / the replay) without
+> hand-labeled ball clicks or contact taps.
+
+That question is the strict version: the 3D model's skeleton is the
+arc structure and arcs are born at contacts, so a path good enough to
+rebuild the replay necessarily recovers the turns — the contact-time
+channel (dead since Gate C) comes along as a byproduct, scored by the
+instrument that killed it.
 
 ## Why this reopens a closed question, and what changed
 
-Automated ball detection was closed 2026-08-15 on the ball-visibility
-measurement: 64% in-play findability, whole CI under the 0.8 kill
-line. Two things changed, both measured since:
-
-1. **The 64% was an isolated-frame instrument.** The user's dense
-   rally-1 ball pass (683 frames, blink-compare, frame-by-frame)
-   measured 92% locatable when frames are labeled contiguously —
-   continuity, not per-frame appearance, is what makes the ball
-   findable. The oracle test (make_ball_audit.py, frozen constants,
-   circular-shift null) PASSED on that stream.
-2. **The constraint side now exists.** Contact times (user labels),
-   hitter identity (verified features, 76/82 on 84 contacts), player
-   floor positions, court DLT, and the piecewise ballistic-drag arc
-   model (court3d.py) with net-crossing / containment / player-anchor
-   priors — i.e., a weak detector no longer has to carry the problem
-   alone. This is the recursive ball↔hitter loop's ball half.
-
-The old closure stands for what it measured: a STANDALONE per-frame
-detector on this 720p VOD. What is licensed for testing here is a
-CONSTRAINED tracker. A KILL below closes automated ball tracking on
-this footage again, this time with the constraints on the table —
-the next reopening would need new footage, not a new argument.
+Automated ball detection was closed 2026-08-15 on isolated-frame
+findability (64%, CI under the 0.8 kill line). Since then, measured:
+(1) the user's dense rally-1 ball pass found the ball in 92% of
+frames — continuity, not per-frame appearance, is what makes it
+findable, and the oracle test (make_ball_audit.py, frozen constants,
+circular-shift null) PASSED on that stream; (2) the physics side
+exists (court3d piecewise ballistic-drag arcs, net-crossing /
+containment / player-anchor priors) so a weak per-frame detector no
+longer has to carry the problem alone. The old closure stands for
+what it measured — a standalone per-frame detector. A KILL below
+closes automated ball tracking on this footage again, with the
+physics constraints on the table; the next door is new footage.
 
 ## The instrument under test
 
-Two stages, both gated behind the freeze:
+Gated behind the freeze: a candidate stage (per-frame ball proposals,
+recall over precision, multiple or zero candidates per frame allowed)
+plus a decoding stage (piecewise ballistic arcs selected/fit over
+candidates with the established priors; the decoder chooses its own
+arc boundaries = its claimed contacts). Output: per-frame (t, x, y)
+in the 1280x720 pose frame, arc segmentation, and the 3D lift.
 
-- **Candidate stage**: per-frame ball candidate proposals with recall
-  prioritized over precision (classical motion/blob methods and/or a
-  lightweight detector; multiple candidates per frame allowed; "no
-  candidate" allowed).
-- **Decoding stage**: piecewise ballistic arcs (court3d's linear-drag
-  model) selected/fit over candidates, anchored on labeled contact
-  times and hitter positions, with the established priors
-  (net-crossing per side vote, court containment, player-geometry
-  anchors, bounce continuity). Output: per-frame (t, x, y) in the
-  1280x720 pose frame plus arc segmentation, and the 3D lift via
-  court3d.
+**Inputs at grade time** (deployment-realistic, nothing hand-labeled
+about the ball or contacts):
+- the VOD and the rally window (referee logs supply these),
+- the serve pin (logs carry serve timing),
+- court calibration (one-time, 11 clicks per venue/camera),
+- pose tracks and identity assignments (occlusion reasoning and the
+  player-anchor prior are allowed to use them).
+- NOT the user's ball clicks; NOT the contact taps.
 
-Anchors come from LABELS during gating (contact taps + track-assign
-clicks). Swapping in model-derived anchors is out of scope for this
-gate and would be a separate registration.
+Contact taps and ball clicks on TRAIN rallies may be used freely
+during development, including anchored diagnostic runs.
 
 ## Ground truth and split
 
-User ball passes via make_ball_audit.py (classes: V visible click,
-S smear click, I inferred/hidden, N not visible).
+User ball passes (make_ball_audit.py; classes V/S/I/N) and, for the
+replication check, the court3d reconstruction built from them.
 
-- **Spent / development**: rally 1's existing ball path
-  (data/vision/ball_path_r1.csv) — it tuned the 3D reconstruction and
-  is free for development without restriction.
-- **Train**: ball passes on rallies **6 and 7** (manual contact
-  anchors exist; short rallies, cheap passes). Tuning, iteration, and
-  diagnostics unrestricted here.
-- **Holdout**: a ball pass on rally **8**, SEALED — the user labels
-  it and commits it, and no tracker run touches it until grading.
-  One grading run, ever, per the consequences below. (Rallies 9/10
-  may be added as secondary sealed rallies later under the same
-  rules; their training asterisk does not affect use as holdout.)
+- **Spent / development**: rally 1's ball path
+  (data/vision/ball_path_r1.csv) and its reconstruction — free for
+  development without restriction.
+- **Train**: ball passes on rallies **6 and 7** (short rallies, cheap
+  passes; manual contact taps already exist there for anchored
+  diagnostics). More train rallies may be added any time.
+- **Holdout**: a ball pass on rally **8**, SEALED — labeled and
+  committed BEFORE the first tracker run on any rally, untouched
+  until grading, graded once. The holdout set can only grow, never
+  shrink or swap. (Rallies 9/10 may join as later sealed rallies;
+  their training asterisk does not affect holdout use.)
 
-The user labels holdout rally 8 BEFORE the first tracker run on any
-rally, so the seal is real. More train rallies may be added at any
-time (user's call — ball passes are cheap); the holdout set can only
-grow, never shrink or swap.
+## Scoring (frozen at freeze time) — three checks, one graded run
 
-## Scoring (frozen at freeze time)
+Panel: the sealed rally from first contact to 0.5 s after the last.
 
-Panel: all frames of the holdout rally from first labeled contact to
-0.5 s after the last, at the label pass's frame rate.
+1. **PATH — V-frame hit rate**: fraction of the user's
+   visible-ball (V) frames where the predicted position is within
+   **25 px** of the click. S (smear) frames scored at 40 px,
+   reported separately. I and N frames are NEVER scored — a claim
+   where no human can see the ball is unfalsifiable (the auto-label
+   poison lesson); coverage there is a diagnostic only.
+2. **TURNS — the oracle battery, unchanged**: the tracker's decoded
+   path is scored by make_ball_audit's frozen instrument (turns
+   within ±0.15 s of the user's contact taps, recall bar 0.80,
+   circular-shift null at 95%, same constants: TURN_DEG 25.0,
+   MIN_SEP_S 0.25, N_NULL 1000). The human-labeled path passed this
+   battery; the tracker must pass the same test without the human.
+   This carries the null that matters — placement beyond rhythm.
+3. **REPLICATION — the deliverable**: court3d run on the tracked
+   path vs court3d run on the user's path, same anchors policy on
+   both sides (player-geometry priors from pose; no tap anchors on
+   the tracked side): median 3D distance between matched impact
+   points ≤ **3.0 ft** (the measured monocular floor is ~1.3-1.5 ft
+   per reconstruction), all decoded arcs satisfy the net-crossing
+   check, and bounce count within ±1 of the human-path
+   reconstruction.
 
-- **Scoreable frames** = V frames (primary) and S frames (secondary).
-  I and N frames are EXCLUDED from scoring — a claim where no human
-  can see the ball is unfalsifiable, the exact failure that poisoned
-  the 2026-08 auto-label fine-tune. Coverage on I/N is reported as a
-  diagnostic only.
-- **Hit** = predicted position within **25 px** of the user's click
-  (V), or within the smear's clicked position + 40 px (S).
-- **Primary metric** = hit rate on V frames.
-- **NULL (the bar that matters)**: the anchors-only path — piecewise
-  LINEAR interpolation in pixel space between the hitter's wrist
-  position at each labeled contact (same anchors the decoder gets, no
-  pixels, no physics). The tracker must beat what its own anchors
-  give away for free. A ballistic-arc-through-anchors variant (still
-  candidate-blind) is the second, harder null, reported alongside.
+### Bars
 
-### Bars (draft numbers — user may adjust before freeze; immutable after)
-
-- **PASS**: V hit rate ≥ **70%** AND ≥ linear-anchor null + **15
-  points** AND ≥ candidate-blind ballistic null + **10 points**.
-- **KILL**: V hit rate < linear-anchor null + **5 points**.
-- **MIDDLE** (between): ONE further train-only iteration is allowed,
-  then one re-grade on a NEWLY labeled sealed rally (not rally 8,
-  which is burned by the first grading). Its result is final.
+- **PASS**: all three — V hit rate ≥ **70%**, oracle battery PASS,
+  replication check met.
+- **KILL**: V hit rate < **40%**, OR the decoded path fails the
+  oracle battery's circular-shift null (i.e., its turns carry no
+  placement information beyond rhythm).
+- **MIDDLE** (anything between): ONE further train-only iteration,
+  then one re-grade on a NEWLY labeled sealed rally (rally 8 is
+  burned by the first grading). That result is final.
 
 ### Consequences (pre-committed)
 
-- **PASS** → the constrained tracker is a licensed channel: it may
-  feed the 3D replay, ball-derived stats, and (via the separate
-  temporal-gate amendment) the temporal model.
-- **KILL** → automated ball tracking on this VOD is closed AGAIN,
-  now with constraints tested. Recorded in STATUS.md; next door is
-  new footage. Human ball passes remain licensed regardless.
-- **MIDDLE exhausted without PASS** → same as KILL.
+- **PASS** → the tracker is a licensed channel: automated 3D
+  replays, ball-derived stats, and recovered contact times for
+  unlabeled rallies; feeding the temporal model still goes through
+  the separate temporal-gate amendment.
+- **KILL**, or MIDDLE exhausted → automated ball tracking on this
+  VOD is closed again, recorded in STATUS.md; the next door is new
+  footage. Human ball passes remain licensed regardless.
 
 ## What may be built before freeze
 
-Nothing of the two gated stages. Existing instruments (court3d,
-make_ball_audit, verify_hitter_features, labeling tools) may be
-maintained. Writing this document is not building.
+Nothing of the gated stages. Existing instruments (court3d, the
+audit tools, verify_hitter_features) may be maintained. This
+document is not building.
 
 ## Amendment rule
 
 Before freeze: anything may change. After freeze: amendments follow
-the contact_gate.md convention — dated, appended, and only ever
-tightening or clarifying; bars and the holdout seal never loosen.
+contact_gate.md convention — dated, appended, tightening or
+clarifying only; bars and the holdout seal never loosen.
