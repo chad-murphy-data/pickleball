@@ -3498,3 +3498,47 @@ a high percentile of the hitter's own baseline, "ran a long way" from
 floor-track distance since the previous contact; both computable from
 already-committed CSVs + the npz-derived features). Not urgent;
 pairs naturally with the impact slow-mo moments.
+
+## 2026-08-30 — DEFINITIVE VERIFICATION: user's 20 track-assign clicks land; the candidates hold on all 84 contacts, and the "span-anomaly" rallies score fine
+
+The user ran the track-assign sprint (state-audit tool, rallies 6-10,
+~20 clicks + a bonus pair of rally-6 Jones episodes including a
+labeled no-contact BACKHAND FAKE — a free hard negative). Clicks are
+merged into state_labels_chicago0725.csv; verify_hitter_features now
+uses user clicks whenever present (geometry stays as fallback).
+Naming is now ground truth on every scored rally:
+
+    ALL 84 new contacts (truth naming)  top1-of-4    which-partner
+      ARM REACH                            76%           82%
+      wrist speed                          68%           83%
+      nose speed                           46%           76%
+    per rally (reach): r6 50/62, r7 60/80, r8 78/78,
+                       r9 87/90, r10 78/81   (chance 25/50)
+
+- **The candidates verify.** Reach recovers to co-leader once naming
+  is right (the interim "wrist > reach" verdict was partly naming
+  noise): reach wins top-1 (76 vs 68), the partner call is a tie
+  (82/83). Rally 1's 92/100 stays regressed — the multiplicity
+  lesson stands — but ~76/82 on 84 untouched contacts is a real,
+  usable signal, and serves are free from logs anyway.
+- **REGIME SPLIT, now visible across 6 rallies: wrist wins the short
+  fast rallies (6-8: 74/85 vs reach 63/74), reach wins the LONG
+  rallies (9-10: 82/86 vs 65/82; rally 1, the 26-shot dink battle,
+  was reach's 92/100).** Consistent with the error anatomy from the
+  rally-1 battery: speed misses soft shots (dinks), reach misses
+  overheads/drives. The learned-combiner headroom is not
+  hypothetical — the two features have opposite home regimes.
+- **Geometry-assigner scorecard vs truth: 18/24 tids** — r1 4/4,
+  r6 4/4, r7 4/4, r8 4/4 (incl. the late-track missing-receiver
+  reconstruction), r9 2/4 (the serving-pair coin flip it had flagged
+  UNSURE), r10 0/4 (both pairs; also flagged). Every miss was
+  pre-flagged, and the naming-immune relabel bounds predicted the
+  truth partner scores almost exactly (predicted ≤86/≤82 on r9/r10;
+  truth 90/81). The instrument-honesty machinery worked.
+- **Span-anomaly update: r9/r10 label CONTENT is fine.** Taps, pose
+  tracks, and hitter names are mutually consistent and score at the
+  top of the table. Whatever the ~24 s duration mismatch is, it lives
+  in the windows-CSV numbering/timing, not in the labels — further
+  support for the numbering-shift hypothesis (2026-08-30 entry
+  above). The video scorebug check is still owed before r9/r10 lose
+  their training asterisk.

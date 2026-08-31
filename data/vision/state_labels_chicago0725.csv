@@ -122,3 +122,35 @@ rally_cum,player,episode,kind,t_s
 1,Ting Chieh Wei,7,impact,30.943
 1,Ting Chieh Wei,7,end,31.209
 1,Ting Chieh Wei,7,forehand,
+6,,0,routine_start,145.007
+6,,0,point_dead,151.873
+6,Allyce Jones,0,track_assign,10
+6,Allyce Jones,1,start,149.607
+6,Allyce Jones,1,impact,150.007
+6,Allyce Jones,1,end,150.14
+6,Allyce Jones,1,no_contact,
+6,Allyce Jones,1,backhand,
+6,Allyce Jones,2,start,150.607
+6,Allyce Jones,2,impact,150.873
+6,Allyce Jones,2,end,151.073
+6,Allyce Jones,2,forehand,
+6,Emma Nelson,0,track_assign,2
+6,Emma Nelson,0,track_assign,12
+6,Etta Tuionetoa,0,track_assign,11
+6,Ting Chieh Wei,0,track_assign,13
+7,Allyce Jones,0,track_assign,2
+7,Emma Nelson,0,track_assign,3
+7,Etta Tuionetoa,0,track_assign,0
+7,Ting Chieh Wei,0,track_assign,1
+8,Allyce Jones,0,track_assign,0
+8,Emma Nelson,0,track_assign,3
+8,Etta Tuionetoa,0,track_assign,1
+8,Ting Chieh Wei,0,track_assign,2
+9,Allyce Jones,0,track_assign,1
+9,Emma Nelson,0,track_assign,0
+9,Etta Tuionetoa,0,track_assign,2
+9,Ting Chieh Wei,0,track_assign,3
+10,Allyce Jones,0,track_assign,11
+10,Emma Nelson,0,track_assign,8
+10,Etta Tuionetoa,0,track_assign,10
+10,Ting Chieh Wei,0,track_assign,9

@@ -25,7 +25,10 @@ naming-immune up-to-relabel bound):
 1. CALIBRATION: re-implement the battery from the notes' written
    recipe with the user's own rally-1 track_assign identities
    (reproduces within a few points; the exact scratchpad code is gone).
-2. ASSIGNMENT: rallies 6-10 have no track_assign clicks. Sides from
+2. ASSIGNMENT: user track_assign clicks (state labels) are used
+   whenever present — they are ground truth and arrived 2026-08-30
+   for all of 6-10, making the current output DEFINITIVE on naming.
+   The geometry fallback below remains for un-clicked rallies. Sides from
    serve-time floor geometry (serving side = side whose SHALLOWER
    member is deeper). Within-pair naming cascade: cross-court
    diagonal rule for the receiver > decisive wrist motion at the
@@ -257,7 +260,13 @@ def assign_tracks(pose, Hinv, contacts, server, receiver):
              [k for k in srv_pair if k != srv][0]: TEAMS[server],
              rc: receiver,
              [k for k in rcv_pair if k != rc][0]: TEAMS[receiver]}
-    # chain later fragments to identities by nearest last position
+    return chain_fragments(pose, Hinv, names), unsure, None
+
+
+def chain_fragments(pose, Hinv, names):
+    """Chain unassigned later fragments to named identities by nearest
+    last position (gate CHAIN_GATE_FT / CHAIN_GATE_S)."""
+    names = dict(names)
     last = {}
     order = np.argsort(pose.t)
     seen = set(names)
@@ -283,7 +292,7 @@ def assign_tracks(pose, Hinv, contacts, server, receiver):
         if best and bd < CHAIN_GATE_FT:
             names[tid] = best
             last[best] = (pose.t[i], xy)
-    return names, unsure, None
+    return names
 
 
 def score_rally(pose, names, contacts, feats_by_name):
@@ -385,6 +394,16 @@ def side_check(pose, Hinv, names, contacts):
     return ok, tot
 
 
+def state_assign(rally):
+    """track_assign rows from the state labels (the user's clicks) —
+    ground-truth identities; multiple tids per player supported."""
+    out = {}
+    for r in csv.DictReader(open(STATE)):
+        if int(r["rally_cum"]) == rally and r["kind"] == "track_assign":
+            out[int(float(r["t_s"]))] = r["player"]
+    return out
+
+
 def rally1_assign():
     out = {}
     for r in csv.DictReader(open(STATE)):
@@ -437,12 +456,26 @@ def main():
         pose = Pose(f)
         cts = load_contacts(rally)
         server, receiver = cts[0][2], cts[1][2]
-        names, unsure, err = assign_tracks(pose, Hinv, cts, server, receiver)
-        if err:
-            print(f"\nrally {rally}: assignment failed ({err}), skipped")
+        user = state_assign(rally)
+        geo, gunsure, gerr = assign_tracks(pose, Hinv, cts, server, receiver)
+        if user:
+            names = chain_fragments(pose, Hinv, user)
+            unsure = []
+            if geo:
+                both = [t for t in user if t in geo]
+                agree = sum(1 for t in both if geo[t] == user[t])
+                print(f"\nrally {rally}: USER CLICKS ({len(user)} tids; "
+                      f"geometry agreed {agree}/{len(both)})")
+            else:
+                print(f"\nrally {rally}: USER CLICKS ({len(user)} tids; "
+                      f"geometry had failed: {gerr})")
+        elif gerr:
+            print(f"\nrally {rally}: assignment failed ({gerr}), skipped")
             continue
+        else:
+            names, unsure = geo, gunsure
         ok, tot = side_check(pose, Hinv, names, cts)
-        print(f"\nrally {rally}: hitter-side consistency {ok}/{tot}"
+        print(f"rally {rally}: hitter-side consistency {ok}/{tot}"
               f"{'  NAMING UNSURE: ' + ','.join(unsure) if unsure else ''}")
         rows = score_rally(pose, names, cts, feats_for(pose, names))
         for r in rows:
