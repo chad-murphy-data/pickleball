@@ -397,8 +397,9 @@ def score_train(rally, per_frame, visited, t0, refined=None, timing=None):
     # gate panel: first physical contact to 0.5 s after the last
     imps_panel, _ = load_impacts(rally=rally)
     p_lo, p_hi = imps_panel[0], imps_panel[-1] + 0.5
-    labels = [r for r in csv.DictReader(open(DATA / f"ball_path_r{rally}.csv"))
-              if r["x"] and p_lo <= float(r["t_s"]) <= p_hi]
+    all_labels = [r for r in csv.DictReader(
+        open(DATA / f"ball_path_r{rally}.csv")) if r["x"]]
+    labels = [r for r in all_labels if p_lo <= float(r["t_s"]) <= p_hi]
     print(f"--- rally {rally}: decoded {len(visited)} visited points; "
           f"gate panel {p_lo:.2f}-{p_hi:.2f}s")
     for cls, tol in (("V", 25.0), ("S", 40.0)):
@@ -425,8 +426,10 @@ def score_train(rally, per_frame, visited, t0, refined=None, timing=None):
     if timing is not None:
         print("  (check 2 scored on the TIMING stream — two-regime "
               "decode per the decoder-fix addendum)")
+    # human path over the FULL label span — ball_grade.py's convention
+    # (check 1's panel filter applies to hit rates only, never here)
     hum_pts = [(float(r["t_s"]), float(r["x"]), float(r["y"]))
-               for r in labels if r["vis"] == "V"]
+               for r in all_labels if r["vis"] == "V"]
     res = {}
     for name, pts in (("tracker", trk_pts), ("human", hum_pts)):
         evs = detect_events(pts)
