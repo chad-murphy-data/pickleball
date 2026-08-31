@@ -43,16 +43,26 @@ arc boundaries = its claimed contacts). Output: per-frame (t, x, y)
 in the 1280x720 pose frame, arc segmentation, and the 3D lift.
 
 **Inputs at grade time** (deployment-realistic, nothing hand-labeled
-about the ball or contacts):
+about the ball, the contacts, or the people):
 - the VOD and the rally window (referee logs supply these),
 - the serve pin (logs carry serve timing),
-- court calibration (one-time, 11 clicks per venue/camera),
-- pose tracks and identity assignments (occlusion reasoning and the
-  player-anchor prior are allowed to use them).
-- NOT the user's ball clicks; NOT the contact taps.
+- court calibration (one-time, 11 clicks per venue/camera — the only
+  persistent human input; per camera, not per rally),
+- **the person channel, FULLY AUTOMATED** (amended 2026-08-30, user
+  question "can the gate include automated person labeling?"): pose
+  tracks as extracted, with junk/crowd filtering, fragment handling,
+  and side classification done by the pipeline itself. Occlusion
+  reasoning and the player-anchor prior use these freely. Note the
+  ball physics needs anonymous bodies-with-sides only — NAMES are
+  not required for this gate (identity is the hitter-features
+  channel's problem, not the ball's).
+- NOT the user's ball clicks; NOT the contact taps; NOT the user's
+  track_assign clicks.
 
-Contact taps and ball clicks on TRAIN rallies may be used freely
-during development, including anchored diagnostic runs.
+Contact taps, ball clicks, and track_assign clicks on TRAIN rallies
+may be used freely during development, including anchored diagnostic
+runs. Surviving the raw track mess (crowd tracks, fragments,
+garbage-keypoint rows) unaided is part of what is being graded.
 
 ## Ground truth and split
 
@@ -90,8 +100,8 @@ Panel: the sealed rally from first contact to 0.5 s after the last.
    This carries the null that matters — placement beyond rhythm.
 3. **REPLICATION — the deliverable**: court3d run on the tracked
    path vs court3d run on the user's path, same anchors policy on
-   both sides (player-geometry priors from pose; no tap anchors on
-   the tracked side): median 3D distance between matched impact
+   both sides (player-geometry priors from AUTOMATED person data; no
+   tap anchors and no track_assign clicks on the tracked side): median 3D distance between matched impact
    points ≤ **3.0 ft** (the measured monocular floor is ~1.3-1.5 ft
    per reconstruction), all decoded arcs satisfy the net-crossing
    check, and bounce count within ±1 of the human-path
