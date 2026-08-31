@@ -51,7 +51,16 @@ SKIP_PEN = 6.0          # per skipped frame
 ACCEL_SCALE = 60.0      # px/s of |dv| per unit cost
 TURN_CAP = 40.0         # max transition cost — a real contact costs this
 COVER_BONUS = 14.0      # per covered frame
-SUCC_MAX = 8            # successors kept per node per gap step
+SUCC_MAX = 8            # successors kept per node per gap step (d <= 3)
+SUCC_FAR = 4            # successors kept at gap steps d > 3 — the search
+                        # must ALWAYS reach GAP_MAX: the old got_close
+                        # early-stop (quit past d=3 once any near-frame
+                        # successor existed) made the ball's own 4-6
+                        # frame candidate gaps unbridgeable whenever junk
+                        # sat nearby — which is exactly at contacts.
+                        # MEASURED 2026-08-31: five true-chain edges on
+                        # r6, all rank-0 nearest, were pruned by it; fix
+                        # took r6 V 60.7->71.3, r7 66.5->82.3
 SLOW_FLOOR = 180.0      # px/s under which an edge is junk-suspicious
 SLOW_PEN = 30.0         # max slow-edge cost (scorebug/crowd/lazy limbs
                         # run <150 px/s; the ball's median is ~330)
@@ -172,29 +181,20 @@ def decode(byf, flags=None, oflags=None, aflags=None):
     for k, (f, _) in enumerate(nodes):
         by_frame_ids[f].append(k)
     edges = []           # (a, b, d)
-    e_in = defaultdict(list)
     for a in range(len(nodes)):
         fa = nframe[a]
-        got_close = False
         for d in range(1, GAP_MAX + 1):
-            if got_close and d > 3:
-                break
             cand = by_frame_ids.get(fa + d, ())
             if not cand:
                 continue
             dx = pos[list(cand)] - pos[a]
             dist = np.hypot(dx[:, 0], dx[:, 1])
             vmax_d = VMAX * d / FPS
-            order = np.argsort(dist)[:SUCC_MAX]
-            for j in order:
+            k = SUCC_MAX if d <= 3 else SUCC_FAR
+            for j in np.argsort(dist)[:k]:
                 if dist[j] > vmax_d:
                     continue
-                b = cand[j]
-                ei = len(edges)
-                edges.append((a, b, d))
-                e_in[b].append(ei)
-                if d <= 3:
-                    got_close = True
+                edges.append((a, cand[j], d))
     if not edges:
         return []
 
@@ -347,6 +347,15 @@ def main():
     ap.add_argument("--serve", type=float, default=None,
                     help="serve pin (VOD s) — licensed gate input; trims "
                          "decode start. Train default: first contact tap.")
+    ap.add_argument("--end", type=float, default=None,
+                    help="rally window end (VOD s) — licensed gate input "
+                         "(referee logs carry the window, same as the "
+                         "serve pin); trims decode end. Train default: "
+                         "the point_dead tap. Without it the decoder "
+                         "tracks celebrations/walk-offs to the end of "
+                         "the clip and those events flood the battery's "
+                         "circular-shift null (r6: 22 of 27 spurious "
+                         "events sat after the rally).")
     ap.add_argument("--pose", help="pose npz for body-box costs (automated channel)")
     ap.add_argument("--anchors", help="hitter-chain anchors CSV (the missile coupling)")
     ap.add_argument("--dump")
@@ -355,12 +364,19 @@ def main():
     if a.rally in SEALED and not a.graded_run:
         raise SystemExit(f"rally {a.rally} is SEALED — refusing")
     byf, t0 = load_candidates(a.rally)
-    serve = a.serve
-    if serve is None and a.rally not in SEALED:
-        serve = load_impacts(rally=a.rally)[0][0]
+    serve, end = a.serve, a.end
+    if a.rally not in SEALED:
+        imps, dead = load_impacts(rally=a.rally)
+        if serve is None:
+            serve = imps[0]
+        if end is None:
+            end = dead
     if serve is not None:
         f_min = round((serve - 0.3 - t0) * FPS)
         byf = {f: c for f, c in byf.items() if f >= f_min}
+    if end is not None:
+        f_max = round((end + 0.3 - t0) * FPS)
+        byf = {f: c for f, c in byf.items() if f <= f_max}
     flags = None
     if a.pose and BODY_PEN > 0:
         flags = in_body_flags(byf, t0, body_boxes(a.pose))
