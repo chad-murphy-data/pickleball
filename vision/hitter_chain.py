@@ -41,7 +41,20 @@ from make_ball_audit import load_impacts  # noqa: E402
 DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
 
 LSHO, RSHO, LWRI, RWRI = 5, 6, 9, 10
+LELB, RELB = 7, 8
 CONF = 0.3
+EXT_LAM = 0.5          # paddle point = wrist + EXT_LAM*(wrist-elbow).
+                       # Measured 2026-08-31 vs contact ball clicks:
+                       # wrist 20px median (18 on occluded contacts),
+                       # extension 15.0/13.7px, plateau lam 0.5-0.6.
+                       # Dumped as paddle_x/y NEXT TO wrist_x/y: the
+                       # decoder's anchor flags stay on the WRIST
+                       # (60px radius covers the paddle anyway; feeding
+                       # it the paddle point instead LOST V — r6
+                       # 71.3->69.7, r1 77.7->75.2 — the wrist region
+                       # also covers the incoming flight). The paddle
+                       # point is for contact-POSITION consumers (3D
+                       # priors, replay), not decoder flags.
 SMOOTH_S = 0.10        # excitement smoothing
 MIN_SEP_S = 0.35       # min separation between predicted contacts
 Z_MIN = 1.2            # excitement threshold (per-track z units)
@@ -58,16 +71,25 @@ def track_signals(z, tid):
     speed = np.full(n, np.nan)
     wx = np.full(n, np.nan)
     wy = np.full(n, np.nan)
+    pxa = np.full(n, np.nan)
+    pya = np.full(n, np.nan)
     for i in range(n):
         if big[i]:
             continue
         best = None
-        for w in (LWRI, RWRI):
+        for w, e in ((LWRI, LELB), (RWRI, RELB)):
             if c[i, w] > CONF:
                 if best is None or c[i, w] > best[0]:
-                    best = (c[i, w], k[i, w, 0], k[i, w, 1])
+                    px, py = k[i, w, 0], k[i, w, 1]
+                    ex, ey = px, py
+                    if c[i, e] > CONF:
+                        vx, vy = px - k[i, e, 0], py - k[i, e, 1]
+                        if math.hypot(vx, vy) > 5:
+                            ex, ey = px + EXT_LAM * vx, py + EXT_LAM * vy
+                    best = (c[i, w], px, py, ex, ey)
         if best:
             wx[i], wy[i] = best[1], best[2]
+            pxa[i], pya[i] = best[3], best[4]
         if i and not big[i - 1]:
             dt = t[i] - t[i - 1]
             if 0 < dt < 0.1:
@@ -88,7 +110,7 @@ def track_signals(z, tid):
                 vals.append(np.linalg.norm(k[i, w] - k[i, s]) / h[i])
         if vals:
             reach[i] = max(vals)
-    return t, speed, reach, wx, wy
+    return t, speed, reach, wx, wy, pxa, pya
 
 
 def zn(x):
@@ -105,18 +127,19 @@ def predict_contacts(npz_path, t_lo=None, t_hi=None):
                   key=lambda k: -(z["track"] == k).sum())[:4]
     per = []
     for tid in tids:
-        t, sp, re, wx, wy = track_signals(z, tid)
+        t, sp, re, wx, wy, pxa, pya = track_signals(z, tid)
         exc = np.nanmax(np.vstack([zn(sp), zn(re)]), axis=0)
         # smooth in time
         order = np.argsort(t)
         t, exc, wx, wy = t[order], exc[order], wx[order], wy[order]
+        pxa, pya = pxa[order], pya[order]
         sm = np.copy(exc)
         for i in range(len(t)):
             m = np.abs(t - t[i]) <= SMOOTH_S
             v = exc[m]
             v = v[~np.isnan(v)]
             sm[i] = v.mean() if len(v) else np.nan
-        per.append((tid, t, sm, wx, wy))
+        per.append((tid, t, sm, wx, wy, pxa, pya))
     # global excitement = max over tracks; peak-pick
     events = []
     allt = np.unique(np.concatenate([p[1] for p in per]))
@@ -124,15 +147,16 @@ def predict_contacts(npz_path, t_lo=None, t_hi=None):
         allt = allt[(allt >= t_lo) & (allt <= t_hi)]
     for tq in allt:
         best = None
-        for tid, t, sm, wx, wy in per:
+        for tid, t, sm, wx, wy, pxa, pya in per:
             i = np.argmin(np.abs(t - tq))
             if abs(t[i] - tq) > 0.03 or np.isnan(sm[i]):
                 continue
             if best is None or sm[i] > best[0]:
-                best = (sm[i], tid, wx[i], wy[i])
+                best = (sm[i], tid, wx[i], wy[i], pxa[i], pya[i])
         if best and best[0] >= Z_MIN and not np.isnan(best[2]):
             events.append((float(tq), float(best[0]), int(best[1]),
-                           float(best[2]), float(best[3])))
+                           float(best[2]), float(best[3]),
+                           float(best[4]), float(best[5])))
     # greedy peak-pick with min separation
     picked = []
     for ev in sorted(events, key=lambda e: -e[1]):
@@ -169,14 +193,122 @@ def score(picked, rally):
           if errs else "  no matched anchors")
 
 
+def blur_gap_fill(npz_path, clip, offset, picked,
+                  radius=70, lag=6, thresh=18, z_min=1.2, min_sep=0.35):
+    """User idea 2026-08-31: a swinging paddle SMEARS — per-track
+    motion-diff mass near the wrist is a second contact channel.
+    Standalone it is weak (fires only on hard swings: 24%/57%/22%
+    recall on r1/r6/r7 vs the pose channel's 72/57/67) but it is
+    COMPLEMENTARY — on r6 it caught the 148.57 smash the pose channel
+    missed outright, the contact whose absence broke check 3's
+    segmentation. So it runs as GAP-FILL only: blur peaks further
+    than min_sep from every pose anchor are appended. Measured safe:
+    decoder V/turns identical on r1/r6/r7, r7's check-3 PASS
+    unchanged, with the r6 bound recovered."""
+    import cv2
+    z = np.load(npz_path)
+    cap = cv2.VideoCapture(clip)
+    fps = cap.get(cv2.CAP_PROP_FPS) or 60.0
+    frames = []
+    while True:
+        ok, fr = cap.read()
+        if not ok:
+            break
+        frames.append(cv2.cvtColor(fr, cv2.COLOR_BGR2GRAY))
+    cap.release()
+    diffs = []
+    for i in range(len(frames)):
+        a = frames[max(0, i - lag)]
+        b = frames[min(len(frames) - 1, i + lag)]
+        diffs.append((cv2.min(cv2.absdiff(frames[i], a),
+                              cv2.absdiff(frames[i], b)) > thresh)
+                     .astype(np.uint8))
+    tids = sorted(set(z["track"].tolist()),
+                  key=lambda k: -(z["track"] == k).sum())[:4]
+    sig = {}
+    for tid in tids:
+        m = np.where(z["track"] == tid)[0]
+        t, kpt, kpc = z["t"][m], z["kpt"][m], z["kpc"][m]
+        rows = []
+        for i in range(len(m)):
+            ws = [(kpt[i, w], kpt[i, e] if kpc[i, e] > CONF else None)
+                  for w, e in ((LWRI, LELB), (RWRI, RELB))
+                  if kpc[i, w] > CONF]
+            if not ws:
+                continue
+            fi = round((float(t[i]) - offset) * fps)
+            if not (0 <= fi < len(frames)):
+                continue
+            best = (0, None, None)
+            for w, el in ws:
+                x0 = max(0, int(w[0] - radius))
+                x1 = min(diffs[fi].shape[1], int(w[0] + radius))
+                y0 = max(0, int(w[1] - radius))
+                y1 = min(diffs[fi].shape[0], int(w[1] + radius))
+                e = int(diffs[fi][y0:y1, x0:x1].sum())
+                if e > best[0]:
+                    best = (e, w, el)
+            rows.append((float(t[i]), best[0], best[1], best[2]))
+        if len(rows) < 20:
+            continue
+        ts = np.array([r[0] for r in rows])
+        es = np.array([r[1] for r in rows], float)
+        zz = (es - np.median(es)) / (es.std() + 1e-9)
+        sm = np.copy(zz)
+        for i in range(len(ts)):
+            mm = np.abs(ts - ts[i]) <= SMOOTH_S
+            sm[i] = zz[mm].mean()
+        sig[tid] = (ts, sm, rows)
+    if not sig:
+        return []
+    events = []
+    for tq in np.unique(np.concatenate([s[0] for s in sig.values()])):
+        best = None
+        for tid, (ts, sm, rows) in sig.items():
+            i = int(np.argmin(np.abs(ts - tq)))
+            if abs(ts[i] - tq) > 0.03:
+                continue
+            if best is None or sm[i] > best[0]:
+                w, el = rows[i][2], rows[i][3]
+                px, py = w
+                if el is not None:
+                    vx, vy = w[0] - el[0], w[1] - el[1]
+                    if math.hypot(vx, vy) > 5:
+                        px, py = w[0] + EXT_LAM * vx, w[1] + EXT_LAM * vy
+                best = (float(sm[i]), tid, float(w[0]), float(w[1]),
+                        float(px), float(py))
+        if best is not None and best[0] >= z_min:
+            events.append((float(tq),) + best)
+    peaks = []
+    for ev in sorted(events, key=lambda e: -e[1]):
+        if all(abs(ev[0] - p[0]) >= min_sep for p in peaks):
+            peaks.append(ev)
+    pose_t = [e[0] for e in picked]
+    out = []
+    for (tv, zv, tid, wx, wy, px, py) in sorted(peaks):
+        if all(abs(tv - pt) >= min_sep for pt in pose_t):
+            out.append((tv, zv, int(tid), wx, wy, px, py))
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--npz", required=True)
     ap.add_argument("--rally", type=int, required=True)
     ap.add_argument("--dump")
+    ap.add_argument("--clip", help="rally clip: adds the BLUR gap-fill "
+                                   "channel (see blur_gap_fill)")
+    ap.add_argument("--offset", type=float,
+                    help="VOD time of clip frame 0 (required with --clip)")
     a = ap.parse_args()
     z = np.load(a.npz)
     picked = predict_contacts(a.npz, float(z["t"].min()), float(z["t"].max()))
+    if a.clip:
+        if a.offset is None:
+            raise SystemExit("--clip needs --offset")
+        extra = blur_gap_fill(a.npz, a.clip, a.offset, picked)
+        print(f"  blur gap-fill: +{len(extra)} anchors")
+        picked = sorted(picked + extra)
     if (DATA / f"ball_path_r{a.rally}.csv").exists():
         score(picked, a.rally)
     else:
@@ -185,9 +317,11 @@ def main():
     if a.dump:
         with open(a.dump, "w", newline="") as f:
             w = csv.writer(f)
-            w.writerow(["t_s", "excitement_z", "track", "wrist_x", "wrist_y"])
+            w.writerow(["t_s", "excitement_z", "track", "wrist_x",
+                        "wrist_y", "paddle_x", "paddle_y"])
             w.writerows([(round(e[0], 3), round(e[1], 2), e[2],
-                          round(e[3], 1), round(e[4], 1)) for e in picked])
+                          round(e[3], 1), round(e[4], 1),
+                          round(e[5], 1), round(e[6], 1)) for e in picked])
         print(f"  dumped {a.dump}")
 
 

@@ -3822,3 +3822,60 @@ outright), and sealed rally 8 is rally-6-SHAPED (7 contacts in
 5.4 s) rather than rally-7-shaped (9 in 7.2 s). Spending the seal
 now is licensed; whether to spend it or first widen train coverage
 on short fast rallies is an owner call, not an agent one.
+
+## 2026-08-31 (morning) — Paddle probe, the blur channel, and reverse decoding
+
+Three user ideas measured; two productized, one recorded for later.
+
+**Paddle occlusion premise CONFIRMED**: the ball's invisible (I)
+frames sit at median 17-32 px from a wrist, 88-100% within 60 px
+(smears, by contrast, 75-126 px away) — the ball only disappears AT
+the paddle. Paddle-region reasoning targets real occlusion.
+
+**Paddle point = arm extension, no detector needed.** wrist +
+0.5*(wrist-elbow) lands 13.5-15 px from the contact ball click
+(occluded contacts 12.6-13.7) vs the bare wrist's 18-20. Now dumped
+as paddle_x/y NEXT TO wrist_x/y in the anchors CSV. The decoder's
+anchor flags deliberately STAY on the wrist: feeding it the paddle
+point lost V (r6 71.3→69.7, r1 77.7→75.2 — the 60 px wrist region
+also covers the incoming flight), and the wrist∪paddle union merely
+tied the wrist. Paddle point is for contact-POSITION consumers
+(3D priors, replay), not decoder flags. A color/blob paddle detector
+was probed and is NOT needed: motion-blob centroids land 40 px out
+(the smear is paddle+forearm, centroid drags to the arm).
+
+**Blur channel (user idea) — weak alone, gold as gap-fill.**
+Per-track motion-diff mass near the wrist, z-scored and peak-picked:
+standalone recall 24%/57%/22% (r1/r6/r7) vs the pose channel's
+72/57/67 — it only fires on hard swings, useless in dink exchanges.
+But it is COMPLEMENTARY: on r6 it caught the 148.57 smash the pose
+channel missed outright — the missing contact that broke check 3's
+segmentation. Productized as `hitter_chain.py --clip --offset`:
+blur peaks ≥0.35 s from every pose anchor are appended (gap-fill
+only). Measured safe: decoder V/turns identical everywhere, r7's
+check-3 PASS byte-identical, r6 missile recall 57→71% and its
+148.57 bound recovered. r6's check 3 still FAILS after the fix —
+the bottleneck moved from segmentation to fit-evidence quality in
+the dropout stretch (only 1-2 of its segments fit at rms<8).
+
+**Reverse decoding (user idea: "trace the point backwards from the
+end") — works as a confidence map, not as a second answer.** The
+Viterbi is a global optimum, so the time-mirrored decode mostly
+reproduces the forward path; where tie-breaks flip is exactly where
+evidence is ambiguous. Measured: agreeing frames (≤10 px) have
+median error 4-7 px vs clicks; disagreeing frames 32-34 px. Now a
+diagnostic flag (`ball_decoder.py --reverse-check`): r6 67%
+confirmed, r7 75% — the number ranks the rallies' shakiness
+correctly. TRIED AND REVERTED: weighting the 3D fit evidence by
+agreement (w=0.25 on disagreeing points) — it nudged r6 up
+(2→3 matched impacts) but PERTURBED r7's segment fits enough to
+flip its check-3 PASS to FAIL (demotion loop cascades off changed
+fits). The confidence map stays out of the graded path until a
+formulation survives both rallies; candidate future use: replay
+display, and per-segment (not per-point) evidence selection.
+
+State of record after this session: r7 full battery PASS with the
+productized anchor pipeline (blur gap-fill on, wrist flags, paddle
+column present); readiness stands. r6: V 71.3 PASS, check 2 pct 92
+vs 96 near-miss, check 3 FAIL (evidence-bound). Next lever for r6
+is decode quality in 147.5-149.4, not more channels.

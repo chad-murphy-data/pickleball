@@ -246,6 +246,33 @@ def decode(byf, flags=None, oflags=None, aflags=None):
             for k in path_nodes]
 
 
+def reverse_agreement(byf, flags, oflags, aflags, fwd, tol_px=10.0):
+    """User idea 2026-08-31 ("trace the point backwards from the
+    end"): decode the mirrored problem and compare. The Viterbi is a
+    global optimum so the reverse run mostly reproduces the forward
+    path — but exactly where the evidence is ambiguous the tie-breaks
+    flip, so DISAGREEMENT is a label-free error map. Measured on
+    train: frames where the two runs agree within 10 px have median
+    error 4-7 px vs the user's clicks; disagreeing frames 32-34 px.
+    Diagnostic only — nothing in the graded path consumes it (an
+    agreement-weighted 3D fit was tried and REVERTED: it flipped r7's
+    check-3 PASS to FAIL by perturbing segment fits).
+    Returns {frame: agrees_bool} over the forward visited frames."""
+    fmax = max(byf)
+    rbyf = {fmax - f: c for f, c in byf.items()}
+    rflags = {fmax - f: v for f, v in flags.items()} if flags else None
+    roflags = {fmax - f: v for f, v in oflags.items()} if oflags else None
+    raflags = {fmax - f: v for f, v in aflags.items()} if aflags else None
+    rev = decode(rbyf, rflags, roflags, raflags)
+    rpos = {fmax - f: (x, y) for f, x, y in rev}
+    out = {}
+    for f, x, y in fwd:
+        r = rpos.get(f)
+        out[f] = bool(r is not None
+                      and math.hypot(x - r[0], y - r[1]) <= tol_px)
+    return out
+
+
 def refine_arcs(visited, t0):
     """Stage 2: piecewise-quadratic arc refit between the path's own
     discovered turns (trimmed least squares per segment). Returns a
@@ -359,6 +386,10 @@ def main():
     ap.add_argument("--pose", help="pose npz for body-box costs (automated channel)")
     ap.add_argument("--anchors", help="hitter-chain anchors CSV (the missile coupling)")
     ap.add_argument("--dump")
+    ap.add_argument("--reverse-check", action="store_true",
+                    help="also decode time-reversed and report "
+                         "forward/backward agreement (label-free "
+                         "confidence; see reverse_agreement)")
     ap.add_argument("--graded-run", action="store_true")
     a = ap.parse_args()
     if a.rally in SEALED and not a.graded_run:
@@ -387,6 +418,12 @@ def main():
                for r in csv.DictReader(open(a.anchors))]
         aflags = anchor_flags(byf, t0, anc)
     visited = decode(byf, flags, oflags, aflags)
+    if a.reverse_check:
+        agree = reverse_agreement(byf, flags, oflags, aflags, visited)
+        n_ok = sum(agree.values())
+        print(f"  reverse check: {n_ok}/{len(agree)} visited points "
+              f"confirmed by the backward decode "
+              f"({100*n_ok/max(len(agree),1):.0f}%)")
     refined = refine_arcs(visited, t0)
     # per-frame positions from the refit (check 1 uses these too)
     per_frame = {}
