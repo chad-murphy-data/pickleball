@@ -3879,3 +3879,40 @@ productized anchor pipeline (blur gap-fill on, wrist flags, paddle
 column present); readiness stands. r6: V 71.3 PASS, check 2 pct 92
 vs 96 near-miss, check 3 FAIL (evidence-bound). Next lever for r6
 is decode quality in 147.5-149.4, not more channels.
+
+## 2026-08-31 (midday) — THE SEAL IS SPENT: rally 8 graded, FAIL, DECODER attributed
+
+Owner authorized the graded run. Everything by the book: grade-time
+configuration recorded in ball_gate.md BEFORE the run (serve pin
+189.2 from the v4 windows row mapped BY TIME — the CSV's t1s turned
+out to be a shot-count formula, not a log timestamp, so the
+point_dead mark stands in for the log-carried rally end on the same
+licensing logic as the serve pin); harness `vision/ball_grade.py`
+dry-run on rally 7 in the identical configuration (PASS end-to-end)
+before touching the seal; one run.
+
+Result: **FAIL by check 2's null clause** — V 58.1% (between the
+bars), turns 85.7% vs the human path's 100% and under its own
+shift-null, and **CHECK 3 PASSED** (median impact agreement 2.82 ft,
+crossings 3/3, bounces 3v2). The deliverable — the 3D replication —
+survived out of sample while path fidelity failed. Pre-stated
+forecast (MIDDLE modal, check 3 underdog) wrong in both directions.
+
+Autopsy (same day, arms in the pre-registered order): oracle
+substitution V 94.6% / null-beating turns (decoder sound on clean
+input); person ablation — the automated 4-longest tracks ARE the
+user's four assigned tracks, curated anchors reproduce V 58.1%
+exactly (person exonerated); frame checks clean (candidate recall
+84.5% at +/-1 frame IS the clock check); candidate stage 84.5%/100%
+on the sealed rally (arm 4's "cannot find the ball" unmet).
+**Attribution: DECODER, association under clutter** — misses cluster
+in 5 runs during the fast exchange WITH the true ball in the
+candidate stream (7/7, 12/13), path parked on limb chains 39-161 px
+away. The identical failure class as train rally 6, which is rally
+8's shape. The next decoder work item was already named before the
+grade: selection among junk at contacts in short fast rallies.
+
+Rally 8 is spent -> train data (a third short-rally training case,
+exactly the regime the decoder fails in). Re-attempt licensed after
+a decoder fix + dated addendum, graded on a NEWLY labeled sealed
+rally — one fresh ball pass when the owner is ready.
