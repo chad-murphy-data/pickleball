@@ -107,16 +107,54 @@ Panel: the sealed rally from first contact to 0.5 s after the last.
    check, and bounce count within ±1 of the human-path
    reconstruction.
 
+### Readiness rule (the seal cannot be spent on an unfinished pipeline)
+
+The sealed rally is graded only after the pipeline PASSES the full
+three-check battery on at least one TRAIN rally (scored against that
+rally's labels, which are of course not inputs). Train iteration is
+unlimited and free — the outer-space-arcs class of bug (court3d's
+own history: fixed by two iterations that a premature verdict would
+have foreclosed) gets caught there, never on the seal.
+
 ### Bars
 
 - **PASS**: all three — V hit rate ≥ **70%**, oracle battery PASS,
   replication check met.
-- **KILL**: V hit rate < **40%**, OR the decoded path fails the
-  oracle battery's circular-shift null (i.e., its turns carry no
-  placement information beyond rhythm).
+- **FAIL — attribution required, see the autopsy**: V hit rate
+  < **40%**, or the decoded path fails the oracle battery's
+  circular-shift null (its turns carry no placement information
+  beyond rhythm).
 - **MIDDLE** (anything between): ONE further train-only iteration,
   then one re-grade on a NEWLY labeled sealed rally (rally 8 is
-  burned by the first grading). That result is final.
+  burned by the first grading).
+
+### The autopsy (pre-registered failure attribution)
+
+**This gate cannot kill the ball CHANNEL: the oracle test already
+proved the information exists in this footage** (a human extracted
+the path and it carried the timing; that result stands regardless of
+what any tracker does). A failing grade is therefore a verdict about
+THIS BUILD, and must be attributed before any consequence attaches.
+After any non-PASS grade, these arms run on the now-spent sealed
+rally (grading is over; the seal's purpose is spent):
+
+1. **Oracle substitution** — the user's ball clicks fed through the
+   SAME decoder as the candidate stream. Fails even on perfect
+   candidates → **DECODER** bug; the candidate stage was never
+   tested.
+2. **Person ablation** — re-run with train-quality person data
+   (user track assigns / hand-curated tracks). Scores recover →
+   **PERSON** channel is the binding constraint. Consequence: fix or
+   kill the person module; the ball question is UNDETERMINED.
+3. **Frame checks** — clock alignment, window integrity, label
+   sanity. A broken frame → verdict **VOID** (the swing-proxy
+   lesson: a frame bug and a detector failure are observationally
+   identical in label-free diagnostics).
+4. Only the remaining case — decoder passes on oracle candidates,
+   person channel exonerated, frame sound, but the candidate stage
+   cannot find the ball in pixels — is a **CANDIDATES** verdict, the
+   one outcome that speaks about automated ball extraction on this
+   footage.
 
 ### Consequences (pre-committed)
 
@@ -124,9 +162,19 @@ Panel: the sealed rally from first contact to 0.5 s after the last.
   replays, ball-derived stats, and recovered contact times for
   unlabeled rallies; feeding the temporal model still goes through
   the separate temporal-gate amendment.
-- **KILL**, or MIDDLE exhausted → automated ball tracking on this
-  VOD is closed again, recorded in STATUS.md; the next door is new
-  footage. Human ball passes remain licensed regardless.
+- **DECODER / PERSON / VOID attribution** → fix the named component;
+  a re-attempt is licensed under a short dated addendum naming what
+  changed, graded on a NEWLY labeled sealed rally. The user is the
+  rate limiter — each re-attempt costs one fresh ball pass — so
+  retries are priced, not forbidden, and a component failure never
+  converts into a false kill of the ball channel.
+- **CANDIDATES verdict** (confirmed on the MIDDLE re-grade if one
+  was available) → automated ball extraction with this instrument
+  class is closed on this VOD, recorded in STATUS.md NEXT TO the
+  standing oracle result: the information is there, this machine
+  couldn't get it. The next door is a different candidate approach
+  under a fresh registration, or new footage. Human ball passes
+  remain licensed regardless.
 
 ## What may be built before freeze
 
