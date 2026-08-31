@@ -191,3 +191,42 @@ document is not building.
 Before freeze: anything may change. After freeze: amendments follow
 contact_gate.md convention — dated, appended, tightening or
 clarifying only; bars and the holdout seal never loosen.
+
+## Amendment 1 — 2026-08-31 (user-approved): check 2 is HUMAN-MATCHED
+
+Measured on TRAIN before any decoder existed: the frozen turns
+battery saturates below ~15 impacts. Rally 6 — 7 physical contacts in
+5.6 s, ~14 path events, ±0.15 s tolerance — gives the circular-shift
+null a 95th percentile of 100%, so the user's own hand-labeled path
+scored a PERFECT 100% recall and still failed (rally 7: obs 77.8%,
+null 95th 77.8%; rally 1 passed only because 25 contacts over 23 s
+left the null room to fail). As frozen, check 2 was unwinnable on the
+sealed rally class regardless of tracker quality — the exact
+instrument-manufactured false-fail the autopsy section exists for,
+caught upstream.
+
+Check 2 therefore reads, per the gate's stated intent ("the same test
+without the human"):
+- On the graded rally, the tracker's decoded path must (a) recall at
+  least as many PHYSICAL contacts (whiffs excluded — Amendment 1a
+  below) as the user's hand-labeled path recalls on that same rally
+  under the same frozen battery, and (b) sit at a circular-shift null
+  percentile >= the human path's on that rally. On rally 6 this bar
+  is a perfect score; nothing is softened in disguise.
+- POOLED ABSOLUTE TEST: once the sealed set holds >= 20 physical
+  contacts across rallies, the original absolute bars (recall >= 0.80,
+  obs > null 95th) run POOLED across all sealed rallies and become
+  binding alongside the per-rally human-matched check. Strictly a
+  tightening over time.
+
+Amendment 1a (same day, bug fix): contact=0 WHIFF taps are never
+recall targets on any rally — a whiff is a no-contact swing, the ball
+correctly shows no turn. Rally 1's frozen answer key is untouched.
+
+Owner-reopen clause (user, same approval: "I reserve the right to
+unkill things if I feel you were too harsh"): closures and KILL
+verdicts bind the PROCESS — the agent may not reopen them. They do
+not bind the OWNER, who may reopen any closure with an explicit call
+plus a fresh registration (this gate itself is the precedent: the
+ball thread was owner-reopened exactly that way). Reopening is never
+silent and never a knob-turn of the failed instrument.

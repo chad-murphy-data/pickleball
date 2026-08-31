@@ -3647,3 +3647,14 @@ merged with the arm). Both are decoder-bridgeable classes in
 principle; that's the next component (arc decoding over candidates,
 court3d machinery). Sealed-rally guard is in the script (--graded-run
 required for rally 8, scoring against the sealed pass refused).
+
+## 2026-08-31 — ball_gate Amendment 1 lands (user-approved): human-matched check 2 + pooled absolute + owner-reopen clause
+
+User: "go with the amendment, but I reserve the right to unkill
+things if I feel you were too harsh." Both encoded in ball_gate.md:
+check 2 is human-matched per rally (whiffs excluded, Amendment 1a)
+with the pooled absolute test becoming binding once the sealed set
+reaches 20 physical contacts; and the owner-reopen clause — closures
+bind the process, not the owner, who can reopen with an explicit
+call + fresh registration (this gate is itself the precedent).
+Grading is now well-defined on rally 8. Next build: the arc decoder.
