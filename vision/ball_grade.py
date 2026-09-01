@@ -88,9 +88,13 @@ def main():
     visited = bdec.decode(byf, None, oflags, aflags)
     refined = bdec.refine_arcs(visited, t0)
     # two-regime split (decoder-fix addendum): the TIMING stream feeds
-    # check 2; hitter-chain anchors union with its self-feedback turns
-    anchor_pts = [(t, x, y) for t, _, x, y in anchors]
-    _, timing_ref = bdec.timing_decode(byf, None, oflags, t0, anchor_pts)
+    # check 2, on SELF-FEEDBACK anchors ONLY. Unioning the hitter-chain
+    # anchors in was MEASURED HARMFUL on the r7 readiness run
+    # (2026-08-31: timing 77.8@86 with the union vs 77.8@98.4 without —
+    # hitter anchors add cheap-turn zones at fake swings, inflating the
+    # event set and eating the null pct). Hitter anchors stay in the
+    # POSITION stream, where check 3 shows they work (bound claiming).
+    _, timing_ref = bdec.timing_decode(byf, None, oflags, t0, [])
     per_frame = {}
     for t, x, y in refined:
         per_frame[round((t - t0) * bdec.FPS)] = (t, x, y)

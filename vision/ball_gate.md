@@ -372,3 +372,25 @@ hardening ladders, intersection anchors, fwd/rev-adaptive hardness,
   grading. SEALED = {10} in all four harnesses.
 - The re-grade runs once, on rally 10, after the readiness rule
   passes in the full grade configuration.
+
+Dated corrections recorded BEFORE any rally-10 run:
+
+- **2026-08-31, timing-stream inputs (readiness measurement):** the
+  addendum's "at grade time the hitter-chain anchors union in as
+  before" was tested by the readiness rule and MEASURED HARMFUL —
+  r7 in grade config posted timing 77.8@86 with the union vs
+  77.8@98.4 without (hitter anchors add cheap-turn zones at fake
+  swings; the inflated event set eats the null percentile). The
+  timing stream therefore runs on its SELF-FEEDBACK anchors ONLY —
+  the exact configuration the train sweep froze and passed 3/3 —
+  and the hitter-chain anchors remain inputs to the position stream
+  (checks 1/3), where the same readiness run showed them working
+  (replication 1.70 ft, crossings 5/5). Bars untouched; this
+  narrows the grade config to the swept one.
+- **2026-08-31, owner label caveat on the sealed r10 pass (recorded
+  verbatim-in-substance, before any run):** the owner reports rally
+  10 contains "another weird lob segment in the middle" where they
+  were "mostly sure" they clicked the correct object. Logged now so
+  the pre-registered frame-checks/label-sanity autopsy arm can weigh
+  it AFTER grading if the verdict turns on that segment; it is not
+  grounds to touch, score, or re-label the sealed pass beforehand.
