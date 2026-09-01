@@ -4202,3 +4202,27 @@ generalization caveat on bounce behavior tuned against Chicago game
 1; (3) named future candidate-stage lever if ever needed: hue-channel
 differencing (neon ball vs white fabric) where gray-diff is blind —
 not built while overall candidate recall runs 84-96%.
+
+## 2026-09-01 — FIX #1 LANDS: the arcs find the bounces the dresses hide
+
+fit_segment now searches an interior 1/15 s grid for bounce splits
+(events remain refined candidates) with restitution enforced
+(post-bounce speed <= pre-bounce, vertical flip up — the owner
+called the speed difference before the code did). Both check-3
+sides get the same fitter, and both moved: human r7 2->4 bounces,
+r10 10->13 (the human labels can't see through white fabric either;
+the fit demands the floor contact regardless — the occlusion
+measurement made this the predicted outcome, 32% far-court I/N).
+
+  r7 : matched 6/9 @ 2.72 (bar met), crossings 7/7, bounces 6v4
+  r10: matched 20/26 @ 2.42 (bar met), bounces 11v13, crossings 17/24
+
+Both bounce counts off by EXACTLY 2 (r7 over, r10 under), and both
+residuals — r7's junk-segment bounces, r10's ~6 unclaimed contacts
+fragmenting crossings — point at the same place: bound
+recall/precision, i.e. the hitter-anchor precision front. The bounce
+MECHANISM is off the blocker list. Next stab, already specced:
+anchor dedupe (same-instant multi-track collapse to best z;
+same-side collapse within ~0.7 s at the ANCHOR level, where the
+sequence is complete and the alternation prior is safe — unlike at
+the claim level, where holes made it kill true bounds).

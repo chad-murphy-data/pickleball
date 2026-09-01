@@ -561,3 +561,31 @@ anchor-precision + bounce-triage pass moves check 3 on train, or
 1+2, licensing touch share / tempo / category products) as a fresh
 pre-registration, leaving replay/placement behind the full check 3.
 Owner's call; both recorded here so the choice is explicit.
+
+### Fix #1 measured — 2026-09-01 (fit-demanded bounces + restitution)
+
+`court3d.fit_segment` candidates are no longer only detector events:
+an interior 1/15 s search grid lets the ARCS demand a bounce no 2D
+evidence shows (measured motivation: 32% of far-court
+floor-proximity moments carry I/N label frames — the near players'
+bodies and, per the owner's eyewitness note, their WHITE DRESSES sit
+between the camera and the far kitchen; contrast annihilation, not
+just geometry). Post-bounce speed <= pre-bounce and upward vertical
+flip enforced (restitution, owner observation). Same fitter both
+sides of check 3.
+
+Result (r7 + r10 batteries):
+- r7: matched 6/9 at 2.72 ft (bar met), crossings 7/7, bounces
+  tracked 6 vs human 4 — EVERY component passes except the bounce
+  count, off by exactly 2 (over).
+- r10: matched 20/26 at 2.42 ft (bar met), bounces tracked 11 vs
+  human 13 — off by exactly 2 (under); crossings 17/24.
+- The human side moved too (r7 2->4 bounces, r10 10->13): the human
+  labels also cannot see occluded bounces; the fit now finds them on
+  both sides, which is the honest version of the comparison.
+
+Reading: both residual failures now trace to BOUND recall/precision
+(r7's extra bounces sit in junk-bound segments; r10's missing
+bounces and 7 non-crossing segments sit where ~6 contacts went
+unclaimed) — i.e. the HITTER-ANCHOR PRECISION front, the other
+named lever. The bounce MECHANISM is no longer the blocker.

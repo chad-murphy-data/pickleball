@@ -116,10 +116,16 @@ check 2 PASSES r7/r10 (+r6/r8 train windows), r10 replication at
 20/26 matched impacts / 2.15 ft (best ever) — but CHECK 3 FAILS on
 all three rallies, a different component each (r7 bounce over-gen
 5v2, r10 under 5v10 + crossings 14/21, r6 accuracy). Named residual
-causes: hitter-anchor precision (73 anchors / 26 contacts) and
-bounce-vs-junk triage; decoder knob-turning deliberately stopped at
-the overfitting line (three knobs probed on r10 truth, recorded
-non-discriminative). r20 re-grade NOT recommended yet; owner fork
+causes were hitter-anchor precision and bounce-vs-junk triage;
+decoder knob-turning deliberately stopped at the overfitting line.
+FIX #1 LANDED same day (fit-demanded bounces: interior search grid +
+restitution in court3d.fit_segment; motivated by measured bounce
+occlusion — far court 32% I/N at floor-proximity moments, the
+white-dress contrast wall): r7 now passes every check-3 component
+except bounce count (6v4), r10 20/26 at 2.42 ft with bounces 11v13 —
+both off by exactly 2. Remaining failures all trace to BOUND
+recall/precision = the anchor-precision front. Bounce mechanism no
+longer the blocker. r20 re-grade NOT recommended yet; owner fork
 recorded in the gate file: one anchor-precision/bounce-triage train
 pass first, or re-register a narrower checks-1+2 contact-times
 channel (touch share / tempo / categories) as a fresh
