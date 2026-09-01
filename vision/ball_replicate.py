@@ -293,16 +293,16 @@ CLAIM_R = 130.0   # px: a claimed turn must sit near the claiming
                   # stealing real bounces into contact bounds.
 
 
-def track_sides(npz_path):
-    """{track: -1/+1 team side} from the automated pose channel
-    (majority vote over the track's rows; 0 = unknown stays absent)."""
-    z = np.load(npz_path)
+def track_sides(floors):
+    """{track: -1/+1 team side} from the automated FLOOR positions
+    (median court y vs the net) — the same channel check 3's
+    reconstruction already trusts for anchor sides. The npz 'side'
+    field is NOT team side (measured degenerate on r0010: all four
+    player tracks +1, which collapsed the alternation prune to a
+    single bound on the first full-iteration run)."""
     out = {}
-    for tid in set(z["track"].tolist()):
-        s = z["side"][z["track"] == tid]
-        s = s[s != 0]
-        if len(s):
-            out[int(tid)] = 1 if np.median(s) > 0 else -1
+    for tid, (ts, xs, ys) in floors.items():
+        out[int(tid)] = 1 if float(np.median(ys)) > NET_Y else -1
     return out
 
 
@@ -515,7 +515,7 @@ def main():
     floors = track_floor(a.npz, P)
     anchors = load_anchors(a.anchors)
     trk = tracked_side(a.rally, anchors, floors, serve, end,
-                       track_sides(a.npz))
+                       track_sides(floors))
     hum = human_side(a.rally, end)
     compare(a.rally, trk, hum, P, floors, anchors)
 
