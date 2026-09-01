@@ -515,3 +515,49 @@ gaps to ~1.5 s), (b) bounce-aware segmentation. Train coverage for
 both exists (r9 34-frame lob, r10 24-frame lob + 10 bounces, plus
 r1/6/7/8). Re-grade on a newly labeled sealed rally (r20 is the
 identified candidate) once the iteration passes readiness.
+
+### Train-iteration record — 2026-09-01 (the MIDDLE's licensed iteration)
+
+Built and measured same-day, multi-rally (r6/r7/r10 full batteries,
+r6/7/8 + r1 check-2 regressions; every config committed with its
+numbers). KEPT, all measured multi-rally:
+
+1. **Off-frame excursion edges** (EXC_TOP/EXC_MAX/EXC_PEN/EXC_COVER):
+   top-band-to-top-band bridges at a flat price + per-frame absence
+   allowance. r10 oracle coverage 50% -> 94%, oracle V 50.0 -> 95.8;
+   the r9/r10 lob regime is solved in principle.
+2. **Anchors never touch a decode** — position stream anchor-free
+   (r10 check 1 66.2 -> 73.6 PASS; r7 82.3 -> 84.8), timing stream
+   self-feedback only (the readiness measurement).
+3. **Top band gets a looser hull margin, not a waiver** (a blanket
+   waiver re-admitted corner scorebug junk and broke r6 check 2;
+   looser margin keeps the lob and the r6 PASS).
+4. **Check-3 bounds come from the TIMING stream's turns** (the
+   instrument that passes check 2) — r10 matching 16 -> 20/26 at
+   2.73 -> 2.15 ft; r7 restored to 6/8 at 2.76 with 7/7 crossings.
+
+TRIED AND REVERTED (numbers in the module comments so they stay
+dead): strict claiming (paddle-point spatial gate + alternation
+prune) — traded r10 +2 matches for an r7 collapse; radius cannot
+separate true from junk claims (~1:1 at 130/180/240 px) and turn
+angle cannot either (distributions overlap on r10).
+
+STATE AT FREEZE: check 1 PASSES all three rallies (84.8 / 80.3 /
+73.6); check 2 PASSES r7 + r10 (and r6/r8 on train windows; r6's
+7-impact battery is saturation-coarse and wobbles with a 0.04 s
+window shift). CHECK 3 STILL FAILS EVERYWHERE, a different component
+each rally: r7 over-generates bounces (5 v 2), r10 under-recovers
+(5 v 10) with 14/21 crossings, r6 accuracy (3/7 at 8.84). The two
+named residual problems: HITTER-ANCHOR PRECISION (73 anchors for 26
+contacts — loose claiming eats bounces, and no local geometry can
+filter it) and BOUNCE-VS-JUNK TRIAGE of unclaimed turns. These are
+the next front; further decoder knob-turning was stopped
+deliberately (three knobs were probed on r10 truth and recorded as
+non-discriminative — the overfitting line).
+
+The re-grade on r20 is NOT recommended until either (a) one
+anchor-precision + bounce-triage pass moves check 3 on train, or
+(b) the owner re-registers a narrower contact-times channel (checks
+1+2, licensing touch share / tempo / category products) as a fresh
+pre-registration, leaving replay/placement behind the full check 3.
+Owner's call; both recorded here so the choice is explicit.
