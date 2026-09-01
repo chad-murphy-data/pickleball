@@ -4791,3 +4791,58 @@ every number above remains comparable), hand-rolled logistic on
 appearance/motion/temporal-persistence features; the auto-label
 poisoning lesson still binds — no training on tracker output or model
 self-labels, ever.
+
+**Learned emission scorer (2026-09-01, the first trained instrument
+in the ball thread; scratchpad `emission.py` + `emission_model.json`).**
+Design + discipline as pre-stated above: hand-rolled Adam logistic
+(no sklearn in this env) on 14 per-candidate features — motion at the
+pixel plus SAME-PIXEL motion one frame earlier/later and their min
+(temporal persistence), tophat, yellowness, gray level, local std,
+cc area, candidate crowding within 16 px, distance-to-nearest-body,
+frame position, peak rank. Positives = candidates within 6 px of an
+owner V click (r6: 198, r7: 161 of 125k candidates in click-labeled
+frames); S clicks ("close to where the ball is", owner caution) become
+22 px ignore-zones, never positives; negatives only from click-labeled
+frames. TRAIN = r6+r7 ONLY; r9/r10 clicks stayed out of training, so
+every graded number is comparable to the DP/v3 ledger above.
+CROSS-RALLY TRANSFER: AUC 0.9042 (train r6 → test r7) / 0.9394
+(r7 → r6). The learned weights independently recover the junk autopsy
+from sections (a)-(c): persistence −1.53 (static shimmer persists at
+its pixel; the ball vacates — the strongest single feature), yellow
++1.29, crowding −0.91, local std −0.81, body proximity −0.54. Nobody
+told it those rules; 359 clicks did.
+DEPLOYED TWO WAYS: hard pre-filter on the DP chain's candidates
+(p ≥ 0.096 = 97% train pos recall; culls 45-53% of all cc/peak
+candidates on r9/r10) and SOFT evidence weight in the spaghetti
+kernel (per-frame support weight 0.25 + 1.75p replacing the hand
+peak-rank bonus). One graded run per rally, same metric and
+displaced-anchor nulls as every arm above.
+RESULTS — oracle arms (corridors anchored at true contacts):
+the filtered chain beats the incumbent on BOTH axes on BOTH rallies,
+the first instrument in this thread to do that — dp-ccL r9 388 r@12 /
+prec 0.59 (vs 369/0.56), r10 261/0.48 with ADDED@12 48 (vs
+255/0.43/40). The trail matcher on r9 jumps to 177 r@12 at prec 0.74
+(vs 159/0.57; [V] 0.73, [S] 0.76 — three of four emitted points land
+within 12 px of a click); r10 flat (115/0.54 vs 114/0.53). The
+junk-dominated peak arm nearly doubles at better precision: r10
+130/0.33 (vs 92/0.18), r9 170/0.39.
+RESULTS — prod arms (corridors from the decoded chain): a
+precision-for-coverage trade, slightly net-negative on hits — r9
+394/0.57 (vs 388/0.55) but r10 271/0.53 (vs 282/0.51), ADDED down
+both rallies (32→26, 82→79). Autopsy: the whole r10 deficit is TWO
+corridors, both fast drives — 297.87-299.20 (bounce/drive 58 ft/s:
+dp 20 → 0) and 295.87-296.47 (drive 89 ft/s: 12 → 5). The threshold
+was set at 97% recall on r6/r7; on faint fast balls p under-scores
+and a HARD filter kills the entire chain, while the soft form
+degrades gracefully (no spaghetti arm regressed anywhere). NULLS:
+r9 all eight arms zero; r10 one oracle null at 5/657 hits prec 0.07
+(~2% noise floor), the rest 0.
+VERDICT on the owner's option 1: training pays. Half the candidate
+junk is identifiable from appearance+persistence alone while keeping
+97% of true ball, the oracle chain improves on both axes, and a
+0.74-precision trail matcher is now a credible contact-to-contact
+bridge where the chain breaks. The one measured bind is the hard
+threshold on fast drives. NEXT (pre-registered here): feed p into
+the DP unary cost as a SOFT term instead of a hard cull — any weight
+tuned on r6/r7 ONLY, then one-shot graded on r9/r10, same protocol
+as this chapter.
