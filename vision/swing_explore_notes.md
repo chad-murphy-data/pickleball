@@ -4688,3 +4688,51 @@ fit arm stays closed (stream/readout floor on fast drives, oracle
 fails the med bar there); r6 stays gated on decode health. None of
 this touches MVP-1 (checks 1+2), which is unaffected by the
 bounce-ledger research line.
+
+**Post-verdict measurements (same day, owner-driven design loop).**
+(a) JUNK DYNAMICS — what the stream does after grabbing a non-ball
+point (r10: 20% of truth-covered points junk >12 px, half of that
+>30 px): next frame the stream is GONE 44% of the time (junk is the
+last gasp before a hole — 50/69 junk runs end in a stream hole, only
+19 recover); when present it is still junk 82%; runs med 2 / p90 5 /
+max 18 points; held junk MOVES ~7 px/frame (arm-speed — why accel
+cost alone cannot reject it); 44% of junk sits within 16 px of a
+skeleton extremity, and near-extremity stream points are junk at 50%
+vs the 20% base. r9 same shape, milder (13%, 12 px/frame).
+(b) HOLE-TRIGGER COST (owner rule "lost it for X frames -> try
+another option", graded BEFORE building): as a blind delete it is a
+coin flip — X>=2,K=1 removes 50 junk but 46 good on r10, and is
+net-negative on r9 (42 junk / 59 good); ~70% of holes have the ball
+VISIBLE inside (owner V codes), so a hole does not imply a junk
+tail. Body-qualified: 51j/23g r10 (x3.4 concentration), ~1:1 r9.
+Capture ceiling ~half the junk at any setting. Verdict: usable only
+as a WHERE-to-re-adjudicate flag feeding evict-and-verify (a good
+resident is re-confirmed by the vouched DP path, so the 46 good
+points cost nothing under trial-not-deletion).
+(c) CAUSE CLASSIFIER INVERTS the intuitive rule set ("behind a
+human -> stick with it; no reason -> try again"): label-free
+occlusion calls (A->B chord >=50% inside a pose bbox) select
+JUNK-enriched tails (r10 48j/32g; reacq after them 50j/28g) and the
+owner codes say the ball was VISIBLE during 83% of "occluded" hole
+clicks — the chord passes through the player because the TRACKED
+points sit on players, not because the ball hid; the junk causes
+its own occlusion signature. "Unexplained" holes have overwhelmingly
+GOOD tails (14g/2j r10, 16g/6j r9) — the detector drops clean locks.
+Edge-of-frame holes are rare (1-2/rally; lob exits do not leave a
+near-border last point). ROBUST FORM of the owner's rules: judge the
+HELD POINT, not the hole — tail ON a body -> distrust/trial; tail in
+open space -> trust and bridge regardless of hole appearance.
+(d) MISS MAP, r10 production path (crossing_demotion): the credited
+8 decompose as 2 precise (309.13 within 0.3 ft of the human 309.15;
+312.79 within 0.5 ft), 2 loose (297.72 ~2.4 ft; 300.32 ~3.1 ft),
+ONE human bounce double-counted by two segments with ~14-16 ft
+position error (304.93 + 305.69 vs human 305.36), and TWO
+fabricated: 308.59 with its arc junction at z=10.2 ft (in
+307.27-308.75 — the A/B probe's candidate desert; least real ball,
+most confident fake) and 317.62 (z=1.3 ft) in a stretch both the
+human ledger and the truth-fit call bounce-free. The 8 misses: 7 of
+8 in the FAR half (the dink/drop zone), 1 near-half (313.95); at
+the bounce instant the owner clicks read V (plainly visible) for 3
+— 296.50, 302.65, 310.58 — and S (momentarily behind a body but
+inferable from surrounding clicks) for 5; every miss window has
+full 21-click coverage. Labels are not the gap; the stream is.
