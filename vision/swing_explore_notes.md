@@ -4280,3 +4280,27 @@ label-evident + 2 rule-mandated + 3 owner calls pending: VOD 4:58.9,
 tracked 3 confirms BOUND RECALL as r10's one blocker. Rule for the
 future: the V-shape label instrument is a lower bound that must be
 UNIONED with the rule-mandated serve/return bounces.
+
+## 2026-09-01 — OWNER VERDICTS: all five disputed bounces are REAL; r10 truth = 13; the fitter was right all along
+
+Owner eyeball-verified every disputed r10 bounce claim (the units
+slip was theirs, the timing instinct was right): 296.50 and 297.77
+are the serve/return bounces "easy to see"; 298.95 REAL (easy);
+300.62 REAL (hidden behind the player — the occlusion class, live);
+315.04 REAL. All at the kitchen line, several SHORT-HOPPED — small-
+amplitude bounces the V-shape instrument's 8 px margin cannot see.
+So: r10 bounce truth = 13; the human-side grid fitter's 13 was
+EXACTLY RIGHT; the phantom diagnosis was an artifact of using a
+lower-bound truth instrument as if it were truth. Consequences:
+(1) velocity gates REVERTED (flag kept with the record — they cut a
+real human bounce and collapsed tracked recovery 8->3); BOUNCE_MARGIN
+0.8 stays (multiplicity-motivated, independent); (2) the tracked-side
+deficit on r10 (3-8 found vs 13 real) is now an ABSOLUTE
+truth-anchored target for the anchor-quality session, not a
+relative-to-instrument one; (3) owner's 2D bounce signature recorded
+for any future 2D instrument: into a short-hop the ball reads MORE
+VERTICAL THAN HORIZONTAL (horizontal image velocity shrinks), then a
+curved V — "a dink to the top left goes down-left then up-left."
+That velocity-ratio feature, with a smaller margin, is the upgrade
+path for the V-shape instrument if it is ever needed again; the 3D
+fit already encodes the physics, which is why it beat my 2D read.
