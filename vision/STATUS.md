@@ -183,6 +183,17 @@ monotonically with trail weight, r9/r10 never run. Train autopsy: the
 trail helps only as a candidate POOL (W≈0 arm beats every cost cell),
 hurts as a per-frame cost, bridges sit > 12 px off — the corridor
 geometry error it inherits binds first (HANDOFF item 2).**
+**Corridor geometry fix (2026-09-01, `vision/ballsearch/geom_lab.py`
++ `geom_fix.py`): stratified grading on r6/r7 showed the incumbent's
+misses were selection (38–51 %, true candidate already in the pool)
+and out-of-window (18–34 %, candidate present, lobs above / bounces
+below the chord box, overshoot p90 120–273 px). Four geometry knobs
+(taller box cap 260, duration term kT 40, tapered end pad ep 60,
+top-K-by-learned-p pool) tuned blind on r6/r7 cross-fold under a
+frozen rule: 376 @ 0.633 → 458 @ 0.704. ONE SHOT r9: prod **479 r@12
+@ prec 0.74** vs 431 @ 0.69 (oracle 432 @ 0.73 vs 406 @ 0.69),
+displaced nulls ≤ 17/779. r10 pending the owner's re-cut clip; the
+residual is now almost entirely selection.**
 
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),

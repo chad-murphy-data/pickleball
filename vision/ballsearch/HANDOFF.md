@@ -40,6 +40,9 @@ disagree on a NUMBER, the notes file is the record.
 | `spaghetti.py` | trail matcher v3 (DIRECT + BOUNCE families, MC null, mode prior, ABSTAIN=2.0) AND the graded harness: `python3 spaghetti.py <r> --lrn --soft 25` prints the prod/oracle table + per-corridor autopsy rows. Auto-builds `cands_r{r}_{cc,peak}_14.npz` on first use. |
 | `softdp.py` | pre-registered W_P_SOFT sweep on r6/r7 cross-fold; frozen rule → W=25. |
 | `fusion.py` / `fusion_tune.json` | the L3 three-part model (emission + spaghetti trails + DP as one cost): `tune` (r6/r7 cross-fold grid, frozen rule, writes the verdict), `grade <r>` (refuses r9/r10 without a live verdict or with knob overrides), `selftest` (synthetic corridor; asserts `trail=None` is bit-identical). VERDICT 2026-09-01: **DEAD** — see the section below. `corridor_dp.py` carries the optional `trail=`/band-pool/`return_cost` extension it needs. |
+| `geom_lab.py` | to-do #1 diagnostic: per-click strata (nocor / outwin / nocand / cand-hit / cand-miss with pool rank + skipped-vs-wrong), per-corridor excursion + endpoint-error table, geometry-only coverage counterfactuals (kT / cap / K grids). `python3 geom_lab.py <r>`. |
+| `geom_fix.py` / `geom_tune.json` / `geom_grade_r9.txt` | the corridor-geometry FIX: knobs cap (wy ceiling), kT (duration term), ep (tapered end pad + END_R), pool (centre vs learned-p). `tune` = 54-cell grid on r6/r7 cross-fold under the frozen rule (writes the verdict), `grade <r>` = one-shot vs incumbent with V/S splits, displaced nulls, strata and per-corridor tables (refuses r9/r10 without a live verdict or with overrides). VERDICT 2026-09-01: **LIVE**, cap=260 kT=40 ep=60 pool=p; **r9 prod 479 @ 0.74 vs 431 @ 0.69**. `corridor_dp.py` carries `POOL_BY_P`. |
+| `check_clip.py` | verifies an owner-cut clip against the committed `ball_candidates_r{N}.csv.gz` (frame count / size / fps, implied offset, extractor re-run matched at frame shifts −3..+3) before any cache is built from it. |
 | `corridor_autopsy.py`, `miss_map.py`, `r10_autopsy.py` | diagnostic-only (truth used to ask WHY). |
 | others (`anchor_*`, `hole_*`, `tr_grid*`, `split_lab`, `fit_lab`, …) | earlier-arc labs, kept for provenance; not on the current path. |
 | `anchors_grade_r*.csv` | anchor grading outputs (small). |
@@ -64,6 +67,10 @@ for r in 9 10; do python3 emission.py cache $r; done   # p_r{9,10}_{cc,peak}_14.
 python3 emission.py cache-cross                        # p_r{6,7}_*_14_x.npz
 python3 softdp.py                                      # reproduces the W sweep (r6/r7 only)
 python3 fusion.py tune                                 # reproduces the fusion grid + DEAD verdict (r6/r7 only)
+python3 geom_lab.py 6; python3 geom_lab.py 7             # strata diagnostic (any rally with caches)
+python3 geom_fix.py tune                               # reproduces the geometry grid + LIVE verdict (r6/r7 only)
+python3 check_clip.py 10 r10_clip.mp4                  # before building r10 caches from a re-cut clip
+python3 geom_fix.py grade 9                            # the r9 one-shot (geom_grade_r9.txt); grade 10 once r10 caches exist
 python3 spaghetti.py 9  --lrn --soft 25                # graded r9 (run_in_background; > 2 min)
 python3 spaghetti.py 10 --lrn --soft 25                # graded r10
 ```
@@ -94,6 +101,35 @@ kp97 r6 0.0277 / r7 0.1497.
 
 Miss decomposition (why fusion was proposed): r9 prod misses = 197
 wrong-emitted + 151 empty frames; r10 156 + 181.
+
+## Corridor geometry fix (to-do #1) — 2026-09-01: LIVE, r9 +48
+
+Diagnostic first (`geom_lab.py`, r6/r7): SELECTION is the largest miss
+stratum (38–51 %) with the true candidate already in the pool (97 %+);
+OUT-OF-WINDOW second (18–34 %), almost all with a candidate present,
+below the chord (bounces) and above (lobs), overshoot p90 120–273 px;
+endpoint errors 100–330 px on several corridors. Knobs chosen from
+geometry-only counterfactuals, instrument committed before numbers.
+
+Tune (54 cells, rule = max total r@12 s.t. pooled prec ≥ incumbent,
+ties fewest knobs / smaller / centre): incumbent 376 @ 0.633 →
+**cap=260 kT=40 ep=60 pool=p 458 @ 0.704**. Each knob helps alone and
+they add (pool 393, kT 385, cap 414, cap+pool 431, cap+kT+pool 457);
+cap 400 ≡ 260, kT 80 ≡ 40, ep 120 ≡ 60.
+
+| rally | arm | incumbent | geom-fix | nulls |
+|---|---|---|---|---|
+| r9 (779) | prod (34) | 431 @ 0.69 | **479 @ 0.74** (V 368/587, S 111/192) | 0 / 14 |
+| r9 | oracle (29) | 406 @ 0.69 | 432 @ 0.73 | 17 / 0 |
+| r10 (657) | prod / oracle | 320 @ 0.67 / 309 @ 0.61 | PENDING the owner's re-cut clip | |
+
+Where it came from (r9 prod): +18 inside `cand`, +30 from `outwin`
+(0 → 30); the outwin stratum itself shrinks 131 → 86 under the new
+box. Corridor 272.58–274.58 (2.0 s) 9 → 39. No prod corridor lost a
+hit. Full tables: `geom_grade_r9.txt`; narrative:
+`vision/swing_explore_notes.md`. The residual is now almost entirely
+selection (nocand ≈ 8 % of clicks) — the fusion pool-only variant's
+territory, to be re-registered after r10.
 
 ## Fusion (L3) — built and tuned 2026-09-01: DEAD under the frozen rule
 
@@ -202,14 +238,22 @@ prior term.
 
 ## Next-thread to-do (in order)
 
-1. Corridor geometry fix (item 2 above) — it is the biggest known
-   structural miss and precedes any fusion work. Stratified grading
-   first (cheap, diagnostic), then the endpoint/window change tuned on
-   r6/r7 with a written rule, one-shot r9/r10.
+1. ~~Corridor geometry fix (item 2 above).~~ DONE 2026-09-01 through
+   the r9 shot (LIVE, 479 @ 0.74 vs 431 @ 0.69 — section above).
+   REMAINING: the r10 shot. r10_clip.mp4 was never in Drive; the owner
+   re-cuts it (`ffmpeg -ss 292.7 -i full_match.mp4 -t 33.0 -r 60 -vf
+   scale=1280:720 -an -c:v libx264 -preset veryfast -crf 18
+   r10_clip.mp4`, 1980 frames), `python3 check_clip.py 10 r10_clip.mp4`
+   must PASS, then `emission.py cache 10` and `geom_fix.py grade 10`.
+   If r10 also clears, the geom-fix cell becomes the incumbent
+   (update the table above and STATUS.md); if it does not, record it
+   and keep the incumbent — no re-tune on r9/r10 either way.
 2. Duration/average-speed prior in spaghetti (item 3).
 3. ~~`fusion.py` L3 (item 1), only on the owner's go.~~ DONE 2026-09-01:
    built, tuned, DEAD under its frozen rule; r9/r10 unrun. Re-try only
    AFTER #1, as a pool-only variant under a fresh pre-registration.
+   The strata now say selection is ~the whole residual, so the pool
+   shape is the right target.
 4. Product re-grade on the current stream (bounce ledger,
    eviction/trial, double-contact segment 301.02) — all were measured
    on the OLD stream; re-run before touching any other knob.

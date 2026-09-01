@@ -4957,3 +4957,61 @@ fusion re-try, exactly as the handoff ordered; the pool-only shape is
 the one lead worth pre-registering AFTER that fix. Not a 3-way model
 failure of principle: reach (20/36 abstain) and geometry both bind
 before the joint objective gets a vote.
+
+**Corridor geometry fix — LIVE on the frozen rule, r9 one-shot +48
+(2026-09-01, `vision/ballsearch/geom_lab.py` + `geom_fix.py` +
+`geom_tune.json` + `geom_grade_r9.txt`).** HANDOFF to-do #1: stratify
+first, then change the geometry under a written rule.
+STRATIFIED GRADING (`geom_lab.py`, r6/r7, incumbent dp-ccS+body
+W_P_SOFT=25, per click: nocor / outwin / nocand / cand-hit /
+cand-miss): of the incumbent's misses, SELECTION (candidate within
+12 px existed, the chain took another) is the largest stratum on every
+arm — 38 / 40 / 51 / 42 % (r6 prod / r6 oracle / r7 prod / r7 oracle)
+— and the true candidate was already inside the K=14 nearest-centre
+pool 97 %+ of the time (POOL-EXCLUDED 1 / 2 / 6 / 10; it is inside the
+top-14 BY p in 34/34, 40/40, 70/73, 70/71). OUT-OF-WINDOW is second,
+18 / 19 / 33 / 34 % of misses, almost all with a candidate present
+(13/17, 18/19, 40/48, 48/58), mostly BELOW the chord (bounces) and
+ABOVE (lobs); vertical overshoot beyond wy median 31–103 px, p90
+120–273. Endpoint errors of 100–330 px on several corridors (paddle
+nearest the decode vs where the ball was struck), the largest on
+oracle arms — contact-TIME is not the error, the paddle-vs-ball
+position is. Geometry-only counterfactuals picked the knobs: taller
+windows wy' = min(cap, 55 + 0.3L + kT·T) at cap 260 / kT 40 cover
+about half of r7-prod's outwin-with-candidate (20/40); a top-K-by-p
+pool admits ≥ the centre pool at every K.
+FIX INSTRUMENT (`geom_fix.py`, committed and pushed BEFORE any
+number): knobs cap ∈ {170,260,400} (wy ceiling; 170 = incumbent), kT ∈
+{0,40,80} (duration term), ep ∈ {0,60,120} (tapered end pad on the
+window inside 0.25 s of each endpoint PLUS END_R = 70 + ep), pool ∈
+{centre, p} (K=14 nearest window centre vs K=14 largest learned p;
+`corridor_dp.POOL_BY_P`). 54 cells, r6+r7 × prod+oracle, cross-fold
+p. RULE: max total r@12 s.t. pooled prec@12 ≥ incumbent; ties fewest
+knobs changed, then smaller cap, kT, ep, centre before p; none → dead
+and `grade 9|10` refuses. INCUMBENT cell reproduced 376 @ 0.633.
+SWEEP (total r@12 @ prec): pool alone 393 @ .653; kT 40 alone 385 @
+.642; cap 260 alone 414 @ .653; cap 260 + pool 431 @ .671; cap 260 +
+kT 40 + pool 457 @ .702; **cap 260 + kT 40 + ep 60 + pool 458 @ .704**
+(ep 60 vs 120 identical; kT 80 ≡ 40 or −1; cap 400 ≡ 260 everywhere —
+the ceiling binds at 260). Every knob helps independently and they
+add: +82 hits (+22 %) AND +7 pp precision on train. VERDICT: live,
+cell cap=260 kT=40 ep=60 pool=p frozen in `geom_tune.json`.
+ONE SHOT r9 (`geom_fix.py grade 9`, `geom_grade_r9.txt`): PROD r@12
+**479 @ 0.74** vs incumbent 431 @ 0.69 (+48, +11 %; r@8 376 vs 335,
+r@20 524 vs 477; ADDED@12 vs decode 35 vs 33), V 368/587, S 111/192;
+ORACLE 432 @ 0.73 vs 406 @ 0.69 (+26). Displaced-anchor nulls
+(seed 20260901): prod 0 / 14, oracle 17 / 0 of 779. Strata (incumbent
+geometry): the gain is 18 inside `cand` (431 → 449) and 30 from
+`outwin` (0 → 30) on prod; 8 + 18 on oracle. Under the fix's own
+geometry the outwin stratum shrinks 131 → 86 (prod) and 157 → 121
+(oracle) — a third of the formerly-outside clicks are now inside the
+box, and 30 of those 45 are then also tracked. Per corridor the win is
+concentrated: 272.58–274.58 (2.0 s, the long r9 exchange) 9 → 39, plus
++6 / +4 / +3 on three others; no corridor lost a hit on prod, one
+oracle corridor is unchanged at 0 (274.90–276.51). r10 pending the
+owner's re-cut clip (`check_clip.py` verifies the cut against the
+committed candidate CSV first).
+READING: the "candidate deserts" reading of item 2 was right — the box
+was the miss, not the detector. Selection is now the whole residual
+(nocand ≈ 8 % of clicks, nocor 0–2 %), which is where the fusion
+pool-only variant would act; re-register it AFTER r10.
