@@ -100,6 +100,16 @@ EXC_PEN = 70.0          # flat edge cost: never preferred over a real
                         # bridge (> TURN_CAP), far cheaper than losing
                         # half a rally's coverage
 EXC_DX_RATE = 400.0     # px/s horizontal drift cap (r9 measured 291)
+EXC_COVER = 9.0         # per-frame absence allowance on excursion
+                        # edges — MEASURED NECESSARY on r10's real
+                        # stream (2026-09-01): at a flat EXC_PEN the
+                        # in-hull limb junk filling the lob gap earns
+                        # COVER_BONUS x 24 frames and always outbids
+                        # the excursion (the r10 re-run was byte-
+                        # identical to the graded run). Kept under
+                        # COVER_BONUS (14) so real detections always
+                        # beat an excursion; junk chains additionally
+                        # pay slow/turn costs, which is the margin.
 
 # ---- two-regime decode (ball_gate.md decoder-fix addendum,
 # 2026-08-31, owner-approved): ONE candidate stream, TWO decodes.
@@ -275,7 +285,9 @@ def decode(byf, flags=None, oflags=None, aflags=None, hard=1.0):
     court = COURT_PEN * (ncourt[ea].astype(float) + ncourt[eb]) / 2.0
     anch = -ANCHOR_BONUS * (nanchor[ea].astype(float) + nanchor[eb]) / 2.0
     base = SKIP_PEN * (ed - 1) - COVER_BONUS * ed + slow + body + court + anch
-    base[eexc] = EXC_PEN        # flat: no cover to earn, nothing to skip
+    base[eexc] = EXC_PEN - EXC_COVER * ed[eexc]     # flat entry price
+    # plus the absence allowance (see EXC_COVER) — never richer than
+    # real coverage, competitive against junk chains paying turn costs
     score = base.astype(float).copy()          # start-anywhere
     prev = np.full(E, -1)
     # process edges grouped by arrival frame so predecessors are final
