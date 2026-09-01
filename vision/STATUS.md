@@ -92,10 +92,25 @@ readiness rule caught and reversed one conjecture: hitter-chain
 anchors in the TIMING stream are measured harmful (77.8@86 with vs
 77.8@98.4 without; fake-swing anchors bloat the event set), so the
 timing stream runs self-feedback only and hitter anchors stay in the
-position stream. r10 staged (candidates extracted post-readiness,
-config note frozen in ball_gate.md, owner point-dead mark 318.45,
-lob-segment label caveat pre-recorded). Remaining: the one graded
-run, on explicit owner authorization.
+position stream. r10 staged, owner authorized, and GRADED
+2026-09-01: **VERDICT MIDDLE** — check 2 **PASS, BEATING THE HUMAN
+PATH** (timing 73.1@98 vs human 65.4@91, beats own null 95th — first
+instrument in program history to outscore human labels on sealed
+contact times); check 1 66.2 V (between bars); check 3 FAIL on
+segmentation not accuracy (matched impacts 2.73 ft UNDER the 3.0
+bar; bounces 3 vs 10, crossings 10/19). Pooled absolute (first time
+binding): 73.1 < 80, short — the human path also fails 80 on this
+rally class (65.4). AUTOPSY (arm validated on the r8 reference
+first): candidates EXONERATED (93.6%, full lob-window coverage —
+the owner's label caveat resolves in the labels' favor), frame
+sane, person N/A; **DECODER, two named defects** — (a) no
+off-frame-excursion capability (the flagged lob = the one
+over-GAP_MAX label gap, 24 frames; clean-input decode truncates at
+exactly 50% of the window there), (b) bounce segmentation on
+dink-heavy rallies. Per the frozen bars: ONE train-only iteration
+(specced: excursion edges + bounce-aware segmentation; train
+coverage r9/r10 lobs + r10's 10 bounces), then one re-grade on a
+newly sealed rally (r20 identified). r10 spent -> train.
 
 ## Built, producing numbers
 

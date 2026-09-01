@@ -4089,3 +4089,41 @@ read: r9's human path passes the frozen battery 82.8% at pct 100
 (29 impacts — real null power; the lob-adjacent contacts are hard
 for the human too). The graded run fires on the owner's explicit
 authorization and not before.
+
+## 2026-09-01 — THE SEAL BROKE TWICE: r10 graded MIDDLE, check 2 beats the human, and the autopsy names the last two defects
+
+Attempt 1 crashed pre-answer-key (no-wrist row in blur_gap_fill —
+neutral guard, recorded, seal epistemically intact). Attempt 2, the
+one graded run: **MIDDLE**. Check 2 PASS **beating the human path**
+— timing stream 73.1@98 vs the human's 65.4@91 on 26 contacts,
+beats its own shift-null; the channel dead since Gate C outscored
+hand labels out of sample, with zero pose anchors. Check 1 66.2
+(between bars). Check 3 FAIL on structure, not space: matched
+impacts agreed at 2.73 ft (bar met) but bounces 3 vs 10 and
+crossings 10/19 — dink rallies are bounce-rich and the position
+stream over-fragments. Pooled absolute newly binding and short
+(73.1 < 80) — noted: the HUMAN path also fails the 80 bar here
+(65.4; first human pass ever to), the lob class is hard for people.
+
+Autopsy, arms in order, ORACLE ARM VALIDATED FIRST on the r8
+reference (my implementation reproduces 93.8 vs the recorded 94.6 —
+the swing-proxy lesson applied to the autopsy itself): candidates
+exonerated (93.6% recall; the owner's two flagged lob windows fully
+covered, 3/3 and 4/4 — their "mostly sure" clicks were right,
+again); frame sane; person N/A. The oracle substitution then told
+the story: V 50.0% on CLEAN input, and the cause verified directly —
+the labels hold exactly one gap over GAP_MAX (307.92-308.32, 24
+frames at 60 fps, the flagged lob, ball above the frame) and the
+oracle decode stops at its left edge: exactly 50% of the window.
+Clean input cannot bridge an off-frame excursion; the graded run
+"bridged" it through junk, which is what degraded check 1 and
+shredded mid-rally segmentation. ATTRIBUTION: DECODER, two named
+defects — off-frame excursion capability (r9's regime, now proven
+load-bearing on a graded rally) and bounce-aware segmentation.
+The two-regime timing fix survived both defects out of sample.
+
+MIDDLE's one train-only iteration is therefore fully specced:
+excursion edges (exit near frame top moving up -> ballistic
+re-entry, gaps to ~1.5 s) + bounce segmentation, trained on
+r9/r10's lobs and r10's 10 bounces. Then r20 seals when the owner
+labels it, and the re-grade decides the channel.
