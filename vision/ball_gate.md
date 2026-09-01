@@ -427,7 +427,17 @@ Frozen here before any rally-10 output exists (r8 precedent):
   anchors only (check 2), per the dated corrections above. Anchor
   generation bypasses hitter_chain's train score() as in the r8 run.
 - **One run**, upon explicit owner authorization — GIVEN 2026-09-01
-  ("break the seal, let's go"), recorded before the run. No pre-stated
+  ("break the seal, let's go"), recorded before the run.
+- **Run attempt 1 (2026-09-01): CRASHED PRE-ANSWER-KEY, not a graded
+  outcome.** hitter_chain.blur_gap_fill unpacked a no-wrist row
+  (w=None; r10's pose has a wristless stretch r7 never exercised)
+  and raised before anchor generation finished — before any decode,
+  before the sealed pass was read, before any rally-10 output
+  existed. Zero information about the seal was produced or consumed.
+  Neutral guard added (a row with no measurable wrist cannot
+  nominate a blur event; r7's path never reached the branch, so its
+  readiness result is unchanged by construction). The one graded run
+  proceeds under the same frozen configuration. No pre-stated
   expectation this time: the r8 note's forecast was wrong in both
   directions, and the honest prior is the train table plus the r1
   long-rally screen (r10 is long-rally class, 26 contacts — the

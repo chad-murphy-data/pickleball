@@ -270,6 +270,10 @@ def blur_gap_fill(npz_path, clip, offset, picked,
                 continue
             if best is None or sm[i] > best[0]:
                 w, el = rows[i][2], rows[i][3]
+                if w is None:
+                    continue    # no measurable wrist on this row (r10
+                                # crash 2026-09-01): it cannot nominate
+                                # a blur event
                 px, py = w
                 if el is not None:
                     vx, vy = w[0] - el[0], w[1] - el[1]
