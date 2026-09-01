@@ -426,7 +426,8 @@ Frozen here before any rally-10 output exists (r8 precedent):
   hitter-chain anchors (checks 1/3), timing stream self-feedback
   anchors only (check 2), per the dated corrections above. Anchor
   generation bypasses hitter_chain's train score() as in the r8 run.
-- **One run**, upon explicit owner authorization. No pre-stated
+- **One run**, upon explicit owner authorization — GIVEN 2026-09-01
+  ("break the seal, let's go"), recorded before the run. No pre-stated
   expectation this time: the r8 note's forecast was wrong in both
   directions, and the honest prior is the train table plus the r1
   long-rally screen (r10 is long-rally class, 26 contacts — the
