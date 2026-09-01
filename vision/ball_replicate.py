@@ -140,6 +140,46 @@ def load_anchors(path):
     return out
 
 
+DEDUP_SAME_T = 0.12    # s: cross-track same-instant collapse (two
+                       # players "excited" at one moment — one contact)
+DEDUP_SIDE_T = 0.55    # s: same-TEAM-side collapse. Alternation is
+                       # exact, so one side's consecutive REAL touches
+                       # sit two shot-intervals apart (>=0.66 s even at
+                       # hand-battle pace); a same-side pair closer
+                       # than this contains a fake swing. Applied at
+                       # the ANCHOR level where the sequence is
+                       # complete — the claim-level version was killed
+                       # by claiming holes (see claim_bounds).
+
+
+def dedupe_anchors(anchors, zs, sides):
+    """Anchor-precision pass (2026-09-01, after fix #1 left bound
+    recall/precision as the last check-3 blocker): collapse
+    same-instant cross-track anchors and too-close same-side pairs,
+    keeping the higher excitement z in each collapse. anchors =
+    load_anchors 6-tuples; zs = parallel excitement list."""
+    keep = []
+    items = sorted(zip(zs, anchors), key=lambda za: za[1][0])
+    for z, a in items:
+        t, tid = a[0], a[1]
+        side = sides.get(int(tid))
+        drop = False
+        for j, (z2, a2) in enumerate(keep):
+            t2, tid2 = a2[0], a2[1]
+            side2 = sides.get(int(tid2))
+            close_t = abs(t - t2) <= DEDUP_SAME_T
+            close_side = (side is not None and side == side2
+                          and abs(t - t2) <= DEDUP_SIDE_T)
+            if close_t or close_side:
+                if z > z2:
+                    keep[j] = (z, a)
+                drop = True
+                break
+        if not drop:
+            keep.append((z, a))
+    return [a for _, a in keep]
+
+
 def bound_anchor_positions(bounds, anchors, floors):
     """Per bound: hitter floor position (or None) via the nearest
     hitter-chain anchor within MATCH_S — the shared automated policy."""

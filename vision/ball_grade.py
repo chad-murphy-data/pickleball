@@ -76,6 +76,8 @@ def main():
         a.npz, a.clip, a.offset,
         str(Path(a.workdir) / f"anchors_grade_r{a.rally}.csv"))
     anchors = br.load_anchors(anchors_csv)
+    zs = [float(r["excitement_z"] or 0)
+          for r in csv.DictReader(open(anchors_csv))]
 
     # ---- decode with licensed window only
     byf, t0 = bdec.load_candidates(a.rally)
@@ -167,6 +169,8 @@ def main():
     X3, x2, _ = c3.load_landmarks()
     P = c3.dlt(X3, x2)
     floors = br.track_floor(a.npz, P)
+    anchors = br.dedupe_anchors(anchors, zs, br.track_sides(floors))
+    print(f"anchors after dedupe: {len(anchors)}")
     matched = br.claim_bounds(turns, angs, timing_ref, anchors)  # LOOSE
     bounds = matched + [a.end]
     bounce_evs = [e for e in turns if e not in set(matched)]
