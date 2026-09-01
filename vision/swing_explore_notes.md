@@ -3985,3 +3985,910 @@ Claude Design for styling. Three things shipped to the artifact
 Verified headless (Playwright + the preinstalled Chromium): all
 meter states, categories, and the ending render correctly; no
 console errors beyond the sandbox's blocked font fetch.
+
+## 2026-08-31 (evening) — DECODER FIX BUILT: two-regime decode, constants frozen off a 30-config train sweep
+
+Owner approved the two-regime split same day ("I'm good for
+two-regime split. Let's go ahead there"); dated addendum in
+ball_gate.md. Build: `timing_decode()` in ball_decoder.py — position
+stream untouched (checks 1/3), timing stream re-decodes with the
+position stream's own >=60-deg turns (forward AND reverse decodes,
+union, accumulated) as turn anchors plus TIMING_HARD=2.5 turn-cost
+hardening away from anchors (check 2). ball_grade.py wired to score
+check 2 on the timing stream; hitter-chain anchors union in at grade
+time. Convention fix along the way: score_train's check-2 human bar
+was panel-filtered; ball_grade (and the graded run) score the full
+label span — score_train now matches (human bars r6 100@94.5, r7
+77.8@91.4, r8 100@98.5).
+
+Sweep results (3 scratch grids, ~2.5 h compute, train r6/7/8, NO
+pose anchors anywhere):
+- Grid 1, hard x angle x rounds (18 configs): r6 and r8 want OPPOSITE
+  hardening — r6 collapses soft (71.4@60 at hard=1.5), passes hard
+  (100@95-96 at 2.5-4.0); r8 is the mirror (100@96-98 at 1.5, decays
+  to 71.4 at 4.0/80). No config 3/3.
+- Grid 2: ONE feedback round beats two (grid 1 ran two: r8 85.7 ->
+  100@98.2 on dropping the second — over-steer, as pre-worried).
+  Hardening LADDERS (soft discovery round seeds anchors for a strict
+  round) fix r8 (100@98.7-99.2 PASS) but break r6: the soft round's
+  junk turns inherit anchor protection. Fwd/rev-agreement ADAPTIVE
+  hardness selection picks wrong on r8 (agreement 0.73 at hard=4.0 vs
+  0.56 at 2.5, but 2.5 scores better) — agreement is not a quality
+  signal ACROSS hardness values. Refuted.
+- Grid 3: INTERSECTION anchors (turn must appear in fwd AND rev)
+  are a disaster — r8 14.3@0.8. Fwd/rev disagree exactly where the
+  ball passes a player, which is where it turns: the "contacts and
+  junk co-locate" geometry, third independent confirmation.
+
+FROZEN: one round, hard=2.5, angle=60, union anchors. Train: r6
+100@96.3 PASS, r7 77.8@98.4 PASS, r8 100@98.2 vs bar 100@98.5 —
+recall at the human's level on the rally class that failed the
+grade; the pct gap is 3 draws of a 1000-draw null, in a config
+strictly weaker than grade (no hitter anchors). Dead ends recorded
+in the module docstring so they don't get re-tried.
+
+Rally 9's ball pass arrived mid-session (885 frames, 66V/22S/6I/6N)
+and is committed UNPEEKED — no tracker run, no human-path score —
+until the owner designates seal vs train. It contains the project's
+first off-frame lob: 34 consecutive N frames (~1.1 s, ball above the
+frame, x moved 330 px while invisible), 3x the decoder's GAP_MAX —
+a regime no train rally exhibits and the current decoder cannot
+bridge (it would junk-chain or drop half the rally). Recommendation
+on record: r9 -> train (it teaches exactly this; also carries the
+log-span asterisk), seal r10/17/20. An off-frame-excursion edge
+(exit near frame top moving up, ballistic re-entry from the top) is
+the named next decoder capability, to build ONLY if r9 lands train.
+
+## 2026-08-31 (late evening) — angle screen closes the sweep: 40 deg, and the train goes 3/3
+
+The rally-1 screen exposed the frozen 60-deg anchor gate's cost on
+the long-rally class (timing 84@99.3 vs human 92@99.5 — hardening
+taxes real dink turns under 60 deg), which mattered because r10, the
+recommended sealed rally, is rally-1-shaped. Final screen, single
+round / hard=2.5, panel = r1+r6+r7+r8:
+
+    ang=60 | r1 84.0@99.3  | r6 100@96.3* | r7 77.8@98.4* | r8 100@98.2  | 2/4
+    ang=40 | r1 88.0@99.3  | r6 100@96.3* | r7 77.8@98.4* | r8 100@98.5* | 3/4
+    ang=30 | r1 84.0@99.3  | r6 100@96.3* | r7 88.9@99.1* | r8 100@98.5* | 3/4
+
+FROZEN FINAL: one round, hard=2.5, TIMING_ANGLE=40. The human-matched
+check passes on ALL THREE train rallies with zero pose anchors —
+including r8, the shape that failed the grade. r1 dev residual: 22/25
+vs the human's 23/25, before hitter-chain anchors (which measured 72%
+contact recall on r1 and carried the missile run to 96%). 30 deg is
+dominated: it trades r1 back down for an r7 bump. Total sweep: 33
+configs, ~3.5 h compute, every refuted mechanism written into the
+module docstring. Next: owner designates the sealed rally, readiness
+in full grade config (needs the Drive assets), one re-grade.
+
+## 2026-08-31 (night) — READINESS PASSES in grade config; r10 sealed, staged, and waiting on the word
+
+Drive folder now link-shared (owner) — assets pull directly, so the
+whole grade config runs from a fresh session. First readiness run on
+r7: checks 1/3 PASS (V 82.3, replication 1.70 ft) but check 2 came
+back 77.8@86 — the addendum's "hitter anchors union into the timing
+stream" conjecture, measured false (77.8@98.4 without the union;
+fake-swing anchors mint cheap-turn zones and the bloated event set
+eats the null pct). Correction recorded in the gate file: timing
+stream = self-feedback anchors ONLY (exactly the swept config);
+hitter anchors stay in the position stream, where the same run
+proved them (bound claiming, 1.70 ft). Re-run: **GATE VERDICT r7
+PASS** — the readiness rule caught a config bug before it could
+burn the seal, which is its entire job.
+
+r10 designated SEALED by owner delivery (r9 -> train). Owner
+finalized the pass same night ("same clicks but stopped one frame
+after the ball bounced out of play", 672 rows, end 318.447 = the
+point-dead mark; only the last row was read). Owner also flagged a
+mid-rally lob segment they were "mostly sure" they clicked right —
+pre-recorded in the addendum for the label-sanity autopsy arm, not
+touched. Clip verified (1980 frames @ 60 fps, offset 292.7),
+candidates extracted post-readiness (39.7/frame), r0010.npz staged,
+graded-run configuration note frozen in ball_gate.md. Bonus train
+read: r9's human path passes the frozen battery 82.8% at pct 100
+(29 impacts — real null power; the lob-adjacent contacts are hard
+for the human too). The graded run fires on the owner's explicit
+authorization and not before.
+
+## 2026-09-01 — THE SEAL BROKE TWICE: r10 graded MIDDLE, check 2 beats the human, and the autopsy names the last two defects
+
+Attempt 1 crashed pre-answer-key (no-wrist row in blur_gap_fill —
+neutral guard, recorded, seal epistemically intact). Attempt 2, the
+one graded run: **MIDDLE**. Check 2 PASS **beating the human path**
+— timing stream 73.1@98 vs the human's 65.4@91 on 26 contacts,
+beats its own shift-null; the channel dead since Gate C outscored
+hand labels out of sample, with zero pose anchors. Check 1 66.2
+(between bars). Check 3 FAIL on structure, not space: matched
+impacts agreed at 2.73 ft (bar met) but bounces 3 vs 10 and
+crossings 10/19 — dink rallies are bounce-rich and the position
+stream over-fragments. Pooled absolute newly binding and short
+(73.1 < 80) — noted: the HUMAN path also fails the 80 bar here
+(65.4; first human pass ever to), the lob class is hard for people.
+
+Autopsy, arms in order, ORACLE ARM VALIDATED FIRST on the r8
+reference (my implementation reproduces 93.8 vs the recorded 94.6 —
+the swing-proxy lesson applied to the autopsy itself): candidates
+exonerated (93.6% recall; the owner's two flagged lob windows fully
+covered, 3/3 and 4/4 — their "mostly sure" clicks were right,
+again); frame sane; person N/A. The oracle substitution then told
+the story: V 50.0% on CLEAN input, and the cause verified directly —
+the labels hold exactly one gap over GAP_MAX (307.92-308.32, 24
+frames at 60 fps, the flagged lob, ball above the frame) and the
+oracle decode stops at its left edge: exactly 50% of the window.
+Clean input cannot bridge an off-frame excursion; the graded run
+"bridged" it through junk, which is what degraded check 1 and
+shredded mid-rally segmentation. ATTRIBUTION: DECODER, two named
+defects — off-frame excursion capability (r9's regime, now proven
+load-bearing on a graded rally) and bounce-aware segmentation.
+The two-regime timing fix survived both defects out of sample.
+
+MIDDLE's one train-only iteration is therefore fully specced:
+excursion edges (exit near frame top moving up -> ballistic
+re-entry, gaps to ~1.5 s) + bounce segmentation, trained on
+r9/r10's lobs and r10's 10 bounces. Then r20 seals when the owner
+labels it, and the re-grade decides the channel.
+
+## 2026-09-01 (cont.) — the licensed iteration, run end to end: four keeps, two reverts, and check 3 becomes the last wall
+
+Full-day sequence after the MIDDLE (every step committed with its
+numbers; this is the compressed record, the gate file has the
+verdict-relevant one):
+
+KEPT (multi-rally evidence): (1) excursion edges + EXC_COVER absence
+allowance + (3) looser top-band hull margin — r10 oracle 50->95.8 V,
+the flat-price version measured unable to outbid in-hull limb junk
+(byte-identical re-run), the blanket court waiver measured breaking
+r6 check 2 via corner scorebug junk (restored 100@96 with the
+margin); (2) ANCHORS NEVER TOUCH A DECODE — the position stream
+anchor-free took r10 check 1 66.2 -> 73.6 PASS and r7 82.3 -> 84.8,
+completing what the readiness measurement started on the timing
+side; (4) check-3 BOUNDS FROM THE TIMING STREAM — r10 matching
+16 -> 20/26 at 2.73 -> 2.15 ft, r7 restored to 6/8 @ 2.76 with 7/7
+crossings after the anchor-free position turns had broken it (3/8 @
+7.39: the position path's turns were leaning on anchored decoding;
+the timing stream is the "when" instrument, so bounds belong to it).
+
+REVERTED with prejudice: strict claiming (paddle gate + alternation
+prune) — r10 +2 matches for an r7 collapse; and the two knobs that
+DO NOT DISCRIMINATE on r10 truth, recorded so nobody re-probes:
+claim radius (true:junk kill ~1:1 at 130/180/240) and turn angle
+(distributions overlap; r7's wobble separation does not
+generalize). The alternation prune also carries a structural lesson:
+exact side alternation only prunes safely over a COMPLETE claim
+sequence — with holes, a distant same-side pair usually brackets a
+MISSED contact, and pruning kills a true bound (ALT_MAX_S is the
+hole-safe form, parked with the machinery).
+
+WHERE IT FROZE: checks 1+2 pass everywhere that matters; check 3
+fails on all three rallies, each on a DIFFERENT component — r7
+over-generates bounces (5v2: spurious unclaimed timing turns), r10
+under-recovers (5v10, crossings 14/21), r6 accuracy (3/7 @ 8.84 on
+the 5.6 s pathological short rally). That pattern is the signature
+of the two upstream problems, not of any decoder constant: HITTER-
+ANCHOR PRECISION (73 anchors / 26 contacts — loose claiming eats
+real bounces as bounds, and no local geometry filters junk anchors)
+and BOUNCE-VS-JUNK TRIAGE of unclaimed turns (physics candidates:
+a bounce reverses vertical image velocity near the floor plane and
+sits far from every paddle; junk doesn't). Both are named,
+neither is built; knob-turning stopped deliberately at the
+overfitting line.
+
+THE FORK (owner's, recorded in the gate file): hold r20 until an
+anchor-precision + bounce-triage pass moves check 3 on train — or
+re-register a narrower CONTACT-TIMES CHANNEL (checks 1+2) that
+licenses touch share / tempo / shot-category products now, leaving
+replay + placement (the bounce-dependent family) behind the full
+check 3. Checks 1+2 currently carry: touch share, categories,
+attack-onset/tempo, rally structure, the temporal-model corpus.
+Check 3 carries: the 3D replay at scale, placement/landing stats
+(a bounce IS a landing), true mph, contact heights.
+
+## 2026-09-01 — owner eyewitness note: far-court bounces hide against WHITE DRESSES
+
+Measured occlusion at floor-proximity moments (proxy: image-lowest
+labeled point per inter-contact segment, +/-2 frames, rallies
+1/6/7/9/10): NEAR court 9% carry I/N frames, FAR court 32% — the
+end-view camera puts the near players' bodies between the lens and
+the far kitchen. Owner adds the mechanism the numbers couldn't see:
+the far-court losses are largely CONTRAST, not geometry — the ball
+sits in front of the white dresses and the gray-level motion diff
+(and the human eye) gets nothing. Implications: (1) the localized
+sibling of the ball-closure's "misses pile at contacts" — no
+detector fixes it on this footage; fit-demanded bounces (fix #1) is
+the correct response because physics needs no pixels at the bounce;
+(2) OUTFIT-DEPENDENT sample quirk — this match (women's whites) is
+near worst-case; dark-kit matches will measure differently, a
+generalization caveat on bounce behavior tuned against Chicago game
+1; (3) named future candidate-stage lever if ever needed: hue-channel
+differencing (neon ball vs white fabric) where gray-diff is blind —
+not built while overall candidate recall runs 84-96%.
+
+## 2026-09-01 — FIX #1 LANDS: the arcs find the bounces the dresses hide
+
+fit_segment now searches an interior 1/15 s grid for bounce splits
+(events remain refined candidates) with restitution enforced
+(post-bounce speed <= pre-bounce, vertical flip up — the owner
+called the speed difference before the code did). Both check-3
+sides get the same fitter, and both moved: human r7 2->4 bounces,
+r10 10->13 (the human labels can't see through white fabric either;
+the fit demands the floor contact regardless — the occlusion
+measurement made this the predicted outcome, 32% far-court I/N).
+
+  r7 : matched 6/9 @ 2.72 (bar met), crossings 7/7, bounces 6v4
+  r10: matched 20/26 @ 2.42 (bar met), bounces 11v13, crossings 17/24
+
+Both bounce counts off by EXACTLY 2 (r7 over, r10 under), and both
+residuals — r7's junk-segment bounces, r10's ~6 unclaimed contacts
+fragmenting crossings — point at the same place: bound
+recall/precision, i.e. the hitter-anchor precision front. The bounce
+MECHANISM is off the blocker list. Next stab, already specced:
+anchor dedupe (same-instant multi-track collapse to best z;
+same-side collapse within ~0.7 s at the ANCHOR level, where the
+sequence is complete and the alternation prior is safe — unlike at
+the claim level, where holes made it kill true bounds).
+
+## 2026-09-01 (close) — first full-battery PASS, the see-saw, and the honest stop
+
+Anchor dedupe: rally 7 posted the program's FIRST full three-check
+PASS (z-tiebreak config: 3v4 bounces, 3/3 crossings, 2.15 ft) — and
+r10 regressed in the same breath, because keep-highest-z keeps loud
+fakes over soft dinks. The timing-turn tiebreak (frozen) reverses
+the trade: r10 16/26 @ 2.98 with 14/15 crossings and 8v13 bounces,
+r7 one bad impact over its 5-point median (3.29 vs 3.0, bounces and
+crossings passing). Three configs, every one a single component
+short somewhere, verdicts flipping on single impacts — stopped
+there deliberately; that is two-rally curve-fitting, not progress.
+The parts that never see-sawed: the decode architecture, the
+excursion machinery, fix #1's fit-demanded bounces, checks 1+2
+passing everywhere. What moves next per the evidence: hitter_chain
+anchor quality (the z-vs-realness inversion on dinks is ITS bug),
+the r9 clip (upload pending — second lob rally, sixth battery
+rally), and tap volume. Then the r20 call.
+
+## 2026-09-01 — bounce truth handed to the owner: 5 disputed timestamps
+
+Truth-calibrated gates: r7 PASSES THE FULL GATE a second time (config
+now stable there; human phantoms 4->2, tracked 3, within the bar).
+r10 remains the tangle: the gates cut the human fit barely (13->12)
+while the tracker collapsed 8->3 — its segments span MISSED contacts
+(bound recall), where no bounce logic can work. And the V-shape truth
+is a LOWER bound (an occluded far-court bounce is real but shows no
+V), so r10 truth sits in [8, 13].
+
+Resolution structure (human-side reconstruction vs label evidence):
+all 8 label-evident bounces are fit-confirmed; the fit adds 5
+DISPUTED claims — VOD seconds 296.50, 297.77, 298.95, 300.62,
+315.04. Owner eyeball on those five settles r10's bounce truth
+exactly: each is either a real occluded bounce (truth -> 13) or a
+fitter phantom (truth -> 8). Until then, no more bounce-side tuning;
+the anchor-quality session remains the other prerequisite for r10.
+
+## 2026-09-01 — DOUBLE-BOUNCE RULE correction (owner's serve sighting)
+
+The owner went looking for disputed bounce 296.50 and landed on a
+serve — off by a units slip (VOD 296.5 s = 4:56.5, not 4:46), but
+the sighting exposed a truth-instrument blind spot with a rules fix:
+296.50 is rally 10's SERVE BOUNCE and 297.77 its RETURN BOUNCE, both
+MANDATED by the double-bounce rule. Every rally carries >=2 real
+bounces the V-shape instrument cannot see (serve/return descents are
+fast, deep, far-court, smear-heavy). Corrections: (1) "r7 has zero
+bounces" was wrong at the edges — truth is exactly 2 (serve+return,
+then all volleys), the human fit's 2 is RIGHT, and r7's full-gate
+PASS is truth-sound; (2) r10 truth bound tightens to [10, 13] (8
+label-evident + 2 rule-mandated + 3 owner calls pending: VOD 4:58.9,
+5:00.6, 5:15.0); (3) the human fit's 12-13 is credible, and the
+tracked 3 confirms BOUND RECALL as r10's one blocker. Rule for the
+future: the V-shape label instrument is a lower bound that must be
+UNIONED with the rule-mandated serve/return bounces.
+
+## 2026-09-01 — OWNER VERDICTS: all five disputed bounces are REAL; r10 truth = 13; the fitter was right all along
+
+Owner eyeball-verified every disputed r10 bounce claim (the units
+slip was theirs, the timing instinct was right): 296.50 and 297.77
+are the serve/return bounces "easy to see"; 298.95 REAL (easy);
+300.62 REAL (hidden behind the player — the occlusion class, live);
+315.04 REAL. All at the kitchen line, several SHORT-HOPPED — small-
+amplitude bounces the V-shape instrument's 8 px margin cannot see.
+So: r10 bounce truth = 13; the human-side grid fitter's 13 was
+EXACTLY RIGHT; the phantom diagnosis was an artifact of using a
+lower-bound truth instrument as if it were truth. Consequences:
+(1) velocity gates REVERTED (flag kept with the record — they cut a
+real human bounce and collapsed tracked recovery 8->3); BOUNCE_MARGIN
+0.8 stays (multiplicity-motivated, independent); (2) the tracked-side
+deficit on r10 (3-8 found vs 13 real) is now an ABSOLUTE
+truth-anchored target for the anchor-quality session, not a
+relative-to-instrument one; (3) owner's 2D bounce signature recorded
+for any future 2D instrument: into a short-hop the ball reads MORE
+VERTICAL THAN HORIZONTAL (horizontal image velocity shrinks), then a
+curved V — "a dink to the top left goes down-left then up-left."
+That velocity-ratio feature, with a smaller margin, is the upgrade
+path for the V-shape instrument if it is ever needed again; the 3D
+fit already encodes the physics, which is why it beat my 2D read.
+
+## 2026-09-01 — Truth-anchored baseline (gates reverted): r7 FULL PASS again; r10's human fit = truth, 13/13
+
+Full battery rerun at commit a6b833b (velocity gates OFF, fit-demanded
+bounce grid + restitution + BOUNCE_MARGIN 0.8 ON):
+
+- **r7: FULL THREE-CHECK PASS.** Check 2 78@95 vs human 78@91; check 3
+  5/9 impacts at 2.36 ft, crossings 4/4, bounces 3v3. The margin-only
+  config holds the pass the z-tiebreak run first found.
+- **r10: MIDDLE, check 3 the one blocker.** Check 2 73@98 vs human
+  65@91 (beats own null); check 3 16/26 at 2.98 ft (UNDER the 3.0
+  bar), crossings 14/15, bounces tracked 8 vs human 13.
+- **The human-side fitter recovers EXACTLY the owner-verified truth on
+  r10: 13 bounces, 26/26 segments ok.** With human positions in, the
+  bounce mechanism is exact. The whole remaining r10 deficit is
+  tracked-side: bound recall 16/26 and segment survival 15/22. The
+  anchor-precision diagnosis is now truth-anchored, not
+  instrument-relative.
+
+Baseline to beat for the anchor-quality session (and not give back):
+r7 PASS; r10 16/26 @ 2.98 ft / 14-15 crossings / 8v13 bounces; r6/r8
+check-2 train windows.
+
+## 2026-09-01 — r9 joins the battery: check 1 BEST EVER (86.1), a THIRD check-3 failure mode, and the anchor stage quantified
+
+Owner uploaded the r9 clip (the missing 6th battery rally, second lob
+case). Candidates: 92,756, V-recall 95.4 / S-recall 97.9 — the lob
+N-frames are off-frame and unscored. Baseline battery (window
+252.60-282.53 = v4 serve pin -> label end; 29 taps):
+
+- **Check 1 PASS, V 86.1 / S 90.6 — the best V on record.** The
+  excursion machinery, built on r10's lob, generalizes to the second
+  lob rally unseen.
+- **Check 2: beats own null at pct 100 (79.3 vs 95th 65.5), one
+  matched turn under the human path (79 vs 83) — near-miss.**
+- **Check 3 FAIL with a NEW failure profile**: bound recall 22/28
+  (best of the long rallies) and crossings 23/23 PERFECT, but median
+  3.75 ft and bounces 18v14 over-generated. The per-impact table
+  pins it: early fast shots miss by 5-12 ft with bounds ~0.1 s early
+  (drive speed makes 0.1 s = 6-12 ft), dinks land at 0.6-1.0 ft.
+  Corner-cutting where the ball vanishes at the paddle (the measured
+  I-frames-at-wrist effect) places the path turn early; claim_bounds
+  inherits the turn's time. Candidate fix (fit-side, mirror of
+  fix #1): contact time from the two adjacent fitted arcs'
+  INTERSECTION, not the last-visible turn.
+
+Check-3 failure modes are now one per rally: r10 = bound RECALL
+(fakes crowd out reals), r9 = bound TIMING on fast shots (+4 bounce
+over-gen), r6 = accuracy on n=3. All three sit on the anchor/claim
+front; the decode itself passes checks 1-2 everywhere (5-of-5 check-1
+passes, check 2 at or above human on 2 of 5).
+
+**Anchor stage quantified for the first time** (anchor_diag.py,
+production pipeline = pose peaks + blur gap-fill, matched at
++/-0.15 s):
+
+| rally | recall | fakes | z real vs fake | top-10 real |
+|---|---|---|---|---|
+| r6 | 5/7 | 3 | 2.21 vs 2.76 (INVERTED) | — |
+| r7 | 6/9 | 11 | 2.31 vs 1.94 | 4/10 |
+| r9 | 18/29 | 37 | 2.59 vs 1.73 | 7/10 |
+| r10 | 17/26 | 29 | 2.44 vs 1.94 | 4/10 |
+
+Two defects, cleanly separated: (a) RECALL — r9 misses 11 taps
+outright, r10 misses 9, all clustered in kitchen dink exchanges
+(soft dinks under Z_MIN=1.2 or eaten by MIN_SEP_S=0.35 next to a
+louder fake); (b) ORDERING — fakes overlap or beat reals everywhere.
+Blur gap-fill contributes almost nothing on these rallies (0-4
+anchors). Session levers: torso-relative wrist speed (kills
+body-translation fakes; the autopsy's third-instrument spec named
+it), wrist-asymmetry discount (running pumps both arms, a swing is
+one-armed), then alternation-prior rescoring.
+
+## 2026-09-01 (cont.) — claiming-lab session: five kills, one discovery, and the oracle that reframed the thread
+
+All train-only, cached-pipeline lab (scratchpad c3_lab/claim_lab/
+fit_lab; lab reproduces the real battery: r7 5/9 @2.35 PASS, r10
+16/26 @2.95 8v13, r9 22/28 @3.57 18v14 — battery said 2.36/2.98/3.75,
+same verdicts). Truth = 71 hand-timestamped taps + human-fit bounce
+times across r6/r7/r9/r10.
+
+**Discovery that survives: ball-path-to-paddle distance (pathdist).**
+dist(decoded path at event time, track's paddle point)/box-height
+separates real from fake pose anchors at AUC 0.936/0.760/0.933/0.982
+(r7/r9/r10/r6; real med 0.27-0.48h, fake 0.93-2.79h). Physical basis:
+the ball genuinely arrives at the hitter's paddle.
+
+**Five kills, each with its mechanism:**
+1. *Pathdist as a claim gate* (trust only near-path anchors): recall
+   collapses everywhere (r9 21->13/29 at any threshold/policy).
+   Mechanism: P0's recall partly comes from time-mislocated anchors
+   whose largest-angle-turn claim SNAPS to the true contact; pathdist
+   at the anchor's own time reads "far" mid-flight, so the gate vetoes
+   exactly the anchors doing error correction.
+2. *Arc-intersection impact readout* (--ix, the r9 fast-shot fix
+   candidate): med 3.57 -> 3.72. The early boundary is baked into the
+   fitted arcs; letting them vote doesn't move the agreement point.
+3. *Bounce-geometry veto.* Real discriminator found first: bounce-turns
+   KEEP horizontal direction (75%), contact-turns REVERSE it (73%) —
+   the owner's V-shape insight, operationalized as keepx (the vertical
+   V flag itself does NOT separate: 0.68 vs 0.71, volleys also go
+   down-up). But as a claim veto, plain or conjuncted with pathdist,
+   it makes r10's ledger WORSE (8v13 -> 5v13; veto-drop 2v13).
+   Mechanism: removing bounce-misclaimed bounds does NOT return those
+   bounces to segment interiors — fit_segment places at most ONE
+   interior bounce, and merged dink segments contain 2+.
+4. *Orphan anchor-time bounds* (anchor claims nothing -> bound at
+   anchor time): cheap-metric Pareto win (+1 recall r7/r10, extras
+   flat), then killed at fit level — r7 FULL PASS regressed to 1v3
+   bounces. The added bound recovered its own impact at 1.25 ft but
+   sat ~0.1 s early (pose-anchor slop; med |dt| 58 ms, p90 122 ms),
+   and the clipped boundary destabilized both neighboring segments.
+   Lesson: never place a bound on a raw event time.
+5. *Hybrid z-admission* (z>=1.2 OR z>=0.5 & pathdist<=0.6): pose-stage
+   recall 0.620 -> 0.690 pooled (+2 taps r10, +2 r6), bound recall +2
+   on r10 only — real but small; superseded by the approach channel
+   below as the recall lever (kept as a compatible add-on).
+
+**THE ORACLE: fit r10 with bounds at the 26 hand-timestamped tap
+times -> matched 25/26, med 1.80 ft, crossings 22/22, bounces 13v13,
+FULL PASS.** The candidate stream + fitter reproduce the human
+reconstruction almost exactly once segmentation is right. Everything
+r10 is missing lives in bound recall/placement; the decode/fit stack
+is exonerated. (Oracle uses labels — a diagnostic ceiling, never a
+production config.)
+
+**Second discovery: the approach channel.** Close-approach local
+minima of pathdist over time (per track, 0.35 s min-sep, rth=0.5) as
+a pose-free contact detector: pooled tap recall 0.789 @ 57% precision
+vs the pose channel's 0.620 @ 37%. r10: 23/26 vs pose 16/26 — the
+far-court white-dress failure doesn't exist for this channel (paddle
+boxes survive where wrist keypoints fail). Weak only on r6 (3/7,
+junk decode there). Approach events carry a track id, so they feed
+claim_bounds as anchors directly: UNION claiming (pose+blur+approach)
+lifts bound recall on every rally — pooled 43/71 -> 52/71, r10
+13->18/26, extras FLAT (11->10). Largest claiming-level jump of the
+session, on the metric the oracle says is binding.
+
+**The remaining ceiling is structural:** 12 approach-recalled taps
+(1 r7 / 5 r9 / 6 r10) have NO 40-deg turn within 0.15 s — and only
+2-3 of 12 appear even at a 20/10-deg floor. The bridged timing stream
+sails smoothly through these contacts. "Bounds only at turns" caps
+r10 around 20/26 where the oracle needs 26. Next mechanism (built,
+measuring now): fit-validated splits — approach events far from any
+bound propose splitting their containing segment, boundary time
+gridded +/-0.15 s at 1/15 s, accepted only when both halves fit
+plausibly and beat the unsplit rms by fit_segment's own 0.5 px
+margin. Same pattern as interior-bounce placement; sidesteps kill #4
+by letting the FIT choose the time.
+
+**Fit-validated splits: verdict (same day, chain complete).** The
+machinery is real but only addresses one of the three failure modes.
+- **r7 — WORKS, the validation case**: splits at 171.57 (rms
+  6.86->2.08) and 174.03 (6.31->3.15), round-2 170.97 (2.09->0.97);
+  check-3 5/9 -> **7/9 med 2.35, crossings 6/6 -> PASS held**. (First
+  attempt broke crossings by splitting an already-clean segment on a
+  0.54 px marginal gain — hence SPLIT_NEED=2.0, only rescue broken
+  fits, best split per segment per round.)
+- **r10 — BLIND, 0 splits fired**: app-base result unchanged (18/26
+  med 2.31, 16/17, 8v13 FAIL). Mechanism: merged dink segments fit
+  CLEAN (rms < 2.0), so the rms trigger — the exact guard that saved
+  r7 — cannot see them. Kill #3's mechanism predicted this:
+  fit_segment lays down a plausible one-bounce arc over what is
+  really two dinks. The bounce deficit is invisible to
+  goodness-of-fit; any fix must be licensed by CONTACT EVIDENCE
+  (approach event + segment duration), not by residuals — or by
+  contact times from outside (labels / temporal model / corridor
+  re-search).
+- **r9 — NEUTRAL, floor reconfirmed**: 1 split accepted (275.13, rms
+  4.66->1.66 — the machinery does find genuinely broken segments),
+  net 22/28 med 3.49->3.70, crossings 23/24, bounces 17v14. The new
+  boundary's own impact pair reads 10.94 ft — fast-boundary readout
+  wobble, the same story as the oracle. r9's med now measured at
+  3.49-3.89 under FOUR bound placements (production / app / app+split
+  / oracle taps): a stream/readout floor on fast drives, not a
+  segmentation problem. One lever left: paddle-anchored impact
+  readout.
+- **r6 — app base is ACTIVELY HARMFUL on a junk decode** (1/7 @27.8
+  vs production 3/7 @7.28): fake approach anchors (z-proxy 2.5-3.0)
+  outrank real pose claims in dedupe. The label-free decode-health
+  guard is a PREREQUISITE for running the approach channel on
+  unlabeled rallies.
+
+State after the session, for the product fork now with the owner:
+checks 1+2 pass on train; check 3 = r7 PASS / r10 fixable-in-principle
+(oracle passes; bounce ledger needs contact evidence) / r9
+instrument-limited on this footage (oracle fails the med bar).
+Recommended and pending owner decision: MVP 1 = checks 1+2 under a
+fresh narrow registration (r20 seal grades MVP 1), check 3 continues
+as research. Proposed item #5, pending owner go: POSE-CORRIDOR
+RE-SEARCH — between consecutive contacts the ball must fly one arc
+from paddle A to paddle B, so re-detect aggressively (faint blobs,
+motion streaks) inside that ~1%-of-frame corridor only; geometric, no
+training (the killed fine-tune stays killed); validated against the
+owner's r9/r10 ball-path clicks vs a DISPLACED-CORRIDOR null. Could
+subsume the r10 ledger fix (recover the far-court white-dress
+observations), the r6 rescue (re-search instead of alarm-only), and
+part of r9 (endpoint anchoring).
+
+## Pose-corridor ball re-search (2026-09-01, owner-approved item #5) — instrument ladder, autopsy, and the "humans aren't the ball" filter
+
+Goal (product): recover the ball observations MISSING between known
+contacts — r10's check-3 ledger reads 8 tracked bounces vs the
+owner's 13 because the far-court dink observations never made the
+stream — without training anything (the killed fine-tune stays
+killed; hand-specified appearance and pose-derived geometry are
+allowed, learned parameters are not). Truth = the owner's
+hand-clicked ball paths (data/vision/ball_path_r{9,10}.csv, 30 fps,
+V/S/I/N visibility codes; V+S rows are scoreable). Every instrument
+graded with displaced-anchor nulls (corridors shifted ~200 px).
+Metric: r@12 = clicks within 12 px, prec@12 = fraction of at-click
+track points within 12 px, ADDED@12 = clicks the corridor recovers
+that the production decode missed.
+
+**Instrument ladder** (r10 production-contact corridors; decode
+baseline 405/657 clicks @12):
+- v1 per-frame windows on the A->B interpolant: established the hole
+  geometry (252/657 clicks with no decode point within 12 px).
+- v2 greedy bidirectional chains (the owner's manual-scan heuristic
+  mechanized): arm-hijack — chains seed on the hitter's arm and
+  follow it; meet-in-middle agreement too sparse to matter.
+- v3 global DP per corridor (corridor_dp.py): Viterbi over per-frame
+  candidates, velocity-change (accel) cost, gap penalties, soft
+  anchoring to both paddle endpoints. cc candidates, K=14:
+  r@12 205, prec 0.36, ADDED 60.  Nulls 0.
+- A/B one-sided variants (anchor at paddle A only / B only) as a
+  two-sided independence gate for corridors the decode cannot vouch
+  for: agreement of two DP passes that share no anchor. First
+  product run: ab kept 0 — probe re-diagnosis (corridor_probe_ab.py)
+  showed NO bug and only ONE truly unjudged corridor (307.27-308.75 s,
+  a candidate desert where even one-sided paths are empty); the other
+  11 non-injecting corridors were judged-and-REJECTED on decode
+  disagreement. That conflation (unjudged vs rejected) is what the
+  --abo arbitration below fixes.
+
+**Decode-hole autopsy** (corridor_autopsy.py; answers the owner's
+"how does a ball I can see produce no candidate?"): of r10's 252
+holes, ZERO lack local +/-2-frame motion signal — the slow-ball /
+far-court-parallax hypothesis is DEAD (a +/-6-frame differencer and a
+chroma differencer, tried as counterfactuals, buy +9/252 between
+them). The real failure modes: MERGED/DISPLACED 138/252 (55% — ball
+signal absorbed into a player-sized blob, median area 1572 px^2 vs
+AREA_MAX 600, centroid ~23 px from the click), OUT-OF-WINDOW 28
+(11% — fast balls, median 8.7 px/frame, outside the corridor window),
+SIGNAL-OK 86 (34% — a candidate existed and selection failed).
+Counterfactual candidate emitter (NMS local maxima instead of
+connected components): hole coverage 98/252 -> 236/252 (94%) on r10,
+72/202 -> 182/202 (90%) on r9 — at the price of ~70 junk peaks per
+patch. Lesson bought cheap this time: measure the mechanism before
+building the fix — a slow-mode/chroma build would have been wasted.
+
+**Visibility-state taxonomy** (owner-proposed three states, graded
+against their own clicks). Fractions: r10 V (plainly visible) 73%,
+V+S (visible + hidden-but-inferrable) 98%; r9 V 66%, V+S 88%.
+INVERSION: the decoder misses VISIBLE clicks at a higher rate than
+hidden ones (r10 42% of V vs 28% of S; r9 28% vs 20%) — 81% of r10's
+hole mass is state 1. So the opportunity was never "infer through
+occlusion", it is "stop losing the ball you can see" (= the merging
+failure above). S runs are short: median 3 clicks (~6 frames, inside
+the DP's GAP=6), p90 8, max 15 — occlusion bridging is within reach
+of the existing gap mechanic. State 3b (off-frame, N-coded) runs long
+only on lobs (r9: runs of 21 and 34 clicks) and is harmless to the
+ledger: no bounce happens off-frame, and the corridor re-anchors at
+the next contact.
+
+**Scope correction to the old 64% in-play findability finding**
+(2026-08-15, ball_visibility.py). The owner's clicks REPLICATE it —
+as isolated-frame findability: V fraction 66-73% matches 64%. But a
+corridor instrument integrates over time, so its ceiling is V+S =
+88-98%, not 64%. The old finding stays retained for exactly what it
+killed — training a single-frame detector on labels that cannot be
+falsified in the invisible fraction — and licenses nothing about
+trajectory-integrating instruments. (Owner directive this session:
+do not treat 64% as binding on corridor work; this is the measured
+reconciliation.)
+
+**Appearance-peak emitter: built, measured, RETIRED.** NMS peaks of
+the motion image ranked by hand-built ball appearance (white tophat
+9x9 — bright blob OR thin streak both survive — + yellowness
+(R+G)/2-B + motion), cap 600/frame, no training. WORSE than cc blobs
+everywhere: r10 prod 147/0.24 (vs cc 205/0.36), with body filter
+123/0.21 (vs cc+body 282/0.51). Mechanism: appearance ranking
+promotes PERSISTENT bright smooth-moving extremities — shoes,
+wristbands — which the accel cost cannot reject because they move
+smoothly; appearance and smoothness stopped being independent
+filters. The candidate-coverage problem the autopsy found is real,
+but this emitter buys coverage with exactly the junk that defeats
+the selector.
+
+**"Humans aren't the ball" (owner-specced): the instrument win of
+the thread.** Soft DP cost from the pose skeletons already in hand:
+candidates near extremity keypoints (elbows/wrists/knees/ankles,
+kpc>=0.3, ALL tracks including refs) pay W_BODY=25 * max(0, 1-d/16px).
+Soft, not a veto, and interior frames only — the ball legitimately
+sits at the hitter's wrist at contact (endpoint frames exempt) and
+passes near far-court feet in 2D on kitchen descents. r10 cc+body:
+**r@12 282, prec 0.51, ADDED@12 82** (from 205/0.36/60 without);
+S-click precision 0.58. Generalizes: r9 cc+body prod r@12 388,
+prec 0.55, ADDED@12 32 (oracle 369/0.56) — precision holds on a
+second rally with different geometry, nulls ~0.
+Null battery: 0 everywhere except one cc+body oracle-null arm at
+13/657 (prec 0.18) — the displaced corridor still overlaps the real
+flight in places, i.e. the filter is good enough to find the actual
+ball from a wrong window; real:null ~ 20:1. Watch it, not alarming.
+
+**Product test — injection into the r10 check-3 fit** (corridor_fit.py
+--body --ab --abo --targeted). Three gates arbitrate what enters:
+(1) decode-shadow vouching (DP path within 10 px of the existing
+decode over >=5 frames — label-free); (2) A/B consensus for corridors
+the decode cannot judge; (3) --abo: A/B consensus OVERRIDES a
+judged-but-disagreeing sparse decode — licensed by the autopsy
+finding that decode points inside merged regions are arm centroids
+~23 px off, so two anchor-independent DP passes agreeing within
+12 px outrank them. Injection restricted to segments holding a split
+candidate (an approach event far from every bound); owner truth used
+only to GRADE the injected points, never to select them.
+
+RESULT — the arbitration WORKED and the ledger did NOT move:
+27 corridors -> 17 shadow-vouched + 7 consensus (previous best
+7 + 0), 41 obs injected into the 6 split-candidate segments,
+med-vs-truth 4.5 px (ab-only 3.1 px — the points the old pipeline
+threw away on the word of an arm-centroid decode were the MOST
+accurate). Fit: matched 18/26, med 2.31 ft (unchanged), **0 splits
+accepted**, bounces 7v13 (baseline 8v13 — one segment tipped out of
+the plausible set, taking a crossing 16/17 -> 15/16 and a bounce
+with it). Bar (tracked >= 12 bounces, med <= 3.0 ft): FAIL. Some
+individual impact reads improved (317.37: 0.72 -> 0.37 ft; 304.67:
+1.50 -> 0.89), so the injected points are real signal — they just
+could not move the fits.
+
+**Truth-fit observability autopsy (corridor_truthfit.py — why 41
+accurate points changed nothing).** For each of the 6 candidate
+segments, fit_segment run on (a) the resident visited stream and
+(b) the owner's clicks alone — the best observations that can ever
+exist. Diagnostic use of labels only. The FAIL decomposes cleanly,
+and the truth-fit AGREES WITH THE HUMAN LEDGER segment by segment:
+- All 6 resident fits are ok=False -> they contribute ZERO bounces,
+  which balances the books exactly: the human has ~5 bounces in
+  these spans, and the ledger reads 8v13.
+- 2/6 are FALSE ALARMS (303.00-304.00, 317.37-318.45): under
+  clicks the fit is a clean single arc (1.47 / 1.89 px, 0 bounces)
+  — and the human ledger has ARC segments there too. The approach
+  events at 303.63 / 317.80 proposed contacts that don't exist;
+  the split guards (margin, plausibility) correctly refused them
+  even under perfect obs. The machinery's guards WORK.
+- 3/6 are WINNABLE with truth-grade obs: 304.67-305.37 fits ok
+  with its bounce (+1); 310.22-311.48 splits at 311.03 vs the
+  human's contact at 311.07, rms 8.54 -> 1.00 px (+1); 313.95-
+  315.22 splits at 314.27 vs the human's 314.32 (+1). Perfect-obs
+  ceiling via this lever: 8+3 = 11 — still under the 12 bar.
+- 1/6 (301.02-302.73) needs TWO contacts the approach channel
+  never proposed (human bounds at 301.32 and 302.34); one split
+  cannot fix it and no candidate exists for the other. That is
+  the remaining +2 that reaches 13.
+WHY the injection failed while clicks succeed: the injection is
+ADDITIVE-ONLY — it bridges empty frames but never evicts the
+corrupt resident observations (the merged-blob arm centroids the
+autopsy measured at ~23 px off), and 41 points cannot outvote
+~240 residents. The corruption shows in both directions: seg
+303.00 reads rms 7.76 on residents vs 1.47 on truth (junk breaks
+a clean flight), seg 304.67 reads 1.74 on residents vs 3.48 on
+truth (junk fakes cleanliness and hides a real bounce).
+
+**Corridor-thread verdict.** The INSTRUMENT is the best ball-
+position source this footage has ever had — r@12 282-388, prec
+0.51-0.55 across two rallies, nulls ~0, injected accuracy 4.5 px,
+and a vouching stack (shadow / A-B consensus / consensus-override)
+that is fully label-free. The PRODUCT hypothesis — that restoring
+missing observations moves the r10 bounce ledger — is FALSIFIED as
+posed: the binding failures are corrupt resident observations and
+one segment with two undetected contacts, not missing points.
+Bar not met; r10 check-3 stays FAIL (18/26, med 2.31 ft, 7v13 in
+the injected arm). Next levers, in order of license already earned:
+(1) EVICTION, not just bridging — inside a vouched corridor,
+resident visited points far from the DP path are the measured arm
+centroids; replace them under the same label-free gates, which is
+exactly the move the truth-fit says converts 310.22/313.95/304.67
+(+3 -> 11). (2) A second contact channel for the 301.32-type miss
+(the DP paths themselves kink at contacts — turn-in-corridor as
+contact evidence), worth +2 more only if (1) lands. (3) The r9
+fit arm stays closed (stream/readout floor on fast drives, oracle
+fails the med bar there); r6 stays gated on decode health. None of
+this touches MVP-1 (checks 1+2), which is unaffected by the
+bounce-ledger research line.
+
+**Post-verdict measurements (same day, owner-driven design loop).**
+(a) JUNK DYNAMICS — what the stream does after grabbing a non-ball
+point (r10: 20% of truth-covered points junk >12 px, half of that
+>30 px): next frame the stream is GONE 44% of the time (junk is the
+last gasp before a hole — 50/69 junk runs end in a stream hole, only
+19 recover); when present it is still junk 82%; runs med 2 / p90 5 /
+max 18 points; held junk MOVES ~7 px/frame (arm-speed — why accel
+cost alone cannot reject it); 44% of junk sits within 16 px of a
+skeleton extremity, and near-extremity stream points are junk at 50%
+vs the 20% base. r9 same shape, milder (13%, 12 px/frame).
+(b) HOLE-TRIGGER COST (owner rule "lost it for X frames -> try
+another option", graded BEFORE building): as a blind delete it is a
+coin flip — X>=2,K=1 removes 50 junk but 46 good on r10, and is
+net-negative on r9 (42 junk / 59 good); ~70% of holes have the ball
+VISIBLE inside (owner V codes), so a hole does not imply a junk
+tail. Body-qualified: 51j/23g r10 (x3.4 concentration), ~1:1 r9.
+Capture ceiling ~half the junk at any setting. Verdict: usable only
+as a WHERE-to-re-adjudicate flag feeding evict-and-verify (a good
+resident is re-confirmed by the vouched DP path, so the 46 good
+points cost nothing under trial-not-deletion).
+(c) CAUSE CLASSIFIER INVERTS the intuitive rule set ("behind a
+human -> stick with it; no reason -> try again"): label-free
+occlusion calls (A->B chord >=50% inside a pose bbox) select
+JUNK-enriched tails (r10 48j/32g; reacq after them 50j/28g) and the
+owner codes say the ball was VISIBLE during 83% of "occluded" hole
+clicks — the chord passes through the player because the TRACKED
+points sit on players, not because the ball hid; the junk causes
+its own occlusion signature. "Unexplained" holes have overwhelmingly
+GOOD tails (14g/2j r10, 16g/6j r9) — the detector drops clean locks.
+Edge-of-frame holes are rare (1-2/rally; lob exits do not leave a
+near-border last point). ROBUST FORM of the owner's rules: judge the
+HELD POINT, not the hole — tail ON a body -> distrust/trial; tail in
+open space -> trust and bridge regardless of hole appearance.
+(d) MISS MAP, r10 production path (crossing_demotion): the credited
+8 decompose as 2 precise (309.13 within 0.3 ft of the human 309.15;
+312.79 within 0.5 ft), 2 loose (297.72 ~2.4 ft; 300.32 ~3.1 ft),
+ONE human bounce double-counted by two segments with ~14-16 ft
+position error (304.93 + 305.69 vs human 305.36), and TWO
+fabricated: 308.59 with its arc junction at z=10.2 ft (in
+307.27-308.75 — the A/B probe's candidate desert; least real ball,
+most confident fake) and 317.62 (z=1.3 ft) in a stretch both the
+human ledger and the truth-fit call bounce-free. The 8 misses: 7 of
+8 in the FAR half (the dink/drop zone), 1 near-half (313.95); at
+the bounce instant the owner clicks read V (plainly visible) for 3
+— 296.50, 302.65, 310.58 — and S (momentarily behind a body but
+inferable from surrounding clicks) for 5; every miss window has
+full 21-click coverage. Labels are not the gap; the stream is.
+
+**Spaghetti trail matcher (2026-09-01, owner-designed; three graded
+iterations, scratchpad `spaghetti.py` + `launch_prior.py`).** The
+design: per corridor (contact A -> contact B), enumerate physically
+legal drag-ballistic trails (closed-form: the connecting launch
+velocity between two 3D points in time T is analytic; bounce trails =
+launch grid integrated to the floor, restitution-gated second arc to
+B) and let motion detections VOTE on which trail they fit best — no
+frame-chaining, holes bridged by the trail itself. Owner clicks grade
+(identical metric to the DP baseline, displaced-anchor nulls); clicks
+NEVER enter trail selection, S ("hidden") clicks half-weighted in the
+prior harvest and split out in grading per the owner's caution.
+LAUNCH PRIOR (the measured constants): 61 validated launches / 27
+bounces harvested ONLY from rms<3 click-driven arc fits across
+r6/r7/r9/r10 — speed P5-P95 20.6-85.1 ft/s (median 38), loft -11..+50
+deg (median 12.5), drag k median 0.36 (independently matches winprob's
+k≈0.4), bounce e_z median 0.79. Sanitized to a 52-shot book in six
+recognizable modes: 13 drops, 11 rolls, 6 dinks, 14 drives, 5 smashes,
+3 lobs (soft game modal, as the owner guessed).
+V1 (open grids, per-frame max-support): FALSIFIED — junk density
+became the objective (corridors with support 49/49 frames and ZERO
+click hits; bounce topology over-selected; winning speeds pinned at
+grid extremes). r10 142 r@12/prec 0.39, r9 104/0.26 vs DP 282/0.51,
+388/0.55. Nulls clean (0-5), so anchors carry real signal even here.
+V2 (per-frame Monte-Carlo null subtraction — 8 random probes/frame,
+score = support minus what a random window point collects — plus
+kernel 14->8 px, top-6 refine, bounce complexity penalty): precision
+up on every arm (r10 oracle 0.46 vs DP 0.43, first spaghetti arm to
+beat DP precision), coverage down (84-85 r@12), still loses badly.
+Winning trails still 92-103 ft/s in corridors the human fits call
+soft arcs: the family itself was the problem, not the scorer.
+V3 (owner steer: "pickleball shots only have a limited number of
+shapes — any physics option that works is too broad"): bounce family
+proposes ONLY the 52-shot book (height-matched to contact, |z0-za|<=
+1.8 ft), every trail pays 0.7/unit distance to its nearest real shape
+in (speed/8, loft/10) space, corridors with <2 net frames of evidence
+ABSTAIN (7-13 of ~30 corridors per arm). Result: the trail matcher is
+now a PRECISION instrument — oracle-arm prec 0.57 (r9, vs DP 0.56;
+[S]-clicks 0.67) and 0.53 (r10, vs DP 0.43), nulls 0-1, sane speeds,
+topology agreement with human fits 57-64% — at ~1/3 of DP's coverage
+(159/114 r@12 oracle vs 369/255; prod 89/84 vs 388/282). Single
+corridors now BEAT the chain where it struggles (r9 265.0-266.1:
+snap 22 clicks vs DP 12; r10 312.1-313.0: 17 vs 14), and full-trail
+bridging ADDED@12 42 decode-missed clicks on r10 oracle vs DP's 40.
+Complementarity is real: chain = coverage, trails = precision.
+Residual bind: the peak emitter almost never abstains (junk keeps
+every corridor above threshold) — the deficit is the EYES, not the
+physics. TRAINING UNLOCKED (owner call, 2026-09-01, explicitly
+lifting the no-training rule for this thread): next instrument is a
+learned per-candidate emission scorer trained on the owner's r6+r7
+clicks only (348 V positives; r9/r10 clicks stay evaluation-only so
+every number above remains comparable), hand-rolled logistic on
+appearance/motion/temporal-persistence features; the auto-label
+poisoning lesson still binds — no training on tracker output or model
+self-labels, ever.
+
+**Learned emission scorer (2026-09-01, the first trained instrument
+in the ball thread; scratchpad `emission.py` + `emission_model.json`).**
+Design + discipline as pre-stated above: hand-rolled Adam logistic
+(no sklearn in this env) on 14 per-candidate features — motion at the
+pixel plus SAME-PIXEL motion one frame earlier/later and their min
+(temporal persistence), tophat, yellowness, gray level, local std,
+cc area, candidate crowding within 16 px, distance-to-nearest-body,
+frame position, peak rank. Positives = candidates within 6 px of an
+owner V click (r6: 198, r7: 161 of 125k candidates in click-labeled
+frames); S clicks ("close to where the ball is", owner caution) become
+22 px ignore-zones, never positives; negatives only from click-labeled
+frames. TRAIN = r6+r7 ONLY; r9/r10 clicks stayed out of training, so
+every graded number is comparable to the DP/v3 ledger above.
+CROSS-RALLY TRANSFER: AUC 0.9042 (train r6 → test r7) / 0.9394
+(r7 → r6). The learned weights independently recover the junk autopsy
+from sections (a)-(c): persistence −1.53 (static shimmer persists at
+its pixel; the ball vacates — the strongest single feature), yellow
++1.29, crowding −0.91, local std −0.81, body proximity −0.54. Nobody
+told it those rules; 359 clicks did.
+DEPLOYED TWO WAYS: hard pre-filter on the DP chain's candidates
+(p ≥ 0.096 = 97% train pos recall; culls 45-53% of all cc/peak
+candidates on r9/r10) and SOFT evidence weight in the spaghetti
+kernel (per-frame support weight 0.25 + 1.75p replacing the hand
+peak-rank bonus). One graded run per rally, same metric and
+displaced-anchor nulls as every arm above.
+RESULTS — oracle arms (corridors anchored at true contacts):
+the filtered chain beats the incumbent on BOTH axes on BOTH rallies,
+the first instrument in this thread to do that — dp-ccL r9 388 r@12 /
+prec 0.59 (vs 369/0.56), r10 261/0.48 with ADDED@12 48 (vs
+255/0.43/40). The trail matcher on r9 jumps to 177 r@12 at prec 0.74
+(vs 159/0.57; [V] 0.73, [S] 0.76 — three of four emitted points land
+within 12 px of a click); r10 flat (115/0.54 vs 114/0.53). The
+junk-dominated peak arm nearly doubles at better precision: r10
+130/0.33 (vs 92/0.18), r9 170/0.39.
+RESULTS — prod arms (corridors from the decoded chain): a
+precision-for-coverage trade, slightly net-negative on hits — r9
+394/0.57 (vs 388/0.55) but r10 271/0.53 (vs 282/0.51), ADDED down
+both rallies (32→26, 82→79). Autopsy: the whole r10 deficit is TWO
+corridors, both fast drives — 297.87-299.20 (bounce/drive 58 ft/s:
+dp 20 → 0) and 295.87-296.47 (drive 89 ft/s: 12 → 5). The threshold
+was set at 97% recall on r6/r7; on faint fast balls p under-scores
+and a HARD filter kills the entire chain, while the soft form
+degrades gracefully (no spaghetti arm regressed anywhere). NULLS:
+r9 all eight arms zero; r10 one oracle null at 5/657 hits prec 0.07
+(~2% noise floor), the rest 0.
+VERDICT on the owner's option 1: training pays. Half the candidate
+junk is identifiable from appearance+persistence alone while keeping
+97% of true ball, the oracle chain improves on both axes, and a
+0.74-precision trail matcher is now a credible contact-to-contact
+bridge where the chain breaks. The one measured bind is the hard
+threshold on fast drives. NEXT (pre-registered here): feed p into
+the DP unary cost as a SOFT term instead of a hard cull — any weight
+tuned on r6/r7 ONLY, then one-shot graded on r9/r10, same protocol
+as this chapter.
+
+**Soft p-term in the DP — tuned blind on the train rallies, one-shot,
+the biggest single jump in the corridor thread (2026-09-01, same
+session; scratchpad `softdp.py` + corridor_dp W_P_SOFT).**
+MECHANISM: taking a candidate now costs W_P_SOFT·(1−p) inside the DP
+(p rides as a 5th tuple field; 4-tuple callers and W=0 are
+bit-identical to the incumbent — regression-checked, the recorded r10
+282/0.51/82 reproduced exactly). A faint true ball competes against
+the W_GAP=9 skip price instead of being culled outright.
+TUNING, r6/r7 ONLY: cross-fold p-caches so the tuner never sees
+in-sample p (emission.py cache-cross: r6 scored by an r7-only model
+and vice versa; fold kp97 0.150/0.028 — the same asymmetry the
+cross-val neg-kept split showed). Selection rule frozen in softdp.py
+BEFORE any number was seen: smallest W maximizing total r@12 over
+r6+r7 × prod+oracle with pooled prec ≥ the W=0 baseline. Sweep:
+326/0.472 (W=0) → 342/0.505 (3) → 351/0.533 (6) → 346/0.556 (12) →
+376/0.633 (25) → 368/0.636 (50); HARD filter at fold kp97 336/0.582.
+Rule picked W=25 — already beating the hard filter on both axes on
+the train rallies. DISCLOSURE: a wiring smoke test had run W=12 on
+r10 (322/0.66) before tuning existed; the frozen rule never consults
+r9/r10 and picked 25, not 12, so the peeked value died with the test
+and every W=25 number below was unseen at freeze.
+ONE-SHOT (r9/r10, same metric and nulls as every arm above;
+soft vs hard-filter vs incumbent, r@12 @ prec, A = ADDED@12):
+  r9 prod    431 @ 0.69 A33 | 394 @ 0.57 A26 | 388 @ 0.55 A32
+  r9 oracle  406 @ 0.69 A33 | 388 @ 0.59 A26 | 369 @ 0.56 A31
+  r10 prod   320 @ 0.67 A87 | 271 @ 0.53 A79 | 282 @ 0.51 A82
+  r10 oracle 309 @ 0.61 A57 | 261 @ 0.48 A48 | 255 @ 0.43 A40
+Pooled +13% hits over the incumbent (1466 vs 1294) with +13–18pp
+precision on EVERY panel; r@8 up everywhere (r10 prod 263 vs 224).
+The fast-drive kills are fixed and then some: 297.87–299.20 dp 0→21
+(above the incumbent's 20), 313.95 17→24, two corridors the incumbent
+left empty now carry hits (315.22: 5, 317.37: 9); 307.27 (the
+candidate desert) and 308.75 stay 0 — no candidates, nothing to
+weight. The mechanism is visible in the counts: trackpts DROP (r10
+653 vs 818, r9 942 vs 1159) while hits rise — junk now costs more
+than a skip, so the DP skips. Nulls: spaghetti nulls unchanged (r9
+all zero, r10 the same 5-hit oracle null0); the dp arm carries no
+displaced null in this panel (it was null-validated in its own
+corridor_dp era). VERDICT: soft > hard > none — the learned emission
+wants to be EVIDENCE, not a gate. dp-ccS+body at W=25 is the thread's
+new best instrument (r9 431/0.69, r10 320/0.67 against the 388/282 @
+0.55/0.51 the whole thread has been graded against). NEXT LEVER: the
+product questions (bounce ledger, eviction/trial, double-contact
+segment) were all measured on the OLD stream — re-run them on this
+one before touching any other knob.

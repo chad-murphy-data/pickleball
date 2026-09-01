@@ -48,7 +48,7 @@ import court3d as c3  # noqa: E402
 import ball_decoder as bdec  # noqa: E402
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
-SEALED = {8}
+SEALED = set()       # r10 spent 2026-09-01 (graded MIDDLE, now train); next seal = r20 when labeled
 
 NET_Y = 22.0
 END_TRIM_S = 0.06
@@ -126,9 +126,66 @@ def turn_angles(points, events, win=0.2):
 
 
 def load_anchors(path):
-    return [(float(r["t_s"]), int(r["track"]), float(r["wrist_x"]),
-             float(r["wrist_y"]))
-            for r in csv.DictReader(open(path))]
+    """6-tuples (t, track, wrist_x, wrist_y, paddle_x, paddle_y); the
+    paddle point (wrist + 0.5*(wrist-elbow)) is the measured better
+    contact-position estimate (13-15 px vs 18-20 for the wrist) and
+    is what the claiming gate uses. Older CSVs without paddle columns
+    fall back to the wrist."""
+    out = []
+    for r in csv.DictReader(open(path)):
+        wx, wy = float(r["wrist_x"]), float(r["wrist_y"])
+        out.append((float(r["t_s"]), int(r["track"]), wx, wy,
+                    float(r.get("paddle_x") or wx),
+                    float(r.get("paddle_y") or wy)))
+    return out
+
+
+DEDUP_SAME_T = 0.12    # s: cross-track same-instant collapse (two
+                       # players "excited" at one moment — one contact)
+DEDUP_SIDE_T = 0.55    # s: same-TEAM-side collapse. Alternation is
+                       # exact, so one side's consecutive REAL touches
+                       # sit two shot-intervals apart (>=0.66 s even at
+                       # hand-battle pace); a same-side pair closer
+                       # than this contains a fake swing. Applied at
+                       # the ANCHOR level where the sequence is
+                       # complete — the claim-level version was killed
+                       # by claiming holes (see claim_bounds).
+
+
+def dedupe_anchors(anchors, zs, sides, turns=None):
+    """Anchor-precision pass (2026-09-01, after fix #1 left bound
+    recall/precision as the last check-3 blocker): collapse
+    same-instant cross-track anchors and too-close same-side pairs.
+    Tiebreak: proximity to a TIMING-STREAM turn first (the instrument
+    that passes check 2 — measured necessary on r10: keep-highest-z
+    kept energetic FAKE swings over soft real dink contacts, matched
+    20->14), excitement z second. anchors = load_anchors 6-tuples;
+    zs = parallel excitement list; turns = timing-stream events."""
+    def rank(z, a):
+        near = (turns is not None
+                and any(abs(a[0] - e) <= MATCH_S for e in turns))
+        return (1 if near else 0, z)
+
+    keep = []
+    items = sorted(zip(zs, anchors), key=lambda za: za[1][0])
+    for z, a in items:
+        t, tid = a[0], a[1]
+        side = sides.get(int(tid))
+        drop = False
+        for j, (z2, a2) in enumerate(keep):
+            t2, tid2 = a2[0], a2[1]
+            side2 = sides.get(int(tid2))
+            close_t = abs(t - t2) <= DEDUP_SAME_T
+            close_side = (side is not None and side == side2
+                          and abs(t - t2) <= DEDUP_SIDE_T)
+            if close_t or close_side:
+                if rank(z, a) > rank(z2, a2):
+                    keep[j] = (z, a)
+                drop = True
+                break
+        if not drop:
+            keep.append((z, a))
+    return [a for _, a in keep]
 
 
 def bound_anchor_positions(bounds, anchors, floors):
@@ -139,7 +196,7 @@ def bound_anchor_positions(bounds, anchors, floors):
         cand = [(abs(tb - a[0]), a) for a in anchors
                 if abs(tb - a[0]) <= MATCH_S]
         if cand:
-            _, (ta, tid, _, _) = min(cand, key=lambda c: c[0])
+            _, (ta, tid, *_) = min(cand, key=lambda c: c[0])
             out.append(floor_at(floors, tid, ta))
         else:
             out.append(None)
@@ -284,8 +341,87 @@ def _plausible(seg):
 
 # --------------------------------------------------------------- sides
 
+CLAIM_R = 130.0   # px: a claimed turn must sit near the claiming
+                  # anchor's PADDLE point — a contact happens AT the
+                  # paddle (good anchors measure 39-73 px from the
+                  # ball; junk anchors at fake swings are far from
+                  # it). Train iteration 2026-09-01 after r10's graded
+                  # MIDDLE: 73 anchors claimed ~30 turns on a
+                  # 26-contact rally, stealing real bounces into
+                  # contact bounds. MEASURED LIMITS on r10 (recorded
+                  # so nobody re-tunes this on one rally): radius
+                  # cannot separate true from junk claims (~1:1 kill
+                  # ratio at 130/180/240) and neither can turn angle
+                  # (distributions overlap; the r7 wobble separation
+                  # does not generalize) — the binding ceiling is
+                  # anchor recall x turn recall (~19/26 there).
+ALT_MAX_S = 0.7   # s: the alternation prune only fires on same-side
+                  # claim pairs CLOSER than this — exact alternation
+                  # holds over the COMPLETE contact sequence, so with
+                  # claiming holes a distant same-side pair usually
+                  # means a MISSED opposite contact between them
+                  # (pruning one would kill a true contact); a close
+                  # pair is a contact+own-wobble/bounce double.
 
-def tracked_side(rally, anchors, floors, serve, end):
+
+def track_sides(floors):
+    """{track: -1/+1 team side} from the automated FLOOR positions
+    (median court y vs the net) — the same channel check 3's
+    reconstruction already trusts for anchor sides. The npz 'side'
+    field is NOT team side (measured degenerate on r0010: all four
+    player tracks +1, which collapsed the alternation prune to a
+    single bound on the first full-iteration run)."""
+    out = {}
+    for tid, (ts, xs, ys) in floors.items():
+        out[int(tid)] = 1 if float(np.median(ys)) > NET_Y else -1
+    return out
+
+
+def claim_bounds(turns, angs, refined, anchors, sides=None,
+                 claim_r=None):
+    """claim_r=None and sides=None = the original LOOSE claiming
+    (one anchor claims its largest-angle turn in MATCH_S, no spatial
+    gate, no prune) — the production setting. MEASURED 2026-09-01,
+    multi-rally: the strict machinery below (paddle-point gate +
+    alternation prune) trades r10 5->7 matched impacts for an r7
+    COLLAPSE (7/8 @1.70ft -> 3/8 @5.98) — net-negative; kept for a
+    future anchor-recall upgrade, OFF by default."""
+    pts = sorted(refined)
+
+    def path_at(e):
+        near = min(pts, key=lambda p: abs(p[0] - e))
+        return near[1], near[2]
+
+    claims = {}                       # turn e -> (angle, track)
+    for ta, tid, wx, wy, gx, gy in anchors:
+        cand = []
+        for e in turns:
+            if abs(e - ta) > MATCH_S:
+                continue
+            if claim_r is not None:
+                px, py = path_at(e)
+                if math.hypot(px - gx, py - gy) > claim_r:
+                    continue
+            cand.append((angs[e], e))
+        if cand:
+            ang, e = max(cand)
+            if e not in claims or ang > claims[e][0]:
+                claims[e] = (ang, int(tid))
+    seq = []                          # (e, angle, side)
+    for e in sorted(claims):
+        ang, tid = claims[e]
+        side = (sides or {}).get(tid)
+        if (seq and side is not None and seq[-1][2] is not None
+                and side == seq[-1][2]
+                and e - seq[-1][0] < ALT_MAX_S):
+            if ang > seq[-1][1]:
+                seq[-1] = (e, ang, side)
+            continue                  # weaker same-side claim -> bounce
+        seq.append((e, ang, side))
+    return sorted(e for e, _, _ in seq)
+
+
+def tracked_side(rally, anchors, floors, serve, end, sides=None):
     """Decode -> turns -> (bounds, bounce events) -> reconstruction
     inputs. Everything automated; serve/end are the licensed window."""
     byf, t0 = bdec.load_candidates(rally)
@@ -293,28 +429,26 @@ def tracked_side(rally, anchors, floors, serve, end):
     f_max = round((end + 0.3 - t0) * bdec.FPS)
     byf = {f: c for f, c in byf.items() if f_min <= f <= f_max}
     oflags = bdec.out_of_court_flags(byf, bdec.court_hull())
-    aflags = bdec.anchor_flags(
-        byf, t0, [(t, x, y) for t, _, x, y in anchors])
-    visited = bdec.decode(byf, None, oflags, aflags)
+    # anchors never touch a decode — claiming only (see ball_grade)
+    visited = bdec.decode(byf, None, oflags, None)
     pts = [(t0 + f / bdec.FPS, x, y) for f, x, y in visited]
     # turns come from the arc-REFINED path — the same stream check 2
     # scores (raw visited points carry wobble that scrambles both the
     # event set and the claim angles); the raw points stay the fit
     # evidence below (real detections, not resampled arcs)
     refined = bdec.refine_arcs(visited, t0)
-    turns = [e for e in detect_events(refined)
+    # bounds from the TIMING stream (see ball_grade check-3 comment)
+    _, timing_ref = bdec.timing_decode(byf, None, oflags, t0, [])
+    turns = [e for e in detect_events(timing_ref)
              if serve - 0.3 <= e < end - 0.05]
-    angs = turn_angles(refined, turns)
+    angs = turn_angles(timing_ref, turns)
     # one anchor claims at most ONE turn (the LARGEST-ANGLE one within
     # MATCH_S): an anchor is a predicted contact, one contact makes one
     # turn, and a real shot reverses the ball (measured on r7: real
     # contacts turn 101-171 deg, the path wobbles hugging the same
     # anchors turn 42-66 deg — nearest-in-time picked the wobble twice)
-    claimed = set()
-    for ta, _, _, _ in anchors:
-        cand = [(angs[e], e) for e in turns if abs(e - ta) <= MATCH_S]
-        if cand:
-            claimed.add(max(cand)[1])
+    matched = claim_bounds(turns, angs, timing_ref, anchors)   # LOOSE
+    claimed = set(matched)
     # TRIED AND REJECTED 2026-08-31: promoting unclaimed turns >= 90 deg
     # to contact bounds (to rescue r6's missile-missed 148.6 contact).
     # It swallowed r7's real bounces into bounds — the crossing
@@ -322,7 +456,6 @@ def tracked_side(rally, anchors, floors, serve, end):
     # and flipped r7's check 3 to FAIL (bounces 0 vs 2, median 3.10).
     # A contact bound requires a hitter-chain anchor, full stop; a
     # missed anchor degrades to a longer segment, not a fake contact.
-    matched = sorted(claimed)
     bounce_evs = [e for e in turns if e not in claimed]
     bounds = matched + [end]
     obs = [(t, x, y, 1.0) for t, x, y in pts]
@@ -454,7 +587,8 @@ def main():
     P = c3.dlt(X3, x2)
     floors = track_floor(a.npz, P)
     anchors = load_anchors(a.anchors)
-    trk = tracked_side(a.rally, anchors, floors, serve, end)
+    trk = tracked_side(a.rally, anchors, floors, serve, end,
+                       track_sides(floors))
     hum = human_side(a.rally, end)
     compare(a.rally, trk, hum, P, floors, anchors)
 

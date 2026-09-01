@@ -36,7 +36,7 @@ import hitter_chain as hc  # noqa: E402
 import court3d as c3  # noqa: E402
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
-SEALED = {8}
+SEALED = set()       # r10 spent 2026-09-01 (graded MIDDLE, now train); next seal = r20 when labeled
 
 
 def make_anchors(npz, clip, offset, out_csv):
@@ -76,6 +76,8 @@ def main():
         a.npz, a.clip, a.offset,
         str(Path(a.workdir) / f"anchors_grade_r{a.rally}.csv"))
     anchors = br.load_anchors(anchors_csv)
+    zs = [float(r["excitement_z"] or 0)
+          for r in csv.DictReader(open(anchors_csv))]
 
     # ---- decode with licensed window only
     byf, t0 = bdec.load_candidates(a.rally)
@@ -83,15 +85,27 @@ def main():
     f_max = round((a.end + 0.3 - t0) * bdec.FPS)
     byf = {f: c for f, c in byf.items() if f_min <= f <= f_max}
     oflags = bdec.out_of_court_flags(byf, bdec.court_hull())
-    aflags = bdec.anchor_flags(byf, t0,
-                               [(t, x, y) for t, _, x, y in anchors])
-    visited = bdec.decode(byf, None, oflags, aflags)
+    # ANCHORS NEVER TOUCH A DECODE (final architecture, 2026-09-01,
+    # measured twice): in the timing stream they eat the null pct
+    # (77.8@86 vs @98.4 on r7); in the position stream their turn
+    # waivers subsidize junk near wrists and block the lob excursion
+    # (r10 V 66.2 anchored vs 73.6 anchor-free; r7 82.3 vs 84.8).
+    # Their job is bound CLAIMING in check 3, nothing else.
+    visited = bdec.decode(byf, None, oflags, None)
     refined = bdec.refine_arcs(visited, t0)
+    # two-regime split (decoder-fix addendum): the TIMING stream feeds
+    # check 2, on SELF-FEEDBACK anchors ONLY. Unioning the hitter-chain
+    # anchors in was MEASURED HARMFUL on the r7 readiness run
+    # (2026-08-31: timing 77.8@86 with the union vs 77.8@98.4 without —
+    # hitter anchors add cheap-turn zones at fake swings, inflating the
+    # event set and eating the null pct). Hitter anchors stay in the
+    # POSITION stream, where check 3 shows they work (bound claiming).
+    _, timing_ref = bdec.timing_decode(byf, None, oflags, t0, [])
     per_frame = {}
     for t, x, y in refined:
         per_frame[round((t - t0) * bdec.FPS)] = (t, x, y)
-    print(f"decoded {len(visited)} visited points, window "
-          f"{a.serve:.1f}-{a.end:.1f}s")
+    print(f"decoded {len(visited)} visited points (position stream), "
+          f"window {a.serve:.1f}-{a.end:.1f}s")
 
     # ================= answer key opens here =================
     imps, dead = load_impacts(rally=a.rally)
@@ -126,7 +140,7 @@ def main():
     hum_pts = [(float(r["t_s"]), float(r["x"]), float(r["y"]))
                for r in labels if r["x"] and r["vis"] == "V"]
     res = {}
-    for name, pts in (("tracker", refined), ("human", hum_pts)):
+    for name, pts in (("tracker", timing_ref), ("human", hum_pts)):
         evs = detect_events(pts)
         obs, p95, pct, med = score_events(evs, imps, span)
         res[name] = (obs, pct, p95)
@@ -143,21 +157,25 @@ def main():
           f"beats own null 95th: {'no' if c2_nullfail else 'yes'}")
 
     # ---- CHECK 3: replication (ball_replicate machinery)
+    # bounds come from the TIMING stream's turns — the instrument that
+    # passes check 2 (two-regime completion: "when" from timing,
+    # position evidence from the position stream). Measured 2026-09-01:
+    # position-stream turns under the anchor-free decode broke r7's
+    # bound structure (3/8 matched vs readiness 7/8).
     pts = [(t0 + f / bdec.FPS, x, y) for f, x, y in visited]
-    turns = [e for e in detect_events(refined)
+    turns = [e for e in detect_events(timing_ref)
              if a.serve - 0.3 <= e < a.end - 0.05]
-    angs = br.turn_angles(refined, turns)
-    claimed = set()
-    for ta, _, _, _ in anchors:
-        cand = [(angs[e], e) for e in turns if abs(e - ta) <= br.MATCH_S]
-        if cand:
-            claimed.add(max(cand)[1])
-    bounds = sorted(claimed) + [a.end]
-    bounce_evs = [e for e in turns if e not in claimed]
-    obs = [(t, x, y, 1.0) for t, x, y in pts]
+    angs = br.turn_angles(timing_ref, turns)
     X3, x2, _ = c3.load_landmarks()
     P = c3.dlt(X3, x2)
     floors = br.track_floor(a.npz, P)
+    anchors = br.dedupe_anchors(anchors, zs, br.track_sides(floors),
+                                turns)
+    print(f"anchors after dedupe: {len(anchors)}")
+    matched = br.claim_bounds(turns, angs, timing_ref, anchors)  # LOOSE
+    bounds = matched + [a.end]
+    bounce_evs = [e for e in turns if e not in set(matched)]
+    obs = [(t, x, y, 1.0) for t, x, y in pts]
     c3_pass = br.compare(a.rally, (obs, bounds, bounce_evs),
                          br.human_side(a.rally, a.end), P, floors,
                          anchors)

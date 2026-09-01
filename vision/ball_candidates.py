@@ -46,8 +46,8 @@ LAG_S = 0.10          # motion-diff lag
 THRESH = 18           # gray abs-diff threshold
 MIN_AREA, MAX_AREA = 4, 600
 TOP_K = 40
-SEALED = {8}          # gate holdout: --score refuses; extraction allowed
-                      # ONLY at the graded run (guarded in main)
+SEALED = set()       # gate holdout (--score refuses; extraction allowed);
+                     # r10 spent 2026-09-01 (graded MIDDLE, now train)
 
 
 def candidates_for_clip(clip, offset):

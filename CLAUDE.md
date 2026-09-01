@@ -698,6 +698,11 @@ social prediction-card renders (design bundle `Prediction Cards.dc.html`,
 port later). Deploy is .github/workflows/site.yml (build + Pages deploy on
 push to main, nightly data refresh); one-time setup = repo Settings →
 Pages → Source "GitHub Actions".
+**BALL-SEARCH THREAD (active, 2026-09-01): read `vision/ballsearch/HANDOFF.md`
+FIRST** — instruments (corridor DP + learned emission + spaghetti trail
+matcher, incumbent r9 431@0.69 / r10 320@0.67), constraints, regeneration
+recipe (clips + pose npz are staged by the owner, not in git), the
+corridor-geometry diagnosis and the ordered next-thread to-do live there.
 Vision (2026-08-11 → CLOSED 2026-08-15 → **SWING THREAD REOPENED later
 the same day, user call**) — **READ `vision/STATUS.md` FIRST** (added
 2026-08-20): a committed per-channel ledger of what works, what is dead,

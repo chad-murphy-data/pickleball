@@ -1,0 +1,5 @@
+# regenerable caches and staged media stay out of git (see HANDOFF.md)
+*.npz
+*.pkl
+*.mp4
+__pycache__/

@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from make_ball_audit import detect_events, score_events, load_impacts  # noqa: E402
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
-SEALED = {8}
+SEALED = set()       # r10 spent 2026-09-01 (graded MIDDLE, now train); next seal = r20 when labeled
 
 FPS = 60.0
 GAP_MAX = 21            # frames (0.35 s) — the battery's own blind-gap limit
@@ -84,6 +84,69 @@ ANCHOR_BONUS = 2.0      # edge-cost discount near an anchor. MEASURED
                         # nearly nil — the over-steer lesson, in numbers
 ANCHOR_TURN_FACTOR = 0.3  # turning near a predicted contact is cheap
 
+# ---- off-frame EXCURSION edges (train iteration after the r10 grade,
+# 2026-09-01): a lob that leaves the frame top is a legitimate >GAP_MAX
+# absence — r10's graded run proved it load-bearing (the one label gap
+# over GAP_MAX was the owner's flagged lob; clean-input decode
+# truncated at exactly 50% of the window). An excursion edge joins two
+# top-band candidates across GAP_MAX < d <= EXC_MAX at a flat price:
+# no cover bonus (nothing to cover — the ball is off-frame), no skip
+# penalty, court-hull penalty waived at its endpoints (a lob exits
+# above the 16-ft hull cap by definition), turn cost waived at its
+# junctions (the ballistic apex is a real direction change).
+EXC_TOP = 110.0         # px: both endpoints must sit this near the top
+EXC_MAX = 90            # frames (1.5 s) — covers r9's 68 and r10's 24
+EXC_PEN = 70.0          # flat edge cost: never preferred over a real
+                        # bridge (> TURN_CAP), far cheaper than losing
+                        # half a rally's coverage
+EXC_DX_RATE = 400.0     # px/s horizontal drift cap (r9 measured 291)
+EXC_COVER = 9.0         # per-frame absence allowance on excursion
+                        # edges — MEASURED NECESSARY on r10's real
+                        # stream (2026-09-01): at a flat EXC_PEN the
+                        # in-hull limb junk filling the lob gap earns
+                        # COVER_BONUS x 24 frames and always outbids
+                        # the excursion (the r10 re-run was byte-
+                        # identical to the graded run). Kept under
+                        # COVER_BONUS (14) so real detections always
+                        # beat an excursion; junk chains additionally
+                        # pay slow/turn costs, which is the margin.
+
+# ---- two-regime decode (ball_gate.md decoder-fix addendum,
+# 2026-08-31, owner-approved): ONE candidate stream, TWO decodes.
+# The POSITION stream is the production config above and feeds checks
+# 1 and 3. The TIMING stream re-decodes with the position stream's
+# own high-angle turns (forward AND reverse decode — the tie-breaks
+# flip exactly where evidence is ambiguous, so the union covers
+# contacts either direction sees) as extra time anchors, plus a
+# turn-cost hardening factor away from all anchors; check 2 reads it.
+# Rationale: the r8 autopsy localized the failure to selection among
+# junk AT contacts; anchors waive the turn cost where a contact is
+# plausible while hardening prices junk turns everywhere else.
+TIMING_HARD = 2.5       # turn-cost multiplier away from anchors
+TIMING_ANGLE = 40.0     # min turn angle (deg) to become a feedback anchor
+TIMING_ROUNDS = 0       # extra feedback iterations beyond the first.
+# FROZEN 2026-08-31 from the train sweep (33 configs, scratch grids over
+# hard 1.5-4.0 x angle 30-80 x rounds 1-3, hardening ladders, fwd/rev
+# adaptive selection, intersection anchors): ONE feedback round at 2.5/40
+# passes the human-matched check on ALL THREE train rallies — r6
+# 100@96.3 (human 100@94.5), r7 77.8@98.4 (77.8@91.4), r8 100@98.5
+# (100@98.5) — and screens 88@99.3 vs human 92@99.5 on dev rally 1
+# with NO pose anchors (angle 60 left r8 3 null draws short and r1 at
+# 84; angle 30 trades r1 back down for an r7 bump). Soft dink turns
+# need the 40-deg anchor gate: at 60 they get hardened away on long
+# rallies. Grade config unions hitter-chain anchors on top (r1
+# missile evidence: 72%-recall anchors carried turns to 96%). Measured
+# dead ends, do not retry: a SECOND feedback round drops r8 to 85.7
+# (over-steer); hardening LADDERS (soft round seeds anchors for a strict
+# round) fix r8 but break r6 — the soft round's junk turns get anchor
+# protection; INTERSECTION anchors (fwd AND rev must agree) strip the
+# real contacts (r8 14.3@0.8) because fwd/rev disagree exactly where the
+# ball passes a player, i.e. at contacts — the "contacts and junk
+# co-locate" geometry again; fwd/rev-agreement ADAPTIVE hard selection
+# picks wrong on r8 (agreement is not a quality signal across hard
+# values). r6 and r8 want opposite hardening at 2 rounds; 1 round at 2.5
+# is the stable point.
+
 
 def court_hull():
     """Convex hull (pixels) of the court footprint plus the footprint
@@ -101,12 +164,23 @@ def court_hull():
     return cv2.convexHull(pts.reshape(-1, 1, 2))
 
 
+COURT_MARGIN_TOP = 200.0    # px: the top band (y <= EXC_TOP) gets a
+                            # LOOSER hull margin, not a blanket waiver
+                            # — a frame-top lob flies far above the
+                            # 16-ft hull cap but stays court-central
+                            # in x, while scorebug/crowd junk lives in
+                            # the frame corners. The blanket waiver
+                            # regressed r6's check 2 (100@96 -> 85.7)
+                            # by re-admitting corner junk (2026-09-01).
+
+
 def out_of_court_flags(byf, hull):
     import cv2
     flags = {}
     for f, cands in byf.items():
         flags[f] = [cv2.pointPolygonTest(hull, (float(x), float(y)), True)
-                    < -COURT_MARGIN for x, y in cands]
+                    < -(COURT_MARGIN_TOP if y <= EXC_TOP else COURT_MARGIN)
+                    for x, y in cands]
     return flags
 
 
@@ -163,7 +237,7 @@ def anchor_flags(byf, t0, anchors):
     return out
 
 
-def decode(byf, flags=None, oflags=None, aflags=None):
+def decode(byf, flags=None, oflags=None, aflags=None, hard=1.0):
     frames = sorted(byf)
     nodes = [(f, i) for f in frames for i in range(len(byf[f]))]
     nid = {n: k for k, n in enumerate(nodes)}
@@ -180,7 +254,7 @@ def decode(byf, flags=None, oflags=None, aflags=None):
     by_frame_ids = defaultdict(list)
     for k, (f, _) in enumerate(nodes):
         by_frame_ids[f].append(k)
-    edges = []           # (a, b, d)
+    edges = []           # (a, b, d, exc)
     for a in range(len(nodes)):
         fa = nframe[a]
         for d in range(1, GAP_MAX + 1):
@@ -194,7 +268,18 @@ def decode(byf, flags=None, oflags=None, aflags=None):
             for j in np.argsort(dist)[:k]:
                 if dist[j] > vmax_d:
                     continue
-                edges.append((a, cand[j], d))
+                edges.append((a, cand[j], d, False))
+    # off-frame excursion edges: top-band -> top-band across long gaps
+    top_by_frame = defaultdict(list)
+    for k, (f, _) in enumerate(nodes):
+        if pos[k, 1] <= EXC_TOP:
+            top_by_frame[f].append(k)
+    for a in [k for ids in top_by_frame.values() for k in ids]:
+        fa = nframe[a]
+        for d in range(GAP_MAX + 1, EXC_MAX + 1):
+            for b in top_by_frame.get(fa + d, ()):
+                if abs(pos[b, 0] - pos[a, 0]) <= EXC_DX_RATE * d / FPS:
+                    edges.append((a, b, d, True))
     if not edges:
         return []
 
@@ -203,6 +288,7 @@ def decode(byf, flags=None, oflags=None, aflags=None):
     ea = np.array([e[0] for e in edges])
     eb = np.array([e[1] for e in edges])
     ed = np.array([e[2] for e in edges])
+    eexc = np.array([e[3] for e in edges])
     vel = (pos[eb] - pos[ea]) / (ed / FPS)[:, None]
     speed = np.hypot(vel[:, 0], vel[:, 1])
     slow = SLOW_PEN * np.clip(1.0 - speed / SLOW_FLOOR, 0.0, 1.0)
@@ -210,6 +296,9 @@ def decode(byf, flags=None, oflags=None, aflags=None):
     court = COURT_PEN * (ncourt[ea].astype(float) + ncourt[eb]) / 2.0
     anch = -ANCHOR_BONUS * (nanchor[ea].astype(float) + nanchor[eb]) / 2.0
     base = SKIP_PEN * (ed - 1) - COVER_BONUS * ed + slow + body + court + anch
+    base[eexc] = EXC_PEN - EXC_COVER * ed[eexc]     # flat entry price
+    # plus the absence allowance (see EXC_COVER) — never richer than
+    # real coverage, competitive against junk chains paying turn costs
     score = base.astype(float).copy()          # start-anywhere
     prev = np.full(E, -1)
     # process edges grouped by arrival frame so predecessors are final
@@ -224,8 +313,12 @@ def decode(byf, flags=None, oflags=None, aflags=None):
                 s0, pe = best_in[a]
                 dv = vel[ei] - vel[pe]
                 tc = min(math.hypot(dv[0], dv[1]) / ACCEL_SCALE, TURN_CAP)
-                if nanchor[a]:
+                if eexc[ei] or eexc[pe]:
+                    tc = 0.0            # ballistic apex: real turn, free
+                elif nanchor[a]:
                     tc *= ANCHOR_TURN_FACTOR
+                else:
+                    tc *= hard          # timing stream: junk turns priced up
                 cand_score = s0 + base[ei] + tc
                 if cand_score < score[ei]:
                     score[ei] = cand_score
@@ -244,6 +337,60 @@ def decode(byf, flags=None, oflags=None, aflags=None):
     path_nodes.reverse()
     return [(int(nframe[k]), float(pos[k, 0]), float(pos[k, 1]))
             for k in path_nodes]
+
+
+def decode_reversed(byf, flags=None, oflags=None, aflags=None, hard=1.0):
+    """Decode the time-mirrored problem; return the path in ORIGINAL
+    frame order. The Viterbi is a global optimum so this mostly
+    reproduces the forward path — the differences live exactly where
+    the evidence is ambiguous (see reverse_agreement)."""
+    fmax = max(byf)
+    rbyf = {fmax - f: c for f, c in byf.items()}
+    rflags = {fmax - f: v for f, v in flags.items()} if flags else None
+    roflags = {fmax - f: v for f, v in oflags.items()} if oflags else None
+    raflags = {fmax - f: v for f, v in aflags.items()} if aflags else None
+    rev = decode(rbyf, rflags, roflags, raflags, hard)
+    return sorted((fmax - f, x, y) for f, x, y in rev)
+
+
+def turn_anchor_list(refined, min_angle=None):
+    """(t, x, y) of a refined path's own turns with angle >= min_angle
+    — the feedback anchors of the timing stream."""
+    from ball_replicate import turn_angles     # lazy: replicate imports us
+    if min_angle is None:
+        min_angle = TIMING_ANGLE
+    evs = detect_events(refined)
+    angs = turn_angles(refined, evs)
+    pts = sorted(refined)
+    out = []
+    for e in evs:
+        if angs.get(e, 0.0) < min_angle:
+            continue
+        near = min(pts, key=lambda p: abs(p[0] - e))
+        out.append((e, near[1], near[2]))
+    return out
+
+
+def timing_decode(byf, flags, oflags, t0, anchor_pts):
+    """The timing stream: decode with feedback turn anchors (from the
+    forward AND reverse position decodes) unioned onto any provided
+    anchors (hitter-chain at grade time), turn cost hardened by
+    TIMING_HARD away from all anchors. Returns (visited, refined)."""
+    anc = list(anchor_pts)              # grows: turns are never forgotten
+    base_af = anchor_flags(byf, t0, anc) if anc else None
+    fwd = decode(byf, flags, oflags, base_af)
+    rev = decode_reversed(byf, flags, oflags, base_af)
+    for _ in range(1 + TIMING_ROUNDS):
+        for path in (fwd, rev):
+            for a in turn_anchor_list(refine_arcs(path, t0)):
+                if all(abs(a[0] - b[0]) > 0.08 or
+                       math.hypot(a[1] - b[1], a[2] - b[2]) > 20
+                       for b in anc):
+                    anc.append(a)
+        af = anchor_flags(byf, t0, anc)
+        fwd = decode(byf, flags, oflags, af, hard=TIMING_HARD)
+        rev = decode_reversed(byf, flags, oflags, af, hard=TIMING_HARD)
+    return fwd, refine_arcs(fwd, t0)
 
 
 def reverse_agreement(byf, flags, oflags, aflags, fwd, tol_px=10.0):
@@ -322,12 +469,13 @@ def to_per_frame(visited, t0):
     return {f: (t0 + f / FPS, x, y, vis) for f, (x, y, vis) in out.items()}
 
 
-def score_train(rally, per_frame, visited, t0, refined=None):
+def score_train(rally, per_frame, visited, t0, refined=None, timing=None):
     # gate panel: first physical contact to 0.5 s after the last
     imps_panel, _ = load_impacts(rally=rally)
     p_lo, p_hi = imps_panel[0], imps_panel[-1] + 0.5
-    labels = [r for r in csv.DictReader(open(DATA / f"ball_path_r{rally}.csv"))
-              if r["x"] and p_lo <= float(r["t_s"]) <= p_hi]
+    all_labels = [r for r in csv.DictReader(
+        open(DATA / f"ball_path_r{rally}.csv")) if r["x"]]
+    labels = [r for r in all_labels if p_lo <= float(r["t_s"]) <= p_hi]
     print(f"--- rally {rally}: decoded {len(visited)} visited points; "
           f"gate panel {p_lo:.2f}-{p_hi:.2f}s")
     for cls, tol in (("V", 25.0), ("S", 40.0)):
@@ -348,10 +496,16 @@ def score_train(rally, per_frame, visited, t0, refined=None):
     # check 2, human-matched (Amendment 1): tracker vs human, same battery
     imps, dead = load_impacts(rally=rally)
     span = (imps[0] - 1.0, dead)
-    trk_pts = refined if refined is not None else [
-        (t0 + f / FPS, x, y) for f, x, y in visited]
+    trk_pts = (timing if timing is not None
+               else refined if refined is not None
+               else [(t0 + f / FPS, x, y) for f, x, y in visited])
+    if timing is not None:
+        print("  (check 2 scored on the TIMING stream — two-regime "
+              "decode per the decoder-fix addendum)")
+    # human path over the FULL label span — ball_grade.py's convention
+    # (check 1's panel filter applies to hit rates only, never here)
     hum_pts = [(float(r["t_s"]), float(r["x"]), float(r["y"]))
-               for r in labels if r["vis"] == "V"]
+               for r in all_labels if r["vis"] == "V"]
     res = {}
     for name, pts in (("tracker", trk_pts), ("human", hum_pts)):
         evs = detect_events(pts)
@@ -391,6 +545,11 @@ def main():
                          "forward/backward agreement (label-free "
                          "confidence; see reverse_agreement)")
     ap.add_argument("--graded-run", action="store_true")
+    ap.add_argument("--two-regime", action="store_true", default=True,
+                    help="score check 2 on the timing stream (default; "
+                         "--no-two-regime for the single-decode read)")
+    ap.add_argument("--no-two-regime", dest="two_regime",
+                    action="store_false")
     a = ap.parse_args()
     if a.rally in SEALED and not a.graded_run:
         raise SystemExit(f"rally {a.rally} is SEALED — refusing")
@@ -412,11 +571,12 @@ def main():
     if a.pose and BODY_PEN > 0:
         flags = in_body_flags(byf, t0, body_boxes(a.pose))
     oflags = out_of_court_flags(byf, court_hull())
-    aflags = None
+    aflags, anchor_pts = None, []
     if a.anchors:
-        anc = [(float(r["t_s"]), float(r["wrist_x"]), float(r["wrist_y"]))
-               for r in csv.DictReader(open(a.anchors))]
-        aflags = anchor_flags(byf, t0, anc)
+        anchor_pts = [(float(r["t_s"]), float(r["wrist_x"]),
+                       float(r["wrist_y"]))
+                      for r in csv.DictReader(open(a.anchors))]
+        aflags = anchor_flags(byf, t0, anchor_pts)
     visited = decode(byf, flags, oflags, aflags)
     if a.reverse_check:
         agree = reverse_agreement(byf, flags, oflags, aflags, visited)
@@ -425,12 +585,15 @@ def main():
               f"confirmed by the backward decode "
               f"({100*n_ok/max(len(agree),1):.0f}%)")
     refined = refine_arcs(visited, t0)
+    timing_ref = None
+    if a.two_regime:
+        _, timing_ref = timing_decode(byf, flags, oflags, t0, anchor_pts)
     # per-frame positions from the refit (check 1 uses these too)
     per_frame = {}
     for t, x, y in refined:
         per_frame[round((t - t0) * FPS)] = (t, x, y, True)
     if a.rally not in SEALED:
-        score_train(a.rally, per_frame, visited, t0, refined)
+        score_train(a.rally, per_frame, visited, t0, refined, timing_ref)
     if a.dump:
         with open(a.dump, "w", newline="") as f:
             w = csv.writer(f)
