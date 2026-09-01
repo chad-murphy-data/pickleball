@@ -268,6 +268,22 @@ REST_PEN = 1.5              # restitution: a bounce dissipates energy —
                             # post-bounce speed must not exceed
                             # pre-bounce (user observation 2026-09-01),
                             # and the vertical velocity must flip up.
+BOUNCE_VZ_IN = -3.0         # ft/s: a real bounce ARRIVES falling and
+BOUNCE_VZ_OUT = 2.0         # LEAVES rising — hard gates (2026-09-01,
+                            # truth-calibrated): the owner asked "are
+                            # we sure the ball bounces?" and the
+                            # label V-shape instrument answered — r7
+                            # has ZERO label-evident bounces (all
+                            # volleys) while both fitters claimed 3-4,
+                            # and r10's human-side 13 vs label-evident
+                            # 8 (the tracker's 8 matched). Phantom
+                            # splits on volley-flat trajectories fail
+                            # these gates; genuine bounces (serves
+                            # included) sail through.
+BOUNCE_MARGIN = 0.8         # px rms the split must win by (was 0.5;
+                            # the interior grid multiplies candidate
+                            # comparisons, so the acceptance margin
+                            # carries the multiplicity burden)
 
 
 def fit_segment(P, obs, t0, t1, events):
@@ -319,7 +335,11 @@ def fit_segment(P, obs, t0, t1, events):
         rms = float(np.sqrt((r1**2 * len(o1) + r2**2 * len(o2))
                             / (len(o1) + len(o2))))
         plausible = -2 <= xy[0] <= 22 and -1 <= xy[1] <= 45
-        if plausible and rms < best["rms"] - 0.5:
+        if float(v_in[2]) > BOUNCE_VZ_IN:
+            continue          # not falling in — a volley, not a bounce
+        if float(arc_vel(a2, 0.0)[2]) < BOUNCE_VZ_OUT:
+            continue          # not rebounding — phantom split
+        if plausible and rms < best["rms"] - BOUNCE_MARGIN:
             best = {"kind": "bounce", "ts": ts, "bounce_xy": xy[:2],
                     "arcs": [(t0, ts, a1), (ts, t1, a2)], "rms": rms}
     return best
