@@ -64,6 +64,14 @@ W_TRAIL = 0.0
 R_TRAIL = 16.0
 R_BAND = 60.0
 
+# Pool ordering (geom_fix.py, 2026-09-01): the K per-frame candidates
+# are the nearest to the window CENTER by default (incumbent). With
+# POOL_BY_P the K highest learned-p candidates in the window are kept
+# instead — a taller window otherwise pushes the lob/bounce excursion
+# (far from the chord by construction) out of a center-ranked pool.
+# False = bit-identical to the incumbent; 4-tuple callers unaffected.
+POOL_BY_P = False
+
 
 def _pc(p):
     return W_P_SOFT * (1.0 - p) if (W_P_SOFT and p is not None) else 0.0
@@ -129,7 +137,10 @@ def corridor_cands(cands, cor, t0, trail=None):
             cs = [(c_[0], c_[1], c_[3], c_[4] if len(c_) > 4 else None)
                   for c_ in cands.get(f, ())
                   if abs(c_[0] - cx) <= wx and abs(c_[1] - cy) <= wy]
-            cs.sort(key=lambda c: np.hypot(c[0] - cx, c[1] - cy))
+            if POOL_BY_P and cs and cs[0][3] is not None:
+                cs.sort(key=lambda c: -c[3])
+            else:
+                cs.sort(key=lambda c: np.hypot(c[0] - cx, c[1] - cy))
         else:
             tx, ty = tp
             cs = [(c_[0], c_[1], c_[3], c_[4] if len(c_) > 4 else None)
