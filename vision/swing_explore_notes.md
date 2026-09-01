@@ -4846,3 +4846,49 @@ threshold on fast drives. NEXT (pre-registered here): feed p into
 the DP unary cost as a SOFT term instead of a hard cull — any weight
 tuned on r6/r7 ONLY, then one-shot graded on r9/r10, same protocol
 as this chapter.
+
+**Soft p-term in the DP — tuned blind on the train rallies, one-shot,
+the biggest single jump in the corridor thread (2026-09-01, same
+session; scratchpad `softdp.py` + corridor_dp W_P_SOFT).**
+MECHANISM: taking a candidate now costs W_P_SOFT·(1−p) inside the DP
+(p rides as a 5th tuple field; 4-tuple callers and W=0 are
+bit-identical to the incumbent — regression-checked, the recorded r10
+282/0.51/82 reproduced exactly). A faint true ball competes against
+the W_GAP=9 skip price instead of being culled outright.
+TUNING, r6/r7 ONLY: cross-fold p-caches so the tuner never sees
+in-sample p (emission.py cache-cross: r6 scored by an r7-only model
+and vice versa; fold kp97 0.150/0.028 — the same asymmetry the
+cross-val neg-kept split showed). Selection rule frozen in softdp.py
+BEFORE any number was seen: smallest W maximizing total r@12 over
+r6+r7 × prod+oracle with pooled prec ≥ the W=0 baseline. Sweep:
+326/0.472 (W=0) → 342/0.505 (3) → 351/0.533 (6) → 346/0.556 (12) →
+376/0.633 (25) → 368/0.636 (50); HARD filter at fold kp97 336/0.582.
+Rule picked W=25 — already beating the hard filter on both axes on
+the train rallies. DISCLOSURE: a wiring smoke test had run W=12 on
+r10 (322/0.66) before tuning existed; the frozen rule never consults
+r9/r10 and picked 25, not 12, so the peeked value died with the test
+and every W=25 number below was unseen at freeze.
+ONE-SHOT (r9/r10, same metric and nulls as every arm above;
+soft vs hard-filter vs incumbent, r@12 @ prec, A = ADDED@12):
+  r9 prod    431 @ 0.69 A33 | 394 @ 0.57 A26 | 388 @ 0.55 A32
+  r9 oracle  406 @ 0.69 A33 | 388 @ 0.59 A26 | 369 @ 0.56 A31
+  r10 prod   320 @ 0.67 A87 | 271 @ 0.53 A79 | 282 @ 0.51 A82
+  r10 oracle 309 @ 0.61 A57 | 261 @ 0.48 A48 | 255 @ 0.43 A40
+Pooled +13% hits over the incumbent (1466 vs 1294) with +13–18pp
+precision on EVERY panel; r@8 up everywhere (r10 prod 263 vs 224).
+The fast-drive kills are fixed and then some: 297.87–299.20 dp 0→21
+(above the incumbent's 20), 313.95 17→24, two corridors the incumbent
+left empty now carry hits (315.22: 5, 317.37: 9); 307.27 (the
+candidate desert) and 308.75 stay 0 — no candidates, nothing to
+weight. The mechanism is visible in the counts: trackpts DROP (r10
+653 vs 818, r9 942 vs 1159) while hits rise — junk now costs more
+than a skip, so the DP skips. Nulls: spaghetti nulls unchanged (r9
+all zero, r10 the same 5-hit oracle null0); the dp arm carries no
+displaced null in this panel (it was null-validated in its own
+corridor_dp era). VERDICT: soft > hard > none — the learned emission
+wants to be EVIDENCE, not a gate. dp-ccS+body at W=25 is the thread's
+new best instrument (r9 431/0.69, r10 320/0.67 against the 388/282 @
+0.55/0.51 the whole thread has been graded against). NEXT LEVER: the
+product questions (bounce ledger, eviction/trial, double-contact
+segment) were all measured on the OLD stream — re-run them on this
+one before touching any other knob.

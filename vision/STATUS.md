@@ -159,6 +159,23 @@ are the two measured defects; anchor-quality session in progress
 
 ## Built, producing numbers
 
+**Ball-path corridor tracker, learned-emission upgrade (2026-09-01;
+full arc + numbers in swing_explore_notes.md, instruments in the
+session scratchpad).** Per-corridor DP over motion candidates with
+body-extremity cost, graded against owner path clicks (r@12 hits +
+precision vs displaced-anchor nulls; nulls 0–5 against real arms in
+the hundreds). Owner lifted the no-training rule for the ball thread:
+a logistic emission scorer fit on r6/r7 clicks ONLY (AUC 0.90/0.94
+cross-rally; S clicks = ignore-zones, never positives) now enters the
+DP as a SOFT cost 25·(1−p) — weight tuned blind on r6/r7 cross-fold,
+rule frozen first, then one-shot on the evaluation rallies: r9 431
+r@12 @ prec 0.69 (incumbent 388/0.55), r10 320 @ 0.67 (282/0.51);
+oracle arms 406/0.69 and 309/0.61. Hard p-filtering REJECTED — it
+kills whole chains on faint fast drives; soft > hard > none. The
+owner-designed repertoire trail matcher (52-shot book) rides the same
+p as a precision/bridging arm (r9 oracle 177 r@12 @ 0.74). Product
+questions (bounce ledger, eviction) not yet re-graded on this stream.
+
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),
 90%-contour area (Alshon 261 > Black 232 > Patriquin 204 > Bright 188
