@@ -85,8 +85,17 @@ geometry), fwd/rev-agreement adaptive hardness (picks wrong on r8),
 DESIGNATED 2026-08-31: r10 SEALED (owner labeled + delivered its
 pass; 26 physical contacts, arming the pooled absolute test), r9 ->
 TRAIN (its off-frame lob — 34 frames N, 3x GAP_MAX — is the named
-next decoder capability). Remaining: readiness in the full grade
-config, then the one graded run on r10.
+next decoder capability). READINESS PASSED
+2026-08-31 on r7 in the exact grade config (V 82.3 / check 2
+human-matched 77.8@95 vs 77.8@91 / replication 1.70 ft) — after the
+readiness rule caught and reversed one conjecture: hitter-chain
+anchors in the TIMING stream are measured harmful (77.8@86 with vs
+77.8@98.4 without; fake-swing anchors bloat the event set), so the
+timing stream runs self-feedback only and hitter anchors stay in the
+position stream. r10 staged (candidates extracted post-readiness,
+config note frozen in ball_gate.md, owner point-dead mark 318.45,
+lob-segment label caveat pre-recorded). Remaining: the one graded
+run, on explicit owner authorization.
 
 ## Built, producing numbers
 

@@ -4060,3 +4060,32 @@ dominated: it trades r1 back down for an r7 bump. Total sweep: 33
 configs, ~3.5 h compute, every refuted mechanism written into the
 module docstring. Next: owner designates the sealed rally, readiness
 in full grade config (needs the Drive assets), one re-grade.
+
+## 2026-08-31 (night) — READINESS PASSES in grade config; r10 sealed, staged, and waiting on the word
+
+Drive folder now link-shared (owner) — assets pull directly, so the
+whole grade config runs from a fresh session. First readiness run on
+r7: checks 1/3 PASS (V 82.3, replication 1.70 ft) but check 2 came
+back 77.8@86 — the addendum's "hitter anchors union into the timing
+stream" conjecture, measured false (77.8@98.4 without the union;
+fake-swing anchors mint cheap-turn zones and the bloated event set
+eats the null pct). Correction recorded in the gate file: timing
+stream = self-feedback anchors ONLY (exactly the swept config);
+hitter anchors stay in the position stream, where the same run
+proved them (bound claiming, 1.70 ft). Re-run: **GATE VERDICT r7
+PASS** — the readiness rule caught a config bug before it could
+burn the seal, which is its entire job.
+
+r10 designated SEALED by owner delivery (r9 -> train). Owner
+finalized the pass same night ("same clicks but stopped one frame
+after the ball bounced out of play", 672 rows, end 318.447 = the
+point-dead mark; only the last row was read). Owner also flagged a
+mid-rally lob segment they were "mostly sure" they clicked right —
+pre-recorded in the addendum for the label-sanity autopsy arm, not
+touched. Clip verified (1980 frames @ 60 fps, offset 292.7),
+candidates extracted post-readiness (39.7/frame), r0010.npz staged,
+graded-run configuration note frozen in ball_gate.md. Bonus train
+read: r9's human path passes the frozen battery 82.8% at pct 100
+(29 impacts — real null power; the lob-adjacent contacts are hard
+for the human too). The graded run fires on the owner's explicit
+authorization and not before.

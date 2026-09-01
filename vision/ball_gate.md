@@ -394,3 +394,40 @@ Dated corrections recorded BEFORE any rally-10 run:
   the pre-registered frame-checks/label-sanity autopsy arm can weigh
   it AFTER grading if the verdict turns on that segment; it is not
   grounds to touch, score, or re-label the sealed pass beforehand.
+- **2026-08-31, sealed pass finalized (owner delivery, pre-run):**
+  the owner supplied the completed version of the same pass — "same
+  clicks but stopped one frame after the ball bounced out of play"
+  (672 rows, final row t=318.447; the first delivery carried ~11
+  post-dead rows). The trimmed version is the sealed answer key of
+  record; its final row IS the owner's point-dead mark. No tracker
+  has run on rally 10; only the file's last row was read, as the
+  rally-end mark.
+
+## Graded-run configuration note — rally 10, recorded BEFORE the run
+
+Frozen here before any rally-10 output exists (r8 precedent):
+
+- **Readiness**: PASSED 2026-08-31 on train rally 7 in this exact
+  configuration — V 82.3%, check 2 human-matched PASS (77.8@95 vs
+  77.8@91), replication 1.70 ft / crossings 5/5 / bounces 2v2.
+- **Serve pin** = 294.30 (v4 windows row covering rally 10's time;
+  mapping BY TIME per the known numbering anomaly; the rally's serve
+  tap 295.78 sits inside the window).
+- **Rally window end** = 318.45, the owner's point-dead mark (the
+  sealed pass's final row — "one frame after the ball bounced out of
+  play"). Same licensing category as the r8 run's point_dead mark:
+  a stand-in for the rally-end moment deployment referee logs carry.
+- **Clip** = owner-cut r10_clip.mp4, 1980 frames @ 60 fps, offset
+  292.7 (verified against the cut command). Candidates extracted
+  post-readiness under --graded-run (78,645 candidates, 39.7/frame,
+  committed as data/vision/ball_candidates_r10.csv.gz). Person
+  channel = r0010.npz, automated as licensed.
+- **Pipeline** = the merged two-regime state: position stream with
+  hitter-chain anchors (checks 1/3), timing stream self-feedback
+  anchors only (check 2), per the dated corrections above. Anchor
+  generation bypasses hitter_chain's train score() as in the r8 run.
+- **One run**, upon explicit owner authorization. No pre-stated
+  expectation this time: the r8 note's forecast was wrong in both
+  directions, and the honest prior is the train table plus the r1
+  long-rally screen (r10 is long-rally class, 26 contacts — the
+  null will have real power).
