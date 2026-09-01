@@ -82,11 +82,11 @@ soft-round junk gets anchor protection), INTERSECTION anchors (r8
 14.3@0.8 — fwd/rev disagree exactly at contacts, the co-location
 geometry), fwd/rev-agreement adaptive hardness (picks wrong on r8),
 60-deg anchor gate (hardens dink turns away on long rallies).
-Awaiting: owner designation of the next sealed rally (r9's pass is
-delivered but committed UNPEEKED; recommendation r9 -> train for its
-off-frame lob regime — 34 frames N, 3x GAP_MAX, no train rally has
-one — seal r10/17/20 instead), then readiness in grade config, then
-the one re-grade.
+DESIGNATED 2026-08-31: r10 SEALED (owner labeled + delivered its
+pass; 26 physical contacts, arming the pooled absolute test), r9 ->
+TRAIN (its off-frame lob — 34 frames N, 3x GAP_MAX — is the named
+next decoder capability). Remaining: readiness in the full grade
+config, then the one graded run on r10.
 
 ## Built, producing numbers
 

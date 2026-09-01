@@ -46,10 +46,8 @@ LAG_S = 0.10          # motion-diff lag
 THRESH = 18           # gray abs-diff threshold
 MIN_AREA, MAX_AREA = 4, 600
 TOP_K = 40
-SEALED = set()       # gate holdout (--score refuses; extraction allowed);
-                     # r8 spent 2026-08-31 (graded, now train); next sealed
-                     # rally added when labeled
-                      # ONLY at the graded run (guarded in main)
+SEALED = {10}        # gate holdout (--score refuses; extraction allowed);
+                     # r10 sealed 2026-08-31 (the re-grade rally); r8/r9 train
 
 
 def candidates_for_clip(clip, offset):

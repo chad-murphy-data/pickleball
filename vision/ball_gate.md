@@ -358,14 +358,17 @@ hardening ladders, intersection anchors, fwd/rev-adaptive hardness,
 - Rally 8: spent -> train (SEALED sets cleared in all four
   harnesses).
 - Rally 9's ball pass (delivered 2026-08-31, committed untouched;
-  885 frames, 66V/22S/6I/6N) — designation OWNER-PENDING. The agent
-  recommendation on the record: r9 -> TRAIN, because its 34-frame
+  885 frames, 66V/22S/6I/6N) — designation was OWNER-PENDING with
+  the recommendation on record: r9 -> TRAIN, because its 34-frame
   off-frame lob excursion (~1.1 s, 3x the decoder's GAP_MAX) is a
   regime no current train rally exhibits and the current decoder
   structurally cannot bridge, and r9 carries the log-span-anomaly
-  asterisk; seal r10 (and/or 17/20) instead. Until the owner
-  designates, NO tracker run and no human-path scoring on r9 (its
-  human bar stays unpeeked so the choice of sealed rally cannot be
-  difficulty-selected).
-- The re-grade runs once, on the newly labeled sealed rally, after
-  the readiness rule passes in the full grade configuration.
+  asterisk; seal r10 instead.
+- **DESIGNATED 2026-08-31 (owner)**: the owner labeled and delivered
+  rally 10's ball pass in response to that recommendation — **r10 is
+  the SEALED re-grade rally** (26 physical contacts, which by itself
+  arms Amendment 1's pooled absolute test), **r9 is TRAIN**. r10's
+  pass was committed sealed; its human bar stays unpeeked until
+  grading. SEALED = {10} in all four harnesses.
+- The re-grade runs once, on rally 10, after the readiness rule
+  passes in the full grade configuration.

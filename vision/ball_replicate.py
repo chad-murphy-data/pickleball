@@ -48,7 +48,7 @@ import court3d as c3  # noqa: E402
 import ball_decoder as bdec  # noqa: E402
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
-SEALED = set()       # r8 spent 2026-08-31 (graded, now train); next sealed rally added when labeled
+SEALED = {10}        # r10 sealed 2026-08-31 (the decoder-fix re-grade rally); r8/r9 are train
 
 NET_Y = 22.0
 END_TRIM_S = 0.06
