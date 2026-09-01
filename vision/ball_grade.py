@@ -83,9 +83,13 @@ def main():
     f_max = round((a.end + 0.3 - t0) * bdec.FPS)
     byf = {f: c for f, c in byf.items() if f_min <= f <= f_max}
     oflags = bdec.out_of_court_flags(byf, bdec.court_hull())
-    aflags = bdec.anchor_flags(byf, t0,
-                               [(t, x, y) for t, _, x, y in anchors])
-    visited = bdec.decode(byf, None, oflags, aflags)
+    # ANCHORS NEVER TOUCH A DECODE (final architecture, 2026-09-01,
+    # measured twice): in the timing stream they eat the null pct
+    # (77.8@86 vs @98.4 on r7); in the position stream their turn
+    # waivers subsidize junk near wrists and block the lob excursion
+    # (r10 V 66.2 anchored vs 73.6 anchor-free; r7 82.3 vs 84.8).
+    # Their job is bound CLAIMING in check 3, nothing else.
+    visited = bdec.decode(byf, None, oflags, None)
     refined = bdec.refine_arcs(visited, t0)
     # two-regime split (decoder-fix addendum): the TIMING stream feeds
     # check 2, on SELF-FEEDBACK anchors ONLY. Unioning the hitter-chain

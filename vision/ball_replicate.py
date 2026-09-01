@@ -357,9 +357,8 @@ def tracked_side(rally, anchors, floors, serve, end, sides=None):
     f_max = round((end + 0.3 - t0) * bdec.FPS)
     byf = {f: c for f, c in byf.items() if f_min <= f <= f_max}
     oflags = bdec.out_of_court_flags(byf, bdec.court_hull())
-    aflags = bdec.anchor_flags(
-        byf, t0, [(t, x, y) for t, _, x, y in anchors])
-    visited = bdec.decode(byf, None, oflags, aflags)
+    # anchors never touch a decode — claiming only (see ball_grade)
+    visited = bdec.decode(byf, None, oflags, None)
     pts = [(t0 + f / bdec.FPS, x, y) for f, x, y in visited]
     # turns come from the arc-REFINED path — the same stream check 2
     # scores (raw visited points carry wobble that scrambles both the
