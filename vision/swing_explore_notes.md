@@ -4736,3 +4736,58 @@ the bounce instant the owner clicks read V (plainly visible) for 3
 — 296.50, 302.65, 310.58 — and S (momentarily behind a body but
 inferable from surrounding clicks) for 5; every miss window has
 full 21-click coverage. Labels are not the gap; the stream is.
+
+**Spaghetti trail matcher (2026-09-01, owner-designed; three graded
+iterations, scratchpad `spaghetti.py` + `launch_prior.py`).** The
+design: per corridor (contact A -> contact B), enumerate physically
+legal drag-ballistic trails (closed-form: the connecting launch
+velocity between two 3D points in time T is analytic; bounce trails =
+launch grid integrated to the floor, restitution-gated second arc to
+B) and let motion detections VOTE on which trail they fit best — no
+frame-chaining, holes bridged by the trail itself. Owner clicks grade
+(identical metric to the DP baseline, displaced-anchor nulls); clicks
+NEVER enter trail selection, S ("hidden") clicks half-weighted in the
+prior harvest and split out in grading per the owner's caution.
+LAUNCH PRIOR (the measured constants): 61 validated launches / 27
+bounces harvested ONLY from rms<3 click-driven arc fits across
+r6/r7/r9/r10 — speed P5-P95 20.6-85.1 ft/s (median 38), loft -11..+50
+deg (median 12.5), drag k median 0.36 (independently matches winprob's
+k≈0.4), bounce e_z median 0.79. Sanitized to a 52-shot book in six
+recognizable modes: 13 drops, 11 rolls, 6 dinks, 14 drives, 5 smashes,
+3 lobs (soft game modal, as the owner guessed).
+V1 (open grids, per-frame max-support): FALSIFIED — junk density
+became the objective (corridors with support 49/49 frames and ZERO
+click hits; bounce topology over-selected; winning speeds pinned at
+grid extremes). r10 142 r@12/prec 0.39, r9 104/0.26 vs DP 282/0.51,
+388/0.55. Nulls clean (0-5), so anchors carry real signal even here.
+V2 (per-frame Monte-Carlo null subtraction — 8 random probes/frame,
+score = support minus what a random window point collects — plus
+kernel 14->8 px, top-6 refine, bounce complexity penalty): precision
+up on every arm (r10 oracle 0.46 vs DP 0.43, first spaghetti arm to
+beat DP precision), coverage down (84-85 r@12), still loses badly.
+Winning trails still 92-103 ft/s in corridors the human fits call
+soft arcs: the family itself was the problem, not the scorer.
+V3 (owner steer: "pickleball shots only have a limited number of
+shapes — any physics option that works is too broad"): bounce family
+proposes ONLY the 52-shot book (height-matched to contact, |z0-za|<=
+1.8 ft), every trail pays 0.7/unit distance to its nearest real shape
+in (speed/8, loft/10) space, corridors with <2 net frames of evidence
+ABSTAIN (7-13 of ~30 corridors per arm). Result: the trail matcher is
+now a PRECISION instrument — oracle-arm prec 0.57 (r9, vs DP 0.56;
+[S]-clicks 0.67) and 0.53 (r10, vs DP 0.43), nulls 0-1, sane speeds,
+topology agreement with human fits 57-64% — at ~1/3 of DP's coverage
+(159/114 r@12 oracle vs 369/255; prod 89/84 vs 388/282). Single
+corridors now BEAT the chain where it struggles (r9 265.0-266.1:
+snap 22 clicks vs DP 12; r10 312.1-313.0: 17 vs 14), and full-trail
+bridging ADDED@12 42 decode-missed clicks on r10 oracle vs DP's 40.
+Complementarity is real: chain = coverage, trails = precision.
+Residual bind: the peak emitter almost never abstains (junk keeps
+every corridor above threshold) — the deficit is the EYES, not the
+physics. TRAINING UNLOCKED (owner call, 2026-09-01, explicitly
+lifting the no-training rule for this thread): next instrument is a
+learned per-candidate emission scorer trained on the owner's r6+r7
+clicks only (348 V positives; r9/r10 clicks stay evaluation-only so
+every number above remains comparable), hand-rolled logistic on
+appearance/motion/temporal-persistence features; the auto-label
+poisoning lesson still binds — no training on tracker output or model
+self-labels, ever.
