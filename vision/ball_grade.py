@@ -169,7 +169,8 @@ def main():
     X3, x2, _ = c3.load_landmarks()
     P = c3.dlt(X3, x2)
     floors = br.track_floor(a.npz, P)
-    anchors = br.dedupe_anchors(anchors, zs, br.track_sides(floors))
+    anchors = br.dedupe_anchors(anchors, zs, br.track_sides(floors),
+                                turns)
     print(f"anchors after dedupe: {len(anchors)}")
     matched = br.claim_bounds(turns, angs, timing_ref, anchors)  # LOOSE
     bounds = matched + [a.end]

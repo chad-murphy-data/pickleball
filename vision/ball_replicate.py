@@ -152,12 +152,20 @@ DEDUP_SIDE_T = 0.55    # s: same-TEAM-side collapse. Alternation is
                        # by claiming holes (see claim_bounds).
 
 
-def dedupe_anchors(anchors, zs, sides):
+def dedupe_anchors(anchors, zs, sides, turns=None):
     """Anchor-precision pass (2026-09-01, after fix #1 left bound
     recall/precision as the last check-3 blocker): collapse
-    same-instant cross-track anchors and too-close same-side pairs,
-    keeping the higher excitement z in each collapse. anchors =
-    load_anchors 6-tuples; zs = parallel excitement list."""
+    same-instant cross-track anchors and too-close same-side pairs.
+    Tiebreak: proximity to a TIMING-STREAM turn first (the instrument
+    that passes check 2 — measured necessary on r10: keep-highest-z
+    kept energetic FAKE swings over soft real dink contacts, matched
+    20->14), excitement z second. anchors = load_anchors 6-tuples;
+    zs = parallel excitement list; turns = timing-stream events."""
+    def rank(z, a):
+        near = (turns is not None
+                and any(abs(a[0] - e) <= MATCH_S for e in turns))
+        return (1 if near else 0, z)
+
     keep = []
     items = sorted(zip(zs, anchors), key=lambda za: za[1][0])
     for z, a in items:
@@ -171,7 +179,7 @@ def dedupe_anchors(anchors, zs, sides):
             close_side = (side is not None and side == side2
                           and abs(t - t2) <= DEDUP_SIDE_T)
             if close_t or close_side:
-                if z > z2:
+                if rank(z, a) > rank(z2, a2):
                     keep[j] = (z, a)
                 drop = True
                 break
