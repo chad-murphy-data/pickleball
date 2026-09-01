@@ -107,10 +107,23 @@ sane, person N/A; **DECODER, two named defects** — (a) no
 off-frame-excursion capability (the flagged lob = the one
 over-GAP_MAX label gap, 24 frames; clean-input decode truncates at
 exactly 50% of the window there), (b) bounce segmentation on
-dink-heavy rallies. Per the frozen bars: ONE train-only iteration
-(specced: excursion edges + bounce-aware segmentation; train
-coverage r9/r10 lobs + r10's 10 bounces), then one re-grade on a
-newly sealed rally (r20 identified). r10 spent -> train.
+dink-heavy rallies. Per the frozen bars: ONE train-only iteration,
+RUN 2026-09-01 (full record: ball_gate.md iteration record + notes).
+KEPT: excursion edges (r10 oracle 50->95.8), anchors-never-touch-a-
+decode, looser top-band margin, check-3 bounds from the timing
+stream. State at freeze: check 1 PASSES r6/r7/r10 (80.3/84.8/73.6),
+check 2 PASSES r7/r10 (+r6/r8 train windows), r10 replication at
+20/26 matched impacts / 2.15 ft (best ever) — but CHECK 3 FAILS on
+all three rallies, a different component each (r7 bounce over-gen
+5v2, r10 under 5v10 + crossings 14/21, r6 accuracy). Named residual
+causes: hitter-anchor precision (73 anchors / 26 contacts) and
+bounce-vs-junk triage; decoder knob-turning deliberately stopped at
+the overfitting line (three knobs probed on r10 truth, recorded
+non-discriminative). r20 re-grade NOT recommended yet; owner fork
+recorded in the gate file: one anchor-precision/bounce-triage train
+pass first, or re-register a narrower checks-1+2 contact-times
+channel (touch share / tempo / categories) as a fresh
+pre-registration. r10 spent -> train.
 
 ## Built, producing numbers
 

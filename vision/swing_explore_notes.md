@@ -4127,3 +4127,58 @@ excursion edges (exit near frame top moving up -> ballistic
 re-entry, gaps to ~1.5 s) + bounce segmentation, trained on
 r9/r10's lobs and r10's 10 bounces. Then r20 seals when the owner
 labels it, and the re-grade decides the channel.
+
+## 2026-09-01 (cont.) — the licensed iteration, run end to end: four keeps, two reverts, and check 3 becomes the last wall
+
+Full-day sequence after the MIDDLE (every step committed with its
+numbers; this is the compressed record, the gate file has the
+verdict-relevant one):
+
+KEPT (multi-rally evidence): (1) excursion edges + EXC_COVER absence
+allowance + (3) looser top-band hull margin — r10 oracle 50->95.8 V,
+the flat-price version measured unable to outbid in-hull limb junk
+(byte-identical re-run), the blanket court waiver measured breaking
+r6 check 2 via corner scorebug junk (restored 100@96 with the
+margin); (2) ANCHORS NEVER TOUCH A DECODE — the position stream
+anchor-free took r10 check 1 66.2 -> 73.6 PASS and r7 82.3 -> 84.8,
+completing what the readiness measurement started on the timing
+side; (4) check-3 BOUNDS FROM THE TIMING STREAM — r10 matching
+16 -> 20/26 at 2.73 -> 2.15 ft, r7 restored to 6/8 @ 2.76 with 7/7
+crossings after the anchor-free position turns had broken it (3/8 @
+7.39: the position path's turns were leaning on anchored decoding;
+the timing stream is the "when" instrument, so bounds belong to it).
+
+REVERTED with prejudice: strict claiming (paddle gate + alternation
+prune) — r10 +2 matches for an r7 collapse; and the two knobs that
+DO NOT DISCRIMINATE on r10 truth, recorded so nobody re-probes:
+claim radius (true:junk kill ~1:1 at 130/180/240) and turn angle
+(distributions overlap; r7's wobble separation does not
+generalize). The alternation prune also carries a structural lesson:
+exact side alternation only prunes safely over a COMPLETE claim
+sequence — with holes, a distant same-side pair usually brackets a
+MISSED contact, and pruning kills a true bound (ALT_MAX_S is the
+hole-safe form, parked with the machinery).
+
+WHERE IT FROZE: checks 1+2 pass everywhere that matters; check 3
+fails on all three rallies, each on a DIFFERENT component — r7
+over-generates bounces (5v2: spurious unclaimed timing turns), r10
+under-recovers (5v10, crossings 14/21), r6 accuracy (3/7 @ 8.84 on
+the 5.6 s pathological short rally). That pattern is the signature
+of the two upstream problems, not of any decoder constant: HITTER-
+ANCHOR PRECISION (73 anchors / 26 contacts — loose claiming eats
+real bounces as bounds, and no local geometry filters junk anchors)
+and BOUNCE-VS-JUNK TRIAGE of unclaimed turns (physics candidates:
+a bounce reverses vertical image velocity near the floor plane and
+sits far from every paddle; junk doesn't). Both are named,
+neither is built; knob-turning stopped deliberately at the
+overfitting line.
+
+THE FORK (owner's, recorded in the gate file): hold r20 until an
+anchor-precision + bounce-triage pass moves check 3 on train — or
+re-register a narrower CONTACT-TIMES CHANNEL (checks 1+2) that
+licenses touch share / tempo / shot-category products now, leaving
+replay + placement (the bounce-dependent family) behind the full
+check 3. Checks 1+2 currently carry: touch share, categories,
+attack-onset/tempo, rally structure, the temporal-model corpus.
+Check 3 carries: the 3D replay at scale, placement/landing stats
+(a bounce IS a landing), true mph, contact heights.
