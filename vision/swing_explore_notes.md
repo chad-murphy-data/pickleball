@@ -4262,3 +4262,21 @@ DISPUTED claims — VOD seconds 296.50, 297.77, 298.95, 300.62,
 exactly: each is either a real occluded bounce (truth -> 13) or a
 fitter phantom (truth -> 8). Until then, no more bounce-side tuning;
 the anchor-quality session remains the other prerequisite for r10.
+
+## 2026-09-01 — DOUBLE-BOUNCE RULE correction (owner's serve sighting)
+
+The owner went looking for disputed bounce 296.50 and landed on a
+serve — off by a units slip (VOD 296.5 s = 4:56.5, not 4:46), but
+the sighting exposed a truth-instrument blind spot with a rules fix:
+296.50 is rally 10's SERVE BOUNCE and 297.77 its RETURN BOUNCE, both
+MANDATED by the double-bounce rule. Every rally carries >=2 real
+bounces the V-shape instrument cannot see (serve/return descents are
+fast, deep, far-court, smear-heavy). Corrections: (1) "r7 has zero
+bounces" was wrong at the edges — truth is exactly 2 (serve+return,
+then all volleys), the human fit's 2 is RIGHT, and r7's full-gate
+PASS is truth-sound; (2) r10 truth bound tightens to [10, 13] (8
+label-evident + 2 rule-mandated + 3 owner calls pending: VOD 4:58.9,
+5:00.6, 5:15.0); (3) the human fit's 12-13 is credible, and the
+tracked 3 confirms BOUND RECALL as r10's one blocker. Rule for the
+future: the V-shape label instrument is a lower bound that must be
+UNIONED with the rule-mandated serve/return bounces.
