@@ -84,6 +84,23 @@ ANCHOR_BONUS = 2.0      # edge-cost discount near an anchor. MEASURED
                         # nearly nil — the over-steer lesson, in numbers
 ANCHOR_TURN_FACTOR = 0.3  # turning near a predicted contact is cheap
 
+# ---- off-frame EXCURSION edges (train iteration after the r10 grade,
+# 2026-09-01): a lob that leaves the frame top is a legitimate >GAP_MAX
+# absence — r10's graded run proved it load-bearing (the one label gap
+# over GAP_MAX was the owner's flagged lob; clean-input decode
+# truncated at exactly 50% of the window). An excursion edge joins two
+# top-band candidates across GAP_MAX < d <= EXC_MAX at a flat price:
+# no cover bonus (nothing to cover — the ball is off-frame), no skip
+# penalty, court-hull penalty waived at its endpoints (a lob exits
+# above the 16-ft hull cap by definition), turn cost waived at its
+# junctions (the ballistic apex is a real direction change).
+EXC_TOP = 110.0         # px: both endpoints must sit this near the top
+EXC_MAX = 90            # frames (1.5 s) — covers r9's 68 and r10's 24
+EXC_PEN = 70.0          # flat edge cost: never preferred over a real
+                        # bridge (> TURN_CAP), far cheaper than losing
+                        # half a rally's coverage
+EXC_DX_RATE = 400.0     # px/s horizontal drift cap (r9 measured 291)
+
 # ---- two-regime decode (ball_gate.md decoder-fix addendum,
 # 2026-08-31, owner-approved): ONE candidate stream, TWO decodes.
 # The POSITION stream is the production config above and feeds checks
@@ -216,7 +233,7 @@ def decode(byf, flags=None, oflags=None, aflags=None, hard=1.0):
     by_frame_ids = defaultdict(list)
     for k, (f, _) in enumerate(nodes):
         by_frame_ids[f].append(k)
-    edges = []           # (a, b, d)
+    edges = []           # (a, b, d, exc)
     for a in range(len(nodes)):
         fa = nframe[a]
         for d in range(1, GAP_MAX + 1):
@@ -230,7 +247,18 @@ def decode(byf, flags=None, oflags=None, aflags=None, hard=1.0):
             for j in np.argsort(dist)[:k]:
                 if dist[j] > vmax_d:
                     continue
-                edges.append((a, cand[j], d))
+                edges.append((a, cand[j], d, False))
+    # off-frame excursion edges: top-band -> top-band across long gaps
+    top_by_frame = defaultdict(list)
+    for k, (f, _) in enumerate(nodes):
+        if pos[k, 1] <= EXC_TOP:
+            top_by_frame[f].append(k)
+    for a in [k for ids in top_by_frame.values() for k in ids]:
+        fa = nframe[a]
+        for d in range(GAP_MAX + 1, EXC_MAX + 1):
+            for b in top_by_frame.get(fa + d, ()):
+                if abs(pos[b, 0] - pos[a, 0]) <= EXC_DX_RATE * d / FPS:
+                    edges.append((a, b, d, True))
     if not edges:
         return []
 
@@ -239,6 +267,7 @@ def decode(byf, flags=None, oflags=None, aflags=None, hard=1.0):
     ea = np.array([e[0] for e in edges])
     eb = np.array([e[1] for e in edges])
     ed = np.array([e[2] for e in edges])
+    eexc = np.array([e[3] for e in edges])
     vel = (pos[eb] - pos[ea]) / (ed / FPS)[:, None]
     speed = np.hypot(vel[:, 0], vel[:, 1])
     slow = SLOW_PEN * np.clip(1.0 - speed / SLOW_FLOOR, 0.0, 1.0)
@@ -246,6 +275,7 @@ def decode(byf, flags=None, oflags=None, aflags=None, hard=1.0):
     court = COURT_PEN * (ncourt[ea].astype(float) + ncourt[eb]) / 2.0
     anch = -ANCHOR_BONUS * (nanchor[ea].astype(float) + nanchor[eb]) / 2.0
     base = SKIP_PEN * (ed - 1) - COVER_BONUS * ed + slow + body + court + anch
+    base[eexc] = EXC_PEN        # flat: no cover to earn, nothing to skip
     score = base.astype(float).copy()          # start-anywhere
     prev = np.full(E, -1)
     # process edges grouped by arrival frame so predecessors are final
@@ -260,7 +290,9 @@ def decode(byf, flags=None, oflags=None, aflags=None, hard=1.0):
                 s0, pe = best_in[a]
                 dv = vel[ei] - vel[pe]
                 tc = min(math.hypot(dv[0], dv[1]) / ACCEL_SCALE, TURN_CAP)
-                if nanchor[a]:
+                if eexc[ei] or eexc[pe]:
+                    tc = 0.0            # ballistic apex: real turn, free
+                elif nanchor[a]:
                     tc *= ANCHOR_TURN_FACTOR
                 else:
                     tc *= hard          # timing stream: junk turns priced up

@@ -155,13 +155,10 @@ def main():
     turns = [e for e in detect_events(refined)
              if a.serve - 0.3 <= e < a.end - 0.05]
     angs = br.turn_angles(refined, turns)
-    claimed = set()
-    for ta, _, _, _ in anchors:
-        cand = [(angs[e], e) for e in turns if abs(e - ta) <= br.MATCH_S]
-        if cand:
-            claimed.add(max(cand)[1])
-    bounds = sorted(claimed) + [a.end]
-    bounce_evs = [e for e in turns if e not in claimed]
+    matched = br.claim_bounds(turns, angs, refined, anchors,
+                              br.track_sides(a.npz))
+    bounds = matched + [a.end]
+    bounce_evs = [e for e in turns if e not in set(matched)]
     obs = [(t, x, y, 1.0) for t, x, y in pts]
     X3, x2, _ = c3.load_landmarks()
     P = c3.dlt(X3, x2)
