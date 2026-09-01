@@ -4304,3 +4304,25 @@ curved V — "a dink to the top left goes down-left then up-left."
 That velocity-ratio feature, with a smaller margin, is the upgrade
 path for the V-shape instrument if it is ever needed again; the 3D
 fit already encodes the physics, which is why it beat my 2D read.
+
+## 2026-09-01 — Truth-anchored baseline (gates reverted): r7 FULL PASS again; r10's human fit = truth, 13/13
+
+Full battery rerun at commit a6b833b (velocity gates OFF, fit-demanded
+bounce grid + restitution + BOUNCE_MARGIN 0.8 ON):
+
+- **r7: FULL THREE-CHECK PASS.** Check 2 78@95 vs human 78@91; check 3
+  5/9 impacts at 2.36 ft, crossings 4/4, bounces 3v3. The margin-only
+  config holds the pass the z-tiebreak run first found.
+- **r10: MIDDLE, check 3 the one blocker.** Check 2 73@98 vs human
+  65@91 (beats own null); check 3 16/26 at 2.98 ft (UNDER the 3.0
+  bar), crossings 14/15, bounces tracked 8 vs human 13.
+- **The human-side fitter recovers EXACTLY the owner-verified truth on
+  r10: 13 bounces, 26/26 segments ok.** With human positions in, the
+  bounce mechanism is exact. The whole remaining r10 deficit is
+  tracked-side: bound recall 16/26 and segment survival 15/22. The
+  anchor-precision diagnosis is now truth-anchored, not
+  instrument-relative.
+
+Baseline to beat for the anchor-quality session (and not give back):
+r7 PASS; r10 16/26 @ 2.98 ft / 14-15 crossings / 8v13 bounces; r6/r8
+check-2 train windows.
