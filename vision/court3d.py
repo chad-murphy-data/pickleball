@@ -248,15 +248,40 @@ def default_inits():
             np.array([10.0, 22.0, 3.0, 0.0, 20.0, 8.0, 0.3])]
 
 
+def arc_vel(theta, tau):
+    """Velocity at time tau (central difference on arc_pos)."""
+    e = 1e-3
+    p = arc_pos(theta, [tau - e, tau + e])
+    return (p[1] - p[0]) / (2 * e)
+
+
+BOUNCE_GRID_S = 1 / 15.0    # model-selection search spacing. 2026-09-01
+                            # (fix #1 after the r10 grade): candidate
+                            # bounce times are no longer ONLY detector
+                            # events — the fit searches an interior
+                            # grid, so a bounce the 2D stream never saw
+                            # (occluded behind the near player, exactly
+                            # where dink bounces live) is still found
+                            # when the arcs demand it. Events remain
+                            # extra candidates with fine refinement.
+REST_PEN = 1.5              # restitution: a bounce dissipates energy —
+                            # post-bounce speed must not exceed
+                            # pre-bounce (user observation 2026-09-01),
+                            # and the vertical velocity must flip up.
+
+
 def fit_segment(P, obs, t0, t1, events):
-    """One arc, or two arcs joined at a z=0 bounce at an interior
-    detector event; pick by pixel RMS. Returns dict."""
+    """One arc, or two arcs joined at a z=0 bounce; candidates = an
+    interior search grid UNION refined detector events; pick by pixel
+    RMS with a 0.5 px acceptance margin + floor/plausibility/
+    restitution constraints. Returns dict."""
     single, rms1 = fit_best(P, obs, t0, default_inits())
     best = {"kind": "arc", "arcs": [(t0, t1, single)], "rms": rms1}
-    # candidate bounce times: detector events, REFINED on a local grid
-    # (the event time is quantized to click frames and can sit a few
-    # frames off the true floor contact)
     cands = set()
+    t = t0 + 0.12 + BOUNCE_GRID_S
+    while t < t1 - 0.12:
+        cands.add(round(t, 3))
+        t += BOUNCE_GRID_S
     for ts in events:
         if t0 + 0.12 < ts < t1 - 0.12:
             for dt in np.arange(-0.167, 0.168, 1 / 30):
@@ -264,8 +289,6 @@ def fit_segment(P, obs, t0, t1, events):
                 if t0 + 0.12 < t < t1 - 0.12:
                     cands.add(t)
     for ts in sorted(cands):
-        if False:
-            continue
         o1 = [o for o in obs if o[0] <= ts]
         o2 = [o for o in obs if o[0] >= ts]
         if len(o1) < 4 or len(o2) < 4:
@@ -277,13 +300,22 @@ def fit_segment(P, obs, t0, t1, events):
         xy = arc_pos(a1, [ts - t0])[0]
         if not (-5 <= xy[0] <= 25 and -3 <= xy[1] <= 47):
             continue          # diverged arc — no bounce claim from it
+        v_in = arc_vel(a1, ts - t0)
+        sp_in = float(np.linalg.norm(v_in))
+
+        def extra2(th, xy=xy, sp_in=sp_in):
+            sp_out = float(np.linalg.norm(th[3:6]))
+            return pen * np.concatenate(
+                [[th[2]], th[:2] - xy[:2],
+                 [REST_PEN * max(0.0, sp_out - sp_in),
+                  REST_PEN * max(0.0, -th[5])]])
+
         a2, r2 = fit_best(
             P, o2, ts,
             [np.concatenate([[xy[0], xy[1], 0.0],
                              a1[3:6] * [1, 1, -0.6], a1[6:7]])]
             + default_inits(),
-            extra=lambda th: pen * np.concatenate(
-                [[th[2]], th[:2] - xy[:2]]))
+            extra=extra2)
         rms = float(np.sqrt((r1**2 * len(o1) + r2**2 * len(o2))
                             / (len(o1) + len(o2))))
         plausible = -2 <= xy[0] <= 22 and -1 <= xy[1] <= 45
