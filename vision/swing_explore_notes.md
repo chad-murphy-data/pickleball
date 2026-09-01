@@ -5051,3 +5051,78 @@ which is where the fusion pool-only variant would act. Next
 pre-registration: geometry fix conditioned on corridor confidence
 (single-contact / short) + pool-only trail, tuned r6/r7, one shot
 r9/r10 — fresh rule, not a knob-turn of this one.
+
+## 2026-09-01 (late) — PATH-FIRST: the contact detector leaves the loop, and both shots clear
+
+Owner's reframing after the geometry-fix SPLIT: "slide the library
+paths over the raw candidate blobs with no contact guess at all, find
+the stretches where a book path lines up with a run of blobs, and then
+read the contacts off the ends of the matched path." Every tracker on
+record was corridor-first (pose → contact guess → chord → box → search
+inside the box); the geometry fix had just shown the box is the miss
+on lobs/bounces and that one mis-merged corridor eats a whole flight.
+Pre-registration `vision/ballsearch/pathfirst_gate.md` was frozen and
+pushed BEFORE any number: instrument, 12-cell grid, selection rule,
+bars (r@12 ≥ incumbent AND prec ≥ incumbent − 0.02 on BOTH r9 and
+r10; displaced + circular-time-shift nulls ≤ 5 %), secondary contact
+recovery, strata.
+
+Instrument (`pathfirst.py`): seeds = top-4 candidates per frame by
+learned p (p ≥ P_SEED, not on a body extremity); for every seed triple
+(f1, f1 + D/2 ± 2, f1 + D), D ∈ {12, 24, 40} frames, the unique
+drag-free arc through the three image points (6×6 linear solve,
+batched); physical filter (z ∈ [−0.5, 12] ft, 10–110 ft/s, court
+volume); support = Σ p-weighted kernel of the nearest blob per frame
+over the span ± D/2 minus a random-probe baseline from the same
+frames; NMS; refit with linear drag on inliers, grow both ways joining
+blobs within 10 px, refit every 6 joins, stop after GAP misses; greedy
+select by (support − weak r6/r7 launch prior)/length with ≤ 3 shared
+frames; contacts = flight ends. Bring-up fix before any tune number:
+the drag refit was seeded at k = 0.3, which bends a drag-free
+hypothesis 10–40 px off its own inliers before the first refit
+(self-test caught it: 5 inliers instead of 61 and a wild refit);
+seeded at k ≈ 0 the planted arc comes back 61/61.
+
+Tune (r6 + r7, cross-fold p-caches): EVERY cell beat the corridor
+incumbent 205 @ 0.623 — worst 220 @ 0.815, best 263 @ 0.807. The
+frozen rule (max r@12 s.t. prec ≥ incumbent; ties larger s_min,
+smaller gap, larger p_seed) picked p_seed=0.4 s_min=6 gap=6. One
+shot each:
+
+  r9  (779 clicks): corridor prod 431 @ 0.69 → path-first 537 @ 0.87
+      (V 421/587 @ 0.94, S 116/192 @ 0.69); nulls 0 / 1.
+  r10 (657, re-cut): 325 @ 0.69 → 422 @ 0.88 (V 316/487, S 106/170);
+      nulls 0 / 0.
+
+Both bars pass on both rallies by wide margins (+106 / +97 clicks,
++18 / +19 pp precision). ADOPTED. Where it wins, by the corridor
+incumbent's own strata: outwin r9 82/131 vs 0 and r10 74/97 vs 0 —
+exactly the lobs and bounces the box could never contain — plus
+cand 441 vs 431 / 338 vs 325 (selection) and nocand 12 / 10 vs 0
+(the arc projects through frames with no blob). Per-flight table:
+34 flights on r9, 28 on r10, rms 0.5–2.8 px, launches 7–71 ft/s.
+
+Secondary, kept secondary on purpose: oracle-contact RECALL from flight
+ends is better than the production detector (r9 24/29 vs 19/29 within
+0.10 s, median 0.046 vs 0.069 s; r10 19/26 vs 15/26) but path-first
+emits 64 / 56 boundaries against 29 / 26 oracle contacts, so it is a
+boundary list, not a contact list, until fragment breaks are merged.
+Bounce typing (z ≤ 0.3 ft, next start ≤ 0.15 s and ≤ 2 ft) fired 2× on
+r9 and 0× on r10 against 13 human bounces — the flights DO break at
+bounces (the S clicks are covered 0.69–0.78), the label does not fire;
+that rule was never tuned and should be tested on the r6/r7 bounce
+ledger under its own registration.
+
+Disclosure, recorded in the gate file: `launch_prior.json` was harvested
+from r6, r7, r9 AND r10, so spaghetti's mode prior read the evaluation
+rallies' own shots and its r9/r10 numbers on record are optimistic by an
+unmeasured amount. Path-first's weak launch prior uses the r6/r7 entries
+only (13 launches). Spaghetti is superseded as a production path; if it
+is ever re-registered the book is rebuilt r6/r7-only first.
+
+What this does not say: nothing about frames with no V/S click, nothing
+about contact precision, nothing about r20 (seal untouched, owner
+authorization required). The lesson for the ledger: the corridor
+family's ceiling was the CONTACT GUESS in the loop, not the emission
+scorer or the trail matcher — remove the guess and the same blobs, the
+same p, the same camera give +100 clicks per rally.

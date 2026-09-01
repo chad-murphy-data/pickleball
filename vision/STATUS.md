@@ -202,6 +202,29 @@ rule written before the r10 shot. The geometry finding survives (the
 box was the miss); the loss is corridor segmentation, the next
 registration gates the taller box on corridor quality.**
 
+**Path-first ball tracker (2026-09-01, `vision/ballsearch/pathfirst.py`,
+pre-registered in `pathfirst_gate.md` before any number) — ADOPTED, the
+new incumbent.** Owner's framing: slide the library paths over the raw
+blobs with no contact guess, read contacts off the matched path's ends.
+Instrument: 3-seed drag-free arc hypotheses over the whole-frame
+candidate cache (top-4 by learned p per frame), p-weighted support minus
+a random-probe baseline, NMS, drag refit + growth, greedy selection by
+density; no contact detector, no corridor box, no pose beyond the
+incumbent's body damping. Tuned blind on r6/r7 cross-fold: every one of
+12 cells beat the corridor incumbent (205 @ 0.623 → chosen 263 @ 0.807).
+ONE SHOT r9: **537 r@12 @ prec 0.87** vs 431 @ 0.69; ONE SHOT r10
+(re-cut clip): **422 @ 0.88** vs 325 @ 0.69; displaced and time-shift
+nulls ≤ 1/779 and 0/657. The gain is the out-of-window stratum the box
+could never reach (r9 82/131 vs 0, r10 74/97 vs 0) plus a small
+selection gain. Secondary, not gating: oracle-contact recovery from
+flight ends 24/29 (r9) and 19/26 (r10) within 0.10 s vs the production
+detector's 19/29 and 15/26 — recall only; 64 / 56 boundaries were
+emitted, so no contact-precision claim, and bounce TYPING is unbuilt (0
+typed on r10 vs 13 in the human ledger). What it does not measure:
+frames without a V/S click, r20 (seal untouched). Leak disclosed in the
+gate file: spaghetti's shot book was harvested from r9/r10 too;
+path-first reads r6/r7 entries only.**
+
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),
 90%-contour area (Alshon 261 > Black 232 > Patriquin 204 > Bright 188

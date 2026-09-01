@@ -42,6 +42,7 @@ disagree on a NUMBER, the notes file is the record.
 | `fusion.py` / `fusion_tune.json` | the L3 three-part model (emission + spaghetti trails + DP as one cost): `tune` (r6/r7 cross-fold grid, frozen rule, writes the verdict), `grade <r>` (refuses r9/r10 without a live verdict or with knob overrides), `selftest` (synthetic corridor; asserts `trail=None` is bit-identical). VERDICT 2026-09-01: **DEAD** — see the section below. `corridor_dp.py` carries the optional `trail=`/band-pool/`return_cost` extension it needs. |
 | `geom_lab.py` | to-do #1 diagnostic: per-click strata (nocor / outwin / nocand / cand-hit / cand-miss with pool rank + skipped-vs-wrong), per-corridor excursion + endpoint-error table, geometry-only coverage counterfactuals (kT / cap / K grids). `python3 geom_lab.py <r>`. |
 | `geom_fix.py` / `geom_tune.json` / `geom_grade_r9.txt` | the corridor-geometry FIX: knobs cap (wy ceiling), kT (duration term), ep (tapered end pad + END_R), pool (centre vs learned-p). `tune` = 54-cell grid on r6/r7 cross-fold under the frozen rule (writes the verdict), `grade <r>` = one-shot vs incumbent with V/S splits, displaced nulls, strata and per-corridor tables (refuses r9/r10 without a live verdict or with overrides). VERDICT 2026-09-01: **LIVE**, cap=260 kT=40 ep=60 pool=p; **r9 prod 479 @ 0.74 vs 431 @ 0.69**. `corridor_dp.py` carries `POOL_BY_P`. |
+| `pathfirst.py` / `pathfirst_gate.md` / `pathfirst_tune.json` / `pathfirst_grade_r{9,10}.txt` | **THE INCUMBENT (adopted 2026-09-01)**: path-first tracker — no contact detector, no corridor box. 3-seed drag-free arc hypotheses over the whole-frame candidate cache (top-4 by learned p per frame, p ≥ P_SEED, not on a body), p-weighted support minus a random-probe baseline, NMS, drag refit + bidirectional growth (R_GROW 10, stop after GAP misses), greedy selection by density, contacts = flight ends. `selftest`, `tune` (12-cell grid r6/r7 cross-fold, frozen rule, writes the verdict), `grade <r>` (one-shot vs the corridor incumbent: V/S splits, displaced + time-shift nulls, strata, oracle-contact recovery, per-flight table; refuses r9/r10 with overrides or a dead verdict). Pre-registration + results addendum in `pathfirst_gate.md`. **r9 537 @ 0.87 vs 431 @ 0.69; r10 422 @ 0.88 vs 325 @ 0.69.** ~3 s per rally. |
 | `cut_clip.py` | cuts `r{N}_clip.mp4` from the full-match source with the offset and frame count read from the committed candidate CSV (system ffmpeg or the imageio-ffmpeg static binary). |
 | `check_clip.py` | verifies an owner-cut clip against the committed `ball_candidates_r{N}.csv.gz` (frame count / size / fps, implied offset, extractor re-run matched at frame shifts −3..+3) before any cache is built from it. |
 | `corridor_autopsy.py`, `miss_map.py`, `r10_autopsy.py` | diagnostic-only (truth used to ask WHY). |
@@ -76,13 +77,38 @@ python3 cut_clip.py 10 full_match.mp4.webm             # r10 clip from the full-
 python3 check_clip.py 10 r10_clip.mp4                  # before building r10 caches from a re-cut clip
 python3 geom_fix.py grade 10                           # the r10 one-shot (geom_grade_r10.txt)
 python3 geom_fix.py grade 9                            # the r9 one-shot (geom_grade_r9.txt); grade 10 once r10 caches exist
+python3 pathfirst.py selftest                          # planted-arc self-test (must print OK)
+python3 pathfirst.py tune                              # reproduces the 12-cell grid + verdict (r6/r7 only)
+python3 pathfirst.py grade 9; python3 pathfirst.py grade 10   # the one-shots (pathfirst_grade_r{9,10}.txt) — already spent; re-running is a RE-GRADE
 python3 spaghetti.py 9  --lrn --soft 25                # graded r9 (run_in_background; > 2 min)
 python3 spaghetti.py 10 --lrn --soft 25                # graded r10
 ```
 Heavy scripts exceed the 120 s foreground limit — background them.
 No ffprobe (use cv2), no sklearn, no gh CLI.
 
-## Incumbent numbers (dp-ccS+body, W_P_SOFT=25, learned p)
+## Incumbent (2026-09-01, late): PATH-FIRST — `pathfirst.py`
+
+Adopted under the pre-registration in `pathfirst_gate.md` (frozen
+before any number; results addendum there). One shot each, frozen
+cell p_seed=0.4 s_min=6 gap=6:
+
+| rally | corridor incumbent (prod) | path-first | nulls disp / tshift |
+|---|---|---|---|
+| r9 (779 clicks) | 431 @ 0.69 | **537 @ 0.87** (V 421/587, S 116/192) | 0 / 1 |
+| r10 (657, re-cut clip) | 325 @ 0.69 | **422 @ 0.88** (V 316/487, S 106/170) | 0 / 0 |
+
+Tune r6+r7 cross-fold: every one of the 12 cells beat the corridor
+incumbent (205 @ 0.623); chosen cell 263 @ 0.807. Gain sits in the
+out-of-window stratum (r9 82/131 vs 0, r10 74/97 vs 0 — lobs and
+bounces the box never contained) plus a small selection gain inside
+the box. Oracle-contact recovery from flight ends (secondary): r9
+24/29 within 0.10 s (prod detector 19/29), r10 19/26 (15/26) — recall
+only, no precision claim (64 / 56 boundaries emitted). Bounce typing
+is effectively unbuilt (2 typed on r9, 0 on r10 vs 13 in the human
+ledger). The corridor stack below stays committed as the comparison
+arm and as the source of the strata; it is no longer production.
+
+## Corridor stack numbers, superseded (dp-ccS+body, W_P_SOFT=25, learned p)
 
 r@12 = truth clicks (V+S) with a track point within 12 px, over ALL
 clicks; prec@12 = hits / at-click track points.
@@ -262,6 +288,19 @@ prior term.
 
 ## Next-thread to-do (in order)
 
+0. **Path-first is the incumbent** (section above; adopted 2026-09-01
+   under `pathfirst_gate.md`). Its open edges, each a fresh
+   pre-registration, tuned on r6/r7, one shot r9/r10, bars never
+   loosen: (a) BOUNDARY TYPING — bounce vs contact at flight ends
+   (r10 human ledger 13 bounces, path-first typed 0; the flights DO
+   break there, the label does not fire — test the z/dt/dxy rule on
+   the r6/r7 ledger first); (b) COVERAGE between flights — at-click
+   points 616/779 on r9: short or slow flights below S_MIN / P_SEED,
+   and the ~0.3 s holes between consecutive flights (e.g. r9
+   258.0–258.4); (c) contact PRECISION — 64 boundaries vs 29 oracle
+   contacts on r9; a boundary list is not a contact list until the
+   fragment breaks are merged. Do not knob-turn pathfirst on r9/r10.
+
 1. ~~Corridor geometry fix (item 2 above).~~ DONE 2026-09-01, both
    shots: r9 CLEARS (479 @ 0.74 vs 431 @ 0.69), r10 does NOT (323 @
    0.65 vs 325 @ 0.69, one mis-merged corridor) → SPLIT, incumbent
@@ -279,10 +318,14 @@ prior term.
 4. Product re-grade on the current stream (bounce ledger,
    eviction/trial, double-contact segment 301.02) — all were measured
    on the OLD stream; re-run before touching any other knob.
+   (Items 1–4 are corridor-stack items; with path-first adopted they
+   matter only if the corridor arm is ever needed again, e.g. as a
+   between-flights fallback under item 0b.)
 5. Carried, inactive: MVP-1 split awaits an owner-confirmed fresh
    registration; r20 seal only per adopted gate criteria; September
    obligation (score `model/registered_predictions.md` per its frozen
    method; update the pending entry in `model/receipts.json`).
 
-PR #113 (`claude/vision-model-roadmap-vzu3i1`) is open and carries all
-of this.
+PR #113 (`claude/vision-model-roadmap-vzu3i1`) carried the corridor
+stack; PR #114 (`claude/fusion-model-building-kvl1bt`) carries fusion,
+the geometry fix, the r10 re-cut and path-first.

@@ -97,3 +97,49 @@ Truth (ball_path_r{r}.csv V/S clicks) is used for grading only; the
 tune reads r6/r7 truth, r9/r10 truth is read once each by `grade`.
 No tracker output is ever used as a label. Temporal-gate holdout rows
 untouched.
+
+## Results (2026-09-01, after the freeze above; numbers in pathfirst_grade_r{9,10}.txt)
+
+Self-test: planted drag-free arc among 20 junk blobs/frame recovered
+61/61 frames (one fix during bring-up, BEFORE any tune number: the
+drag refit was seeded at k=0.3, which bent a drag-free hypothesis off
+its own inliers; seeded at k=1e-4 instead, and a refit needs >= 6
+inliers). No other change between the freeze and the shots.
+
+Tune (12 cells, r6+r7, cross-fold p): EVERY cell clears the incumbent
+prod arm (205 @ 0.623); range 220 @ 0.815 .. 263 @ 0.807. Rule picked
+**p_seed=0.4 s_min=6 gap=6 (263 @ 0.807)** (tie with s_min=4 broken
+to the larger s_min). `pathfirst_tune.json` holds the grid + verdict.
+
+One shot each:
+
+| rally | incumbent prod | path-first | V / S | nulls disp / tshift | at-click pts |
+|---|---|---|---|---|---|
+| r9 (779 clicks) | 431 @ 0.69 | **537 @ 0.87** | 421/587 @ 0.94, 116/192 @ 0.69 | 0 / 1 | 616 vs 628 |
+| r10 (657, re-cut clip) | 325 @ 0.69 | **422 @ 0.88** | 316/487 @ 0.92, 106/170 @ 0.78 | 0 / 0 | 479 vs 472 |
+
+Both PRIMARY bars pass on both rallies (r@12 +106 / +97, prec +18 pp /
++19 pp); both nulls <= 1 % of clicks. **ADOPTED: path-first is the
+incumbent.** Strata (incumbent prod geometry): r9 cand 441 vs 431,
+nocand 12 vs 0, outwin 82/131 vs 0, nocor 2/2; r10 cand 338 vs 325,
+nocand 10 vs 0, outwin 74/97 vs 0 — the gain is the out-of-window
+clicks (lobs, bounces) the corridor box could never reach, plus a
+small selection gain inside the box.
+
+SECONDARY (not gating, reported as promised): oracle-contact recovery
+|dt| to nearest path-first boundary — r9 median 0.046 s, 24/29 within
+0.10 s (prod detector 0.069 s, 19/29); r10 0.048 s, 19/26 (prod 0.074,
+15/26). Caveats that keep this secondary: (i) it is RECALL of oracle
+contacts only — path-first emits 64 / 56 boundaries against 29 / 26
+oracle contacts, so many boundaries are bounces, flight fragments or
+misses, and no precision is claimed; (ii) the bounce rule (z <= 0.3 ft,
+next start <= 0.15 s and <= 2 ft) fired 2 times on r9 and 0 on r10
+against a human ledger of 13 bounces on r10 — bounce TYPING is
+essentially unbuilt; the flights break at bounces, the labels do not
+say so. r6 smoke (train, overrides allowed): 0 bounces typed.
+Runtime: ~3 s per rally.
+
+What this does NOT establish: track quality on frames with NO click
+(the V/S ledger is the only truth; between-click frames are unscored),
+contact precision, bounce typing, r20 (the seal is untouched and needs
+owner authorization).
