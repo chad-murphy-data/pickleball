@@ -11,8 +11,8 @@ the stronger player takes w = 0.59 of the court; a within-team
 contact-width split is that number observed instead of inferred.
 
 Inputs, all committed (no tracker, no sealed data):
-- ball passes  data/vision/ball_path_r{1,6,7,8}.csv (rally 9 EXCLUDED
-  until its seal/train designation lands — its pass stays unpeeked)
+- ball passes  data/vision/ball_path_r{1,6,7,8,9,10}.csv (r9 designated
+  TRAIN 2026-08-31; r10's seal spent on the 2026-09-01 graded run)
 - hitter taps  r1: state_labels (kind=impact, per-episode player);
                r6-8: contact_labels manual/divergent taps, contact!=0
 - court        court_landmarks + court3d DLT (one-time calibration)
@@ -54,7 +54,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from court3d import load_landmarks, dlt  # noqa: E402
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
-RALLIES = (1, 6, 7, 8)          # r9 excluded: designation pending
+RALLIES = (1, 6, 7, 8, 9, 10)   # r9 train 2026-08-31; r10 spent -> train 09-01
 MATCH_S = 0.15                  # tap <-> ball-frame match window
 NET_Y = 22.0                    # court is 20 x 44 ft, net at y=22
 KITCHEN = 7.0                   # kitchen line is 7 ft from the net
@@ -202,7 +202,7 @@ def main():
             print(f"    r{h[0]} {kind} {h[2]:<16} width {W:4.1f} "
                   f"depth {D:4.1f}")
 
-    print("\nCaveats: n=4 rallies, one matchup, one camera. Depth "
+    print(f"\nCaveats: n={len(RALLIES)} rallies, one matchup, one camera. Depth "
           "wears the contact-height bias (z0 vs z2.5 columns); width "
           "is the trustworthy axis. Serves/returns excluded above. "
           "A licensed tracker mints this for every logged rally; "
