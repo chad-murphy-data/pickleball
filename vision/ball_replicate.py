@@ -329,16 +329,15 @@ def track_sides(floors):
     return out
 
 
-def claim_bounds(turns, angs, refined, anchors, sides=None):
-    """Anchor -> turn claiming with the two 2026-09-01 upgrades:
-    (a) SPATIAL GATE — the claimed turn's path position must lie
-    within CLAIM_R of the claiming anchor's wrist; (b) ALTERNATION
-    PRUNE — consecutive claimed bounds must alternate the claiming
-    track's team side (side alternation is EXACT in this sport: 0
-    violations / 229 labeled contacts); where two consecutive claims
-    share a side, the weaker-angle one is demoted back to the bounce
-    pool. One anchor still claims at most one turn (largest angle in
-    MATCH_S), per the r7 wobble lesson."""
+def claim_bounds(turns, angs, refined, anchors, sides=None,
+                 claim_r=None):
+    """claim_r=None and sides=None = the original LOOSE claiming
+    (one anchor claims its largest-angle turn in MATCH_S, no spatial
+    gate, no prune) — the production setting. MEASURED 2026-09-01,
+    multi-rally: the strict machinery below (paddle-point gate +
+    alternation prune) trades r10 5->7 matched impacts for an r7
+    COLLAPSE (7/8 @1.70ft -> 3/8 @5.98) — net-negative; kept for a
+    future anchor-recall upgrade, OFF by default."""
     pts = sorted(refined)
 
     def path_at(e):
@@ -351,9 +350,10 @@ def claim_bounds(turns, angs, refined, anchors, sides=None):
         for e in turns:
             if abs(e - ta) > MATCH_S:
                 continue
-            px, py = path_at(e)
-            if math.hypot(px - gx, py - gy) > CLAIM_R:
-                continue
+            if claim_r is not None:
+                px, py = path_at(e)
+                if math.hypot(px - gx, py - gy) > claim_r:
+                    continue
             cand.append((angs[e], e))
         if cand:
             ang, e = max(cand)
@@ -397,7 +397,7 @@ def tracked_side(rally, anchors, floors, serve, end, sides=None):
     # turn, and a real shot reverses the ball (measured on r7: real
     # contacts turn 101-171 deg, the path wobbles hugging the same
     # anchors turn 42-66 deg — nearest-in-time picked the wobble twice)
-    matched = claim_bounds(turns, angs, refined, anchors, sides)
+    matched = claim_bounds(turns, angs, refined, anchors)   # LOOSE
     claimed = set(matched)
     # TRIED AND REJECTED 2026-08-31: promoting unclaimed turns >= 90 deg
     # to contact bounds (to rescue r6's missile-missed 148.6 contact).

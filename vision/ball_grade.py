@@ -162,8 +162,7 @@ def main():
     X3, x2, _ = c3.load_landmarks()
     P = c3.dlt(X3, x2)
     floors = br.track_floor(a.npz, P)
-    matched = br.claim_bounds(turns, angs, refined, anchors,
-                              br.track_sides(floors))
+    matched = br.claim_bounds(turns, angs, refined, anchors)  # LOOSE
     bounds = matched + [a.end]
     bounce_evs = [e for e in turns if e not in set(matched)]
     obs = [(t, x, y, 1.0) for t, x, y in pts]
