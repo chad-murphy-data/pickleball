@@ -4376,3 +4376,80 @@ anchors). Session levers: torso-relative wrist speed (kills
 body-translation fakes; the autopsy's third-instrument spec named
 it), wrist-asymmetry discount (running pumps both arms, a swing is
 one-armed), then alternation-prior rescoring.
+
+## 2026-09-01 (cont.) — claiming-lab session: five kills, one discovery, and the oracle that reframed the thread
+
+All train-only, cached-pipeline lab (scratchpad c3_lab/claim_lab/
+fit_lab; lab reproduces the real battery: r7 5/9 @2.35 PASS, r10
+16/26 @2.95 8v13, r9 22/28 @3.57 18v14 — battery said 2.36/2.98/3.75,
+same verdicts). Truth = 71 hand-timestamped taps + human-fit bounce
+times across r6/r7/r9/r10.
+
+**Discovery that survives: ball-path-to-paddle distance (pathdist).**
+dist(decoded path at event time, track's paddle point)/box-height
+separates real from fake pose anchors at AUC 0.936/0.760/0.933/0.982
+(r7/r9/r10/r6; real med 0.27-0.48h, fake 0.93-2.79h). Physical basis:
+the ball genuinely arrives at the hitter's paddle.
+
+**Five kills, each with its mechanism:**
+1. *Pathdist as a claim gate* (trust only near-path anchors): recall
+   collapses everywhere (r9 21->13/29 at any threshold/policy).
+   Mechanism: P0's recall partly comes from time-mislocated anchors
+   whose largest-angle-turn claim SNAPS to the true contact; pathdist
+   at the anchor's own time reads "far" mid-flight, so the gate vetoes
+   exactly the anchors doing error correction.
+2. *Arc-intersection impact readout* (--ix, the r9 fast-shot fix
+   candidate): med 3.57 -> 3.72. The early boundary is baked into the
+   fitted arcs; letting them vote doesn't move the agreement point.
+3. *Bounce-geometry veto.* Real discriminator found first: bounce-turns
+   KEEP horizontal direction (75%), contact-turns REVERSE it (73%) —
+   the owner's V-shape insight, operationalized as keepx (the vertical
+   V flag itself does NOT separate: 0.68 vs 0.71, volleys also go
+   down-up). But as a claim veto, plain or conjuncted with pathdist,
+   it makes r10's ledger WORSE (8v13 -> 5v13; veto-drop 2v13).
+   Mechanism: removing bounce-misclaimed bounds does NOT return those
+   bounces to segment interiors — fit_segment places at most ONE
+   interior bounce, and merged dink segments contain 2+.
+4. *Orphan anchor-time bounds* (anchor claims nothing -> bound at
+   anchor time): cheap-metric Pareto win (+1 recall r7/r10, extras
+   flat), then killed at fit level — r7 FULL PASS regressed to 1v3
+   bounces. The added bound recovered its own impact at 1.25 ft but
+   sat ~0.1 s early (pose-anchor slop; med |dt| 58 ms, p90 122 ms),
+   and the clipped boundary destabilized both neighboring segments.
+   Lesson: never place a bound on a raw event time.
+5. *Hybrid z-admission* (z>=1.2 OR z>=0.5 & pathdist<=0.6): pose-stage
+   recall 0.620 -> 0.690 pooled (+2 taps r10, +2 r6), bound recall +2
+   on r10 only — real but small; superseded by the approach channel
+   below as the recall lever (kept as a compatible add-on).
+
+**THE ORACLE: fit r10 with bounds at the 26 hand-timestamped tap
+times -> matched 25/26, med 1.80 ft, crossings 22/22, bounces 13v13,
+FULL PASS.** The candidate stream + fitter reproduce the human
+reconstruction almost exactly once segmentation is right. Everything
+r10 is missing lives in bound recall/placement; the decode/fit stack
+is exonerated. (Oracle uses labels — a diagnostic ceiling, never a
+production config.)
+
+**Second discovery: the approach channel.** Close-approach local
+minima of pathdist over time (per track, 0.35 s min-sep, rth=0.5) as
+a pose-free contact detector: pooled tap recall 0.789 @ 57% precision
+vs the pose channel's 0.620 @ 37%. r10: 23/26 vs pose 16/26 — the
+far-court white-dress failure doesn't exist for this channel (paddle
+boxes survive where wrist keypoints fail). Weak only on r6 (3/7,
+junk decode there). Approach events carry a track id, so they feed
+claim_bounds as anchors directly: UNION claiming (pose+blur+approach)
+lifts bound recall on every rally — pooled 43/71 -> 52/71, r10
+13->18/26, extras FLAT (11->10). Largest claiming-level jump of the
+session, on the metric the oracle says is binding.
+
+**The remaining ceiling is structural:** 12 approach-recalled taps
+(1 r7 / 5 r9 / 6 r10) have NO 40-deg turn within 0.15 s — and only
+2-3 of 12 appear even at a 20/10-deg floor. The bridged timing stream
+sails smoothly through these contacts. "Bounds only at turns" caps
+r10 around 20/26 where the oracle needs 26. Next mechanism (built,
+measuring now): fit-validated splits — approach events far from any
+bound propose splitting their containing segment, boundary time
+gridded +/-0.15 s at 1/15 s, accepted only when both halves fit
+plausibly and beat the unsplit rms by fit_segment's own 0.5 px
+margin. Same pattern as interior-bounce placement; sidesteps kill #4
+by letting the FIT choose the time.

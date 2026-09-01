@@ -489,3 +489,20 @@ by HUMAN EYEBALL, not by more reasoning: the Colab debug frames
 If the scorebugs mismatch → real identity problem → remap before any
 TRAINING use of r9/r10. Until checked, r9/r10 carry an asterisk for
 training purposes only.
+
+**Addendum 2026-09-01 — the eyeball happened, via the ball passes.**
+The owner clicked the ball frame-by-frame through both rallies for the
+ball gate (ball_path_r9/r10.csv): r9 is one CONTINUOUS point running
+252.60→282.53 clip time ≈ 30 s serve-to-out — the "should run ~30 s"
+criterion, met by direct human observation (29 contacts / 30 s ≈ 1/s
+cadence, physically sane for a dink rally, where 29 in 17 s was not).
+r10's play span 294.30→318.45 = 24.2 s MATCHES its log duration 24.0 —
+its 47.0 label window was extraction padding, not play; r10 was never
+actually anomalous. r10 identity is further pinned to the main VOD by
+the owner's own bounce checks (clip offset 292.7 maps 296.50→4:46 etc.,
+verified at 4:58.9 / 5:00.6 / 5:15.0 during the 2026-08-31 bounce
+dispute). Verdict: the log-side per-rally DURATION field is the wrong
+member of the pair for r9 (errs both directions across the set, as the
+original note suspected). Remaining formality before TRAINING use: the
+r9 scorebug still (expect 2-3-1); everything else about the asterisk is
+resolved.
