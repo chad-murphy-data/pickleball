@@ -126,9 +126,18 @@ def turn_angles(points, events, win=0.2):
 
 
 def load_anchors(path):
-    return [(float(r["t_s"]), int(r["track"]), float(r["wrist_x"]),
-             float(r["wrist_y"]))
-            for r in csv.DictReader(open(path))]
+    """6-tuples (t, track, wrist_x, wrist_y, paddle_x, paddle_y); the
+    paddle point (wrist + 0.5*(wrist-elbow)) is the measured better
+    contact-position estimate (13-15 px vs 18-20 for the wrist) and
+    is what the claiming gate uses. Older CSVs without paddle columns
+    fall back to the wrist."""
+    out = []
+    for r in csv.DictReader(open(path)):
+        wx, wy = float(r["wrist_x"]), float(r["wrist_y"])
+        out.append((float(r["t_s"]), int(r["track"]), wx, wy,
+                    float(r.get("paddle_x") or wx),
+                    float(r.get("paddle_y") or wy)))
+    return out
 
 
 def bound_anchor_positions(bounds, anchors, floors):
@@ -139,7 +148,7 @@ def bound_anchor_positions(bounds, anchors, floors):
         cand = [(abs(tb - a[0]), a) for a in anchors
                 if abs(tb - a[0]) <= MATCH_S]
         if cand:
-            _, (ta, tid, _, _) = min(cand, key=lambda c: c[0])
+            _, (ta, tid, *_) = min(cand, key=lambda c: c[0])
             out.append(floor_at(floors, tid, ta))
         else:
             out.append(None)
@@ -285,12 +294,26 @@ def _plausible(seg):
 # --------------------------------------------------------------- sides
 
 CLAIM_R = 130.0   # px: a claimed turn must sit near the claiming
-                  # anchor's wrist — a contact happens AT the paddle
-                  # (good anchors measure 39-73 px from the ball; junk
-                  # anchors at fake swings are far from it). Train
-                  # iteration 2026-09-01 after r10's graded MIDDLE:
-                  # 73 anchors claimed ~30 turns on a 26-contact rally,
-                  # stealing real bounces into contact bounds.
+                  # anchor's PADDLE point — a contact happens AT the
+                  # paddle (good anchors measure 39-73 px from the
+                  # ball; junk anchors at fake swings are far from
+                  # it). Train iteration 2026-09-01 after r10's graded
+                  # MIDDLE: 73 anchors claimed ~30 turns on a
+                  # 26-contact rally, stealing real bounces into
+                  # contact bounds. MEASURED LIMITS on r10 (recorded
+                  # so nobody re-tunes this on one rally): radius
+                  # cannot separate true from junk claims (~1:1 kill
+                  # ratio at 130/180/240) and neither can turn angle
+                  # (distributions overlap; the r7 wobble separation
+                  # does not generalize) — the binding ceiling is
+                  # anchor recall x turn recall (~19/26 there).
+ALT_MAX_S = 0.7   # s: the alternation prune only fires on same-side
+                  # claim pairs CLOSER than this — exact alternation
+                  # holds over the COMPLETE contact sequence, so with
+                  # claiming holes a distant same-side pair usually
+                  # means a MISSED opposite contact between them
+                  # (pruning one would kill a true contact); a close
+                  # pair is a contact+own-wobble/bounce double.
 
 
 def track_sides(floors):
@@ -323,13 +346,13 @@ def claim_bounds(turns, angs, refined, anchors, sides=None):
         return near[1], near[2]
 
     claims = {}                       # turn e -> (angle, track)
-    for ta, tid, wx, wy in anchors:
+    for ta, tid, wx, wy, gx, gy in anchors:
         cand = []
         for e in turns:
             if abs(e - ta) > MATCH_S:
                 continue
             px, py = path_at(e)
-            if math.hypot(px - wx, py - wy) > CLAIM_R:
+            if math.hypot(px - gx, py - gy) > CLAIM_R:
                 continue
             cand.append((angs[e], e))
         if cand:
@@ -341,7 +364,8 @@ def claim_bounds(turns, angs, refined, anchors, sides=None):
         ang, tid = claims[e]
         side = (sides or {}).get(tid)
         if (seq and side is not None and seq[-1][2] is not None
-                and side == seq[-1][2]):
+                and side == seq[-1][2]
+                and e - seq[-1][0] < ALT_MAX_S):
             if ang > seq[-1][1]:
                 seq[-1] = (e, ang, side)
             continue                  # weaker same-side claim -> bounce
