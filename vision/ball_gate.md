@@ -589,3 +589,35 @@ Reading: both residual failures now trace to BOUND recall/precision
 bounces and 7 non-crossing segments sit where ~6 contacts went
 unclaimed) — i.e. the HITTER-ANCHOR PRECISION front, the other
 named lever. The bounce MECHANISM is no longer the blocker.
+
+### Anchor-precision pass + honest stop — 2026-09-01 (end of session)
+
+Anchor dedupe (same-instant cross-track + same-side within 0.55 s,
+at the ANCHOR level where the alternation prior is safe) landed with
+two tiebreaks measured:
+
+- z-tiebreak: **rally 7 FULL BATTERY PASS** — the first complete
+  three-check pass under the final architecture (3v4 bounces, 3/3
+  crossings, 2.15 ft) — but keep-highest-z keeps energetic FAKE
+  swings over soft real dink contacts, so r10 regressed (14 matched,
+  3.57 ft).
+- timing-turn tiebreak (FROZEN as production): r10 recovers (16/26
+  at 2.98 ft, crossings 14/15, bounces 8v13) and r7 misses its PASS
+  by a single impact's effect on a 5-point median (3.29 vs 3.0;
+  bounces and crossings both pass).
+
+STOP RECORDED: across the last three configs every change trades r7
+against r10 on n=5-9 matched points — single impacts flip verdicts.
+Continuing is curve-fitting to two rallies. What the evidence says
+actually moves check 3 next, in order: (1) hitter_chain anchor
+QUALITY itself (the fakes' excitement z beats real dinks — one
+focused pass on its peak logic, not claiming-side arithmetic);
+(2) rally 9's clip (never uploaded — its candidates would add the
+missing second lob-regime train rally and a 6th battery rally);
+(3) more train rallies from taps. The bounce mechanism (fix #1) and
+the decode architecture are settled and were never the see-saw.
+
+Session totals for check 3 on r10, graded run -> now: matched 16/26
+-> 16-20/26, median 2.73 -> 2.42-2.98, crossings 10/19 -> 14/15,
+bounces 3v10 -> 8v13 (with the fitter now finding occluded bounces
+on both sides). Checks 1+2 pass everywhere throughout.

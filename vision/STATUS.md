@@ -125,7 +125,15 @@ white-dress contrast wall): r7 now passes every check-3 component
 except bounce count (6v4), r10 20/26 at 2.42 ft with bounces 11v13 —
 both off by exactly 2. Remaining failures all trace to BOUND
 recall/precision = the anchor-precision front. Bounce mechanism no
-longer the blocker. r20 re-grade NOT recommended yet; owner fork
+longer the blocker. ANCHOR DEDUPE landed same day (two tiebreaks
+measured; timing-turn proximity frozen): rally 7 posted the FIRST
+FULL THREE-CHECK PASS under the z-tiebreak; the frozen config holds
+r10 at 16/26 / 2.98 ft / 14-15 crossings / 8v13 bounces with r7 one
+impact from PASS. STOPPED at the see-saw: three configs trade r7 vs
+r10 on single impacts (n=5-9 matched) — further claiming arithmetic
+is curve-fitting. Next levers, evidence-ordered: hitter_chain anchor
+QUALITY (fake swings out-z real dinks), the r9 clip (missing 6th
+battery rally + second lob case), more tapped rallies. r20 re-grade NOT recommended yet; owner fork
 recorded in the gate file: one anchor-precision/bounce-triage train
 pass first, or re-register a narrower checks-1+2 contact-times
 channel (touch share / tempo / categories) as a fresh

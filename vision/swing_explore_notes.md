@@ -4226,3 +4226,21 @@ anchor dedupe (same-instant multi-track collapse to best z;
 same-side collapse within ~0.7 s at the ANCHOR level, where the
 sequence is complete and the alternation prior is safe — unlike at
 the claim level, where holes made it kill true bounds).
+
+## 2026-09-01 (close) — first full-battery PASS, the see-saw, and the honest stop
+
+Anchor dedupe: rally 7 posted the program's FIRST full three-check
+PASS (z-tiebreak config: 3v4 bounces, 3/3 crossings, 2.15 ft) — and
+r10 regressed in the same breath, because keep-highest-z keeps loud
+fakes over soft dinks. The timing-turn tiebreak (frozen) reverses
+the trade: r10 16/26 @ 2.98 with 14/15 crossings and 8v13 bounces,
+r7 one bad impact over its 5-point median (3.29 vs 3.0, bounces and
+crossings passing). Three configs, every one a single component
+short somewhere, verdicts flipping on single impacts — stopped
+there deliberately; that is two-rally curve-fitting, not progress.
+The parts that never see-sawed: the decode architecture, the
+excursion machinery, fix #1's fit-demanded bounces, checks 1+2
+passing everywhere. What moves next per the evidence: hitter_chain
+anchor quality (the z-vs-realness inversion on dinks is ITS bug),
+the r9 clip (upload pending — second lob rally, sixth battery
+rally), and tap volume. Then the r20 call.
