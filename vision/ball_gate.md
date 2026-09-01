@@ -442,3 +442,37 @@ Frozen here before any rally-10 output exists (r8 precedent):
   directions, and the honest prior is the train table plus the r1
   long-rally screen (r10 is long-rally class, 26 contacts — the
   null will have real power).
+
+## GRADED RESULT — 2026-09-01, rally 10 (seal spent)
+
+One graded run (attempt 2; attempt 1 crashed pre-answer-key, recorded
+above). Configuration exactly as frozen in the note.
+
+- **CHECK 1: 66.2%** V (314/474; S 85.0%) — between the bars
+  (PASS >= 70, FAIL < 40), 3.8 points short of PASS.
+- **CHECK 2: PASS — the tracker BEAT THE HUMAN PATH.** Timing stream
+  recall 73.1% at null pct 98 vs the human's 65.4% at pct 91, and it
+  beats its own shift-null 95th (65.4) outright — the clause that
+  failed the r8 grade. 26 physical contacts; the null had real
+  power. First instrument in program history to outscore human
+  labels on a sealed rally's contact times.
+- **CHECK 3: FAIL — on segmentation, not accuracy.** Matched impacts
+  16/26 at median 2.73 ft (the 3.0 bar is MET); net crossings 10/19
+  drawn segments (bar: all); bounces 3 vs the human path's 10 (bar
+  +/-1). The rally is dink-heavy: bounce-rich. The tracker
+  over-fragments (32 segments vs human 26) and under-recovers
+  bounces; where impacts matched, the 3D agreement held.
+- **Pooled absolute test (Amendment 1, first time binding — 26
+  sealed physical contacts):** pooled recall 73.1% < 0.80 — SHORT,
+  recorded. Noted alongside: the human path itself scores 65.4% on
+  this rally under the same frozen battery (the lob class is hard
+  for humans too), the first human pass under the 0.80 absolute bar.
+- Owner's pre-recorded lob-segment caveat: to be weighed by the
+  autopsy arms against the check-3 miss geography.
+
+**VERDICT: MIDDLE, per the frozen bars — one further train-only
+iteration, then one re-grade on a NEWLY labeled sealed rally.**
+Rally 10 is spent -> train (a long-rally, bounce-rich, lob-bearing
+training case — the exact regimes the iteration must address).
+Autopsy arms run post-verdict on the spent rally per the
+pre-registration; results appended when complete.

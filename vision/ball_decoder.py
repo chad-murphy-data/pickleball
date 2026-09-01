@@ -42,7 +42,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from make_ball_audit import detect_events, score_events, load_impacts  # noqa: E402
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
-SEALED = {10}        # r10 sealed 2026-08-31 (the decoder-fix re-grade rally); r8/r9 are train
+SEALED = set()       # r10 spent 2026-09-01 (graded MIDDLE, now train); next seal = r20 when labeled
 
 FPS = 60.0
 GAP_MAX = 21            # frames (0.35 s) — the battery's own blind-gap limit
