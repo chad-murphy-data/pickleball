@@ -476,3 +476,42 @@ Rally 10 is spent -> train (a long-rally, bounce-rich, lob-bearing
 training case — the exact regimes the iteration must address).
 Autopsy arms run post-verdict on the spent rally per the
 pre-registration; results appended when complete.
+
+### Autopsy — 2026-09-01, pre-registered arms on spent rally 10
+(`vision/ball_autopsy_r10.py`; oracle arm validated against the r8
+reference first — it reproduces 93.8% vs the recorded 94.6%, so its
+r10 readings are trusted)
+
+1. **Oracle substitution: V 50.0%, turns 38.5%** — the decoder on
+   the user's own clicks does WORSE than on the junky stream, and
+   the reason is structural, verified directly: the labels contain
+   exactly ONE gap exceeding GAP_MAX (307.92-308.32s, 24 frames at
+   60 fps — the owner's flagged lob, ball above the frame), and the
+   oracle path stops at its left edge, covering exactly 50% of the
+   window. Clean input cannot bridge an off-frame excursion; the
+   graded position stream "bridged" it through junk, which degraded
+   check 1 and shredded mid-rally segmentation.
+2. **Person ablation: N/A** (no manual track data exists for r10;
+   no signal implicates the automated channel).
+3. **Frame checks: SANE** — candidate V recall 93.6% (456/487) at
+   +/-1 frame is the clock check.
+4. **Candidates: EXONERATED** — 93.6% overall, and the owner's two
+   flagged lob windows have full coverage (3/3, 4/4). The labels
+   were right; the caveat resolves in the labels' favor (again).
+
+**ATTRIBUTION: DECODER, two named defects** — (a) no off-frame
+excursion capability (GAP_MAX 21 vs the lob's 24-frame absence; the
+same regime r9's 34-frame lob exposed on train the day before),
+(b) bounce segmentation on dink-heavy rallies (3 recovered vs the
+human reconstruction's 10; 32 segments vs 26). The check-2 timing
+stream beat the human path THROUGH both defects — the two-regime
+fix is validated out of sample; what remains is position-stream
+structure, not timing.
+
+**The MIDDLE's one train-only iteration is therefore specced, not
+open-ended**: (a) an off-frame-excursion edge class (exit near the
+frame top with upward velocity -> ballistic re-entry from the top,
+gaps to ~1.5 s), (b) bounce-aware segmentation. Train coverage for
+both exists (r9 34-frame lob, r10 24-frame lob + 10 bounces, plus
+r1/6/7/8). Re-grade on a newly labeled sealed rally (r20 is the
+identified candidate) once the iteration passes readiness.
