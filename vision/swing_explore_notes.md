@@ -4453,3 +4453,52 @@ gridded +/-0.15 s at 1/15 s, accepted only when both halves fit
 plausibly and beat the unsplit rms by fit_segment's own 0.5 px
 margin. Same pattern as interior-bounce placement; sidesteps kill #4
 by letting the FIT choose the time.
+
+**Fit-validated splits: verdict (same day, chain complete).** The
+machinery is real but only addresses one of the three failure modes.
+- **r7 — WORKS, the validation case**: splits at 171.57 (rms
+  6.86->2.08) and 174.03 (6.31->3.15), round-2 170.97 (2.09->0.97);
+  check-3 5/9 -> **7/9 med 2.35, crossings 6/6 -> PASS held**. (First
+  attempt broke crossings by splitting an already-clean segment on a
+  0.54 px marginal gain — hence SPLIT_NEED=2.0, only rescue broken
+  fits, best split per segment per round.)
+- **r10 — BLIND, 0 splits fired**: app-base result unchanged (18/26
+  med 2.31, 16/17, 8v13 FAIL). Mechanism: merged dink segments fit
+  CLEAN (rms < 2.0), so the rms trigger — the exact guard that saved
+  r7 — cannot see them. Kill #3's mechanism predicted this:
+  fit_segment lays down a plausible one-bounce arc over what is
+  really two dinks. The bounce deficit is invisible to
+  goodness-of-fit; any fix must be licensed by CONTACT EVIDENCE
+  (approach event + segment duration), not by residuals — or by
+  contact times from outside (labels / temporal model / corridor
+  re-search).
+- **r9 — NEUTRAL, floor reconfirmed**: 1 split accepted (275.13, rms
+  4.66->1.66 — the machinery does find genuinely broken segments),
+  net 22/28 med 3.49->3.70, crossings 23/24, bounces 17v14. The new
+  boundary's own impact pair reads 10.94 ft — fast-boundary readout
+  wobble, the same story as the oracle. r9's med now measured at
+  3.49-3.89 under FOUR bound placements (production / app / app+split
+  / oracle taps): a stream/readout floor on fast drives, not a
+  segmentation problem. One lever left: paddle-anchored impact
+  readout.
+- **r6 — app base is ACTIVELY HARMFUL on a junk decode** (1/7 @27.8
+  vs production 3/7 @7.28): fake approach anchors (z-proxy 2.5-3.0)
+  outrank real pose claims in dedupe. The label-free decode-health
+  guard is a PREREQUISITE for running the approach channel on
+  unlabeled rallies.
+
+State after the session, for the product fork now with the owner:
+checks 1+2 pass on train; check 3 = r7 PASS / r10 fixable-in-principle
+(oracle passes; bounce ledger needs contact evidence) / r9
+instrument-limited on this footage (oracle fails the med bar).
+Recommended and pending owner decision: MVP 1 = checks 1+2 under a
+fresh narrow registration (r20 seal grades MVP 1), check 3 continues
+as research. Proposed item #5, pending owner go: POSE-CORRIDOR
+RE-SEARCH — between consecutive contacts the ball must fly one arc
+from paddle A to paddle B, so re-detect aggressively (faint blobs,
+motion streaks) inside that ~1%-of-frame corridor only; geometric, no
+training (the killed fine-tune stays killed); validated against the
+owner's r9/r10 ball-path clicks vs a DISPLACED-CORRIDOR null. Could
+subsume the r10 ledger fix (recover the far-court white-dress
+observations), the r6 rescue (re-search instead of alarm-only), and
+part of r9 (endpoint anchoring).
