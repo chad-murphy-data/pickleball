@@ -4326,3 +4326,53 @@ bounce grid + restitution + BOUNCE_MARGIN 0.8 ON):
 Baseline to beat for the anchor-quality session (and not give back):
 r7 PASS; r10 16/26 @ 2.98 ft / 14-15 crossings / 8v13 bounces; r6/r8
 check-2 train windows.
+
+## 2026-09-01 — r9 joins the battery: check 1 BEST EVER (86.1), a THIRD check-3 failure mode, and the anchor stage quantified
+
+Owner uploaded the r9 clip (the missing 6th battery rally, second lob
+case). Candidates: 92,756, V-recall 95.4 / S-recall 97.9 — the lob
+N-frames are off-frame and unscored. Baseline battery (window
+252.60-282.53 = v4 serve pin -> label end; 29 taps):
+
+- **Check 1 PASS, V 86.1 / S 90.6 — the best V on record.** The
+  excursion machinery, built on r10's lob, generalizes to the second
+  lob rally unseen.
+- **Check 2: beats own null at pct 100 (79.3 vs 95th 65.5), one
+  matched turn under the human path (79 vs 83) — near-miss.**
+- **Check 3 FAIL with a NEW failure profile**: bound recall 22/28
+  (best of the long rallies) and crossings 23/23 PERFECT, but median
+  3.75 ft and bounces 18v14 over-generated. The per-impact table
+  pins it: early fast shots miss by 5-12 ft with bounds ~0.1 s early
+  (drive speed makes 0.1 s = 6-12 ft), dinks land at 0.6-1.0 ft.
+  Corner-cutting where the ball vanishes at the paddle (the measured
+  I-frames-at-wrist effect) places the path turn early; claim_bounds
+  inherits the turn's time. Candidate fix (fit-side, mirror of
+  fix #1): contact time from the two adjacent fitted arcs'
+  INTERSECTION, not the last-visible turn.
+
+Check-3 failure modes are now one per rally: r10 = bound RECALL
+(fakes crowd out reals), r9 = bound TIMING on fast shots (+4 bounce
+over-gen), r6 = accuracy on n=3. All three sit on the anchor/claim
+front; the decode itself passes checks 1-2 everywhere (5-of-5 check-1
+passes, check 2 at or above human on 2 of 5).
+
+**Anchor stage quantified for the first time** (anchor_diag.py,
+production pipeline = pose peaks + blur gap-fill, matched at
++/-0.15 s):
+
+| rally | recall | fakes | z real vs fake | top-10 real |
+|---|---|---|---|---|
+| r6 | 5/7 | 3 | 2.21 vs 2.76 (INVERTED) | — |
+| r7 | 6/9 | 11 | 2.31 vs 1.94 | 4/10 |
+| r9 | 18/29 | 37 | 2.59 vs 1.73 | 7/10 |
+| r10 | 17/26 | 29 | 2.44 vs 1.94 | 4/10 |
+
+Two defects, cleanly separated: (a) RECALL — r9 misses 11 taps
+outright, r10 misses 9, all clustered in kitchen dink exchanges
+(soft dinks under Z_MIN=1.2 or eaten by MIN_SEP_S=0.35 next to a
+louder fake); (b) ORDERING — fakes overlap or beat reals everywhere.
+Blur gap-fill contributes almost nothing on these rallies (0-4
+anchors). Session levers: torso-relative wrist speed (kills
+body-translation fakes; the autopsy's third-instrument spec named
+it), wrist-asymmetry discount (running pumps both arms, a swing is
+one-armed), then alternation-prior rescoring.

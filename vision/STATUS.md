@@ -138,6 +138,24 @@ recorded in the gate file: one anchor-precision/bounce-triage train
 pass first, or re-register a narrower checks-1+2 contact-times
 channel (touch share / tempo / categories) as a fresh
 pre-registration. r10 spent -> train.
+**Owner truth verdicts + r9 baseline (2026-09-01, later):** all 5
+disputed r10 bounce calls verified REAL (kitchen short-hops; one
+occluded) -> r10 truth = 13, the human-side fitter was exactly right;
+hard velocity gates REVERTED (premise falsified), BOUNCE_MARGIN kept.
+Truth rerun: **r7 FULL three-check PASS** (2.36 ft / 4-4 / 3v3); r10
+human fit = truth 13/13 on 26/26 segments — the bounce mechanism is
+exact given human positions; r10 tracked side 16/26 @ 2.98 ft / 8v13.
+Owner uploaded the r9 clip: candidates 92.8k @ 95.4 V-recall;
+baseline battery check 1 PASS **86.1 V, best on record — the
+r10-built lob machinery generalizes unseen**; check 2 beats own null
+at pct 100 (79v83 human near-miss); check 3 FAIL on a third profile
+(bounds 22/28 + crossings 23/23 strong; median 3.75 ft from ~0.1
+s-early fast-shot bounds; bounces 18v14). All three check-3 failures
+now sit on the anchor/claim front. Anchor stage quantified
+(anchor_diag): recall 5/7, 6/9, 18/29, 17/26 with 3-37 fakes and
+fake-z overlapping or beating real-z — dink RECALL and z ORDERING
+are the two measured defects; anchor-quality session in progress
+(torso-relative speed, asymmetry discount, alternation rescoring).
 
 ## Built, producing numbers
 

@@ -612,10 +612,22 @@ Continuing is curve-fitting to two rallies. What the evidence says
 actually moves check 3 next, in order: (1) hitter_chain anchor
 QUALITY itself (the fakes' excitement z beats real dinks — one
 focused pass on its peak logic, not claiming-side arithmetic);
-(2) rally 9's clip (never uploaded — its candidates would add the
-missing second lob-regime train rally and a 6th battery rally);
+(2) rally 9's clip (DONE 2026-09-01 — owner uploaded it; candidates
+92,756 at V-recall 95.4/S 97.9; baseline battery: check 1 PASS at
+86.1 V, the best on record — the r10-built lob excursion generalizes
+to the second lob rally unseen; check 2 beats own null at pct 100,
+one turn under human 79v83; check 3 FAIL on a THIRD profile — bound
+recall 22/28 and crossings 23/23 both strong, but median 3.75 ft
+from ~0.1 s-early bounds on fast shots, + bounces 18v14. The three
+check-3 failures are now one per rally: r10 recall, r9 fast-shot
+bound timing, r6 small-n accuracy — all on the anchor/claim front);
 (3) more train rallies from taps. The bounce mechanism (fix #1) and
 the decode architecture are settled and were never the see-saw.
+Post-verdict truth rerun (gates reverted, margin kept, a6b833b):
+r7 FULL PASS (2.36 ft, 4/4, 3v3); r10 16/26 @ 2.98 / 14-15 / 8v13
+with the human fit recovering EXACTLY the owner-verified 13 bounces
+on 26/26 segments — the bounce mechanism is exact given human
+positions; every remaining deficit is tracked-side.
 
 Session totals for check 3 on r10, graded run -> now: matched 16/26
 -> 16-20/26, median 2.73 -> 2.42-2.98, crossings 10/19 -> 14/15,
