@@ -175,6 +175,14 @@ kills whole chains on faint fast drives; soft > hard > none. The
 owner-designed repertoire trail matcher (52-shot book) rides the same
 p as a precision/bridging arm (r9 oracle 177 r@12 @ 0.74). Product
 questions (bounce ledger, eviction) not yet re-graded on this stream.
+**Fusion (2026-09-01, `vision/ballsearch/fusion.py`): the three-part
+model (emission + trail proposals + DP as one cost) was built,
+self-tested and tuned blind on r6/r7 under a pre-registered rule —
+DEAD: best cell 381 @ 0.620 vs incumbent 376 @ 0.633, recall falls
+monotonically with trail weight, r9/r10 never run. Train autopsy: the
+trail helps only as a candidate POOL (W≈0 arm beats every cost cell),
+hurts as a per-frame cost, bridges sit > 12 px off — the corridor
+geometry error it inherits binds first (HANDOFF item 2).**
 
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),

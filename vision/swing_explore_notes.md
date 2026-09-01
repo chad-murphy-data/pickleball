@@ -4892,3 +4892,68 @@ new best instrument (r9 431/0.69, r10 320/0.67 against the 388/282 @
 product questions (bounce ledger, eviction/trial, double-contact
 segment) were all measured on the OLD stream — re-run them on this
 one before touching any other knob.
+
+**Fusion (emission + spaghetti trails + DP as ONE cost) — built,
+tuned blind on r6/r7, DEAD under the frozen rule; r9/r10 never run
+(2026-09-01, next thread; `vision/ballsearch/fusion.py`, verdict in
+`fusion_tune.json`).** The HANDOFF's L3 design, on the owner's go:
+per corridor, spaghetti scores every DIRECT/BOUNCE trail and refines
+the top M=8; each proposal conditions ONE DP run (candidate pool =
+chord window OR within R_BAND=60 px of the trail pixel, sorted by
+distance to the trail; unary `W_TRAIL·min(d/R_TRAIL,1)` on top of the
+incumbent's accel/gap/body/`25·(1−p)` terms); the winner is argmin of
+DP path cost + W_GAP × shot-book prior penalty; DP-skipped frames are
+bridged from the chosen trail (`-F` arm, flagged); abstain / no
+proposal / no path → the incumbent path verbatim. `corridor_dp.py`
+gained `trail=`, the band pool and `return_cost`; with `trail=None` it
+is bit-identical (asserted in the selftest; the environment was
+re-verified first — `softdp.py` reproduced the recorded sweep to the
+hit, 376 @ 0.633 at W=25, and the tune's INCUMBENT line is that same
+376 @ 0.633).
+PROTOCOL, written in the module docstring before any number: grid
+W_TRAIL ∈ {3,6,12,25} × R_TRAIL ∈ {8,16,30}, r6+r7 × prod+oracle,
+cross-fold p; rule = max total r@12 on the `fus` arm s.t. pooled
+prec@12 ≥ incumbent, ties smallest W then R, none → DEAD and `grade
+9|10` refuses to run (it also refuses any knob override on the
+evaluation rallies).
+SWEEP (total r@12 @ prec; incumbent 376 @ 0.633):
+  W=3:  379 @ .618 (R8) · 381 @ .620 (R16) · 381 @ .620 (R30)
+  W=6:  366 @ .616 · 373 @ .619 · 372 @ .615
+  W=12: 283 @ .558 · 304 @ .571 · 324 @ .579
+  W=25: 258 @ .534 · 278 @ .549 · 293 @ .553
+VERDICT: DEAD. The best cell buys +5 hits for −1.3pp precision; every
+heavier W loses recall MONOTONICALLY (−118 hits at W=25/R8). The trail
+pulls the DP OFF the ball as soon as it is allowed to pull.
+AUTOPSY (train rallies only, post-hoc, not a re-tune — any variant
+needs a fresh pre-registration): (i) reach is small: spaghetti
+abstains or has no proposal on 20 of 36 train corridors, so fusion
+touches 16; on prod arms it is ≈ the incumbent (r6 92 vs 90, r7 116
+vs 115) and most of the grid's +5 is r7-ORACLE (93/172 vs 90/149 —
+more track points, lower precision). (ii) The two mechanisms split
+cleanly with a W=0.001 arm (band pool on, cost term off): POOL-ONLY
+does BETTER than the best cost cell — r7 oracle 99 @ 0.57 vs 93 @
+0.54, r7 prod 117 vs 116 — so the cost term is net negative at every
+weight and the only real content of the trail is WHERE TO LOOK, not
+where the ball is. (iii) The bridge confirms it: `-F` is negative on
+every panel (r6 prod 90 → 82, r7 oracle 90 → 82) — trail pixels at
+DP-skipped frames sit > 12 px from the ball, and `spag.hits` lets a
+bridge point at the click frame pre-empt a correct DP point at f±1.
+(iv) M=1 ≡ M=8 within ±1 hit everywhere: the chooser is not the
+problem, the geometry is. (v) The truth-free confidence is DEGENERATE
+as built — `conf = inf` on every fused prod corridor printed (8/8) because the same
+trail-conditioned DP on a displaced corridor never finds a path
+(displaced band, no candidates); it would need the displaced arm to
+run the incumbent pool. Nulls (displaced anchors, seed 20260901): 0
+hits on every arm and panel, `-F` included. Strata (prod corridors):
+fusion's gains and losses are all inside `cand` (candidate existed,
+selection failed); `outwin` moves +3 on r6 prod (17 clicks) and 0 on
+r7 — the band does reach outside the chord box, rarely.
+READING: this is HANDOFF item 2 measured from the other side — the
+trail endpoints inherit the ~80–100 px contact-endpoint error and the
+chord-box geometry, so a trail is not a 12-px object and cannot be a
+per-frame unary; as a pool it helps a little (r7 oracle +9) and as a
+cost it hurts. The corridor-geometry fix (to-do #1) precedes any
+fusion re-try, exactly as the handoff ordered; the pool-only shape is
+the one lead worth pre-registering AFTER that fix. Not a 3-way model
+failure of principle: reach (20/36 abstain) and geometry both bind
+before the joint objective gets a vote.

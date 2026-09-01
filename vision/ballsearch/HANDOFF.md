@@ -39,6 +39,7 @@ disagree on a NUMBER, the notes file is the record.
 | `launch_prior.py` / `launch_prior.json` | shot book: 61 launches / 27 bounces from r6/r7 human segments. |
 | `spaghetti.py` | trail matcher v3 (DIRECT + BOUNCE families, MC null, mode prior, ABSTAIN=2.0) AND the graded harness: `python3 spaghetti.py <r> --lrn --soft 25` prints the prod/oracle table + per-corridor autopsy rows. Auto-builds `cands_r{r}_{cc,peak}_14.npz` on first use. |
 | `softdp.py` | pre-registered W_P_SOFT sweep on r6/r7 cross-fold; frozen rule → W=25. |
+| `fusion.py` / `fusion_tune.json` | the L3 three-part model (emission + spaghetti trails + DP as one cost): `tune` (r6/r7 cross-fold grid, frozen rule, writes the verdict), `grade <r>` (refuses r9/r10 without a live verdict or with knob overrides), `selftest` (synthetic corridor; asserts `trail=None` is bit-identical). VERDICT 2026-09-01: **DEAD** — see the section below. `corridor_dp.py` carries the optional `trail=`/band-pool/`return_cost` extension it needs. |
 | `corridor_autopsy.py`, `miss_map.py`, `r10_autopsy.py` | diagnostic-only (truth used to ask WHY). |
 | others (`anchor_*`, `hole_*`, `tr_grid*`, `split_lab`, `fit_lab`, …) | earlier-arc labs, kept for provenance; not on the current path. |
 | `anchors_grade_r*.csv` | anchor grading outputs (small). |
@@ -62,6 +63,7 @@ python3 emission.py train                              # emission_model.json (al
 for r in 9 10; do python3 emission.py cache $r; done   # p_r{9,10}_{cc,peak}_14.npz
 python3 emission.py cache-cross                        # p_r{6,7}_*_14_x.npz
 python3 softdp.py                                      # reproduces the W sweep (r6/r7 only)
+python3 fusion.py tune                                 # reproduces the fusion grid + DEAD verdict (r6/r7 only)
 python3 spaghetti.py 9  --lrn --soft 25                # graded r9 (run_in_background; > 2 min)
 python3 spaghetti.py 10 --lrn --soft 25                # graded r10
 ```
@@ -93,6 +95,43 @@ kp97 r6 0.0277 / r7 0.1497.
 Miss decomposition (why fusion was proposed): r9 prod misses = 197
 wrong-emitted + 151 empty frames; r10 156 + 181.
 
+## Fusion (L3) — built and tuned 2026-09-01: DEAD under the frozen rule
+
+`fusion.py` implements item 1 below exactly as specified (top-M=8
+trail proposals per corridor, each conditioning one DP run with a
+`W_TRAIL·min(d/R_TRAIL,1)` unary and a chord-window-OR-60-px-trail-band
+candidate pool; choice = DP path cost + W_GAP × shot-book penalty;
+trail bridge on skipped frames as the `-F` arm; incumbent path on
+abstain/no-proposal/no-path). Environment re-verified first: softdp.py
+reproduced 376 @ 0.633 at W=25 to the hit, and the tune's INCUMBENT
+line is that same number.
+
+Pre-registered grid W_TRAIL {3,6,12,25} × R_TRAIL {8,16,30}, r6+r7 ×
+prod+oracle, cross-fold p; rule = max total r@12 (`fus` arm) s.t.
+pooled prec@12 ≥ incumbent 0.633, ties smallest W then R, none → dead.
+
+| W_TRAIL | R=8 | R=16 | R=30 |
+|---|---|---|---|
+| 3 | 379 @ .618 | 381 @ .620 | 381 @ .620 |
+| 6 | 366 @ .616 | 373 @ .619 | 372 @ .615 |
+| 12 | 283 @ .558 | 304 @ .571 | 324 @ .579 |
+| 25 | 258 @ .534 | 278 @ .549 | 293 @ .553 |
+
+No cell clears precision; recall falls monotonically in W. **r9/r10
+were NOT run** (`grade 9|10` refuses on a dead verdict). Train-only
+autopsy (post-hoc, not a re-tune): spaghetti abstains/no-proposal on
+20 of 36 train corridors; a W=0.001 arm (band pool on, cost off) beats
+the best cost cell (r7 oracle 99 @ 0.57 vs 93 @ 0.54) — the trail's
+content is WHERE TO LOOK, not where the ball is; the bridge is
+negative everywhere (trail pixels at skipped frames sit > 12 px off);
+M=1 ≡ M=8 within ±1; the displaced-trail confidence is degenerate
+(always inf — the displaced band has no candidates). Nulls 0 on every
+arm. Reading: item 2's corridor-endpoint/window geometry error is what
+the trail inherits — the geometry fix precedes any fusion re-try, and
+the only lead worth a FRESH pre-registration afterwards is the
+pool-only shape. Full record: swing_explore_notes.md, "Fusion" entry
+at the end of the pose-corridor chapter.
+
 ## Open questions answered in the last exchange (assessment, unbuilt)
 
 **1. Combining spaghetti + emission + DP (owner: "not an ensemble").**
@@ -107,8 +146,8 @@ through the DP, choose by DP path cost + shot-book prior, confidence =
 best joint cost vs the same DP on a displaced window (truth-free).
 Recommendation: build L3 as `fusion.py` (M=1 arm reported alongside),
 W_TRAIL/R_TRAIL swept on r6/r7 cross-fold only, frozen rule, one-shot
-r9/r10 vs the incumbent, displaced-anchor nulls. Not started — owner
-has not given the go.
+r9/r10 vs the incumbent, displaced-anchor nulls. BUILT AND TUNED
+2026-09-01 on the owner's go — DEAD, see the Fusion section above.
 
 **2. The r10 "candidate deserts" 307.27–308.75 and 308.75–309.53
 (should they be excluded as unretrievable-except-by-inference?).**
@@ -168,7 +207,9 @@ prior term.
    first (cheap, diagnostic), then the endpoint/window change tuned on
    r6/r7 with a written rule, one-shot r9/r10.
 2. Duration/average-speed prior in spaghetti (item 3).
-3. `fusion.py` L3 (item 1), only on the owner's go.
+3. ~~`fusion.py` L3 (item 1), only on the owner's go.~~ DONE 2026-09-01:
+   built, tuned, DEAD under its frozen rule; r9/r10 unrun. Re-try only
+   AFTER #1, as a pool-only variant under a fresh pre-registration.
 4. Product re-grade on the current stream (bounce ledger,
    eviction/trial, double-contact segment 301.02) — all were measured
    on the OLD stream; re-run before touching any other knob.
