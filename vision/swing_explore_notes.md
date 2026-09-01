@@ -4244,3 +4244,21 @@ passing everywhere. What moves next per the evidence: hitter_chain
 anchor quality (the z-vs-realness inversion on dinks is ITS bug),
 the r9 clip (upload pending — second lob rally, sixth battery
 rally), and tap volume. Then the r20 call.
+
+## 2026-09-01 — bounce truth handed to the owner: 5 disputed timestamps
+
+Truth-calibrated gates: r7 PASSES THE FULL GATE a second time (config
+now stable there; human phantoms 4->2, tracked 3, within the bar).
+r10 remains the tangle: the gates cut the human fit barely (13->12)
+while the tracker collapsed 8->3 — its segments span MISSED contacts
+(bound recall), where no bounce logic can work. And the V-shape truth
+is a LOWER bound (an occluded far-court bounce is real but shows no
+V), so r10 truth sits in [8, 13].
+
+Resolution structure (human-side reconstruction vs label evidence):
+all 8 label-evident bounces are fit-confirmed; the fit adds 5
+DISPUTED claims — VOD seconds 296.50, 297.77, 298.95, 300.62,
+315.04. Owner eyeball on those five settles r10's bounce truth
+exactly: each is either a real occluded bounce (truth -> 13) or a
+fitter phantom (truth -> 8). Until then, no more bounce-side tuning;
+the anchor-quality session remains the other prerequisite for r10.
