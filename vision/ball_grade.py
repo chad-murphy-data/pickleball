@@ -155,14 +155,19 @@ def main():
           f"beats own null 95th: {'no' if c2_nullfail else 'yes'}")
 
     # ---- CHECK 3: replication (ball_replicate machinery)
+    # bounds come from the TIMING stream's turns — the instrument that
+    # passes check 2 (two-regime completion: "when" from timing,
+    # position evidence from the position stream). Measured 2026-09-01:
+    # position-stream turns under the anchor-free decode broke r7's
+    # bound structure (3/8 matched vs readiness 7/8).
     pts = [(t0 + f / bdec.FPS, x, y) for f, x, y in visited]
-    turns = [e for e in detect_events(refined)
+    turns = [e for e in detect_events(timing_ref)
              if a.serve - 0.3 <= e < a.end - 0.05]
-    angs = br.turn_angles(refined, turns)
+    angs = br.turn_angles(timing_ref, turns)
     X3, x2, _ = c3.load_landmarks()
     P = c3.dlt(X3, x2)
     floors = br.track_floor(a.npz, P)
-    matched = br.claim_bounds(turns, angs, refined, anchors)  # LOOSE
+    matched = br.claim_bounds(turns, angs, timing_ref, anchors)  # LOOSE
     bounds = matched + [a.end]
     bounce_evs = [e for e in turns if e not in set(matched)]
     obs = [(t, x, y, 1.0) for t, x, y in pts]

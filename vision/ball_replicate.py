@@ -389,15 +389,17 @@ def tracked_side(rally, anchors, floors, serve, end, sides=None):
     # event set and the claim angles); the raw points stay the fit
     # evidence below (real detections, not resampled arcs)
     refined = bdec.refine_arcs(visited, t0)
-    turns = [e for e in detect_events(refined)
+    # bounds from the TIMING stream (see ball_grade check-3 comment)
+    _, timing_ref = bdec.timing_decode(byf, None, oflags, t0, [])
+    turns = [e for e in detect_events(timing_ref)
              if serve - 0.3 <= e < end - 0.05]
-    angs = turn_angles(refined, turns)
+    angs = turn_angles(timing_ref, turns)
     # one anchor claims at most ONE turn (the LARGEST-ANGLE one within
     # MATCH_S): an anchor is a predicted contact, one contact makes one
     # turn, and a real shot reverses the ball (measured on r7: real
     # contacts turn 101-171 deg, the path wobbles hugging the same
     # anchors turn 42-66 deg — nearest-in-time picked the wobble twice)
-    matched = claim_bounds(turns, angs, refined, anchors)   # LOOSE
+    matched = claim_bounds(turns, angs, timing_ref, anchors)   # LOOSE
     claimed = set(matched)
     # TRIED AND REJECTED 2026-08-31: promoting unclaimed turns >= 90 deg
     # to contact bounds (to rescue r6's missile-missed 148.6 contact).

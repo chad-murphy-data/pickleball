@@ -164,18 +164,23 @@ def court_hull():
     return cv2.convexHull(pts.reshape(-1, 1, 2))
 
 
+COURT_MARGIN_TOP = 200.0    # px: the top band (y <= EXC_TOP) gets a
+                            # LOOSER hull margin, not a blanket waiver
+                            # — a frame-top lob flies far above the
+                            # 16-ft hull cap but stays court-central
+                            # in x, while scorebug/crowd junk lives in
+                            # the frame corners. The blanket waiver
+                            # regressed r6's check 2 (100@96 -> 85.7)
+                            # by re-admitting corner junk (2026-09-01).
+
+
 def out_of_court_flags(byf, hull):
     import cv2
     flags = {}
     for f, cands in byf.items():
-        # top band (y <= EXC_TOP) is exempt: a frame-top lob flies far
-        # above the 16-ft hull cap, and court-penalizing its ascent
-        # made the r10 decode detour into mid-frame junk before the
-        # exit (2026-09-01) — static/slow junk up there is SLOW_PEN's
-        # job, not the hull's
-        flags[f] = [y > EXC_TOP and
-                    cv2.pointPolygonTest(hull, (float(x), float(y)), True)
-                    < -COURT_MARGIN for x, y in cands]
+        flags[f] = [cv2.pointPolygonTest(hull, (float(x), float(y)), True)
+                    < -(COURT_MARGIN_TOP if y <= EXC_TOP else COURT_MARGIN)
+                    for x, y in cands]
     return flags
 
 
