@@ -4182,3 +4182,23 @@ check 3. Checks 1+2 currently carry: touch share, categories,
 attack-onset/tempo, rally structure, the temporal-model corpus.
 Check 3 carries: the 3D replay at scale, placement/landing stats
 (a bounce IS a landing), true mph, contact heights.
+
+## 2026-09-01 — owner eyewitness note: far-court bounces hide against WHITE DRESSES
+
+Measured occlusion at floor-proximity moments (proxy: image-lowest
+labeled point per inter-contact segment, +/-2 frames, rallies
+1/6/7/9/10): NEAR court 9% carry I/N frames, FAR court 32% — the
+end-view camera puts the near players' bodies between the lens and
+the far kitchen. Owner adds the mechanism the numbers couldn't see:
+the far-court losses are largely CONTRAST, not geometry — the ball
+sits in front of the white dresses and the gray-level motion diff
+(and the human eye) gets nothing. Implications: (1) the localized
+sibling of the ball-closure's "misses pile at contacts" — no
+detector fixes it on this footage; fit-demanded bounces (fix #1) is
+the correct response because physics needs no pixels at the bounce;
+(2) OUTFIT-DEPENDENT sample quirk — this match (women's whites) is
+near worst-case; dark-kit matches will measure differently, a
+generalization caveat on bounce behavior tuned against Chicago game
+1; (3) named future candidate-stage lever if ever needed: hue-channel
+differencing (neon ball vs white fabric) where gray-diff is blind —
+not built while overall candidate recall runs 84-96%.
