@@ -5011,7 +5011,43 @@ concentrated: 272.58–274.58 (2.0 s, the long r9 exchange) 9 → 39, plus
 oracle corridor is unchanged at 0 (274.90–276.51). r10 pending the
 owner's re-cut clip (`check_clip.py` verifies the cut against the
 committed candidate CSV first).
+ONE SHOT r10 (`geom_grade_r10.txt`; clip RE-CUT from the owner's
+full-match WebM with `cut_clip.py`, `check_clip.py` PASS at 0.787 vs
+0.567 at ±1 — the r9 control cut from the same source passes at
+0.767 and the staged original reads 1.000, so the re-encode moves
+~20 % of strong candidates by > 3 px; the incumbent re-graded on the
+re-cut clip is prod 325 @ 0.69 (recorded 320 @ 0.67) and oracle 285
+@ 0.60 (recorded 309 @ 0.61) — encode noise alone is worth ~±20 on
+the oracle arm, remember that when reading r10 deltas): PROD r@12
+**323 @ 0.65 vs incumbent 325 @ 0.69** (−2, −4 pp; r@8 253 vs 259,
+r@20 358 vs 357); ORACLE 310 @ 0.63 vs 285 @ 0.60 (+25). Nulls prod
+5 / 0, oracle 29 / 0 (that null0 = 29 on oracle is the highest null
+on record; treat the oracle +25 as ≈ its own noise). Strata (prod,
+incumbent geometry): `cand` 325 → 318, `outwin` 0 → 5; under the
+fix's geometry outwin shrinks 97 → 60, i.e. the box now REACHES the
+lob (307.27–308.75, 0 → 5) and the bounce (308.75–309.53, 0 → 2)
+corridors that item 2 diagnosed, but the chain still does not track
+them. The prod loss is ONE corridor: 301.02–302.73 (1.72 s, the
+double-contact segment of to-do #4; prod merges two oracle corridors
+301.32–302.34 / 302.34–302.88) drops 25 → 12, against +4 / +2 / +5
+/ +2 elsewhere. On the oracle arm, where that segment is split
+correctly, the same corridors read 22 / 9 → 22 / 9 (no loss) and the
+gains are 302.88 +8, 308.77 +6, 310.15 +4, 313.05 +10.
+VERDICT ON THE PAIR: SPLIT — r9 clears by a wide margin (+48,
++5 pp), r10 ties on recall and loses precision on prod. The rule
+written before the r10 shot (HANDOFF to-do #1: adopt only if r10 also
+clears) keeps the INCUMBENT in production; no re-tune on r9/r10. What
+survives regardless: the geometry finding (the box was the miss on the
+lob/bounce corridors; outwin shrinks by a third on both rallies), and
+the mechanism of the one r10 loss — a taller/longer window over a
+mis-merged double-contact corridor admits the wrong object. That is a
+corridor-SEGMENTATION error (to-do #4's 301.02 segment), not a window
+error, and it says the fix should be gated on corridor quality
+(oracle-like single-contact corridors gain everywhere on both rallies).
 READING: the "candidate deserts" reading of item 2 was right — the box
-was the miss, not the detector. Selection is now the whole residual
-(nocand ≈ 8 % of clicks, nocor 0–2 %), which is where the fusion
-pool-only variant would act; re-register it AFTER r10.
+was the miss, not the detector; reaching the ball is not tracking it.
+Selection is the residual (nocand ≈ 8–15 % of clicks, nocor 0–2 %),
+which is where the fusion pool-only variant would act. Next
+pre-registration: geometry fix conditioned on corridor confidence
+(single-contact / short) + pool-only trail, tuned r6/r7, one shot
+r9/r10 — fresh rule, not a knob-turn of this one.

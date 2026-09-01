@@ -42,6 +42,7 @@ disagree on a NUMBER, the notes file is the record.
 | `fusion.py` / `fusion_tune.json` | the L3 three-part model (emission + spaghetti trails + DP as one cost): `tune` (r6/r7 cross-fold grid, frozen rule, writes the verdict), `grade <r>` (refuses r9/r10 without a live verdict or with knob overrides), `selftest` (synthetic corridor; asserts `trail=None` is bit-identical). VERDICT 2026-09-01: **DEAD** — see the section below. `corridor_dp.py` carries the optional `trail=`/band-pool/`return_cost` extension it needs. |
 | `geom_lab.py` | to-do #1 diagnostic: per-click strata (nocor / outwin / nocand / cand-hit / cand-miss with pool rank + skipped-vs-wrong), per-corridor excursion + endpoint-error table, geometry-only coverage counterfactuals (kT / cap / K grids). `python3 geom_lab.py <r>`. |
 | `geom_fix.py` / `geom_tune.json` / `geom_grade_r9.txt` | the corridor-geometry FIX: knobs cap (wy ceiling), kT (duration term), ep (tapered end pad + END_R), pool (centre vs learned-p). `tune` = 54-cell grid on r6/r7 cross-fold under the frozen rule (writes the verdict), `grade <r>` = one-shot vs incumbent with V/S splits, displaced nulls, strata and per-corridor tables (refuses r9/r10 without a live verdict or with overrides). VERDICT 2026-09-01: **LIVE**, cap=260 kT=40 ep=60 pool=p; **r9 prod 479 @ 0.74 vs 431 @ 0.69**. `corridor_dp.py` carries `POOL_BY_P`. |
+| `cut_clip.py` | cuts `r{N}_clip.mp4` from the full-match source with the offset and frame count read from the committed candidate CSV (system ffmpeg or the imageio-ffmpeg static binary). |
 | `check_clip.py` | verifies an owner-cut clip against the committed `ball_candidates_r{N}.csv.gz` (frame count / size / fps, implied offset, extractor re-run matched at frame shifts −3..+3) before any cache is built from it. |
 | `corridor_autopsy.py`, `miss_map.py`, `r10_autopsy.py` | diagnostic-only (truth used to ask WHY). |
 | others (`anchor_*`, `hole_*`, `tr_grid*`, `split_lab`, `fit_lab`, …) | earlier-arc labs, kept for provenance; not on the current path. |
@@ -55,7 +56,9 @@ and write caches next to themselves (`SP = Path(__file__).parent`);
 
 Stage into THIS directory (owner supplies; not in git):
 `r6_clip.mp4 r7_clip.mp4 r9_clip.mp4 r10_clip.mp4` (owner-cut 60 fps
-clips; offsets in `corridor_lab`/`ball_gate.md`: r10 = 292.7) and the
+clips; offsets in `corridor_lab`/`ball_gate.md`: r10 = 292.7; r6/r7/r9
+are in the Drive pose folder, r10 is NOT — cut it with `cut_clip.py`
+from the owner's `full_match.mp4.webm` in Drive) and the
 pose streams `r0006.npz r0007.npz r0009.npz r0010.npz`
 (`vision/pose_extract.py` on Colab per `gpu_runbook.md`). Then:
 
@@ -69,7 +72,9 @@ python3 softdp.py                                      # reproduces the W sweep 
 python3 fusion.py tune                                 # reproduces the fusion grid + DEAD verdict (r6/r7 only)
 python3 geom_lab.py 6; python3 geom_lab.py 7             # strata diagnostic (any rally with caches)
 python3 geom_fix.py tune                               # reproduces the geometry grid + LIVE verdict (r6/r7 only)
+python3 cut_clip.py 10 full_match.mp4.webm             # r10 clip from the full-match source (offset/frames from the committed CSV)
 python3 check_clip.py 10 r10_clip.mp4                  # before building r10 caches from a re-cut clip
+python3 geom_fix.py grade 10                           # the r10 one-shot (geom_grade_r10.txt)
 python3 geom_fix.py grade 9                            # the r9 one-shot (geom_grade_r9.txt); grade 10 once r10 caches exist
 python3 spaghetti.py 9  --lrn --soft 25                # graded r9 (run_in_background; > 2 min)
 python3 spaghetti.py 10 --lrn --soft 25                # graded r10
@@ -121,15 +126,34 @@ cap 400 ≡ 260, kT 80 ≡ 40, ep 120 ≡ 60.
 |---|---|---|---|---|
 | r9 (779) | prod (34) | 431 @ 0.69 | **479 @ 0.74** (V 368/587, S 111/192) | 0 / 14 |
 | r9 | oracle (29) | 406 @ 0.69 | 432 @ 0.73 | 17 / 0 |
-| r10 (657) | prod / oracle | 320 @ 0.67 / 309 @ 0.61 | PENDING the owner's re-cut clip | |
+| r10 (657, re-cut clip; incumbent re-graded 325 @ 0.69) | prod (28) | 325 @ 0.69 | 323 @ 0.65 (V 227/487, S 96/170) | 5 / 0 |
+| r10 (oracle incumbent re-graded 285 @ 0.60) | oracle (26) | 285 @ 0.60 | 310 @ 0.63 | 29 / 0 |
 
-Where it came from (r9 prod): +18 inside `cand`, +30 from `outwin`
-(0 → 30); the outwin stratum itself shrinks 131 → 86 under the new
-box. Corridor 272.58–274.58 (2.0 s) 9 → 39. No prod corridor lost a
-hit. Full tables: `geom_grade_r9.txt`; narrative:
-`vision/swing_explore_notes.md`. The residual is now almost entirely
-selection (nocand ≈ 8 % of clicks) — the fusion pool-only variant's
-territory, to be re-registered after r10.
+**VERDICT: SPLIT → incumbent stays in production** (rule written
+before the r10 shot: adopt only if both clear). r9: +48 / +5 pp on
+prod, +18 inside `cand`, +30 from `outwin` (0 → 30), outwin stratum
+131 → 86 under the new box, corridor 272.58–274.58 (2.0 s) 9 → 39,
+no prod corridor lost a hit. r10: prod −2 / −4 pp, ALL of it one
+corridor — 301.02–302.73, the mis-merged double-contact segment
+(to-do #4), 25 → 12; every other corridor is ≥ incumbent (+4 +2 +5
++2), outwin 97 → 60, and the item-2 lob/bounce corridors go 0 → 5 and
+0 → 2 (reached, not tracked). Oracle +25 on r10 but null0 = 29 there
+(highest on record) and the re-cut clip alone moved the oracle
+incumbent 309 → 285, so the oracle delta is noise-sized. Full
+tables: `geom_grade_r9.txt`, `geom_grade_r10.txt`; narrative in
+`vision/swing_explore_notes.md`. Reading: the geometry finding
+stands (the box was the miss on lobs/bounces; reaching ≠ tracking),
+the one loss is corridor SEGMENTATION not window size, and the next
+registration should gate the taller box on corridor quality and add
+the pool-only trail — fresh rule, tuned r6/r7, one shot r9/r10.
+
+r10 clip provenance: never in Drive; re-cut 2026-09-01 by
+`cut_clip.py` from the owner's `full_match.mp4.webm` (Drive, 1280×720
+60 fps, 289,199 frames), `check_clip.py` PASS (0.787 at shift 0 vs
+0.567 at ±1; r9 control from the same source 0.767, staged original
+1.000). Re-encode noise moves ~20 % of strong candidates > 3 px;
+incumbent on the re-cut clip = prod 325 @ 0.69 / oracle 285 @ 0.60
+vs 320 @ 0.67 / 309 @ 0.61 recorded on the original.
 
 ## Fusion (L3) — built and tuned 2026-09-01: DEAD under the frozen rule
 
@@ -238,16 +262,14 @@ prior term.
 
 ## Next-thread to-do (in order)
 
-1. ~~Corridor geometry fix (item 2 above).~~ DONE 2026-09-01 through
-   the r9 shot (LIVE, 479 @ 0.74 vs 431 @ 0.69 — section above).
-   REMAINING: the r10 shot. r10_clip.mp4 was never in Drive; the owner
-   re-cuts it (`ffmpeg -ss 292.7 -i full_match.mp4 -t 33.0 -r 60 -vf
-   scale=1280:720 -an -c:v libx264 -preset veryfast -crf 18
-   r10_clip.mp4`, 1980 frames), `python3 check_clip.py 10 r10_clip.mp4`
-   must PASS, then `emission.py cache 10` and `geom_fix.py grade 10`.
-   If r10 also clears, the geom-fix cell becomes the incumbent
-   (update the table above and STATUS.md); if it does not, record it
-   and keep the incumbent — no re-tune on r9/r10 either way.
+1. ~~Corridor geometry fix (item 2 above).~~ DONE 2026-09-01, both
+   shots: r9 CLEARS (479 @ 0.74 vs 431 @ 0.69), r10 does NOT (323 @
+   0.65 vs 325 @ 0.69, one mis-merged corridor) → SPLIT, incumbent
+   stays (section above). r10 clip re-cut from the owner's WebM
+   (`cut_clip.py` + `check_clip.py`). NEXT registration on this line:
+   gate the taller box on corridor quality (single-contact / short)
+   and pair it with the pool-only trail; tuned r6/r7, fresh rule, one
+   shot r9/r10. Do not knob-turn geom_fix on r9/r10.
 2. Duration/average-speed prior in spaghetti (item 3).
 3. ~~`fusion.py` L3 (item 1), only on the owner's go.~~ DONE 2026-09-01:
    built, tuned, DEAD under its frozen rule; r9/r10 unrun. Re-try only

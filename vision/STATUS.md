@@ -192,8 +192,15 @@ below the chord box, overshoot p90 120–273 px). Four geometry knobs
 top-K-by-learned-p pool) tuned blind on r6/r7 cross-fold under a
 frozen rule: 376 @ 0.633 → 458 @ 0.704. ONE SHOT r9: prod **479 r@12
 @ prec 0.74** vs 431 @ 0.69 (oracle 432 @ 0.73 vs 406 @ 0.69),
-displaced nulls ≤ 17/779. r10 pending the owner's re-cut clip; the
-residual is now almost entirely selection.**
+displaced nulls ≤ 17/779. ONE SHOT r10 (clip re-cut from the owner's
+WebM, checker-verified): prod 323 @ 0.65 vs 325 @ 0.69 — a tie on
+recall, −4 pp precision, all from ONE mis-merged double-contact
+corridor (25 → 12) while every other corridor holds or gains and the
+diagnosed lob/bounce corridors are reached (0 → 5, 0 → 2) but not
+tracked. SPLIT verdict → the incumbent stays in production per the
+rule written before the r10 shot. The geometry finding survives (the
+box was the miss); the loss is corridor segmentation, the next
+registration gates the taller box on corridor quality.**
 
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),
