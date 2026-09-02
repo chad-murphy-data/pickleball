@@ -1,0 +1,44 @@
+{
+ "video": "vision/ballsearch/full_match.webm",
+ "backend": "rtmpose-balanced",
+ "fps": 60.0,
+ "width": 1280,
+ "device": "auto",
+ "iou_min": 0.15,
+ "gap_s": 0.6,
+ "runtime_s": {
+  "r2": "~900 (first run)",
+  "r3+r4": 1328.1
+ },
+ "rallies": {
+  "2": {
+   "detections": 4655,
+   "tracks": 5,
+   "sided_tracks": 5,
+   "window": "labels",
+   "t0": 39.04,
+   "t1": 57.43,
+   "note": "from the first run's log line (that run died after r2; its meta.json was never written)"
+  },
+  "3": {
+   "detections": 7585,
+   "tracks": 8,
+   "sided_tracks": 7,
+   "window": "labels",
+   "t0": 57.93,
+   "t1": 89.16
+  },
+  "4": {
+   "detections": 6519,
+   "tracks": 7,
+   "sided_tracks": 6,
+   "window": "labels",
+   "t0": 89.66,
+   "t1": 116.78
+  },
+  "5": {
+   "status": "pending (extraction running 2026-09-02 ~19:00Z; stamp updated when it lands)"
+  }
+ },
+ "note": "CPU fallback for r2-r5; windows = prefill-contact label windows (serve - 1.5 s to next serve - gap), which cover the ball_audit spans. npz files gitignored."
+}
