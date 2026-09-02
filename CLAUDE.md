@@ -588,6 +588,21 @@ Articles: unsolved-meta (Anna Bright DreamBreaker post), smoke-dimension
 
 ## Open threads (specced, unbuilt)
 
+**MLP Value Cap (active, 2026-09-02): read `value_cap/README.md` and
+`value_cap/phase0_bench_value.md` first.** Transfermarkt-style value
+pricing for MLP under a $1M roster cap, dyad-aware (consumes PICKLES,
+does not rebuild it). Phase 0 (does the bench have real value?) is
+scoped but deliberately unresolved: MLP's rotation/substitution/
+DreamBreaker-eligibility rules are unconfirmed, and the write-up treats
+realistic bench playing-time as a swept parameter rather than a picked
+one — working rule stated there: don't program a dominant strategy
+deliberately, let one fall out of the math if it does. One real
+finding so far: the talent cliff is sharply gender-asymmetric (men's
+top 10 in `data/v2_players.csv` spans 0.21 with no tier break; women's
+has Waters alone 0.47 clear of Bright, who is 0.15 clear of a flat
+parity pack from #3-#10). Phase 1 (value model) and Phase 2 (price
+curve fit) are unbuilt.
+
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
 solved layers ONLY (pose tracks + court homography + lineup identity —
