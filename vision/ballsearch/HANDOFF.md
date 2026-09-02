@@ -302,6 +302,12 @@ prior term.
    258.0–258.4); (c) contact PRECISION — 64 boundaries vs 29 oracle
    contacts on r9; a boundary list is not a contact list until the
    fragment breaks are merged. Do not knob-turn pathfirst on r9/r10.
+   OWNER'S EYES (2026-09-02, overlay watched, see notes): the double
+   labels are arrive+depart pairs at every contact; a lob is split at
+   its apex and the seam labelled; the down-the-line near→far speedup
+   is lost in BOTH rallies (fast + short, below the ~0.25 s seed
+   span); one wrong-side-of-net depth read; NO false tracks seen.
+   Order: (c) pair-merge + seam-glue first, then (b), then (a).
 
 1. ~~Corridor geometry fix (item 2 above).~~ DONE 2026-09-01, both
    shots: r9 CLEARS (479 @ 0.74 vs 431 @ 0.69), r10 does NOT (323 @

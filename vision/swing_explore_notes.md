@@ -5126,3 +5126,40 @@ authorization required). The lesson for the ledger: the corridor
 family's ceiling was the CONTACT GUESS in the loop, not the emission
 scorer or the trail matcher — remove the guess and the same blobs, the
 same p, the same camera give +100 clicks per rally.
+
+## 2026-09-02 — owner watched the path-first overlay (r9, r10): first eyes on the track
+
+`render_pathfirst.py` overlays the adopted track on the clips. Owner's
+read after a few seconds of each, recorded verbatim in substance:
+
+- **Double hits at every contact** — one label near the start of the
+  stroke, one at the end of the follow-through. Cause: a flight ends
+  when the ball ARRIVES at the paddle and the next starts only once the
+  ball is clear of it again (seeds exclude near-body blobs, and a new
+  flight needs three seeds), so each real contact shows as an
+  arrive-label plus a depart-label ~0.1–0.25 s apart. This is the
+  64-vs-29 boundary count in the gate results. Fix = pair merge (end +
+  next start within a short window → one contact between them).
+- **A lob got a "hit" at the top / start of its descent.** Cause: the
+  3-seed hypotheses span at most 40 frames, so a long lob is found as
+  two flights and the seam is labelled. Fix = glue consecutive flights
+  whose 3D state is continuous across the join (same velocity at the
+  seam) before labelling.
+- **Lost the down-the-line speedup, near → far, in BOTH rallies.**
+  Fast and short: the tracker needs ~0.25 s of clean ball to seed a
+  flight; a speedup can be over first, and a near→far ball moves few
+  pixels per frame against the far court. This is to-do 0b's real
+  content and needs its own instrument (shorter D, or a
+  velocity-continuation seed off the previous flight's end).
+- **Ball read on the wrong side of the net once.** Depth is not
+  observed by a single camera; the image track was likely on the ball,
+  the 3D placement was not. Note for any court-side use of the 3D
+  output; irrelevant to the pixel grade.
+- **No false tracks seen in either rally**; some late starts and some
+  missed flights. Matches prec@12 0.87 / 0.88 and the at-click coverage
+  616/779, 479/657. r10 "saw hits better".
+
+Nothing here is a grade (the overlay reads no truth); it is the
+owner's eyes, and it orders to-do 0: (c) pair-merge + seam-glue first
+(cheap, likely fixes most of the label count), then (b) short/fast
+flights, then bounce typing.
