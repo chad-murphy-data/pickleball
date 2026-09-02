@@ -1,0 +1,7 @@
+  {'gap_max': 0.5, 'd_meet': 20.0}  r@12 270 prec 0.801  nulls 0/2  r6 121/123 3/5 gaps filled | r7 149/214 4/9 gaps filled
+  {'gap_max': 0.5, 'd_meet': 40.0}  r@12 270 prec 0.794  nulls 0/2  r6 121/123 3/5 gaps filled | r7 149/217 5/9 gaps filled
+  {'gap_max': 0.5, 'd_meet': inf}  r@12 270 prec 0.769  nulls 0/2  r6 121/123 3/5 gaps filled | r7 149/228 8/9 gaps filled
+  {'gap_max': 0.8, 'd_meet': 20.0}  r@12 273 prec 0.782  nulls 0/2  r6 124/135 4/5 gaps filled | r7 149/214 4/9 gaps filled
+  {'gap_max': 0.8, 'd_meet': 40.0}  r@12 273 prec 0.776  nulls 0/2  r6 124/135 4/5 gaps filled | r7 149/217 5/9 gaps filled
+  {'gap_max': 0.8, 'd_meet': inf}  r@12 279 prec 0.730  nulls 0/2  r6 130/154 5/5 gaps filled | r7 149/228 8/9 gaps filled
+SELECTED {'gap_max': 0.8, 'd_meet': 20.0}  r@12 273 prec 0.782 (incumbent {'h12': 263, 'prec': 0.807})
