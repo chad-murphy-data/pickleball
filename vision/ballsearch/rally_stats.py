@@ -276,7 +276,8 @@ def main():
     ev_cell = json.loads((SP / "events_tune_v3.json").read_text())
     assert not ev_cell.get("dead")
     ctx = pf.context(a.rally)
-    res = pf.run(ctx, cell["p_seed"], cell["s_min"], cell["gap"])
+    import gapfill
+    res = gapfill.product(ctx)                  # tracked flights + tagged gap fill (gapfill_gate.md v2)
     chosen, t0 = res["chosen"], ctx["t0"]
     ctx["_track"] = res["track"]
     evs = evm.events(ctx, chosen, ev_cell["r_seam"], ev_cell["a_seam"], ev_cell["dt_pair"],

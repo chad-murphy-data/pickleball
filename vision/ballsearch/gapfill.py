@@ -6,7 +6,9 @@ come within D_MEET px is left open.  Nothing is detected, no paddle is
 used: the frames only exist through inference and the arcs carry it.
 
     python3 gapfill.py tune        # r6/r7 cross-fold grid -> gapfill_tune.json
-    python3 gapfill.py grade 9     # one shot vs the incumbent (r9/r10)
+    python3 gapfill.py grade 9     # v1 one shot vs the incumbent (r9/r10) — spent, NOT ADOPTED
+    python3 gapfill.py tune2       # v2 (tagged inferred stratum) rule on r6/r7 -> gapfill_tune2.json
+    python3 gapfill.py grade2 9    # v2 bars on r9/r10 (owner re-use of the eval rallies, disclosed)
     python3 gapfill.py selftest
 """
 import json
@@ -116,6 +118,99 @@ def tune():
     TUNE_JSON.write_text(json.dumps(out, indent=1))
 
 
+def inferred_score(ctx, res):
+    """(h12, have, prec, null_disp, null_tshift) on the inferred frames alone."""
+    truth, t0, dec = ctx["truth"], ctx["t0"], ctx["dec"]
+    inf = {f: xy for f, xy in res["track"].items() if f in res["inferred"]}
+    h, hv, _ = geom_fix.grade(inf, truth, t0, dec)
+    nd, nt = nulls(ctx, inf, np.random.default_rng(pf.NULL_SEED + ctx["rally"]))
+    return h, hv, h / max(1, hv), nd, nt
+
+
+def tune2():
+    """v2 rule (gapfill_gate.md): max pooled inferred r@12 s.t. inferred prec >= 0.5, nulls <= 3."""
+    ctxs = {r: pf.context(r) for r in (6, 7)}
+    rows = []
+    for cell in cells():
+        h12 = have = 0
+        nd = nt = 0
+        per = []
+        for r, ctx in ctxs.items():
+            res = run(ctx, cell)
+            h, hv, p, d_, t_ = inferred_score(ctx, res)
+            nd, nt = max(nd, d_), max(nt, t_)
+            h12 += h
+            have += hv
+            per.append(f"r{r} inferred {h}/{hv}")
+        prec = h12 / max(1, have)
+        rows.append((cell, h12, prec, nd, nt))
+        print(f"  {cell}  inferred r@12 {h12} prec {prec:.3f}  nulls {nd}/{nt}  {' | '.join(per)}")
+    ok = [x for x in rows if x[2] >= 0.5 and x[3] <= 3 and x[4] <= 3 and x[1] > 0]
+    ok.sort(key=lambda x: (-x[1], x[0]["gap_max"], x[0]["d_meet"]))
+    out = dict(rule="v2: max pooled inferred r@12 on r6+r7 s.t. inferred prec >= 0.5 and nulls <= 3; ties smaller gap_max, smaller d_meet")
+    if not ok:
+        print("no cell passes the v2 rule; falling back to the v1 cell")
+        out.update(load_cell(), fallback=True)
+    else:
+        best = ok[0]
+        print(f"SELECTED {best[0]}  inferred r@12 {best[1]} prec {best[2]:.3f}")
+        out.update(best[0], train_inf_h12=best[1], train_inf_prec=round(best[2], 3))
+    if out["d_meet"] == float("inf"):
+        out["d_meet"] = "inf"
+    (SP / "gapfill_tune2.json").write_text(json.dumps(out, indent=1))
+
+
+def grade2(rally):
+    cell = json.loads((SP / "gapfill_tune2.json").read_text())
+    cell = dict(gap_max=float(cell["gap_max"]), d_meet=float(cell["d_meet"]))
+    ctx = pf.context(rally)
+    res = run(ctx, cell)
+    truth, t0, dec = ctx["truth"], ctx["t0"], ctx["dec"]
+    inc = INC_EVAL[rally]
+    print(f"rally {rally} (v2 product): cell {cell}; incumbent path-first {inc}")
+    base = res["base"]["track"]
+    tracked = {f: xy for f, xy in res["track"].items() if f not in res["inferred"]}
+    same = tracked == base
+    h_tr = geom_fix.grade(tracked, truth, t0, dec)[0]
+    cdp.score(tracked, truth, t0, dec, "tracked")
+    cdp.score(res["track"], truth, t0, dec, "tracked+inf")
+    h, hv, prec, nd, nt = inferred_score(ctx, res)
+    inf = {f: xy for f, xy in res["track"].items() if f in res["inferred"]}
+    cdp.score(inf, truth, t0, dec, "inferred")
+    rng = np.random.default_rng(pf.NULL_SEED + rally)
+    cdp.score(pf.displaced(inf, rng), truth, t0, dec, "inf-null-disp")
+    cdp.score(pf.timeshift(inf, ctx, rng), truth, t0, dec, "inf-null-tsh")
+    import events as evm
+    ec = json.loads((SP / "events_tune_v3.json").read_text())
+    evs = evm.events(ctx, res["chosen"], ec["r_seam"], ec["a_seam"], ec["dt_pair"],
+                     ec["off"], d_pair=ec["d_pair"])
+    cont, bnc = evm.truth_events(ctx["c"])
+    pr_ = evm.prf([e["t"] for e in evs], sorted(cont + bnc))
+    f1 = pr_["f1"]
+    nf = sum(1 for x in res["rows"] if x["filled"])
+    print(f"  gaps {len(res['rows'])}: filled {nf}; inferred frames {len(res['inferred'])}")
+    print(f"  events v3 on filled flights: n={len(evs)} recall {pr_['recall']:.3f} prec {pr_['precision']:.3f} "
+          f"F1 {f1:.3f} (adopted {inc['f1']})")
+    bars = [same and h_tr == inc["h12"], prec >= 0.5, h >= 10, nd <= 3, nt <= 3, f1 >= inc["f1"] - 0.03]
+    print(f"  BARS: tracked bit-identical & r@12 {h_tr} == {inc['h12']}: {bars[0]}; inferred prec {prec:.3f} >= 0.5: "
+          f"{bars[1]}; inferred r@12 {h} >= 10: {bars[2]}; inferred nulls {nd}/{nt} <= 3: {bars[3] and bars[4]}; "
+          f"events F1 {f1:.3f} >= {inc['f1'] - 0.03:.3f}: {bars[5]}  =>  {'PASS' if all(bars) else 'FAIL'}")
+    return all(bars)
+
+
+def product(ctx):
+    """THE adopted tagged product (gapfill_gate.md v2): the incumbent path-first
+    flights with the arc-extension fill applied, plus the set of inferred frames.
+    Consumers must carry the tag (draw dashed, caption) — the tracked half is
+    bit-identical to pathfirst.run's track."""
+    cell = json.loads((SP / "gapfill_tune2.json").read_text())
+    assert not cell.get("dead") and not cell.get("fallback")
+    cell = dict(gap_max=float(cell["gap_max"]), d_meet=float(cell["d_meet"]))
+    res = run(ctx, cell)
+    return dict(chosen=res["chosen"], track=res["track"], inferred=res["inferred"],
+                base=res["base"], rows=res["rows"], cell=cell)
+
+
 def load_cell():
     cell = json.loads(TUNE_JSON.read_text())
     assert not cell.get("dead"), "no live gap-fill cell"
@@ -199,5 +294,9 @@ if __name__ == "__main__":
         if r in INC_EVAL and len(sys.argv) > 3:
             sys.exit("no overrides on r9/r10")
         grade(r)
+    elif sys.argv[1] == "tune2":
+        tune2()
+    elif sys.argv[1] == "grade2":
+        grade2(int(sys.argv[2]))
     elif sys.argv[1] == "selftest":
         selftest()

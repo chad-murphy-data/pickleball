@@ -8,7 +8,10 @@ all cosmetic and all in the honest direction: the path is broken at
 flight gaps instead of joined by a straight line (the page joins
 consecutive samples regardless), the ball is hidden while the track is
 lost, and a ring flashes at each attributed hit (the page loads IMPACTS
-and never draws them).  Nothing is re-fit; the file is the input.
+and never draws them).  Since gapfill_gate.md v2 the viewer's PATH carries a
+fifth column (1 = frame exists only through the adopted arc-extension fill);
+those segments are drawn DASHED here and captioned.  Nothing is re-fit; the
+file is the input.
 
     python3 render_court3d.py 9            ->  court3d_r9.mp4  (1280x720, 30 fps)
 """
@@ -55,7 +58,10 @@ def load(html):
     path = json.loads(re.search(r"const PATH = (\[.*?\]);\n", s).group(1))
     imp = json.loads(re.search(r"const IMPACTS = (\[.*?\]);\n", s).group(1))
     pl = json.loads(re.search(r"const PLAYERS = (\{.*?\});\n", s).group(1))
-    return np.array(path, float), np.array(imp, float), {k: np.array(v, float) for k, v in pl.items()}
+    path = np.array(path, float)
+    if path.shape[1] == 4:                                  # pre-gapfill viewer: nothing inferred
+        path = np.c_[path, np.zeros(len(path))]
+    return path, np.array(imp, float), {k: np.array(v, float) for k, v in pl.items()}
 
 
 class Cam:
@@ -71,8 +77,15 @@ class Cam:
         return (int(round(self.cx + u * self.zoom)), int(round(self.cy + v * self.zoom)))
 
 
-def line(img, cam, a, b, col, w):
-    cv2.line(img, cam(*a), cam(*b), col, w, cv2.LINE_AA)
+def line(img, cam, a, b, col, w, dashed=False):
+    if not dashed:
+        cv2.line(img, cam(*a), cam(*b), col, w, cv2.LINE_AA)
+        return
+    p, q = np.array(cam(*a), float), np.array(cam(*b), float)
+    n = max(1, int(np.hypot(*(q - p)) / (4 * SS)))
+    for k in range(0, n, 2):
+        u, v = p + (q - p) * k / n, p + (q - p) * min(n, k + 1) / n
+        cv2.line(img, tuple(int(round(x)) for x in u), tuple(int(round(x)) for x in v), col, w, cv2.LINE_AA)
 
 
 def court(img, cam):
@@ -107,12 +120,14 @@ def frame(path, imp, players, tcur, az, t_start, hits_so_far):
     court(img, cam)
     dt = np.diff(path[:, 0])
     ok = dt <= GAP_S                                  # segment i-1 -> i is within one flight
+    inf = (path[1:, 4] > 0) | (path[:-1, 4] > 0)         # segment touches an inferred frame
     for i in np.where(ok)[0]:
-        line(img, cam, path[i, 1:], path[i + 1, 1:], PATH_FAINT, SS)
+        line(img, cam, path[i, 1:4], path[i + 1, 1:4], PATH_FAINT, SS, dashed=bool(inf[i]))
     lit = np.where(ok & (path[1:, 0] <= tcur))[0]
     for i in lit:
         recent = tcur - path[i + 1, 0] <= 0.6
-        line(img, cam, path[i, 1:], path[i + 1, 1:], PATH_LIT, (3 if recent else 2) * SS)
+        line(img, cam, path[i, 1:4], path[i + 1, 1:4], PATH_LIT, (3 if recent else 2) * SS,
+             dashed=bool(inf[i]))
     for nm, tr in players.items():
         x, y = interp(tr, tcur)
         col = NEAR if nm.startswith("near") else FAR
@@ -127,14 +142,14 @@ def frame(path, imp, players, tcur, az, t_start, hits_so_far):
         if 0 <= age <= HIT_FLASH:
             k = int(np.argmin(np.abs(path[:, 0] - ti)))
             if abs(path[k, 0] - ti) <= 0.15:
-                p = cam(*path[k, 1:])
+                p = cam(*path[k, 1:4])
                 f = age / HIT_FLASH
                 col = hexc("#ffffff", 1 - f)
                 cv2.circle(img, p, int((6 + 16 * f) * SS), col, 2 * SS, cv2.LINE_AA)
     # ball: last sample at or before tcur, hidden once the track is lost
     j = int(np.searchsorted(path[:, 0], tcur, side="right")) - 1
     if j >= 0 and tcur - path[j, 0] <= BALL_HOLD:
-        bx, by, bz = path[j, 1:]
+        bx, by, bz = path[j, 1:4]
         s = cam(bx, by, 0)
         cv2.ellipse(img, s, (5 * SS, 2 * SS), 0, 0, 360, hexc("#000000", 0.5), -1, cv2.LINE_AA)
         cv2.circle(img, cam(bx, by, bz), 5 * SS, PATH_LIT, -1, cv2.LINE_AA)
@@ -165,7 +180,7 @@ def main():
     raw = out.with_suffix(".raw.mp4")
     vw = cv2.VideoWriter(str(raw), cv2.VideoWriter_fourcc(*"mp4v"), FPS, (W, H))
     cap1 = (f"rally {a.rally} in 3D  ·  reconstructed from one broadcast camera  ·  "
-            f"yellow = tracked ball, breaks = lost track  ·  rings = attributed hits")
+            f"solid = tracked ball, dashed = inferred through an occlusion, breaks = lost track  ·  rings = hits")
     cap2 = ("player marks = pose floor positions, coloured by side  ·  "
             "depth (down the court) is the weak axis of a one-camera fit")
     for k in range(n_lead + n_play + n_tail):

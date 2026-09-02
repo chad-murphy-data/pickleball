@@ -1,0 +1,7 @@
+  {'gap_max': 0.5, 'd_meet': 20.0}  inferred r@12 17 prec 0.708  nulls 0/0  r6 inferred 6/6 | r7 inferred 11/18
+  {'gap_max': 0.5, 'd_meet': 40.0}  inferred r@12 18 prec 0.621  nulls 0/0  r6 inferred 6/6 | r7 inferred 12/23
+  {'gap_max': 0.5, 'd_meet': inf}  inferred r@12 19 prec 0.413  nulls 0/0  r6 inferred 6/6 | r7 inferred 13/40
+  {'gap_max': 0.8, 'd_meet': 20.0}  inferred r@12 21 prec 0.553  nulls 0/0  r6 inferred 10/20 | r7 inferred 11/18
+  {'gap_max': 0.8, 'd_meet': 40.0}  inferred r@12 22 prec 0.512  nulls 0/0  r6 inferred 10/20 | r7 inferred 12/23
+  {'gap_max': 0.8, 'd_meet': inf}  inferred r@12 31 prec 0.383  nulls 0/0  r6 inferred 18/41 | r7 inferred 13/40
+SELECTED {'gap_max': 0.8, 'd_meet': 40.0}  inferred r@12 22 prec 0.512

@@ -109,3 +109,69 @@ honest way to ship it is TAGGED, graded as its own stratum with its own
 bar and its own displaced null (HANDOFF item 2 already proposed exactly
 this for the off-frame stratum). That is a NEW registration on the next
 clean seal (r20 / r21), not a re-read of this one.
+
+## v2 — inferred frames as their own product (2026-09-02, owner go to re-use r9/r10)
+
+Owner, after the v1 shot: "I'm ok using the previous rallies to try
+again, let's not be as sweaty here, we'll have chances to check it
+again." So r9/r10 are re-used for THIS registration, disclosed; r20/r21
+(label_picks.md) are the later clean check.
+
+What is different: the PRODUCT. v1 graded the filled track as if every
+frame were a detection and failed the pooled precision bar by 0.010.
+v2 says an inferred frame is a different kind of claim: the track is
+the incumbent's tracked frames, bit-identical, PLUS a tagged set of
+inferred frames that any consumer can drop and get the incumbent back.
+Each half is graded on its own.
+
+Instrument unchanged (`gapfill.fill`): same arc extension, same switch
+rule, same tag. Tune rule re-stated for the product (r6/r7 only, same
+6-cell grid): highest pooled INFERRED r@12 subject to inferred prec@12
+≥ 0.5 and both nulls on the inferred frames alone ≤ 3; ties smaller
+gap_max, smaller d_meet. (The v1 cell gap_max 0.8 / d_meet 20 is the
+fallback if the new rule picks nothing.)
+
+Bars on r9 and r10, BOTH rallies, written here before `grade2` runs:
+1. tracked frames bit-identical to the incumbent (asserted; r@12 stays
+   537 / 422 on the tracked half);
+2. inferred stratum: prec@12 ≥ 0.5 (an inferred frame must be more
+   likely right than wrong — the principled floor, and the one v1's
+   numbers 0.65 / 0.58 already sit above; disclosed) AND inferred r@12
+   ≥ 10 AND displaced + time-shift nulls on the inferred frames ≤ 3;
+3. events v3 (frozen cell) on the filled flights: F1 ≥ adopted − 0.03
+   (.701 / .645), as in v1.
+Anything else = NOT ADOPTED. Adoption means: consumers may use the
+filled flights WITH the tag (viewer draws inferred frames dashed;
+events run on the filled flights; stats too); the graded track number
+quoted for the tracker stays the tracked half's.
+
+### v2 results (2026-09-02, gapfill_tune2.txt, gapfill_grade2_r{9,10}.txt)
+Tune under the v2 rule (r6/r7, inferred stratum alone): prec falls
+monotonically with d_meet (0.708 / 0.621 / 0.413 at gap 0.5; 0.553 /
+0.512 / 0.383 at gap 0.8); the no-limit cells fail the 0.5 floor.
+Selected **gap_max 0.8 / d_meet 40 → inferred 22 @ 0.512** (v1's cell,
+d_meet 20, is 21 @ 0.553 — the rule takes the extra frame).
+
+| | r9 | r10 |
+|---|---|---|
+| tracked half (bit-identical) r@12 / prec | 537 / 0.87 ✓ | 422 / 0.88 ✓ |
+| inferred frames / at-click | 114 / 57 | 154 / 69 |
+| inferred r@12 / prec@12 (bar ≥ 10, ≥ 0.5) | **38 / 0.667** ✓ | **41 / 0.594** ✓ |
+| inferred r@8 / r@20 | 30 / 49 | 29 / 57 |
+| inferred nulls displaced / time-shift | 0 / 0 | 0 / 1 |
+| tracked + inferred r@12 / prec (reported, not a bar) | 563 / 0.86 | 447 / 0.85 |
+| events v3 on filled flights F1 (bar) | **0.764** (≥ .701; adopted .731) | **0.658** (≥ .645; adopted .675) |
+| verdict | PASS | PASS |
+
+**ADOPTED as a TAGGED product** (2026-09-02). The tracker's graded
+number stays the tracked half's (537 / 422 @ 0.87 / 0.88); the inferred
+frames are a second, tagged layer that is right at 12 px two times in
+three on r9 and three in five on r10, above chance by every null, and
+that any consumer can drop. Events on the filled flights: up on r9
+(.731 → .764), down 0.017 on r10 (.675 → .658) — within the bar, and
+note the v1 cell (d_meet 20) had r10 events at .684; the v2 rule chose
+recall in the inferred stratum over that. Consumers wired with the tag:
+`rally_3d.py` / court3d viewer (inferred segments dashed, captioned),
+`render_court3d.py` (same in the video), `rally_stats.py` (events and
+hits on the filled flights). Clean re-check on r20 / r21 when labeled
+(bars 1–3 as written, no re-tune).
