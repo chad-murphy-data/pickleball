@@ -263,6 +263,16 @@ rallies; incumbent stays. Reading: the coverage mechanism works, the
 layer above pays for the extra flight ends. Next gate = events re-tune
 on the hand-off track, adopted together or not at all.
 
+**Better learner (2026-09-02, `vision/ballsearch/learner.py`,
+`learner_gate.md`) — GATE 1 DEAD, learner is label-limited.**
+Gradient-boosted trees on the same 14 candidate features, same
+positives (359 owner V clicks on r6/r7), pre-registered. Cross-rally
+AUC 0.906 / 0.946 vs logistic 0.904 / 0.939 (noise-sized) but the
+97 %-recall tail keeps 0.635 of negatives vs 0.319 → dead, no shot.
+Learning curve: logistic flat from 25 % to 100 % of labels (feature-
+saturated); trees still rising at the full count and overtaking only
+at ≥ 75 %. Next step is clicks (label_picks.md), not model code.
+
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),
 90%-contour area (Alshon 261 > Black 232 > Patriquin 204 > Bright 188

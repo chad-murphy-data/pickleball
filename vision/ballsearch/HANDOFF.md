@@ -49,6 +49,7 @@ disagree on a NUMBER, the notes file is the record.
 | `handoff.py` / `handoff_gate.md` / `handoff_tune.json` / `handoff_grade_r{9,10}.txt` | Hand-off seeding, pass 2 on top of the frozen path-first pass: short-span seeds (6/8/12 frames) allowed NEAR BODY, only inside a zone next to a pass-1 flight end. Pre-registered, tuned on r6/r7 (16 cells → r_zone 70 / w 18 / p_hand 0.25 / s_min 3, 277 @ 0.810 vs 263 @ 0.807), ONE SHOT on r9/r10 spent 2026-09-02: track r@12 537→563 (r9) and 422→446 (r10) at unchanged precision, nulls clean, BUT the v3 events layer re-run on the new flights lands F1 .636 on r10 vs bar .645 (r9 .758 passes) → **NOT ADOPTED**, incumbent stays. `grade` for r9/r10 is spent. Next gate if reopened = events re-tune on the hand-off track (new pre-registration). |
 | `label_picks.md` | the owner's click list for 2–4 more ball-click rallies chosen for FAST exchanges, inside the split rules: r17 (train), r21 (fresh seal), then r4 (train), r20 (the reserved seal). r22–r30 holdout untouched. |
 | `render_pathfirst.py --bridge` | cosmetic, owner-approved for the demo: gaps ≤ 0.5 s between tracked flights drawn as a DASHED straight segment with a sliding dashed ring, persistent caption "dashed = inferred between tracked flights, not tracked". Never enters the track/events/stats/grades. Output `pathfirst_r{N}_reddit_bridge.mp4`. |
+| `learner.py` / `learner_gate.md` / `learner_train.txt` / `emission_gbt.json` / `learner_curve.py` + `.txt` | The better learner (owner go 2026-09-02): gradient-boosted trees on emission.py's 14 features, same labels/discipline, three fixed configs, pre-registered gate. **GATE 1 DEAD**: AUC +0.002 / +0.007 over the logistic (noise on 161–198 positives) but the 97 %-recall tail keeps 0.635 of r6 negatives vs the logistic's 0.319 → no caches, no tune, no shot. Learning curve (diagnostic): logistic FLAT in labels (feature-saturated), trees still CLIMBING and overtaking only at ≥ 75 % of positives → the learner is now LABEL-limited; re-run `train` when r17/r21 land. `pathfirst.py` gained the inert `PF_PXS` p-cache-suffix env hook (unset = unchanged). |
 | `events.py` / `events_gate.md` / `events_tune{,_v2,_v3}.json` / `events_grade_{r9,r10,v3_r9,v3_r10}.txt` | EVENTS layer on top of path-first (track untouched, asserted): one event per change of flight. v1 (time-gap pairing) FAILED the recall guard on both r9/r10; v2 (arcs must meet) DEAD on train; **v3 ADOPTED (owner's framing: pair by PHYSICAL distance between arrive and depart points, ≤ 2.5 ft at the local px/ft scale, 0.5 s sanity cap)**: r9 F1 .731 vs RAW .625, r10 .675 vs .617, recall guard and time-shift null cleared on both. `tune --v3`, `grade <r> --v3`. Typing hit/bounce is secondary and unbuilt. |
 | `cut_clip.py` | cuts `r{N}_clip.mp4` from the full-match source with the offset and frame count read from the committed candidate CSV (system ffmpeg or the imageio-ffmpeg static binary). |
 | `check_clip.py` | verifies an owner-cut clip against the committed `ball_candidates_r{N}.csv.gz` (frame count / size / fps, implied offset, extractor re-run matched at frame shifts −3..+3) before any cache is built from it. |
@@ -347,6 +348,15 @@ prior term.
    owner's go (a seal is a seal). Meanwhile: `label_picks.md` (r17
    train / r21 seal first) for the owner's clicking, and the
    `--bridge` demo cut exists for the share (cosmetic, captioned).
+
+0a. **LEARNER: label-limited, not code-limited (2026-09-02,
+   `learner_gate.md`).** Trees on the 14 features are DEAD at the
+   tail bar with 359 positives and still climbing on the learning
+   curve; the logistic is flat in labels. Next learner step = the
+   owner's clicks (`label_picks.md`: r17, r21, then r4, r20), then
+   `python3 learner.py train` again under the same gate text; patch-
+   appearance model after that. No knob here is worth turning before
+   the labels exist.
 
 0b. **SHOT SPEED — owner standing ask (2026-09-02, "don't forget speed
    history").** History: the rally-1 demo speeds (dinks 13–21 mph,

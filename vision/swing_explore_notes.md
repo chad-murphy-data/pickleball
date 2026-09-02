@@ -5365,3 +5365,39 @@ the contacts, and a launch speed read off a fragment on a one-camera
 3D fit is depth-dominated (speed_lab, rally_stats). Complete flights
 that start at the hit are what the hand-off pass moves toward, which
 is why it and the shot-speed number are the same thread.
+
+
+## 2026-09-02 (late) — the better learner: trees lose on the tail, and the learning curve says the next move is clicks
+
+Owner's go: swap the per-candidate logistic for gradient-boosted trees
+on the same 14 features, same labels, same discipline, gate on r6/r7
+cross-fold first, then re-tune path-first and shoot once. Gate written
+before any number (`learner_gate.md`): three fixed tree configs, pick by
+mean cross-rally AUC, PASS only if AUC ≥ logistic AND the 97 %-recall
+negative-kept rate ≤ logistic, in both directions.
+
+Numbers. Config A (15 leaves, 300 rounds): AUC 0.906 / 0.946 vs the
+logistic's 0.904 / 0.939 — better both ways, by amounts that are noise
+on 161–198 positives. Tail: at 97 % held-out positive recall, trees
+trained on r7 keep 0.635 of r6's negatives where the logistic keeps
+0.319. DEAD. Why the tail: that threshold is set by the five
+lowest-scored true balls out of 198; a tree ensemble fit on 161
+positives has never seen r6's blurriest near-body balls and scores
+them near the floor, while the logistic's smooth surface degrades
+gracefully. The tracker cares about that tail (P_SEED, support
+weights), which is why it was a bar.
+
+Learning curve (diagnostic, `learner_curve.py`): subsample the train
+positives at 25/50/75/100 %, keep all negatives, five seeds. The
+logistic is flat in labels — AUC 0.907 → 0.904 (6→7) and 0.922 → 0.939
+(7→6) from a quarter of the clicks to all of them: on these features it
+is saturated. The trees climb the whole way (0.869 → 0.906,
+0.929 → 0.946; tail 0.82 → 0.64) and only overtake the logistic at
+≥ 75 % of the positives. That is the shape of a label-limited learner.
+So the honest answer to "tweak or label?" for this layer is LABEL: at
+roughly double the positives (r17, r21, r4, r20 per label_picks.md)
+the curve says trees clear this gate, and a patch-appearance model —
+the real step change — sits further up the same curve. No knob is worth
+turning before those clicks exist. `learner.py train` re-runs under the
+same gate text when they do; `pathfirst.py` keeps the inert PF_PXS
+cache-suffix hook so the re-tune is one env var away.

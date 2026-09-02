@@ -16,6 +16,7 @@ Usage:
   python3 pathfirst.py selftest          # planted arc through synthetic blobs
 """
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -73,7 +74,9 @@ _BOOK = np.array([(l["speed"], l["loft"]) for l in spag.PRIOR["launches"]
 # ----------------------------------------------------------- context
 
 def context(rally):
-    pxs = "_x" if rally in (6, 7) else ""
+    # PF_PXS (learner_gate.md): extra p-cache suffix, e.g. "_gbt";
+    # unset = the incumbent caches, behaviour unchanged.
+    pxs = ("_x" if rally in (6, 7) else "") + os.environ.get("PF_PXS", "")
     c = load(rally)
     series = paddle_series(c["npz"])
     truth = load_truth(rally)
