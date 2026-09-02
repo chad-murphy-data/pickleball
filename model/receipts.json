@@ -16,7 +16,7 @@
  "entries": [
   {
    "id": "2026-midseason-gold-final",
-   "title": "MLP Mid-Season Tournament Gold Final \u2014 New Jersey 5s vs St. Louis Shock",
+   "title": "MLP Mid-Season Tournament Gold Final — New Jersey 5s vs St. Louis Shock",
    "committed": "2026-07-12",
    "graded": "2026-07-13",
    "status": "graded",
@@ -79,51 +79,51 @@
    "id": "2026-registered-chemistry",
    "title": "Preregistered chemistry predictions (second half of 2026 season)",
    "committed": "2026-07-12",
-   "graded": null,
-   "status": "pending",
+   "graded": "2026-09-02",
+   "status": "graded",
    "grade_after": "2026-09-01",
    "source": "model/registered_predictions.md",
    "model": "v1 dyad chemistry + fixed-effects regression scoring (method frozen in the source file)",
-   "outcome_summary": null,
+   "outcome_summary": "Scored on 2,326 modelling games dated after 2026-07-12 (full 2026-season player fixed effects, H2-only dyad estimate, cluster-robust by match). Both registered PAIR predictions are VOID, not wrong: Waters/Bright and Alshon/Patriquin never played together again after the freeze. All four players were active in H2 (25-33 games each), so this is dissolution, not missing data - and it is the outcome the survivorship work predicts for the two most negative chemistry contrasts on record. The two scorable predictions both HIT.",
    "items": [
     {
      "label": "Waters + Bright (womens, PPA) underperform sum-of-parts in remaining 2026 games",
      "prob": null,
-     "outcome": null,
+     "outcome": "0 games together after 2026-07-12 (Waters 25 H2 games, Bright 26 - but never as a pair)",
      "result": null,
-     "grade": "PENDING",
+     "grade": "VOID",
      "brier": null
     },
     {
      "label": "Alshon + Patriquin (mens, PPA) underperform sum-of-parts in remaining 2026 games",
      "prob": null,
-     "outcome": null,
+     "outcome": "0 games together after 2026-07-12 (Alshon 33 H2 games, Patriquin 26 - but never as a pair)",
      "result": null,
-     "grade": "PENDING",
+     "grade": "VOID",
      "brier": null
     },
     {
      "label": "Bright + Patriquin (mixed) chemistry stays small: |chem| < 1 point/game unshrunk",
      "prob": null,
-     "outcome": null,
-     "result": null,
-     "grade": "PENDING",
+     "outcome": "+0.05 +/- 2.17 pts/game on 14 H2 games together (full-season +0.29 +/- 0.85); |chem| well under 1",
+     "result": 1,
+     "grade": "HIT",
      "brier": null
     },
     {
      "label": "League-wide dyad-chemistry scale (sd_d) refit on H2-only games stays under 1.0 point/game",
      "prob": null,
-     "outcome": null,
-     "result": null,
-     "grade": "PENDING",
+     "outcome": "sd_d = 0.340 +/- 0.248 refit on the 2,326 H2 games (~95% upper 0.835); frozen full-season value 0.473",
+     "result": 1,
+     "grade": "HIT",
      "brier": null
     }
    ],
-   "footnote": "Scored in September against games dated after 2026-07-12 only, using the method written into the frozen file."
+   "footnote": "Scored 2026-09-02 against games dated after 2026-07-12 only, using the method written into the frozen file. Two of four predictions were VOIDED by roster churn: a chemistry prediction about a pair needs the pair to keep playing. Future preregistrations should name a fallback or a minimum-games condition."
   },
   {
    "id": "2026-mlp-san-diego-day1",
-   "title": "MLP San Diego day 1 \u2014 five-matchup slate vs the frozen site forecasts",
+   "title": "MLP San Diego day 1 — five-matchup slate vs the frozen site forecasts",
    "committed": "2026-07-14",
    "graded": "2026-07-16",
    "status": "graded",
@@ -172,7 +172,7 @@
      "brier": 0.1383
     }
    ],
-   "footnote": "Matchup mean Brier 0.130 (coin flip = 0.25). Game level, matched on the forecast's own team-one pairing: 12/13 hits, mean Brier 0.092, two modal scores exact (both 11-6 mixed calls); 7 games VOID where the projected pairing never took the court, and opponent-side substitutions (Sock for Johnson, twice) graded through as lineup risk. Reaches-a-DreamBreaker graded 4/5 on the modal call, mean Brier 0.136 \u2014 the miss was the 37.4% DB that decided Phoenix-Orlando. POST-HOC COUNTERFACTUAL (not a regrade; committed grades stand): re-rating the four Sock-affected games with actual lineups (Sock 0.837 vs Johnson 0.369 on 448/303 games) flips the matchup-3 call to Orlando 68% (Brier 0.377 \u2192 0.102) and dissolves the MD game miss (0.316 \u2192 0.023) \u2014 the day's headline miss was lineup information, not skill values. It cuts the other way too: Columbus's wins over the Sock-rated pairs (11-6, 11-1) become 48% and 90% calls, so the affected games' Brier sum rises 0.362 \u2192 0.507. The model can't take credit both ways; the ledger keeps the frozen numbers."
+   "footnote": "Matchup mean Brier 0.130 (coin flip = 0.25). Game level, matched on the forecast's own team-one pairing: 12/13 hits, mean Brier 0.092, two modal scores exact (both 11-6 mixed calls); 7 games VOID where the projected pairing never took the court, and opponent-side substitutions (Sock for Johnson, twice) graded through as lineup risk. Reaches-a-DreamBreaker graded 4/5 on the modal call, mean Brier 0.136 — the miss was the 37.4% DB that decided Phoenix-Orlando. POST-HOC COUNTERFACTUAL (not a regrade; committed grades stand): re-rating the four Sock-affected games with actual lineups (Sock 0.837 vs Johnson 0.369 on 448/303 games) flips the matchup-3 call to Orlando 68% (Brier 0.377 → 0.102) and dissolves the MD game miss (0.316 → 0.023) — the day's headline miss was lineup information, not skill values. It cuts the other way too: Columbus's wins over the Sock-rated pairs (11-6, 11-1) become 48% and 90% calls, so the affected games' Brier sum rises 0.362 → 0.507. The model can't take credit both ways; the ledger keeps the frozen numbers."
   },
   {
    "id": "2026-momentum-h3b-timeout-window",
@@ -224,12 +224,12 @@
    "status": "graded",
    "source": "model/momentum_prereg.md ADDENDUM H3d + model/momentum_h3d.py (frozen before any statistic touched the replication pool)",
    "model": "Window profile theta_W for W in {1,2,3,4,5,7,10} on the full untouched 9,426-match pool, identical moments/controls. Primary: theta_3 > 0 one-sided alpha .01. Family: other windows at Bonferroni |z|>=2.69. Bounding: all seven 99% CIs vs +/-2.5pp. Amended pre-unblinding (user's argument: one cell cannot close a family for a skeptical reader in either direction).",
-   "outcome_summary": "The 3-rally hint was noise. On the full untouched pool (9,426 matches, 361,593 moments \u2014 4x the original), the primary window-3 effect is +0.26pp (one-sided p=.113, fails to replicate at .01), no other window clears Bonferroni (max |z|=1.27), and all seven 99% CIs from window 1 to window 10 sit inside +/-2.5pp. The window profile is flat and incoherent, not the decay a real short-window huddle effect would show. Frozen conclusion: no window from 1 to 10 rallies hides a meaningful timeout effect. Timeout question closed in both directions.",
+   "outcome_summary": "The 3-rally hint was noise. On the full untouched pool (9,426 matches, 361,593 moments — 4x the original), the primary window-3 effect is +0.26pp (one-sided p=.113, fails to replicate at .01), no other window clears Bonferroni (max |z|=1.27), and all seven 99% CIs from window 1 to window 10 sit inside +/-2.5pp. The window profile is flat and incoherent, not the decay a real short-window huddle effect would show. Frozen conclusion: no window from 1 to 10 rallies hides a meaningful timeout effect. Timeout question closed in both directions.",
    "items": [
     {
      "label": "H3d primary: the 3-rally hint FAILS to replicate (one-sided p >= .01)",
      "prob": 0.8,
-     "outcome": "+0.26pp, one-sided p=.113 \u2014 fails to replicate (predicted)",
+     "outcome": "+0.26pp, one-sided p=.113 — fails to replicate (predicted)",
      "result": 1,
      "grade": "HIT",
      "brier": 0.04
@@ -258,7 +258,7 @@
     {
      "label": "H1: no meaningful within-possession momentum (|APE| < 1pp or p >= .01)",
      "prob": 0.85,
-     "outcome": "+0.11pp, 99% CI [-0.72, +0.94] \u2014 no meaningful effect, BOUNDED",
+     "outcome": "+0.11pp, 99% CI [-0.72, +0.94] — no meaningful effect, BOUNDED",
      "result": 1,
      "grade": "HIT",
      "brier": 0.0225
@@ -266,7 +266,7 @@
     {
      "label": "H2: no meaningful cross-possession momentum (trailing-5 window)",
      "prob": 0.85,
-     "outcome": "+0.17pp, 99% CI [-0.19, +0.52] \u2014 no meaningful effect, BOUNDED",
+     "outcome": "+0.17pp, 99% CI [-0.19, +0.52] — no meaningful effect, BOUNDED",
      "result": 1,
      "grade": "HIT",
      "brier": 0.0225
@@ -274,7 +274,7 @@
     {
      "label": "H3: no meaningful receiving-side timeout effect (|APE| < 2pp)",
      "prob": 0.8,
-     "outcome": "+1.53pp, p=.014 (not sig at .01); CI [-0.07, +3.12] exceeds +2pp so not bounded \u2014 no effect established, formally inconclusive",
+     "outcome": "+1.53pp, p=.014 (not sig at .01); CI [-0.07, +3.12] exceeds +2pp so not bounded — no effect established, formally inconclusive",
      "result": 1,
      "grade": "HIT",
      "brier": 0.04
@@ -282,7 +282,7 @@
     {
      "label": "H4: no meaningful game-point pressure effect (|APE| < 2pp)",
      "prob": 0.7,
-     "outcome": "-0.01pp, 99% CI [-1.31, +1.29] \u2014 servers convert game points at exactly their usual rate, BOUNDED",
+     "outcome": "-0.01pp, 99% CI [-1.31, +1.29] — servers convert game points at exactly their usual rate, BOUNDED",
      "result": 1,
      "grade": "HIT",
      "brier": 0.09
