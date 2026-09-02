@@ -129,3 +129,31 @@ rallies). The hypothesis was formed on the r9/r10 tables; the knobs are
 tuned on r6/r7 only; the r9/r10 shot is the SECOND on this truth for
 this layer and is recorded as such. `events.py tune --v2`,
 `grade <r> --v2`.
+
+## v2 results (2026-09-02): DEAD on r6/r7, r9/r10 NOT run
+
+RAW 0.542, v1 cell 0.667; best v2 cell 0.653 (E_PAIR 80). Splitting on
+seam error hurts r7: a hard volley reverses the ball, so the two arcs
+extrapolate far apart even when it is ONE hit (r7 emitted 13 → 17 for
+10 vs 9 matched). Extrapolation error is a direction-change measure,
+not a "two events" measure. `events_tune_v2.json`.
+
+## v3 registration (frozen 2026-09-02, before any v3 number) — owner's framing
+
+Owner, watching the overlay: "the double hit should maybe be physical
+distance rather than temporal distance". A ball on a paddle does not
+travel; a bounce-then-hit does. So: a gap is ONE event iff the distance
+between where A's ball ARRIVED (A's last tracked point) and where B's
+ball LEFT (B's first tracked point) is ≤ D_PAIR feet, converted from
+pixels with the local px/ft scale at A's end point (a 1-ft offset
+projected at that 3D location — depth error barely moves the scale,
+unlike the 3D position itself, per the owner's confirmed wrong-side
+read), AND the gap ≤ DT_CAP = 0.5 s (sanity only: a dink exchange can
+bring the ball back near the same spot after ~0.6 s+). Otherwise two
+events (arrive at end(A), depart at start(B) − OFF). Seam rule as v1
+(r_seam 8, a_seam 20, frozen, still untested on train — no lobs in r6/r7,
+owner-confirmed). Grid: D_PAIR ∈ {1.5, 2.5, 4} ft × OFF ∈ {0.06, 0.10}.
+Rule: max pooled F1 on r6+r7; ties smaller D_PAIR, smaller OFF; must beat
+RAW (0.542) AND the v1 cell (0.667), else DEAD. Bars on r9/r10 as v1.
+This would be the second r9/r10 shot for this layer (v2 never fired).
+`events.py tune --v3`, `grade <r> --v3`.

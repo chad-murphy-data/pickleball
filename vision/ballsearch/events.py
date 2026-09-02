@@ -26,6 +26,10 @@ TUNE_JSON_V2 = SP / "events_tune_v2.json"
 V1_FROZEN = dict(r_seam=8.0, a_seam=20.0, dt_pair=0.25)   # v1 verdict, carried into v2
 GRID_EPAIR = (40.0, 80.0, 150.0)
 GRID_OFF_V2 = (0.06, 0.10, 0.14)
+TUNE_JSON_V3 = SP / "events_tune_v3.json"
+DT_CAP = 0.5                      # v3 sanity cap on a pair's gap (s)
+GRID_DPAIR = (1.5, 2.5, 4.0)      # ft, local scale at the arrive point
+GRID_OFF_V3 = (0.06, 0.10)
 FPS = pf.FPS
 DT_SEAM = 0.12
 TOL = 0.10
@@ -79,11 +83,31 @@ def closest_time(ctx, A, B, tA1, tB0):
     return float(ts[int(np.argmin(d))])
 
 
+def local_scale(P, fl, t0):
+    """px per ft at flight fl's last tracked point (a 1-ft horizontal
+    offset projected at that 3D location; depth error barely moves it)."""
+    X = c3.arc_pos(fl["theta"], [t0 + fl["fb"] / FPS - fl["t_ref"]])[0]
+    a = c3.project(P, X[None, :])[0]
+    b = c3.project(P, (X + np.array([1.0, 0.0, 0.0]))[None, :])[0]
+    cc = c3.project(P, (X + np.array([0.0, 1.0, 0.0]))[None, :])[0]
+    return float((np.linalg.norm(b - a) + np.linalg.norm(cc - a)) / 2)
+
+
+def pair_distance_ft(ctx, A, B):
+    """physical distance between where A's ball arrived and where B's
+    left, in feet via the local px/ft scale (owner's framing 2026-09-02)."""
+    P, t0 = ctx["P"], ctx["t0"]
+    pa = proj(P, A, t0 + A["fb"] / FPS, t0)
+    pb = proj(P, B, t0 + B["fa"] / FPS, t0)
+    return float(np.linalg.norm(pa - pb) / max(1e-6, local_scale(P, A, t0)))
+
+
 def z_at_end(fl, t0):
     return float(c3.arc_pos(fl["theta"], [t0 + fl["fb"] / FPS - fl["t_ref"]])[0][2])
 
 
-def events(ctx, chosen, r_seam, a_seam, dt_pair, off, e_pair=float("inf")):
+def events(ctx, chosen, r_seam, a_seam, dt_pair, off, e_pair=float("inf"),
+           d_pair=None):
     """list of dicts(t, kind, how) — kind in hit|bounce (secondary), how in
     serve|pair|arrive|depart. v2 (events_gate.md): a pair is one event only
     if the two arcs also MEET in the image plane (e <= e_pair); otherwise
@@ -98,12 +122,18 @@ def events(ctx, chosen, r_seam, a_seam, dt_pair, off, e_pair=float("inf")):
         kind = "bounce" if z_at_end(A, t0) <= BOUNCE_Z else "hit"
         if dt <= DT_SEAM and e <= r_seam and ang <= a_seam:
             continue                                   # one flight, two pieces
-        if dt <= dt_pair and e <= e_pair:
-            out.append(dict(t=closest_time(ctx, A, B, tA1, tB0), kind=kind,
-                            how="pair", e=e, ang=ang, dt=dt))
+        if d_pair is not None:                     # v3: physical distance
+            dft = pair_distance_ft(ctx, A, B)
+            is_pair = dft <= d_pair and dt <= DT_CAP
         else:
-            out.append(dict(t=tA1, kind=kind, how="arrive", dt=dt))
-            out.append(dict(t=tB0 - off, kind="hit", how="depart", dt=dt))
+            dft = float("nan")
+            is_pair = dt <= dt_pair and e <= e_pair
+        if is_pair:
+            out.append(dict(t=closest_time(ctx, A, B, tA1, tB0), kind=kind,
+                            how="pair", e=e, ang=ang, dt=dt, dft=dft))
+        else:
+            out.append(dict(t=tA1, kind=kind, how="arrive", dt=dt, dft=dft))
+            out.append(dict(t=tB0 - off, kind="hit", how="depart", dt=dt, dft=dft))
     return out
 
 
@@ -259,6 +289,53 @@ def tune_v2():
     print("wrote", TUNE_JSON_V2)
 
 
+def tune_v3():
+    ctxs = [pf.context(r) for r in (6, 7)]
+    fls = [flights(ctx)["chosen"] for ctx in ctxs]
+    truths = [truth_events(ctx["c"]) for ctx in ctxs]
+    raw_tot = dict(n=0, matched=0, ntruth=0)
+    v1_tot = dict(n=0, matched=0, ntruth=0)
+    for ctx, ch, (cont, bnc) in zip(ctxs, fls, truths):
+        tr = sorted(cont + bnc)
+        r = prf([e["t"] for e in raw_events(ctx, ch)], tr)
+        raw_tot["n"] += r["n"]; raw_tot["matched"] += r["matched"]; raw_tot["ntruth"] += len(tr)
+        r1 = prf([e["t"] for e in events(ctx, ch, off=0.06, **V1_FROZEN)], tr)
+        v1_tot["n"] += r1["n"]; v1_tot["matched"] += r1["matched"]; v1_tot["ntruth"] += len(tr)
+    raw_f1, v1_f1 = pooled_f1(raw_tot), pooled_f1(v1_tot)
+    print(f"RAW pooled F1 {raw_f1:.3f}; v1 frozen cell pooled F1 {v1_f1:.3f}")
+    grid = []
+    for d_pair in GRID_DPAIR:
+        for off in GRID_OFF_V3:
+            tot = dict(n=0, matched=0, ntruth=0)
+            per = []
+            for ctx, ch, (cont, bnc) in zip(ctxs, fls, truths):
+                tr = sorted(cont + bnc)
+                ev = events(ctx, ch, V1_FROZEN["r_seam"], V1_FROZEN["a_seam"],
+                            V1_FROZEN["dt_pair"], off, d_pair=d_pair)
+                r = prf([e["t"] for e in ev], tr)
+                tot["n"] += r["n"]; tot["matched"] += r["matched"]; tot["ntruth"] += len(tr)
+                per.append(f"r{ctx['rally']} {r['matched']}/{r['n']} of {len(tr)}")
+            f1 = pooled_f1(tot)
+            grid.append(dict(d_pair=d_pair, off=off, f1=f1, **tot))
+            print(f"d_pair={d_pair:3.1f}ft off={off:.2f}  pooled F1 {f1:.3f}  | " + "  ".join(per),
+                  flush=True)
+    rule = ("v3: pair iff arrive->depart distance <= d_pair ft (local px/ft scale) and gap "
+            "<= 0.5 s; max pooled F1 on r6+r7; ties smaller d_pair, smaller off; must beat "
+            "RAW and the v1 cell else dead")
+    best = sorted(grid, key=lambda g: (-g["f1"], g["d_pair"], g["off"]))[0]
+    out = dict(raw_f1=raw_f1, v1_f1=v1_f1, grid=grid, rule=rule,
+               r_seam=V1_FROZEN["r_seam"], a_seam=V1_FROZEN["a_seam"], dt_pair=DT_CAP)
+    if best["f1"] > max(raw_f1, v1_f1):
+        out.update(dead=False, d_pair=best["d_pair"], off=best["off"])
+        print(f"VERDICT v3: d_pair={best['d_pair']} ft off={best['off']} (F1 {best['f1']:.3f} "
+              f"vs RAW {raw_f1:.3f} / v1 {v1_f1:.3f}) — freeze and one-shot r9/r10")
+    else:
+        out.update(dead=True)
+        print("VERDICT v3: no cell beats RAW and v1 — DEAD, do not run r9/r10")
+    TUNE_JSON_V3.write_text(json.dumps(out, indent=1))
+    print("wrote", TUNE_JSON_V3)
+
+
 def pooled_f1(tot):
     rec = tot["matched"] / max(1, tot["ntruth"])
     prec = tot["matched"] / max(1, tot["n"])
@@ -280,7 +357,7 @@ def grade(rally, cell):
     print(f"rally {rally}: {len(ch)} flights; truth {len(cont)} contacts + {len(bnc)} "
           f"bounces = {len(tr)} events; cell {cell}")
     ev = events(ctx, ch, cell["r_seam"], cell["a_seam"], cell["dt_pair"], cell["off"],
-                cell.get("e_pair", float("inf")))
+                cell.get("e_pair", float("inf")), cell.get("d_pair"))
     times = [e["t"] for e in ev]
     r_ev = prf(times, tr)
     r_raw = prf([e["t"] for e in raw_events(ctx, ch)], tr)
@@ -322,6 +399,8 @@ def grade(rally, cell):
             extra = f"e {e['e']:5.1f} ang {e['ang']:5.1f} dt {e['dt']:.2f}"
         elif "dt" in e:
             extra = f"gap {e['dt']:.2f}"
+        if e.get("dft") == e.get("dft"):        # not nan
+            extra += f"  d {e['dft']:4.1f} ft"
         print(f"   {e['t']:7.3f} | {e['how']:7s} | {e['kind']:6s} | {note} | {extra}")
     miss = [u for j, u in enumerate(tr) if j not in set(m.values())]
     print("-- truth not matched: " + ", ".join(f"{u:.2f}{'B' if u in bset else 'C'}" for u in miss))
@@ -337,14 +416,17 @@ def main():
     ap.add_argument("--off", type=float)
     ap.add_argument("--e-pair", type=float)
     ap.add_argument("--v2", action="store_true", help="use the v2 registration (events_tune_v2.json)")
+    ap.add_argument("--v3", action="store_true", help="use the v3 registration (events_tune_v3.json)")
+    ap.add_argument("--d-pair", type=float)
     a = ap.parse_args()
     if a.cmd == "tune":
-        (tune_v2 if a.v2 else tune)(); return
+        (tune_v3 if a.v3 else tune_v2 if a.v2 else tune)(); return
     over = {k: v for k, v in (("r_seam", a.r_seam), ("a_seam", a.a_seam),
                               ("dt_pair", a.dt_pair), ("off", a.off),
-                              ("e_pair", a.e_pair)) if v is not None}
-    keys = ("r_seam", "a_seam", "dt_pair", "off") + (("e_pair",) if a.v2 else ())
-    tj = TUNE_JSON_V2 if a.v2 else TUNE_JSON
+                              ("e_pair", a.e_pair), ("d_pair", a.d_pair)) if v is not None}
+    keys = ("r_seam", "a_seam", "dt_pair", "off") + (("e_pair",) if a.v2 else ()) \
+        + (("d_pair",) if a.v3 else ())
+    tj = TUNE_JSON_V3 if a.v3 else TUNE_JSON_V2 if a.v2 else TUNE_JSON
     if a.rally in pf.EVAL_RALLIES:
         assert not over, "no knob overrides on r9/r10"
         assert tj.exists(), "tune first"

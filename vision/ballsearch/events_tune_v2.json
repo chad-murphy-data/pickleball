@@ -1,0 +1,83 @@
+{
+ "raw_f1": 0.5423728813559322,
+ "v1_f1": 0.6666666666666666,
+ "grid": [
+  {
+   "e_pair": 40.0,
+   "off": 0.06,
+   "f1": 0.6399999999999999,
+   "n": 27,
+   "matched": 16,
+   "ntruth": 23
+  },
+  {
+   "e_pair": 40.0,
+   "off": 0.1,
+   "f1": 0.6399999999999999,
+   "n": 27,
+   "matched": 16,
+   "ntruth": 23
+  },
+  {
+   "e_pair": 40.0,
+   "off": 0.14,
+   "f1": 0.5599999999999999,
+   "n": 27,
+   "matched": 14,
+   "ntruth": 23
+  },
+  {
+   "e_pair": 80.0,
+   "off": 0.06,
+   "f1": 0.6530612244897959,
+   "n": 26,
+   "matched": 16,
+   "ntruth": 23
+  },
+  {
+   "e_pair": 80.0,
+   "off": 0.1,
+   "f1": 0.6530612244897959,
+   "n": 26,
+   "matched": 16,
+   "ntruth": 23
+  },
+  {
+   "e_pair": 80.0,
+   "off": 0.14,
+   "f1": 0.5714285714285715,
+   "n": 26,
+   "matched": 14,
+   "ntruth": 23
+  },
+  {
+   "e_pair": 150.0,
+   "off": 0.06,
+   "f1": 0.6382978723404256,
+   "n": 24,
+   "matched": 15,
+   "ntruth": 23
+  },
+  {
+   "e_pair": 150.0,
+   "off": 0.1,
+   "f1": 0.6382978723404256,
+   "n": 24,
+   "matched": 15,
+   "ntruth": 23
+  },
+  {
+   "e_pair": 150.0,
+   "off": 0.14,
+   "f1": 0.6382978723404256,
+   "n": 24,
+   "matched": 15,
+   "ntruth": 23
+  }
+ ],
+ "rule": "v2: max pooled F1 over r6+r7 with v1's r_seam/a_seam/dt_pair frozen; ties larger e_pair (fewer splits), smaller off; must beat RAW and the v1 cell else dead",
+ "r_seam": 8.0,
+ "a_seam": 20.0,
+ "dt_pair": 0.25,
+ "dead": true
+}
