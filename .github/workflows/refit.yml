@@ -31,7 +31,7 @@ concurrency:
 jobs:
   refit:
     runs-on: ubuntu-latest
-    timeout-minutes: 90
+    timeout-minutes: 330
     steps:
       - uses: actions/checkout@v4
 
@@ -43,6 +43,16 @@ jobs:
         run: pip install numpy scipy "jax[cpu]" numpyro
 
       - name: Rebuild model tables + refit v2
+        env:
+          # 600/600 (the script default) does NOT converge on the full joint
+          # panel: it returned sd_d r_hat 1.2330 on 2026-09-02. sd_d is weakly
+          # identified by construction -- chemistry is tiny and no pair is
+          # certifiable (finding 2) -- so its posterior is a diffuse ridge that
+          # short chains settle on differently. The model is already
+          # non-centered, so there is no funnel left to reparameterise away;
+          # the only lever is draws. ~4.8 s/iter => 2000 iters ~= 2.7 h.
+          SRM2_WARMUP: "1200"
+          SRM2_SAMPLES: "800"
         run: |
           DATE_FROM=2026-01-01 python scraper/build_model_data.py
           python model/fit_v2.py
