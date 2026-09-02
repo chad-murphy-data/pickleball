@@ -53,13 +53,34 @@ jobs:
           import csv, json, sys
           rows = list(csv.DictReader(open("data/v2_players.csv")))
           fit  = json.load(open("model/v2_fit_summary.json"))
-          rhat = fit.get("max_rhat_v0", 99)
           n    = len(rows)
-          print(f"players={n} max_rhat_v0={rhat}")
+          rhat_v0 = fit.get("max_rhat_v0", 99)
+          print(f"players={n}  divergences={fit.get('n_divergences')}  max_rhat_v0={rhat_v0:.4f}")
+
+          fail, warn = [], []
           if n < 3000:
-              sys.exit(f"FAIL: only {n} players in the fit")
-          if rhat > 1.05:
-              sys.exit(f"FAIL: max r_hat {rhat} > 1.05 — did not converge")
+              fail.append(f"only {n} players in the fit")
+          if rhat_v0 > 1.05:
+              fail.append(f"max_rhat_v0 {rhat_v0:.4f} > 1.05")
+
+          # Scalars matter too: sd_d drives the pair-chemistry the site renders
+          # (web/sitelib/data.py). An earlier version of this guard checked only
+          # max_rhat_v0 and would have passed a fit whose sd_d r_hat was 1.23.
+          for k, v in fit["scalars"].items():
+              r = v.get("r_hat")
+              if isinstance(r, list) or r is None:
+                  continue
+              print(f"  {k:10s} mean {v['mean']:+.4f}  r_hat {r:.4f}")
+              if r > 1.10:
+                  fail.append(f"{k} r_hat {r:.4f} > 1.10")
+              elif r > 1.05:
+                  warn.append(f"{k} r_hat {r:.4f}")
+
+          for w in warn:
+              print(f"::warning::marginal convergence: {w}")
+          if fail:
+              sys.exit("FAIL: " + "; ".join(fail) +
+                       "  -- raise SRM2_WARMUP and re-run; do not ship this fit")
           print("sanity OK")
           PY
 
