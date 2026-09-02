@@ -225,6 +225,21 @@ frames without a V/S click, r20 (seal untouched). Leak disclosed in the
 gate file: spaghetti's shot book was harvested from r9/r10 too;
 path-first reads r6/r7 entries only.**
 
+**Events from flight ends (2026-09-02, `vision/ballsearch/events.py`,
+`events_gate.md`) — v3 ADOPTED.** One event per change of flight, on
+top of the adopted path-first track (track asserted unchanged). v1
+paired arrive/depart by TIME gap: F1 up on both r9/r10 but failed the
+pre-registered recall guard by 0.017 / 0.002 (short bounce-then-hit gaps
+collapsed to one event) — recorded FAIL. v2 (arcs must meet in the
+image) DEAD on r6/r7, never fired. v3 = the owner's framing, pair by
+PHYSICAL distance between where the ball arrived and where it left
+(≤ 2.5 ft at the local px/ft scale; 0.5 s sanity cap): r6/r7 0.708 vs
+RAW 0.542; ONE SHOT r9 **F1 .731** (RAW .625; recall .756, precision
+.708), r10 **.675** (RAW .617; .718 / .636); time-shift null .30 / .33.
+Truth = oracle contacts ∪ human bounces (45 / 39). Second r9/r10 shot
+for this layer, disclosed. Remaining misses are lost-track gaps
+(coverage), not pairing. Hit/bounce typing still unbuilt (5/4, 3/1).**
+
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),
 90%-contour area (Alshon 261 > Black 232 > Patriquin 204 > Bright 188

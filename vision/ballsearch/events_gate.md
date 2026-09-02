@@ -157,3 +157,31 @@ Rule: max pooled F1 on r6+r7; ties smaller D_PAIR, smaller OFF; must beat
 RAW (0.542) AND the v1 cell (0.667), else DEAD. Bars on r9/r10 as v1.
 This would be the second r9/r10 shot for this layer (v2 never fired).
 `events.py tune --v3`, `grade <r> --v3`.
+
+## v3 results (2026-09-02; events_grade_v3_r{9,10}.txt) — PASS both, ADOPTED
+
+Tune r6+r7: RAW 0.542, v1 0.667, v3 best **d_pair 2.5 ft, off 0.06 →
+0.708** (1.5 ft 0.667, 4 ft 0.681). `events_tune_v3.json`. One shot
+each (the SECOND r9/r10 shot for this layer; v1 failed the recall
+guard, v2 died on train and never fired):
+
+| rally | truth | RAW | events v3 | null F1 | bars |
+|---|---|---|---|---|---|
+| r9 | 45 | 67 / 35, R .778 P .522 F1 .625 | 48 / 34, R .756 P .708 **F1 .731** | .302 ± .060 (bar .482) | F1 ✓ recall ✓ (.756 ≥ .728) null ✓ |
+| r10 | 39 | 55 / 29, R .744 P .527 F1 .617 | 44 / 28, R .718 P .636 **F1 .675** | .325 ± .084 (bar .576) | F1 ✓ recall ✓ (.718 ≥ .694) null ✓ |
+
+Track check passed both (r@12 537 / 422 == adopted). Median |dt| of
+matched events 0.037 s (r9) / 0.016 s (r10). PROD detector on the same
+truth: F1 .525 / .627 (all), .594 / .556 (contacts only). One print bug
+in the per-event table was fixed after the shot and the files
+regenerated; the computation is deterministic and the numbers did not
+change. Typed (secondary, unchanged): bounce right/wrong 5/4 and 3/1 —
+bounce typing stays unbuilt.
+
+What remains, from the tables: nearly every unmatched event is an
+"arrive"/"depart" around a LONG gap (0.2–1.6 s, distance 4–39 ft) —
+the tracker lost the ball, usually right after a bounce, and picked it
+up late. That is coverage (to-do 0b), not this layer. The pairing
+itself is clean: pairs sit at 0.0–2.4 ft and match; the one unmatched
+pair with e 357 px (272.62) is a 0.9-ft, 0.25-s gap where truth has a
+bounce 0.38 s earlier and a hit 0.22 s later — a lost flight in between.

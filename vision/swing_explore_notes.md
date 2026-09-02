@@ -5163,3 +5163,50 @@ Nothing here is a grade (the overlay reads no truth); it is the
 owner's eyes, and it orders to-do 0: (c) pair-merge + seam-glue first
 (cheap, likely fixes most of the label count), then (b) short/fast
 flights, then bounce typing.
+
+## 2026-09-02 — events layer: v1 fails by a hair, v2 dies on train, the owner's physical-distance rule passes
+
+Goal (to-do 0c): one event per change of flight from the path-first
+flights, track untouched. Truth = oracle contacts ∪ human bounces
+(r6 10, r7 13, r9 45, r10 39), greedy one-to-one match at ±0.10 s, F1.
+Baseline RAW = every flight boundary (what the overlay showed: r9 67
+boundaries for 45 truth events).
+
+v1 (pre-registered, `events_gate.md`): pair arrive+depart if the gap
+≤ 0.25 s, seam-glue if the arcs continue smoothly, lone departs pulled
+0.06 s earlier. Seam knobs were INERT on r6/r7 (no lobs there —
+owner-confirmed) and froze untested. r9 F1 .625 → .719, r10 .617 →
+.667, precision +20 pp, nulls cleared — and the recall guard (≥ RAW −
+0.05) FAILED on both, by 0.017 and 0.002. Bars never loosen: recorded
+as FAIL. Autopsy from the r9/r10 tables (disclosed as evaluation-born):
+the lost events were short bounce-then-hit gaps collapsed into one.
+
+v2: "pair only if the arcs meet in the image" (seam error ≤ E_PAIR).
+DEAD on r6/r7 (0.653 < v1 0.667): a hard volley reverses the ball, so
+two extrapolated arcs sit far apart even for one hit. Extrapolation
+error measures direction change, not event count. Never fired on r9/r10.
+
+v3 — owner, mid-session: "the double hit should maybe be physical
+distance rather than temporal distance". A ball on a paddle does not
+travel; a bounce-then-hit does. Pair iff the distance between where the
+ball ARRIVED (A's last tracked pixel) and where it LEFT (B's first) is
+≤ D_PAIR feet, pixels → feet by the local scale at that spot (a 1-ft
+offset projected at A's 3D end; depth error moves the position, not the
+scale — the owner had confirmed the wrong-side-of-net read was depth
+only), plus a 0.5 s sanity cap (a dink exchange returns the ball to the
+same spot after ~0.6 s+). Grid 1.5/2.5/4 ft × off 0.06/0.10 on r6/r7:
+0.667 / **0.708** / 0.681 — beats RAW 0.542 and v1 0.667. One shot:
+r9 F1 .731 (R .756 P .708; RAW .625; recall guard .728 cleared), r10
+.675 (R .718 P .636; RAW .617; guard .694 cleared); time-shift nulls
+.30 ± .06 / .33 ± .08. PASS both. ADOPTED. Second shot on this truth
+for the layer, on record.
+
+What the tables say now: pairs sit at 0–2.4 ft and match; nearly every
+remaining miss is an arrive/depart around a LONG gap (0.2–1.6 s, 4–39
+ft apart) where the tracker lost the ball, mostly just after a bounce,
+and re-acquired late. That is coverage (to-do 0b), the layer above is
+done. Hit/bounce typing (secondary) is still a coin flip (5/4, 3/1).
+Lesson worth keeping: the owner's physical framing beat two
+time-and-geometry framings on the first try — the quantity that
+distinguishes "one hit seen twice" from "two events" is how far the
+ball moved, nothing else.

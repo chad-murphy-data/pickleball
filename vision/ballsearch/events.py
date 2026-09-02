@@ -399,8 +399,9 @@ def grade(rally, cell):
             extra = f"e {e['e']:5.1f} ang {e['ang']:5.1f} dt {e['dt']:.2f}"
         elif "dt" in e:
             extra = f"gap {e['dt']:.2f}"
-        if e.get("dft") == e.get("dft"):        # not nan
-            extra += f"  d {e['dft']:4.1f} ft"
+        dft = e.get("dft")
+        if isinstance(dft, float) and dft == dft:   # present and not nan
+            extra += f"  d {dft:4.1f} ft"
         print(f"   {e['t']:7.3f} | {e['how']:7s} | {e['kind']:6s} | {note} | {extra}")
     miss = [u for j, u in enumerate(tr) if j not in set(m.values())]
     print("-- truth not matched: " + ", ".join(f"{u:.2f}{'B' if u in bset else 'C'}" for u in miss))

@@ -44,6 +44,7 @@ disagree on a NUMBER, the notes file is the record.
 | `geom_fix.py` / `geom_tune.json` / `geom_grade_r9.txt` | the corridor-geometry FIX: knobs cap (wy ceiling), kT (duration term), ep (tapered end pad + END_R), pool (centre vs learned-p). `tune` = 54-cell grid on r6/r7 cross-fold under the frozen rule (writes the verdict), `grade <r>` = one-shot vs incumbent with V/S splits, displaced nulls, strata and per-corridor tables (refuses r9/r10 without a live verdict or with overrides). VERDICT 2026-09-01: **LIVE**, cap=260 kT=40 ep=60 pool=p; **r9 prod 479 @ 0.74 vs 431 @ 0.69**. `corridor_dp.py` carries `POOL_BY_P`. |
 | `pathfirst.py` / `pathfirst_gate.md` / `pathfirst_tune.json` / `pathfirst_grade_r{9,10}.txt` | **THE INCUMBENT (adopted 2026-09-01)**: path-first tracker — no contact detector, no corridor box. 3-seed drag-free arc hypotheses over the whole-frame candidate cache (top-4 by learned p per frame, p ≥ P_SEED, not on a body), p-weighted support minus a random-probe baseline, NMS, drag refit + bidirectional growth (R_GROW 10, stop after GAP misses), greedy selection by density, contacts = flight ends. `selftest`, `tune` (12-cell grid r6/r7 cross-fold, frozen rule, writes the verdict), `grade <r>` (one-shot vs the corridor incumbent: V/S splits, displaced + time-shift nulls, strata, oracle-contact recovery, per-flight table; refuses r9/r10 with overrides or a dead verdict). Pre-registration + results addendum in `pathfirst_gate.md`. **r9 537 @ 0.87 vs 431 @ 0.69; r10 422 @ 0.88 vs 325 @ 0.69.** ~3 s per rally. |
 | `render_pathfirst.py` | viewer only: draws the path-first track (trail, ball ring, hit/bounce end labels, faint candidate dots) on `r{N}_clip.mp4` → `pathfirst_r{N}.mp4` (960×540 H.264, default half speed). Reads no truth, tunes nothing. |
+| `events.py` / `events_gate.md` / `events_tune{,_v2,_v3}.json` / `events_grade_{r9,r10,v3_r9,v3_r10}.txt` | EVENTS layer on top of path-first (track untouched, asserted): one event per change of flight. v1 (time-gap pairing) FAILED the recall guard on both r9/r10; v2 (arcs must meet) DEAD on train; **v3 ADOPTED (owner's framing: pair by PHYSICAL distance between arrive and depart points, ≤ 2.5 ft at the local px/ft scale, 0.5 s sanity cap)**: r9 F1 .731 vs RAW .625, r10 .675 vs .617, recall guard and time-shift null cleared on both. `tune --v3`, `grade <r> --v3`. Typing hit/bounce is secondary and unbuilt. |
 | `cut_clip.py` | cuts `r{N}_clip.mp4` from the full-match source with the offset and frame count read from the committed candidate CSV (system ffmpeg or the imageio-ffmpeg static binary). |
 | `check_clip.py` | verifies an owner-cut clip against the committed `ball_candidates_r{N}.csv.gz` (frame count / size / fps, implied offset, extractor re-run matched at frame shifts −3..+3) before any cache is built from it. |
 | `corridor_autopsy.py`, `miss_map.py`, `r10_autopsy.py` | diagnostic-only (truth used to ask WHY). |
@@ -82,6 +83,7 @@ python3 pathfirst.py selftest                          # planted-arc self-test (
 python3 pathfirst.py tune                              # reproduces the 12-cell grid + verdict (r6/r7 only)
 python3 pathfirst.py grade 9; python3 pathfirst.py grade 10   # the one-shots (pathfirst_grade_r{9,10}.txt) — already spent; re-running is a RE-GRADE
 python3 render_pathfirst.py 9                         # watchable overlay (pathfirst_r9.mp4, gitignored)
+python3 events.py tune --v3                            # events grid (r6/r7); grade 9 --v3 / grade 10 --v3 are spent one-shots
 python3 spaghetti.py 9  --lrn --soft 25                # graded r9 (run_in_background; > 2 min)
 python3 spaghetti.py 10 --lrn --soft 25                # graded r10
 ```
@@ -302,6 +304,9 @@ prior term.
    258.0–258.4); (c) contact PRECISION — 64 boundaries vs 29 oracle
    contacts on r9; a boundary list is not a contact list until the
    fragment breaks are merged. Do not knob-turn pathfirst on r9/r10.
+   (c) DONE 2026-09-02 — `events.py` v3 ADOPTED (owner's physical-
+   distance pairing; events_gate.md has v1 FAIL / v2 DEAD / v3 PASS in
+   order). Remaining misses are lost-track gaps → (b) is next.
    OWNER'S EYES (2026-09-02, overlay watched, see notes): the double
    labels are arrive+depart pairs at every contact; a lob is split at
    its apex and the seam labelled; the down-the-line near→far speedup
