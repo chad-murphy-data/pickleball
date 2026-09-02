@@ -14,8 +14,13 @@ one-camera fit, so positions are trustworthy across the court and in
 height, less so in how far down the court.  Since gapfill_gate.md v2
 (2026-09-02) the path carries the adopted TAGGED gap fill: frames that
 exist only by extending the two arcs through an occlusion are flagged
-and drawn dashed; lost flights stay gaps.  Viewer only; nothing is tuned
-or written back.
+and drawn dashed; lost flights stay gaps.  Since 2026-09-02 (owner ask,
+this file's relift()) every flight is RE-LIFTED for display: refit to its
+own graded pixels with the four players' floor positions as a soft
+boundary (+4 ft reach) and a floor hinge, which resolves the depth
+degeneracy that put arcs 30 ft behind the baseline.  The 2D track is
+untouched (pixel rms of the re-lift is printed).  Viewer only; nothing is
+tuned or written back.
 """
 import json
 import sys
@@ -42,6 +47,70 @@ SEG = """function seg(i,col,w){
 }
 function draw(){"""
 LANK, RANK = 15, 16
+# player-box re-lift (owner ask 2026-09-02, restoring the pseudo-boundary the
+# court3d.py pass-2 fits carried): depth is the weak axis of a one-camera
+# arc, so a flight can match its pixels while racing 30 ft behind the
+# baseline.  The four players' floor positions bound where the ball can be:
+# each flight is REFIT to its own graded pixels with a hinge that keeps the
+# arc inside the players' bounding box (+PAD_FT reach) and above the floor.
+# Viewer-only: the 2D track (the graded product) is the fit's data and is
+# not written back; the pixel rms of the re-lift vs the graded track is
+# printed so the cost in 2D is on record.
+PAD_FT = 4.0            # reach beyond the four players' box, ft
+FLOOR_FT = -0.3         # ball radius below z = 0 is the lowest physical centre
+W_BOX = 1.0             # px per ft of excursion (the court-box prior uses 0.5)
+BOX_TOL = 0.3           # s: a player's position counts if a pose sample is this close
+BOX_STEP = 3            # sample the hinge every 3 frames over the flight's span
+
+
+def player_box(players, t):
+    """(xlo, xhi, ylo, yhi) of the players seen within BOX_TOL of t, or None."""
+    xs, ys = [], []
+    for tt, xx, yy in players.values():
+        i = int(np.abs(tt - t).argmin())
+        if abs(tt[i] - t) <= BOX_TOL:
+            xs.append(xx[i])
+            ys.append(yy[i])
+    if len(xs) < 2:
+        return None
+    return min(xs) - PAD_FT, max(xs) + PAD_FT, min(ys) - PAD_FT, max(ys) + PAD_FT
+
+
+def relift(ctx, chosen, inferred, players):
+    """Refit every flight to its own projected pixels on its TRACKED frames,
+    with the player-box + floor hinge over its full span (inferred extension
+    included).  Returns (flights, rows); rows = (fa, fb, rms_px, exc_before,
+    exc_after) where exc = worst excursion outside the box, ft."""
+    P, t0 = ctx["P"], ctx["t0"]
+    out, rows = [], []
+    for fl in sorted(chosen, key=lambda f: f["fa"]):
+        t_ref = fl["t_ref"]
+        obs = [(t0 + f / FPS, *map(float, pf.arc_px(P, fl["theta"], t_ref, f, t0)), 1.0)
+               for f in range(fl["fa"], fl["fb"] + 1) if f not in inferred]
+        fs = list(range(fl["fa"], fl["fb"] + 1, BOX_STEP))
+        taus = np.array([t0 + f / FPS - t_ref for f in fs])
+        boxes = [player_box(players, t0 + f / FPS) for f in fs]
+        lo = np.array([[b[0], b[2], FLOOR_FT] if b else [-np.inf, -np.inf, FLOOR_FT] for b in boxes])
+        hi = np.array([[b[1], b[3], np.inf] if b else [np.inf, np.inf, np.inf] for b in boxes])
+
+        def excursion(th):
+            X = c3.arc_pos(th, taus)
+            return np.maximum(lo - X, 0) + np.maximum(X - hi, 0)
+
+        def extra(th):
+            return W_BOX * excursion(th).ravel()
+
+        if len(obs) < 4:
+            out.append(dict(fl))
+            rows.append((fl["fa"], fl["fb"], 0.0, float(excursion(fl["theta"]).max()), None))
+            continue
+        th, rms = c3.fit_arc(P, obs, t_ref, theta0=np.array(fl["theta"], float), extra=extra)
+        nf = dict(fl)
+        nf["theta"] = th
+        out.append(nf)
+        rows.append((fl["fa"], fl["fb"], rms, float(excursion(fl["theta"]).max()),
+                     float(excursion(th).max())))
+    return out, rows
 
 
 def ball_path(chosen, t0, inferred=frozenset()):
@@ -96,8 +165,9 @@ def main():
                      ev_cell["off"], d_pair=ev_cell["d_pair"])
     pls = rs.players(ctx)
     st = rs.rally_stats(ctx, chosen, evs, pls)
-    path = ball_path(chosen, t0, res["inferred"])
     players = player_tracks(ctx, pls)
+    lifted, lrows = relift(ctx, chosen, res["inferred"], players)
+    path = ball_path(lifted, t0, res["inferred"])
     impacts = [h["t"] for h in st["hits"]]
     out = SP / f"court3d_r{rally}.html"
     c3.write_viewer(path, impacts, out, players)
@@ -122,12 +192,13 @@ def main():
     html = html.replace('<span id="tl"></span></div>',
         '<span id="tl"></span><br><span style="color:#999">solid = tracked ball · '
         'dashed = inferred through an occlusion by extending the two arcs (gapfill v2, '
-        'right at 12 px about 2 in 3) · breaks = lost track</span></div>')
+        'right at 12 px about 2 in 3) · breaks = lost track · depth bounded by the four '
+        'players\' positions (+4 ft)</span></div>')
     assert 'function seg' in html and 'seg(i,"#ffd94a",2)' in html
     out.write_text(html)
     # net-crossing check, free ground truth: the ball must clear the tape
     n_x, low = 0, 0
-    for fl in chosen:
+    for fl in lifted:
         ts = np.arange(t0 + fl["fa"] / FPS, t0 + fl["fb"] / FPS + 1e-9, 1 / 120.0)
         X = c3.arc_pos(fl["theta"], ts - fl["t_ref"])
         y = X[:, 1]
@@ -136,6 +207,11 @@ def main():
                 n_x += 1
                 if X[i, 2] < c3.TAPE_FT:
                     low += 1
+    rms = [r[2] for r in lrows]
+    print(f"player-box re-lift: {len(lrows)} flights, pixel rms vs graded track "
+          f"median {np.median(rms):.2f} max {max(rms):.2f} px; worst excursion outside the "
+          f"players' box+{PAD_FT:g} ft: before {max(r[3] for r in lrows):.1f} ft, "
+          f"after {max(r[4] for r in lrows if r[4] is not None):.1f} ft")
     print(f"wrote {out} ({out.stat().st_size / 1e3:.0f} kB): {len(path)} path samples "
           f"({sum(p[4] for p in path)} inferred) over {len(chosen)} flights, {len(impacts)} hits, "
           f"{len(players)} players; "

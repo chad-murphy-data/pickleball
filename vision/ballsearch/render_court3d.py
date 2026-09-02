@@ -182,7 +182,7 @@ def main():
     cap1 = (f"rally {a.rally} in 3D  ·  reconstructed from one broadcast camera  ·  "
             f"solid = tracked ball, dashed = inferred through an occlusion, breaks = lost track  ·  rings = hits")
     cap2 = ("player marks = pose floor positions, coloured by side  ·  "
-            "depth (down the court) is the weak axis of a one-camera fit")
+            "depth (down the court) is the weak axis of a one-camera fit, bounded by the players' box (+4 ft)")
     for k in range(n_lead + n_play + n_tail):
         tp = min(max(0.0, (k - n_lead) / FPS * a.speed), dur)   # rally-relative playhead
         tcur = t0 + tp
