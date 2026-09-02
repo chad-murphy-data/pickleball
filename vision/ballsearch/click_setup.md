@@ -20,7 +20,7 @@ tools are built and committed — open the HTML, pick the video, click.
 
 | sitting | rally | role after clicking | contacts (fast) | frames to click (30 fps) | why |
 |---|---|---|---|---|---|
-| 1 | **r17** | TRAIN (joins r6 / r7) | 15 (7 fast) | 448 | the densest fast rally in the train split: the hands battle the tracker keeps losing |
+| 1 | **r17** ✅ clicked 2026-09-02 | TRAIN (joins r6 / r7) | 15 (7 fast) | 448 | the densest fast rally in the train split: the hands battle the tracker keeps losing. Delivered: 403 frames (through 440.7 s, the ball dead), 269 V / 110 S / 24 I / 0 N — streak share 27 %, the highest of any clicked rally |
 | 1 | **r21** | SEAL #2 (grade only) | 6 (2 fast) | 228 | quick kill after the return — the fast-short-flight shape the hand-off pass targets |
 | 1 | r18 | TRAIN | 3 (1 fast) | 186 | serve, return, one fast put-away: a free three-contact sample |
 | 1 | r19 | TRAIN | 2 | 133 | serve + return only (a missed return): two flights, nearly free |
