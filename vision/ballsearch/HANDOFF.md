@@ -348,6 +348,24 @@ prior term.
    train / r21 seal first) for the owner's clicking, and the
    `--bridge` demo cut exists for the share (cosmetic, captioned).
 
+0b. **SHOT SPEED — owner standing ask (2026-09-02, "don't forget speed
+   history").** History: the rally-1 demo speeds (dinks 13–21 mph,
+   attacks 25–48 mph, `shot_categories.py`) came from a HAND-labeled
+   ball path anchored at HAND-labeled contact times = complete flights
+   with known ends. No change removed that; the automatic tracker never
+   had it (fragments, ends ≠ contacts, one-camera launch speed is
+   depth-dominated — rally_stats named the wrong speed-up twice,
+   speed_lab found no separating measure on r6/r7). Ways back, in
+   order of honesty: (i) complete flights from the tracker — needs the
+   hand-off + events joint gate above to pass; then flight = hit-to-hit
+   and the shot_categories speed rule applies as it did on rally 1;
+   (ii) DEMO-ONLY hybrid: anchor the tracked flights at the owner's
+   labeled contact times (r9/r10 have them) and read speed over the
+   full hit-to-hit interval — honest if captioned "contact times
+   hand-labeled", never a grade, never fed back; (iii) hit-to-hit TIME
+   alone (no 3D) as a proxy — separates on train, failed r10 label
+   timings, not spent further. Do not publish a speed off a fragment.
+
 1. ~~Corridor geometry fix (item 2 above).~~ DONE 2026-09-01, both
    shots: r9 CLEARS (479 @ 0.74 vs 431 @ 0.69), r10 does NOT (323 @
    0.65 vs 325 @ 0.69, one mis-merged corridor) → SPLIT, incumbent
