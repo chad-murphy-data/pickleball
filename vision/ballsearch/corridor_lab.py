@@ -41,7 +41,10 @@ from claim_lab import (load, paddle_series, paddle_at,  # noqa: E402
 from approach_lab import approach_events          # noqa: E402
 
 CLIPS = {9: "r9_clip.mp4", 10: "r10_clip.mp4", 7: "r7_clip.mp4",
-         6: "r6_clip.mp4"}
+         6: "r6_clip.mp4",
+         # click package 2026-09-02 (cut_clip.py --stage; offsets in the committed CSVs)
+         17: "r17_clip.mp4", 18: "r18_clip.mp4", 19: "r19_clip.mp4",
+         20: "r20_clip.mp4", 21: "r21_clip.mp4"}
 SP = Path(__file__).parent
 AREA_MIN, AREA_MAX = 3, 600
 RADII = (8, 12, 20)

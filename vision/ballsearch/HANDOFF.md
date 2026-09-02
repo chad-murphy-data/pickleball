@@ -50,6 +50,7 @@ disagree on a NUMBER, the notes file is the record.
 | `handoff.py` / `handoff_gate.md` / `handoff_tune.json` / `handoff_grade_r{9,10}.txt` | Hand-off seeding, pass 2 on top of the frozen path-first pass: short-span seeds (6/8/12 frames) allowed NEAR BODY, only inside a zone next to a pass-1 flight end. Pre-registered, tuned on r6/r7 (16 cells → r_zone 70 / w 18 / p_hand 0.25 / s_min 3, 277 @ 0.810 vs 263 @ 0.807), ONE SHOT on r9/r10 spent 2026-09-02: track r@12 537→563 (r9) and 422→446 (r10) at unchanged precision, nulls clean, BUT the v3 events layer re-run on the new flights lands F1 .636 on r10 vs bar .645 (r9 .758 passes) → **NOT ADOPTED**, incumbent stays. `grade` for r9/r10 is spent. Next gate if reopened = events re-tune on the hand-off track (new pre-registration). |
 | `label_picks.md` | the owner's click list for 2–4 more ball-click rallies chosen for FAST exchanges, inside the split rules: r17 (train), r21 (fresh seal), then r4 (train), r20 (the reserved seal). r22–r30 holdout untouched. |
 | `click_setup.md` | **THE CLICK PACKAGE (2026-09-02, owner: "don't give me the minimum")** — nine rallies in three sittings with tools built and staging done: r17 / r21 / r18 / r19 (sitting 1), r20 (sitting 2), r3 / r4 / r2 / r5 after a contact pass (sitting 3). Committed: `data/vision/ball_audit_r{17,18,19,20,21}.html`, `data/vision/ball_candidates_r{17..21}.csv.gz` (clips cut at the audit-tool span via `cut_clip.py --stage`, check_clip PASS), c3_lab WINDOWS 17–21. Missing: pose npz for 17–21 (one Colab line in the doc). What to run when the CSVs land is written there. |
+| `train_read.py` / `train_read_r17.txt` | **The first read of a NEW TRAIN rally** (2026-09-02): refuses r9 / r10 / r20 / r21, reads only the committed tune records, scores the incumbent path-first track + gap fill v2 against the V/S clicks with both nulls, then buckets every click by the nearest manual contact (serve / return / slow / fast / middle, S-only split) and prints a per-contact coverage table. `python3 train_read.py 17`. `c3_lab.py` now takes rally args (`python3 c3_lab.py 17`; no args = the original four). |
 | `gapfill.py` / `gapfill_gate.md` / `gapfill_tune.json` / `gapfill_grade_r{9,10}.txt` | GAP FILL BY ARC EXTENSION (owner's framing 2026-09-02: the ball behind a paddle/player exists only through inference): for each gap between consecutive path-first flights, extend A's arc forward and B's backward, switch at the frame where they come closest, leave the gap open if they never come within D_MEET px; filled frames tagged `inferred`; NO paddle used (the wrist+forearm proxy picks the switch time worse than the arcs do — autopsy). Pre-registered, tuned on r6/r7 (6 cells → gap_max 0.8 / d_meet 20, 273 @ 0.782 vs 263 @ 0.807), ONE SHOT on r9/r10 spent 2026-09-02: r9 556 @ 0.87 PASS all bars (events F1 .756); r10 443 @ 0.850 FAILS the precision bar by 0.010 (recall, nulls and events F1 .684 all clear) → **NOT ADOPTED**, incumbent stays. Inferred frames alone are right at 12 px ~60% of the time (0.65 / 0.58); events F1 rises on BOTH rallies (the fill gives the seam rule meeting arcs). **v2 SAME DAY, owner go to re-use r9/r10 ("let's not be as sweaty")**: the product is re-stated as tracked frames (bit-identical, asserted) PLUS a TAGGED inferred stratum graded on its own (prec ≥ 0.5, r@12 ≥ 10, own displaced + time-shift nulls ≤ 3) + events F1 ≥ adopted − 0.03. Re-tuned under that rule on r6/r7 → gap_max 0.8 / d_meet 40. r9: inferred 38 @ 0.667, events .764; r10: 41 @ 0.594, events .658 → **ADOPTED AS A TAGGED PRODUCT** (`gapfill.product(ctx)`); the tracker's quoted number stays the tracked half's. Consumers draw inferred frames dashed (rally_3d / court3d viewer / render_court3d) and run events + stats on the filled flights (rally_stats). Clean re-check on r20/r21, bars as written, no re-tune. **v3 / v3b (hit-anchored fill of the open gaps, 2026-09-02) DEAD ON TRAIN, r9/r10 untouched** — see the gate §v3–v3c and `gapfill_explore3.txt`: the open gaps are tracker-tail junk (r7) and a two-contact drive (r6), not something a time-anchored 3D kink can fill. |
 | `render_pathfirst.py --bridge` | cosmetic, owner-approved for the demo: gaps ≤ 0.5 s between tracked flights drawn as a DASHED straight segment with a sliding dashed ring, persistent caption "dashed = inferred between tracked flights, not tracked". Never enters the track/events/stats/grades. Output `pathfirst_r{N}_reddit_bridge.mp4`. |
 | `learner.py` / `learner_gate.md` / `learner_train.txt` / `emission_gbt.json` / `learner_curve.py` + `.txt` | The better learner (owner go 2026-09-02): gradient-boosted trees on emission.py's 14 features, same labels/discipline, three fixed configs, pre-registered gate. **GATE 1 DEAD**: AUC +0.002 / +0.007 over the logistic (noise on 161–198 positives) but the 97 %-recall tail keeps 0.635 of r6 negatives vs the logistic's 0.319 → no caches, no tune, no shot. Learning curve (diagnostic): logistic FLAT in labels (feature-saturated), trees still CLIMBING and overtaking only at ≥ 75 % of positives → the learner is now LABEL-limited; re-run `train` when r17/r21 land. `pathfirst.py` gained the inert `PF_PXS` p-cache-suffix env hook (unset = unchanged). |
@@ -378,6 +379,42 @@ prior term.
    in the tracker — each a fresh registration. Meanwhile: `click_setup.md` (r17
    train / r21 seal first; nine rallies staged) for the owner's clicking, and the
    `--bridge` demo cut exists for the share (cosmetic, captioned).
+
+0-r17. **FIRST CLICK DELIVERY READ — r17, train only (2026-09-02,
+   `train_read_r17.txt`).** Owner clicked 403 frames (269 V / 110 S /
+   24 I), streak share 27 %. Pose: CPU rtmpose-balanced here (20.7 min;
+   `r0017.npz` gitignored — re-extract or take the Colab npz);
+   `ball_grade.py` train dry-run → `anchors_grade_r17.csv` (committed;
+   that older harness read V 82 % / S 96 % at its own tolerance, CHECK 3
+   FAIL, "MIDDLE" — diagnostic only, r17 is train). Incumbent path-first
+   at the frozen cell, emission p-cache from the pooled r6/r7 model
+   (out-of-fold for r17, so this read is honest): **245 / 379 @ 1.00**
+   (V 169/269, S 76/110), nulls 0 / 4; gap fill v2 253 @ 0.94 (inferred
+   17/112 @ 0.49, nulls 0/0); 14 flights; ONE wrong point in 379 — every
+   other miss is a hole (r9 537/779 @ 0.87, r10 422/657 @ 0.88 for
+   scale: same recall band, better precision). WHERE THE HOLES ARE, by
+   the owner's contact labels (clicks within ±0.30 s): fast 88/113
+   (S-fast 38/49), middle 97/142, return 8/14, serve 7/17, **slow
+   45/93 (S-slow 1/17)**. Per contact: the three slow contacts at
+   432.12 / 432.82 / 435.95 s cover 5/18, 5/13, 0/18 (the flight list
+   has 1-s gaps at 431.97–432.98 and 435.37–436.28 — the tracker never
+   seeds a flight there), the serve 7/17; the late fast exchange
+   439.25 → 439.75 → 440.25 degrades 12 → 10 → 7 of 18. READING: the
+   premise that picked r17 ("the hands battle the tracker keeps losing")
+   is NOT what r17 shows — fast contacts are the best-covered bucket and
+   fast streaks are 78 % covered already. The losses are dink / reset
+   contacts next to a player and the serve, i.e. short slow flights
+   the seeding never opens (S_MIN 6 / P_SEED 0.4 / near-body factor),
+   the same shape as hand-off's target. CONSEQUENCE for the streak-
+   detector question: on this evidence it is not the next instrument —
+   the S-slow 1/17 is a proximity hole, not a blur hole. Next machine
+   steps, in order, each needing labels or a go: (i) r18 / r19 / r21 /
+   r20 land → same chain (pose here on CPU is fine); (ii) once ≥ 2 new
+   train rallies exist, `emission.py train` with r17 in fold and
+   `cache-cross` extended three-way (it is hard-wired to 6/7 today);
+   (iii) a hand-off / seeding re-registration aimed at the slow
+   near-body flights, tuned on r6 + r7 + r17, one shot r20/r21 on the
+   owner's go. r9 / r10 untouched throughout.
 
 0a. **LEARNER: label-limited, not code-limited (2026-09-02,
    `learner_gate.md`).** Trees on the 14 features are DEAD at the

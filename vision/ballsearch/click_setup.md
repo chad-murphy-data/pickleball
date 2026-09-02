@@ -138,6 +138,24 @@ instrument under test).
 - `c3_lab.py` WINDOWS carries (serve, end, npz) for 17–21 at the
   audit-tool span; `python3 c3_lab.py N` runs the moment the npz lands.
 
+## r17 — DONE end to end (2026-09-02, same day as the delivery)
+
+Pose came from the CPU fallback (rtmpose-balanced, 20.7 min, 7,063
+detections / 36 tracks) — Colab is optional for the rest; the npz is
+gitignored, so a fresh thread re-extracts (`python3 vision/pose_extract.py
+--video vision/ballsearch/full_match.webm --backend rtmpose --rtm-mode
+balanced --rallies 17 --out-dir vision/ballsearch --labels
+data/vision/contact_labels_chicago0725.csv --windows
+data/vision/rally_windows_chicago0725_v4.csv`) or drops in your Colab
+npz. Chain after that: `ball_grade.py` (train dry-run → anchors,
+committed) → `c3_lab.py 17` → `emission.py cache 17` → `train_read.py 17`
+(→ `train_read_r17.txt`, committed; the read itself is in HANDOFF.md).
+Headline: 245 / 379 clicks at 1.00 precision, one wrong point in the
+whole rally; every miss is a hole, and the holes are the SLOW contacts
+next to a player (432.1 / 432.8 / 436.0 s) and the serve — the fast
+exchanges are the best-covered bucket. That is the opposite of the
+premise that picked r17 ("the hands battle the tracker keeps losing").
+
 ## What happens when the CSVs arrive
 
 1. r17 (+ r18, r19, later r3/r4/r2/r5) join TRAIN: `emission.py train`
@@ -148,7 +166,7 @@ instrument under test).
 2. r20 / r21 become the sealed pair. Their one-shot happens only on
    your explicit authorization, on a selection rule written down
    before the numbers (`gapfill_gate.md` / `handoff_gate.md` pattern).
-3. The first read that matters: does the hand-off pass's fast-flight
+3. ~~The first read that matters~~ DONE for r17 (above): does the hand-off pass's fast-flight
    miss rate on r17 look like r6 / r7 (arrive/depart pairs lost next to
    a player), or different? That read decides whether the streak
    detector question (a timing instrument, per the 2026-09-02 thread)
