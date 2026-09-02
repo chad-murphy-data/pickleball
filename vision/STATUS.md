@@ -240,6 +240,18 @@ Truth = oracle contacts ∪ human bounces (45 / 39). Second r9/r10 shot
 for this layer, disclosed. Remaining misses are lost-track gaps
 (coverage), not pairing. Hit/bounce typing still unbuilt (5/4, 3/1).**
 
+**Rally stats prototype (2026-09-02, `vision/ballsearch/rally_stats.py`)
+— hits per player and last shot WORK, speed-up does NOT.** Three rules
+fixed before looking (hit = v3 event within 3 ft of a paddle proxy,
+de-duplicated at 0.6 s; speed-up = first ≥ 38 ft/s launch after the
+3rd hit; last shot = last hit + final flight end in court ft), identity
+by court position only. Evaluation vs the owner's r9/r10 labels: hit
+counts within ±1 for all 8 player-rallies (r9 10/5/10/5 vs 9/5/10/5,
+r10 4/9/9/5 vs 5/8/9/4), last hitter right twice; first speed-up wrong
+twice (3D launch speed is depth-dominated and fragment starts inflate
+it). `rally_3d.py` writes the orbitable 3D court view of the same
+flights (`court3d_r{9,10}.html`). Prototype, not a graded channel.
+
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),
 90%-contour area (Alshon 261 > Black 232 > Patriquin 204 > Bright 188

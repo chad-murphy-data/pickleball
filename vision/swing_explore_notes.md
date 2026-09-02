@@ -5222,3 +5222,51 @@ fast, in front of a moving body). To-do 0b should start from the
 near-body seed rule: a velocity-continuation seed off the previous
 flight's end could re-enter the body zone without opening the door to
 body blobs in general.
+
+## 2026-09-02 — share cuts, a rally-stats prototype, and the 3D view
+
+Owner asked for a Reddit-able version of the overlay (pose points, no
+labels, ball always red) and, "something crazy", rally stats: hits per
+player, who sped up first, where the last shot was.
+
+`render_pathfirst.py --reddit`: full 1280×720, no HUD/labels, red ball
++ trail with white outline, pose keypoints + COCO skeleton of the four
+tracked players from the rally npz. Both share cuts are committed
+(force-added past the mp4 ignore) so they outlive the session. Memory
+note: a render or a stats run holds ~10 GB (pathfirst.context); two at
+once OOM-kill one of them, which is how the first r9 render died.
+
+`rally_stats.py`, rules written before any rally was looked at: an
+event is a HIT by player p if the ball at the event sits within 3 ft
+(local px/ft scale) of p's paddle proxy or wrist within ±0.08 s; the
+same player twice inside 0.6 s counts once (the double-label the owner
+saw); a speed-up is the first flight after the 3rd hit launched at
+≥ 38 ft/s that STARTS at a hit; the last shot is the last hit, and the
+ball's last position is the end of the final flight in court feet.
+Identity = position at the serve (ankle midpoint through the z=0
+homography; near = y > 22, left/right by image x). Names enter only in
+`--grade`, by majority vote of the owner's labeled contacts over
+tracks, for evaluation.
+
+Result: hits per player within ±1 for all 8 player-rallies (r9
+10/5/10/5 vs truth 9/5/10/5; r10 4/9/9/5 vs 5/8/9/4). Last hitter
+right in both (Tuionetoa 281.82 / Nelson 317.54, truth 281.83 /
+317.44), and r10's "ball last tracked 1.5 ft outside the left sideline
+on the near side" is what a lunge that ends a rally looks like.
+Speed-up WRONG in both: r9 named a 71 ft/s flight at 260.97 (truth:
+first fast shot Nelson 257.84), r10 a 42 ft/s flight at 303.18 (truth:
+Tuionetoa's speed-up 300.23). Diagnosis needs no labels: the launch
+speed of a one-camera 3D arc is dominated by the depth component the
+camera cannot pin, and short fragments (post-bounce, post-seam) fit
+with inflated speeds. Requiring the flight to start at a hit was the
+one label-free refinement applied (before that, both rallies named a
+fragment that started mid-air). A speed measure the camera supports
+(image-plane speed at local scale, or hit-to-hit time) is the honest
+next try; NOT tuned here — r9/r10 are evaluation rallies.
+
+`rally_3d.py`: the path-first flights are already 3D arcs (position,
+velocity, drag, through P), so the "3D fit" is a viewer, not a fit:
+court3d.write_viewer with the flights sampled at 60 fps, the four
+players' floor tracks (5-sample running median), and the attributed
+hits as impacts. Depth caveat stands; gaps are drawn as gaps.
+

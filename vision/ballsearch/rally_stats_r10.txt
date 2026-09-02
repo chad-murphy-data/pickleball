@@ -1,0 +1,103 @@
+rally 10: 28 flights, 44 events, 27 attributed hits (35 before de-dup)
+players (position at the serve, court ft):
+  far-left    track 8  x   4.7  y  12.0
+  far-right   track 9  x  17.0  y  -7.9
+  near-left   track 10  x   4.6  y  45.0
+  near-right  track 11  x  10.4  y  44.1
+hits per player:
+  far-left    4
+  far-right   9
+  near-left   9
+  near-right  5
+-- events: t | how | nearest player d(ft) | call
+    294.557 | serve   | -            --  | bounce/?
+    295.067 | arrive  | -            --  | bounce/?
+    295.040 | depart  | -            --  | bounce/?
+    295.400 | arrive  | -            --  | bounce/?
+    295.707 | depart  | near-right   1.5 | HIT
+    296.476 | pair    | far-right    5.4 | bounce/?
+    296.855 | pair    | far-right    0.7 | HIT
+    297.734 | arrive  | near-left    2.5 | HIT
+    298.074 | depart  | near-left    0.2 | HIT
+    298.967 | arrive  | far-right    1.1 | HIT
+    299.124 | depart  | far-right    0.2 | HIT
+    299.834 | arrive  | near-left    0.7 | HIT
+    300.224 | depart  | near-left    0.1 | HIT
+    300.634 | arrive  | near-right   2.5 | HIT
+    301.307 | depart  | far-right    0.7 | HIT
+    302.517 | arrive  | near-left    0.2 | HIT
+    303.124 | depart  | far-left     1.0 | HIT
+    304.034 | pair    | near-left    0.5 | HIT
+    304.634 | arrive  | far-right    0.6 | HIT
+    304.890 | depart  | far-right    0.8 | HIT
+    305.368 | pair    | near-right   0.4 | HIT
+    305.947 | pair    | far-right    1.0 | HIT
+    306.859 | pair    | near-left    0.7 | HIT
+    307.267 | arrive  | far-left     3.5 | bounce/?
+    307.474 | depart  | far-left     0.6 | HIT
+    307.934 | arrive  | far-left     3.0 | bounce/?
+    308.257 | depart  | far-left     5.2 | bounce/?
+    308.797 | pair    | near-left    0.7 | HIT
+    309.150 | arrive  | far-right    3.7 | bounce/?
+    309.740 | depart  | far-right    1.2 | HIT
+    310.147 | pair    | near-right   0.7 | HIT
+    310.572 | pair    | near-right   1.7 | HIT
+    311.050 | arrive  | far-right    0.5 | HIT
+    311.940 | depart  | near-left    1.2 | HIT
+    312.734 | arrive  | far-right    1.6 | HIT
+    313.257 | depart  | far-right    0.4 | HIT
+    313.750 | arrive  | near-right   2.5 | HIT
+    314.307 | depart  | near-right   0.3 | HIT
+    315.000 | arrive  | far-left     1.8 | HIT
+    315.307 | depart  | far-left     0.9 | HIT
+    316.001 | pair    | near-left    0.2 | HIT
+    316.418 | pair    | far-right    0.8 | HIT
+    316.950 | arrive  | near-left    0.6 | HIT
+    317.540 | depart  | far-left     0.8 | HIT
+-- flights: start | launch ft/s | hitter
+    294.617 |  34.2      | ?
+    295.100 |   7.4      | ?
+    295.767 |  40.6 FAST | near-right
+    296.467 |  39.8 FAST | ?
+    296.867 |  18.4      | far-right
+    298.134 |  39.5 FAST | ?
+    299.184 |  18.1      | ?
+    300.284 |  37.5      | ?
+    301.367 |  28.8      | far-right
+    303.184 |  41.9 FAST | far-left
+    304.067 |  32.8      | near-left
+    304.950 |  23.2      | ?
+    305.417 |  80.3 FAST | near-right
+    306.034 |  48.4 FAST | far-right
+    306.884 | 100.1 FAST | near-left
+    307.534 |  62.3 FAST | far-left
+    308.317 |  13.5      | ?
+    308.834 | 100.5 FAST | near-left
+    309.800 |  31.7      | far-right
+    310.167 |  49.8 FAST | near-right
+    310.567 |  40.9 FAST | ?
+    312.000 |  26.8      | near-left
+    313.317 |   9.6      | ?
+    314.367 |  21.3      | ?
+    315.367 |  19.9      | ?
+    316.050 |  33.7      | near-left
+    316.400 |  33.4      | far-right
+    317.600 |  18.3      | far-left
+first speed-up: far-left at 303.18 s, flight 10, launch 42 ft/s (29 mph)
+last shot: by far-left at 317.54 s; ball last tracked at 318.38 s: near side, left half as the camera sees it, 6.2 ft from the net, 1.5 ft OUTSIDE the sideline, height 0.5 ft
+
+== grade vs owner labels (EVALUATION only): 26 contacts + 1 whiff
+  name map (majority vote of labeled contacts -> nearest track):
+    Allyce Jones     {'near-right': 4}
+    Emma Nelson      {'far-right': 1, 'far-left': 2}
+    Etta Tuionetoa   {'near-left': 9}
+    Ting Chieh Wei   {'far-right': 6}
+  player           label       truth  ours
+  Emma Nelson      far-left        5     4
+  Ting Chieh Wei   far-right       8     9
+  Etta Tuionetoa   near-left       9     9
+  Allyce Jones     near-right      4     5
+  first fast shot (truth): #5 Etta Tuionetoa at 300.23  type speed-up
+  first speed-up (ours):   Emma Nelson at 303.18  42 ft/s
+  last contact (truth): #27 Emma Nelson at 317.44 (lunge); ours: Emma Nelson at 317.54
+  our speed-up flight starts at a labeled shot: NO
