@@ -1,0 +1,5 @@
+  {'w_anc': 2.0, 'bounce': False}  inferred3 r@12 1 prec 0.077  nulls 0/0  r6 inferred3 1/13 (28 frames, 0 bounces) | r7 inferred3 0/0 (46 frames, 0 bounces)
+  {'w_anc': 2.0, 'bounce': True}  inferred3 r@12 1 prec 0.077  nulls 0/0  r6 inferred3 1/13 (28 frames, 0 bounces) | r7 inferred3 0/0 (46 frames, 0 bounces)
+  {'w_anc': 6.0, 'bounce': False}  inferred3 r@12 1 prec 0.077  nulls 0/0  r6 inferred3 1/13 (28 frames, 0 bounces) | r7 inferred3 0/0 (46 frames, 0 bounces)
+  {'w_anc': 6.0, 'bounce': True}  inferred3 r@12 1 prec 0.077  nulls 0/0  r6 inferred3 1/13 (28 frames, 0 bounces) | r7 inferred3 0/0 (46 frames, 0 bounces)
+DEAD: no cell passes the v3 rule

@@ -1,0 +1,81 @@
+PART 1 — geometry of every open gap on train (owner clicks vs the two arcs)
+=== r6 gap f325-371 (5.42-6.18 s, 45 frames)  A n=15 rms=0.73  B n=25 rms=0.46  detector anchors [5.63, 6.1]  owner contacts [5.7, 6.07]  bounces []
+   t=5.37 V truth=(657,240)  A_fwd=(658,238) d=   2 z=  9.7   B_bwd=(854,2543) d=2312 z=-19.8
+   t=5.41 V truth=(658,220)  A_fwd=(660,222) d=   3 z=  9.9   B_bwd=(854,2279) d=2069 z=-18.7
+   t=5.44 V truth=(661,212)  A_fwd=(662,208) d=   4 z= 10.1   B_bwd=(855,2059) d=1857 z=-17.6
+   t=5.47 V truth=(662,194)  A_fwd=(664,196) d=   3 z= 10.2   B_bwd=(855,1868) d=1685 z=-16.6
+   t=5.51 V truth=(668,186)  A_fwd=(666,185) d=   2 z= 10.3   B_bwd=(855,1695) d=1521 z=-15.5
+   t=5.54 V truth=(667,177)  A_fwd=(668,176) d=   2 z= 10.4   B_bwd=(856,1548) d=1384 z=-14.5
+   t=5.57 V truth=(671,171)  A_fwd=(670,169) d=   3 z= 10.4   B_bwd=(856,1418) d=1260 z=-13.6
+   t=5.61 V truth=(673,165)  A_fwd=(672,162) d=   3 z= 10.4   B_bwd=(857,1298) d=1148 z=-12.7
+   t=5.64 V truth=(674,158)  A_fwd=(674,157) d=   1 z= 10.3   B_bwd=(857,1194) d=1052 z=-11.8
+   t=5.67 V truth=(681,161)  A_fwd=(676,153) d=   9 z= 10.3   B_bwd=(858,1101) d= 957 z=-11.0
+   t=5.71 S truth=(697,183)  A_fwd=(678,151) d=  38 z= 10.1   B_bwd=(858,1015) d= 847 z=-10.2
+   t=5.74 S truth=(711,212)  A_fwd=(680,149) d=  70 z= 10.0   B_bwd=(859,939) d= 742 z= -9.4
+   t=5.77 S truth=(726,238)  A_fwd=(682,149) d= 100 z=  9.8   B_bwd=(860,870) d= 646 z= -8.7
+   t=5.81 S truth=(743,268)  A_fwd=(683,149) d= 133 z=  9.6   B_bwd=(860,806) d= 550 z= -8.0
+   t=5.84 S truth=(757,295)  A_fwd=(685,151) d= 161 z=  9.3   B_bwd=(861,749) d= 466 z= -7.3
+   t=5.87 S truth=(773,329)  A_fwd=(687,154) d= 196 z=  9.0   B_bwd=(862,697) d= 379 z= -6.7
+   t=5.91 S truth=(789,364)  A_fwd=(688,157) d= 230 z=  8.6   B_bwd=(863,648) d= 294 z= -6.1
+   t=5.94 S truth=(805,398)  A_fwd=(690,162) d= 263 z=  8.3   B_bwd=(863,605) d= 215 z= -5.5
+   t=5.97 S truth=(823,442)  A_fwd=(692,167) d= 305 z=  7.9   B_bwd=(864,566) d= 130 z= -5.0
+   t=6.01 V truth=(838,480)  A_fwd=(693,173) d= 339 z=  7.4   B_bwd=(865,528) d=  55 z= -4.5
+   t=6.11 S truth=(864,441)  A_fwd=(698,197) d= 295 z=  5.9   B_bwd=(867,436) d=   6 z= -3.3
+   t=6.14 V truth=(866,412)  A_fwd=(700,206) d= 264 z=  5.3   B_bwd=(868,411) d=   3 z= -3.0
+   t=6.17 V truth=(868,386)  A_fwd=(701,216) d= 238 z=  4.7   B_bwd=(869,387) d=   2 z= -2.7
+   t=6.21 V truth=(866,363)  A_fwd=(703,228) d= 212 z=  4.0   B_bwd=(870,365) d=   5 z= -2.4
+=== r7 gap f142-158 (2.37-2.63 s, 15 frames)  A n=43 rms=1.23  B n=51 rms=0.96  detector anchors [2.5]  owner contacts [2.55]  bounces [2.32]
+   t=2.33 S truth=(895,558)  A_fwd=(916,617) d=  63 z=  3.8   B_bwd=(1413,1301) d= 906 z= -1.1
+   t=2.36 V truth=(926,559)  A_fwd=(944,667) d= 109 z=  3.0   B_bwd=(1328,1136) d= 703 z= -0.3
+   t=2.40 V truth=(938,562)  A_fwd=(974,722) d= 164 z=  2.2   B_bwd=(1255,996) d= 537 z=  0.5
+   t=2.43 V truth=(960,570)  A_fwd=(1005,779) d= 214 z=  1.4   B_bwd=(1196,882) d= 391 z=  1.3
+   t=2.53 V truth=(1026,599)  A_fwd=(1108,982) d= 392 z= -1.4   B_bwd=(1059,633) d=  47 z=  3.2
+   t=2.56 V truth=(1018,580)  A_fwd=(1146,1060) d= 497 z= -2.4   B_bwd=(1025,572) d=  10 z=  3.7
+   t=2.63 V truth=(970,482)  A_fwd=(1229,1238) d= 799 z= -4.5   B_bwd=(966,473) d=   9 z=  4.6
+   t=2.66 V truth=(953,448)  A_fwd=(1274,1337) d= 945 z= -5.6   B_bwd=(942,434) d=  18 z=  5.0
+=== r7 gap f346-361 (5.77-6.02 s, 14 frames)  A n=53 rms=0.85  B n=23 rms=0.98  detector anchors [5.95]  owner contacts [5.98]  bounces []
+   t=5.73 S truth=(763,265)  A_fwd=(781,294) d=  34 z= -3.8   B_bwd=(897,268) d= 134 z=  1.8
+   t=5.76 V truth=(772,258)  A_fwd=(792,304) d=  50 z= -4.5   B_bwd=(885,262) d= 113 z=  2.2
+   t=5.80 V truth=(778,254)  A_fwd=(802,316) d=  66 z= -5.3   B_bwd=(874,256) d=  96 z=  2.5
+   t=5.83 V truth=(784,251)  A_fwd=(812,328) d=  82 z= -6.1   B_bwd=(862,251) d=  78 z=  2.8
+   t=5.86 V truth=(789,244)  A_fwd=(822,340) d= 102 z= -6.9   B_bwd=(851,248) d=  62 z=  3.1
+   t=5.90 V truth=(793,233)  A_fwd=(832,354) d= 127 z= -7.8   B_bwd=(839,245) d=  48 z=  3.3
+   t=5.93 V truth=(794,231)  A_fwd=(842,367) d= 145 z= -8.7   B_bwd=(828,243) d=  36 z=  3.5
+   t=5.96 V truth=(796,231)  A_fwd=(852,382) d= 161 z= -9.6   B_bwd=(817,242) d=  23 z=  3.7
+   t=6.00 V truth=(809,229)  A_fwd=(862,397) d= 177 z=-10.6   B_bwd=(805,241) d=  13 z=  3.8
+   t=6.03 V truth=(796,236)  A_fwd=(872,413) d= 193 z=-11.6   B_bwd=(793,242) d=   7 z=  3.9
+   t=6.06 V truth=(786,239)  A_fwd=(882,430) d= 213 z=-12.6   B_bwd=(782,244) d=   7 z=  4.0
+=== r7 gap f535-540 (8.92-9.00 s, 4 frames)  A n=56 rms=0.68  B n=17 rms=1.85  detector anchors [8.92]  owner contacts []  bounces [9.0]
+   t=8.90 S truth=(742,290)  A_fwd=(691,213) d=  92 z=  3.9   B_bwd=(788,439) d= 156 z= -6.9
+   t=8.93 S truth=(773,335)  A_fwd=(698,225) d= 133 z=  3.3   B_bwd=(807,443) d= 113 z= -6.1
+   t=8.96 S truth=(801,384)  A_fwd=(705,238) d= 174 z=  2.7   B_bwd=(827,448) d=  69 z= -5.3
+   t=9.00 S truth=(833,432)  A_fwd=(712,253) d= 216 z=  1.9   B_bwd=(849,455) d=  28 z= -4.6
+   t=9.03 V truth=(862,459)  A_fwd=(719,267) d= 239 z=  1.2   B_bwd=(872,463) d=  11 z= -3.9
+=== r7 gap f558-631 (9.30-10.52 s, 72 frames)  A n=17 rms=1.85  B n=20 rms=1.21  detector anchors [9.73, 10.25, 10.52]  owner contacts []  bounces []
+   t=9.26 S truth=(1077,576)  A_fwd=(1099,581) d=  22 z=  0.1   B_bwd=(1705,1683) d=1272 z=-50.8
+   t=9.30 S truth=(1127,597)  A_fwd=(1146,612) d=  24 z=  0.6   B_bwd=(1690,1631) d=1177 z=-48.9
+   t=9.33 V truth=(1182,624)  A_fwd=(1197,647) d=  27 z=  0.9   B_bwd=(1676,1582) d=1078 z=-47.1
+   t=9.36 S truth=(1244,658)  A_fwd=(1254,687) d=  30 z=  1.3   B_bwd=(1662,1535) d= 971 z=-45.3
+
+PART 2 — kink-rule table (inferred frames only; kink at the detector's contact time)
+rule         bounce | r6 r@12/have/frames nulls   r7 r@12/have/frames nulls
+A-ext        False  | 7/21/45 0/0   0/20/105 0/0   pooled 7/41 prec 0.17
+A-ext        True   | 7/21/45 0/0   0/20/105 0/0   pooled 7/41 prec 0.17
+B-ext        False  | 3/21/45 0/0   1/20/105 0/0   pooled 4/41 prec 0.10
+B-ext        True   | 3/21/45 0/0   1/20/105 0/0   pooled 4/41 prec 0.10
+mean         False  | 0/21/45 0/0   2/20/105 0/0   pooled 2/41 prec 0.05
+mean         True   | 0/21/45 0/0   2/20/105 0/0   pooled 2/41 prec 0.05
+mean-y       False  | 0/21/45 0/0   1/20/105 0/0   pooled 1/41 prec 0.02
+mean-y       True   | 0/21/45 0/0   1/20/105 0/0   pooled 1/41 prec 0.02
+chord-t      False  | 2/21/45 0/0   1/20/105 0/0   pooled 3/41 prec 0.07
+chord-t      True   | 2/21/45 0/0   1/20/105 0/0   pooled 3/41 prec 0.07
+chord-y      False  | 1/21/45 0/0   1/20/105 0/0   pooled 2/41 prec 0.05
+chord-y      True   | 1/21/45 0/0   1/20/105 0/0   pooled 2/41 prec 0.05
+relift-AB    False  | 2/21/45 0/0   1/20/105 0/0   pooled 3/41 prec 0.07
+relift-AB    True   | 2/21/45 0/0   1/20/105 0/0   pooled 3/41 prec 0.07
+relift-A     False  | 2/21/45 0/0   2/20/105 0/0   pooled 4/41 prec 0.10
+relift-A     True   | 2/21/45 0/0   2/20/105 0/0   pooled 4/41 prec 0.10
+relift-B     False  | 0/21/45 0/0   1/20/105 0/0   pooled 1/41 prec 0.02
+relift-B     True   | 0/21/45 0/0   1/20/105 0/0   pooled 1/41 prec 0.02
+relift-mean  False  | 0/21/45 0/0   2/20/105 0/0   pooled 2/41 prec 0.05
+relift-mean  True   | 0/21/45 0/0   2/20/105 0/0   pooled 2/41 prec 0.05

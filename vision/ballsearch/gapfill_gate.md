@@ -175,3 +175,161 @@ recall in the inferred stratum over that. Consumers wired with the tag:
 `render_court3d.py` (same in the video), `rally_stats.py` (events and
 hits on the filled flights). Clean re-check on r20 / r21 when labeled
 (bars 1–3 as written, no re-tune).
+
+## v3 — HIT-ANCHORED fill of the gaps v2 leaves open (written 2026-09-02 before any tune number; owner go: "Go ahead!")
+
+**Why.** Autopsy of the gaps the adopted v2 product leaves open (r9 12 gaps
+/ 5.7 s / 97 V clicks; r10 11 / 5.1 s / 116 — about a fifth of all
+clicks) against the owner's tapped contacts: all but four hold exactly ONE
+contact, usually at the gap's end, and half also hold a bounce. They are
+HIT gaps: A is the ball arriving, B the ball leaving, two different
+flights meeting at the paddle, so v2's closest-approach switch is the
+wrong rule (the extensions miss by 46–350 px) and a bounce on A's side
+breaks the extension outright. The owner's framing: "LL hit the ball and
+UL hit it, the ball must travel between them; if it got there quickly it
+travelled straighter" — a boundary-value arc between two hits.
+
+**Anchors are production, never truth.** Contact TIME = the production
+approach detector (`corridor_lab.prod_contacts`, the r6/r7-tuned
+pathfirst "prod" arm) — a contact within ±TOL = 0.10 s of the open gap is
+an anchor (r6 1/1, r7 4/4, r9 12/12, r10 10/11 open gaps have one; counts
+of detections only, no clicks read). The hitter = the tracked player
+whose paddle proxy (wrist + half forearm, the existing series) at that
+time is nearest the midpoint of A's last pixel and B's first pixel; the
+anchor PIXEL is that paddle proxy; its DEPTH is the hitter's floor
+position (ankle midpoint through the z=0 homography) and the anchor's 3D
+point is the pixel lifted at that depth with z clamped to a paddle range
+[0.5, 9] ft. The owner's `imps` are never read by the fill.
+
+**Rule per open gap** (A, B consecutive v2 flights, anchors c_1..c_k
+inside the gap ±TOL, frames clipped to the gap):
+1. A' = A's own projected pixels on its tracked frames (weight 1) refit
+   with the anchor: pixel residual at t_c weighted W_ANC (px per px) plus
+   a depth residual (y at t_c − hitter's y) at 1 px/ft. Fills
+   A.fb+1 .. f_c1. Kept only if A' reproduces A's pixels within
+   RMS_MAX = 3 px (else those frames stay open).
+2. BOUNCE (grid arm): if A's UNANCHORED arc reaches the floor inside
+   (ta − 0.05, t_c1), the fill is A to the floor and then a drag-free
+   boundary-value arc from the bounce point to the anchor's 3D point
+   over the remaining time — the owner's rule in its exact physical
+   form. Mirror on B's side (B' back to the floor after t_ck).
+3. c_i → c_{i+1}: drag-free boundary-value arc between the two lifted
+   anchor points (≥ 3 frames).
+4. B' = mirror of 1, fills f_ck+1 .. B.fa−1.
+Every filled frame is tagged `inferred3`; v2's tracked frames and v2's
+inferred frames are bit-identical to the adopted product (asserted).
+pathfirst.py, events.py, gapfill v2 untouched.
+
+**Grid** (4 cells; the train set has only 5 open gaps / 24 clicks, so the
+grid is small on purpose): W_ANC ∈ {2, 6} × BOUNCE ∈ {off, on}. TOL,
+RMS_MAX, the depth weight, the z clamp are FIXED above.
+**Selection** on r6+r7 (cross-fold `_x` p-caches): max pooled inferred3
+r@12 s.t. inferred3 prec@12 ≥ 0.5 and own nulls ≤ 3; ties → smaller
+W_ANC, then BOUNCE off. If no cell passes: DEAD, nothing graded.
+**Bars on r9/r10 (both rallies; second re-use of the eval rallies,
+under the owner's 2026-09-02 relaxation, disclosed)**:
+1. tracked + v2-inferred frames bit-identical to the v2 product;
+2. inferred3 prec@12 ≥ 0.5 (a v3 frame is more likely right than wrong);
+3. inferred3 r@12 ≥ 10;
+4. inferred3 displaced + time-shift nulls ≤ 3;
+5. events v3 F1 on the v3-filled flights ≥ adopted − 0.03 (r9 ≥ .701,
+   r10 ≥ .645 — the same reference as v2).
+ADOPT ⇒ `gapfill.product3(ctx)` becomes the consumer product, with
+inferred3 as its own tag (consumers may draw it distinctly or drop it).
+FAIL on either rally ⇒ recorded, v2 stays, no re-tune on r9/r10.
+Clean re-check on r20/r21 as written.
+
+### v3 as registered: DEAD on train (2026-09-02, `gapfill_tune3_v3a_DEAD.txt`)
+
+All four cells: pooled inferred3 r@12 = 1 at prec 0.077 (r6 1/13 on 28
+frames; r7 0/0 on 46 frames — the anchored refits were rejected by
+RMS_MAX on every single-anchor gap, only between-anchor BVPs survived).
+Nothing graded on r9/r10. Diagnosis on TRAIN ONLY (r6/r7 clicks and
+truth contacts, which the rules allow): the anchor PIXEL is the failure.
+The paddle proxy (wrist + half forearm) sits 80–200 px from the ball at
+contact — a paddle length away, and on r6's first anchor a different
+player from the hitter — so a point anchor is wrong by construction, and
+forcing A through it costs > 3 px on A's own pixels. The detector's
+TIMES are fine (within 2–4 frames of the truth contacts on every train
+gap that has one). Two more instrument facts: r6's open gap holds two
+contacts with a BOUNCE between them, where a plain boundary-value arc is
+wrong, and r7's 3-anchor gap is detector false positives with the ball
+off-frame.
+
+## v3b — re-registered on train only (written before any v3b number)
+
+Changes, all from the train diagnosis above; r9/r10 still untouched:
+1. Anchor = contact TIME (detector, as before) + hitter's DEPTH (floor y,
+   as before) + a paddle REGION: a hinge at R_ANC = 2 ft (at the local
+   px/ft) around the paddle proxy, weight W_ANC, instead of a point.
+2. The two flights are refit JOINTLY: A's own pixels + B's own pixels +
+   a MEET residual |A(t_c) − B(t_c)| in px at W_MEET = 2 (fixed) + the
+   depth and region terms on both. Accepted only if BOTH still reproduce
+   their own pixels within RMS_MAX = 3 px. A' fills A.fb+1 .. f_c, B'
+   fills f_c+1 .. B.fa−1. Contact point X_c = the mean of A'(t_c), B'(t_c).
+3. BOUNCE arm unchanged in spirit: if A's unanchored arc reaches the
+   floor before t_c, A runs to the floor and a drag-free BVP runs from
+   the bounce point to X_c (mirror on B).
+4. Gaps with ≥ 2 anchors: A' anchored alone to the first, B' alone to the
+   last (region + depth, no meet); the span between them is filled by a
+   drag-free BVP between A'(t_c1) and B'(t_ck) ONLY if that arc stays
+   above the floor (a volley-to-volley exchange); a BVP that dips under
+   the floor means a bounce we cannot place from no data — left open.
+Grid, selection rule, bars, consequences: exactly as v3.
+
+### v3b as registered: DEAD on train (2026-09-02, `gapfill_tune3.txt` / `.json`)
+
+All four cells fill ZERO frames: every joint refit (single-anchor gaps)
+and every anchored single refit (multi-anchor gaps) is rejected at
+RMS_MAX 3 px. Per-gap autopsy (scratch, reproduced in
+`gapfill_explore3.txt` part 1): the meet residual at the detector's
+contact time starts at 137–244 px on the three short r7 gaps and the
+optimiser can only close it by wrecking the arcs (own-pixel rms 8–43 px
+at convergence); on r6 / the long r7 gap the refit_one arms never get
+within 3 px either. The constraint set is unsatisfiable, not mis-coded.
+
+## v3c — train-only exploration, NOT a registration (2026-09-02, `gapfill_explore3.py` → `gapfill_explore3.txt`)
+
+Before writing the hit-anchored idea off, every kink rule that uses only
+what the anchor reliably carries — the contact TIME and the hitter's
+floor DEPTH, never the paddle pixel — was run on r6/r7 with the gap
+filled A-side / kink / B-side by drag-free BVPs (bounce arm included):
+X_c = A forward, B backward, their mean, mean at hitter depth, the 3D
+chord at t_c, and the pixel of either extrapolation re-lifted at the
+hitter's depth. r9/r10 were never loaded. Best cell: A-forward, 7/41
+right at 12 px (prec 0.17), all others 1–4/41; the bounce arm never
+fires because the depth-degenerate arcs are already under the floor at
+the gap edge or never cross it. Nothing is near the 0.5 / ≥10 bar, so
+no v3c is registered.
+
+**Why (part 1 of the printout, the finding that closes this line):**
+1. **Three of r7's four open gaps start on a flight whose TAIL is off
+   the ball** — A's own last frame sits 50–110 px from the owner's
+   click (f142: 109 px, f346: 50 px, f535: 92 px), i.e. the tracker
+   ended those flights on a non-ball candidate near a bounce or a
+   body. A kink anchored in time cannot repair a wrong starting point;
+   B's backward arc is right to ~10 px in all three, which is exactly
+   what v2's meet rule could not see because A never comes to it.
+2. **r6's open gap is a two-contact fast exchange** (owner contacts at
+   5.70 and 6.07 s, 8 streak clicks between them). A forward tracks the
+   truth to ≤ 9 px right up to the first contact — that is where the 7
+   hits come from — and B backward is exact from the second; the 34
+   frames between are a drive the arcs cannot bend into, and a BVP
+   between two depth-degenerate 3D points projects onto the wrong
+   curve (the streak runs almost straight in pixels; the 3D heights
+   the arcs carry there are +10 ft and −3 ft).
+3. The long r7 gap (1.2 s) is the ball off-frame with three detector
+   false positives; nothing to fill.
+
+So the owner's human logic ("LL hit it, UL hit it, the ball must travel
+between them, quickly = straighter") is right about the r6 gap and is
+the one that would pay: it needs the fill drawn in PIXEL space between
+the two contact pixels (a near-straight line for a fast shot), not a
+3D BVP, and it needs the contact TIMES to ~1 frame (the detector's are
+2 and 1 frames off there). The r7 gaps need the tracker to stop ending
+flights on junk — hand-off/tail work, not inference. Neither is a
+knob on v3; both are new registrations. **Verdict: v3 line closed on
+train; v2 stays the adopted fill; r9/r10 untouched by anything v3.**
+`gapfill.py`'s v3/v3b code stays as the reproducible instrument behind
+these records (`tune3`, `selftest3`; `grade3` must never be run — the
+rule has no passing cell to shoot).
