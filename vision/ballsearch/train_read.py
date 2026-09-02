@@ -45,14 +45,29 @@ T_ASSIGN = 0.30                 # s: a click belongs to a contact within this
 FPS = 60
 
 
+SLOW = {"dink", "drop", "reset", "lob", "third", "slow"}
+FAST = {"drive", "speed-up", "counter", "smash", "volley", "fast"}
+
+
 def contacts_for(rally):
-    out = []
+    """(t, type) manual contacts; a rally with none yet (r2-r5 before the
+    owner's contact pass) falls back to its PREFILL rows with the pop-era
+    shot types folded to slow/fast — approximate times, printed as such."""
+    out, pre = [], []
     for r in csv.DictReader(open(CONTACTS)):
-        if int(r["rally_cum"]) != rally or r["source"] not in ("manual", "divergent"):
+        if int(r["rally_cum"]) != rally or r.get("contact", "1") == "0":
             continue
-        if r.get("contact", "1") == "0":
-            continue
-        out.append((float(r["t_refined_s"] or r["t_tap_s"]), r["shot_type"]))
+        t, typ = float(r["t_refined_s"] or r["t_tap_s"]), r["shot_type"]
+        if r["source"] in ("manual", "divergent"):
+            out.append((t, typ))
+        elif r["source"] == "prefill":
+            if typ not in ("serve", "return"):
+                typ = "fast" if typ in FAST else "slow"
+            pre.append((t, typ))
+    if not out and pre:
+        print(f"NOTE: rally {rally} has no manual contacts — buckets use its "
+              f"{len(pre)} PREFILL contacts (approximate times, folded types)")
+        return sorted(pre)
     return sorted(out)
 
 

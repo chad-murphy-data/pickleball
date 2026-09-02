@@ -468,7 +468,7 @@ def human_side(rally, end):
         if r["x"] and r["vis"] in c3.W_VIS:
             obs.append((float(r["t_s"]), float(r["x"]), float(r["y"]),
                         c3.W_VIS[r["vis"]]))
-    imps, _ = load_impacts(rally=rally)
+    imps, _ = load_impacts(rally=rally, prefill_ok=True)  # r2-r5: prefill bounds until the contact pass
     bounds = list(imps) + [end]
     evs = detect_events([(t, x, y) for t, x, y, w in obs if w == 1.0])
     return obs, bounds, evs

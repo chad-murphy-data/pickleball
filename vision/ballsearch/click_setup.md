@@ -68,38 +68,53 @@ clicks, the pose stream and the tracker all see the same frames.
 6. Skip `--score` on r20 / r21 for now; export only. Scoring is a
    grade, and grades on the seals wait for your go.
 
-## Sitting 3 — the fast rallies that need a contact pass first
+## Sitting 3 — r2, r3, r4, r5: READY TO CLICK (2026-09-02, no contact pass needed first)
 
-r2–r5 carry only PREFILL contact rows (pop-era types and approximate
-times, `source = prefill`). The ball tool refuses to build off
-prefills by design (its answer key must be your taps), so these need
-your contact pass first — the same job you did for r17–r27, about one
-keypress per shot with the chained seek.
+Owner: "set things up for 2, 3, 4 and 5 … might as well fill out the
+training set." Done. These four carry only PREFILL contact rows (pop-era
+types, approximate times), and the earlier version of this file said
+that blocked the ball tool. It does not: the tool only needs a SPAN,
+and I checked the prefill times against the video frames — every
+serve sits where the prefill says (bug 0-0 / 0-0 / 1-0 / 2-0). So the
+tools were built off the prefill contacts with wider margins
+(`--prefill-ok`: first prefill − 1.5 s to last prefill + 3.0 s); stop
+clicking when the ball is dead, exactly as on r17.
 
-| order | rally | old-era shot mix | why |
-|---|---|---|---|
-| 1 | **r3** | 17 shots: 10 fast-type (counters / speed-ups) | the fastest rally in game 1 by type count; note its pin marks a REPLAY (pin_realignment.md) — the live rally is at ~56–79 s, scorebug 0-0, Tuionetoa serving |
-| 2 | **r4** | 16 shots: 8 dinks → 2 speed-ups + 4 counters | slow→fast transition inside one rally |
-| 3 | r2 | 11 shots, 4 fast-type | short and quick |
-| 4 | r5 | 14 shots | a fourth train rally if the appetite holds |
+| order | rally | tool | frames (30 fps) | frame 0 is at | scorebug check on frame 0 | old-era shot mix |
+|---|---|---|---|---|---|---|
+| 1 | **r3** | `data/vision/ball_audit_r3.html` | 626 | 57.9 s | UTAH 0 – CHICAGO 0, Tuionetoa serving from the near-left court | 17 shots, 10 fast-type: the fastest rally in game 1 |
+| 2 | **r4** | `data/vision/ball_audit_r4.html` | 510 | 89.7 s | UTAH 1 – 0, Tuionetoa serving from the near-right court | 16 shots: 8 dinks → 2 speed-ups + 4 counters |
+| 3 | r2 | `data/vision/ball_audit_r2.html` | 402 | 39.0 s | UTAH 0 – 0, Jones serving from the near-right court | 11 shots, 4 fast-type |
+| 4 | r5 | `data/vision/ball_audit_r5.html` | 545 | 117.3 s | UTAH 2 – 0, Tuionetoa serving from the near-left court | 14 shots, 8 dinks |
 
-Steps:
+≈ 2,080 frames in all (r17 was 403). Same keys, same export name
+(`data/vision/ball_path_r{N}.csv`), same video file.
 
-1. Open `data/vision/contact_audit_chicago0725.html`, go to the rally,
-   run the tap pass then the pace pass (F/S per contact), export
-   `contact_labels_chicago0725.csv` at the end of the sitting and
-   share it — it replaces the committed one (the prefill rows for those
-   rallies become `manual`).
-2. Then either run locally
+**The replay scare is resolved the other way.** `pin_realignment.md`
+(2026-08-16) called the segment at ~91 s a broadcast REPLAY of rally 3.
+Frames pulled from the VOD today say otherwise: at 91.3 s the bug reads
+UTAH 1 – 0 and Tuionetoa serves from the near-RIGHT court, while rally
+3's live serve at 59.5 s (bug 0-0) is from the near-LEFT court — a
+replay would repeat the same picture. The duration arithmetic agrees
+(rally 4 is 25 s of log and rally 5 serves at 118.8 s; a rally-3 replay
+at 91 s leaves it no room). Consequence: `rally_windows_chicago0725_v4.csv`
+rows 3, 4, 5, … are ONE RALLY LATE (row 3 = rally 4, row 4 = rally 5,
+row 5 = rally 6 — confirmed by your manual r6 serve at 146.34 s), and
+the prefill `t_tap_s` for r2–r5 are the right rallies. Nothing built on
+v4 windows is used for these four; everything here is prefill-spanned.
 
-       python3 vision/make_ball_audit.py --rally 3     # -> data/vision/ball_audit_r3.html
+**Contact pass — optional, recommended, any time.** The ball clicks are
+the training signal and need nothing else. What a contact pass adds is
+exact contact times and your F/S types, which make the misses-by-contact
+read (`train_read.py`) exact instead of prefill-typed and let the
+c3 / grade diagnostics use real bounds. In
+`data/vision/contact_audit_chicago0725.html` seek by time, not by pin,
+for these four (the pins are the shifted ones): **r2 40.5 s, r3 59.4 s,
+r4 91.2 s, r5 118.8 s**; tap pass, then pace pass, export
+`contact_labels_chicago0725.csv`, share it.
 
-   and click as above, or hand me the contact CSV and I generate the
-   tools, cut the clips, extract candidates and commit them (five
-   minutes here) before you click.
-
-r14 and r16 are the same shape (prefill only, 11 and 7 shots) and are
-the next two after r5 if you keep going. **Do not click r22–r34.**
+r14 and r16 are the same shape (prefill only, 11 and 7 shots) and can
+be staged the same way on request. **Do not click r22–r34.**
 
 ## The one thing the machine cannot do here: pose streams
 
@@ -137,6 +152,11 @@ instrument under test).
   one line when a fresh thread needs them, then `check_clip.py N`.
 - `c3_lab.py` WINDOWS carries (serve, end, npz) for 17–21 at the
   audit-tool span; `python3 c3_lab.py N` runs the moment the npz lands.
+- r2–r5 (2026-09-02): clips cut with `cut_clip.py --stage N` off the
+  prefill span (offsets 38.5 / 57.4 / 89.1 / 116.7 s), candidates
+  `data/vision/ball_candidates_r{2,3,4,5}.csv.gz` committed, `check_clip`
+  PASS, c3_lab WINDOWS + corridor_lab CLIPS entries in place, pose npz
+  extracted here on CPU (gitignored; `pose_meta_r2to5.json` is the stamp).
 
 ## r17 — DONE end to end (2026-09-02, same day as the delivery)
 

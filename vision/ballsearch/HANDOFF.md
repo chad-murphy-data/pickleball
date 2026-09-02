@@ -49,7 +49,7 @@ disagree on a NUMBER, the notes file is the record.
 | `render_court3d.py` / `court3d_r9.mp4` | the 3D viewer as a video (owner ask 2026-09-02, easier to post): reads PATH/IMPACTS/PLAYERS out of the committed viewer HTML, replays them with the viewer's own projection and colours in real time with a slow orbit, 1280x720 @ 30 fps, libx264 crf 18. Three honest cosmetics the page lacks: the path is broken at flight gaps (the page joins consecutive samples with a straight line), the ball is hidden while the track is lost, rings flash at the attributed hits. r9 chosen over r10 (more samples, all four player tracks complete). Committed (force-added past the mp4 ignore, 4.6 MB). Rally 9 is also published as an interactive artifact (same viewer with the same gap fix, real-time play button). Nothing re-fit; viewer only. |
 | `handoff.py` / `handoff_gate.md` / `handoff_tune.json` / `handoff_grade_r{9,10}.txt` | Hand-off seeding, pass 2 on top of the frozen path-first pass: short-span seeds (6/8/12 frames) allowed NEAR BODY, only inside a zone next to a pass-1 flight end. Pre-registered, tuned on r6/r7 (16 cells → r_zone 70 / w 18 / p_hand 0.25 / s_min 3, 277 @ 0.810 vs 263 @ 0.807), ONE SHOT on r9/r10 spent 2026-09-02: track r@12 537→563 (r9) and 422→446 (r10) at unchanged precision, nulls clean, BUT the v3 events layer re-run on the new flights lands F1 .636 on r10 vs bar .645 (r9 .758 passes) → **NOT ADOPTED**, incumbent stays. `grade` for r9/r10 is spent. Next gate if reopened = events re-tune on the hand-off track (new pre-registration). |
 | `label_picks.md` | the owner's click list for 2–4 more ball-click rallies chosen for FAST exchanges, inside the split rules: r17 (train), r21 (fresh seal), then r4 (train), r20 (the reserved seal). r22–r30 holdout untouched. |
-| `click_setup.md` | **THE CLICK PACKAGE (2026-09-02, owner: "don't give me the minimum")** — nine rallies in three sittings with tools built and staging done: r17 / r21 / r18 / r19 (sitting 1), r20 (sitting 2), r3 / r4 / r2 / r5 after a contact pass (sitting 3). Committed: `data/vision/ball_audit_r{17,18,19,20,21}.html`, `data/vision/ball_candidates_r{17..21}.csv.gz` (clips cut at the audit-tool span via `cut_clip.py --stage`, check_clip PASS), c3_lab WINDOWS 17–21. Missing: pose npz for 17–21 (one Colab line in the doc). What to run when the CSVs land is written there. |
+| `click_setup.md` | **THE CLICK PACKAGE (2026-09-02, owner: "don't give me the minimum")** — nine rallies in three sittings with tools built and staging done: r17 / r21 / r18 / r19 (sitting 1), r20 (sitting 2), r3 / r4 / r2 / r5 (sitting 3 — **staged 2026-09-02 off the PREFILL span, no contact pass needed**). Committed: `data/vision/ball_audit_r{2,3,4,5,17,18,19,20,21}.html`, `data/vision/ball_candidates_r{2..5,17..21}.csv.gz` (clips cut at the audit-tool span via `cut_clip.py --stage`, check_clip PASS), c3_lab WINDOWS + corridor_lab CLIPS for 2–5 and 17–21. Pose npz: r17 + r2–r5 extracted here on CPU (gitignored; `pose_meta_r17.json` / `pose_meta_r2to5.json` are the stamps), 18–21 still need a run (CPU here or Colab). What to run when the CSVs land is written there. |
 | `train_read.py` / `train_read_r17.txt` | **The first read of a NEW TRAIN rally** (2026-09-02): refuses r9 / r10 / r20 / r21, reads only the committed tune records, scores the incumbent path-first track + gap fill v2 against the V/S clicks with both nulls, then buckets every click by the nearest manual contact (serve / return / slow / fast / middle, S-only split) and prints a per-contact coverage table. `python3 train_read.py 17`. `c3_lab.py` now takes rally args (`python3 c3_lab.py 17`; no args = the original four). |
 | `gapfill.py` / `gapfill_gate.md` / `gapfill_tune.json` / `gapfill_grade_r{9,10}.txt` | GAP FILL BY ARC EXTENSION (owner's framing 2026-09-02: the ball behind a paddle/player exists only through inference): for each gap between consecutive path-first flights, extend A's arc forward and B's backward, switch at the frame where they come closest, leave the gap open if they never come within D_MEET px; filled frames tagged `inferred`; NO paddle used (the wrist+forearm proxy picks the switch time worse than the arcs do — autopsy). Pre-registered, tuned on r6/r7 (6 cells → gap_max 0.8 / d_meet 20, 273 @ 0.782 vs 263 @ 0.807), ONE SHOT on r9/r10 spent 2026-09-02: r9 556 @ 0.87 PASS all bars (events F1 .756); r10 443 @ 0.850 FAILS the precision bar by 0.010 (recall, nulls and events F1 .684 all clear) → **NOT ADOPTED**, incumbent stays. Inferred frames alone are right at 12 px ~60% of the time (0.65 / 0.58); events F1 rises on BOTH rallies (the fill gives the seam rule meeting arcs). **v2 SAME DAY, owner go to re-use r9/r10 ("let's not be as sweaty")**: the product is re-stated as tracked frames (bit-identical, asserted) PLUS a TAGGED inferred stratum graded on its own (prec ≥ 0.5, r@12 ≥ 10, own displaced + time-shift nulls ≤ 3) + events F1 ≥ adopted − 0.03. Re-tuned under that rule on r6/r7 → gap_max 0.8 / d_meet 40. r9: inferred 38 @ 0.667, events .764; r10: 41 @ 0.594, events .658 → **ADOPTED AS A TAGGED PRODUCT** (`gapfill.product(ctx)`); the tracker's quoted number stays the tracked half's. Consumers draw inferred frames dashed (rally_3d / court3d viewer / render_court3d) and run events + stats on the filled flights (rally_stats). Clean re-check on r20/r21, bars as written, no re-tune. **v3 / v3b (hit-anchored fill of the open gaps, 2026-09-02) DEAD ON TRAIN, r9/r10 untouched** — see the gate §v3–v3c and `gapfill_explore3.txt`: the open gaps are tracker-tail junk (r7) and a two-contact drive (r6), not something a time-anchored 3D kink can fill. |
 | `render_pathfirst.py --bridge` | cosmetic, owner-approved for the demo: gaps ≤ 0.5 s between tracked flights drawn as a DASHED straight segment with a sliding dashed ring, persistent caption "dashed = inferred between tracked flights, not tracked". Never enters the track/events/stats/grades. Output `pathfirst_r{N}_reddit_bridge.mp4`. |
@@ -416,11 +416,43 @@ prior term.
    near-body flights, tuned on r6 + r7 + r17, one shot r20/r21 on the
    owner's go. r9 / r10 untouched throughout.
 
+0-r2to5. **SITTING 3 STAGED — r2 / r3 / r4 / r5 click tools + machine
+   side (2026-09-02, owner: "set things up for 2, 3, 4 and 5 … fill out
+   the training set").** These four have only PREFILL contact rows
+   (pop-era types, approximate times), and the click package had them
+   gated behind a contact pass. That gate was wrong: the ball tool needs
+   a SPAN, not contacts. Frames pulled from the VOD put every prefill
+   serve on the right rally (40.54 / 59.43 / 91.16 / 118.78 s; bug
+   0-0 / 0-0 / 1-0 / 2-0), so `make_ball_audit.py --prefill-ok` spans
+   first prefill − 1.5 s to last prefill + 3.0 s (wider margins than the
+   manual-contact 1.0 / 2.0 because the prefill last-contact time is
+   soft) → `ball_audit_r{2,3,4,5}.html` = 402 / 626 / 510 / 545 frames
+   (t0 39.04 / 57.93 / 89.66 / 117.28). `cut_clip.py --stage` and
+   `ball_replicate.py` take the same prefill fallback, clips cut at
+   offsets 38.5 / 57.4 / 89.1 / 116.7 s, candidates committed, check_clip
+   PASS d = 0 on all four, c3_lab WINDOWS + corridor_lab CLIPS added,
+   pose npz via CPU rtmpose-balanced (gitignored; stamp
+   `pose_meta_r2to5.json`). `train_read.py` falls back to prefill
+   contacts with types folded slow/fast when a rally has no manual
+   contacts (prints NOTE — the bucket read is approximate until the
+   owner's contact pass). FINDING ON THE WAY: `pin_realignment.md`'s
+   "replay of rally 3 at ~91 s" is wrong on video time — 91.3 s is rally
+   4's LIVE serve (bug 1-0, near-right court; rally 3 serves near-left at
+   59.5 s on 0-0), and the v4 rally windows are ONE RALLY LATE from row 3
+   on (row 3 = rally 4 … row 5 = rally 6, matching the manual r6 serve at
+   146.34). Addendum written in `pin_realignment.md`; nothing built on
+   v4 windows is used for r2–r5. Optional owner contact pass: seek by
+   TIME in the contact tool (40.5 / 59.4 / 91.2 / 118.8 s), not by pin.
+   Click order r3 (fastest game-1 rally, 626 frames), r4, r2, r5;
+   ≈ 2,080 frames total. Chain per rally once a CSV lands = the r17
+   chain (`ball_grade.py` dry-run → `c3_lab.py N` → `emission.py cache N`
+   → `train_read.py N`).
+
 0a. **LEARNER: label-limited, not code-limited (2026-09-02,
    `learner_gate.md`).** Trees on the 14 features are DEAD at the
    tail bar with 359 positives and still climbing on the learning
    curve; the logistic is flat in labels. Next learner step = the
-   owner's clicks (`click_setup.md`: r17, r21, r18, r19, then r20, then r3/r4/r2/r5 after a contact pass), then
+   owner's clicks (`click_setup.md`: r17 ✅, then r21, r18, r19, r20, and r3/r4/r2/r5 — all nine tools now built), then
    `python3 learner.py train` again under the same gate text; patch-
    appearance model after that. No knob here is worth turning before
    the labels exist.

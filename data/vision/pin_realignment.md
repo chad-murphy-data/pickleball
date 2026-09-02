@@ -50,3 +50,32 @@ protocol routes around the replay regardless.
   replayed rally's END state.)
 - Rally 3 labels at its live airing: serve ≈ 56-60 s, bug 0-0, Utah
   serving. The tool now seeks there.
+
+## Addendum 2026-09-02 — the "replay at ~91 s" call is WRONG on the video time
+
+Frames pulled straight from the VOD (imageio-ffmpeg, no browser) while
+staging the r2–r5 ball tools:
+
+| t (s) | scorebug | what is on screen |
+|---|---|---|
+| 40.6 | 0-0 | Jones serving, near-right court → rally 2 serve |
+| 59.5 | 0-0 | Tuionetoa tossing to serve, near-LEFT court → rally 3 LIVE serve |
+| 76.0 | 0-0 | rally 3 still in play (Utah at the kitchen) |
+| 91.3 | **1-0** | Tuionetoa serving, near-RIGHT court → **rally 4 live serve** |
+| 103.9 | 1-0 | rally 4 in play at the kitchen (ends ~103.7, Wei into the net) |
+| 118.9 | 2-0 | Tuionetoa serving, near-left → rally 5 serve |
+| 132.6 | 2-0 | rally 5 dinking at the kitchen |
+| 146.4 | 3-0 | serve → rally 6 (matches the manual r6 serve 146.34) |
+
+A replay of rally 3 at 91 s would repeat the 59.5 s picture (same court
+side, same server position); it does not, and the duration arithmetic
+never allowed it (rally 4 = 25 s of log between 91 and the rally-5 serve
+at 118.8). So the 91.19 s pin is rally 4's live serve, and the v4
+window rows are one rally LATE from row 3 onward (row 3 = rally 4,
+row 4 = rally 5, row 5 = rally 6, …). The prefill `t_tap_s` values for
+r2–r5 sit on the right rallies (serves at 40.54 / 59.43 / 91.16 /
+118.78). The row-content mapping (identity) stands; only the pin-time
+reading changes. Consumers: the contact tool's per-row pin seek is
+shifted for rows ≥ 3 (seek by time instead: 40.5 / 59.4 / 91.2 /
+118.8); `windows_from_labels` in pose_extract is unaffected (it reads
+the contact rows, which are right).
