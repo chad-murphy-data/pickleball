@@ -5274,3 +5274,29 @@ tape; r10 10 crossings, 0 under — the under-tape count is a direct,
 label-free read of how often the 3D fit's depth/height is wrong, and
 it is the number to watch if the fit is ever tightened.
 
+## 2026-09-02 — speed measures on the training rallies: nothing the camera sees separates fast from slow
+
+Owner's framing: "turn it into 3D and then count pixels per second for
+speed". `speed_lab.py 6 7` (TRAIN only; r9/r10 not run) computes, per
+flight that starts at an attributed hit, four measures against the
+owner's fast/slow labels: the arc's launch |v0|, the median 3D speed
+along the sampled arc, the median IMAGE speed (px/s ÷ local px/ft — the
+owner's measure, no depth in it), and the time to the next hit.
+`speed_lab_train.txt` is the table. Labeled fast shots (5): image speed
+20, 24, 22, 12, 37 ft/s; labeled slow (2): 25, 18; serve/return 31, 25,
+30. Launch and 3D speed: fast 18–32 ft/s, slow 27 and 85 (a bad fit).
+No speed measure separates. Two reasons, both structural: the camera
+sits at (9.5, 97.6, 26.1) ft — centred, 54 ft behind the near baseline,
+26 ft up — so a drive down the court moves along the camera axis and
+barely moves in the image, and the fast flights are the short fragments
+where the tracker catches only part of the path, which a drag fit reads
+as slow (fast shots at 12–22 mph on the 3D read are not real). The one
+thing that separates on train is hit-to-hit time (fast ≤ 0.62 s, slow
+≥ 0.78 s), but the r10 label times already on record show dink volleys
+0.46 s apart and a labeled speed-up followed 1.09 s later, so that rule
+is not worth a shot. Verdict: "who sped up first" is not readable from
+this camera angle with this tracker. What would read it: a side or
+elevated-corner camera (down-court motion becomes image motion), or a
+tracker that holds the whole fast flight so the 3D speed is fit from
+both ends. Not a knob to turn on r9/r10.
+

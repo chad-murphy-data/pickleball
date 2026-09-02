@@ -323,7 +323,10 @@ prior term.
    last-shot work off the current stack; "who sped up first" does NOT
    (3D launch speed is depth-dominated). (b) stays next; then (a) — the
    stats prototype's paddle-distance rule is the natural candidate for
-   (a)'s typing; then a camera-supportable speed measure.
+   (a)'s typing. Speed measure: `speed_lab.py` (train only) shows NO
+   camera-visible measure separates fast/slow on r6/r7 (notes
+   2026-09-02) — down-court speed is along the camera axis; drop it
+   until there is a side camera or full-flight coverage.
 
 1. ~~Corridor geometry fix (item 2 above).~~ DONE 2026-09-01, both
    shots: r9 CLEARS (479 @ 0.74 vs 431 @ 0.69), r10 does NOT (323 @

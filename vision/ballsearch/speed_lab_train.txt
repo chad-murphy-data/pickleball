@@ -1,0 +1,18 @@
+rally 6: 8 flights, 7 hits, 5 flights start at a hit
+   t        who         label     launch  path3d   image   gap   dur
+     146.55 far-right   -           37.7    24.7    13.1  0.94  0.53
+     147.48 far-left    return      31.7    29.6    25.0  0.78  0.73
+     149.50 far-left    fast        32.0    31.9    20.3  0.45  0.45
+     149.98 near-right  fast        29.0    26.5    24.3  0.25  0.23
+     150.98 near-right  lunge       45.5    44.9    22.4  0.46  0.40
+rally 7: 11 flights, 12 hits, 9 flights start at a hit
+   t        who         label     launch  path3d   image   gap   dur
+     166.03 far-left    serve       19.6    22.2    30.8  0.89  0.83
+     167.95 near-left   -           18.7    15.4    16.9  0.37  0.28
+     168.40 far-right   slow        84.9    55.2    18.5  0.86  0.70
+     169.23 near-right  slow        31.8    27.3    25.4  1.08  1.03
+     170.52 far-right   fast        18.0    18.3    21.9  0.47  0.40
+     170.98 near-right  fast        25.9    22.7    12.5  0.62  0.57
+     171.70 far-left    fast        22.0    25.0    37.0  0.54  0.33
+     172.17 near-right  lunge       29.0    19.3    19.7  1.32  1.25
+     173.50 far-right   -           79.7    78.2    43.4  0.38  0.30
