@@ -5210,3 +5210,15 @@ Lesson worth keeping: the owner's physical framing beat two
 time-and-geometry framings on the first try — the quantity that
 distinguishes "one hit seen twice" from "two events" is how far the
 ball moved, nothing else.
+
+Owner, on the v3 overlay (r9): loses the ball for about two exchanges;
+notably loses it when it is CLOSE TO A PLAYER; and sometimes the ring
+has no trail. Answers for the record: a bare ring is the first frame of
+a new flight (the trail draws only the current flight) — i.e. the late
+re-acquire made visible; near-player loss is half by design (blobs
+within NEAR_BODY 16 px of an extremity are damped 0.3 and never seed a
+flight — the zero-false-track guarantee) and half the stream (small,
+fast, in front of a moving body). To-do 0b should start from the
+near-body seed rule: a velocity-continuation seed off the previous
+flight's end could re-enter the body zone without opening the door to
+body blobs in general.
