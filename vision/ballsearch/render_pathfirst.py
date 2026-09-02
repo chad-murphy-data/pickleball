@@ -14,6 +14,12 @@ rally's caches, and writes an H.264 mp4 (960x540) with:
 --reddit (owner request 2026-09-02, a share-able cut): full 1280x720, no
 labels and no HUD, the trail and ring always red, and the four tracked
 players' pose keypoints + skeleton drawn from the rally's pose npz.
+--bridge (owner-approved cosmetic, 2026-09-02): across a gap of <= BRIDGE_S
+between two tracked flights, draw a DASHED straight line from the last
+tracked point to the next flight's first point and a hollow dashed ring
+sliding along it, with a persistent caption "dashed = inferred, not
+tracked". It is a drawing convention for the share cut, not a track: it
+never enters the track, the events layer, the stats, or any grade.
 Viewer only: no truth is read, nothing is tuned, nothing is written back.
 The clip must be the same one the caches were built from (r{N}_clip.mp4).
 """
@@ -40,6 +46,41 @@ RED = (0, 0, 255)   # BGR
 SKEL = [(5, 7), (7, 9), (6, 8), (8, 10), (5, 6), (5, 11), (6, 12), (11, 12),
         (11, 13), (13, 15), (12, 14), (14, 16), (0, 5), (0, 6)]
 KP_CONF = 0.3
+BRIDGE_S = 0.5      # --bridge: longest gap (s) drawn as an inferred dashed segment
+DASH = 9            # dash length in px
+
+
+def dashed_line(img, p, q, col, thick, dash=DASH):
+    p, q = np.asarray(p, float), np.asarray(q, float)
+    L = float(np.hypot(*(q - p)))
+    if L < 1:
+        return
+    u = (q - p) / L
+    s = 0.0
+    while s < L:
+        a, b = p + u * s, p + u * min(L, s + dash)
+        cv2.line(img, (int(a[0]), int(a[1])), (int(b[0]), int(b[1])), col, thick, cv2.LINE_AA)
+        s += 2 * dash
+
+
+def dashed_circle(img, c, r, col, thick, n=12):
+    for k in range(0, n, 2):
+        cv2.ellipse(img, (int(c[0]), int(c[1])), (r, r), 0, k * 360 / n,
+                    (k + 1) * 360 / n, col, thick, cv2.LINE_AA)
+
+
+def bridges(chosen, track):
+    """frame -> (p, q, frac): the inferred segment across a short gap."""
+    out = {}
+    for a, b in zip(chosen, chosen[1:]):
+        fa, fb = a["fb"], b["fa"]
+        if not (0 < fb - fa - 1 <= BRIDGE_S * pf.FPS):
+            continue
+        if fa not in track or fb not in track:
+            continue
+        for f in range(fa + 1, fb):
+            out[f] = (track[fa], track[fb], (f - fa) / (fb - fa))
+    return out
 
 
 def ffmpeg_bin():
@@ -88,6 +129,8 @@ def main():
     ap.add_argument("--out", default=None)
     ap.add_argument("--reddit", action="store_true",
                     help="share cut: no labels/HUD, red ball, pose skeletons, 1280x720")
+    ap.add_argument("--bridge", action="store_true",
+                    help=f"cosmetic: dashed inferred segment across gaps <= {BRIDGE_S}s, captioned")
     a = ap.parse_args()
     cell = json.loads(pf.TUNE_JSON.read_text())
     assert not cell.get("dead"), "no live path-first verdict"
@@ -119,13 +162,14 @@ def main():
     for i, fl in enumerate(chosen):
         for f in range(fl["fa"], fl["fb"] + 1):
             flight_of[f] = i
+    br = bridges(chosen, track) if a.bridge else {}
     clip = SP / f"r{a.rally}_clip.mp4"
     cap = cv2.VideoCapture(str(clip))
     n = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
     f_lo, f_hi = max(0, ctx["f_lo"] - 30), min(n - 1, ctx["f_hi"] + 30)
     poses = pose_by_frame(ctx["c"]["npz"], t0, f_lo, f_hi) if a.reddit else {}
     raw = SP / f"_render_r{a.rally}_raw.mp4"
-    suffix = "_reddit" if a.reddit else ""
+    suffix = ("_reddit" if a.reddit else "") + ("_bridge" if a.bridge else "")
     out = Path(a.out) if a.out else SP / f"pathfirst_r{a.rally}{suffix}.mp4"
     fps_out = 60.0 * a.speed
     vw = cv2.VideoWriter(str(raw), cv2.VideoWriter_fourcc(*"mp4v"), fps_out, (1280, 720))
@@ -161,6 +205,18 @@ def main():
             else:
                 cv2.circle(img, (int(x), int(y)), 9, (255, 255, 255), 2)
                 cv2.circle(img, (int(x), int(y)), 9, col, 1)
+        if f in br:
+            p, q, frac = br[f]
+            col = RED if a.reddit else (200, 200, 200)
+            dashed_line(img, p, q, (255, 255, 255), 4)
+            dashed_line(img, p, q, col, 2)
+            c = (p[0] + (q[0] - p[0]) * frac, p[1] + (q[1] - p[1]) * frac)
+            dashed_circle(img, c, 11, (255, 255, 255), 3)
+            dashed_circle(img, c, 11, col, 1)
+        if a.bridge:
+            cap_txt = "dashed = inferred between tracked flights, not tracked"
+            cv2.putText(img, cap_txt, (14, 650), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 0, 0), 3, cv2.LINE_AA)
+            cv2.putText(img, cap_txt, (14, 650), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (255, 255, 255), 1, cv2.LINE_AA)
         if f in labels:
             active.append((f + LABEL_HOLD, *labels[f]))
         active = [z for z in active if z[0] >= f]
@@ -190,7 +246,8 @@ def main():
     raw.unlink()
     print(f"wrote {out} ({out.stat().st_size / 1e6:.1f} MB): frames {f_lo}-{f_hi}, "
           f"{len(chosen)} flights, {len(labels)} end labels, {a.speed:g}x"
-          f"{', reddit cut' if a.reddit else ''}")
+          f"{', reddit cut' if a.reddit else ''}"
+          f"{f', {len(br)} bridged frames' if a.bridge else ''}")
 
 
 if __name__ == "__main__":

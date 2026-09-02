@@ -5300,3 +5300,68 @@ elevated-corner camera (down-court motion becomes image motion), or a
 tracker that holds the whole fast flight so the 3D speed is fit from
 both ends. Not a knob to turn on r9/r10.
 
+
+
+## 2026-09-02 — hand-off seeding: the track clears both shots, the events layer above does not, and the rule says no
+
+The owner's overlay notes said where the ball goes missing: next to a
+player, for about two exchanges a rally, and the down-the-line speed-up
+in both evaluation rallies. Both are the same frozen design choice —
+the path-first tracker will not SEED from a blob within 16 px of a pose
+extremity (its zero-false-track guarantee) and its shortest seed span is
+12 frames — so the fix was designed as a second pass, not a knob:
+`handoff.py`. Where a pass-1 flight ends, open a zone (W frames, R_ZONE
+px around the last tracked point); inside it a hypothesis may start on
+a near-body blob at a lower p and on 6/8/12-frame spans; everything
+after the seed is pathfirst's own solve / plausible / support / nms /
+grow; new flights are admitted only where they overlap nothing already
+chosen. Pre-registered in `handoff_gate.md` before a number existed:
+16-cell grid on r6/r7, selection rule, one shot on r9/r10 with bars =
+track strictly better at precision ≥ incumbent − 0.02, nulls ≤ 3, AND
+the adopted events layer re-run on the new track keeping F1 ≥ adopted
+− 0.03, on both rallies.
+
+Tune (r6/r7): every cell keeps precision and both nulls; the gain is
+small and all r6 (125/127 → 134/138, +3 flights); r7 adds nothing in 12
+of 16 cells. Selected r_zone 70 / w 18 / p_hand 0.25 / s_min 3, 277 @
+0.810 vs 263 @ 0.807.
+
+The shot. Track: r9 537 → 563 @ 0.87 (r8 416 → 439, at-click 616 → 650),
+r10 422 → 446 @ 0.89 (r8 327 → 350, at-click 479 → 503), nulls 0/2 and
+0/1, five new flights each, all 0.13–0.47 s, densities 0.19–0.90. Both
+track bars pass on both rallies. Events layer on the new track: r9 F1
+.758 (recall .711 → .800, precision held .72), PASS; r10 F1 .636
+(recall .692 → .718 but precision .643 → .571), bar .645, FAIL by
+0.009. Verdict NOT ADOPTED; the incumbent path-first track and v3
+events stay production; nothing re-run, no bar moved.
+
+What it means. The mechanism the owner asked for works: the new flights
+are real ball (the displaced null is 0, the tight r8 radius gains as
+much as r12), and they sit exactly where the ball was being lost. The
+cost is structural, not noise: five short flights are ten new flight
+ENDS, and the events layer labels flight ends; its seam rule was tuned
+on the incumbent's ends, which are long-flight ends, and a 0.2 s flight
+ending against a player's body is a different object. On r9 the new
+ends turned lost gaps into matched arrive/depart pairs; on r10 they
+fired more unmatched events than matched. So the honest next step is
+not a knob on either layer alone but a joint gate: re-tune events on the
+hand-off track (r6/r7), one shot, both layers adopted together or
+neither. That is a seal, so it waits for the owner.
+
+Two smaller things shipped alongside. `label_picks.md` is the click
+list the owner asked for (rallies with fast exchanges, inside the split
+rules: r17 train and r21 fresh seal first; r22–r30 holdout untouched).
+And `render_pathfirst.py --bridge` is the demo convention the owner
+approved: a gap ≤ 0.5 s between tracked flights is drawn as a dashed
+straight segment with a sliding dashed ring and a standing caption that
+it is inferred, not tracked. It touches no track, event, stat or grade.
+
+On the "we used to have shot speed" question: the speeds in the
+original rally-1 demo (dinks 13–21 mph, attacks 25–48 mph) came from a
+hand-labeled ball path anchored at hand-labeled contact times, i.e.
+complete flights with known ends. No change removed that; the automatic
+tracker never had it, because it produces fragments whose ends are not
+the contacts, and a launch speed read off a fragment on a one-camera
+3D fit is depth-dominated (speed_lab, rally_stats). Complete flights
+that start at the hit are what the hand-off pass moves toward, which
+is why it and the shot-speed number are the same thread.

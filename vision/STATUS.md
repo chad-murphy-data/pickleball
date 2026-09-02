@@ -252,6 +252,17 @@ twice (3D launch speed is depth-dominated and fragment starts inflate
 it). `rally_3d.py` writes the orbitable 3D court view of the same
 flights (`court3d_r{9,10}.html`). Prototype, not a graded channel.
 
+**Hand-off seeding (2026-09-02, `vision/ballsearch/handoff.py`,
+`handoff_gate.md`) — SHOT, NOT ADOPTED.** Pass 2 over the frozen
+path-first track: short-span seeds allowed next to a player, only inside
+a zone at a pass-1 flight end. Tuned r6/r7 (277 @ 0.810 vs 263 @ 0.807),
+one shot r9/r10: track r@12 537→563 and 422→446 at unchanged precision
+with clean nulls, but the adopted events layer re-run on the new flights
+gives F1 .758 (r9, passes) / .636 (r10, bar .645, FAILS). Rule said both
+rallies; incumbent stays. Reading: the coverage mechanism works, the
+layer above pays for the extra flight ends. Next gate = events re-tune
+on the hand-off track, adopted together or not at all.
+
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),
 90%-contour area (Alshon 261 > Black 232 > Patriquin 204 > Bright 188

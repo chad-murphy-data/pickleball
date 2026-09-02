@@ -46,6 +46,9 @@ disagree on a NUMBER, the notes file is the record.
 | `render_pathfirst.py` | viewer only: draws the path-first track (trail, ball ring, v3 event labels, faint candidate dots) on `r{N}_clip.mp4` → `pathfirst_r{N}.mp4` (960×540 H.264, default half speed). `--reddit` = the share cut (owner ask 2026-09-02): 1280×720, no labels/HUD, ball and trail always red, pose skeletons of the four tracked players → `pathfirst_r{N}_reddit.mp4` (the two share cuts ARE committed, force-added past `*.mp4`, ~9 MB each). Reads no truth, tunes nothing. |
 | `rally_stats.py` / `rally_stats_r{9,10}.txt` | PROTOTYPE rally stats off the adopted track + v3 events, three rules written before any rally was looked at (hit = event within 3 ft of a player's paddle proxy, same player twice inside 0.6 s = one; speed-up = first flight after the 3rd hit launched ≥ 38 ft/s and starting at a hit; last shot = last attributed hit + end of the final flight in court ft). Identity is POSITION only (near/far × left/right from the pose tracks). `--grade` (r9/r10, evaluation only) maps names to tracks by majority vote over the owner's labeled contacts. RESULT: hits per player within ±1 of the labels for all 8 player-rallies (r9 10/5/10/5 vs 9/5/10/5; r10 4/9/9/5 vs 5/8/9/4); last shot right in both; **speed-up WRONG in both** — launch speed off a one-camera 3D fit is depth-dominated and fragments inflate it (r9 named a 71 ft/s fragment at 260.97 vs the labeled first fast shot at 257.84; r10 303.18 vs 300.23). Not a channel; a speed measure the camera can support (image speed at local scale, or hit-to-hit time) is the next thing to try. |
 | `rally_3d.py` / `court3d_r{9,10}.html` | orbitable 3D court view (court3d.write_viewer) of the path-first flights — every flight already IS a 3D arc — plus the four players' floor tracks from the pose npz through the z=0 homography and the attributed hits. Prints the free ground-truth check: r9 17 net crossings, 4 under the 34-in tape; r10 10 / 0 (a crossing under the tape = a flight whose depth or height is off, the one-camera weakness made countable). Committed (small HTML). Depth is the weak axis; gaps stay gaps. |
+| `handoff.py` / `handoff_gate.md` / `handoff_tune.json` / `handoff_grade_r{9,10}.txt` | Hand-off seeding, pass 2 on top of the frozen path-first pass: short-span seeds (6/8/12 frames) allowed NEAR BODY, only inside a zone next to a pass-1 flight end. Pre-registered, tuned on r6/r7 (16 cells → r_zone 70 / w 18 / p_hand 0.25 / s_min 3, 277 @ 0.810 vs 263 @ 0.807), ONE SHOT on r9/r10 spent 2026-09-02: track r@12 537→563 (r9) and 422→446 (r10) at unchanged precision, nulls clean, BUT the v3 events layer re-run on the new flights lands F1 .636 on r10 vs bar .645 (r9 .758 passes) → **NOT ADOPTED**, incumbent stays. `grade` for r9/r10 is spent. Next gate if reopened = events re-tune on the hand-off track (new pre-registration). |
+| `label_picks.md` | the owner's click list for 2–4 more ball-click rallies chosen for FAST exchanges, inside the split rules: r17 (train), r21 (fresh seal), then r4 (train), r20 (the reserved seal). r22–r30 holdout untouched. |
+| `render_pathfirst.py --bridge` | cosmetic, owner-approved for the demo: gaps ≤ 0.5 s between tracked flights drawn as a DASHED straight segment with a sliding dashed ring, persistent caption "dashed = inferred between tracked flights, not tracked". Never enters the track/events/stats/grades. Output `pathfirst_r{N}_reddit_bridge.mp4`. |
 | `events.py` / `events_gate.md` / `events_tune{,_v2,_v3}.json` / `events_grade_{r9,r10,v3_r9,v3_r10}.txt` | EVENTS layer on top of path-first (track untouched, asserted): one event per change of flight. v1 (time-gap pairing) FAILED the recall guard on both r9/r10; v2 (arcs must meet) DEAD on train; **v3 ADOPTED (owner's framing: pair by PHYSICAL distance between arrive and depart points, ≤ 2.5 ft at the local px/ft scale, 0.5 s sanity cap)**: r9 F1 .731 vs RAW .625, r10 .675 vs .617, recall guard and time-shift null cleared on both. `tune --v3`, `grade <r> --v3`. Typing hit/bounce is secondary and unbuilt. |
 | `cut_clip.py` | cuts `r{N}_clip.mp4` from the full-match source with the offset and frame count read from the committed candidate CSV (system ffmpeg or the imageio-ffmpeg static binary). |
 | `check_clip.py` | verifies an owner-cut clip against the committed `ball_candidates_r{N}.csv.gz` (frame count / size / fps, implied offset, extractor re-run matched at frame shifts −3..+3) before any cache is built from it. |
@@ -87,6 +90,9 @@ python3 pathfirst.py grade 9; python3 pathfirst.py grade 10   # the one-shots (p
 python3 render_pathfirst.py 9                         # watchable overlay (pathfirst_r9.mp4, gitignored)
 python3 render_pathfirst.py 9 --reddit                # share cut (pathfirst_r9_reddit.mp4, committed); ~10 GB RSS — never two at once
 python3 rally_stats.py 9 --grade                      # rally stats prototype + evaluation vs labels (rally_stats_r9.txt)
+python3 handoff.py tune                                # hand-off pass-2 grid on r6/r7 -> handoff_tune.json (handoff_tune.txt)
+python3 handoff.py grade 9                             # SPENT for r9/r10 (handoff_grade_r9.txt); re-running is not a new seal
+python3 render_pathfirst.py 9 --reddit --bridge        # demo cut with dashed inferred gaps -> pathfirst_r9_reddit_bridge.mp4
 python3 rally_3d.py 9                                 # orbitable 3D court view (court3d_r9.html)
 python3 events.py tune --v3                            # events grid (r6/r7); grade 9 --v3 / grade 10 --v3 are spent one-shots
 python3 spaghetti.py 9  --lrn --soft 25                # graded r9 (run_in_background; > 2 min)
@@ -327,6 +333,20 @@ prior term.
    camera-visible measure separates fast/slow on r6/r7 (notes
    2026-09-02) — down-court speed is along the camera axis; drop it
    until there is a side camera or full-flight coverage.
+   (b) SHOT AND SPENT 2026-09-02 as HAND-OFF SEEDING (`handoff.py`,
+   `handoff_gate.md`): the door next to a flight end, near-body seeds
+   allowed, short spans. Track clears on BOTH rallies (r9 563 @ 0.87,
+   r10 446 @ 0.89, nulls 0/2, 0/1) but the v3 events layer on the new
+   flights fails its r10 bar (.636 vs .645; r9 .758 passes) → NOT
+   ADOPTED, incumbent stays. The mechanism is right and the layer
+   above is the cost: five short flights = ten new flight ends the
+   seam rule never saw. NEXT on this line, one pre-registration, not
+   a knob turn: re-tune events (r6/r7) ON the hand-off track, bars =
+   track bars as written + events F1 ≥ adopted − 0.03 on the SAME
+   one-shot; both layers adopted together or neither. Needs the
+   owner's go (a seal is a seal). Meanwhile: `label_picks.md` (r17
+   train / r21 seal first) for the owner's clicking, and the
+   `--bridge` demo cut exists for the share (cosmetic, captioned).
 
 1. ~~Corridor geometry fix (item 2 above).~~ DONE 2026-09-01, both
    shots: r9 CLEARS (479 @ 0.74 vs 431 @ 0.69), r10 does NOT (323 @

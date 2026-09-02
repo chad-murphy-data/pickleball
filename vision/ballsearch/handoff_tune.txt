@@ -1,0 +1,18 @@
+  {'r_zone': 40.0, 'w': 18, 'p_hand': 0.25, 's_min_hand': 3.0}  r@12 268 prec 0.810  nulls 0/2  r6 125/127 +2fl r7 143/204 +0fl
+  {'r_zone': 40.0, 'w': 18, 'p_hand': 0.25, 's_min_hand': 4.0}  r@12 268 prec 0.810  nulls 0/2  r6 125/127 +2fl r7 143/204 +0fl
+  {'r_zone': 40.0, 'w': 18, 'p_hand': 0.4, 's_min_hand': 3.0}  r@12 268 prec 0.810  nulls 0/2  r6 125/127 +2fl r7 143/204 +0fl
+  {'r_zone': 40.0, 'w': 18, 'p_hand': 0.4, 's_min_hand': 4.0}  r@12 268 prec 0.810  nulls 0/2  r6 125/127 +2fl r7 143/204 +0fl
+  {'r_zone': 40.0, 'w': 30, 'p_hand': 0.25, 's_min_hand': 3.0}  r@12 268 prec 0.810  nulls 0/2  r6 125/127 +2fl r7 143/204 +0fl
+  {'r_zone': 40.0, 'w': 30, 'p_hand': 0.25, 's_min_hand': 4.0}  r@12 268 prec 0.810  nulls 0/2  r6 125/127 +2fl r7 143/204 +0fl
+  {'r_zone': 40.0, 'w': 30, 'p_hand': 0.4, 's_min_hand': 3.0}  r@12 268 prec 0.810  nulls 0/2  r6 125/127 +2fl r7 143/204 +0fl
+  {'r_zone': 40.0, 'w': 30, 'p_hand': 0.4, 's_min_hand': 4.0}  r@12 268 prec 0.810  nulls 0/2  r6 125/127 +2fl r7 143/204 +0fl
+  {'r_zone': 70.0, 'w': 18, 'p_hand': 0.25, 's_min_hand': 3.0}  r@12 277 prec 0.810  nulls 0/2  r6 134/138 +3fl r7 143/204 +0fl
+  {'r_zone': 70.0, 'w': 18, 'p_hand': 0.25, 's_min_hand': 4.0}  r@12 277 prec 0.810  nulls 0/2  r6 134/138 +3fl r7 143/204 +0fl
+  {'r_zone': 70.0, 'w': 18, 'p_hand': 0.4, 's_min_hand': 3.0}  r@12 268 prec 0.810  nulls 0/2  r6 125/127 +2fl r7 143/204 +0fl
+  {'r_zone': 70.0, 'w': 18, 'p_hand': 0.4, 's_min_hand': 4.0}  r@12 268 prec 0.810  nulls 0/2  r6 125/127 +2fl r7 143/204 +0fl
+  {'r_zone': 70.0, 'w': 30, 'p_hand': 0.25, 's_min_hand': 3.0}  r@12 280 prec 0.771  nulls 0/2  r6 134/138 +3fl r7 146/225 +1fl
+  {'r_zone': 70.0, 'w': 30, 'p_hand': 0.25, 's_min_hand': 4.0}  r@12 277 prec 0.810  nulls 0/2  r6 134/138 +3fl r7 143/204 +0fl
+  {'r_zone': 70.0, 'w': 30, 'p_hand': 0.4, 's_min_hand': 3.0}  r@12 280 prec 0.771  nulls 0/2  r6 134/138 +3fl r7 146/225 +1fl
+  {'r_zone': 70.0, 'w': 30, 'p_hand': 0.4, 's_min_hand': 4.0}  r@12 277 prec 0.810  nulls 0/2  r6 134/138 +3fl r7 143/204 +0fl
+SELECTED {'r_zone': 70.0, 'w': 18, 'p_hand': 0.25, 's_min_hand': 3.0}  r@12 277 prec 0.810 (incumbent {'h12': 263, 'prec': 0.807})
+exit 0
