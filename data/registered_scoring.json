@@ -1,0 +1,41 @@
+{
+ "Anna Leigh Waters + Anna Bright": {
+  "full": {
+   "games": 98,
+   "beta": -2.173538447975205,
+   "se": 0.854270500232658
+  },
+  "H2": {
+   "games": 0,
+   "beta": null,
+   "se": null
+  },
+  "context": "womens"
+ },
+ "Christian Alshon + Hayden Patriquin": {
+  "full": {
+   "games": 95,
+   "beta": -1.606210738143092,
+   "se": 0.8566063167819961
+  },
+  "H2": {
+   "games": 0,
+   "beta": null,
+   "se": null
+  },
+  "context": "mens"
+ },
+ "Anna Bright + Hayden Patriquin": {
+  "full": {
+   "games": 153,
+   "beta": 0.2895736445436476,
+   "se": 0.8486857720895779
+  },
+  "H2": {
+   "games": 14,
+   "beta": 0.04988415559131166,
+   "se": 2.168883859268012
+  },
+  "context": "mixed"
+ }
+}

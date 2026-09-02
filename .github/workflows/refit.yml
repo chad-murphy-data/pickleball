@@ -1,0 +1,79 @@
+# Weekly v2 refit.
+#
+# Deliberately NOT part of the nightly site build. Two reasons:
+#
+#  1. v2's dynamic skill lives on a MONTHLY grid (model/fit_v2.py: month_idx,
+#     tau ~ 0.038/month), and value_now is the final month's bucket. A daily
+#     refit cannot produce sub-monthly movement — it just re-estimates the
+#     current month with a few more games. The resolution isn't there.
+#  2. It's a 600/600 NUTS sample over ~39k games. The nightly harvest already
+#     runs long; bolting this on would make a fast path slow for no gain.
+#
+# Weekly on Monday catches the weekend's MLP/PPA events, which is when new
+# games actually arrive. The thing that genuinely decays is COVERAGE, not
+# drift: players who debut between refits have no rating at all.
+#
+# Run manually any time with workflow_dispatch (e.g. mid-event).
+name: refit
+
+on:
+  schedule:
+    - cron: "40 10 * * 1"   # Mondays, 10:40 UTC — after the nightly refresh
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refit
+  cancel-in-progress: false
+
+jobs:
+  refit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install model deps
+        run: pip install numpy scipy "jax[cpu]" numpyro
+
+      - name: Rebuild model tables + refit v2
+        run: |
+          DATE_FROM=2026-01-01 python scraper/build_model_data.py
+          python model/fit_v2.py
+
+      - name: Sanity guard (refuse to commit a broken fit)
+        run: |
+          python - <<'PY'
+          import csv, json, sys
+          rows = list(csv.DictReader(open("data/v2_players.csv")))
+          fit  = json.load(open("model/v2_fit_summary.json"))
+          rhat = fit.get("max_rhat_v0", 99)
+          n    = len(rows)
+          print(f"players={n} max_rhat_v0={rhat}")
+          if n < 3000:
+              sys.exit(f"FAIL: only {n} players in the fit")
+          if rhat > 1.05:
+              sys.exit(f"FAIL: max r_hat {rhat} > 1.05 — did not converge")
+          print("sanity OK")
+          PY
+
+      - name: Commit the refit
+        run: |
+          git add -A data/v2_players.csv data/v2_trajectories.csv \
+                     data/v2_dyads.csv model/v2_fit_summary.json \
+                     data/model_data.csv data/model_players.csv data/model_dyads.csv
+          if git diff --cached --quiet; then
+            echo "no change — nothing to commit"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "model: weekly v2 refit ($(date -u +%F))"
+            git push origin "HEAD:${{ github.ref_name }}" \
+              || (git pull --rebase origin "${{ github.ref_name }}" && git push origin "HEAD:${{ github.ref_name }}")
+          fi
