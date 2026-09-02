@@ -57,9 +57,13 @@ def pose_by_frame(npz_path, t0, f_lo, f_hi):
                   key=lambda k: -(z["track"] == k).sum())[:4]
     fr = np.round((np.asarray(z["t"]) - t0) * 60).astype(int)
     keep = np.isin(z["track"], tids) & (fr >= f_lo) & (fr <= f_hi)
+    # read the arrays ONCE: each z["kpt"] access decompresses the whole
+    # array afresh, and a slice keeps that copy alive (this loop once held
+    # ~20 GB that way and got the render OOM-killed)
+    kpt, kpc = z["kpt"], z["kpc"]
     out = {}
     for i in np.where(keep)[0]:
-        out.setdefault(int(fr[i]), []).append((z["kpt"][i], z["kpc"][i]))
+        out.setdefault(int(fr[i]), []).append((kpt[i], kpc[i]))
     return out
 
 
