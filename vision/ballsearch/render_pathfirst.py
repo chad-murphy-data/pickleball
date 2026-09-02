@@ -7,7 +7,10 @@ rally's caches, and writes an H.264 mp4 (960x540) with:
   - faint grey dots  = the candidate blobs the tracker could choose from
   - coloured trail   = the selected flight (one colour per flight)
   - white ring       = the tracked ball on this frame
-  - "hit"/"bounce"   = flight-end labels, shown for a few frames
+  - labels at flight ends, shown for a few frames: with the adopted
+    events layer (events_tune_v3.json) one "event" per change of flight
+    (hit or bounce, untyped); "arrive"/"depart" mark the two sides of a
+    gap where the tracker lost the ball. Without it, raw hit/bounce ends.
 Viewer only: no truth is read, nothing is tuned, nothing is written back.
 The clip must be the same one the caches were built from (r{N}_clip.mp4).
 """
@@ -50,12 +53,25 @@ def main():
     ctx = pf.context(a.rally)
     res = pf.run(ctx, cell["p_seed"], cell["s_min"], cell["gap"])
     chosen, track, t0 = res["chosen"], res["track"], ctx["t0"]
-    bd = pf.boundaries(ctx, chosen)
     labels = {}     # frame -> (text, xy)
-    for t, kind in bd:
-        f = int(round((t - t0) * pf.FPS))
-        if f in track:
-            labels[f] = ("bounce" if "bounce" in kind else "hit", track[f])
+    ev_json = SP / "events_tune_v3.json"
+    if ev_json.exists() and not json.loads(ev_json.read_text()).get("dead"):
+        # adopted events layer (events_gate.md v3): one label per change of flight
+        import events as evm
+        cell = json.loads(ev_json.read_text())
+        evs = evm.events(ctx, chosen, cell["r_seam"], cell["a_seam"], cell["dt_pair"],
+                         cell["off"], d_pair=cell["d_pair"])
+        for e in evs:
+            f = int(round((e["t"] - t0) * pf.FPS))
+            near = min(track, key=lambda g: abs(g - f)) if track else None
+            if near is not None and abs(near - f) <= 6:
+                labels[f] = ("event" if e["how"] == "pair" or e["how"] == "serve"
+                             else e["how"], track[near])
+    else:
+        for t, kind in pf.boundaries(ctx, chosen):
+            f = int(round((t - t0) * pf.FPS))
+            if f in track:
+                labels[f] = ("bounce" if "bounce" in kind else "hit", track[f])
     flight_of = {}
     for i, fl in enumerate(chosen):
         for f in range(fl["fa"], fl["fb"] + 1):
@@ -93,7 +109,7 @@ def main():
             active.append((f + LABEL_HOLD, *labels[f]))
         active = [z for z in active if z[0] >= f]
         for _, text, (x, y) in active:
-            cv2.circle(img, (int(x), int(y)), 14, (0, 255, 255) if text == "hit" else (0, 200, 255), 2)
+            cv2.circle(img, (int(x), int(y)), 14, (0, 255, 255) if text in ("hit", "event") else (0, 200, 255), 2)
             cv2.putText(img, text, (int(x) + 16, int(y) - 8), cv2.FONT_HERSHEY_SIMPLEX,
                         0.6, (0, 0, 0), 3, cv2.LINE_AA)
             cv2.putText(img, text, (int(x) + 16, int(y) - 8), cv2.FONT_HERSHEY_SIMPLEX,
