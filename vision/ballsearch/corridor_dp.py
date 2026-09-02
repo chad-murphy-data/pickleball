@@ -52,9 +52,39 @@ W_BODY = 25.0
 # W_P_SOFT is tuned on r6/r7 ONLY (cross-fold p), never on r9/r10.
 W_P_SOFT = 0.0
 
+# TRAIL term (fusion.py, 2026-09-01): when a physical trail hypothesis
+# (spaghetti) is handed in as frame -> (x, y), taking a candidate costs
+# W_TRAIL * min(d_to_trail / R_TRAIL, 1) and the per-frame candidate
+# pool becomes "chord window OR within R_BAND of the trail pixel",
+# ranked by distance to the trail (the trail defines where to look —
+# the lob/bounce excursions the chord box cannot see). trail=None and
+# W_TRAIL=0 leave every existing caller bit-identical. W_TRAIL/R_TRAIL
+# are tuned on r6/r7 ONLY (fusion.py tune), never on r9/r10.
+W_TRAIL = 0.0
+R_TRAIL = 16.0
+R_BAND = 60.0
+
+# Pool ordering (geom_fix.py, 2026-09-01): the K per-frame candidates
+# are the nearest to the window CENTER by default (incumbent). With
+# POOL_BY_P the K highest learned-p candidates in the window are kept
+# instead — a taller window otherwise pushes the lob/bounce excursion
+# (far from the chord by construction) out of a center-ranked pool.
+# False = bit-identical to the incumbent; 4-tuple callers unaffected.
+POOL_BY_P = False
+
 
 def _pc(p):
     return W_P_SOFT * (1.0 - p) if (W_P_SOFT and p is not None) else 0.0
+
+
+def _tc(trail, f, x, y):
+    if not W_TRAIL or trail is None:
+        return 0.0
+    tp = trail.get(f)
+    if tp is None:
+        return 0.0
+    d = float(np.hypot(x - tp[0], y - tp[1]))
+    return W_TRAIL * min(d / R_TRAIL, 1.0)
 
 
 def body_points(c, f_lo, f_hi):
@@ -95,32 +125,47 @@ def _body_costs(cf, fa, fb, body):
     return bc
 
 
-def corridor_cands(cands, cor, t0):
+def corridor_cands(cands, cor, t0, trail=None):
     ta, tb, A, B, wx, wy = cor
     fa, fb = int(round((ta - t0) * 60)), int(round((tb - t0) * 60))
     out = {}
     for f in range(fa, fb + 1):
         t = t0 + f / 60.0
         cx, cy, _, _ = window_at(cor, min(max(t, ta), tb))
-        cs = [(c_[0], c_[1], c_[3], c_[4] if len(c_) > 4 else None)
-              for c_ in cands.get(f, ())
-              if abs(c_[0] - cx) <= wx and abs(c_[1] - cy) <= wy]
-        cs.sort(key=lambda c: np.hypot(c[0] - cx, c[1] - cy))
+        tp = trail.get(f) if trail is not None else None
+        if tp is None:
+            cs = [(c_[0], c_[1], c_[3], c_[4] if len(c_) > 4 else None)
+                  for c_ in cands.get(f, ())
+                  if abs(c_[0] - cx) <= wx and abs(c_[1] - cy) <= wy]
+            if POOL_BY_P and cs and cs[0][3] is not None:
+                cs.sort(key=lambda c: -c[3])
+            else:
+                cs.sort(key=lambda c: np.hypot(c[0] - cx, c[1] - cy))
+        else:
+            tx, ty = tp
+            cs = [(c_[0], c_[1], c_[3], c_[4] if len(c_) > 4 else None)
+                  for c_ in cands.get(f, ())
+                  if (abs(c_[0] - cx) <= wx and abs(c_[1] - cy) <= wy)
+                  or np.hypot(c_[0] - tx, c_[1] - ty) <= R_BAND]
+            cs.sort(key=lambda c: np.hypot(c[0] - tx, c[1] - ty))
         out[f] = cs[:K]
     return fa, fb, out
 
 
-def dp_path(cands, cor, t0, anchor="both", body=None):
+def dp_path(cands, cor, t0, anchor="both", body=None, trail=None,
+            return_cost=False):
     """anchor: 'both' = position-tied at A and B; 'A' = tied at A only
     (far end free in position, corridor still covered in time); 'B' =
     mirror. A-only vs B-only agreement is the two-sided independence
     gate for corridors the decode cannot vouch for. body = frame ->
-    extremity array; candidates near a body extremity pay W_BODY."""
-    fa, fb, cf = corridor_cands(cands, cor, t0)
+    extremity array; candidates near a body extremity pay W_BODY.
+    trail = frame -> (x, y) physical trail hypothesis (see W_TRAIL).
+    return_cost: return (path, total cost) — cost is inf when empty."""
+    fa, fb, cf = corridor_cands(cands, cor, t0, trail)
     A, B = cor[2], cor[3]
     frames = [f for f in range(fa, fb + 1) if cf[f]]
     if len(frames) < 3:
-        return {}
+        return ({}, float("inf")) if return_cost else {}
     bc = (_body_costs(cf, fa, fb, body) if body is not None
           else {f: [0.0] * len(cf[f]) for f in cf})
     # state: (f, j) -> [cost, prev_state, vel]
@@ -136,10 +181,10 @@ def dp_path(cands, cor, t0, anchor="both", body=None):
                 c0 = W_END * d
             else:
                 c0 = 0.0
-            st[(f, j)] = [c0 + W_GAP * (f - fa) + bc[f][j] + _pc(p),
-                          None, None]
+            st[(f, j)] = [c0 + W_GAP * (f - fa) + bc[f][j] + _pc(p)
+                          + _tc(trail, f, x, y), None, None]
     if not st:
-        return {}
+        return ({}, float("inf")) if return_cost else {}
     order = sorted(st) + []
     # forward sweep frame by frame
     fset = sorted(set(frames))
@@ -170,7 +215,7 @@ def dp_path(cands, cor, t0, anchor="both", body=None):
                         c_extra = 0.0
                     c = (s[0] + W_ACC * acc + W_GAP * (g - f - 1)
                          + c_extra - 0.04 * min(qpk, 40.0)
-                         + bc[g][k] + _pc(qp))
+                         + bc[g][k] + _pc(qp) + _tc(trail, g, qx, qy))
                     cur = st.get((g, k))
                     if cur is None or c < cur[0]:
                         st[(g, k)] = [c, (f, j), v]
@@ -191,7 +236,7 @@ def dp_path(cands, cor, t0, anchor="both", body=None):
         if c < bc:
             bc, best = c, (f, j)
     if best is None:
-        return {}
+        return ({}, float("inf")) if return_cost else {}
     path = {}
     cur = best
     while cur is not None:
@@ -199,7 +244,7 @@ def dp_path(cands, cor, t0, anchor="both", body=None):
         x, y = cf[f][j][:2]
         path[f] = (float(x), float(y))
         cur = st[cur][1]
-    return path
+    return (path, float(bc)) if return_cost else path
 
 
 def build_track(cands, cors, t0, disp=None, body=None):

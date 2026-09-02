@@ -4892,3 +4892,512 @@ new best instrument (r9 431/0.69, r10 320/0.67 against the 388/282 @
 product questions (bounce ledger, eviction/trial, double-contact
 segment) were all measured on the OLD stream — re-run them on this
 one before touching any other knob.
+
+**Fusion (emission + spaghetti trails + DP as ONE cost) — built,
+tuned blind on r6/r7, DEAD under the frozen rule; r9/r10 never run
+(2026-09-01, next thread; `vision/ballsearch/fusion.py`, verdict in
+`fusion_tune.json`).** The HANDOFF's L3 design, on the owner's go:
+per corridor, spaghetti scores every DIRECT/BOUNCE trail and refines
+the top M=8; each proposal conditions ONE DP run (candidate pool =
+chord window OR within R_BAND=60 px of the trail pixel, sorted by
+distance to the trail; unary `W_TRAIL·min(d/R_TRAIL,1)` on top of the
+incumbent's accel/gap/body/`25·(1−p)` terms); the winner is argmin of
+DP path cost + W_GAP × shot-book prior penalty; DP-skipped frames are
+bridged from the chosen trail (`-F` arm, flagged); abstain / no
+proposal / no path → the incumbent path verbatim. `corridor_dp.py`
+gained `trail=`, the band pool and `return_cost`; with `trail=None` it
+is bit-identical (asserted in the selftest; the environment was
+re-verified first — `softdp.py` reproduced the recorded sweep to the
+hit, 376 @ 0.633 at W=25, and the tune's INCUMBENT line is that same
+376 @ 0.633).
+PROTOCOL, written in the module docstring before any number: grid
+W_TRAIL ∈ {3,6,12,25} × R_TRAIL ∈ {8,16,30}, r6+r7 × prod+oracle,
+cross-fold p; rule = max total r@12 on the `fus` arm s.t. pooled
+prec@12 ≥ incumbent, ties smallest W then R, none → DEAD and `grade
+9|10` refuses to run (it also refuses any knob override on the
+evaluation rallies).
+SWEEP (total r@12 @ prec; incumbent 376 @ 0.633):
+  W=3:  379 @ .618 (R8) · 381 @ .620 (R16) · 381 @ .620 (R30)
+  W=6:  366 @ .616 · 373 @ .619 · 372 @ .615
+  W=12: 283 @ .558 · 304 @ .571 · 324 @ .579
+  W=25: 258 @ .534 · 278 @ .549 · 293 @ .553
+VERDICT: DEAD. The best cell buys +5 hits for −1.3pp precision; every
+heavier W loses recall MONOTONICALLY (−118 hits at W=25/R8). The trail
+pulls the DP OFF the ball as soon as it is allowed to pull.
+AUTOPSY (train rallies only, post-hoc, not a re-tune — any variant
+needs a fresh pre-registration): (i) reach is small: spaghetti
+abstains or has no proposal on 20 of 36 train corridors, so fusion
+touches 16; on prod arms it is ≈ the incumbent (r6 92 vs 90, r7 116
+vs 115) and most of the grid's +5 is r7-ORACLE (93/172 vs 90/149 —
+more track points, lower precision). (ii) The two mechanisms split
+cleanly with a W=0.001 arm (band pool on, cost term off): POOL-ONLY
+does BETTER than the best cost cell — r7 oracle 99 @ 0.57 vs 93 @
+0.54, r7 prod 117 vs 116 — so the cost term is net negative at every
+weight and the only real content of the trail is WHERE TO LOOK, not
+where the ball is. (iii) The bridge confirms it: `-F` is negative on
+every panel (r6 prod 90 → 82, r7 oracle 90 → 82) — trail pixels at
+DP-skipped frames sit > 12 px from the ball, and `spag.hits` lets a
+bridge point at the click frame pre-empt a correct DP point at f±1.
+(iv) M=1 ≡ M=8 within ±1 hit everywhere: the chooser is not the
+problem, the geometry is. (v) The truth-free confidence is DEGENERATE
+as built — `conf = inf` on every fused prod corridor printed (8/8) because the same
+trail-conditioned DP on a displaced corridor never finds a path
+(displaced band, no candidates); it would need the displaced arm to
+run the incumbent pool. Nulls (displaced anchors, seed 20260901): 0
+hits on every arm and panel, `-F` included. Strata (prod corridors):
+fusion's gains and losses are all inside `cand` (candidate existed,
+selection failed); `outwin` moves +3 on r6 prod (17 clicks) and 0 on
+r7 — the band does reach outside the chord box, rarely.
+READING: this is HANDOFF item 2 measured from the other side — the
+trail endpoints inherit the ~80–100 px contact-endpoint error and the
+chord-box geometry, so a trail is not a 12-px object and cannot be a
+per-frame unary; as a pool it helps a little (r7 oracle +9) and as a
+cost it hurts. The corridor-geometry fix (to-do #1) precedes any
+fusion re-try, exactly as the handoff ordered; the pool-only shape is
+the one lead worth pre-registering AFTER that fix. Not a 3-way model
+failure of principle: reach (20/36 abstain) and geometry both bind
+before the joint objective gets a vote.
+
+**Corridor geometry fix — LIVE on the frozen rule, r9 one-shot +48
+(2026-09-01, `vision/ballsearch/geom_lab.py` + `geom_fix.py` +
+`geom_tune.json` + `geom_grade_r9.txt`).** HANDOFF to-do #1: stratify
+first, then change the geometry under a written rule.
+STRATIFIED GRADING (`geom_lab.py`, r6/r7, incumbent dp-ccS+body
+W_P_SOFT=25, per click: nocor / outwin / nocand / cand-hit /
+cand-miss): of the incumbent's misses, SELECTION (candidate within
+12 px existed, the chain took another) is the largest stratum on every
+arm — 38 / 40 / 51 / 42 % (r6 prod / r6 oracle / r7 prod / r7 oracle)
+— and the true candidate was already inside the K=14 nearest-centre
+pool 97 %+ of the time (POOL-EXCLUDED 1 / 2 / 6 / 10; it is inside the
+top-14 BY p in 34/34, 40/40, 70/73, 70/71). OUT-OF-WINDOW is second,
+18 / 19 / 33 / 34 % of misses, almost all with a candidate present
+(13/17, 18/19, 40/48, 48/58), mostly BELOW the chord (bounces) and
+ABOVE (lobs); vertical overshoot beyond wy median 31–103 px, p90
+120–273. Endpoint errors of 100–330 px on several corridors (paddle
+nearest the decode vs where the ball was struck), the largest on
+oracle arms — contact-TIME is not the error, the paddle-vs-ball
+position is. Geometry-only counterfactuals picked the knobs: taller
+windows wy' = min(cap, 55 + 0.3L + kT·T) at cap 260 / kT 40 cover
+about half of r7-prod's outwin-with-candidate (20/40); a top-K-by-p
+pool admits ≥ the centre pool at every K.
+FIX INSTRUMENT (`geom_fix.py`, committed and pushed BEFORE any
+number): knobs cap ∈ {170,260,400} (wy ceiling; 170 = incumbent), kT ∈
+{0,40,80} (duration term), ep ∈ {0,60,120} (tapered end pad on the
+window inside 0.25 s of each endpoint PLUS END_R = 70 + ep), pool ∈
+{centre, p} (K=14 nearest window centre vs K=14 largest learned p;
+`corridor_dp.POOL_BY_P`). 54 cells, r6+r7 × prod+oracle, cross-fold
+p. RULE: max total r@12 s.t. pooled prec@12 ≥ incumbent; ties fewest
+knobs changed, then smaller cap, kT, ep, centre before p; none → dead
+and `grade 9|10` refuses. INCUMBENT cell reproduced 376 @ 0.633.
+SWEEP (total r@12 @ prec): pool alone 393 @ .653; kT 40 alone 385 @
+.642; cap 260 alone 414 @ .653; cap 260 + pool 431 @ .671; cap 260 +
+kT 40 + pool 457 @ .702; **cap 260 + kT 40 + ep 60 + pool 458 @ .704**
+(ep 60 vs 120 identical; kT 80 ≡ 40 or −1; cap 400 ≡ 260 everywhere —
+the ceiling binds at 260). Every knob helps independently and they
+add: +82 hits (+22 %) AND +7 pp precision on train. VERDICT: live,
+cell cap=260 kT=40 ep=60 pool=p frozen in `geom_tune.json`.
+ONE SHOT r9 (`geom_fix.py grade 9`, `geom_grade_r9.txt`): PROD r@12
+**479 @ 0.74** vs incumbent 431 @ 0.69 (+48, +11 %; r@8 376 vs 335,
+r@20 524 vs 477; ADDED@12 vs decode 35 vs 33), V 368/587, S 111/192;
+ORACLE 432 @ 0.73 vs 406 @ 0.69 (+26). Displaced-anchor nulls
+(seed 20260901): prod 0 / 14, oracle 17 / 0 of 779. Strata (incumbent
+geometry): the gain is 18 inside `cand` (431 → 449) and 30 from
+`outwin` (0 → 30) on prod; 8 + 18 on oracle. Under the fix's own
+geometry the outwin stratum shrinks 131 → 86 (prod) and 157 → 121
+(oracle) — a third of the formerly-outside clicks are now inside the
+box, and 30 of those 45 are then also tracked. Per corridor the win is
+concentrated: 272.58–274.58 (2.0 s, the long r9 exchange) 9 → 39, plus
++6 / +4 / +3 on three others; no corridor lost a hit on prod, one
+oracle corridor is unchanged at 0 (274.90–276.51). r10 pending the
+owner's re-cut clip (`check_clip.py` verifies the cut against the
+committed candidate CSV first).
+ONE SHOT r10 (`geom_grade_r10.txt`; clip RE-CUT from the owner's
+full-match WebM with `cut_clip.py`, `check_clip.py` PASS at 0.787 vs
+0.567 at ±1 — the r9 control cut from the same source passes at
+0.767 and the staged original reads 1.000, so the re-encode moves
+~20 % of strong candidates by > 3 px; the incumbent re-graded on the
+re-cut clip is prod 325 @ 0.69 (recorded 320 @ 0.67) and oracle 285
+@ 0.60 (recorded 309 @ 0.61) — encode noise alone is worth ~±20 on
+the oracle arm, remember that when reading r10 deltas): PROD r@12
+**323 @ 0.65 vs incumbent 325 @ 0.69** (−2, −4 pp; r@8 253 vs 259,
+r@20 358 vs 357); ORACLE 310 @ 0.63 vs 285 @ 0.60 (+25). Nulls prod
+5 / 0, oracle 29 / 0 (that null0 = 29 on oracle is the highest null
+on record; treat the oracle +25 as ≈ its own noise). Strata (prod,
+incumbent geometry): `cand` 325 → 318, `outwin` 0 → 5; under the
+fix's geometry outwin shrinks 97 → 60, i.e. the box now REACHES the
+lob (307.27–308.75, 0 → 5) and the bounce (308.75–309.53, 0 → 2)
+corridors that item 2 diagnosed, but the chain still does not track
+them. The prod loss is ONE corridor: 301.02–302.73 (1.72 s, the
+double-contact segment of to-do #4; prod merges two oracle corridors
+301.32–302.34 / 302.34–302.88) drops 25 → 12, against +4 / +2 / +5
+/ +2 elsewhere. On the oracle arm, where that segment is split
+correctly, the same corridors read 22 / 9 → 22 / 9 (no loss) and the
+gains are 302.88 +8, 308.77 +6, 310.15 +4, 313.05 +10.
+VERDICT ON THE PAIR: SPLIT — r9 clears by a wide margin (+48,
++5 pp), r10 ties on recall and loses precision on prod. The rule
+written before the r10 shot (HANDOFF to-do #1: adopt only if r10 also
+clears) keeps the INCUMBENT in production; no re-tune on r9/r10. What
+survives regardless: the geometry finding (the box was the miss on the
+lob/bounce corridors; outwin shrinks by a third on both rallies), and
+the mechanism of the one r10 loss — a taller/longer window over a
+mis-merged double-contact corridor admits the wrong object. That is a
+corridor-SEGMENTATION error (to-do #4's 301.02 segment), not a window
+error, and it says the fix should be gated on corridor quality
+(oracle-like single-contact corridors gain everywhere on both rallies).
+READING: the "candidate deserts" reading of item 2 was right — the box
+was the miss, not the detector; reaching the ball is not tracking it.
+Selection is the residual (nocand ≈ 8–15 % of clicks, nocor 0–2 %),
+which is where the fusion pool-only variant would act. Next
+pre-registration: geometry fix conditioned on corridor confidence
+(single-contact / short) + pool-only trail, tuned r6/r7, one shot
+r9/r10 — fresh rule, not a knob-turn of this one.
+
+## 2026-09-01 (late) — PATH-FIRST: the contact detector leaves the loop, and both shots clear
+
+Owner's reframing after the geometry-fix SPLIT: "slide the library
+paths over the raw candidate blobs with no contact guess at all, find
+the stretches where a book path lines up with a run of blobs, and then
+read the contacts off the ends of the matched path." Every tracker on
+record was corridor-first (pose → contact guess → chord → box → search
+inside the box); the geometry fix had just shown the box is the miss
+on lobs/bounces and that one mis-merged corridor eats a whole flight.
+Pre-registration `vision/ballsearch/pathfirst_gate.md` was frozen and
+pushed BEFORE any number: instrument, 12-cell grid, selection rule,
+bars (r@12 ≥ incumbent AND prec ≥ incumbent − 0.02 on BOTH r9 and
+r10; displaced + circular-time-shift nulls ≤ 5 %), secondary contact
+recovery, strata.
+
+Instrument (`pathfirst.py`): seeds = top-4 candidates per frame by
+learned p (p ≥ P_SEED, not on a body extremity); for every seed triple
+(f1, f1 + D/2 ± 2, f1 + D), D ∈ {12, 24, 40} frames, the unique
+drag-free arc through the three image points (6×6 linear solve,
+batched); physical filter (z ∈ [−0.5, 12] ft, 10–110 ft/s, court
+volume); support = Σ p-weighted kernel of the nearest blob per frame
+over the span ± D/2 minus a random-probe baseline from the same
+frames; NMS; refit with linear drag on inliers, grow both ways joining
+blobs within 10 px, refit every 6 joins, stop after GAP misses; greedy
+select by (support − weak r6/r7 launch prior)/length with ≤ 3 shared
+frames; contacts = flight ends. Bring-up fix before any tune number:
+the drag refit was seeded at k = 0.3, which bends a drag-free
+hypothesis 10–40 px off its own inliers before the first refit
+(self-test caught it: 5 inliers instead of 61 and a wild refit);
+seeded at k ≈ 0 the planted arc comes back 61/61.
+
+Tune (r6 + r7, cross-fold p-caches): EVERY cell beat the corridor
+incumbent 205 @ 0.623 — worst 220 @ 0.815, best 263 @ 0.807. The
+frozen rule (max r@12 s.t. prec ≥ incumbent; ties larger s_min,
+smaller gap, larger p_seed) picked p_seed=0.4 s_min=6 gap=6. One
+shot each:
+
+  r9  (779 clicks): corridor prod 431 @ 0.69 → path-first 537 @ 0.87
+      (V 421/587 @ 0.94, S 116/192 @ 0.69); nulls 0 / 1.
+  r10 (657, re-cut): 325 @ 0.69 → 422 @ 0.88 (V 316/487, S 106/170);
+      nulls 0 / 0.
+
+Both bars pass on both rallies by wide margins (+106 / +97 clicks,
++18 / +19 pp precision). ADOPTED. Where it wins, by the corridor
+incumbent's own strata: outwin r9 82/131 vs 0 and r10 74/97 vs 0 —
+exactly the lobs and bounces the box could never contain — plus
+cand 441 vs 431 / 338 vs 325 (selection) and nocand 12 / 10 vs 0
+(the arc projects through frames with no blob). Per-flight table:
+34 flights on r9, 28 on r10, rms 0.5–2.8 px, launches 7–71 ft/s.
+
+Secondary, kept secondary on purpose: oracle-contact RECALL from flight
+ends is better than the production detector (r9 24/29 vs 19/29 within
+0.10 s, median 0.046 vs 0.069 s; r10 19/26 vs 15/26) but path-first
+emits 64 / 56 boundaries against 29 / 26 oracle contacts, so it is a
+boundary list, not a contact list, until fragment breaks are merged.
+Bounce typing (z ≤ 0.3 ft, next start ≤ 0.15 s and ≤ 2 ft) fired 2× on
+r9 and 0× on r10 against 13 human bounces — the flights DO break at
+bounces (the S clicks are covered 0.69–0.78), the label does not fire;
+that rule was never tuned and should be tested on the r6/r7 bounce
+ledger under its own registration.
+
+Disclosure, recorded in the gate file: `launch_prior.json` was harvested
+from r6, r7, r9 AND r10, so spaghetti's mode prior read the evaluation
+rallies' own shots and its r9/r10 numbers on record are optimistic by an
+unmeasured amount. Path-first's weak launch prior uses the r6/r7 entries
+only (13 launches). Spaghetti is superseded as a production path; if it
+is ever re-registered the book is rebuilt r6/r7-only first.
+
+What this does not say: nothing about frames with no V/S click, nothing
+about contact precision, nothing about r20 (seal untouched, owner
+authorization required). The lesson for the ledger: the corridor
+family's ceiling was the CONTACT GUESS in the loop, not the emission
+scorer or the trail matcher — remove the guess and the same blobs, the
+same p, the same camera give +100 clicks per rally.
+
+## 2026-09-02 — owner watched the path-first overlay (r9, r10): first eyes on the track
+
+`render_pathfirst.py` overlays the adopted track on the clips. Owner's
+read after a few seconds of each, recorded verbatim in substance:
+
+- **Double hits at every contact** — one label near the start of the
+  stroke, one at the end of the follow-through. Cause: a flight ends
+  when the ball ARRIVES at the paddle and the next starts only once the
+  ball is clear of it again (seeds exclude near-body blobs, and a new
+  flight needs three seeds), so each real contact shows as an
+  arrive-label plus a depart-label ~0.1–0.25 s apart. This is the
+  64-vs-29 boundary count in the gate results. Fix = pair merge (end +
+  next start within a short window → one contact between them).
+- **A lob got a "hit" at the top / start of its descent.** Cause: the
+  3-seed hypotheses span at most 40 frames, so a long lob is found as
+  two flights and the seam is labelled. Fix = glue consecutive flights
+  whose 3D state is continuous across the join (same velocity at the
+  seam) before labelling.
+- **Lost the down-the-line speedup, near → far, in BOTH rallies.**
+  Fast and short: the tracker needs ~0.25 s of clean ball to seed a
+  flight; a speedup can be over first, and a near→far ball moves few
+  pixels per frame against the far court. This is to-do 0b's real
+  content and needs its own instrument (shorter D, or a
+  velocity-continuation seed off the previous flight's end).
+- **Ball read on the wrong side of the net once.** Depth is not
+  observed by a single camera; the image track was likely on the ball,
+  the 3D placement was not. Note for any court-side use of the 3D
+  output; irrelevant to the pixel grade.
+- **No false tracks seen in either rally**; some late starts and some
+  missed flights. Matches prec@12 0.87 / 0.88 and the at-click coverage
+  616/779, 479/657. r10 "saw hits better".
+
+Nothing here is a grade (the overlay reads no truth); it is the
+owner's eyes, and it orders to-do 0: (c) pair-merge + seam-glue first
+(cheap, likely fixes most of the label count), then (b) short/fast
+flights, then bounce typing.
+
+## 2026-09-02 — events layer: v1 fails by a hair, v2 dies on train, the owner's physical-distance rule passes
+
+Goal (to-do 0c): one event per change of flight from the path-first
+flights, track untouched. Truth = oracle contacts ∪ human bounces
+(r6 10, r7 13, r9 45, r10 39), greedy one-to-one match at ±0.10 s, F1.
+Baseline RAW = every flight boundary (what the overlay showed: r9 67
+boundaries for 45 truth events).
+
+v1 (pre-registered, `events_gate.md`): pair arrive+depart if the gap
+≤ 0.25 s, seam-glue if the arcs continue smoothly, lone departs pulled
+0.06 s earlier. Seam knobs were INERT on r6/r7 (no lobs there —
+owner-confirmed) and froze untested. r9 F1 .625 → .719, r10 .617 →
+.667, precision +20 pp, nulls cleared — and the recall guard (≥ RAW −
+0.05) FAILED on both, by 0.017 and 0.002. Bars never loosen: recorded
+as FAIL. Autopsy from the r9/r10 tables (disclosed as evaluation-born):
+the lost events were short bounce-then-hit gaps collapsed into one.
+
+v2: "pair only if the arcs meet in the image" (seam error ≤ E_PAIR).
+DEAD on r6/r7 (0.653 < v1 0.667): a hard volley reverses the ball, so
+two extrapolated arcs sit far apart even for one hit. Extrapolation
+error measures direction change, not event count. Never fired on r9/r10.
+
+v3 — owner, mid-session: "the double hit should maybe be physical
+distance rather than temporal distance". A ball on a paddle does not
+travel; a bounce-then-hit does. Pair iff the distance between where the
+ball ARRIVED (A's last tracked pixel) and where it LEFT (B's first) is
+≤ D_PAIR feet, pixels → feet by the local scale at that spot (a 1-ft
+offset projected at A's 3D end; depth error moves the position, not the
+scale — the owner had confirmed the wrong-side-of-net read was depth
+only), plus a 0.5 s sanity cap (a dink exchange returns the ball to the
+same spot after ~0.6 s+). Grid 1.5/2.5/4 ft × off 0.06/0.10 on r6/r7:
+0.667 / **0.708** / 0.681 — beats RAW 0.542 and v1 0.667. One shot:
+r9 F1 .731 (R .756 P .708; RAW .625; recall guard .728 cleared), r10
+.675 (R .718 P .636; RAW .617; guard .694 cleared); time-shift nulls
+.30 ± .06 / .33 ± .08. PASS both. ADOPTED. Second shot on this truth
+for the layer, on record.
+
+What the tables say now: pairs sit at 0–2.4 ft and match; nearly every
+remaining miss is an arrive/depart around a LONG gap (0.2–1.6 s, 4–39
+ft apart) where the tracker lost the ball, mostly just after a bounce,
+and re-acquired late. That is coverage (to-do 0b), the layer above is
+done. Hit/bounce typing (secondary) is still a coin flip (5/4, 3/1).
+Lesson worth keeping: the owner's physical framing beat two
+time-and-geometry framings on the first try — the quantity that
+distinguishes "one hit seen twice" from "two events" is how far the
+ball moved, nothing else.
+
+Owner, on the v3 overlay (r9): loses the ball for about two exchanges;
+notably loses it when it is CLOSE TO A PLAYER; and sometimes the ring
+has no trail. Answers for the record: a bare ring is the first frame of
+a new flight (the trail draws only the current flight) — i.e. the late
+re-acquire made visible; near-player loss is half by design (blobs
+within NEAR_BODY 16 px of an extremity are damped 0.3 and never seed a
+flight — the zero-false-track guarantee) and half the stream (small,
+fast, in front of a moving body). To-do 0b should start from the
+near-body seed rule: a velocity-continuation seed off the previous
+flight's end could re-enter the body zone without opening the door to
+body blobs in general.
+
+## 2026-09-02 — share cuts, a rally-stats prototype, and the 3D view
+
+Owner asked for a Reddit-able version of the overlay (pose points, no
+labels, ball always red) and, "something crazy", rally stats: hits per
+player, who sped up first, where the last shot was.
+
+`render_pathfirst.py --reddit`: full 1280×720, no HUD/labels, red ball
++ trail with white outline, pose keypoints + COCO skeleton of the four
+tracked players from the rally npz. Both share cuts are committed
+(force-added past the mp4 ignore) so they outlive the session. Memory
+note: a render or a stats run holds ~10 GB (pathfirst.context); two at
+once OOM-kill one of them, which is how the first r9 render died.
+
+`rally_stats.py`, rules written before any rally was looked at: an
+event is a HIT by player p if the ball at the event sits within 3 ft
+(local px/ft scale) of p's paddle proxy or wrist within ±0.08 s; the
+same player twice inside 0.6 s counts once (the double-label the owner
+saw); a speed-up is the first flight after the 3rd hit launched at
+≥ 38 ft/s that STARTS at a hit; the last shot is the last hit, and the
+ball's last position is the end of the final flight in court feet.
+Identity = position at the serve (ankle midpoint through the z=0
+homography; near = y > 22, left/right by image x). Names enter only in
+`--grade`, by majority vote of the owner's labeled contacts over
+tracks, for evaluation.
+
+Result: hits per player within ±1 for all 8 player-rallies (r9
+10/5/10/5 vs truth 9/5/10/5; r10 4/9/9/5 vs 5/8/9/4). Last hitter
+right in both (Tuionetoa 281.82 / Nelson 317.54, truth 281.83 /
+317.44), and r10's "ball last tracked 1.5 ft outside the left sideline
+on the near side" is what a lunge that ends a rally looks like.
+Speed-up WRONG in both: r9 named a 71 ft/s flight at 260.97 (truth:
+first fast shot Nelson 257.84), r10 a 42 ft/s flight at 303.18 (truth:
+Tuionetoa's speed-up 300.23). Diagnosis needs no labels: the launch
+speed of a one-camera 3D arc is dominated by the depth component the
+camera cannot pin, and short fragments (post-bounce, post-seam) fit
+with inflated speeds. Requiring the flight to start at a hit was the
+one label-free refinement applied (before that, both rallies named a
+fragment that started mid-air). A speed measure the camera supports
+(image-plane speed at local scale, or hit-to-hit time) is the honest
+next try; NOT tuned here — r9/r10 are evaluation rallies.
+
+`rally_3d.py`: the path-first flights are already 3D arcs (position,
+velocity, drag, through P), so the "3D fit" is a viewer, not a fit:
+court3d.write_viewer with the flights sampled at 60 fps, the four
+players' floor tracks (5-sample running median), and the attributed
+hits as impacts. Depth caveat stands; gaps are drawn as gaps. Free
+check printed by the script: r9 17 net crossings, 4 under the 34-in
+tape; r10 10 crossings, 0 under — the under-tape count is a direct,
+label-free read of how often the 3D fit's depth/height is wrong, and
+it is the number to watch if the fit is ever tightened.
+
+## 2026-09-02 — speed measures on the training rallies: nothing the camera sees separates fast from slow
+
+Owner's framing: "turn it into 3D and then count pixels per second for
+speed". `speed_lab.py 6 7` (TRAIN only; r9/r10 not run) computes, per
+flight that starts at an attributed hit, four measures against the
+owner's fast/slow labels: the arc's launch |v0|, the median 3D speed
+along the sampled arc, the median IMAGE speed (px/s ÷ local px/ft — the
+owner's measure, no depth in it), and the time to the next hit.
+`speed_lab_train.txt` is the table. Labeled fast shots (5): image speed
+20, 24, 22, 12, 37 ft/s; labeled slow (2): 25, 18; serve/return 31, 25,
+30. Launch and 3D speed: fast 18–32 ft/s, slow 27 and 85 (a bad fit).
+No speed measure separates. Two reasons, both structural: the camera
+sits at (9.5, 97.6, 26.1) ft — centred, 54 ft behind the near baseline,
+26 ft up — so a drive down the court moves along the camera axis and
+barely moves in the image, and the fast flights are the short fragments
+where the tracker catches only part of the path, which a drag fit reads
+as slow (fast shots at 12–22 mph on the 3D read are not real). The one
+thing that separates on train is hit-to-hit time (fast ≤ 0.62 s, slow
+≥ 0.78 s), but the r10 label times already on record show dink volleys
+0.46 s apart and a labeled speed-up followed 1.09 s later, so that rule
+is not worth a shot. Verdict: "who sped up first" is not readable from
+this camera angle with this tracker. What would read it: a side or
+elevated-corner camera (down-court motion becomes image motion), or a
+tracker that holds the whole fast flight so the 3D speed is fit from
+both ends. Not a knob to turn on r9/r10.
+
+
+
+## 2026-09-02 — hand-off seeding: the track clears both shots, the events layer above does not, and the rule says no
+
+The owner's overlay notes said where the ball goes missing: next to a
+player, for about two exchanges a rally, and the down-the-line speed-up
+in both evaluation rallies. Both are the same frozen design choice —
+the path-first tracker will not SEED from a blob within 16 px of a pose
+extremity (its zero-false-track guarantee) and its shortest seed span is
+12 frames — so the fix was designed as a second pass, not a knob:
+`handoff.py`. Where a pass-1 flight ends, open a zone (W frames, R_ZONE
+px around the last tracked point); inside it a hypothesis may start on
+a near-body blob at a lower p and on 6/8/12-frame spans; everything
+after the seed is pathfirst's own solve / plausible / support / nms /
+grow; new flights are admitted only where they overlap nothing already
+chosen. Pre-registered in `handoff_gate.md` before a number existed:
+16-cell grid on r6/r7, selection rule, one shot on r9/r10 with bars =
+track strictly better at precision ≥ incumbent − 0.02, nulls ≤ 3, AND
+the adopted events layer re-run on the new track keeping F1 ≥ adopted
+− 0.03, on both rallies.
+
+Tune (r6/r7): every cell keeps precision and both nulls; the gain is
+small and all r6 (125/127 → 134/138, +3 flights); r7 adds nothing in 12
+of 16 cells. Selected r_zone 70 / w 18 / p_hand 0.25 / s_min 3, 277 @
+0.810 vs 263 @ 0.807.
+
+The shot. Track: r9 537 → 563 @ 0.87 (r8 416 → 439, at-click 616 → 650),
+r10 422 → 446 @ 0.89 (r8 327 → 350, at-click 479 → 503), nulls 0/2 and
+0/1, five new flights each, all 0.13–0.47 s, densities 0.19–0.90. Both
+track bars pass on both rallies. Events layer on the new track: r9 F1
+.758 (recall .711 → .800, precision held .72), PASS; r10 F1 .636
+(recall .692 → .718 but precision .643 → .571), bar .645, FAIL by
+0.009. Verdict NOT ADOPTED; the incumbent path-first track and v3
+events stay production; nothing re-run, no bar moved.
+
+What it means. The mechanism the owner asked for works: the new flights
+are real ball (the displaced null is 0, the tight r8 radius gains as
+much as r12), and they sit exactly where the ball was being lost. The
+cost is structural, not noise: five short flights are ten new flight
+ENDS, and the events layer labels flight ends; its seam rule was tuned
+on the incumbent's ends, which are long-flight ends, and a 0.2 s flight
+ending against a player's body is a different object. On r9 the new
+ends turned lost gaps into matched arrive/depart pairs; on r10 they
+fired more unmatched events than matched. So the honest next step is
+not a knob on either layer alone but a joint gate: re-tune events on the
+hand-off track (r6/r7), one shot, both layers adopted together or
+neither. That is a seal, so it waits for the owner.
+
+Two smaller things shipped alongside. `label_picks.md` is the click
+list the owner asked for (rallies with fast exchanges, inside the split
+rules: r17 train and r21 fresh seal first; r22–r30 holdout untouched).
+And `render_pathfirst.py --bridge` is the demo convention the owner
+approved: a gap ≤ 0.5 s between tracked flights is drawn as a dashed
+straight segment with a sliding dashed ring and a standing caption that
+it is inferred, not tracked. It touches no track, event, stat or grade.
+
+On the "we used to have shot speed" question: the speeds in the
+original rally-1 demo (dinks 13–21 mph, attacks 25–48 mph) came from a
+hand-labeled ball path anchored at hand-labeled contact times, i.e.
+complete flights with known ends. No change removed that; the automatic
+tracker never had it, because it produces fragments whose ends are not
+the contacts, and a launch speed read off a fragment on a one-camera
+3D fit is depth-dominated (speed_lab, rally_stats). Complete flights
+that start at the hit are what the hand-off pass moves toward, which
+is why it and the shot-speed number are the same thread.
+
+
+## 2026-09-02 (late) — the better learner: trees lose on the tail, and the learning curve says the next move is clicks
+
+Owner's go: swap the per-candidate logistic for gradient-boosted trees
+on the same 14 features, same labels, same discipline, gate on r6/r7
+cross-fold first, then re-tune path-first and shoot once. Gate written
+before any number (`learner_gate.md`): three fixed tree configs, pick by
+mean cross-rally AUC, PASS only if AUC ≥ logistic AND the 97 %-recall
+negative-kept rate ≤ logistic, in both directions.
+
+Numbers. Config A (15 leaves, 300 rounds): AUC 0.906 / 0.946 vs the
+logistic's 0.904 / 0.939 — better both ways, by amounts that are noise
+on 161–198 positives. Tail: at 97 % held-out positive recall, trees
+trained on r7 keep 0.635 of r6's negatives where the logistic keeps
+0.319. DEAD. Why the tail: that threshold is set by the five
+lowest-scored true balls out of 198; a tree ensemble fit on 161
+positives has never seen r6's blurriest near-body balls and scores
+them near the floor, while the logistic's smooth surface degrades
+gracefully. The tracker cares about that tail (P_SEED, support
+weights), which is why it was a bar.
+
+Learning curve (diagnostic, `learner_curve.py`): subsample the train
+positives at 25/50/75/100 %, keep all negatives, five seeds. The
+logistic is flat in labels — AUC 0.907 → 0.904 (6→7) and 0.922 → 0.939
+(7→6) from a quarter of the clicks to all of them: on these features it
+is saturated. The trees climb the whole way (0.869 → 0.906,
+0.929 → 0.946; tail 0.82 → 0.64) and only overtake the logistic at
+≥ 75 % of the positives. That is the shape of a label-limited learner.
+So the honest answer to "tweak or label?" for this layer is LABEL: at
+roughly double the positives (r17, r21, r4, r20 per label_picks.md)
+the curve says trees clear this gate, and a patch-appearance model —
+the real step change — sits further up the same curve. No knob is worth
+turning before those clicks exist. `learner.py train` re-runs under the
+same gate text when they do; `pathfirst.py` keeps the inert PF_PXS
+cache-suffix hook so the re-tune is one env var away.

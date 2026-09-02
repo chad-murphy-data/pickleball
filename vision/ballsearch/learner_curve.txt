@@ -1,0 +1,19 @@
+train r6 (198 pos) -> test r7 (161 pos)
+   25% pos (n= 50) logit: AUC 0.9073 ± 0.0096   neg_kept@97% 0.691 ± 0.038
+   25% pos (n= 50) trees: AUC 0.8688 ± 0.0421   neg_kept@97% 0.717 ± 0.110
+   50% pos (n= 99) logit: AUC 0.8983 ± 0.0087   neg_kept@97% 0.755 ± 0.032
+   50% pos (n= 99) trees: AUC 0.8770 ± 0.0247   neg_kept@97% 0.698 ± 0.057
+   75% pos (n=148) logit: AUC 0.9035 ± 0.0045   neg_kept@97% 0.738 ± 0.016
+   75% pos (n=148) trees: AUC 0.9156 ± 0.0029   neg_kept@97% 0.589 ± 0.049
+  100% pos (n=198) logit: AUC 0.9042 ± 0.0000   neg_kept@97% 0.723 ± 0.000
+  100% pos (n=198) trees: AUC 0.9060 ± 0.0000   neg_kept@97% 0.694 ± 0.000
+train r7 (161 pos) -> test r6 (198 pos)
+   25% pos (n= 40) logit: AUC 0.9216 ± 0.0225   neg_kept@97% 0.581 ± 0.167
+   25% pos (n= 40) trees: AUC 0.9290 ± 0.0104   neg_kept@97% 0.817 ± 0.099
+   50% pos (n= 80) logit: AUC 0.9307 ± 0.0099   neg_kept@97% 0.403 ± 0.116
+   50% pos (n= 80) trees: AUC 0.9231 ± 0.0185   neg_kept@97% 0.941 ± 0.040
+   75% pos (n=121) logit: AUC 0.9396 ± 0.0047   neg_kept@97% 0.343 ± 0.037
+   75% pos (n=121) trees: AUC 0.9435 ± 0.0049   neg_kept@97% 0.707 ± 0.082
+  100% pos (n=161) logit: AUC 0.9394 ± 0.0000   neg_kept@97% 0.319 ± 0.000
+  100% pos (n=161) trees: AUC 0.9464 ± 0.0000   neg_kept@97% 0.635 ± 0.000
+exit 0

@@ -1,0 +1,8 @@
+r6: 57099 labeled cands, 198 pos
+r7: 68476 labeled cands, 161 pos
+  cfg A {'max_leaf_nodes': 15, 'max_iter': 300, 'learning_rate': 0.05}: 6->7 {'auc': 0.906, 'neg_kept': 0.6943}  7->6 {'auc': 0.9464, 'neg_kept': 0.635}  mean AUC 0.9262
+  cfg B {'max_leaf_nodes': 31, 'max_iter': 300, 'learning_rate': 0.05}: 6->7 {'auc': 0.9059, 'neg_kept': 0.7393}  7->6 {'auc': 0.9329, 'neg_kept': 0.9278}  mean AUC 0.9194
+  cfg C {'max_leaf_nodes': 15, 'max_iter': 600, 'learning_rate': 0.03}: 6->7 {'auc': 0.9085, 'neg_kept': 0.5542}  7->6 {'auc': 0.9407, 'neg_kept': 0.7449}  mean AUC 0.9246
+  incumbent logistic: {'6->7': {'auc': 0.9042, 'neg_kept': 0.7229}, '7->6': {'auc': 0.9394, 'neg_kept': 0.3192}}
+GATE 1: DEAD (selected A); wrote emission_gbt.json
+exit 0

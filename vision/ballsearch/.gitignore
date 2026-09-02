@@ -3,3 +3,4 @@
 *.pkl
 *.mp4
 __pycache__/
+*.webm

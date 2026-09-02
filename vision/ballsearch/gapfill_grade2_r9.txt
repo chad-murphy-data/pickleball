@@ -1,0 +1,9 @@
+rally 9 (v2 product): cell {'gap_max': 0.8, 'd_meet': 40.0}; incumbent path-first {'h12': 537, 'prec': 0.87, 'f1': 0.731}
+  tracked      trackpts 1257  at-click 616/779  r@8 416  r@12 537  r@20 590  prec@12 0.87  ADDED@12 72
+  tracked+inf  trackpts 1371  at-click 651/779  r@8 434  r@12 563  r@20 623  prec@12 0.86  ADDED@12 88
+  inferred     trackpts  114  at-click 57/779  r@8 30  r@12 38  r@20 49  prec@12 0.67  ADDED@12 23
+  inf-null-disp trackpts  114  at-click 57/779  r@8 0  r@12 0  r@20 0  prec@12 0.00  ADDED@12 0
+  inf-null-tsh trackpts  114  at-click 54/779  r@8 0  r@12 0  r@20 0  prec@12 0.00  ADDED@12 0
+  gaps 26: filled 14; inferred frames 114
+  events v3 on filled flights: n=44 recall 0.756 prec 0.773 F1 0.764 (adopted 0.731)
+  BARS: tracked bit-identical & r@12 537 == 537: True; inferred prec 0.667 >= 0.5: True; inferred r@12 38 >= 10: True; inferred nulls 0/0 <= 3: True; events F1 0.764 >= 0.701: True  =>  PASS

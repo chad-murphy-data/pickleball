@@ -1,0 +1,7 @@
+{
+ "rule": "v2: max pooled inferred r@12 on r6+r7 s.t. inferred prec >= 0.5 and nulls <= 3; ties smaller gap_max, smaller d_meet",
+ "gap_max": 0.8,
+ "d_meet": 40.0,
+ "train_inf_h12": 22,
+ "train_inf_prec": 0.512
+}

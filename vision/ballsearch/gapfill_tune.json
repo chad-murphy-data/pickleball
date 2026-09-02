@@ -1,0 +1,7 @@
+{
+ "gap_max": 0.8,
+ "d_meet": 20.0,
+ "train_h12": 273,
+ "train_prec": 0.782,
+ "rule": "max pooled r@12 on r6+r7 s.t. prec >= inc-0.03 and nulls <= 3; ties smaller gap_max, smaller d_meet"
+}

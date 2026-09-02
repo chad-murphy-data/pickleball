@@ -1,0 +1,38 @@
+rally 9: cell {'gap_max': 0.8, 'd_meet': 20.0}; incumbent path-first {'h12': 537, 'prec': 0.87, 'f1': 0.731}
+  path-first   trackpts 1257  at-click 616/779  r@8 416  r@12 537  r@20 590  prec@12 0.87  ADDED@12 72
+  gap-fill     trackpts 1351  at-click 642/779  r@8 429  r@12 556  r@20 614  prec@12 0.87  ADDED@12 84
+    gf[V]      trackpts 1351  at-click 473/587  r@8 363  r@12 440  r@20 459  prec@12 0.93  ADDED@12 71
+    gf[S]      trackpts 1351  at-click 169/192  r@8 66  r@12 116  r@20 155  prec@12 0.69  ADDED@12 13
+    inferred   trackpts   94  at-click 46/779  r@8 24  r@12 30  r@20 39  prec@12 0.65  ADDED@12 18
+  null-disp    trackpts 1351  at-click 642/779  r@8 0  r@12 0  r@20 0  prec@12 0.00  ADDED@12 0
+  null-tshift  trackpts 1351  at-click 590/779  r@8 1  r@12 2  r@20 7  prec@12 0.00  ADDED@12 0
+  gaps 26: filled 13, long 1, no-meet 12; inferred frames 94
+  events v3 on filled flights: n=45 recall 0.756 prec 0.756 F1 0.756 (adopted 0.731)
+  BARS: r@12 556 > 537: True; prec 0.866 >= 0.85: True; nulls 0/2 <= 3: True; events F1 0.756 >= 0.701: True  =>  PASS
+-- gaps: start end dur | d_c t_c | verdict
+    255.13  255.22 0.07 |   1.8  255.18 | filled
+    256.40  256.58 0.17 |  19.4  256.52 | filled
+    257.90  258.43 0.52 | 109.3  258.43 | no-meet
+    258.73  258.80 0.05 |   2.9  258.75 | filled
+    259.07  259.40 0.32 |   8.5  259.22 | filled
+    259.90  260.12 0.20 |  18.3  259.92 | filled
+    261.78  262.03 0.23 |  48.0  262.03 | no-meet
+    263.10  263.40 0.28 |  46.0  263.10 | no-meet
+    263.88  263.93 0.03 |  11.3  263.93 | filled
+    264.75  265.50 0.73 |  67.4  264.87 | no-meet
+    265.83  266.02 0.17 |  63.6  266.00 | no-meet
+    266.67  266.92 0.23 |   7.6  266.88 | filled
+    267.77  268.07 0.28 | 105.0  267.97 | no-meet
+    268.80  269.33 0.52 |  94.7  268.95 | no-meet
+    269.83  270.35 0.50 | 286.0  269.98 | no-meet
+    270.67  270.78 0.10 |  11.0  270.72 | filled
+    271.47  271.82 0.33 |  28.9  271.47 | no-meet
+    272.48  272.73 0.23 |  65.9  272.62 | no-meet
+    274.03  274.25 0.20 |  11.8  274.25 | filled
+    274.83  276.47 1.62 |   ---    ---   | long
+    277.18  277.30 0.10 |   2.2  277.25 | filled
+    277.83  277.92 0.07 |   3.2  277.90 | filled
+    278.57  278.88 0.30 |  60.8  278.62 | no-meet
+    279.70  279.73 0.02 |  18.8  279.73 | filled
+    280.65  280.98 0.32 | 107.6  280.78 | no-meet
+    281.80  281.83 0.02 |   8.6  281.82 | filled

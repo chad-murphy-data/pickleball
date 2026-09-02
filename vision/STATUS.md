@@ -175,6 +175,103 @@ kills whole chains on faint fast drives; soft > hard > none. The
 owner-designed repertoire trail matcher (52-shot book) rides the same
 p as a precision/bridging arm (r9 oracle 177 r@12 @ 0.74). Product
 questions (bounce ledger, eviction) not yet re-graded on this stream.
+**Fusion (2026-09-01, `vision/ballsearch/fusion.py`): the three-part
+model (emission + trail proposals + DP as one cost) was built,
+self-tested and tuned blind on r6/r7 under a pre-registered rule —
+DEAD: best cell 381 @ 0.620 vs incumbent 376 @ 0.633, recall falls
+monotonically with trail weight, r9/r10 never run. Train autopsy: the
+trail helps only as a candidate POOL (W≈0 arm beats every cost cell),
+hurts as a per-frame cost, bridges sit > 12 px off — the corridor
+geometry error it inherits binds first (HANDOFF item 2).**
+**Corridor geometry fix (2026-09-01, `vision/ballsearch/geom_lab.py`
++ `geom_fix.py`): stratified grading on r6/r7 showed the incumbent's
+misses were selection (38–51 %, true candidate already in the pool)
+and out-of-window (18–34 %, candidate present, lobs above / bounces
+below the chord box, overshoot p90 120–273 px). Four geometry knobs
+(taller box cap 260, duration term kT 40, tapered end pad ep 60,
+top-K-by-learned-p pool) tuned blind on r6/r7 cross-fold under a
+frozen rule: 376 @ 0.633 → 458 @ 0.704. ONE SHOT r9: prod **479 r@12
+@ prec 0.74** vs 431 @ 0.69 (oracle 432 @ 0.73 vs 406 @ 0.69),
+displaced nulls ≤ 17/779. ONE SHOT r10 (clip re-cut from the owner's
+WebM, checker-verified): prod 323 @ 0.65 vs 325 @ 0.69 — a tie on
+recall, −4 pp precision, all from ONE mis-merged double-contact
+corridor (25 → 12) while every other corridor holds or gains and the
+diagnosed lob/bounce corridors are reached (0 → 5, 0 → 2) but not
+tracked. SPLIT verdict → the incumbent stays in production per the
+rule written before the r10 shot. The geometry finding survives (the
+box was the miss); the loss is corridor segmentation, the next
+registration gates the taller box on corridor quality.**
+
+**Path-first ball tracker (2026-09-01, `vision/ballsearch/pathfirst.py`,
+pre-registered in `pathfirst_gate.md` before any number) — ADOPTED, the
+new incumbent.** Owner's framing: slide the library paths over the raw
+blobs with no contact guess, read contacts off the matched path's ends.
+Instrument: 3-seed drag-free arc hypotheses over the whole-frame
+candidate cache (top-4 by learned p per frame), p-weighted support minus
+a random-probe baseline, NMS, drag refit + growth, greedy selection by
+density; no contact detector, no corridor box, no pose beyond the
+incumbent's body damping. Tuned blind on r6/r7 cross-fold: every one of
+12 cells beat the corridor incumbent (205 @ 0.623 → chosen 263 @ 0.807).
+ONE SHOT r9: **537 r@12 @ prec 0.87** vs 431 @ 0.69; ONE SHOT r10
+(re-cut clip): **422 @ 0.88** vs 325 @ 0.69; displaced and time-shift
+nulls ≤ 1/779 and 0/657. The gain is the out-of-window stratum the box
+could never reach (r9 82/131 vs 0, r10 74/97 vs 0) plus a small
+selection gain. Secondary, not gating: oracle-contact recovery from
+flight ends 24/29 (r9) and 19/26 (r10) within 0.10 s vs the production
+detector's 19/29 and 15/26 — recall only; 64 / 56 boundaries were
+emitted, so no contact-precision claim, and bounce TYPING is unbuilt (0
+typed on r10 vs 13 in the human ledger). What it does not measure:
+frames without a V/S click, r20 (seal untouched). Leak disclosed in the
+gate file: spaghetti's shot book was harvested from r9/r10 too;
+path-first reads r6/r7 entries only.**
+
+**Events from flight ends (2026-09-02, `vision/ballsearch/events.py`,
+`events_gate.md`) — v3 ADOPTED.** One event per change of flight, on
+top of the adopted path-first track (track asserted unchanged). v1
+paired arrive/depart by TIME gap: F1 up on both r9/r10 but failed the
+pre-registered recall guard by 0.017 / 0.002 (short bounce-then-hit gaps
+collapsed to one event) — recorded FAIL. v2 (arcs must meet in the
+image) DEAD on r6/r7, never fired. v3 = the owner's framing, pair by
+PHYSICAL distance between where the ball arrived and where it left
+(≤ 2.5 ft at the local px/ft scale; 0.5 s sanity cap): r6/r7 0.708 vs
+RAW 0.542; ONE SHOT r9 **F1 .731** (RAW .625; recall .756, precision
+.708), r10 **.675** (RAW .617; .718 / .636); time-shift null .30 / .33.
+Truth = oracle contacts ∪ human bounces (45 / 39). Second r9/r10 shot
+for this layer, disclosed. Remaining misses are lost-track gaps
+(coverage), not pairing. Hit/bounce typing still unbuilt (5/4, 3/1).**
+
+**Rally stats prototype (2026-09-02, `vision/ballsearch/rally_stats.py`)
+— hits per player and last shot WORK, speed-up does NOT.** Three rules
+fixed before looking (hit = v3 event within 3 ft of a paddle proxy,
+de-duplicated at 0.6 s; speed-up = first ≥ 38 ft/s launch after the
+3rd hit; last shot = last hit + final flight end in court ft), identity
+by court position only. Evaluation vs the owner's r9/r10 labels: hit
+counts within ±1 for all 8 player-rallies (r9 10/5/10/5 vs 9/5/10/5,
+r10 4/9/9/5 vs 5/8/9/4), last hitter right twice; first speed-up wrong
+twice (3D launch speed is depth-dominated and fragment starts inflate
+it). `rally_3d.py` writes the orbitable 3D court view of the same
+flights (`court3d_r{9,10}.html`). Prototype, not a graded channel.
+
+**Hand-off seeding (2026-09-02, `vision/ballsearch/handoff.py`,
+`handoff_gate.md`) — SHOT, NOT ADOPTED.** Pass 2 over the frozen
+path-first track: short-span seeds allowed next to a player, only inside
+a zone at a pass-1 flight end. Tuned r6/r7 (277 @ 0.810 vs 263 @ 0.807),
+one shot r9/r10: track r@12 537→563 and 422→446 at unchanged precision
+with clean nulls, but the adopted events layer re-run on the new flights
+gives F1 .758 (r9, passes) / .636 (r10, bar .645, FAILS). Rule said both
+rallies; incumbent stays. Reading: the coverage mechanism works, the
+layer above pays for the extra flight ends. Next gate = events re-tune
+on the hand-off track, adopted together or not at all.
+
+**Better learner (2026-09-02, `vision/ballsearch/learner.py`,
+`learner_gate.md`) — GATE 1 DEAD, learner is label-limited.**
+Gradient-boosted trees on the same 14 candidate features, same
+positives (359 owner V clicks on r6/r7), pre-registered. Cross-rally
+AUC 0.906 / 0.946 vs logistic 0.904 / 0.939 (noise-sized) but the
+97 %-recall tail keeps 0.635 of negatives vs 0.319 → dead, no shot.
+Learning curve: logistic flat from 25 % to 100 % of labels (feature-
+saturated); trees still rising at the full count and overtaking only
+at ≥ 75 %. Next step is clicks (label_picks.md), not model code.
 
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),

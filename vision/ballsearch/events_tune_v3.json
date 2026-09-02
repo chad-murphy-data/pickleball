@@ -1,0 +1,61 @@
+{
+ "raw_f1": 0.5423728813559322,
+ "v1_f1": 0.6666666666666666,
+ "grid": [
+  {
+   "d_pair": 1.5,
+   "off": 0.06,
+   "f1": 0.6666666666666666,
+   "n": 28,
+   "matched": 17,
+   "ntruth": 23
+  },
+  {
+   "d_pair": 1.5,
+   "off": 0.1,
+   "f1": 0.6274509803921569,
+   "n": 28,
+   "matched": 16,
+   "ntruth": 23
+  },
+  {
+   "d_pair": 2.5,
+   "off": 0.06,
+   "f1": 0.7083333333333334,
+   "n": 25,
+   "matched": 17,
+   "ntruth": 23
+  },
+  {
+   "d_pair": 2.5,
+   "off": 0.1,
+   "f1": 0.6666666666666666,
+   "n": 25,
+   "matched": 16,
+   "ntruth": 23
+  },
+  {
+   "d_pair": 4.0,
+   "off": 0.06,
+   "f1": 0.6808510638297872,
+   "n": 24,
+   "matched": 16,
+   "ntruth": 23
+  },
+  {
+   "d_pair": 4.0,
+   "off": 0.1,
+   "f1": 0.6808510638297872,
+   "n": 24,
+   "matched": 16,
+   "ntruth": 23
+  }
+ ],
+ "rule": "v3: pair iff arrive->depart distance <= d_pair ft (local px/ft scale) and gap <= 0.5 s; max pooled F1 on r6+r7; ties smaller d_pair, smaller off; must beat RAW and the v1 cell else dead",
+ "r_seam": 8.0,
+ "a_seam": 20.0,
+ "dt_pair": 0.5,
+ "dead": false,
+ "d_pair": 2.5,
+ "off": 0.06
+}

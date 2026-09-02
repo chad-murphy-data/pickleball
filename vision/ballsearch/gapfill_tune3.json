@@ -1,0 +1,4 @@
+{
+ "rule": "v3: max pooled inferred3 r@12 on r6+r7 s.t. inferred3 prec >= 0.5 and nulls <= 3; ties smaller w_anc, then bounce off",
+ "dead": true
+}

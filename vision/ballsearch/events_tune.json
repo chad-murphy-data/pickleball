@@ -1,0 +1,251 @@
+{
+ "raw_f1": 0.5423728813559322,
+ "grid": [
+  {
+   "r_seam": 8.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.25,
+   "off": 0.0,
+   "f1": 0.5777777777777778,
+   "n": 22,
+   "matched": 13,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 8.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.25,
+   "off": 0.06,
+   "f1": 0.6666666666666666,
+   "n": 22,
+   "matched": 15,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 8.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.4,
+   "off": 0.0,
+   "f1": 0.5454545454545454,
+   "n": 21,
+   "matched": 12,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 8.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.4,
+   "off": 0.06,
+   "f1": 0.6363636363636365,
+   "n": 21,
+   "matched": 14,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 8.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.25,
+   "off": 0.0,
+   "f1": 0.5777777777777778,
+   "n": 22,
+   "matched": 13,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 8.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.25,
+   "off": 0.06,
+   "f1": 0.6666666666666666,
+   "n": 22,
+   "matched": 15,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 8.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.4,
+   "off": 0.0,
+   "f1": 0.5454545454545454,
+   "n": 21,
+   "matched": 12,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 8.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.4,
+   "off": 0.06,
+   "f1": 0.6363636363636365,
+   "n": 21,
+   "matched": 14,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 16.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.25,
+   "off": 0.0,
+   "f1": 0.5777777777777778,
+   "n": 22,
+   "matched": 13,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 16.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.25,
+   "off": 0.06,
+   "f1": 0.6666666666666666,
+   "n": 22,
+   "matched": 15,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 16.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.4,
+   "off": 0.0,
+   "f1": 0.5454545454545454,
+   "n": 21,
+   "matched": 12,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 16.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.4,
+   "off": 0.06,
+   "f1": 0.6363636363636365,
+   "n": 21,
+   "matched": 14,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 16.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.25,
+   "off": 0.0,
+   "f1": 0.5777777777777778,
+   "n": 22,
+   "matched": 13,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 16.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.25,
+   "off": 0.06,
+   "f1": 0.6666666666666666,
+   "n": 22,
+   "matched": 15,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 16.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.4,
+   "off": 0.0,
+   "f1": 0.5454545454545454,
+   "n": 21,
+   "matched": 12,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 16.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.4,
+   "off": 0.06,
+   "f1": 0.6363636363636365,
+   "n": 21,
+   "matched": 14,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 30.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.25,
+   "off": 0.0,
+   "f1": 0.5777777777777778,
+   "n": 22,
+   "matched": 13,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 30.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.25,
+   "off": 0.06,
+   "f1": 0.6666666666666666,
+   "n": 22,
+   "matched": 15,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 30.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.4,
+   "off": 0.0,
+   "f1": 0.5454545454545454,
+   "n": 21,
+   "matched": 12,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 30.0,
+   "a_seam": 20.0,
+   "dt_pair": 0.4,
+   "off": 0.06,
+   "f1": 0.6363636363636365,
+   "n": 21,
+   "matched": 14,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 30.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.25,
+   "off": 0.0,
+   "f1": 0.5777777777777778,
+   "n": 22,
+   "matched": 13,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 30.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.25,
+   "off": 0.06,
+   "f1": 0.6666666666666666,
+   "n": 22,
+   "matched": 15,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 30.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.4,
+   "off": 0.0,
+   "f1": 0.5454545454545454,
+   "n": 21,
+   "matched": 12,
+   "ntruth": 23
+  },
+  {
+   "r_seam": 30.0,
+   "a_seam": 40.0,
+   "dt_pair": 0.4,
+   "off": 0.06,
+   "f1": 0.6363636363636365,
+   "n": 21,
+   "matched": 14,
+   "ntruth": 23
+  }
+ ],
+ "rule": "max pooled F1 over r6+r7 (events vs oracle contacts \u222a human bounces, TOL 0.10); ties smaller r_seam, a_seam, dt_pair, off 0; must beat RAW pooled F1 0.542 else dead",
+ "dead": false,
+ "r_seam": 8.0,
+ "a_seam": 20.0,
+ "dt_pair": 0.25,
+ "off": 0.06
+}

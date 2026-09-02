@@ -1,0 +1,56 @@
+track check: r@12 537 @ 0.87 == adopted
+rally 9: 34 flights; truth 29 contacts + 16 bounces = 45 events; cell {'r_seam': 8.0, 'a_seam': 20.0, 'dt_pair': 0.25, 'off': 0.06}
+  events         n= 44 matched= 32 recall 0.711 prec 0.727 F1 0.719 med|dt| 0.034
+  RAW            n= 67 matched= 35 recall 0.778 prec 0.522 F1 0.625 med|dt| 0.022
+  PROD(all)      n= 35 matched= 21 recall 0.467 prec 0.600 F1 0.525 med|dt| 0.045
+  PROD(cont)     n= 35 matched= 19 recall 0.655 prec 0.543 F1 0.594 med|dt| 0.045
+  events(cont)   n= 44 matched= 22 recall 0.759 prec 0.500 F1 0.603 med|dt| 0.029
+  null F1 (time-shift x200): 0.297 ± 0.063  -> bar 0.487
+  BARS: F1 0.719 >= RAW 0.625: True; recall 0.711 >= RAW-0.05 0.728: False; > null: True  =>  FAIL
+  typed (secondary): emitted hit 32 / bounce 12; matched hit right/wrong 17/6, bounce right/wrong 4/5; ledger 29/16
+-- events: t | how | kind | nearest truth dt (truth kind) | seam e / ang / dt
+   254.124 | serve   | hit    | +0.062 (C) | 
+   254.805 | pair    | hit    |   ---  (unmatched) | e   5.6 ang 115.1 dt -0.02
+   255.189 | pair    | hit    | -0.011 (C) | e  13.3 ang 127.8 dt 0.08
+   256.097 | pair    | bounce | +0.002 (B) | e   2.3 ang  95.2 dt 0.00
+   256.509 | pair    | bounce | -0.011 (C) | e 226.1 ang 152.7 dt 0.18
+   257.900 | arrive  | hit    | +0.057 (C) | gap 0.53
+   258.374 | depart  | hit    | -0.054 (B) | gap 0.53
+   258.751 | pair    | bounce | -0.031 (C) | e  48.1 ang 178.0 dt 0.07
+   259.067 | arrive  | hit    |   ---  (unmatched) | gap 0.33
+   259.340 | depart  | hit    |   ---  (unmatched) | gap 0.33
+   259.922 | pair    | bounce | +0.025 (C) | e 183.8 ang 179.6 dt 0.22
+   260.968 | pair    | bounce | +0.040 (B) | e   1.3 ang 147.1 dt 0.00
+   261.301 | pair    | hit    | +0.022 (C) | e  54.6 ang 131.0 dt 0.02
+   262.051 | pair    | hit    | +0.015 (C) | e 241.0 ang 169.7 dt 0.25
+   263.100 | arrive  | bounce |   ---  (unmatched) | gap 0.30
+   263.340 | depart  | hit    | +0.011 (C) | gap 0.30
+   263.943 | pair    | hit    | +0.037 (C) | e  46.1 ang 151.0 dt 0.05
+   264.750 | arrive  | bounce | -0.009 (B) | gap 0.75
+   265.440 | depart  | hit    |   ---  (unmatched) | gap 0.75
+   265.993 | pair    | bounce |   ---  (unmatched) | e 227.6 ang 175.6 dt 0.18
+   266.889 | pair    | bounce | -0.006 (C) | e  92.4 ang 155.3 dt 0.25
+   267.767 | arrive  | bounce | -0.048 (B) | gap 0.30
+   268.007 | depart  | hit    | -0.059 (C) | gap 0.30
+   268.800 | arrive  | hit    | +0.081 (B) | gap 0.53
+   269.274 | depart  | hit    |   ---  (unmatched) | gap 0.53
+   269.834 | arrive  | bounce | -0.039 (C) | gap 0.52
+   270.290 | depart  | hit    | +0.026 (C) | gap 0.52
+   270.709 | pair    | hit    | +0.005 (C) | e  77.4 ang 132.9 dt 0.12
+   271.467 | arrive  | hit    | +0.085 (C) | gap 0.35
+   271.757 | depart  | hit    |   ---  (unmatched) | gap 0.35
+   272.618 | pair    | bounce |   ---  (unmatched) | e 356.8 ang 159.8 dt 0.25
+   274.255 | pair    | hit    | +0.027 (B) | e 123.4 ang 151.0 dt 0.22
+   274.834 | arrive  | hit    | -0.070 (C) | gap 1.63
+   276.407 | depart  | hit    |   ---  (unmatched) | gap 1.63
+   276.855 | pair    | hit    | +0.022 (B) | e   5.8 ang 124.9 dt -0.02
+   277.247 | pair    | hit    |   ---  (unmatched) | e  14.1 ang  77.2 dt 0.12
+   277.901 | pair    | hit    | -0.020 (C) | e  77.8 ang 179.9 dt 0.08
+   278.567 | arrive  | hit    | +0.059 (B) | gap 0.32
+   278.824 | depart  | hit    | -0.039 (C) | gap 0.32
+   279.726 | pair    | hit    | -0.098 (C) | e  42.7 ang 172.5 dt 0.03
+   280.650 | arrive  | hit    | +0.055 (B) | gap 0.33
+   280.924 | depart  | hit    | -0.053 (C) | gap 0.33
+   281.822 | pair    | hit    | -0.004 (C) | e  35.3 ang 169.0 dt 0.03
+   282.472 | pair    | hit    |   ---  (unmatched) | e   4.8 ang 115.5 dt -0.02
+-- truth not matched: 254.51B, 256.71B, 259.20C, 262.96B, 265.00C, 265.86B, 266.11C, 269.00C, 272.24B, 272.84C, 276.51C, 277.37C, 282.13B

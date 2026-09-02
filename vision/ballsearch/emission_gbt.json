@@ -1,0 +1,80 @@
+{
+ "selected": "A",
+ "results": {
+  "A": {
+   "cfg": {
+    "max_leaf_nodes": 15,
+    "max_iter": 300,
+    "learning_rate": 0.05
+   },
+   "xval": {
+    "6->7": {
+     "auc": 0.906,
+     "neg_kept": 0.6943
+    },
+    "7->6": {
+     "auc": 0.9464,
+     "neg_kept": 0.635
+    }
+   },
+   "mean_auc": 0.9262
+  },
+  "B": {
+   "cfg": {
+    "max_leaf_nodes": 31,
+    "max_iter": 300,
+    "learning_rate": 0.05
+   },
+   "xval": {
+    "6->7": {
+     "auc": 0.9059,
+     "neg_kept": 0.7393
+    },
+    "7->6": {
+     "auc": 0.9329,
+     "neg_kept": 0.9278
+    }
+   },
+   "mean_auc": 0.9194
+  },
+  "C": {
+   "cfg": {
+    "max_leaf_nodes": 15,
+    "max_iter": 600,
+    "learning_rate": 0.03
+   },
+   "xval": {
+    "6->7": {
+     "auc": 0.9085,
+     "neg_kept": 0.5542
+    },
+    "7->6": {
+     "auc": 0.9407,
+     "neg_kept": 0.7449
+    }
+   },
+   "mean_auc": 0.9246
+  }
+ },
+ "gate1": "DEAD",
+ "feats": [
+  "mot",
+  "mot_prev",
+  "mot_next",
+  "persist",
+  "tophat",
+  "yellow",
+  "gray",
+  "std9",
+  "area",
+  "crowd",
+  "dbody",
+  "xn",
+  "yn",
+  "pk"
+ ],
+ "train_rallies": [
+  6,
+  7
+ ]
+}
