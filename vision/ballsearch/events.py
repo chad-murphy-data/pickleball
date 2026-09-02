@@ -22,6 +22,10 @@ from corridor_lab import prod_contacts                      # noqa: E402
 
 SP = Path(__file__).parent
 TUNE_JSON = SP / "events_tune.json"
+TUNE_JSON_V2 = SP / "events_tune_v2.json"
+V1_FROZEN = dict(r_seam=8.0, a_seam=20.0, dt_pair=0.25)   # v1 verdict, carried into v2
+GRID_EPAIR = (40.0, 80.0, 150.0)
+GRID_OFF_V2 = (0.06, 0.10, 0.14)
 FPS = pf.FPS
 DT_SEAM = 0.12
 TOL = 0.10
@@ -79,9 +83,11 @@ def z_at_end(fl, t0):
     return float(c3.arc_pos(fl["theta"], [t0 + fl["fb"] / FPS - fl["t_ref"]])[0][2])
 
 
-def events(ctx, chosen, r_seam, a_seam, dt_pair, off):
+def events(ctx, chosen, r_seam, a_seam, dt_pair, off, e_pair=float("inf")):
     """list of dicts(t, kind, how) — kind in hit|bounce (secondary), how in
-    serve|pair|arrive|depart."""
+    serve|pair|arrive|depart. v2 (events_gate.md): a pair is one event only
+    if the two arcs also MEET in the image plane (e <= e_pair); otherwise
+    the gap holds two events even when it is short."""
     t0 = ctx["t0"]
     out = []
     if not chosen:
@@ -92,7 +98,7 @@ def events(ctx, chosen, r_seam, a_seam, dt_pair, off):
         kind = "bounce" if z_at_end(A, t0) <= BOUNCE_Z else "hit"
         if dt <= DT_SEAM and e <= r_seam and ang <= a_seam:
             continue                                   # one flight, two pieces
-        if dt <= dt_pair:
+        if dt <= dt_pair and e <= e_pair:
             out.append(dict(t=closest_time(ctx, A, B, tA1, tB0), kind=kind,
                             how="pair", e=e, ang=ang, dt=dt))
         else:
@@ -208,6 +214,51 @@ def tune():
     print("wrote", TUNE_JSON)
 
 
+def tune_v2():
+    ctxs = [pf.context(r) for r in (6, 7)]
+    fls = [flights(ctx)["chosen"] for ctx in ctxs]
+    truths = [truth_events(ctx["c"]) for ctx in ctxs]
+    raw_tot = dict(n=0, matched=0, ntruth=0)
+    v1_tot = dict(n=0, matched=0, ntruth=0)
+    for ctx, ch, (cont, bnc) in zip(ctxs, fls, truths):
+        tr = sorted(cont + bnc)
+        r = prf([e["t"] for e in raw_events(ctx, ch)], tr)
+        raw_tot["n"] += r["n"]; raw_tot["matched"] += r["matched"]; raw_tot["ntruth"] += len(tr)
+        r1 = prf([e["t"] for e in events(ctx, ch, off=0.06, **V1_FROZEN)], tr)
+        v1_tot["n"] += r1["n"]; v1_tot["matched"] += r1["matched"]; v1_tot["ntruth"] += len(tr)
+    raw_f1, v1_f1 = pooled_f1(raw_tot), pooled_f1(v1_tot)
+    print(f"RAW pooled F1 {raw_f1:.3f}; v1 frozen cell pooled F1 {v1_f1:.3f}")
+    grid = []
+    for e_pair in GRID_EPAIR:
+        for off in GRID_OFF_V2:
+            tot = dict(n=0, matched=0, ntruth=0)
+            per = []
+            for ctx, ch, (cont, bnc) in zip(ctxs, fls, truths):
+                tr = sorted(cont + bnc)
+                ev = events(ctx, ch, off=off, e_pair=e_pair, **V1_FROZEN)
+                r = prf([e["t"] for e in ev], tr)
+                tot["n"] += r["n"]; tot["matched"] += r["matched"]; tot["ntruth"] += len(tr)
+                per.append(f"r{ctx['rally']} {r['matched']}/{r['n']} of {len(tr)}")
+            f1 = pooled_f1(tot)
+            grid.append(dict(e_pair=e_pair, off=off, f1=f1, **tot))
+            print(f"e_pair={e_pair:4.0f} off={off:.2f}  pooled F1 {f1:.3f}  | " + "  ".join(per),
+                  flush=True)
+    rule = ("v2: max pooled F1 over r6+r7 with v1's r_seam/a_seam/dt_pair frozen; ties "
+            "larger e_pair (fewer splits), smaller off; must beat RAW and the v1 cell "
+            "else dead")
+    best = sorted(grid, key=lambda g: (-g["f1"], -g["e_pair"], g["off"]))[0]
+    out = dict(raw_f1=raw_f1, v1_f1=v1_f1, grid=grid, rule=rule, **V1_FROZEN)
+    if best["f1"] > max(raw_f1, v1_f1):
+        out.update(dead=False, e_pair=best["e_pair"], off=best["off"])
+        print(f"VERDICT v2: e_pair={best['e_pair']:g} off={best['off']} (F1 {best['f1']:.3f} "
+              f"vs RAW {raw_f1:.3f} / v1 {v1_f1:.3f}) — freeze and one-shot r9/r10")
+    else:
+        out.update(dead=True)
+        print("VERDICT v2: no cell beats RAW and v1 — DEAD, do not run r9/r10")
+    TUNE_JSON_V2.write_text(json.dumps(out, indent=1))
+    print("wrote", TUNE_JSON_V2)
+
+
 def pooled_f1(tot):
     rec = tot["matched"] / max(1, tot["ntruth"])
     prec = tot["matched"] / max(1, tot["n"])
@@ -228,7 +279,8 @@ def grade(rally, cell):
     tr = sorted(cont + bnc)
     print(f"rally {rally}: {len(ch)} flights; truth {len(cont)} contacts + {len(bnc)} "
           f"bounces = {len(tr)} events; cell {cell}")
-    ev = events(ctx, ch, cell["r_seam"], cell["a_seam"], cell["dt_pair"], cell["off"])
+    ev = events(ctx, ch, cell["r_seam"], cell["a_seam"], cell["dt_pair"], cell["off"],
+                cell.get("e_pair", float("inf")))
     times = [e["t"] for e in ev]
     r_ev = prf(times, tr)
     r_raw = prf([e["t"] for e in raw_events(ctx, ch)], tr)
@@ -283,23 +335,28 @@ def main():
     ap.add_argument("--a-seam", type=float)
     ap.add_argument("--dt-pair", type=float)
     ap.add_argument("--off", type=float)
+    ap.add_argument("--e-pair", type=float)
+    ap.add_argument("--v2", action="store_true", help="use the v2 registration (events_tune_v2.json)")
     a = ap.parse_args()
     if a.cmd == "tune":
-        tune(); return
+        (tune_v2 if a.v2 else tune)(); return
     over = {k: v for k, v in (("r_seam", a.r_seam), ("a_seam", a.a_seam),
-                              ("dt_pair", a.dt_pair), ("off", a.off)) if v is not None}
+                              ("dt_pair", a.dt_pair), ("off", a.off),
+                              ("e_pair", a.e_pair)) if v is not None}
+    keys = ("r_seam", "a_seam", "dt_pair", "off") + (("e_pair",) if a.v2 else ())
+    tj = TUNE_JSON_V2 if a.v2 else TUNE_JSON
     if a.rally in pf.EVAL_RALLIES:
         assert not over, "no knob overrides on r9/r10"
-        assert TUNE_JSON.exists(), "tune first"
-        t = json.loads(TUNE_JSON.read_text())
+        assert tj.exists(), "tune first"
+        t = json.loads(tj.read_text())
         assert not t.get("dead"), "events layer is DEAD; grade 9|10 refused"
-        cell = {k: t[k] for k in ("r_seam", "a_seam", "dt_pair", "off")}
+        cell = {k: t[k] for k in keys}
     else:
         cell = dict(r_seam=16.0, a_seam=40.0, dt_pair=0.40, off=0.0)
-        if TUNE_JSON.exists() and not over:
-            t = json.loads(TUNE_JSON.read_text())
+        if tj.exists() and not over:
+            t = json.loads(tj.read_text())
             if not t.get("dead"):
-                cell = {k: t[k] for k in ("r_seam", "a_seam", "dt_pair", "off")}
+                cell = {k: t[k] for k in keys}
         cell.update(over)
     grade(a.rally, cell)
 

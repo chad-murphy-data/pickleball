@@ -79,3 +79,53 @@ median |dt| of matched events; the PROD baseline both ways.
 r9/r10 truth read once each by `grade`. No tracker output is a label.
 The adopted track is not modified; if it changes, the assert fails and
 the run is void. Temporal-gate holdout untouched.
+
+## v1 results (2026-09-02; events_grade_r{9,10}.txt) — FAIL on the recall guard
+
+Tune: RAW pooled F1 0.542 on r6+r7. The seam knobs (R_SEAM, A_SEAM) were
+INERT on both train rallies — no consecutive flights there fall within
+DT_SEAM with a small seam error — so the rule froze them at their
+smallest values (8 px, 20°) untested; the two knobs that moved were
+OFF (0 → 0.06 lifted r6 from 4 to 6 matched) and DT_PAIR (0.25 beat
+0.40). Frozen: r_seam 8, a_seam 20, dt_pair 0.25, off 0.06; pooled F1
+0.667. `events_tune.json`.
+
+| rally | truth (C+B) | RAW | events v1 | PROD (all / contacts-only) | null F1 |
+|---|---|---|---|---|---|
+| r9 | 29+16 = 45 | 67 emitted, 35 matched, R .778 P .522 F1 .625 | 44 emitted, 32 matched, R .711 P .727 **F1 .719** | .525 / .594 | .297 ± .063 |
+| r10 | 26+13 = 39 | 55, 29, R .744 P .527 F1 .617 | 42, 27, R .692 P .643 **F1 .667** | .627 / .556 | .326 ± .085 |
+
+Track check passed both (r@12 537 / 422 == adopted). F1 bar and null
+bar pass on both; the RECALL guard fails on both — r9 0.711 vs the
+floor 0.728, r10 0.692 vs 0.694 (3 and 2 truth events lost). Bars
+never loosen: **v1 is NOT adopted; RAW boundaries remain the state on
+record.** Typed (secondary): bounce right/wrong 4/5 on r9, 3/1 on r10 —
+the z-rule is a coin flip, as expected before its own registration.
+
+Autopsy (READ FROM THE r9/r10 TABLES — this is evaluation truth being
+used to form a hypothesis, disclosed as such): every lost truth event
+sits under a "pair" whose seam error e is 100–360 px (r9 256.51 e 226,
+259.92 e 184, 262.05 e 241, 265.99 e 228, 272.62 e 357; r10 295.05
+e 116, 299.03 e 114). A short gap whose two arcs do NOT meet in the
+image plane is not one hit seen twice; it is two events (a bounce and
+the hit that follows it within a quarter second). The arrive/depart
+pairs that ARE one hit have e ≤ ~80 px. Separately, "depart" events
+after a long gap are late by more than OFF (the late re-acquisition
+the owner saw): that is coverage (to-do 0b), not this layer.
+
+## v2 registration (frozen 2026-09-02, before any v2 number)
+
+One added check: a gap ≤ DT_PAIR is ONE event only if e ≤ E_PAIR; a
+short gap whose arcs do not meet holds TWO events (arrive at end(A),
+depart at start(B) − OFF), exactly as a long gap does. Everything else
+as v1, with v1's r_seam 8 / a_seam 20 / dt_pair 0.25 carried frozen.
+Grid: E_PAIR ∈ {40, 80, 150} px × OFF ∈ {0.06, 0.10, 0.14} s (OFF
+re-opened because r6's serve and lone departs read late at 0.06;
+tuned on r6/r7 only). Rule: max pooled F1 on r6+r7; ties larger E_PAIR
+(fewer splits), smaller OFF; must beat BOTH RAW (0.542) and the v1
+cell's pooled F1 on r6+r7, else DEAD. Bars on r9/r10 unchanged from
+v1 (F1 ≥ RAW, recall ≥ RAW − 0.05, F1 > null mean + 3 sd, both
+rallies). The hypothesis was formed on the r9/r10 tables; the knobs are
+tuned on r6/r7 only; the r9/r10 shot is the SECOND on this truth for
+this layer and is recorded as such. `events.py tune --v2`,
+`grade <r> --v2`.
