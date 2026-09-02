@@ -19,5 +19,16 @@ matter a lot -- see the DreamBreaker-specialist section there and
 (run: `python value_cap/phase1_value_model.py`, writes
 `player_value.csv`). It's dyad- and role-aware and reuses the
 production PICKLES race engine; every simplifying assumption is stated
-in its docstring and in `phase1_first_cut.md`. Not yet built: Phase 2
-(price curve fit against real roster archetypes), Phase 3 (site).
+in its docstring and in `phase1_first_cut.md`.
+
+`phase2_price_model.py` is a first pass at turning V into dollars
+(run: `python value_cap/phase2_price_model.py`). It sweeps the
+star-premium exponent instead of picking one, and searches every
+possible $1M roster instead of checking hand-picked examples. Read
+`phase2_notes.md` before touching alpha or the floor -- it surfaced a
+hard ceiling constraint (a high enough alpha prices a single player
+above the entire team cap) and a benchmark problem (comparing rosters
+against an all-replacement team can't tell a stars-heavy build from a
+balanced one; candidate rosters need to be compared to each other, not
+to replacement level) that the real archetype fit still needs to
+account for. Not yet built: Phase 3 (site).
