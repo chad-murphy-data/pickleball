@@ -5268,5 +5268,9 @@ next try; NOT tuned here — r9/r10 are evaluation rallies.
 velocity, drag, through P), so the "3D fit" is a viewer, not a fit:
 court3d.write_viewer with the flights sampled at 60 fps, the four
 players' floor tracks (5-sample running median), and the attributed
-hits as impacts. Depth caveat stands; gaps are drawn as gaps.
+hits as impacts. Depth caveat stands; gaps are drawn as gaps. Free
+check printed by the script: r9 17 net crossings, 4 under the 34-in
+tape; r10 10 crossings, 0 under — the under-tape count is a direct,
+label-free read of how often the 3D fit's depth/height is wrong, and
+it is the number to watch if the fit is ever tightened.
 
