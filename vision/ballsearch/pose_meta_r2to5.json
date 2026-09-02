@@ -8,7 +8,8 @@
  "gap_s": 0.6,
  "runtime_s": {
   "r2": "~900 (first run)",
-  "r3+r4": 1328.1
+  "r3+r4": 1328.1,
+  "r5": 589.6
  },
  "rallies": {
   "2": {
@@ -37,7 +38,12 @@
    "t1": 116.78
   },
   "5": {
-   "status": "pending (extraction running 2026-09-02 ~19:00Z; stamp updated when it lands)"
+   "detections": 6331,
+   "tracks": 12,
+   "sided_tracks": 11,
+   "window": "labels",
+   "t0": 117.28,
+   "t1": 144.34
   }
  },
  "note": "CPU fallback for r2-r5; windows = prefill-contact label windows (serve - 1.5 s to next serve - gap), which cover the ball_audit spans. npz files gitignored."
