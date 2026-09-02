@@ -1,5 +1,12 @@
 # Ball-click label picks (2026-09-02) — for the owner to click
 
+**Superseded the same day by `click_setup.md`** (owner: "don't give me
+the minimum amount"): nine rallies in three sittings, tools built and
+staging committed. This file keeps the original reasoning for the four
+core picks; the expanded list adds r18 / r19 (free short train
+rallies) and a contact-pass-first tier r3 / r4 / r2 / r5 (prefill-only
+today; the ball tool cannot build off prefills).
+
 Purpose: 2–4 more rallies with **ball V/S clicks** (the `ball_path_r{N}.csv`
 kind, per `labeling_protocol.md`), chosen for FAST EXCHANGES, because
 that is where the tracker loses the ball (owner overlay observations +

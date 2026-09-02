@@ -28,6 +28,11 @@ WINDOWS = {                            # rally -> (serve, end, npz)
     7:  (164.70, 175.20, SP / "r0007.npz"),
     9:  (252.60, 282.53, SP / "r0009.npz"),
     10: (294.30, 318.45, SP / "r0010.npz"),
+    17: (427.31, 442.25, SP / "r0017.npz"),   # click package 2026-09-02: first tap - 1.0 / last tap + 2.0 (audit-tool span); npz pending
+    18: (455.69, 461.91, SP / "r0018.npz"),   # click package 2026-09-02: first tap - 1.0 / last tap + 2.0 (audit-tool span); npz pending
+    19: (477.29, 481.75, SP / "r0019.npz"),   # click package 2026-09-02: first tap - 1.0 / last tap + 2.0 (audit-tool span); npz pending
+    20: (484.28, 506.64, SP / "r0020.npz"),   # click package 2026-09-02: first tap - 1.0 / last tap + 2.0 (audit-tool span); npz pending
+    21: (515.99, 523.62, SP / "r0021.npz"),   # click package 2026-09-02: first tap - 1.0 / last tap + 2.0 (audit-tool span); npz pending
 }
 
 

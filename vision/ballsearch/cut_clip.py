@@ -4,6 +4,15 @@ COMMITTED candidate CSV so the cut cannot drift from what was graded
 (2026-09-01, for the r10 re-cut; pair with check_clip.py).
 
   python3 cut_clip.py <rally> <full_match source> [out.mp4]
+  python3 cut_clip.py --stage <rally> <full_match source> [out.mp4]
+
+--stage (2026-09-02, click-package staging for rallies that have NO
+committed candidate CSV yet): the window comes from the owner's manual
+contact taps instead — offset = first contact - 1.5 s (rounded down to
+0.1 s), frames through last contact + 2.5 s — the same span the ball
+audit tool frames (PRE_S 1.0 / dead = last + 2.0) with a margin. The
+printed offset is what ball_candidates.py --offset takes; once that CSV
+is committed the default mode reproduces the cut exactly.
 
 offset = t_s(frame k) - k/60 from data/vision/ball_candidates_r{N}.csv.gz,
 frames = max(frame) + 2 (the extractor emits nothing at frame 0 and the
@@ -31,6 +40,17 @@ def spec(rally):
     return round(off, 2), max(k for k, _ in rows) + 2
 
 
+def stage_spec(rally):
+    """(offset, frames) from the manual contact taps (never prefill)."""
+    import sys as _s
+    _s.path.insert(0, "/home/user/pickleball/vision")
+    from make_ball_audit import load_impacts
+    imps, _dead = load_impacts(rally=rally)
+    off = int((imps[0] - 1.5) * 10) / 10.0
+    n = int(round((imps[-1] + 2.5 - off) * 60))
+    return off, n
+
+
 def ffmpeg_bin():
     exe = shutil.which("ffmpeg")
     if exe:
@@ -40,9 +60,13 @@ def ffmpeg_bin():
 
 
 def main():
-    rally, src = int(sys.argv[1]), sys.argv[2]
-    out = sys.argv[3] if len(sys.argv) > 3 else f"r{rally}_clip.mp4"
-    off, n = spec(rally)
+    args = sys.argv[1:]
+    staging = args and args[0] == "--stage"
+    if staging:
+        args = args[1:]
+    rally, src = int(args[0]), args[1]
+    out = args[2] if len(args) > 2 else f"r{rally}_clip.mp4"
+    off, n = stage_spec(rally) if staging else spec(rally)
     cmd = [ffmpeg_bin(), "-y", "-loglevel", "error", "-ss", f"{off:.2f}",
            "-i", src, "-frames:v", str(n), "-r", "60",
            "-vf", "scale=1280:720", "-an", "-c:v", "libx264",
