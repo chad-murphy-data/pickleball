@@ -108,7 +108,11 @@ def main():
           f"window {a.serve:.1f}-{a.end:.1f}s")
 
     # ================= answer key opens here =================
-    imps, dead = load_impacts(rally=a.rally)
+    # prefill_ok: r2-r5 carry only PREFILL contact rows (approximate
+    # times). They bound the gate panel and the check-1 window, not
+    # any tuned quantity, so an approximate bracket is sufficient;
+    # load_impacts prints a WARNING when it falls back.
+    imps, dead = load_impacts(rally=a.rally, prefill_ok=True)
     labels = list(csv.DictReader(open(DATA / f"ball_path_r{a.rally}.csv")))
 
     # ---- CHECK 1: V hit rate on the gate panel
