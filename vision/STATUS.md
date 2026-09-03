@@ -12,6 +12,36 @@ This file is **where are we**. `vision/ballsearch/ROADMAP.md` is
 **where are we going** — the phase plan, its exit criteria, and the
 parked threads.
 
+## In plain language (2026-09-03, owner recap — corrected)
+
+Five sentences, so a "where are we" answer does not have to be assembled
+from the tables below. Every claim here has its number in this file.
+
+- **Where the players are: solved.** Court geometry to 0.06 ft, identity
+  99.25% over 45,689 rallies (from referee logs, no camera), hitter side
+  95%, four-way 85%.
+- **Who hit it and in what order: solved.** Shot counts 161/162, side
+  alternation 0 violations / 229 contacts, team assignment 0
+  contradictions.
+- **When they hit it: works off the BALL, dead off POSE.** From a ball
+  path the machine now beats human labels on a sealed rally (73.1% vs
+  65.4%). From body pose alone it is 40.7% against an 85 bar — closed.
+- **The ball itself: found more often than "when visible" suggests, and
+  lost two OPPOSITE ways.** 64% was isolated single frames; dense
+  contiguous is 92% in-pixels. It is lost when too FAST (streaks carry no
+  yellow, and yellow is the scorer's largest positive weight) and when too
+  CLOSE TO A BODY (dbody + crowd fire on kitchen dinks — r5's failure),
+  plus simply gone on lobs out of frame. "Hidden by bodies" is half the
+  story.
+- **Speed / bounce / landing: three different verdicts, not one.** SPEED is
+  broken — a labeled `slow` shot reads 84.9 mph and a labeled `fast` reads
+  18.0 in `speed_lab_train.txt`; one camera cannot see toward-or-away
+  motion and no label count fixes it. BOUNCES are EXACT given human ball
+  positions (r10 human fit = truth 13/13 across 26/26 segments, and all 5
+  disputed calls verified real) — the tracker feeding them is what is off
+  (8 v 13). LANDING/net crossings are in between: 23/23 on r9, 14–15/21
+  on r10.
+
 ## What works
 
 | channel | number | chance / null | status |
@@ -275,7 +305,10 @@ AUC 0.906 / 0.946 vs logistic 0.904 / 0.939 (noise-sized) but the
 97 %-recall tail keeps 0.635 of negatives vs 0.319 → dead, no shot.
 Learning curve: logistic flat from 25 % to 100 % of labels (feature-
 saturated); trees still rising at the full count and overtaking only
-at ≥ 75 %. Next step is clicks (label_picks.md), not model code.
+at ≥ 75 %. ~~Next step is clicks (label_picks.md), not model code.~~
+**SUPERSEDED 2026-09-03 — clicks are NOT the next step; see "Label
+saturation" below.** That reading came from the within-rally curve
+alone; the between-rally curve is flat too.
 
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),
@@ -285,7 +318,82 @@ kitchen-band occupancy. Three findings already withdrawn by its own
 checks (deep poach, crossing rate, ellipse area) — the instrument
 polices itself.
 
+## Label saturation — both axes measured, both flat
+
+**How many clicked rallies does the emission learner need? Zero more**
+(2026-09-03, `vision/ballsearch/label_curve.py` → `label_curve.txt`;
+diagnostic only, no knob / gate / seal, eval + holdout rallies excluded
+by construction). Two axes, both now measured:
+
+| axis | instrument | result |
+|---|---|---|
+| positives WITHIN a rally | `learner_curve.py` | flat — AUC 0.907 @ 50 pos vs 0.904 @ 198 |
+| number of RALLIES pooled | `label_curve.py` | flat — see below |
+
+Leave-one-rally-out over the seven clicked train rallies (663k labeled
+candidates, 1,888 positives):
+
+| k rallies | AUC | neg kept @97% recall |
+|---|---|---|
+| 1 | 0.9377 ± 0.0174 | 0.555 |
+| 2 | 0.9426 ± 0.0165 | 0.554 |
+| 3 | 0.9436 ± 0.0158 | 0.551 |
+| 4 | 0.9451 ± 0.0158 | 0.554 |
+| 5 | 0.9458 ± 0.0155 | 0.554 |
+| 6 | 0.9461 ± 0.0153 | 0.558 |
+
+k=1 → k=6 moves AUC **+0.008**, inside the ±0.015 between-rally spread,
+and the operational metric — junk surviving at 97% recall — does not
+improve at all (0.555 → 0.558; the 3→4 and 5→6 steps are negative).
+So the remaining reasons to click a ball path are GRADING and the
+r18/r19 roadmap batch, **not training**. What this does NOT say: it
+grades the emission scorer in isolation (not the full path-first +
+gap-fill stack), and it says nothing about CONDITIONING — r5's
+dbody/crowd failure is a regime problem, so the n-way refit is still
+the right build, for coverage of kitchen play rather than sample count.
+
+**Click cost by channel, since the question is where effort should go:**
+ball path 362 frame-clicks/rally (68,029 for all 188 rallies, 28–57 h);
+contact type + time ~13 taps/rally (2,350 for the whole match, 3–7 h).
+Contact typing is **28× cheaper per rally** and is the thin channel.
+
+**Scale, for the record (owner asked about 10,000 rallies):** at 362
+clicks/rally that is 3.6M clicks, 1,500–3,000 h. It buys nothing for this
+model class — a 14-feature logistic on candidate boxes is saturated. It
+would only matter by changing the INSTRUMENT (a learned detector trained
+from scratch), and the detector question is closed for a separate reason:
+the oracle licenses human labels only.
+
 ## Measured, not yet a channel
+
+**Swing envelopes** (inventoried 2026-09-03, owner ask: "can we do it over
+the course of X frames"). `data/vision/state_labels_chicago0725.csv` holds
+36 episodes, **26 complete** `start → impact → end` — but 24 are rally 1
+and 2 are rally 6. Geometry: full episode 0.92 s median (27 frames @30,
+range 0.47–1.57), backswing 0.52 s (16 fr), follow-through 0.30 s (9 fr).
+No single window width — 14–47 frames, 3.3× spread.
+NOT a Gate-C knob-turn: `fastslow_check` v2 killed the per-contact pose
+MAGNITUDE version (raw `arm_cmax` AUC 0.445 inverted; drive 0.49× dink,
+lowest of every type; best fold-honest 61.1% vs 56.9% majority, mostly
+cadence), but `arm_cmax` is a maximum and is invariant to how long a motion
+lasts — duration was never a feature anywhere in that run.
+BLOCKER is the join, not the idea: rally 1 has the envelopes AND the fine
+types (dink 8 / smash 5 / counter 5 / speed-up 2 → 8 vs 12 pooled under the
+frozen label-semantics rule) but no pose npz (~20 min CPU) and prefill-era
+types; r6/r7/r17 have pose + trustworthy manual pace and 2 complete
+episodes between them. Only 4 of 26 episodes join to a manual pace label.
+RUNNABLE TODAY after one pose extraction: **forehand vs backhand**, 14 bh /
+12 fh, flat 50% baseline. Per-contact arm (no envelopes) is 58 manual
+slow/fast contacts on pose-bearing train rallies, balanced 29/29 — the arm
+fastslow already saturated near 60%.
+POWER: n=26 needs 18 (69%) to clear p<0.05; the n=20 dink-vs-kitchen-fast
+arm against its 60% majority needs 17 (85%), effectively unreachable.
+LEVEL C vs LEVEL B (phase_grader's own split): owner-marked envelopes are
+the science arm; machine-placed envelopes are the product arm and inherit
+Gate C's wall, since placement is what died at 40.7%. Needs a bar written
+before any number.
+
+
 
 **Paddle visibility near a tracked wrist** (2026-08-29, user eyeball
 of PR #65's `paddle_probe.py` n=24 contact sheet — the pre-build

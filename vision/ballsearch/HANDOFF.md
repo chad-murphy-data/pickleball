@@ -14,6 +14,113 @@ measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
 
+## 2026-09-03 (later) — BOTH LABEL AXES ARE SATURATED; where clicking should go
+
+Owner question: "if you had to guess how many rallies will we need?" — then
+"what if I coded 10,000?" Answered by measurement, not guess.
+
+`learner_curve.py` had already answered the WITHIN-rally axis (subsample one
+rally's positives, test on the other): logistic flat, AUC 0.907 at 50
+positives vs 0.904 at 198. The BETWEEN-rally axis was never measured — the
+shipped emission model is still fit on r6/r7 only. New instrument
+`label_curve.py` (diagnostic; no knob, no gate, no seal; TRAIN list is
+literal so eval + holdout rallies are excluded by construction) sweeps it
+leave-one-rally-out over all seven clicked train rallies. Harvest:
+663k labeled candidates, 1,888 positives.
+
+```
+ k   AUC                neg kept @97% recall
+ 1   0.9377 ± 0.0174    0.555 ± 0.127
+ 2   0.9426 ± 0.0165    0.554 ± 0.127
+ 3   0.9436 ± 0.0158    0.551 ± 0.116
+ 4   0.9451 ± 0.0158    0.554 ± 0.116
+ 5   0.9458 ± 0.0155    0.554 ± 0.118
+ 6   0.9461 ± 0.0153    0.558 ± 0.120
+```
+
+One rally to six moves AUC +0.008 — inside the ±0.015 spread across
+held-out rallies — and the OPERATIONAL metric (junk surviving at 97%
+recall) does not improve at all, 0.555 → 0.558, with the 3→4 and 5→6
+steps slightly negative. Full output in `label_curve.txt`.
+
+**Conclusion: more clicked ball-path rallies do not improve the emission
+model.** Not "diminishing"; flat. The remaining reasons to click a ball
+path are GRADING (you need truth to score against) and r18/r19 completing
+the roadmap batch — not training. This CORRECTS the reading in
+`learner_gate.md` / STATUS's "Better learner" entry, whose "next step is
+clicks, not model code" was inferred from the within-rally curve alone.
+
+CAVEATS, both real: (1) this grades the emission SCORER in isolation, not
+the whole path-first + gap-fill stack, which carries knobs the curve never
+touches; (2) it says nothing about CONDITIONING — r5's dbody/crowd failure
+is a regime problem, and the n-way refit (ROADMAP Phase 1) is still the
+right build because it lets the model see kitchen play at all, not because
+it adds sample count.
+
+### What a click actually costs, by channel
+
+| channel | per rally | whole match (188 rallies) |
+|---|---|---|
+| ball path | 362 frame-clicks (2,533 over 7 rallies) | 68,029 clicks ≈ 28–57 h |
+| contact type + time | ~13 taps (median contacts/rally) | 2,350 taps ≈ 3–7 h |
+
+Contact typing is **28× cheaper per rally** than ball clicking, and it is
+the channel that is actually thin. That is the answer to "where should the
+clicking go": not more ball paths.
+
+### Swing-envelope inventory (owner: "over the course of X frames")
+
+`data/vision/state_labels_chicago0725.csv` — 36 episodes, **26 complete**
+`start → impact → end`, but 24 are rally 1 and 2 are rally 6.
+
+| segment | median | frames @30 | range |
+|---|---|---|---|
+| full episode | 0.92 s | 27 | 0.47–1.57 s |
+| start → impact (backswing) | 0.52 s | 16 | 0.23–1.27 s |
+| impact → end (follow-through) | 0.30 s | 9 | 0.13–0.50 s |
+
+So there is no single X: 14–47 frames, a 3.3× spread. Resample to fixed
+length for SHAPE and keep raw duration as its own feature.
+
+**Why this is a new instrument and not a Gate-C knob-turn.** `fastslow_check`
+v2 already killed the per-contact pose-magnitude version — raw `arm_cmax`
+fast-vs-slow AUC **0.445, inverted**, `drive` at 0.49× dink's arm speed (the
+lowest of every type), best fold-honest 61.1% (POSE-N+CAD) vs a 56.9%
+majority, and the notes record per-contact pace saturating ~60% on this
+stream, mostly off CADENCE not pose. But `arm_cmax` is a MAXIMUM: it is
+invariant to how long a motion lasts. If a drive's tell is a longer
+backswing rather than a faster one, that instrument is structurally blind
+to it, and duration was never a feature anywhere in the run.
+
+**The join is the blocker, not the idea.** Rally 1 holds the envelopes AND
+the fine vocabulary (dink 8 / smash 5 / counter 5 / speed-up 2 — pool the
+last three per the owner's frozen label-semantics correction, so 8 vs 12),
+but has no pose npz extracted (~20 min CPU) and its types are prefill-era.
+r6 / r7 / r17 have pose npz and trustworthy MANUAL pace labels and 2
+complete episodes between them. Only 4 of the 26 episodes join to a manual
+pace label at all; 1 of those has pose.
+
+What DOES join today is **forehand vs backhand**: 14 bh / 12 fh on the
+complete episodes, flat 50% baseline, pure swing-shape. Also rally 1, also
+needs that one pose extraction.
+
+Manual (non-prefill) contact types across the match: 220 rows, `slow` 88 /
+`fast` 67. On train rallies that already have pose npz (r6, r7, r9, r10,
+r17) that is **58 contacts, balanced 29/29** — the per-contact arm, already
+runnable, and the arm fastslow already found saturates near 60%.
+
+POWER, so nobody reads a coin flip as a result: n=26 fh/bh needs 18 correct
+(69%) to clear p<0.05; the n=20 dink-vs-kitchen-fast arm against its 60%
+majority needs 17 (85%), effectively unreachable. Pilot-sized for a large
+effect, blind to anything subtle.
+
+TWO QUESTIONS, DO NOT CONFLATE — this is `phase_grader.py`'s own LEVEL C vs
+LEVEL B split. Owner-marked envelopes answer "do dink and drive swings
+differ in shape" (science, fair game, no placement needed). Machine-placed
+envelopes are the product and inherit Gate C's wall directly, since
+placement is exactly what died at 40.7%. Any run of this needs a bar
+written down BEFORE the number.
+
 ## 2026-09-03 — r3 / r4 / r2 reads, and TWO SCORER ARTIFACTS
 
 Owner delivered ball_path_r3 (528 rows, 348 V / 154 S / 24 I / 2 N; two
