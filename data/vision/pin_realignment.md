@@ -79,3 +79,48 @@ reading changes. Consumers: the contact tool's per-row pin seek is
 shifted for rows ≥ 3 (seek by time instead: 40.5 / 59.4 / 91.2 /
 118.8); `windows_from_labels` in pose_extract is unaffected (it reads
 the contact rows, which are right).
+
+## Addendum 2026-09-03 — the drift is not a constant offset, and the tool now seeks the measured serves
+
+Staging the r2–r5 contact pass made the pin↔rally map worth checking end
+to end, against the manual taps in `contact_labels_chicago0725.csv`
+(which are the ground truth wherever they exist):
+
+| pin row | pin time | true serve of that rally | offset |
+|---|---|---|---|
+| 1 | 10.33 | 10.24 (r1 tap) | 0 |
+| 2 | 40.64 | 40.54 | 0 |
+| 3 | 91.19 | 59.43 — 91.19 is **r4** | +1 |
+| 4 | 118.88 | 91.16 — 118.88 is **r5** | +1 |
+| 5 | 146.57 | 118.78 — 146.57 is **r6** (tap 146.34) | +1 |
+| 6 | 166.15 | 146.34 — 166.15 is **r7** (tap 166.03) | +1 |
+| 7 | 190.68 | 166.03 — 190.68 is **r8** (tap 190.57) | +1 |
+| 8 | 211.85 | 190.57 — 211.85 is neither r8 nor r9 | — |
+| 9 | 254.10 | 254.06 (r9 tap) | **0 again** |
+| 10 | 295.78 | 295.68 (r10 tap) | 0 |
+| 15 | 428.47 | 428.31 is **r17**'s tap | +2 |
+| 16 | 456.75 | 456.69 is **r18**'s tap | +2 |
+
+So "one rally late from row 3 onward" is right where it was measured and
+wrong as a general rule: the offset is 0, then +1, then 0 again, then +2.
+Row 8's 211.85 s sits between the r8 and r9 taps and matches no numbered
+rally, which is the shape of an EXTRA pinned rally — an insert like that
+is exactly what would hand the offset back from +1 to 0, and a skipped
+one later is what would take it to +2. Consequence: **a pin is only
+trustworthy where a manual tap confirms it.** The scorebug remains the
+rally's identity; the pins are a seek convenience, not a record.
+
+Fixed in the tool rather than left as a footnote. `make_contact_audit.py`
+now carries `SERVE_FIX = {3: 59.43, 4: 91.16, 5: 118.78}` — the measured
+live serves, taken from the clip windows in
+`vision/ballsearch/pose_meta_r2to5.json` (cut at serve − 1.5 s from the
+owner's own ball-path label spans) and cross-checked against the shifted
+pins, which agree to 0.1 s. The rally's window is rebuilt around the
+measured serve too, so the banner, the seek and the pace-pass replay end
+all point at the same rally. Regenerated
+`contact_audit_chicago0725.html` differs from the previous build in
+exactly those three rallies' `pin`/`t0s`/`t1s` and nothing else.
+
+Rallies 11–16 keep their unverified pins: nobody has tapped them, the
+offset there is unknown (+1 or +2), and guessing a seek is worse than
+the scorebug check the tool already prints. Measure before fixing.
