@@ -12,7 +12,7 @@ This file is **where are we**. `vision/ballsearch/ROADMAP.md` is
 **where are we going** — the phase plan, its exit criteria, and the
 parked threads. `vision/STATS.md` is **what comes out the end** — the
 can-get / can't-get stat list and the ship order, including the
-non-tracking family (bounce location without the ball, 5.1 ft).
+non-tracking family (bounce location without the ball, 5.3 ft).
 
 ## In plain language (2026-09-03, owner recap — corrected)
 
@@ -64,9 +64,9 @@ read grades the SPEED measure, not the tracker. Nothing tuned, no seal.
 
 | panel | dist alone | 1/dt alone | dist/dt | median fast vs slow |
 |---|---|---|---|---|
-| TRAIN r6+r7+r17 (n=18) | 0.425 | **0.925** | 0.825 | 30.3 vs 16.3 mph |
-| EVAL r9+r10 (n=45) | 0.628 | 0.732 | **0.788** | 30.2 vs 18.4 mph |
-| pooled (n=63) | 0.583 | 0.793 | **0.805** | 30.3 vs 17.5 mph |
+| TRAIN r2-r7+r17 (n=64) | 0.652 | 0.792 | **0.856** | 29.4 vs 17.6 mph |
+| EVAL r9+r10 (n=47) | 0.635 | 0.731 | **0.793** | 27.7 vs 18.4 mph |
+| pooled (n=111) | 0.654 | 0.767 | **0.829** | 29.4 vs 17.8 mph |
 
 AUC = separating owner-labeled fast from slow; permutation null ~0.50
 [0.36, 0.65] pooled. Compare the 3D launch fit on the same labels: **0.10**.
@@ -80,7 +80,21 @@ reads slow twice over; feet are not the contact point (~2-3 ft of reach);
 and r17's attribution fails its own alternation check (4 violations / 17),
 so its rows are the shakiest in the panel. Free internal validators printed
 by the script: side alternation 0 violations on r6/r7/r9/r10, name→track
-purity 88-100%.
+purity 88-100% — and with whiffs excluded (below) every rally except r17
+is now a clean 100%.
+
+**Panel corrected 2026-09-03 (two bugs in this script, both mine).** The
+first read used 63 flights; it should have used 111. `contacts()` skipped
+rows whose `source` column said `prefill`, on the assumption that those
+were un-timed placeholders. They are not: `source` records HOW a tap was
+entered (⏎ following the prefilled hitter/type vs an explicit 1-4 key),
+and every row in `contact_labels_chicago0725.csv` carries a real owner
+tap. That dropped r1-r5 entirely. Second, `contact == 0` rows are WHIFFS —
+a swing with no touch — and were being treated as flight endpoints, which
+inserted false junctions into r6/r7/r9/r10/r17. Both fixed; the read above
+is the corrected one. Direction of the correction: the finding got
+STRONGER (train AUC 0.825 → 0.856 on 3.5x the flights) and the eval barely
+moved (0.788 → 0.793, whiff fix only).
 
 ## The black hole is real, and it is AT the contact (2026-09-03)
 
@@ -92,11 +106,11 @@ owner-labeled contact. Same shape on both panels:
 
 | band | human hole (I/N) | machine claims | machine hits |
 |---|---|---|---|
-| ≤0.10 s from a contact | 13.9% / 10.5% | 74.8% / 75.6% | 72.3% / 71.5% |
-| 0.10-0.25 s | 3.2% / 4.4% | 79.7% / 75.7% | 73.9% / 73.0% |
-| mid-flight 0.25-0.60 s | 1.2% / 5.5% | 91.5% / 90.4% | **90.5% / 90.3%** |
+| ≤0.10 s from a contact | 13.2% / 10.5% | 81.3% / 75.6% | 77.5% / 71.5% |
+| 0.10-0.25 s | 5.4% / 4.4% | 82.6% / 75.7% | 76.7% / 73.0% |
+| mid-flight 0.25-0.60 s | 3.3% / 5.5% | 91.0% / 90.4% | **89.8% / 90.3%** |
 
-(TRAIN r6+r7+r17 / EVAL r9+r10.) Mid-flight the tracker is a 90% instrument.
+(TRAIN r2-r7+r17, 2,302 frames / EVAL r9+r10, 1,502.) Mid-flight the tracker is a 90% instrument.
 At the contact it drops ~19 points, and the human drops too — the ball is
 genuinely behind a body there. **The loss is not spread over the rally; it is
 concentrated in a ~0.2 s window around every direction change** (unrecovered
@@ -422,10 +436,11 @@ improve at all (0.555 → 0.558; the 3→4 and 5→6 steps are negative).
 So the remaining reasons to click a ball path are GRADING and the
 r18/r19 roadmap batch, **not training**. **Contact TAPS are the opposite
 case and gained a third consumer on 2026-09-03**: they set the panel size
-for `geom_speed.py` (63 flights) and `bounce_proxy.py` (36 bounces) as
-well as unblocking CHECK 2. r2-r5 already carry pose npz and owner ball
-paths with prefill contacts only, so 58 taps (~45 min) grow the bounce
-panel 58% and the speed panel ~66% with no machine work at all. What this does NOT say: it
+for `geom_speed.py` and `bounce_proxy.py` as well as unblocking CHECK 2 —
+which is why it mattered that the same day turned up 58 taps on r2-r5
+that had been on disk the whole time and were being filtered out (see
+HANDOFF, "THE r2-r5 CONTACT TAPS ALREADY EXISTED"). Those panels are now
+111 flights and 57 bounces without anyone clicking anything. What this does NOT say: it
 grades the emission scorer in isolation (not the full path-first +
 gap-fill stack), and it says nothing about CONDITIONING — r5's
 dbody/crowd failure is a regime problem, so the n-way refit is still

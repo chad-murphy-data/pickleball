@@ -50,7 +50,7 @@ from rally_stats import ground_point, players, foot_xy, FPS  # noqa: E402
 
 LABELS = Path("/home/user/pickleball/data/vision/contact_labels_chicago0725.csv")
 PATHS = Path("/home/user/pickleball/data/vision")
-TRAIN = [6, 7, 17]
+TRAIN = [2, 3, 4, 5, 6, 7, 17]   # every train rally with a ball path, pose npz AND taps
 EVAL = [9, 10]
 FAST = {"fast", "speed-up", "smash", "drive", "counter"}
 SLOW = {"slow", "dink", "drop"}
@@ -58,13 +58,25 @@ FT_S_TO_MPH = 0.681818
 
 
 def contacts(rally):
-    """owner-labeled contacts for one rally, manual only, time-ordered."""
+    """owner-labeled contacts for one rally, time-ordered.
+
+    Every row in contact_labels is a TAP: `source` records HOW it was
+    stamped (⏎ following the prefilled hitter/type = "prefill", an
+    explicit 1-4 key = "manual", a flagged mismatch = "divergent"), not
+    whether a human timed it — see the exporter in make_contact_audit.py.
+    An earlier version of this function dropped source == "prefill",
+    which silently threw away all of r1-r5 (103 taps).
+
+    contact == 0 rows are WHIFFS: a swing with no touch. They are real
+    events but not junctions in the ball's path, so a flight must span
+    them rather than end at one.
+    """
     out = []
     with open(LABELS) as f:
         for r in csv.DictReader(f):
             if r["division"] != "womens" or int(r["rally_in_game"]) != rally:
                 continue
-            if r["source"] == "prefill":
+            if r["contact"] == "0":
                 continue
             t = r["t_refined_s"] or r["t_tap_s"]
             if not t:
@@ -231,10 +243,10 @@ def main():
         tr += rally_rows(rl)
     for rl in EVAL:
         ev += rally_rows(rl)
-    report("TRAIN r6+r7+r17", tr, detail=True)
-    report("EVAL r9+r10 (owner clicks are spent evaluation; read only, tunes nothing)",
+    report("TRAIN " + "+".join(f"r{r}" for r in TRAIN), tr, detail=True)
+    report("EVAL " + "+".join(f"r{r}" for r in EVAL) + " (owner clicks are spent evaluation; read only, tunes nothing)",
            ev, detail=True)
-    report("POOLED all five rallies", tr + ev)
+    report(f"POOLED all {len(TRAIN) + len(EVAL)} rallies", tr + ev)
 
 
 if __name__ == "__main__":

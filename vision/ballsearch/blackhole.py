@@ -40,7 +40,7 @@ from gate_checks import TOL                                  # noqa: E402
 from geom_speed import contacts                              # noqa: E402
 
 PATHS = Path("/home/user/pickleball/data/vision")
-TRAIN = [6, 7, 17]
+TRAIN = [2, 3, 4, 5, 6, 7, 17]
 EVAL = [9, 10]
 BANDS = ((0.00, 0.10, "at the contact   (<=0.10 s)"),
          (0.10, 0.25, "just after/before(0.10-0.25)"),
@@ -120,11 +120,11 @@ def main():
     tr = []
     for r in TRAIN:
         tr += rally_rows(r)
-    report("TRAIN r6+r7+r17", tr)
+    report("TRAIN " + "+".join(f"r{r}" for r in TRAIN), tr)
     ev = []
     for r in EVAL:
         ev += rally_rows(r)
-    report("EVAL r9+r10 (spent evaluation; read only)", ev)
+    report("EVAL " + "+".join(f"r{r}" for r in EVAL) + " (spent evaluation; read only)", ev)
 
 
 if __name__ == "__main__":

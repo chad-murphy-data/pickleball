@@ -14,6 +14,50 @@ measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
 
+## 2026-09-03 (latest) — THE r2-r5 CONTACT TAPS ALREADY EXISTED
+
+Staging tonight's click found the click job did not exist. `source` in
+`contact_labels_chicago0725.csv` records HOW a tap was entered — `prefill`
+= ⏎ against the prefilled hitter/type, `manual` = an explicit 1-4 key,
+`divergent` = a flagged mismatch — and is written per TAP row by the
+exporter. It never meant "un-timed placeholder". All 323 rows carry a
+time; r2-r5's 58 contacts have been tapped all along.
+
+`geom_speed.contacts()` had `if r["source"] == "prefill": continue`, so
+three instruments (it, `bounce_proxy`, `blackhole`) were running on about
+half the panel available to them. Second bug found in the same pass:
+`contact == 0` rows are WHIFFS — a swing with no touch — and were being
+used as flight endpoints, inserting false junctions into r6/r7/r9/r10/r17.
+
+Both fixed. Panels now, with the previous number in brackets:
+
+| instrument | train | eval | headline |
+|---|---|---|---|
+| `geom_speed` | 64 flights [18] | 47 [45] | v AUC **0.856** train [0.825], **0.793** eval [0.788], 0.829 pooled [0.805] |
+| `bounce_proxy` | 31 bounces [10] | 26 [26] | **5.3 ft** eval [5.1], 4.0 ft train [2.9] |
+| `blackhole` | 2,302 frames [757] | 1,502 [1,502] | 77.5% at the contact vs 89.8% mid-flight [72.3 / 90.5] |
+
+Directions worth reading: the speed finding got STRONGER on 3.5x the
+flights, and the eval moved 0.005 (the whiff fix alone). The bounce
+number got WORSE — 2.9 → 4.0 ft on train — because 2.9 was an n=10 panel.
+The blackhole shape is unchanged on 3x the frames. Whiff removal also
+cleaned the attribution validators: every rally except r17 is now 100%
+name→track purity (r17 stays 4 alternation violations / 13-of-15, the
+one genuinely bad rally).
+
+LEAD_FT refit on the enlarged train set: 8.5 → 8.7 ft. V_FAST in
+`rally_stats.py` is NOT changed — the enlarged train midpoint is 34.5 vs
+the shipped 34.2 ft/s, inside the noise, and moving a shipped threshold
+by 0.3 to chase a re-fit is churn.
+
+Nothing here touched a seal, a bar, or the eval rallies' role. The eval
+re-read is a bug-fix re-read of a diagnostic, not a graded re-run.
+
+Lesson, and it is the same one as the `rally1_show.json` staleness: a
+column whose name reads like a status ("prefill") was assumed rather than
+traced to the code that writes it. One grep of the exporter would have
+saved the wrong roadmap.
+
 ## 2026-09-03 (later still) — SPEED IS NOT BROKEN, AND THE BLACK HOLE IS 0.2 s WIDE
 
 Owner, two claims in one message: (1) speed should be recoverable from
@@ -38,9 +82,9 @@ Nothing tuned, no threshold fit, no gate, no seal. Output `geom_speed.txt`.
 
 | panel | dist alone | 1/dt alone | dist/dt | fast vs slow |
 |---|---|---|---|---|
-| TRAIN r6+r7+r17 (n=18) | 0.425 | **0.925** | 0.825 | 30.3 / 16.3 mph |
-| EVAL r9+r10 (n=45) | 0.628 | 0.732 | **0.788** | 30.2 / 18.4 mph |
-| pooled (n=63) | 0.583 | 0.793 | **0.805** | 30.3 / 17.5 mph |
+| TRAIN r2-r7+r17 (n=64) | 0.652 | 0.792 | **0.856** | 29.4 / 17.6 mph |
+| EVAL r9+r10 (n=47) | 0.635 | 0.731 | **0.793** | 27.7 / 18.4 mph |
+| pooled (n=111) | 0.654 | 0.767 | **0.829** | 29.4 / 17.8 mph |
 
 Permutation null ~0.50 [0.36, 0.65] pooled. **The decomposition is the
 finding: most of the signal is TIMING.** Time-between-contacts alone matches
@@ -71,9 +115,9 @@ Output `blackhole.txt`. Same shape on both panels (TRAIN / EVAL):
 
 | band | human hole (I/N) | machine claims | machine hits |
 |---|---|---|---|
-| ≤0.10 s from a contact | 13.9% / 10.5% | 74.8% / 75.6% | 72.3% / 71.5% |
-| 0.10-0.25 s | 3.2% / 4.4% | 79.7% / 75.7% | 73.9% / 73.0% |
-| mid-flight 0.25-0.60 s | 1.2% / 5.5% | 91.5% / 90.4% | **90.5% / 90.3%** |
+| ≤0.10 s from a contact | 13.2% / 10.5% | 81.3% / 75.6% | 77.5% / 71.5% |
+| 0.10-0.25 s | 5.4% / 4.4% | 82.6% / 75.7% | 76.7% / 73.0% |
+| mid-flight 0.25-0.60 s | 3.3% / 5.5% | 91.0% / 90.4% | **89.8% / 90.3%** |
 | all | 4.9% / 7.1% | 84.0% / 82.9% | 81.1% / 81.1% |
 
 Mid-flight the tracker is a 90% instrument. At the contact it loses ~19

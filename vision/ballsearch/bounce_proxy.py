@@ -37,7 +37,7 @@ import pathfirst as pf                                       # noqa: E402
 from rally_stats import players                              # noqa: E402
 from geom_speed import contacts, clicks, hitter_track, foot_xy  # noqa: E402
 
-TRAIN = [6, 7, 17]
+TRAIN = [2, 3, 4, 5, 6, 7, 17]
 EVAL = [9, 10]
 
 
@@ -106,11 +106,12 @@ def main():
     tr = []
     for r in TRAIN:
         tr += rally_rows(r, lead)
-    summarise("TRAIN r6+r7+r17", tr, lead)
+    summarise("TRAIN " + "+".join(f"r{r}" for r in TRAIN), tr, lead)
     ev = []
     for r in EVAL:
         ev += rally_rows(r, lead)
-    summarise("EVAL r9+r10 (spent evaluation; lead comes from TRAIN, nothing refit)", ev, lead)
+    summarise("EVAL " + "+".join(f"r{r}" for r in EVAL)
+              + " (spent evaluation; lead comes from TRAIN, nothing refit)", ev, lead)
 
 
 if __name__ == "__main__":

@@ -47,11 +47,11 @@ same result with a map.
 2. **Speed came back.** It was excluded from Phase 2 as measured-broken.
    That verdict was about the 3D launch fit off the ball's own arc (AUC
    0.10, inverted). Speed off player geometry + contact timing scores AUC
-   0.805 and is shipped in `rally_stats.py`. Owner call: average speed is
+   0.829 and is shipped in `rally_stats.py`. Owner call: average speed is
    the speed. See STATS.md's house rule.
 3. **A whole stat family stopped needing the ball at the contact.** Player
    positions (exact plane) plus contact times (better than human) place a
-   bounce to 5.1 ft with no ball tracking at all — 2× worse than the
+   bounce to 5.3 ft with no ball tracking at all — 2× worse than the
    tracked fit and available on every rally today, skipping candidates,
    emission cache, path-first and events entirely.
 
@@ -77,29 +77,32 @@ Phase 2 just got much cheaper.
 
 ### Tonight's click, in priority order
 
-**1. CONTACT TAPS on r2, r3, r4, r5 — 58 contacts, ~45 min. Do this first.**
-Everything it needs is already on disk: all four have pose npz AND owner
-ball paths, and carry only PREFILL contacts. It pays three ways at once:
+**0. The 58 contact taps are already done — do not re-tap them.** This
+section previously opened with a 45-minute tap pass on r2-r5. That job did
+not exist: every row of `contact_labels_chicago0725.csv` already carries an
+owner tap, including all four of those rallies. The `source` column says
+HOW a tap was entered (⏎ against the prefilled hitter/type = `prefill`, an
+explicit 1-4 key = `manual`), not whether one exists. Three instruments had
+filtered `source == "prefill"` out and were running on roughly half their
+available panel; fixed 2026-09-03, and folding r2-r5 back in delivered
+exactly what the tap pass was forecast to deliver (bounces 36 → 57,
+flights 63 → 111, blackhole frames 2,259 → 3,804) for a one-line change.
 
-- **+21 human-fit bounces** for `bounce_proxy.py` (36 → 57, +58%)
-- **~+50 flights** for `geom_speed.py` (76 → ~126, +66%)
-- **unblocks CHECK 2 on path-first**, which has been blocked on exactly
-  this since 2026-09-02 (its truth is manual taps at ±0.15 s; of the clean
-  train rallies only r17 clears the 14-contact power floor r2's FAIL set)
+**1. BALL PATHS on r18 + r19 — ~319 frames combined.** Now the top of the
+list. Tools committed (`data/vision/ball_audit_r18.html`, `_r19.html`).
+Both already have owner contact taps (3 and 2 shots), so a path turns them
+into full LEVEL-C rallies. Grading and coverage, not training — the learner
+is saturated. Machine prerequisite: pose npz for r18/r19 (see below).
 
-Tool: `data/vision/contact_audit_chicago0725.html`. **Seek by TIME, not by
-pin** — the pins for these four are the shifted ones: **r2 40.5 s, r3
-59.4 s, r4 91.2 s, r5 118.8 s.** Tap pass, then pace pass, export
-`contact_labels_chicago0725.csv`, share it.
-
-**2. BALL PATHS on r18 + r19 — ~319 frames combined, nearly free.** Tools
-committed (`data/vision/ball_audit_r18.html`, `_r19.html`). These are for
-grading and coverage, not training — the learner is saturated.
-
-**3. Nothing else.** r20 and r21 stay unclicked-or-unspent. **r20 is the
+**2. Nothing else.** r20 and r21 stay unclicked-or-unspent. **r20 is the
 next seal, r21 the second**, and no graded run happens on either without an
-explicit go. r22–r34 are temporal-gate holdout and stay untouched at every
+explicit go. r22-r34 are temporal-gate holdout and stay untouched at every
 level.
+
+**Still blocked, and it is not a clicking problem: CHECK 2 on path-first.**
+Its truth is contact taps at ±0.15 s, which r2-r5 turn out to have — so the
+panel is 4 clean train rallies wide, not 1, and r2's 11 contacts remain
+under the power floor its own FAIL established. Run it.
 
 ### Machine-side, before the next batch
 
@@ -142,7 +145,7 @@ stat, it is a transcription.
    and the divergence is "who is carrying this team".
 2. **Contact map + bounce map** — the non-tracking family. Every shot's
    contact position in court feet (exact plane), and the bounce proxy at
-   5.1 ft median / 92% court side, with that error bar printed on the page.
+   5.3 ft median / 92% court side, with that error bar printed on the page.
    A bounce map at 5 ft is a real bounce map; a line call at 5 ft is not.
 3. **Rally tempo and average speed** — seconds between contacts, average
    mph beside it. Framed as average speed per the STATS.md house rule:

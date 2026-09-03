@@ -1,13 +1,13 @@
 
-=== TRAIN r6+r7+r17: 757 owner-judged frames on the gate panel
+=== TRAIN r2+r3+r4+r5+r6+r7+r17: 2302 owner-judged frames on the gate panel
   band                          frames  human hole  machine claims  machine hits
-  at the contact   (<=0.10 s)      180      13.9%          74.8%        72.3%   (n=155 placed)
-  just after/before(0.10-0.25)     249       3.2%          79.7%        73.9%   (n=241 placed)
-  mid-flight       (0.25-0.60)     320       1.2%          91.5%        90.5%   (n=316 placed)
-  far from contact (>0.60 s)         8       0.0%         100.0%       100.0%   (n=8 placed)
-  ALL                              757       4.9%          84.0%        81.1%   (n=720 placed)
-  unrecovered runs (machine miss or human hole): n=19 median 7 fr (0.23 s) p90 22 max 29
-  run-length histogram (30 fps frames): {1: 2, 2: 4, 5: 2, 6: 1, 7: 1, 9: 3, 10: 1, 11: 1, 16: 1, 21: 1, 26: 1, 29: 1}
+  at the contact   (<=0.10 s)      517      13.2%          81.3%        77.5%   (n=449 placed)
+  just after/before(0.10-0.25)     735       5.4%          82.6%        76.7%   (n=695 placed)
+  mid-flight       (0.25-0.60)     977       3.3%          91.0%        89.8%   (n=945 placed)
+  far from contact (>0.60 s)        73       6.8%         100.0%       100.0%   (n=68 placed)
+  ALL                             2302       6.3%          86.6%        83.4%   (n=2157 placed)
+  unrecovered runs (machine miss or human hole): n=64 median 5 fr (0.17 s) p90 19 max 31
+  run-length histogram (30 fps frames): {1: 16, 2: 9, 3: 4, 4: 1, 5: 3, 6: 2, 7: 2, 8: 1, 9: 5, 10: 1, 11: 3, 12: 2, 13: 2, 14: 2, 16: 2, 17: 1, 18: 1, 20: 1, 21: 1, 22: 1, 23: 1, 26: 1, 29: 1, 31: 1}
 
 === EVAL r9+r10 (spent evaluation; read only): 1502 owner-judged frames on the gate panel
   band                          frames  human hole  machine claims  machine hits

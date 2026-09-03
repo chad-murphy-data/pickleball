@@ -45,10 +45,10 @@ specific, bounded place — see "the black hole" below.
 | who hit it (which of the four) | 85% | pose |
 | every contact's court position | feet, exact plane | pose → homography |
 | where each player stands, over a match | width share, 90% area, kitchen band, off-court fraction | coverage model, 90 of 141 rallies |
-| shot pace fast vs slow | AUC 0.805, null 0.50 | `geom_speed.py` |
+| shot pace fast vs slow | AUC 0.829, null 0.50 | `geom_speed.py` |
 | **average shot speed in mph** | 30.3 fast / 17.5 slow, medians | `geom_speed.py`, shipped in `rally_stats.py` |
 | rally tempo (time between contacts) | AUC 0.793 on its own | `geom_speed.py` |
-| **bounce location without the ball** | 5.1 ft median, court side 92% | `bounce_proxy.py` |
+| **bounce location without the ball** | 5.3 ft median, court side 92% | `bounce_proxy.py` |
 | net crossings | 23/23 on r9; 14–15/21 on r10 | 3D fit |
 | bounce ledger from a human ball path | 13/13 exact | `court3d.fit_segment` |
 
@@ -146,12 +146,14 @@ bounce ledger (the arm verified exact, 13/13 on r10):
 | estimator | median error | depth error | depth bias |
 |---|---|---|---|
 | receiver's feet | 6.3 ft | 6.1 ft | −2.8 ft |
-| **feet + 8.5 ft lead** | **5.1 ft** | **3.9 ft** | **0.0 ft** |
+| **feet + 8.7 ft lead** | **5.3 ft** | **3.8 ft** | **0.0 ft** |
 | midpoint of the two hitters (control) | 8.0 ft | 6.9 ft | +5.2 ft |
 
-Eval panel (r9+r10, n=26); the 8.5 ft lead is the median receiver-to-bounce
+Eval panel (r9+r10, n=26); the 8.7 ft lead is the median receiver-to-bounce
 offset fixed on train and not refit. Categorical: court side 92%, left/right
-half 92%, kitchen-vs-deep 73%. Train (n=10) is tighter at 2.9 ft.
+half 92%, kitchen-vs-deep 73%. Train is 4.0 ft on 31 bounces — the 2.9 ft
+first reported was an n=10 panel, and the honest number went UP when the
+panel tripled.
 
 Read that against the tracked version: the 3D fit posts 2.15–2.98 ft on
 matched impacts. So **no-ball is about 2× worse and costs nothing** — and it
@@ -212,18 +214,26 @@ cheapest thing to fix.
 
 | instrument | panel today | limited by |
 |---|---|---|
-| `geom_speed.py` | 63 pace-labeled flights (18 train / 45 eval) | manual contact taps |
-| `bounce_proxy.py` | 36 human-fit bounces (10 train / 26 eval) | manual contact taps |
-| `blackhole.py` | 2,259 owner-judged frames | nothing — this one is fine |
+| `geom_speed.py` | 111 pace-labeled flights (64 train / 47 eval) | rallies with a ball path AND pose |
+| `bounce_proxy.py` | 57 human-fit bounces (31 train / 26 eval) | rallies with a ball path AND pose |
+| `blackhole.py` | 3,804 owner-judged frames | nothing — this one is fine |
 | `rally_stats.py` counts | 8 player-rallies | manual shot labels |
 | `label_curve.py` | 663k candidates, 1,888 positives | nothing — saturated |
 
-**r2, r3, r4 and r5 already have pose npz AND owner ball paths, and carry
-only PREFILL contacts.** A contact tap pass on those four — 58 contacts,
-~45 min — adds **21 human-fit bounces** (+58% to the bounce panel) and
-roughly 50 flights (+66% to the speed panel), with zero machine
-prerequisites, and it unblocks CHECK 2 on path-first at the same time. That
-is the single highest-value hour of clicking available.
+**Correction, 2026-09-03: r2-r5 were already fully tapped, and the panel
+sizes above are the ones that follow.** The first version of this table said
+those four rallies carried "only prefill contacts" and costed a 58-contact,
+45-minute tap pass to add them. That was a misreading of the CSV on my side:
+`source` = `prefill` means the tap was entered with ⏎ against the prefilled
+hitter/type, not that the row is an un-timed placeholder. Every one of the
+323 rows in `contact_labels_chicago0725.csv` carries an owner tap. Folding
+r2-r5 in cost nothing but a one-line fix, and it did what an hour of
+clicking was forecast to do: bounces 36 → 57, flights 63 → 111.
+
+What is still genuinely limited: `rally_stats.py`'s per-rally shot counts
+(8 player-rallies) and CHECK 2's contact-timing panel, which wants rallies
+with taps AND a graded path. The next real click job is a BALL PATH on a
+rally that already has taps — r18, r19, r20-r22 — not more contact taps.
 
 ## What would change the answer
 
