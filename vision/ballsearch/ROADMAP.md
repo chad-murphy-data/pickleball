@@ -88,8 +88,21 @@ Machine-side, before the next batch:
   and it is the direct answer to the learner being label-limited.
 - Pose npz for r18–r21 (CPU here or Colab per `gpu_runbook.md`).
 
+- **CHECK 1 on path-first: DONE 2026-09-03, passes on all seven train
+  rallies** (pooled 78.1 % V vs a 70 % bar, of-claimed 99.6 % —
+  `pf_check1.py`, detail in `HANDOFF.md`). The finding that drove it:
+  the graded battery runs the DECODER stack, not the adopted
+  incumbent, so the seal is registered against a stack we no longer
+  use. The frozen scorer now lives in `vision/gate_checks.py` and both
+  stacks call it.
+- **CHECK 2 on path-first is BLOCKED on contact taps.** Its truth is
+  manual taps at ±0.15 s and r2–r5 carry prefill only; of the clean
+  train rallies only r17 clears the 14-contact power floor that r2's
+  FAIL established. Owner ask recorded in `HANDOFF.md`: a timing pass
+  on r3 / r4 / r5.
+
 **Exit:** n-way emission refit landed and re-read on r6/r7 cross-fold;
-r18/r19 clicked; no seal spent.
+r18/r19 clicked; CHECK 2 panel powered; no seal spent.
 
 **Explicitly parked until a later phase asks:** the S-click rule
 change (~500 genuine positives currently discarded — owner's call,

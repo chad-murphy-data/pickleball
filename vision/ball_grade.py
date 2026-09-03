@@ -34,6 +34,7 @@ import ball_decoder as bdec  # noqa: E402
 import ball_replicate as br  # noqa: E402
 import hitter_chain as hc  # noqa: E402
 import court3d as c3  # noqa: E402
+import gate_checks as gc  # noqa: E402
 
 DATA = Path(__file__).resolve().parent.parent / "data" / "vision"
 SEALED = set()       # r10 spent 2026-09-01 (graded MIDDLE, now train); next seal = r20 when labeled
@@ -116,28 +117,15 @@ def main():
     labels = list(csv.DictReader(open(DATA / f"ball_path_r{a.rally}.csv")))
 
     # ---- CHECK 1: V hit rate on the gate panel
-    p_lo, p_hi = imps[0], imps[-1] + 0.5
-    rates = {}
-    for cls, tol in (("V", 25.0), ("S", 40.0)):
-        hit = tot = 0
-        for r in labels:
-            if not r["x"] or r["vis"] != cls:
-                continue
-            tt = float(r["t_s"])
-            if not (p_lo <= tt <= p_hi):
-                continue
-            tot += 1
-            f0 = round((tt - t0) * bdec.FPS)
-            best = min((math.hypot(per_frame[g][1] - float(r["x"]),
-                                   per_frame[g][2] - float(r["y"]))
-                        for g in (f0 - 1, f0, f0 + 1) if g in per_frame),
-                       default=1e9)
-            hit += int(best <= tol)
-        rates[cls] = 100 * hit / max(tot, 1)
-        print(f"CHECK 1 {cls}: {rates[cls]:.1f}% ({hit}/{tot})"
+    # scorer lives in gate_checks.check1 (extracted 2026-09-03, frozen
+    # logic unchanged) so challenger stacks score through the same code.
+    c1 = gc.check1(per_frame, labels, imps, t0, bdec.FPS)
+    rates = {cls: c1[cls]["rate"] for cls in ("V", "S")}
+    for cls in ("V", "S"):
+        print(f"CHECK 1 {cls}: {rates[cls]:.1f}% "
+              f"({c1[cls]['hit']}/{c1[cls]['tot']})"
               + (" [bars: PASS>=70, FAIL<40]" if cls == "V" else ""))
-    c1_pass = rates["V"] >= 70.0
-    c1_fail = rates["V"] < 40.0
+    c1_pass, c1_fail = c1["pass"], c1["fail"]
 
     # ---- CHECK 2: frozen battery, human-matched (Amendment 1)
     span = (imps[0] - 1.0, dead)

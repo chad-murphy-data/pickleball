@@ -247,6 +247,72 @@ train-only iteration, then ONE re-grade on a newly labeled sealed
 rally. No seal is consumed by any of the above; r2-r5 are train.
 
 
+### CHECK 1 SCORED ON PATH-FIRST — PASSES ON ALL SEVEN TRAIN RALLIES
+
+2026-09-03, `pf_check1.py` -> `pf_check1.json`. Train measurement, no
+seal, bars untouched.
+
+The gate battery (`vision/ball_grade.py`) runs the DECODER stack;
+path-first has been the adopted incumbent since 2026-09-01 and had
+never been scored on the gate's own checks. `HANDOFF.md` reports both
+per rally in adjacent paragraphs — the "read" (path-first r@12) and
+the "gate verdict" (decoder) — which is how the split went unnoticed.
+The frozen CHECK 1 scorer now lives in `vision/gate_checks.py` and
+BOTH stacks call it (extraction verified: ball_grade on r4 reproduces
+53.4% / 64.8% exactly).
+
+  rally   V hit      rate   claimed  of-claimed   S rate  flights
+     2   131/166    78.9%      131      100.0%     62.5%    12
+     3   227/281    80.8%      228       99.6%     79.7%    19
+     4   190/262    72.5%      190      100.0%     81.9%    16
+     5   220/270    81.5%      222       99.1%     86.0%    21
+     6    98/122    80.3%       98      100.0%     47.8%     8
+     7   135/158    85.4%      137       98.5%     89.7%    11
+    17   169/239    70.7%      169      100.0%     70.0%    14
+  pooled 1170/1498 = 78.1%  claimed 78.4%  of-claimed 99.6%
+
+All seven PASS the >= 70% bar. r6/r7 are in-sample for the frozen cell
+(it was tuned on them); the five OUT-OF-SAMPLE rallies pass too
+(78.9 / 80.8 / 72.5 / 81.5 / 70.7), and every emission p-cache is
+out-of-fold via `context()`'s `_x` rule.
+
+THE NUMBER THAT MATTERS IS of-claimed = 99.6%. Where path-first speaks
+it is within 25 px essentially always; every CHECK 1 miss is a frame
+where it said nothing. So CHECK 1 is PURELY COVERAGE-BOUND — placement
+is not a failure mode at this tolerance — and to-do (b) moves it
+roughly 1:1 while precision holds.
+
+The two stacks fail in opposite directions: the decoder claims
+everywhere and is often wrong (r4 53.4%), path-first stays silent and
+is almost never wrong (r4 72.5% at 100% of-claimed). Do not read this
+as path-first dominating — on r2 and r3 the decoder's CHECK 1 is
+HIGHER (81.9 / 85.4 vs 78.9 / 80.8) because continuous claiming is
+rewarded when it happens to be right. It is a different trade, not a
+strict upgrade, and CHECK 3 may price silence differently.
+
+CAVEATS: r2-r5 have PREFILL contacts only, so the panel edges
+(imps[0] .. imps[-1]+0.5) are approximate there — acceptable for
+CHECK 1, which is why `--prefill-ok` exists, and NOT acceptable for
+CHECK 2. And r17 is the weakest rally at 70.7%, barely over the bar —
+awkward, because r17 is the only clean train rally with enough manual
+contacts for CHECK 2 to resolve its null (see below).
+
+CHECK 2 CANNOT YET BE SCORED ON THE TRAIN SET. Its truth is manual
+contact taps at +-0.15 s. Inventory of
+`data/vision/contact_labels_chicago0725.csv`: manual taps exist for
+r6 (8), r7 (10), r8 (9, spent seal -> train), r17 (17), r18 (3),
+r19 (2), r20 (20, the seal), r21 (6), r9 (30) and r10 (27) which are
+evaluation-only, and r22-r27 which are temporal-gate HOLDOUT and stay
+untouched. **r2-r5 are PREFILL ONLY.** On top of that, r2's FAIL
+established a power floor — 11 contacts cannot resolve the
+permutation null (it quantises in 1/11 steps) — so of the clean train
+rallies only r17 (17 contacts) is adequately powered.
+THE ASK: a timing pass on r3 / r4 / r5 (47 contacts; they are inside
+the audit tool's frozen core-16 set, so hitter and shot type are
+already prefilled and only the timing is supplied) turns a
+one-rally CHECK 2 panel into a four-rally one, off ball paths that
+already exist. r2 is below the power floor; skip it.
+
 ## Constraints in force (owner-set; carry verbatim)
 
 - No graded re-run / seal consumption without explicit owner
