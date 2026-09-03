@@ -5,6 +5,8 @@ roadmap."
 
 `vision/STATUS.md` answers **where are we** (per-channel ledger, every
 number next to its null). `HANDOFF.md` answers **what do I run**.
+`vision/STATS.md` answers **what comes out the end** — the graded
+can-get / can't-get stat list and the ship order.
 This file answers **where are we going, and how do we know when to
 stop**. If it disagrees with STATUS.md on a number, STATUS.md wins.
 

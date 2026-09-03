@@ -10,7 +10,9 @@ mood.
 
 This file is **where are we**. `vision/ballsearch/ROADMAP.md` is
 **where are we going** — the phase plan, its exit criteria, and the
-parked threads.
+parked threads. `vision/STATS.md` is **what comes out the end** — the
+can-get / can't-get stat list and the ship order, including the
+non-tracking family (bounce location without the ball, 5.1 ft).
 
 ## In plain language (2026-09-03, owner recap — corrected)
 
