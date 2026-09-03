@@ -341,7 +341,7 @@ for this layer, disclosed. Remaining misses are lost-track gaps
 (coverage), not pairing. Hit/bounce typing still unbuilt (5/4, 3/1).**
 
 **Rally stats prototype (2026-09-02, `vision/ballsearch/rally_stats.py`)
-— hits per player and last shot WORK, speed-up does NOT.** Three rules
+— hits per player and last shot WORK; speed-up FIXED 2026-09-03.** Three rules
 fixed before looking (hit = v3 event within 3 ft of a paddle proxy,
 de-duplicated at 0.6 s; speed-up = first ≥ 38 ft/s launch after the
 3rd hit; last shot = last hit + final flight end in court ft), identity
@@ -349,7 +349,15 @@ by court position only. Evaluation vs the owner's r9/r10 labels: hit
 counts within ±1 for all 8 player-rallies (r9 10/5/10/5 vs 9/5/10/5,
 r10 4/9/9/5 vs 5/8/9/4), last hitter right twice; first speed-up wrong
 twice (3D launch speed is depth-dominated and fragment starts inflate
-it). `rally_3d.py` writes the orbitable 3D court view of the same
+it). **SPEED-UP RULE REPLACED 2026-09-03** (owner call: "average speed
+is good enough for speed"): average speed between consecutive attributed
+hits, V_FAST = 34.2 ft/s = the midpoint of the TRAIN medians in
+geom_speed.txt, fixed on r6/r7/r17 before the eval read. Now the right
+PLAYER on both eval rallies and the right SHOT on r9 (257.90 vs truth
+257.84); r10 is 3.8 s late because its true first speed-up measures
+23 ft/s even under perfect labels -- the clock stops at the next
+contact, so a put-away that draws a late reply reads slow. House rule
+and its two labelling consequences: STATS.md. `rally_3d.py` writes the orbitable 3D court view of the same
 flights (`court3d_r{9,10}.html`). Prototype, not a graded channel.
 
 **Hand-off seeding (2026-09-02, `vision/ballsearch/handoff.py`,

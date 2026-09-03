@@ -46,7 +46,7 @@ import numpy as np
 sys.path.insert(0, "/home/user/pickleball/vision")
 sys.path.insert(0, str(Path(__file__).parent))
 import pathfirst as pf                                       # noqa: E402
-from rally_stats import ground_point, players, FPS, KP_CONF, LANK, RANK  # noqa: E402
+from rally_stats import ground_point, players, foot_xy, FPS  # noqa: E402
 
 LABELS = Path("/home/user/pickleball/data/vision/contact_labels_chicago0725.csv")
 PATHS = Path("/home/user/pickleball/data/vision")
@@ -85,22 +85,6 @@ def clicks(rally):
             out[float(r["t_s"])] = (float(r["x"]), float(r["y"]))
     return out
 
-
-def foot_xy(z, P, tid, t, win=0.10):
-    """court (x, y) of one pose track's feet at time t (median over +-win)."""
-    m = (z["track"] == tid) & (np.abs(z["t"] - t) <= win)
-    idx = np.where(m)[0]
-    if not len(idx):
-        return None
-    kpt, kpc, box = z["kpt"], z["kpc"], z["box"]
-    pts = []
-    for i in idx:
-        if kpc[i, LANK] >= KP_CONF and kpc[i, RANK] >= KP_CONF:
-            uv = (kpt[i, [LANK, RANK], 0].mean(), kpt[i, [LANK, RANK], 1].mean())
-        else:
-            uv = ((box[i, 0] + box[i, 2]) / 2, box[i, 3])
-        pts.append(ground_point(P, uv))
-    return np.median(pts, axis=0)
 
 
 def hitter_track(ctx, pls, t, cl):

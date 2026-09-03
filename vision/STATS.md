@@ -46,7 +46,7 @@ specific, bounded place — see "the black hole" below.
 | every contact's court position | feet, exact plane | pose → homography |
 | where each player stands, over a match | width share, 90% area, kitchen band, off-court fraction | coverage model, 90 of 141 rallies |
 | shot pace fast vs slow | AUC 0.805, null 0.50 | `geom_speed.py` |
-| **shot speed in mph** | 30.3 fast / 17.5 slow, medians | `geom_speed.py` |
+| **average shot speed in mph** | 30.3 fast / 17.5 slow, medians | `geom_speed.py`, shipped in `rally_stats.py` |
 | rally tempo (time between contacts) | AUC 0.793 on its own | `geom_speed.py` |
 | **bounce location without the ball** | 5.1 ft median, court side 92% | `bounce_proxy.py` |
 | net crossings | 23/23 on r9; 14–15/21 on r10 | 3D fit |
@@ -56,11 +56,10 @@ specific, bounded place — see "the black hole" below.
 
 | stat | the asterisk |
 |---|---|
-| ball speed | it's an AVERAGE over the flight, not off the paddle; straight-line, so lobs read slow twice; most of the signal is the clock, not the geometry |
 | bounce location | ~5 ft, good for a heat map and for deep-vs-short, not for line calls |
 | bounce ledger from the TRACKED path | mechanism is exact; the tracker feeding it is off (8 v 13 on r10) |
 | 3D replay | works and looks right (r4 CHECK 3 at 1.76 ft vs a 3.0 bar) but passes on some rallies and not others |
-| first speed-up | the concept works off `geom_speed`; the shipped `rally_stats` version uses the broken 3D launch and gets it wrong |
+| first speed-up | right player on both eval rallies, right shot on one (see the house rule below) |
 
 ### Can't get, and more data won't fix it
 
@@ -80,6 +79,39 @@ measured flat: within-rally (AUC 0.907 at 50 positives vs 0.904 at 198) and
 between-rally (k=1 → k=6 moves AUC +0.008 and the operational metric not at
 all). 10,000 clicked rallies would be 3.6M clicks, 1,500–3,000 hours, and
 would buy nothing for this model class.
+
+## House rule: average speed is the speed (owner call, 2026-09-03)
+
+> *"I think average speed is good enough for speed. When people measure serve
+> speed on tennis they don't show frame by frame. And 'close enough' speed is
+> fine for pickleball. Not a sport that measures in speed."*
+
+Settled. The project reports **average speed over the flight** — court
+distance between consecutive hitters' feet, divided by the time between their
+contacts — and does not chase launch speed. Launch speed off a single camera
+is depth-dominated and measured inverted (AUC 0.10); it is not a precision
+target we are falling short of, it is a measurement this footage cannot make.
+
+Two things that follow, both about labelling rather than accuracy:
+
+- **Say "average", and don't compare it to a radar number.** A tennis serve
+  gun reads the ball at launch. Average-over-flight runs lower — drag, plus
+  we charge the ball the straight line and it flies an arc. Our 30 mph fast
+  shot is not the 40-something a gun would post at the paddle.
+- **A shot's average speed is partly the receiver's choice.** The clock stops
+  at the next contact, so a put-away that draws a late reply reads slow. This
+  is not hypothetical: r10's true first speed-up (300.23 s) measures 23 ft/s
+  = 15.7 mph even with perfect labels, because the reply came a full second
+  later. Fixable in principle by ending the clock at the bounce or the
+  arrival instead — not built.
+
+Shipped 2026-09-03: `rally_stats.py`'s speed-up rule now uses average speed
+instead of the 3D launch. Threshold V_FAST = 34.2 ft/s, the midpoint of the
+TRAIN-panel medians (fast 44.39 / slow 23.94), fixed on r6/r7/r17 before any
+eval read. Evaluation on r9/r10: **first speed-up was wrong on both rallies
+under the old rule; it is now the right player on both, and the right shot on
+r9** (Emma Nelson at 257.90 vs truth 257.84). r10 names the right player
+3.8 s late, for exactly the reason in the second bullet.
 
 ## The black hole, and why it licenses the non-tracking family
 
@@ -156,9 +188,8 @@ on rallies nobody clicked.** Clicks are the grader, never the source.
 2. **Contact map + bounce map** — the non-tracking family. Every shot's
    contact position, and the bounce proxy at 5 ft. Publishes as a heat map
    per player, or per team, with the error bar stated on the page.
-3. **Rally tempo / pace** — median seconds between contacts, and the mph
-   version next to it. The honest framing is "pace", not "ball speed off the
-   paddle".
+3. **Rally tempo / pace** — median seconds between contacts, and the average
+   mph next to it. Framed as average speed, per the house rule above.
 4. **The 3D replay** — Phase 3, the showpiece. Already built for r4; needs a
    rally chosen on a stated rule rather than on which one came out well.
 
