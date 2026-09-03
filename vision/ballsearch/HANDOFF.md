@@ -107,6 +107,65 @@ Off-screen check r3 passed clean: 2 trackpoints across 2.1 s of ball out
 of frame, the first rally able to test that failure mode.
 
 
+### r5 delivered — sitting 3 complete
+
+ball_path_r5: 446 rows, 290 V / 114 S / 23 I / 19 N, no frame gaps
+(tool t0 117.279 vs the recorded 117.28). TRAIN. Three N runs — two
+singletons and one 17-frame run at frames 191-207, bracketed by y=1 and
+y=2, i.e. another lob out of the top of frame. Unlike r3 the owner
+marked these N with the row present rather than skipping, which is the
+better shape: the reader knows the ball was unplaceable rather than
+having to infer it from a frame gap.
+
+### Owner callout: "an S is better than a guess" — CONFIRMED, and bigger
+
+inferred_audit.py. Gap fill v2's inferred frames, crossed against the
+click path, over r2/r3/r4/r6/r7/r17:
+
+  414 inferred frames -> V 240 (58%)  S 83 (20%)  I 33  no click 58 (14%)
+  78% of the guesses land on a frame the owner could see and click
+  32% sit within 0.20 s of a contact (the "near the paddle" half)
+  the guesses are poor: median 10-55 px from the click that was there,
+  27-63% of them within 12 px
+
+Split on decode@12 — did a candidate exist that path-first declined?
+
+  S clicks, candidate existed   57      S: 57/85  = 67% declined
+  S clicks, no candidate        28
+  V clicks, candidate existed   92      V: 92/243 = 38% declined
+  V clicks, no candidate       151
+  overall 149/328 = 45% of the guessed-at clicks HAD a candidate
+
+So the streak stratum is where the tracker most often walks past evidence
+already in hand, at nearly twice the V rate. Mechanism, end to end: an S
+click yields no positive, so the emission model never learns the streak
+appearance; its largest weight is `yellow` (+1.287), the one feature a
+white smear lacks; streak candidates therefore score under p_seed;
+path-first's seed test declines them; gap fill guesses over the top.
+Clicks are ground truth and not a run-time input, so this is NOT "use the
+click" — it is that the S stratum carries recoverable evidence the
+current rule forbids the model from learning. RULE STILL UNCHANGED.
+
+### r2 gate autopsy (CHECK 3 FAIL, verdict FAIL via c2_nullfail)
+
+  CHECK 1 V: 81.9% (136/166)  [bars PASS>=70, FAIL<40]
+  CHECK 1 S: 92.7% (89/96)    <- S is the BEST stratum on this rally
+  CHECK 2 turns[tracker]: recall 72.7% at null pct 81 (95th 81.8) - misses
+  CHECK 3: 8/10 impacts matched, median 3D 6.13 ft (bar <=3.0);
+           bounces tracked 8 vs human 3 (bar +/-1)
+
+Two reads. CHECK 1 puts S ABOVE V here, another data point against "S is
+the weak stratum". And r2 has only 11 contacts, so CHECK 2's null is
+quantised in 1/11 steps: the 95th percentile is 9/11 and the tracker got
+8/11, i.e. clearing the bar needs 10 of 11. That is a power limit on a
+short rally as much as an instrument failure — read it next to r3 (17
+contacts) and r4 (16) before concluding. The substantive CHECK 3 finding
+is the bounce count: 8 claimed vs 3 reconstructed, i.e. the tracker
+over-segments the rally into more flights than were played — the same
+seed-and-commit machinery that drops short flights whole, failing the
+other way.
+
+
 ## Constraints in force (owner-set; carry verbatim)
 
 - No graded re-run / seal consumption without explicit owner
