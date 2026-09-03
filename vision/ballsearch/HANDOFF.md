@@ -198,14 +198,32 @@ both; that is an argument for conditioning, not for another knob turn.
 Gate verdicts, all four rallies of sitting 3 (`ball_grade.py`, prefill
 contacts, `--prefill-ok`):
 
-  r2 (11 contacts)  FAIL     C1 V 81.9 / S 92.7  C2 nullfail  C3 fail
-  r3 (17 contacts)  MIDDLE   C3 fail: 9/16 impacts, median 4.84 ft,
-                             bounces 4 vs 6
-  r4 (16 contacts)  MIDDLE   C3 PASS: 9/16 impacts, median 1.76 ft,
-                             bounces 5 vs 4, crossings 9/9
+  r2 (11 contacts)  FAIL     C1 V 81.9 / S 92.7 = pass
+                             C2 recall 72.7 at null pct 81 -> NULLFAIL
+                             C3 fail: 8/10, median 6.13 ft, bounces 8 v 3
+  r3 (17 contacts)  MIDDLE   C1 V 85.4 / S 87.4 = pass (best C1 of the four)
+                             C2 82.4 v human 70.6, both pct 100 = PASS
+                             C3 fail: 9/16, median 4.84 ft, bounces 4 v 6
+  r4 (16 contacts)  MIDDLE   C1 V 53.4 / S 64.8 = MIDDLE band (bars 70/40)
+                             C2 beats own null 95th, human-matched no
+                             C3 PASS: 9/16, median 1.76 ft, bounces 5 v 4
   r5 (14 contacts)  MIDDLE   C3 fail on distance ONLY: 8/14 impacts,
-                             median 4.60 ft, bounces 6 vs 6 (exact),
+                             median 4.60 ft, bounces 6 v 6 (exact),
                              crossings 9/9
+
+THE CHECKS DISAGREE ACROSS RALLIES, AND THE DISAGREEMENT IS THE FINDING.
+r3 has the best CHECK 1 and the only clean CHECK 2 human-match, and fails
+CHECK 3. r4 has the WEAKEST CHECK 1 of the four (53.4% V, in the middle
+band) and is the only CHECK 3 pass, at 1.76 ft. So anchor-level precision
+and 3D replication quality are not the same axis here and on this
+evidence run opposite: r4's 16 flights are long and well separated, which
+is what the ballistic fit wants, while its anchor set is thin (40 anchors
+vs r3's 51) on a rally whose clicks are dominated by a few long arcs.
+Do not treat any single check as the universal blocker, and do not tune
+against CHECK 1 expecting CHECK 3 to follow.
+
+CHECK 2 beats its own null 95th on r3, r4 AND r5 and fails only on r2 —
+independent confirmation that r2's FAIL is the 11-contact power limit.
 
 Two things follow. First, r2's FAIL was a POWER artifact and is now
 confirmed as such: MIDDLE requires `not c2_nullfail`, so CHECK 2 cleared
