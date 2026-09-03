@@ -449,6 +449,35 @@ the caches above.  Rally 4 is TRAIN, so iterating on it is free — but
 it is still the ball-thread pipeline: no knob is tuned outside r6/r7,
 and `rally_3d.py` writes nothing back.
 
+**Who is who in r4** (MLP Chicago 07/25, women's doubles game 1; the
+`rally_stats.players()` labels the 3D viewer and `hits` use).  Camera is
+behind the near baseline: near = bottom of frame (court y 44), far = top
+(y 0), court x grows to the image right.
+
+| label | player | team | kit |
+|---|---|---|---|
+| `near-left` | Etta Tuionetoa (server) | Utah Black Diamonds | black |
+| `near-right` | Allyce Jones | Utah | black |
+| `far-left` | Emma Nelson (returner) | Chicago Slice | white |
+| `far-right` | Ting Chieh Wei | Chicago | white |
+
+Derivation, repeatable for any rally: near/far from kit colour (median
+torso BGR 21 vs 125–148 at the serve frame), the server from the
+paddle-overhead follow-through at t = 91.29 s, the returner from the
+first return being attributed to `far-left` at 92.28 s — and all of it
+agrees with the referee log independently
+(`data/vision/lineup_0ca7efd7.csv` rally 4: server Tuionetoa, receiver
+Nelson, start_score 1-0-2) and with the scorebug rosters.
+
+The labels are assigned ONCE from each track's median floor position
+over serve −1 s to +3 s and then hold for the whole rally — they are
+per-rally identities, not live quadrants.  Tuionetoa stays `near-left`
+in the many frames where she is physically right of Jones (at the serve
+she is at x = 13, right of the centreline; Utah was stacked).  The
+left/right pairing within a team also changes rally to rally as the
+serving team scores: `click_setup.md` has her serving from the near-LEFT
+court in r3 and r5.
+
 ## Incumbent (2026-09-01, late): PATH-FIRST — `pathfirst.py`
 
 Adopted under the pre-registration in `pathfirst_gate.md` (frozen
