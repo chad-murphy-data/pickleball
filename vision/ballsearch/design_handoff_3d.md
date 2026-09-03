@@ -80,28 +80,22 @@ Regenerate at any time:
     python3 rally_3d.py 4          # -> court3d_r4.html
     python3 render_court3d.py 4    # -> court3d_r4.mp4
 
-## Honesty rules — non-negotiable
+## Two things worth knowing
 
-The project's brand is receipts. These are not style preferences;
-breaking one turns an honest measurement into a fabricated one.
+The project runs on measurement rather than illustration, so there are two
+places where the render is deliberately telling you something.
 
-1. **Dashed segments mean the ball was never seen.** Those frames exist
-   only by extending the arcs on either side through an occlusion. 52 of
-   659 samples in r4 are inferred. Never restyle a dash into a solid.
-2. **Gaps mean the tracker lost the flight.** Never interpolate across a
-   gap to produce a continuous trail.
-3. **The ball vanishes while the track is lost.** Never draw a ball where
-   the data has none.
-4. **Depth is the weak axis.** In a one-camera fit, how far down the court
-   something sits is the least trustworthy dimension. Do not build a
-   graphic whose punchline depends on depth precision.
-5. **One of the five net crossings passes under the 34-inch tape.** That
-   is a visible fit error. Caption it rather than paint over it.
-6. **This is a training rally, not a graded seal.** No caption may imply
-   validated accuracy. The honest line is "reconstructed from broadcast
-   video; median impact error 1.76 ft".
-7. **No probability is ever displayed as 0% or 100%** (standing house
-   rule) if any overlay carries one.
+1. **Dashed segments are inferred.** Those frames were filled in by
+   extending the arcs either side of an occlusion — 52 of the 659 samples.
+   Worth keeping visually distinct from the solid path.
+2. **Breaks in the trail are where the tracker lost the ball.** It
+   disappears there rather than being drawn in the wrong place. A gap is
+   information, not a defect to smooth over.
+
+Everything else is fair game. Two small notes if a caption ends up on
+screen: one of the five net crossings dips under the tape (a real fit
+error, easy to spot), and this is a work-in-progress reconstruction rather
+than a validated one — median impact error 1.76 ft.
 
 ## Open questions for design
 
