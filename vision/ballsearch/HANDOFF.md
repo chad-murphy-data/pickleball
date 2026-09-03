@@ -10,6 +10,103 @@ measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
 
+## 2026-09-03 — r3 / r4 / r2 reads, and TWO SCORER ARTIFACTS
+
+Owner delivered ball_path_r3 (528 rows, 348 V / 154 S / 24 I / 2 N; two
+frame gaps at the top of frame = the two lobs that left the picture),
+ball_path_r4 (403 rows, 273 V / 106 S / 24 I, no gaps) and ball_path_r2
+(291 rows, 171 V / 96 S / 24 I, no gaps). All three are TRAIN.
+
+Reads (incumbent cell, as the scorer counts today):
+  r3  tracked+inf r@12 344/502  prec 0.81   decode ceiling 366/502
+  r4  tracked+inf r@12 275/379  prec 0.93   decode ceiling 167/379
+  r17 (prior)     r@12 253/379  prec 0.94   decode ceiling 244/379
+r4 is the strongest read so far: path-first + gap fill reach 108 clicks
+the candidate decoder alone cannot (ADDED@12 113).
+r2's ball_grade gate returned CHECK 3 FAIL — autopsy still open.
+
+### The S-click question (owner asked: are they really ignore-zones?)
+
+Measured with NO tracker and NO model: leave-one-out local-quadratic
+residual, contact-straddling windows dropped (click_diag.py precision).
+
+  V clicks  n=1046  median 1.93 px  p75 3.02  p90 4.25  94% within 6 px
+  S clicks  n= 387  median 2.68 px  p75 4.15  p90 7.23  87% within 6 px
+
+S clicks are the ball and they are precise to ~2.7 px. 87% of them
+already satisfy R_POS=6. The current rule (R_IGN=22, never a positive)
+discards ~500 genuine positives across the train rallies in exactly the
+stratum the detector is worst at. RULE UNCHANGED — this is the owner's
+call and they have the number now.
+
+### Two SCORING artifacts, both pessimistic, both speed-scaling
+
+1. cdp.score matches a click to `track.get(f) or track.get(f-1) or
+   track.get(f+1)` — FIRST available, not nearest, never interpolated.
+   When frame f is missing it silently compares against a position up to
+   1.5 frames away; at 40 px/frame that is 60 px of bookkeeping error.
+   Only fast balls are hit.
+2. The click grid and the clip frame grid are out of phase by a fraction
+   of a frame. Fit on V clicks ONLY (click_diag.py phase): r3 -0.45,
+   r6 -0.25, r7 -0.50, r17 -0.20 frames at 60 fps — every rally negative,
+   i.e. click times run 3-8 ms late, consistent with the browser seeking
+   to the frame at or before currentTime. The fit never sees an S click
+   and still halves S error (r3 5.92 -> 2.66 px, r7 9.90 -> 3.75 px),
+   which a per-click artifact could not do.
+
+Rescored with both removed (interpolate, then phase):
+  r3   r@8 273 -> 384   r@12 338 -> 388   (of 502)
+  r7   r@8 123 -> 169   r@12 157 -> 178   (of 260)
+  r17  r@8 236 -> 241   r@12 244 -> 245   (of 379)
+r17 barely moves because it was nearly in phase — that, not rally
+difficulty, is why r17 looked so much healthier than r3.
+
+DO NOT ship the fitted phase. It is fit against the track and is a
+diagnostic that the problem is real, not the number to correct with. A
+shipped correction must measure each clip's true cut offset against the
+full match video. The incumbent seals (r9 431@0.69, r10 320@0.67) were
+scored under the old rule and have NOT been rescored — that is a graded
+re-run and needs explicit owner authorization.
+
+### Why whole flights come back empty (owner question, autopsy)
+
+flight_autopsy.py. A flight = clicks between consecutive contacts.
+Over r9+r10 (AUTOPSY use of the eval clicks — no knob touched):
+
+                    zero-hit    hit
+    clicks             14        27      <- the discriminator
+    S share            0.21      0.24    <- no difference at all
+    speed (px/f)      10.6      12.1
+    duration (s)       0.57      0.90
+
+It is FLIGHT LENGTH, not click type or speed. path-first needs a seed run
+of s_min=6 consecutive frames above p_seed and then commits or drops the
+whole flight; a 0.3-0.45 s exchange is 18-27 frames at 60 fps, so losing
+a handful kills the entire flight at once. That all-or-nothing structure
+is what "it detected nothing" looks like from outside.
+Caveat: the r9/r10 phase scalars (-0.50, -0.70) were fit for this
+autopsy, so they are contaminated for grading — a shipped scorer must not
+reuse them.
+Biggest single zero-hit category in EVERY rally is the PRE-SERVE segment
+(ball stationary in the server's hand, punished by persist + dbody).
+Arguably correct behaviour being counted as a miss.
+
+### Owner's speed-vs-appearance hypothesis (partly confirmed)
+
+Label-side only, train rallies (click_diag.py appearance). S clicks run
+2.2x faster than V clicks in median pixel displacement (20.8 vs 9.4
+px/frame pooled) and the split holds in every rally — "looks like a
+streak" really does mean "going fast". The median S patch contains zero
+yellow pixels, the median V patch ~12. The SHAPE half is NOT settled: over
+a 21x21 patch the ball is a handful of pixels and the court dominates the
+statistic, so elongation did not separate (V 1.63 vs S 1.68). Note the
+emission model already carries `yellow` as its single largest positive
+weight (+1.287 of 14 features); what it has NO feature for is streak
+elongation or orientation. That is the open gap.
+Off-screen check r3 passed clean: 2 trackpoints across 2.1 s of ball out
+of frame, the first rally able to test that failure mode.
+
+
 ## Constraints in force (owner-set; carry verbatim)
 
 - No graded re-run / seal consumption without explicit owner
