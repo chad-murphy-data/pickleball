@@ -171,8 +171,17 @@ claim the second.
 - kitchen arrival time: when does each team get to the line
 - rally shape: contact positions over time, which is a rally in one picture
 
-None of these needs the ball. All of them need contact times, which is the
-channel that already beats human labels.
+**Be precise about what "non-tracking" means here.** None of these needs to
+know where the ball is AT the contact — which is exactly where the tracker
+drops to 72% and the human drops too. They do need contact TIMES, and those
+still come from the ball path mid-flight, where the tracker is a 90%
+instrument and already beats human labels. So the family is not ball-free end
+to end; it is free of the ball precisely where the ball is worst. That is the
+whole trick, and it is why these stats can be good when line calls can't.
+
+They also skip most of the per-rally machine chain. A tracked stat needs
+clip → pose → candidates → emission p-cache → path-first → events → stats.
+The non-tracking family needs clip → pose → contact times → stats.
 
 ## What to ship, in order
 
@@ -195,6 +204,26 @@ on rallies nobody clicked.** Clicks are the grader, never the source.
 
 Not shipping: shot types, in/out, spin, launch speed, anything that needs a
 timestamp from pose.
+
+## Panel sizes — what every claim here currently rests on
+
+Small n is the honest weak point of the two new instruments, and it is the
+cheapest thing to fix.
+
+| instrument | panel today | limited by |
+|---|---|---|
+| `geom_speed.py` | 63 pace-labeled flights (18 train / 45 eval) | manual contact taps |
+| `bounce_proxy.py` | 36 human-fit bounces (10 train / 26 eval) | manual contact taps |
+| `blackhole.py` | 2,259 owner-judged frames | nothing — this one is fine |
+| `rally_stats.py` counts | 8 player-rallies | manual shot labels |
+| `label_curve.py` | 663k candidates, 1,888 positives | nothing — saturated |
+
+**r2, r3, r4 and r5 already have pose npz AND owner ball paths, and carry
+only PREFILL contacts.** A contact tap pass on those four — 58 contacts,
+~45 min — adds **21 human-fit bounces** (+58% to the bounce panel) and
+roughly 50 flights (+66% to the speed panel), with zero machine
+prerequisites, and it unblocks CHECK 2 on path-first at the same time. That
+is the single highest-value hour of clicking available.
 
 ## What would change the answer
 

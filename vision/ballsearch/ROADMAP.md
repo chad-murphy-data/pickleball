@@ -1,17 +1,19 @@
 # Ball-search thread — roadmap
 
-Written 2026-09-03, owner's ask: "I'm sort of lost on an overall
-roadmap."
+Written 2026-09-03 ("I'm sort of lost on an overall roadmap");
+**rewritten the same evening**, because three of its premises changed in
+one day. What changed is recorded at the bottom under "What this roadmap
+used to say".
 
 `vision/STATUS.md` answers **where are we** (per-channel ledger, every
 number next to its null). `HANDOFF.md` answers **what do I run**.
 `vision/STATS.md` answers **what comes out the end** — the graded
-can-get / can't-get stat list and the ship order.
-This file answers **where are we going, and how do we know when to
-stop**. If it disagrees with STATUS.md on a number, STATUS.md wins.
+can-get / can't-get stat list, the ship order, and the house rules.
+This file answers **where are we going, and how do we know when to stop**.
+If it disagrees with STATUS.md on a number, STATUS.md wins.
 
-Update the phase table when a phase closes. Do not update it to match
-a mood.
+Update the phase table when a phase closes. Do not update it to match a
+mood.
 
 ## Where we are, with the receipt
 
@@ -23,173 +25,176 @@ Same rally, same owner clicks, different instruments, ~two weeks:
 | + geometry fix | 479 @ 0.74 | 323 @ 0.65 (split → not adopted) |
 | **path-first (incumbent)** | **537 @ 0.87** | **422 @ 0.88** |
 
-Recall 55 % → 69 % and 49 % → 64 %, precision 0.69 → 0.88, every gain
-booked as a one-shot after a written-down rule, displaced/time-shift
-nulls ≤ 2/779. Layers on top: events v3 adopted (F1 .731 / .675 vs raw
-.625 / .617, shift-null .30 / .33), gap-fill v2 adopted as a tagged
-product, `rally_stats.py` hit counts within ±1 on **8 of 8**
-player-rallies, r4's 3D reconstruction a CHECK 3 PASS at 1.76 ft
-against a 3.0 ft bar.
+Recall 55% → 69% and 49% → 64%, precision 0.69 → 0.88, every gain booked
+as a one-shot after a written-down rule, displaced/time-shift nulls
+≤ 2/779. Layers on top: events v3 adopted (F1 .731 / .675), gap-fill v2
+adopted as a tagged product, `rally_stats.py` hit counts within ±1 on
+**8 of 8** player-rallies, r4's 3D reconstruction a CHECK 3 PASS at
+1.76 ft against a 3.0 ft bar.
 
-The thread is working. That is not the problem.
+And, as of today, the tracker's error is **located**: it is a 90%
+instrument mid-flight and a 72% one inside 0.2 s of a contact
+(`blackhole.py`). That is not a worse result than we thought — it is the
+same result with a map.
 
-## Why it stopped feeling like progress
+## The three things that changed on 2026-09-03
 
-The loop optimizes an **instrument**, and instruments have no finish
-line — only a next digit. Nothing from this thread has reached the
-website since the 3D replay, and the most recent *finding* was "the
-checks disagree across rallies."
+1. **Clicking is no longer the input to the learner.** Both label axes are
+   measured flat (`label_curve.py`): pooling 1 → 6 train rallies moves AUC
+   +0.008 and the operational metric not at all. The old plan's "the next
+   input is clicks, not model code" is dead. Clicks are now for GRADING and
+   for PANEL SIZE.
+2. **Speed came back.** It was excluded from Phase 2 as measured-broken.
+   That verdict was about the 3D launch fit off the ball's own arc (AUC
+   0.10, inverted). Speed off player geometry + contact timing scores AUC
+   0.805 and is shipped in `rally_stats.py`. Owner call: average speed is
+   the speed. See STATS.md's house rule.
+3. **A whole stat family stopped needing the ball at the contact.** Player
+   positions (exact plane) plus contact times (better than human) place a
+   bounce to 5.1 ft with no ball tracking at all — 2× worse than the
+   tracked fit and available on every rally today, skipping candidates,
+   emission cache, path-first and events entirely.
 
-Two independent signals say tuning is near its end anyway:
+Together those move the centre of gravity from *tune the tracker* to
+*spend what the tracker already produces*, which was Phase 2's whole point.
+Phase 2 just got much cheaper.
 
-- **r5 exposed a second failure mode** running opposite the first —
-  fast balls lose to `yellow`, slow balls near bodies lose to `dbody`
-  + `crowd`. One global tune cannot serve both. That argues for
-  conditioning, not another knob.
-- **`learner_gate.md` came back label-limited, not architecture-
-  limited**: logistic is flat from 25 % to 100 % of labels
-  (feature-saturated); trees only overtake at ≥ 75 %. The next input
-  is clicks, not model code.
+## The three phases (owner's sequence, unchanged)
 
-So the fix is not to try harder on the instrument. It is to spend what
-the instrument already produces.
-
-## The three phases (owner's sequence, 2026-09-03)
-
-> "finish the current coding exercise, take a diversion to get some
-> sort of publishable stats on the match we've been coding (derived,
-> not from hand coding) then go back to the 3D sim"
+> "finish the current coding exercise, take a diversion to get some sort of
+> publishable stats on the match we've been coding (derived, not from hand
+> coding) then go back to the 3D sim"
 
 | phase | goal | closes when |
 |---|---|---|
-| **1. Finish the coding** | spend the staged click package | sittings 1–3 delivered and read; seals still unspent |
+| **1. Finish the coding** | spend the staged click package | contact taps in, r18/r19 clicked, seals unspent |
 | **2. Derived match stats** | one publishable stat from the tracker | a graded stat ships to the site with receipts |
 | **3. Back to the 3D sim** | the showpiece | r4-class replay for a real rally, embedded |
-
-Phase 2 is the one that converts two weeks of tracker work into
-something that exists outside a gate file. Phase 1 feeds it. Phase 3
-spends it.
 
 ---
 
 ## Phase 1 — finish the current coding exercise
 
-Staged and committed in `click_setup.md`; nothing here needs new code.
+### Tonight's click, in priority order
 
-Delivered: r17 (train), r2, r3, r4, r5 (train, sitting 3 complete).
-Outstanding: **r18, r19** (train, ~319 frames combined — nearly free),
-and the two seals **r20 / r21**, which stay unclicked-or-unspent until
-Phase 2 has a reason to spend them.
+**1. CONTACT TAPS on r2, r3, r4, r5 — 58 contacts, ~45 min. Do this first.**
+Everything it needs is already on disk: all four have pose npz AND owner
+ball paths, and carry only PREFILL contacts. It pays three ways at once:
 
-Machine-side, before the next batch:
+- **+21 human-fit bounces** for `bounce_proxy.py` (36 → 57, +58%)
+- **~+50 flights** for `geom_speed.py` (76 → ~126, +66%)
+- **unblocks CHECK 2 on path-first**, which has been blocked on exactly
+  this since 2026-09-02 (its truth is manual taps at ±0.15 s; of the clean
+  train rallies only r17 clears the 14-contact power floor r2's FAIL set)
 
-- **Make the emission refit n-way.** `emission.py cache-cross` is
-  hard-wired to r6/r7 and structurally cannot absorb r2–r5 or r17.
-  Until it does, six clicked train rallies are feeding a model fit on
-  two. This is the single highest-value unbuilt thing in the thread
-  and it is the direct answer to the learner being label-limited.
-- Pose npz for r18–r21 (CPU here or Colab per `gpu_runbook.md`).
+Tool: `data/vision/contact_audit_chicago0725.html`. **Seek by TIME, not by
+pin** — the pins for these four are the shifted ones: **r2 40.5 s, r3
+59.4 s, r4 91.2 s, r5 118.8 s.** Tap pass, then pace pass, export
+`contact_labels_chicago0725.csv`, share it.
 
+**2. BALL PATHS on r18 + r19 — ~319 frames combined, nearly free.** Tools
+committed (`data/vision/ball_audit_r18.html`, `_r19.html`). These are for
+grading and coverage, not training — the learner is saturated.
+
+**3. Nothing else.** r20 and r21 stay unclicked-or-unspent. **r20 is the
+next seal, r21 the second**, and no graded run happens on either without an
+explicit go. r22–r34 are temporal-gate holdout and stay untouched at every
+level.
+
+### Machine-side, before the next batch
+
+- **Make the emission refit n-way.** `emission.py cache-cross` is hard-wired
+  to r6/r7 and structurally cannot absorb r2–r5 or r17. Still worth doing —
+  but for the reason the label curve leaves standing, which is **regime
+  coverage, not sample count**: r5's failure is `dbody` + `crowd`
+  suppressing kitchen dinks while r3's is `yellow` missing fast streaks,
+  and one global weight vector cannot serve both.
+- Pose npz for r18–r21 (CPU here, ~21 min each, or Colab per
+  `gpu_runbook.md`). r2–r10 and r17 are already extracted.
 - **CHECK 1 on path-first: DONE 2026-09-03, passes on all seven train
-  rallies** (pooled 78.1 % V vs a 70 % bar, of-claimed 99.6 % —
-  `pf_check1.py`, detail in `HANDOFF.md`). The finding that drove it:
-  the graded battery runs the DECODER stack, not the adopted
-  incumbent, so the seal is registered against a stack we no longer
-  use. The frozen scorer now lives in `vision/gate_checks.py` and both
-  stacks call it.
-- **CHECK 2 on path-first is BLOCKED on contact taps.** Its truth is
-  manual taps at ±0.15 s and r2–r5 carry prefill only; of the clean
-  train rallies only r17 clears the 14-contact power floor that r2's
-  FAIL established. Owner ask recorded in `HANDOFF.md`: a timing pass
-  on r3 / r4 / r5.
+  rallies** (pooled 78.1% V vs a 70% bar, of-claimed 99.6%; `pf_check1.py`).
+- **CHECK 2: unblocked by item 1 above.** Run it the moment the taps land.
 
-**Exit:** n-way emission refit landed and re-read on r6/r7 cross-fold;
-r18/r19 clicked; CHECK 2 panel powered; no seal spent.
+**Exit:** contact taps on r2–r5 delivered, CHECK 2 panel powered, r18/r19
+clicked, n-way emission refit landed and re-read on r6/r7 cross-fold, no
+seal spent.
 
-**Explicitly parked until a later phase asks:** the S-click rule
-change (~500 genuine positives currently discarded — owner's call,
-they have the number), a streak-elongation emission feature, the
-scorer fix (interpolate + per-clip measured cut offset), and any
-rescore of the r9/r10 incumbent numbers. Each is a graded re-run or a
-rule change and needs an explicit go.
+**Explicitly parked, each needing an explicit go:** the S-click rule change
+(~500 genuine positives currently discarded), a streak-elongation emission
+feature, the scorer fix (interpolate + per-clip measured cut offset), any
+rescore of the r9/r10 incumbent numbers, and the contact-anchored junction
+solve (below).
 
 ---
 
 ## Phase 2 — derived stats on chicago0725
 
-**The hard rule that defines this phase:** the stat must be **derived
-by the machine on rallies nobody clicked**. Owner clicks are the
-*grader*, never the source. A number that needs a human to click the
-ball first is not a stat, it is a transcription.
+**The hard rule that defines this phase:** the stat must be **derived by the
+machine on rallies nobody clicked**. Owner clicks are the *grader*, never
+the source. A number that needs a human to click the ball first is not a
+stat, it is a transcription.
 
-### The deliverable
+### The deliverables, in ship order
 
-**Touch share** — of the balls a team hit, what fraction each partner
-hit — plus hits-per-player and last-shot location. STATUS.md already
-carries touch share as "buildable now, glue unbuilt," and it is the
-direct complement to the coverage model: coverage measures SPACE,
-touch share measures BALLS, and the divergence is the "who is carrying
-this team" question.
+1. **Touch share** — of the balls a team hit, what fraction each partner
+   hit, plus hits-per-player and last-shot location. Direct complement to
+   the coverage model: coverage measures SPACE, touch share measures BALLS,
+   and the divergence is "who is carrying this team".
+2. **Contact map + bounce map** — the non-tracking family. Every shot's
+   contact position in court feet (exact plane), and the bounce proxy at
+   5.1 ft median / 92% court side, with that error bar printed on the page.
+   A bounce map at 5 ft is a real bounce map; a line call at 5 ft is not.
+3. **Rally tempo and average speed** — seconds between contacts, average
+   mph beside it. Framed as average speed per the STATS.md house rule:
+   never next to a radar number, and remembering a shot's average speed is
+   partly the receiver's choice.
 
-`rally_stats.py` already does the counting channel at ±1 on 8/8
-player-rallies. What it is not yet: run at scale, graded at scale, or
-attributed to names.
+**Now in scope, reversing the earlier exclusion:** speed. The old line —
+"do not ship a speed number off this footage without a side camera" —
+applied to the 3D launch fit and still does. It does not apply to
+`geom_speed.py`. **Still out of scope:** shot types, in/out calls, spin,
+launch speed, anything needing a timestamp from pose.
 
-**Not in scope:** "who sped up first" is measured broken — 3D launch
-speed is depth-dominated and fragment starts inflate it (wrong twice
-of two), and `speed_lab.py` found no camera-visible measure that
-separates fast from slow on r6/r7. Do not ship a speed number off this
-footage without a side camera.
+### Attribution and grading are nearly free
 
-### Attribution is free
+`data/vision/rally_windows_chicago0725_v4.csv` carries all 188 rallies with
+`teamA_names` / `teamB_names`, division (125 mixed / 32 mens / 31 womens)
+and per-rally `server_uuid` + `receiver_uuid`. `vision/lineup.py` is solved
+at 99.25% over 45,689 rallies, so real names cost nothing. Two validators
+need no new clicks:
 
-`data/vision/rally_windows_chicago0725_v4.csv` carries all 188 rallies
-with `teamA_names` / `teamB_names`, division (125 mixed / 32 mens /
-31 womens) and per-rally `server_uuid` + `receiver_uuid`, resolved
-from referee logs. `vision/lineup.py` is a solved asset at 99.25 %
-over 45,689 rallies. So real names cost nothing.
+1. **Shots 1 and 2 are known for every rally** — `server_uuid` and
+   `receiver_uuid` populated on **188 of 188**, i.e. **376 free hitter
+   labels**, scored at n=188 with a flat chance baseline.
+2. **Alternation is an internal validator** — exact in this footage (0
+   violations / 229 contacts), so a derived sequence that fails to alternate
+   is detectably wrong on all 188 rallies with no labels at all.
+   `geom_speed.py` already prints this per rally and it already caught
+   something: r17's attribution fails it 4/17.
 
-### Grading is *also* nearly free — the finding that makes this affordable
+Validator (1) assumes the tracker's first two events land on the actual
+serve and return rather than a bounce — verify on r6/r7 before leaning on
+it. That is boundary typing again, HANDOFF to-do (a).
 
-The obvious worry is that we only hold owner shot labels for r9/r10 —
-8 player-rallies, far too thin to publish from. Two independent
-validators fix that without a single new click:
+### The cost, and the cheaper road
 
-1. **Shot 1 and shot 2 are known for every rally.** `server_uuid` and
-   `receiver_uuid` are populated on **188 of 188** rallies. That is
-   **376 free hitter labels** against which the attribution rule can be
-   scored at n=188 instead of n=8, with a flat chance baseline (¼ for
-   a four-way call, ½ once the side is known).
-2. **Alternation is an internal validator.** Side alternation is EXACT
-   in this footage (0 violations / 229 contacts) and the alternation
-   decoder got shot counts 161/162. A derived hit sequence that fails
-   to alternate sides is detectably wrong, on all 188 rallies, with no
-   labels at all.
+Tracked chain per rally: clip → pose → candidate cache → emission p-cache →
+path-first → events → stats. Non-tracking chain: clip → pose → contact
+times → stats. **Pose is the shared bottleneck** at 20.7 min/rally on CPU
+here, so 188 rallies ≈ 65 CPU-hours; Colab per `gpu_runbook.md` is the
+practical route, clips cut in batch with `cut_clip.py` (`check_clip.py`
+before trusting any re-cut).
 
-Both need verifying before they are leaned on — (1) assumes the
-tracker's first two events land on the actual serve and return rather
-than on a bounce, which is exactly the boundary-typing gap in
-`HANDOFF.md` to-do (a). Verify on r6/r7 first, then read at scale.
+A partial run is a legitimate product — the coverage model published off 90
+of 141 rallies and policed itself into withdrawing three of its own
+findings. Pick the rally set by a rule written down first (all womens +
+mens rallies, or every rally over N seconds), not by which ones came out
+looking good.
 
-### The cost, honestly
-
-The chain per rally is clip → pose npz → candidate cache → emission
-p-cache → path-first → events → stats. Pose is the bottleneck:
-20.7 min/rally on CPU here, so 188 rallies ≈ **65 CPU-hours**. Colab
-GPU per `gpu_runbook.md` is the practical route; clips cut in batch
-from the owner's `full_match.mp4.webm` with `cut_clip.py`
-(`check_clip.py` before trusting any re-cut).
-
-A partial run is a legitimate product — the coverage model published
-off 90 of 141 rallies and policed itself into withdrawing three of its
-own findings. Pick the rally set by a rule written down first (e.g.
-all womens + mens rallies, or every rally over N seconds), not by
-which ones came out looking good.
-
-**Exit:** a touch-share table for chicago0725, derived end-to-end,
-graded against the 376 free labels and the alternation check, shipped
-as a site block or an insight article with its error bars and its
-null next to it. If it fails its bars, the phase still closes — the
+**Exit:** a touch-share table plus a contact/bounce map for chicago0725,
+derived end to end, graded against the 376 free labels and the alternation
+check, shipped as a site block or an insight article with error bars and
+nulls next to them. If it fails its bars the phase still closes — the
 write-up is a null result, which this project publishes.
 
 ---
@@ -200,50 +205,74 @@ Already partly built: `rally_3d.py` → `court3d_r{N}.html`,
 `render_court3d.py` → mp4, the rally-1 replay live in
 `web/replay/pickles_replay.html`, r4 rendered and handed to design.
 
-What Phase 2 buys it: r4 passes CHECK 3 at 1.76 ft while r3 and r5
-fail at 4.84 and 4.60, and CHECK 3 fails on a *different component*
-each rally (bounce over-generation, bounce under-generation, accuracy).
-Picking a showpiece rally today means picking the one that happened to
-fit. After Phase 2 there is a match-wide reconstruction to choose from
-on a stated criterion.
+What Phase 2 buys it: r4 passes CHECK 3 at 1.76 ft while r3 and r5 fail at
+4.84 and 4.60, and CHECK 3 fails on a *different component* each rally.
+Picking a showpiece today means picking the one that happened to fit. After
+Phase 2 there is a match-wide reconstruction to choose from on a stated
+criterion.
 
-Open before this ships as more than a demo: boundary TYPING (bounce vs
-contact — `HANDOFF.md` to-do (a); r10's human ledger has 13 bounces,
-path-first typed 0), and per-shot mph, which is blocked by the
-standing rule that a speed is never published off a fragment.
+Open before this ships as more than a demo: **boundary TYPING** (bounce vs
+contact — r10's human ledger has 13 bounces, path-first typed 0). Per-shot
+mph is no longer blocked: average speed ships, launch speed never will off
+one camera.
 
-**Exit:** a replay of a chosen rally, embedded, with the same
-caveats-relaxed framing as the rally-1 page.
+### The named next build: the contact-anchored junction solve
+
+Not scheduled, needs a pre-registered bar before any number, and it is the
+one piece of tracker work still clearly worth doing. The black hole is
+**bracketed** — an arc arrives, an arc departs, one junction is missing, and
+the geometry channel now supplies the hitter's paddle position in court
+feet. Two arcs + a spatial anchor + a time is over-determined, which is
+where inference beats detection. `court3d.fit_segment` already solves the
+same shape for a bounce; `gapfill.py` already extends both arcs to their
+closest approach. It would also type boundaries for free — a junction at
+ground level is a bounce, one at a paddle is a contact — which is exactly
+what CHECK 3 keeps failing on.
 
 ---
 
 ## Constraints that survive all three phases
 
-Carried verbatim from `HANDOFF.md`; none of this roadmap relaxes any
-of them.
+Carried verbatim from `HANDOFF.md`; nothing in this roadmap relaxes any of
+them.
 
-- No graded re-run / seal consumption without explicit owner
-  authorization. **r20 is the next seal, r21 the second.** Bars never
-  loosen.
-- TRAIN = r6 + r7 (+ r17, r2–r5 once the refit is n-way). r9 / r10
-  owner clicks are EVALUATION-only: grading and autopsy, never
-  production path selection, never tuning a weight or threshold. Any
-  knob is tuned on r6/r7 cross-fold, the selection rule is written
-  down BEFORE the numbers, then ONE shot.
+- No graded re-run / seal consumption without explicit owner authorization.
+  **r20 is the next seal, r21 the second.** Bars never loosen.
+- TRAIN = r6 + r7 (+ r17, r2–r5 once the refit is n-way). r9 / r10 owner
+  clicks are EVALUATION-only: grading and autopsy, never production path
+  selection, never tuning a weight or threshold. Any knob is tuned on r6/r7
+  cross-fold, the selection rule is written down BEFORE the numbers, then
+  ONE shot.
 - Positives ONLY from owner V clicks within R_POS=6 px; S clicks are
-  ignore-zones (R_IGN=22), never positives; never train on tracker
-  output or model self-labels.
+  ignore-zones (R_IGN=22), never positives; never train on tracker output or
+  model self-labels.
 - Oracle-bounds fits are diagnostic-only. Temporal-gate holdout rows
-  (`data/vision/label_split.csv`) are untouchable; holdout burns on
-  use.
-- Rallies 22–34 are temporal-gate holdout and stay untouched at every
-  level, including Phase 2's match-wide run.
+  (`data/vision/label_split.csv`) are untouchable; holdout burns on use.
+- Rallies 22–34 are temporal-gate holdout and stay untouched at every level,
+  including Phase 2's match-wide run.
 
 ## What this roadmap deliberately does not chase
 
-The pre-registered seal on r20 — a full three-check PASS on a fresh
-sealed rally — is the *scientific* finish line and it is not close:
-CHECK 3 fails on a different component each rally. That is fine. It
-accrues in the background off the same clicking Phase 1 already does,
-and Phase 2 does not depend on it. Do not let it gate a publishable
-stat, and do not spend a seal to chase one.
+The pre-registered seal on r20 — a full three-check PASS on a fresh sealed
+rally — is the *scientific* finish line and it is not close: CHECK 3 fails
+on a different component each rally. That is fine. It accrues in the
+background off the same clicking Phase 1 already does, and Phase 2 does not
+depend on it. Do not let it gate a publishable stat, and do not spend a seal
+to chase one.
+
+## What this roadmap used to say
+
+For the record, so the reversals are visible rather than quietly edited
+away. The morning version of this file said:
+
+- *"`learner_gate.md` came back label-limited, not architecture-limited …
+  the next input is clicks, not model code."* **Superseded the same day**
+  by `label_curve.py`: that read came from the within-rally curve alone,
+  and the between-rally curve is flat too.
+- *"Not in scope: 'who sped up first' is measured broken … Do not ship a
+  speed number off this footage without a side camera."* **Half reversed.**
+  True of the 3D launch fit, false of geometry + timing. Average speed is
+  now shipped and graded.
+- Phase 2 costed only the tracked chain. **The non-tracking family skips
+  four of its seven stages**, which is why the contact/bounce map is now a
+  ship item rather than a someday.

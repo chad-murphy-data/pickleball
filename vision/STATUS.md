@@ -420,7 +420,12 @@ k=1 → k=6 moves AUC **+0.008**, inside the ±0.015 between-rally spread,
 and the operational metric — junk surviving at 97% recall — does not
 improve at all (0.555 → 0.558; the 3→4 and 5→6 steps are negative).
 So the remaining reasons to click a ball path are GRADING and the
-r18/r19 roadmap batch, **not training**. What this does NOT say: it
+r18/r19 roadmap batch, **not training**. **Contact TAPS are the opposite
+case and gained a third consumer on 2026-09-03**: they set the panel size
+for `geom_speed.py` (63 flights) and `bounce_proxy.py` (36 bounces) as
+well as unblocking CHECK 2. r2-r5 already carry pose npz and owner ball
+paths with prefill contacts only, so 58 taps (~45 min) grow the bounce
+panel 58% and the speed panel ~66% with no machine work at all. What this does NOT say: it
 grades the emission scorer in isolation (not the full path-first +
 gap-fill stack), and it says nothing about CONDITIONING — r5's
 dbody/crowd failure is a regime problem, so the n-way refit is still
