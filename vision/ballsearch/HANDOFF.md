@@ -409,6 +409,46 @@ python3 spaghetti.py 10 --lrn --soft 25                # graded r10
 Heavy scripts exceed the 120 s foreground limit — background them.
 No ffprobe (use cv2), no sklearn, no gh CLI.
 
+#### Recreating ONE rally from scratch — worked example, rally 4
+
+The block above covers r6/r7/r9/r10 only; r2–r5 and r17 were staged
+later and follow the same shape.  Everything below is what a fresh
+session needs for r4, and where each piece lives.
+
+**In git already (nothing to stage):** the code, every tune JSON
+(`pathfirst_tune.json`, `events_tune_v3.json`, `emission_model.json`,
+`gapfill_tune3.json`, …), `data/vision/court_landmarks_chicago0725.csv`
+(the homography), `data/vision/ball_candidates_r4.csv.gz` (the
+extractor's raw candidates — also the only record of the clip's cut:
+offset 89.10 s, 1085 frames), `data/vision/ball_path_r4.csv` (the
+owner's 403 clicks: 273 V / 106 S / 24 I), `anchors_grade_r4.csv`,
+`train_read_r4.txt`, `court3d_r4.html` (the output).
+
+**Owner supplies, gitignored, must be dropped into `vision/ballsearch/`:**
+
+| file | ~size | where it comes from |
+|---|---|---|
+| `r4_clip.mp4` | 3.5 MB | `python3 cut_clip.py 4 full_match.mp4.webm` from the owner's Drive VOD — offset and frame count are read from the committed candidate CSV so the cut cannot drift (then `check_clip.py 4 r4_clip.mp4`) |
+| `r0004.npz` | 1.2 MB | pose stream; already in the owner's Drive pose folder (r0002–r0010).  Otherwise `vision/pose_extract.py` — Colab per `gpu_runbook.md`, or the CPU RTMPose fallback here (~11 min for r3+r4 together; `pose_meta_r2to5.json` records the run: window 89.66–116.78 s, 6519 detections, 7 tracks) |
+| `full_match.mp4.webm` | — | only needed if the clip has to be re-cut |
+
+**Then, in `vision/ballsearch/`:**
+
+```bash
+python3 c3_lab.py 4                    # -> c3_cache_r4.pkl  (candidates, decode, turns,
+                                       #    anchors, floors, homography; window in c3_lab.WINDOWS)
+python3 spaghetti.py 4 --lrn --soft 25 # auto-builds cands_r4_{cc,peak}_14.npz on first use
+python3 emission.py cache 4            # -> p_r4_{cc,peak}_14.npz  (the committed pooled r6/r7 model)
+python3 rally_3d.py 4                  # -> court3d_r4.html   (the orbitable 3D view)
+python3 render_court3d.py 4            # -> court3d_r4.mp4    (optional; gitignored)
+```
+
+`spaghetti.py` and `emission.py cache` are the slow steps (minutes;
+background them).  `rally_3d.py` itself takes seconds and needs only
+the caches above.  Rally 4 is TRAIN, so iterating on it is free — but
+it is still the ball-thread pipeline: no knob is tuned outside r6/r7,
+and `rally_3d.py` writes nothing back.
+
 ## Incumbent (2026-09-01, late): PATH-FIRST — `pathfirst.py`
 
 Adopted under the pre-registration in `pathfirst_gate.md` (frozen
