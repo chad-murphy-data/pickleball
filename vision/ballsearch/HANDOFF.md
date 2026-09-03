@@ -3,8 +3,12 @@
 Dated status snapshot + next-thread to-do for the corridor ball-path
 tracker. Written because the working thread was running out of context.
 The instruments lived in a session scratchpad; they are now committed
-HERE (`vision/ballsearch/`) so a fresh thread can run them. The
-narrative record stays in `vision/swing_explore_notes.md` (chapter
+HERE (`vision/ballsearch/`) so a fresh thread can run them.
+
+**Direction: `ROADMAP.md` (this directory) — the three phases, what
+closes each, and what is deliberately not being chased.**
+
+The narrative record stays in `vision/swing_explore_notes.md` (chapter
 "Pose-corridor ball re-search", line ~4506 onward: post-verdict
 measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they

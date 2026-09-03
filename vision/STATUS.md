@@ -8,6 +8,10 @@ summary disagrees with this table, the summary is wrong.
 Update the table when a measurement lands. Do not update it to match a
 mood.
 
+This file is **where are we**. `vision/ballsearch/ROADMAP.md` is
+**where are we going** — the phase plan, its exit criteria, and the
+parked threads.
+
 ## What works
 
 | channel | number | chance / null | status |
