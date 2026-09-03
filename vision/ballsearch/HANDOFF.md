@@ -14,6 +14,94 @@ measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
 
+## 2026-09-03 (later still) — SPEED IS NOT BROKEN, AND THE BLACK HOLE IS 0.2 s WIDE
+
+Owner, two claims in one message: (1) speed should be recoverable from
+player positions + timing, (2) the place to spend time is the "black hole"
+where the ball vanishes at a direction change — solved by inference, not
+tracking. Both were tested the same day. Both hold.
+
+### (1) `geom_speed.py` — speed off geometry + timing
+
+The standing "speed is broken" line was about ONE instrument: the 3D launch
+fit off the ball's own arc, which is depth-dominated (a labeled `slow` at
+84.9 ft/s, a labeled `fast` at 18.0; AUC 0.10 on the r6/r7 labels — worse
+than a coin). The owner's estimator never touches ball depth:
+
+    avg speed over a flight = |xy(hitter_next) - xy(hitter)| / (t_next - t)
+
+with `xy` = the hitter's FEET through the z=0 homography (exact, 0.06 ft).
+LEVEL C: contact times are the owner's labels. Hitter attribution is the
+owner's clicked ball pixel → nearest pose track in PIXEL space, so both
+inputs are ground truth and the read grades the measure, not the tracker.
+Nothing tuned, no threshold fit, no gate, no seal. Output `geom_speed.txt`.
+
+| panel | dist alone | 1/dt alone | dist/dt | fast vs slow |
+|---|---|---|---|---|
+| TRAIN r6+r7+r17 (n=18) | 0.425 | **0.925** | 0.825 | 30.3 / 16.3 mph |
+| EVAL r9+r10 (n=45) | 0.628 | 0.732 | **0.788** | 30.2 / 18.4 mph |
+| pooled (n=63) | 0.583 | 0.793 | **0.805** | 30.3 / 17.5 mph |
+
+Permutation null ~0.50 [0.36, 0.65] pooled. **The decomposition is the
+finding: most of the signal is TIMING.** Time-between-contacts alone matches
+or beats the full speed on train. Geometry converts a tempo into physical
+units, and the units land where they should. Do not report this as "we
+measured ball speed off the video" — report it as pace from contact timing,
+put in mph by the court geometry.
+
+Caveats, all real: AVERAGE over the flight, not launch; straight-line
+distance, so a lob reads slow twice over; feet ≠ contact point (2-3 ft of
+reach, and height is ignored entirely); r17 fails its own alternation check
+(4 violations / 17) so its rows are the weakest. Free validators the script
+prints: side alternation 0 violations on r6/r7/r9/r10 (exact in this
+footage), name→track purity 88-100%.
+
+What would make it a real number rather than a pilot: (a) drop the LEVEL-C
+crutch and feed machine contact times — that is a LEVEL-B read and inherits
+the timing stream's error, which on sealed r10 is already better than the
+human's; (b) use the paddle proxy at contact height instead of the feet;
+(c) charge the ball its arc length, not the chord, once the junction solve
+below exists.
+
+### (2) `blackhole.py` — the hole is short, and it is bracketed
+
+Scored with the frozen CHECK-1 scorer on the adopted product (path-first +
+gap-fill v2), stratified by distance to the nearest owner-labeled contact.
+Output `blackhole.txt`. Same shape on both panels (TRAIN / EVAL):
+
+| band | human hole (I/N) | machine claims | machine hits |
+|---|---|---|---|
+| ≤0.10 s from a contact | 13.9% / 10.5% | 74.8% / 75.6% | 72.3% / 71.5% |
+| 0.10-0.25 s | 3.2% / 4.4% | 79.7% / 75.7% | 73.9% / 73.0% |
+| mid-flight 0.25-0.60 s | 1.2% / 5.5% | 91.5% / 90.4% | **90.5% / 90.3%** |
+| all | 4.9% / 7.1% | 84.0% / 82.9% | 81.1% / 81.1% |
+
+Mid-flight the tracker is a 90% instrument. At the contact it loses ~19
+points, and the HUMAN loses too (I/N triples) — the ball really is behind a
+body. The loss is not smeared over the rally: unrecovered runs are median
+6-7 frames, p90 18-22, i.e. a **~0.2 s window around every direction
+change**. Over the whole clicked archive only 6.8% of frames are I/N, and
+hidden runs are median 2 frames — the black hole is narrow, not vast.
+
+**Why that is the good case for inference.** The hole is bracketed: an arc
+arrives, an arc departs, one junction is missing. Endpoints plus flight time
+nearly determine a projectile arc (drag aside), and the project has done
+this shape before — `court3d.fit_segment` already joins two arcs at a bounce
+(`h_segs` kind=`bounce` with a solved `bounce_xy`), and `gapfill.py` extends
+both arcs to their closest approach and switches there.
+
+NEXT BUILD (unbuilt, needs a pre-registered bar before any number):
+**contact-anchored junction solve.** Same two-arc join, but with the
+constraint the bounce solve does not have — the junction must sit within
+reach of the hitter's paddle, whose court position the geometry channel now
+supplies in feet. That is over-determined (two arcs + a spatial anchor + a
+time), which is exactly the regime where inference beats detection. It also
+falls out as boundary TYPING for free — a junction at z≈0 is a bounce, one
+at a paddle is a contact — which is HANDOFF to-do (a) and the thing r10's
+CHECK 3 keeps failing on. `rally_3d.py`'s `relift()` already proved the
+anchor idea works for DISPLAY (worst arc-to-hitter distance at contact r4
+32.6 → 5.5 ft); this is the same anchor moved into the tracker.
+
 ## 2026-09-03 (later) — BOTH LABEL AXES ARE SATURATED; where clicking should go
 
 Owner question: "if you had to guess how many rallies will we need?" — then

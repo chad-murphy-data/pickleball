@@ -33,14 +33,78 @@ from the tables below. Every claim here has its number in this file.
   CLOSE TO A BODY (dbody + crowd fire on kitchen dinks — r5's failure),
   plus simply gone on lobs out of frame. "Hidden by bodies" is half the
   story.
-- **Speed / bounce / landing: three different verdicts, not one.** SPEED is
-  broken — a labeled `slow` shot reads 84.9 mph and a labeled `fast` reads
-  18.0 in `speed_lab_train.txt`; one camera cannot see toward-or-away
-  motion and no label count fixes it. BOUNCES are EXACT given human ball
+- **Speed / bounce / landing: three different verdicts, not one.** SPEED
+  OFF THE BALL'S OWN ARC is broken — a labeled `slow` shot reads 84.9 ft/s
+  and a labeled `fast` reads 18.0 in `speed_lab_train.txt` (AUC 0.10,
+  inverted); one camera cannot see toward-or-away motion and no label count
+  fixes it. **SPEED OFF PLAYER GEOMETRY + CONTACT TIMING WORKS** and is a
+  different measurement — see "Speed from geometry" below. BOUNCES are EXACT given human ball
   positions (r10 human fit = truth 13/13 across 26/26 segments, and all 5
   disputed calls verified real) — the tracker feeding them is what is off
   (8 v 13). LANDING/net crossings are in between: 23/23 on r9, 14–15/21
   on r10.
+
+## Speed from geometry + timing — WORKS (2026-09-03, owner's idea)
+
+Owner: *"If we know where player X is and player Y is, and we know timing,
+then we'd have the answer for speed (more or less)."* Correct, and it is a
+different instrument from the one that failed. It never uses the ball's
+depth. Court position of a player's feet sits on the z=0 plane where the
+homography is exact (0.06 ft); contact times are the one thing the timing
+stream already does better than a human (73.1% vs 65.4% on sealed r10). So
+
+    avg speed over a flight = |xy(hitter_next) - xy(hitter)| / (t_next - t)
+
+`vision/ballsearch/geom_speed.py` → `geom_speed.txt`. LEVEL C (owner-labeled
+contact times), hitter attribution from the owner's clicked ball pixel →
+nearest pose track in PIXEL space, so both sides are ground truth and the
+read grades the SPEED measure, not the tracker. Nothing tuned, no seal.
+
+| panel | dist alone | 1/dt alone | dist/dt | median fast vs slow |
+|---|---|---|---|---|
+| TRAIN r6+r7+r17 (n=18) | 0.425 | **0.925** | 0.825 | 30.3 vs 16.3 mph |
+| EVAL r9+r10 (n=45) | 0.628 | 0.732 | **0.788** | 30.2 vs 18.4 mph |
+| pooled (n=63) | 0.583 | 0.793 | **0.805** | 30.3 vs 17.5 mph |
+
+AUC = separating owner-labeled fast from slow; permutation null ~0.50
+[0.36, 0.65] pooled. Compare the 3D launch fit on the same labels: **0.10**.
+
+Read it honestly: **most of the signal is TIMING, not geometry.** Time
+between contacts alone is as good as the full speed. What the geometry adds
+is physical units — and they are plausible ones (a drive averaging ~30 mph
+over its flight, a dink ~17). Caveats that are real: this is an AVERAGE over
+the flight, not a launch speed; it charges the ball a straight line, so a lob
+reads slow twice over; feet are not the contact point (~2-3 ft of reach);
+and r17's attribution fails its own alternation check (4 violations / 17),
+so its rows are the shakiest in the panel. Free internal validators printed
+by the script: side alternation 0 violations on r6/r7/r9/r10, name→track
+purity 88-100%.
+
+## The black hole is real, and it is AT the contact (2026-09-03)
+
+Owner: *"the ball goes into the black hole of [where the] player changes
+direction ... not through tracking because it's not there, but through
+inference?"* Measured, `vision/ballsearch/blackhole.py` → `blackhole.txt`,
+scored with the frozen CHECK-1 scorer, stratified by distance to the nearest
+owner-labeled contact. Same shape on both panels:
+
+| band | human hole (I/N) | machine claims | machine hits |
+|---|---|---|---|
+| ≤0.10 s from a contact | 13.9% / 10.5% | 74.8% / 75.6% | 72.3% / 71.5% |
+| 0.10-0.25 s | 3.2% / 4.4% | 79.7% / 75.7% | 73.9% / 73.0% |
+| mid-flight 0.25-0.60 s | 1.2% / 5.5% | 91.5% / 90.4% | **90.5% / 90.3%** |
+
+(TRAIN r6+r7+r17 / EVAL r9+r10.) Mid-flight the tracker is a 90% instrument.
+At the contact it drops ~19 points, and the human drops too — the ball is
+genuinely behind a body there. **The loss is not spread over the rally; it is
+concentrated in a ~0.2 s window around every direction change** (unrecovered
+runs: median 6-7 frames, p90 18-22).
+
+That is the good news for inference: the hole is short and it is BRACKETED.
+An arc arrives, an arc departs, and the only unknown is where and when they
+join. `gapfill.py` already bridges by extending both arcs to their closest
+approach; what it does not yet do is require the junction to sit at a
+paddle, which the geometry channel now supplies in court feet. Unbuilt.
 
 ## What works
 

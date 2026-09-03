@@ -1,0 +1,101 @@
+attribution validators (a rally that fails these has untrustworthy speeds):
+  r6: 8 contacts, 4 pose tracks, side-alternation violations 0 (exact footage: expect 0), name->track purity 7/8
+  r7: 10 contacts, 4 pose tracks, side-alternation violations 0 (exact footage: expect 0), name->track purity 9/9
+  r17: 17 contacts, 4 pose tracks, side-alternation violations 4 (exact footage: expect 0), name->track purity 14/17
+  r9: 30 contacts, 4 pose tracks, side-alternation violations 0 (exact footage: expect 0), name->track purity 29/30
+  r10: 27 contacts, 4 pose tracks, side-alternation violations 0 (exact footage: expect 0), name->track purity 24/27
+
+=== TRAIN r6+r7+r17: 25 flights with both endpoints placed, 18 pace-labeled (10 fast / 8 slow)
+  dist  AUC 0.425   null 0.500 [0.212, 0.775]   median fast  23.82 ft / slow  24.56 ft
+  dt    AUC 0.925   null 0.500 [0.237, 0.762]   median fast   0.51 s / slow   0.95 s
+  v     AUC 0.825   null 0.500 [0.237, 0.775]   median fast  44.39 ft/s / slow  23.94 ft/s  ( 30.3 vs  16.3 mph)
+  -- flights, time-ordered
+    r   #        t type       dist ft   dt s    ft/s    mph  same-hitter
+    6   1   146.34 serve         53.7   1.14    47.3   32.2  
+    6   2   147.48 return        50.0   1.14    43.7   29.8  
+    6   3   148.62 slow          31.4   0.94    33.4   22.8 S
+    6   4   149.56 fast          22.9   0.51    44.6   30.4 F
+    6   7   150.50 fast          23.3   0.37    62.2   42.4 F
+    7   1   166.03 serve         52.0   1.02    51.1   34.9  
+    7   2   167.05 return        50.1   1.33    37.8   25.8  
+    7   3   168.37 slow          33.6   0.83    40.3   27.5 S
+    7   4   169.21 slow          21.1   1.28    16.5   11.3 S
+    7   5   170.48 fast          21.4   0.47    45.7   31.2 F
+    7   6   170.95 fast          24.4   0.76    32.2   22.0 F
+    7   7   171.71 fast          27.5   0.37    74.0   50.5 F
+    7   8   172.08 lunge         24.2   1.17    20.7   14.1  
+   17   1   428.31 serve         35.2   1.13    31.0   21.1  
+   17   2   429.44 return        34.9   1.28    27.2   18.6  
+   17   3   430.72 slow           9.6   0.79    12.1    8.3 S
+   17   4   431.51 fast           9.1   0.60    15.2   10.4 F
+   17   5   432.12 slow          24.3   0.70    34.5   23.6 S
+   17   6   432.82 slow          24.5   0.96    25.4   17.3 S
+   17   7   433.78 slow          27.0   1.20    22.5   15.3 S
+   17  10   435.95 slow          24.7   1.17    21.1   14.4 S
+   17  11   437.12 fast          26.5   0.83    32.0   21.8 F
+   17  12   437.94 fast          32.6   0.86    37.8   25.8 F
+   17  13   438.81 fast          26.7   0.44    61.0   41.6 F
+   17  14   439.25 fast          22.4   0.51    44.2   30.1 F
+
+=== EVAL r9+r10 (owner clicks are spent evaluation; read only, tunes nothing): 51 flights with both endpoints placed, 45 pace-labeled (20 fast / 25 slow)
+  dist  AUC 0.628   null 0.504 [0.334, 0.676]   median fast  29.29 ft / slow  22.76 ft
+  dt    AUC 0.732   null 0.500 [0.334, 0.678]   median fast   0.69 s / slow   0.98 s
+  v     AUC 0.788   null 0.502 [0.334, 0.680]   median fast  44.31 ft/s / slow  26.97 ft/s  ( 30.2 vs  18.4 mph)
+  -- flights, time-ordered
+    r   #        t type       dist ft   dt s    ft/s    mph  same-hitter
+    9   1   254.06 serve         54.4   1.14    47.8   32.6  
+    9   2   255.20 return        54.4   1.32    41.2   28.1  
+    9   3   256.52 slow          38.6   1.32    29.1   19.9 S
+    9   4   257.84 fast          30.1   0.94    32.1   21.9 F
+    9   5   258.78 fast          29.7   0.42    70.2   47.9 F
+    9   6   259.20 slow          22.8   0.69    32.9   22.4 S
+    9   7   259.90 slow          21.0   1.38    15.2   10.4 S
+    9   8   261.28 slow          22.5   0.76    29.7   20.3 S
+    9   9   262.04 slow          21.4   1.29    16.5   11.3 S
+    9  10   263.33 slow          16.8   0.58    29.0   19.8 S
+    9  11   263.91 slow          22.8   1.10    20.8   14.2 S
+    9  12   265.00 slow          22.1   1.11    19.9   13.5 S
+    9  13   266.11 slow          19.7   0.78    25.2   17.2 S
+    9  14   266.89 slow          21.9   1.17    18.7   12.8 S
+    9  15   268.07 slow          25.3   0.93    27.1   18.5 S
+    9  16   269.00 slow          22.5   0.87    25.7   17.5 S
+    9  17   269.87 fast          22.5   0.39    57.6   39.3 F
+    9  18   270.26 fast          23.1   0.44    52.6   35.9 F
+    9  21   271.38 slow          23.8   1.46    16.4   11.2 S
+    9  22   272.84 lob           38.3   2.06    18.5   12.6  
+    9  23   274.90 lob           44.5   1.61    27.7   18.9  
+    9  24   276.51 fast          40.3   0.86    46.9   32.0 F
+    9  25   277.37 fast          34.7   0.55    63.2   43.1 F
+    9  26   277.92 fast          33.5   0.94    35.6   24.2 F
+    9  27   278.86 slow          34.3   0.96    35.6   24.3 S
+    9  28   279.82 fast          31.4   1.15    27.2   18.6 F
+    9  29   280.98 slow          31.9   0.85    37.5   25.6 S
+   10   1   295.78 serve         52.4   1.14    45.9   31.3  
+   10   2   296.92 return        51.4   1.13    45.3   30.9  
+   10   3   298.06 drop          33.3   1.14    29.3   20.0 S
+   10   4   299.19 dink          21.8   1.04    21.0   14.3 S
+   10   5   300.23 speed-up      24.9   1.08    23.0   15.7 F
+   10   6   301.32 counter       21.9   1.02    21.5   14.6 F
+   10   7   302.34 counter       28.9   0.55    52.6   35.9 F
+   10   8   302.88 counter       28.6   1.15    24.9   17.0 F
+   10   9   304.03 counter       31.0   0.60    51.3   35.0 F
+   10  10   304.64 counter       26.5   0.91    29.0   19.8 F
+   10  11   305.55 dink          28.9   0.46    62.7   42.8 S
+   10  12   306.01 dink          29.7   0.86    34.4   23.4 S
+   10  13   306.87 dink          32.2   0.60    53.8   36.7 S
+   10  14   307.47 dink          35.0   1.30    27.0   18.4 S
+   10  15   308.77 speed-up      34.0   0.68    49.8   33.9 F
+   10  16   309.45 fast          31.2   0.70    44.7   30.5 F
+   10  19   311.07 fast          32.6   1.00    32.5   22.1 F
+   10  20   312.08 slow          21.6   0.98    22.1   15.1 S
+   10  21   313.05 slow          22.6   1.27    17.7   12.1 S
+   10  22   314.32 slow          24.6   1.00    24.5   16.7 S
+   10  23   315.33 slow          20.4   0.67    30.4   20.7 S
+   10  24   316.00 fast          19.9   0.53    37.3   25.4 F
+   10  25   316.53 fast          19.2   0.43    45.0   30.7 F
+   10  26   316.96 fast          20.9   0.47    43.9   29.9 F
+
+=== POOLED all five rallies: 76 flights with both endpoints placed, 63 pace-labeled (30 fast / 33 slow)
+  dist  AUC 0.583   null 0.500 [0.359, 0.651]   median fast  26.60 ft / slow  23.83 ft
+  dt    AUC 0.793   null 0.498 [0.358, 0.646]   median fast   0.60 s / slow   0.96 s
+  v     AUC 0.805   null 0.502 [0.356, 0.647]   median fast  44.39 ft/s / slow  25.72 ft/s  ( 30.3 vs  17.5 mph)
