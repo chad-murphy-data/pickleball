@@ -166,6 +166,65 @@ seed-and-commit machinery that drops short flights whole, failing the
 other way.
 
 
+### r5 read, and the three gate verdicts (r2 FAIL / r3, r4, r5 MIDDLE)
+
+r5 (`train_read_r5.txt`) is the SLOWEST rally in the set and it reads
+worst of the four, which is the opposite of the expected ordering:
+
+  404 V/S clicks (290 V / 114 S), decode@12 280/404 = 0.69 ceiling
+  path-first    r@12 274  prec@12 0.84  ADDED@12 43
+    pf[V]       r@12 209/290   prec 0.92
+    pf[S]       r@12  65/114   prec 0.66
+  tracked+inf   r@12 299/404 = 0.74  prec 0.79  ADDED@12 65
+  inferred      194 frames (the most of any rally), r@12 37, prec 0.50
+
+By prefill contact TYPE the ordering inverts against every prior read:
+
+  fast    48 clicks, 41 pf-hit = 85%
+  slow   144 clicks, 75 pf-hit = 52%
+
+That is not a speed effect, it is a PROXIMITY effect. r5 is a dinking
+rally: "slow" contacts put the ball low, near bodies and paddles, where
+`dbody` and `crowd` — two of the emission model's larger negative
+weights — are doing exactly what they were fitted to do on r6/r7, which
+had far less kitchen play. The worst single contact is 132.46 (16
+clicks, 1 hit). The mirror of the r9/r10 finding: path-first drops
+whole flights, and here it drops the flights that live at the kitchen.
+So the instrument has TWO failure modes, not one — fast/blurred balls
+lose to `yellow`, slow/close balls lose to `dbody`+`crowd` — and they
+are not the same rallies. A single global tune cannot be optimal for
+both; that is an argument for conditioning, not for another knob turn.
+
+Gate verdicts, all four rallies of sitting 3 (`ball_grade.py`, prefill
+contacts, `--prefill-ok`):
+
+  r2 (11 contacts)  FAIL     C1 V 81.9 / S 92.7  C2 nullfail  C3 fail
+  r3 (17 contacts)  MIDDLE   C3 fail: 9/16 impacts, median 4.84 ft,
+                             bounces 4 vs 6
+  r4 (16 contacts)  MIDDLE   C3 PASS: 9/16 impacts, median 1.76 ft,
+                             bounces 5 vs 4, crossings 9/9
+  r5 (14 contacts)  MIDDLE   C3 fail on distance ONLY: 8/14 impacts,
+                             median 4.60 ft, bounces 6 vs 6 (exact),
+                             crossings 9/9
+
+Two things follow. First, r2's FAIL was a POWER artifact and is now
+confirmed as such: MIDDLE requires `not c2_nullfail`, so CHECK 2 cleared
+its permutation null on r3, r4 and r5 — every rally with 14+ contacts —
+and failed only on the 11-contact rally where the null quantises in
+1/11 steps and clearing needs 10 of 11. Do not read r2 as the tracker
+being worse on r2; read it as an 11-contact rally being unable to
+resolve the question. Second, r4 is the first CHECK 3 PASS on any
+newly-labeled rally (median impact error 1.76 ft against a <=3.0 bar),
+and it is also the strongest train read on record (ADDED@12 113 over a
+ceiling of only 167). r4 and r5 bracket the instrument: same tune, same
+model, 1.76 ft vs 4.60 ft, and the difference is what the rally is made
+of.
+
+All three MIDDLE verdicts route to the same frozen clause — one
+train-only iteration, then ONE re-grade on a newly labeled sealed
+rally. No seal is consumed by any of the above; r2-r5 are train.
+
+
 ## Constraints in force (owner-set; carry verbatim)
 
 - No graded re-run / seal consumption without explicit owner
