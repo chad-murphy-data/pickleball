@@ -207,7 +207,7 @@ def bound_anchor_positions(bounds, anchors, floors):
 # ------------------------------------------------------- reconstruction
 
 
-def reconstruct(P, obs_all, bounds, events, panchors):
+def reconstruct(P, obs_all, bounds, events, panchors, corridor=False):
     """court3d's two-pass fit, generalized: arbitrary bounds, player
     anchors supplied per bound (automated), sides derived from the
     anchors' own floor positions. Returns (segs, cons) — cons[k] is the
@@ -228,8 +228,14 @@ def reconstruct(P, obs_all, bounds, events, panchors):
         # sits on the line joining them.  Anchors give both positions from
         # POSE, not from the ball, so the gate is independent of the fit it
         # constrains.  Missing anchor -> None -> the old court-wide test.
-        corr = (panchors[k] if k < len(panchors) else None,
-                panchors[k + 1] if k + 1 < len(panchors) else None)
+        # corridor=False for the HUMAN reconstruction: it is the ground
+        # truth this change is graded against, and a gate applied to both
+        # sides silently moves the target (it deleted a real human bounce
+        # on r9, 13 -> 12, the first time this was run).
+        corr = None
+        if corridor:
+            corr = (panchors[k] if k < len(panchors) else None,
+                    panchors[k + 1] if k + 1 < len(panchors) else None)
         seg = c3.fit_segment(P, obs, t0, t1, events, corridor=corr)
         seg["ok"] = _plausible(seg)
         segs.append(seg)
@@ -522,7 +528,7 @@ def crossing_demotion(P, obs, bounds, evs, floors, anchors, rounds=3):
     in two, and the crossing can only live in one of the pieces."""
     for _ in range(rounds):
         pa = bound_anchor_positions(bounds, anchors, floors)
-        segs, cons = reconstruct(P, obs, bounds, evs, pa)
+        segs, cons = reconstruct(P, obs, bounds, evs, pa, corridor=True)
         demote = None
         for k, seg in enumerate(segs):
             if seg is None or not seg["ok"] or k == 0:
@@ -536,7 +542,7 @@ def crossing_demotion(P, obs, bounds, evs, floors, anchors, rounds=3):
         evs = sorted(evs + [bounds[demote]])
         bounds = bounds[:demote] + bounds[demote + 1:]
     pa = bound_anchor_positions(bounds, anchors, floors)
-    segs, cons = reconstruct(P, obs, bounds, evs, pa)
+    segs, cons = reconstruct(P, obs, bounds, evs, pa, corridor=True)
     return segs, cons, bounds, evs
 
 
