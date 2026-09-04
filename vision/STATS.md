@@ -258,6 +258,32 @@ nothing ever asks whether the turn looks like one.
    exactly as it did when first rejected 2026-09-01; re-measured
    2026-09-04 on the physics-cleaned path and it fails the same way.
 
+3. *The corridor gate — SHIPPED `7275834`, modest.* The owner's rule above,
+   turned into a filter on the arc-fitter: a candidate bounce point must lie
+   in the receiver->hitter corridor (lateral <= 8.0 ft, front >= -2.0 ft,
+   <= 1.15x the separation — each bound set at the measured p99 plus margin,
+   keeping 56/57 = 98% of real bounces). Pooled over r7/r9/r10/r17:
+
+   | | bounces called | matched | precision | impacts | crossings |
+   |---|---|---|---|---|---|
+   | before | 46 | 13/34 | 28.3% | 57/78 | 59/71 = 83.1% |
+   | after | 34 | 13/34 | **38.2%** | 54/78 | 50/63 = 79.4% |
+
+   All 12 deleted calls were unmatched — **recall is exactly unchanged and
+   every real bounce survived**. Cost is 3 impact matches and a slightly
+   worse crossing ratio, partly offset by better impact distances on r10
+   (2.60 -> 1.79 ft) and r17 (4.66 -> 3.21 ft). A keeper, not a clean win
+   like the sign test.
+
+   **TRAP, and it cost a run.** `reconstruct()` in `ball_replicate.py` fits
+   BOTH the tracked side and the human ground truth. Applied to both, the
+   corridor deleted a real human bounce on r9 (13 -> 12) — i.e. it moved the
+   target in the flattering direction, because constraining the truth removes
+   exactly the awkward bounces the tracker was failing to match. The tell is
+   the human bounce count moving. `corridor=` now defaults False and only
+   `crossing_demotion` passes True (`5e12aaf`). Any future gate inside
+   `reconstruct()` must do the same.
+
 Three other candidates measured 2026-09-04 and NOT shipped
 (`ballsearch/bounce_fix.py` carries the full arm table): re-detecting turns
 on the physics-cleaned path costs 7 contacts for junk the sign test removes
