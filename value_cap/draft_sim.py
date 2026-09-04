@@ -100,15 +100,17 @@ class Owner:
         self.s = {u: sgl[u] for u in BOARD}
 
     def choose(self, roster, spent, avail, price, need, gaps):
-        """roster: list of pids; need: {g: slots left}; gaps[j] = how many
+        """Deterministic given (owner beliefs, board, seed): every sort breaks
+        ties on player_id, so results do not depend on set iteration order
+        (PYTHONHASHSEED). roster: list of pids; need: {g: slots left}; gaps[j] = how many
         picks the OTHER teams make before this owner's (j+1)-th next turn.
         When projecting the fill for that turn the owner assumes the
         gaps[j] highest-PRICED players still on the board are gone (price =
         the public consensus of value; the owner's private error only
         shapes their own choice). Without this every owner defers the
         stars, because "I can take them next round" looks free. Returns pid."""
-        by_g = {g: sorted((u for u in avail if GENDER[u] == g), key=lambda u: price[u]) for g in ("M", "F")}
-        by_price = sorted(avail, key=lambda u: -price[u])
+        by_g = {g: sorted((u for u in avail if GENDER[u] == g), key=lambda u: (price[u], u)) for g in ("M", "F")}
+        by_price = sorted(avail, key=lambda u: (-price[u], u))
 
         def completion_cost(exclude, need_after):
             tot = 0.0
@@ -138,11 +140,11 @@ class Owner:
             # affordable = can still complete the roster at the cheapest prices
             pool_g = [u for u in avail if GENDER[u] == g
                       and price[u] + completion_cost({u}, need_after) <= budget + 1e-6]
-            cands.update(sorted(pool_g, key=lambda u: -self.v[u])[:CAND_TOP])
-            cands.update(sorted(pool_g, key=lambda u: -self.s[u])[:CAND_SINGLES])
+            cands.update(sorted(pool_g, key=lambda u: (-self.v[u], u))[:CAND_TOP])
+            cands.update(sorted(pool_g, key=lambda u: (-self.s[u], u))[:CAND_SINGLES])
             cands.update(by_g[g][:CAND_CHEAP])
         best, best_p = None, -1.0
-        for x in cands:
+        for x in sorted(cands):
             gx = GENDER[x]
             need_after = dict(need)
             need_after[gx] -= 1
@@ -156,11 +158,11 @@ class Owner:
             j = 0
             while na["M"] > 0 or na["F"] > 0:
                 pick = None
-                gone = set(by_price[:gaps[j] + 1]) - {x} if j < len(gaps) else set()
-                gone = set(list(gone)[:gaps[j]]) if j < len(gaps) else gone
+                # the gaps[j] highest-priced players other than x are assumed gone
+                gone = set([u for u in by_price[:gaps[j] + 1] if u != x][:gaps[j]]) if j < len(gaps) else set()
                 j += 1
                 for u in sorted((u for u in avail if u not in taken and u not in gone
-                                 and na[GENDER[u]] > 0), key=lambda u: -self.v[u]):
+                                 and na[GENDER[u]] > 0), key=lambda u: (-self.v[u], u)):
                     n2 = dict(na)
                     n2[GENDER[u]] -= 1
                     if price[u] + completion_cost(taken | {u}, n2) <= left + 1e-6:
@@ -184,7 +186,7 @@ class Owner:
 
 def run_draft(price, fmt, noise, rng, gamma=None):
     owners = [Owner(noise, rng, gamma) for _ in range(N_TEAMS)]
-    avail = set(BOARD)
+    avail = set(BOARD)   # only ever iterated through sorted(...) below
     rosters = [[] for _ in range(N_TEAMS)]
     spent = [0.0] * N_TEAMS
     need = [{"M": PER_GENDER, "F": PER_GENDER} for _ in range(N_TEAMS)]
@@ -287,7 +289,7 @@ def run_variant(price, fmt, noise, drafts, seasons, seed, stars, gamma=None):
 
 def render(results, price, header, stars, out):
     L = ["# Draft simulation -- 20 teams, scarcity, varied draft and information", "",
-         header, "",
+         header, "", f"Board: {BOARD_DESC} (`--board {BOARD_MODE}`).", "",
          f"20 teams, $1M cap, 6 rounds (3M+3W), one pick per turn. Owners project a final "
          f"roster for each affordable candidate (candidate + greedy fill of the best-believed "
          f"players still available) and take the one whose projection has the highest believed "
@@ -311,8 +313,7 @@ def render(results, price, header, stars, out):
         # undrafted first (user call: info, up top, never buried)
         und = sorted(r["undrafted"].items(), key=lambda kv: (-kv[1], -PHI[kv[0]]))
         notable = [(u, c) for u, c in und if POOL_RANK[u] <= 30]
-        L.append(f"**Undrafted priced players (info, not a test):** the board is the priced 60+60 "
-                 f"plus {len(EXTRA_PIDS)//2} free agents per gender at the ${FLOOR/1e3:.0f}k floor; teams "
+        L.append(f"**Undrafted priced players (info, not a test):** the board is {BOARD_DESC}; teams "
                  f"took {r['floor_taken']:.1f} floor players per draft, leaving {len(und)} distinct "
                  f"priced players unpicked in at least one draft. Inside the top 30 of their gender: "
                  + (", ".join(f"{NAME[u]} (#{POOL_RANK[u]}{GENDER[u]}, ${price[u]/1e3:,.0f}k, "
@@ -353,8 +354,11 @@ def main():
     ap.add_argument("--drafts", type=int, default=30, help="per noisy variant; noise 0 runs once")
     ap.add_argument("--seasons", type=int, default=200)
     ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument("--board", default="best60", choices=["best60", "mlp2026", "mlp2026only"],
+                    help="who is draftable; see set_board")
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
+    set_board(a.board)
     if a.tag:
         price = prices_tagged(POOL, a.alpha, pid_named(a.tag), "joint")
         price = {u: price.get(u, FLOOR) for u in BOARD}
@@ -373,43 +377,100 @@ def main():
             print(f"{fmt} noise {noise}: {drafts} drafts in {r['secs']:.0f}s; spread {100*r['spread']:.1f} pts, "
                   f"max {100*r['max_exp']:.1f}%", file=sys.stderr)
             results.append(r)
-    out = a.out or str(HERE / ("draft_sim_tag.md" if a.tag else f"draft_sim_a{a.alpha}.md"))
+    suffix = "" if a.board == "best60" else f"_{a.board}"
+    out = a.out or str(HERE / (f"draft_sim_tag{suffix}.md" if a.tag else f"draft_sim_a{a.alpha}{suffix}.md"))
     render(results, price, header, stars, out)
 
 
 # ------------------------------------------------------------ module state
 TRUE_ENGINE = FastTie(DOUBLES, SINGLES)
-POOL_PIDS = [u for g in ("M", "F") for u, _, _ in POOL[g]]
-# the priced pool is exactly 20 x 3 per gender, so on its own it is always fully
-# drafted; the board adds the next players by phi at the FLOOR price (free agents
-# at the minimum) so "a priced player went undrafted" can actually happen.
+PRICED_PIDS = [u for g in ("M", "F") for u, _, _ in POOL[g]]
 import csv as _csv
 PHI = {}
-_EXTRA = {"M": [], "F": []}
+_PHI_EXTRA = {"M": [], "F": []}
 for _r in _csv.DictReader((HERE / "player_value_shapley.csv").open()):
     PHI[_r["player_id"]] = float(_r["phi"])
     if _r["in_pool"] != "1" and _r["player_id"] in DOUBLES:
-        _EXTRA[_r["gender"]].append(_r["player_id"])
-for _g in _EXTRA:
-    _EXTRA[_g].sort(key=lambda u: -PHI[u])
-    # pad to 60 per gender with the next tracked players by doubles value, so a
-    # team can ALWAYS complete at the floor no matter what the other 19 took
-    # (60 priced + 60 floor >= the 60 slots per gender): feasibility never
-    # decays as the board empties, and the cheapest completion is a constant.
-    _have = set(POOL_PIDS) | set(_EXTRA[_g])
-    for _u in sorted((u for u in DOUBLES if DOUBLES[u]["gender"] == _g and u not in _have),
-                     key=lambda u: -DOUBLES[u]["v"]):
-        if len(_EXTRA[_g]) >= EXTRA_PER_GENDER:
-            break
-        _EXTRA[_g].append(_u)
-        PHI.setdefault(_u, float("-inf"))
-EXTRA_PIDS = [u for g in ("M", "F") for u in _EXTRA[g]]
-BOARD = POOL_PIDS + EXTRA_PIDS
-POOL_RANK = {u: i + 1 for g in ("M", "F") for i, (u, _, _) in enumerate(POOL[g])}
-for _g in _EXTRA:
-    for _i, _u in enumerate(_EXTRA[_g]):
-        POOL_RANK[_u] = len(POOL[_g]) + _i + 1
+        _PHI_EXTRA[_r["gender"]].append(_r["player_id"])
 GENDER = {u: DOUBLES[u]["gender"] for u in DOUBLES}
+
+# Always on the board whatever the mode (user call 2026-09-04: Goldin priced
+# as a value pick in every template build; his 2026 MLP absence reads as
+# health, not talent).
+KEEP = ["Grayson Goldin"]
+
+
+def mlp_participants(year=2026):
+    """Every player who appeared in an MLP game that year (DreamBreakers
+    included -- a DB-only specialist is still a roster member), from
+    data/games.csv; players v2 does not track (11 fill-ins in 2026 with
+    <=5 games) are dropped because they have no value to price."""
+    played = set()
+    with (HERE.parent / "data" / "games.csv").open() as fh:
+        for r in _csv.DictReader(fh):
+            if r["tour"] == "MLP" and r["date"].startswith(str(year)):
+                for k in ("t1_p1", "t1_p2", "t2_p1", "t2_p2"):
+                    played.add(r[k].lower())
+    return {u for u in played if u in DOUBLES}
+
+
+def set_board(mode="best60"):
+    """Define who can be drafted. Modes:
+      best60      priced 60/gender + the next 60/gender by phi (padded by
+                  doubles value) at the floor. Feasibility never decays
+                  (60 priced + 60 floor >= the 60 slots per gender).
+      mlp2026     priced 60/gender + every 2026 MLP participant outside
+                  the priced pool, at the floor. The real fill-in tail.
+      mlp2026only ONLY 2026 MLP participants: priced ones keep their
+                  price, the rest are floor. The league as it was."""
+    global BOARD, BOARD_MODE, BOARD_DESC, POOL_PIDS, EXTRA_PIDS, POOL_RANK, POOL_SET
+    keep = {pid_named(n) for n in KEEP}
+    if mode == "best60":
+        extra = {g: sorted(_PHI_EXTRA[g], key=lambda u: -PHI[u]) for g in ("M", "F")}
+        for g in extra:
+            have = set(PRICED_PIDS) | set(extra[g])
+            for u in sorted((u for u in DOUBLES if GENDER[u] == g and u not in have),
+                            key=lambda u: -DOUBLES[u]["v"]):
+                if len(extra[g]) >= EXTRA_PER_GENDER:
+                    break
+                extra[g].append(u)
+        priced = list(PRICED_PIDS)
+        desc = (f"the priced 60+60 plus {EXTRA_PER_GENDER} free agents per gender "
+                f"(next by phi / doubles value) at the ${FLOOR/1e3:.0f}k floor")
+    elif mode in ("mlp2026", "mlp2026only"):
+        played = mlp_participants(2026) | keep
+        if mode == "mlp2026only":
+            priced = [u for u in PRICED_PIDS if u in played]
+        else:
+            priced = list(PRICED_PIDS)
+        extra = {g: sorted((u for u in played if GENDER[u] == g and u not in set(PRICED_PIDS)),
+                           key=lambda u: -DOUBLES[u]["v"]) for g in ("M", "F")}
+        n_pr = {g: sum(1 for u in priced if GENDER[u] == g) for g in ("M", "F")}
+        desc = (("ONLY 2026 MLP participants: " if mode == "mlp2026only" else
+                 "the priced 60+60 plus every 2026 MLP participant outside the priced pool: ")
+                + f"{n_pr['M']}M/{n_pr['F']}F priced + {len(extra['M'])}M/{len(extra['F'])}F "
+                f"real fill-ins at the ${FLOOR/1e3:.0f}k floor")
+    else:
+        raise ValueError(mode)
+    for u in extra.values():
+        for x in u:
+            PHI.setdefault(x, float("-inf"))
+    BOARD_MODE = mode
+    BOARD_DESC = desc
+    POOL_PIDS = priced
+    EXTRA_PIDS = [u for g in ("M", "F") for u in extra[g]]
+    BOARD = POOL_PIDS + EXTRA_PIDS
+    POOL_RANK = {u: i + 1 for g in ("M", "F") for i, (u, _, _) in enumerate(POOL[g])}
+    for g in extra:
+        for i, u in enumerate(extra[g]):
+            POOL_RANK[u] = len(POOL[g]) + i + 1
+    POOL_SET = set(POOL_PIDS)
+    for g in ("M", "F"):
+        n = sum(1 for u in BOARD if GENDER[u] == g)
+        assert n >= N_TEAMS * PER_GENDER, (mode, g, n)
+
+
+set_board("best60")
 SPREAD_V = {g: statistics.pstdev([DOUBLES[u]["v"] for u, _, _ in POOL[g]]) for g in ("M", "F")}
 SPREAD_S = {g: statistics.pstdev([TRUE_ENGINE.s[u] for u, _, _ in POOL[g]]) for g in ("M", "F")}
 POOL_SET = set(POOL_PIDS)
