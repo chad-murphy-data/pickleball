@@ -241,6 +241,46 @@ READS = """## What this says (hand-written against the seed-1 grid; re-check the
 """
 
 
+
+def concentration(r):
+    """Title-odds concentration per draft, averaged over drafts: how many teams
+    can really win. Uses the per-slot title% the season sim recorded."""
+    n_d = len(r["slot_title"][0])
+    out = {"top": [], "second": [], "third": [], "n10": [], "n5": [], "eff": [], "gini": [], "gap": []}
+    for d in range(n_d):
+        p = sorted((r["slot_title"][t][d] for t in range(D.N_TEAMS)), reverse=True)
+        tot = sum(p) or 1.0
+        p = [x / tot for x in p]
+        out["top"].append(p[0]); out["second"].append(p[1]); out["third"].append(p[2])
+        out["n10"].append(sum(1 for x in p if x >= 0.10))
+        out["n5"].append(sum(1 for x in p if x >= 0.05))
+        out["eff"].append(1.0 / sum(x * x for x in p))
+        out["gap"].append(p[0] - p[1])
+        n = len(p)
+        srt = sorted(p)
+        out["gini"].append(sum((2 * (i + 1) - n - 1) * x for i, x in enumerate(srt)) / (n * sum(srt)))
+    return {k: statistics.mean(v) for k, v in out.items()}
+
+
+def render_concentration(rows):
+    L = ["", "## Who can actually win: title-odds concentration", "",
+         "Per draft, every team's title odds from the season sim, then averaged over the drafts. "
+         "'Effective contenders' = 1 / sum(title odds squared): 20 means twenty equal teams, 1 means one "
+         "certain champion. Gini is over the twenty teams' title odds (0 = parity). Contenders = teams with "
+         "at least a 10% (or 5%) title shot. 'Runner-up favourite' = the title odds of the second-best team, "
+         "i.e. how real the chase is. For scale, a bookmaker's pre-season English Premier League board "
+         "(favourite ~55%, two challengers at ~20% and ~15%) is about 2.7 effective contenders, 3 teams at 10%+.", "",
+         "| persona | strength | how many | favourite | runner-up favourite | third | gap 1st-2nd | teams >= 10% | "
+         "teams >= 5% | effective contenders | Gini |",
+         "|---|---|---|---|---|---|---|---|---|---|---|"]
+    for label, strength, count, r in rows:
+        c = concentration(r)
+        L.append(f"| {label} | {strength} | {count if count else '--'} | {100*c['top']:.1f}% | {100*c['second']:.1f}% | "
+                 f"{100*c['third']:.1f}% | {100*c['gap']:.1f} pts | {c['n10']:.1f} | {c['n5']:.1f} | {c['eff']:.1f} | "
+                 f"{c['gini']:.2f} |")
+    return L
+
+
 def render(price, stars, rows, args, out):
     L = ["# Owner personas in the draft", "",
          f"Shipped tag list (alpha 1, joint pool, Waters tagged at ${price[stars[0]]/1e3:,.0f}k), snake draft on the "
@@ -278,6 +318,7 @@ def render(price, stars, rows, args, out):
         top = sorted(diff.items(), key=lambda kv: (-kv[1], price[kv[0]]))[:8]
         L.append(f"- **{label}**, {strength}: " + ", ".join(
             f"{NAME[u]} ${price[u]/1e3:,.0f}k (+{d:.0f}pp)" for u, d in top if d > 0))
+    L += render_concentration(rows)
     L += ["", READS]
     L.append("")
     Path(out).write_text("\n".join(L))
