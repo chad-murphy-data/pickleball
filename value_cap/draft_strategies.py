@@ -36,6 +36,7 @@ from phase2_pricing import (DOUBLES, NAME, POOL, REPL_RANK, SINGLES, TEAM_CAP,
                             roster_from_ranks, win)
 
 HERE = Path(__file__).resolve().parent
+TOL = 1e-3      # dollars; a franchise tag is defined so the cheapest legal roster costs EXACTLY the cap
 
 
 # ------------------------------------------------------------ helpers
@@ -71,8 +72,7 @@ SPECIALISTS = {g: specialists(g) for g in ("M", "F")}
 def strategy_specs(price):
     """name -> dict(desc, pred{g: fn(triple)->bool}, share=(lo,hi) men's
     share of spend, cap). Predicates see prices via closure."""
-    top_men = [u for u, _, _ in POOL["M"][:5]]
-    top_women = [u for u, _, _ in POOL["F"][:5]]
+    anchor = 0.35 * TEAM_CAP        # price-based so the strategy means the same thing on every list
     waters = pid_named("Anna Leigh Waters")
 
     def under(x):
@@ -96,9 +96,9 @@ def strategy_specs(price):
             desc="must roster Anna Leigh Waters, fill around her",
             pred={"F": lambda t: waters in t}, share=(0, 1), cap=TEAM_CAP),
         "Two anchors": dict(
-            desc="one top-5 man AND one top-5 woman, fill the rest",
-            pred={"M": lambda t: any(u in top_men for u in t),
-                  "F": lambda t: any(u in top_women for u in t)},
+            desc="a man AND a woman each costing >= 35% of cap, fill the rest",
+            pred={"M": lambda t: any(price[u] >= anchor for u in t),
+                  "F": lambda t: any(price[u] >= anchor for u in t)},
             share=(0, 1), cap=TEAM_CAP),
         "Balanced four": dict(
             desc="no starter over 28% of cap, bench at <= $80k each",
@@ -128,7 +128,7 @@ def candidates(g, price, budget, k, pred):
     for ids, _ in TRIPLES[g]:
         if pred is not None and not pred(ids):
             continue
-        if price[ids[0]] + price[ids[1]] + price[ids[2]] <= budget:
+        if price[ids[0]] + price[ids[1]] + price[ids[2]] <= budget + TOL:
             out.append(ids)
             if len(out) == k:
                 break
@@ -147,9 +147,9 @@ def build(price, opps, spec, k, step):
     cheapest = {g: min(cost(t, price) for t, _ in TRIPLES[g]
                        if spec["pred"].get(g) is None or spec["pred"][g](t))
                 for g in ("M", "F")}
-    splits = sorted(set(range(0, cap + 1, step)) | {int(cheapest["M"]), int(cap - cheapest["F"])})
+    splits = sorted(set(range(0, cap + 1, step)) | {cheapest["M"], cap - cheapest["F"]})
     for b_men in splits:
-        if b_men < 0 or b_men > cap:
+        if b_men < 0 or b_men > cap + TOL:
             continue
         cm = candidates("M", price, b_men, k, spec["pred"].get("M"))
         cw = candidates("F", price, cap - b_men, k, spec["pred"].get("F"))
@@ -161,7 +161,7 @@ def build(price, opps, spec, k, step):
             pairs = [(m, w) for m in cm for w in cw]
         for m, w in pairs:
             c_m, c_w = cost(m, price), cost(w, price)
-            if c_m + c_w > cap:
+            if c_m + c_w > cap + TOL:
                 continue
             share = c_m / (c_m + c_w)
             if not (lo <= share <= hi):
