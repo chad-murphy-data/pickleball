@@ -42,6 +42,8 @@ priced pool. `phase2_notes.md` is the record of the first split-pool pass
 covered it): it surfaced the alpha ceiling (a high enough alpha prices
 one player above the team cap) and the benchmark problem (rosters must be
 compared to each other, not to an all-replacement team), both of which
-`phase2_pricing.md` builds on. Built since: Phase 3 site page (`web/build_site.py:build_valuecap`) and
-owner personas (`personas.py` -> `personas.md`). Not yet built: the
-injury/absence layer (HANDOFF.md Next steps).
+`phase2_pricing.md` builds on. Built since: Phase 3 site page (`web/build_site.py:build_valuecap`),
+owner personas (`personas.py` -> `personas.md`), the dials probe
+(`dials_probe.py` -> `dials.md`) and the auction draft (`auction_sim.py`
+-> `auction.md`). Not yet built: the injury/absence layer (HANDOFF.md
+Next steps).

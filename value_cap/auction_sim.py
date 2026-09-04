@@ -431,7 +431,75 @@ def movers(r, list_price, n=6):
 
 READS = """## What this says (hand-written against the seed-1 grid; re-check the numbers above if it is re-run)
 
-(filled in after the run)
+- **The auction does not dent the Waters team.** She sells at the cap's maximum
+  ($850k = cap minus five floor players) at sale 1 in every quant cell and every
+  seed; her buyer is left with $150k for five slots and takes five floor players;
+  the team still wins 67-68% of ties with a 33-39% title shot (snake: 66% / 36%).
+  The snake gave her buyer floor-priced players too, so nothing is lost. The
+  one price-side lever from `dials.md` (charge her more than the list) is what
+  the room does on its own, and it is not enough: at $850k she is still the best
+  buy in the league. Seeds 2 and 3 agree (67-69% / 32-40%).
+- **But the auction makes a chase.** Runner-up title odds 11.5-16% (snake 7.3%),
+  1.8-3.0 teams at 10%+ (snake 1.0), effective contenders 5.2-5.8 (snake 6.4,
+  i.e. the pack is LESS equal). The 10%+ teams are almost all the same build:
+  two players at $390-490k plus four floor players -- Patriquin + Rohrabacher,
+  Jorja Johnson + Alshon, Todd + Staksrud, JW Johnson + Humberg, Fahey + Black.
+  A man and a woman is the strong version: the tie model puts the two stars
+  together in one mixed game (near-lock), and each carries a same-gender game
+  with a floor partner at about even odds, so a star plays in three of the four
+  games (Patriquin + Rohrabacher vs the field: WD 48%, MD 66%, MXD1 74%, MXD2
+  46%, tie 62%; the same roster with Tardio in place of Rohrabacher, 45%; with
+  Fahey in place of Patriquin, 59%). A snake cannot build it -- the pick-2 team
+  waits until pick 39 and the top 60 are gone before round 4 -- so every snake
+  team but Waters' is "one star plus depth", and nineteen of those are equals.
+  Money is the only constraint at auction, and the cap rewards concentration.
+  Nobody programmed the build; it falls out of owners who value rosters, not
+  players (their objective is the projected roster's tie probability).
+- **The room re-prices the list's middle.** Stars (#1-5) go at 101-115% of
+  list, the #6-15 tier at 111-130% (the second star of a two-star build; the
+  biggest single premiums are the $130-210k men -- Bhatia, Howells, Frazier,
+  Huynh, Garnett -- at +40-65%), #16-30 at about list, and the #31-60 depth at
+  51-67%: the $79-96k role players (Rane, Van Reek, Dunlap, Brascia, Petrei)
+  sell for the floor. The room pays for a second star and for fit, and not
+  for depth, because the winning build has four floor slots. The DreamBreaker
+  specialists the list floors go at 3-6x (Joseph $98k, Haworth $185k on the
+  rosters that want them): phi is a context average and cannot see fit; a
+  room prices one context. Every cap is spent ($999-1,000k), nothing in the
+  top 30 is left unsold, ~14-15 bidders per sale, nobody stranded.
+- **Expectations and noise are second order** (the earlier sensitivity was an
+  artefact of a nomination rule that let stars come up after the money was
+  gone). Owners who anticipate inflation give Waters a slightly smaller title
+  share (33-37% vs 37-39%) and the runner-up more (11.5-16%); 10% belief noise
+  raises the stars' prices ~8% (Bright $654-675k vs $610-622k) and trims the
+  runner-up (11.5-11.7% vs 14.8-16%): noisy owners overpay the stars, which
+  squeezes the two-star budgets.
+- **Personas: the auction forgives individual mistakes and punishes shared
+  ones.** Alone, the $500k cheapskate wins 27-29% (snake 21%), bargains-first
+  at $120k 34-36% (snake 24%) -- a bad opening no longer costs the whole top 60,
+  because anyone can be bought at any time. Five cheapskates still break the
+  pack (spread 11.5-12.7, the quants at 56-57%). Overvaluing a gender, chasing
+  names and mild loyalty are free, as in the snake (overvalues-women k=1 alone
+  is again mildly AHEAD, 53% / 7-8%: women carry mixed). Strong loyalty
+  (lam 0.5) costs 1-3 points alone and, as a league norm, overpays the known
+  stars (Bright $705-739k, Johns $577-598k) and gives the widest chase in the
+  grid (runner-up 17-18%, 3 teams at 10%+).
+- **The only leagues where Waters goes cheaper are the ones where everyone
+  shares the same blind spot, and they are worse leagues.** Twenty owners who
+  overvalue men (k=1) sell her at $759-779k and her team wins 74-75% with a 50%
+  title share; twenty bargain hunters ($250k threshold) spend rounds 1-3 on
+  mid-priced players and then let the stars go for half price (Waters
+  $515-547k, Bright $440-499k, Johns $283-396k): her team 84-88%, favourite
+  56-57%, parity spread 15-16, worse than anything the snake produced. Twenty
+  $500k cheapskates hit their own $350k first-buy maximum on Waters (Bright
+  $328-350k, Johns $260-350k) and get a 43% favourite with a runner-up at
+  10-22%. The cap maximum binds in every mixed league: whatever the room, she
+  costs what a team may pay.
+- **For the price list**: the room's curve is more convex than phi's -- a
+  premium on the second star and on fit, the floor for depth. That is not a
+  reason to change the list (the list prices context-averaged value; a room
+  prices fit and liquidity on the day) but it is the shape to expect in the
+  league-price / surplus column once MLP publishes, and it says the list's
+  $60-100k depth tier is where the surplus will look largest.
 """
 
 

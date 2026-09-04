@@ -1,4 +1,4 @@
-# MLP Value Cap — HANDOFF (2026-09-04, late night; supersedes the night snapshot)
+# MLP Value Cap — HANDOFF (2026-09-04, late night, rev 2 after the auction run; supersedes the night snapshot)
 
 Dated status snapshot + next-thread to-do. Read this first, then
 `phase2_pricing.md` §8 (the shipped rule and every number behind it),
@@ -36,7 +36,23 @@ coin-flip DreamBreaker (gap over Bright/Johns 14.6 -> 8.6), and targeted
 rivals (42% head-to-head at no season cost). Split gender caps make it
 worse (82% vs reference; Bright and Johns go over cap too). Format
 changes the title lottery (37% -> 14%) but never lifts a second team past
-10%.
+10%. **Auction draft DONE** (`auction_sim.py` -> `auction.md`,
+`phase2_pricing.md` §11): same owners and personas, prices set by the
+room (rotation nominations under the auction's own scarcity,
+indifference-price ceilings, second price + $5k, ceilings capped at
+budget minus the cheapest legal completion = $850k for a first buy).
+Waters is not dented -- $850k at sale 1 in every quant cell and seed,
+five floor teammates, 67-68% / 33-39% title (snake 66 / 36) -- but the
+auction makes a CHASE: runner-up 11.5-16% (snake 7.3%), 1.8-3.0 teams
+at 10%+ (snake 1.0). The chasers are one build a snake cannot make: two
+$390-490k players plus four floor slots, a man and a woman (the tie
+model pairs them in mixed, so a star plays three of the four games;
+Patriquin + Rohrabacher 62% vs the field). The room re-prices the list's
+middle (second star at 111-130% of list, depth at the floor, floored DB
+specialists at 3-6x) and forgives individual persona mistakes while
+punishing shared ones (twenty bargain hunters at $250k: Waters
+$515-547k, her team 84-88%, spread 15-16). Expectations and noise are
+second order once nominations run under the auction's own scarcity.
 
 ## The shipped rule in one paragraph
 
@@ -90,6 +106,20 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    blueprint-vs-blueprint read; the draft sim is the league read.
 7. **35% title odds is normal** (user, after the write-up): top NBA/EPL
    preseason favorites carry 30-50%. Ship it and say so on the page.
+8. **Auction simulator** (`auction_sim.py`, user question "can we try an
+   auction with the personas we have"): summary above, full grid and the
+   hand-written reads in `auction.md`. A nomination defect was found and
+   fixed on the way: nominations projected under the SNAKE's scarcity let
+   the stars come up after the money was gone (Bright at sale 113 for
+   $107k, JW Johnson unsold) and produced a "fragile to expectations" read
+   (Waters' team 52-65%) that is RETRACTED. Now each owner nominates its
+   snake pick under the rotation's own scarcity (gaps = (j+1) x active
+   others), anything openable at the floor is nominatable, and the stars
+   sell in the first ~13 sales at 0.95-1.1x list. Seeds 2 and 3 agree with
+   seed 1 on the quant cells (67-69% / 32-40%). Truthful bidding, rotation
+   nomination, no learning within an auction -- all stated in the
+   docstring; the star rows carry what her other five cost (`mates_paid`,
+   `mates_floor`).
 
 ## Next steps
 
@@ -109,6 +139,17 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    (bench value rises). Also worth a cell each: DreamBreaker rule
    variants, and a "rival" persona that best-responds to the Waters
    roster (the spoiler exists; see `dials.md`).
+1c. **Auction follow-ups** (`auction.md`): (i) the first-buy maximum
+   (cap minus the cheapest legal completion) is the only rule that ever
+   binds in a mixed room -- confirm whether MLP's real mechanism is a
+   draft or an auction, and whether it carries a per-player maximum or
+   a min-spend; (ii) run the rotation / playing-time sweep of 1b at
+   auction too: the two-star build is the most rotation-sensitive roster
+   in the league after Waters' own; (iii) strategic nomination and bid
+   shading are the two mechanism gaps to close if the auction ever
+   becomes the recommendation rather than a probe; (iv) the surplus
+   column should expect the room's convex curve (second star and fit
+   above list, depth at the floor).
 2. **Phase 3 follow-ups**: the league-price + surplus column once MLP
    publishes prices (the page already says it is coming); a per-player
    line on player pages ("value price $X, #N among women"); an insights
@@ -146,6 +187,12 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
   `concentration(r)` = title-odds concentration of a run_variant result.
 - `dials_probe.py` → `dials.md` — DB coin flip, availability, measured 2026
   playing time, rival best response, split caps, season formats.
+- `auction_sim.py` → `auction.md` — `run_auction(...)`, `run_variant(...,
+  expect="list"|"inflated", owner_factory=)`, `render`; CLI `--expect list
+  inflated`, `--counts`, `--only`, `--perfect` (quant room at noise 0),
+  `--rerender` (rows cached in `cache/auction_rows.pkl`, gitignored).
+  Nominations = the owner's snake pick under the auction's scarcity
+  (`nominate`), ceilings by bisection (`ceiling`), stranded fallback.
 - `pool_floor_sweep.py` — `phi_pool(P)`, `run_cell(P, floor, pool, ...)`.
 - `draft_strategies.py`, `simulate_templates.py` — template rosters and
   their season.

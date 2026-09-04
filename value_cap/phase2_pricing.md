@@ -428,3 +428,76 @@ top 4) -> 22-25% (single RR + top 8, 3-event) -> 14% (16-team bracket),
 with the runner-up stuck at 6% and one team at 10%+ throughout. A fair
 list plus a snake draft gives one favourite and nineteen equals; the
 EPL shape needs inequality in the pack.
+
+## 11. Auction draft (2026-09-04, late; `auction_sim.py` -> `auction.md`)
+
+Same owners, same personas, same board and season, prices set by the
+room instead of the list. Mechanism (docstring of `auction_sim.py`):
+each owner in turn nominates the player it would take in a snake
+under the auction's own scarcity; every interested owner bids up to
+its indifference price (believed tie probability of "this player plus
+a greedy fill at expected prices" vs "the fill without him"); the
+winner pays the second-highest ceiling + $5k; ceilings are hard-capped
+at budget minus the cheapest legal completion ($850k for a first buy).
+Expectations = the list, or the list inflated by money-left /
+value-left; 20 auctions x 200 seasons per cell, seed 1, seeds 2 and 3
+checked on the quant cells. Waters is NOT dented: she sells at sale 1
+for the cap's maximum $850k in every quant cell and every seed, her
+buyer takes five floor players, the team wins 67-68% of ties with a
+33-39% title share (snake 66 / 36). The one price-side lever of §10
+(charge her more than the list) is what the room does by itself, and
+at $850k she is still the best buy in the league.
+
+What changes is the pack: runner-up title odds 11.5-16% (snake 7.3%),
+1.8-3.0 teams at 10%+ (snake 1.0), parity spread 6.1-8.0 (snake 4.4),
+effective contenders 5.2-5.8 (snake 6.4 -- less equal, not more). The
+10%+ teams are one build: two $390-490k players and four floor slots
+(Patriquin + Rohrabacher, Jorja Johnson + Alshon, Todd + Staksrud,
+JW Johnson + Humberg, Fahey + Black), a man and a woman being the
+strong version because the tie model pairs the two stars in mixed, so
+a star plays three of the four games (Patriquin + Rohrabacher vs the
+field: WD 48 / MD 66 / MXD1 74 / MXD2 46, tie 62%; the M+M version
+45%, the F+F version 59%). A snake cannot build it -- the pick-2 team
+waits until pick 39 and the top 60 are gone before round 4 -- so the
+snake's nineteen "one star plus depth" teams are equals; at auction
+money is the only constraint and the cap rewards concentration.
+Nobody programmed the build; it falls out of owners whose objective is
+the projected roster's tie probability, not a player's price. Price
+discovery: #1-5 at 101-115% of list, #6-15 at 111-130% (the second
+star; the $130-210k men Bhatia / Howells / Frazier / Huynh / Garnett
+carry the biggest premiums, +40-65%), #16-30 at list, #31-60 at 51-67%
+(the $79-96k role players sell for the floor), and the floor-priced
+DreamBreaker specialists at 3-6x (Joseph $98k, Haworth $185k on the
+rosters that want them): the room pays for a second star and for fit,
+not for depth, because the winning build has four floor slots, and phi
+as a context average cannot see fit. Every cap spent, nothing in the
+top 30 unsold, 14-15 bidders per sale, nobody stranded. Expectations
+and belief noise are second order (an earlier "fragile to
+expectations" read, Waters' team at 52-65%, came from a nomination
+rule that projected under the snake's scarcity and let stars come up
+after the money was gone -- Bright at sale 113 for $107k; fixed, and
+that read is retracted).
+
+Personas: the auction forgives individual mistakes -- the $500k
+cheapskate alone 27-29% (snake 21%), bargains-first at $120k 34-36%
+(snake 24%), because anyone can be bought at any time -- and punishes
+shared ones: five cheapskates still break the pack (spread 11.5-12.7,
+quants at 56-57%); twenty overvalue-men owners sell her at $759-779k
+and her team wins 74-75% with a 50% title share; twenty bargain hunters
+at $250k spend rounds 1-3 on mid-priced players and let the stars go
+for half price (Waters $515-547k, Bright $440-499k, Johns $283-396k):
+her team 84-88%, favourite 56-57%, spread 15-16, worse than anything
+the snake produced. Overvaluing a gender, chasing names and mild
+loyalty are free, as in the snake; strong loyalty (lam 0.5) as a
+league norm overpays the known stars (Bright $705-739k, Johns
+$577-598k) and gives the widest chase in the grid (runner-up 17-18%,
+3 teams at 10%+). For the list: the room's curve is more convex than
+phi's (a premium on the second star and on fit, the floor for depth) --
+not a reason to change the list, but the shape to expect in the
+league-price / surplus column, with the $60-100k depth tier where the
+surplus will look largest. Mechanism caveats, all in the docstring:
+bids are truthful indifference prices (no shading), nomination is
+rotation rather than strategic, there is no learning within an
+auction, and the first-buy maximum (cap minus the cheapest completion)
+is the only rule that ever binds -- it is the rule MLP's real mechanism
+has to confirm.

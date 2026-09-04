@@ -663,6 +663,30 @@ targeted rivals (42% head-to-head, free vs the field). Split gender
 caps make it WORSE (82% vs reference, Bright/Johns over cap too).
 Format moves the title lottery (37% → 14%) but never a second team past
 10%: a fair list + snake draft = one favourite and nineteen equals.
+AUCTION DRAFT (`auction_sim.py` → `auction.md`, phase2_pricing §11;
+2026-09-04 late): same owners/personas, prices set by the room
+(rotation nominations under the auction's own scarcity,
+indifference-price ceilings, second price + $5k, ceilings capped at
+budget minus the cheapest legal completion = $850k first buy). Waters
+NOT dented: $850k at sale 1 in every quant cell and seed, five floor
+teammates, 67-68% / 33-39% title (snake 66/36) — but the auction MAKES
+A CHASE: runner-up 11.5-16% (snake 7.3%), 1.8-3.0 teams at 10%+ (snake
+1.0). The chasers are one build a snake cannot make: two $390-490k
+players + four floor slots, a man AND a woman (the tie model pairs them
+in mixed, so a star plays 3 of 4 games; Patriquin+Rohrabacher 62% vs
+the field, the M+M version 45%, F+F 59%). Room vs list: #1-5 at
+101-115%, #6-15 at 111-130% (the second star), #16-30 at list, #31-60
+at 51-67% (depth sells at the floor), floored DB specialists at 3-6×.
+Personas: the auction forgives individual mistakes (cheapskate alone
+27-29% vs 21% snake; bargains $120k 34-36% vs 24%) and punishes shared
+ones (twenty bargain hunters at $250k let the stars go for half price —
+Waters $515-547k, her team 84-88%, spread 15-16, worse than any snake
+league). Expectations/noise are second order — an earlier "fragile to
+expectations" read came from nominations projected under the SNAKE's
+scarcity, which let stars come up after the money was gone (fixed;
+read retracted). Truthful bids, rotation nomination, no in-auction
+learning; the first-buy maximum is the only rule that binds — confirm
+MLP's real mechanism (draft vs auction, per-player max, min-spend).
 Phase 3 site page shipped off price_list.csv. Next: confirm MLP
 rotation/playing-time rules (now the biggest lever), injury/absence
 Monte Carlo (sweep the rate), gamma switch sweep, confirm 20 teams +
