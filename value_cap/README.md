@@ -6,7 +6,12 @@ published (league price). Surplus is the headline stat. Consumes
 PICKLES (`data/v2_players.csv` etc.) and, where useful, MOTSON — does
 not rebuild either.
 
-Read `phase0_bench_value.md` first. It's a scoping document, not a
+**Read `HANDOFF.md` first** — dated 2026-09-04, it's the live status
+snapshot and next-thread to-do for the price-fitting work in progress.
+The rest of this README and the phase docs below are the layered record
+underneath it.
+
+Read `phase0_bench_value.md` first for the phase-by-phase background. It's a scoping document, not a
 finished phase: three of the four bench-value rules questions are still
 open pending Chad's confirmation, and the write-up deliberately stops
 short of picking a strategy-determining assumption. See its "working
