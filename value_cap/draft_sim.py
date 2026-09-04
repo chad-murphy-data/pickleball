@@ -69,35 +69,49 @@ def order_for(fmt, rnd):
 
 
 class Owner:
+    """The quant: believes the values (with noise), maximizes projected tie
+    probability vs REFERENCE under the $1M cap. Personas (personas.py)
+    subclass this and override beliefs (self.dbl / self.sgl then
+    rebuild()), the cap (self.cap), the objective (score) or the
+    candidate set (filter_cands)."""
+    name = "quant"
+
     def __init__(self, noise, rng, gamma):
         self.noise = noise
-        eng_gamma = TRUE_ENGINE.gamma if gamma is None else gamma
-        if noise <= 0:
-            self.engine = TRUE_ENGINE if gamma is None else FastTie(DOUBLES, SINGLES, gamma)
-            self.v = {u: DOUBLES[u]["v"] for u in BOARD}
-            self.s = {u: TRUE_ENGINE.s[u] for u in BOARD}
-            return
-        dbl = {}
-        sgl = {}
-        for g in ("M", "F"):
-            sd_v = SPREAD_V[g]
-            sd_s = SPREAD_S[g]
-            for u in BOARD:
-                if GENDER[u] != g:
-                    continue
-                d = dict(DOUBLES[u])
-                d["v"] = d["v"] + rng.gauss(0, noise * sd_v)
-                dbl[u] = d
-                sgl[u] = TRUE_ENGINE.s[u] + rng.gauss(0, noise * sd_s)
-        # players outside the pool keep true values (never drafted anyway)
-        for u in DOUBLES:
-            if u not in dbl:
-                dbl[u] = DOUBLES[u]
-        merged_singles = dict(SINGLES)
-        merged_singles.update(sgl)
-        self.engine = FastTie(dbl, merged_singles, eng_gamma)
-        self.v = {u: dbl[u]["v"] for u in BOARD}
-        self.s = {u: sgl[u] for u in BOARD}
+        self.cap = TEAM_CAP
+        self.eng_gamma = TRUE_ENGINE.gamma if gamma is None else gamma
+        self.dbl = {u: dict(DOUBLES[u]) for u in BOARD}
+        self.sgl = {u: TRUE_ENGINE.s[u] for u in BOARD}
+        if noise > 0:
+            for g in ("M", "F"):
+                sd_v = SPREAD_V[g]
+                sd_s = SPREAD_S[g]
+                for u in BOARD:
+                    if GENDER[u] != g:
+                        continue
+                    self.dbl[u]["v"] += rng.gauss(0, noise * sd_v)
+                    self.sgl[u] += rng.gauss(0, noise * sd_s)
+        self.rebuild()
+
+    def rebuild(self):
+        """Engine + lookups from the current beliefs (self.dbl / self.sgl)."""
+        if all(self.dbl[u]["v"] == DOUBLES[u]["v"] for u in BOARD) and \
+                all(self.sgl[u] == TRUE_ENGINE.s[u] for u in BOARD) and self.eng_gamma == TRUE_ENGINE.gamma:
+            self.engine = TRUE_ENGINE
+        else:
+            dbl = dict(DOUBLES)          # players outside the board keep true values
+            dbl.update(self.dbl)
+            merged_singles = dict(SINGLES)
+            merged_singles.update(self.sgl)
+            self.engine = FastTie(dbl, merged_singles, self.eng_gamma)
+        self.v = {u: self.dbl[u]["v"] for u in BOARD}
+        self.s = {u: self.sgl[u] for u in BOARD}
+
+    def score(self, proj):
+        return self.engine.tie(tuple(proj), REFERENCE)
+
+    def filter_cands(self, cands, roster, avail, price):
+        return cands
 
     def choose(self, roster, spent, avail, price, need, gaps):
         """Deterministic given (owner beliefs, board, seed): every sort breaks
@@ -130,7 +144,7 @@ class Owner:
                     return float("inf")
             return tot
 
-        budget = TEAM_CAP - spent
+        budget = self.cap - spent
         cands = set()
         for g in ("M", "F"):
             if need[g] <= 0:
@@ -143,6 +157,7 @@ class Owner:
             cands.update(sorted(pool_g, key=lambda u: (-self.v[u], u))[:CAND_TOP])
             cands.update(sorted(pool_g, key=lambda u: (-self.s[u], u))[:CAND_SINGLES])
             cands.update(by_g[g][:CAND_CHEAP])
+        cands = self.filter_cands(cands, roster, avail, price)
         best, best_p = None, -1.0
         for x in sorted(cands):
             gx = GENDER[x]
@@ -176,7 +191,7 @@ class Owner:
                 na[GENDER[pick]] -= 1
             if na["M"] > 0 or na["F"] > 0:
                 continue
-            p = self.engine.tie(tuple(proj), REFERENCE)
+            p = self.score(proj)
             if p > best_p:
                 best, best_p = x, p
         if best is None:
@@ -184,8 +199,8 @@ class Owner:
         return best
 
 
-def run_draft(price, fmt, noise, rng, gamma=None):
-    owners = [Owner(noise, rng, gamma) for _ in range(N_TEAMS)]
+def run_draft(price, fmt, noise, rng, gamma=None, owners=None):
+    owners = owners or [Owner(noise, rng, gamma) for _ in range(N_TEAMS)]
     avail = set(BOARD)   # only ever iterated through sorted(...) below
     rosters = [[] for _ in range(N_TEAMS)]
     spent = [0.0] * N_TEAMS
@@ -202,7 +217,7 @@ def run_draft(price, fmt, noise, rng, gamma=None):
             need[team][GENDER[x]] -= 1
             avail.discard(x)
             picks[x] = (team, rnd + 1)
-    return [tuple(r) for r in rosters], spent, picks, avail
+    return [tuple(r) for r in rosters], spent, picks, avail, owners
 
 
 def season(rosters, seasons, rng):
@@ -245,8 +260,10 @@ def blueprint(roster, price):
     return "balanced (<28%)"
 
 
-def run_variant(price, fmt, noise, drafts, seasons, seed, stars, gamma=None):
+def run_variant(price, fmt, noise, drafts, seasons, seed, stars, gamma=None, owner_factory=None):
+    """owner_factory(rng) -> list of N_TEAMS Owner objects (slot order); None = 20 quants."""
     rng = random.Random(seed)
+    kinds = {}          # owner.name -> {"exp": [], "title": [], "spend": [], "picks": {pid: n}, "n": 0}
     slot_exp = [[] for _ in range(N_TEAMS)]
     slot_title = [[] for _ in range(N_TEAMS)]
     star_rows = {u: {"rounds": [], "undrafted": 0, "exp": [], "title": [], "slot": []} for u in stars}
@@ -258,8 +275,17 @@ def run_variant(price, fmt, noise, drafts, seasons, seed, stars, gamma=None):
     floor_taken = []
     t0 = time.time()
     for d in range(drafts):
-        rosters, spent, picks, left = run_draft(price, fmt, noise, rng, gamma)
+        owners = owner_factory(rng) if owner_factory else None
+        rosters, spent, picks, left, owners = run_draft(price, fmt, noise, rng, gamma, owners)
         exp, mw, ttl = season(rosters, seasons, rng)
+        for t in range(N_TEAMS):
+            k = kinds.setdefault(owners[t].name, {"exp": [], "title": [], "spend": [], "picks": {}, "n": 0})
+            k["exp"].append(exp[t])
+            k["title"].append(ttl[t])
+            k["spend"].append(spent[t])
+            k["n"] += 1
+            for u in rosters[t]:
+                k["picks"][u] = k["picks"].get(u, 0) + 1
         spreads.append(statistics.pstdev(exp))
         maxes.append(max(exp))
         spends.extend(spent)
@@ -284,7 +310,7 @@ def run_variant(price, fmt, noise, drafts, seasons, seed, stars, gamma=None):
     return dict(fmt=fmt, noise=noise, drafts=drafts, seasons=seasons, secs=time.time() - t0,
                 slot_exp=slot_exp, slot_title=slot_title, stars=star_rows, undrafted=undrafted,
                 shapes=shapes, spend=statistics.mean(spends), spread=statistics.mean(spreads),
-                max_exp=statistics.mean(maxes), floor_taken=statistics.mean(floor_taken))
+                max_exp=statistics.mean(maxes), floor_taken=statistics.mean(floor_taken), kinds=kinds)
 
 
 def render(results, price, header, stars, out):
