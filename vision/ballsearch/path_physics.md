@@ -168,3 +168,54 @@ where the ball is, it's where the ball is invisible. The unspent half is
 that the ball's height is knowable when you stop treating it as a
 constraint on pixels and start treating it as a quantity to solve for
 between two known contacts — which is the double-bounce arc fit, not this.
+
+### Redone player-relative (owner: "what if it's not the frame but player position?")
+
+Fair challenge, and the first pass deserved it — it took the max over every
+laterally-near player, so it measured depth to the *deepest* player rather
+than to the one the ball is actually at. Redone properly: nearest player by
+signed box distance, depth measured against **that** player's feet.
+
+    behind the nearest player's feet    junk 92.2%  good 82.7%   1.12x
+      > 3 ft                            junk 68.6%  good 69.6%   0.99x
+      > 6 ft                            junk 45.5%  good 55.0%   0.83x
+      >15 ft                            junk 14.1%  good 30.0%   0.47x
+    behind EVERY player's feet          junk 38.8%  good 52.7%   0.74x
+    behind the nearest on its own half  junk 65.2%  good 62.6%   1.04x
+
+Still backwards, now with the confound named: the deeper the z=0 projection,
+the *more* likely the point is good, because depth is height and height is
+the ball. And depth adds nothing on top of the box — inside a box, splitting
+on behind-the-feet gives 3.04x (>3 ft) against the box's own 2.93x. Flat.
+
+Every player-relative *position* cut collapses to the same statement, which
+is why they all read alike: junk hugs players, the good ball is free of them.
+Distance to the nearest box, > 0.5 box-heights: good 15.6%, junk 2.8%.
+
+**The one axis that isn't the box: vertical position within the body.**
+Restricted to the 1,533 points inside a box, binned by height in the body
+(0 = feet, 1 = top of head):
+
+    0.0-0.1  good 109  junk 112    50.7% junk
+    0.1-0.2  good 112  junk 152    57.6%
+    0.2-0.3  good 126  junk 128    50.4%
+    0.3-0.4  good  79  junk 109    58.0%
+    0.4-0.5  good  49  junk  74    60.2%
+    0.5-0.6  good  32  junk  62    66.0%
+    0.6-0.7  good  19  junk  86    81.9%   <- chest / shoulder
+    0.7-0.8  good  23  junk  56    70.9%
+    0.8-0.9  good  44  junk  53    54.6%
+    0.9-1.0  good  72  junk  36    33.3%
+
+The shoe intuition is backwards: ankle height is the *cleanest* part of a
+player (dinks and bounces really do happen at their feet), and the tracker's
+worst latch is the **chest and shoulders** — the paddle-and-hands band, where
+the plausible-looking distractors live. Good path inside a box is bimodal,
+over the head or down at the ankles; junk fills the torso between them.
+
+Not shipped: standalone the 0.55-0.85 band runs 17.2% of junk for 2.7% of
+good (6.4x, marginal 4.7x on top of the shipped filter, below the ~6.2x the
+filter already runs) and it is **not stable across rallies** — r6 12.5:1 and
+r4 6.5:1 against r5 0.5:1 and r3 0.9:1. Two of nine rallies where it is a
+wash or actively bad is not a delete rule. Its right home is a weight in the
+emission model next to `dbody`, learned rather than thresholded.
