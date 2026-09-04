@@ -588,6 +588,54 @@ Articles: unsolved-meta (Anna Bright DreamBreaker post), smoke-dimension
 
 ## Open threads (specced, unbuilt)
 
+**MLP Value Cap (active, 2026-09-04): read `value_cap/HANDOFF.md` FIRST**
+(dated status snapshot + next-thread to-do), then `value_cap/README.md`,
+`value_cap/phase0_bench_value.md`, `value_cap/phase1_first_cut.md`,
+`value_cap/phase2_notes.md` for the layered background underneath it.
+Transfermarkt-style value pricing for MLP under a $1M roster cap,
+dyad-aware (consumes PICKLES, does not rebuild it). Working rule: don't
+program a dominant strategy deliberately, let one fall out of the math
+if it does — treat unconfirmed rules/rates as swept parameters, not
+picked constants.
+
+Phase 0: rotation/substitution/fatigue rules still unconfirmed;
+DreamBreaker eligibility IS confirmed — a team names its own 4-player DB
+lineup independent of who started the tie's other games, which breaks
+the original bench binary (plays vs. pure injury insurance) into a
+third category, the DB-only specialist. Talent cliff is sharply
+gender-asymmetric (men's top 10 in `data/v2_players.csv` spans 0.21
+with no tier break; women's has Waters alone 0.47 clear of Bright, who
+is 0.15 clear of a flat parity pack from #3-#10).
+
+Phase 1 first cut is built (`value_cap/phase1_value_model.py`, dyad- and
+role-aware, reuses `web/sitelib/race.py` + the DB singles-gap model):
+blind of any real 2026 roster info, it independently ranks Christopher
+Haworth's DB-channel value #1 of 1,033 tracked players (his doubles
+value sits on the replacement line; his singles value is #1 among men)
+with Federico Staksrud and Hunter Johnson both top-5 — the same three
+teams already running this play (Brooklyn, NJ 5's, Dallas Flash). Treat
+that as a smell-test pass, not a finished valuation — no injury/absence
+draws yet (planned as a Monte Carlo layer, not a picked rate), no real
+roster construction, replacement level uses an assumed 20-team count
+pending confirmation.
+
+Phase 2 (price fitting) is live, as of 2026-09-04 (full detail in
+`value_cap/HANDOFF.md`): two rank-sweep-discovered "indifference pairs"
+(searched for, not hand-picked) point to alpha ≈ 0.76-0.88 (sub-linear —
+a star DISCOUNT relative to proportional, not a premium). A naive test
+made Anna Leigh Waters look unfixably underpriced at any legal price,
+but that was an artifact of comparing her to a FIXED alternative roster
+instead of one that reoptimizes at the real prices — done properly, the
+same ~0.76-0.88 alpha range handles her too (crossover ≈ 0.96-0.98). A
+$500k minimum-team-spend rule (Chad's recollection, needs confirmation
+like Phase 0's other rules items) only binds at alpha ≳0.85-1.0; below
+that it's redundant. Floor/min-spend and alpha answer different
+questions (floor stops scrub-stacking, alpha shapes competitive
+balance) and shouldn't be tuned as if either one fixes both. Live open
+thread: the $10M-per-gender subpool is an untested 50/50 split of the
+20-team × $1M league total — next step is testing whether an uneven
+split changes any of the above.
+
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
 solved layers ONLY (pose tracks + court homography + lineup identity —
