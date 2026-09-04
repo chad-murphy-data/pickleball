@@ -384,7 +384,6 @@ def main():
 
 # ------------------------------------------------------------ module state
 TRUE_ENGINE = FastTie(DOUBLES, SINGLES)
-PRICED_PIDS = [u for g in ("M", "F") for u, _, _ in POOL[g]]
 import csv as _csv
 PHI = {}
 _PHI_EXTRA = {"M": [], "F": []}
@@ -414,7 +413,7 @@ def mlp_participants(year=2026):
     return {u for u in played if u in DOUBLES}
 
 
-def set_board(mode="best60"):
+def set_board(mode="best60", pool=None):
     """Define who can be drafted. Modes:
       best60      priced 60/gender + the next 60/gender by phi (padded by
                   doubles value) at the floor. Feasibility never decays
@@ -424,6 +423,12 @@ def set_board(mode="best60"):
       mlp2026only ONLY 2026 MLP participants: priced ones keep their
                   price, the rest are floor. The league as it was."""
     global BOARD, BOARD_MODE, BOARD_DESC, POOL_PIDS, EXTRA_PIDS, POOL_RANK, POOL_SET
+    global PRICED_POOL, PRICED_PIDS, SPREAD_V, SPREAD_S
+    # pool = gender -> [(pid, name, value)] (any size); default = the 60/gender phi pool
+    PRICED_POOL = pool if pool is not None else POOL
+    PRICED_PIDS = [u for g in ("M", "F") for u, _, _ in PRICED_POOL[g]]
+    SPREAD_V = {g: statistics.pstdev([DOUBLES[u]["v"] for u, _, _ in PRICED_POOL[g]]) for g in ("M", "F")}
+    SPREAD_S = {g: statistics.pstdev([TRUE_ENGINE.s[u] for u, _, _ in PRICED_POOL[g]]) for g in ("M", "F")}
     keep = {pid_named(n) for n in KEEP}
     if mode == "best60":
         extra = {g: sorted(_PHI_EXTRA[g], key=lambda u: -PHI[u]) for g in ("M", "F")}
@@ -435,7 +440,7 @@ def set_board(mode="best60"):
                     break
                 extra[g].append(u)
         priced = list(PRICED_PIDS)
-        desc = (f"the priced 60+60 plus {EXTRA_PER_GENDER} free agents per gender "
+        desc = (f"the priced {len(PRICED_POOL['M'])}M/{len(PRICED_POOL['F'])}F plus {EXTRA_PER_GENDER} free agents per gender "
                 f"(next by phi / doubles value) at the ${FLOOR/1e3:.0f}k floor")
     elif mode in ("mlp2026", "mlp2026only"):
         played = mlp_participants(2026) | keep
@@ -447,7 +452,7 @@ def set_board(mode="best60"):
                            key=lambda u: -DOUBLES[u]["v"]) for g in ("M", "F")}
         n_pr = {g: sum(1 for u in priced if GENDER[u] == g) for g in ("M", "F")}
         desc = (("ONLY 2026 MLP participants: " if mode == "mlp2026only" else
-                 "the priced 60+60 plus every 2026 MLP participant outside the priced pool: ")
+                 f"the priced {len(PRICED_POOL['M'])}M/{len(PRICED_POOL['F'])}F plus every 2026 MLP participant outside the priced pool: ")
                 + f"{n_pr['M']}M/{n_pr['F']}F priced + {len(extra['M'])}M/{len(extra['F'])}F "
                 f"real fill-ins at the ${FLOOR/1e3:.0f}k floor")
     else:
@@ -460,21 +465,18 @@ def set_board(mode="best60"):
     POOL_PIDS = priced
     EXTRA_PIDS = [u for g in ("M", "F") for u in extra[g]]
     BOARD = POOL_PIDS + EXTRA_PIDS
-    POOL_RANK = {u: i + 1 for g in ("M", "F") for i, (u, _, _) in enumerate(POOL[g])}
+    POOL_RANK = {u: i + 1 for g in ("M", "F") for i, (u, _, _) in enumerate(PRICED_POOL[g])}
     for g in extra:
         for i, u in enumerate(extra[g]):
-            POOL_RANK[u] = len(POOL[g]) + i + 1
+            POOL_RANK[u] = len(PRICED_POOL[g]) + i + 1
     POOL_SET = set(POOL_PIDS)
     for g in ("M", "F"):
         n = sum(1 for u in BOARD if GENDER[u] == g)
         assert n >= N_TEAMS * PER_GENDER, (mode, g, n)
 
 
-set_board("best60")
-SPREAD_V = {g: statistics.pstdev([DOUBLES[u]["v"] for u, _, _ in POOL[g]]) for g in ("M", "F")}
-SPREAD_S = {g: statistics.pstdev([TRUE_ENGINE.s[u] for u, _, _ in POOL[g]]) for g in ("M", "F")}
-POOL_SET = set(POOL_PIDS)
 REFERENCE = tuple(rank("M", r) for r in REF_RANKS) + tuple(rank("F", r) for r in REF_RANKS)
+set_board("best60")
 
 if __name__ == "__main__":
     main()
