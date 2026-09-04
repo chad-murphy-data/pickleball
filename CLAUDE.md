@@ -620,24 +620,32 @@ roster construction, replacement level uses an assumed 20-team count
 pending confirmation.
 
 Phase 2 (price fitting), as of 2026-09-04 evening (full detail in
-`value_cap/HANDOFF.md` + `value_cap/phase2_joint_pool.md`): the two
+`value_cap/HANDOFF.md` + `value_cap/phase2_pricing.md`): the two
 remaining arbitrary inputs were tested and replaced. (a) One joint $20M
 pool instead of two $10M gender sub-pools — the split falls out at ~57/43
 women, and the 50/50 split had overpriced every man ~16% (Johns a
 must-avoid at every alpha). (b) Phase 1's replacement-context V is the
 wrong pricing basis (the #60 partner's weakest-link gap damps stars in
 proportion to value); replaced by phi = Shapley-style context-averaged
-value (`value_cap/shapley_value.py`). Instrument = the must-buy test
-(best $1M roster with vs without a player, both best-responding;
-injection-checked). Result: on phi + joint there are two regimes and ONE
-player decides which — below alpha ≈ 0.88 "buy Waters" is a dominant
-strategy (her phi is 5.5% of the league vs 5% per team), above 0.91 she
-is unrosterable, and in between everyone #1-#10 is fair (0.47-0.51) out
-to alpha 1.6. The "star discount" is precisely the discount that makes
-the best player rosterable; nothing else needs it. The floor is cosmetic
-(any roster legal iff value share ≤ 1/20, every floor). Morning-session
-indifference pairs A/B anchored on star+scrubs builds — don't fit alpha
-to them. Next: Phase 3 site off the alpha≈0.89 list, injury/absence
+value over a SELF-CONSISTENT pool (`value_cap/shapley_value.py`;
+`pool.py` defines the pool — top 60/gender by phi, iterated to a fixed
+point). Instrument = the must-buy test (best $1M roster with vs without
+a player, both best-responding; injection-checked). Result: on phi +
+joint there are two regimes and ONE player decides which — below alpha
+≈ 0.84 "buy Waters" is a dominant strategy (her phi is 5.3% of the
+league vs 5% per team), from 0.853 she is unrosterable, and above 0.9
+everyone #1-#10 is fair (0.45-0.51) out to alpha 1.6. The
+fair-and-rosterable window is a knife-edge (alpha 0.84-0.85, ~$725k,
+five ~$53k teammates); it sits where the VALUE WEIGHT of the cheapest
+cast puts it (first draft said 0.88-0.91 on a pool with negative-phi
+members priced at the floor — the pool's bottom definition moves the
+edge, the dollar floor does not). The "star discount" is precisely the
+discount that makes the best player rosterable; nothing else needs it.
+The floor is cosmetic (any roster legal iff value share ≤ 1/20, every
+floor). Morning-session indifference pairs A/B anchored on star+scrubs
+builds — don't fit alpha to them. Sonnet's `phase2_price_model.py` was
+removed; `phase2_pricing.py --value total --modes split` covers it.
+Next: Phase 3 site off the alpha≈0.845 list, injury/absence
 Monte Carlo (sweep the rate), confirm 20 teams + $500k min-spend.
 
 Court coverage per player (2026-08-16, user request —

@@ -1,6 +1,10 @@
 # Phase 2 — quick pass: pricing sweep + a real (not cherry-picked) search
 
-Status: 2026-09-02, rough pass. Run: `python value_cap/phase2_price_model.py`.
+Status: 2026-09-02, rough pass. Its script (`phase2_price_model.py`) was
+removed 2026-09-04 — `phase2_pricing.py --value total --modes split` covers
+the same sweep, and `phase2_pricing.md` is where both findings below were
+taken up (finding 2 became the must-buy test). Kept as the record of what
+the first pass found.
 
 Formula: `price = floor + (V^alpha / sum(V^alpha)) * pool`, fit separately
 per gender. Floor fixed at $30,000 (the original brief's example number,

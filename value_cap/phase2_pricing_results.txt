@@ -1,0 +1,338 @@
+# value_cap/phase2_pricing_results.txt -- raw output of every sweep quoted in phase2_pricing.md
+# Generated 2026-09-04 (evening, self-consistent phi pool). Regenerate: see phase2_pricing.md §0.
+
+################ shapley_value.py (pool iteration + phi) ################
+iteration 0: pool churn  M +5/-5  F +1/-1
+    in  M Harsh Mehta                phi +0.0169  V_total +0.0344
+    in  M Etienne Blaszkewycz        phi +0.0146  V_total +0.0292
+    in  M Patrick Kawka              phi +0.0084  V_total +0.0339
+    in  M Tristan Dussault           phi +0.0079  V_total +0.0362
+    in  M Michael Loyd               phi +0.0012  V_total +0.0302
+    out M Rafael Lenhard             phi -0.0025  V_total +0.0400
+    out M Zane Ford                  phi -0.0026  V_total +0.0470
+    out M Adam Harvey                phi -0.0068  V_total +0.0383
+    out M Gabriel Joseph             phi -0.0075  V_total +0.0425
+    out M Alexander Crum             phi -0.0077  V_total +0.0381
+    in  F Cailyn Campbell            phi +0.0076  V_total +0.0290
+    out F Helena Jansen              phi +0.0054  V_total +0.0362
+iteration 1: pool churn  M +1/-1  F +0/-0
+    in  M Zane Ford                  phi +0.0108  V_total +0.0470
+    out M Michael Loyd               phi +0.0045  V_total +0.0302
+iteration 2: pool churn  M +0/-0  F +0/-0
+pool is self-consistent
+M # 1 Ben Johns                  V_total +0.2691  phi +0.2206 ± 0.0013
+M # 2 JW Johnson                 V_total +0.2448  phi +0.1989 ± 0.0012
+M # 3 Hayden Patriquin           V_total +0.2404  phi +0.1944 ± 0.0012
+M # 4 Gabriel Tardio             V_total +0.2333  phi +0.1882 ± 0.0012
+M # 5 Christian Alshon           V_total +0.2335  phi +0.1838 ± 0.0011
+M # 6 Andrei Daescu              V_total +0.1903  phi +0.1455 ± 0.0010
+M # 7 Federico Staksrud          V_total +0.1935  phi +0.1416 ± 0.0010
+M # 8 Eric Oncins                V_total +0.1853  phi +0.1374 ± 0.0010
+M # 9 Jay Devilliers             V_total +0.1775  phi +0.1283 ± 0.0009
+M #10 Riley Newman               V_total +0.1484  phi +0.1097 ± 0.0008
+M #11 Jack Sock                  V_total +0.1489  phi +0.0973 ± 0.0008
+M #12 Phuc Huynh                 V_total +0.1343  phi +0.0892 ± 0.0007
+M #58 Mohaned Alhouni            V_total +0.0366  phi +0.0085 ± 0.0003
+M #59 Hoang Nam Ly               V_total +0.0398  phi +0.0069 ± 0.0004
+M #60 Grayson Goldin             V_total +0.0406  phi +0.0068 ± 0.0004
+F # 1 Anna Leigh Waters          V_total +0.4222  phi +0.4373 ± 0.0026
+F # 2 Anna Bright                V_total +0.3423  phi +0.2897 ± 0.0018
+F # 3 Parris Todd                V_total +0.2963  phi +0.2281 ± 0.0015
+F # 4 Jorja Johnson              V_total +0.2875  phi +0.2212 ± 0.0015
+F # 5 Kate Fahey                 V_total +0.2822  phi +0.2103 ± 0.0015
+F # 6 Jade Kawamoto              V_total +0.2713  phi +0.2054 ± 0.0015
+F # 7 Rachel Rohrabacher         V_total +0.2634  phi +0.1943 ± 0.0014
+F # 8 Tina Pisnik                V_total +0.2576  phi +0.1918 ± 0.0014
+F # 9 Jackie Kawamoto            V_total +0.2487  phi +0.1791 ± 0.0014
+F #10 Tyra Hurricane Black       V_total +0.2445  phi +0.1769 ± 0.0014
+F #11 Sofia Sewing               V_total +0.2174  phi +0.1588 ± 0.0013
+F #12 Danni-Elle Townsend        V_total +0.2119  phi +0.1465 ± 0.0013
+F #58 Christine Maddox           V_total +0.0343  phi +0.0104 ± 0.0002
+F #59 Callie Smith               V_total +0.0415  phi +0.0100 ± 0.0002
+F #60 Cailyn Campbell            V_total +0.0290  phi +0.0079 ± 0.0002
+
+wrote /home/user/pickleball/value_cap/player_value_shapley.csv (160 players, 120 in pool)
+
+################ phase2_pricing.py --quick --value total ################
+value basis for pricing: total  (pool = top 60 per gender on that basis, see pool.py)
+
+=== gender split implied by a joint $20M pool ===
+alpha=0.6   women's share 54.0%   Waters $345,632  Bright $308,341  Johns $270,919  #60M $102,727  #60F $99,947
+alpha=0.76  women's share 55.1%   Waters $414,742  Bright $358,098  Johns $303,261  #60M $89,936  #60F $87,049
+alpha=0.88  women's share 55.9%   Waters $473,268  Bright $398,621  Johns $328,273  #60M $81,486  #60F $78,625
+alpha=1.0   women's share 56.7%   Waters $537,746  Bright $441,756  Johns $353,692  #60M $73,972  #60F $71,206
+alpha=1.2   women's share 58.1%   Waters $658,804  Bright $518,998  Johns $396,351  #60M $63,385  #60F $60,881
+
+=== indifference pairs: rank sweep, then the alpha that price-matches them ===
+(same pair -> two alphas: split = HANDOFF.md's two $10M sub-pools, joint = one $20M pool)
+A  #3M/#2F anchor + 2 scrubs: ties at k=17 (P=0.498)  alpha_split=0.879  alpha_joint=0.855
+    anchor:     Hayden Patriquin(#3M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Anna Bright(#2F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Jack Munro(#17M) / Quang Duong(#18M) / Erik Lange(#60M) / Catherine Parenteau(#17F) / Vivienne David(#18F) / Martina Frantova(#60F)
+B  #10 anchor + 2 scrubs: ties at k=24 (P=0.500)  alpha_split=0.746  alpha_joint=0.703
+    anchor:     Riley Newman(#10M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Kate Fahey(#10F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Armaan Bhatia(#24M) / Dekel Bar(#25M) / Erik Lange(#60M) / Leigh Waters(#24F) / Allyce Jones(#25F) / Martina Frantova(#60F)
+C  #1 anchor + 2 scrubs: ties at k=8 (P=0.450)  alpha_split=1.470  alpha_joint=1.393
+    anchor:     Ben Johns(#1M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Anna Leigh Waters(#1F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Jay Devilliers(#8M) / Federico Staksrud(#9M) / Erik Lange(#60M) / Jackie Kawamoto(#8F) / Tyra Hurricane Black(#9F) / Martina Frantova(#60F)
+F  #1 + 2 replacements: ties at k=10 (P=0.554)  alpha_split=1.683  alpha_joint=1.757
+    anchor:     Ben Johns(#1M) / Erik Lange(#60M) / Erik Lange(#60M) / Anna Leigh Waters(#1F) / Martina Frantova(#60F) / Martina Frantova(#60F)
+    challenger: Riley Newman(#10M) / Thomas Wilson(#11M) / Nicolas Acevedo(#12M) / Kate Fahey(#10F) / Danni-Elle Townsend(#11F) / Sofia Sewing(#12F)
+
+
+################ phase2_pricing.py --quick --value phi ################
+value basis for pricing: phi  (pool = top 60 per gender on that basis, see pool.py)
+
+=== gender split implied by a joint $20M pool ===
+alpha=0.6   women's share 54.1%   Waters $494,806  Bright $392,993  Johns $338,266  #60M $68,253  #60F $71,817
+alpha=0.76  women's share 55.2%   Waters $637,873  Bright $474,433  Johns $391,333  #60M $55,702  #60F $58,773
+alpha=0.88  women's share 56.0%   Waters $762,744  Bright $539,884  Johns $431,216  #60M $48,801  #60F $51,426
+alpha=1.0   women's share 56.9%   Waters $903,168  Bright $608,285  Johns $470,407  #60M $43,596  #60F $45,772
+alpha=1.2   women's share 58.3%   Waters $1,172,541  Bright $726,827  Johns $532,551  #60M $37,738  #60F $39,248
+
+=== indifference pairs: rank sweep, then the alpha that price-matches them ===
+(same pair -> two alphas: split = HANDOFF.md's two $10M sub-pools, joint = one $20M pool)
+A  #3M/#2F anchor + 2 scrubs: ties at k=17 (P=0.498)  alpha_split=0.614  alpha_joint=0.598
+    anchor:     Hayden Patriquin(#3M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Anna Bright(#2F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Jack Munro(#17M) / Quang Duong(#18M) / Erik Lange(#60M) / Catherine Parenteau(#17F) / Vivienne David(#18F) / Martina Frantova(#60F)
+B  #10 anchor + 2 scrubs: ties at k=24 (P=0.500)  alpha_split=0.525  alpha_joint=0.503
+    anchor:     Riley Newman(#10M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Kate Fahey(#10F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Armaan Bhatia(#24M) / Dekel Bar(#25M) / Erik Lange(#60M) / Leigh Waters(#24F) / Allyce Jones(#25F) / Martina Frantova(#60F)
+C  #1 anchor + 2 scrubs: ties at k=8 (P=0.450)  alpha_split=0.939  alpha_joint=0.891
+    anchor:     Ben Johns(#1M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Anna Leigh Waters(#1F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Jay Devilliers(#8M) / Federico Staksrud(#9M) / Erik Lange(#60M) / Jackie Kawamoto(#8F) / Tyra Hurricane Black(#9F) / Martina Frantova(#60F)
+F  #1 + 2 replacements: ties at k=10 (P=0.554)  alpha_split=1.212  alpha_joint=1.204
+    anchor:     Ben Johns(#1M) / Erik Lange(#60M) / Erik Lange(#60M) / Anna Leigh Waters(#1F) / Martina Frantova(#60F) / Martina Frantova(#60F)
+    challenger: Riley Newman(#10M) / Thomas Wilson(#11M) / Nicolas Acevedo(#12M) / Kate Fahey(#10F) / Danni-Elle Townsend(#11F) / Sofia Sewing(#12F)
+
+
+################ must-buy panel: --must-buy NAME --value V --floor F --modes MODE ################
+--- phi_30000_joint_Anna_Bright
+Anna Bright        phi     joint floor=30000  crossover=0.89   a=0.6:0.353  a=0.7:0.361  a=0.8:0.402  a=0.9:0.511  a=1.0:0.483  a=1.1:0.455  a=1.2:0.417  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=0.9: with    $997,376  Will Howells(#20M) / Harsh Mehta(#36M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Jessie Irvine(#32F) / Katerina Stewart(#79F)
+                 without $999,463  Ben Johns(#1M) / George Wall(#30M) / Matthew Barlow(#117M) / Vivian Glozman(#14F) / Lucy Kovalova(#34F) / Seone Mendez(#87F)
+--- phi_30000_joint_Anna_Leigh_Waters
+Anna Leigh Waters  phi     joint floor=30000  crossover=None   a=0.6:0.646  a=0.7:0.656  a=0.8:0.602  a=0.9:INFEAS  a=1.0:INFEAS  a=1.1:INFEAS  a=1.2:INFEAS  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=0.8: with    $994,534  Etienne Blaszkewycz(#38M) / Patrick Kawka(#61M) / Matthew Barlow(#117M) / Anna Leigh Waters(#1F) / Genie Erokhina(#48F) / Cailyn Campbell(#58F)
+                 without $994,322  Ben Johns(#1M) / Etienne Blaszkewycz(#38M) / Grayson Goldin(#98M) / Sofia Sewing(#12F) / Allie Reichert(#39F) / Genie Bouchard(#216F)
+--- phi_30000_joint_Ben_Johns
+Ben Johns          phi     joint floor=30000  crossover=None   a=0.6:0.350  a=0.7:0.359  a=0.8:0.400  a=0.9:0.489  a=1.0:0.477  a=1.1:0.474  a=1.2:0.466  a=1.4:0.446  a=1.6:0.409
+    at alpha=0.9: with    $999,463  Ben Johns(#1M) / George Wall(#30M) / Matthew Barlow(#117M) / Vivian Glozman(#14F) / Lucy Kovalova(#34F) / Seone Mendez(#87F)
+                 without $997,376  Will Howells(#20M) / Harsh Mehta(#36M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Jessie Irvine(#32F) / Katerina Stewart(#79F)
+--- phi_30000_joint_Hayden_Patriquin
+Hayden Patriquin   phi     joint floor=30000  crossover=None   a=0.6:0.343  a=0.7:0.356  a=0.8:0.388  a=0.9:0.490  a=1.0:0.481  a=1.1:0.479  a=1.2:0.481  a=1.4:0.480  a=1.6:0.461
+    at alpha=0.9: with    $997,842  Hayden Patriquin(#3M) / Anderson Scarpa(#33M) / Grayson Goldin(#98M) / Sofia Sewing(#12F) / Lucy Kovalova(#34F) / Genie Bouchard(#216F)
+                 without $997,376  Will Howells(#20M) / Harsh Mehta(#36M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Jessie Irvine(#32F) / Katerina Stewart(#79F)
+--- phi_30000_joint_JW_Johnson
+JW Johnson         phi     joint floor=30000  crossover=None   a=0.6:0.347  a=0.7:0.359  a=0.8:0.392  a=0.9:0.491  a=1.0:0.481  a=1.1:0.481  a=1.2:0.481  a=1.4:0.477  a=1.6:0.456
+    at alpha=0.9: with    $995,666  JW Johnson(#2M) / Etienne Blaszkewycz(#38M) / Matthew Barlow(#117M) / Sofia Sewing(#12F) / Lucy Kovalova(#34F) / Genie Bouchard(#216F)
+                 without $997,376  Will Howells(#20M) / Harsh Mehta(#36M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Jessie Irvine(#32F) / Katerina Stewart(#79F)
+--- phi_30000_joint_Jorja_Johnson
+Jorja Johnson      phi     joint floor=30000  crossover=0.896   a=0.6:0.362  a=0.7:0.365  a=0.8:0.383  a=0.9:0.505  a=1.0:0.497  a=1.1:0.482  a=1.2:0.474  a=1.4:0.463  a=1.6:0.432
+    at alpha=1.0: with    $995,249  Dylan Frazier(#27M) / Dekel Bar(#25M) / Matthew Barlow(#117M) / Jorja Johnson(#3F) / Meghan Dizon(#22F) / Katerina Stewart(#79F)
+                 without $999,462  Jack Sock(#13M) / Yuta Funemizu(#23M) / Matthew Barlow(#117M) / Danni-Elle Townsend(#11F) / Lacy Schneemann(#16F) / Katerina Stewart(#79F)
+--- phi_30000_joint_Kate_Fahey
+Kate Fahey         phi     joint floor=30000  crossover=None   a=0.6:0.371  a=0.7:0.359  a=0.8:0.392  a=0.9:0.486  a=1.0:0.493  a=1.1:0.484  a=1.2:0.484  a=1.4:0.473  a=1.6:0.448
+    at alpha=1.0: with    $997,685  Dylan Frazier(#27M) / Dekel Bar(#25M) / Matthew Barlow(#117M) / Kate Fahey(#10F) / Vivienne David(#18F) / Genie Bouchard(#216F)
+                 without $999,462  Jack Sock(#13M) / Yuta Funemizu(#23M) / Matthew Barlow(#117M) / Danni-Elle Townsend(#11F) / Lacy Schneemann(#16F) / Katerina Stewart(#79F)
+--- phi_30000_joint_Riley_Newman
+Riley Newman       phi     joint floor=30000  crossover=0.978   a=0.6:0.332  a=0.7:0.374  a=0.8:0.393  a=0.9:0.483  a=1.0:0.505  a=1.1:0.512  a=1.2:0.509  a=1.4:0.519  a=1.6:0.517
+    at alpha=1.0: with    $996,507  Riley Newman(#10M) / Jack Sock(#13M) / Grayson Goldin(#98M) / Vivian Glozman(#14F) / Leigh Waters(#24F) / Genie Bouchard(#216F)
+                 without $999,462  Thomas Wilson(#11M) / Jack Munro(#17M) / Mohaned Alhouni(#73M) / Sofia Sewing(#12F) / Meghan Dizon(#22F) / Seone Mendez(#87F)
+--- phi_5000_joint_Anna_Bright
+Anna Bright        phi     joint floor=5000  crossover=0.897   a=0.6:0.357  a=0.7:0.361  a=0.8:0.390  a=0.9:0.503  a=1.0:0.478  a=1.1:0.452  a=1.2:0.420  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=0.9: with    $996,895  Will Howells(#20M) / Harsh Mehta(#36M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Jessie Irvine(#32F) / Katerina Stewart(#79F)
+                 without $998,501  Ben Johns(#1M) / Dekel Bar(#25M) / Matthew Barlow(#117M) / Bobbi Oshiro(#15F) / Lucy Kovalova(#34F) / Genie Bouchard(#216F)
+--- phi_5000_joint_Anna_Leigh_Waters
+Anna Leigh Waters  phi     joint floor=5000  crossover=None   a=0.6:0.643  a=0.7:0.661  a=0.8:0.610  a=0.9:INFEAS  a=1.0:INFEAS  a=1.1:INFEAS  a=1.2:INFEAS  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=0.8: with    $993,653  Juan Benitez(#45M) / Mohaned Alhouni(#73M) / Hoang Nam Ly(#102M) / Anna Leigh Waters(#1F) / Genie Erokhina(#48F) / Genie Bouchard(#216F)
+                 without $998,027  Ben Johns(#1M) / Federico Staksrud(#9M) / Rafa Hewett(#50M) / Kaitlyn Christian(#56F) / Katerina Stewart(#79F) / Cailyn Campbell(#58F)
+--- phi_5000_joint_Ben_Johns
+Ben Johns          phi     joint floor=5000  crossover=None   a=0.6:0.358  a=0.7:0.356  a=0.8:0.414  a=0.9:0.497  a=1.0:0.483  a=1.1:0.472  a=1.2:0.467  a=1.4:0.443  a=1.6:0.413
+    at alpha=0.9: with    $998,501  Ben Johns(#1M) / Dekel Bar(#25M) / Matthew Barlow(#117M) / Bobbi Oshiro(#15F) / Lucy Kovalova(#34F) / Genie Bouchard(#216F)
+                 without $996,895  Will Howells(#20M) / Harsh Mehta(#36M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Jessie Irvine(#32F) / Katerina Stewart(#79F)
+--- phi_5000_joint_Hayden_Patriquin
+Hayden Patriquin   phi     joint floor=5000  crossover=None   a=0.6:0.341  a=0.7:0.357  a=0.8:0.386  a=0.9:0.488  a=1.0:0.480  a=1.1:0.482  a=1.2:0.485  a=1.4:0.478  a=1.6:0.453
+    at alpha=0.9: with    $998,019  Hayden Patriquin(#3M) / Etienne Blaszkewycz(#38M) / Zane Ford(#191M) / Sofia Sewing(#12F) / Maggie Brascia(#33F) / Genie Bouchard(#216F)
+                 without $996,940  Jack Munro(#17M) / Harsh Mehta(#36M) / Grayson Goldin(#98M) / Anna Bright(#2F) / Maggie Brascia(#33F) / Katerina Stewart(#79F)
+--- phi_5000_joint_JW_Johnson
+JW Johnson         phi     joint floor=5000  crossover=None   a=0.6:0.345  a=0.7:0.356  a=0.8:0.396  a=0.9:0.492  a=1.0:0.482  a=1.1:0.485  a=1.2:0.483  a=1.4:0.475  a=1.6:0.456
+    at alpha=0.9: with    $999,457  JW Johnson(#2M) / Etienne Blaszkewycz(#38M) / Matthew Barlow(#117M) / Sofia Sewing(#12F) / Maggie Brascia(#33F) / Genie Bouchard(#216F)
+                 without $996,940  Jack Munro(#17M) / Harsh Mehta(#36M) / Grayson Goldin(#98M) / Anna Bright(#2F) / Maggie Brascia(#33F) / Katerina Stewart(#79F)
+--- phi_5000_joint_Jorja_Johnson
+Jorja Johnson      phi     joint floor=5000  crossover=None   a=0.6:0.371  a=0.7:0.356  a=0.8:0.382  a=0.9:0.499  a=1.0:0.481  a=1.1:0.477  a=1.2:0.470  a=1.4:0.457  a=1.6:0.431
+    at alpha=0.9: with    $999,231  Phuc Huynh(#14M) / Harsh Mehta(#36M) / Matthew Barlow(#117M) / Jorja Johnson(#3F) / Allyce Jones(#25F) / Seone Mendez(#87F)
+                 without $998,501  Ben Johns(#1M) / Dekel Bar(#25M) / Matthew Barlow(#117M) / Bobbi Oshiro(#15F) / Lucy Kovalova(#34F) / Genie Bouchard(#216F)
+--- phi_5000_joint_Kate_Fahey
+Kate Fahey         phi     joint floor=5000  crossover=None   a=0.6:0.376  a=0.7:0.362  a=0.8:0.390  a=0.9:0.489  a=1.0:0.488  a=1.1:0.481  a=1.2:0.482  a=1.4:0.468  a=1.6:0.457
+    at alpha=0.9: with    $999,349  Joseph Wild(#35M) / Connor Mogle(#43M) / Grayson Goldin(#98M) / Kate Fahey(#10F) / Danni-Elle Townsend(#11F) / Katerina Stewart(#79F)
+                 without $999,628  Roscoe Bellamy(#32M) / Joseph Wild(#35M) / Hoang Nam Ly(#102M) / Anna Bright(#2F) / Yana Newell(#26F) / Genie Bouchard(#216F)
+--- phi_5000_joint_Riley_Newman
+Riley Newman       phi     joint floor=5000  crossover=1.108   a=0.6:0.325  a=0.7:0.359  a=0.8:0.397  a=0.9:0.491  a=1.0:0.497  a=1.1:0.499  a=1.2:0.512  a=1.4:0.524  a=1.6:0.522
+    at alpha=1.1: with    $999,279  Andrei Daescu(#6M) / Riley Newman(#10M) / Zane Ford(#191M) / Ewa Radzikowska(#21F) / Allyce Jones(#25F) / Seone Mendez(#87F)
+                 without $995,966  Jay Devilliers(#8M) / Nicolas Acevedo(#12M) / Christopher Haworth(#66M) / Sahra Dennehy(#23F) / Meghan Dizon(#22F) / Kaitlyn Christian(#56F)
+--- phi_30000_split_Anna_Bright
+Anna Bright        phi     split floor=30000  crossover=1.029   a=0.6:0.398  a=0.7:0.384  a=0.8:0.389  a=0.9:0.422  a=1.0:0.493  a=1.1:0.516  a=1.2:0.506  a=1.4:0.440  a=1.6:0.400
+    at alpha=1.2: with    $997,671  Christopher Haworth(#66M) / Hien Truong(#37M) / Harsh Mehta(#36M) / Anna Bright(#2F) / Allyce Jones(#25F) / Katerina Stewart(#79F)
+                 without $999,192  Jack Sock(#13M) / Nicolas Acevedo(#12M) / Christopher Haworth(#66M) / Bobbi Oshiro(#15F) / Etta Tuionetoa(#19F) / Roos Van Reek(#45F)
+--- phi_30000_split_Anna_Leigh_Waters
+Anna Leigh Waters  phi     split floor=30000  crossover=None   a=0.6:0.602  a=0.7:0.616  a=0.8:0.611  a=0.9:0.578  a=1.0:INFEAS  a=1.1:INFEAS  a=1.2:INFEAS  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=0.9: with    $998,513  Connor Mogle(#43M) / Etienne Blaszkewycz(#38M) / Grayson Goldin(#98M) / Anna Leigh Waters(#1F) / Eugenia Carolina Lopez Ascarate(#42F) / Cailyn Campbell(#58F)
+                 without $997,966  Connor Mogle(#43M) / Etienne Blaszkewycz(#38M) / Grayson Goldin(#98M) / Anna Bright(#2F) / Mari Humberg(#13F) / Genie Bouchard(#216F)
+--- phi_30000_split_Ben_Johns
+Ben Johns          phi     split floor=30000  crossover=None   a=0.6:0.322  a=0.7:0.308  a=0.8:0.307  a=0.9:0.362  a=1.0:0.405  a=1.1:0.402  a=1.2:0.377  a=1.4:0.301  a=1.6:INFEAS
+    at alpha=1.0: with    $998,083  Ben Johns(#1M) / Etienne Blaszkewycz(#38M) / Hoang Nam Ly(#102M) / Bobbi Oshiro(#15F) / Shelby Bates(#46F) / Genie Bouchard(#216F)
+                 without $999,639  Augustus Ge(#28M) / George Wall(#30M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Etta Tuionetoa(#19F) / Genie Bouchard(#216F)
+--- total_5000_joint_Anna_Bright
+Anna Bright        total   joint floor=5000  crossover=1.072   a=0.6:0.341  a=0.7:0.327  a=0.8:0.319  a=0.9:0.311  a=1.0:0.342  a=1.1:0.561  a=1.2:0.545  a=1.4:0.490  a=1.6:0.444
+    at alpha=1.4: with    $996,278  CJ Klinger(#26M) / Dekel Bar(#25M) / Christopher Haworth(#66M) / Anna Bright(#2F) / Eugenia Carolina Lopez Ascarate(#42F) / Helena Jansen(#136F)
+                 without $996,467  Thomas Wilson(#11M) / Will Howells(#20M) / Christopher Haworth(#66M) / Bobbi Oshiro(#15F) / Lacy Schneemann(#16F) / Judit Castillo(#43F)
+--- total_5000_joint_Anna_Leigh_Waters
+Anna Leigh Waters  total   joint floor=5000  crossover=None   a=0.6:0.715  a=0.7:0.694  a=0.8:0.687  a=0.9:0.665  a=1.0:0.663  a=1.1:0.658  a=1.2:0.585  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=1.2: with    $993,724  Juan Benitez(#45M) / Tama Shimabukuro(#58M) / Hoang Nam Ly(#102M) / Anna Leigh Waters(#1F) / Callie Smith(#55F) / Helena Jansen(#136F)
+                 without $996,364  Federico Staksrud(#9M) / Andrei Daescu(#6M) / Hunter Johnson(#31M) / Roos Van Reek(#45F) / Lucy Kovalova(#34F) / Kaitlyn Christian(#56F)
+--- total_5000_joint_Ben_Johns
+Ben Johns          total   joint floor=5000  crossover=1.086   a=0.6:0.352  a=0.7:0.355  a=0.8:0.347  a=0.9:0.384  a=1.0:0.364  a=1.1:0.522  a=1.2:0.537  a=1.4:0.489  a=1.6:0.480
+    at alpha=1.4: with    $992,331  Ben Johns(#1M) / Nicolas Acevedo(#12M) / Christopher Haworth(#66M) / Yana Newell(#26F) / Estee Widdershoven(#37F) / Marianna Petrei(#51F)
+                 without $996,467  Thomas Wilson(#11M) / Will Howells(#20M) / Christopher Haworth(#66M) / Bobbi Oshiro(#15F) / Lacy Schneemann(#16F) / Judit Castillo(#43F)
+
+################ Waters / Patriquin fine scan (budget grid $5k), phi joint $30k ################
+Anna Leigh Waters  alpha=0.80 P=0.605  Waters $677,792  with=Etienne Blaszkewycz(#38M) / Patrick Kawka(#61M) / Grayson Goldin(#98M) / Anna Leigh Waters(#1F) / Allie Reichert(#39F) / Cailyn Campbell(#58F)
+Anna Leigh Waters  alpha=0.82 P=0.575  Waters $698,388  with=Rafa Hewett(#50M) / Patrick Kawka(#61M) / Grayson Goldin(#98M) / Anna Leigh Waters(#1F) / Genie Erokhina(#48F) / Cailyn Campbell(#58F)
+Anna Leigh Waters  alpha=0.84 P=0.495  Waters $719,410  with=Martin Emmrich(#49M) / Hoang Nam Ly(#102M) / Grayson Goldin(#98M) / Anna Leigh Waters(#1F) / Callie Smith(#55F) / Cailyn Campbell(#58F)
+Anna Leigh Waters  alpha=0.86 P=INFEAS  Waters $740,862  with=-
+Anna Leigh Waters  alpha=0.88 P=INFEAS  Waters $762,744  with=-
+Anna Leigh Waters  alpha=0.90 P=INFEAS  Waters $785,058  with=-
+Anna Leigh Waters  alpha=0.92 P=INFEAS  Waters $807,806  with=-
+Hayden Patriquin   alpha=0.80 P=0.390  Waters $677,792  with=Hayden Patriquin(#3M) / Jack Sock(#13M) / Christopher Haworth(#66M) / Brooke Buckner(#36F) / Shelby Bates(#46F) / Christine Maddox(#65F)
+Hayden Patriquin   alpha=0.82 P=0.414  Waters $698,388  with=Hayden Patriquin(#3M) / Harsh Mehta(#36M) / Matthew Barlow(#117M) / Jackie Kawamoto(#8F) / Eugenia Carolina Lopez Ascarate(#42F) / Genie Bouchard(#216F)
+Hayden Patriquin   alpha=0.84 P=0.482  Waters $719,410  with=Hayden Patriquin(#3M) / Etienne Blaszkewycz(#38M) / Hoang Nam Ly(#102M) / Jackie Kawamoto(#8F) / Allie Reichert(#39F) / Genie Bouchard(#216F)
+Hayden Patriquin   alpha=0.86 P=0.487  Waters $740,862  with=Hayden Patriquin(#3M) / Etienne Blaszkewycz(#38M) / Hoang Nam Ly(#102M) / Jackie Kawamoto(#8F) / Allie Reichert(#39F) / Genie Bouchard(#216F)
+Hayden Patriquin   alpha=0.88 P=0.488  Waters $762,744  with=Hayden Patriquin(#3M) / George Wall(#30M) / Matthew Barlow(#117M) / Sofia Sewing(#12F) / Eugenia Carolina Lopez Ascarate(#42F) / Genie Bouchard(#216F)
+Hayden Patriquin   alpha=0.90 P=0.491  Waters $785,058  with=Hayden Patriquin(#3M) / Etienne Blaszkewycz(#38M) / Grayson Goldin(#98M) / Jackie Kawamoto(#8F) / Eugenia Carolina Lopez Ascarate(#42F) / Christine Maddox(#65F)
+Hayden Patriquin   alpha=0.92 P=0.489  Waters $807,806  with=Hayden Patriquin(#3M) / Etienne Blaszkewycz(#38M) / Zane Ford(#191M) / Sofia Sewing(#12F) / Lucy Kovalova(#34F) / Genie Bouchard(#216F)
+
+################ Waters feasibility edge (budget grid $5k) ################
+pool total phi 8.2144; Waters share 5.32%
+alpha=0.835 Waters $714,115  cheapest Waters roster $985,404  P=0.529  with=Martin Emmrich(#49M) / Mohaned Alhouni(#73M) / Hoang Nam Ly(#102M) / Anna Leigh Waters(#1F) / Callie Smith(#55F) / Cailyn Campbell(#58F)
+alpha=0.840 Waters $719,410  cheapest Waters roster $989,224  P=0.495  with=Martin Emmrich(#49M) / Hoang Nam Ly(#102M) / Grayson Goldin(#98M) / Anna Leigh Waters(#1F) / Callie Smith(#55F) / Cailyn Campbell(#58F)
+alpha=0.845 Waters $724,733  cheapest Waters roster $993,087  P=0.464  with=Mohaned Alhouni(#73M) / Hoang Nam Ly(#102M) / Grayson Goldin(#98M) / Anna Leigh Waters(#1F) / Callie Smith(#55F) / Cailyn Campbell(#58F)
+alpha=0.850 Waters $730,082  cheapest Waters roster $996,992  P=0.459  with=Grayson Goldin(#98M) / Hoang Nam Ly(#102M) / Mohaned Alhouni(#73M) / Callie Smith(#55F) / Anna Leigh Waters(#1F) / Cailyn Campbell(#58F)
+alpha=0.855 Waters $735,459  cheapest Waters roster $1,000,939  P=INFEAS  with=-
+alpha=0.860 Waters $740,862  cheapest Waters roster $1,004,928  P=INFEAS  with=-
+
+################ price list, phi/V ratios, alone-above-cap, cheapest roster, injection, K check ################
+=== price list alpha=0.89 phi joint floor=30000: women's share 56.1%
+M pool# 1 dbl# 1 Ben Johns                  phi +0.2206  $434,517
+M pool# 2 dbl# 2 JW Johnson                 phi +0.1989  $398,886
+M pool# 3 dbl# 3 Hayden Patriquin           phi +0.1943  $391,398
+M pool# 4 dbl# 4 Gabriel Tardio             phi +0.1882  $381,169
+M pool# 5 dbl# 5 Christian Alshon           phi +0.1838  $373,868
+M pool# 6 dbl# 6 Andrei Daescu              phi +0.1455  $309,383
+M pool# 7 dbl# 9 Federico Staksrud          phi +0.1416  $302,659
+M pool# 8 dbl# 7 Eric Oncins                phi +0.1374  $295,398
+M pool# 9 dbl# 8 Jay Devilliers             phi +0.1283  $279,659
+M pool#10 dbl#10 Riley Newman               phi +0.1097  $247,288
+M pool#11 dbl#13 Jack Sock                  phi +0.0973  $225,203
+M pool#12 dbl#14 Phuc Huynh                 phi +0.0892  $210,795
+M pool#57 dbl#117 Matthew Barlow             phi +0.0087  $52,837
+M pool#58 dbl#73 Mohaned Alhouni            phi +0.0085  $52,255
+M pool#59 dbl#102 Hoang Nam Ly               phi +0.0069  $48,619
+M pool#60 dbl#98 Grayson Goldin             phi +0.0068  $48,308
+F pool# 1 dbl# 1 Anna Leigh Waters          phi +0.4374  $773,847
+F pool# 2 dbl# 2 Anna Bright                phi +0.2897  $545,481
+F pool# 3 dbl# 5 Parris Todd                phi +0.2281  $446,703
+F pool# 4 dbl# 3 Jorja Johnson              phi +0.2212  $435,545
+F pool# 5 dbl#10 Kate Fahey                 phi +0.2103  $417,663
+F pool# 6 dbl# 4 Jade Kawamoto              phi +0.2054  $409,695
+F pool# 7 dbl# 7 Rachel Rohrabacher         phi +0.1943  $391,233
+F pool# 8 dbl# 6 Tina Pisnik                phi +0.1918  $387,225
+F pool# 9 dbl# 8 Jackie Kawamoto            phi +0.1791  $365,997
+F pool#10 dbl# 9 Tyra Hurricane Black       phi +0.1769  $362,338
+F pool#11 dbl#12 Sofia Sewing               phi +0.1588  $331,860
+F pool#12 dbl#11 Danni-Elle Townsend        phi +0.1465  $311,091
+F pool#57 dbl#216 Genie Bouchard             phi +0.0126  $61,724
+F pool#58 dbl#65 Christine Maddox           phi +0.0104  $56,756
+F pool#59 dbl#55 Callie Smith               phi +0.0100  $55,818
+F pool#60 dbl#58 Cailyn Campbell            phi +0.0079  $50,895
+sum phi M 3.417  F 4.797  total 8.214
+Waters phi share 5.32%  (team = 5.00%)
+
+=== phi/V ratios (pool players) ===
+M pool# 1 Ben Johns                  V +0.2691 phi +0.2206 ratio 0.82
+M pool# 2 JW Johnson                 V +0.2448 phi +0.1989 ratio 0.81
+M pool# 3 Hayden Patriquin           V +0.2404 phi +0.1943 ratio 0.81
+M pool# 4 Gabriel Tardio             V +0.2333 phi +0.1882 ratio 0.81
+M pool# 5 Christian Alshon           V +0.2335 phi +0.1838 ratio 0.79
+M pool# 6 Andrei Daescu              V +0.1903 phi +0.1455 ratio 0.76
+M pool# 7 Federico Staksrud          V +0.1935 phi +0.1416 ratio 0.73
+M pool# 8 Eric Oncins                V +0.1853 phi +0.1374 ratio 0.74
+M pool# 9 Jay Devilliers             V +0.1775 phi +0.1283 ratio 0.72
+M pool#10 Riley Newman               V +0.1484 phi +0.1097 ratio 0.74
+M pool#30 Augustus Ge                V +0.0775 phi +0.0359 ratio 0.46
+M pool#60 Grayson Goldin             V +0.0406 phi +0.0068 ratio 0.17
+F pool# 1 Anna Leigh Waters          V +0.4222 phi +0.4374 ratio 1.04
+F pool# 2 Anna Bright                V +0.3423 phi +0.2897 ratio 0.85
+F pool# 3 Parris Todd                V +0.2963 phi +0.2281 ratio 0.77
+F pool# 4 Jorja Johnson              V +0.2875 phi +0.2212 ratio 0.77
+F pool# 5 Kate Fahey                 V +0.2822 phi +0.2103 ratio 0.75
+F pool# 6 Jade Kawamoto              V +0.2713 phi +0.2054 ratio 0.76
+F pool# 7 Rachel Rohrabacher         V +0.2634 phi +0.1943 ratio 0.74
+F pool# 8 Tina Pisnik                V +0.2576 phi +0.1918 ratio 0.74
+F pool# 9 Jackie Kawamoto            V +0.2487 phi +0.1791 ratio 0.72
+F pool#10 Tyra Hurricane Black       V +0.2445 phi +0.1769 ratio 0.72
+F pool#30 Alix Truong                V +0.1092 phi +0.0506 ratio 0.46
+F pool#60 Cailyn Campbell            V +0.0290 phi +0.0079 ratio 0.27
+
+=== alone-above-cap alpha (Waters) ===
+joint: Waters alone > cap from alpha 1.076
+split: Waters alone > cap from alpha 1.219
+
+=== cheapest legal roster vs $500k ===
+joint alpha=0.6: $440,021 BINDS
+joint alpha=0.8: $344,681 BINDS
+joint alpha=0.9: $309,449 BINDS
+joint alpha=1.0: $280,983 BINDS
+joint alpha=1.2: $240,177 BINDS
+
+=== injection at alpha 1.0 (Patriquin, Newman) and K check ===
+Hayden Patriquin   price x1.0: P=0.481
+Hayden Patriquin   price x0.5: P=0.627
+Hayden Patriquin   price x1.5: P=0.332
+Riley Newman       price x1.0: P=0.505
+Riley Newman       price x0.5: P=0.580
+Riley Newman       price x1.5: P=0.415
+K check Patriquin alpha 1.0: K=25 0.481  K=80 0.473
+
+=== price list alpha=0.845 phi joint floor=30000: women's share 55.8%
+M pool# 1 dbl#  1 Ben Johns                  phi +0.2206  $419,625
+M pool# 2 dbl#  2 JW Johnson                 phi +0.1989  $386,966
+M pool# 3 dbl#  3 Hayden Patriquin           phi +0.1943  $380,083
+M pool# 4 dbl#  4 Gabriel Tardio             phi +0.1882  $370,668
+M pool# 5 dbl#  5 Christian Alshon           phi +0.1838  $363,941
+M pool# 6 dbl#  6 Andrei Daescu              phi +0.1455  $304,181
+M pool# 7 dbl#  9 Federico Staksrud          phi +0.1416  $297,912
+M pool# 8 dbl#  7 Eric Oncins                phi +0.1374  $291,134
+M pool# 9 dbl#  8 Jay Devilliers             phi +0.1283  $276,408
+M pool#10 dbl# 10 Riley Newman               phi +0.1097  $245,969
+M pool#11 dbl# 13 Jack Sock                  phi +0.0973  $225,073
+M pool#12 dbl# 14 Phuc Huynh                 phi +0.0892  $211,377
+M pool#57 dbl#117 Matthew Barlow             phi +0.0087  $55,437
+M pool#58 dbl# 73 Mohaned Alhouni            phi +0.0085  $54,821
+M pool#59 dbl#102 Hoang Nam Ly               phi +0.0069  $50,954
+M pool#60 dbl# 98 Grayson Goldin             phi +0.0068  $50,622
+F pool# 1 dbl#  1 Anna Leigh Waters          phi +0.4374  $724,733
+F pool# 2 dbl#  2 Anna Bright                phi +0.2897  $520,456
+F pool# 3 dbl#  5 Parris Todd                phi +0.2281  $430,761
+F pool# 4 dbl#  3 Jorja Johnson              phi +0.2212  $420,566
+F pool# 5 dbl# 10 Kate Fahey                 phi +0.2103  $404,196
+F pool# 6 dbl#  4 Jade Kawamoto              phi +0.2054  $396,890
+F pool# 7 dbl#  7 Rachel Rohrabacher         phi +0.1943  $379,931
+F pool# 8 dbl#  6 Tina Pisnik                phi +0.1918  $376,244
+F pool# 9 dbl#  8 Jackie Kawamoto            phi +0.1791  $356,679
+F pool#10 dbl#  9 Tyra Hurricane Black       phi +0.1769  $353,300
+F pool#11 dbl# 12 Sofia Sewing               phi +0.1588  $325,083
+F pool#12 dbl# 11 Danni-Elle Townsend        phi +0.1465  $305,772
+F pool#57 dbl#216 Genie Bouchard             phi +0.0126  $64,754
+F pool#58 dbl# 65 Christine Maddox           phi +0.0104  $59,564
+F pool#59 dbl# 55 Callie Smith               phi +0.0100  $58,579
+F pool#60 dbl# 58 Cailyn Campbell            phi +0.0079  $53,378

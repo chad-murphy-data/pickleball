@@ -7,7 +7,7 @@ PICKLES (`data/v2_players.csv` etc.) and, where useful, MOTSON — does
 not rebuild either.
 
 **Read `HANDOFF.md` first** — dated 2026-09-04 (evening), it's the live
-status snapshot and next-thread to-do. `phase2_joint_pool.md` is the
+status snapshot and next-thread to-do. `phase2_pricing.md` is the
 current Phase 2 result (joint pool, context-averaged value `phi` from
 `shapley_value.py`, the must-buy test, and the Waters window). The rest
 of this README and the phase docs below are the layered record
@@ -28,14 +28,16 @@ matter a lot -- see the DreamBreaker-specialist section there and
 production PICKLES race engine; every simplifying assumption is stated
 in its docstring and in `phase1_first_cut.md`.
 
-`phase2_price_model.py` is a first pass at turning V into dollars
-(run: `python value_cap/phase2_price_model.py`). It sweeps the
-star-premium exponent instead of picking one, and searches every
-possible $1M roster instead of checking hand-picked examples. Read
-`phase2_notes.md` before touching alpha or the floor -- it surfaced a
-hard ceiling constraint (a high enough alpha prices a single player
-above the entire team cap) and a benchmark problem (comparing rosters
-against an all-replacement team can't tell a stars-heavy build from a
-balanced one; candidate rosters need to be compared to each other, not
-to replacement level) that the real archetype fit still needs to
-account for. Not yet built: Phase 3 (site).
+`phase2_pricing.py` turns value into dollars (run:
+`python value_cap/phase2_pricing.py --quick`; default basis is phi from
+`shapley_value.py`, `--value total` reproduces the Phase 1 V_total basis).
+It sweeps the star-premium exponent alpha instead of picking one, prices
+both genders from one league pool, and tests a price list with the
+must-buy instrument (best $1M roster with a player vs best without, both
+sides optimizing) rather than hand-picked rosters. `pool.py` defines the
+priced pool. `phase2_notes.md` is the record of the first split-pool pass
+(its script, `phase2_price_model.py`, was removed once `phase2_pricing.py`
+covered it): it surfaced the alpha ceiling (a high enough alpha prices
+one player above the team cap) and the benchmark problem (rosters must be
+compared to each other, not to an all-replacement team), both of which
+`phase2_pricing.md` builds on. Not yet built: Phase 3 (site).

@@ -1,29 +1,29 @@
-"""value_cap/phase2_joint_pool.py -- Phase 2, second pass: price both genders
-from ONE league pool instead of two hand-split $10M sub-pools, and rerun the
-three core checks from HANDOFF.md (pairs A and B, the Waters must-buy test)
-under both conventions so they can be compared side by side.
+"""value_cap/phase2_pricing.py -- Phase 2: turn player value into $1M-cap
+prices, and the instruments that test whether a price list is fair.
 
-    python value_cap/phase2_joint_pool.py            # full run, ~10 min
-    python value_cap/phase2_joint_pool.py --quick    # skip must-buy sweeps
-    python value_cap/phase2_joint_pool.py --value shapley   # price on phi
-                                       (value_cap/shapley_value.py) instead
-                                       of Phase 1's replacement-context V
+    python value_cap/phase2_pricing.py --quick          # implied gender split + indifference pairs
+    python value_cap/phase2_pricing.py                  # + must-buy sweeps for Waters/Bright/Johns (~10 min)
+    python value_cap/phase2_pricing.py --must-buy "Anna Leigh Waters" --modes joint
+    python value_cap/phase2_pricing.py --value total    # HANDOFF-era basis (Phase 1 V_total pool)
 
-Why a joint pool. The 50/50 split was the last unexamined constant in the
-price formula. V is defined per player as tie-win contribution relative to
-the SAME-GENDER replacement player, so it is offset-free (every game has
-equal women per side; the cross-gender offset cancels) and V's are
-comparable across genders as dollars-of-win-probability. Pricing everyone
-from one pool therefore makes the gender split an OUTPUT of the data rather
-than an input:
+Value basis (--value, see pool.py): default "phi" = the context-averaged,
+self-consistent pool from shapley_value.py; "total" = Phase 1's
+replacement-context V_total, top 60 per gender, kept so the 2026-09-04
+morning numbers (indifference pairs A/B) stay reproducible. "shapley" is
+accepted as an alias for "phi".
 
-    price_i = floor + (V_i^alpha / sum_j V_j^alpha) * (20 * cap - N * floor)
+Price formula, one league pool (mode="joint"):
 
-with j running over all 120 priced players (top 60 per gender by V, as in
-phase2_price_model.py). Players outside the priced pool cost the floor.
+    price_i = floor + (v_i^alpha / sum_j v_j^alpha) * (20 * cap - N * floor)
 
-Reusable pieces (the handoff asked for the rank-sweep to be promoted from
-one-off snippets):
+with j running over all 120 priced players; players outside the pool cost
+the floor. mode="split" is HANDOFF.md's older convention -- each gender's
+60 share $10M -- kept for comparison. Value is defined per player relative
+to the SAME-GENDER replacement (doubles #60), so it is cross-gender
+offset-free and a joint pool makes the gender split an OUTPUT of the data
+instead of a 50/50 input.
+
+Instruments:
   - prices(pool, alpha, mode)          joint or split price list
   - find_crossover(anchor, block_fn)   sweep a challenger spec over ranks
                                        until P(anchor wins) crosses 0.5
@@ -34,11 +34,14 @@ one-off snippets):
                                        exclude constraints
   - must_buy(pid, alpha, mode)         P(best roster WITH pid beats best
                                        roster WITHOUT pid), each side
-                                       best-responding to the other
+                                       best-responding to the other. 0.5 =
+                                       fairly priced, >0.5 = bargain,
+                                       None = pid cannot be rostered at all.
 
 Conventions carried over from HANDOFF.md so results are comparable:
 ranks are DOUBLES ranks (data/v2_players.csv order within gender),
-replacement = doubles #60, floor = $30,000, 20 teams, $1M cap.
+replacement = doubles #60, floor = $30,000 (cosmetic, see the write-up
+§6), 20 teams, $1M cap.
 """
 from __future__ import annotations
 
@@ -46,7 +49,7 @@ import sys
 from itertools import combinations
 
 from phase1_value_model import load_doubles, load_singles, tie_win_prob
-from phase2_price_model import load_pool
+from pool import load_pool
 
 FLOOR = 30_000
 if "--floor" in sys.argv:
@@ -55,21 +58,17 @@ N_TEAMS = 20
 TEAM_CAP = 1_000_000
 LEAGUE_TOTAL = N_TEAMS * TEAM_CAP
 REPL_RANK = 60
-BUDGET_STEP = 20_000
+BUDGET_STEP = 10_000
 K_CAND = 25          # candidate triples per gender per budget split (by proxy V)
 
 DOUBLES = load_doubles()
 SINGLES = load_singles()
-POOL = load_pool()                       # gender -> [(pid, name, V)] top 60 by V
-VALUE_SOURCE = "total"
+VALUE_SOURCE = "phi"
 if "--value" in sys.argv:
     VALUE_SOURCE = sys.argv[sys.argv.index("--value") + 1]
-if VALUE_SOURCE == "shapley":
-    import csv
-    from phase1_value_model import ROOT
-    _phi = {r["player_id"]: float(r["phi"])
-            for r in csv.DictReader((ROOT / "value_cap" / "player_value_shapley.csv").open())}
-    POOL = {g: [(pid, name, _phi[pid]) for pid, name, _ in POOL[g]] for g in POOL}
+    if VALUE_SOURCE == "shapley":
+        VALUE_SOURCE = "phi"
+POOL = load_pool(VALUE_SOURCE)           # gender -> [(pid, name, value)], 60 each
 V_OF = {pid: v for g in POOL for pid, _, v in POOL[g]}
 NAME = {u: DOUBLES[u]["name"] for u in DOUBLES}
 RANKED = {g: sorted((u for u in DOUBLES if DOUBLES[u]["gender"] == g),
@@ -176,7 +175,10 @@ def candidates(g, price, budget, k, must=None, exclude=()):
 def best_roster(price, opp, must=None, exclude=(), k=None, cap=TEAM_CAP):
     """Best roster under `cap` at these prices, scored by REAL tie_win_prob
     against `opp`. Enumerates budget splits; per split takes the top-k
-    triples per gender by proxy V and scores all k*k combinations."""
+    triples per gender by proxy value and scores all k*k combinations.
+    With `must`, the cheapest legal roster containing `must` is always a
+    candidate too, so the search is infeasible only when no legal roster
+    with that player exists (not when the budget grid missed it)."""
     k = K_CAND if k is None else k
     g_must = DOUBLES[must]["gender"] if must else None
     best = (-1.0, None)
@@ -188,6 +190,17 @@ def best_roster(price, opp, must=None, exclude=(), k=None, cap=TEAM_CAP):
                 p = win(m + w, opp)
                 if p > best[0]:
                     best = (p, m + w)
+    if must is not None:
+        cheap = {g: sorted((u for u, _, _ in POOL[g] if u != must and u not in exclude),
+                           key=lambda u: price[u]) for g in ("M", "F")}
+        og = "F" if g_must == "M" else "M"
+        r = tuple(sorted((must,) + tuple(cheap[g_must][:2]))) + tuple(cheap[og][:3])
+        r = tuple(u for u in r if DOUBLES[u]["gender"] == "M") + \
+            tuple(u for u in r if DOUBLES[u]["gender"] == "F")
+        if cost(r, price) <= cap:
+            p = win(r, opp)
+            if p > best[0]:
+                best = (p, r)
     return best
 
 
@@ -251,7 +264,7 @@ PAIRS = [
 
 
 def main(quick=False):
-    print(f"value source for pricing: {VALUE_SOURCE}  (pool = same 120 players either way)\n")
+    print(f"value basis for pricing: {VALUE_SOURCE}  (pool = top 60 per gender on that basis, see pool.py)\n")
     print("=== gender split implied by a joint $20M pool ===")
     for a in (0.6, 0.76, 0.88, 1.0, 1.2):
         pj = prices(POOL, a, "joint")
