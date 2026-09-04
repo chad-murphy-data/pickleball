@@ -4,6 +4,8 @@ each other.
 
     python value_cap/draft_strategies.py                 # ~10 min, writes draft_strategies.md
     python value_cap/draft_strategies.py --alpha 0.845 --rounds 2 --k 20 --step 10000
+    python value_cap/draft_strategies.py --alpha 1.0 --tag "Anna Leigh Waters" \
+        --out value_cap/draft_strategies_tag.md      # proportional prices + franchise tag
 
 Setup (user framing, 2026-09-05): a team drafts ANY six players from the
 priced pool (3 men + 3 women, no exclusivity between teams -- every team
@@ -30,7 +32,8 @@ from pathlib import Path
 
 from phase1_value_model import singles_of
 from phase2_pricing import (DOUBLES, NAME, POOL, REPL_RANK, SINGLES, TEAM_CAP,
-                            V_OF, cost, pid_named, prices, roster_from_ranks, win)
+                            V_OF, cost, pid_named, prices, prices_tagged,
+                            roster_from_ranks, win)
 
 HERE = Path(__file__).resolve().parent
 
@@ -193,10 +196,15 @@ def main():
     ap.add_argument("--rounds", type=int, default=2, help="best-response rounds vs the field")
     ap.add_argument("--k", type=int, default=20)
     ap.add_argument("--step", type=int, default=10_000)
+    ap.add_argument("--tag", default=None, help="franchise-tag this player (see phase2_pricing.prices_tagged)")
     ap.add_argument("--out", default=str(HERE / "draft_strategies.md"))
     a = ap.parse_args()
 
-    price = prices(POOL, a.alpha, "joint")
+    if a.tag:
+        price = prices_tagged(POOL, a.alpha, pid_named(a.tag), "joint")
+        print(f"tag: {a.tag} at ${price[pid_named(a.tag)]:,.0f}", file=sys.stderr)
+    else:
+        price = prices(POOL, a.alpha, "joint")
     specs = strategy_specs(price)
     repl = roster_from_ranks([REPL_RANK] * 3, [REPL_RANK] * 3)
     print(f"specialists: M={[NAME[u] for u in SPECIALISTS['M']]}  F={[NAME[u] for u in SPECIALISTS['F']]}",
@@ -231,8 +239,11 @@ def main():
     lines = []
     w = lines.append
     w("# Draft strategies under the $1M cap -- hypothetical rosters\n")
-    w(f"Prices: alpha = {a.alpha}, one joint $20M pool, $30k floor (the Phase 2 list, "
-      f"`phase2_pricing.py`). Any 6 from the priced pool (3M+3W), four start "
+    tag_note = (f", **{a.tag} franchise-tagged at ${price[pid_named(a.tag)]:,.0f}** "
+                f"(most a team can pay and still field a legal roster; the surplus is "
+                f"spread over the rest of the pool)" if a.tag else "")
+    w(f"Prices: alpha = {a.alpha}, one joint $20M pool, $30k floor{tag_note} "
+      f"(`phase2_pricing.py`). Any 6 from the priced pool (3M+3W), four start "
       f"(top 2 per gender by doubles value), DreamBreaker foursome picked "
       f"separately by singles value. Each roster is the best legal roster for "
       f"its strategy against the other strategies' rosters after {a.rounds} "

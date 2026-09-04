@@ -109,6 +109,35 @@ def prices(pool, alpha, mode="joint", floor=FLOOR):
     return out
 
 
+def prices_tagged(pool, alpha, tag_pid, mode="joint", floor=FLOOR, cap=TEAM_CAP):
+    """prices() with one player FRANCHISE-TAGGED: their price is set directly
+    to the most a team can pay and still field a legal roster (cap minus the
+    cheapest 5-player completion), instead of coming off the curve. The gap
+    between their curve price and the tag is redistributed over the rest of
+    the pool in proportion to their value-weighted share, so the pool still
+    sums to 20 x cap. Motivation (2026-09-05): a player worth more than a
+    team's share of the cap cannot be priced fairly by any proportional
+    rule, and bending alpha to fit her discounts every other star and
+    surcharges every role player (~10-15% either way at alpha 0.845 vs 1)."""
+    price = prices(pool, alpha, mode, floor)
+    g_tag = DOUBLES[tag_pid]["gender"]
+    others = [u for u in price if u != tag_pid]
+    weights = {u: price[u] - floor for u in others}
+    wtot = sum(weights.values())
+    for _ in range(5):                    # fixed point: tag depends on the redistributed prices
+        same = sorted(price[u] for u in price if u != tag_pid and DOUBLES[u]["gender"] == g_tag)[:2]
+        other = sorted(price[u] for u in price if DOUBLES[u]["gender"] != g_tag)[:3]
+        tag = cap - sum(same) - sum(other)
+        surplus = prices(pool, alpha, mode, floor)[tag_pid] - tag
+        new = {u: floor + weights[u] + surplus * weights[u] / wtot for u in others}
+        new[tag_pid] = tag
+        if all(abs(new[u] - price[u]) < 1 for u in price):
+            price = new
+            break
+        price = new
+    return price
+
+
 def cost(roster, price):
     return sum(price.get(u, FLOOR) for u in roster)
 
