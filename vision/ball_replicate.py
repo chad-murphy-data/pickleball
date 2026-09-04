@@ -222,7 +222,15 @@ def reconstruct(P, obs_all, bounds, events, panchors):
             segs.append(None)
             continue
         seg_obs[k] = obs
-        seg = c3.fit_segment(P, obs, t0, t1, events)
+        # BOUNCE CORRIDOR (owner rule 2026-09-04, measured 98% on 57 human
+        # bounces -- court3d.in_corridor).  This flight runs from the hitter
+        # at bound k to the receiver at bound k+1, and a bounce between them
+        # sits on the line joining them.  Anchors give both positions from
+        # POSE, not from the ball, so the gate is independent of the fit it
+        # constrains.  Missing anchor -> None -> the old court-wide test.
+        corr = (panchors[k] if k < len(panchors) else None,
+                panchors[k + 1] if k + 1 < len(panchors) else None)
+        seg = c3.fit_segment(P, obs, t0, t1, events, corridor=corr)
         seg["ok"] = _plausible(seg)
         segs.append(seg)
 
