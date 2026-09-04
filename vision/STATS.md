@@ -113,6 +113,28 @@ under the old rule; it is now the right player on both, and the right shot on
 r9** (Emma Nelson at 257.90 vs truth 257.84). r10 names the right player
 3.8 s late, for exactly the reason in the second bullet.
 
+### LOCKED 2026-09-04 — do not re-open speed
+
+This question is closed. It was settled by an owner call, the numbers have
+been reproduced on a bigger panel since, and nothing new is pending. A future
+session that finds itself re-arguing average-vs-launch speed should stop and
+read this block instead.
+
+| what | value |
+|---|---|
+| the measure | average speed over the flight = court distance between consecutive hitters' feet / time between their contacts |
+| separates fast from slow | AUC **0.829** pooled (111 labelled flights), 0.856 train / 0.793 eval |
+| where the signal is | timing 0.767, geometry 0.654 — the clock does most of the work, geometry supplies the units |
+| medians | **29.4 mph** fast, **17.8 mph** slow |
+| threshold in production | `V_FAST = 34.2` ft/s in `rally_stats.py`, fixed on train before any eval read |
+| launch speed | not a target we are missing — AUC 0.10, inverted, depth-degenerate on one camera |
+| the visual | https://claude.ai/code/artifact/e90c7b69-5e5e-46ed-a5cf-e941de206821 |
+
+The two caveats above (say "average", and the clock is partly the receiver's
+choice) are labelling rules, not open problems. Ending the clock at the bounce
+instead of the next contact is the one real improvement available and it is
+**optional** — the measure ships without it.
+
 ## UPDATE 2026-09-04 — the bounce bottleneck moved
 
 Everything above was written before the four commits of 2026-09-04. One of
