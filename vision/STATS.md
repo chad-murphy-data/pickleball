@@ -135,6 +135,37 @@ choice) are labelling rules, not open problems. Ending the clock at the bounce
 instead of the next contact is the one real improvement available and it is
 **optional** — the measure ships without it.
 
+### The bounce corridor (owner rule, 2026-09-04) — measured, and it holds
+
+Owner: *"the ball always bounces in front of the person making contact, and
+they RARELY hit the ball behind them. When I look at the contacts, many of
+them are behind the feet."*
+
+Two claims, and only one of them is confounded. A bounce is on the floor at
+z = 0, where the homography is exact. A contact is at paddle height, and this
+project maps everything to z = 0, where a ball at height projects DEEPER than
+it is. Tested separately (`ballsearch/infront.py`):
+
+| | in front | distance | sideways off the line |
+|---|---|---|---|
+| **bounces** (n=57) | **98%** (56/57) | median 7.8 ft, IQR 4.1–10.5 | median 1.4 ft, p90 2.8 |
+| **contacts** (n=123) | 46% — a coin flip | median −1.0 ft (behind) | — |
+
+**The bounce rule is as close to a law as this project has**, and it is
+tighter than "in front": the bounce sits in a narrow corridor along the line
+between the two players, 2–10 ft ahead of the receiver. That makes it a
+SEARCH PRIOR, not only a filter — it says where to look, which attacks the
+38% recall, not just the precision.
+
+**The contact observation is real and is NOT a defect.** Contacts read behind
+the feet about half the time because of the projection above. Do not use
+"behind the feet" as an error signal on contacts — it is the same confound
+that made the earlier behind-the-feet junk filter null (`path_physics.md`).
+
+Sole counterexample is in r17 (80%, min −6.3 ft), already the known-bad rally
+for hitter attribution (4 alternation violations, 14/17 purity). Likely a
+mislabelled hitter, not a backward bounce.
+
 ## UPDATE 2026-09-04 — the bounce bottleneck moved
 
 Everything above was written before the four commits of 2026-09-04. One of
