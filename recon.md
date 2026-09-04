@@ -41,6 +41,11 @@ Step 4 returns, per match: **all four player UUIDs + names**, per-game scores
 exact score format (`"1 game to 15 win by 2"`, `is_rally_scoring`, per-game
 point targets) — needed because **PPA Challengers play early rounds as a single
 side-out game to 15**, which the short payload doesn't distinguish from Bo3-to-11.
+Formats are assigned per bracket ROUND, so step 5 is needed once per
+(`event_uuid`, `in_bracket_type` W/L, `round_number`) group — all three are in the
+step-4 payload, as is `score_format_game_best_out_of`, the per-match check that a
+group's format applies (the live proxy resolves formats this way since 2026-09-04;
+before, a 6-per-sweep budget left most matches unpriced on cold isolates).
 
 ### MLP (team-league) chain
 | step | endpoint |
