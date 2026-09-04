@@ -6,12 +6,14 @@ published (league price). Surplus is the headline stat. Consumes
 PICKLES (`data/v2_players.csv` etc.) and, where useful, MOTSON — does
 not rebuild either.
 
-**Read `HANDOFF.md` first** — dated 2026-09-04 (evening), it's the live
-status snapshot and next-thread to-do. `phase2_pricing.md` is the
-current Phase 2 result (joint pool, context-averaged value `phi` from
-`shapley_value.py`, the must-buy test, and the Waters window). The rest
-of this README and the phase docs below are the layered record
-underneath it.
+**Read `HANDOFF.md` first** — dated 2026-09-04 (night), it's the live
+status snapshot and next-thread to-do. **Phase 2 is shipped**: the price
+list is `price_list.md` / `price_list.csv` (`price_list.py`) — alpha 1,
+one joint $20M pool, Anna Leigh Waters franchise-tagged; `phase2_pricing.md`
+§8 states the rule and the league reads behind it (draft simulator
+`draft_sim.py`, pool/floor sweep `pool_floor_sweep.py`, speed layer
+`fast_tie.py`). The rest of this README and the phase docs below are the
+layered record underneath it.
 
 Read `phase0_bench_value.md` first for the phase-by-phase background. It's a scoping document, not a
 finished phase: three of the four bench-value rules questions are still
@@ -40,4 +42,5 @@ priced pool. `phase2_notes.md` is the record of the first split-pool pass
 covered it): it surfaced the alpha ceiling (a high enough alpha prices
 one player above the team cap) and the benchmark problem (rosters must be
 compared to each other, not to an all-replacement team), both of which
-`phase2_pricing.md` builds on. Not yet built: Phase 3 (site).
+`phase2_pricing.md` builds on. Not yet built: Phase 3 (site), owner
+personas in the draft sim, the injury/absence layer (HANDOFF.md Next steps).

@@ -619,34 +619,35 @@ draws yet (planned as a Monte Carlo layer, not a picked rate), no real
 roster construction, replacement level uses an assumed 20-team count
 pending confirmation.
 
-Phase 2 (price fitting), as of 2026-09-04 evening (full detail in
-`value_cap/HANDOFF.md` + `value_cap/phase2_pricing.md`): the two
-remaining arbitrary inputs were tested and replaced. (a) One joint $20M
-pool instead of two $10M gender sub-pools — the split falls out at ~57/43
-women, and the 50/50 split had overpriced every man ~16% (Johns a
-must-avoid at every alpha). (b) Phase 1's replacement-context V is the
-wrong pricing basis (the #60 partner's weakest-link gap damps stars in
-proportion to value); replaced by phi = Shapley-style context-averaged
-value over a SELF-CONSISTENT pool (`value_cap/shapley_value.py`;
-`pool.py` defines the pool — top 60/gender by phi, iterated to a fixed
-point). Instrument = the must-buy test (best $1M roster with vs without
-a player, both best-responding; injection-checked). Result: on phi +
-joint there are two regimes and ONE player decides which — below alpha
-≈ 0.84 "buy Waters" is a dominant strategy (her phi is 5.3% of the
-league vs 5% per team), from 0.853 she is unrosterable, and above 0.9
-everyone #1-#10 is fair (0.45-0.51) out to alpha 1.6. The
-fair-and-rosterable window is a knife-edge (alpha 0.84-0.85, ~$725k,
-five ~$53k teammates); it sits where the VALUE WEIGHT of the cheapest
-cast puts it (first draft said 0.88-0.91 on a pool with negative-phi
-members priced at the floor — the pool's bottom definition moves the
-edge, the dollar floor does not). The "star discount" is precisely the
-discount that makes the best player rosterable; nothing else needs it.
-The floor is cosmetic (any roster legal iff value share ≤ 1/20, every
-floor). Morning-session indifference pairs A/B anchored on star+scrubs
-builds — don't fit alpha to them. Sonnet's `phase2_price_model.py` was
-removed; `phase2_pricing.py --value total --modes split` covers it.
-Next: Phase 3 site off the alpha≈0.845 list, injury/absence
-Monte Carlo (sweep the rate), confirm 20 teams + $500k min-spend.
+Phase 2 (price fitting) is SHIPPED as of 2026-09-04 night (full detail
+in `value_cap/HANDOFF.md` + `value_cap/phase2_pricing.md` §8; the list is
+`value_cap/price_list.md`): alpha 1, ONE joint $20M pool (the gender
+split falls out at ~57/43 women; two $10M sub-pools overpriced every man
+~16%), prices proportional to phi = Shapley-style context-averaged tie
+value over a SELF-CONSISTENT pool (`shapley_value.py`, `pool.py`: top
+60/gender by phi iterated to a fixed point — Phase 1's replacement-
+context V was the wrong basis, the #60 partner's weakest-link gap damps
+stars in proportion to value). Waters' phi is 5.3% of the league vs 5%
+per team, so her curve price ($903k) fits no legal roster; she is
+FRANCHISE-TAGGED (`prices_tagged`) at cap minus the cheapest legal
+completion ($769k at a $30k floor), the gap redistributed over the other
+119 by value. This replaced the alpha ≈ 0.845 star-discount list, which
+bought her rosterability by mispricing everyone else 10-15%. League read
+(`draft_sim.py`: 20 teams, scarcity, noisy owners, seasons on true
+values, boards best60 / mlp2026 (default, real 2026 fill-ins) /
+mlp2026only): tag list gives parity spread 4.3-4.6 pts, nobody in the
+top 30 undrafted, cap spent; the slot-1 pick (Waters + cheap DreamBreaker
+singles specialists) wins 66% with a ~1-in-3 title shot, slots 2-20 sit
+at 47-53%. NOT levers (`pool_floor_sweep.md`): the floor (cosmetic,
+identical drafts $10k-$75k), the priced-pool size (80/100 only leaves
+cap unspent and hands the prize to Bright), a deeper replacement line
+(makes Waters cheaper AND stronger). User call: a 35% favorite is normal
+pro sports; ship and say so. Speed layer `fast_tie.py` (~85x, err 8e-5).
+Sonnet's `phase2_price_model.py` was removed. Next: owner PERSONAS in
+the draft sim (overvalues men / $500k cheapskate / marketing-fame /
+real-teams / bargains-first — user's words in HANDOFF), Phase 3 site
+off price_list.csv, injury/absence Monte Carlo (sweep the rate), gamma
+switch sweep, confirm 20 teams + $500k min-spend.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's

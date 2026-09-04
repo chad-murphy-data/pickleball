@@ -267,3 +267,87 @@ Kawamoto $357k, Black $353k, Sewing $325k, Townsend $306k … #57-60
   flat.
 - The must-buy test has ~±0.01 search noise (budget grid $10k, K=25
   candidates); readings within 0.48-0.52 are "fair", not ranked.
+
+## 8. SHIPPED (2026-09-04, night): the franchise tag at alpha 1
+
+User call after the draft simulations and the pool/floor sweep: ship the
+tag rule. The rule, in plain language (`prices_tagged` in
+`phase2_pricing.py`):
+
+1. Price everyone off the curve at alpha 1 -- share of the $20M league
+   pool = share of total phi, one joint pool for men and women.
+2. Franchise-tag the one player the curve cannot fit. Waters' curve price
+   is $903k of a $1M cap; no legal six-player roster can carry it. Her
+   price is set directly to the most a team can pay and still field a
+   legal roster: cap minus the cheapest legal completion (the two cheapest
+   priced women plus the three cheapest priced men). At a $30k floor
+   that is **$769k**.
+3. The $134k gap between her curve price and her tag is spread back over
+   the other 119 priced players in proportion to their value, so the
+   pool still sums to twenty caps (+1% each, iterated because the
+   cheapest completion itself moves a little).
+4. Nobody else changes rules: one tagged player, one price list, alpha
+   stays at 1. This replaces the §5/§7 alpha ≈ 0.845 list, which bought
+   Waters' rosterability by discounting every other star and
+   surcharging every role player 10-15%.
+
+The list: `price_list.md` / `price_list.csv` (`price_list.py`), with the
+doubles-only value and rank next to each price so the DreamBreaker
+(singles) lift is visible -- Todd (#5F doubles) and Fahey (#10F) price
+3rd and 6th among women because they are the best two singles players
+in the field after Waters; Jade Kawamoto and Pisnik have 0 singles games
+and sit on the imputed prior. Top of the list: Waters $769k, Bright
+$613k, Todd $489k, Jorja Johnson $475k, Johns $474k, Fahey $453k, Jade
+Kawamoto $444k, JW Johnson $430k, Patriquin $421k, Rohrabacher $421k.
+Women's share 56.6%.
+
+What the tag list does in a league with scarcity (`draft_sim.py`, 20
+teams, 6 rounds, owners with belief noise, seasons on true values;
+`draft_sim_tag*.md`, `draft_sim_a0.845.md`):
+
+| price list / board | snake, perfect info: spread / strongest | snake, 10% owner error: spread / strongest / slot-1 title | top-30 undrafted | mean spend |
+|---|---|---|---|---|
+| tag, priced 60+60 + real 2026 MLP fill-ins (`mlp2026`, the default board) | 4.3 pts / 66.1% | 4.4 / 65.7% / 36% | none | $975k |
+| tag, priced 60+60 + best-60 free agents (`best60`) | 4.2 / 65.3% | 4.6 / 65.7% / 34% | none | $970k |
+| tag, real 2026 MLP participants only (`mlp2026only`) | 4.6 / 68.2% | 7.0 / 72.3% / 47% | -- (77 priced for 120 slots; talent-starved) | $838k |
+| alpha 0.845, `best60` | 9.6 / 67.2% | 9.7 / 67.7% | Bellamy #29M in 100% of drafts | $926k |
+
+Reads: (a) the strongest team is always the slot-1 pick, Waters plus the
+cheap DreamBreaker singles specialists the spare ~$230k buys (Gabriel
+Joseph, Bellamy); slots 2-20 sit at 47-53% and ~3.4% title each. (b) The
+tag list beats the alpha 0.845 list on every read: half the parity
+spread, no top-30 player left on the board, the cap actually spent.
+(c) The real-2026-participant board does not shrink Waters' prize (the
+user asked; it makes it bigger, because the fill-in tail is weaker).
+(d) A 66% team with a ~1-in-3 title shot at pick 1 is a normal pro-sports
+favorite (top NBA/EPL preseason favorites carry 30-50%); it is a lottery
+prize attached to one player being 5.3% of the league's value, not a
+dynasty -- user call: "it is what it is", ship it and say so.
+
+Levers that do NOT move it (`pool_floor_sweep.md`, `pool_floor_sweep.py`):
+the floor ($10k-$75k: identical drafts at every floor); the priced-pool
+size (80 or 100 per gender drops Waters' team to 57% only by spreading
+the $20M over players nobody drafts -- spend falls to $670-910k and the
+prize moves to Bright's team at 61-66%; pricing the 120 draftable against
+a deeper replacement makes her CHEAPER and her team STRONGER, 73% / 50%
+title vs #100). The tag accounting alternative (charge the full $903k,
+lower floor for the tagged team) reaches the low 50s and is the only
+thing that has ever moved her; rejected because it prices one player
+above a team's fair share, which is what the tag exists to avoid.
+
+Template-strategy rosters without scarcity (`draft_strategies_tag.md`,
+`template_season.md`): no dominant blueprint on the tag list -- Balanced
+four / DreamBreaker specialist / Quant within a point of each other,
+Superstar-Waters 12.3% title in an 8-roster field (parity 12.5%). Those
+rosters share players, so the draft sim above is the real league read.
+
+Probe the user asked about: Waters plus the five BEST leftover fill-ins
+after a full draft beats the drafted field 55.6% (best60 board) / 56.1%
+(mlp2026) / 42.7% (mlp2026only); plus the five worst, 16%. Same story as
+the draft: the value is in her, the cheap completion decides the margin.
+
+Reproduce:
+
+    python value_cap/price_list.py                              # the shipped list
+    python value_cap/draft_sim.py --tag --board mlp2026         # the league read (~2 min)
+    python value_cap/pool_floor_sweep.py                        # pool x floor grid (~20 min; phi_pool{60,80,100}.csv cached)
