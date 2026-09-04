@@ -144,24 +144,37 @@ So the honest table for bounces is now three rows, not one:
 |---|---|
 | locating a bounce we found | **solved**, 1.91 ft |
 | finding the bounces | **13 of 34 = 38% recall** |
-| not calling non-bounces | of 30 emitted, **6 real / 12 junk / 12 missed contacts** |
+| not calling non-bounces | of 14 emitted, **6 real / 2 junk / 6 missed contacts** (was 30 / 6 / 12 / 12 before the sign test shipped, `84d7e6b`) |
 
 Neither live problem is the ball detector. Both are the claim logic
 (`a16e2ba`): `bounce_evs = [e for e in turns if e not in claimed]` makes
 bounce the residual category, so every anchor miss becomes a fake bounce and
 nothing ever asks whether the turn looks like one.
 
-**Two measured fixes exist and neither is shipped.**
+**One of the two measured fixes now ships; the other is rejected twice.**
 
-1. *The bounce signature.* Image y falls then rises — a sign test, nothing to
-   tune. Keeps **6/6** real bounces, kills **10/12** junk markers. The turn
-   angle the claim uses today does not separate them at all (real median
-   91.5 deg, junk 66.5, ranges overlapping). Measured in `a16e2ba`; the
-   predicate lives at `ballsearch/turn_geom.py:42` as `v_shape` and
-   `ball_replicate.py` does not call it.
-2. *A spatial gate on claiming.* `claim_bounds()` gives an anchor its
-   largest-angle turn within 0.25 s with no distance test, which is the
-   over-claiming half.
+1. *The bounce signature — SHIPPED `84d7e6b`.* Image y falls then rises — a
+   sign test, nothing to tune. Keeps **6/6** real bounces, kills **10/12**
+   junk markers, costs **zero** contacts (63/79 either way). The turn angle
+   the claim uses today does not separate them at all (real median 91.5 deg,
+   junk 66.5, ranges overlapping). Measured in `a16e2ba`, sat unused as
+   `turn_geom.v_shape` for three days, now called by
+   `ball_replicate.tracked_side`. End to end: markers 30 -> 14, precision
+   20% -> 43%.
+2. *A spatial gate on claiming — REJECTED, twice.* `claim_bounds()` gives an
+   anchor its largest-angle turn within 0.25 s with no distance test, which
+   is genuinely the over-claiming half. But gating it buys bounce recall
+   (8/35 -> 14/35) with a quarter of the contacts (**63/79 -> 41/79**),
+   exactly as it did when first rejected 2026-09-01; re-measured
+   2026-09-04 on the physics-cleaned path and it fails the same way.
+
+Three other candidates measured 2026-09-04 and NOT shipped
+(`ballsearch/bounce_fix.py` carries the full arm table): re-detecting turns
+on the physics-cleaned path costs 7 contacts for junk the sign test removes
+free; `turn_deg` 18/20 and `min_sep` 0.12/0.18 are exactly null — the shallow
+serve bounces are not being deleted by the threshold, they are not in the
+path; asserting the two double-bounce-rule bounces only reads well while its
+windows come from the owner's own labelled contact times, which is a leak.
 
 **Path junk is now filtered before any of this** (`ballsearch/path_physics.py`,
 graded label-free against the nine owner-clicked paths in `physics_grade.py`):
