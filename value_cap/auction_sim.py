@@ -6,12 +6,16 @@ personas) buying the same board at AUCTION instead of in a snake draft.
     python value_cap/auction_sim.py --rerender            # re-render from cache
 
 Mechanism (a standard fantasy auction, nothing tuned):
-  - owners nominate in rotation; an owner projects their ideal roster at
-    the EXPECTED prices (the snake owners' greedy projection, so every
-    persona's beliefs and habits carry over) and nominates its most
-    expensive missing member -- get your key target on the block before
-    the room has spent (a bargain hunter, capped at T for the first three
-    buys, nominates the priciest target they would actually pay for);
+  - owners nominate in rotation; an owner nominates the player they would
+    take right now in a snake draft at the EXPECTED prices (the snake
+    owners' shortlist + projection + believed tie probability, so every
+    persona's beliefs and habits carry over), under the auction's own
+    scarcity: before they nominate again every other team nominates once,
+    so the highest-priced players are assumed gone by then -- which is
+    why the stars come up while the room still has money. Anyone the
+    owner can open the bidding on (floor + cheapest completion within
+    budget) is nominatable, projected at the lower of the expected price
+    and the most that owner could pay; ties go to the most expensive;
   - every owner who still needs that gender works out a CEILING: the price
     at which they are indifferent between "this player plus what my
     remaining money buys at expected prices" and "what my money buys
@@ -75,19 +79,27 @@ def completion_cost(by_g, price, exclude, need):
     return tot
 
 
-def project(owner, roster, budget, price, need, order, by_g, exclude):
-    """Greedy fill of the open slots (draft_sim.Owner.choose's projection with
-    no scarcity assumption): best-believed player that keeps the roster
-    completable, repeated. order = avail sorted by the owner's believed
-    doubles value. Returns the projected roster or None."""
+def project(owner, roster, budget, price, need, order, by_g, exclude, gaps=None, by_price=None):
+    """Greedy fill of the open slots (draft_sim.Owner.choose's projection):
+    best-believed player that keeps the roster completable, repeated. order =
+    avail sorted by the owner's believed doubles value. With gaps (the
+    nomination case) the j-th fill assumes the gaps[j] highest-PRICED players
+    other than the roster are already sold -- choose()'s scarcity rule;
+    without it (the ceiling case) every player is assumed available at the
+    expected price. Returns the projected roster or None."""
     proj = list(roster)
     left = budget
     na = dict(need)
     taken = set(roster) | set(exclude)
+    j = 0
     while na["M"] > 0 or na["F"] > 0:
+        gone = set()
+        if gaps is not None and j < len(gaps):
+            gone = set([u for u in by_price if u not in taken][:gaps[j]])
+        j += 1
         pick = None
         for u in order:
-            if u in taken or na[D.GENDER[u]] <= 0:
+            if u in taken or u in gone or na[D.GENDER[u]] <= 0:
                 continue
             n2 = dict(na)
             n2[D.GENDER[u]] -= 1
@@ -156,16 +168,56 @@ def expected_prices(list_price, avail, owners, spent, need, mode):
     return {u: (FLOOR if list_price[u] <= FLOOR else max(FLOOR, rho * list_price[u])) for u in list_price}
 
 
-def nominate(owner, roster, spent, avail, price, need, by_g):
+def nominate(owner, roster, spent, avail, price, need, by_g, others_active):
+    """The owner's snake pick, transplanted: shortlist as choose() does (top
+    believed doubles value per needed gender, top singles, cheapest few;
+    persona filter), project candidate + greedy fill under the auction's own
+    scarcity -- before this owner nominates again every other active team
+    nominates once, so the (j+1)*others_active highest-priced players are
+    assumed sold before the j-th fill -- and take the best believed tie
+    probability; ties go to the most expensive candidate, pid last.
+    Two auction-specific rules: a candidate only has to be OPENABLE (the
+    floor plus the cheapest completion fits the budget), and is projected
+    at the lower of its expected price and the most this owner could pay
+    for it -- an owner short of money still puts the star up, and the room
+    decides. Returns None when nothing is openable."""
+    budget = owner.cap - spent
     order = sorted(avail, key=lambda u: (-owner.v[u], u))
-    proj = project(owner, roster, owner.cap - spent, price, need, order, by_g, set())
-    if proj is None:
-        try:
-            return owner.choose(roster, spent, avail, price, need, [])
-        except RuntimeError:
-            return None
-    new = [u for u in proj if u not in roster]
-    return max(new, key=lambda u: (min(price[u], owner.bid_cap(u, roster)), -owner.v[u], u))
+    by_price = sorted(avail, key=lambda u: (-price[u], u))
+    gaps = [(j + 1) * others_active for j in range(D.ROUNDS)]
+    cands = set()
+    cost = {}
+    for g in ("M", "F"):
+        if need[g] <= 0:
+            continue
+        need_after = dict(need)
+        need_after[g] -= 1
+        pool_g = []
+        for u in order:
+            if D.GENDER[u] != g:
+                continue
+            top = budget - completion_cost(by_g, price, {u}, need_after)
+            if top + 1e-6 >= FLOOR:
+                pool_g.append(u)
+                cost[u] = min(price[u], top)
+        cands.update(pool_g[:D.CAND_TOP])
+        cands.update(sorted(pool_g, key=lambda u: (-owner.s[u], u))[:D.CAND_SINGLES])
+        cands.update(sorted(pool_g, key=lambda u: (price[u], u))[:D.CAND_CHEAP])
+    cands = owner.filter_cands(cands, roster, avail, price)
+    best = None
+    for x in sorted(cands):
+        if x not in cost:
+            continue
+        need_after = dict(need)
+        need_after[D.GENDER[x]] -= 1
+        proj = project(owner, roster + [x], budget - cost[x], price, need_after, order, by_g, set(),
+                       gaps=gaps, by_price=[u for u in by_price if u != x])
+        if proj is None:
+            continue
+        key = (round(owner.score(proj), 6), min(price[x], owner.bid_cap(x, roster)), x)
+        if best is None or key > best[0]:
+            best = (key, x)
+    return best[1] if best else None
 
 
 # ------------------------------------------------------------------ auction
@@ -187,11 +239,9 @@ def run_auction(list_price, noise, rng, owners=None, expect="list", inc=INC, gam
             continue
         price = expected_prices(list_price, avail, owners, spent, need, expect)
         by_g = {g: sorted((u for u in avail if D.GENDER[u] == g), key=lambda u: (price[u], u)) for g in ("M", "F")}
-        # nomination = the most expensive member of the owner's projected ideal
-        # roster at expected prices (get your key target on the block before
-        # the room spends), subject to any self-imposed bid cap; falls back to
-        # the snake pick at expected prices
-        x = nominate(owners[t], rosters[t], spent[t], avail, price, need[t], by_g)
+        # nomination = the owner's snake pick under the auction's own scarcity (stars while the room has money)
+        others_active = sum(1 for k in range(D.N_TEAMS) if k != t and need[k]["M"] + need[k]["F"] > 0)
+        x = nominate(owners[t], rosters[t], spent[t], avail, price, need[t], by_g, others_active)
         if x is None:
             # stranded: nothing affordable -- league assigns the cheapest player of a needed gender at the floor
             g = "M" if need[t]["M"] > 0 else "F"
@@ -254,7 +304,8 @@ def run_variant(list_price, noise, drafts, seasons, seed, stars, owner_factory=N
     kinds = {}
     slot_exp = [[] for _ in range(D.N_TEAMS)]
     slot_title = [[] for _ in range(D.N_TEAMS)]
-    star_rows = {u: {"rounds": [], "undrafted": 0, "exp": [], "title": [], "slot": [], "paid": []} for u in stars}
+    star_rows = {u: {"rounds": [], "undrafted": 0, "exp": [], "title": [], "slot": [], "paid": [],
+                     "mates_paid": [], "mates_floor": []} for u in stars}
     undrafted = {}
     shapes = {}
     paid = {}           # pid -> [price paid per draft it was sold]
@@ -295,6 +346,9 @@ def run_variant(list_price, noise, drafts, seasons, seed, stars, owner_factory=N
                 star_rows[u]["title"].append(ttl[team])
                 star_rows[u]["slot"].append(team + 1)
                 star_rows[u]["paid"].append(pp)
+                mates = [v for v in rosters[team] if v != u]
+                star_rows[u]["mates_paid"].append(sum(picks[v][1] for v in mates))
+                star_rows[u]["mates_floor"].append(sum(1 for v in mates if picks[v][1] <= FLOOR + 1e-6))
             else:
                 star_rows[u]["undrafted"] += 1
         for u in left:
@@ -393,9 +447,10 @@ def render(list_price, stars, rows, args, out):
          f"for the players they have not bought yet: the list, or the list inflated by money-left / value-left. "
          f"Parity = 50% win, 5% title. Built by `auction_sim.py`.", "",
          "## Headline: auction vs snake with twenty quants", "",
-         "| format | expect | owner noise | Waters paid | her team win% | title% | Bright paid | her team | Johns paid | his team | "
+         "| format | expect | owner noise | Waters paid | sold at sale # | her other five cost (at floor) | her team win% | title% | "
+         "Bright paid | her team | Johns paid | his team | "
          "parity spread | favourite title | runner-up | teams >= 10% | effective contenders | mean spend | unspent per team | top-30 undrafted |",
-         "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
+         "|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|"]
 
     def star(r, u):
         s = r["stars"][u]
@@ -413,7 +468,12 @@ def render(list_price, stars, rows, args, out):
         bp, be, _ = star(r, B)
         jp, je, _ = star(r, J)
         nz = strength or f"noise {r['noise']:.0%}"
-        L.append(f"| {label} | {expect if r['fmt'] == 'auction' else '--'} | {nz} | {wp} | {we} | {wt} | "
+        sw = r["stars"][W]
+        mates = (f"${statistics.mean(sw['mates_paid'])/1e3:,.0f}k ({statistics.mean(sw['mates_floor']):.1f} of 5)"
+                 if sw.get("mates_paid") else "--")
+        sale_no = ((f"{statistics.mean(sw['rounds']):.1f}" if r["fmt"] == "auction" else f"pick {statistics.mean(sw['rounds']):.0f}")
+                   if sw.get("rounds") else "--")
+        L.append(f"| {label} | {expect if r['fmt'] == 'auction' else '--'} | {nz} | {wp} | {sale_no} | {mates} | {we} | {wt} | "
                  f"{bp} | {be} | {jp} | {je} | {100*r['spread']:.1f} pts | {100*c['top']:.1f}% | {100*c['second']:.1f}% | "
                  f"{c['n10']:.1f} | {c['eff']:.1f} | ${r['spend']/1e3:,.0f}k | "
                  f"${r.get('unspent', 0)/1e3/D.N_TEAMS:,.0f}k | "
