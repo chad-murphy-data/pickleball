@@ -135,6 +135,43 @@ choice) are labelling rules, not open problems. Ending the clock at the bounce
 instead of the next contact is the one real improvement available and it is
 **optional** — the measure ships without it.
 
+### "Every pair of contacts has to make a call" (owner, 2026-09-04)
+
+The reframing that matters more than any single feature. Bounce is currently
+the RESIDUAL of turn detection, so its denominator is however many wobbles
+the tracker produced. Recast as **one binary call per flight**, the panel is
+finite and the score is well defined: N contacts → N−1 flights → N−1 answers.
+Base rate **P(bounce) = 0.422** (57 of 135) — a real classification problem.
+
+`court3d.fit_segment` already works this way: it takes each flight between
+two contacts and decides bounce vs. arc by whether a floor-touching split
+fits the pixels better. That is the counter CHECK 3 grades. The `bounce_evs`
+turn stream is the redundant, weaker one.
+
+Priors measured on that panel (`ballsearch/bounce_prior.py`):
+
+| prior | AUC | note |
+|---|---|---|
+| **receiver depth from the net** | **0.806** | 0.09 at the kitchen → **0.91 at the baseline** |
+| **flight duration** | **0.809** | P 0.09 → 0.44 → 0.72 across terciles |
+| both together | **0.910** | depth survives duration strata at 0.988 / 0.862 / 0.742 |
+| flight speed | 0.597 | **null once duration is known** (0.433 / 0.486 / 0.360) |
+| double-bounce rule | exact | flight 0 = 0.89, flight 1 = **1.00**, flight 2+ = 0.34 |
+
+Owner's *"slow shots bounce more"* is true raw (20.7 vs 23.5 mph) and is
+**duration in disguise** — slow shots bounce more because they take longer.
+Owner's *"receiver at the baseline ⇒ almost certainly a bounce"* is confirmed
+at 0.91 and is the strongest single feature found.
+
+Both are measured **without the ball**, from pose and contact times. So the
+prior is available on every flight, including the ones where the ball is
+never found. Flight 0 reading 0.89 where the rule demands 1.00 is a
+labelling artifact and a useful data-quality probe.
+
+In-sample on 135 flights; both features are partly consequences of a bounce
+(it adds travel time; a deep receiver has more time). Fine for a prior — the
+claim is predictive, not causal — but not a held-out score.
+
 ### The bounce corridor (owner rule, 2026-09-04) — measured, and it holds
 
 Owner: *"the ball always bounces in front of the person making contact, and
