@@ -13,6 +13,9 @@
 //   completed-matchup details                            — 10 min
 //   per-match score formats (immutable)                  — forever
 //   whole response                                       — 12 s + in-flight coalescing
+// None of these is load-bearing: a cold instance must still produce a complete
+// sweep cheaply (the Supabase twin's isolates recycle around nearly every
+// poll), which is why PPA score formats resolve per bracket round below.
 //
 // Query params: ?date=YYYY-MM-DD (optional, tour-local override for replay
 // and testing; default = today in America/Los_Angeles, matching the poller).
@@ -27,7 +30,8 @@ const ORD_SNAKE = ["one", "two", "three", "four", "five"];
 // ---- module-level caches (persist across warm invocations) --------------
 const disco = { date: null, ts: 0, mlp: [], ppa: [], nextDates: [] };
 const doneMatchups = new Map();   // uuid -> {ts, data}
-const fmtCache = new Map();       // match uuid -> fmt object|null
+const fmtCache = new Map();       // match uuid -> fmt (misses are not cached)
+const fmtGroupCache = new Map();  // fmtKey -> fmt (a bracket round's shared format)
 let sweepCache = { key: null, ts: 0, body: null };
 let inflight = null;
 
@@ -208,6 +212,27 @@ async function matchupDetail(uuid, completed) {
   return data;
 }
 
+// ---- PPA score formats --------------------------------------------------
+// getMatchInfosShort carries the best-of count but not the points target or
+// the rally flag; those take getResultMatchInfos per match. Formats are set
+// per bracket ROUND, though — every match in the same (event, bracket side,
+// round) shares one — so one lookup per group covers the day, and a match's
+// own score_format_game_best_out_of is the check that the group's format
+// really applies to it (a mismatch gets its own lookup). This replaced a
+// 6-per-sweep budget that, on a cold instance, only ever priced the first
+// six matches of the day (the missing-PRE bug, 2026-09-04). Twin of the
+// Deno version in supabase/functions/live/index.ts; web/test_live_proxy.mjs
+// exercises this file offline.
+const FMT_MAX_LOOKUPS = 20;   // per sweep; a heavy Challenger day is ~15 groups
+const FMT_CONCURRENCY = 4;
+
+const fmtKey = (m) => m.event_uuid
+  ? `${lc(m.event_uuid)}|${m.in_bracket_type || ""}|${lc(m.pool_id)}|${m.round_number ?? m.round_text ?? ""}`
+  : `match:${lc(m.match_uuid)}`;
+
+const fmtFits = (m, fmt) =>
+  !m.score_format_game_best_out_of || !fmt.bestOf || m.score_format_game_best_out_of === fmt.bestOf;
+
 async function matchFormat(uuid) {
   if (fmtCache.has(uuid)) return fmtCache.get(uuid);
   let fmt = null;
@@ -221,11 +246,49 @@ async function matchFormat(uuid) {
         max,
         winBy: m.score_format_game_one_win_by || 2,
         title: m.score_format_title || "",
+        bestOf: m.score_format_game_best_out_of || max.filter((x) => x > 0).length,
       };
     }
   } catch { fmt = null; }
-  fmtCache.set(uuid, fmt);
+  if (fmt) fmtCache.set(uuid, fmt);   // a failed lookup is retried next sweep
   return fmt;
+}
+
+async function pooled(items, n, fn) {
+  let i = 0;
+  const worker = async () => { while (i < items.length) await fn(items[i++]); };
+  await Promise.all(Array.from({ length: Math.min(n, items.length) }, worker));
+}
+
+// match uuid -> fmt | null, for every match in one short payload
+async function resolveFormats(ms) {
+  const out = new Map();
+  const groups = new Map();
+  for (const m of ms) {
+    const u = lc(m.match_uuid), k = fmtKey(m);
+    const own = fmtCache.get(u), grp = fmtGroupCache.get(k);
+    if (own) out.set(u, own);
+    else if (grp && fmtFits(m, grp)) out.set(u, grp);
+    else { if (!groups.has(k)) groups.set(k, []); groups.get(k).push(m); }
+  }
+  let budget = FMT_MAX_LOOKUPS;
+  const reps = [...groups.values()].map((g) => g[0]).slice(0, budget);
+  budget -= reps.length;
+  await pooled(reps, FMT_CONCURRENCY, (m) => matchFormat(lc(m.match_uuid)));
+  const strays = [];
+  for (const [k, members] of groups) {
+    const fmt = fmtCache.get(lc(members[0].match_uuid)) || null;
+    if (fmt) fmtGroupCache.set(k, fmt);
+    for (const m of members) {
+      const u = lc(m.match_uuid);
+      if (!fmt) out.set(u, null);
+      else if (m === members[0] || fmtFits(m, fmt)) out.set(u, fmt);
+      else strays.push(m);
+    }
+  }
+  await pooled(strays.slice(0, budget), FMT_CONCURRENCY, (m) => matchFormat(lc(m.match_uuid)));
+  for (const m of strays) out.set(lc(m.match_uuid), fmtCache.get(lc(m.match_uuid)) || null);
+  return out;
 }
 
 async function sweep(date) {
@@ -265,14 +328,8 @@ async function sweep(date) {
     try {
       const ms = (await bff(
         `/api/v1/results/getMatchInfosShort?eventIds=${doubles.join(",")}&date=${date}`)).data || [];
-      let fmtBudget = 6;    // spread format lookups across sweeps
-      const rows = [];
-      for (const m of ms) {
-        let fmt = fmtCache.get(lc(m.match_uuid));
-        if (fmt === undefined && fmtBudget > 0) { fmt = await matchFormat(lc(m.match_uuid)); fmtBudget--; }
-        rows.push(compactPpaMatch(m, fmt));
-      }
-      out.ppa.push({ tid, title, matches: rows });
+      const fmts = await resolveFormats(ms);
+      out.ppa.push({ tid, title, matches: ms.map((m) => compactPpaMatch(m, fmts.get(lc(m.match_uuid)))) });
     } catch (e) { out.errors.push(`ppa: ${e.message}`); }
   }
   return out;

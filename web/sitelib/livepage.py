@@ -583,9 +583,9 @@ function ppaRow(m) {
     }
     if (m.st === 2 && curIdx < 0) curIdx = Math.min(m.g.length - 1, Ts.length - 1);
   }
-  let live = null, pre = null;
+  let live = null, pre = null, info = null;
   if (playable && Ts.length) {
-    const info = priceGame(m.t1, m.t2, Ts[0]);
+    info = priceGame(m.t1, m.t2, Ts[0]);
     if (info) {
       const perGame = Ts.map(T => priceGame(m.t1, m.t2, T).p0);
       pre = seqProb(0, 0, need, perGame);
@@ -607,7 +607,11 @@ function ppaRow(m) {
   const liveCell = m.st === 2
     ? (live !== null ? `<strong>${fpF(live)}%</strong>` : '<span class="note">' + (fmt ? (fmt.rally ? 'rally format' : 'unrated') : 'format?') + '</span>')
     : m.st === 4 ? (m.win === 1 ? '✓' : m.win === 2 ? '✗' : '') : '';
-  const preCell = pre !== null ? `<span class="note">${fpF(pre)}%</span>` : '';
+  // an empty price is never silent: name the blocker (format still unknown
+  // upstream, or an unrated pairing) the same way the live cell does
+  const preCell = pre !== null ? `<span class="note">${fpF(pre)}%</span>`
+    : !fmt ? '<span class="note">format?</span>'
+    : (playable && Ts.length && !info) ? '<span class="note">unrated</span>' : '';
   const status = m.st === 2 ? ' class="lp-liverow"' : '';
   return `<tr${status}><td class="lp-slot">${esc(m.rd || '')}</td>` +
     `<td>${pairNames(m.t1, 1)}<br>${pairNames(m.t2, 2)}</td>` +

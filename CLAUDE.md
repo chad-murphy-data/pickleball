@@ -470,8 +470,20 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   after touching either side). Data path: browser → Supabase Edge Functions
   `live`/`logs` (source `supabase/functions/`; same code as the alternate
   `netlify/functions/` backend — BFF/SSE send no CORS so a proxy is
-  mandatory; responses memo-coalesced so upstream sees ≤1 sweep/15 s
-  regardless of viewers). Config via env LIVE_API_BASE / LIVE_API_KEY at
+  mandatory). **The in-memory sweep memo does NOT coalesce viewers on
+  Supabase** (2026-09-04: function_logs show an isolate boot + shutdown
+  around nearly every poll, so every module-level cache — sweep memo,
+  discovery, matchup details, score formats — is cold per request and each
+  viewer poll is a full upstream sweep; true coalescing needs a durable
+  layer, Postgres or a CDN, not built). Consequence fixed the same day:
+  PPA score formats used to be looked up 6 per sweep "spread across
+  sweeps", which on cold isolates priced only the first six matches of
+  the day and left every later row without a PRE number. Formats now
+  resolve per bracket round — one getResultMatchInfos per (event_uuid,
+  in_bracket_type, round_number) group from the short payload, checked
+  against each match's own score_format_game_best_out_of — so a cold
+  sweep is complete (`web/test_live_proxy.mjs` pins this offline against
+  the Netlify twin; keep `supabase/functions/live/index.ts` in sync). Config via env LIVE_API_BASE / LIVE_API_KEY at
   build. Mid-match joins backfill from getListLogs; no-log courts fall back
   to ~20 s scoreboard snapshots (localStorage). Pre-match numbers anchor to
   the calibrated race DP, so live curves agree with graded receipts at

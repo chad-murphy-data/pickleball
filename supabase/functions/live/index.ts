@@ -4,8 +4,11 @@
 // Deno twin of netlify/functions/live.mjs (the alternate backend) — keep the
 // two in sync; the page only needs ONE of them deployed. Full protocol notes
 // live in the .mjs header and recon.md. Politeness: a 15 s in-memory memo +
-// in-flight coalescing per isolate caps the upstream sweep rate no matter how
-// many viewers poll; the page itself polls every 20 s.
+// in-flight coalescing per isolate — BUT isolates here rarely survive between
+// polls (function_logs 2026-09-04: a boot and a shutdown around nearly every
+// request), so every module-level cache is a bonus, never a guarantee: a
+// sweep must come out complete and cheap from a cold start. The page polls
+// every 20 s.
 //
 // CORS is deliberate: the page lives on GitHub Pages (different origin).
 // Auth: standard Supabase anon JWT (public by design, baked into the page).
@@ -23,7 +26,8 @@ type J = any;
 
 const disco: J = { date: null, ts: 0, mlp: [], ppa: [], nextDates: [] };
 const doneMatchups = new Map<string, { ts: number; data: J }>();
-const fmtCache = new Map<string, J>();
+const fmtCache = new Map<string, J>();        // match uuid -> fmt (misses are not cached)
+const fmtGroupCache = new Map<string, J>();   // fmtKey -> fmt (a bracket round's shared format)
 let sweepCache: { key: string | null; ts: number; body: J } = { key: null, ts: 0, body: null };
 let inflight: Promise<J> | null = null;
 
@@ -194,6 +198,25 @@ async function matchupDetail(uuid: string, completed: boolean) {
   return data;
 }
 
+// ---- PPA score formats --------------------------------------------------
+// getMatchInfosShort carries the best-of count but not the points target or
+// the rally flag; those take getResultMatchInfos per match. Formats are set
+// per bracket ROUND, though — every match in the same (event, bracket side,
+// round) shares one — so one lookup per group covers the day, and a match's
+// own score_format_game_best_out_of is the check that the group's format
+// really applies to it (a mismatch gets its own lookup). This replaced a
+// 6-per-sweep budget that, with isolates recycling per poll, only ever
+// priced the first six matches of the day (the missing-PRE bug, 2026-09-04).
+const FMT_MAX_LOOKUPS = 20;   // per sweep; a heavy Challenger day is ~15 groups
+const FMT_CONCURRENCY = 4;
+
+const fmtKey = (m: J) => m.event_uuid
+  ? `${lc(m.event_uuid)}|${m.in_bracket_type || ""}|${lc(m.pool_id)}|${m.round_number ?? m.round_text ?? ""}`
+  : `match:${lc(m.match_uuid)}`;
+
+const fmtFits = (m: J, fmt: J) =>
+  !m.score_format_game_best_out_of || !fmt.bestOf || m.score_format_game_best_out_of === fmt.bestOf;
+
 async function matchFormat(uuid: string) {
   if (fmtCache.has(uuid)) return fmtCache.get(uuid);
   let fmt: J = null;
@@ -201,16 +224,55 @@ async function matchFormat(uuid: string) {
     const body = await bff(`/api/v1/results/getResultMatchInfos?id=${uuid}`);
     const d = body.data, m = Array.isArray(d) ? d[0] : d;
     if (m && typeof m === "object") {
+      const max = ORD_SNAKE.map((o) => m[`score_format_game_${o}_max`] || 0);
       fmt = {
         rally: !!m.is_rally_scoring,
-        max: ORD_SNAKE.map((o) => m[`score_format_game_${o}_max`] || 0),
+        max,
         winBy: m.score_format_game_one_win_by || 2,
         title: m.score_format_title || "",
+        bestOf: m.score_format_game_best_out_of || max.filter((x: number) => x > 0).length,
       };
     }
   } catch { fmt = null; }
-  fmtCache.set(uuid, fmt);
+  if (fmt) fmtCache.set(uuid, fmt);   // a failed lookup is retried next sweep
   return fmt;
+}
+
+async function pooled<T>(items: T[], n: number, fn: (x: T) => Promise<unknown>) {
+  let i = 0;
+  const worker = async () => { while (i < items.length) await fn(items[i++]); };
+  await Promise.all(Array.from({ length: Math.min(n, items.length) }, worker));
+}
+
+// match uuid -> fmt | null, for every match in one short payload
+async function resolveFormats(ms: J[]) {
+  const out = new Map<string, J>();
+  const groups = new Map<string, J[]>();
+  for (const m of ms) {
+    const u = lc(m.match_uuid), k = fmtKey(m);
+    const own = fmtCache.get(u), grp = fmtGroupCache.get(k);
+    if (own) out.set(u, own);
+    else if (grp && fmtFits(m, grp)) out.set(u, grp);
+    else { if (!groups.has(k)) groups.set(k, []); groups.get(k)!.push(m); }
+  }
+  let budget = FMT_MAX_LOOKUPS;
+  const reps = [...groups.values()].map((g) => g[0]).slice(0, budget);
+  budget -= reps.length;
+  await pooled(reps, FMT_CONCURRENCY, (m) => matchFormat(lc(m.match_uuid)));
+  const strays: J[] = [];
+  for (const [k, members] of groups) {
+    const fmt = fmtCache.get(lc(members[0].match_uuid)) || null;
+    if (fmt) fmtGroupCache.set(k, fmt);
+    for (const m of members) {
+      const u = lc(m.match_uuid);
+      if (!fmt) out.set(u, null);
+      else if (m === members[0] || fmtFits(m, fmt)) out.set(u, fmt);
+      else strays.push(m);
+    }
+  }
+  await pooled(strays.slice(0, budget), FMT_CONCURRENCY, (m) => matchFormat(lc(m.match_uuid)));
+  for (const m of strays) out.set(lc(m.match_uuid), fmtCache.get(lc(m.match_uuid)) || null);
+  return out;
 }
 
 async function sweep(date: string) {
@@ -248,14 +310,8 @@ async function sweep(date: string) {
     try {
       const ms = (await bff(
         `/api/v1/results/getMatchInfosShort?eventIds=${doubles.join(",")}&date=${date}`)).data || [];
-      let fmtBudget = 6;
-      const rows: J[] = [];
-      for (const m of ms) {
-        let fmt = fmtCache.get(lc(m.match_uuid));
-        if (fmt === undefined && fmtBudget > 0) { fmt = await matchFormat(lc(m.match_uuid)); fmtBudget--; }
-        rows.push(compactPpaMatch(m, fmt));
-      }
-      out.ppa.push({ tid, title, matches: rows });
+      const fmts = await resolveFormats(ms);
+      out.ppa.push({ tid, title, matches: ms.map((m: J) => compactPpaMatch(m, fmts.get(lc(m.match_uuid)))) });
     } catch (e) { out.errors.push(`ppa: ${(e as Error).message}`); }
   }
   return out;
