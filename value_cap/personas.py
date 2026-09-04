@@ -125,7 +125,17 @@ def fame_table():
     return out
 
 
-FAME = fame_table()
+_FAME = {}
+
+
+def fame():
+    """fame_table() for the CURRENT board (set_board rebinds D.BOARD, so this
+    is computed lazily and cached per board rather than at import)."""
+    key = frozenset(D.BOARD)
+    if key not in _FAME:
+        _FAME.clear()
+        _FAME[key] = fame_table()
+    return _FAME[key]
 
 
 class Marketing(D.Owner):
@@ -134,8 +144,9 @@ class Marketing(D.Owner):
     def __init__(self, noise, rng, gamma, k):
         super().__init__(noise, rng, gamma)
         self.k = k
+        fm = fame()
         for u in D.BOARD:
-            self.dbl[u]["v"] += k * D.SPREAD_V[D.GENDER[u]] * FAME[u]
+            self.dbl[u]["v"] += k * D.SPREAD_V[D.GENDER[u]] * fm.get(u, 0.0)
         self.rebuild()
 
 
