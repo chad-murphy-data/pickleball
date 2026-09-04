@@ -1,0 +1,202 @@
+# phase2_joint_pool.py raw outputs, 2026-09-04 (see phase2_joint_pool.md)
+
+## V basis, split+joint, full run (--value total)
+=== gender split implied by a joint $20M pool ===
+alpha=0.6   women's share 54.0%   Waters $345,632  Bright $308,341  Johns $270,919  #60M $102,727  #60F $99,947
+alpha=0.76  women's share 55.1%   Waters $414,742  Bright $358,098  Johns $303,261  #60M $89,936  #60F $87,049
+alpha=0.88  women's share 55.9%   Waters $473,268  Bright $398,621  Johns $328,273  #60M $81,486  #60F $78,625
+alpha=1.0   women's share 56.7%   Waters $537,746  Bright $441,756  Johns $353,692  #60M $73,972  #60F $71,206
+alpha=1.2   women's share 58.1%   Waters $658,804  Bright $518,998  Johns $396,351  #60M $63,385  #60F $60,881
+
+=== indifference pairs: rank sweep, then the alpha that price-matches them ===
+(same pair -> two alphas: split = HANDOFF.md's two $10M sub-pools, joint = one $20M pool)
+A  #3M/#2F anchor + 2 scrubs: ties at k=17 (P=0.498)  alpha_split=0.879  alpha_joint=0.855
+    anchor:     Hayden Patriquin(#3M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Anna Bright(#2F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Jack Munro(#17M) / Quang Duong(#18M) / Erik Lange(#60M) / Catherine Parenteau(#17F) / Vivienne David(#18F) / Martina Frantova(#60F)
+B  #10 anchor + 2 scrubs: ties at k=24 (P=0.500)  alpha_split=0.746  alpha_joint=0.703
+    anchor:     Riley Newman(#10M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Kate Fahey(#10F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Armaan Bhatia(#24M) / Dekel Bar(#25M) / Erik Lange(#60M) / Leigh Waters(#24F) / Allyce Jones(#25F) / Martina Frantova(#60F)
+C  #1 anchor + 2 scrubs: ties at k=8 (P=0.450)  alpha_split=1.470  alpha_joint=1.393
+    anchor:     Ben Johns(#1M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Anna Leigh Waters(#1F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Jay Devilliers(#8M) / Federico Staksrud(#9M) / Erik Lange(#60M) / Jackie Kawamoto(#8F) / Tyra Hurricane Black(#9F) / Martina Frantova(#60F)
+D  #2+#3 + replacement: ties at k=4 (P=0.666)  alpha_split=none  alpha_joint=none
+    anchor:     JW Johnson(#2M) / Hayden Patriquin(#3M) / Erik Lange(#60M) / Anna Bright(#2F) / Jorja Johnson(#3F) / Martina Frantova(#60F)
+    challenger: Gabriel Tardio(#4M) / Christian Alshon(#5M) / Andrei Daescu(#6M) / Jade Kawamoto(#4F) / Parris Todd(#5F) / Tina Pisnik(#6F)
+E  #5+#6 + replacement: ties at k=7 (P=0.630)  alpha_split=none  alpha_joint=none
+    anchor:     Christian Alshon(#5M) / Andrei Daescu(#6M) / Erik Lange(#60M) / Parris Todd(#5F) / Tina Pisnik(#6F) / Martina Frantova(#60F)
+    challenger: Eric Oncins(#7M) / Jay Devilliers(#8M) / Federico Staksrud(#9M) / Rachel Rohrabacher(#7F) / Jackie Kawamoto(#8F) / Tyra Hurricane Black(#9F)
+F  #1 + 2 replacements: ties at k=10 (P=0.554)  alpha_split=1.683  alpha_joint=1.757
+    anchor:     Ben Johns(#1M) / Erik Lange(#60M) / Erik Lange(#60M) / Anna Leigh Waters(#1F) / Martina Frantova(#60F) / Martina Frantova(#60F)
+    challenger: Riley Newman(#10M) / Thomas Wilson(#11M) / Nicolas Acevedo(#12M) / Kate Fahey(#10F) / Danni-Elle Townsend(#11F) / Sofia Sewing(#12F)
+
+=== must-buy test: P(best roster WITH player beats best roster WITHOUT) ===
+(crossover = alpha at which the player is fairly priced; below it they are a bargain)
+Anna Leigh Waters  split  crossover=None   a=0.6:0.676  a=0.7:0.673  a=0.8:0.663  a=0.9:0.667  a=1.0:0.702  a=1.1:0.714  a=1.2:0.700
+    at alpha=0.8: with    $994,585  Juan Benitez(#45M) / Martin Emmrich(#49M) / Mohaned Alhouni(#73M) / Anna Leigh Waters(#1F) / Mari Humberg(#13F) / Helena Jansen(#136F)
+                 without $997,529  Juan Benitez(#45M) / Martin Emmrich(#49M) / Mohaned Alhouni(#73M) / Anna Bright(#2F) / Jade Kawamoto(#4F) / Genie Bouchard(#216F)
+Anna Leigh Waters  joint  crossover=None   a=0.6:0.704  a=0.7:0.696  a=0.8:0.687  a=0.9:0.676  a=1.0:0.657  a=1.1:0.655  a=1.2:0.622
+    at alpha=1.2: with    $997,331  Tama Shimabukuro(#58M) / Martin Emmrich(#49M) / Mohaned Alhouni(#73M) / Anna Leigh Waters(#1F) / Eugenia Carolina Lopez Ascarate(#42F) / Christine Maddox(#65F)
+                 without $996,567  Christian Alshon(#5M) / Quang Duong(#18M) / Nicolas Acevedo(#12M) / Judit Castillo(#43F) / Marianna Petrei(#51F) / Lucy Kovalova(#34F)
+Anna Bright        split  crossover=1.07   a=0.6:0.325  a=0.7:0.327  a=0.8:0.337  a=0.9:0.333  a=1.0:0.341  a=1.1:0.569  a=1.2:0.556
+    at alpha=1.2: with    $999,121  Dekel Bar(#25M) / Pablo Tellez(#39M) / Oliver Frank(#92M) / Anna Bright(#2F) / Vivienne David(#18F) / Kaitlyn Christian(#56F)
+                 without $999,408  Dekel Bar(#25M) / Pablo Tellez(#39M) / Oliver Frank(#92M) / Jackie Kawamoto(#8F) / Sofia Sewing(#12F) / Lea Jansen(#44F)
+Anna Bright        joint  crossover=1.071   a=0.6:0.356  a=0.7:0.322  a=0.8:0.324  a=0.9:0.316  a=1.0:0.359  a=1.1:0.557  a=1.2:0.546
+    at alpha=1.2: with    $997,211  Augustus Ge(#28M) / Yuta Funemizu(#23M) / Christopher Haworth(#66M) / Anna Bright(#2F) / Lucy Kovalova(#34F) / Genie Bouchard(#216F)
+                 without $995,767  Thomas Wilson(#11M) / Bruno Faletto(#22M) / Christopher Haworth(#66M) / Bobbi Oshiro(#15F) / Meghan Dizon(#22F) / Brooke Buckner(#36F)
+Ben Johns          split  crossover=None   a=0.6:0.292  a=0.7:0.309  a=0.8:0.305  a=0.9:0.305  a=1.0:0.298  a=1.1:0.441  a=1.2:0.420
+    at alpha=1.1: with    $997,732  Ben Johns(#1M) / Nicolas Acevedo(#12M) / Oliver Frank(#92M) / Judit Castillo(#43F) / Lucy Kovalova(#34F) / Kiora Kunimoto(#66F)
+                 without $999,444  Dekel Bar(#25M) / George Wall(#30M) / Alexander Crum(#404M) / Rachel Rohrabacher(#7F) / Danni-Elle Townsend(#11F) / Lea Jansen(#44F)
+Ben Johns          joint  crossover=1.086   a=0.6:0.358  a=0.7:0.357  a=0.8:0.351  a=0.9:0.377  a=1.0:0.377  a=1.1:0.520  a=1.2:0.503
+    at alpha=1.2: with    $998,836  Ben Johns(#1M) / Vanshik Kapadia(#21M) / Matthew Barlow(#117M) / Jillian Braverman(#27F) / Yana Newell(#26F) / Yufei Long(#49F)
+                 without $997,425  Nicolas Acevedo(#12M) / Vanshik Kapadia(#21M) / Christopher Haworth(#66M) / Sofia Sewing(#12F) / Leigh Waters(#24F) / Brooke Buckner(#36F)
+
+=== cheapest legal roster (3M+3F from the priced pool) vs a $500k min-spend rule ===
+split alpha=0.6: $627,130  redundant
+split alpha=0.8: $535,132  redundant
+split alpha=1.0: $458,211  BINDS
+split alpha=1.2: $395,088  BINDS
+joint alpha=0.6: $622,789  redundant
+joint alpha=0.8: $528,910  redundant
+joint alpha=1.0: $450,531  BINDS
+joint alpha=1.2: $386,517  BINDS
+
+## phi basis, pairs (--quick --value shapley)
+value source for pricing: shapley  (pool = same 120 players either way)
+
+=== gender split implied by a joint $20M pool ===
+alpha=0.6   women's share 55.4%   Waters $511,267  Bright $405,825  Johns $344,927  #60M $59,689  #60F $79,553
+alpha=0.76  women's share 56.2%   Waters $655,590  Bright $487,350  Johns $395,595  #60M $48,361  #60F $65,130
+alpha=0.88  women's share 56.9%   Waters $781,354  Bright $552,786  Johns $433,385  #60M $42,632  #60F $56,778
+alpha=1.0   women's share 57.7%   Waters $922,739  Bright $621,185  Johns $470,316  #60M $38,598  #60F $50,193
+alpha=1.2   women's share 59.0%   Waters $1,194,138  Bright $739,910  Johns $528,485  #60M $34,430  #60F $42,341
+
+=== indifference pairs: rank sweep, then the alpha that price-matches them ===
+(same pair -> two alphas: split = HANDOFF.md's two $10M sub-pools, joint = one $20M pool)
+A  #3M/#2F anchor + 2 scrubs: ties at k=17 (P=0.498)  alpha_split=0.621  alpha_joint=0.602
+    anchor:     Hayden Patriquin(#3M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Anna Bright(#2F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Jack Munro(#17M) / Quang Duong(#18M) / Erik Lange(#60M) / Catherine Parenteau(#17F) / Vivienne David(#18F) / Martina Frantova(#60F)
+B  #10 anchor + 2 scrubs: ties at k=24 (P=0.500)  alpha_split=0.546  alpha_joint=0.514
+    anchor:     Riley Newman(#10M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Kate Fahey(#10F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Armaan Bhatia(#24M) / Dekel Bar(#25M) / Erik Lange(#60M) / Leigh Waters(#24F) / Allyce Jones(#25F) / Martina Frantova(#60F)
+C  #1 anchor + 2 scrubs: ties at k=8 (P=0.450)  alpha_split=0.947  alpha_joint=0.893
+    anchor:     Ben Johns(#1M) / Tyler Loong(#79M) / Wade Heerboth(#80M) / Anna Leigh Waters(#1F) / Katerina Stewart(#79F) / Emily Cederquist(#80F)
+    challenger: Jay Devilliers(#8M) / Federico Staksrud(#9M) / Erik Lange(#60M) / Jackie Kawamoto(#8F) / Tyra Hurricane Black(#9F) / Martina Frantova(#60F)
+F  #1 + 2 replacements: ties at k=10 (P=0.554)  alpha_split=1.221  alpha_joint=1.210
+    anchor:     Ben Johns(#1M) / Erik Lange(#60M) / Erik Lange(#60M) / Anna Leigh Waters(#1F) / Martina Frantova(#60F) / Martina Frantova(#60F)
+    challenger: Riley Newman(#10M) / Thomas Wilson(#11M) / Nicolas Acevedo(#12M) / Kate Fahey(#10F) / Danni-Elle Townsend(#11F) / Sofia Sewing(#12F)
+
+
+## must-buy sweeps (--must-buy), one block per job
+--- shapley_30000_joint_Anna_Bright
+Anna Bright        shapley joint floor=30000  crossover=None   a=0.6:0.414  a=0.7:0.383  a=0.8:0.379  a=0.9:0.497  a=1.0:0.485  a=1.1:0.449  a=1.2:0.430  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=0.9: with    $997,183  Phuc Huynh(#14M) / Joseph Wild(#35M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Eugenia Carolina Lopez Ascarate(#42F) / Helena Jansen(#136F)
+                 without $997,632  Ben Johns(#1M) / Yuta Funemizu(#23M) / Zane Ford(#191M) / Bobbi Oshiro(#15F) / Jessie Irvine(#32F) / Genie Bouchard(#216F)
+--- shapley_30000_joint_Anna_Leigh_Waters
+Anna Leigh Waters  shapley joint floor=30000  crossover=None   a=0.6:0.642  a=0.7:0.647  a=0.8:0.597  a=0.9:INFEAS  a=1.0:INFEAS  a=1.1:INFEAS  a=1.2:INFEAS  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=0.8: with    $995,461  Zane Ford(#191M) / Alex Emery(#40M) / Grayson Goldin(#98M) / Anna Leigh Waters(#1F) / Allie Reichert(#39F) / Kiora Kunimoto(#66F)
+                 without $993,873  Ben Johns(#1M) / Federico Staksrud(#9M) / Grayson Goldin(#98M) / Judit Castillo(#43F) / Eugenia Carolina Lopez Ascarate(#42F) / Genie Bouchard(#216F)
+--- shapley_30000_joint_Ben_Johns
+Ben Johns          shapley joint floor=30000  crossover=0.897   a=0.6:0.385  a=0.7:0.395  a=0.8:0.428  a=0.9:0.503  a=1.0:0.481  a=1.1:0.471  a=1.2:0.467  a=1.4:0.452  a=1.6:0.424
+    at alpha=0.9: with    $997,632  Ben Johns(#1M) / Yuta Funemizu(#23M) / Zane Ford(#191M) / Bobbi Oshiro(#15F) / Jessie Irvine(#32F) / Genie Bouchard(#216F)
+                 without $997,183  Phuc Huynh(#14M) / Joseph Wild(#35M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Eugenia Carolina Lopez Ascarate(#42F) / Helena Jansen(#136F)
+--- shapley_30000_joint_Hayden_Patriquin
+Hayden Patriquin   shapley joint floor=30000  crossover=None   a=0.6:0.371  a=0.7:0.384  a=0.8:0.384  a=0.9:0.497  a=1.0:0.485  a=1.1:0.487  a=1.2:0.492  a=1.4:0.479  a=1.6:0.466
+    at alpha=0.9: with    $997,361  Hayden Patriquin(#3M) / George Wall(#30M) / Zane Ford(#191M) / Sofia Sewing(#12F) / Lucy Kovalova(#34F) / Genie Bouchard(#216F)
+                 without $997,813  Phuc Huynh(#14M) / Joseph Wild(#35M) / Matthew Barlow(#117M) / Parris Todd(#5F) / Meghan Dizon(#22F) / Helena Jansen(#136F)
+--- shapley_30000_joint_JW_Johnson
+JW Johnson         shapley joint floor=30000  crossover=None   a=0.6:0.373  a=0.7:0.388  a=0.8:0.407  a=0.9:0.490  a=1.0:0.492  a=1.1:0.484  a=1.2:0.490  a=1.4:0.476  a=1.6:0.457
+    at alpha=1.0: with    $999,357  JW Johnson(#2M) / Yuta Funemizu(#23M) / Zane Ford(#191M) / Sahra Dennehy(#23F) / Allyce Jones(#25F) / Seone Mendez(#87F)
+                 without $999,541  Riley Newman(#10M) / Thomas Wilson(#11M) / Oliver Frank(#92M) / Catherine Parenteau(#17F) / Etta Tuionetoa(#19F) / Helena Jansen(#136F)
+--- shapley_30000_joint_Jorja_Johnson
+Jorja Johnson      shapley joint floor=30000  crossover=None   a=0.6:0.406  a=0.7:0.384  a=0.8:0.389  a=0.9:0.489  a=1.0:0.484  a=1.1:0.478  a=1.2:0.489  a=1.4:0.456  a=1.6:0.429
+    at alpha=1.2: with    $995,865  Armaan Bhatia(#24M) / Christopher Haworth(#66M) / George Wall(#30M) / Jorja Johnson(#3F) / Allyce Jones(#25F) / Katerina Stewart(#79F)
+                 without $997,268  Phuc Huynh(#14M) / Nicolas Acevedo(#12M) / Jaume Martinez Vich(#41M) / Catherine Parenteau(#17F) / Ewa Radzikowska(#21F) / Lea Jansen(#44F)
+--- shapley_30000_joint_Kate_Fahey
+Kate Fahey         shapley joint floor=30000  crossover=None   a=0.6:0.412  a=0.7:0.391  a=0.8:0.386  a=0.9:0.486  a=1.0:0.488  a=1.1:0.485  a=1.2:0.500  a=1.4:0.464  a=1.6:0.455
+    at alpha=1.2: with    $996,266  Bruno Faletto(#22M) / Vanshik Kapadia(#21M) / Christopher Haworth(#66M) / Kate Fahey(#10F) / Yana Newell(#26F) / Helena Jansen(#136F)
+                 without $997,268  Phuc Huynh(#14M) / Nicolas Acevedo(#12M) / Jaume Martinez Vich(#41M) / Catherine Parenteau(#17F) / Ewa Radzikowska(#21F) / Lea Jansen(#44F)
+--- shapley_30000_joint_Riley_Newman
+Riley Newman       shapley joint floor=30000  crossover=0.928   a=0.6:0.478  a=0.7:0.387  a=0.8:0.397  a=0.9:0.497  a=1.0:0.508  a=1.1:0.515  a=1.2:0.519  a=1.4:0.520  a=1.6:0.512
+    at alpha=0.9: with    $999,476  Riley Newman(#10M) / Dylan Frazier(#27M) / Zane Ford(#191M) / Jorja Johnson(#3F) / Lucy Kovalova(#34F) / Helena Jansen(#136F)
+                 without $996,227  Dylan Frazier(#27M) / Alex Emery(#40M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Alix Truong(#28F) / Genie Bouchard(#216F)
+--- shapley_30000_split_Anna_Bright
+Anna Bright        shapley split floor=30000  crossover=0.616   a=0.6:0.525  a=0.7:0.373  a=0.8:0.398  a=0.9:0.408  a=1.0:0.494  a=1.1:0.515  a=1.2:0.509  a=1.4:0.449  a=1.6:0.361
+    at alpha=1.0: with    $995,416  Donald Young(#48M) / Juan Benitez(#45M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Mari Humberg(#13F) / Genie Bouchard(#216F)
+                 without $998,631  Donald Young(#48M) / Juan Benitez(#45M) / Matthew Barlow(#117M) / Parris Todd(#5F) / Jade Kawamoto(#4F) / Helena Jansen(#136F)
+--- shapley_30000_split_Anna_Leigh_Waters
+Anna Leigh Waters  shapley split floor=30000  crossover=0.998   a=0.6:0.678  a=0.7:0.627  a=0.8:0.602  a=0.9:0.583  a=1.0:0.498  a=1.1:INFEAS  a=1.2:INFEAS  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=1.0: with    $993,543  Matthew Barlow(#117M) / Grayson Goldin(#98M) / Martin Emmrich(#49M) / Anna Leigh Waters(#1F) / Eugenia Carolina Lopez Ascarate(#42F) / Helena Jansen(#136F)
+                 without $998,631  Donald Young(#48M) / Juan Benitez(#45M) / Matthew Barlow(#117M) / Parris Todd(#5F) / Jade Kawamoto(#4F) / Helena Jansen(#136F)
+--- shapley_30000_split_Ben_Johns
+Ben Johns          shapley split floor=30000  crossover=None   a=0.6:0.322  a=0.7:0.340  a=0.8:0.319  a=0.9:0.325  a=1.0:0.404  a=1.1:0.412  a=1.2:0.380  a=1.4:0.302  a=1.6:INFEAS
+    at alpha=1.1: with    $999,501  Ben Johns(#1M) / Vanshik Kapadia(#21M) / Grayson Goldin(#98M) / Samantha Parker(#35F) / Maggie Brascia(#33F) / Katerina Stewart(#79F)
+                 without $996,988  Jack Munro(#17M) / Yuta Funemizu(#23M) / Christopher Haworth(#66M) / Sofia Sewing(#12F) / Vivienne David(#18F) / Lea Jansen(#44F)
+--- shapley_5000_joint_Anna_Bright
+Anna Bright        shapley joint floor=5000  crossover=0.892   a=0.6:0.421  a=0.7:0.381  a=0.8:0.391  a=0.9:0.510  a=1.0:0.475  a=1.1:0.452  a=1.2:0.423  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=0.9: with    $997,597  Pablo Tellez(#39M) / Alex Emery(#40M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Vivienne David(#18F) / Helena Jansen(#136F)
+                 without $995,670  Max Freeman(#42M) / George Wall(#30M) / Matthew Barlow(#117M) / Kate Fahey(#10F) / Danni-Elle Townsend(#11F) / Genie Bouchard(#216F)
+--- shapley_5000_joint_Anna_Leigh_Waters
+Anna Leigh Waters  shapley joint floor=5000  crossover=0.867   a=0.6:0.658  a=0.7:0.641  a=0.8:0.596  a=0.9:0.454  a=1.0:INFEAS  a=1.1:INFEAS  a=1.2:INFEAS  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=0.9: with    $993,101  Zane Ford(#191M) / Grayson Goldin(#98M) / Hoang Nam Ly(#102M) / Anna Leigh Waters(#1F) / Callie Smith(#55F) / Helena Jansen(#136F)
+                 without $994,780  Connor Garnett(#16M) / Anderson Scarpa(#33M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Allie Reichert(#39F) / Helena Jansen(#136F)
+--- shapley_5000_joint_Ben_Johns
+Ben Johns          shapley joint floor=5000  crossover=None   a=0.6:0.391  a=0.7:0.404  a=0.8:0.434  a=0.9:0.496  a=1.0:0.487  a=1.1:0.458  a=1.2:0.478  a=1.4:0.461  a=1.6:0.425
+    at alpha=0.9: with    $992,609  Ben Johns(#1M) / Yuta Funemizu(#23M) / Zane Ford(#191M) / Vivian Glozman(#14F) / Allie Reichert(#39F) / Genie Bouchard(#216F)
+                 without $998,761  Quang Duong(#18M) / Juan Benitez(#45M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Lucy Kovalova(#34F) / Genie Bouchard(#216F)
+--- shapley_5000_joint_Hayden_Patriquin
+Hayden Patriquin   shapley joint floor=5000  crossover=None   a=0.6:0.396  a=0.7:0.396  a=0.8:0.392  a=0.9:0.492  a=1.0:0.485  a=1.1:0.469  a=1.2:0.492  a=1.4:0.482  a=1.6:0.464
+    at alpha=1.2: with    $993,860  Hayden Patriquin(#3M) / Dekel Bar(#25M) / Christopher Haworth(#66M) / Meghan Dizon(#22F) / Layne Sleeth(#29F) / Kaitlyn Christian(#56F)
+                 without $999,410  Noe Khlif(#19M) / Nicolas Acevedo(#12M) / Christopher Haworth(#66M) / Mari Humberg(#13F) / Ewa Radzikowska(#21F) / Lea Jansen(#44F)
+--- shapley_5000_joint_JW_Johnson
+JW Johnson         shapley joint floor=5000  crossover=0.899   a=0.6:0.376  a=0.7:0.398  a=0.8:0.405  a=0.9:0.501  a=1.0:0.492  a=1.1:0.467  a=1.2:0.491  a=1.4:0.480  a=1.6:0.456
+    at alpha=0.9: with    $996,788  JW Johnson(#2M) / Anderson Scarpa(#33M) / Zane Ford(#191M) / Sofia Sewing(#12F) / Maggie Brascia(#33F) / Genie Bouchard(#216F)
+                 without $998,600  Quang Duong(#18M) / Augustus Ge(#28M) / Grayson Goldin(#98M) / Kate Fahey(#10F) / Meghan Dizon(#22F) / Helena Jansen(#136F)
+--- shapley_5000_joint_Jorja_Johnson
+Jorja Johnson      shapley joint floor=5000  crossover=None   a=0.6:0.413  a=0.7:0.381  a=0.8:0.385  a=0.9:0.491  a=1.0:0.489  a=1.1:0.469  a=1.2:0.481  a=1.4:0.464  a=1.6:0.417
+    at alpha=0.9: with    $997,561  Federico Staksrud(#9M) / Anderson Scarpa(#33M) / Matthew Barlow(#117M) / Jorja Johnson(#3F) / Maggie Brascia(#33F) / Helena Jansen(#136F)
+                 without $994,780  Connor Garnett(#16M) / Anderson Scarpa(#33M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Allie Reichert(#39F) / Helena Jansen(#136F)
+--- shapley_5000_joint_Kate_Fahey
+Kate Fahey         shapley joint floor=5000  crossover=None   a=0.6:0.415  a=0.7:0.397  a=0.8:0.392  a=0.9:0.493  a=1.0:0.487  a=1.1:0.482  a=1.2:0.487  a=1.4:0.477  a=1.6:0.447
+    at alpha=0.9: with    $995,670  Max Freeman(#42M) / George Wall(#30M) / Matthew Barlow(#117M) / Kate Fahey(#10F) / Danni-Elle Townsend(#11F) / Genie Bouchard(#216F)
+                 without $996,630  Max Freeman(#42M) / George Wall(#30M) / Matthew Barlow(#117M) / Anna Bright(#2F) / Etta Tuionetoa(#19F) / Helena Jansen(#136F)
+--- shapley_5000_joint_Riley_Newman
+Riley Newman       shapley joint floor=5000  crossover=0.952   a=0.6:0.487  a=0.7:0.375  a=0.8:0.402  a=0.9:0.491  a=1.0:0.509  a=1.1:0.500  a=1.2:0.514  a=1.4:0.519  a=1.6:0.524
+    at alpha=1.1: with    $999,049  Riley Newman(#10M) / Robert Slutsky(#15M) / Oliver Frank(#92M) / Catherine Parenteau(#17F) / Etta Tuionetoa(#19F) / Kaitlyn Christian(#56F)
+                 without $999,502  Robert Slutsky(#15M) / Thomas Wilson(#11M) / Christopher Haworth(#66M) / Catherine Parenteau(#17F) / Etta Tuionetoa(#19F) / Kaitlyn Christian(#56F)
+--- total_5000_joint_Anna_Bright
+Anna Bright        total   joint floor=5000  crossover=1.07   a=0.6:0.327  a=0.7:0.329  a=0.8:0.314  a=0.9:0.311  a=1.0:0.357  a=1.1:0.561  a=1.2:0.532  a=1.4:0.496  a=1.6:0.451
+    at alpha=1.4: with    $997,549  Dekel Bar(#25M) / Christopher Haworth(#66M) / Luca Mack(#47M) / Anna Bright(#2F) / Maggie Brascia(#33F) / Kiora Kunimoto(#66F)
+                 without $997,735  Connor Garnett(#16M) / Thomas Wilson(#11M) / Jaume Martinez Vich(#41M) / Bobbi Oshiro(#15F) / Ewa Radzikowska(#21F) / Judit Castillo(#43F)
+--- total_5000_joint_Anna_Leigh_Waters
+Anna Leigh Waters  total   joint floor=5000  crossover=None   a=0.6:0.673  a=0.7:0.687  a=0.8:0.687  a=0.9:0.654  a=1.0:0.663  a=1.1:0.649  a=1.2:0.576  a=1.4:INFEAS  a=1.6:INFEAS
+    at alpha=1.2: with    $993,878  Zane Ford(#191M) / Juan Benitez(#45M) / Tama Shimabukuro(#58M) / Anna Leigh Waters(#1F) / Helena Jansen(#136F) / Christine Maddox(#65F)
+                 without $996,740  Robert Slutsky(#15M) / Nicolas Acevedo(#12M) / Christopher Haworth(#66M) / Bobbi Oshiro(#15F) / Allyce Jones(#25F) / Brooke Buckner(#36F)
+--- total_5000_joint_Ben_Johns
+Ben Johns          total   joint floor=5000  crossover=1.086   a=0.6:0.324  a=0.7:0.369  a=0.8:0.340  a=0.9:0.374  a=1.0:0.368  a=1.1:0.522  a=1.2:0.522  a=1.4:0.498  a=1.6:0.480
+    at alpha=1.4: with    $992,331  Ben Johns(#1M) / Nicolas Acevedo(#12M) / Christopher Haworth(#66M) / Yana Newell(#26F) / Estee Widdershoven(#37F) / Marianna Petrei(#51F)
+                 without $997,735  Connor Garnett(#16M) / Thomas Wilson(#11M) / Jaume Martinez Vich(#41M) / Bobbi Oshiro(#15F) / Ewa Radzikowska(#21F) / Judit Castillo(#43F)
+
+## fine alpha scan, phi joint, budget grid $5k (scratch waters_fine.py: must_buy at alpha 0.80-0.92)
+Anna Leigh Waters  alpha=0.80 P=0.605  Waters $695,806  with=Anderson Scarpa(#33M) / Rafa Hewett(#50M) / Matthew Barlow(#117M) / Anna Leigh Waters(#1F) / Genie Erokhina(#48F) / Helena Jansen(#136F)
+Anna Leigh Waters  alpha=0.82 P=0.588  Waters $716,549  with=Zane Ford(#191M) / Juan Benitez(#45M) / Grayson Goldin(#98M) / Anna Leigh Waters(#1F) / Eugenia Carolina Lopez Ascarate(#42F) / Katerina Stewart(#79F)
+Anna Leigh Waters  alpha=0.84 P=0.589  Waters $737,721  with=Zane Ford(#191M) / Alex Emery(#40M) / Grayson Goldin(#98M) / Anna Leigh Waters(#1F) / Allie Reichert(#39F) / Helena Jansen(#136F)
+Anna Leigh Waters  alpha=0.86 P=0.550  Waters $759,321  with=Zane Ford(#191M) / Juan Benitez(#45M) / Grayson Goldin(#98M) / Anna Leigh Waters(#1F) / Genie Erokhina(#48F) / Helena Jansen(#136F)
+Anna Leigh Waters  alpha=0.88 P=0.508  Waters $781,354  with=Zane Ford(#191M) / Grayson Goldin(#98M) / Mohaned Alhouni(#73M) / Anna Leigh Waters(#1F) / Genie Erokhina(#48F) / Helena Jansen(#136F)
+Anna Leigh Waters  alpha=0.90 P=0.454  Waters $803,821  with=Zane Ford(#191M) / Grayson Goldin(#98M) / Hoang Nam Ly(#102M) / Anna Leigh Waters(#1F) / Callie Smith(#55F) / Helena Jansen(#136F)
+Anna Leigh Waters  alpha=0.92 P=INFEAS  Waters $826,725  with=-
+Hayden Patriquin   alpha=0.80 P=0.394  Waters $695,806  with=Hayden Patriquin(#3M) / Anderson Scarpa(#33M) / Zane Ford(#191M) / Rachel Rohrabacher(#7F) / Allie Reichert(#39F) / Helena Jansen(#136F)
+Hayden Patriquin   alpha=0.82 P=0.405  Waters $716,549  with=Hayden Patriquin(#3M) / Zane Ford(#191M) / Juan Benitez(#45M) / Kate Fahey(#10F) / Genie Erokhina(#48F) / Helena Jansen(#136F)
+Hayden Patriquin   alpha=0.84 P=0.417  Waters $737,721  with=Hayden Patriquin(#3M) / Max Freeman(#42M) / Zane Ford(#191M) / Rachel Rohrabacher(#7F) / Eugenia Carolina Lopez Ascarate(#42F) / Helena Jansen(#136F)
+Hayden Patriquin   alpha=0.86 P=0.444  Waters $759,321  with=Hayden Patriquin(#3M) / Anderson Scarpa(#33M) / Zane Ford(#191M) / Jackie Kawamoto(#8F) / Eugenia Carolina Lopez Ascarate(#42F) / Genie Bouchard(#216F)
+Hayden Patriquin   alpha=0.88 P=0.491  Waters $781,354  with=Hayden Patriquin(#3M) / Anderson Scarpa(#33M) / Zane Ford(#191M) / Jackie Kawamoto(#8F) / Allie Reichert(#39F) / Helena Jansen(#136F)
+Hayden Patriquin   alpha=0.90 P=0.497  Waters $803,821  with=Hayden Patriquin(#3M) / Anderson Scarpa(#33M) / Zane Ford(#191M) / Jackie Kawamoto(#8F) / Eugenia Carolina Lopez Ascarate(#42F) / Helena Jansen(#136F)
+Hayden Patriquin   alpha=0.92 P=0.501  Waters $826,725  with=Hayden Patriquin(#3M) / Anderson Scarpa(#33M) / Zane Ford(#191M) / Tyra Hurricane Black(#9F) / Eugenia Carolina Lopez Ascarate(#42F) / Helena Jansen(#136F)
+
+## injection test, alpha=1.0 phi joint: one player's price multiplied
+  Hayden Patriquin   x0.5: price $208,850  P(with beats without)=0.665
+  Hayden Patriquin   x1.0: price $417,701  P(with beats without)=0.485
+  Hayden Patriquin   x1.5: price $626,551  P(with beats without)=0.339
+  Riley Newman       x0.5: price $125,731  P(with beats without)=0.587
+  Riley Newman       x1.0: price $251,461  P(with beats without)=0.508
+  Riley Newman       x1.5: price $377,192  P(with beats without)=0.423
+## K robustness (candidates per gender per budget split), Waters alpha=0.8 phi joint: K=25 P=0.597, K=80 P=0.600

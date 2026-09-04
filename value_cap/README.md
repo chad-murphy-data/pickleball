@@ -6,9 +6,11 @@ published (league price). Surplus is the headline stat. Consumes
 PICKLES (`data/v2_players.csv` etc.) and, where useful, MOTSON — does
 not rebuild either.
 
-**Read `HANDOFF.md` first** — dated 2026-09-04, it's the live status
-snapshot and next-thread to-do for the price-fitting work in progress.
-The rest of this README and the phase docs below are the layered record
+**Read `HANDOFF.md` first** — dated 2026-09-04 (evening), it's the live
+status snapshot and next-thread to-do. `phase2_joint_pool.md` is the
+current Phase 2 result (joint pool, context-averaged value `phi` from
+`shapley_value.py`, the must-buy test, and the Waters window). The rest
+of this README and the phase docs below are the layered record
 underneath it.
 
 Read `phase0_bench_value.md` first for the phase-by-phase background. It's a scoping document, not a

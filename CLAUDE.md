@@ -619,22 +619,26 @@ draws yet (planned as a Monte Carlo layer, not a picked rate), no real
 roster construction, replacement level uses an assumed 20-team count
 pending confirmation.
 
-Phase 2 (price fitting) is live, as of 2026-09-04 (full detail in
-`value_cap/HANDOFF.md`): two rank-sweep-discovered "indifference pairs"
-(searched for, not hand-picked) point to alpha ≈ 0.76-0.88 (sub-linear —
-a star DISCOUNT relative to proportional, not a premium). A naive test
-made Anna Leigh Waters look unfixably underpriced at any legal price,
-but that was an artifact of comparing her to a FIXED alternative roster
-instead of one that reoptimizes at the real prices — done properly, the
-same ~0.76-0.88 alpha range handles her too (crossover ≈ 0.96-0.98). A
-$500k minimum-team-spend rule (Chad's recollection, needs confirmation
-like Phase 0's other rules items) only binds at alpha ≳0.85-1.0; below
-that it's redundant. Floor/min-spend and alpha answer different
-questions (floor stops scrub-stacking, alpha shapes competitive
-balance) and shouldn't be tuned as if either one fixes both. Live open
-thread: the $10M-per-gender subpool is an untested 50/50 split of the
-20-team × $1M league total — next step is testing whether an uneven
-split changes any of the above.
+Phase 2 (price fitting), as of 2026-09-04 evening (full detail in
+`value_cap/HANDOFF.md` + `value_cap/phase2_joint_pool.md`): the two
+remaining arbitrary inputs were tested and replaced. (a) One joint $20M
+pool instead of two $10M gender sub-pools — the split falls out at ~57/43
+women, and the 50/50 split had overpriced every man ~16% (Johns a
+must-avoid at every alpha). (b) Phase 1's replacement-context V is the
+wrong pricing basis (the #60 partner's weakest-link gap damps stars in
+proportion to value); replaced by phi = Shapley-style context-averaged
+value (`value_cap/shapley_value.py`). Instrument = the must-buy test
+(best $1M roster with vs without a player, both best-responding;
+injection-checked). Result: on phi + joint there are two regimes and ONE
+player decides which — below alpha ≈ 0.88 "buy Waters" is a dominant
+strategy (her phi is 5.5% of the league vs 5% per team), above 0.91 she
+is unrosterable, and in between everyone #1-#10 is fair (0.47-0.51) out
+to alpha 1.6. The "star discount" is precisely the discount that makes
+the best player rosterable; nothing else needs it. The floor is cosmetic
+(any roster legal iff value share ≤ 1/20, every floor). Morning-session
+indifference pairs A/B anchored on star+scrubs builds — don't fit alpha
+to them. Next: Phase 3 site off the alpha≈0.89 list, injury/absence
+Monte Carlo (sweep the rate), confirm 20 teams + $500k min-spend.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
