@@ -82,3 +82,12 @@ Prices: alpha = 1.0, one joint $20M pool, $30k floor, **Anna Leigh Waters franch
 | **Two anchors** | 43 | 44 | 44 | 45 | 46 | 48 | -- | 51 | 75 | 45.7 |
 | **Deep six** | 43 | 44 | 44 | 45 | 44 | 44 | 49 | -- | 76 | 44.6 |
 | **Cheapskate** | 20 | 20 | 20 | 20 | 21 | 26 | 25 | 24 | -- | 22.0 |
+
+## Optimizer-width check (k = 60 vs the k = 20 used above)
+
+Rebuilt the unconstrained and Waters rosters against the final field above with three times the candidate width (60 triples per gender per budget split instead of 20). Same ordering, same level:
+
+- Unconstrained: 52.9% vs field (k=20 roster: 52.0%), spend $998,218 -- Jay Devilliers, Nicolas Acevedo, Bobbi Oshiro, Ewa Radzikowska starting, Grayson Goldin and Genie Bouchard on the bench. That is the Balanced-four shape (53.0% above), so the wider search converges on the same build the constrained strategy already found; no hidden star-led roster appears.
+- Waters: 50.25% vs field (k=20: 50.0%), same five-cheap-teammates shape (Alhouni, Ly, Goldin, Smith, Campbell).
+
+The k=20 grid is not what holds the star builds down.
