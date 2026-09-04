@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import pickle
 import random
 import statistics
 import sys
@@ -229,6 +230,17 @@ def run(args):
     return price, stars, rows
 
 
+READS = """## What this says (hand-written against the seed-1 grid; re-check the numbers above if the grid is re-run)
+
+- **Overvaluing one gender costs nothing.** Stretch the men's or women's gaps to double their real size and the persona's teams still win 47-50% with a normal title shot; the quants around them do not move. The price list already carries the ranking, so a lopsided belief about which gender matters changes a pick or two at the margin, not the roster.
+- **The marketing owner comes out slightly AHEAD (51-52% win, ~6% title).** At these prices the big names are fairly priced, so preferring them is free -- and the fame table is built from real doubles rank, so a fame bias is partly a bias toward the truth. Read it as "chasing names at fair prices does not hurt you", not as "fame beats analysis".
+- **The $500k cheapskate is the persona that breaks the league.** Alone, the team wins 21% with no title shot. Five of them push the parity spread from 4.4 to 13.7 points and hand the other fifteen a 58% win rate; all twenty, and Waters, Johns, Bright and the top of the list are never drafted (no one can afford them). This is the case for the $500k min-spend rule: it is not about fairness to the cheap team, it is that unspent money makes the whole league worse.
+- **Loyalty is cheap in small doses and expensive in large ones.** A light preference for 2026 teammates (lam 0.05) is free; at lam 0.15 it costs ~1.5 points of win rate; at lam 0.5 (a full real six worth half a win of belief) the team drops to 42% / 2% title and leaves $110k unspent because the teammates it wants do not fill a legal roster efficiently.
+- **Bargains first is the worst strategy that looks sensible.** Spending rounds 1-3 on <=$120k players wins 24% with no title shot, and only $600k gets spent: in a 20-team snake the whole top 60 is gone before round 4, so the money has nothing left to buy. Raising the threshold to $250k gets 39%. The lesson is that in a draft, waiting is the expensive move -- the stars are gone, not overpriced.
+- **Nothing here dents the pick-1 team.** Waters' team wins 63-68% in every cell it is drafted; the only cells that move it are the ones where personas leave the league lopsided (five cheapskates 68.5%).
+"""
+
+
 def render(price, stars, rows, args, out):
     L = ["# Owner personas in the draft", "",
          f"Shipped tag list (alpha 1, joint pool, Waters tagged at ${price[stars[0]]/1e3:,.0f}k), snake draft on the "
@@ -244,24 +256,29 @@ def render(price, stars, rows, args, out):
         k = r["kinds"].get(label if count else "quant")
         q = r["kinds"].get("quant")
         und = [u for u, c in r["undrafted"].items() if D.POOL_RANK[u] <= 30]
-        st = {u: statistics.mean(r["stars"][u]["exp"]) if r["stars"][u]["exp"] else float("nan") for u in stars}
+        st = {u: (f"{100*statistics.mean(r['stars'][u]['exp']):.1f}%" if r["stars"][u]["exp"] else "not drafted")
+              for u in stars}
         L.append(f"| {label} | {strength} | {count if count else '--'} | "
                  f"{100*statistics.mean(k['exp']):.1f}% | {100*statistics.mean(k['title']):.1f}% | "
                  f"${statistics.mean(k['spend'])/1e3:,.0f}k | "
                  + (f"{100*statistics.mean(q['exp']):.1f}% | {100*statistics.mean(q['title']):.1f}% | " if q and count else "-- | -- | ")
-                 + f"{100*r['spread']:.1f} pts | {100*st[stars[0]]:.1f}% | {100*st[stars[1]]:.1f}% | {100*st[stars[2]]:.1f}% | "
+                 + f"{100*r['spread']:.1f} pts | {st[stars[0]]} | {st[stars[1]]} | {st[stars[2]]} | "
                  + (", ".join(f"{NAME[u]} #{D.POOL_RANK[u]}{D.GENDER[u]}" for u in sorted(und, key=lambda u: D.POOL_RANK[u])[:4])
                     + (f" (+{len(und)-4})" if len(und) > 4 else "") if und else "none") + " |")
     L += ["", "## Who each persona drafts", "",
-          "Most-drafted players per persona (share of that persona's rosters that carried them), one row per strength "
-          "at the k = 1 cell (the persona among 19 quants) and the all-20 cell.", ""]
+          "Players the persona carries more often than the quants in the same league (share of the persona's "
+          "rosters minus share of the quants' rosters, percentage points), k = 1 cells. The all-20 cells are "
+          "uninformative here (every drafted player is on exactly one roster per draft).", ""]
     for label, strength, count, r in rows:
-        if not count or count not in (1, D.N_TEAMS):
+        if count != 1:
             continue
         k = r["kinds"][label]
-        top = sorted(k["picks"].items(), key=lambda kv: (-kv[1], price[kv[0]]))[:8]
-        L.append(f"- **{label}**, {strength}, x{count}: " + ", ".join(
-            f"{NAME[u]} ${price[u]/1e3:,.0f}k ({100*c/k['n']:.0f}%)" for u, c in top))
+        q = r["kinds"]["quant"]
+        diff = {u: 100 * (c / k["n"] - q["picks"].get(u, 0) / q["n"]) for u, c in k["picks"].items()}
+        top = sorted(diff.items(), key=lambda kv: (-kv[1], price[kv[0]]))[:8]
+        L.append(f"- **{label}**, {strength}: " + ", ".join(
+            f"{NAME[u]} ${price[u]/1e3:,.0f}k (+{d:.0f}pp)" for u, d in top if d > 0))
+    L += ["", READS]
     L.append("")
     Path(out).write_text("\n".join(L))
     print("\n".join(L))
@@ -277,8 +294,16 @@ def main():
     ap.add_argument("--board", default="mlp2026")
     ap.add_argument("--only", nargs="*", default=None)
     ap.add_argument("--out", default=str(HERE / "personas.md"))
+    ap.add_argument("--rerender", action="store_true",
+                    help="skip the grid; render from cache/personas_rows.pkl (same args)")
     args = ap.parse_args(_argv[1:])
-    price, stars, rows = run(args)
+    cache = HERE / "cache" / "personas_rows.pkl"
+    if args.rerender:
+        price, stars, rows = pickle.loads(cache.read_bytes())
+    else:
+        price, stars, rows = run(args)
+        cache.parent.mkdir(exist_ok=True)
+        cache.write_bytes(pickle.dumps((price, stars, rows)))
     render(price, stars, rows, args, args.out)
 
 

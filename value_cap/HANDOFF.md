@@ -1,4 +1,4 @@
-# MLP Value Cap — HANDOFF (2026-09-04, night; supersedes the evening snapshot)
+# MLP Value Cap — HANDOFF (2026-09-04, late night; supersedes the night snapshot)
 
 Dated status snapshot + next-thread to-do. Read this first, then
 `phase2_pricing.md` §8 (the shipped rule and every number behind it),
@@ -19,6 +19,13 @@ off `price_list.csv` (gender tabs, TAG chip, share of $20M, doubles pts +
 rank, lift arrows, singles games; the tag rule and the one-favorite fact
 stated on the page), linked from the site nav and a landing-page door.
 The league-price / surplus column waits on MLP publishing real prices.
+**Owner personas are DONE** (`personas.py` -> `personas.md`, summary in
+`phase2_pricing.md` §9): the one persona that breaks the league is the
+$500k cheapskate (alone 21% / no title; five of them spread 13.7, the
+rest of the league 58%), which is the case for a $500k min-spend;
+bargains-first is the worst sensible-looking strategy (24%, the top 60
+are gone before round 4); overvaluing a gender, chasing names and mild
+loyalty are all free; nothing dents Waters' team (63-68%).
 
 ## The shipped rule in one paragraph
 
@@ -75,14 +82,14 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
 
 ## Next steps
 
-1. **Owner personas in the draft sim** (user request, words as given):
-   "owner who overvalues men"; "guy who is trying to save money and draft
-   only $500k worth of players"; "marketing guy who values big names";
-   "person who wants real teams" (dyad/2026-pairing preference);
-   "persona who picks up bargains first, then goes for high value
-   players". Build as `Owner` subclasses with a belief/objective twist,
-   mix them into a league of quants, read the same tables. Sweep the
-   mix, don't pick it.
+1. ~~Owner personas in the draft sim~~ DONE (see above; `personas.md`).
+   Left open: the marketing fame table is built from TRUE doubles rank
+   (a leak toward the truth, stated in the write-up) -- a fame proxy
+   from outside the model (social following, broadcast mentions) would
+   make that persona honest. Personas as `Owner` subclasses
+   (`draft_sim.Owner` hooks: beliefs, cap, score, filter_cands) are the
+   reusable part; a mixed league of several personas at once is one
+   `owner_factory` away.
 2. **Phase 3 follow-ups**: the league-price + surplus column once MLP
    publishes prices (the page already says it is coming); a per-player
    line on player pages ("value price $X, #N among women"); an insights
@@ -112,7 +119,11 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
 - `fast_tie.py` — `FastTie(DOUBLES, SINGLES, gamma=float|dict)`; grid cached
   under `cache/` (gitignored).
 - `draft_sim.py` — `--tag`, `--board best60|mlp2026|mlp2026only`,
-  `--drafts`, `--seasons`, `--noise`; `set_board(mode, pool)` for scripted use.
+  `--drafts`, `--seasons`, `--noise`; `set_board(mode, pool)` for scripted use;
+  `Owner` hooks (beliefs `dbl`/`sgl` + `rebuild()`, `cap`, `score(proj)`,
+  `filter_cands`) and `run_variant(..., owner_factory=)` for persona leagues.
+- `personas.py` → `personas.md` — the five persona classes + `franchises_2026()`
+  (pid → modal 2026 MLP team); `--only`, `--counts`, `--rerender`.
 - `pool_floor_sweep.py` — `phi_pool(P)`, `run_cell(P, floor, pool, ...)`.
 - `draft_strategies.py`, `simulate_templates.py` — template rosters and
   their season.

@@ -351,3 +351,48 @@ Reproduce:
     python value_cap/price_list.py                              # the shipped list
     python value_cap/draft_sim.py --tag --board mlp2026         # the league read (~2 min)
     python value_cap/pool_floor_sweep.py                        # pool x floor grid (~20 min; phi_pool{60,80,100}.csv cached)
+
+
+## 9. Owner personas in the draft (2026-09-04, late; `personas.py` -> `personas.md`)
+
+User request: what happens to a team that drafts like a person instead of
+a quant, and what its presence does to the league. Five personas in the
+user's words, each an `Owner` subclass with one swept strength, dropped
+at random slots (1, 5, or all 20 of them) into a league of quants; shipped
+tag list, mlp2026 board, 10% belief noise everywhere, 20 drafts x 200
+seasons per cell. Parity = 50% win / 5% title; quant baseline spread 4.4.
+
+| persona | strength | alone (win / title / spend) | five of them | all twenty |
+|---|---|---|---|---|
+| overvalues men | gaps x1.5 / x2 | 50.2% / 4.0% / $985k ; 49.1% / 4.5% | 50.2% ; 47.1% / 2.5% | spread 4.5 ; 5.1 |
+| overvalues women | gaps x1.5 / x2 | 49.8% / 4.6% ; 49.5% / 4.6% | 49.9% ; 49.2% | spread 4.6 ; 4.6 |
+| $500k cheapskate | cap $500k | **21.3% / 0.0% / $494k** | 26.7% / 0%, quants 57.8%, spread **13.7** | 50% each, Waters/Johns/Bright never drafted |
+| marketing guy (big names) | +0.5 / +1 spread x fame | **51.9% / 6.2%** ; 51.5% / 5.7% | 51.0% ; 51.3% | spread 4.4 ; 4.3 |
+| wants real teams | lam 0.05 / 0.15 / 0.5 | 50.8% ; 48.7% / 3.7% ; **42.0% / 2.0% / $888k** | 49.9% ; 48.4% ; 43.4% | spread 4.5 ; 4.5 ; 5.8 |
+| bargains first | rounds 1-3 <= $120k / $250k | **24.1% / 0.0% / $600k** ; 38.6% / 0.1% / $817k | 38.8% / 0.2% ; 42.2% / 0.5% | spread 4.8 ; 4.2 (Waters undrafted at $250k) |
+
+Reads (full text in `personas.md`):
+
+- A lopsided belief about which gender matters costs nothing: the price
+  list already carries the ranking, so the pick changes at the margin.
+- The marketing owner is slightly AHEAD. Big names are fairly priced, so
+  preferring them is free; and fame here is built from real doubles rank,
+  so the bias is partly toward the truth. "Names at fair prices don't
+  hurt", not "fame beats analysis".
+- The $500k cheapskate is the persona that breaks the league: alone 21%
+  and no title shot; five of them push the spread to 13.7 and give the
+  other fifteen 58%; twenty of them and the top of the list is never
+  drafted. That is the argument for a $500k MIN-spend: unspent money makes
+  the whole league worse, not just the cheap team.
+- Loyalty is free in small doses (lam 0.05), ~1.5 points at 0.15, and at
+  lam 0.5 the team drops to 42% and leaves $110k unspent.
+- Bargains first is the worst strategy that looks sensible: in a 20-team
+  snake the whole top 60 is gone before round 4, so a team that waits has
+  nothing left to buy (24%, $600k spent). Waiting is the expensive move.
+- Nothing dents the pick-1 team: Waters' team wins 63-68% wherever she is
+  drafted.
+
+Caveats: personas are one-knob caricatures; the marketing fame table
+leaks true rank (stated above); strengths were swept over two or three
+values, not fitted to anything. Reproduce: `python value_cap/personas.py`
+(~15 min; `--rerender` re-renders from `cache/personas_rows.pkl`).

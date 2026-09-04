@@ -645,11 +645,18 @@ identical drafts $10k-$75k), the priced-pool size (80/100 only leaves
 cap unspent and hands the prize to Bright), a deeper replacement line
 (makes Waters cheaper AND stronger). User call: a 35% favorite is normal
 pro sports; ship and say so. Speed layer `fast_tie.py` (~85x, err 8e-5).
-Sonnet's `phase2_price_model.py` was removed. Next: owner PERSONAS in
-the draft sim (overvalues men / $500k cheapskate / marketing-fame /
-real-teams / bargains-first — user's words in HANDOFF), Phase 3 site
-off price_list.csv, injury/absence Monte Carlo (sweep the rate), gamma
-switch sweep, confirm 20 teams + $500k min-spend.
+Sonnet's `phase2_price_model.py` was removed. Owner PERSONAS in the
+draft sim DONE (2026-09-04 late; `personas.py` → `personas.md`,
+`phase2_pricing.md` §9): the $500k cheapskate is the one persona that
+breaks the league (alone 21% / no title; five of them spread 13.7 and
+the rest of the league at 58%) — the case for a $500k min-spend;
+bargains-first is the worst sensible-looking strategy (24%: the top 60
+are gone before round 4 of a 20-team snake); overvaluing a gender,
+chasing big names and mild loyalty are free; nothing dents Waters' team
+(63-68%). Phase 3 site page shipped off price_list.csv. Next:
+injury/absence Monte Carlo (sweep the rate), gamma switch sweep,
+confirm 20 teams + $500k min-spend, league-price/surplus column when
+MLP publishes.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
