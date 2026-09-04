@@ -46,7 +46,9 @@ def main():
         c = load(r)
         pts = np.asarray(c["timing_ref"], float)
         lab = label(pts, c["hum"][0])
-        _, keep, reason = pp.clean(pts, serve=c["imps"][0], dead=c["dead"], P=c["P"])
+        z = np.load(c["npz"])
+        _, keep, reason = pp.clean(pts, serve=c["imps"][0], dead=c["dead"],
+                                   P=c["P"], occ_mask=pp.in_player_box(pts, z))
         g, j = lab == "GOOD", lab == "JUNK"
         gd, jd = int((g & ~keep).sum()), int((j & ~keep).sum())
         gk, jk = int((g & keep).sum()), int((j & keep).sum())

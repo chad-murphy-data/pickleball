@@ -52,21 +52,39 @@ moved to the right frame:
 | TELEPORT | >2200 px/s (human paths' own p99.9 is 2047) | 108 | 3 |
 | STALL | ±0.25 s window covering <4 ft of court | 39 | 4 |
 | RETRACE | window revisits its own path, >0.70 | 262 | 101 |
+| DEFECTED | post-teleport run >80% inside player boxes | 57 | 35 |
 | SPUR | surviving run under 4 frames | 3 | 0 |
 
-Pooled: **27.3% of junk removed for 3.9% of good**, a 7:1 filter. It deletes
+**DEFECTED** exists because the first version of this filter found the
+switch and then did nothing with it. r7 t=173.35 is the worked example
+(owner: "what happened here?"): the ball is genuinely hit at 173.25, the
+tracker sails straight through the contact, then one frame later jumps
+88 px — 2,634 px/s against a 2,050 ceiling — reverses, and spends 14 of
+the next 19 frames inside a player's box while the real ball goes to the
+far corner unwatched. The teleport rule cut the path in the right place
+but only dropped runs under 4 frames, so all 19 survived. A teleport says
+the tracker changed its mind; which side of the cut is the ball still has
+to be decided, and a run that lands in a person is not it.
+
+Pooled: **31.8% of junk removed for 5.1% of good**, a 6:1 filter. It deletes
 the pre-serve latch outright (confirmed in r7, r9, r10 and r17 — ~50 points
 per rally, the class the owner caught in two separate videos).
 
 End to end on the turn calls, which is what the audit was about:
 
-    turns          338 -> 303   (-10%)
-    JUNK turns     180 -> 145   (-19%)
+    turns          338 -> 288   (-15%)
+    JUNK turns     180 -> 132   (-27%)
     bounce recall   40 -> 41    /59
-    impact recall  118 -> 117   /144
+    impact recall  118 -> 115   /144
 
-A fifth of the over-calling goes away and no real event is lost. BOUNDS +
-TELEPORT + STALL are free but small; RETRACE is what moves it.
+Over a quarter of the over-calling goes away, bounce recall is up one, and
+the cost is 3 impacts out of 144. BOUNDS + TELEPORT + STALL are free but
+small; RETRACE and DEFECTED are what move it.
+
+DEFECT_BOX was set at 0.80 on the end-to-end sweep, not the point sweep --
+the point ratio is flat across the whole range (3.1:1 at 0.5 up to 7.1:1
+at "off") while the calls are not: 0.9 misses the r7 excursion entirely,
+0.7 costs 7 impacts to remove 6 more junk turns.
 
 ## Occlusion bridging — measured, not yet shipped
 

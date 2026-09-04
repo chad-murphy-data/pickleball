@@ -23,6 +23,15 @@ import numpy as np
 
 V_MAX = 2200.0      # px/s -- above this is not a ball (human p99.9 = 2047)
 MIN_RUN = 4         # frames; a shorter surviving run is a latch, not flight
+
+# DEFECTED: a teleport says the tracker changed its mind about what the
+# ball is -- but it does not say which side of the cut is the ball, and
+# early versions of this filter found the switch and then did nothing
+# about it (r7 t=173.35: an 88 px single-frame jump, 2634 px/s, followed
+# by 19 frames of running backwards into a player, all kept).  Where the
+# run after a teleport spends most of its life inside player boxes, the
+# tracker jumped onto a person.  Drop that run.
+DEFECT_BOX = 0.80   # share of a post-teleport run inside player boxes
 SERVE_LEAD = 0.10   # s of grace before the serve contact
 
 # STALL: owner's rule -- "any path not toward the court needs
@@ -111,7 +120,7 @@ def retracing(pts, P, win_s=RETRACE_WIN, lag_s=RETRACE_LAG,
     return out
 
 
-def clean(pts, serve=None, dead=None, P=None,
+def clean(pts, serve=None, dead=None, P=None, occ_mask=None,
           v_max=V_MAX, min_run=MIN_RUN):
     """Return (kept_pts, mask, reason) for a (t,x,y) path.
 
@@ -153,6 +162,16 @@ def clean(pts, serve=None, dead=None, P=None,
     for a, b in runs:
         if b - a < min_run:
             reason[live[a:b]] = "spur"
+
+    # DEFECTED: a run that STARTS at a teleport and then lives inside
+    # player boxes is the tracker having jumped onto a person.
+    if occ_mask is not None:
+        for k, (a, b) in enumerate(runs):
+            if k == 0 or b - a < min_run:
+                continue                      # k==0 did not follow a cut
+            idx = live[a:b]
+            if occ_mask[idx].mean() > DEFECT_BOX:
+                reason[idx] = "defected"
 
     keep = reason == ""
     return pts[keep], keep, reason
