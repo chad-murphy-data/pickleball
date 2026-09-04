@@ -58,13 +58,20 @@ def _grid_path(T):
     return CACHE / f"game_grid_T{T}_{ETA_STEP}_{SD_STEP}.f64"
 
 
+_GRIDS = {}
+
+
 def load_grid(T=T_GAME, verbose=True):
-    """array('d') of N_SD * N_ETA values, row = sd index, col = eta index."""
+    """array('d') of N_SD * N_ETA values, row = sd index, col = eta index.
+    Loaded once per process (many FastTie instances share it)."""
+    if T in _GRIDS:
+        return _GRIDS[T]
     path = _grid_path(T)
     if path.exists():
         g = array.array("d")
         g.frombytes(path.read_bytes())
         if len(g) == N_SD * N_ETA:
+            _GRIDS[T] = g
             return g
     t0 = time.time()
     g = array.array("d", bytes(8 * N_SD * N_ETA))
@@ -75,6 +82,7 @@ def load_grid(T=T_GAME, verbose=True):
             g[base + j] = game_win_prob_uncertain(ETA_LO + j * ETA_STEP, sd, T)
     CACHE.mkdir(exist_ok=True)
     path.write_bytes(g.tobytes())
+    _GRIDS[T] = g
     if verbose:
         print(f"built game grid T={T}: {N_SD}x{N_ETA} in {time.time()-t0:.0f}s -> {path.name}")
     return g
