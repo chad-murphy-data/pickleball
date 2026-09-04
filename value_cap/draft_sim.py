@@ -113,6 +113,11 @@ class Owner:
     def filter_cands(self, cands, roster, avail, price):
         return cands
 
+    def bid_cap(self, x, roster):
+        """Auction hook (auction_sim.py): the most this owner will ever bid for
+        x given the roster so far; inf = no self-imposed limit."""
+        return float("inf")
+
     def choose(self, roster, spent, avail, price, need, gaps):
         """Deterministic given (owner beliefs, board, seed): every sort breaks
         ties on player_id, so results do not depend on set iteration order

@@ -178,6 +178,10 @@ class BargainsFirst(D.Owner):
         cheap = {u for u in cands if price[u] <= self.threshold}
         return cheap or cands
 
+    def bid_cap(self, x, roster):
+        # auction twin of filter_cands: the first `rounds` buys are capped at T
+        return self.threshold if len(roster) < self.rounds else float("inf")
+
 
 PERSONAS = [
     ("overvalues men", OvervaluesMen, "k", [0.5, 1.0]),
