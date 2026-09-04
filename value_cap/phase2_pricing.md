@@ -392,7 +392,39 @@ Reads (full text in `personas.md`):
 - Nothing dents the pick-1 team: Waters' team wins 63-68% wherever she is
   drafted.
 
+Title-odds concentration (added after the user asked whether personas
+let anyone catch her, EPL-style): favourite 33-37%, runner-up 7-9%, one
+team at 10%+ in every cell where she is drafted; two or more 10%+ teams
+only when she goes undrafted (twenty cheapskates 11.6% favourite / 14
+effective contenders; twenty $250k bargain hunters 15% / 12% / 10%).
+Personas spread title odds across the pack, never up to a slot-2 team.
+
 Caveats: personas are one-knob caricatures; the marketing fame table
 leaks true rank (stated above); strengths were swept over two or three
 values, not fitted to anything. Reproduce: `python value_cap/personas.py`
 (~15 min; `--rerender` re-renders from `cache/personas_rows.pkl`).
+
+## 10. What moves her team other than her price (2026-09-04, late; `dials.md`)
+
+Price-side: one dial only. Her worth exceeds what a team may pay and the
+tag already charges the cap's maximum, so floor / cap / pool / alpha /
+redistribution all collapse into "how much of her worth is she charged
+for"; the only price-side way down is charging above the cap and letting
+her team fill below the floor (§8, low 50s, rejected). Non-price dials,
+field held fixed (`dials_probe.py`): playing time -- she plays 90 / 80 /
+75 / 67% of ties -> 60.7 / 55.3 / 52.6 / 48.2% (team without her 11.9%;
+Bright's without her 18.8%, Johns' without him 25.7%; measured 2026:
+stars on contending teams played 100%, median franchise 92%, so a
+rotation RULE is the biggest lever and Phase 0's unconfirmed one);
+DreamBreaker as a coin flip -> 61.8% vs Bright 53.2 / Johns 54.5 (gap
+14.6 -> 8.6; her design lives at 2-2); a rival best-responding to HER
+roster (Johns + Acevedo + Shimabukuro, cheap women) beats her 41.9% vs
+34-36% for the drafted teams at no cost vs the field; split gender caps
+($500k + $500k) make it WORSE -- her women's-pool curve price is $778k
+vs a $500k cap, tagged at $408k she gets a full men's side for free
+(82.4% vs reference), and Bright ($550k) and Johns ($559k) go over cap
+too. Season format changes the lottery, not the chase: 37% (double RR +
+top 4) -> 22-25% (single RR + top 8, 3-event) -> 14% (16-team bracket),
+with the runner-up stuck at 6% and one team at 10%+ throughout. A fair
+list plus a snake draft gives one favourite and nineteen equals; the
+EPL shape needs inequality in the pack.

@@ -653,10 +653,20 @@ the rest of the league at 58%) — the case for a $500k min-spend;
 bargains-first is the worst sensible-looking strategy (24%: the top 60
 are gone before round 4 of a 20-team snake); overvaluing a gender,
 chasing big names and mild loyalty are free; nothing dents Waters' team
-(63-68%). Phase 3 site page shipped off price_list.csv. Next:
-injury/absence Monte Carlo (sweep the rate), gamma switch sweep,
-confirm 20 teams + $500k min-spend, league-price/surplus column when
-MLP publishes.
+(63-68%) and no persona creates a second 10%+ contender. DIALS PROBE
+(`dials_probe.py` → `dials.md`, phase2_pricing §10): price-side there is
+ONE lever (charge her above what the cap allows — she is worth more
+than a team may pay); what moves her team is playing time (67% of ties
+→ 48%; team without her 12%, and 2026 contenders' stars played 100%),
+a coin-flip DreamBreaker (gap over Bright/Johns 14.6 → 8.6 pts), and
+targeted rivals (42% head-to-head, free vs the field). Split gender
+caps make it WORSE (82% vs reference, Bright/Johns over cap too).
+Format moves the title lottery (37% → 14%) but never a second team past
+10%: a fair list + snake draft = one favourite and nineteen equals.
+Phase 3 site page shipped off price_list.csv. Next: confirm MLP
+rotation/playing-time rules (now the biggest lever), injury/absence
+Monte Carlo (sweep the rate), gamma switch sweep, confirm 20 teams +
+$500k min-spend, league-price/surplus column when MLP publishes.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's

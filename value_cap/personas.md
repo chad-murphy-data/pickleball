@@ -21,7 +21,7 @@ Shipped tag list (alpha 1, joint pool, Waters tagged at $769k), snake draft on t
 | overvalues women | k = 1 | 20 | 50.0% | 5.0% | $971k | -- | -- | 4.6 pts | 64.9% | 51.5% | 49.6% | Alix Truong #30F |
 | cheapskate $500k | $500k | 1 | 21.3% | 0.0% | $494k | 51.5% | 5.3% | 7.6 pts | 65.6% | 52.0% | 50.4% | Dekel Bar #27M, Brooke Buckner #29F |
 | cheapskate $500k | $500k | 5 | 26.7% | 0.0% | $494k | 57.8% | 6.7% | 13.7 pts | 68.5% | 56.7% | 56.6% | Federico Staksrud #7M, Eric Oncins #8M, Tina Pisnik #8F, Jay Devilliers #9M (+39) |
-| cheapskate $500k | $500k | 20 | 50.0% | 5.0% | $483k | -- | -- | 4.3 pts | nan% | nan% | nan% | Anna Leigh Waters #1F, Ben Johns #1M, JW Johnson #2M, Anna Bright #2F (+51) |
+| cheapskate $500k | $500k | 20 | 50.0% | 5.0% | $483k | -- | -- | 4.3 pts | not drafted | not drafted | not drafted | Anna Leigh Waters #1F, Ben Johns #1M, Anna Bright #2F, JW Johnson #2M (+51) |
 | marketing guy (big names) | k = 0.5 | 1 | 51.9% | 6.2% | $982k | 49.9% | 4.9% | 4.4 pts | 65.6% | 51.9% | 50.6% | none |
 | marketing guy (big names) | k = 0.5 | 5 | 51.0% | 5.6% | $979k | 49.7% | 4.8% | 4.5 pts | 65.9% | 52.1% | 50.5% | none |
 | marketing guy (big names) | k = 0.5 | 20 | 50.0% | 5.0% | $975k | -- | -- | 4.4 pts | 65.9% | 51.4% | 50.4% | none |
@@ -42,33 +42,75 @@ Shipped tag list (alpha 1, joint pool, Waters tagged at $769k), snake draft on t
 | bargains first | $120k | 20 | 50.0% | 5.0% | $963k | -- | -- | 4.8 pts | 65.8% | 52.5% | 49.7% | Riley Newman #10M, Jack Sock #11M, Phuc Huynh #12M, Thomas Wilson #13M (+17) |
 | bargains first | $250k | 1 | 38.6% | 0.1% | $817k | 50.6% | 5.3% | 4.9 pts | 65.5% | 51.5% | 50.0% | none |
 | bargains first | $250k | 5 | 42.2% | 0.5% | $860k | 52.6% | 6.5% | 5.7 pts | 65.1% | 51.8% | 51.4% | Jillian Braverman #26F, Dekel Bar #27M, Yana Newell #28F, CJ Klinger #28M (+2) |
-| bargains first | $250k | 20 | 50.0% | 5.0% | $921k | -- | -- | 4.2 pts | nan% | 56.4% | 52.5% | Anna Leigh Waters #1F, Gabriel Tardio #4M, Andrei Daescu #6M, Federico Staksrud #7M (+7) |
+| bargains first | $250k | 20 | 50.0% | 5.0% | $921k | -- | -- | 4.2 pts | not drafted | 56.4% | 52.5% | Anna Leigh Waters #1F, Gabriel Tardio #4M, Andrei Daescu #6M, Federico Staksrud #7M (+7) |
 
 ## Who each persona drafts
 
-Most-drafted players per persona (share of that persona's rosters that carried them), one row per strength at the k = 1 cell (the persona among 19 quants) and the all-20 cell.
+Players the persona carries more often than the quants in the same league (share of the persona's rosters minus share of the quants' rosters, percentage points), k = 1 cells. The all-20 cells are uninformative here (every drafted player is on exactly one roster per draft).
 
-- **overvalues men**, k = 0.5, x1: Victoria Dimuzio $30k (25%), Tyra Hurricane Black $386k (25%), Matthew Barlow $48k (15%), Oscar Serra $92k (15%), Jaume Martinez Vich $100k (15%), Hunter Johnson $137k (15%), Meghan Dizon $171k (15%), Ewa Radzikowska $176k (15%)
-- **overvalues men**, k = 0.5, x20: Lina Padegimaite $30k (5%), Gabriel Joseph $30k (5%), Irina Tereschenko $30k (5%), Rafael Lenhard $30k (5%), Alexander Crum $30k (5%), Grayson Goldin $44k (5%), Hoang Nam Ly $44k (5%), Matthew Barlow $48k (5%)
-- **overvalues men**, k = 1, x1: Roos Van Reek $96k (25%), Carlota Trevino $101k (25%), Christopher Haworth $95k (20%), Keilly Ulery $30k (15%), Liz Truluck $68k (15%), Maggie Brascia $81k (15%), Jaume Martinez Vich $100k (15%), Jillian Braverman $149k (15%)
-- **overvalues men**, k = 1, x20: Gabriel Joseph $30k (5%), Lina Padegimaite $30k (5%), Victoria Dimuzio $30k (5%), Rafael Lenhard $30k (5%), Alexander Crum $30k (5%), Grayson Goldin $44k (5%), Hoang Nam Ly $44k (5%), Matthew Barlow $48k (5%)
-- **overvalues women**, k = 0.5, x1: Lea Jansen $117k (25%), Tyra Hurricane Black $386k (25%), Brooke Buckner $134k (20%), Gabriel Joseph $30k (15%), Matthew Barlow $48k (15%), Anderson Scarpa $70k (15%), George Wall $83k (15%), Kaitlyn Christian $87k (15%)
-- **overvalues women**, k = 0.5, x20: Alexander Crum $30k (5%), Rafael Lenhard $30k (5%), Victoria Dimuzio $30k (5%), Lina Padegimaite $30k (5%), Gabriel Joseph $30k (5%), Yates Johnson $30k (5%), Irina Tereschenko $30k (5%), Grayson Goldin $44k (5%)
-- **overvalues women**, k = 1, x1: Lea Jansen $117k (25%), Brooke Buckner $134k (25%), Tyra Hurricane Black $386k (25%), Jorja Johnson $475k (20%), Rafael Lenhard $30k (15%), Oliver Frank $51k (15%), Max Freeman $64k (15%), Katerina Stewart $65k (15%)
-- **overvalues women**, k = 1, x20: Alexander Crum $30k (5%), Gabriel Joseph $30k (5%), Lina Padegimaite $30k (5%), Victoria Dimuzio $30k (5%), Rafael Lenhard $30k (5%), Irina Tereschenko $30k (5%), Yates Johnson $30k (5%), Grayson Goldin $44k (5%)
-- **cheapskate $500k**, $500k, x1: Gabriel Joseph $30k (45%), Maggie Brascia $81k (20%), Ting Chieh Wei $102k (20%), Keilly Ulery $30k (15%), Victoria Dimuzio $30k (15%), Hannah Blatt $30k (15%), Matthew Barlow $48k (15%), Pablo Tellez $71k (15%)
-- **cheapskate $500k**, $500k, x20: Michael Loyd $30k (5%), Naomi Nguyen $30k (5%), Hannah Blatt $30k (5%), Irina Tereschenko $30k (5%), Lina Padegimaite $30k (5%), Camden Chaffin $30k (5%), Ella Yeh $30k (5%), Victoria Dimuzio $30k (5%)
-- **marketing guy (big names)**, k = 0.5, x1: Jorja Johnson $475k (25%), Victoria Dimuzio $30k (20%), Alexander Crum $30k (20%), Matthew Barlow $48k (20%), Tyra Hurricane Black $386k (20%), Rafael Lenhard $30k (15%), Rika Fujiwara $30k (15%), Pablo Tellez $71k (15%)
-- **marketing guy (big names)**, k = 0.5, x20: Alexander Crum $30k (5%), Lina Padegimaite $30k (5%), Gabriel Joseph $30k (5%), Victoria Dimuzio $30k (5%), Rafael Lenhard $30k (5%), Yates Johnson $30k (5%), Grayson Goldin $44k (5%), Hoang Nam Ly $44k (5%)
-- **marketing guy (big names)**, k = 1, x1: Jorja Johnson $475k (25%), Victoria Dimuzio $30k (20%), Etta Tuionetoa $187k (20%), Rafael Lenhard $30k (15%), Alexander Crum $30k (15%), Matthew Barlow $48k (15%), Armaan Bhatia $130k (15%), Alix Truong $132k (15%)
-- **marketing guy (big names)**, k = 1, x20: Alexander Crum $30k (5%), Lina Padegimaite $30k (5%), Ben Cawston $30k (5%), Rafael Lenhard $30k (5%), Gabriel Joseph $30k (5%), Irina Tereschenko $30k (5%), Victoria Dimuzio $30k (5%), Hoang Nam Ly $44k (5%)
-- **wants real teams**, lam = 0.05, x1: Victoria Dimuzio $30k (25%), Layne Sleeth $147k (20%), Camden Chaffin $30k (15%), Matthew Barlow $48k (15%), Ewa Radzikowska $176k (15%), Jay Devilliers $288k (15%), Federico Staksrud $315k (15%), JW Johnson $430k (15%)
-- **wants real teams**, lam = 0.05, x20: Gabriel Joseph $30k (5%), Lina Padegimaite $30k (5%), Rafael Lenhard $30k (5%), Alexander Crum $30k (5%), Grayson Goldin $44k (5%), Matthew Barlow $48k (5%), Oliver Frank $51k (5%), Zane Ford $53k (5%)
-- **wants real teams**, lam = 0.15, x1: Camden Chaffin $30k (20%), Victoria Dimuzio $30k (20%), Jay Devilliers $288k (20%), Alexa Schull $30k (15%), Marcela Aguila Ampon $30k (15%), Matthew Barlow $48k (15%), George Wall $83k (15%), Layne Sleeth $147k (15%)
-- **wants real teams**, lam = 0.15, x20: Alexander Crum $30k (5%), Blaine Hovenier $30k (5%), Rafael Lenhard $30k (5%), Gabriel Joseph $30k (5%), Grayson Goldin $44k (5%), Matthew Barlow $48k (5%), Seone Mendez $64k (5%), Katerina Stewart $65k (5%)
-- **wants real teams**, lam = 0.5, x1: Brooke Buckner $134k (30%), Camden Chaffin $30k (25%), Alix Truong $132k (25%), Wyatt Stone $30k (20%), Ivan Jakovljevic $30k (20%), Daria Walczak $79k (20%), Jessie Irvine $89k (20%), Jonathan Truong $30k (15%)
-- **wants real teams**, lam = 0.5, x20: Alexa Schull $30k (5%), Rafael Lenhard $30k (5%), Victoria Dimuzio $30k (5%), Gabriel Joseph $30k (5%), Alexander Crum $30k (5%), Jonathan Truong $30k (5%), Matthew Barlow $48k (5%), Donald Young $62k (5%)
-- **bargains first**, $120k, x1: Lea Jansen $117k (75%), Christopher Haworth $95k (55%), Roos Van Reek $96k (35%), Carlota Trevino $101k (35%), Roscoe Bellamy $107k (35%), Oscar Serra $92k (25%), Ting Chieh Wei $102k (25%), Yuta Funemizu $119k (25%)
-- **bargains first**, $120k, x20: Ella Yeh $30k (5%), Jalina Ingram $30k (5%), Naomi Nguyen $30k (5%), Hannah Blatt $30k (5%), Elsie Hendershot $30k (5%), Gabriel Joseph $30k (5%), Irina Tereschenko $30k (5%), Tamaryn Emmrich $30k (5%)
-- **bargains first**, $250k, x1: Jack Sock $226k (65%), Phuc Huynh $210k (35%), Bobbi Oshiro $247k (30%), Rafa Hewett $52k (25%), Maggie Brascia $81k (25%), Sahra Dennehy $203k (25%), Allyce Jones $154k (20%), Kiora Kunimoto $68k (15%)
-- **bargains first**, $250k, x20: Yates Johnson $30k (5%), Gabriel Joseph $30k (5%), Rafael Lenhard $30k (5%), Victoria Dimuzio $30k (5%), Lina Padegimaite $30k (5%), Alexander Crum $30k (5%), Grayson Goldin $44k (5%), Hoang Nam Ly $44k (5%)
+- **overvalues men**, k = 0.5: Victoria Dimuzio $30k (+21pp), Tyra Hurricane Black $386k (+21pp), Oscar Serra $92k (+11pp), Matthew Barlow $48k (+11pp), Jaume Martinez Vich $100k (+11pp), Hunter Johnson $137k (+11pp), Meghan Dizon $171k (+11pp), Ewa Radzikowska $176k (+11pp)
+- **overvalues men**, k = 1: Roos Van Reek $96k (+21pp), Carlota Trevino $101k (+21pp), Christopher Haworth $95k (+16pp), Liz Truluck $68k (+12pp), Keilly Ulery $30k (+12pp), Maggie Brascia $81k (+12pp), Jaume Martinez Vich $100k (+11pp), Jillian Braverman $149k (+11pp)
+- **overvalues women**, k = 0.5: Lea Jansen $117k (+21pp), Tyra Hurricane Black $386k (+21pp), Brooke Buckner $134k (+16pp), Anderson Scarpa $70k (+12pp), George Wall $83k (+11pp), Oscar Serra $92k (+11pp), Gabriel Joseph $30k (+11pp), Matthew Barlow $48k (+11pp)
+- **overvalues women**, k = 1: Lea Jansen $117k (+21pp), Brooke Buckner $134k (+21pp), Tyra Hurricane Black $386k (+21pp), Jorja Johnson $475k (+16pp), Max Freeman $64k (+13pp), Anderson Scarpa $70k (+12pp), Oscar Serra $92k (+11pp), Rafael Lenhard $30k (+11pp)
+- **cheapskate $500k**, $500k: Gabriel Joseph $30k (+42pp), Maggie Brascia $81k (+17pp), Ting Chieh Wei $102k (+17pp), Pablo Tellez $71k (+13pp), Hannah Blatt $30k (+12pp), Carlota Trevino $101k (+12pp), Keilly Ulery $30k (+11pp), Brooke Buckner $134k (+11pp)
+- **marketing guy (big names)**, k = 0.5: Jorja Johnson $475k (+21pp), Victoria Dimuzio $30k (+16pp), Alexander Crum $30k (+16pp), Matthew Barlow $48k (+16pp), Tyra Hurricane Black $386k (+16pp), Pablo Tellez $71k (+12pp), Rika Fujiwara $30k (+11pp), Rafael Lenhard $30k (+11pp)
+- **marketing guy (big names)**, k = 1: Jorja Johnson $475k (+21pp), Victoria Dimuzio $30k (+16pp), Etta Tuionetoa $187k (+16pp), Rafael Lenhard $30k (+11pp), Alexander Crum $30k (+11pp), Matthew Barlow $48k (+11pp), Armaan Bhatia $130k (+11pp), Alix Truong $132k (+11pp)
+- **wants real teams**, lam = 0.05: Victoria Dimuzio $30k (+21pp), Layne Sleeth $147k (+16pp), Camden Chaffin $30k (+12pp), Matthew Barlow $48k (+11pp), Ewa Radzikowska $176k (+11pp), Jay Devilliers $288k (+11pp), Federico Staksrud $315k (+11pp), JW Johnson $430k (+11pp)
+- **wants real teams**, lam = 0.15: Camden Chaffin $30k (+17pp), Victoria Dimuzio $30k (+16pp), Jay Devilliers $288k (+16pp), Marcela Aguila Ampon $30k (+15pp), Alexa Schull $30k (+13pp), George Wall $83k (+11pp), Matthew Barlow $48k (+11pp), Layne Sleeth $147k (+11pp)
+- **wants real teams**, lam = 0.5: Brooke Buckner $134k (+26pp), Camden Chaffin $30k (+22pp), Alix Truong $132k (+21pp), Ivan Jakovljevic $30k (+20pp), Wyatt Stone $30k (+19pp), Daria Walczak $79k (+18pp), Jessie Irvine $89k (+16pp), Jonathan Truong $30k (+14pp)
+- **bargains first**, $120k: Lea Jansen $117k (+74pp), Christopher Haworth $95k (+53pp), Carlota Trevino $101k (+32pp), Roos Van Reek $96k (+32pp), Roscoe Bellamy $107k (+32pp), Oscar Serra $92k (+21pp), Ting Chieh Wei $102k (+21pp), Yuta Funemizu $119k (+21pp)
+- **bargains first**, $250k: Jack Sock $226k (+63pp), Phuc Huynh $210k (+32pp), Bobbi Oshiro $247k (+26pp), Rafa Hewett $52k (+23pp), Maggie Brascia $81k (+21pp), Sahra Dennehy $203k (+21pp), Allyce Jones $154k (+16pp), Yufei Long $79k (+11pp)
+
+## Who can actually win: title-odds concentration
+
+Per draft, every team's title odds from the season sim, then averaged over the drafts. 'Effective contenders' = 1 / sum(title odds squared): 20 means twenty equal teams, 1 means one certain champion. Gini is over the twenty teams' title odds (0 = parity). Contenders = teams with at least a 10% (or 5%) title shot. 'Runner-up favourite' = the title odds of the second-best team, i.e. how real the chase is. For scale, a bookmaker's pre-season English Premier League board (favourite ~55%, two challengers at ~20% and ~15%) is about 2.7 effective contenders, 3 teams at 10%+.
+
+| persona | strength | how many | favourite | runner-up favourite | third | gap 1st-2nd | teams >= 10% | teams >= 5% | effective contenders | Gini |
+|---|---|---|---|---|---|---|---|---|---|---|
+| quant baseline |  | -- | 36.2% | 7.3% | 6.3% | 28.9 pts | 1.0 | 4.5 | 6.4 | 0.51 |
+| overvalues men | k = 0.5 | 1 | 36.0% | 8.4% | 7.0% | 27.6 pts | 1.1 | 4.3 | 6.3 | 0.52 |
+| overvalues men | k = 0.5 | 5 | 36.1% | 8.1% | 6.9% | 28.0 pts | 1.1 | 4.6 | 6.3 | 0.52 |
+| overvalues men | k = 0.5 | 20 | 36.2% | 8.3% | 6.9% | 27.9 pts | 1.1 | 4.7 | 6.3 | 0.53 |
+| overvalues men | k = 1 | 1 | 35.6% | 9.1% | 6.9% | 26.5 pts | 1.1 | 4.8 | 6.4 | 0.52 |
+| overvalues men | k = 1 | 5 | 35.0% | 8.4% | 6.6% | 26.5 pts | 1.1 | 4.8 | 6.6 | 0.52 |
+| overvalues men | k = 1 | 20 | 35.0% | 8.0% | 7.0% | 27.0 pts | 1.1 | 5.4 | 6.5 | 0.53 |
+| overvalues women | k = 0.5 | 1 | 35.1% | 8.4% | 6.7% | 26.8 pts | 1.1 | 4.8 | 6.5 | 0.52 |
+| overvalues women | k = 0.5 | 5 | 34.7% | 8.4% | 7.1% | 26.3 pts | 1.1 | 5.2 | 6.6 | 0.53 |
+| overvalues women | k = 0.5 | 20 | 34.2% | 8.8% | 6.9% | 25.4 pts | 1.1 | 4.7 | 6.8 | 0.52 |
+| overvalues women | k = 1 | 1 | 35.3% | 8.4% | 6.9% | 26.9 pts | 1.1 | 5.0 | 6.5 | 0.52 |
+| overvalues women | k = 1 | 5 | 36.2% | 8.2% | 6.8% | 28.0 pts | 1.0 | 4.8 | 6.3 | 0.53 |
+| overvalues women | k = 1 | 20 | 33.0% | 8.5% | 6.8% | 24.5 pts | 1.1 | 5.2 | 7.2 | 0.50 |
+| cheapskate $500k | $500k | 1 | 32.2% | 7.8% | 6.7% | 24.4 pts | 1.0 | 4.6 | 7.4 | 0.48 |
+| cheapskate $500k | $500k | 5 | 31.4% | 8.6% | 7.6% | 22.8 pts | 1.0 | 7.0 | 7.3 | 0.54 |
+| cheapskate $500k | $500k | 20 | 11.6% | 9.9% | 8.8% | 1.7 pts | 1.1 | 8.9 | 14.2 | 0.36 |
+| marketing guy (big names) | k = 0.5 | 1 | 34.7% | 8.0% | 6.8% | 26.7 pts | 1.1 | 4.4 | 6.7 | 0.50 |
+| marketing guy (big names) | k = 0.5 | 5 | 36.7% | 7.6% | 6.7% | 29.0 pts | 1.1 | 4.5 | 6.2 | 0.52 |
+| marketing guy (big names) | k = 0.5 | 20 | 36.9% | 7.9% | 6.4% | 29.0 pts | 1.1 | 4.3 | 6.1 | 0.52 |
+| marketing guy (big names) | k = 1 | 1 | 36.0% | 7.7% | 6.7% | 28.3 pts | 1.1 | 4.5 | 6.4 | 0.51 |
+| marketing guy (big names) | k = 1 | 5 | 35.7% | 8.0% | 6.7% | 27.7 pts | 1.1 | 4.5 | 6.5 | 0.51 |
+| marketing guy (big names) | k = 1 | 20 | 36.1% | 7.9% | 6.6% | 28.2 pts | 1.1 | 4.8 | 6.4 | 0.51 |
+| wants real teams | lam = 0.05 | 1 | 35.2% | 8.2% | 6.8% | 27.0 pts | 1.1 | 4.3 | 6.6 | 0.51 |
+| wants real teams | lam = 0.05 | 5 | 36.0% | 8.4% | 7.0% | 27.6 pts | 1.2 | 4.9 | 6.3 | 0.53 |
+| wants real teams | lam = 0.05 | 20 | 35.7% | 8.1% | 6.9% | 27.7 pts | 1.1 | 4.7 | 6.4 | 0.52 |
+| wants real teams | lam = 0.15 | 1 | 34.9% | 8.3% | 6.9% | 26.6 pts | 1.1 | 4.4 | 6.6 | 0.51 |
+| wants real teams | lam = 0.15 | 5 | 35.4% | 8.5% | 7.1% | 26.9 pts | 1.1 | 4.5 | 6.5 | 0.53 |
+| wants real teams | lam = 0.15 | 20 | 33.5% | 9.0% | 7.1% | 24.5 pts | 1.3 | 5.2 | 7.0 | 0.51 |
+| wants real teams | lam = 0.5 | 1 | 34.8% | 8.3% | 6.9% | 26.5 pts | 1.1 | 4.8 | 6.6 | 0.52 |
+| wants real teams | lam = 0.5 | 5 | 33.2% | 8.5% | 7.0% | 24.7 pts | 1.1 | 5.5 | 7.0 | 0.53 |
+| wants real teams | lam = 0.5 | 20 | 27.7% | 9.9% | 8.7% | 17.8 pts | 1.4 | 6.8 | 8.3 | 0.53 |
+| bargains first | $120k | 1 | 32.7% | 7.3% | 6.3% | 25.4 pts | 1.0 | 5.2 | 7.3 | 0.48 |
+| bargains first | $120k | 5 | 34.6% | 8.2% | 6.8% | 26.4 pts | 1.0 | 5.7 | 6.6 | 0.55 |
+| bargains first | $120k | 20 | 35.3% | 8.8% | 7.1% | 26.5 pts | 1.2 | 4.8 | 6.6 | 0.53 |
+| bargains first | $250k | 1 | 34.4% | 8.4% | 7.0% | 26.0 pts | 1.2 | 5.1 | 6.7 | 0.52 |
+| bargains first | $250k | 5 | 33.6% | 8.1% | 6.9% | 25.5 pts | 1.1 | 5.4 | 7.0 | 0.53 |
+| bargains first | $250k | 20 | 15.2% | 12.0% | 10.0% | 3.2 pts | 2.5 | 7.7 | 12.1 | 0.43 |
+
+## What this says (hand-written against the seed-1 grid; re-check the numbers above if the grid is re-run)
+
+- **Overvaluing one gender costs nothing.** Stretch the men's or women's gaps to double their real size and the persona's teams still win 47-50% with a normal title shot; the quants around them do not move. The price list already carries the ranking, so a lopsided belief about which gender matters changes a pick or two at the margin, not the roster.
+- **The marketing owner comes out slightly AHEAD (51-52% win, ~6% title).** At these prices the big names are fairly priced, so preferring them is free -- and the fame table is built from real doubles rank, so a fame bias is partly a bias toward the truth. Read it as "chasing names at fair prices does not hurt you", not as "fame beats analysis".
+- **The $500k cheapskate is the persona that breaks the league.** Alone, the team wins 21% with no title shot. Five of them push the parity spread from 4.4 to 13.7 points and hand the other fifteen a 58% win rate; all twenty, and Waters, Johns, Bright and the top of the list are never drafted (no one can afford them). This is the case for the $500k min-spend rule: it is not about fairness to the cheap team, it is that unspent money makes the whole league worse.
+- **Loyalty is cheap in small doses and expensive in large ones.** A light preference for 2026 teammates (lam 0.05) is free; at lam 0.15 it costs ~1.5 points of win rate; at lam 0.5 (a full real six worth half a win of belief) the team drops to 42% / 2% title and leaves $110k unspent because the teammates it wants do not fill a legal roster efficiently.
+- **Bargains first is the worst strategy that looks sensible.** Spending rounds 1-3 on <=$120k players wins 24% with no title shot, and only $600k gets spent: in a 20-team snake the whole top 60 is gone before round 4, so the money has nothing left to buy. Raising the threshold to $250k gets 39%. The lesson is that in a draft, waiting is the expensive move -- the stars are gone, not overpriced.
+- **Nothing here dents the pick-1 team.** Waters' team wins 63-68% in every cell it is drafted; the only cells that move it are the ones where personas leave the league lopsided (five cheapskates 68.5%).
+

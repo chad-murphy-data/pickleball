@@ -25,7 +25,18 @@ $500k cheapskate (alone 21% / no title; five of them spread 13.7, the
 rest of the league 58%), which is the case for a $500k min-spend;
 bargains-first is the worst sensible-looking strategy (24%, the top 60
 are gone before round 4); overvaluing a gender, chasing names and mild
-loyalty are all free; nothing dents Waters' team (63-68%).
+loyalty are all free; nothing dents Waters' team (63-68%). **No persona
+creates a second contender** (title-odds concentration table in
+`personas.md`: one team at 10%+ in every cell she is drafted).
+**Dials probe DONE** (`dials_probe.py` -> `dials.md`, `phase2_pricing.md`
+§10): on the price side there is exactly one lever (charge her above what
+the cap allows); what actually moves her team is playing time (67% of
+ties -> 48%; she is a single point of failure, team without her 12%), a
+coin-flip DreamBreaker (gap over Bright/Johns 14.6 -> 8.6), and targeted
+rivals (42% head-to-head at no season cost). Split gender caps make it
+worse (82% vs reference; Bright and Johns go over cap too). Format
+changes the title lottery (37% -> 14%) but never lifts a second team past
+10%.
 
 ## The shipped rule in one paragraph
 
@@ -90,6 +101,14 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    (`draft_sim.Owner` hooks: beliefs, cap, score, filter_cands) are the
    reusable part; a mixed league of several personas at once is one
    `owner_factory` away.
+1b. **Confirm MLP's rotation / playing-time rules** (Phase 0's open
+   item, now the biggest known lever on the one-favourite problem):
+   measured 2026 shows contenders' stars at 100% of matchups, so today
+   there is no rotation; if MLP has or adds a minimum-starts rule, sweep
+   it (share of ties the star plays) through the draft sim, and re-price
+   (bench value rises). Also worth a cell each: DreamBreaker rule
+   variants, and a "rival" persona that best-responds to the Waters
+   roster (the spoiler exists; see `dials.md`).
 2. **Phase 3 follow-ups**: the league-price + surplus column once MLP
    publishes prices (the page already says it is coming); a per-player
    line on player pages ("value price $X, #N among women"); an insights
@@ -123,7 +142,10 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
   `Owner` hooks (beliefs `dbl`/`sgl` + `rebuild()`, `cap`, `score(proj)`,
   `filter_cands`) and `run_variant(..., owner_factory=)` for persona leagues.
 - `personas.py` → `personas.md` — the five persona classes + `franchises_2026()`
-  (pid → modal 2026 MLP team); `--only`, `--counts`, `--rerender`.
+  (pid → modal 2026 MLP team); `--only`, `--counts`, `--rerender`;
+  `concentration(r)` = title-odds concentration of a run_variant result.
+- `dials_probe.py` → `dials.md` — DB coin flip, availability, measured 2026
+  playing time, rival best response, split caps, season formats.
 - `pool_floor_sweep.py` — `phi_pool(P)`, `run_cell(P, floor, pool, ...)`.
 - `draft_strategies.py`, `simulate_templates.py` — template rosters and
   their season.
