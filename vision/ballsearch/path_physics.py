@@ -35,6 +35,18 @@ SERVE_LEAD = 0.10   # s of grace before the serve contact
 STALL_WIN = 0.25    # s each side
 STALL_FT = 4.0      # court feet of extent below which nothing is flying
 
+# RETRACE: the owner, watching the tracker shuttle in and out from behind
+# a player -- "went behind the player, toward the player, behind her
+# again, toward her again".  A ball reverses only when something reverses
+# it: a paddle, the floor, the net.  Four reversals in half a second is
+# four causes that do not exist.  Measured as the fraction of a window's
+# points that come back within 2 ft of where the path already was at
+# least 0.15 s earlier: >0.70 holds 20.9% of junk and 3.7% of good.
+RETRACE_WIN = 0.30  # s each side
+RETRACE_LAG = 0.15  # s -- how much earlier counts as "already been there"
+RETRACE_FT = 2.0    # court feet
+RETRACE_MAX = 0.70  # above this the path is retracing, not flying
+
 
 def _speeds(pts):
     dt = np.diff(pts[:, 0])
@@ -69,6 +81,36 @@ def stalled(pts, P, win_s=STALL_WIN, dmin_ft=STALL_FT):
     return out
 
 
+def retracing(pts, P, win_s=RETRACE_WIN, lag_s=RETRACE_LAG,
+              near_ft=RETRACE_FT):
+    """Fraction of each window that revisits where the path already was."""
+    Hi = _court(P)
+    pts = np.asarray(pts, float)
+    cp = np.empty((len(pts), 2))
+    for i, (_, x, y) in enumerate(pts[:, :3]):
+        v = Hi @ np.array([x, y, 1.0])
+        cp[i] = v[:2] / v[2]
+    t = pts[:, 0]
+    out = np.zeros(len(pts))
+    for i in range(len(pts)):
+        a = np.searchsorted(t, t[i] - win_s)
+        b = np.searchsorted(t, t[i] + win_s)
+        if b - a < 6:
+            continue
+        idx = np.arange(a, b)
+        hit = tot = 0
+        for k in idx:
+            far = np.abs(t[idx] - t[k]) >= lag_s
+            if not far.any():
+                continue
+            tot += 1
+            d = np.hypot(*(cp[idx[far]] - cp[k]).T)
+            if (d < near_ft).any():
+                hit += 1
+        out[i] = hit / max(tot, 1)
+    return out
+
+
 def clean(pts, serve=None, dead=None, P=None,
           v_max=V_MAX, min_run=MIN_RUN):
     """Return (kept_pts, mask, reason) for a (t,x,y) path.
@@ -89,6 +131,10 @@ def clean(pts, serve=None, dead=None, P=None,
     if P is not None:
         st = stalled(pts, P)
         reason[(reason == "") & st] = "stalled"
+
+    if P is not None:
+        rt = retracing(pts, P)
+        reason[(reason == "") & (rt > RETRACE_MAX)] = "retrace"
 
     live = np.where(reason == "")[0]
     if len(live) < 2:

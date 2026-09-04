@@ -21,6 +21,7 @@ human paths say where the ball actually was, so every tracked point is GOOD
 | direction off court long axis | 8.8% >60° | 8.8% | 1.0× | **null** |
 | **inside a player's box** | **23.7%** | **69.6%** | **2.9×** | strong |
 | **run court displacement <3 ft** | **1.7%** | **18.8%** | **10.9×** | strongest |
+| **path retrace >0.70** | **3.7%** | **20.9%** | **5.6×** | strong, high volume |
 
 Two of these came from the owner during the audit and are the only two that
 worked. Both were first stated in a form that is null, and both survive when
@@ -34,6 +35,14 @@ moved to the right frame:
   test this is null (lift 1.0×) because junk rides players and players move
   up-court too. Measured as COURT DISPLACEMENT over half a second it is the
   strongest feature found: the ball always goes somewhere, a shoe does not.
+- *"went behind the player, toward the player, behind her again, toward her
+  again"* → **retrace**. The deepest of the three, because it is about
+  CAUSES rather than positions: a ball reverses only when a paddle, the
+  floor or the net reverses it, so four reversals in half a second is four
+  causes that do not exist. Measured as the fraction of a window that comes
+  back within 2 ft of where the path already was ≥0.15 s earlier. Lower
+  lift than stall (5.6× vs 10.9×) but six times the volume, and it is the
+  rule that actually moves the calls.
 
 ## Rules shipped (`path_physics.clean`)
 
@@ -42,13 +51,22 @@ moved to the right frame:
 | BOUNDS | no ball before the serve contact or after it dies | ~50 pts/rally | 0 |
 | TELEPORT | >2200 px/s (human paths' own p99.9 is 2047) | 108 | 3 |
 | STALL | ±0.25 s window covering <4 ft of court | 39 | 4 |
+| RETRACE | window revisits its own path, >0.70 | 262 | 101 |
 | SPUR | surviving run under 4 frames | 3 | 0 |
 
-Pooled: **11.1% of junk removed for 0.2% of good.** Free, and it deletes the
-pre-serve latch outright (confirmed in r7, r9, r10 and r17 — ~50 points per
-rally, the class the owner caught in two separate videos), but it is not
-yet a big enough bite to move the bounce calls (turns 338 → 314, bounce
-recall 40 → 41, impact recall 118 → 117).
+Pooled: **27.3% of junk removed for 3.9% of good**, a 7:1 filter. It deletes
+the pre-serve latch outright (confirmed in r7, r9, r10 and r17 — ~50 points
+per rally, the class the owner caught in two separate videos).
+
+End to end on the turn calls, which is what the audit was about:
+
+    turns          338 -> 303   (-10%)
+    JUNK turns     180 -> 145   (-19%)
+    bounce recall   40 -> 41    /59
+    impact recall  118 -> 117   /144
+
+A fifth of the over-calling goes away and no real event is lost. BOUNDS +
+TELEPORT + STALL are free but small; RETRACE is what moves it.
 
 ## Occlusion bridging — measured, not yet shipped
 
