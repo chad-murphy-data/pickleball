@@ -56,8 +56,8 @@ specific, bounded place — see "the black hole" below.
 
 | stat | the asterisk |
 |---|---|
-| bounce location | ~5 ft, good for a heat map and for deep-vs-short, not for line calls |
-| bounce ledger from the TRACKED path | mechanism is exact; the tracker feeding it is off (8 v 13 on r10) |
+| bounce location, no ball | ~5 ft, good for a heat map and for deep-vs-short, not for line calls |
+| bounce location, TRACKED | **1.91 ft** where it fires — but it only fires on 13 of 34 (see below) |
 | 3D replay | works and looks right (r4 CHECK 3 at 1.76 ft vs a 3.0 bar) but passes on some rallies and not others |
 | first speed-up | right player on both eval rallies, right shot on one (see the house rule below) |
 
@@ -112,6 +112,72 @@ eval read. Evaluation on r9/r10: **first speed-up was wrong on both rallies
 under the old rule; it is now the right player on both, and the right shot on
 r9** (Emma Nelson at 257.90 vs truth 257.84). r10 names the right player
 3.8 s late, for exactly the reason in the second bullet.
+
+## UPDATE 2026-09-04 — the bounce bottleneck moved
+
+Everything above was written before the four commits of 2026-09-04. One of
+them changes which problem is the hard one, so read this section against the
+tables above.
+
+**Locating a bounce is now solved; finding one is not.** Check 3 gained a
+time-matched comparison of the fitted `bounce_xy` against the human ledger
+(`1cb9042`, `ac87c99`), so bounce position is reported in court feet rather
+than only counted:
+
+| rally | matched | median |
+|---|---|---|
+| r7 | 3/3 | 2.05 ft |
+| r9 | 5/13 | 0.83 ft |
+| r10 | 2/13 | 1.60 ft |
+| r17 | 3/5 | 1.91 ft |
+
+Pooled n=13, **median 1.91 ft**, 46% within 1 ft, 77% within 3. That beats
+the no-ball proxy's 5.3 ft by ~2.8x and beats the tracked *impact* numbers
+(2.15-2.98 ft) on every single rally — structurally, not by luck: a bounce
+sits on the z=0 plane the homography solves to 0.06 ft and is bracketed by
+arcs on both sides, where the tracker is a 90% instrument. A contact is
+exactly where the path has its hole.
+
+So the honest table for bounces is now three rows, not one:
+
+| | state |
+|---|---|
+| locating a bounce we found | **solved**, 1.91 ft |
+| finding the bounces | **13 of 34 = 38% recall** |
+| not calling non-bounces | of 30 emitted, **6 real / 12 junk / 12 missed contacts** |
+
+Neither live problem is the ball detector. Both are the claim logic
+(`a16e2ba`): `bounce_evs = [e for e in turns if e not in claimed]` makes
+bounce the residual category, so every anchor miss becomes a fake bounce and
+nothing ever asks whether the turn looks like one.
+
+**Two measured fixes exist and neither is shipped.**
+
+1. *The bounce signature.* Image y falls then rises — a sign test, nothing to
+   tune. Keeps **6/6** real bounces, kills **10/12** junk markers. The turn
+   angle the claim uses today does not separate them at all (real median
+   91.5 deg, junk 66.5, ranges overlapping). Measured in `a16e2ba`; the
+   predicate lives at `ballsearch/turn_geom.py:42` as `v_shape` and
+   `ball_replicate.py` does not call it.
+2. *A spatial gate on claiming.* `claim_bounds()` gives an anchor its
+   largest-angle turn within 0.25 s with no distance test, which is the
+   over-claiming half.
+
+**Path junk is now filtered before any of this** (`ballsearch/path_physics.py`,
+graded label-free against the nine owner-clicked paths in `physics_grade.py`):
+31.8% of junk points removed for 5.1% of good, junk turns 180 -> 132. Rules
+are bounds / teleport / spur / stall / retrace / defected, each with its
+measured lift in `ballsearch/path_physics.md`.
+
+**Four things were tested and are null** — recorded so they are not retried:
+the court-volume rule ("the ball is never outside the court or behind a
+player's feet"), the same rule written player-relative, vertical position
+within the body as a delete rule, and occlusion bridging. A per-point trust
+ranker does work as a *ranker* (leave-one-rally-out AUC 0.831, every rally
+0.75-0.93) but does not fix bridging: pooled AUC is inflated by
+stratification, and at a box edge -- exactly where bridging must pick its
+anchors -- it is 0.729 on a 63% base. Details and nulls in
+`ballsearch/path_physics.md`.
 
 ## The black hole, and why it licenses the non-tracking family
 
