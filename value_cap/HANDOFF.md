@@ -13,7 +13,12 @@ stand. **Phase 2 is SHIPPED**: alpha 1, one joint $20M pool, $30k floor,
 Anna Leigh Waters franchise-tagged at $769k (user call 2026-09-04 night,
 after the draft simulations and the pool/floor sweep). The price list is
 `price_list.md` / `price_list.csv` with a doubles-only column so the
-DreamBreaker lift is visible. Phase 3 (site) has not started.
+DreamBreaker lift is visible. **Phase 3 (site) first cut is BUILT**
+(same night): `web/build_site.py:build_valuecap` renders `site/valuecap.html`
+off `price_list.csv` (gender tabs, TAG chip, share of $20M, doubles pts +
+rank, lift arrows, singles games; the tag rule and the one-favorite fact
+stated on the page), linked from the site nav and a landing-page door.
+The league-price / surplus column waits on MLP publishing real prices.
 
 ## The shipped rule in one paragraph
 
@@ -78,10 +83,13 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    players". Build as `Owner` subclasses with a belief/objective twist,
    mix them into a league of quants, read the same tables. Sweep the
    mix, don't pick it.
-2. **Phase 3 (site)** off `price_list.csv`: two columns per player (value
-   price, league price once MLP publishes), surplus as the headline;
-   the doubles-only column next to the price; state the tag rule and the
-   "pick 1 is a ~1-in-3 title shot because of one player" fact plainly.
+2. **Phase 3 follow-ups**: the league-price + surplus column once MLP
+   publishes prices (the page already says it is coming); a per-player
+   line on player pages ("value price $X, #N among women"); an insights
+   article on the tag rule and the one favorite. Optional: LLM owners as
+   persona GENERATORS for item 1 (the user asked; judged not worth it as
+   drafters — repeated play in the sim answers the learning question
+   cheaper).
 3. **Injury/absence Monte Carlo** (Phase 1's open item): sweep the rate;
    the Waters-plus-five-cheap build is the most availability-fragile
    roster in the league and this is the one layer that could

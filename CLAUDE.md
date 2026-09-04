@@ -566,7 +566,9 @@ PICKLES landing page (index.html — live doorway teasers + conditional
 live-page bullet above), power rankings (rankings.html), singles ratings
 + DreamBreaker record book (singles.html, gender-separate; player pages
 carry a Singles block),
-499 player pages (trajectory + game-log-vs-expectation SVGs), client-side
+499 player pages (trajectory + game-log-vs-expectation SVGs), value cap
+(valuecap.html — the shipped MLP price list off value_cap/price_list.csv,
+gender tabs, TAG chip, doubles-rank lift arrows; added 2026-09-04), client-side
 matchup simulator (race DP + weakest link + uncertainty in embedded JS,
 shareable permalinks), receipts ledger + calibration, record book,
 methods, 404. The look is the PICKLES design handoff: master
