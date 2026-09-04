@@ -14,7 +14,30 @@ measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
 
-## 2026-09-03 (latest) — THE r2-r5 CONTACT TAPS ALREADY EXISTED
+## 2026-09-04 (latest) — BOUND ORACLE: the bounces are lost in the bounds, both halves at once
+
+`bound_oracle.py` (this directory; numbers and the flight-level reading in
+`vision/STATS.md`, "UPDATE 2026-09-04 (later)"). The bounce counter's 13 of
+35 is not the detector (tracked path 4.5 px median on the missed flights),
+not the fitter (25/35 when handed the human flights), and not the crossing
+demotion (drop it: 11; validate it on the merged fit: 13; on perfect bounds
+it demotes 11 real dink contacts, 25 → 20). It is the claimed bounds: 17 of 79 contacts
+missed AND 34 junk bounds (8 sitting on a bounce, 8 duplicate claims, 7
+mistimed by 0.27–0.41 s, 11 far). Only 13 of the 35 bounce-holding flights
+are intact (both ends within 0.25 s, nothing in between); on intact flights
+the counter hits 11/16, on broken ones 2/19. Fixing contact recall alone
+= 14, junk alone = 14, both = 25 — the two defects break the same flights.
+
+Grade claim-step work on intact flights, not on the bounce count, until the
+intact count moves. Two flags: `ball_replicate.main`/the autopsy use raw
+anchors while `ball_grade` check 3 dedupes (13 vs 12 shipped — quote them
+separately); `court3d.fit_arc` can raise `LinAlgError` on a 2-point piece
+(guarded in the oracle only — r20 risk). Reproduce: `bound_oracle.py
+--rally N --bounds {tracked,recall,precision,human} --demotion
+{none,shipped,validated} [--policy dedup]`, then `--summary`; caches are
+gitignored, ~1–13 min a cell.
+
+## 2026-09-03 — THE r2-r5 CONTACT TAPS ALREADY EXISTED
 
 Staging tonight's click found the click job did not exist. `source` in
 `contact_labels_chicago0725.csv` records HOW a tap was entered — `prefill`
@@ -575,6 +598,8 @@ already exist. r2 is below the power floor; skip it.
 |---|---|
 | `c3_lab.py` | Stage A cache per rally → `c3_cache_r{r}.pkl` (windowed candidates, decode, timing stream, turns, anchors, floors, human side fit). WINDOWS dict holds serve/end/pose-npz per rally. |
 | `claim_lab.py` | `load(rally)`, `paddle_series(npz)`; claim logic labs. |
+| `bounce_autopsy.py` | read-only bucket per missed human bounce on r7/9/10/17 (NO WINDOW / CAPPED / NO SEG / NOT OK / CALLED ARC / WRONG TIME) off the c3 cache; caches the shipped tracked side as `autopsy_track_r{r}.pkl` (gitignored). |
+| `bound_oracle.py` | swaps each downstream stage for its oracle (bounds: tracked / +missed contacts / −junk / human × demotion: none / shipped / validated; `--first-pass`; `--policy dedup` = check 3's anchors) and grades the same 35 bounces; `--summary` prints the grid, `--anatomy` the junk-bound breakdown. Result 2026-09-04: both bound defects together 25/35, either alone 14, shipped 13 — see STATS.md. Caches gitignored. |
 | `corridor_lab.py` | corridors between consecutive contacts (prod = approach_events + anchors → dedupe → claim_bounds; oracle = hand taps `c["imps"]`); window = chord ± (wx=min(140,40+0.2L), wy=min(170,55+0.3L)); truth loader; `decode_recall`; R_MAIN=12. |
 | `corridor_dp.py` | Viterbi chain per corridor over per-frame candidates (K=14, GAP=6): accel + gap + endpoint + body-extremity cost (W_BODY=25, R_BODY=16) − peak bonus + `W_P_SOFT·(1−p)`. |
 | `emission.py` | learned per-candidate scorer (hand-rolled Adam logistic, 14 features). `train` (r6↔r7 cross-val + pooled model → `emission_model.json`), `cache <r>` (p-cache from pooled model), `cache-cross` (r6 scored by r7-only model and vice versa → `p_r{6,7}_{mode}_14_x.npz`, fold kp97). |

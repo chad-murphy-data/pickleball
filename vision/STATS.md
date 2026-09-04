@@ -308,6 +308,73 @@ stratification, and at a box edge -- exactly where bridging must pick its
 anchors -- it is 0.729 on a 63% base. Details and nulls in
 `ballsearch/path_physics.md`.
 
+### UPDATE 2026-09-04 (later) — the bounces are lost in the BOUNDS, both halves at once
+
+`ballsearch/bound_oracle.py`. The counter above finds 13 of 35 human bounces
+on r7/r9/r10/r17 (35 with r17's ledger; 34 in the tables above). The tracked
+ball path is as good as the hand-labeled one on the flights it misses
+(median 4.5 px, p90 9 px, near-bounce 3.5 px), so the loss is downstream of
+the detector. This swaps each downstream stage for its oracle, one at a time
+(human contacts as an oracle for the bounds only; tracked observations
+throughout; nothing trained or tuned), and grades the same 35 bounces:
+
+| bounds \ demotion | none | shipped | validated |
+|---|---|---|---|
+| tracked (as claimed) | 11 | **13** (the autopsy) | 13 |
+| + the 17 missed contacts inserted | 14 | 14 | |
+| − the 34 junk bounds removed | 14 | 14 | |
+| human contacts (both fixed) | **25** (first pass only: 23) | 20 | |
+
+Per rally r7/r9/r10/r17: shipped 3/6/2/2, both-fixed 3/9/9/4.
+
+**Read it by flights, not stages.** A bounce is found only inside an intact
+flight — both contacts placed within 0.25 s and no extra bound between them.
+Of the 35 bounce-holding flights, 13 are intact in the claimed bounds (16
+after demotion). On intact flights the counter hits 11/16; on broken ones
+2/19; with every flight intact, 25/35. So bounce recall is the
+intact-flight count times the fitter's own ~70%, and nothing else in the
+grid matters. Why the 22 broken flights are broken: 9 have a missing end
+AND a junk bound inside, 7 junk only, 6 a missing end only. Fixing one
+defect leaves the other one breaking the same flights, which is why contact
+recall alone and junk removal alone are each worth +3 and together +14.
+
+**The 34 junk bounds**, by what they sit on: 8 ON a human bounce (within
+0.05 s — the bounce-turn was claimed as a contact, so the flight is split at
+the bounce and neither piece can hold it), 8 duplicates of a contact another
+bound already matched, 7 mistimed claims 0.27–0.41 s from a contact that is
+otherwise missed (MATCH_S is 0.25), 11 far from anything. The bounce-shape
+sign test cannot veto claims: 60% of the REAL contact bounds are also
+fall-then-rise (dinks and low volleys) against 88% of the on-a-bounce ones.
+
+**Demotion is not the lever and is not free to drop.** Its premise (a real
+flight's drawn path crosses the net) fails 7 times in 71 on the human
+flights — dinks. On the claimed bounds it removes 12 bounds over the four
+rallies, 5 of them real contacts (r9 258.77/259.12, r10 306.02, r17 431.48;
+r10 308.75 under the validated variant), and it is net +2 (11 → 13) only
+because it also removes junk, including the bound sitting on r7's bounce at
+170.16. Validating each demotion on the merged flight's plausibility changes
+nothing (13; the merge test also passes a real contact and fails junk). On
+perfect bounds it costs 5 (25 → 20): all 11 bounds it removes there are real
+contacts, and on junk-free tracked bounds all 7 are (14 → 14).
+
+Two flags found on the way. (i) `ball_replicate.main` and the autopsy pass
+RAW anchors to `tracked_side` (with the `bounce_shaped` filter on markers);
+`ball_grade` check 3 dedupes anchors first and keeps every unclaimed turn as
+a marker. Under check 3's policy the tracked row reads none 13 / shipped 12
+/ validated 13, with contacts 57/79 and junk 22 (raw: 62/79 and 35). Same
+story, one bounce apart; the two paths should not be quoted as one number.
+(ii) `court3d.fit_arc` raises `LinAlgError` (singular matrix) on a
+2-observation piece; the oracle guards it (rms = inf, piece rejected), the
+shipped fitter does not, and r20 could hit it.
+
+**What this changes in the to-do.** Grade any claim-step change on INTACT
+FLIGHTS (both ends within 0.25 s, nothing between) before looking at the
+bounce count: the bounce count cannot move until both bound defects move
+together. The contact-recall line (the black hole above) and the junk line
+(bounce-turns and duplicate anchors claimed as contacts) are one problem
+with two symptoms, and a fix that trades one for the other — the spatial
+claim gate, the dedupe policy — measures flat here for exactly that reason.
+
 ## The black hole, and why it licenses the non-tracking family
 
 Measured 2026-09-03 (`ballsearch/blackhole.py`), the frozen scorer sliced by
