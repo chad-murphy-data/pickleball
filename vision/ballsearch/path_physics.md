@@ -106,3 +106,65 @@ So even perfect anchoring is a tail fix, not a median fix — when the tracker
 is on the ball entering and leaving a box it is usually fine inside too. The
 open work is finding trusted anchors for the other 58% of spans, which is
 the same problem as identifying junk in the first place.
+
+## "The ball never goes behind players' feet or outside the court" — null
+
+Owner's rule, tested as stated. It does not fire on this footage, and the
+two halves fail for two different measured reasons.
+
+**Written as a ray/volume test.** A pixel is not a point, it is a ray from
+the camera. So the right form of the rule is: *is there any height at which
+this pixel is a ball inside the playable volume* — the court footprint plus
+a margin, ground to lob ceiling. That reformulation was supposed to absorb
+the lob and ATP exceptions instead of carving them out (a lob is in the
+volume, an ATP is in the extended footprint at low height). It does absorb
+them. It just has nothing left to delete.
+
+Marginal flags **on top of** the shipped filter, nine human-graded rallies:
+
+    margin  0 ft, ceiling 12 ft   junk  11   good   6      (1.8:1)
+    margin  0 ft, ceiling 20 ft   junk  11   good   6
+    margin  3 ft, ceiling 15 ft   junk   1   good   0
+    margin  6 ft, ceiling 15 ft   junk   0   good   0
+
+The shipped rules run about 7:1. At any honest margin — a pickleball court
+has ~6 ft of run-off and ATPs go wider — the rule flags nothing at all, and
+the only setting that flags anything is worse than a coin flip. Not shipped.
+
+**Why "outside the court" is empty: the volume fills the frame.** Sampling
+every 4th pixel of the 1280×720 frame and asking the same question:
+
+    margin  0 ft, ceiling 12 ft    54.5% of the frame is a legal ball position
+    margin  3 ft, ceiling 12 ft    82.0%
+    margin  6 ft, ceiling 15 ft    98.6%
+    margin 10 ft, ceiling 20 ft   100.0%
+
+There is almost nowhere in this camera's view a ball could not be. And the
+junk isn't in the 1.4% that's left, because the junk rides *players*, and
+players stand on the court. 99% of junk points are reachable at ground
+level inside the lines.
+
+**Why "behind their feet" fires backwards.** A ball at height projects
+*deeper* than it is — the camera looks down the court, so height and depth
+are the same measurement at z=0. Which means good path is behind the feet
+*more* often than junk, not less:
+
+    share of points >3 ft behind the nearest player's feet    good 88%  junk 86%
+    share >6 ft                                               good 83%  junk 74%
+    share >12 ft                                              good 74%  junk 57%
+
+Lift 0.8–1.0× — the wrong direction at every threshold. The rule would
+preferentially delete lobs and drives, which is exactly the exception list
+it was going to need.
+
+**"Those have the player feet moving"** — tested separately as its own
+feature, on the nearest player's box-bottom speed over ±0.15 s. Null:
+p50 123 px/s under good points vs 111 under junk, p90 232 vs 227.
+
+**What survives of the intuition.** The rule is real, it just isn't a
+*position* claim on this footage — it's the occlusion claim, already shipped
+as `in_player_box` (69.6% of junk vs 23.7% of good). A player box is not
+where the ball is, it's where the ball is invisible. The unspent half is
+that the ball's height is knowable when you stop treating it as a
+constraint on pixels and start treating it as a quantity to solve for
+between two known contacts — which is the double-bounce arc fit, not this.
