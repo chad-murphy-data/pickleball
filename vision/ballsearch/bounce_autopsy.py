@@ -30,6 +30,7 @@ Read-only autopsy on the c3 cache; no knob is tuned and no gate moves.
 """
 from __future__ import annotations
 
+import pickle
 import sys
 from pathlib import Path
 
@@ -46,14 +47,45 @@ NEAR_S = 0.30
 
 
 def tracked(c):
-    """The shipped tracked side, exactly as check 3 builds it."""
+    """The shipped tracked side, exactly as check 3 builds it.
+
+    Cached: the crossing-demotion fits are ~6 min a rally and nothing
+    here tunes them, so the autopsy re-reads rather than re-fits."""
     rally, anchors, floors = c["rally"], c["anchors"], c["floors"]
+    cp = HERE / f"autopsy_track_r{rally}.pkl"
+    if cp.exists():
+        with open(cp, "rb") as f:
+            return pickle.load(f)
     serve, end = c["imps"][0], c["dead"]
     t_obs, t_bounds, t_evs = br.tracked_side(
         rally, anchors, floors, serve, end)
     segs, cons, bounds, evs = br.crossing_demotion(
         c["P"], t_obs, t_bounds, t_evs, floors, anchors)
-    return t_obs, segs, bounds, evs
+    out = (t_obs, segs, bounds, evs)
+    with open(cp, "wb") as f:
+        pickle.dump(out, f)
+    return out
+
+
+def why_not_ok(seg):
+    """Which clause of ball_replicate._plausible rejected this fit."""
+    import court3d as c3
+    pts = np.array([p[1:] for p in c3.sample_path(seg)])
+    if not len(pts):
+        return "empty"
+    bad = []
+    if not seg["rms"] < 8.0:
+        bad.append(f"rms {seg['rms']:.1f}")
+    if not (pts[:, 0].min() > -15 and pts[:, 0].max() < 35):
+        bad.append(f"x [{pts[:,0].min():.0f},{pts[:,0].max():.0f}]")
+    if not (pts[:, 1].min() > -15 and pts[:, 1].max() < 60):
+        bad.append(f"y [{pts[:,1].min():.0f},{pts[:,1].max():.0f}]")
+    if not (pts[:, 2].min() > -3 and pts[:, 2].max() < 40):
+        bad.append(f"z [{pts[:,2].min():.0f},{pts[:,2].max():.0f}]")
+    v = np.diff(pts, axis=0) * 60.0
+    if len(v) and not np.linalg.norm(v, axis=1).max() < 176:
+        bad.append(f"v {np.linalg.norm(v,axis=1).max():.0f}")
+    return " ".join(bad) or "?"
 
 
 def main():
@@ -109,8 +141,18 @@ def main():
             else:
                 b = "CALLED ARC"
             tally[b] = tally.get(b, 0) + 1
+            det = ""
+            if b == "NOT OK":
+                det = why_not_ok(segs[k]) + (
+                    "  [bounce]" if segs[k]["kind"] == "bounce" else "  [arc]")
+            elif b == "NO SEG":
+                det = f"span {bounds[k+1]-bounds[k]:.2f}s"
+            elif b == "WRONG TIME":
+                det = f"called {called[k]:.2f} (d {abs(called[k]-ts):.2f}s)"
+            elif b == "CALLED ARC":
+                det = f"rms {segs[k]['rms']:.1f} span {bounds[k+1]-bounds[k]:.2f}s"
             rows.append((r, ts, b, near, ev,
-                         len(holds.get(k, [])) if k is not None else 0))
+                         len(holds.get(k, [])) if k is not None else 0, det))
 
         # missed contacts: how many human contacts have no tracked bound
         cmiss = sum(1 for hc in h_con
@@ -127,12 +169,12 @@ def main():
           f"by construction): {capped_segs}")
 
     print(f"\n{'rally':>5} {'t':>8} {'bucket':12s} {'obs+-.15':>9} "
-          f"{'marker':>7} {'hb in seg':>10}")
-    for r, ts, b, near, ev, nh in rows:
+          f"{'marker':>7} {'nhb':>4}  why")
+    for r, ts, b, near, ev, nh, det in rows:
         if b == "matched":
             continue
         print(f"{r:>5} {ts:>8.2f} {b:12s} {near:>9} "
-              f"{'yes' if ev else 'no':>7} {nh:>10}")
+              f"{'yes' if ev else 'no':>7} {nh:>4}  {det}")
 
 
 if __name__ == "__main__":

@@ -39,3 +39,4 @@ data/vision/ball_audit_r1.html
 data/vision/ball_visibility_audit.html
 data/vision/court_calibration.html
 data/vision/court3d_r1.html
+vision/ballsearch/autopsy_track_r*.pkl
