@@ -378,6 +378,20 @@ def track_sides(floors):
     return out
 
 
+def bounce_shaped(points, e, win=0.12):
+    """Does the path FALL then RISE through e?  Image y grows downward,
+    so a real bounce is dy_pre > 0 > dy_post.  Unmeasurable -> True: the
+    test may only delete on positive evidence of the wrong shape."""
+    pts = sorted(points)
+    d = []
+    for seg in ([p for p in pts if e - win <= p[0] < e],
+                [p for p in pts if e < p[0] <= e + win]):
+        if len(seg) < 2 or seg[-1][0] - seg[0][0] < 1e-3:
+            return True
+        d.append((seg[-1][2] - seg[0][2]) / (seg[-1][0] - seg[0][0]))
+    return d[0] > 0 > d[1]
+
+
 def claim_bounds(turns, angs, refined, anchors, sides=None,
                  claim_r=None):
     """claim_r=None and sides=None = the original LOOSE claiming
@@ -457,7 +471,21 @@ def tracked_side(rally, anchors, floors, serve, end, sides=None):
     # and flipped r7's check 3 to FAIL (bounces 0 vs 2, median 3.10).
     # A contact bound requires a hitter-chain anchor, full stop; a
     # missed anchor degrades to a longer segment, not a fake contact.
-    bounce_evs = [e for e in turns if e not in claimed]
+    # A bounce FALLS THEN RISES.  Image y grows downward, so a real
+    # bounce has dy_pre > 0 > dy_post -- a sign test on the local
+    # velocity, nothing to tune.  This is the missing half of the line
+    # below: bounce is the RESIDUAL category, so without it every
+    # tracking wobble an anchor failed to claim becomes a bounce marker.
+    # Measured on all 128 turns of r7/r9/r10/r17 against the owner's
+    # reconstruction (turn_audit.py, ballsearch/bounce_fix.py):
+    # keeps 6/6 real bounces, kills 10/12 junk markers, and the turn
+    # ANGLE the claim already uses does not separate them at all (real
+    # median 91.5 deg, junk 66.5, ranges overlapping).  End to end over
+    # the four rallies: markers 30 -> 14, junk 12 -> 2, missed-contact
+    # markers 12 -> 6, precision 20% -> 43%, contact recall UNCHANGED
+    # at 63/79.  Turns with unmeasurable velocity are kept, not deleted.
+    bounce_evs = [e for e in turns
+                  if e not in claimed and bounce_shaped(timing_ref, e)]
     bounds = matched + [end]
     obs = [(t, x, y, 1.0) for t, x, y in pts]
     return obs, bounds, bounce_evs
