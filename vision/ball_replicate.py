@@ -56,6 +56,7 @@ MATCH_S = 0.25          # turn <-> anchor and tracked <-> human bound match
 LANK, RANK = 15, 16     # COCO ankles
 KPT_CONF = 0.3
 IMPACT_BAR_FT = 3.0     # frozen gate bar
+BOUNCE_MATCH_S = 0.30   # tracked <-> human bounce time match
 
 
 # ------------------------------------------------- automated person floor
@@ -540,6 +541,34 @@ def compare(rally, trk, hum, P, floors, anchors):
     n_h = sum(1 for j, hb in enumerate(h_bounds[:-1])
               if h_cons[j] is not None)
     med = float(np.median(dists)) if dists else float("inf")
+
+    # BOUNCE POINTS -- the product question ("the ball bounced somewhere").
+    # Same time-matching as impacts, but the quantity is the z=0 landing
+    # point in COURT coordinates, which is what a bounce map is read on.
+    # No depth degeneracy here: a bounce is on the plane the homography
+    # solves exactly, and it is bracketed by arcs on both sides.
+    bd, bused = [], set()
+    tb_all = [(float(s["ts"]), np.asarray(s["bounce_xy"], float))
+              for s in t_segs if s and s.get("ok") and s["kind"] == "bounce"]
+    hb_all = [(float(s["ts"]), np.asarray(s["bounce_xy"], float))
+              for s in h_segs if s and s.get("ok") and s["kind"] == "bounce"]
+    for ts, txy in tb_all:
+        m = [(abs(ts - hs), j) for j, (hs, _) in enumerate(hb_all)
+             if j not in bused and abs(ts - hs) <= BOUNCE_MATCH_S]
+        if not m:
+            continue
+        _, j = min(m)
+        bused.add(j)
+        hs, hxy = hb_all[j]
+        bd.append(float(np.linalg.norm(txy - hxy)))
+        print(f"  bounce {ts:7.2f}s <-> {hs:7.2f}s : "
+              f"({txy[0]:5.1f},{txy[1]:5.1f}) vs ({hxy[0]:5.1f},{hxy[1]:5.1f})"
+              f"  court dist {bd[-1]:.2f} ft")
+    print(f"  BOUNCE POINTS: {len(bd)}/{len(hb_all)} human bounces matched, "
+          f"median court dist "
+          f"{np.median(bd) if bd else float('nan'):.2f} ft")
+    globals().setdefault("_BOUNCE_LOG", []).append(
+        dict(rally=rally, matched=len(bd), n_hum=len(hb_all), d=list(bd)))
 
     # net-crossing check on drawn tracked arcs (court3d check: every
     # segment between contacts must cross the net)
