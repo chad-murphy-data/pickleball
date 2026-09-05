@@ -488,6 +488,19 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   to ~20 s scoreboard snapshots (localStorage). Pre-match numbers anchor to
   the calibrated race DP, so live curves agree with graded receipts at
   rally zero; DB panel uses the singles model.
+  **PPA SINGLES ADDED 2026-09-05**: discovery used to keep only events
+  titled "doubles", so pro singles never reached the board. Both proxies
+  now sweep doubles + singles pro events and flag singles rows `sg: true`
+  (one player per side). Page: pre-match = singles suite race integrated
+  over both players' sd (the holdout's "suite+unc" arm; NO doubles
+  calibration layer — it was fit on doubles v2); in-game = the two-state
+  singles serve DP `winprob.SinglesDP` / `PKL.SinglesDP` (one server per
+  side, no #2-server exception, K_SINGLES = 0.525 from
+  clutch_leverage.md), anchored to the pre-match number like doubles.
+  live_values.json now also ships the 771 singles-only players (doubles
+  value null) plus a singles sd column. `node web/test_live_engine.mjs`
+  cross-checks the singles DP + anchor + sd-integrated race vs Python;
+  `node web/test_live_proxy.mjs` pins the singles sweep.
 - **Lineups (2026-07-17; ladder reworked 2026-07-26)**: make_forecast
   projects via a 3-tier ladder — (1) the matchup's own PUBLISHED lineups,
   (2) BEST LINEUP: top 2W+2M by v2 value from the team's season roster

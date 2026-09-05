@@ -43,6 +43,11 @@ from .race import sigmoid
 # Measured league serve-rally win rate between equal sides (referee logs,
 # 2024-26 doubles; see recon.md "getListLogs" and data/match_rally_summary).
 K_DOUBLES = 0.43
+# Singles serve-rally win rate between equal sides (referee logs, PPA pro
+# singles; model/clutch_leverage.md "Measured k: 0.4383 doubles, 0.5254
+# singles"). Singles has ONE server per side and no opening #2-server
+# exception, so it gets its own two-state DP below.
+K_SINGLES = 0.525
 # Per-match random-effect sd on eta (logit) — same overdispersion the race
 # model carries; the mixture wrapper integrates over it.
 SD_MATCH = 0.352
@@ -165,6 +170,83 @@ def eta_anchor(target_p: float, k: float = K_DOUBLES, T: int = 11) -> float:
         mid = 0.5 * (lo + hi)
         dp = ServeDP(mid, k, T)
         if 0.5 * (dp.p(0, 0, A2) + dp.p(0, 0, B2)) < target_p:
+            lo = mid
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
+# ---- singles: one server per side ------------------------------------
+# Serve states: 0 = A serves, 1 = B serves.
+SA, SB = 0, 1
+
+
+@lru_cache(maxsize=256)
+def _singles_table(kA: float, kB: float, T: int, cap: int) -> dict:
+    """V[(a, b, s)] = P(A wins) for a singles game. A serving wins the
+    rally with prob kA (point) else sides out; the no-score cycle
+    A-serve -> side-out -> B-serve -> side-out -> A-serve is solved
+    algebraically (same trick as the doubles cell, with two states)."""
+    qA, qB = 1 - kA, 1 - kB
+    denom = 1 - qA * qB
+    V = {}
+
+    def done(a, b):
+        if a >= T and a - b >= 2:
+            return 1.0
+        if b >= T and b - a >= 2:
+            return 0.0
+        return None
+
+    def get(a, b, s):
+        d = done(a, b)
+        if d is not None:
+            return d
+        if a >= cap or b >= cap:
+            return 0.5
+        return V[(a, b, s)]
+
+    for a in range(cap - 1, -1, -1):
+        for b in range(cap - 1, -1, -1):
+            if done(a, b) is not None:
+                continue
+            w = get(a + 1, b, SA)          # A scores, keeps serve
+            l_ = get(a, b + 1, SB)         # B scores, keeps serve
+            va = (kA * w + qA * kB * l_) / denom
+            vb = kB * l_ + qB * va
+            V[(a, b, SA)], V[(a, b, SB)] = va, vb
+    return V
+
+
+class SinglesDP:
+    """Exact singles game win probability at a fixed eta (point-share
+    logit, same scale as the singles suite: p_point = sigmoid(v_A - v_B))."""
+
+    def __init__(self, eta: float, k: float = K_SINGLES, T: int = 11):
+        self.eta, self.k, self.T = eta, k, T
+        kA, kB = serve_probs(eta, k)
+        self._V = _singles_table(round(kA, 6), round(kB, 6), T, T + 40)
+        self._done = lambda a, b: (1.0 if (a >= T and a - b >= 2) else
+                                   0.0 if (b >= T and b - a >= 2) else None)
+
+    def p(self, a: int, b: int, state: int) -> float:
+        d = self._done(a, b)
+        if d is not None:
+            return d
+        return self._V.get((a, b, state), 0.5)
+
+
+def eta_anchor_singles(target_p: float, k: float = K_SINGLES,
+                       T: int = 11) -> float:
+    """Singles twin of eta_anchor: eta' whose SinglesDP start-of-game prob
+    (mean over who serves first) equals target_p — the pre-match number
+    from the singles suite's serve-blind race."""
+    target_p = min(max(target_p, 1e-6), 1 - 1e-6)
+    lo, hi = -8.0, 8.0
+    for _ in range(40):
+        mid = 0.5 * (lo + hi)
+        dp = SinglesDP(mid, k, T)
+        if 0.5 * (dp.p(0, 0, SA) + dp.p(0, 0, SB)) < target_p:
             lo = mid
         else:
             hi = mid

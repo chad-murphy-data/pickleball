@@ -12,8 +12,15 @@ pre-match probability, matchup track composed via matchup_prob, DreamBreaker
 via the singles model of make_forecast.py.
 
 Data: site/data/live_values.json (built here) — every v2 player's current
-value/sd + suite singles value (fitted/blended/imputed — always present),
-keyed by uuid.
+value/sd + suite singles value/sd (fitted/blended/imputed — always present),
+keyed by uuid, plus the singles-only players (a real PPA singles record, no
+v2 doubles value) so pro singles rows can price too.
+
+PPA singles (2026-09-05): rows carry sg=true from the proxy; pre-match =
+the singles suite's serve-blind race integrated over the two players' sd
+(model/singles_holdout.py "suite+unc" arm — no doubles calibration layer,
+which was fit on doubles v2); in-game = the two-state singles serve DP
+(winprob.SinglesDP, k = K_SINGLES) anchored to that pre-match number.
 """
 from __future__ import annotations
 
@@ -24,6 +31,7 @@ from pathlib import Path
 
 from . import style
 from .race import GAMMA
+from .winprob import K_SINGLES
 
 ROOT = Path(__file__).resolve().parents[2]
 DATA = ROOT / "data"
@@ -67,23 +75,37 @@ SINGLES_IMPUTE = _singles_impute()
 
 
 def _load_singles():
+    """pid -> (singles value, singles sd, name, gender, singles games)."""
     path = DATA / "singles_players.csv"
     if not path.exists():
         return {}
-    return {r["player_id"].lower(): round(float(r["singles_value"]), 4)
+    return {r["player_id"].lower(): (round(float(r["singles_value"]), 4),
+                                     round(float(r["singles_sd"]), 4),
+                                     r["full_name"], r["gender"],
+                                     int(r["singles_games"] or 0))
             for r in csv.DictReader(path.open())}
 
 
 def build_values_json(players, cal, updated, site_dir):
-    """site/data/live_values.json: pid -> [name, gender, value, sd, singles, has_page]."""
+    """site/data/live_values.json:
+    pid -> [name, gender, value, sd, singles, has_page, singles_sd].
+    Doubles value/sd are null for singles-only players (real singles
+    record, never in a v2 doubles fit) — they exist so PPA singles rows
+    price; doubles pricing still needs all four v2 values."""
     singles = _load_singles()
     recs = {}
     for p in players.values():
+        sg = singles.get(p.pid)
         recs[p.pid] = [p.name, p.gender or "?", round(p.value, 4), round(p.sd, 4),
-                       singles.get(p.pid), 1 if (p.dynamic and p.stats) else 0]
+                       sg[0] if sg else None, 1 if (p.dynamic and p.stats) else 0,
+                       sg[1] if sg else None]
+    for pid, (sv, ssd, name, gender, ngames) in singles.items():
+        if pid in recs or ngames <= 0:
+            continue
+        recs[pid] = [name, gender or "?", None, None, sv, 0, ssd]
     body = {
         "meta": {
-            "gamma": GAMMA, "k": K_DOUBLES, "kDbSingles": K_DB_SINGLES,
+            "gamma": GAMMA, "k": K_DOUBLES, "kSingles": K_SINGLES, "kDbSingles": K_DB_SINGLES,
             "singlesImpute": list(SINGLES_IMPUTE),
             "cal": {"a": cal["a"], "b": cal["b"], "eps": cal["eps"]},
             "updated": updated,
@@ -101,7 +123,7 @@ def build_values_json(players, cal, updated, site_dir):
 LIVE_JS = r"""
 'use strict';
 const CFG = __CFG__;
-PKL.configure({ gamma: CFG.gamma, kDoubles: CFG.k, kDbSingles: CFG.kDbSingles,
+PKL.configure({ gamma: CFG.gamma, kDoubles: CFG.k, kSingles: CFG.kSingles, kDbSingles: CFG.kDbSingles,
                 singlesImpute: CFG.singlesImpute, cal: CFG.cal, epsFloor: CFG.cal.eps });
 
 const $app = document.getElementById('live-app');
@@ -110,18 +132,18 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;
 const fpF = p => PKL.fp(PKL.displayFloor(p));          // floored display %
 const RALLY = 12, MARK_TYPES = {18:'T',35:'T+',2:'C',37:'C',45:'C'};
 
-let VALUES = null;                 // pid -> [name, gender, v, sd, singles, hasPage]
+let VALUES = null;                 // pid -> [name, gender, v, sd, singles, hasPage, singlesSd]
 let nameIndex = null;              // lower name -> pid (unambiguous only)
 let logsCache = new Map();         // match uuid -> {rows, done, fetchedAt}
 let snapStore = {};                // match uuid -> [[ts,a,b,state]]  (no-log fallback)
 let pollTimer = null, errBackoff = 0, failStreak = 0;
 
-function val(pid) { const r = pid && VALUES[pid]; return r ? { n: r[0], g: r[1], v: r[2], s: r[3], sv: r[4], pg: r[5] } : null; }
+function val(pid) { const r = pid && VALUES[pid]; return r ? { n: r[0], g: r[1], v: r[2], s: r[3], sv: r[4], pg: r[5], ss: r[6] ?? null } : null; }
 function resolve(p) {              // {id, n} from the API -> value record
   if (p.id && VALUES[p.id]) return { pid: p.id, ...val(p.id), matched: 'id' };
   const hit = p.n && nameIndex[p.n.toLowerCase()];
   if (hit) return { pid: hit, ...val(hit), matched: 'name' };
-  return { pid: null, n: p.n || '?', v: null, s: null, sv: null, pg: 0, matched: null };
+  return { pid: null, n: p.n || '?', v: null, s: null, sv: null, ss: null, pg: 0, matched: null };
 }
 
 // ---- pre-match pricing (mirrors make_forecast.price_game) -------------
@@ -133,6 +155,26 @@ function priceGame(pair1, pair2, T) {
   const p0 = PKL.calibrate(PKL.raceDist(PKL.sig(eta), T).pw);
   return { eta, p0, nameMatched: [...a, ...b].some(p => p.matched === 'name') };
 }
+
+// PPA singles (mirrors model/singles_holdout.py "suite+unc"): per-point
+// p = sigmoid(v1 - v2) on the singles suite scale, race to T integrated
+// over both players' posterior sd. No doubles calibration layer — that
+// curve was fit on doubles v2 — the display floor still applies.
+function priceSingles(side1, side2, T) {
+  if (side1.length !== 1 || side2.length !== 1) return null;
+  const a = resolve(side1[0]), b = resolve(side2[0]);
+  if (a.sv === null || a.sv === undefined || b.sv === null || b.sv === undefined) return null;
+  const eta = a.sv - b.sv;
+  const sd = Math.sqrt((a.ss ?? 0.5) ** 2 + (b.ss ?? 0.5) ** 2);
+  return { eta, p0: PKL.gameWinProbUncertain(eta, sd, T), nameMatched: [a, b].some(p => p.matched === 'name') };
+}
+// one pricing door for a PPA row: doubles (v2 + weakest link) or singles
+const priceMatch = (m, T) => m.sg ? priceSingles(m.t1, m.t2, T) : priceGame(m.t1, m.t2, T);
+// in-game DP for a PPA row, anchored so rally zero equals the pre-match number
+const rowDP = (m, p0, T) => m.sg
+  ? PKL.SinglesDP(PKL.etaAnchorSingles(p0, CFG.kSingles, T), CFG.kSingles, T)
+  : PKL.ServeDP(PKL.etaAnchor(p0, CFG.k, T), CFG.k, T);
+const rowState = m => m.sg ? (m.svT === 1 ? PKL.SA : PKL.SB) : stateFromSnap(m);
 
 function dbProb(mu) {
   const side = i => {
@@ -556,13 +598,14 @@ function ppaDecided(gRow, T, winBy) {
 function ppaCard(t) {
   const byEvent = new Map();
   for (const m of t.matches) {
-    const k = m.ev || 'Pro doubles';
+    const k = m.ev || (m.sg ? 'Pro singles' : 'Pro doubles');
     if (!byEvent.has(k)) byEvent.set(k, []);
     byEvent.get(k).push(m);
   }
   let html = `<div class="card lp-card"><div class="lp-head"><span class="lp-chip lp-ppa">PPA</span><span class="lp-teams">${esc(t.title)}</span></div>`;
   for (const [ev, ms] of byEvent) {
-    html += `<h3 class="lp-ev">${esc(ev)}</h3><table class="lp-games"><tr><th>round</th><th>pairing</th><th>score</th><th>live</th><th>pre</th></tr>`;
+    const who = ms.some(m => m.sg) ? 'players' : 'pairing';
+    html += `<h3 class="lp-ev">${esc(ev)}</h3><table class="lp-games"><tr><th>round</th><th>${who}</th><th>score</th><th>live</th><th>pre</th></tr>`;
     for (const m of ms) html += ppaRow(m);
     html += '</table>';
   }
@@ -585,16 +628,16 @@ function ppaRow(m) {
   }
   let live = null, pre = null, info = null;
   if (playable && Ts.length) {
-    info = priceGame(m.t1, m.t2, Ts[0]);
+    info = priceMatch(m, Ts[0]);
     if (info) {
-      const perGame = Ts.map(T => priceGame(m.t1, m.t2, T).p0);
+      const perGame = Ts.map(T => priceMatch(m, T).p0);
       pre = seqProb(0, 0, need, perGame);
       if (m.st === 2 && curIdx >= 0) {
         const T = Ts[curIdx];
-        const dp = PKL.ServeDP(PKL.etaAnchor(perGame[curIdx], CFG.k, T), CFG.k, T);
+        const dp = rowDP(m, perGame[curIdx], T);
         const [a, b] = m.g[curIdx];
-        const pCur = dp.p(a, b, stateFromSnap(m));
-        recordSnapshot(m.uuid, a, b, stateFromSnap(m));
+        const pCur = dp.p(a, b, rowState(m));
+        recordSnapshot(m.uuid, a, b, rowState(m));
         const fut = perGame.slice(curIdx + 1);
         live = pCur * seqProb(w1 + 1, w2, need, fut) + (1 - pCur) * seqProb(w1, w2 + 1, need, fut);
       } else if (m.st === 2) {
@@ -603,7 +646,7 @@ function ppaRow(m) {
     }
   }
   const score = m.g.map(([a, b]) => `<span class="lp-score">${a}–${b}</span>`).join(' ');
-  const serve = m.st === 2 && m.svT ? `<span class="lp-serve">${m.svT === 1 ? '◀' : '▶'} #${m.svN}</span>` : '';
+  const serve = m.st === 2 && m.svT ? `<span class="lp-serve">${m.svT === 1 ? '◀' : '▶'}${m.sg ? '' : ` #${m.svN}`}</span>` : '';
   const liveCell = m.st === 2
     ? (live !== null ? `<strong>${fpF(live)}%</strong>` : '<span class="note">' + (fmt ? (fmt.rally ? 'rally format' : 'unrated') : 'format?') + '</span>')
     : m.st === 4 ? (m.win === 1 ? '✓' : m.win === 2 ? '✗' : '') : '';
@@ -872,7 +915,7 @@ def build_live(players, cal, updated, site_dir, write):
         "api": API_BASE, "values": "data/live_values.json", "poll": POLL_MS,
         "headers": ({"Authorization": f"Bearer {API_KEY}", "apikey": API_KEY}
                     if API_KEY else {}),
-        "gamma": GAMMA, "k": K_DOUBLES, "kDbSingles": K_DB_SINGLES,
+        "gamma": GAMMA, "k": K_DOUBLES, "kSingles": K_SINGLES, "kDbSingles": K_DB_SINGLES,
         "singlesImpute": list(SINGLES_IMPUTE),
         "cal": {"a": cal["a"], "b": cal["b"], "eps": cal["eps"]},
     })
@@ -880,7 +923,8 @@ def build_live(players, cal, updated, site_dir, write):
 <style>{LIVE_CSS}</style>
 <h1>Live</h1>
 <p class="sub">Rally-by-rally win probability for today's MLP matchups and PPA
-pro doubles, from the same validated model the receipts ledger grades — the
+pro doubles and singles, from the same validated models the receipts ledger and
+the singles ratings page carry — the
 serve-aware engine is anchored so its pre-match numbers match the frozen
 forecasts exactly. Board refreshes every ~20 seconds.</p>
 <p id="live-asof">connecting…</p>
@@ -893,8 +937,10 @@ k&nbsp;=&nbsp;{K_DOUBLES} measured from referee logs; each game anchored to the
 calibrated pre-match probability, so live curves and the
 <a href="receipts.html">receipts ledger</a> agree at rally zero. In-game
 calibration is provisional pending the full rally-log backfill — treat
-mid-game numbers as honest estimates, not gospel. DreamBreakers use the
-singles model (rough by design). Probabilities are floored — nothing is ever
+mid-game numbers as honest estimates, not gospel. PPA singles rows use the
+<a href="singles.html">singles ratings</a> (posterior value ± sd, integrated)
+with a one-server-per-side DP at singles k&nbsp;=&nbsp;{K_SINGLES}; DreamBreakers
+use the singles model too (rough by design). Probabilities are floored — nothing is ever
 0% or 100%. Rally-resolution curves appear on digitally-refereed courts;
 otherwise the page samples the scoreboard every ~20&nbsp;s. Chart ticks:
 T&nbsp;=&nbsp;timeout, C&nbsp;=&nbsp;challenge/review.</p>

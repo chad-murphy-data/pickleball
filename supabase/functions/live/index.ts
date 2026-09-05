@@ -1,5 +1,6 @@
 // GET /functions/v1/live — compact live-state snapshot of today's MLP
-// matchups and PPA pro-doubles matches from pickleball.com's open BFF.
+// matchups and PPA pro doubles AND pro singles matches from pickleball.com's
+// open BFF (singles rows carry sg: true; one player per side).
 //
 // Deno twin of netlify/functions/live.mjs (the alternate backend) — keep the
 // two in sync; the page only needs ONE of them deployed. Full protocol notes
@@ -108,8 +109,12 @@ async function discover(date: string) {
       `?tournamentId=${tid}&formatId=${pro[0].format_id}` +
       `&playerGroupId=${pro[0].player_group_id}` +
       `&bracketLevelId=${pro[0].bracket_level_id}&date=${date}`)).data || [];
-    const doubles = ev.filter((e: J) => /doubles/i.test(e.title)).map((e: J) => e.uuid);
-    if (doubles.length) ppa.push({ tid, title: t.Title, doubles });
+    // pro doubles + pro singles; the singles flag rides on the EVENT uuid
+    // (event titles on the short match payload are the same strings, but
+    // discovery is the one place that has the list, so decide it here)
+    const events = ev.filter((e: J) => /doubles|singles/i.test(e.title)).map((e: J) => e.uuid);
+    const singles = ev.filter((e: J) => /singles/i.test(e.title)).map((e: J) => lc(e.uuid));
+    if (events.length) ppa.push({ tid, title: t.Title, events, singles });
   }
   let nextDates: string[] = [];
   if (!mlp.length && !ppa.length) {
@@ -172,9 +177,10 @@ const compactMlpMatch = (m: J) => ({
   t2: playerPair(m, "Two", true),
 });
 
-const compactPpaMatch = (m: J, fmt: J) => ({
+const compactPpaMatch = (m: J, fmt: J, sg: boolean) => ({
   uuid: lc(m.match_uuid),
   ev: m.event_title || "",
+  sg,                                  // singles: one player per side
   rd: m.round_title || m.round_text || "",
   st: m.match_status,
   win: m.winner || 0,
@@ -306,12 +312,13 @@ async function sweep(date: string) {
       }
     } catch (e) { out.errors.push(`mlp: ${(e as Error).message}`); }
   }
-  for (const { tid, title, doubles } of d.ppa) {
+  for (const { tid, title, events, singles } of d.ppa) {
     try {
       const ms = (await bff(
-        `/api/v1/results/getMatchInfosShort?eventIds=${doubles.join(",")}&date=${date}`)).data || [];
+        `/api/v1/results/getMatchInfosShort?eventIds=${events.join(",")}&date=${date}`)).data || [];
       const fmts = await resolveFormats(ms);
-      out.ppa.push({ tid, title, matches: ms.map((m: J) => compactPpaMatch(m, fmts.get(lc(m.match_uuid)))) });
+      const isSg = (m: J) => singles.includes(lc(m.event_uuid)) || /singles/i.test(m.event_title || "");
+      out.ppa.push({ tid, title, matches: ms.map((m: J) => compactPpaMatch(m, fmts.get(lc(m.match_uuid)), isSg(m))) });
     } catch (e) { out.errors.push(`ppa: ${(e as Error).message}`); }
   }
   return out;

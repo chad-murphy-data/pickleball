@@ -1420,7 +1420,7 @@ def build_titlerace(players, updated):
     if sections:
         body_main = "".join(sections)
     else:
-        body_main = ('<div class="card"><p>No MLP event or PPA pro doubles '
+        body_main = ('<div class="card"><p>No MLP event or PPA pro '
                      'draw is live this week. This page wakes up with the '
                      'next event — it refreshes with every nightly data '
                      'build.</p></div>')

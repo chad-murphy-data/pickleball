@@ -19,6 +19,7 @@
   const DEFAULTS = {
     gamma: -0.1829,          // weakest-link (race.py GAMMA)
     kDoubles: 0.43,          // measured serve-rally win rate (winprob.py)
+    kSingles: 0.525,         // singles serve-rally win rate (winprob.py K_SINGLES)
     epsFloor: 0.021,         // display floor (winprob.py EPS_FLOOR)
     cal: { a: 0.0, b: 1.0, eps: 0.0 },   // race.py set_calibration
     kDbSingles: 0.42,        // make_forecast.py K_DB_SINGLES
@@ -136,6 +137,77 @@
     return 0.5 * (lo + hi);
   }
 
+  // ---- winprob.py SinglesDP: one server per side ------------------------
+  // States: 0 = A serves, 1 = B serves. No opening #2-server exception.
+  const SA = 0, SB = 1;
+
+  function SinglesDP(eta, k, T) {
+    k = k === undefined ? C.kSingles : k;
+    T = T === undefined ? 11 : T;
+    const cap = T + 40;
+    let [kA, kB] = serveProbs(eta, k);
+    kA = Math.round(kA * 1e6) / 1e6;     // mirror the Python lru_cache key
+    kB = Math.round(kB * 1e6) / 1e6;
+    const qA = 1 - kA, qB = 1 - kB;
+    const denom = 1 - qA * qB;
+    const N = cap + 1;
+    const V = new Float64Array(N * N * 2);
+    const done = (a, b) => (a >= T && a - b >= 2 ? 1 : b >= T && b - a >= 2 ? 0 : null);
+    const get = (a, b, s) => {
+      const d = done(a, b);
+      if (d !== null) return d;
+      if (a >= cap || b >= cap) return 0.5;
+      return V[(a * N + b) * 2 + s];
+    };
+    for (let a = cap - 1; a >= 0; a--) {
+      for (let b = cap - 1; b >= 0; b--) {
+        if (done(a, b) !== null) continue;
+        const w = get(a + 1, b, SA), l = get(a, b + 1, SB);
+        const va = (kA * w + qA * kB * l) / denom;
+        const vb = kB * l + qB * va;
+        const base = (a * N + b) * 2;
+        V[base + SA] = va; V[base + SB] = vb;
+      }
+    }
+    return {
+      eta, k, T,
+      p(a, b, s) {
+        const d = done(a, b);
+        if (d !== null) return d;
+        if (a >= cap || b >= cap) return 0.5;
+        return V[(a * N + b) * 2 + s];
+      },
+    };
+  }
+
+  // Mirrors winprob.eta_anchor_singles.
+  function etaAnchorSingles(targetP, k, T) {
+    targetP = clamp(targetP, 1e-6, 1 - 1e-6);
+    let lo = -8, hi = 8;
+    for (let i = 0; i < 40; i++) {
+      const mid = 0.5 * (lo + hi);
+      const dp = SinglesDP(mid, k, T);
+      if (0.5 * (dp.p(0, 0, SA) + dp.p(0, 0, SB)) < targetP) lo = mid;
+      else hi = mid;
+    }
+    return 0.5 * (lo + hi);
+  }
+
+  // ---- race.py game_win_prob_uncertain: race prob integrated over a
+  // normal on eta (41-node grid; race.py rounds sigmoid(eta) to 4 dp).
+  function gameWinProbUncertain(etaMean, etaSd, T) {
+    T = T === undefined ? 11 : T;
+    const pw = (eta) => raceDist(Math.round(sig(eta) * 1e4) / 1e4, T).pw;
+    if (!(etaSd > 0)) return pw(etaMean);
+    let total = 0, wsum = 0;
+    for (let i = 0; i < 41; i++) {
+      const z = -4 + i * 0.2, w = Math.exp(-0.5 * z * z);
+      total += w * pw(etaMean + z * etaSd);
+      wsum += w;
+    }
+    return total / wsum;
+  }
+
   // ---- DreamBreaker: rally-scored race (winprob.rally_race_p) ----------
   // Iterative DP table (the Python version memoizes a recursion).
   function rallyRaceTable(p, T) {
@@ -210,8 +282,9 @@
 
   return {
     configure, C, sig, comb, raceDist, teamEta, calibrate, displayFloor,
-    serveProbs, ServeDP, etaAnchor, rallyRaceTable, rallyPForTarget,
+    serveProbs, ServeDP, etaAnchor, SinglesDP, etaAnchorSingles,
+    gameWinProbUncertain, rallyRaceTable, rallyPForTarget,
     dbWinProb, matchupProb, bestOfProb, fp,
-    A1, A2, B1, B2,
+    A1, A2, B1, B2, SA, SB,
   };
 });
