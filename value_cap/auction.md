@@ -329,3 +329,83 @@ player given what they hold). `market_eq.solve` is an exact roster
 planner; swapping it into `Owner`'s projection and re-running the persona
 and auction grids is the follow-up that would tell whether the two-star
 chase and the persona rankings survive owners who can count.
+
+## Why the chasers buy a man AND a woman (2026-09-05; `two_star.py`, against the market-limit field)
+
+The auction room's 10%+ teams were two-star builds and almost always one
+man plus one woman. `two_star.py` plays each two-star shape (two stars +
+the $30k fill-ins the market-limit rosters actually use: Truong, Joseph,
+Emmrich; Padegimaite, Erokhina, Schull) against the nineteen non-Waters
+rosters of a market-limit league (`market_eq` cache, equalize c 8, rep 0)
+and reads the tie game by game. Field pair strengths, for reference: WD
++1.76, MD +1.63, MXD1 +1.83, MXD2 +1.57, DreamBreaker singles +1.53 (S =
+sum + gamma|gap| on the per-point logit scale).
+
+| build | WD | MD | MXD1 | MXD2 | DB | tie | games won of 4 | cost at market |
+|---|---|---|---|---|---|---|---|---|
+| M+W Patriquin + Rohrabacher | 47% | 52% | **77%** | 30% | 44% | **49.7%** | 2.06 | $1.08M |
+| M+W Tardio + Fahey | 44% | 51% | 75% | 30% | 53% | 51.3% | 2.00 | $1.12M |
+| M+M Patriquin + Tardio | **19%** | **86%** | 39% | 56% | 38% | **44.3%** | 2.00 | $1.06M |
+| M+M Patriquin + JW Johnson | 19% | 86% | 39% | 57% | 40% | 45.9% | 2.01 | $1.09M |
+| M+M Johns + JW Johnson | 19% | 87% | 41% | 57% | 45% | 49.5% | 2.05 | $1.15M |
+| F+F Rohrabacher + Fahey | 81% | 26% | 40% | 57% | 52% | 52.2% | 2.03 | $1.13M |
+| F+F Rohrabacher + Todd | 84% | 26% | 41% | 60% | 51% | **54.3%** | 2.10 | $1.18M |
+| M+W Johns + Bright | 60% | 54% | 88% | 30% | 56% | 65.5% | 2.33 | $1.42M |
+| F+F Bright + Todd | 91% | 26% | 53% | 61% | 58% | 65.9% | 2.32 | $1.46M |
+
+(Per-game columns are means over the nineteen opponents; the tie column
+is the mean tie probability, which is what the season sim uses.)
+
+**Two men win the same number of games and lose the tie.** Every
+two-star build wins about two games of four (2.00-2.10) -- the stars'
+value is the same wherever it lands. What differs is where the wins sit.
+The tie needs three of four, or 2-2 plus the DreamBreaker, and the
+`lineup()` rule decides where the stars play:
+
+1. **A man and a woman play TOGETHER in mixed.** The weakest-link term
+   (gamma < 0) rewards equal partners, so the split rule pairs the two
+   stars in MXD1 (+2.19 vs the field's +1.83: 77%) and gives each of them
+   a floor partner in their own-gender game (about 50%). Two men cannot
+   share a mixed game: they play MD together (+2.15 vs +1.63: 86%) and
+   then each drags a floor woman through a mixed game (39% / 56%).
+   Same expected wins; the M+W shape has one near-lock and three
+   coin-flips, the M+M shape has one near-lock, one near-certain loss
+   and two coin-flips. Three of four is easier to reach from the first
+   shape (P(3+ of 4) about 0.32 vs 0.28).
+2. **The punted game is cheaper on the women's side of the sheet than
+   it looks -- and dearest in WD.** Every two-star roster fields one
+   floor-only pair (+1.31 to +1.33). M+W punts MXD2, the field's weakest
+   game (+1.57: 30%); M+M punts WD, the field's strongest (+1.76: 19%).
+   Women's values are spread 1.5x wider than men's (priced pool top-5
+   mean +1.32 vs +1.07, floor +0.60 vs +0.55), so the field's women's
+   pairs are further ahead of a floor pair than its men's pairs are.
+   That is also why F+F is the best two-star shape (52-54%): it punts MD
+   (26%) and owns WD (81-84%), and the woman + floor man mixed pairs
+   still draw even. The room bought M+W more often than F+F only because
+   two top women cost more ($1.13-1.18M vs $1.08M here).
+3. **Cheap men are singles specialists; cheap women are not.** The floor
+   men carry DreamBreaker values of +0.99 / +1.61 / +1.32 (Joseph,
+   Emmrich are exactly the DB-only specialists the value model priced in
+   Phase 1); the floor women +1.26 / +0.99 / +0.88. A roster with two
+   floor women in the DB lineup runs 38-40% in the DreamBreaker; with a
+   star woman and Padegimaite it is 44-53%.
+
+So "why not two men" has three answers that all point the same way: two
+men cannot share a court in mixed, two men leave women's doubles to the
+floor where the gap is widest, and two men leave the DreamBreaker to
+floor women. A man and a woman is the shape that spends two stars on
+three games.
+
+**The planner's verdict in one line.** Every one of these rosters costs
+$1.06-1.18M at market prices ($1.42-1.46M for the Johns/Bright/Todd
+versions) -- over the cap -- and plays the market-limit field at
+44-54%. The chase exists in the auction room for two reasons, and the
+price is the smaller one: the second star sold there for $390-490k
+against $440-485k at market, just enough to squeeze under the cap; and
+the greedy room's other rosters are weaker (about 0.47 vs the planners'
+0.52), so the same Patriquin + Rohrabacher roster reads 62% against
+the greedy field and 50% against this one. At market prices it cannot
+be assembled, and if it could it would be an average team. What survives is the
+shape: if a rule ever lets a two-star roster fit (a higher cap, a
+cheaper second star, a min-spend that pushes money to the middle), the
+team to build is a man and a woman, or two women, never two men.

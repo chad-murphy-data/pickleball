@@ -523,3 +523,10 @@ vs market: the top fifteen at 112-117% of list, #16-30 at list, #31-60 at
 -- the list is right in level and rank order, the market steepens the
 shape. The list does not change (it prices context-averaged value);
 `market_prices.csv` is the second reference for the surplus column.
+Companion read (`two_star.py`, auction.md "Why the chasers buy a man AND
+a woman"): the two-star chasers are one man + one woman because the two
+stars share the MXD1 court (gamma < 0 rewards equal partners: 77% vs the
+field), the punted floor-only game lands in MXD2 (30%) rather than WD
+(19%; women's spread is 1.5x men's), and cheap men are DreamBreaker
+specialists where cheap women are not; M+M 44-46%, M+W 50-51%, F+F
+52-54% vs the market-limit field, all over the cap at market prices.

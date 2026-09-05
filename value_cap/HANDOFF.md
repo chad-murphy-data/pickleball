@@ -71,7 +71,12 @@ two-star chase is a greedy-owner artefact (owners in `draft_sim` /
 `auction_sim` project one slot at a time; a roster planner beats
 them). "Buy whole teams" as a solver IS this solver: the
 Waters+Johns+Bright+JW chain costs $2.29M at list / $2.65M at market
-and falls back to one star plus fill-ins at 49%.
+and falls back to one star plus fill-ins at 49%. `two_star.py` (auction.md
+"Why the chasers buy a man AND a woman") decomposes the two-star
+builds game by game vs the market-limit field: M+W 50-51%, M+M 44-46%,
+F+F 52-54%, all $1.06-1.18M at market (over the cap) -- M+W because the
+two stars share the mixed court (77%), the punt lands in MXD2 (30%)
+not WD (19%), and floor men are DreamBreaker specialists.
 
 ## The shipped rule in one paragraph
 

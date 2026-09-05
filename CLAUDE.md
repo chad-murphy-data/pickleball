@@ -716,7 +716,12 @@ at list = 0.597 vs greedy ≈ 0.47) — the auction's two-star chase and
 the persona rankings were measured with greedy owners and the market
 limit says the chase does not survive planners. Follow-up: swap
 `market_eq.solve` into `draft_sim.Owner`'s projection and re-run the
-persona/auction grids; `--noise` and `--k` are the unswept dials.
+persona/auction grids; `--noise` and `--k` are the unswept dials. WHY M+W (`two_star.py`, auction.md last section): two-star
+chasers are a man + a woman because the stars share the MXD1 court
+(γ<0: 77% vs field), the floor-only punt lands in MXD2 (30%) not WD
+(19%; women's spread 1.5× men's), and floor men are DB specialists;
+M+M 44-46% / M+W 50-51% / F+F 52-54% vs the market-limit field, all
+over the cap at market prices — the shape survives, the chase does not.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
