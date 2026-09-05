@@ -200,17 +200,34 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    average-team price per pool player) as its second reference next to
    the list; (vii) `market_eq.py --noise` (belief noise) and a deeper
    `--k` are the two unswept dials on the market limit; (viii) **the
-   strategic-auction plan** (2026-09-05 conversation, not yet built):
-   planner owners first (item v), then a strategy SEARCH instead of
-   hand-written personas (dials: ceiling aggression by tier, patience,
-   nomination policy, rival-budget awareness; fictitious play until no
-   owner moves; output = exploitability), plus two cheap probes (price
-   enforcement should be a free-rider null at 20 teams; drain
-   nomination should matter only around Waters and Bright). The
-   validation instrument for that search is `toy_auction.py`
-   (`toy_auction.md`): the typed 2-4 team toy solved exactly -- score
-   the search on ROSTERS, never on prices, and under both stage
-   conventions.
+   strategic-auction search is BUILT** (2026-09-05, `strategic_auction.py`
+   -> `strategic_auction.md`, phase2_pricing §14): planner owners, an
+   8-dial strategy family (ceiling multipliers by tier incl. a
+   no-star-team multiplier, price expectations incl. fictitious-play
+   learned prices, greedy/planner projection, nomination policy,
+   shortlist/all bidding), coordinate-ascent self-play to a symmetric
+   dial equilibrium with the best remaining single-dial gain as the
+   exploitability. Validated on `toy_auction.py`'s solved cells on
+   ROSTERS under both conventions: MATCH only at 2 teams, DIFFER at 3-4
+   (the SPE's asymmetric hold-backs and deep-pocket buys by the no-star
+   team are outside a symmetric dial family; coarse money grid) -- so
+   20-team reads are the FAMILY's equilibrium, not the game's. Real
+   board from the truthful start: `auction_sim`'s owner is exploitable
+   by 8 pp (learned prices) then 20 pp (roster planner); the search
+   CYCLES on the no-star multiplier (1.0 <-> 2.0) at a_star 1.25 /
+   learned / planners, exploitability ~10-12 pp; Waters $850k at sale 1
+   and 67-68% / 37% at every node (no dial moves her); the middle is
+   repriced (top 5 116% of list, #31-60 75%, 22 floor-priced vs 39) and
+   the two-star chase SURVIVES planners in a sequential room (2.1 teams
+   at 10%+, second-best 58.7%) -- the market limit's "chase dies"
+   holds at market-fixed-point prices, which a rotation-nominated room
+   does not reach. Unswept: `--noise` (belief dispersion), nomination
+   dials from the truthful start (snake stayed), deviator slot
+   asymmetry, and the toy's own lesson -- a non-symmetric (role-typed)
+   profile search is the next instrument if anyone wants the game's
+   equilibrium rather than the family's. Two cheap probes from the
+   plan (price-enforcement free-rider null, drain nomination only
+   around Waters/Bright) are still unrun.
 2. **Phase 3 follow-ups**: the league-price + surplus column once MLP
    publishes prices (the page already says it is coming); a per-player
    line on player pages ("value price $X, #N among women"); an insights

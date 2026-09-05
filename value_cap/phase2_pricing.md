@@ -553,3 +553,30 @@ owners at twenty without a strategic layer. The toy is the check for any heurist
 (score it on rosters, never on prices) and the direction of few-bidder
 strategy, not a forecast of MLP's room.
 
+## 14. Strategic auction: dial agents and self-play (2026-09-05; `strategic_auction.py` -> `strategic_auction.md`)
+
+The next honest instrument after the toy: every owner plays one dial
+vector (ceiling multipliers by tier, a separate multiplier for a team
+holding no star, price expectations incl. fictitious-play learned
+prices, greedy or whole-roster planner projection, nomination policy,
+shortlist-or-everyone bidding); coordinate-ascent self-play adopts the
+best single-dial deviation until none clears twice its standard error;
+the best remaining deviation is the exploitability. Calibrated on the
+solved toy on ROSTERS under both conventions: the family reproduces the
+exact equilibrium only in two-team rooms and differs at 3-4 teams (the
+SPE has asymmetric hold-backs and deep-pocket good-player buys by
+whoever missed the stars; a symmetric profile cannot express them and
+the money grid is coarse). So the 20-team result is the family's
+equilibrium, not the game's. On the real board from `auction_sim`'s
+owner: learned prices gain 8 pp, a roster planner 20 pp, then the
+search cycles on the no-star multiplier (1.0 <-> 2.0) at a_star 1.25 /
+learned / planners with ~10-12 pp of exploitability at either node.
+Waters: $850k at sale 1, 67-68% / 37% title, at every node and in every
+deviation table -- the rule rations her, not the room. The middle is
+repriced (top 5 at 116% of list, #6-30 at list, #31-60 at 75%, 22
+floor-priced players vs 39, ~$44k per team unspent) and the two-star
+chase survives roster planners in a sequential room (2.1 teams at 10%+
+title odds, second-best 58.7%): the market limit's "chase dies" holds
+at its fixed-point prices, which a rotation-nominated auction does not
+reach. Read `strategic_auction.md` for the toy table, the paths, the
+seed-0 rosters and the caveats (8 seeds, noise 0, symmetric profiles).

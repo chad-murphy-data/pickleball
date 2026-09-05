@@ -50,5 +50,7 @@ owner personas (`personas.py` -> `personas.md`), the dials probe
 roster-planning owners -- Waters the only rationed player, written up
 at the end of `auction.md`; `two_star.py` = the game-by-game read of why
 the two-star chasers are a man + a woman; `toy_auction.py` -> `toy_auction.md`
-= the exactly solved typed toy auction, 2-4 teams). Not yet built: the injury/absence layer
+= the exactly solved typed toy auction, 2-4 teams; `strategic_auction.py`
+-> `strategic_auction.md` = dial-family strategy search with self-play,
+validated on the toy, run on the 20-team board). Not yet built: the injury/absence layer
 (HANDOFF.md Next steps).

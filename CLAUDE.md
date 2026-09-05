@@ -733,9 +733,20 @@ search on ROSTERS; small rooms accommodate (stars split, star teams
 no better than no-star team); truthful planners (= auction_sim owners
 with exact planning) are NOT the equilibrium at 2-3 teams; nobody
 buys two stars of one gender; sale order is first-order; a 4th bidder pushes star prices to the
-list (3 teams paid 60-80% of it) while truthful planners stay at 2 units. Plan on
-record in HANDOFF 1c(viii): planner owners → fictitious-play strategy
-search → exploitability, validated on the toy.
+list (3 teams paid 60-80% of it) while truthful planners stay at 2 units. STRATEGIC AUCTION BUILT (`strategic_auction.py` → `strategic_auction.md`,
+phase2_pricing §14; 2026-09-05): planner owners + 8-dial strategy family +
+coordinate-ascent self-play, exploitability = best remaining single-dial
+gain. Toy check on ROSTERS: MATCH at 2 teams only, DIFFER at 3-4 (SPE's
+asymmetric hold-backs/deep-pocket buys by the no-star team; coarse grid)
+— 20-team reads are the FAMILY's equilibrium, not the game's. Real board:
+auction_sim's owner exploitable by 8 pp (learned prices) then 20 pp
+(planner); search CYCLES on the no-star multiplier (1.0↔2.0) at a_star
+1.25/learned/planners, ~10-12 pp exploitability; Waters $850k sale 1,
+67-68%/37% at every node (no dial moves her); middle repriced (top 5 116%
+of list, #31-60 75%); the two-star chase SURVIVES planners in a
+sequential room (2.1 teams at 10%+) — market_eq's "chase dies" holds at
+fixed-point prices a rotation-nominated room never reaches. Unswept:
+--noise, role-typed (asymmetric) profiles.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
