@@ -221,9 +221,14 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    the two-star chase SURVIVES planners in a sequential room (2.1 teams
    at 10%+, second-best 58.7%) -- the market limit's "chase dies"
    holds at market-fixed-point prices, which a rotation-nominated room
-   does not reach. Unswept: `--noise` (belief dispersion), nomination
-   dials from the truthful start (snake stayed), deviator slot
-   asymmetry, and the toy's own lesson -- a non-symmetric (role-typed)
+   does not reach. Planner start (4 seeds) walks BACK to greedy + list
+   + snake (bid on everyone) with ~7 pp left (the stop was a gate
+   artifact: the rule tests only the best gain; learned +7.4 se 2.9
+   would have cleared it), so the family has NO low-exploitability
+   symmetric point; robust across every node: Waters $850k / 67-69% /
+   33-37%, second-best 58.7-59.7%, 2-3 chasers. Unswept: `--noise`
+   (belief dispersion), role-typed profiles, deviator slot asymmetry,
+   an adopt-any-cleared-gain rule, and the toy's own lesson -- a non-symmetric (role-typed)
    profile search is the next instrument if anyone wants the game's
    equilibrium rather than the family's. Two cheap probes from the
    plan (price-enforcement free-rider null, drain nomination only

@@ -9,7 +9,26 @@ instrument: planner owners, a small family of strategies (dials), self-play
 to a symmetric equilibrium in the dial space, and the size of the best
 remaining deviation -- validated on the toy before anything runs at twenty.
 
-**Short answer.** _(filled in below once the runs finish)_
+**Short answer.** Built (`strategic_auction.py`), validated on the toy,
+run at twenty from both starts. The toy says the symmetric dial family
+reproduces the exact equilibrium's rosters only in two-team rooms; from
+three teams up the true equilibrium has asymmetric moves (hold-backs,
+deep-pocket good-player buys by whoever missed the stars) that one shared
+dial vector cannot express, so the 20-team result is the FAMILY's
+equilibrium, not the game's. On the real board `auction_sim`'s truthful
+greedy owner is exploitable by 8 pp (learn last time's prices) and then
+20 pp (plan the whole roster); the search from that start cycles on the
+no-star team's good-player multiplier with 10-12 pp of single-dial gain
+left, and from the planner start it walks back to greedy + list with
+~7 pp left -- there is no low-exploitability symmetric point in this
+family. What does not move under any of it: Waters at the cap's $850k
+maximum at sale 1, her team 67-69% / 33-37% title, a second-best team at
+58.7-59.7%, 2-3 teams at 10%+ title odds. Strategy reshapes the middle of
+the price curve (whether the top 5 or the second star carries the
+premium; how much depth sells at the floor), and the two-star chase
+survives roster planners in a sequential room -- the market limit's
+"chase dies" holds at its fixed-point prices, which a rotation-nominated
+auction never reaches.
 
 ## Instrument
 
@@ -223,3 +242,100 @@ sits in slot (7 x seed) mod 20, so its position in the nomination
 rotation varies with the seed; noise 0 (every owner shares the true
 values), so the room has no belief dispersion at all -- `auction_sim`'s
 10% noise was not swept here for cost.
+
+### From the planner start (4 seeds, 4 rounds allowed, 45 min)
+
+Start = whole-roster planners with list expectations, nominating their
+dearest planned player, bidding on everyone.
+
+| round | profile | best deviation | gain |
+|---|---|---|---|
+| 0 | planner, list, want, all | nom=snake | +6.6 (se 2.9); inflate +6.4, nom=dear +3.5 |
+| 1 | planner, list, snake, all | plan=greedy | +9.6 (se 4.2); a_star 1.25-2.0 +9.4, learned +9.1 |
+| 2 | greedy, list, snake, all | inflate +7.5 (se 5.2) | fails the 2-se gate: stop, "converged" |
+
+So from the planner start the search walks BACK to `auction_sim`'s owner
+(greedy projection, list expectations, snake nomination), differing only
+in bidding on everyone rather than the shortlist. The stop is a gate
+artifact, not a fixed point: the rule tests only the single best gain
+(inflate, se 5.2 on 4 seeds) and the second-best, expect=learned at
++7.4 (se 2.9), would have cleared it. Read the exploitability at this
+profile as ~7 pp, and the two starts as disagreeing about where the
+family settles: planners + learned prices cycling on the no-star
+multiplier from one side, greedy + list from the other, each with 7-12 pp
+of single-dial gain left. The dial family has no low-exploitability
+symmetric point on this board; both runs stopped at whatever the
+adoption rule let through.
+
+Room at the planner-start's end point (all clones, 4 seeds): top 5 at
+106% of list, #6-15 at 120%, #16-30 at 107%, #31-60 at 54%, 36.5
+floor-priced, $6k unspent -- `auction_sim`'s room again (106 / 121 / 106 /
+53). Waters $850k at sale 1, 67.2% / 33% title, second-best 59.5%,
+3.0 teams at 10%+, spread 6.8. Seed 0 has Bright + Garnett 61.4%, JW
+Johnson + Glozman + Leigh Waters 58.1%, Alshon + Oncins + Dennehy 58.2%,
+Johns + Parenteau 55.8%: the second stars sold at $414-632k with a
+$225-330k partner, the chase again.
+
+The STARTING room is worth one line because it is the failure mode of a
+naive planner league: twenty planners at list expectations nominating
+what they want and bidding on everyone leaves $316k per team unspent,
+prices #31-60 at 121% of list with 1.5 players at the floor, and Waters'
+buyer -- forced to five floor slots -- gets the dregs: her team 39%,
+title 0.5%. Planner-exact ceilings at list prices are conservative on
+stars and generous on depth, and the room never corrects because nobody
+learns within the auction. It is not an equilibrium (snake nomination
+gains 6.6 pp at once) and no run ended there, but it is the shape a
+room of over-careful quants would produce, and it is the only room in
+this whole project where Waters' team is not the favourite.
+
+## What is robust across both starts and every node
+
+| | `auction_sim` truthful | truthful-start cycle node | planner-start end |
+|---|---|---|---|
+| Waters price | $850k, sale 1 | $850k, sale 1 | $850k, sale 1 |
+| Waters' team win / title | 68.8% / 37% | 67.5% / 37% | 67.2% / 33% |
+| second-best team | 59.7% | 58.7% | 59.5% |
+| teams at 10%+ title | 2.6 | 2.1 | 3.0 |
+| parity spread | 7.3 | 6.0 | 6.8 |
+| #1-5 / #6-15 / #16-30 / #31-60 vs list | 1.06 / 1.21 / 1.06 / 0.53 | 1.16 / 1.05 / 0.99 / 0.75 | 1.06 / 1.20 / 1.07 / 0.54 |
+
+Waters' price and team, the second-best team and the count of chasers
+do not move with strategy. What strategy moves is the shape of the
+middle: whether the second star or the top 5 carries the premium and
+how much of depth sells at the floor.
+
+## Caveats
+
+- **Family, not game.** The toy says the symmetric dial family's
+  equilibrium differs from the exact one at 3+ teams in a specific
+  direction (asymmetric aggression from teams that missed the stars). The
+  20-team numbers above are what this owner population does, and the
+  robust rows are robust WITHIN it. The next instrument, if anyone wants
+  the game's equilibrium, is role-typed profiles (the no-star team plays
+  a different vector, not one extra multiplier) with the same self-play
+  and the same toy check.
+- **Gate and seeds.** 8 seeds on the truthful start, 4 on the planner
+  start; single-dial gains under ~5 pp sit inside their error bars; the
+  adoption rule tests only the best gain, which let the planner start
+  stop while a smaller-se deviation still cleared the bar.
+- **Cycles.** Coordinate ascent on a discrete profile has no
+  convergence guarantee; the truthful start's a_good0 cycle is a
+  real best-response cycle (bid up good players when nobody else does,
+  stop when everyone does), not a numerical one.
+- **Noise 0.** Every owner shares the true values; `auction_sim`'s 10%
+  belief noise, `--noise`, was not swept for cost. With dispersion the
+  second-price mechanism pays the second-highest BELIEF, which should
+  raise mid prices and lower exploitability of the price-expectation
+  dials; the Waters rows should not move (she is at the cap every time).
+- **Shortlist artifact.** `auction_sim`'s 68% Waters team depends on
+  its shortlist rule and snake nomination leaving floor-priced good
+  players uncontested; bidding on everyone with the same greedy owner
+  reproduces the room (planner-start end point), but planner owners
+  bidding on everyone at list expectations do not (the 39% starting
+  room). Any comparison across owner types must hold the bidding rule
+  fixed.
+- **Costs.** Truthful start 4.5 h at jobs 3 (four planner rounds at
+  80-86 min each); planner start 45 min at 4 seeds / jobs 4. Cache:
+  `cache/strategic_real_{truthful,planner}.json` (path, every
+  deviation's gain and se, room stats at start and end),
+  `cache/strategic_toy.json` (the ladder).

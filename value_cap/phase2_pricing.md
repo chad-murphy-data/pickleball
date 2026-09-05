@@ -578,5 +578,13 @@ floor-priced players vs 39, ~$44k per team unspent) and the two-star
 chase survives roster planners in a sequential room (2.1 teams at 10%+
 title odds, second-best 58.7%): the market limit's "chase dies" holds
 at its fixed-point prices, which a rotation-nominated auction does not
-reach. Read `strategic_auction.md` for the toy table, the paths, the
-seed-0 rosters and the caveats (8 seeds, noise 0, symmetric profiles).
+reach. The planner start walks back to greedy + list + snake with
+~7 pp of gain left (its stop is a gate artifact), so the two starts
+disagree and the family has no low-exploitability symmetric point;
+robust across every node: Waters $850k / 67-69% / 33-37% title,
+second-best 58.7-59.7%, 2-3 teams at 10%+. A room of twenty planners
+at list expectations bidding on everyone (the planner START, not an
+equilibrium) is the one room in the project where her team is not
+the favourite (39%; $316k per team unspent, depth at 121% of list).
+Read `strategic_auction.md` for the toy table, the paths, the seed-0
+rosters and the caveats (4-8 seeds, noise 0, symmetric profiles).

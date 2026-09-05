@@ -745,8 +745,14 @@ auction_sim's owner exploitable by 8 pp (learned prices) then 20 pp
 67-68%/37% at every node (no dial moves her); middle repriced (top 5 116%
 of list, #31-60 75%); the two-star chase SURVIVES planners in a
 sequential room (2.1 teams at 10%+) — market_eq's "chase dies" holds at
-fixed-point prices a rotation-nominated room never reaches. Unswept:
---noise, role-typed (asymmetric) profiles.
+fixed-point prices a rotation-nominated room never reaches. Planner
+start walks BACK to greedy/list/snake with ~7 pp left (gate artifact:
+only the best gain is tested) — the family has NO low-exploitability
+symmetric point; robust everywhere: Waters $850k / 67-69% / 33-37%,
+second-best 58.7-59.7%, 2-3 chasers. Twenty planners at list bidding on
+everyone (the START, not an equilibrium) is the one room where her team
+is not the favourite (39%, $316k/team unspent). Unswept: --noise,
+role-typed (asymmetric) profiles, adopt-any-cleared-gain rule.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
