@@ -1,4 +1,4 @@
-# MLP Value Cap — HANDOFF (2026-09-05, rev 3 after the market-limit run; supersedes the 2026-09-04 rev 2 snapshot)
+# MLP Value Cap — HANDOFF (2026-09-05, rev 4 after the fan-owner auction; supersedes rev 3 of the same day)
 
 Dated status snapshot + next-thread to-do. Read this first, then
 `phase2_pricing.md` §8 (the shipped rule and every number behind it),
@@ -163,7 +163,42 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    docstring; the star rows carry what her other five cost (`mates_paid`,
    `mates_floor`).
 
+**THE FAN ROOM (2026-09-05, latest)** — every earlier auction/draft/market
+room hands its owners OUR list as the starting expectation, so every price
+above is conditional on the room believing the sheet. `fan_owner_spec.md`
+(design, user-set knowledge layers) + `fan_view.py` (what a fan knows:
+2026 records with game counts, singles record, MLP usage, ONE ordinal
+draw per owner per gender from the v2 posterior — owner 1 has Fahey 10th,
+owner 2 14th — no values, no prices, no cross-gender comparison) +
+`fan_auction.py` → `fan_auction.md` (six roster-shape personas with budget
+shares, the signed-off 5-step bid rule, second price + $5k, rotation
+nomination, payoffs on the true tie model). Reads: (1) Waters' price is
+the persona mix and the SALE ORDER, not the cap — $835-850k when two
+star-and-scrubs owners meet on her, $390-420k when a top-3 man came up
+first and one of them spent its star money on him at ~$410k (fans cannot
+price Johns against Waters), $206-265k in a room with no star owner; default mix averages
+$570k vs the $769k list. (2) Fans INVERT our curve: #1-5 at 68% of list,
+#6-15 77%, #16-30 112%, #31-60 152% — plan money is flat within a band.
+(3) Paying the max for her is the worst way to own her: $845k leaves $30k
+slots and 61-63% / 3-6%; getting her at $410k gives 70-78% / 18-29%; one
+two-star owner in a four-starters room lands her at $265k and wins 88% /
+66% — the quant rooms' "Waters + cheap specialists = 66/35" needed the
+model to pick the specialists. (4) Philosophies: four starters ≈
+singles-minded ≈ two stars 58-59%; star-and-scrubs 53%; risk-averse 39%;
+balanced six 29%. (5) Dead dials: going-rate premium (plan money sets the
+prices), share jitter (moves her price only via sale order). Spread 13-17
+in every fan room (mismatched rosters, not a runaway favourite). Build
+dials written down in the spec's Status section.
+
 ## Next steps
+
+0. **Fan room follow-ups**: learning across seasons (owners drift toward
+   the shapes that won — the user's stated interest); a fan room where the
+   list IS published to some owners (mixed sheet/no-sheet room: does the
+   sheet-holder win, and by how much — the value of the list itself);
+   price-order vs rotation nomination in the fan room (sale order is
+   first-order there); star owners with a gender preference (the
+   cross-gender coin flip at $845k is the room's biggest single error).
 
 1. ~~Owner personas in the draft sim~~ DONE (see above; `personas.md`).
    Left open: the marketing fame table is built from TRUE doubles rank
@@ -265,6 +300,15 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    prize moves with 1/N_teams.
 
 ## Reusable code
+
+- `fan_view.py` — `doubles_records`, `singles_records`, `mlp_usage`,
+  `draw_order(rng, post, gender, pids, sd_mult)` (ONE joint posterior draw
+  → order only), `rank_probs`, `board_pids`; CLI prints the fan's board.
+- `fan_auction.py` → `fan_auction.md` — `World`, `Owner` (personas =
+  `PERSONAS` role lists; `ceiling`, `nominate`, `degrade`), `run_auction`,
+  `room_stats`, `grid`; CLI `--mix star=2,two=3,...`, `--seeds`, `--sd-mult`,
+  `--premium`, `--jitter`, `--sgl-top`, `--describe`, `--trace names`,
+  `--grid`.
 
 - `price_list.py` → `price_list.md/.csv` — the shipped list.
 - `phase2_pricing.py` — `prices`, `prices_tagged`, `must_buy`, `best_roster`,

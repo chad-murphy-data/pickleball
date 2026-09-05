@@ -1,6 +1,6 @@
 # The records-only owner ("fan owner") — spec, 2026-09-05
 
-Status: knowledge layer BUILT (`fan_view.py`); personas and bid rule PROPOSED,
+Status: BUILT end to end (`fan_view.py` knowledge layer, `fan_auction.py` room, `fan_auction.md` results) 2026-09-05;
 awaiting sign-off before the auction is built. This document is the design
 conversation written down; the numbers are from `python value_cap/fan_view.py`.
 
@@ -71,7 +71,7 @@ across seasons is a follow-up.
 **4. Dollars (nobody).** No list, no past auction. Price information =
 cap arithmetic + tonight's sales so far.
 
-## Proposed personas (Layer 3) — for sign-off
+## Personas (Layer 3) — signed off 2026-09-05, two amendments
 
 Each is a roster SHAPE: six roles with (gender, acceptable band in the
 owner's own ordering, budget share). Shares are the owner's plan for
@@ -83,13 +83,13 @@ spreading $1M, not a valuation.
 | two stars | top-5 woman + top-5 man + four cheap | 40 / 40 / 5×4 | the auction's chase build |
 | four starters | 2W + 2M from own top-15, bench at floor | 22×4 / 6 / 6 | the natural fan build ("four play") |
 | balanced six | six from own top-30 | 17×6 | |
-| singles-minded | four starters, one W and one M must be singles players | 22×4 / 6 / 6 | pays a premium for singles record (DB) |
+| singles-minded | four starters, plus ONE of the six must be a real singles player, any gender (user amendment: "tries to find a singles player in their top 6 somewhere") | 22×4 / 6 / 6 | real = active on the singles tour (≥10 games 2026 or ≥100 career) and in the owner's own singles top-10; the bench slot pays up to 6% for one if no starter is |
 | risk-averse | four starters + a real bench, avoids <75% usage | 20×4 / 10 / 10 | the only persona that reads usage |
 
 Default room: a mix (e.g. 2 / 3 / 6 / 4 / 3 / 2 of 20); sweeps: all-X rooms,
 one-X-in-a-room-of-Y, sd-mult 1 / 2.
 
-## Proposed bid rule (Layer 4) — for sign-off
+## Bid rule (Layer 4) — signed off 2026-09-05
 
 For owner o and player x on the block:
 1. **Role match.** x fills the most expensive unfilled role whose gender
@@ -122,12 +122,29 @@ odds) are scored on the TRUE tie model, because that is the world.
   thing the real league will learn.
 - Title concentration and unspent money vs the quant rooms.
 
+## Status
+
+BUILT 2026-09-05: `fan_auction.py` (results in `fan_auction.md`). Two
+user amendments folded in: (a) singles-minded = one real singles player
+anywhere in the six, either gender; (b) each owner is handed ONE rank per
+player — a single joint posterior draw per owner, ranked within gender
+(`fan_view.draw_order`) — owner 1 has Fahey 10th, owner 2 14th, owner 3
+6th; nobody sees a distribution. Build decisions taken while wiring the
+rule (all dials, none picked as truth): savings from roles filled under
+plan spread evenly over the OPEN targeted roles first, then the floor slots
+(a star-and-scrubs owner who lost the star at $424k does not sit on $445k);
+a role nobody left on the board can fill degrades to "anyone of that
+gender" but keeps its money AND is capped by the going rate of the band the
+player actually sits in (no $225k scrubs); floor slots bid only on the best
+of what is left in the owner's own ordering (rank among available ≤
+2×open slots + 2); per-owner share jitter sd 0.1 so identical textbook
+plans do not tie to the dollar (`--jitter`, 0 = textbook).
+
 ## Open decisions (user)
 
 - Persona set and default mix above; any persona missing (marketing /
   hometown from `personas.py` could be re-added as a target-list tilt).
 - Premium and carry-over rules in step 3; whether a persona may exceed plan
   money for its star (a "stretch" dial).
-- Whether the ordinal draw is shared (one consensus) or per-owner (each
-  owner its own draw). Per-owner is the honest default.
+- ~~Shared vs per-owner ordinal draw~~ — per-owner, one rank per player (user call).
 - Learning over seasons (owners drift toward the shapes that won): later.
