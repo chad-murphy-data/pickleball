@@ -139,6 +139,9 @@ class Owner:
                 self.srank[u] = i + 1
         self.roster = []; self.spent = 0.0; self.savings = 0.0
         self.need = dict(SLOTS)
+        # reputation multipliers (pid -> x) learned from results across seasons
+        # (owner_learning.py's W channel); None = a first-ever auction, nobody has a record
+        self.rep = None
         # acceptable sets per role (static; availability handled outside)
         self.acc = [self._acceptable_set(r) for r in self.roles]
 
@@ -234,6 +237,8 @@ class Owner:
             ahead = sum(1 for u in avail if u != x and self.W.gender[u] == g and self.rank[u] < self.rank[x])
             if ahead >= 2 * self.need[g] + 2:
                 return None, None
+        if self.rep is not None:
+            c *= self.rep.get(x, 1.0)     # "the team with x won": pay x times the plan
         c = max(c, FLOOR)
         return min(c, self.hard_cap()), i
 

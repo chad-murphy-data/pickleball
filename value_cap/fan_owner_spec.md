@@ -166,6 +166,21 @@ ranking + last-season anchors → one owner sweeps Waters, Bright, Johns and
 JW Johnson at $225k each (99% / 89%). The missing dial is a within-band
 rank slope — open decision below.
 
+W (RESULTS) CHANNEL ADDED 2026-09-05 (later still; user: a player who
+wins every season should get dearer, and nothing in P/S/K could make that
+happen — none connects a player to her team's result). Public reputation
+multiplier per player, moved by the team's realised win% (credit eta,
+attributed by price paid or equally, cumulative or last-season-only),
+applied to every owner's ceiling (`Owner.rep`). Waters sells for the $850k
+maximum from season 2 in every W cell; the curve un-inverts in one season;
+at the cap with five floor teammates her team is 62-70% / 6-18% (control
+72% / 25%). Attribution sets the league around her: by-price marks losers'
+expensive players down and leaves the cap unspent ($1.84M); equal credit
+gives the tightest league of any cell (spread 10.9) and every shape
+converges to 46-52%. Reputation chases one season's luck. Picked, not
+swept: the [1/5, 5] clip (irrelevant to her price; it sets how hard losers
+are marked down).
+
 ## Open decisions (user)
 
 - Persona set and default mix above; any persona missing (marketing /
@@ -173,9 +188,12 @@ rank slope — open decision below.
 - Premium and carry-over rules in step 3; whether a persona may exceed plan
   money for its star (a "stretch" dial).
 - ~~Shared vs per-owner ordinal draw~~ — per-owner, one rank per player (user call).
-- ~~Learning over seasons~~ — built (`owner_learning.py`); its open dials:
-  anchor rule for P (band median vs own top target vs asymmetric "raise
-  if I lost"), copy target for S, keepers/contracts across seasons.
+- ~~Learning over seasons~~ — built (`owner_learning.py`, P/S/K/W); its
+  open dials: anchor rule for P (band median vs own top target vs
+  asymmetric "raise if I lost"), copy target for S, keepers/contracts
+  across seasons; for W: symmetric vs winners-only credit, the clip, what
+  counts as "winning" (win% vs playoffs vs title), one season vs a running
+  record, public vs private reputation.
 - **Within-band rank slope**: does an owner pay more for its #1 than its
   #15 inside a band, and how much? Every shape is flat today; the learning
   runs show that flatness is what makes price memory deflate the stars and

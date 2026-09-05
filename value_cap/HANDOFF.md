@@ -1,4 +1,4 @@
-# MLP Value Cap — HANDOFF (2026-09-05, rev 5 after the no-sheet auction + owner learning; supersedes rev 3 of the same day)
+# MLP Value Cap — HANDOFF (2026-09-05, rev 6 after the no-sheet auction + owner learning incl. the W results channel; supersedes rev 5 of the same day)
 
 Dated status snapshot + next-thread to-do. Read this first, then
 `phase2_pricing.md` §8 (the shipped rule and every number behind it),
@@ -224,14 +224,49 @@ rank slope, and that dial is the open design call. Caveats: 8 seeds, shape-
 only imitation, band-median anchor (alternatives unrun), one realised
 season per year, no keepers.
 
+**(6) W — RESULTS MOVE PLAYER PRICES (2026-09-05, latest; user: "Anna
+Leigh winning all the time should drive her price up").** The user was
+right and the reason is structural: P learns what a band costs, S a
+shape, K a ranking — nothing connected a PLAYER to what her team did.
+Fourth channel (`--eta/--attr/--rho`, `fan_auction.Owner.rep`): a PUBLIC
+reputation multiplier per player, 1.0 on day one; after each season a
+team's realised win fraction w gives credit eta·(2w−1) to its six by an
+attribution rule (`paid`: ∝ price paid on that roster; `equal`: everyone
+gets it), log m ← rho·log m + credit, clipped [1/5, 5]; every owner
+multiplies its ceiling by m. Reads: Waters sells for the $850k first-buy
+maximum from season 2 in every W cell (equal credit: season 4 via $719k,
+$809k; rho 0 last-season-only: $795-850k, m 3.2-4.7 — one 65%+ season at
+eta 1 is ×3.4); the curve un-inverts in ONE season (68/77/115/154 →
+103/97/96/99) where P/S/K took ten to get partway. Above m ≈ 3.9 every
+owner's ceiling for her is the cap, so she stops going to star-and-scrubs
+owners and goes to whoever wins the tie, and at $850k + five floor slots
+her team is 62-70% / 6-18% title (control 72% / 25%) — the room now
+enforces "paying the max is the worst way to own her". Attribution sets
+the league, not her price: `paid` marks expensive players on LOSING teams
+down to 0.2×, depth sells at the floor (#31-60 → 79%), cap unspent $0.84M
+→ $1.84M, spread 16-17; `equal` hands the halo to whole winning rosters
+(#1-5 132%, #31-60 67%, unspent $0.24M, spread 10.9 — tightest league of
+any cell; all four + equal: 10.6 / $0.08M) and every shape converges to
+46-52%. Reputation chases LUCK (one realised season): top-5 m entering
+season 10 = Rohrabacher/Jorja Johnson/Johns/Waters/Castillo under `paid`,
+Loong/Goins/Walczak (floor riders) under `equal`. W dissolves the
+degenerate corner ($256k → $850k by season 3; 82%/50% → 69%/13%). Picked,
+not swept: the 5× clip (irrelevant to her — any m ≥ 3.9 is the cap — but
+it sets how hard losers are marked DOWN, the source of the unspent money);
+the natural next sweep is an asymmetric rule (winners up, losers flat).
+
 ## Next steps
 
 0. **No-sheet room follow-ups**: ~~learning across seasons~~ DONE
-   (`owner_learning.py`, above) — its open dials: a WITHIN-BAND RANK SLOPE
-   (user design call: does an owner pay more for its #1 than its #15, and
-   how much — the flatness is what drives both the P deflation and the
-   degenerate sweep), the P anchor rule (band median vs own top target vs
-   asymmetric raise-if-lost), keepers/contracts across seasons; a no-sheet room where the
+   (`owner_learning.py`, above, four channels P/S/K/W) — its open dials:
+   W's clip and symmetry (asymmetric winners-up/losers-flat rule; the 5×
+   clip is picked), W's credit unit (realised win% vs playoff/title, ONE
+   season vs a running record), private vs public reputation; a
+   WITHIN-BAND RANK SLOPE (user design call: does an owner pay more for its
+   #1 than its #15, and how much — the flatness drives the P deflation; W
+   supplies a slope of its own, by results, so the two interact), the P
+   anchor rule (band median vs own top target vs asymmetric
+   raise-if-lost), keepers/contracts across seasons; a no-sheet room where the
    list IS published to some owners (mixed sheet/no-sheet room: does the
    sheet-holder win, and by how much — the value of the list itself);
    price-order vs rotation nomination in the no-sheet room (sale order is
@@ -343,9 +378,12 @@ season per year, no keepers.
   `draw_order(rng, post, gender, pids, sd_mult)` (ONE joint posterior draw
   → order only), `rank_probs`, `board_pids`; CLI prints the owner's board.
 - `owner_learning.py` → `owner_learning.md` — `play_season` (true-engine
-  season + one realised standing), `State`/`reanchor` (P), `run_years`
-  (T seasons, channels lam / p_switch / decay / copy), `cell`, `grid`;
-  `fan_auction.run_auction` now takes `owners=` and `memory=`.
+  season + one realised standing), `State`/`reanchor` (P), `credit` (W:
+  team result → per-player credit, `paid`/`equal`), `run_years`
+  (T seasons, channels lam / p_switch / decay / copy / eta / attr / rho),
+  `cell`, `grid`; `fan_auction.run_auction` takes `owners=` and
+  `memory=`, `fan_auction.Owner.rep` (pid → multiplier on the ceiling;
+  None = no record, bit-identical to the one-night room).
 - `fan_auction.py` → `fan_auction.md` — `World`, `Owner` (personas =
   `PERSONAS` role lists; `ceiling`, `nominate`, `degrade`), `run_auction`,
   `room_stats`, `grid`; CLI `--mix star=2,two=3,...`, `--seeds`, `--sd-mult`,

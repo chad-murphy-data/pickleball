@@ -790,8 +790,21 @@ four-starters seats, 86/87/127/104, spread 14.5-15 (never 4.5), Waters
 $457-526k and her team 76-79% / 32-42% — every learning cell makes her
 CHEAPER and her team STRONGER. Degenerate corner (all four-starters + all
 three): one owner sweeps Waters/Bright/Johns/JW at $225k each, 99% / 89% —
-identical flat plans + shared ranking + last-year anchors. OPEN DESIGN
-CALL: within-band rank slope.
+identical flat plans + shared ranking + last-year anchors. FOURTH CHANNEL
+W (same day; user: "Anna Leigh winning all the time should drive her
+price up" — right, and structural: P/S/K never connect a PLAYER to her
+team's result): public reputation multiplier per player moved by the
+team's realised win% (eta; credit by price paid or equal; cumulative or
+last-season; clip [1/5, 5] picked not swept), applied to every owner's
+ceiling (`Owner.rep`). Waters → the $850k maximum from season 2 in every
+W cell, curve un-inverts in ONE season (→ 103/97/96/99), and at the cap
+with five floor slots her team is 62-70% / 6-18% (control 72% / 25%) —
+the room enforces "paying the max is the worst way to own her".
+Attribution sets the league, not her price: by-price → losers' stars
+marked down, depth at the floor, $1.84M unspent; equal → spread 10.9
+(tightest cell), every shape 46-52%. Reputation chases one season's luck
+(floor riders at 5× under equal credit). OPEN DESIGN CALLS: within-band
+rank slope; W's symmetry/clip/credit unit.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
