@@ -125,6 +125,86 @@ and fill the rest at the floor. Those teams get to 60%+ and a 10-15%
 title shot. The room also re-prices the list's middle: second-tier
 stars go above list, depth goes to the floor.
 
+## A turn in the room: Bright is up
+
+Step 6 says "every owner bids up to the most the player is worth to
+their roster". Here is what that means, one sale at a time, using one
+real traced auction (owners as built in `strategic_auction.py`, honest
+bidders, list prices expected, seed 0; run it yourself with
+`SA_TRACE="Anna Bright" python value_cap/strategic_auction.py --world
+real --seeds 1 --time --start "nom=dear,plan=planner,bid=all"`).
+
+**Sale 1, Waters.** All twenty owners have an empty roster and $1M.
+Every one of them asks the same question: "what is the best team I can
+build WITHOUT her at list prices, and at what price for her does a team
+WITH her stop beating it?" For Waters that price is above what anyone
+may pay, so every owner hits the hard rule instead: $1M minus five
+floor players at $30k = $850k. Twenty identical $850k bids. The sim
+breaks the tie with a coin flip; call the winner Team 15. It pays the
+second-highest bid plus $5k, capped at its own bid, so $850k. Team 15
+now has $150k for five slots. It will bid the $30k floor on everyone
+for the rest of the night and end up with Waters plus five floor
+players (59% in this room). Nobody else has spent anything.
+
+**Sale 2, Bright (list $613k).** Now the owners differ. Three kinds of
+owner are in the room, and each does something different.
+
+1. **An owner with an empty roster (nineteen of them).** The owner first
+   builds its best six without Bright, paying list for each slot, and
+   records that team's expected win rate against the field. Call that
+   the baseline. Then it tries rosters WITH Bright at a trial price:
+   Bright at $p, plus the best five it can still afford from the
+   money left over, again at list. It searches for the largest $p at
+   which the Bright team still matches the baseline. That is the most
+   it will pay, because one dollar more and it would rather not have
+   her. In this room the answer is $568k, below her list price, and
+   all nineteen empty owners land on the same number because they
+   hold the same thing (nothing) and expect the same prices. Nineteen
+   bids of $568k, one coin flip, Team 5 wins and pays $568k.
+
+   Why below list? Because these owners plan the whole roster. A
+   planner's best no-Bright team is quite good (two $300-400k players
+   and real depth), so Bright has to be a bargain to beat it. In the
+   same auction with owners who fill one slot at a time (the "greedy"
+   owners of the earlier sims) the no-Bright baseline is weaker, the
+   indifference price comes out at $632k, above list, and she sells
+   for $632k. Same player, same money, different bid, and the only
+   thing that changed is how well the owner imagines its fallback.
+
+2. **An owner who already bought a star.** In the greedy auction
+   Bright comes up at sale 6, after Johns, JW Johnson, Jorja Johnson
+   and Todd have sold. The owner holding JW Johnson at $466k would
+   value Bright at about the same $632k as everyone else, but it
+   cannot pay it: $1M minus $466k minus four floor players leaves
+   $414k, and that is its bid. The Jorja owner bids $392k, the Todd
+   owner $389k, the Johns owner $373k, each exactly its remaining
+   budget minus completions. Their bids are not a valuation, they are
+   a wallet. This is why the sim's first-buy ceiling matters more than
+   any strategy knob: once you own one $450k player you are out of the
+   running for a second star unless you go floor everywhere else.
+
+3. **Waters' owner.** Team 15 bids $30k, the floor, because $150k for
+   five slots leaves nothing above it.
+
+**Who wins and what they pay.** Bids are sorted; ties are broken by the
+coin flip; the winner pays the second-highest bid plus $5k, never more
+than its own bid. When fifteen owners tie at $632k the winner pays
+$632k. In the planner room one owner (Team 11) later stretches into a
+second star anyway, Johns at $414k on top of Jorja at $466k, and
+finishes with four floor players and a 33% team. The two-star chase
+the earlier sims found works only when the two stars are cheap enough
+to leave real money for the other four, and in this seed they were
+not.
+
+**The knobs from Step 7, in this picture.** "Bid over list on stars"
+multiplies that indifference price by, say, 1.25 before the budget
+cap. "Expect inflated prices" changes the list prices the owner
+plugs into its fallback team, which moves the baseline and so the
+bid. "Plan the whole roster" versus "fill one slot at a time" is the
+$568k versus $632k difference above. "Nominate by price" is what put
+Bright up at sale 2 instead of sale 6. None of those knobs touch the
+$850k first-buy rule, which is why Waters' price never moves.
+
 ## Step 7: what if the owners are clever?
 
 The auction owners above are honest: they bid what a player is worth
