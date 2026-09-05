@@ -1,4 +1,6 @@
-# The records-only owner ("fan owner") — spec, 2026-09-05
+# The records-only owner — spec, 2026-09-05
+
+(Naming, user call 2026-09-05: these are OWNERS — people who bought a pickleball team and follow the sport without analytics — not "fans". The `fan_` file prefix is kept from the first draft.)
 
 Status: BUILT end to end (`fan_view.py` knowledge layer, `fan_auction.py` room, `fan_auction.md` results) 2026-09-05;
 awaiting sign-off before the auction is built. This document is the design
@@ -14,13 +16,13 @@ indifference prices in the walk-through ($568k / $632k for Bright) are
 does a first-ever MLP auction look like when nobody has a sheet and nobody
 can compute one?
 
-## What a fan owner knows (user-set, 2026-09-05)
+## What a records-only owner knows (user-set, 2026-09-05)
 
 Four layers. The fog is in dollars and in what wins, not in who is good.
 
 **1. Rules (everyone).** 6 players, 3M + 3W, $1M cap, $30k floor. A tie is
 WD, MD, MXD1, MXD2, DreamBreaker singles at 2-2 with a team-named 4-player
-lineup. Four of six play a tie; players 5 and 6 rarely play (fans know
+lineup. Four of six play a tie; players 5 and 6 rarely play (owners know
 this). Cap arithmetic: $167k average slot, $850k most anyone can put on one
 player.
 
@@ -32,14 +34,14 @@ player.
 - An ORDINAL picture within gender: one joint draw from the v2 posterior
   (`value_now_mean ± value_now_sd`), ranked, and the owner keeps only the
   order. The fog is the model's own uncertainty, scaled by `--sd-mult`
-  (1 = posterior; 2 = a fan who reads results less efficiently). Same for
+  (1 = posterior; 2 = an owner who reads results less efficiently). Same for
   singles from the singles suite posterior.
 - 2026 MLP franchise and usage (matchups appeared / franchise matchups).
   Bench and injury are indistinguishable in the data; only the risk-averse
   persona reads low usage as risk (Rohrabacher 19/27, Todd 23/33,
   Hurricane Black 22/33, Hunter Johnson 11/27).
 - NOT known: any per-point value, tie probability, phi, price; any
-  cross-gender comparison (Johns vs Bright is not a question a fan can
+  cross-gender comparison (Johns vs Bright is not a question such an owner can
   answer, and the owner is never asked it).
 
 What the ordinal draw looks like (P(rank ≤ k), posterior ×1, mlp2026 board):
@@ -58,7 +60,7 @@ What the ordinal draw looks like (P(rank ≤ k), posterior ×1, mlp2026 board):
 | Alshon | 6.9 | 0.04 | 0.21 | 0.43 | 0.84 |
 
 Read: the women's top two are certain, #3-#10 is a pack. The men's #1 is a
-genuine four-way question even to the model (Johns 27%). A fan's "ALW >
+genuine four-way question even to the model (Johns 27%). An owner's "ALW >
 Bright > Jorja" is exactly what the posterior says; "Johns is the best man"
 is a 27% opinion.
 
@@ -79,9 +81,9 @@ spreading $1M, not a valuation.
 
 | persona | shape | shares | notes |
 |---|---|---|---|
-| star & scrubs | one top-3 (either gender) + five floor | 85 / 3×5 | the build our model says wins; unclear any fan would try it |
+| star & scrubs | one top-3 (either gender) + five floor | 85 / 3×5 | the build our model says wins; unclear any new owner would try it |
 | two stars | top-5 woman + top-5 man + four cheap | 40 / 40 / 5×4 | the auction's chase build |
-| four starters | 2W + 2M from own top-15, bench at floor | 22×4 / 6 / 6 | the natural fan build ("four play") |
+| four starters | 2W + 2M from own top-15, bench at floor | 22×4 / 6 / 6 | the natural new-owner build ("four play") |
 | balanced six | six from own top-30 | 17×6 | |
 | singles-minded | four starters, plus ONE of the six must be a real singles player, any gender (user amendment: "tries to find a singles player in their top 6 somewhere") | 22×4 / 6 / 6 | real = active on the singles tour (≥10 games 2026 or ≥100 career) and in the owner's own singles top-10; the bench slot pays up to 6% for one if no starter is |
 | risk-averse | four starters + a real bench, avoids <75% usage | 20×4 / 10 / 10 | the only persona that reads usage |
@@ -106,7 +108,7 @@ For owner o and player x on the block:
 5. **Hard cap.** Never above budget − floor × (slots left − 1).
 Payment: second-highest + $5k, as in every room so far. Nomination:
 rotation; the nominator names the top target of its dearest unfilled role
-(fans nominate who they want) — `nom` sweepable as before.
+(owners nominate who they want) — `nom` sweepable as before.
 
 No owner ever evaluates a roster's tie probability. Payoffs (win%, title
 odds) are scored on the TRUE tie model, because that is the world.
@@ -140,6 +142,30 @@ of what is left in the owner's own ordering (rank among available ≤
 2×open slots + 2); per-owner share jitter sd 0.1 so identical textbook
 plans do not tie to the dollar (`--jitter`, 0 = textbook).
 
+REPRODUCIBILITY FIX 2026-09-05 (later): two tie-breaks (the cross-gender
+coin flip in nomination, the fallback nomination) consumed random numbers
+in Python set-iteration order, so the same seed gave a different room in a
+different process (PYTHONHASHSEED). Fixed — candidates are sorted by pid
+before the rng is touched; `fan_auction.md` was regenerated and the
+headline numbers moved only at the margin (default mix still $570k,
+68/78/113/149; jitter-0 price $794k not $850k; sd×2 $792k not $738k).
+
+LEARNING ACROSS SEASONS BUILT 2026-09-05 (later): `owner_learning.py` →
+`owner_learning.md`. Ten seasons of full re-auctions; three switchable
+channels — P the room remembers last season's prices (going-rate seed +
+budget shares re-anchored toward the band median, weight lam), S owners
+copy a random playoff team's shape with probability p (or the champion),
+K rank draws sharpen (sd × decay per season). Headline: S is the channel
+that makes the room look like the list (p 0.5 → 95/100/93/106 of list by
+season 10, the list's shape from a room that never saw it); P alone
+deflates stars and inflates depth (the anchor is a band median that depth
+buyers set, and no shape pays more for #1 than #15); K is agreement =
+competition (unspent $0.84M → $0.18M). Every learning cell makes Waters
+CHEAPER and her team STRONGER. Degenerate corner: identical plans + shared
+ranking + last-season anchors → one owner sweeps Waters, Bright, Johns and
+JW Johnson at $225k each (99% / 89%). The missing dial is a within-band
+rank slope — open decision below.
+
 ## Open decisions (user)
 
 - Persona set and default mix above; any persona missing (marketing /
@@ -147,4 +173,10 @@ plans do not tie to the dollar (`--jitter`, 0 = textbook).
 - Premium and carry-over rules in step 3; whether a persona may exceed plan
   money for its star (a "stretch" dial).
 - ~~Shared vs per-owner ordinal draw~~ — per-owner, one rank per player (user call).
-- Learning over seasons (owners drift toward the shapes that won): later.
+- ~~Learning over seasons~~ — built (`owner_learning.py`); its open dials:
+  anchor rule for P (band median vs own top target vs asymmetric "raise
+  if I lost"), copy target for S, keepers/contracts across seasons.
+- **Within-band rank slope**: does an owner pay more for its #1 than its
+  #15 inside a band, and how much? Every shape is flat today; the learning
+  runs show that flatness is what makes price memory deflate the stars and
+  what lets one owner sweep the top four at the going rate.

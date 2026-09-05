@@ -1,6 +1,9 @@
-"""fan_view.py -- what a pickleball FAN knows about the players (no model values).
+"""fan_view.py -- what a NEW OWNER knows about the players (no model values).
 
-The records-only owner for the value-cap auction (fan_owner_spec.md). A fan
+(File name kept from the first draft; the owners are not fans in the stands but
+people who bought a team and follow the sport without analytics.)
+
+The records-only owner for the value-cap auction (fan_owner_spec.md). Such an owner
 knows results, not ratings: per-division doubles win% with game counts,
 singles win% with game counts (so who plays singles at all), how often a
 player actually took the court for their 2026 MLP team, and an ORDINAL
@@ -11,12 +14,12 @@ The ordinal picture is drawn from the v2 posterior (data/v2_players.csv:
 value_now_mean / value_now_sd): one joint draw per owner, ranked within
 gender, and the owner is handed ONLY the order. So the fog is the model's
 own uncertainty -- stable at the top (Waters / Bright / Jorja), blurry from
-about #10 down -- scaled by --sd-mult (1 = the posterior; 2 = a fan who
+about #10 down -- scaled by --sd-mult (1 = the posterior; 2 = an owner who
 processes the results less efficiently than the model). Same for singles
 from data/singles_players.csv. `rank_probs` reports P(rank <= k) so the fog
 is visible as a table, not a vibe.
 
-    python value_cap/fan_view.py                 # print the fan's board
+    python value_cap/fan_view.py                 # print the owner's board
     python value_cap/fan_view.py --sd-mult 2
 """
 from __future__ import annotations
@@ -83,7 +86,7 @@ def singles_records(year=None):
 def mlp_usage(year=YEAR):
     """pid -> (matchups appeared in, matchups the player's modal franchise
     played, franchise). Appearance = any game of the matchup (DBs count).
-    A low ratio is EITHER bench or injury -- the data cannot tell, a fan
+    A low ratio is EITHER bench or injury -- the data cannot tell, an owner
     reading the news can (Rohrabacher's absence / Blatt subbing in)."""
     mm = {r["match_id"]: r for r in _rows("mlp_matchups_2026.csv")}
     team_matchups = defaultdict(set)
@@ -156,7 +159,7 @@ def rank_probs(post, gender, pids=None, draws=4000, sd_mult=1.0, seed=0):
     return out
 
 
-# ------------------------------------------------------------------ the fan's board
+# ------------------------------------------------------------------ the owner's board
 def board_pids():
     """The auction board as draft_sim defines it (mlp2026): priced pool + 2026 MLP participants."""
     import sys
@@ -178,7 +181,7 @@ def main():
         rp = rank_probs(DOUBLES_POST, g, pids, sd_mult=A.sd_mult)
         order = sorted(rp, key=lambda u: (rp[u] * np.arange(len(rp[u]))).sum())
         sp = rank_probs(SINGLES_POST, g, pids, sd_mult=A.sd_mult)
-        print(f"\n=== {g}: what a fan sees (2026 doubles records by division, singles record, MLP usage; "
+        print(f"\n=== {g}: what a new owner sees (2026 doubles records by division, singles record, MLP usage; "
               f"P(rank<=k) from the posterior x{A.sd_mult:g}) ===")
         print(f"{'player':22s} {'E[rk]':>5s} {'P<=1':>5s} {'P<=3':>5s} {'P<=5':>5s} {'P<=10':>5s} | "
               f"{'WD/MD':>9s} {'MXD':>9s} | {'sgl26':>9s} {'sglcar':>9s} {'E[sgl rk]':>9s} | {'MLP use':>8s} franchise")
@@ -195,7 +198,7 @@ def main():
                   f"{pct(own)} {own[1]:3d} {pct(mx)} {mx[1]:3d} | {pct(s26)} {s26[1]:3d} {pct(sc)} {sc[1]:3d} {es:9.1f} | "
                   f"{ustr:>8s} {us[2] if us else ''}")
     # usage outliers among top-30 by expected rank: the injury/bench fog
-    print("\n=== MLP 2026 usage < 75% among the fan's top 30 per gender (bench or injury -- data can't tell) ===")
+    print("\n=== MLP 2026 usage < 75% among the owner's top 30 per gender (bench or injury -- data can't tell) ===")
     for g in ("F", "M"):
         rp = rank_probs(DOUBLES_POST, g, pids, sd_mult=A.sd_mult)
         order = sorted(rp, key=lambda u: (rp[u] * np.arange(len(rp[u]))).sum())[:30]

@@ -760,21 +760,38 @@ widens — greedy owners: her title 37.6→30.2%, second-best 59.7→61.6%,
 two-star M+W build is the favourite (64.7% vs her 56.5%/7%). The one
 nomination rule that dents her title odds without touching her price. Adapted owners (frozen-rule self-play, path end) make it WIDER not
 fairer: best team 74% (not hers), second 69%, spread 12.8 vs 7-8, $156k/
-team unspent. `--room` writes per-player paid prices to cache. FAN ROOM (2026-09-05,
+team unspent. `--room` writes per-player paid prices to cache. NO-SHEET ROOM (2026-09-05; the owners are records-only OWNERS who bought a team, not fans — user naming call, `fan_` file prefix kept;
 `fan_owner_spec.md` → `fan_view.py` + `fan_auction.py` → `fan_auction.md`):
-every room above hands owners OUR list as the prior; the fan room has no
+every room above hands owners OUR list as the prior; the no-sheet room has no
 sheet — records-only owners (2026 win% with game counts, singles record,
 MLP usage, ONE ordinal posterior draw per owner per gender; no values,
 prices or cross-gender comparison) with six roster-shape personas and
 budget shares. Waters' price = persona mix × SALE ORDER: $835-850k when
 two star-and-scrubs owners meet on her, $390-420k when a top-3 man sold
-first to a star owner at ~$410k (a fan cannot price Johns vs Waters), $206-265k with no star owner;
-default mix $570k vs $769k list. Fans INVERT the curve (#1-5 68% of
-list, #31-60 152%). Paying the max for her is the worst way to own her
-(61-63% / 3-6%; at $410k 70-78% / 18-29%; one two-star owner among
-four-starters gets her at $265k and wins 88% / 66%). Four starters ≈
-singles-minded ≈ two stars 58-59%, star-and-scrubs 53%, risk-averse 39%,
-balanced six 29%. Dead dials: going-rate premium, share jitter.
+first to a star owner at $410-460k (such an owner cannot price Johns vs Waters), $206-265k with no star owner;
+default mix $570k vs $769k list. New owners INVERT the curve (#1-5 68% of
+list, #31-60 149%). Paying the max for her is the worst way to own her
+(61-68% / 3-15%; at $410k 68-77% / 12-30%; one two-star owner among
+four-starters gets her at $265k and wins 88% / 65%). Four starters ≈
+singles-minded ≈ two stars 58-60%, star-and-scrubs 52%, risk-averse 39%,
+balanced six 29%. Dead dials: going-rate premium, share jitter. (Rooms
+are now reproducible across processes — two tie-breaks used to consume
+rng in set order; fixed, md regenerated.) DO THE OWNERS LEARN
+(`owner_learning.py` → `owner_learning.md`, 2026-09-05): ten seasons of
+re-auctions, three switchable channels — P price memory (band-median
+anchor, lam), S copy a playoff team's shape (p), K sharper rank draws
+(decay). Control flat. P alone DEFLATES stars (#1-5 68% → 52% of list,
+Waters → $314k) because the anchor is a depth-buyer median and no shape
+pays more for #1 than #15; S is what un-inverts the curve (p 0.5 → 95/100/
+93/106 of list — the list's shape from a room that never saw it; two-stars
++ four-starters take over, risk/six go extinct, spread 16 → 12); K =
+agreement = competition (unspent $0.84M → $0.18M). All three: 11-14
+four-starters seats, 86/87/127/104, spread 14.5-15 (never 4.5), Waters
+$457-526k and her team 76-79% / 32-42% — every learning cell makes her
+CHEAPER and her team STRONGER. Degenerate corner (all four-starters + all
+three): one owner sweeps Waters/Bright/Johns/JW at $225k each, 99% / 89% —
+identical flat plans + shared ranking + last-year anchors. OPEN DESIGN
+CALL: within-band rank slope.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's

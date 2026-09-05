@@ -1,4 +1,5 @@
-"""fan_auction.py -- the first-ever MLP auction, run by FANS who have never
+"""fan_auction.py -- the first-ever MLP auction, run by NEW OWNERS -- people who bought a
+team, follow the sport, have no analytics -- and have never
 seen a price sheet (fan_owner_spec.md).
 
 Every earlier room (auction_sim, strategic_auction, market_eq) hands its
@@ -108,7 +109,7 @@ class World:
             for i, u in enumerate(sorted((u for u in self.pids if self.gender[u] == g), key=lambda u: -self.lp[u])):
                 self.lrank[u] = i + 1
         self.waters = next(u for u in self.pids if self.name[u] == "Anna Leigh Waters")
-        # fan facts
+        # what a new owner knows
         s26 = F.singles_records("2026"); sc = F.singles_records(None)
         self.singles_active = {u for u in self.pids if s26.get(u, [0, 0])[1] >= 10 or sc.get(u, [0, 0])[1] >= 100}
         use = F.mlp_usage()
@@ -124,7 +125,7 @@ class Owner:
     def __init__(self, W, persona, rng, sd_mult, premium, jitter=0.1):
         self.W = W; self.persona = persona; self.premium = premium
         shares = np.array([s for _, _, s in PERSONAS[persona]])
-        if jitter > 0:   # no two fans hold the same plan to the dollar
+        if jitter > 0:   # no two owners hold the same plan to the dollar
             shares = shares * np.clip(1 + jitter * rng.standard_normal(len(shares)), 0.5, 1.5)
             shares = shares / shares.sum()
         self.roles = [dict(g=g, band=b, share=float(sh), pid=None, paid=None, degraded=False)
@@ -250,8 +251,11 @@ class Owner:
                 g = self.W.gender[u]
                 if g not in best or key(u) < key(best[g]):
                     best[g] = u
-            # a fan cannot compare across genders: take the better own-rank, coin flip on ties
-            pick = sorted(best.values(), key=lambda u: (key(u), rng.random()))
+            # a new owner cannot compare across genders: take the better own-rank, coin flip on ties
+            # (sorted by pid first so the rng stream does not depend on set-iteration order)
+            pick = sorted(best.values(), key=lambda u: (key(u), u))
+            if len(pick) > 1 and key(pick[0]) == key(pick[1]) and rng.random() < 0.5:
+                return pick[1]
             return pick[0]
         return None
 
@@ -275,13 +279,19 @@ def parse_mix(s):
     return mix
 
 
-def run_auction(W, mix, seed, sd_mult=1.0, premium=0.1, trace=(), jitter=0.1):
+def run_auction(W, mix, seed, sd_mult=1.0, premium=0.1, trace=(), jitter=0.1, owners=None, memory=()):
+    """One night. owners: pre-built Owner objects (owner_learning.py carries
+    them across seasons; seat order is theirs); memory: (pid, paid) sales the
+    room remembers from before tonight -- they seed the going rate."""
     rng = np.random.default_rng(seed)
-    seats = list(mix); rng.shuffle(seats)
-    owners = [Owner(W, p, rng, sd_mult, premium, jitter) for p in seats]
+    if owners is None:
+        seats = list(mix); rng.shuffle(seats)
+        owners = [Owner(W, p, rng, sd_mult, premium, jitter) for p in seats]
+    else:
+        seats = [o.persona for o in owners]
     avail = set(W.pids)
     sales = []          # (pid, owner idx or None, paid, nominator)
-    sold = []           # (pid, paid) -- public record of the night
+    sold = list(memory)  # (pid, paid) -- public record; tonight's sales are appended
     turn = 0
     while any(o.need["F"] + o.need["M"] > 0 for o in owners):
         t = turn % N_TEAMS; turn += 1
@@ -295,7 +305,9 @@ def run_auction(W, mix, seed, sd_mult=1.0, premium=0.1, trace=(), jitter=0.1):
             cands = [u for u in avail if nom.need[W.gender[u]] > 0]
             if not cands:
                 raise RuntimeError("nothing to nominate")
-            x = min(cands, key=lambda u: (nom.rank[u], rng.random()))
+            cands.sort(key=lambda u: (nom.rank[u], u))
+            tied = [u for u in cands if nom.rank[u] == nom.rank[cands[0]]]
+            x = tied[int(rng.integers(len(tied)))] if len(tied) > 1 else tied[0]
         gx = W.gender[x]
         rivals_need = {g: sum(1 for o in owners if any(r["pid"] is None and o.targeted(r) and r["g"] in ("A", g)
                                                         and o.gender_feasible(r, g) for r in o.roles)) for g in ("F", "M")}
@@ -455,52 +467,53 @@ FINDINGS = """## What the room does (read from the tables below)
 1. **Her price is the persona mix and the sale order, not the cap.** With two
    star-and-scrubs owners live she sells for $835-850k; if a top-3 MAN is
    nominated first, one of them spends its star money on him -- JW Johnson,
-   Ben Johns or Hayden Patriquin at ~$410k, the two-star owners' second bid
-   (a fan has no way to price a man against Anna Leigh Waters, and men's #1
+   Ben Johns or Hayden Patriquin at $410-460k, the two-star owners' second bid
+   (an owner without a sheet has no way to price a man against Anna Leigh Waters, and men's #1
    is a four-way question so the other star owner often does not bid) --
    and she then faces one $850k bid and goes for the two-star owners' plan
    money plus $5k, $390-420k. In
    a room with no star-and-scrubs owner she is a "top-15 woman" at
    $206-265k (every all-X room bar the star one), $407-440k where two-star
-   owners set the second bid. The list says $769k; the fan room averages
+   owners set the second bid. The list says $769k; the no-sheet room averages
    $570k in the default mix and only reaches the max when two star owners
    happen to meet on her.
-2. **Fans invert our curve.** Default mix: #1-5 sell at 68% of list, #6-15
-   at 77%, #16-30 at 112%, #31-60 at 152%. Plan money is flat within a band
+2. **New owners invert our curve.** Default mix: #1-5 sell at 68% of list, #6-15
+   at 78%, #16-30 at 113%, #31-60 at 149%. Plan money is flat within a band
    (a four-starters owner pays the same ~$220k for the 2nd-best woman and the
    14th), so stars are cheap and depth is dear -- the mirror image of every
    quant room (top 5 at 101-117%, #31-60 at 51-67%). The all-star room is the
    exception: twenty owners chasing six top-3 players put #1-5 at 155%.
 3. **Paying the max for her is the WORST way to own her.** $845k leaves $30k
    a slot; the five who come with it are whoever nobody else wanted
-   (61-63% win, 3-6% title, seeds 0/3/5). The star owner who gets her at
-   $410k spends the other $440k on $70-180k players and wins 70-78% / 18-29%;
+   (61-68% win, 3-15% title, seeds 0/3/5). The star owner who gets her at
+   $410k spends the other $440k on $70-180k players and wins 68-77% / 12-30%;
    the two-star owner who lands her at $265k in a four-starters room wins
-   88% / 66%. The quant rooms' "Waters + cheap singles specialists = 66% /
-   35%" needed the MODEL to pick the specialists; a fan with $30k slots does
+   88% / 65%. The quant rooms' "Waters + cheap singles specialists = 66% /
+   35%" needed the MODEL to pick the specialists; an owner with $30k slots does
    not get them.
 4. **Which philosophy wins a first draft:** four starters, singles-minded
-   and two stars are level (58-59% in the default mix); star-and-scrubs 53%;
+   and two stars are level (58-60% in the default mix); star-and-scrubs 52%;
    risk-averse 39% (it refuses contested players and bids 20% into a room
    bidding 22%); balanced six 29% (six $170k players lose every contested
    sale). One two-star owner in a four-starters room is the biggest single
-   edge in any room we have run (88% / 66% title); one star-and-scrubs owner
-   there is 69% / 32%. Homogeneous rooms miss their plans 12-19 times out of
+   edge in any room we have run (88% / 65% title); one star-and-scrubs owner
+   there is 68% / 30%. Homogeneous rooms miss their plans 10-19 times out of
    20 (everyone's top-15 is the same 15 women).
 5. **Dead dials:** the going-rate premium (0.1 vs 0.3) changes nothing --
    plan money IS what sets prices, so the going rate never sits below it.
-   Share jitter 0 / 0.1 / 0.2 moves her mean price ($850k / $570k / $565k)
+   Share jitter 0 / 0.1 / 0.2 moves her mean price ($794k / $570k / $565k)
    only through sale order (textbook plans nominate her first and put both
    star owners on her), not the shape of the curve. Posterior fog x2 sends
-   her to the star owners more often ($738k) and makes the $30k scrubs
-   worse, her team 72% -> 62%.
-6. **Parity:** spread 13-17 points in every fan room vs 4.3-4.6 with our
+   her to the star owners more often ($792k) and makes the $30k scrubs
+   worse, her team 71% -> 59%.
+6. **Parity:** spread 13-17 points in every no-sheet room vs 4.3-4.6 with our
    list -- not one runaway favourite but a league of mismatched rosters,
-   because fans with identical plans win random members of the same band.
-   Unspent money $0.4-1.4M of $20M.
+   because owners with identical plans win random members of the same band.
+   Unspent money $0.2-1.4M of $20M.
 
 CAVEATS: one bid rule (the spec's), six hand-picked shapes, no learning
-within the auction or across seasons, truthful bids, rotation nomination;
+within the auction (across seasons: owner_learning.py / owner_learning.md),
+truthful bids, rotation nomination;
 the "real singles player" and the floor-slot pickiness rules are
 build-time dials (fan_owner_spec.md, Status). The room is a probe of what
 a sheetless first auction does, not a forecast of MLP's.
@@ -509,9 +522,9 @@ a sheetless first auction does, not a forecast of MLP's.
 
 def write_md(W, cells, res, by_seed, seeds, seasons, out, secs):
     L = []
-    L.append("# The fan auction: no price sheet in the room\n")
+    L.append("# The new-owner auction: no price sheet in the room\n")
     L.append(f"Generated by `value_cap/fan_auction.py --grid` ({seeds} seeds per cell, {seasons} simulated seasons per "
-             f"room, {secs/60:.1f} min). Owners are records-only fans (fan_owner_spec.md, fan_view.py): one ordinal draw "
+             f"room, {secs/60:.1f} min). Owners are records-only new owners -- people who bought a team, not analysts (fan_owner_spec.md, fan_view.py; file names keep the earlier 'fan' label): one ordinal draw "
              "per owner per gender from the v2 posterior, a roster shape with budget shares, second price + $5k, "
              "rotation nomination, $1M cap / $30k floor / $850k first-buy max. Payoffs scored on the true tie model. "
              "List prices appear ONLY in the comparison columns; no owner sees them.\n")
@@ -564,7 +577,7 @@ def main():
     ap.add_argument("--seeds", type=int, default=8)
     ap.add_argument("--sd-mult", type=float, default=1.0)
     ap.add_argument("--premium", type=float, default=0.1)
-    ap.add_argument("--jitter", type=float, default=0.1, help="sd of per-owner share jitter (0 = every fan holds the textbook plan)")
+    ap.add_argument("--jitter", type=float, default=0.1, help="sd of per-owner share jitter (0 = every owner holds the textbook plan)")
     ap.add_argument("--seasons", type=int, default=300)
     ap.add_argument("--sgl-top", type=int, default=10)
     ap.add_argument("--describe", action="store_true")

@@ -1,4 +1,4 @@
-# MLP Value Cap — HANDOFF (2026-09-05, rev 4 after the fan-owner auction; supersedes rev 3 of the same day)
+# MLP Value Cap — HANDOFF (2026-09-05, rev 5 after the no-sheet auction + owner learning; supersedes rev 3 of the same day)
 
 Dated status snapshot + next-thread to-do. Read this first, then
 `phase2_pricing.md` §8 (the shipped rule and every number behind it),
@@ -163,10 +163,10 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    docstring; the star rows carry what her other five cost (`mates_paid`,
    `mates_floor`).
 
-**THE FAN ROOM (2026-09-05, latest)** — every earlier auction/draft/market
+**THE NO-SHEET ROOM (2026-09-05; "fan" in file names = records-only OWNERS, people who bought a team — user naming call)** — every earlier auction/draft/market
 room hands its owners OUR list as the starting expectation, so every price
 above is conditional on the room believing the sheet. `fan_owner_spec.md`
-(design, user-set knowledge layers) + `fan_view.py` (what a fan knows:
+(design, user-set knowledge layers) + `fan_view.py` (what a new owner knows:
 2026 records with game counts, singles record, MLP usage, ONE ordinal
 draw per owner per gender from the v2 posterior — owner 1 has Fahey 10th,
 owner 2 14th — no values, no prices, no cross-gender comparison) +
@@ -175,28 +175,66 @@ shares, the signed-off 5-step bid rule, second price + $5k, rotation
 nomination, payoffs on the true tie model). Reads: (1) Waters' price is
 the persona mix and the SALE ORDER, not the cap — $835-850k when two
 star-and-scrubs owners meet on her, $390-420k when a top-3 man came up
-first and one of them spent its star money on him at ~$410k (fans cannot
+first and one of them spent its star money on him at $410-460k (such owners cannot
 price Johns against Waters), $206-265k in a room with no star owner; default mix averages
-$570k vs the $769k list. (2) Fans INVERT our curve: #1-5 at 68% of list,
-#6-15 77%, #16-30 112%, #31-60 152% — plan money is flat within a band.
+$570k vs the $769k list. (2) New owners INVERT our curve: #1-5 at 68% of list,
+#6-15 78%, #16-30 113%, #31-60 149% — plan money is flat within a band.
 (3) Paying the max for her is the worst way to own her: $845k leaves $30k
-slots and 61-63% / 3-6%; getting her at $410k gives 70-78% / 18-29%; one
+slots and 61-68% / 3-15%; getting her at $410k gives 68-77% / 12-30%; one
 two-star owner in a four-starters room lands her at $265k and wins 88% /
-66% — the quant rooms' "Waters + cheap specialists = 66/35" needed the
+65% — the quant rooms' "Waters + cheap specialists = 66/35" needed the
 model to pick the specialists. (4) Philosophies: four starters ≈
-singles-minded ≈ two stars 58-59%; star-and-scrubs 53%; risk-averse 39%;
+singles-minded ≈ two stars 58-60%; star-and-scrubs 52%; risk-averse 39%;
 balanced six 29%. (5) Dead dials: going-rate premium (plan money sets the
 prices), share jitter (moves her price only via sale order). Spread 13-17
-in every fan room (mismatched rosters, not a runaway favourite). Build
-dials written down in the spec's Status section.
+in every no-sheet room (mismatched rosters, not a runaway favourite). Build
+dials written down in the spec's Status section. REPRODUCIBILITY: two
+tie-breaks consumed rng in set-iteration order (rooms differed across
+processes) — fixed, md regenerated, numbers above are the deterministic ones.
+
+**DO THE OWNERS LEARN? (2026-09-05, latest)** — `owner_learning.py` →
+`owner_learning.md`: ten seasons of full re-auctions by the no-sheet owners
+with three switchable channels, one swept rate each — P the room remembers
+last season's prices (going-rate seed; budget shares re-anchored toward the
+band median with weight lam), S owners copy a random playoff team's roster
+shape with probability p (`--copy champ` = the champion), K rank draws
+sharpen (sd × decay per season). Control (no channel) is flat over ten
+seasons. Reads: (1) P alone makes the room LESS like the list — #1-5 68% →
+52% of list, #31-60 154% → 179%, Waters $578k → $314k, spread 16 → 18:
+the anchor is a band median that depth buyers set at ~$225k and no shape
+pays more for #1 than #15, so prices converge to plan money; four-starters
+owners are the winners (60% → 67%). (2) S is the channel that un-inverts
+the curve: the room converges to two-stars + four-starters (risk-averse and
+balanced six extinct by season 7-10, star-and-scrubs holds ~2 seats), p 0.5
+takes 68/77/115/154 → 95/100/93/106 of list — the list's shape from a room
+that never saw it; spread 16 → 12; the copied shape's edge is competed away
+(two stars 61% → 51% as it goes 3 → 14 seats). (3) K = agreement =
+competition: unspent $0.84M → $0.18M, #1-5 → 81%, spread unchanged; the
+star-and-scrubs owner is the loser (52% → 34%). (4) All three: 11-14
+four-starters seats, curve → 86/87/127/104 (top and bottom at list, the
+middle dear), spread 14.5-15 (never 4.5), Waters $457-526k and her team
+76-79% / 32-42% — every learning cell makes her CHEAPER and her team
+STRONGER (she goes to owners with $440k left for real players). sd×2
+starters end in the same place. (5) Degenerate corner: twenty four-starters
+owners + all three → one owner holds Waters, Bright, Johns, JW Johnson at
+$225k each (99% / 89%, spread 23): identical flat plans + shared ranking +
+last-season anchors tie every sale within the jitter and the fattest plan
+wins each for $5k. Not a forecast — the owner family has no within-band
+rank slope, and that dial is the open design call. Caveats: 8 seeds, shape-
+only imitation, band-median anchor (alternatives unrun), one realised
+season per year, no keepers.
 
 ## Next steps
 
-0. **Fan room follow-ups**: learning across seasons (owners drift toward
-   the shapes that won — the user's stated interest); a fan room where the
+0. **No-sheet room follow-ups**: ~~learning across seasons~~ DONE
+   (`owner_learning.py`, above) — its open dials: a WITHIN-BAND RANK SLOPE
+   (user design call: does an owner pay more for its #1 than its #15, and
+   how much — the flatness is what drives both the P deflation and the
+   degenerate sweep), the P anchor rule (band median vs own top target vs
+   asymmetric raise-if-lost), keepers/contracts across seasons; a no-sheet room where the
    list IS published to some owners (mixed sheet/no-sheet room: does the
    sheet-holder win, and by how much — the value of the list itself);
-   price-order vs rotation nomination in the fan room (sale order is
+   price-order vs rotation nomination in the no-sheet room (sale order is
    first-order there); star owners with a gender preference (the
    cross-gender coin flip at $845k is the room's biggest single error).
 
@@ -303,7 +341,11 @@ dials written down in the spec's Status section.
 
 - `fan_view.py` — `doubles_records`, `singles_records`, `mlp_usage`,
   `draw_order(rng, post, gender, pids, sd_mult)` (ONE joint posterior draw
-  → order only), `rank_probs`, `board_pids`; CLI prints the fan's board.
+  → order only), `rank_probs`, `board_pids`; CLI prints the owner's board.
+- `owner_learning.py` → `owner_learning.md` — `play_season` (true-engine
+  season + one realised standing), `State`/`reanchor` (P), `run_years`
+  (T seasons, channels lam / p_switch / decay / copy), `cell`, `grid`;
+  `fan_auction.run_auction` now takes `owners=` and `memory=`.
 - `fan_auction.py` → `fan_auction.md` — `World`, `Owner` (personas =
   `PERSONAS` role lists; `ceiling`, `nominate`, `degrade`), `run_auction`,
   `room_stats`, `grid`; CLI `--mix star=2,two=3,...`, `--seeds`, `--sd-mult`,
