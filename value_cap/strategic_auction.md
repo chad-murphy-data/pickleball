@@ -130,3 +130,96 @@ single-dial deviation from it. It is a strategy-search result about
 and prices it produces are where such a room ends up, with the toy saying
 the true equilibrium can be elsewhere in exactly the 3+-team direction:
 more role-specific aggression from teams that miss the stars.
+
+## The real board (20 teams, `mlp2026` board, list expectations = the shipped list, noise 0)
+
+### From the truthful start (8 seeds, 8 rounds allowed, 4.5 h)
+
+Path, with the best single-dial gain at each step (pp of mean tie
+probability for the deviating team; se over the 8 seeds):
+
+| round | profile | best deviation | gain |
+|---|---|---|---|
+| 0 | truthful: list, greedy, snake, shortlist (= `auction_sim`) | expect=learned | +8.0 (se 2.1); inflate +6.5, a_star 1.25 +6.3, nom=cheap +5.9 |
+| 1 | learned, greedy | plan=planner | +20.2 (se 4.2); inflate +16.0, rivals +12.7, list +11.1 |
+| 2 | learned, planner | a_star=1.25 | +22.7 (se 2.8); every other expectation and plan=greedy +20-21 |
+| 3 | a_star 1.25, learned, planner | a_good0=2.0 | +12.2 (se 1.2); a_good0 1.25-1.5 +11.8, rivals/list +11.4 |
+| 4 | a_star 1.25, a_good0 2.0, learned, planner | a_good0=1.0 | +9.6 (se 4.4); a_good0 0.6-0.8 +8.4 |
+
+Round 4 returns to the round-3 profile: **CYCLE**, no symmetric
+equilibrium in the dial family from this start. The two nodes are
+"a_star 1.25, learned prices, planners, snake nomination, shortlist
+bidding" with the no-star multiplier at 1.0 or 2.0; the exploitability at
+either node is ~10-12 pp for a single deviating team, and it is the same
+dial both ways: a team that missed the stars wants to bid twice the
+indifference price for good players when nobody else does, and wants to
+stop when everybody does. That is the toy's 4-team truthful cycle
+(a_good0 1.5 <-> 1.0) reappearing at twenty.
+
+The room at the reported node (a_good0 1.0; all clones, 8 seeds), next to
+`auction_sim`'s truthful room:
+
+| | truthful room (`auction_sim`) | dial-cycle node |
+|---|---|---|
+| price / list, #1-5 | 1.06 | 1.16 |
+| price / list, #6-15 | 1.21 | 1.05 |
+| price / list, #16-30 | 1.06 | 0.99 |
+| price / list, #31-60 | 0.53 | 0.75 |
+| Waters price | $850k (sale 1) | $850k (sale 1) |
+| Waters' team win / title | 68.8% / 37% | 67.5% / 37% |
+| second-best team | 59.7% | 58.7% |
+| teams at 10%+ title | 2.6 | 2.1 |
+| parity spread (pts) | 7.3 | 6.0 |
+| floor-priced players (of 120) | 38.6 | 21.8 |
+| unspent per team | $4k | $44k |
+
+Reads:
+
+- **Waters is not dented by strategy either.** At the cap's first-buy
+  maximum at sale 1, five floor teammates, 67-68% and a 37% title shot,
+  in the truthful room, at every node of the search and in every
+  deviation table (no dial ever moved her price or her team). She is
+  rationed by the rule, not the room, and no strategy layer changes that:
+  it is the same read as `market_eq.md` and `auction.md`, now with owners
+  who plan whole rosters and bid strategically.
+- **The strategic layer moves the middle, not the top.** Planners with
+  learned prices push the top 5 from 6% to 16% over list (Bright $774k
+  vs $697-760k in the market limit; Johns $614k), pull the second tier
+  back to list (105% vs 121%), and lift depth from 53% to 75% of list:
+  fewer players at the floor (22 vs 39), and about $44k per team unspent
+  because ceilings on depth players are planner-exact and the shortlist
+  rule keeps most owners out of those sales. The shape is the market
+  limit's shape (`market_prices.csv`: top 15 at 112-117%, #31-60 at
+  53-61%) with a flatter tail.
+- **The two-star chase survives planners here.** The seed-0 room at the
+  cycle node has Pisnik + Rohrabacher ($390k + $389k, 60.8%), Sewing +
+  Black ($365k + $363k, 53.9%), Jade Kawamoto + Daescu ($440k + $338k,
+  54.4%), Alshon + Jackie Kawamoto ($486k + $394k) -- the second-best
+  team is 58.7% and 2.1 teams sit at 10%+ title odds, against 1.0 in the
+  snake. `market_eq.md` said the chase does not survive roster planners;
+  what it does not survive is planners at MARKET prices (the fixed point
+  where every second star is bid to the price that makes their team
+  average). In an actual auction with sequential sales and rotation
+  nomination, the second stars come up before their buyers' money is
+  gone and the room does not reach that fixed point; two of them for
+  ~$750k is still the best no-Waters build. The chasers are not all
+  man + woman here (Pisnik + Rohrabacher is two women, Sewing + Black
+  two women), which is the planner's completion finding a cheap man to
+  pair with in mixed; the M+W shape from `two_star.py` is the greedy
+  owner's version.
+- **What the dials say about `auction_sim`'s owner.** Its truthful
+  ceiling is exploitable by 8 pp at round 0 and its greedy projection by
+  20 pp at round 1: a single roster planner in a room of nineteen
+  truthful greedy owners gains a fifth of a tie probability. So the
+  persona and auction grids measured with greedy owners are not
+  equilibrium reads (as HANDOFF 1c(v) suspected). But once the room is
+  planners with learned prices the remaining single-dial gains are the
+  role-conditional a_good0 flip-flop and ~7 pp on the star multiplier,
+  and none of them touch Waters' team.
+
+Caveats specific to this run: 8 seeds, so a deviation gain under ~5 pp is
+inside its own error bar (the round-4 table is all se 3-5); the deviator
+sits in slot (7 x seed) mod 20, so its position in the nomination
+rotation varies with the seed; noise 0 (every owner shares the true
+values), so the room has no belief dispersion at all -- `auction_sim`'s
+10% noise was not swept here for cost.
