@@ -546,7 +546,10 @@ the no-star team, demand reduction where no Waters team exists); the
 truthful-planner benchmark -- what `auction_sim.py` owners do, with exact
 roster planning -- is NOT the equilibrium at 2 or 3 teams under either
 expectation; nobody buys two stars of one gender; sale order is a
-first-order dial. The toy is the check for any heuristic strategy search
+first-order dial; a fourth bidder pushes star prices to the list
+($500k / $400k vs $300-400k at three teams) while the truthful planner
+keeps bidding 2 units, so the N-trend argues against truthful planner
+owners at twenty without a strategic layer. The toy is the check for any heuristic strategy search
 (score it on rosters, never on prices) and the direction of few-bidder
 strategy, not a forecast of MLP's room.
 

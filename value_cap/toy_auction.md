@@ -55,8 +55,8 @@ theory says.
 | 3 | 1,1,3,3 | $100k | secondprice | 406k | 3.2M | 27 s |
 | 3 | 1,1,3,3 goods first | $100k | either | 150k | 1-4M | 12 s |
 | 3 | 1,1,2,2 | $50k | english | 994k | 72.9M | 129 s |
-| 3 | 2,2,4,4 | $100k | secondprice | > 4.8M at 9 min, still running at commit time (~8.5k states/s, ~1 GB) | | |
-| 4 | 1,1,3,3 | $100k | secondprice | > 2.8M at 9 min, still running at commit time | | |
+| 4 | 1,1,3,3 | $100k | secondprice | 4.37M | 68.9M | 829 s |
+| 3 | 2,2,4,4 | $100k | secondprice | > 6.8M / 47M in-sale at 14 min (~8k states/s, > 1 GB), process died without a result -- out of reach | | |
 | 3 | 2,2,4,4 | $50k | english | > 1.8M in 2 min, killed | | |
 | 3 | 2,2,6,6 | $100k | english | > 1.4M in 2 min, killed | | |
 | 3 | 2,2,6,6 | $50k | english | > 2M in 3 min, killed | | |
@@ -94,6 +94,9 @@ roster planning).
 | same, english | SF 3, SM 1 | one star each for T0, T1; T2 goods | 41.3 / 45.8 / 45.4 | 67.6 |
 | 3 teams, 1,1,3,3, secondprice, NO Waters team | SF 2, SM 5 | T0 gets the star woman for $200k, others' ceilings 1 | 66.5 / 43.0 / 40.5 | -- |
 | 3 teams, 1,1,2,2, $50k, english | SF unsold, SM 9 | nobody takes the star woman at the reserve | 42.8 / 41.1 / 38.1 | 78.0 |
+| 4 teams, 1,1,3,3, $100k, secondprice | SF 5, SM 4 (= list) | T1 the man + a good woman, T2 the woman + five floors, T0 two good women, T3 three good men | 41.6 / 56.0 / 37.9 / 38.7 | 75.8 |
+| same, bench (list expectations) | SF 2, SM 2 | T0 the woman, T1 the man, T2 and T3 stranded on goods | 53.5 / 53.3 / 34.8 / 34.8 | 73.6 |
+| same, bench (equilibrium expectations) | SF 3, SM 2 | T1 the man + goods at 69%, T2 stranded at 20% | 52.9 / 69.4 / 19.7 / 35.4 | 72.6 |
 
 ## What it says
 
@@ -125,8 +128,9 @@ roster planning).
 4. **Nobody chases two stars of one gender.** With two stars per gender
    and two teams, each team takes one man and one woman (64.4% each,
    Waters' team 21%), the same M+W shape `two_star.py` found in the real
-   room. The 3-team, two-stars-per-gender case was still solving when this
-   was written (see the cost table); its row goes here when it lands.
+   room. The 3-team, two-stars-per-gender case is out of reach (the
+   solve died past 6.8M states without a result), so the M+W shape is
+   established here at two teams only.
 5. **Sale order is a first-order dial.** Goods first hands the opener a
    59% team at second-price (buy goods while they are cheap, then the
    star woman at 4 with a roster that makes her worth it); stars first
@@ -139,6 +143,20 @@ roster planning).
    after taking her is worse than the continuation without her. These
    are genuine subgame-perfect outcomes of the lowest-price selection,
    and they are the reason to report both conventions rather than one.
+
+7. **A fourth bidder pushes star prices to the list.** At 4 teams and
+   one star per gender (second-price) the stars sell at exactly their
+   list prices ($500k / $400k) where 3 teams paid $300-400k: the
+   accommodation of finding 2 weakens as bidders are added, which is
+   the direction the 20-team market limit needs. The split is no longer
+   equal, though -- the star man's buyer adds a good woman and wins 56%,
+   the star woman's buyer is left with five floor players at 38%, below
+   the two no-star teams (42%, 39%). The truthful-planner benchmark does
+   NOT converge toward this as teams are added: at 4 teams it still buys
+   both stars at 2 units and strands two teams at 35% (list
+   expectations) or one at 20% (equilibrium expectations). Three points
+   on the N-trend (2, 3, 4) say prices move toward the list and the
+   benchmark's prices do not move at all.
 
 ## Caveats
 
@@ -156,9 +174,10 @@ not a forecast of MLP's room.
 - Score a strategy search (fictitious play over a small dial set) on
   this toy: it passes if it reproduces the equilibrium ROSTERS at 2 and
   3 teams under both conventions.
-- The N-trend: 2 -> 3 -> 4 teams at one star per gender is within reach;
-  if the truthful-planner benchmark converges toward the equilibrium as
-  teams are added, that is the argument for trusting planner owners at
-  twenty.
+- The N-trend at one star per gender is now measured at 2, 3 and 4
+  teams (finding 7): equilibrium star prices rise toward the list, the
+  truthful-planner benchmark's do not. That is the case AGAINST trusting
+  truthful planner owners at twenty without a strategic layer; the
+  strategy search above is the fix.
 - A faster solver (the between-sale recursion in a compiled loop) would
   buy one more team or one more star per gender, not twenty teams.

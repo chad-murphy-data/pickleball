@@ -83,14 +83,18 @@ not WD (19%), and floor men are DreamBreaker specialists.
 strategic teams + a fixed Waters team, money grid, fixed sale order,
 backward induction over the whole auction under two stage conventions
 (english alternating-raise strict, second-price indifference bids).
-Feasible range 2-3 teams with one or two stars per gender, 4 teams with
-one (a few million states, minutes); the 3-team 2,2,6,6 board is out of
-reach in Python. Reads: allocation robust to the convention, prices
+Feasible range: 2 teams with one or two stars per gender, 3-4 teams
+with one (up to ~4.4M states, 14 min for 4 teams); 3 teams with two
+stars per gender (2,2,4,4 and 2,2,6,6) is out of reach in Python. Reads: allocation robust to the convention, prices
 not; small rooms accommodate (stars split one per team, star teams no
 better than the no-star team, demand reduction without a Waters team);
 the truthful-planner benchmark is NOT the equilibrium at 2-3 teams
 under either expectation; nobody buys two stars of one gender; sale
-order is a first-order dial. Numbers and caveats in the file.
+order is a first-order dial; a fourth bidder pushes star prices to the
+list ($500k/$400k vs $300-400k at 3 teams) while the truthful planner's
+prices stay at 2 units -- the N-trend argues against truthful planner
+owners at twenty without a strategic layer. Numbers and caveats in the
+file.
 
 ## The shipped rule in one paragraph
 
