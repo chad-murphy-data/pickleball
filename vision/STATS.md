@@ -483,6 +483,15 @@ fitter converts 14. The oracle's ceiling was 25/35 on perfect bounds
 with 34 intact; the fitter's NOT OK clause on genuinely intact flights
 is the next wall, and that is a fitter question, not a claim question.
 
+**With the shipped crossing demotion on top of the claimer bounds:
+13/35** (r7 2, r9 4, r10 4, r17 3). The demotion removes 9 bounds
+across the four rallies — 7 of them REAL contacts (r7 170.45; r9
+257.81, 270.30, 270.68; r10 316.50; r17 431.48, 433.56) and 2 junk —
+and the r7 one costs a bounce (170.16 matched → NOT OK). On claimer
+bounds the demotion is a net −1: the junk it was catching is already
+gone, so what it demotes now is mostly real. The shipped pipeline's 13
+and this 13 are different 13s (r7 2/r9 4/r10 4/r17 3 here vs 3/6/2/2).
+
 **A leak, flagged.** Permutation importance on the train panel puts
 `t_to_end` first (+0.086 AUC), and that feature is tainted: for every
 rally without a point-dead label the window's end is last contact +

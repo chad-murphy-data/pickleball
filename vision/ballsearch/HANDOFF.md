@@ -35,8 +35,12 @@ a fitter question. LEAK flagged: `t_to_end` is the top feature and the
 window end is last contact + 2 s on every rally without a point-dead
 label; `--no-end-feats` LORO keeps the intact gain (r7 3/3) and halves
 the junk gain (48 → 38 instead of 48 → 24); a leak-free r9/r10 read is
-a SECOND read and was not taken. Anchor-only arms after the full fit
-(shipped demotion): 14 and 15 of 35 — a wash, as the intact table said.
+a SECOND read and was not taken. With the shipped crossing demotion on
+top of the claimer bounds: **13/35** (r7 2, r9 4, r10 4, r17 3) — it
+removes 9 bounds, 7 of them real contacts, and costs r7 a bounce: net
+−1 on claimer bounds, the junk it was built to catch is already gone.
+Anchor-only arms after the full fit (shipped demotion): 14 and 15 of
+35 — a wash, as the intact table said.
 
 Bounce coder: `vision/make_bounce_audit.py` →
 `data/vision/bounce_audit_chicago0725.html` (19 train rallies, 229
