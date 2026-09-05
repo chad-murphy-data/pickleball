@@ -288,6 +288,77 @@ gains 6.6 pp at once) and no run ended there, but it is the shape a
 room of over-careful quants would produce, and it is the only room in
 this whole project where Waters' team is not the favourite.
 
+## Price-order nomination (league rule; in-session 2026-09-05, 8 seeds, noise 0)
+
+Question (user): what if nominations were in PRICE order -- the dearest
+remaining player by list price is always the next sale, nobody chooses?
+In the instrument that is `nom=dear` frozen as a rule: `--room` reports
+the room at a profile, `--fix nom --start nom=dear` runs the self-play
+with the dial removed from the search. Two owner types, each held fixed
+across the rule change (the bidding rule must be held fixed too; see
+the shortlist caveat below):
+
+| | greedy owners, snake (= `auction_sim`) | greedy owners, PRICE ORDER | planner owners, own choice | planner owners, PRICE ORDER |
+|---|---|---|---|---|
+| price / list, #1-5 | 1.06 | 1.10 | 0.96 | 0.91 |
+| price / list, #6-15 | 1.21 | **1.31** | 0.98 | 0.97 |
+| price / list, #16-30 | 1.06 | 0.92 | 1.01 | 1.11 |
+| price / list, #31-60 | 0.53 | 0.49 | 1.21 | 0.99 |
+| Waters price | $850k, sale 1 | $850k, sale 1 | $850k, sale 1 | $850k, sale 1 |
+| Waters' team win / title | 68.8% / 37.6% | 66.2% / **30.2%** | 39.3% / 0.5% | 56.5% / **7.1%** |
+| best team | 68.8% (hers) | 66.4% | 61.7% | **64.7% (not hers)** |
+| second-best team | 59.7% | **61.6%** | 57.8% | **63.2%** |
+| teams at 10%+ title | 2.9 | **3.9** | 3.5 | 3.75 |
+| parity spread (pts) | 7.3 | 8.0 | 5.9 | 7.4 |
+| floor-priced players (of 120) | 38.6 | 45.3 | 1.5 | 15.1 |
+| unspent per team | $4k | $8k | $316k | $56k |
+
+(greedy = `a_star 1, list, greedy, shortlist`, price order with
+`bid=all` gives IDENTICAL numbers -- with the dearest player always on
+the block the shortlist filter never excludes a contested sale; planner
+= `plan=planner, list, bid=all`, own choice = `nom=want`.)
+
+Reads:
+
+- **Waters' price does not move.** She is sale 1 under both rules
+  (owner-chosen nomination already puts her up first) and the $850k
+  first-buy maximum is the binding constraint, not the order. Price
+  order changes what happens AFTER her.
+- **It widens the chase.** With `auction_sim`'s greedy owners the
+  second-best team goes 59.7% -> 61.6% and the count of teams at 10%+
+  title odds 2.9 -> 3.9; her title share falls 37.6% -> 30.2%. The
+  second-star tier is where the money goes: #6-15 sell at 131% of list
+  (121% under snake). Mechanism: the nineteen owners who missed her
+  face the next-dearest players immediately, all with full budgets, so
+  every star sale is contested by everyone; under snake nomination the
+  stars trickle out between cheaper picks and some go uncontested.
+  Depth pays for it: #16-30 slip to 92% of list and 45 players sell at
+  the floor (39 under snake), and 1 pool player goes unsold (the
+  cheapest come last, when rosters are full).
+- **With planner owners it makes the two-star build the favourite.**
+  Seed 0: Jade Kawamoto + JW Johnson 65.3%, Parris Todd + Kate Fahey
+  64.1%, Tina Pisnik + Gabriel Tardio 62.5% -- all ahead of Waters +
+  five floor players at 59.3%. Over 8 seeds her team is 56.5% with a
+  7% title shot; the best team is 64.7% and the second 63.2%. Stars
+  sell to planners BELOW list (#1-5 at 91%, #6-15 at 97%) and the
+  mid-tier ABOVE (#16-30 at 111%): a whole-roster planner knows the
+  star's price only pays if the completion is cheap, and with the stars
+  gone first the completions are what twenty planners fight over.
+  3 pool players unsold in seed 0.
+- **Caveat on the planner column.** Its reference room (planner owners,
+  own-choice nomination) is the anomalous 39% start already flagged
+  under Caveats ($316k per team unspent) and neither planner room is a
+  self-play end point, so read the planner comparison as "price order
+  gets planners to spend and hands the room to two-star teams", not as
+  a Waters-team number to quote. The greedy column is the like-for-like
+  test against the shipped `auction_sim` room.
+- **Self-play with the rule frozen** (`--start nom=dear --fix nom`,
+  7 dials searched, 8 seeds, 4 rounds allowed): launched at write time;
+  result appended below when it lands. Question it answers: where the
+  dial family settles when owners adapt to price order -- in particular
+  whether the a_star discount (stars first, everyone rich) or the
+  no-star multiplier moves.
+
 ## What is robust across both starts and every node
 
 | | `auction_sim` truthful | truthful-start cycle node | planner-start end |

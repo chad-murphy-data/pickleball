@@ -752,7 +752,13 @@ symmetric point; robust everywhere: Waters $850k / 67-69% / 33-37%,
 second-best 58.7-59.7%, 2-3 chasers. Twenty planners at list bidding on
 everyone (the START, not an equilibrium) is the one room where her team
 is not the favourite (39%, $316k/team unspent). Unswept: --noise,
-role-typed (asymmetric) profiles, adopt-any-cleared-gain rule.
+role-typed (asymmetric) profiles, adopt-any-cleared-gain rule. PRICE-ORDER
+NOMINATION (user question 2026-09-05; `--room`, `--fix nom --start
+nom=dear`): Waters unmoved ($850k, sale 1 either way) but the chase
+widens — greedy owners: her title 37.6→30.2%, second-best 59.7→61.6%,
+2.9→3.9 teams at 10%+, #6-15 at 131% of list; planner owners: the
+two-star M+W build is the favourite (64.7% vs her 56.5%/7%). The one
+nomination rule that dents her title odds without touching her price.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's

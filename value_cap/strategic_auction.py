@@ -98,6 +98,8 @@ ap.add_argument("--K", type=int, default=10, help="real: planner candidate depth
 ap.add_argument("--plan-top", type=int, default=40, help="real: planner ceilings only for players ranked in the top N by list (else greedy)")
 ap.add_argument("--noise", type=float, default=0.0, help="real: owner belief noise (fraction of the value spread), fixed per owner per auction")
 ap.add_argument("--time", action="store_true", help="real: time one auction on the starting profile and stop")
+ap.add_argument("--fix", default="", help="real: comma list of dials frozen at their start value (a league RULE, e.g. --fix nom with --start nom=dear = nominations in list-price order); they are not searched")
+ap.add_argument("--room", action="store_true", help="real: report the room at the starting profile over the seeds (all clones) and stop -- no self-play")
 ap.add_argument("--seasons", type=int, default=200, help="real: seasons for the title share in the final report")
 ap.add_argument("--tag", default="", help="cache/report suffix")
 ap.add_argument("--quiet", action="store_true")
@@ -964,6 +966,22 @@ def main():
     WORLD = w
     log(f"=== real world: {w.label}; seeds {A.seeds}, jobs {A.jobs} ===")
     theta0 = theta_of(A.start)
+    if A.fix:
+        fixed = [f for f in A.fix.split(",") if f]
+        w.dials = [f for f in w.dials if f not in fixed]
+        log(f"fixed by rule: {', '.join(f'{f}={th(theta0, f)}' for f in fixed)}; searched dials: {w.dials}")
+    if A.room:
+        sp = SelfPlay(w, A.jobs, 0.0, log, A.se_mult)
+        sp.settle(theta0, w.seeds)
+        results = [sp.runs[sp.base_key(theta0, sd)] for sd in w.seeds]
+        stats = w.room_stats(results, random.Random(0))
+        log(f"room on [{fmt_theta(theta0)}] (all clones, {len(results)} seeds): " + json.dumps(stats))
+        line, rows = w.describe(results[0])
+        log("  seed 0: " + line)
+        for rw in rows:
+            log("  " + rw)
+        (CACHE / f"strategic_room{tag}.json").write_text(json.dumps(dict(label=w.label, theta=theta0, stats=stats, seeds=A.seeds), indent=1, default=str))
+        return
     if A.time:
         t0 = time.time()
         res = w.run([theta0] * w.n, 0)

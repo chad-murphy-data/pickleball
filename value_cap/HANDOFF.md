@@ -232,7 +232,15 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    profile search is the next instrument if anyone wants the game's
    equilibrium rather than the family's. Two cheap probes from the
    plan (price-enforcement free-rider null, drain nomination only
-   around Waters/Bright) are still unrun.
+   around Waters/Bright) are still unrun. PRICE-ORDER NOMINATION probed
+   (2026-09-05, user question; `--room`, `--fix nom --start nom=dear`,
+   md section "Price-order nomination"): Waters unmoved ($850k, sale 1
+   either way); greedy owners -- her title 37.6 -> 30.2%, second-best
+   59.7 -> 61.6%, 2.9 -> 3.9 teams at 10%+, #6-15 at 131% of list;
+   planner owners -- the two-star M+W build is the favourite (64.7%
+   vs her 56.5% / 7% title), stars below list, mid-tier above. The
+   one nomination rule that dents her title odds without touching her
+   price. Frozen-rule self-play result: in the md.
 2. **Phase 3 follow-ups**: the league-price + surplus column once MLP
    publishes prices (the page already says it is coming); a per-player
    line on player pages ("value price $X, #N among women"); an insights

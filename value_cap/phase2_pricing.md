@@ -588,3 +588,19 @@ equilibrium) is the one room in the project where her team is not
 the favourite (39%; $316k per team unspent, depth at 121% of list).
 Read `strategic_auction.md` for the toy table, the paths, the seed-0
 rosters and the caveats (4-8 seeds, noise 0, symmetric profiles).
+
+PRICE-ORDER NOMINATION (user question, 2026-09-05; rooms via `--room`,
+rule via `--fix nom --start nom=dear`; `strategic_auction.md` "Price-order
+nomination"): selling players in descending list-price order does NOT
+move Waters ($850k at sale 1 either way -- she is already the first
+sale) but widens the chase behind her. Greedy owners (like-for-like with
+`auction_sim`): her title share 37.6% -> 30.2%, second-best team 59.7%
+-> 61.6%, teams at 10%+ 2.9 -> 3.9, the second-star tier #6-15 at 131%
+of list (121%), depth at the floor 39 -> 45, shortlist vs all bidding
+identical (the dearest player is always on the block). Planner owners:
+the two-star M+W build becomes the favourite (Kawamoto+JW 65%,
+Todd+Fahey 64%, Pisnik+Tardio 62.5% vs Waters+floor 59% in seed 0; her
+team 56.5% / 7% title over 8 seeds), stars sell below list (#1-5 91%)
+and the mid-tier above (#16-30 111%); the planner reference room is the
+39% anomaly, so quote the direction, not the level. Self-play with the
+rule frozen: see the md.
