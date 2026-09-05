@@ -1,0 +1,133 @@
+# The records-only owner ("fan owner") — spec, 2026-09-05
+
+Status: knowledge layer BUILT (`fan_view.py`); personas and bid rule PROPOSED,
+awaiting sign-off before the auction is built. This document is the design
+conversation written down; the numbers are from `python value_cap/fan_view.py`.
+
+## Why
+
+Every room `strategic_auction.py` has run hands each owner OUR price list as
+its picture of what the other slots will cost: `expect=list` uses it,
+`inflate` scales it, `rivals` caps it, `learned` seeds from it. So the
+indifference prices in the walk-through ($568k / $632k for Bright) are
+"the owner's valuation GIVEN our sheet". The question this answers: what
+does a first-ever MLP auction look like when nobody has a sheet and nobody
+can compute one?
+
+## What a fan owner knows (user-set, 2026-09-05)
+
+Four layers. The fog is in dollars and in what wins, not in who is good.
+
+**1. Rules (everyone).** 6 players, 3M + 3W, $1M cap, $30k floor. A tie is
+WD, MD, MXD1, MXD2, DreamBreaker singles at 2-2 with a team-named 4-player
+lineup. Four of six play a tie; players 5 and 6 rarely play (fans know
+this). Cap arithmetic: $167k average slot, $850k most anyone can put on one
+player.
+
+**2. Player facts (everyone, with sample-size sense).**
+- Doubles win% and games, 2026, split by own-gender doubles and mixed.
+- Singles win% and games (2026 and career) — so who plays singles and how
+  well. Todd and Fahey being elite singles players is common knowledge; so
+  is Hurricane Black not playing singles.
+- An ORDINAL picture within gender: one joint draw from the v2 posterior
+  (`value_now_mean ± value_now_sd`), ranked, and the owner keeps only the
+  order. The fog is the model's own uncertainty, scaled by `--sd-mult`
+  (1 = posterior; 2 = a fan who reads results less efficiently). Same for
+  singles from the singles suite posterior.
+- 2026 MLP franchise and usage (matchups appeared / franchise matchups).
+  Bench and injury are indistinguishable in the data; only the risk-averse
+  persona reads low usage as risk (Rohrabacher 19/27, Todd 23/33,
+  Hurricane Black 22/33, Hunter Johnson 11/27).
+- NOT known: any per-point value, tie probability, phi, price; any
+  cross-gender comparison (Johns vs Bright is not a question a fan can
+  answer, and the owner is never asked it).
+
+What the ordinal draw looks like (P(rank ≤ k), posterior ×1, mlp2026 board):
+
+| | E[rank] | P(#1) | P(≤3) | P(≤5) | P(≤10) |
+|---|---|---|---|---|---|
+| Waters | 1.0 | 1.00 | 1.00 | 1.00 | 1.00 |
+| Bright | 2.6 | 0.00 | 0.87 | 0.96 | 1.00 |
+| Jorja Johnson | 5.9 | 0.00 | 0.25 | 0.55 | 0.91 |
+| Todd | 7.2 | 0.00 | 0.15 | 0.39 | 0.82 |
+| Fahey | 9.6 | 0.00 | 0.03 | 0.14 | 0.62 |
+| Johns | 3.2 | 0.27 | 0.66 | 0.85 | 0.98 |
+| JW Johnson | 4.3 | 0.20 | 0.52 | 0.73 | 0.95 |
+| Patriquin | 4.4 | 0.14 | 0.46 | 0.71 | 0.95 |
+| Tardio | 4.6 | 0.11 | 0.43 | 0.70 | 0.95 |
+| Alshon | 6.9 | 0.04 | 0.21 | 0.43 | 0.84 |
+
+Read: the women's top two are certain, #3-#10 is a pack. The men's #1 is a
+genuine four-way question even to the model (Johns 27%). A fan's "ALW >
+Bright > Jorja" is exactly what the posterior says; "Johns is the best man"
+is a 27% opinion.
+
+**3. Beliefs about what wins (opinion; heterogeneous; the personas).**
+How much a star matters vs balance, whether the bench matters, whether the
+DreamBreaker is worth planning for. The model has answers; owners have
+none. First draft = a hand-picked MIX of personas (user call); learning
+across seasons is a follow-up.
+
+**4. Dollars (nobody).** No list, no past auction. Price information =
+cap arithmetic + tonight's sales so far.
+
+## Proposed personas (Layer 3) — for sign-off
+
+Each is a roster SHAPE: six roles with (gender, acceptable band in the
+owner's own ordering, budget share). Shares are the owner's plan for
+spreading $1M, not a valuation.
+
+| persona | shape | shares | notes |
+|---|---|---|---|
+| star & scrubs | one top-3 (either gender) + five floor | 85 / 3×5 | the build our model says wins; unclear any fan would try it |
+| two stars | top-5 woman + top-5 man + four cheap | 40 / 40 / 5×4 | the auction's chase build |
+| four starters | 2W + 2M from own top-15, bench at floor | 22×4 / 6 / 6 | the natural fan build ("four play") |
+| balanced six | six from own top-30 | 17×6 | |
+| singles-minded | four starters, one W and one M must be singles players | 22×4 / 6 / 6 | pays a premium for singles record (DB) |
+| risk-averse | four starters + a real bench, avoids <75% usage | 20×4 / 10 / 10 | the only persona that reads usage |
+
+Default room: a mix (e.g. 2 / 3 / 6 / 4 / 3 / 2 of 20); sweeps: all-X rooms,
+one-X-in-a-room-of-Y, sd-mult 1 / 2.
+
+## Proposed bid rule (Layer 4) — for sign-off
+
+For owner o and player x on the block:
+1. **Role match.** x fills the most expensive unfilled role whose gender
+   and rank band (own ordering) it satisfies; otherwise no bid (the
+   nominator still opens at the floor if it can afford completion).
+2. **Plan money.** ceiling = that role's share × $1M + savings carried from
+   roles already filled under plan.
+3. **Watch the room.** Once ≥3 players in the same band have sold tonight,
+   going_rate = their median price. If going_rate < plan money, ceiling =
+   going_rate × (1 + premium), premium a persona dial (sweep 0.1 / 0.3).
+   Owners never bid above plan money for a role — except:
+4. **Scarcity.** If the acceptable players left for the role ≤ the rivals
+   who still need that role, bid full plan money (ignore the going rate).
+5. **Hard cap.** Never above budget − floor × (slots left − 1).
+Payment: second-highest + $5k, as in every room so far. Nomination:
+rotation; the nominator names the top target of its dearest unfilled role
+(fans nominate who they want) — `nom` sweepable as before.
+
+No owner ever evaluates a roster's tie probability. Payoffs (win%, title
+odds) are scored on the TRUE tie model, because that is the world.
+
+## What the room will tell us
+
+- Paid prices vs our list, by rank band: does a room with no sheet land
+  near it, and where does it bend?
+- Waters' price and buyer. Only star & scrubs can pay $850k; if the room
+  has one such owner she goes for the second bid + $5k, i.e. the two-star
+  owners' ~$400k. Her price is set by the persona mix, not the cap.
+- Which philosophy wins a first draft (persona win% / title odds) — the
+  thing the real league will learn.
+- Title concentration and unspent money vs the quant rooms.
+
+## Open decisions (user)
+
+- Persona set and default mix above; any persona missing (marketing /
+  hometown from `personas.py` could be re-added as a target-list tilt).
+- Premium and carry-over rules in step 3; whether a persona may exceed plan
+  money for its star (a "stretch" dial).
+- Whether the ordinal draw is shared (one consensus) or per-owner (each
+  owner its own draw). Per-owner is the honest default.
+- Learning over seasons (owners drift toward the shapes that won): later.
