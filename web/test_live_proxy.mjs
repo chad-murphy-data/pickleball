@@ -17,7 +17,7 @@ const T = { TournamentID: "t-1", Title: "PPA Tour: Test Open", RegistrationConta
 const EVENTS = [
   { uuid: "e-md", title: "Mens Doubles Pro Main Draw" },
   { uuid: "e-wd", title: "Womens Doubles Pro Main Draw" },
-  { uuid: "e-ms", title: "Mens Singles Pro Main Draw" },   // not doubles: discovery drops it
+  { uuid: "e-ms", title: "Mens Singles Pro Main Draw" },   // singles: swept too, flagged sg
 ];
 // score formats as getResultMatchInfos reports them
 const FORMATS = {
@@ -38,11 +38,15 @@ function mk(ev, round, bracket, fmtId, n) {
       score_format_game_best_out_of: FORMATS[fmtId].bestOf,
       match_status: 1, winner: 0,
       team_one_player_one_uuid: `p${seq}a`, team_one_player_one_name: "A One",
-      team_one_player_two_uuid: `p${seq}b`, team_one_player_two_name: "A Two",
       team_two_player_one_uuid: `p${seq}c`, team_two_player_one_name: "B One",
-      team_two_player_two_uuid: `p${seq}d`, team_two_player_two_name: "B Two",
       _fmt: fmtId,                            // mock-side truth, ignored by the proxy
     });
+    if (ev !== "e-ms") {                      // singles carries one player per side
+      Object.assign(rows[rows.length - 1], {
+        team_one_player_two_uuid: `p${seq}b`, team_one_player_two_name: "A Two",
+        team_two_player_two_uuid: `p${seq}d`, team_two_player_two_name: "B Two",
+      });
+    }
   }
   return rows;
 }
@@ -60,7 +64,7 @@ globalThis.fetch = async (url) => {
   }
   if (p.endsWith("getTournamentEventsShort")) return ok({ data: EVENTS });
   if (p.endsWith("getMatchInfosShort")) {
-    assert.equal(q.get("eventIds"), "e-md,e-wd", "only the doubles events are swept");
+    assert.equal(q.get("eventIds"), "e-md,e-wd,e-ms", "doubles AND singles pro events are swept");
     return ok({ data: DAY });
   }
   if (p.endsWith("getResultMatchInfos")) {
@@ -108,12 +112,17 @@ DAY = [
   ...mk("e-wd", 3, "W", "bo5_11", 1),          // ... with one odd best-of-5 inside it (the stray)
   ...mk("e-wd", 3, "L", "bo1_15", 4),          // women's back draw: single game to 15
   ...mk("e-wd", 6, "W", "bo5_11", 1),          // gold medal match
+  ...mk("e-ms", 2, "W", "bo3_11", 4),          // men's SINGLES R32 (one player per side)
 ];
 let rows = await sweep();
-assert.equal(rows.length, 26);
-assert.equal(withFmt(rows), 26, "every match on a cold sweep carries a format");
-assert.equal(lookups.size, 6, "5 bracket-round groups + 1 stray = 6 lookups");
-assert.equal(totalLookups(), 6);
+assert.equal(rows.length, 30);
+assert.equal(withFmt(rows), 30, "every match on a cold sweep carries a format");
+assert.equal(lookups.size, 7, "6 bracket-round groups + 1 stray = 7 lookups");
+assert.equal(totalLookups(), 7);
+const sgRows = rows.filter((r) => r.sg);
+assert.equal(sgRows.length, 4, "singles rows are flagged sg");
+assert.ok(sgRows.every((r) => r.t1.length === 1 && r.t2.length === 1), "singles: one player per side");
+assert.ok(rows.filter((r) => !r.sg).every((r) => r.t1.length === 2 && r.t2.length === 2));
 for (const r of rows) {
   const truth = FORMATS[DAY.find((m) => m.match_uuid.toLowerCase() === r.uuid)._fmt];
   assert.deepEqual(r.fmt.max, truth.max, `format for ${r.uuid} (${r.rd})`);
@@ -122,7 +131,7 @@ for (const r of rows) {
   assert.equal(r.fmt.rally, false);
   assert.equal(r.fmt.winBy, 2);
 }
-console.log("ok  cold day: 26 matches priced with 6 lookups");
+console.log("ok  cold day: 30 matches (4 singles) priced with 7 lookups");
 
 // ---- 2. a failed lookup leaves its round unpriced for ONE sweep, then heals
 lookups.clear();
