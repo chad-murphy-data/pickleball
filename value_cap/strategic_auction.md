@@ -354,38 +354,38 @@ Reads:
   test against the shipped `auction_sim` room.
 ### What people actually paid (mean over 8 seeds; `--room` now writes `cache/strategic_room<tag>_prices.csv`)
 
-| # | player | list | greedy, snake | greedy, PRICE ORDER | planner, PRICE ORDER |
-|---|---|---|---|---|---|
-| 1 | Anna Leigh Waters (F) | $769k | $850k | $850k | $850k |
-| 1 | Ben Johns (M) | $474k | $507k | $520k | $414k |
-| 2 | Anna Bright (F) | $613k | $629k | $607k | $568k |
-| 2 | JW Johnson (M) | $430k | $466k | $466k | $373k |
-| 3 | Parris Todd (F) | $489k | $491k | $491k | $466k |
-| 3 | Hayden Patriquin (M) | $421k | $440k | $466k | $339k |
-| 4 | Jorja Johnson (F) | $475k | $488k | $491k | $466k |
-| 4 | Gabriel Tardio (M) | $409k | $443k | $520k | $342k |
-| 5 | Kate Fahey (F) | $453k | $488k | $488k | $392k |
-| 5 | Christian Alshon (M) | $400k | $420k | $488k | $338k |
-| 6 | Jade Kawamoto (F) | $444k | $466k | $466k | $389k |
-| 6 | Andrei Daescu (M) | $323k | $347k | $322k | $312k |
-| 7 | Rachel Rohrabacher (F) | $421k | $491k | $491k | $368k |
-| 7 | Federico Staksrud (M) | $315k | $372k | $293k | $312k |
-| 8 | Tina Pisnik (F) | $416k | $499k | $491k | $363k |
-| 8 | Eric Oncins (M) | $307k | $322k | $334k | $312k |
-| 9 | Jackie Kawamoto (F) | $391k | $555k | $555k | $363k |
-| 9 | Jay Devilliers (M) | $288k | $373k | $434k | $286k |
-| 10 | Tyra Hurricane Black (F) | $386k | $445k | $555k | $338k |
-| 10 | Riley Newman (M) | $251k | $294k | $393k | $261k |
-| 11 | Sofia Sewing (F) | $350k | $434k | $555k | $338k |
-| 11 | Jack Sock (M) | $226k | $272k | $373k | $242k |
-| 12 | Danni-Elle Townsend (F) | $325k | $389k | $345k | $286k |
-| 12 | Phuc Huynh (M) | $210k | $324k | $246k | $211k |
-| 13 | Mari Humberg (F) | $303k | $364k | $392k | $286k |
-| 13 | Thomas Wilson (M) | $209k | $261k | $354k | $234k |
-| 14 | Vivian Glozman (F) | $271k | $312k | $434k | $270k |
-| 14 | Quang Duong (M) | $203k | $251k | $294k | $185k |
-| 15 | Catherine Parenteau (F) | $267k | $300k | $317k | $261k |
-| 15 | Connor Garnett (M) | $202k | $264k | $229k | $218k |
+| # | player | list | greedy, snake | greedy, PRICE ORDER | planner, PRICE ORDER | adapted, PRICE ORDER (path end) |
+|---|---|---|---|---|---|---|
+| 1 | Anna Leigh Waters (F) | $769k | $850k | $850k | $850k | $850k |
+| 1 | Ben Johns (M) | $474k | $507k | $520k | $414k | $478k |
+| 2 | Anna Bright (F) | $613k | $629k | $607k | $568k | $630k |
+| 2 | JW Johnson (M) | $430k | $466k | $466k | $373k | $441k |
+| 3 | Parris Todd (F) | $489k | $491k | $491k | $466k | $486k |
+| 3 | Hayden Patriquin (M) | $421k | $440k | $466k | $339k | $419k |
+| 4 | Jorja Johnson (F) | $475k | $488k | $491k | $466k | $479k |
+| 4 | Gabriel Tardio (M) | $409k | $443k | $520k | $342k | $432k |
+| 5 | Kate Fahey (F) | $453k | $488k | $488k | $392k | $452k |
+| 5 | Christian Alshon (M) | $400k | $420k | $488k | $338k | $407k |
+| 6 | Jade Kawamoto (F) | $444k | $466k | $466k | $389k | $380k |
+| 6 | Andrei Daescu (M) | $323k | $347k | $322k | $312k | $293k |
+| 7 | Rachel Rohrabacher (F) | $421k | $491k | $491k | $368k | $346k |
+| 7 | Federico Staksrud (M) | $315k | $372k | $293k | $312k | $320k |
+| 8 | Tina Pisnik (F) | $416k | $499k | $491k | $363k | $363k |
+| 8 | Eric Oncins (M) | $307k | $322k | $334k | $312k | $270k |
+| 9 | Jackie Kawamoto (F) | $391k | $555k | $555k | $363k | $327k |
+| 9 | Jay Devilliers (M) | $288k | $373k | $434k | $286k | $335k |
+| 10 | Tyra Hurricane Black (F) | $386k | $445k | $555k | $338k | $358k |
+| 10 | Riley Newman (M) | $251k | $294k | $393k | $261k | $353k |
+| 11 | Sofia Sewing (F) | $350k | $434k | $555k | $338k | $333k |
+| 11 | Jack Sock (M) | $226k | $272k | $373k | $242k | $199k |
+| 12 | Danni-Elle Townsend (F) | $325k | $389k | $345k | $286k | $304k |
+| 12 | Phuc Huynh (M) | $210k | $324k | $246k | $211k | $310k |
+| 13 | Mari Humberg (F) | $303k | $364k | $392k | $286k | $295k |
+| 13 | Thomas Wilson (M) | $209k | $261k | $354k | $234k | $157k |
+| 14 | Vivian Glozman (F) | $271k | $312k | $434k | $270k | $287k |
+| 14 | Quang Duong (M) | $203k | $251k | $294k | $185k | $157k |
+| 15 | Catherine Parenteau (F) | $267k | $300k | $317k | $261k | $236k |
+| 15 | Connor Garnett (M) | $202k | $264k | $229k | $218k | $182k |
 
 Reads: greedy owners under price order pay MORE for every man in the
 top 5 (Tardio $520k vs $443k, Alshon $488k vs $420k) and the same for
@@ -406,11 +406,45 @@ vs $629k under snake): she is sale 2, when the room has just watched
 Waters go for $850k and nobody wants two stars of one gender.
 
 - **Self-play with the rule frozen** (`--start nom=dear --fix nom`,
-  7 dials searched, 8 seeds, 4 rounds allowed): launched at write time;
-  result appended below when it lands. Question it answers: where the
-  dial family settles when owners adapt to price order -- in particular
-  whether the a_star discount (stars first, everyone rich) or the
-  no-star multiplier moves.
+  7 dials searched, 8 seeds, 4 rounds, ~1 h): owners adapt in this
+  order -- inflate price expectations (+11.5 pp, se 1.9; the largest
+  round-0 gain of any start), a_star 1.25, whole-roster planners,
+  learned prices -- and hit the round limit with +5.2 pp (se 1.7) still
+  on the table (a_good0 next), so this is a PATH END, not an
+  equilibrium. The room at that end (all clones, 8 seeds):
+
+  | | greedy, price order (start) | adapted owners, price order (path end) |
+  |---|---|---|
+  | price / list, #1-5 / #6-15 / #16-30 / #31-60 | 1.10 / 1.31 / 0.92 / 0.49 | 1.02 / 0.96 / 0.83 / 1.18 |
+  | Waters price | $850k, sale 1 | $850k, sale 1 |
+  | Waters' team win / title | 66.2% / 30.2% | 71.3% / 28.8% |
+  | best team | 66.4% | **74.3% (not hers)** |
+  | second-best team | 61.6% | 69.0% |
+  | teams at 10%+ title | 3.9 | 3.9 |
+  | parity spread (pts) | 8.0 | **12.8** |
+  | floor-priced (of 120) | 45.3 | 19.9 |
+  | unspent per team | $8k | **$156k** |
+
+  Seed 0 is a league of super-teams and stragglers: Alshon + Sewing +
+  Humberg 70.3%, Todd + JW Johnson 66.1%, Johns + Jade Kawamoto 64.2%,
+  Waters + five floor players 64.0%, Fahey + Tardio 63.7%, Rohrabacher
+  + Hurricane Black 60.8% -- and six teams at 33-42%. Adapted owners
+  expect last room's prices and plan whole rosters, so they hold money
+  back for completions that then sell above list (#31-60 at 118%,
+  Katerina Stewart $65k -> $244k, Walczak $79k -> $220k, Haworth $200k)
+  while 13 of the #29-60 go unsold in at least one seed (they come up
+  last, after the planners have filled) and $156k per team is left
+  over. Stars themselves sell at list (Johns $478k, Bright $630k, JW
+  $441k, Tardio $432k), the second-star tier BELOW list (Jade Kawamoto
+  $380k, Rohrabacher $346k, Jackie Kawamoto $327k). So the rule's
+  effect with adapting owners is not "a fairer league" -- it is a
+  wider one: more strong chasers (3.9 at 10%+, second-best 69%) AND
+  more dead teams, spread 12.8 vs 7-8 in every other room in this
+  file. Waters' team wins more ties (71%) because the bottom is
+  weaker, but her title share falls (28.8%) because the top is
+  stronger. Read with the gate caveat (path end, symmetric family,
+  noise 0); the direction (chase widens, Waters unmoved in price) is
+  the same at every node of the path.
 
 ## What is robust across both starts and every node
 

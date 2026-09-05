@@ -240,7 +240,11 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    planner owners -- the two-star M+W build is the favourite (64.7%
    vs her 56.5% / 7% title), stars below list, mid-tier above. The
    one nomination rule that dents her title odds without touching her
-   price. Frozen-rule self-play result: in the md.
+   price. Frozen-rule self-play (path end, 5 pp left): adapting owners
+   make the league WIDER, not fairer -- best team 74.3% (not hers;
+   71.3% / 28.8%), second 69%, spread 12.8 vs 7-8, $156k/team unspent,
+   #31-60 above list yet 13 of them unsold in some seed. Per-player
+   prices per room: `--room` writes `cache/strategic_room<tag>_prices.csv`.
 2. **Phase 3 follow-ups**: the league-price + surplus column once MLP
    publishes prices (the page already says it is coming); a per-player
    line on player pages ("value price $X, #N among women"); an insights

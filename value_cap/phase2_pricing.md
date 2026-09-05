@@ -603,4 +603,10 @@ Todd+Fahey 64%, Pisnik+Tardio 62.5% vs Waters+floor 59% in seed 0; her
 team 56.5% / 7% title over 8 seeds), stars sell below list (#1-5 91%)
 and the mid-tier above (#16-30 111%); the planner reference room is the
 39% anomaly, so quote the direction, not the level. Self-play with the
-rule frozen: see the md.
+rule frozen (7 dials, 8 seeds, 4 rounds, path end with 5 pp left):
+owners inflate expectations, discount stars, plan rosters, learn
+prices -- and the league gets WIDER, not fairer: best team 74.3% (not
+Waters'; hers 71.3% / 28.8% title), second 69.0%, 3.9 teams at 10%+,
+spread 12.8 (7-8 elsewhere), $156k per team unspent, #31-60 at 118% of
+list with 13 of them unsold in some seed. Per-player prices for every
+room: `--room` now writes `cache/strategic_room<tag>_prices.csv`.

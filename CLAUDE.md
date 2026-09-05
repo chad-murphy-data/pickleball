@@ -758,7 +758,9 @@ nom=dear`): Waters unmoved ($850k, sale 1 either way) but the chase
 widens — greedy owners: her title 37.6→30.2%, second-best 59.7→61.6%,
 2.9→3.9 teams at 10%+, #6-15 at 131% of list; planner owners: the
 two-star M+W build is the favourite (64.7% vs her 56.5%/7%). The one
-nomination rule that dents her title odds without touching her price.
+nomination rule that dents her title odds without touching her price. Adapted owners (frozen-rule self-play, path end) make it WIDER not
+fairer: best team 74% (not hers), second 69%, spread 12.8 vs 7-8, $156k/
+team unspent. `--room` writes per-player paid prices to cache.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
