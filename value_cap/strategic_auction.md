@@ -352,6 +352,59 @@ Reads:
   gets planners to spend and hands the room to two-star teams", not as
   a Waters-team number to quote. The greedy column is the like-for-like
   test against the shipped `auction_sim` room.
+### What people actually paid (mean over 8 seeds; `--room` now writes `cache/strategic_room<tag>_prices.csv`)
+
+| # | player | list | greedy, snake | greedy, PRICE ORDER | planner, PRICE ORDER |
+|---|---|---|---|---|---|
+| 1 | Anna Leigh Waters (F) | $769k | $850k | $850k | $850k |
+| 1 | Ben Johns (M) | $474k | $507k | $520k | $414k |
+| 2 | Anna Bright (F) | $613k | $629k | $607k | $568k |
+| 2 | JW Johnson (M) | $430k | $466k | $466k | $373k |
+| 3 | Parris Todd (F) | $489k | $491k | $491k | $466k |
+| 3 | Hayden Patriquin (M) | $421k | $440k | $466k | $339k |
+| 4 | Jorja Johnson (F) | $475k | $488k | $491k | $466k |
+| 4 | Gabriel Tardio (M) | $409k | $443k | $520k | $342k |
+| 5 | Kate Fahey (F) | $453k | $488k | $488k | $392k |
+| 5 | Christian Alshon (M) | $400k | $420k | $488k | $338k |
+| 6 | Jade Kawamoto (F) | $444k | $466k | $466k | $389k |
+| 6 | Andrei Daescu (M) | $323k | $347k | $322k | $312k |
+| 7 | Rachel Rohrabacher (F) | $421k | $491k | $491k | $368k |
+| 7 | Federico Staksrud (M) | $315k | $372k | $293k | $312k |
+| 8 | Tina Pisnik (F) | $416k | $499k | $491k | $363k |
+| 8 | Eric Oncins (M) | $307k | $322k | $334k | $312k |
+| 9 | Jackie Kawamoto (F) | $391k | $555k | $555k | $363k |
+| 9 | Jay Devilliers (M) | $288k | $373k | $434k | $286k |
+| 10 | Tyra Hurricane Black (F) | $386k | $445k | $555k | $338k |
+| 10 | Riley Newman (M) | $251k | $294k | $393k | $261k |
+| 11 | Sofia Sewing (F) | $350k | $434k | $555k | $338k |
+| 11 | Jack Sock (M) | $226k | $272k | $373k | $242k |
+| 12 | Danni-Elle Townsend (F) | $325k | $389k | $345k | $286k |
+| 12 | Phuc Huynh (M) | $210k | $324k | $246k | $211k |
+| 13 | Mari Humberg (F) | $303k | $364k | $392k | $286k |
+| 13 | Thomas Wilson (M) | $209k | $261k | $354k | $234k |
+| 14 | Vivian Glozman (F) | $271k | $312k | $434k | $270k |
+| 14 | Quang Duong (M) | $203k | $251k | $294k | $185k |
+| 15 | Catherine Parenteau (F) | $267k | $300k | $317k | $261k |
+| 15 | Connor Garnett (M) | $202k | $264k | $229k | $218k |
+
+Reads: greedy owners under price order pay MORE for every man in the
+top 5 (Tardio $520k vs $443k, Alshon $488k vs $420k) and the same for
+the top women, then bid the second-tier women to a $555k ceiling
+(Jackie Kawamoto, Hurricane Black, Sewing -- the most a team that has
+already bought one player can pay) and the #9-14 men to 130-170% of
+list (Devilliers $434k, Newman $393k, Sock $373k, Wilson $354k);
+#21-40 collapse to 63% of list and four of #58-60 go unsold in most
+seeds (they come up last, when rosters are full). Planner owners under
+price order pay BELOW list for every star (Johns $414k, JW $373k,
+Patriquin $339k, Bright $568k, Fahey $392k), list for #16-20, 104% for
+#21-40, and double the $80k tier (Widdershoven, Petrei, Wall, Brascia,
+Walczak at $145-160k) -- the completions are what planners fight over.
+DreamBreaker specialists split the same way: Haworth $43k with greedy
+owners vs $137k with planners (list $95k). Bright is the one star who
+goes for LESS under price order with either owner type ($607k / $568k
+vs $629k under snake): she is sale 2, when the room has just watched
+Waters go for $850k and nobody wants two stars of one gender.
+
 - **Self-play with the rule frozen** (`--start nom=dear --fix nom`,
   7 dials searched, 8 seeds, 4 rounds allowed): launched at write time;
   result appended below when it lands. Question it answers: where the

@@ -65,6 +65,7 @@ from __future__ import annotations
 import argparse
 import itertools
 import os
+import csv
 import json
 import math
 import multiprocessing as mp
@@ -980,7 +981,25 @@ def main():
         log("  seed 0: " + line)
         for rw in rows:
             log("  " + rw)
-        (CACHE / f"strategic_room{tag}.json").write_text(json.dumps(dict(label=w.label, theta=theta0, stats=stats, seeds=A.seeds), indent=1, default=str))
+        # per-player prices over the seeds (what people actually went for)
+        paid = {}
+        for res in results:
+            for x, wn, p, t in res["sales"]:
+                paid.setdefault(x, []).append(p if wn is not None else None)
+        rows_p = []
+        for x, ps in paid.items():
+            sold = [p for p in ps if p is not None]
+            rows_p.append(dict(name=w.name_of(x), gender=w.GEN[x], list_rank=int(w.rank[x]), list_price=int(w.LP[x]),
+                               mean_paid=int(round(statistics.mean(sold))) if sold else 0,
+                               min_paid=int(min(sold)) if sold else 0, max_paid=int(max(sold)) if sold else 0,
+                               sold=len(sold), of=len(ps)))
+        rows_p.sort(key=lambda r: r["list_rank"])
+        with open(CACHE / f"strategic_room{tag}_prices.csv", "w", newline="") as fh:
+            wr = csv.DictWriter(fh, fieldnames=list(rows_p[0].keys())); wr.writeheader(); wr.writerows(rows_p)
+        log("  per-player prices (mean over seeds) -> " + str(CACHE / f"strategic_room{tag}_prices.csv"))
+        for r in rows_p[:30]:
+            log(f"    #{r['list_rank']:<3} {r['name']:<26} {r['gender']} list ${r['list_price']/1e3:.0f}k  paid ${r['mean_paid']/1e3:.0f}k  [{r['min_paid']/1e3:.0f}-{r['max_paid']/1e3:.0f}k]  sold {r['sold']}/{r['of']}")
+        (CACHE / f"strategic_room{tag}.json").write_text(json.dumps(dict(label=w.label, theta=theta0, stats=stats, seeds=A.seeds, prices=rows_p), indent=1, default=str))
         return
     if A.time:
         t0 = time.time()
