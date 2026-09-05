@@ -101,6 +101,7 @@ from claim_lab import load as c3load                           # noqa: E402
 from bounce_autopsy import tracked as autopsy_tracked          # noqa: E402
 
 RAL = [7, 9, 10, 17]
+KINDS = ["tracked", "recall", "precision", "anchors", "anchors2", "human"]
 ON_BOUNCE_S = 0.05
 
 _fit_arc = c3.fit_arc
@@ -204,7 +205,7 @@ def is_real(b, imps):
     return any(abs(hc - b) <= br.MATCH_S for hc in imps)
 
 
-def make_bounds(kind, t_bounds, t_evs, imps):
+def make_bounds(kind, t_bounds, t_evs, imps, anchors=(), zs=()):
     """Returns (bounds, evs, note)."""
     if kind == "tracked":
         return list(t_bounds), list(t_evs), ""
@@ -221,6 +222,19 @@ def make_bounds(kind, t_bounds, t_evs, imps):
         return keep, sorted(t_evs + gone), f"removed {len(gone)} junk bounds"
     if kind == "human":
         return list(imps) + [t_bounds[-1]], list(t_evs), "human contacts"
+    if kind in ("anchors", "anchors2"):
+        # LABEL-FREE claim-step change (2026-09-05): a pose anchor that
+        # claimed no turn and has no bound within MATCH_S sets its own
+        # bound. Motivated by miss anatomy: 10 of the 17 missed contacts
+        # have an anchor within MATCH_S and no turn (6 have no anchor,
+        # 3 have both and lost the claim). anchors2 = same, z >= 2.0
+        # (one pre-stated threshold, not tuned).
+        zmin = 2.0 if kind == "anchors2" else -1e9
+        add = [a[0] for a, z in zip(anchors, zs) if z >= zmin
+               and not any(abs(a[0] - b) <= br.MATCH_S for b in t_bounds)
+               and t_bounds[0] < a[0] < t_bounds[-1]]
+        return (sorted(t_bounds + add), list(t_evs),
+                f"added {len(add)} anchor-only bounds")
     raise ValueError(kind)
 
 
@@ -286,7 +300,9 @@ def run_cell(r, kind, demotion, policy, fp):
     _, segs_a, bounds_a, _ = autopsy_tracked(c)
     base = grade(segs_a, bounds_a, h_bnc)
     obs, t_bounds, t_evs, anchors = predem(c, policy)
-    bounds, evs, note = make_bounds(kind, t_bounds, t_evs, imps)
+    bounds, evs, note = make_bounds(kind, t_bounds, t_evs, imps,
+                                    anchors, c["zs"] if policy == "raw"
+                                    else [0.0] * len(anchors))
     t = time.time()
     log = []
     if fp:
@@ -364,6 +380,58 @@ def junk_anatomy(policy="raw"):
         print(f"  {n:>3}  {k}")
 
 
+def intact_flights(bounds, imps, h_bnc):
+    """How many bounce-holding human flights survive in these bounds:
+    both contacts matched within MATCH_S and no bound in between. The
+    grading number for claim-step work (2026-09-05): a bounce is only
+    findable inside an intact flight (shipped: 11/16 intact vs 2/19
+    broken), so this moves BEFORE the bounce count does, and needs no
+    fit -- seconds, not minutes."""
+    n = 0
+    for ts in h_bnc:
+        prev = max([c for c in imps if c <= ts], default=None)
+        nxt = min([c for c in imps if c > ts], default=None)
+        if prev is None or nxt is None:
+            continue
+        ok = (any(abs(prev - b) <= br.MATCH_S for b in bounds)
+              and any(abs(nxt - b) <= br.MATCH_S for b in bounds)
+              and not any(prev + br.MATCH_S < b < nxt - br.MATCH_S
+                          for b in bounds))
+        n += ok
+    return n
+
+
+def intact_table(policy="raw", kinds=KINDS):
+    """Pre-demotion intact flights / contacts matched / junk per bounds
+    variant. Measured 2026-09-05 (raw policy):
+        tracked    13/35   62/79   35 junk
+        recall     19/35   79/79   35
+        precision  19/35   62/79    1
+        anchors     8/35   67/79   59   <- anchor-only bounds: DEAD
+        anchors2   12/35   66/79   45   <- (z >= 2) also dead
+        human      34/35   79/79    0
+    Each bound defect alone lifts intact 13 -> 19; both -> 34. The
+    anchor-only claim (the obvious fix for the 10 'anchor present, no
+    turn' misses) buys 4-5 contacts for 10-24 junk bounds and LOSES
+    intact flights -- pose anchors are too fake-heavy to bound alone."""
+    print(f"{'bounds':10s} {'intact':>7} {'contacts':>9} {'junk':>5}   per rally")
+    for kind in kinds:
+        tot, per = [0, 0, 0, 0], []
+        for r in RAL:
+            c = c3load(r)
+            imps, hb = list(c["imps"]), human_bounces(c)
+            _, tb, te, anch = predem(c, policy)
+            zs = c["zs"] if policy == "raw" else [0.0] * len(anch)
+            b, _, _ = make_bounds(kind, tb, te, imps, anch, zs)
+            i = intact_flights(b, imps, hb)
+            cm = sum(1 for hc in imps if is_real(hc, b))
+            j = sum(1 for x in b[:-1] if not is_real(x, imps))
+            tot[0] += i; tot[1] += len(hb); tot[2] += cm; tot[3] += j
+            per.append(f"r{r} {i}/{len(hb)}")
+        print(f"{kind:10s} {tot[0]:>3}/{tot[1]:<3} {tot[2]:>5}/79 "
+              f"{tot[3]:>5}   " + "  ".join(per))
+
+
 def summary(policy="raw"):
     cells = {}
     for p in HERE.glob(f"bound_oracle_*_{policy}_r*.json"):
@@ -387,19 +455,24 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--rally", type=int)
     ap.add_argument("--bounds", default="tracked",
-                    choices=["tracked", "recall", "precision", "human"])
+                    choices=KINDS)
     ap.add_argument("--demotion", default="none",
                     choices=["none", "shipped", "validated"])
     ap.add_argument("--first-pass", action="store_true")
     ap.add_argument("--policy", default="raw", choices=["raw", "dedup"])
     ap.add_argument("--summary", action="store_true")
     ap.add_argument("--anatomy", action="store_true")
+    ap.add_argument("--intact", action="store_true",
+                    help="intact-flight table per bounds variant (no fits)")
     a = ap.parse_args()
     if a.summary:
         summary(a.policy)
         return
     if a.anatomy:
         junk_anatomy(a.policy)
+        return
+    if a.intact:
+        intact_table(a.policy)
         return
     for r in ([a.rally] if a.rally else RAL):
         run_cell(r, a.bounds, a.demotion, a.policy, a.first_pass)

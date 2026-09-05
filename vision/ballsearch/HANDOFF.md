@@ -14,7 +14,27 @@ measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
 
-## 2026-09-04 (latest) — BOUND ORACLE: the bounces are lost in the bounds, both halves at once
+## 2026-09-05 (latest) — INTACT-FLIGHT GRADER, MISS ANATOMY, first claim-step candidate dead
+
+`bound_oracle.py --intact` grades a bounds variant in seconds (intact
+bounce flights / contacts matched / junk), no fit needed; numbers in
+`vision/STATS.md` "UPDATE 2026-09-05". Tracked 13/35 intact, either bound
+defect fixed 19, both 34. The 17 missed contacts: 10 anchor-but-no-turn,
+6 turn-but-no-anchor, 3 lost the claim; none blocked by the 0.35 s picker
+separation (misses sit in SLOWER exchanges). `predict_contacts` is three
+hand-set constants, not a model — more contact taps enlarge the panel but
+cannot improve it until a learned claimer exists. Anchor-only bounds
+(unclaimed anchor sets its own bound; `--bounds anchors|anchors2`) is
+DEAD: +4–5 contacts, +10–24 junk, intact 13 → 8/12; full-fit bounce count: r7 3 → 2, other rallies
+pending at time of writing. Panel caveat: the 35 "human bounces" are the fitter's
+calls on the human click path, never tapped directly — a direct bounce
+tap would be the first independent key.
+
+Next: a claimer that separates real contacts from fake swings AT THE
+ANCHOR (pose features + the ball-turn features, trained on the existing
+~200 manual contact taps, graded on `--intact` first, r20 untouched).
+
+## 2026-09-04 — BOUND ORACLE: the bounces are lost in the bounds, both halves at once
 
 `bound_oracle.py` (this directory; numbers and the flight-level reading in
 `vision/STATS.md`, "UPDATE 2026-09-04 (later)"). The bounce counter's 13 of
@@ -599,7 +619,7 @@ already exist. r2 is below the power floor; skip it.
 | `c3_lab.py` | Stage A cache per rally → `c3_cache_r{r}.pkl` (windowed candidates, decode, timing stream, turns, anchors, floors, human side fit). WINDOWS dict holds serve/end/pose-npz per rally. |
 | `claim_lab.py` | `load(rally)`, `paddle_series(npz)`; claim logic labs. |
 | `bounce_autopsy.py` | read-only bucket per missed human bounce on r7/9/10/17 (NO WINDOW / CAPPED / NO SEG / NOT OK / CALLED ARC / WRONG TIME) off the c3 cache; caches the shipped tracked side as `autopsy_track_r{r}.pkl` (gitignored). |
-| `bound_oracle.py` | swaps each downstream stage for its oracle (bounds: tracked / +missed contacts / −junk / human × demotion: none / shipped / validated; `--first-pass`; `--policy dedup` = check 3's anchors) and grades the same 35 bounces; `--summary` prints the grid, `--anatomy` the junk-bound breakdown. Result 2026-09-04: both bound defects together 25/35, either alone 14, shipped 13 — see STATS.md. Caches gitignored. |
+| `bound_oracle.py` | swaps each downstream stage for its oracle (bounds: tracked / +missed contacts / −junk / human × demotion: none / shipped / validated; `--first-pass`; `--policy dedup` = check 3's anchors) and grades the same 35 bounces; `--summary` prints the grid, `--anatomy` the junk-bound breakdown, `--intact` the no-fit intact-flight table (the claim-step grading number; 2026-09-05). Result 2026-09-04: both bound defects together 25/35, either alone 14, shipped 13 — see STATS.md. Caches gitignored. |
 | `corridor_lab.py` | corridors between consecutive contacts (prod = approach_events + anchors → dedupe → claim_bounds; oracle = hand taps `c["imps"]`); window = chord ± (wx=min(140,40+0.2L), wy=min(170,55+0.3L)); truth loader; `decode_recall`; R_MAIN=12. |
 | `corridor_dp.py` | Viterbi chain per corridor over per-frame candidates (K=14, GAP=6): accel + gap + endpoint + body-extremity cost (W_BODY=25, R_BODY=16) − peak bonus + `W_P_SOFT·(1−p)`. |
 | `emission.py` | learned per-candidate scorer (hand-rolled Adam logistic, 14 features). `train` (r6↔r7 cross-val + pooled model → `emission_model.json`), `cache <r>` (p-cache from pooled model), `cache-cross` (r6 scored by r7-only model and vice versa → `p_r{6,7}_{mode}_14_x.npz`, fold kp97). |

@@ -375,6 +375,59 @@ together. The contact-recall line (the black hole above) and the junk line
 with two symptoms, and a fix that trades one for the other — the spatial
 claim gate, the dedupe policy — measures flat here for exactly that reason.
 
+### UPDATE 2026-09-05 — the intact-flight grader, the miss anatomy, and the first claim-step candidate (dead)
+
+`bound_oracle.py --intact` is the grading tool the previous update asked
+for: for each bounds variant it counts the bounce-holding human flights
+that survive intact (both contacts matched within 0.25 s, no bound in
+between), plus contacts matched and junk bounds. No fit is run, so it
+answers in seconds instead of minutes, and it moves before the bounce
+count does.
+
+| bounds (pre-demotion) | intact flights | contacts | junk bounds |
+|---|---|---|---|
+| tracked (shipped) | 13/35 | 62/79 | 35 |
+| + the 17 missed contacts | 19/35 | 79/79 | 35 |
+| − the junk bounds | 19/35 | 62/79 | 1 |
+| anchor-only bounds, all | 8/35 | 67/79 | 59 |
+| anchor-only bounds, z ≥ 2 | 12/35 | 66/79 | 45 |
+| human contacts | 34/35 | 79/79 | 0 |
+
+Each bound defect alone lifts intact flights 13 → 19; both together 34.
+
+**Why the claim step misses 17 contacts** (`MATCH_S` = 0.25 s; a bound
+needs a pose anchor AND a ball turn within 0.25 s of each other):
+10 have the anchor and no turn (the ball path shows no direction
+change at a dink contact, or the contact sits in the black hole), 6
+have a turn and no anchor (soft swings under the z ≥ 1.2 excitement
+line), 3 have both and lost the claim to a neighbouring turn. None is
+blocked by the picker's 0.35 s minimum separation: missed contacts sit
+in SLOWER exchanges (median neighbour gap 0.94 s vs 0.69 s for matched
+ones). `predict_contacts` is not a trained model — it is a peak picker
+with three hand-set constants (z ≥ 1.2, 0.35 s separation, 0.10 s
+smoothing) tuned by eye on r6/r7 — so more contact taps do not improve
+it today; they only enlarge the panel. A learned claimer would change
+that.
+
+**First candidate, dead on arrival:** let an unclaimed anchor set its
+own bound when no turn is near it (the obvious fix for the 10
+anchor-and-no-turn misses). It buys 4–5 contacts and pays 10–24 junk
+bounds, and intact flights FALL (13 → 8 all anchors, 13 → 12 at z ≥ 2).
+The pose anchors carry too many fake swings to bound a flight alone.
+Bounce count after the full fit: r7 reads 3 → 2 on both arms; the r9/r10/r17 fits were still running when this was written (see HANDOFF for the total once in). The lesson is the
+one already written: anything that trades recall for junk measures
+flat or worse; the claim step has to gain contacts WITHOUT adding
+bounds, which means telling a real contact from a fake swing at the
+anchor, not at the turn.
+
+**Panel caveat, found while answering "would coding more bounces
+help":** the 35 "human bounces" were never tapped by a human. They are
+the fitter's own bounce calls on the human-clicked ball path (r7/r9/
+r10/r17, `kind == "bounce"` in the human-side fit). So the 25/35
+ceiling and the 35 itself are both model-derived. A direct bounce tap
+(time, and roughly where) would be the first independent bounce truth
+and would audit the key itself; ~10 taps a rally.
+
 ## The black hole, and why it licenses the non-tracking family
 
 Measured 2026-09-03 (`ballsearch/blackhole.py`), the frozen scorer sliced by
