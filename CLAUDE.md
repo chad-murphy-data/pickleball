@@ -721,7 +721,20 @@ chasers are a man + a woman because the stars share the MXD1 court
 (γ<0: 77% vs field), the floor-only punt lands in MXD2 (30%) not WD
 (19%; women's spread 1.5× men's), and floor men are DB specialists;
 M+M 44-46% / M+W 50-51% / F+F 52-54% vs the market-limit field, all
-over the cap at market prices — the shape survives, the chase does not.
+over the cap at market prices — the shape survives, the chase does not. TOY AUCTION SOLVED EXACTLY (`toy_auction.py` → `toy_auction.md`,
+phase2_pricing §13; 2026-09-05): typed players, 2-4 strategic teams +
+fixed Waters team, money grid, fixed sale order, backward induction
+under two stage conventions (english strict / second-price). Feasible
+2-3 teams (4 with one star/gender); 20 teams has NO computable
+equilibrium (state space, exposure problem, budgets, multiplicity,
+PPAD). Reads: allocation robust to the convention, PRICES ARE NOT
+(same rosters, star woman $50k vs $750k) — validate any strategy
+search on ROSTERS; small rooms accommodate (stars split, star teams
+no better than no-star team); truthful planners (= auction_sim owners
+with exact planning) are NOT the equilibrium at 2-3 teams; nobody
+buys two stars of one gender; sale order is first-order. Plan on
+record in HANDOFF 1c(viii): planner owners → fictitious-play strategy
+search → exploitability, validated on the toy.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's

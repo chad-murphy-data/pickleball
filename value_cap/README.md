@@ -49,5 +49,6 @@ owner personas (`personas.py` -> `personas.md`), the dials probe
 `market_prices.csv`; the backward induction run to its fixed point with
 roster-planning owners -- Waters the only rationed player, written up
 at the end of `auction.md`; `two_star.py` = the game-by-game read of why
-the two-star chasers are a man + a woman). Not yet built: the injury/absence layer
+the two-star chasers are a man + a woman; `toy_auction.py` -> `toy_auction.md`
+= the exactly solved typed toy auction, 2-4 teams). Not yet built: the injury/absence layer
 (HANDOFF.md Next steps).

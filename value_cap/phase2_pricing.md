@@ -530,3 +530,23 @@ field), the punted floor-only game lands in MXD2 (30%) rather than WD
 (19%; women's spread is 1.5x men's), and cheap men are DreamBreaker
 specialists where cheap women are not; M+M 44-46%, M+W 50-51%, F+F
 52-54% vs the market-limit field, all over the cap at market prices.
+
+## 13. The toy auction, solved exactly (2026-09-05; `toy_auction.py` -> `toy_auction.md`)
+
+The 20-team auction has no computable equilibrium; a typed toy does
+(star / good / floor per gender, 2-4 strategic teams, a fixed Waters
+team, money on a grid, fixed sale order, English auction as an
+alternating-raise game or second-price stages, backward induction over
+the whole auction). Read `toy_auction.md` for the ladder of state
+counts and the equilibrium table. In one paragraph: allocation is
+robust to the equilibrium convention and prices are not (the same
+rosters with the star woman at $50k or $750k); small rooms accommodate
+(stars split one per team at $300-400k, star teams no better off than
+the no-star team, demand reduction where no Waters team exists); the
+truthful-planner benchmark -- what `auction_sim.py` owners do, with exact
+roster planning -- is NOT the equilibrium at 2 or 3 teams under either
+expectation; nobody buys two stars of one gender; sale order is a
+first-order dial. The toy is the check for any heuristic strategy search
+(score it on rosters, never on prices) and the direction of few-bidder
+strategy, not a forecast of MLP's room.
+

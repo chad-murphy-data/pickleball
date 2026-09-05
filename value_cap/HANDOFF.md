@@ -78,6 +78,20 @@ F+F 52-54%, all $1.06-1.18M at market (over the cap) -- M+W because the
 two stars share the mixed court (77%), the punt lands in MXD2 (30%)
 not WD (19%), and floor men are DreamBreaker specialists.
 
+**Toy auction solved exactly DONE** (2026-09-05 late; `toy_auction.py`
+-> `toy_auction.md`, `phase2_pricing.md` §13): typed players, 2-4
+strategic teams + a fixed Waters team, money grid, fixed sale order,
+backward induction over the whole auction under two stage conventions
+(english alternating-raise strict, second-price indifference bids).
+Feasible range 2-3 teams with one or two stars per gender, 4 teams with
+one (a few million states, minutes); the 3-team 2,2,6,6 board is out of
+reach in Python. Reads: allocation robust to the convention, prices
+not; small rooms accommodate (stars split one per team, star teams no
+better than the no-star team, demand reduction without a Waters team);
+the truthful-planner benchmark is NOT the equilibrium at 2-3 teams
+under either expectation; nobody buys two stars of one gender; sale
+order is a first-order dial. Numbers and caveats in the file.
+
 ## The shipped rule in one paragraph
 
 Prices are proportional to phi (context-averaged tie value, `shapley_value.py`)
@@ -181,7 +195,18 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    surplus column should use `market_prices.csv` (market and
    average-team price per pool player) as its second reference next to
    the list; (vii) `market_eq.py --noise` (belief noise) and a deeper
-   `--k` are the two unswept dials on the market limit.
+   `--k` are the two unswept dials on the market limit; (viii) **the
+   strategic-auction plan** (2026-09-05 conversation, not yet built):
+   planner owners first (item v), then a strategy SEARCH instead of
+   hand-written personas (dials: ceiling aggression by tier, patience,
+   nomination policy, rival-budget awareness; fictitious play until no
+   owner moves; output = exploitability), plus two cheap probes (price
+   enforcement should be a free-rider null at 20 teams; drain
+   nomination should matter only around Waters and Bright). The
+   validation instrument for that search is `toy_auction.py`
+   (`toy_auction.md`): the typed 2-4 team toy solved exactly -- score
+   the search on ROSTERS, never on prices, and under both stage
+   conventions.
 2. **Phase 3 follow-ups**: the league-price + surplus column once MLP
    publishes prices (the page already says it is coming); a per-player
    line on player pages ("value price $X, #N among women"); an insights
