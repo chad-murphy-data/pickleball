@@ -345,12 +345,12 @@ class RealWorld:
         self.label = f"{self.n} teams, board mlp2026 ({self.N} players), K={K}, planner for list rank<={plan_top}, noise {noise:g}"
         self.seeds = list(range(A.seeds))
         self.waters = M.IDX[M.WATERS]
+        self.trace = set(os.environ.get("SA_TRACE", "").split(",")) - {""}
+        self.pids = list(M.BOARD)
 
     def slot(self, sd):
         """The deviator's slot for seed sd, spread over the nomination order (slot 0 nominates first)."""
         return (7 * sd) % self.n
-        self.trace = set(os.environ.get("SA_TRACE", "").split(",")) - {""}
-        self.pids = list(M.BOARD)
 
     # -- values (beliefs)
     def beliefs(self, rng):
