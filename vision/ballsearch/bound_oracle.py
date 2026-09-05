@@ -101,7 +101,8 @@ from claim_lab import load as c3load                           # noqa: E402
 from bounce_autopsy import tracked as autopsy_tracked          # noqa: E402
 
 RAL = [7, 9, 10, 17]
-KINDS = ["tracked", "recall", "precision", "anchors", "anchors2", "human"]
+KINDS = ["tracked", "recall", "precision", "anchors", "anchors2", "claimer",
+         "human"]
 ON_BOUNCE_S = 0.05
 
 _fit_arc = c3.fit_arc
@@ -235,7 +236,24 @@ def make_bounds(kind, t_bounds, t_evs, imps, anchors=(), zs=()):
                and t_bounds[0] < a[0] < t_bounds[-1]]
         return (sorted(t_bounds + add), list(t_evs),
                 f"added {len(add)} anchor-only bounds")
+    if kind == "claimer":
+        # LEARNED claim step (claimer.py): bounds + unclaimed bounce-shaped
+        # turns written by `claimer.py --save` (LORO bounds on the train
+        # rallies, train-only model on r9/r10).  Rally id rides in on the
+        # last bound: this kind is looked up by the caller.
+        raise ValueError("claimer bounds are loaded in run_cell")
     raise ValueError(kind)
+
+
+def claimer_bounds(r):
+    p = HERE / f"claimer_bounds_r{r}.json"
+    if not p.exists():
+        raise SystemExit(f"{p} missing: run claimer.py --loro --save / "
+                         f"--read-eval --save first")
+    with open(p) as f:
+        d = json.load(f)
+    return (list(d["bounds"]), list(d["evs"]),
+            f"claimer bounds (tau {d['tau']:.2f})")
 
 
 # ------------------------------------------------------------ demotion
@@ -300,9 +318,12 @@ def run_cell(r, kind, demotion, policy, fp):
     _, segs_a, bounds_a, _ = autopsy_tracked(c)
     base = grade(segs_a, bounds_a, h_bnc)
     obs, t_bounds, t_evs, anchors = predem(c, policy)
-    bounds, evs, note = make_bounds(kind, t_bounds, t_evs, imps,
-                                    anchors, c["zs"] if policy == "raw"
-                                    else [0.0] * len(anchors))
+    if kind == "claimer":
+        bounds, evs, note = claimer_bounds(r)
+    else:
+        bounds, evs, note = make_bounds(kind, t_bounds, t_evs, imps,
+                                        anchors, c["zs"] if policy == "raw"
+                                        else [0.0] * len(anchors))
     t = time.time()
     log = []
     if fp:
@@ -416,13 +437,21 @@ def intact_table(policy="raw", kinds=KINDS):
     intact flights -- pose anchors are too fake-heavy to bound alone."""
     print(f"{'bounds':10s} {'intact':>7} {'contacts':>9} {'junk':>5}   per rally")
     for kind in kinds:
+        if kind == "claimer" and not all(
+                (HERE / f"claimer_bounds_r{r}.json").exists() for r in RAL):
+            print(f"{kind:10s} (no claimer_bounds_r*.json for all of {RAL}; "
+                  f"run claimer.py --save)")
+            continue
         tot, per = [0, 0, 0, 0], []
         for r in RAL:
             c = c3load(r)
             imps, hb = list(c["imps"]), human_bounces(c)
             _, tb, te, anch = predem(c, policy)
             zs = c["zs"] if policy == "raw" else [0.0] * len(anch)
-            b, _, _ = make_bounds(kind, tb, te, imps, anch, zs)
+            if kind == "claimer":
+                b, _, _ = claimer_bounds(r)
+            else:
+                b, _, _ = make_bounds(kind, tb, te, imps, anch, zs)
             i = intact_flights(b, imps, hb)
             cm = sum(1 for hc in imps if is_real(hc, b))
             j = sum(1 for x in b[:-1] if not is_real(x, imps))

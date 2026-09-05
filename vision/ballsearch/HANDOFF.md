@@ -14,7 +14,46 @@ measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
 
-## 2026-09-05 (latest) — INTACT-FLIGHT GRADER, MISS ANATOMY, first claim-step candidate dead
+## 2026-09-05 (later, latest) — LEARNED CLAIMER: intact 13 → 17/35, bounce count 13 → 14; BOUNCE CODER shipped
+
+`claimer.py` (this directory) is the first FITTED claim step: candidates
+= ball turns + pose anchors, 26 two-channel features at each, boosted
+trees, 0.30 s NMS, threshold by intact flights on train. Train = r2–r7
++ r17 (contact taps; r2–r5 prefill); r9/r10 read ONCE (tau 0.45).
+`bound_oracle.py --bounds claimer` reads `claimer_bounds_r{N}.json`
+(gitignored; `claimer.py --read-eval --save` rewrites all nine in ~5 min
+— run with OMP_NUM_THREADS=1, the boosted fits crawl under thread
+oversubscription next to other jobs). Numbers in `vision/STATS.md`
+"UPDATE 2026-09-05 (later)": on the 35-bounce panel intact **17/35**
+(shipped 13), junk 35 → 14, contacts 62/79 unchanged — the first
+claim-step change that moves the leading indicator. Full fit, no
+demotion: **14/35** (r7 3, r9 4, r10 4, r17 3; shipped pipeline 13,
+tracked-no-demotion 11). r9 LOSES two (6 → 4) while its intact count
+barely moves: three matched bounces come back NOT OK on the re-cut
+flights — the fitter's plausibility clause is the next wall, and it is
+a fitter question. LEAK flagged: `t_to_end` is the top feature and the
+window end is last contact + 2 s on every rally without a point-dead
+label; `--no-end-feats` LORO keeps the intact gain (r7 3/3) and halves
+the junk gain (48 → 38 instead of 48 → 24); a leak-free r9/r10 read is
+a SECOND read and was not taken. Anchor-only arms after the full fit
+(shipped demotion): 14 and 15 of 35 — a wash, as the intact table said.
+
+Bounce coder: `vision/make_bounce_audit.py` →
+`data/vision/bounce_audit_chicago0725.html` (19 train rallies, 229
+flights, clicked rallies first; per flight bounce-with-spot / volley /
+unsure / no bounce; only the owner's own ball clicks are drawn).
+`--score bounce_labels_chicago0725.csv` grades the taps against the
+fitter's human-path bounces (time ±0.30 s, landing feet), the tracked
+bounces where cached, and the per-flight call vs segment kind.
+Protocol: `vision/labeling_protocol.md`, addendum 2026-09-05.
+
+Next: (1) the owner's bounce taps → `--score` — audits the 35 and says
+whether the NOT OK flights hold a bounce at all; (2) leak-free r9/r10
+re-read only if the owner authorizes the second read; (3) the fitter's
+NOT OK clause on intact flights (why r9's three matched bounces fail on
+a cleaner cut) — grade on `--bounds claimer` / `--bounds human`.
+
+## 2026-09-05 — INTACT-FLIGHT GRADER, MISS ANATOMY, first claim-step candidate dead
 
 `bound_oracle.py --intact` grades a bounds variant in seconds (intact
 bounce flights / contacts matched / junk), no fit needed; numbers in
@@ -25,8 +64,9 @@ separation (misses sit in SLOWER exchanges). `predict_contacts` is three
 hand-set constants, not a model — more contact taps enlarge the panel but
 cannot improve it until a learned claimer exists. Anchor-only bounds
 (unclaimed anchor sets its own bound; `--bounds anchors|anchors2`) is
-DEAD: +4–5 contacts, +10–24 junk, intact 13 → 8/12; full-fit bounce count: r7 3 → 2, other rallies
-pending at time of writing. Panel caveat: the 35 "human bounces" are the fitter's
+DEAD: +4–5 contacts, +10–24 junk, intact 13 → 8/12; full-fit bounce
+count with the shipped demotion 14 / 15 of 35 (r7 loses one, r9/r10
+gain, r17 loses one). Panel caveat: the 35 "human bounces" are the fitter's
 calls on the human click path, never tapped directly — a direct bounce
 tap would be the first independent key.
 
@@ -620,6 +660,8 @@ already exist. r2 is below the power floor; skip it.
 | `claim_lab.py` | `load(rally)`, `paddle_series(npz)`; claim logic labs. |
 | `bounce_autopsy.py` | read-only bucket per missed human bounce on r7/9/10/17 (NO WINDOW / CAPPED / NO SEG / NOT OK / CALLED ARC / WRONG TIME) off the c3 cache; caches the shipped tracked side as `autopsy_track_r{r}.pkl` (gitignored). |
 | `bound_oracle.py` | swaps each downstream stage for its oracle (bounds: tracked / +missed contacts / −junk / human × demotion: none / shipped / validated; `--first-pass`; `--policy dedup` = check 3's anchors) and grades the same 35 bounces; `--summary` prints the grid, `--anatomy` the junk-bound breakdown, `--intact` the no-fit intact-flight table (the claim-step grading number; 2026-09-05). Result 2026-09-04: both bound defects together 25/35, either alone 14, shipped 13 — see STATS.md. Caches gitignored. |
+| `claimer.py` | the LEARNED claim step (2026-09-05): candidates = turns + anchors, 26 features, boosted trees, NMS, tau by intact flights on train; `--loro` (train, leave-one-rally-out, nested tau), `--read-eval` (ONE read of r9/r10 — spent 2026-09-05 with the window-end features in; `--no-end-feats` = the leak-free variant, LORO only so far), `--save` writes `claimer_bounds_r{N}.json` for `bound_oracle.py --bounds claimer`, `--manual-only`, `--train a,b,c`. Set OMP_NUM_THREADS=1. |
+| `../make_bounce_audit.py` | the BOUNCE CODER (vision/, 2026-09-05): per-flight bounce/volley/unsure/no-bounce with the landing spot → `data/vision/bounce_audit_chicago0725.html`; `--score` vs the fitter's human-path bounces + tracked bounces; `--selftest` (node --check + an exact r7 round-trip). |
 | `corridor_lab.py` | corridors between consecutive contacts (prod = approach_events + anchors → dedupe → claim_bounds; oracle = hand taps `c["imps"]`); window = chord ± (wx=min(140,40+0.2L), wy=min(170,55+0.3L)); truth loader; `decode_recall`; R_MAIN=12. |
 | `corridor_dp.py` | Viterbi chain per corridor over per-frame candidates (K=14, GAP=6): accel + gap + endpoint + body-extremity cost (W_BODY=25, R_BODY=16) − peak bonus + `W_P_SOFT·(1−p)`. |
 | `emission.py` | learned per-candidate scorer (hand-rolled Adam logistic, 14 features). `train` (r6↔r7 cross-val + pooled model → `emission_model.json`), `cache <r>` (p-cache from pooled model), `cache-cross` (r6 scored by r7-only model and vice versa → `p_r{6,7}_{mode}_14_x.npz`, fold kp97). |

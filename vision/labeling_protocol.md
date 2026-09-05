@@ -178,3 +178,52 @@ not intent: toward the ball as if to play it = B…E+X; moving aside to
 vacate space for the partner = C. Consistent with the 2026-08-16
 contact-tool convention (both-went-for-it recorded as the non-hitter's
 whiff) — same event family, now with state boundaries.
+
+## Addendum 2026-09-05 — the bounce coder (first direct bounce labels)
+
+`python3 vision/make_bounce_audit.py` →
+`data/vision/bounce_audit_chicago0725.html`. Same shape as the other
+tools: local video, nothing uploaded, autosave in the browser, ⬇ export
+at the end of every sitting as `bounce_labels_chicago0725.csv` into
+data/vision/ (⬆ import restores it).
+
+**Why it exists.** No bounce had ever been tapped. The "human bounces"
+the ball-search thread grades against are the trajectory fitter's own
+calls on the owner's clicked ball path, so the answer key and the
+ceiling are both model outputs. This tool records the first independent
+bounce truth and audits that key.
+
+**Unit of work = a flight**: the ball's trip from one contact tap to the
+next (whiffs are skipped — the ball flies through them). The last
+contact opens a terminal flight (to point-dead where labeled, else
++2.5 s) that can hold two bounces. Flights come from the existing
+contact taps (manual where a rally has them, prefill for r2–r5 — those
+times are approximate, so a flight may start a little early or late;
+the bounce tap itself is exact). Rally 1 uses its frozen state-label
+impacts.
+
+**Calls per flight**: click the landing spot on the bounce frame (time
+AND place; B = time only when the spot is hidden) · V = volley, no
+bounce before the next contact · U = can't tell · X = terminal flight,
+no bounce at all (net, caught, out of frame). Each flight replays at
+half speed from 0.15 s before contact a to 0.15 s after contact b; a
+bounce/V/U/X call moves to the next flight; ⌫ clears. Accuracy bar:
+bounce frame ±1, spot within a foot — don't agonize.
+
+**What is never shown**: the fitter's bounces. T shows only YOUR ball
+clicks (ball_path_r{N}.csv, ±0.5 s) when you lose the ball, so the
+label can't be led by the thing it grades.
+
+**Order**: rallies are listed clicked-first (r1–r10, r17; ★ marks the
+nine with a fitter run to compare with), then the other train rallies.
+Holdout rallies (22+) are left out by default (`--include-holdout` adds
+them; labeling them is fine — a label is truth, not a read).
+
+**Scoring**: `python3 vision/make_bounce_audit.py --score
+data/vision/bounce_labels_chicago0725.csv` — per rally, taps vs the
+fitter's human-path bounces (time within 0.30 s, landing error in court
+feet through the floor homography), taps vs the shipped tracked bounces
+where that fit is cached, and per flight your call crossed with the
+fitter's segment kind (bounce / arc). Selftest: `--selftest` (node
+--check on the page script + an exact round-trip of the fitter's own r7
+bounces through the scorer).

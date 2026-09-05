@@ -391,6 +391,7 @@ count does.
 | − the junk bounds | 19/35 | 62/79 | 1 |
 | anchor-only bounds, all | 8/35 | 67/79 | 59 |
 | anchor-only bounds, z ≥ 2 | 12/35 | 66/79 | 45 |
+| **learned claimer** (`claimer.py`, 2026-09-05 later) | **17/35** | 62/79 | 14 |
 | human contacts | 34/35 | 79/79 | 0 |
 
 Each bound defect alone lifts intact flights 13 → 19; both together 34.
@@ -414,7 +415,10 @@ own bound when no turn is near it (the obvious fix for the 10
 anchor-and-no-turn misses). It buys 4–5 contacts and pays 10–24 junk
 bounds, and intact flights FALL (13 → 8 all anchors, 13 → 12 at z ≥ 2).
 The pose anchors carry too many fake swings to bound a flight alone.
-Bounce count after the full fit: r7 reads 3 → 2 on both arms; the r9/r10/r17 fits were still running when this was written (see HANDOFF for the total once in). The lesson is the
+Bounce count after the full fit (shipped demotion): all anchors 14/35
+(r7 3 → 2, r9 6 → 7, r10 2 → 4, r17 2 → 1), z ≥ 2 15/35 (2, 7, 4, 1) —
+a wash: +1/+2 on 13, gains on r9/r10 paid for by losses on r7/r17,
+exactly what a lower intact count predicts. The lesson is the
 one already written: anything that trades recall for junk measures
 flat or worse; the claim step has to gain contacts WITHOUT adding
 bounds, which means telling a real contact from a fake swing at the
@@ -427,6 +431,84 @@ r10/r17, `kind == "bounce"` in the human-side fit). So the 25/35
 ceiling and the 35 itself are both model-derived. A direct bounce tap
 (time, and roughly where) would be the first independent bounce truth
 and would audit the key itself; ~10 taps a rally.
+
+### UPDATE 2026-09-05 (later) — the learned claimer moves intact flights 13 → 17; the fitter takes most of it back; the bounce coder
+
+**The claimer** (`vision/ballsearch/claimer.py`) is the first claim
+step fitted to a contact label. Candidates = every ball turn plus every
+pose anchor not within 0.08 s of a turn; 26 features at the candidate
+from both channels (turn angle and distance, path coverage, ball speed
+in and out and their log ratio, vertical motion before and after,
+bounce-shaped, excitement of the two most excited tracks, ball-to-paddle
+distance for the most excited track and for the nearest anchor, which
+side is swinging vs which way the ball goes next, anchor count within
+0.25 / 0.60 s, anchor z, spacing to the neighbouring candidates, time
+from serve, time to end); label = within 0.25 s of a human contact tap;
+gradient-boosted trees (depth 3, 200 rounds, lr 0.05, leaf ≥ 8); 0.30 s
+non-max suppression; threshold picked on the training rallies by summed
+intact flights. Train = r2–r7 and r17 (r6/r7/r17 manual taps, r2–r5
+prefill); r9/r10 read ONCE with the model fitted on all seven and the
+threshold fixed on their out-of-fold bounds (0.45); r20 untouched,
+holdout never loaded.
+
+Leave-one-rally-out on the seven train rallies (277 candidates, 144
+positive): AUC 0.80. Contacts 71 → 67 of 89, junk bounds 48 → 24,
+intact 14 → 13 of 32 — but the prefill rallies carry approximate
+contact times, and on the three manually tapped rallies the picture is
+different: contacts 23 → 24 of 31, junk 15 → 2, intact 3 → 6 of 11
+(r7 2/3 → 3/3, r17 1/5 → 3/5). A manual-only model (three rallies, 88
+candidates) is worse on those same rallies (28/31 contacts but junk 12,
+intact 3), so the prefill rows earn their place as training rows even
+though they are noisy as grading rows.
+
+The one read of r9/r10 (tau 0.45): r9 contacts 24/29 → 24/29, junk
+13 → 6, intact 8 → 7 of 14; r10 20/26 → 18/26, junk 10 → 6, intact
+2 → 4 of 13. On the 35-bounce panel (`bound_oracle.py --intact`,
+claimer row = leave-one-out bounds for r7/r17, train-only model for
+r9/r10): **intact 17/35 vs 13/35 shipped, contacts 62/79 (unchanged),
+junk 14 vs 35** — the first claim-step change that raises the intact
+count, and it does it the way the 09-04 reading said it had to: fewer
+bounds, not more.
+
+**Then the full fit, and the fitter takes most of it back.** Claimer
+bounds, no demotion: r7 3, r9 4, r10 4, r17 3 = **14/35** (shipped
+pipeline 13; tracked bounds with no demotion 11). r9 goes 6 → 4 while
+its intact count goes 8 → 7: three bounces that were matched become
+NOT OK — the fitter's plausibility clause rejects the segment on the
+re-cut flight — and its buckets read NOT OK 6, WRONG TIME 2, CALLED
+ARC 1, NO SEG 1, matched 4. r10 goes 2 → 4 (two flights that were NO
+SEG / NOT OK now fit), r17 2 → 3, r7 3 → 3. So the ledger now reads:
+bounds fixed as far as this claimer fixes them → intact 17/35 → the
+fitter converts 14. The oracle's ceiling was 25/35 on perfect bounds
+with 34 intact; the fitter's NOT OK clause on genuinely intact flights
+is the next wall, and that is a fitter question, not a claim question.
+
+**A leak, flagged.** Permutation importance on the train panel puts
+`t_to_end` first (+0.086 AUC), and that feature is tainted: for every
+rally without a point-dead label the window's end is last contact +
+2.0 s, so "within 2 s of the end" means "after the last contact" —
+label information. The leave-one-out without the two window-end
+features (`--no-end-feats`): AUC 0.73, contacts 70/89, junk 38
+(shipped 48), intact 13/32 — the intact count does not move (r7 still
+3/3, r17 2/5) and the junk reduction shrinks from 24 bounds to 10,
+because the leaky feature was mostly cleaning the terminal flight,
+which holds no graded bounce. The r9/r10 read above used the model
+with the leak; a leak-free read would be a SECOND read of r9/r10 and
+is not taken here — the owner's call. The train-side evidence says the
+intact gain survives and the junk gain halves.
+
+**Bounce coder** (`vision/make_bounce_audit.py` →
+`data/vision/bounce_audit_chicago0725.html`; protocol in
+`vision/labeling_protocol.md`, addendum 2026-09-05). Per flight: bounce
+(click the landing spot on the bounce frame) / volley / unsure / no
+bounce; 19 train rallies, 229 flights, clicked rallies first; only the
+owner's own ball clicks are ever drawn. `--score` compares the taps
+with the fitter's human-path bounces (time within 0.30 s, landing error
+in feet through the floor homography), with the tracked bounces where
+that fit is cached, and crosses the per-flight call with the fitter's
+segment kind. It settles two things nothing else can: whether the 35
+are real (the key itself), and whether the NOT OK flights above hold a
+bounce at all.
 
 ## The black hole, and why it licenses the non-tracking family
 

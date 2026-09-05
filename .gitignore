@@ -42,3 +42,4 @@ data/vision/court3d_r1.html
 vision/ballsearch/autopsy_track_r*.pkl
 vision/ballsearch/bound_oracle_predem_r*.pkl
 vision/ballsearch/bound_oracle_*_r*.json
+vision/ballsearch/claimer_bounds_r*.json
