@@ -6,6 +6,8 @@ published (league price). Surplus is the headline stat. Consumes
 PICKLES (`data/v2_players.csv` etc.) and, where useful, MOTSON — does
 not rebuild either.
 
+**New here? `EXPLAINER.md` is the plain-language version of the whole method** (ratings -> tie model -> Shapley-style value -> prices + tag -> fake leagues -> auction -> scheming owners -> rule experiments).
+
 **Read `HANDOFF.md` first** — dated 2026-09-04 (night), it's the live
 status snapshot and next-thread to-do. **Phase 2 is shipped**: the price
 list is `price_list.md` / `price_list.csv` (`price_list.py`) — alpha 1,
