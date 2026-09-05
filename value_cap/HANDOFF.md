@@ -1,4 +1,4 @@
-# MLP Value Cap — HANDOFF (2026-09-04, late night, rev 2 after the auction run; supersedes the night snapshot)
+# MLP Value Cap — HANDOFF (2026-09-05, rev 3 after the market-limit run; supersedes the 2026-09-04 rev 2 snapshot)
 
 Dated status snapshot + next-thread to-do. Read this first, then
 `phase2_pricing.md` §8 (the shipped rule and every number behind it),
@@ -53,6 +53,25 @@ specialists at 3-6x) and forgives individual persona mistakes while
 punishing shared ones (twenty bargain hunters at $250k: Waters
 $515-547k, her team 84-88%, spread 15-16). Expectations and noise are
 second order once nominations run under the auction's own scarcity.
+**Market limit DONE** (`market_eq.py` -> `market_eq.md`,
+`market_prices.csv`; write-up in `auction.md` "The market limit",
+`phase2_pricing.md` §12): the user's backward induction (owner 19
+stops overpaying, then 18, then 17 ...) run to its fixed point with
+owners who plan whole rosters (exhaustive 3M+3W search, brute-force
+checked). Waters is the ONLY rationed player (at the $850k maximum
+with excess demand, every run, both price rules); Bright is bid to
+the price where a Bright team is average ($697-760k, not rationed),
+Johns $501-545k, and every other star likewise; the other nineteen
+teams are equals (second-best 50.6-51.1%, runner-up title 6-8%, one
+team at 10%+). Her team 62-63% / 24-38%. List vs market: top 15 at
+112-117% of list, #16-30 at list, #31-60 at 53-61% (27-28 of 120 at
+the floor), pool total $19.84-19.98M vs $20.00M -- the list is right
+in level and rank, the market steepens the shape. The auction's
+two-star chase is a greedy-owner artefact (owners in `draft_sim` /
+`auction_sim` project one slot at a time; a roster planner beats
+them). "Buy whole teams" as a solver IS this solver: the
+Waters+Johns+Bright+JW chain costs $2.29M at list / $2.65M at market
+and falls back to one star plus fill-ins at 49%.
 
 ## The shipped rule in one paragraph
 
@@ -149,7 +168,15 @@ alpha-1 curve. Full statement: `phase2_pricing.md` §8.
    shading are the two mechanism gaps to close if the auction ever
    becomes the recommendation rather than a probe; (iv) the surplus
    column should expect the room's convex curve (second star and fit
-   above list, depth at the floor).
+   above list, depth at the floor); (v) **swap `market_eq.solve` (exact
+   roster planner) into `draft_sim.Owner`'s projection** and re-run the
+   persona and auction grids -- the two-star chase and the persona
+   rankings were measured with greedy owners, and the market limit says
+   the chase does not survive owners who plan whole rosters; (vi) the
+   surplus column should use `market_prices.csv` (market and
+   average-team price per pool player) as its second reference next to
+   the list; (vii) `market_eq.py --noise` (belief noise) and a deeper
+   `--k` are the two unswept dials on the market limit.
 2. **Phase 3 follow-ups**: the league-price + surplus column once MLP
    publishes prices (the page already says it is coming); a per-player
    line on player pages ("value price $X, #N among women"); an insights

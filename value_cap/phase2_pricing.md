@@ -501,3 +501,25 @@ rotation rather than strategic, there is no learning within an
 auction, and the first-buy maximum (cap minus the cheapest completion)
 is the only rule that ever binds -- it is the rule MLP's real mechanism
 has to confirm.
+
+## 12. The market limit (2026-09-05; `market_eq.py` -> `market_eq.md`, `market_prices.csv`)
+
+The user's backward induction on §11: the owners there fill one slot at a
+time and a human who plans whole rosters beats them, so owner 19 stops
+overpaying, then 18, then 17, and so on. `market_eq.py` runs that to its
+fixed point -- every owner plans its best $1M roster exhaustively at the
+current prices, above-average rosters mark their players up, below-average
+down, unsold players fall, prices clipped to the floor and the $850k
+first-buy maximum, capped-roster teammates shadow-priced. The write-up is
+the last section of `auction.md`; in one paragraph: Waters is the only
+rationed player (at the maximum with excess demand, every run, both price
+rules) and the cap, not the market, sets her price; Bright is bid to
+$697-760k, the price at which a Bright team is average, and is not
+rationed; every other star likewise (Johns $501-545k); the other nineteen
+teams are equals (second-best 50.6-51.1%, runner-up title 6-8%, one team
+at 10%+), so the auction's two-star chase is a greedy-owner artefact. List
+vs market: the top fifteen at 112-117% of list, #16-30 at list, #31-60 at
+53-61% with 27-28 of 120 at the floor, pool total $19.84-19.98M vs $20.00M
+-- the list is right in level and rank order, the market steepens the
+shape. The list does not change (it prices context-averaged value);
+`market_prices.csv` is the second reference for the surplus column.

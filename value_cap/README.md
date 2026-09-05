@@ -44,6 +44,9 @@ one player above the team cap) and the benchmark problem (rosters must be
 compared to each other, not to an all-replacement team), both of which
 `phase2_pricing.md` builds on. Built since: Phase 3 site page (`web/build_site.py:build_valuecap`),
 owner personas (`personas.py` -> `personas.md`), the dials probe
-(`dials_probe.py` -> `dials.md`) and the auction draft (`auction_sim.py`
--> `auction.md`). Not yet built: the injury/absence layer (HANDOFF.md
-Next steps).
+(`dials_probe.py` -> `dials.md`), the auction draft (`auction_sim.py`
+-> `auction.md`) and the market limit (`market_eq.py` -> `market_eq.md`,
+`market_prices.csv`; the backward induction run to its fixed point with
+roster-planning owners -- Waters the only rationed player, written up
+at the end of `auction.md`). Not yet built: the injury/absence layer
+(HANDOFF.md Next steps).

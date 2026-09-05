@@ -203,3 +203,129 @@ k = 1 cells, `list` expectation: players the persona carries more often than the
   league-price / surplus column once MLP publishes, and it says the list's
   $60-100k depth tier is where the surplus will look largest.
 
+
+## The market limit: what the backward induction settles on (2026-09-05; `market_eq.py` -> `market_eq.md`, `market_prices.csv`)
+
+**Why this exists.** The owners above fill one slot at a time against a
+cheat sheet (the list, or the list inflated by money left). A planner who
+buys whole rosters beats them: at list prices the best $1M roster WITHOUT
+Waters is worth 0.597 (tie probability vs the reference team; Staksrud,
+Acevedo, Joseph, Oshiro, Tuionetoa, Padegimaite, $996k -- `--at-list`
+prints it), while the greedy owners' rosters come out around 0.47, and a
+"watch nineteen sales, then buy the #20-26 players" human finished in the
+top three of twenty in two of three rooms (both in-session measurements
+against `auction_sim.py`; the scripts were not kept -- the 0.597 is
+reproducible, the greedy comparison is not). So owner 19 stops chasing the
+players that human beats him with, then 18, then 17, and the question is
+what the prices look like once nobody overpays.
+
+**Method.** Every owner plans its best $1M roster at the current prices --
+exhaustive over every 3M+3W combination of a candidate set (top 20 per
+gender by value, plus the top singles values, the cheapest pool players
+and the best floor players; brute-force checked by `--selftest`). Rosters
+are handed out in a random order each round. A priced player on an
+above-average roster is marked up and on a below-average roster marked
+down (times exp(eta * c * (roster value - average)), c swept 4/8/12, eta
+decaying); unsold priced players fall; prices are clipped to the $30k
+floor and the $850k first-buy maximum (cap minus the cheapest legal
+completion, the same rule that binds in the auction). A player on a roster
+that holds a capped player is priced by the best FREE roster that would
+hold him instead (shadow pricing), so the capped player's premium is not
+smeared onto floor teammates -- without it Waters' five $30k teammates
+drifted to $50-80k and her team read 0.73. Prices are the average over
+the last third of 200 rounds. The fixed point: every roster an owner can
+buy is worth the same, except for the players the maximum stops from
+being priced -- those rationed players are the difference makers. True
+values, identical owners (`--noise` perturbs beliefs; at zero noise the
+seed only changes the allocation order). `--rule demand` is the textbook
+excess-demand version (over-demanded players up, unsold down, nothing
+else moves), kept as a check that the rationed set does not depend on the
+rule -- with identical owners its demand signal is one roster, so it
+never clears (roster sd 0.12) and leaves the middle of the list untouched.
+
+**What settles out (c 4/8/12; ranges across the three runs).**
+
+- **Waters is the only rationed player.** She sits at the $850k maximum
+  with excess demand in every run and under both rules; nobody else does.
+  Her team at market prices: five $30k teammates (Emmrich, Truong, Joseph,
+  Erokhina or Schull, Padegimaite), tie value 0.648-0.665, in-league win%
+  61.7-63.4, title 24-38% (auction 67-68% / 33-39%; snake 66 / 36). She
+  is worth more than a team may pay; the cap, not the market, sets her
+  price.
+- **Bright is NOT rationed.** She is bid up to the point where a Bright
+  team is an average team: $697k (the price at which the best roster
+  holding her equals the average roster the market hands out, 0.520) to
+  $760k (the time-averaged market price; 114-124% of her $613k list),
+  and stays under the $850k maximum with room to spare. Same for every
+  other star: Johns $501-545k (106-115% of $474k), Todd $547-576k
+  (112-118%), Jorja Johnson $538-559k, Fahey $501-525k, JW Johnson
+  $458-487k, Patriquin $442-472k, Rohrabacher $472-484k, Tardio
+  $434-458k. The two numbers bracket the price: the market column is an
+  average of oscillating round-to-round prices, and a roster that is
+  affordable in most rounds is not always affordable at the averaged
+  prices, so for the top dozen the averaged market sits a little above
+  the exact average-team price (below it for the #14-24 stars: Jackie
+  Kawamoto, Glozman, Parenteau read 117-121% on the average-team
+  benchmark vs 115-116% market).
+- **The other nineteen teams are equals.** Second-best team 50.6-51.1%
+  in-league, the worst 42-47%; free-roster tie values 0.520 +- 0.008-0.020;
+  runner-up title share 6-8%, exactly one team at 10%+. The auction's
+  two-star chase (runner-up 11.5-16%, 1.8-3.0 teams at 10%+) is a
+  greedy-owner artefact: it lives on the second star selling to a room
+  that never priced whole rosters. Once everyone plans rosters, the
+  second star's roster is worth what everyone else's is.
+- **List vs market, by tier (mean market / list within gender):** women
+  #1-5 117%, #6-15 116-117%, #16-30 105-106%, #31-60 53-55% (11-12 of
+  30 at the floor); men #1-5 112-114%, #6-15 112-113%, #16-30 97-98%,
+  #31-60 60-61% (15-16 at the floor). Priced-pool total $19.84-19.98M
+  against the list's $20.00M: the money that the list spreads over the
+  bottom half of the pool moves to the top thirty. The list is right in
+  level and in rank order; the market steepens the shape, in the same
+  direction the auction room did but with the premium on the FIRST
+  fifteen rather than the second star.
+- **Why the stars go UP, not down.** The "don't overpay" benchmark is not
+  the 0.597 roster (one owner gets it); it is the average roster the
+  market hands out, 0.520 (about 49% in-league), because the mid-priced
+  players every best-no-Waters roster leans on (Staksrud, Acevedo,
+  Oshiro, Tuionetoa) get bid up until that roster is average too. A star
+  priced against an average team is worth more than a star priced
+  against the best team you could build without her.
+- **"Buy teams" as a solver is this solver.** An owner who tries to buy
+  Waters + Johns + Bright + JW Johnson and two floor players finds the
+  four cost $2.29M at list and $2.64-2.65M at market; the fallback chain
+  (drop the fourth star, then the third, ...) ends at one star plus
+  fill-ins, worth what every other roster is worth (about 49%), because
+  each star's price already carries the value of the best roster she
+  fits in. Only Waters breaks the chain, and only because the maximum
+  stops her price short.
+
+**Caveats.** Identical, perfectly informed owners on true values (the
+sim's "noise 0"); a heuristic price adjustment rather than an auction
+mechanism (there are no bids, nominations or budgets in the loop -- the
+fixed point is what any such mechanism has to converge to, not a
+prediction of any particular room's path); the fixed point is not exact
+(free-roster sd 0.008-0.020, star prices oscillate +-$5-15k round to
+round); the candidate set is top-20 per gender by value plus extras
+(`--k`), so a roster built from four #21-30 players is not searched;
+rosters are allocated sequentially, so an owner late in the order gets
+the best of what is left rather than the best roster on the board; and
+the indifference (best) column in `market_eq.md` is measured against a
+roster only one owner can hold, which is why it reads $10-25k under the
+average-team price. None of these change the rationed set (Waters alone,
+every run, both rules).
+
+**For the price list.** `market_prices.csv` carries the market price and
+the average-team price next to the list price for all 120 pool players;
+it is the second column to show once MLP publishes real prices, and the
+shape to expect in the surplus column: the top fifteen a little above the
+list, #16-30 at the list, the bottom half of the pool at the floor. The
+list itself does not change -- it prices context-averaged value, which is
+what a fair draft board should say; the market prices fit under a cap
+with a first-buy maximum, which is what a room will pay.
+
+**The one thing to carry into the other sims.** `draft_sim.py` and
+`auction_sim.py` owners project their own roster greedily (best next
+player given what they hold). `market_eq.solve` is an exact roster
+planner; swapping it into `Owner`'s projection and re-running the persona
+and auction grids is the follow-up that would tell whether the two-star
+chase and the persona rankings survive owners who can count.

@@ -691,6 +691,32 @@ Phase 3 site page shipped off price_list.csv. Next: confirm MLP
 rotation/playing-time rules (now the biggest lever), injury/absence
 Monte Carlo (sweep the rate), gamma switch sweep, confirm 20 teams +
 $500k min-spend, league-price/surplus column when MLP publishes.
+MARKET LIMIT (`market_eq.py` → `market_eq.md` + `market_prices.csv`,
+write-up at the end of `auction.md`, phase2_pricing §12; 2026-09-05):
+the user's backward induction (owner 19 stops overpaying, then 18,
+then 17 …) run to its fixed point with owners who plan WHOLE rosters
+(exhaustive 3M+3W search, brute-force selftest; above-average rosters
+mark their players up, below-average down, unsold fall, clip to
+[$30k, $850k first-buy max], capped-roster teammates shadow-priced;
+c swept 4/8/12, `--rule demand` as a check). Waters is the ONLY
+rationed player (at the max with excess demand, every run, both
+rules) — the cap sets her price, not the market; Bright is bid to the
+price where a Bright team is average ($697-760k, 114-124% of list)
+and is NOT rationed, Johns $501-545k, every other star likewise; the
+other nineteen teams are equals (second-best 50.6-51.1%, runner-up
+title 6-8%, one team at 10%+; her team 62-63% / 24-38%). List vs
+market: top 15 at 112-117%, #16-30 at list, #31-60 at 53-61% (27-28
+of 120 at the floor), pool $19.84-19.98M vs $20.00M — list right in
+level and rank, market steepens the shape. "Buy whole teams" as a
+solver IS this solver (Waters+Johns+Bright+JW: $2.29M list / $2.65M
+market; the fallback ends at one star + fill-ins at 49%). TRAP: the
+draft_sim/auction_sim owners project their roster GREEDILY one slot
+at a time, so a roster planner beats them (best no-Waters $1M roster
+at list = 0.597 vs greedy ≈ 0.47) — the auction's two-star chase and
+the persona rankings were measured with greedy owners and the market
+limit says the chase does not survive planners. Follow-up: swap
+`market_eq.solve` into `draft_sim.Owner`'s projection and re-run the
+persona/auction grids; `--noise` and `--k` are the unswept dials.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
