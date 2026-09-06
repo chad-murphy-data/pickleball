@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{TITLE}}</title>
+<style>
+/* ---- PICKLES social slide template (1080 x 1350, 4:5) ----------------
+   render.py fills {{FONT_CSS}} (vendored fonts as data URIs), {{BODY}}
+   (one of the slide layouts below) and the header/footer fields.  To
+   restyle the carousel, edit THIS file; the Python only assembles the
+   markup fragments documented in social/README.md.                      */
+{{FONT_CSS}}
+:root {
+  --page: #172a1c;      /* slide background */
+  --card: #0f1f14;      /* match card */
+  --border: #3d5a43;    /* card + footer rule */
+  --ink: #edf4e0;       /* cream text */
+  --ink2: #c2d3a8;      /* secondary text */
+  --muted: #8fa585;     /* captions */
+  --hl: #d9f154;        /* PICKLES lime */
+  --hl-ink: #16321e;    /* text on lime */
+  --track: #2b4331;     /* unfilled meter */
+  --mono: "Space Mono", ui-monospace, "DejaVu Sans Mono", monospace;
+  --display: "Anton", "Impact", "Arial Narrow", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  width: 1080px; height: 1350px; overflow: hidden;
+  background: var(--page); color: var(--ink);
+  font-family: var(--mono); -webkit-font-smoothing: antialiased;
+}
+.slide { position: relative; width: 1080px; height: 1350px; padding: 58px 60px 0; }
+
+/* header */
+.hdr { display: flex; justify-content: space-between; align-items: center; height: 42px; }
+.brand { background: var(--hl); color: var(--hl-ink); font-weight: 700; font-size: 22px;
+  letter-spacing: .04em; padding: 8px 18px; line-height: 1; }
+.hdr .cap { color: var(--muted); font-size: 17px; letter-spacing: .18em; text-transform: uppercase; }
+
+/* kicker + headline */
+.kicker { margin-top: 48px; color: #b9cf7a; font-weight: 700; font-size: 19px;
+  letter-spacing: .22em; text-transform: uppercase; }
+h1 { font-family: var(--display); font-weight: 400; text-transform: uppercase;
+  color: var(--ink); font-size: 88px; line-height: .98; margin: 14px 0 0; letter-spacing: .005em; }
+h1 .hl { background: var(--hl); color: var(--hl-ink); padding: 0 12px; display: inline-block; }
+.cover h1 { font-size: 132px; line-height: .96; margin-top: 30px; }
+.cover .sub { margin-top: 42px; font-size: 24px; line-height: 1.45; color: var(--ink2); max-width: 900px; }
+.chips { position: absolute; left: 60px; bottom: 112px; display: flex; gap: 12px; }
+.chip { border: 1px solid var(--border); color: var(--ink2); font-size: 17px; letter-spacing: .08em;
+  padding: 12px 16px; text-transform: uppercase; }
+.chip.ok { color: var(--hl); font-weight: 700; }
+
+/* match cards */
+.cards { margin-top: 40px; display: flex; flex-direction: column; gap: 26px; }
+.card { background: var(--card); border: 1px solid var(--border); padding: 32px 36px 30px; }
+.card .lbl { color: var(--muted); font-size: 16px; letter-spacing: .18em; text-transform: uppercase; }
+.card .top { display: flex; justify-content: space-between; align-items: flex-end; margin-top: 26px; }
+.card .fav { font-weight: 700; font-size: 32px; letter-spacing: .02em; text-transform: uppercase; }
+.card .pct { color: var(--hl); font-weight: 700; font-size: 60px; line-height: .9; letter-spacing: -.02em; }
+.card .pct.na { color: var(--muted); font-size: 44px; }
+.meter { position: relative; margin-top: 16px; height: 22px; background: var(--track); }
+.meter .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--hl); }
+.meter .mid { position: absolute; left: 50%; top: -6px; bottom: -6px; width: 2px; background: var(--ink); opacity: .9; }
+.card .bot { display: flex; justify-content: space-between; margin-top: 18px; font-size: 17px; }
+.card .vs { color: var(--muted); font-size: 15px; margin-right: 8px; letter-spacing: .1em; }
+.card .dog { font-weight: 700; font-size: 21px; text-transform: uppercase; }
+.card .meta { color: var(--muted); letter-spacing: .1em; text-transform: uppercase; text-align: right; }
+
+/* compact density (4-6 matches) */
+.cards.compact { gap: 12px; }
+.compact .card { padding: 14px 28px 14px; }
+.compact .card .lbl { font-size: 13px; }
+.compact .card .top { margin-top: 6px; }
+.compact .card .fav { font-size: 23px; }
+.compact .card .pct { font-size: 36px; }
+.compact .meter { height: 12px; margin-top: 8px; }
+.compact .card .bot { margin-top: 8px; font-size: 13px; }
+.compact .card .dog { font-size: 16px; }
+
+/* list density (7-10 matches): one line per match, thin meter under it */
+.cards.list { gap: 8px; }
+.list .card { padding: 9px 22px 9px; display: grid; column-gap: 18px; row-gap: 0; align-items: center;
+  grid-template-columns: 110px 1fr auto; grid-template-areas: "lbl fav pct" "lbl dog pct" "meter meter meter"; }
+.list .card .top { display: contents; }
+.list .card .lbl { grid-area: lbl; font-size: 13px; }
+.list .card .fav { grid-area: fav; font-size: 19px; }
+.list .card .pct { grid-area: pct; font-size: 30px; align-self: center; }
+.list .card .bot { grid-area: dog; margin: 0; display: block; font-size: 13px; }
+.list .card .dog { font-size: 15px; }
+.list .card .vs { font-size: 12px; }
+.list .card .meta { display: none; }
+.list .meter { grid-area: meter; height: 6px; margin-top: 6px; }
+.list .meter .mid { top: -4px; bottom: -4px; }
+
+/* methods slide */
+.steps { margin-top: 36px; display: flex; flex-direction: column; }
+.step { display: grid; grid-template-columns: 180px 1fr; column-gap: 28px; padding: 20px 0; border-top: 1px solid var(--border); }
+.step .k { color: var(--hl); font-weight: 700; font-size: 17px; letter-spacing: .18em; text-transform: uppercase; }
+.step .t { font-size: 19px; line-height: 1.5; color: var(--ink2); }
+
+/* opponent-TBD card: one mini row per possible opponent */
+.branch { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; font-size: 17px; }
+.branch .who { color: var(--ink); }
+.branch .bp { color: var(--hl); font-weight: 700; font-size: 26px; }
+.branch + .meter { height: 10px; margin-top: 8px; }
+.compact .branch { margin-top: 8px; font-size: 14px; }
+.compact .branch .bp { font-size: 20px; }
+.compact .branch + .meter { height: 6px; margin-top: 4px; }
+
+/* footer */
+.ftr { position: absolute; left: 60px; right: 60px; bottom: 54px; border-top: 1px solid var(--border);
+  padding-top: 24px; display: flex; justify-content: space-between; color: var(--muted);
+  font-size: 17px; letter-spacing: .12em; text-transform: uppercase; }
+.ftr .url { text-transform: none; letter-spacing: .04em; }
+</style>
+</head>
+<body>
+<div class="slide {{KIND}}">
+  <div class="hdr"><span class="brand">PICKLES</span><span class="cap">{{HDR_RIGHT}}</span></div>
+  {{BODY}}
+  <div class="ftr"><span class="{{FTR_CLASS}}">{{FTR_LEFT}}</span><span>{{FTR_RIGHT}}</span></div>
+</div>
+</body>
+</html>
