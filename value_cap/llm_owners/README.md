@@ -155,6 +155,46 @@ on one scale. Both arms agree on the one robust mechanism — her price is
 the second-highest star-hunter's number, and the buyer's team strength
 is set by what the rest of the room leaves on the floor, not by her.
 
+## The named arm (same day; `packet_names.md`, `sheets_names/`, `analyze_names.txt`, `rooms_names.txt`)
+
+Same twenty seats and prompt, but the packet is nothing except the 183
+names, alphabetical by surname. No records. Whatever the agents bring is
+outside knowledge, and it is stale knowledge: the model behind the agents
+stopped learning about pickleball well before the 2026 season.
+
+- **Reputation replaces the record.** Consensus top women: Waters,
+  Bright, Genie Bouchard (list #57), Jessie Irvine (#37), Fahey, Genie
+  Erokhina (#56), Parenteau, Rohrabacher. Men: Johns, Tardio, Patriquin,
+  JW Johnson, Zane Navratil (#85), Christopher Haworth (#32), Tyson
+  McGuffin (#50), Hunter Johnson. Spearman vs the list falls from ~0.5
+  (blind) to 0.21 / 0.17, and vs raw 2026 win% to 0.17 / 0.17. The two
+  arms' consensus rankings agree at only 0.11 (W) / 0.31 (M), 4 of 8 top
+  names in common per gender.
+- **Owners agree less with each other** (same-persona 0.50 / 0.61,
+  different-persona 0.51 / 0.59 vs ~0.7 blind): a name is a weaker
+  shared signal than a win% column.
+- **Ceilings are higher and dense.** 18 of 20 priced all 183 (blind: 8);
+  top-6 sums run $1.0-4.2M. Waters' ceilings: star-and-scrubs 850 / 800 /
+  820, the two no-persona owners 800 / 800, median 410k (blind 250k).
+  Johns is priced up to $900k.
+- **Rooms.** Waters $825k in every room (the $850k first-buy max minus an
+  increment; list $769k), Johns $805k [555-805], Bright $455k, then
+  Bouchard $355k, Haworth $305k, Irvine $280k, Navratil $275k, McGuffin
+  $235k. List #16-30 sell at 24% of list, #31-60 at 30%: Todd, Jorja
+  Johnson, Alshon, Staksrud go for less than names that the 2026 record
+  puts on the replacement line. **Her team is 81% / 23% title** (blind
+  61% / 0.6%): not because she got cheaper, but because the field spent
+  its money on the wrong players and the real #3-#30 were left for the
+  floor fills. Best team is still someone else's in 86% of rooms (a
+  no-persona owner at 90.6%, on Johns + the underpriced middle).
+
+What that adds: the blind and named arms disagree with each other far
+more than either disagrees with the list, and the named arm is the one
+that is wrong on the record — so "owners who go by name" is a concrete,
+testable way MLP's real prices could depart from the list (old names
+over new results). It is also the arm where paying the max for Waters is
+NOT the worst way to own her, because the rest of the room is worse.
+
 # Running it again with your own prompt and personas
 
 1. Write a personas file (see `personas_v1.json`, the v1 seats above):
