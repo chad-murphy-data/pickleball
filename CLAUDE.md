@@ -591,7 +591,9 @@ PICKLES landing page (index.html — live doorway teasers + conditional
 live-page bullet above), power rankings (rankings.html), singles ratings
 + DreamBreaker record book (singles.html, gender-separate; player pages
 carry a Singles block),
-499 player pages (trajectory + game-log-vs-expectation SVGs), client-side
+499 player pages (trajectory + game-log-vs-expectation SVGs), value cap
+(valuecap.html — the shipped MLP price list off value_cap/price_list.csv,
+gender tabs, TAG chip, doubles-rank lift arrows; added 2026-09-04), client-side
 matchup simulator (race DP + weakest link + uncertainty in embedded JS,
 shareable permalinks), receipts ledger + calibration, record book,
 methods, 404. The look is the PICKLES design handoff: master
@@ -644,22 +646,190 @@ draws yet (planned as a Monte Carlo layer, not a picked rate), no real
 roster construction, replacement level uses an assumed 20-team count
 pending confirmation.
 
-Phase 2 (price fitting) is live, as of 2026-09-04 (full detail in
-`value_cap/HANDOFF.md`): two rank-sweep-discovered "indifference pairs"
-(searched for, not hand-picked) point to alpha ≈ 0.76-0.88 (sub-linear —
-a star DISCOUNT relative to proportional, not a premium). A naive test
-made Anna Leigh Waters look unfixably underpriced at any legal price,
-but that was an artifact of comparing her to a FIXED alternative roster
-instead of one that reoptimizes at the real prices — done properly, the
-same ~0.76-0.88 alpha range handles her too (crossover ≈ 0.96-0.98). A
-$500k minimum-team-spend rule (Chad's recollection, needs confirmation
-like Phase 0's other rules items) only binds at alpha ≳0.85-1.0; below
-that it's redundant. Floor/min-spend and alpha answer different
-questions (floor stops scrub-stacking, alpha shapes competitive
-balance) and shouldn't be tuned as if either one fixes both. Live open
-thread: the $10M-per-gender subpool is an untested 50/50 split of the
-20-team × $1M league total — next step is testing whether an uneven
-split changes any of the above.
+Phase 2 (price fitting) is SHIPPED as of 2026-09-04 night (full detail
+in `value_cap/HANDOFF.md` + `value_cap/phase2_pricing.md` §8; the list is
+`value_cap/price_list.md`): alpha 1, ONE joint $20M pool (the gender
+split falls out at ~57/43 women; two $10M sub-pools overpriced every man
+~16%), prices proportional to phi = Shapley-style context-averaged tie
+value over a SELF-CONSISTENT pool (`shapley_value.py`, `pool.py`: top
+60/gender by phi iterated to a fixed point — Phase 1's replacement-
+context V was the wrong basis, the #60 partner's weakest-link gap damps
+stars in proportion to value). Waters' phi is 5.3% of the league vs 5%
+per team, so her curve price ($903k) fits no legal roster; she is
+FRANCHISE-TAGGED (`prices_tagged`) at cap minus the cheapest legal
+completion ($769k at a $30k floor), the gap redistributed over the other
+119 by value. This replaced the alpha ≈ 0.845 star-discount list, which
+bought her rosterability by mispricing everyone else 10-15%. League read
+(`draft_sim.py`: 20 teams, scarcity, noisy owners, seasons on true
+values, boards best60 / mlp2026 (default, real 2026 fill-ins) /
+mlp2026only): tag list gives parity spread 4.3-4.6 pts, nobody in the
+top 30 undrafted, cap spent; the slot-1 pick (Waters + cheap DreamBreaker
+singles specialists) wins 66% with a ~1-in-3 title shot, slots 2-20 sit
+at 47-53%. NOT levers (`pool_floor_sweep.md`): the floor (cosmetic,
+identical drafts $10k-$75k), the priced-pool size (80/100 only leaves
+cap unspent and hands the prize to Bright), a deeper replacement line
+(makes Waters cheaper AND stronger). User call: a 35% favorite is normal
+pro sports; ship and say so. Speed layer `fast_tie.py` (~85x, err 8e-5).
+Sonnet's `phase2_price_model.py` was removed. Owner PERSONAS in the
+draft sim DONE (2026-09-04 late; `personas.py` → `personas.md`,
+`phase2_pricing.md` §9): the $500k cheapskate is the one persona that
+breaks the league (alone 21% / no title; five of them spread 13.7 and
+the rest of the league at 58%) — the case for a $500k min-spend;
+bargains-first is the worst sensible-looking strategy (24%: the top 60
+are gone before round 4 of a 20-team snake); overvaluing a gender,
+chasing big names and mild loyalty are free; nothing dents Waters' team
+(63-68%) and no persona creates a second 10%+ contender. DIALS PROBE
+(`dials_probe.py` → `dials.md`, phase2_pricing §10): price-side there is
+ONE lever (charge her above what the cap allows — she is worth more
+than a team may pay); what moves her team is playing time (67% of ties
+→ 48%; team without her 12%, and 2026 contenders' stars played 100%),
+a coin-flip DreamBreaker (gap over Bright/Johns 14.6 → 8.6 pts), and
+targeted rivals (42% head-to-head, free vs the field). Split gender
+caps make it WORSE (82% vs reference, Bright/Johns over cap too).
+Format moves the title lottery (37% → 14%) but never a second team past
+10%: a fair list + snake draft = one favourite and nineteen equals.
+AUCTION DRAFT (`auction_sim.py` → `auction.md`, phase2_pricing §11;
+2026-09-04 late): same owners/personas, prices set by the room
+(rotation nominations under the auction's own scarcity,
+indifference-price ceilings, second price + $5k, ceilings capped at
+budget minus the cheapest legal completion = $850k first buy). Waters
+NOT dented: $850k at sale 1 in every quant cell and seed, five floor
+teammates, 67-68% / 33-39% title (snake 66/36) — but the auction MAKES
+A CHASE: runner-up 11.5-16% (snake 7.3%), 1.8-3.0 teams at 10%+ (snake
+1.0). The chasers are one build a snake cannot make: two $390-490k
+players + four floor slots, a man AND a woman (the tie model pairs them
+in mixed, so a star plays 3 of 4 games; Patriquin+Rohrabacher 62% vs
+the field, the M+M version 45%, F+F 59%). Room vs list: #1-5 at
+101-115%, #6-15 at 111-130% (the second star), #16-30 at list, #31-60
+at 51-67% (depth sells at the floor), floored DB specialists at 3-6×.
+Personas: the auction forgives individual mistakes (cheapskate alone
+27-29% vs 21% snake; bargains $120k 34-36% vs 24%) and punishes shared
+ones (twenty bargain hunters at $250k let the stars go for half price —
+Waters $515-547k, her team 84-88%, spread 15-16, worse than any snake
+league). Expectations/noise are second order — an earlier "fragile to
+expectations" read came from nominations projected under the SNAKE's
+scarcity, which let stars come up after the money was gone (fixed;
+read retracted). Truthful bids, rotation nomination, no in-auction
+learning; the first-buy maximum is the only rule that binds — confirm
+MLP's real mechanism (draft vs auction, per-player max, min-spend).
+Phase 3 site page shipped off price_list.csv. Next: confirm MLP
+rotation/playing-time rules (now the biggest lever), injury/absence
+Monte Carlo (sweep the rate), gamma switch sweep, confirm 20 teams +
+$500k min-spend, league-price/surplus column when MLP publishes.
+MARKET LIMIT (`market_eq.py` → `market_eq.md` + `market_prices.csv`,
+write-up at the end of `auction.md`, phase2_pricing §12; 2026-09-05):
+the user's backward induction (owner 19 stops overpaying, then 18,
+then 17 …) run to its fixed point with owners who plan WHOLE rosters
+(exhaustive 3M+3W search, brute-force selftest; above-average rosters
+mark their players up, below-average down, unsold fall, clip to
+[$30k, $850k first-buy max], capped-roster teammates shadow-priced;
+c swept 4/8/12, `--rule demand` as a check). Waters is the ONLY
+rationed player (at the max with excess demand, every run, both
+rules) — the cap sets her price, not the market; Bright is bid to the
+price where a Bright team is average ($697-760k, 114-124% of list)
+and is NOT rationed, Johns $501-545k, every other star likewise; the
+other nineteen teams are equals (second-best 50.6-51.1%, runner-up
+title 6-8%, one team at 10%+; her team 62-63% / 24-38%). List vs
+market: top 15 at 112-117%, #16-30 at list, #31-60 at 53-61% (27-28
+of 120 at the floor), pool $19.84-19.98M vs $20.00M — list right in
+level and rank, market steepens the shape. "Buy whole teams" as a
+solver IS this solver (Waters+Johns+Bright+JW: $2.29M list / $2.65M
+market; the fallback ends at one star + fill-ins at 49%). TRAP: the
+draft_sim/auction_sim owners project their roster GREEDILY one slot
+at a time, so a roster planner beats them (best no-Waters $1M roster
+at list = 0.597 vs greedy ≈ 0.47) — the auction's two-star chase and
+the persona rankings were measured with greedy owners and the market
+limit says the chase does not survive planners. Follow-up: swap
+`market_eq.solve` into `draft_sim.Owner`'s projection and re-run the
+persona/auction grids; `--noise` and `--k` are the unswept dials. WHY M+W (`two_star.py`, auction.md last section): two-star
+chasers are a man + a woman because the stars share the MXD1 court
+(γ<0: 77% vs field), the floor-only punt lands in MXD2 (30%) not WD
+(19%; women's spread 1.5× men's), and floor men are DB specialists;
+M+M 44-46% / M+W 50-51% / F+F 52-54% vs the market-limit field, all
+over the cap at market prices — the shape survives, the chase does not. TOY AUCTION SOLVED EXACTLY (`toy_auction.py` → `toy_auction.md`,
+phase2_pricing §13; 2026-09-05): typed players, 2-4 strategic teams +
+fixed Waters team, money grid, fixed sale order, backward induction
+under two stage conventions (english strict / second-price). Feasible:
+2 teams with two stars/gender, 3-4 with one; 20 teams has NO computable
+equilibrium (state space, exposure problem, budgets, multiplicity,
+PPAD). Reads: allocation robust to the convention, PRICES ARE NOT
+(same rosters, star woman $50k vs $750k) — validate any strategy
+search on ROSTERS; small rooms accommodate (stars split, star teams
+no better than no-star team); truthful planners (= auction_sim owners
+with exact planning) are NOT the equilibrium at 2-3 teams; nobody
+buys two stars of one gender; sale order is first-order; a 4th bidder pushes star prices to the
+list (3 teams paid 60-80% of it) while truthful planners stay at 2 units. STRATEGIC AUCTION BUILT (`strategic_auction.py` → `strategic_auction.md`,
+phase2_pricing §14; 2026-09-05): planner owners + 8-dial strategy family +
+coordinate-ascent self-play, exploitability = best remaining single-dial
+gain. Toy check on ROSTERS: MATCH at 2 teams only, DIFFER at 3-4 (SPE's
+asymmetric hold-backs/deep-pocket buys by the no-star team; coarse grid)
+— 20-team reads are the FAMILY's equilibrium, not the game's. Real board:
+auction_sim's owner exploitable by 8 pp (learned prices) then 20 pp
+(planner); search CYCLES on the no-star multiplier (1.0↔2.0) at a_star
+1.25/learned/planners, ~10-12 pp exploitability; Waters $850k sale 1,
+67-68%/37% at every node (no dial moves her); middle repriced (top 5 116%
+of list, #31-60 75%); the two-star chase SURVIVES planners in a
+sequential room (2.1 teams at 10%+) — market_eq's "chase dies" holds at
+fixed-point prices a rotation-nominated room never reaches. Planner
+start walks BACK to greedy/list/snake with ~7 pp left (gate artifact:
+only the best gain is tested) — the family has NO low-exploitability
+symmetric point; robust everywhere: Waters $850k / 67-69% / 33-37%,
+second-best 58.7-59.7%, 2-3 chasers. Twenty planners at list bidding on
+everyone (the START, not an equilibrium) is the one room where her team
+is not the favourite (39%, $316k/team unspent). Unswept: --noise,
+role-typed (asymmetric) profiles, adopt-any-cleared-gain rule. PRICE-ORDER
+NOMINATION (user question 2026-09-05; `--room`, `--fix nom --start
+nom=dear`): Waters unmoved ($850k, sale 1 either way) but the chase
+widens — greedy owners: her title 37.6→30.2%, second-best 59.7→61.6%,
+2.9→3.9 teams at 10%+, #6-15 at 131% of list; planner owners: the
+two-star M+W build is the favourite (64.7% vs her 56.5%/7%). The one
+nomination rule that dents her title odds without touching her price. Adapted owners (frozen-rule self-play, path end) make it WIDER not
+fairer: best team 74% (not hers), second 69%, spread 12.8 vs 7-8, $156k/
+team unspent. `--room` writes per-player paid prices to cache. NO-SHEET ROOM (2026-09-05; the owners are records-only OWNERS who bought a team, not fans — user naming call, `fan_` file prefix kept;
+`fan_owner_spec.md` → `fan_view.py` + `fan_auction.py` → `fan_auction.md`):
+every room above hands owners OUR list as the prior; the no-sheet room has no
+sheet — records-only owners (2026 win% with game counts, singles record,
+MLP usage, ONE ordinal posterior draw per owner per gender; no values,
+prices or cross-gender comparison) with six roster-shape personas and
+budget shares. Waters' price = persona mix × SALE ORDER: $835-850k when
+two star-and-scrubs owners meet on her, $390-420k when a top-3 man sold
+first to a star owner at $410-460k (such an owner cannot price Johns vs Waters), $206-265k with no star owner;
+default mix $570k vs $769k list. New owners INVERT the curve (#1-5 68% of
+list, #31-60 149%). Paying the max for her is the worst way to own her
+(61-68% / 3-15%; at $410k 68-77% / 12-30%; one two-star owner among
+four-starters gets her at $265k and wins 88% / 65%). Four starters ≈
+singles-minded ≈ two stars 58-60%, star-and-scrubs 52%, risk-averse 39%,
+balanced six 29%. Dead dials: going-rate premium, share jitter. (Rooms
+are now reproducible across processes — two tie-breaks used to consume
+rng in set order; fixed, md regenerated.) DO THE OWNERS LEARN
+(`owner_learning.py` → `owner_learning.md`, 2026-09-05): ten seasons of
+re-auctions, three switchable channels — P price memory (band-median
+anchor, lam), S copy a playoff team's shape (p), K sharper rank draws
+(decay). Control flat. P alone DEFLATES stars (#1-5 68% → 52% of list,
+Waters → $314k) because the anchor is a depth-buyer median and no shape
+pays more for #1 than #15; S is what un-inverts the curve (p 0.5 → 95/100/
+93/106 of list — the list's shape from a room that never saw it; two-stars
++ four-starters take over, risk/six go extinct, spread 16 → 12); K =
+agreement = competition (unspent $0.84M → $0.18M). All three: 11-14
+four-starters seats, 86/87/127/104, spread 14.5-15 (never 4.5), Waters
+$457-526k and her team 76-79% / 32-42% — every learning cell makes her
+CHEAPER and her team STRONGER. Degenerate corner (all four-starters + all
+three): one owner sweeps Waters/Bright/Johns/JW at $225k each, 99% / 89% —
+identical flat plans + shared ranking + last-year anchors. FOURTH CHANNEL
+W (same day; user: "Anna Leigh winning all the time should drive her
+price up" — right, and structural: P/S/K never connect a PLAYER to her
+team's result): public reputation multiplier per player moved by the
+team's realised win% (eta; credit by price paid or equal; cumulative or
+last-season; clip [1/5, 5] picked not swept), applied to every owner's
+ceiling (`Owner.rep`). Waters → the $850k maximum from season 2 in every
+W cell, curve un-inverts in ONE season (→ 103/97/96/99), and at the cap
+with five floor slots her team is 62-70% / 6-18% (control 72% / 25%) —
+the room enforces "paying the max is the worst way to own her".
+Attribution sets the league, not her price: by-price → losers' stars
+marked down, depth at the floor, $1.84M unspent; equal → spread 10.9
+(tightest cell), every shape 46-52%. Reputation chases one season's luck
+(floor riders at 5× under equal credit). OPEN DESIGN CALLS: within-band
+rank slope; W's symmetry/clip/credit unit.
 
 Court coverage per player (2026-08-16, user request —
 `vision/coverage_spec.md`): track all four players via the Gate C kit's
