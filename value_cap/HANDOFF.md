@@ -356,10 +356,16 @@ the natural next sweep is an asymmetric rule (winners up, losers flat).
 2. **Phase 3 follow-ups**: the league-price + surplus column once MLP
    publishes prices (the page already says it is coming); a per-player
    line on player pages ("value price $X, #N among women"); an insights
-   article on the tag rule and the one favorite. Optional: LLM owners as
-   persona GENERATORS for item 1 (the user asked; judged not worth it as
-   drafters — repeated play in the sim answers the learning question
-   cheaper).
+   article on the tag rule and the one favorite. LLM owners: DONE as a
+   cheap probe 2026-09-06 (`llm_owners.py`, `llm_owners/README.md`):
+   20 blind records-only agent sheets (anonymous ids, no values, no
+   names) → Waters first on 19/20, consensus rank ≈ list top in both
+   genders (Spearman ~0.5 vs list, ~0.7-0.8 vs raw win% — they mostly
+   sort the win% column), $750k in every room only because two
+   star-and-scrubs seats meet on her ($420k without them), her team 61%
+   and never the best. A second witness for the tier-2 reads; price
+   LEVELS are not established (sheets divide $1M over six targets, so
+   stars go at 37-50% of list). Not run: named arm, second prompt.
 3. **Injury/absence Monte Carlo** (Phase 1's open item): sweep the rate;
    the Waters-plus-five-cheap build is the most availability-fragile
    roster in the league and this is the one layer that could

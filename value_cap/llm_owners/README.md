@@ -37,10 +37,12 @@ Outputs: `analyze.txt`, `rooms.txt`. Everything below is copied from them.
   (mean ceiling). Lower against the list than against the raw column, so no
   sign of contamination — and no sign the agents see anything the raw
   record does not.
-- **Anna Leigh Waters (W36) is every one of the twenty owners' top woman.**
+- **Anna Leigh Waters (W36) is the top woman on 19 of 20 sheets** (one
+  balanced-six owner priced her at 0 and led with Catherine Parenteau).
   Ceilings by persona (k$): star-and-scrubs 800 / 745 / 700; two-stars
   420 / 380 / 420; everyone else 160-400, median 250. Ben Johns is the top
-  man on 17 of 20 sheets (consensus $194k vs Tardio $161k).
+  man on 12 of 20 sheets (Staksrud 4, Tardio 3; consensus $194k vs
+  Tardio $161k).
 - **Consensus top of the board matches the list's top in rank, not in
   price.** Women: Waters, Bright, Fahey, Jorja Johnson, Parenteau, Todd,
   Black, Pisnik (list #1, #2, #5, #4, #15, #3, #10, #8). Men: Johns, Tardio,
@@ -75,8 +77,8 @@ season luck only; prices barely move.
 ## What this does and does not establish
 
 Independent of anything we typed: (1) twenty blind owners reproduce the
-list's ordering at the top of both genders and put Waters first
-unanimously; (2) her price is a room-composition question — the maximum
+list's ordering at the top of both genders and put Waters first on
+19 of 20 sheets; (2) her price is a room-composition question — the maximum
 only when two star-hunters meet on her, ~$420k otherwise; (3) the owner who
 pays the maximum is not the favourite. Those three were already the
 robust (tier-2) reads from the hand-coded rooms; this is a second,
