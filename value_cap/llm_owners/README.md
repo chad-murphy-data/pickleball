@@ -91,7 +91,66 @@ not a valuation of the players. The rooms also freeze each owner's sheet
 (no in-room adaptation), which is why the league is so unequal; a real
 owner who lost six targets would re-price the next tier.
 
-Caveats: one model family, one prompt, one packet, twenty sheets, blind
-arm only (a named arm — real names, outside knowledge allowed — was not
-run); the floor-fill ordering is ours; in-session numbers, not a frozen
-result. Cheap enough to re-run with more seats, a second prompt, or names.
+Caveats: one model family, one prompt, one packet, twenty sheets; the
+floor-fill ordering is ours; in-session numbers, not a frozen result.
+
+# The named arm (same day, user request: "JUST give them names")
+
+`--packet-names` writes `packet_names.md`: the same 183 players as names
+only, alphabetical within gender, no records. Same twenty seats, same
+prompt otherwise; agents were told to use whatever they already know.
+Sheets in `sheets_names/`, key `key_names.json`; outputs
+`analyze_names.txt`, `rooms_names.txt` (run with `--key key_names.json`).
+
+## What names alone produce
+
+- **Reputation, not form.** Per-owner Spearman vs the shipped list 0.19
+  (W) / 0.23 (M), vs raw 2026 win% 0.17 / 0.17 — both far below the blind
+  arm's 0.5 and 0.7-0.8. Named-vs-blind consensus agree at rho 0.11 (W) /
+  0.31 (M), 4 of 8 top-8 names in common per gender.
+- **The top two per gender survive; the rest is name recognition.**
+  Consensus women: Waters, Bright, then Genie Bouchard (list #57, $55k),
+  Jessie Irvine (#37), Fahey, Genie Erokhina (#56), Parenteau,
+  Rohrabacher. Men: Johns, Tardio, Patriquin, JW Johnson, then Zane
+  Navratil (list #85, the $30k floor), Christopher Haworth (#32),
+  Tyson McGuffin (#50), Hunter Johnson. Bouchard, Navratil and McGuffin
+  are names the agents know from outside pickleball or from years ago.
+- **Owners disagree more without data.** Same-persona pairs 0.50 (W) /
+  0.61 (M), different-persona 0.51 / 0.59, vs 0.7 in the blind arm.
+- **Waters is the top woman on 15 of 20 sheets** (blind arm 19): Bright
+  led on 3, Fahey and Rohrabacher on one each; one balanced-six owner
+  priced her at 0. Median ceiling
+  $410k (blind $250k); star-and-scrubs 850 / 800 / 820; the two
+  no-persona owners wrote $800k for her AND $800-900k for Johns.
+
+## What the named rooms do
+
+- **Waters $825k in every room** (blind $750k, list $769k), again to a
+  star-and-scrubs seat, again the second-highest star-hunter ceiling.
+  Johns $805k (list $474k), Bouchard $355k (list $55k), Navratil $275k
+  (list $30k), Haworth $305k, McGuffin $235k.
+- **Her team is 81% / 23% title and the best team in 14% of rooms** —
+  much stronger than the blind arm's 61% / 0.6%. The reason is the fill:
+  in a room that bids on names, the players nobody recognises go unsold,
+  and the floor fill (room consensus, then shrunk 2026 win%) hands the
+  star buyer real 2026 performers at $30k. A reputation room leaves
+  current value on the floor for whoever is still buying.
+- **Prices vs list by band:** #1-5 at 74%, #6-15 at 54%, #16-30 at 24%,
+  #31-60 at 30%, unpriced players at 167%. The middle of the real list
+  is where names fail: the room pays for the top of the marquee and for
+  names it remembers, and nothing for the 2026 regulars in between.
+- Persona table: no-persona 65% / 11% (they wrote the biggest numbers on
+  the biggest names), two-stars 57%, star-and-scrubs 55% / 8%,
+  risk-averse 53%, four-starters 52% / 11%, balanced-six 39%,
+  singles-minded 34% (they paid $305k for Haworth's name). Spread 76
+  pts, $427k per team unspent.
+
+## Read across the two arms
+
+Records without names reproduce the list's ordering at rho ~0.5 and put
+the price on Waters only through the star-hunter persona. Names without
+records reproduce only the top two per gender and spend the rest on
+memory. The list is the thing neither arm has: current form for all 183,
+on one scale. Both arms agree on the one robust mechanism — her price is
+the second-highest star-hunter's number, and the buyer's team strength
+is set by what the rest of the room leaves on the floor, not by her.

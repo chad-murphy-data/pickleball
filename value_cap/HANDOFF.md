@@ -365,7 +365,12 @@ the natural next sweep is an asymmetric rule (winners up, losers flat).
    star-and-scrubs seats meet on her ($420k without them), her team 61%
    and never the best. A second witness for the tier-2 reads; price
    LEVELS are not established (sheets divide $1M over six targets, so
-   stars go at 37-50% of list). Not run: named arm, second prompt.
+   stars go at 37-50% of list). NAMED ARM (names only, no records, same
+   day): reputation not form — rho 0.2 vs list, 0.17 vs win%, Waters
+   top on 15/20, Bouchard/Navratil/McGuffin priced at $235-355k on
+   memory; Waters $825k every room and her team 81% because the room
+   leaves unrecognised 2026 regulars on the floor for her buyer. Not
+   run: second prompt, more seats.
 3. **Injury/absence Monte Carlo** (Phase 1's open item): sweep the rate;
    the Waters-plus-five-cheap build is the most availability-fragile
    roster in the league and this is the one layer that could
