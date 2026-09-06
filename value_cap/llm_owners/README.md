@@ -154,3 +154,33 @@ memory. The list is the thing neither arm has: current form for all 183,
 on one scale. Both arms agree on the one robust mechanism — her price is
 the second-highest star-hunter's number, and the buyer's team strength
 is set by what the rest of the room leaves on the floor, not by her.
+
+# Running it again with your own prompt and personas
+
+1. Write a personas file (see `personas_v1.json`, the v1 seats above):
+   `{"personas": {name: text}, "seats": [name, ...], "template": optional}`.
+   The template, if given, is the whole agent prompt with `{persona_text}`,
+   `{persona}`, `{packet_path}`, `{packet_note}`, `{sheet_path}`,
+   `{n_players}`, `{id_range}` placeholders; the default is in
+   `llm_owners.py` (`PROMPT_TEMPLATE`).
+2. `python value_cap/llm_owners.py --prompts <file> --arm blind|names --out <dir>`
+   writes one `<seat>.prompt.txt` per seat; a session launches one agent
+   per prompt verbatim and the agents write `<seat>.json` into the same
+   directory.
+3. `--analyze <dir>` (add `--key key_names.json` for the names arm, and
+   `--compare <other dir>` for arm-vs-arm), then `--rooms <dir>`.
+
+Prompt lessons from v1, so the next prompt does not repeat them:
+- Say a ceiling is a maximum, not a spending plan. Half the v1 owners
+  wrote six numbers that add to exactly $1M (a plan) and zeros elsewhere;
+  the other half wrote maxima summing to $2-4M. Those are different
+  objects and the room treats them the same.
+- Sparse sheets go silent once their targets are gone, and the engine
+  fills them at the floor by room consensus. Ask for a number on every
+  player they would take at any price, or accept that the fill is ours.
+- Units: one owner wrote thousands. The prompt now gives a dollar example.
+- Names arm: say what to do with a name they do not know (v1 said "price
+  accordingly"; most wrote 0, some wrote $30-50k).
+- Personas written as roster SHAPES ("40% each on two stars") produce the
+  shape by construction. Personas written as BELIEFS about what wins
+  leave the shape to the owner, which is the more informative run.

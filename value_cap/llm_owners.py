@@ -76,6 +76,43 @@ PERSONAS = {
 SEATS = [p for p in ("star_scrubs", "two_stars", "four_starters", "balanced_six", "singles_minded", "risk_averse") for _ in range(3)] + ["free", "free"]
 
 
+# ------------------------------------------------------------------ personas + prompts from a file
+PROMPT_TEMPLATE = """You are an owner of a team in a pro pickleball league entering a player auction. {persona_text}
+
+Read exactly ONE file: {packet_path} -- it contains the league rules and the player table. {packet_note} Do NOT read any other file, do NOT search the repository, do NOT run any shell commands, do NOT browse the web.
+
+Then write ONE JSON file to {sheet_path} with exactly this shape:
+{{"persona": "{persona}", "strategy": "<60-100 words on how you will spend the $1,000,000>", "ceilings": {{"W01": <int dollars>, ..., "M95": <int dollars>}}}}
+The "ceilings" object must contain EVERY one of the {n_players} ids in the packet ({id_range}). A ceiling is the MAXIMUM you would pay for that player if they came up for sale, in whole dollars (e.g. 250000, not 250 or "250k") -- it is not a spending plan, so your ceilings do not need to add up to $1,000,000; write 0 for anyone you would not bid on at any price. You must end with 3 women and 3 men and can never exceed $1,000,000 in total, and in a second-price auction you usually pay less than your maximum.
+
+Reply with only: your top 3 women and top 3 men with the maxima you wrote."""
+
+
+def load_personas(path):
+    """JSON: {"personas": {name: text}, "seats": [name, ...], "template": optional override}."""
+    spec = json.load(Path(path).open())
+    return spec["personas"], spec["seats"], spec.get("template", PROMPT_TEMPLATE)
+
+
+def render_prompts(path, arm, out_dir):
+    """Write one prompt file per seat to out_dir so a session can launch the
+    agents verbatim (and the prompts are in the repo for reproduction)."""
+    personas, seats, template = load_personas(path)
+    packet = OUT / ("packet_names.md" if arm == "names" else "packet.md")
+    note = ("It gives you ONLY player names, no statistics. Use whatever you already know about these players."
+            if arm == "names" else
+            "Players are anonymous ids (W01..W88 women, M01..M95 men) with their records. Do not try to guess real identities.")
+    out = Path(out_dir); out.mkdir(parents=True, exist_ok=True)
+    counts = defaultdict(int); written = []
+    for name in seats:
+        counts[name] += 1; seat = f"{name}_{counts[name]}"
+        txt = template.format(persona_text=personas[name], persona=name, packet_path=packet,
+                              packet_note=note, sheet_path=out / f"{seat}.json",
+                              n_players=183, id_range="W01..W88 and M01..M95")
+        (out / f"{seat}.prompt.txt").write_text(txt); written.append(seat)
+    print(f"{len(written)} prompts -> {out}/<seat>.prompt.txt; sheets go to {out}/<seat>.json")
+
+
 # ------------------------------------------------------------------ the blind packet
 def build_packet(seed=7):
     D.set_board("mlp2026")
@@ -417,6 +454,9 @@ def main():
     ap.add_argument("--packet-names", action="store_true", help="names-only packet (the named arm)")
     ap.add_argument("--key", default="key.json", help="key file under llm_owners/ for the sheets being read")
     ap.add_argument("--compare", metavar="DIR2", help="with --analyze: second sheet dir (other arm), consensus vs consensus")
+    ap.add_argument("--prompts", metavar="PERSONAS.json", help="render per-seat agent prompts from a personas file")
+    ap.add_argument("--arm", choices=["blind", "names"], default="blind", help="with --prompts: which packet the seats read")
+    ap.add_argument("--out", metavar="DIR", help="with --prompts: directory for prompts and the sheets they will write")
     ap.add_argument("--analyze", metavar="DIR")
     ap.add_argument("--rooms", metavar="DIR")
     ap.add_argument("--seeds", type=int, default=200)
@@ -428,6 +468,8 @@ def main():
         build_packet()
     if A.packet_names:
         build_packet_names()
+    if A.prompts:
+        render_prompts(A.prompts, A.arm, A.out or (OUT / f"sheets_{Path(A.prompts).stem}_{A.arm}"))
     if A.analyze:
         analyze(A.analyze, A.compare)
     if A.rooms:
