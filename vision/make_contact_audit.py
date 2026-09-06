@@ -65,6 +65,15 @@ from pathlib import Path
 from make_shot_audit import MATCHUP, VIDEO_NOTE, SHOT_TYPES, load, cumulative
 
 CORE = set(range(1, 17))     # the frozen 16-rally label set (womens game)
+
+# Measured live-serve times (full-match video clock, seconds) for rallies
+# whose shot_labels pin points at the wrong rally. Source: the pose/ball
+# clip windows in vision/ballsearch/pose_meta_r2to5.json, which are
+# serve - 1.5 s and were cut from the owner's own ball-path label spans.
+# Cross-checked against the shifted pins, which land on the NEXT rally in
+# this range: pin(3) 91.19 vs r4 91.16, pin(4) 118.88 vs r5 118.78 — two
+# independent sources agreeing to 0.1 s.
+SERVE_FIX = {3: 59.43, 4: 91.16, 5: 118.78}
 PILOT_PER_GAME = 12          # suggested pilot corpus: longest per game
 
 TYPES = SHOT_TYPES + [
@@ -150,12 +159,22 @@ def build_payload(games, names, teams, rallies, windows, prefill, pilot):
         # the game-2/4 openers) are still listed: no auto-seek, located by
         # SCOREBUG (the start score uniquely identifies a rally in-game)
         pf = prefill.get(r["cum"], {})
-        # Rally 3's pin marks a full-speed REPLAY of rally 3, not its live
-        # serve (data/vision/pin_realignment.md) — drop the pin and seek
-        # the LIVE airing instead (~56-79 s, scorebug 0-0)
-        if r["cum"] == 3:
-            pf = dict(pf, pin=None)
-            w = {"t0": 55.0, "t1": 84.0, "approx": True}
+        # The serve pins in shot_labels_chicago0725.csv do NOT map 1:1 onto
+        # rally_cum, and the drift is not a constant offset (see the
+        # 2026-09-03 addendum in data/vision/pin_realignment.md): rows 1-2
+        # are correct, rows 3-7 are one rally late, rows 9-10 are correct
+        # again, and rows 15-16 are two late. So a pin is only trustworthy
+        # where a manual tap confirms it. SERVE_FIX carries the rallies
+        # whose true serve has since been measured, so the tool seeks the
+        # live serve instead of a neighbouring rally. The scorebug banner
+        # stays the arbiter either way.
+        if r["cum"] in SERVE_FIX:
+            sv = SERVE_FIX[r["cum"]]
+            pf = dict(pf, pin=sv)
+            # the v4 window belongs to the neighbouring rally too — rebuild
+            # it around the measured serve so the banner and the pace-pass
+            # replay end agree with where the tool actually seeks
+            w = {"t0": sv - 1.5, "t1": sv + r["dur"] + 3, "approx": False}
         out["rallies"].append({
             "cum": r["cum"], "slot": r["slot"], "rally": r["rally"],
             "t0s": round(w["t0"], 1) if w else None,
@@ -953,10 +972,13 @@ def main():
     payload = build_payload(games, names, teams, rallies, windows, prefill, pilot)
     n_pf = sum(1 for r in payload["rallies"] if r["pf"])
     n_pin = sum(1 for r in payload["rallies"] if r["pin"] is not None)
-    # 15 pins, not 16: rally 3's pin marks a replay and is dropped
-    # (data/vision/pin_realignment.md)
-    assert n_pf == len(CORE) and n_pin == len(CORE) - 1, \
-        f"expected {len(CORE)} prefilled / {len(CORE)-1} pinned, got {n_pf}/{n_pin}"
+    # All 16 core rallies carry a pin again: rally 3's was not dropped but
+    # REPLACED with the measured serve (SERVE_FIX), along with 4 and 5.
+    assert n_pf == len(CORE) and n_pin == len(CORE), \
+        f"expected {len(CORE)} prefilled / {len(CORE)} pinned, got {n_pf}/{n_pin}"
+    for c, t in SERVE_FIX.items():
+        got = next(r["pin"] for r in payload["rallies"] if r["cum"] == c)
+        assert got == t, f"rally {c} pin {got} != measured serve {t}"
 
     html = (HTML.replace("__PAYLOAD__", json.dumps(payload))
                 .replace("__VIDEO_NOTE__", VIDEO_NOTE))

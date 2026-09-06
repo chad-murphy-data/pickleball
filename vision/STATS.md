@@ -1,0 +1,658 @@
+# What we can measure, what we can't, and what to ship
+
+Written 2026-09-03, owner ask: *"record everything you said about what we
+can and can't get ... and think about what we can/want to ship and where we
+can start using non-tracking methods (where the ball bounced) for 'good
+enough' answers."*
+
+Three files, three jobs:
+
+- `STATUS.md` — **where are we**: the per-channel ledger, every number next
+  to its null. It is the authority. If this file disagrees, it wins.
+- `ballsearch/ROADMAP.md` — **where are we going**: the phase plan.
+- **this file** — **what comes out the end**: the stat list, graded, and the
+  order to ship it in.
+
+Every number below is measured and traceable to a script in this repo. Where
+something is an estimate rather than a measurement it says so.
+
+## The four input channels
+
+Everything downstream is built from these. Their quality is the whole story.
+
+| channel | how good | where from |
+|---|---|---|
+| **court geometry** | 0.06 ft median residual | homography, `court3d.py` |
+| **player positions** | feet on the z=0 plane, so exact to the above | pose tracks → homography |
+| **player identity** | 99.25% over 45,689 rallies | referee logs, `lineup.py` — no camera |
+| **contact times** | 73.1% @ ±0.15 s on sealed r10, beating human labels (65.4%) | ball path → timing stream |
+| **shot order / sides** | counts 161/162; side alternation 0 violations / 229 | alternation decoder |
+| **the ball itself** | 90% mid-flight, 72% within 0.1 s of a contact | `pathfirst.py` + `gapfill.py` |
+
+The pattern that matters: **three of these are solved and one is not.** Where
+the ball is at any instant is the only weak channel, and it is weak in a
+specific, bounded place — see "the black hole" below.
+
+## The stat list
+
+### Can get, and it's good
+
+| stat | quality | instrument |
+|---|---|---|
+| hits per player (touch share) | ±1 on 8/8 player-rallies | `rally_stats.py` |
+| shot count per rally | 161/162 | alternation decoder |
+| who hit it (side) | 95% | pose + alternation |
+| who hit it (which of the four) | 85% | pose |
+| every contact's court position | feet, exact plane | pose → homography |
+| where each player stands, over a match | width share, 90% area, kitchen band, off-court fraction | coverage model, 90 of 141 rallies |
+| shot pace fast vs slow | AUC 0.829, null 0.50 | `geom_speed.py` |
+| **average shot speed in mph** | 30.3 fast / 17.5 slow, medians | `geom_speed.py`, shipped in `rally_stats.py` |
+| rally tempo (time between contacts) | AUC 0.793 on its own | `geom_speed.py` |
+| **bounce location without the ball** | 5.3 ft median, court side 92% | `bounce_proxy.py` |
+| net crossings | 23/23 on r9; 14–15/21 on r10 | 3D fit |
+| bounce ledger from a human ball path | 13/13 exact | `court3d.fit_segment` |
+
+### Can get, with an asterisk
+
+| stat | the asterisk |
+|---|---|
+| bounce location, no ball | ~5 ft, good for a heat map and for deep-vs-short, not for line calls |
+| bounce location, TRACKED | **1.91 ft** where it fires — but it only fires on 13 of 34 (see below) |
+| 3D replay | works and looks right (r4 CHECK 3 at 1.76 ft vs a 3.0 bar) but passes on some rallies and not others |
+| first speed-up | right player on both eval rallies, right shot on one (see the house rule below) |
+
+### Can't get, and more data won't fix it
+
+| stat | why |
+|---|---|
+| contact TIMESTAMPS from body pose | 40.7% against an 85 bar; four VLM grid arms all fail their own shifted-call null |
+| shot TYPE (dink / drive / roll / drop) | pose magnitude is AUC 0.445 — inverted; fast-vs-slow is the whole resolution |
+| launch speed off the paddle | one camera can't see toward-or-away; the 3D launch fit scores AUC 0.10, worse than a coin |
+| spin | nothing in the stream carries it |
+| in/out calls | needs the ball to a few inches; we have ~5 ft without it and ~2–3 ft with it |
+| ball height at contact | depth-degenerate, same reason as launch speed |
+| shot selection / decision quality | execution and decision are perfectly confounded in the result |
+| anything at all from a better ball detector | closed for a separate reason: on 36% of in-play frames a human can't see the ball, so a detector's claims there are unfalsifiable |
+
+**More clicked rallies do not move any of this.** Both label axes are
+measured flat: within-rally (AUC 0.907 at 50 positives vs 0.904 at 198) and
+between-rally (k=1 → k=6 moves AUC +0.008 and the operational metric not at
+all). 10,000 clicked rallies would be 3.6M clicks, 1,500–3,000 hours, and
+would buy nothing for this model class.
+
+## House rule: average speed is the speed (owner call, 2026-09-03)
+
+> *"I think average speed is good enough for speed. When people measure serve
+> speed on tennis they don't show frame by frame. And 'close enough' speed is
+> fine for pickleball. Not a sport that measures in speed."*
+
+Settled. The project reports **average speed over the flight** — court
+distance between consecutive hitters' feet, divided by the time between their
+contacts — and does not chase launch speed. Launch speed off a single camera
+is depth-dominated and measured inverted (AUC 0.10); it is not a precision
+target we are falling short of, it is a measurement this footage cannot make.
+
+Two things that follow, both about labelling rather than accuracy:
+
+- **Say "average", and don't compare it to a radar number.** A tennis serve
+  gun reads the ball at launch. Average-over-flight runs lower — drag, plus
+  we charge the ball the straight line and it flies an arc. Our 30 mph fast
+  shot is not the 40-something a gun would post at the paddle.
+- **A shot's average speed is partly the receiver's choice.** The clock stops
+  at the next contact, so a put-away that draws a late reply reads slow. This
+  is not hypothetical: r10's true first speed-up (300.23 s) measures 23 ft/s
+  = 15.7 mph even with perfect labels, because the reply came a full second
+  later. Fixable in principle by ending the clock at the bounce or the
+  arrival instead — not built.
+
+Shipped 2026-09-03: `rally_stats.py`'s speed-up rule now uses average speed
+instead of the 3D launch. Threshold V_FAST = 34.2 ft/s, the midpoint of the
+TRAIN-panel medians (fast 44.39 / slow 23.94), fixed on r6/r7/r17 before any
+eval read. Evaluation on r9/r10: **first speed-up was wrong on both rallies
+under the old rule; it is now the right player on both, and the right shot on
+r9** (Emma Nelson at 257.90 vs truth 257.84). r10 names the right player
+3.8 s late, for exactly the reason in the second bullet.
+
+### LOCKED 2026-09-04 — do not re-open speed
+
+This question is closed. It was settled by an owner call, the numbers have
+been reproduced on a bigger panel since, and nothing new is pending. A future
+session that finds itself re-arguing average-vs-launch speed should stop and
+read this block instead.
+
+| what | value |
+|---|---|
+| the measure | average speed over the flight = court distance between consecutive hitters' feet / time between their contacts |
+| separates fast from slow | AUC **0.829** pooled (111 labelled flights), 0.856 train / 0.793 eval |
+| where the signal is | timing 0.767, geometry 0.654 — the clock does most of the work, geometry supplies the units |
+| medians | **29.4 mph** fast, **17.8 mph** slow |
+| threshold in production | `V_FAST = 34.2` ft/s in `rally_stats.py`, fixed on train before any eval read |
+| launch speed | not a target we are missing — AUC 0.10, inverted, depth-degenerate on one camera |
+| the visual | https://claude.ai/code/artifact/e90c7b69-5e5e-46ed-a5cf-e941de206821 |
+
+The two caveats above (say "average", and the clock is partly the receiver's
+choice) are labelling rules, not open problems. Ending the clock at the bounce
+instead of the next contact is the one real improvement available and it is
+**optional** — the measure ships without it.
+
+### "Every pair of contacts has to make a call" (owner, 2026-09-04)
+
+The reframing that matters more than any single feature. Bounce is currently
+the RESIDUAL of turn detection, so its denominator is however many wobbles
+the tracker produced. Recast as **one binary call per flight**, the panel is
+finite and the score is well defined: N contacts → N−1 flights → N−1 answers.
+Base rate **P(bounce) = 0.422** (57 of 135) — a real classification problem.
+
+`court3d.fit_segment` already works this way: it takes each flight between
+two contacts and decides bounce vs. arc by whether a floor-touching split
+fits the pixels better. That is the counter CHECK 3 grades. The `bounce_evs`
+turn stream is the redundant, weaker one.
+
+Priors measured on that panel (`ballsearch/bounce_prior.py`):
+
+| prior | AUC | note |
+|---|---|---|
+| **receiver depth from the net** | **0.806** | 0.09 at the kitchen → **0.91 at the baseline** |
+| **flight duration** | **0.809** | P 0.09 → 0.44 → 0.72 across terciles |
+| both together | **0.910** | depth survives duration strata at 0.988 / 0.862 / 0.742 |
+| flight speed | 0.597 | **null once duration is known** (0.433 / 0.486 / 0.360) |
+| double-bounce rule | exact | flight 0 = 0.89, flight 1 = **1.00**, flight 2+ = 0.34 |
+
+Owner's *"slow shots bounce more"* is true raw (20.7 vs 23.5 mph) and is
+**duration in disguise** — slow shots bounce more because they take longer.
+Owner's *"receiver at the baseline ⇒ almost certainly a bounce"* is confirmed
+at 0.91 and is the strongest single feature found.
+
+Both are measured **without the ball**, from pose and contact times. So the
+prior is available on every flight, including the ones where the ball is
+never found. Flight 0 reading 0.89 where the rule demands 1.00 is a
+labelling artifact and a useful data-quality probe.
+
+In-sample on 135 flights; both features are partly consequences of a bounce
+(it adds travel time; a deep receiver has more time). Fine for a prior — the
+claim is predictive, not causal — but not a held-out score.
+
+### The bounce corridor (owner rule, 2026-09-04) — measured, and it holds
+
+Owner: *"the ball always bounces in front of the person making contact, and
+they RARELY hit the ball behind them. When I look at the contacts, many of
+them are behind the feet."*
+
+Two claims, and only one of them is confounded. A bounce is on the floor at
+z = 0, where the homography is exact. A contact is at paddle height, and this
+project maps everything to z = 0, where a ball at height projects DEEPER than
+it is. Tested separately (`ballsearch/infront.py`):
+
+| | in front | distance | sideways off the line |
+|---|---|---|---|
+| **bounces** (n=57) | **98%** (56/57) | median 7.8 ft, IQR 4.1–10.5 | median 1.4 ft, p90 2.8 |
+| **contacts** (n=123) | 46% — a coin flip | median −1.0 ft (behind) | — |
+
+**The bounce rule is as close to a law as this project has**, and it is
+tighter than "in front": the bounce sits in a narrow corridor along the line
+between the two players, 2–10 ft ahead of the receiver. That makes it a
+SEARCH PRIOR, not only a filter — it says where to look, which attacks the
+38% recall, not just the precision.
+
+**The contact observation is real and is NOT a defect.** Contacts read behind
+the feet about half the time because of the projection above. Do not use
+"behind the feet" as an error signal on contacts — it is the same confound
+that made the earlier behind-the-feet junk filter null (`path_physics.md`).
+
+Sole counterexample is in r17 (80%, min −6.3 ft), already the known-bad rally
+for hitter attribution (4 alternation violations, 14/17 purity). Likely a
+mislabelled hitter, not a backward bounce.
+
+## UPDATE 2026-09-04 — the bounce bottleneck moved
+
+Everything above was written before the four commits of 2026-09-04. One of
+them changes which problem is the hard one, so read this section against the
+tables above.
+
+**Locating a bounce is now solved; finding one is not.** Check 3 gained a
+time-matched comparison of the fitted `bounce_xy` against the human ledger
+(`1cb9042`, `ac87c99`), so bounce position is reported in court feet rather
+than only counted:
+
+| rally | matched | median |
+|---|---|---|
+| r7 | 3/3 | 2.05 ft |
+| r9 | 5/13 | 0.83 ft |
+| r10 | 2/13 | 1.60 ft |
+| r17 | 3/5 | 1.91 ft |
+
+Pooled n=13, **median 1.91 ft**, 46% within 1 ft, 77% within 3. That beats
+the no-ball proxy's 5.3 ft by ~2.8x and beats the tracked *impact* numbers
+(2.15-2.98 ft) on every single rally — structurally, not by luck: a bounce
+sits on the z=0 plane the homography solves to 0.06 ft and is bracketed by
+arcs on both sides, where the tracker is a 90% instrument. A contact is
+exactly where the path has its hole.
+
+So the honest table for bounces is now three rows, not one:
+
+| | state |
+|---|---|
+| locating a bounce we found | **solved**, 1.91 ft |
+| finding the bounces | **13 of 34 = 38% recall** |
+| not calling non-bounces | of 14 emitted, **6 real / 2 junk / 6 missed contacts** (was 30 / 6 / 12 / 12 before the sign test shipped, `84d7e6b`) |
+
+Neither live problem is the ball detector. Both are the claim logic
+(`a16e2ba`): `bounce_evs = [e for e in turns if e not in claimed]` makes
+bounce the residual category, so every anchor miss becomes a fake bounce and
+nothing ever asks whether the turn looks like one.
+
+**One of the two measured fixes now ships; the other is rejected twice.**
+
+1. *The bounce signature — SHIPPED `84d7e6b`.* Image y falls then rises — a
+   sign test, nothing to tune. Keeps **6/6** real bounces, kills **10/12**
+   junk markers, costs **zero** contacts (63/79 either way). The turn angle
+   the claim uses today does not separate them at all (real median 91.5 deg,
+   junk 66.5, ranges overlapping). Measured in `a16e2ba`, sat unused as
+   `turn_geom.v_shape` for three days, now called by
+   `ball_replicate.tracked_side`. End to end: markers 30 -> 14, precision
+   20% -> 43%.
+2. *A spatial gate on claiming — REJECTED, twice.* `claim_bounds()` gives an
+   anchor its largest-angle turn within 0.25 s with no distance test, which
+   is genuinely the over-claiming half. But gating it buys bounce recall
+   (8/35 -> 14/35) with a quarter of the contacts (**63/79 -> 41/79**),
+   exactly as it did when first rejected 2026-09-01; re-measured
+   2026-09-04 on the physics-cleaned path and it fails the same way.
+
+3. *The corridor gate — SHIPPED `7275834`, modest.* The owner's rule above,
+   turned into a filter on the arc-fitter: a candidate bounce point must lie
+   in the receiver->hitter corridor (lateral <= 8.0 ft, front >= -2.0 ft,
+   <= 1.15x the separation — each bound set at the measured p99 plus margin,
+   keeping 56/57 = 98% of real bounces). Pooled over r7/r9/r10/r17:
+
+   | | bounces called | matched | precision | impacts | crossings |
+   |---|---|---|---|---|---|
+   | before | 46 | 13/34 | 28.3% | 57/78 | 59/71 = 83.1% |
+   | after | 34 | 13/34 | **38.2%** | 54/78 | 50/63 = 79.4% |
+
+   All 12 deleted calls were unmatched — **recall is exactly unchanged and
+   every real bounce survived**. Cost is 3 impact matches and a slightly
+   worse crossing ratio, partly offset by better impact distances on r10
+   (2.60 -> 1.79 ft) and r17 (4.66 -> 3.21 ft). A keeper, not a clean win
+   like the sign test.
+
+   **TRAP, and it cost a run.** `reconstruct()` in `ball_replicate.py` fits
+   BOTH the tracked side and the human ground truth. Applied to both, the
+   corridor deleted a real human bounce on r9 (13 -> 12) — i.e. it moved the
+   target in the flattering direction, because constraining the truth removes
+   exactly the awkward bounces the tracker was failing to match. The tell is
+   the human bounce count moving. `corridor=` now defaults False and only
+   `crossing_demotion` passes True (`5e12aaf`). Any future gate inside
+   `reconstruct()` must do the same.
+
+Three other candidates measured 2026-09-04 and NOT shipped
+(`ballsearch/bounce_fix.py` carries the full arm table): re-detecting turns
+on the physics-cleaned path costs 7 contacts for junk the sign test removes
+free; `turn_deg` 18/20 and `min_sep` 0.12/0.18 are exactly null — the shallow
+serve bounces are not being deleted by the threshold, they are not in the
+path; asserting the two double-bounce-rule bounces only reads well while its
+windows come from the owner's own labelled contact times, which is a leak.
+
+**Path junk is now filtered before any of this** (`ballsearch/path_physics.py`,
+graded label-free against the nine owner-clicked paths in `physics_grade.py`):
+31.8% of junk points removed for 5.1% of good, junk turns 180 -> 132. Rules
+are bounds / teleport / spur / stall / retrace / defected, each with its
+measured lift in `ballsearch/path_physics.md`.
+
+**Four things were tested and are null** — recorded so they are not retried:
+the court-volume rule ("the ball is never outside the court or behind a
+player's feet"), the same rule written player-relative, vertical position
+within the body as a delete rule, and occlusion bridging. A per-point trust
+ranker does work as a *ranker* (leave-one-rally-out AUC 0.831, every rally
+0.75-0.93) but does not fix bridging: pooled AUC is inflated by
+stratification, and at a box edge -- exactly where bridging must pick its
+anchors -- it is 0.729 on a 63% base. Details and nulls in
+`ballsearch/path_physics.md`.
+
+### UPDATE 2026-09-04 (later) — the bounces are lost in the BOUNDS, both halves at once
+
+`ballsearch/bound_oracle.py`. The counter above finds 13 of 35 human bounces
+on r7/r9/r10/r17 (35 with r17's ledger; 34 in the tables above). The tracked
+ball path is as good as the hand-labeled one on the flights it misses
+(median 4.5 px, p90 9 px, near-bounce 3.5 px), so the loss is downstream of
+the detector. This swaps each downstream stage for its oracle, one at a time
+(human contacts as an oracle for the bounds only; tracked observations
+throughout; nothing trained or tuned), and grades the same 35 bounces:
+
+| bounds \ demotion | none | shipped | validated |
+|---|---|---|---|
+| tracked (as claimed) | 11 | **13** (the autopsy) | 13 |
+| + the 17 missed contacts inserted | 14 | 14 | |
+| − the 34 junk bounds removed | 14 | 14 | |
+| human contacts (both fixed) | **25** (first pass only: 23) | 20 | |
+
+Per rally r7/r9/r10/r17: shipped 3/6/2/2, both-fixed 3/9/9/4.
+
+**Read it by flights, not stages.** A bounce is found only inside an intact
+flight — both contacts placed within 0.25 s and no extra bound between them.
+Of the 35 bounce-holding flights, 13 are intact in the claimed bounds (16
+after demotion). On intact flights the counter hits 11/16; on broken ones
+2/19; with every flight intact, 25/35. So bounce recall is the
+intact-flight count times the fitter's own ~70%, and nothing else in the
+grid matters. Why the 22 broken flights are broken: 9 have a missing end
+AND a junk bound inside, 7 junk only, 6 a missing end only. Fixing one
+defect leaves the other one breaking the same flights, which is why contact
+recall alone and junk removal alone are each worth +3 and together +14.
+
+**The 34 junk bounds**, by what they sit on: 8 ON a human bounce (within
+0.05 s — the bounce-turn was claimed as a contact, so the flight is split at
+the bounce and neither piece can hold it), 8 duplicates of a contact another
+bound already matched, 7 mistimed claims 0.27–0.41 s from a contact that is
+otherwise missed (MATCH_S is 0.25), 11 far from anything. The bounce-shape
+sign test cannot veto claims: 60% of the REAL contact bounds are also
+fall-then-rise (dinks and low volleys) against 88% of the on-a-bounce ones.
+
+**Demotion is not the lever and is not free to drop.** Its premise (a real
+flight's drawn path crosses the net) fails 7 times in 71 on the human
+flights — dinks. On the claimed bounds it removes 12 bounds over the four
+rallies, 5 of them real contacts (r9 258.77/259.12, r10 306.02, r17 431.48;
+r10 308.75 under the validated variant), and it is net +2 (11 → 13) only
+because it also removes junk, including the bound sitting on r7's bounce at
+170.16. Validating each demotion on the merged flight's plausibility changes
+nothing (13; the merge test also passes a real contact and fails junk). On
+perfect bounds it costs 5 (25 → 20): all 11 bounds it removes there are real
+contacts, and on junk-free tracked bounds all 7 are (14 → 14).
+
+Two flags found on the way. (i) `ball_replicate.main` and the autopsy pass
+RAW anchors to `tracked_side` (with the `bounce_shaped` filter on markers);
+`ball_grade` check 3 dedupes anchors first and keeps every unclaimed turn as
+a marker. Under check 3's policy the tracked row reads none 13 / shipped 12
+/ validated 13, with contacts 57/79 and junk 22 (raw: 62/79 and 35). Same
+story, one bounce apart; the two paths should not be quoted as one number.
+(ii) `court3d.fit_arc` raises `LinAlgError` (singular matrix) on a
+2-observation piece; the oracle guards it (rms = inf, piece rejected), the
+shipped fitter does not, and r20 could hit it.
+
+**What this changes in the to-do.** Grade any claim-step change on INTACT
+FLIGHTS (both ends within 0.25 s, nothing between) before looking at the
+bounce count: the bounce count cannot move until both bound defects move
+together. The contact-recall line (the black hole above) and the junk line
+(bounce-turns and duplicate anchors claimed as contacts) are one problem
+with two symptoms, and a fix that trades one for the other — the spatial
+claim gate, the dedupe policy — measures flat here for exactly that reason.
+
+### UPDATE 2026-09-05 — the intact-flight grader, the miss anatomy, and the first claim-step candidate (dead)
+
+`bound_oracle.py --intact` is the grading tool the previous update asked
+for: for each bounds variant it counts the bounce-holding human flights
+that survive intact (both contacts matched within 0.25 s, no bound in
+between), plus contacts matched and junk bounds. No fit is run, so it
+answers in seconds instead of minutes, and it moves before the bounce
+count does.
+
+| bounds (pre-demotion) | intact flights | contacts | junk bounds |
+|---|---|---|---|
+| tracked (shipped) | 13/35 | 62/79 | 35 |
+| + the 17 missed contacts | 19/35 | 79/79 | 35 |
+| − the junk bounds | 19/35 | 62/79 | 1 |
+| anchor-only bounds, all | 8/35 | 67/79 | 59 |
+| anchor-only bounds, z ≥ 2 | 12/35 | 66/79 | 45 |
+| **learned claimer** (`claimer.py`, 2026-09-05 later) | **17/35** | 62/79 | 14 |
+| human contacts | 34/35 | 79/79 | 0 |
+
+Each bound defect alone lifts intact flights 13 → 19; both together 34.
+
+**Why the claim step misses 17 contacts** (`MATCH_S` = 0.25 s; a bound
+needs a pose anchor AND a ball turn within 0.25 s of each other):
+10 have the anchor and no turn (the ball path shows no direction
+change at a dink contact, or the contact sits in the black hole), 6
+have a turn and no anchor (soft swings under the z ≥ 1.2 excitement
+line), 3 have both and lost the claim to a neighbouring turn. None is
+blocked by the picker's 0.35 s minimum separation: missed contacts sit
+in SLOWER exchanges (median neighbour gap 0.94 s vs 0.69 s for matched
+ones). `predict_contacts` is not a trained model — it is a peak picker
+with three hand-set constants (z ≥ 1.2, 0.35 s separation, 0.10 s
+smoothing) tuned by eye on r6/r7 — so more contact taps do not improve
+it today; they only enlarge the panel. A learned claimer would change
+that.
+
+**First candidate, dead on arrival:** let an unclaimed anchor set its
+own bound when no turn is near it (the obvious fix for the 10
+anchor-and-no-turn misses). It buys 4–5 contacts and pays 10–24 junk
+bounds, and intact flights FALL (13 → 8 all anchors, 13 → 12 at z ≥ 2).
+The pose anchors carry too many fake swings to bound a flight alone.
+Bounce count after the full fit (shipped demotion): all anchors 14/35
+(r7 3 → 2, r9 6 → 7, r10 2 → 4, r17 2 → 1), z ≥ 2 15/35 (2, 7, 4, 1) —
+a wash: +1/+2 on 13, gains on r9/r10 paid for by losses on r7/r17,
+exactly what a lower intact count predicts. The lesson is the
+one already written: anything that trades recall for junk measures
+flat or worse; the claim step has to gain contacts WITHOUT adding
+bounds, which means telling a real contact from a fake swing at the
+anchor, not at the turn.
+
+**Panel caveat, found while answering "would coding more bounces
+help":** the 35 "human bounces" were never tapped by a human. They are
+the fitter's own bounce calls on the human-clicked ball path (r7/r9/
+r10/r17, `kind == "bounce"` in the human-side fit). So the 25/35
+ceiling and the 35 itself are both model-derived. A direct bounce tap
+(time, and roughly where) would be the first independent bounce truth
+and would audit the key itself; ~10 taps a rally.
+
+### UPDATE 2026-09-05 (later) — the learned claimer moves intact flights 13 → 17; the fitter takes most of it back; the bounce coder
+
+**The claimer** (`vision/ballsearch/claimer.py`) is the first claim
+step fitted to a contact label. Candidates = every ball turn plus every
+pose anchor not within 0.08 s of a turn; 26 features at the candidate
+from both channels (turn angle and distance, path coverage, ball speed
+in and out and their log ratio, vertical motion before and after,
+bounce-shaped, excitement of the two most excited tracks, ball-to-paddle
+distance for the most excited track and for the nearest anchor, which
+side is swinging vs which way the ball goes next, anchor count within
+0.25 / 0.60 s, anchor z, spacing to the neighbouring candidates, time
+from serve, time to end); label = within 0.25 s of a human contact tap;
+gradient-boosted trees (depth 3, 200 rounds, lr 0.05, leaf ≥ 8); 0.30 s
+non-max suppression; threshold picked on the training rallies by summed
+intact flights. Train = r2–r7 and r17 (r6/r7/r17 manual taps, r2–r5
+prefill); r9/r10 read ONCE with the model fitted on all seven and the
+threshold fixed on their out-of-fold bounds (0.45); r20 untouched,
+holdout never loaded.
+
+Leave-one-rally-out on the seven train rallies (277 candidates, 144
+positive): AUC 0.80. Contacts 71 → 67 of 89, junk bounds 48 → 24,
+intact 14 → 13 of 32 — but the prefill rallies carry approximate
+contact times, and on the three manually tapped rallies the picture is
+different: contacts 23 → 24 of 31, junk 15 → 2, intact 3 → 6 of 11
+(r7 2/3 → 3/3, r17 1/5 → 3/5). A manual-only model (three rallies, 88
+candidates) is worse on those same rallies (28/31 contacts but junk 12,
+intact 3), so the prefill rows earn their place as training rows even
+though they are noisy as grading rows.
+
+The one read of r9/r10 (tau 0.45): r9 contacts 24/29 → 24/29, junk
+13 → 6, intact 8 → 7 of 14; r10 20/26 → 18/26, junk 10 → 6, intact
+2 → 4 of 13. On the 35-bounce panel (`bound_oracle.py --intact`,
+claimer row = leave-one-out bounds for r7/r17, train-only model for
+r9/r10): **intact 17/35 vs 13/35 shipped, contacts 62/79 (unchanged),
+junk 14 vs 35** — the first claim-step change that raises the intact
+count, and it does it the way the 09-04 reading said it had to: fewer
+bounds, not more.
+
+**Then the full fit, and the fitter takes most of it back.** Claimer
+bounds, no demotion: r7 3, r9 4, r10 4, r17 3 = **14/35** (shipped
+pipeline 13; tracked bounds with no demotion 11). r9 goes 6 → 4 while
+its intact count goes 8 → 7: three bounces that were matched become
+NOT OK — the fitter's plausibility clause rejects the segment on the
+re-cut flight — and its buckets read NOT OK 6, WRONG TIME 2, CALLED
+ARC 1, NO SEG 1, matched 4. r10 goes 2 → 4 (two flights that were NO
+SEG / NOT OK now fit), r17 2 → 3, r7 3 → 3. So the ledger now reads:
+bounds fixed as far as this claimer fixes them → intact 17/35 → the
+fitter converts 14. The oracle's ceiling was 25/35 on perfect bounds
+with 34 intact; the fitter's NOT OK clause on genuinely intact flights
+is the next wall, and that is a fitter question, not a claim question.
+
+**With the shipped crossing demotion on top of the claimer bounds:
+13/35** (r7 2, r9 4, r10 4, r17 3). The demotion removes 9 bounds
+across the four rallies — 7 of them REAL contacts (r7 170.45; r9
+257.81, 270.30, 270.68; r10 316.50; r17 431.48, 433.56) and 2 junk —
+and the r7 one costs a bounce (170.16 matched → NOT OK). On claimer
+bounds the demotion is a net −1: the junk it was catching is already
+gone, so what it demotes now is mostly real. The shipped pipeline's 13
+and this 13 are different 13s (r7 2/r9 4/r10 4/r17 3 here vs 3/6/2/2).
+
+**A leak, flagged.** Permutation importance on the train panel puts
+`t_to_end` first (+0.086 AUC), and that feature is tainted: for every
+rally without a point-dead label the window's end is last contact +
+2.0 s, so "within 2 s of the end" means "after the last contact" —
+label information. The leave-one-out without the two window-end
+features (`--no-end-feats`): AUC 0.73, contacts 70/89, junk 38
+(shipped 48), intact 13/32 — the intact count does not move (r7 still
+3/3, r17 2/5) and the junk reduction shrinks from 24 bounds to 10,
+because the leaky feature was mostly cleaning the terminal flight,
+which holds no graded bounce. The r9/r10 read above used the model
+with the leak; a leak-free read would be a SECOND read of r9/r10 and
+is not taken here — the owner's call. The train-side evidence says the
+intact gain survives and the junk gain halves.
+
+**Bounce coder** (`vision/make_bounce_audit.py` →
+`data/vision/bounce_audit_chicago0725.html`; protocol in
+`vision/labeling_protocol.md`, addendum 2026-09-05). Per flight: bounce
+(click the landing spot on the bounce frame) / volley / unsure / no
+bounce; 19 train rallies, 229 flights, clicked rallies first; only the
+owner's own ball clicks are ever drawn. `--score` compares the taps
+with the fitter's human-path bounces (time within 0.30 s, landing error
+in feet through the floor homography), with the tracked bounces where
+that fit is cached, and crosses the per-flight call with the fitter's
+segment kind. It settles two things nothing else can: whether the 35
+are real (the key itself), and whether the NOT OK flights above hold a
+bounce at all.
+
+## The black hole, and why it licenses the non-tracking family
+
+Measured 2026-09-03 (`ballsearch/blackhole.py`), the frozen scorer sliced by
+distance to the nearest contact:
+
+| | human can't place it | machine claims | machine right |
+|---|---|---|---|
+| within 0.10 s of a contact | 14% / 11% | 75% / 76% | **72% / 72%** |
+| 0.10–0.25 s | 3% / 4% | 80% / 76% | 74% / 73% |
+| mid-flight | 1% / 6% | 92% / 90% | **91% / 90%** |
+
+(train / eval.) Mid-flight the tracker is a 90% instrument. It loses ~19
+points in a ~0.2 s window at each direction change, and the human loses there
+too — the ball really is behind a body. Unrecovered runs are median 6–7
+frames, p90 18–22.
+
+So the ball channel is not broadly unreliable. It is reliable in the middle
+and blind at the ends. **Every stat that needs the ball only mid-flight is
+already fine; every stat that needs it AT the contact should be built from
+the players instead.**
+
+## The non-tracking family — the idea worth spending time on
+
+Player positions and contact times are solved. Chain them and a whole class
+of shot-location stats falls out with **no ball at all**.
+
+**Bounce location.** A ball that bounces gets struck right after it bounces,
+so the receiver's own feet locate the bounce. Graded against the human-fit
+bounce ledger (the arm verified exact, 13/13 on r10):
+
+| estimator | median error | depth error | depth bias |
+|---|---|---|---|
+| receiver's feet | 6.3 ft | 6.1 ft | −2.8 ft |
+| **feet + 8.7 ft lead** | **5.3 ft** | **3.8 ft** | **0.0 ft** |
+| midpoint of the two hitters (control) | 8.0 ft | 6.9 ft | +5.2 ft |
+
+Eval panel (r9+r10, n=26); the 8.7 ft lead is the median receiver-to-bounce
+offset fixed on train and not refit. Categorical: court side 92%, left/right
+half 92%, kitchen-vs-deep 73%. Train is 4.0 ft on 31 bounces — the 2.9 ft
+first reported was an n=10 panel, and the honest number went UP when the
+panel tripled.
+
+Read that against the tracked version: the 3D fit posts 2.15–2.98 ft on
+matched impacts. So **no-ball is about 2× worse and costs nothing** — and it
+runs on all 188 rallies today, where the tracked version needs a pose
+extraction, a candidate cache and a graded path per rally.
+
+That is the whole "good enough" argument. A bounce map at 5 ft is a real
+bounce map. A line call at 5 ft is not a line call. Ship the first, never
+claim the second.
+
+**Everything else in the family, same two inputs:**
+
+- contact position of every shot, in court feet — free, exact plane
+- shot pace and mph — `geom_speed.py`, above
+- serve and return depth (how deep the returner takes the ball) — free
+- where each player stands when the ball is struck, all four at once
+- kitchen arrival time: when does each team get to the line
+- rally shape: contact positions over time, which is a rally in one picture
+
+**Be precise about what "non-tracking" means here.** None of these needs to
+know where the ball is AT the contact — which is exactly where the tracker
+drops to 72% and the human drops too. They do need contact TIMES, and those
+still come from the ball path mid-flight, where the tracker is a 90%
+instrument and already beats human labels. So the family is not ball-free end
+to end; it is free of the ball precisely where the ball is worst. That is the
+whole trick, and it is why these stats can be good when line calls can't.
+
+They also skip most of the per-rally machine chain. A tracked stat needs
+clip → pose → candidates → emission p-cache → path-first → events → stats.
+The non-tracking family needs clip → pose → contact times → stats.
+
+## What to ship, in order
+
+`ROADMAP.md` Phase 2's rule stands: **the stat must be derived by the machine
+on rallies nobody clicked.** Clicks are the grader, never the source.
+
+1. **Touch share** — the Phase 2 deliverable already chosen. Who hit how many
+   balls, per player, per match. Graded free: `server_uuid` / `receiver_uuid`
+   are populated on 188 of 188 rallies (376 free hitter labels), and side
+   alternation validates every derived sequence with no labels at all.
+   Complement to the coverage model: coverage measures SPACE, touch share
+   measures BALLS, and the divergence is "who is carrying this team".
+2. **Contact map + bounce map** — the non-tracking family. Every shot's
+   contact position, and the bounce proxy at 5 ft. Publishes as a heat map
+   per player, or per team, with the error bar stated on the page.
+3. **Rally tempo / pace** — median seconds between contacts, and the average
+   mph next to it. Framed as average speed, per the house rule above.
+4. **The 3D replay** — Phase 3, the showpiece. Already built for r4; needs a
+   rally chosen on a stated rule rather than on which one came out well.
+
+Not shipping: shot types, in/out, spin, launch speed, anything that needs a
+timestamp from pose.
+
+## Panel sizes — what every claim here currently rests on
+
+Small n is the honest weak point of the two new instruments, and it is the
+cheapest thing to fix.
+
+| instrument | panel today | limited by |
+|---|---|---|
+| `geom_speed.py` | 111 pace-labeled flights (64 train / 47 eval) | rallies with a ball path AND pose |
+| `bounce_proxy.py` | 57 human-fit bounces (31 train / 26 eval) | rallies with a ball path AND pose |
+| `blackhole.py` | 3,804 owner-judged frames | nothing — this one is fine |
+| `rally_stats.py` counts | 8 player-rallies | manual shot labels |
+| `label_curve.py` | 663k candidates, 1,888 positives | nothing — saturated |
+
+**Correction, 2026-09-03: r2-r5 were already fully tapped, and the panel
+sizes above are the ones that follow.** The first version of this table said
+those four rallies carried "only prefill contacts" and costed a 58-contact,
+45-minute tap pass to add them. That was a misreading of the CSV on my side:
+`source` = `prefill` means the tap was entered with ⏎ against the prefilled
+hitter/type, not that the row is an un-timed placeholder. Every one of the
+323 rows in `contact_labels_chicago0725.csv` carries an owner tap. Folding
+r2-r5 in cost nothing but a one-line fix, and it did what an hour of
+clicking was forecast to do: bounces 36 → 57, flights 63 → 111.
+
+What is still genuinely limited: `rally_stats.py`'s per-rally shot counts
+(8 player-rallies) and CHECK 2's contact-timing panel, which wants rallies
+with taps AND a graded path. The next real click job is a BALL PATH on a
+rally that already has taps — r18, r19, r20-r22 — not more contact taps.
+
+## What would change the answer
+
+Only two things, and neither is more clicking:
+
+- **New footage.** Higher resolution or uncondensed source moves the ball
+  channel; a second camera angle kills the depth degeneracy outright and
+  turns half the "can't" list into "can". Everything in the can't-get table
+  that says "one camera" is waiting on this and nothing else.
+- **The contact-anchored junction solve** (named, unbuilt, needs a
+  pre-registered bar). The black hole is bracketed: an arc in, an arc out,
+  one missing junction, and now a paddle position in court feet to anchor it
+  to. That is over-determined, which is where inference beats detection. It
+  would also type boundaries for free — a junction at ground level is a
+  bounce, one at a paddle is a contact — which is the thing CHECK 3 keeps
+  failing on.

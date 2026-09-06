@@ -3,12 +3,641 @@
 Dated status snapshot + next-thread to-do for the corridor ball-path
 tracker. Written because the working thread was running out of context.
 The instruments lived in a session scratchpad; they are now committed
-HERE (`vision/ballsearch/`) so a fresh thread can run them. The
-narrative record stays in `vision/swing_explore_notes.md` (chapter
+HERE (`vision/ballsearch/`) so a fresh thread can run them.
+
+**Direction: `ROADMAP.md` (this directory) — the three phases, what
+closes each, and what is deliberately not being chased.**
+
+The narrative record stays in `vision/swing_explore_notes.md` (chapter
 "Pose-corridor ball re-search", line ~4506 onward: post-verdict
 measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
+
+## 2026-09-05 (later, latest) — LEARNED CLAIMER: intact 13 → 17/35, bounce count 13 → 14; BOUNCE CODER shipped
+
+`claimer.py` (this directory) is the first FITTED claim step: candidates
+= ball turns + pose anchors, 26 two-channel features at each, boosted
+trees, 0.30 s NMS, threshold by intact flights on train. Train = r2–r7
++ r17 (contact taps; r2–r5 prefill); r9/r10 read ONCE (tau 0.45).
+`bound_oracle.py --bounds claimer` reads `claimer_bounds_r{N}.json`
+(gitignored; `claimer.py --read-eval --save` rewrites all nine in ~5 min
+— run with OMP_NUM_THREADS=1, the boosted fits crawl under thread
+oversubscription next to other jobs). Numbers in `vision/STATS.md`
+"UPDATE 2026-09-05 (later)": on the 35-bounce panel intact **17/35**
+(shipped 13), junk 35 → 14, contacts 62/79 unchanged — the first
+claim-step change that moves the leading indicator. Full fit, no
+demotion: **14/35** (r7 3, r9 4, r10 4, r17 3; shipped pipeline 13,
+tracked-no-demotion 11). r9 LOSES two (6 → 4) while its intact count
+barely moves: three matched bounces come back NOT OK on the re-cut
+flights — the fitter's plausibility clause is the next wall, and it is
+a fitter question. LEAK flagged: `t_to_end` is the top feature and the
+window end is last contact + 2 s on every rally without a point-dead
+label; `--no-end-feats` LORO keeps the intact gain (r7 3/3) and halves
+the junk gain (48 → 38 instead of 48 → 24); a leak-free r9/r10 read is
+a SECOND read and was not taken. With the shipped crossing demotion on
+top of the claimer bounds: **13/35** (r7 2, r9 4, r10 4, r17 3) — it
+removes 9 bounds, 7 of them real contacts, and costs r7 a bounce: net
+−1 on claimer bounds, the junk it was built to catch is already gone.
+Anchor-only arms after the full fit (shipped demotion): 14 and 15 of
+35 — a wash, as the intact table said.
+
+Bounce coder: `vision/make_bounce_audit.py` →
+`data/vision/bounce_audit_chicago0725.html` (19 train rallies, 229
+flights, clicked rallies first; per flight bounce-with-spot / volley /
+unsure / no bounce; only the owner's own ball clicks are drawn).
+`--score bounce_labels_chicago0725.csv` grades the taps against the
+fitter's human-path bounces (time ±0.30 s, landing feet), the tracked
+bounces where cached, and the per-flight call vs segment kind.
+Protocol: `vision/labeling_protocol.md`, addendum 2026-09-05.
+
+Next: (1) the owner's bounce taps → `--score` — audits the 35 and says
+whether the NOT OK flights hold a bounce at all; (2) leak-free r9/r10
+re-read only if the owner authorizes the second read; (3) the fitter's
+NOT OK clause on intact flights (why r9's three matched bounces fail on
+a cleaner cut) — grade on `--bounds claimer` / `--bounds human`.
+
+## 2026-09-05 — INTACT-FLIGHT GRADER, MISS ANATOMY, first claim-step candidate dead
+
+`bound_oracle.py --intact` grades a bounds variant in seconds (intact
+bounce flights / contacts matched / junk), no fit needed; numbers in
+`vision/STATS.md` "UPDATE 2026-09-05". Tracked 13/35 intact, either bound
+defect fixed 19, both 34. The 17 missed contacts: 10 anchor-but-no-turn,
+6 turn-but-no-anchor, 3 lost the claim; none blocked by the 0.35 s picker
+separation (misses sit in SLOWER exchanges). `predict_contacts` is three
+hand-set constants, not a model — more contact taps enlarge the panel but
+cannot improve it until a learned claimer exists. Anchor-only bounds
+(unclaimed anchor sets its own bound; `--bounds anchors|anchors2`) is
+DEAD: +4–5 contacts, +10–24 junk, intact 13 → 8/12; full-fit bounce
+count with the shipped demotion 14 / 15 of 35 (r7 loses one, r9/r10
+gain, r17 loses one). Panel caveat: the 35 "human bounces" are the fitter's
+calls on the human click path, never tapped directly — a direct bounce
+tap would be the first independent key.
+
+Next: a claimer that separates real contacts from fake swings AT THE
+ANCHOR (pose features + the ball-turn features, trained on the existing
+~200 manual contact taps, graded on `--intact` first, r20 untouched).
+
+## 2026-09-04 — BOUND ORACLE: the bounces are lost in the bounds, both halves at once
+
+`bound_oracle.py` (this directory; numbers and the flight-level reading in
+`vision/STATS.md`, "UPDATE 2026-09-04 (later)"). The bounce counter's 13 of
+35 is not the detector (tracked path 4.5 px median on the missed flights),
+not the fitter (25/35 when handed the human flights), and not the crossing
+demotion (drop it: 11; validate it on the merged fit: 13; on perfect bounds
+it demotes 11 real dink contacts, 25 → 20). It is the claimed bounds: 17 of 79 contacts
+missed AND 34 junk bounds (8 sitting on a bounce, 8 duplicate claims, 7
+mistimed by 0.27–0.41 s, 11 far). Only 13 of the 35 bounce-holding flights
+are intact (both ends within 0.25 s, nothing in between); on intact flights
+the counter hits 11/16, on broken ones 2/19. Fixing contact recall alone
+= 14, junk alone = 14, both = 25 — the two defects break the same flights.
+
+Grade claim-step work on intact flights, not on the bounce count, until the
+intact count moves. Two flags: `ball_replicate.main`/the autopsy use raw
+anchors while `ball_grade` check 3 dedupes (13 vs 12 shipped — quote them
+separately); `court3d.fit_arc` can raise `LinAlgError` on a 2-point piece
+(guarded in the oracle only — r20 risk). Reproduce: `bound_oracle.py
+--rally N --bounds {tracked,recall,precision,human} --demotion
+{none,shipped,validated} [--policy dedup]`, then `--summary`; caches are
+gitignored, ~1–13 min a cell.
+
+## 2026-09-03 — THE r2-r5 CONTACT TAPS ALREADY EXISTED
+
+Staging tonight's click found the click job did not exist. `source` in
+`contact_labels_chicago0725.csv` records HOW a tap was entered — `prefill`
+= ⏎ against the prefilled hitter/type, `manual` = an explicit 1-4 key,
+`divergent` = a flagged mismatch — and is written per TAP row by the
+exporter. It never meant "un-timed placeholder". All 323 rows carry a
+time; r2-r5's 58 contacts have been tapped all along.
+
+`geom_speed.contacts()` had `if r["source"] == "prefill": continue`, so
+three instruments (it, `bounce_proxy`, `blackhole`) were running on about
+half the panel available to them. Second bug found in the same pass:
+`contact == 0` rows are WHIFFS — a swing with no touch — and were being
+used as flight endpoints, inserting false junctions into r6/r7/r9/r10/r17.
+
+Both fixed. Panels now, with the previous number in brackets:
+
+| instrument | train | eval | headline |
+|---|---|---|---|
+| `geom_speed` | 64 flights [18] | 47 [45] | v AUC **0.856** train [0.825], **0.793** eval [0.788], 0.829 pooled [0.805] |
+| `bounce_proxy` | 31 bounces [10] | 26 [26] | **5.3 ft** eval [5.1], 4.0 ft train [2.9] |
+| `blackhole` | 2,302 frames [757] | 1,502 [1,502] | 77.5% at the contact vs 89.8% mid-flight [72.3 / 90.5] |
+
+Directions worth reading: the speed finding got STRONGER on 3.5x the
+flights, and the eval moved 0.005 (the whiff fix alone). The bounce
+number got WORSE — 2.9 → 4.0 ft on train — because 2.9 was an n=10 panel.
+The blackhole shape is unchanged on 3x the frames. Whiff removal also
+cleaned the attribution validators: every rally except r17 is now 100%
+name→track purity (r17 stays 4 alternation violations / 13-of-15, the
+one genuinely bad rally).
+
+LEAD_FT refit on the enlarged train set: 8.5 → 8.7 ft. V_FAST in
+`rally_stats.py` is NOT changed — the enlarged train midpoint is 34.5 vs
+the shipped 34.2 ft/s, inside the noise, and moving a shipped threshold
+by 0.3 to chase a re-fit is churn.
+
+Nothing here touched a seal, a bar, or the eval rallies' role. The eval
+re-read is a bug-fix re-read of a diagnostic, not a graded re-run.
+
+Lesson, and it is the same one as the `rally1_show.json` staleness: a
+column whose name reads like a status ("prefill") was assumed rather than
+traced to the code that writes it. One grep of the exporter would have
+saved the wrong roadmap.
+
+## 2026-09-03 (later still) — SPEED IS NOT BROKEN, AND THE BLACK HOLE IS 0.2 s WIDE
+
+Owner, two claims in one message: (1) speed should be recoverable from
+player positions + timing, (2) the place to spend time is the "black hole"
+where the ball vanishes at a direction change — solved by inference, not
+tracking. Both were tested the same day. Both hold.
+
+### (1) `geom_speed.py` — speed off geometry + timing
+
+The standing "speed is broken" line was about ONE instrument: the 3D launch
+fit off the ball's own arc, which is depth-dominated (a labeled `slow` at
+84.9 ft/s, a labeled `fast` at 18.0; AUC 0.10 on the r6/r7 labels — worse
+than a coin). The owner's estimator never touches ball depth:
+
+    avg speed over a flight = |xy(hitter_next) - xy(hitter)| / (t_next - t)
+
+with `xy` = the hitter's FEET through the z=0 homography (exact, 0.06 ft).
+LEVEL C: contact times are the owner's labels. Hitter attribution is the
+owner's clicked ball pixel → nearest pose track in PIXEL space, so both
+inputs are ground truth and the read grades the measure, not the tracker.
+Nothing tuned, no threshold fit, no gate, no seal. Output `geom_speed.txt`.
+
+| panel | dist alone | 1/dt alone | dist/dt | fast vs slow |
+|---|---|---|---|---|
+| TRAIN r2-r7+r17 (n=64) | 0.652 | 0.792 | **0.856** | 29.4 / 17.6 mph |
+| EVAL r9+r10 (n=47) | 0.635 | 0.731 | **0.793** | 27.7 / 18.4 mph |
+| pooled (n=111) | 0.654 | 0.767 | **0.829** | 29.4 / 17.8 mph |
+
+Permutation null ~0.50 [0.36, 0.65] pooled. **The decomposition is the
+finding: most of the signal is TIMING.** Time-between-contacts alone matches
+or beats the full speed on train. Geometry converts a tempo into physical
+units, and the units land where they should. Do not report this as "we
+measured ball speed off the video" — report it as pace from contact timing,
+put in mph by the court geometry.
+
+Caveats, all real: AVERAGE over the flight, not launch; straight-line
+distance, so a lob reads slow twice over; feet ≠ contact point (2-3 ft of
+reach, and height is ignored entirely); r17 fails its own alternation check
+(4 violations / 17) so its rows are the weakest. Free validators the script
+prints: side alternation 0 violations on r6/r7/r9/r10 (exact in this
+footage), name→track purity 88-100%.
+
+What would make it a real number rather than a pilot: (a) drop the LEVEL-C
+crutch and feed machine contact times — that is a LEVEL-B read and inherits
+the timing stream's error, which on sealed r10 is already better than the
+human's; (b) use the paddle proxy at contact height instead of the feet;
+(c) charge the ball its arc length, not the chord, once the junction solve
+below exists.
+
+### (2) `blackhole.py` — the hole is short, and it is bracketed
+
+Scored with the frozen CHECK-1 scorer on the adopted product (path-first +
+gap-fill v2), stratified by distance to the nearest owner-labeled contact.
+Output `blackhole.txt`. Same shape on both panels (TRAIN / EVAL):
+
+| band | human hole (I/N) | machine claims | machine hits |
+|---|---|---|---|
+| ≤0.10 s from a contact | 13.2% / 10.5% | 81.3% / 75.6% | 77.5% / 71.5% |
+| 0.10-0.25 s | 5.4% / 4.4% | 82.6% / 75.7% | 76.7% / 73.0% |
+| mid-flight 0.25-0.60 s | 3.3% / 5.5% | 91.0% / 90.4% | **89.8% / 90.3%** |
+| all | 4.9% / 7.1% | 84.0% / 82.9% | 81.1% / 81.1% |
+
+Mid-flight the tracker is a 90% instrument. At the contact it loses ~19
+points, and the HUMAN loses too (I/N triples) — the ball really is behind a
+body. The loss is not smeared over the rally: unrecovered runs are median
+6-7 frames, p90 18-22, i.e. a **~0.2 s window around every direction
+change**. Over the whole clicked archive only 6.8% of frames are I/N, and
+hidden runs are median 2 frames — the black hole is narrow, not vast.
+
+**Why that is the good case for inference.** The hole is bracketed: an arc
+arrives, an arc departs, one junction is missing. Endpoints plus flight time
+nearly determine a projectile arc (drag aside), and the project has done
+this shape before — `court3d.fit_segment` already joins two arcs at a bounce
+(`h_segs` kind=`bounce` with a solved `bounce_xy`), and `gapfill.py` extends
+both arcs to their closest approach and switches there.
+
+NEXT BUILD (unbuilt, needs a pre-registered bar before any number):
+**contact-anchored junction solve.** Same two-arc join, but with the
+constraint the bounce solve does not have — the junction must sit within
+reach of the hitter's paddle, whose court position the geometry channel now
+supplies in feet. That is over-determined (two arcs + a spatial anchor + a
+time), which is exactly the regime where inference beats detection. It also
+falls out as boundary TYPING for free — a junction at z≈0 is a bounce, one
+at a paddle is a contact — which is HANDOFF to-do (a) and the thing r10's
+CHECK 3 keeps failing on. `rally_3d.py`'s `relift()` already proved the
+anchor idea works for DISPLAY (worst arc-to-hitter distance at contact r4
+32.6 → 5.5 ft); this is the same anchor moved into the tracker.
+
+## 2026-09-03 (later) — BOTH LABEL AXES ARE SATURATED; where clicking should go
+
+Owner question: "if you had to guess how many rallies will we need?" — then
+"what if I coded 10,000?" Answered by measurement, not guess.
+
+`learner_curve.py` had already answered the WITHIN-rally axis (subsample one
+rally's positives, test on the other): logistic flat, AUC 0.907 at 50
+positives vs 0.904 at 198. The BETWEEN-rally axis was never measured — the
+shipped emission model is still fit on r6/r7 only. New instrument
+`label_curve.py` (diagnostic; no knob, no gate, no seal; TRAIN list is
+literal so eval + holdout rallies are excluded by construction) sweeps it
+leave-one-rally-out over all seven clicked train rallies. Harvest:
+663k labeled candidates, 1,888 positives.
+
+```
+ k   AUC                neg kept @97% recall
+ 1   0.9377 ± 0.0174    0.555 ± 0.127
+ 2   0.9426 ± 0.0165    0.554 ± 0.127
+ 3   0.9436 ± 0.0158    0.551 ± 0.116
+ 4   0.9451 ± 0.0158    0.554 ± 0.116
+ 5   0.9458 ± 0.0155    0.554 ± 0.118
+ 6   0.9461 ± 0.0153    0.558 ± 0.120
+```
+
+One rally to six moves AUC +0.008 — inside the ±0.015 spread across
+held-out rallies — and the OPERATIONAL metric (junk surviving at 97%
+recall) does not improve at all, 0.555 → 0.558, with the 3→4 and 5→6
+steps slightly negative. Full output in `label_curve.txt`.
+
+**Conclusion: more clicked ball-path rallies do not improve the emission
+model.** Not "diminishing"; flat. The remaining reasons to click a ball
+path are GRADING (you need truth to score against) and r18/r19 completing
+the roadmap batch — not training. This CORRECTS the reading in
+`learner_gate.md` / STATUS's "Better learner" entry, whose "next step is
+clicks, not model code" was inferred from the within-rally curve alone.
+
+CAVEATS, both real: (1) this grades the emission SCORER in isolation, not
+the whole path-first + gap-fill stack, which carries knobs the curve never
+touches; (2) it says nothing about CONDITIONING — r5's dbody/crowd failure
+is a regime problem, and the n-way refit (ROADMAP Phase 1) is still the
+right build because it lets the model see kitchen play at all, not because
+it adds sample count.
+
+### What a click actually costs, by channel
+
+| channel | per rally | whole match (188 rallies) |
+|---|---|---|
+| ball path | 362 frame-clicks (2,533 over 7 rallies) | 68,029 clicks ≈ 28–57 h |
+| contact type + time | ~13 taps (median contacts/rally) | 2,350 taps ≈ 3–7 h |
+
+Contact typing is **28× cheaper per rally** than ball clicking, and it is
+the channel that is actually thin. That is the answer to "where should the
+clicking go": not more ball paths.
+
+### Swing-envelope inventory (owner: "over the course of X frames")
+
+`data/vision/state_labels_chicago0725.csv` — 36 episodes, **26 complete**
+`start → impact → end`, but 24 are rally 1 and 2 are rally 6.
+
+| segment | median | frames @30 | range |
+|---|---|---|---|
+| full episode | 0.92 s | 27 | 0.47–1.57 s |
+| start → impact (backswing) | 0.52 s | 16 | 0.23–1.27 s |
+| impact → end (follow-through) | 0.30 s | 9 | 0.13–0.50 s |
+
+So there is no single X: 14–47 frames, a 3.3× spread. Resample to fixed
+length for SHAPE and keep raw duration as its own feature.
+
+**Why this is a new instrument and not a Gate-C knob-turn.** `fastslow_check`
+v2 already killed the per-contact pose-magnitude version — raw `arm_cmax`
+fast-vs-slow AUC **0.445, inverted**, `drive` at 0.49× dink's arm speed (the
+lowest of every type), best fold-honest 61.1% (POSE-N+CAD) vs a 56.9%
+majority, and the notes record per-contact pace saturating ~60% on this
+stream, mostly off CADENCE not pose. But `arm_cmax` is a MAXIMUM: it is
+invariant to how long a motion lasts. If a drive's tell is a longer
+backswing rather than a faster one, that instrument is structurally blind
+to it, and duration was never a feature anywhere in the run.
+
+**The join is the blocker, not the idea.** Rally 1 holds the envelopes AND
+the fine vocabulary (dink 8 / smash 5 / counter 5 / speed-up 2 — pool the
+last three per the owner's frozen label-semantics correction, so 8 vs 12),
+but has no pose npz extracted (~20 min CPU) and its types are prefill-era.
+r6 / r7 / r17 have pose npz and trustworthy MANUAL pace labels and 2
+complete episodes between them. Only 4 of the 26 episodes join to a manual
+pace label at all; 1 of those has pose.
+
+What DOES join today is **forehand vs backhand**: 14 bh / 12 fh on the
+complete episodes, flat 50% baseline, pure swing-shape. Also rally 1, also
+needs that one pose extraction.
+
+Manual (non-prefill) contact types across the match: 220 rows, `slow` 88 /
+`fast` 67. On train rallies that already have pose npz (r6, r7, r9, r10,
+r17) that is **58 contacts, balanced 29/29** — the per-contact arm, already
+runnable, and the arm fastslow already found saturates near 60%.
+
+POWER, so nobody reads a coin flip as a result: n=26 fh/bh needs 18 correct
+(69%) to clear p<0.05; the n=20 dink-vs-kitchen-fast arm against its 60%
+majority needs 17 (85%), effectively unreachable. Pilot-sized for a large
+effect, blind to anything subtle.
+
+TWO QUESTIONS, DO NOT CONFLATE — this is `phase_grader.py`'s own LEVEL C vs
+LEVEL B split. Owner-marked envelopes answer "do dink and drive swings
+differ in shape" (science, fair game, no placement needed). Machine-placed
+envelopes are the product and inherit Gate C's wall directly, since
+placement is exactly what died at 40.7%. Any run of this needs a bar
+written down BEFORE the number.
+
+## 2026-09-03 — r3 / r4 / r2 reads, and TWO SCORER ARTIFACTS
+
+Owner delivered ball_path_r3 (528 rows, 348 V / 154 S / 24 I / 2 N; two
+frame gaps at the top of frame = the two lobs that left the picture),
+ball_path_r4 (403 rows, 273 V / 106 S / 24 I, no gaps) and ball_path_r2
+(291 rows, 171 V / 96 S / 24 I, no gaps). All three are TRAIN.
+
+Reads (incumbent cell, as the scorer counts today):
+  r3  tracked+inf r@12 344/502  prec 0.81   decode ceiling 366/502
+  r4  tracked+inf r@12 275/379  prec 0.93   decode ceiling 167/379
+  r17 (prior)     r@12 253/379  prec 0.94   decode ceiling 244/379
+r4 is the strongest read so far: path-first + gap fill reach 108 clicks
+the candidate decoder alone cannot (ADDED@12 113).
+r2's ball_grade gate returned CHECK 3 FAIL — autopsy still open.
+
+### The S-click question (owner asked: are they really ignore-zones?)
+
+Measured with NO tracker and NO model: leave-one-out local-quadratic
+residual, contact-straddling windows dropped (click_diag.py precision).
+
+  V clicks  n=1046  median 1.93 px  p75 3.02  p90 4.25  94% within 6 px
+  S clicks  n= 387  median 2.68 px  p75 4.15  p90 7.23  87% within 6 px
+
+S clicks are the ball and they are precise to ~2.7 px. 87% of them
+already satisfy R_POS=6. The current rule (R_IGN=22, never a positive)
+discards ~500 genuine positives across the train rallies in exactly the
+stratum the detector is worst at. RULE UNCHANGED — this is the owner's
+call and they have the number now.
+
+### Two SCORING artifacts, both pessimistic, both speed-scaling
+
+1. cdp.score matches a click to `track.get(f) or track.get(f-1) or
+   track.get(f+1)` — FIRST available, not nearest, never interpolated.
+   When frame f is missing it silently compares against a position up to
+   1.5 frames away; at 40 px/frame that is 60 px of bookkeeping error.
+   Only fast balls are hit.
+2. The click grid and the clip frame grid are out of phase by a fraction
+   of a frame. Fit on V clicks ONLY (click_diag.py phase): r3 -0.45,
+   r6 -0.25, r7 -0.50, r17 -0.20 frames at 60 fps — every rally negative,
+   i.e. click times run 3-8 ms late, consistent with the browser seeking
+   to the frame at or before currentTime. The fit never sees an S click
+   and still halves S error (r3 5.92 -> 2.66 px, r7 9.90 -> 3.75 px),
+   which a per-click artifact could not do.
+
+Rescored with both removed (interpolate, then phase):
+  r3   r@8 273 -> 384   r@12 338 -> 388   (of 502)
+  r7   r@8 123 -> 169   r@12 157 -> 178   (of 260)
+  r17  r@8 236 -> 241   r@12 244 -> 245   (of 379)
+r17 barely moves because it was nearly in phase — that, not rally
+difficulty, is why r17 looked so much healthier than r3.
+
+DO NOT ship the fitted phase. It is fit against the track and is a
+diagnostic that the problem is real, not the number to correct with. A
+shipped correction must measure each clip's true cut offset against the
+full match video. The incumbent seals (r9 431@0.69, r10 320@0.67) were
+scored under the old rule and have NOT been rescored — that is a graded
+re-run and needs explicit owner authorization.
+
+### Why whole flights come back empty (owner question, autopsy)
+
+flight_autopsy.py. A flight = clicks between consecutive contacts.
+Over r9+r10 (AUTOPSY use of the eval clicks — no knob touched):
+
+                    zero-hit    hit
+    clicks             14        27      <- the discriminator
+    S share            0.21      0.24    <- no difference at all
+    speed (px/f)      10.6      12.1
+    duration (s)       0.57      0.90
+
+It is FLIGHT LENGTH, not click type or speed. path-first needs a seed run
+of s_min=6 consecutive frames above p_seed and then commits or drops the
+whole flight; a 0.3-0.45 s exchange is 18-27 frames at 60 fps, so losing
+a handful kills the entire flight at once. That all-or-nothing structure
+is what "it detected nothing" looks like from outside.
+Caveat: the r9/r10 phase scalars (-0.50, -0.70) were fit for this
+autopsy, so they are contaminated for grading — a shipped scorer must not
+reuse them.
+Biggest single zero-hit category in EVERY rally is the PRE-SERVE segment
+(ball stationary in the server's hand, punished by persist + dbody).
+Arguably correct behaviour being counted as a miss.
+
+### Owner's speed-vs-appearance hypothesis (partly confirmed)
+
+Label-side only, train rallies (click_diag.py appearance). S clicks run
+2.2x faster than V clicks in median pixel displacement (20.8 vs 9.4
+px/frame pooled) and the split holds in every rally — "looks like a
+streak" really does mean "going fast". The median S patch contains zero
+yellow pixels, the median V patch ~12. The SHAPE half is NOT settled: over
+a 21x21 patch the ball is a handful of pixels and the court dominates the
+statistic, so elongation did not separate (V 1.63 vs S 1.68). Note the
+emission model already carries `yellow` as its single largest positive
+weight (+1.287 of 14 features); what it has NO feature for is streak
+elongation or orientation. That is the open gap.
+Off-screen check r3 passed clean: 2 trackpoints across 2.1 s of ball out
+of frame, the first rally able to test that failure mode.
+
+
+### r5 delivered — sitting 3 complete
+
+ball_path_r5: 446 rows, 290 V / 114 S / 23 I / 19 N, no frame gaps
+(tool t0 117.279 vs the recorded 117.28). TRAIN. Three N runs — two
+singletons and one 17-frame run at frames 191-207, bracketed by y=1 and
+y=2, i.e. another lob out of the top of frame. Unlike r3 the owner
+marked these N with the row present rather than skipping, which is the
+better shape: the reader knows the ball was unplaceable rather than
+having to infer it from a frame gap.
+
+### Owner callout: "an S is better than a guess" — CONFIRMED, and bigger
+
+inferred_audit.py. Gap fill v2's inferred frames, crossed against the
+click path, over r2/r3/r4/r6/r7/r17:
+
+  414 inferred frames -> V 240 (58%)  S 83 (20%)  I 33  no click 58 (14%)
+  78% of the guesses land on a frame the owner could see and click
+  32% sit within 0.20 s of a contact (the "near the paddle" half)
+  the guesses are poor: median 10-55 px from the click that was there,
+  27-63% of them within 12 px
+
+Split on decode@12 — did a candidate exist that path-first declined?
+
+  S clicks, candidate existed   57      S: 57/85  = 67% declined
+  S clicks, no candidate        28
+  V clicks, candidate existed   92      V: 92/243 = 38% declined
+  V clicks, no candidate       151
+  overall 149/328 = 45% of the guessed-at clicks HAD a candidate
+
+So the streak stratum is where the tracker most often walks past evidence
+already in hand, at nearly twice the V rate. Mechanism, end to end: an S
+click yields no positive, so the emission model never learns the streak
+appearance; its largest weight is `yellow` (+1.287), the one feature a
+white smear lacks; streak candidates therefore score under p_seed;
+path-first's seed test declines them; gap fill guesses over the top.
+Clicks are ground truth and not a run-time input, so this is NOT "use the
+click" — it is that the S stratum carries recoverable evidence the
+current rule forbids the model from learning. RULE STILL UNCHANGED.
+
+### r2 gate autopsy (CHECK 3 FAIL, verdict FAIL via c2_nullfail)
+
+  CHECK 1 V: 81.9% (136/166)  [bars PASS>=70, FAIL<40]
+  CHECK 1 S: 92.7% (89/96)    <- S is the BEST stratum on this rally
+  CHECK 2 turns[tracker]: recall 72.7% at null pct 81 (95th 81.8) - misses
+  CHECK 3: 8/10 impacts matched, median 3D 6.13 ft (bar <=3.0);
+           bounces tracked 8 vs human 3 (bar +/-1)
+
+Two reads. CHECK 1 puts S ABOVE V here, another data point against "S is
+the weak stratum". And r2 has only 11 contacts, so CHECK 2's null is
+quantised in 1/11 steps: the 95th percentile is 9/11 and the tracker got
+8/11, i.e. clearing the bar needs 10 of 11. That is a power limit on a
+short rally as much as an instrument failure — read it next to r3 (17
+contacts) and r4 (16) before concluding. The substantive CHECK 3 finding
+is the bounce count: 8 claimed vs 3 reconstructed, i.e. the tracker
+over-segments the rally into more flights than were played — the same
+seed-and-commit machinery that drops short flights whole, failing the
+other way.
+
+
+### r5 read, and the three gate verdicts (r2 FAIL / r3, r4, r5 MIDDLE)
+
+r5 (`train_read_r5.txt`) is the SLOWEST rally in the set and it reads
+worst of the four, which is the opposite of the expected ordering:
+
+  404 V/S clicks (290 V / 114 S), decode@12 280/404 = 0.69 ceiling
+  path-first    r@12 274  prec@12 0.84  ADDED@12 43
+    pf[V]       r@12 209/290   prec 0.92
+    pf[S]       r@12  65/114   prec 0.66
+  tracked+inf   r@12 299/404 = 0.74  prec 0.79  ADDED@12 65
+  inferred      194 frames (the most of any rally), r@12 37, prec 0.50
+
+By prefill contact TYPE the ordering inverts against every prior read:
+
+  fast    48 clicks, 41 pf-hit = 85%
+  slow   144 clicks, 75 pf-hit = 52%
+
+That is not a speed effect, it is a PROXIMITY effect. r5 is a dinking
+rally: "slow" contacts put the ball low, near bodies and paddles, where
+`dbody` and `crowd` — two of the emission model's larger negative
+weights — are doing exactly what they were fitted to do on r6/r7, which
+had far less kitchen play. The worst single contact is 132.46 (16
+clicks, 1 hit). The mirror of the r9/r10 finding: path-first drops
+whole flights, and here it drops the flights that live at the kitchen.
+So the instrument has TWO failure modes, not one — fast/blurred balls
+lose to `yellow`, slow/close balls lose to `dbody`+`crowd` — and they
+are not the same rallies. A single global tune cannot be optimal for
+both; that is an argument for conditioning, not for another knob turn.
+
+Gate verdicts, all four rallies of sitting 3 (`ball_grade.py`, prefill
+contacts, `--prefill-ok`):
+
+  r2 (11 contacts)  FAIL     C1 V 81.9 / S 92.7 = pass
+                             C2 recall 72.7 at null pct 81 -> NULLFAIL
+                             C3 fail: 8/10, median 6.13 ft, bounces 8 v 3
+  r3 (17 contacts)  MIDDLE   C1 V 85.4 / S 87.4 = pass (best C1 of the four)
+                             C2 82.4 v human 70.6, both pct 100 = PASS
+                             C3 fail: 9/16, median 4.84 ft, bounces 4 v 6
+  r4 (16 contacts)  MIDDLE   C1 V 53.4 / S 64.8 = MIDDLE band (bars 70/40)
+                             C2 beats own null 95th, human-matched no
+                             C3 PASS: 9/16, median 1.76 ft, bounces 5 v 4
+  r5 (14 contacts)  MIDDLE   C3 fail on distance ONLY: 8/14 impacts,
+                             median 4.60 ft, bounces 6 v 6 (exact),
+                             crossings 9/9
+
+THE CHECKS DISAGREE ACROSS RALLIES, AND THE DISAGREEMENT IS THE FINDING.
+r3 has the best CHECK 1 and the only clean CHECK 2 human-match, and fails
+CHECK 3. r4 has the WEAKEST CHECK 1 of the four (53.4% V, in the middle
+band) and is the only CHECK 3 pass, at 1.76 ft. So anchor-level precision
+and 3D replication quality are not the same axis here and on this
+evidence run opposite: r4's 16 flights are long and well separated, which
+is what the ballistic fit wants, while its anchor set is thin (40 anchors
+vs r3's 51) on a rally whose clicks are dominated by a few long arcs.
+Do not treat any single check as the universal blocker, and do not tune
+against CHECK 1 expecting CHECK 3 to follow.
+
+CHECK 2 beats its own null 95th on r3, r4 AND r5 and fails only on r2 —
+independent confirmation that r2's FAIL is the 11-contact power limit.
+
+Two things follow. First, r2's FAIL was a POWER artifact and is now
+confirmed as such: MIDDLE requires `not c2_nullfail`, so CHECK 2 cleared
+its permutation null on r3, r4 and r5 — every rally with 14+ contacts —
+and failed only on the 11-contact rally where the null quantises in
+1/11 steps and clearing needs 10 of 11. Do not read r2 as the tracker
+being worse on r2; read it as an 11-contact rally being unable to
+resolve the question. Second, r4 is the first CHECK 3 PASS on any
+newly-labeled rally (median impact error 1.76 ft against a <=3.0 bar),
+and it is also the strongest train read on record (ADDED@12 113 over a
+ceiling of only 167). r4 and r5 bracket the instrument: same tune, same
+model, 1.76 ft vs 4.60 ft, and the difference is what the rally is made
+of.
+
+All three MIDDLE verdicts route to the same frozen clause — one
+train-only iteration, then ONE re-grade on a newly labeled sealed
+rally. No seal is consumed by any of the above; r2-r5 are train.
+
+
+### CHECK 1 SCORED ON PATH-FIRST — PASSES ON ALL SEVEN TRAIN RALLIES
+
+2026-09-03, `pf_check1.py` -> `pf_check1.json`. Train measurement, no
+seal, bars untouched.
+
+The gate battery (`vision/ball_grade.py`) runs the DECODER stack;
+path-first has been the adopted incumbent since 2026-09-01 and had
+never been scored on the gate's own checks. `HANDOFF.md` reports both
+per rally in adjacent paragraphs — the "read" (path-first r@12) and
+the "gate verdict" (decoder) — which is how the split went unnoticed.
+The frozen CHECK 1 scorer now lives in `vision/gate_checks.py` and
+BOTH stacks call it (extraction verified: ball_grade on r4 reproduces
+53.4% / 64.8% exactly).
+
+  rally   V hit      rate   claimed  of-claimed   S rate  flights
+     2   131/166    78.9%      131      100.0%     62.5%    12
+     3   227/281    80.8%      228       99.6%     79.7%    19
+     4   190/262    72.5%      190      100.0%     81.9%    16
+     5   220/270    81.5%      222       99.1%     86.0%    21
+     6    98/122    80.3%       98      100.0%     47.8%     8
+     7   135/158    85.4%      137       98.5%     89.7%    11
+    17   169/239    70.7%      169      100.0%     70.0%    14
+  pooled 1170/1498 = 78.1%  claimed 78.4%  of-claimed 99.6%
+
+All seven PASS the >= 70% bar. r6/r7 are in-sample for the frozen cell
+(it was tuned on them); the five OUT-OF-SAMPLE rallies pass too
+(78.9 / 80.8 / 72.5 / 81.5 / 70.7), and every emission p-cache is
+out-of-fold via `context()`'s `_x` rule.
+
+THE NUMBER THAT MATTERS IS of-claimed = 99.6%. Where path-first speaks
+it is within 25 px essentially always; every CHECK 1 miss is a frame
+where it said nothing. So CHECK 1 is PURELY COVERAGE-BOUND — placement
+is not a failure mode at this tolerance — and to-do (b) moves it
+roughly 1:1 while precision holds.
+
+The two stacks fail in opposite directions: the decoder claims
+everywhere and is often wrong (r4 53.4%), path-first stays silent and
+is almost never wrong (r4 72.5% at 100% of-claimed). Do not read this
+as path-first dominating — on r2 and r3 the decoder's CHECK 1 is
+HIGHER (81.9 / 85.4 vs 78.9 / 80.8) because continuous claiming is
+rewarded when it happens to be right. It is a different trade, not a
+strict upgrade, and CHECK 3 may price silence differently.
+
+CAVEATS: r2-r5 have PREFILL contacts only, so the panel edges
+(imps[0] .. imps[-1]+0.5) are approximate there — acceptable for
+CHECK 1, which is why `--prefill-ok` exists, and NOT acceptable for
+CHECK 2. And r17 is the weakest rally at 70.7%, barely over the bar —
+awkward, because r17 is the only clean train rally with enough manual
+contacts for CHECK 2 to resolve its null (see below).
+
+CHECK 2 CANNOT YET BE SCORED ON THE TRAIN SET. Its truth is manual
+contact taps at +-0.15 s. Inventory of
+`data/vision/contact_labels_chicago0725.csv`: manual taps exist for
+r6 (8), r7 (10), r8 (9, spent seal -> train), r17 (17), r18 (3),
+r19 (2), r20 (20, the seal), r21 (6), r9 (30) and r10 (27) which are
+evaluation-only, and r22-r27 which are temporal-gate HOLDOUT and stay
+untouched. **r2-r5 are PREFILL ONLY.** On top of that, r2's FAIL
+established a power floor — 11 contacts cannot resolve the
+permutation null (it quantises in 1/11 steps) — so of the clean train
+rallies only r17 (17 contacts) is adequately powered.
+THE ASK: a timing pass on r3 / r4 / r5 (47 contacts; they are inside
+the audit tool's frozen core-16 set, so hitter and shot type are
+already prefilled and only the timing is supplied) turns a
+one-rally CHECK 2 panel into a four-rally one, off ball paths that
+already exist. r2 is below the power floor; skip it.
 
 ## Constraints in force (owner-set; carry verbatim)
 
@@ -33,6 +662,10 @@ disagree on a NUMBER, the notes file is the record.
 |---|---|
 | `c3_lab.py` | Stage A cache per rally → `c3_cache_r{r}.pkl` (windowed candidates, decode, timing stream, turns, anchors, floors, human side fit). WINDOWS dict holds serve/end/pose-npz per rally. |
 | `claim_lab.py` | `load(rally)`, `paddle_series(npz)`; claim logic labs. |
+| `bounce_autopsy.py` | read-only bucket per missed human bounce on r7/9/10/17 (NO WINDOW / CAPPED / NO SEG / NOT OK / CALLED ARC / WRONG TIME) off the c3 cache; caches the shipped tracked side as `autopsy_track_r{r}.pkl` (gitignored). |
+| `bound_oracle.py` | swaps each downstream stage for its oracle (bounds: tracked / +missed contacts / −junk / human × demotion: none / shipped / validated; `--first-pass`; `--policy dedup` = check 3's anchors) and grades the same 35 bounces; `--summary` prints the grid, `--anatomy` the junk-bound breakdown, `--intact` the no-fit intact-flight table (the claim-step grading number; 2026-09-05). Result 2026-09-04: both bound defects together 25/35, either alone 14, shipped 13 — see STATS.md. Caches gitignored. |
+| `claimer.py` | the LEARNED claim step (2026-09-05): candidates = turns + anchors, 26 features, boosted trees, NMS, tau by intact flights on train; `--loro` (train, leave-one-rally-out, nested tau), `--read-eval` (ONE read of r9/r10 — spent 2026-09-05 with the window-end features in; `--no-end-feats` = the leak-free variant, LORO only so far), `--save` writes `claimer_bounds_r{N}.json` for `bound_oracle.py --bounds claimer`, `--manual-only`, `--train a,b,c`. Set OMP_NUM_THREADS=1. |
+| `../make_bounce_audit.py` | the BOUNCE CODER (vision/, 2026-09-05): per-flight bounce/volley/unsure/no-bounce with the landing spot → `data/vision/bounce_audit_chicago0725.html`; `--score` vs the fitter's human-path bounces + tracked bounces; `--selftest` (node --check + an exact r7 round-trip). |
 | `corridor_lab.py` | corridors between consecutive contacts (prod = approach_events + anchors → dedupe → claim_bounds; oracle = hand taps `c["imps"]`); window = chord ± (wx=min(140,40+0.2L), wy=min(170,55+0.3L)); truth loader; `decode_recall`; R_MAIN=12. |
 | `corridor_dp.py` | Viterbi chain per corridor over per-frame candidates (K=14, GAP=6): accel + gap + endpoint + body-extremity cost (W_BODY=25, R_BODY=16) − peak bonus + `W_P_SOFT·(1−p)`. |
 | `emission.py` | learned per-candidate scorer (hand-rolled Adam logistic, 14 features). `train` (r6↔r7 cross-val + pooled model → `emission_model.json`), `cache <r>` (p-cache from pooled model), `cache-cross` (r6 scored by r7-only model and vice versa → `p_r{6,7}_{mode}_14_x.npz`, fold kp97). |
@@ -45,11 +678,12 @@ disagree on a NUMBER, the notes file is the record.
 | `pathfirst.py` / `pathfirst_gate.md` / `pathfirst_tune.json` / `pathfirst_grade_r{9,10}.txt` | **THE INCUMBENT (adopted 2026-09-01)**: path-first tracker — no contact detector, no corridor box. 3-seed drag-free arc hypotheses over the whole-frame candidate cache (top-4 by learned p per frame, p ≥ P_SEED, not on a body), p-weighted support minus a random-probe baseline, NMS, drag refit + bidirectional growth (R_GROW 10, stop after GAP misses), greedy selection by density, contacts = flight ends. `selftest`, `tune` (12-cell grid r6/r7 cross-fold, frozen rule, writes the verdict), `grade <r>` (one-shot vs the corridor incumbent: V/S splits, displaced + time-shift nulls, strata, oracle-contact recovery, per-flight table; refuses r9/r10 with overrides or a dead verdict). Pre-registration + results addendum in `pathfirst_gate.md`. **r9 537 @ 0.87 vs 431 @ 0.69; r10 422 @ 0.88 vs 325 @ 0.69.** ~3 s per rally. |
 | `render_pathfirst.py` | viewer only: draws the path-first track (trail, ball ring, v3 event labels, faint candidate dots) on `r{N}_clip.mp4` → `pathfirst_r{N}.mp4` (960×540 H.264, default half speed). `--reddit` = the share cut (owner ask 2026-09-02): 1280×720, no labels/HUD, ball and trail always red, pose skeletons of the four tracked players → `pathfirst_r{N}_reddit.mp4` (the two share cuts ARE committed, force-added past `*.mp4`, ~9 MB each). Reads no truth, tunes nothing. |
 | `rally_stats.py` / `rally_stats_r{9,10}.txt` | PROTOTYPE rally stats off the adopted track + v3 events, three rules written before any rally was looked at (hit = event within 3 ft of a player's paddle proxy, same player twice inside 0.6 s = one; speed-up = first flight after the 3rd hit launched ≥ 38 ft/s and starting at a hit; last shot = last attributed hit + end of the final flight in court ft). Identity is POSITION only (near/far × left/right from the pose tracks). `--grade` (r9/r10, evaluation only) maps names to tracks by majority vote over the owner's labeled contacts. RESULT: hits per player within ±1 of the labels for all 8 player-rallies (r9 10/5/10/5 vs 9/5/10/5; r10 4/9/9/5 vs 5/8/9/4) — re-run 2026-09-02 on the adopted gap-fill flights: r9 unchanged, r10 3/8/9/4 (three exact, far-left −2); last shot right in both; **speed-up WRONG in both** — launch speed off a one-camera 3D fit is depth-dominated and fragments inflate it (r9 named a 71 ft/s fragment at 260.97 vs the labeled first fast shot at 257.84; r10 303.18 vs 300.23). Not a channel; a speed measure the camera can support (image speed at local scale, or hit-to-hit time) is the next thing to try. |
-| `rally_3d.py` / `court3d_r{9,10}.html` | orbitable 3D court view (court3d.write_viewer) of the path-first flights — every flight already IS a 3D arc — plus the four players' floor tracks from the pose npz through the z=0 homography and the attributed hits. Prints the free ground-truth check: r9 17 net crossings, 4 under the 34-in tape; r10 10 / 0 (a crossing under the tape = a flight whose depth or height is off, the one-camera weakness made countable). Committed (small HTML). Depth is the weak axis; gaps stay gaps. **PLAYER-BOX RE-LIFT (owner ask 2026-09-02, restoring the pseudo-boundary the court3d pass-2 fits had)**: for display, every flight is refit to its own graded pixels with a hinge keeping the arc inside the four players' floor box (+4 ft) and above the floor (W_BOX 1 px/ft; 4 px/ft made one r9 fit diverge). r9: pixel rms vs the graded track median 0.07 / max 1.8 px, worst excursion 32 ft → 10 ft, path y −29..58 → −5..52, net crossings 14/3; r10: 0.09 / 2.0 px, 21 ft → 4 ft, 11/0. The 2D track is untouched — this is the viewer's lift, not the tracker. |
+| `rally_3d.py` / `court3d_r{9,10}.html` | orbitable 3D court view (court3d.write_viewer) of the path-first flights — every flight already IS a 3D arc — plus the four players' floor tracks from the pose npz through the z=0 homography and the attributed hits. Prints the free ground-truth check: r9 17 net crossings, 4 under the 34-in tape; r10 10 / 0 (a crossing under the tape = a flight whose depth or height is off, the one-camera weakness made countable). Committed (small HTML). Depth is the weak axis; gaps stay gaps. **PLAYER-BOX RE-LIFT (owner ask 2026-09-02, restoring the pseudo-boundary the court3d pass-2 fits had)**: for display, every flight is refit to its own graded pixels with a hinge keeping the arc inside the four players' floor box (+4 ft) and above the floor (W_BOX 1 px/ft; 4 px/ft made one r9 fit diverge). r9: pixel rms vs the graded track median 0.07 / max 1.8 px, worst excursion 32 ft → 10 ft, path y −29..58 → −5..52, net crossings 14/3; r10: 0.09 / 2.0 px, 21 ft → 4 ft, 11/0. The 2D track is untouched — this is the viewer's lift, not the tracker. **CONTACT ANCHORING (owner ask 2026-09-03: on rally 4 the ball still ended up behind a player before they struck it)**: the box alone was not enough for three reasons, all fixed in `relift()` — (1) the box was polluted (nearest-sample min/max over four players, and rally 4's far-left pose track has 188 contiguous junk samples over the serve and first two flights, so the box was y[−13,50]: now an APRON filter plus a windowed median); (2) nothing said the ball must reach the player about to hit it — hit attribution is done in PIXEL space (`rally_stats.nearest_player`) so it survives the depth degeneracy, which makes every attributed hit a usable anchor (arc within REACH_FT=5 ft of the hitter's floor position, contact height 0.2–9 ft); (3) Gauss-Newton was stuck in a local minimum — where the box WAS right the fit still left a 10.7 ft excursion for 0.38 px, so the fit is now multi-start (±8 ft depth-shifted launches plus one placed at the first anchor, lowest total cost wins). W_BOX 1 → 4 px/ft; the multi-start is what stopped 4 px/ft diverging. Measured, worst arc-to-hitter distance at contact → after: r4 32.6 → 5.5 ft (16 flights, 26 anchored hits; excursion 10.7 → 0.6 ft; net crossings 5 → 13, pixel rms median 0.14 → 0.38 / max 0.38 → 0.97 px), r9 56.9 → 10.9 ft (excursion 32.1 → 2.5, crossings 22/5 under tape, rms 0.33/2.94), r10 57.0 → 6.7 ft (21.3 → 2.2, crossings 20/1, rms 0.35/3.62). The robust box on its own moves contact distance almost not at all (r4 32.6 → 32.6 ft) — the anchors and the multi-start are the whole gain. Constants were settled on r4/r6/r7 (TRAIN); r9/r10 are regenerated viewers only — nothing tuned on them, nothing written back, no gate touched. |
 | `render_court3d.py` / `court3d_r9.mp4` | the 3D viewer as a video (owner ask 2026-09-02, easier to post): reads PATH/IMPACTS/PLAYERS out of the committed viewer HTML, replays them with the viewer's own projection and colours in real time with a slow orbit, 1280x720 @ 30 fps, libx264 crf 18. Three honest cosmetics the page lacks: the path is broken at flight gaps (the page joins consecutive samples with a straight line), the ball is hidden while the track is lost, rings flash at the attributed hits. r9 chosen over r10 (more samples, all four player tracks complete). Committed (force-added past the mp4 ignore, 4.6 MB). Rally 9 is also published as an interactive artifact (same viewer with the same gap fix, real-time play button). Nothing re-fit; viewer only. |
 | `handoff.py` / `handoff_gate.md` / `handoff_tune.json` / `handoff_grade_r{9,10}.txt` | Hand-off seeding, pass 2 on top of the frozen path-first pass: short-span seeds (6/8/12 frames) allowed NEAR BODY, only inside a zone next to a pass-1 flight end. Pre-registered, tuned on r6/r7 (16 cells → r_zone 70 / w 18 / p_hand 0.25 / s_min 3, 277 @ 0.810 vs 263 @ 0.807), ONE SHOT on r9/r10 spent 2026-09-02: track r@12 537→563 (r9) and 422→446 (r10) at unchanged precision, nulls clean, BUT the v3 events layer re-run on the new flights lands F1 .636 on r10 vs bar .645 (r9 .758 passes) → **NOT ADOPTED**, incumbent stays. `grade` for r9/r10 is spent. Next gate if reopened = events re-tune on the hand-off track (new pre-registration). |
 | `label_picks.md` | the owner's click list for 2–4 more ball-click rallies chosen for FAST exchanges, inside the split rules: r17 (train), r21 (fresh seal), then r4 (train), r20 (the reserved seal). r22–r30 holdout untouched. |
-| `click_setup.md` | **THE CLICK PACKAGE (2026-09-02, owner: "don't give me the minimum")** — nine rallies in three sittings with tools built and staging done: r17 / r21 / r18 / r19 (sitting 1), r20 (sitting 2), r3 / r4 / r2 / r5 after a contact pass (sitting 3). Committed: `data/vision/ball_audit_r{17,18,19,20,21}.html`, `data/vision/ball_candidates_r{17..21}.csv.gz` (clips cut at the audit-tool span via `cut_clip.py --stage`, check_clip PASS), c3_lab WINDOWS 17–21. Missing: pose npz for 17–21 (one Colab line in the doc). What to run when the CSVs land is written there. |
+| `click_setup.md` | **THE CLICK PACKAGE (2026-09-02, owner: "don't give me the minimum")** — nine rallies in three sittings with tools built and staging done: r17 / r21 / r18 / r19 (sitting 1), r20 (sitting 2), r3 / r4 / r2 / r5 (sitting 3 — **staged 2026-09-02 off the PREFILL span, no contact pass needed**). Committed: `data/vision/ball_audit_r{2,3,4,5,17,18,19,20,21}.html`, `data/vision/ball_candidates_r{2..5,17..21}.csv.gz` (clips cut at the audit-tool span via `cut_clip.py --stage`, check_clip PASS), c3_lab WINDOWS + corridor_lab CLIPS for 2–5 and 17–21. Pose npz: r17 + r2–r5 extracted here on CPU (gitignored; `pose_meta_r17.json` / `pose_meta_r2to5.json` are the stamps), 18–21 still need a run (CPU here or Colab). What to run when the CSVs land is written there. |
+| `train_read.py` / `train_read_r17.txt` | **The first read of a NEW TRAIN rally** (2026-09-02): refuses r9 / r10 / r20 / r21, reads only the committed tune records, scores the incumbent path-first track + gap fill v2 against the V/S clicks with both nulls, then buckets every click by the nearest manual contact (serve / return / slow / fast / middle, S-only split) and prints a per-contact coverage table. `python3 train_read.py 17`. `c3_lab.py` now takes rally args (`python3 c3_lab.py 17`; no args = the original four). |
 | `gapfill.py` / `gapfill_gate.md` / `gapfill_tune.json` / `gapfill_grade_r{9,10}.txt` | GAP FILL BY ARC EXTENSION (owner's framing 2026-09-02: the ball behind a paddle/player exists only through inference): for each gap between consecutive path-first flights, extend A's arc forward and B's backward, switch at the frame where they come closest, leave the gap open if they never come within D_MEET px; filled frames tagged `inferred`; NO paddle used (the wrist+forearm proxy picks the switch time worse than the arcs do — autopsy). Pre-registered, tuned on r6/r7 (6 cells → gap_max 0.8 / d_meet 20, 273 @ 0.782 vs 263 @ 0.807), ONE SHOT on r9/r10 spent 2026-09-02: r9 556 @ 0.87 PASS all bars (events F1 .756); r10 443 @ 0.850 FAILS the precision bar by 0.010 (recall, nulls and events F1 .684 all clear) → **NOT ADOPTED**, incumbent stays. Inferred frames alone are right at 12 px ~60% of the time (0.65 / 0.58); events F1 rises on BOTH rallies (the fill gives the seam rule meeting arcs). **v2 SAME DAY, owner go to re-use r9/r10 ("let's not be as sweaty")**: the product is re-stated as tracked frames (bit-identical, asserted) PLUS a TAGGED inferred stratum graded on its own (prec ≥ 0.5, r@12 ≥ 10, own displaced + time-shift nulls ≤ 3) + events F1 ≥ adopted − 0.03. Re-tuned under that rule on r6/r7 → gap_max 0.8 / d_meet 40. r9: inferred 38 @ 0.667, events .764; r10: 41 @ 0.594, events .658 → **ADOPTED AS A TAGGED PRODUCT** (`gapfill.product(ctx)`); the tracker's quoted number stays the tracked half's. Consumers draw inferred frames dashed (rally_3d / court3d viewer / render_court3d) and run events + stats on the filled flights (rally_stats). Clean re-check on r20/r21, bars as written, no re-tune. **v3 / v3b (hit-anchored fill of the open gaps, 2026-09-02) DEAD ON TRAIN, r9/r10 untouched** — see the gate §v3–v3c and `gapfill_explore3.txt`: the open gaps are tracker-tail junk (r7) and a two-contact drive (r6), not something a time-anchored 3D kink can fill. |
 | `render_pathfirst.py --bridge` | cosmetic, owner-approved for the demo: gaps ≤ 0.5 s between tracked flights drawn as a DASHED straight segment with a sliding dashed ring, persistent caption "dashed = inferred between tracked flights, not tracked". Never enters the track/events/stats/grades. Output `pathfirst_r{N}_reddit_bridge.mp4`. |
 | `learner.py` / `learner_gate.md` / `learner_train.txt` / `emission_gbt.json` / `learner_curve.py` + `.txt` | The better learner (owner go 2026-09-02): gradient-boosted trees on emission.py's 14 features, same labels/discipline, three fixed configs, pre-registered gate. **GATE 1 DEAD**: AUC +0.002 / +0.007 over the logistic (noise on 161–198 positives) but the 97 %-recall tail keeps 0.635 of r6 negatives vs the logistic's 0.319 → no caches, no tune, no shot. Learning curve (diagnostic): logistic FLAT in labels (feature-saturated), trees still CLIMBING and overtaking only at ≥ 75 % of positives → the learner is now LABEL-limited; re-run `train` when r17/r21 land. `pathfirst.py` gained the inert `PF_PXS` p-cache-suffix env hook (unset = unchanged). |
@@ -104,6 +738,75 @@ python3 spaghetti.py 10 --lrn --soft 25                # graded r10
 ```
 Heavy scripts exceed the 120 s foreground limit — background them.
 No ffprobe (use cv2), no sklearn, no gh CLI.
+
+#### Recreating ONE rally from scratch — worked example, rally 4
+
+The block above covers r6/r7/r9/r10 only; r2–r5 and r17 were staged
+later and follow the same shape.  Everything below is what a fresh
+session needs for r4, and where each piece lives.
+
+**In git already (nothing to stage):** the code, every tune JSON
+(`pathfirst_tune.json`, `events_tune_v3.json`, `emission_model.json`,
+`gapfill_tune3.json`, …), `data/vision/court_landmarks_chicago0725.csv`
+(the homography), `data/vision/ball_candidates_r4.csv.gz` (the
+extractor's raw candidates — also the only record of the clip's cut:
+offset 89.10 s, 1085 frames), `data/vision/ball_path_r4.csv` (the
+owner's 403 clicks: 273 V / 106 S / 24 I), `anchors_grade_r4.csv`,
+`train_read_r4.txt`, `court3d_r4.html` (the output).
+
+**Owner supplies, gitignored, must be dropped into `vision/ballsearch/`:**
+
+| file | ~size | where it comes from |
+|---|---|---|
+| `r4_clip.mp4` | 3.5 MB | `python3 cut_clip.py 4 full_match.mp4.webm` from the owner's Drive VOD — offset and frame count are read from the committed candidate CSV so the cut cannot drift (then `check_clip.py 4 r4_clip.mp4`) |
+| `r0004.npz` | 1.2 MB | pose stream; already in the owner's Drive pose folder (r0002–r0010).  Otherwise `vision/pose_extract.py` — Colab per `gpu_runbook.md`, or the CPU RTMPose fallback here (~11 min for r3+r4 together; `pose_meta_r2to5.json` records the run: window 89.66–116.78 s, 6519 detections, 7 tracks) |
+| `full_match.mp4.webm` | — | only needed if the clip has to be re-cut |
+
+**Then, in `vision/ballsearch/`:**
+
+```bash
+python3 c3_lab.py 4                    # -> c3_cache_r4.pkl  (candidates, decode, turns,
+                                       #    anchors, floors, homography; window in c3_lab.WINDOWS)
+python3 spaghetti.py 4 --lrn --soft 25 # auto-builds cands_r4_{cc,peak}_14.npz on first use
+python3 emission.py cache 4            # -> p_r4_{cc,peak}_14.npz  (the committed pooled r6/r7 model)
+python3 rally_3d.py 4                  # -> court3d_r4.html   (the orbitable 3D view)
+python3 render_court3d.py 4            # -> court3d_r4.mp4    (optional; gitignored)
+```
+
+`spaghetti.py` and `emission.py cache` are the slow steps (minutes;
+background them).  `rally_3d.py` itself takes seconds and needs only
+the caches above.  Rally 4 is TRAIN, so iterating on it is free — but
+it is still the ball-thread pipeline: no knob is tuned outside r6/r7,
+and `rally_3d.py` writes nothing back.
+
+**Who is who in r4** (MLP Chicago 07/25, women's doubles game 1; the
+`rally_stats.players()` labels the 3D viewer and `hits` use).  Camera is
+behind the near baseline: near = bottom of frame (court y 44), far = top
+(y 0), court x grows to the image right.
+
+| label | player | team | kit |
+|---|---|---|---|
+| `near-left` | Etta Tuionetoa (server) | Utah Black Diamonds | black |
+| `near-right` | Allyce Jones | Utah | black |
+| `far-left` | Emma Nelson (returner) | Chicago Slice | white |
+| `far-right` | Ting Chieh Wei | Chicago | white |
+
+Derivation, repeatable for any rally: near/far from kit colour (median
+torso BGR 21 vs 125–148 at the serve frame), the server from the
+paddle-overhead follow-through at t = 91.29 s, the returner from the
+first return being attributed to `far-left` at 92.28 s — and all of it
+agrees with the referee log independently
+(`data/vision/lineup_0ca7efd7.csv` rally 4: server Tuionetoa, receiver
+Nelson, start_score 1-0-2) and with the scorebug rosters.
+
+The labels are assigned ONCE from each track's median floor position
+over serve −1 s to +3 s and then hold for the whole rally — they are
+per-rally identities, not live quadrants.  Tuionetoa stays `near-left`
+in the many frames where she is physically right of Jones (at the serve
+she is at x = 13, right of the centreline; Utah was stacked).  The
+left/right pairing within a team also changes rally to rally as the
+serving team scores: `click_setup.md` has her serving from the near-LEFT
+court in r3 and r5.
 
 ## Incumbent (2026-09-01, late): PATH-FIRST — `pathfirst.py`
 
@@ -379,11 +1082,79 @@ prior term.
    train / r21 seal first; nine rallies staged) for the owner's clicking, and the
    `--bridge` demo cut exists for the share (cosmetic, captioned).
 
+0-r17. **FIRST CLICK DELIVERY READ — r17, train only (2026-09-02,
+   `train_read_r17.txt`).** Owner clicked 403 frames (269 V / 110 S /
+   24 I), streak share 27 %. Pose: CPU rtmpose-balanced here (20.7 min;
+   `r0017.npz` gitignored — re-extract or take the Colab npz);
+   `ball_grade.py` train dry-run → `anchors_grade_r17.csv` (committed;
+   that older harness read V 82 % / S 96 % at its own tolerance, CHECK 3
+   FAIL, "MIDDLE" — diagnostic only, r17 is train). Incumbent path-first
+   at the frozen cell, emission p-cache from the pooled r6/r7 model
+   (out-of-fold for r17, so this read is honest): **245 / 379 @ 1.00**
+   (V 169/269, S 76/110), nulls 0 / 4; gap fill v2 253 @ 0.94 (inferred
+   17/112 @ 0.49, nulls 0/0); 14 flights; ONE wrong point in 379 — every
+   other miss is a hole (r9 537/779 @ 0.87, r10 422/657 @ 0.88 for
+   scale: same recall band, better precision). WHERE THE HOLES ARE, by
+   the owner's contact labels (clicks within ±0.30 s): fast 88/113
+   (S-fast 38/49), middle 97/142, return 8/14, serve 7/17, **slow
+   45/93 (S-slow 1/17)**. Per contact: the three slow contacts at
+   432.12 / 432.82 / 435.95 s cover 5/18, 5/13, 0/18 (the flight list
+   has 1-s gaps at 431.97–432.98 and 435.37–436.28 — the tracker never
+   seeds a flight there), the serve 7/17; the late fast exchange
+   439.25 → 439.75 → 440.25 degrades 12 → 10 → 7 of 18. READING: the
+   premise that picked r17 ("the hands battle the tracker keeps losing")
+   is NOT what r17 shows — fast contacts are the best-covered bucket and
+   fast streaks are 78 % covered already. The losses are dink / reset
+   contacts next to a player and the serve, i.e. short slow flights
+   the seeding never opens (S_MIN 6 / P_SEED 0.4 / near-body factor),
+   the same shape as hand-off's target. CONSEQUENCE for the streak-
+   detector question: on this evidence it is not the next instrument —
+   the S-slow 1/17 is a proximity hole, not a blur hole. Next machine
+   steps, in order, each needing labels or a go: (i) r18 / r19 / r21 /
+   r20 land → same chain (pose here on CPU is fine); (ii) once ≥ 2 new
+   train rallies exist, `emission.py train` with r17 in fold and
+   `cache-cross` extended three-way (it is hard-wired to 6/7 today);
+   (iii) a hand-off / seeding re-registration aimed at the slow
+   near-body flights, tuned on r6 + r7 + r17, one shot r20/r21 on the
+   owner's go. r9 / r10 untouched throughout.
+
+0-r2to5. **SITTING 3 STAGED — r2 / r3 / r4 / r5 click tools + machine
+   side (2026-09-02, owner: "set things up for 2, 3, 4 and 5 … fill out
+   the training set").** These four have only PREFILL contact rows
+   (pop-era types, approximate times), and the click package had them
+   gated behind a contact pass. That gate was wrong: the ball tool needs
+   a SPAN, not contacts. Frames pulled from the VOD put every prefill
+   serve on the right rally (40.54 / 59.43 / 91.16 / 118.78 s; bug
+   0-0 / 0-0 / 1-0 / 2-0), so `make_ball_audit.py --prefill-ok` spans
+   first prefill − 1.5 s to last prefill + 3.0 s (wider margins than the
+   manual-contact 1.0 / 2.0 because the prefill last-contact time is
+   soft) → `ball_audit_r{2,3,4,5}.html` = 402 / 626 / 510 / 545 frames
+   (t0 39.04 / 57.93 / 89.66 / 117.28). `cut_clip.py --stage` and
+   `ball_replicate.py` take the same prefill fallback, clips cut at
+   offsets 38.5 / 57.4 / 89.1 / 116.7 s, candidates committed, check_clip
+   PASS d = 0 on all four, c3_lab WINDOWS + corridor_lab CLIPS added,
+   pose npz via CPU rtmpose-balanced (gitignored; stamp
+   `pose_meta_r2to5.json`). `train_read.py` falls back to prefill
+   contacts with types folded slow/fast when a rally has no manual
+   contacts (prints NOTE — the bucket read is approximate until the
+   owner's contact pass). FINDING ON THE WAY: `pin_realignment.md`'s
+   "replay of rally 3 at ~91 s" is wrong on video time — 91.3 s is rally
+   4's LIVE serve (bug 1-0, near-right court; rally 3 serves near-left at
+   59.5 s on 0-0), and the v4 rally windows are ONE RALLY LATE from row 3
+   on (row 3 = rally 4 … row 5 = rally 6, matching the manual r6 serve at
+   146.34). Addendum written in `pin_realignment.md`; nothing built on
+   v4 windows is used for r2–r5. Optional owner contact pass: seek by
+   TIME in the contact tool (40.5 / 59.4 / 91.2 / 118.8 s), not by pin.
+   Click order r3 (fastest game-1 rally, 626 frames), r4, r2, r5;
+   ≈ 2,080 frames total. Chain per rally once a CSV lands = the r17
+   chain (`ball_grade.py` dry-run → `c3_lab.py N` → `emission.py cache N`
+   → `train_read.py N`).
+
 0a. **LEARNER: label-limited, not code-limited (2026-09-02,
    `learner_gate.md`).** Trees on the 14 features are DEAD at the
    tail bar with 359 positives and still climbing on the learning
    curve; the logistic is flat in labels. Next learner step = the
-   owner's clicks (`click_setup.md`: r17, r21, r18, r19, then r20, then r3/r4/r2/r5 after a contact pass), then
+   owner's clicks (`click_setup.md`: r17 ✅, then r21, r18, r19, r20, and r3/r4/r2/r5 — all nine tools now built), then
    `python3 learner.py train` again under the same gate text; patch-
    appearance model after that. No knob here is worth turning before
    the labels exist.

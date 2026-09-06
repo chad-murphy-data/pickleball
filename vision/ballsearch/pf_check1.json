@@ -1,0 +1,93 @@
+[
+ {
+  "rally": 2,
+  "v_hit": 131,
+  "v_tot": 166,
+  "v_rate": 78.91566265060241,
+  "v_claimed": 131,
+  "of_claimed": 100.0,
+  "s_hit": 60,
+  "s_tot": 96,
+  "s_rate": 62.5,
+  "flights": 12,
+  "verdict": "PASS"
+ },
+ {
+  "rally": 3,
+  "v_hit": 227,
+  "v_tot": 281,
+  "v_rate": 80.7829181494662,
+  "v_claimed": 228,
+  "of_claimed": 99.56140350877193,
+  "s_hit": 114,
+  "s_tot": 143,
+  "s_rate": 79.72027972027972,
+  "flights": 19,
+  "verdict": "PASS"
+ },
+ {
+  "rally": 4,
+  "v_hit": 190,
+  "v_tot": 262,
+  "v_rate": 72.51908396946565,
+  "v_claimed": 190,
+  "of_claimed": 100.0,
+  "s_hit": 86,
+  "s_tot": 105,
+  "s_rate": 81.9047619047619,
+  "flights": 16,
+  "verdict": "PASS"
+ },
+ {
+  "rally": 5,
+  "v_hit": 220,
+  "v_tot": 270,
+  "v_rate": 81.48148148148148,
+  "v_claimed": 222,
+  "of_claimed": 99.09909909909909,
+  "s_hit": 98,
+  "s_tot": 114,
+  "s_rate": 85.96491228070175,
+  "flights": 21,
+  "verdict": "PASS"
+ },
+ {
+  "rally": 6,
+  "v_hit": 98,
+  "v_tot": 122,
+  "v_rate": 80.32786885245902,
+  "v_claimed": 98,
+  "of_claimed": 100.0,
+  "s_hit": 11,
+  "s_tot": 23,
+  "s_rate": 47.82608695652174,
+  "flights": 8,
+  "verdict": "PASS"
+ },
+ {
+  "rally": 7,
+  "v_hit": 135,
+  "v_tot": 158,
+  "v_rate": 85.44303797468355,
+  "v_claimed": 137,
+  "of_claimed": 98.54014598540147,
+  "s_hit": 61,
+  "s_tot": 68,
+  "s_rate": 89.70588235294117,
+  "flights": 11,
+  "verdict": "PASS"
+ },
+ {
+  "rally": 17,
+  "v_hit": 169,
+  "v_tot": 239,
+  "v_rate": 70.7112970711297,
+  "v_claimed": 169,
+  "of_claimed": 100.0,
+  "s_hit": 77,
+  "s_tot": 110,
+  "s_rate": 70.0,
+  "flights": 14,
+  "verdict": "PASS"
+ }
+]
