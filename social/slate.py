@@ -40,6 +40,7 @@ import datetime as dt
 import json
 import logging
 import math
+import os
 import re
 import sys
 from pathlib import Path
@@ -70,6 +71,11 @@ BRACKETS = {                       # slide order; key -> display title
 }
 ORD = ("one", "two", "three", "four", "five")
 FMT_MAX_LOOKUPS = 24
+# Formats come from the API per bracket round.  If the tour changes a rule
+# and pickleball.com lags (user heads-up 2026-09-06: "all PPA matches are
+# best of 3 as of today"), SOCIAL_PPA_BEST_OF=3 forces every PPA match to
+# that length (game targets kept from the API's first game).
+FORCE_BEST_OF = int(os.environ.get("SOCIAL_PPA_BEST_OF") or 0)
 
 
 def bracket_of(event_title: str) -> str | None:
@@ -140,7 +146,7 @@ def fmt_key(m: dict) -> str:
 
 def fmt_fits(m: dict, fmt: dict) -> bool:
     bo = m.get("score_format_game_best_out_of")
-    return not bo or not fmt.get("best_of") or bo == fmt["best_of"]
+    return bool(FORCE_BEST_OF) or not bo or not fmt.get("best_of") or bo == fmt["best_of"]
 
 
 def match_format(c: PBClient, uuid: str) -> dict | None:
@@ -154,6 +160,13 @@ def match_format(c: PBClient, uuid: str) -> dict | None:
     if not isinstance(d, dict):
         return None
     mx = [d.get(f"score_format_game_{o}_max") or 0 for o in ORD]
+    if FORCE_BEST_OF and any(mx):
+        first = next(x for x in mx if x)
+        mx = [first] * FORCE_BEST_OF + [0] * (5 - FORCE_BEST_OF)
+        return {"rally": bool(d.get("is_rally_scoring")), "max": mx,
+                "win_by": d.get("score_format_game_one_win_by") or 2,
+                "title": f"best of {FORCE_BEST_OF} (forced)", "best_of": FORCE_BEST_OF,
+                "planned_start": d.get("local_date_match_planned_start")}
     return {"rally": bool(d.get("is_rally_scoring")),
             "max": mx, "win_by": d.get("score_format_game_one_win_by") or 2,
             "title": d.get("score_format_shorthand") or d.get("score_format_title") or "",
@@ -194,34 +207,52 @@ def modal_score(p_point: float, T: int) -> str:
     return f"{a}-{b}"
 
 
+def series_dist(per_game: list[float]) -> dict[str, float]:
+    """P(final series score) from side 1's view, e.g. {"2-0": .., "2-1": ..,
+    "1-2": .., "0-2": ..} for a best-of-3 (games may have different T)."""
+    need = math.ceil(len(per_game) / 2)
+    out: dict[str, float] = {}
+
+    def walk(w1, w2, pr, i):
+        if w1 == need or w2 == need:
+            out[f"{w1}-{w2}"] = out.get(f"{w1}-{w2}", 0.0) + pr
+            return
+        p = per_game[i] if i < len(per_game) else 0.5
+        walk(w1 + 1, w2, pr * p, i + 1)
+        walk(w1, w2 + 1, pr * (1 - p), i + 1)
+    walk(0, 0, 1.0, 0)
+    order = sorted(out, key=lambda k: (-int(k.split("-")[0]), int(k.split("-")[1])))
+    return {k: round(out[k], 4) for k in order}
+
+
 def price_doubles(s1: dict, s2: dict, fmt: dict, vals: dict):
-    """(p side 1 wins the series, note, modal first-game score)."""
+    """(p side 1 wins the series, note, modal first-game score, series pmf)."""
     try:
         a = [vals[u][1] for u in s1["uuids"]]
         b = [vals[u][1] for u in s2["uuids"]]
     except KeyError:
-        return None, "unrated pairing", None
+        return None, "unrated pairing", None, None
     if len(a) != 2 or len(b) != 2:
-        return None, "unrated pairing", None
+        return None, "unrated pairing", None, None
     eta = team_eta(a[0], a[1], b[0], b[1])
     ts = [t for t in fmt["max"] if t > 0]
     per_game = [calibrate(race_dist(round(sigmoid(eta), 4), t)["p_win"]) for t in ts]
     need = math.ceil(len(ts) / 2)
     return (display_floor(seq_prob(0, 0, need, per_game)), None,
-            modal_score(sigmoid(eta), ts[0]))
+            modal_score(sigmoid(eta), ts[0]), series_dist(per_game))
 
 
 def price_singles(s1: dict, s2: dict, fmt: dict, singles: dict):
     a, b = singles.get(s1["uuids"][0]), singles.get(s2["uuids"][0])
     if not a or not b:
-        return None, "unrated player", None
+        return None, "unrated player", None, None
     eta = a[0] - b[0]
     sd = math.sqrt(a[1] ** 2 + b[1] ** 2)
     ts = [t for t in fmt["max"] if t > 0]
     per_game = [game_win_prob_uncertain(eta, sd, t) for t in ts]
     need = math.ceil(len(ts) / 2)
     return (display_floor(seq_prob(0, 0, need, per_game)), None,
-            modal_score(sigmoid(eta), ts[0]))
+            modal_score(sigmoid(eta), ts[0]), series_dist(per_game))
 
 
 def load_singles_full() -> dict[str, tuple[float, float]]:
@@ -258,10 +289,10 @@ def tbd_branches(c: PBClient, m: dict, d: dt.date, known: dict, sg: bool,
         if any(s["tbd"] for s in sides) or any(set(s["uuids"]) & mine for s in sides):
             continue
         for s in sides:
-            p, _, _ = (price_singles(known, s, fmt, singles) if sg
-                       else price_doubles(known, s, fmt, vals))
+            p, _, modal, _ = (price_singles(known, s, fmt, singles) if sg
+                              else price_doubles(known, s, fmt, vals))
             if p is not None:
-                out.append({**s, "p_known": round(p, 4)})
+                out.append({**s, "p_known": round(p, 4), "modal": modal})
         break                                # one feeder match per open side
     return out
 
@@ -302,7 +333,7 @@ def ppa_slate(c: PBClient, d: dt.date, vals: dict, singles: dict) -> list[dict]:
             sg = br in ("MS", "WS")
             s1, s2 = side_of(m, "one", sg), side_of(m, "two", sg)
             fmt = fmts.get(str(m["match_uuid"]).lower())
-            p1, note, modal = None, None, None
+            p1, note, modal, dist = None, None, None, None
             branches = []
             if s1["tbd"] or s2["tbd"]:
                 note = "opponent not set yet"
@@ -314,9 +345,9 @@ def ppa_slate(c: PBClient, d: dt.date, vals: dict, singles: dict) -> list[dict]:
             elif fmt["rally"]:
                 note = "rally-scoring format, not priced"
             elif sg:
-                p1, note, modal = price_singles(s1, s2, fmt, singles)
+                p1, note, modal, dist = price_singles(s1, s2, fmt, singles)
             else:
-                p1, note, modal = price_doubles(s1, s2, fmt, vals)
+                p1, note, modal, dist = price_doubles(s1, s2, fmt, vals)
             by_bracket.setdefault(br, []).append({
                 "match_uuid": str(m["match_uuid"]).lower(),
                 "round": (m.get("round_text") or "").strip() or
@@ -331,7 +362,7 @@ def ppa_slate(c: PBClient, d: dt.date, vals: dict, singles: dict) -> list[dict]:
                 "best_of": (fmt or {}).get("best_of") or m.get("score_format_game_best_out_of"),
                 "t1": s1, "t2": s2,
                 "p1": round(p1, 4) if p1 is not None else None,
-                "modal": modal, "note": note, "branches": branches,
+                "modal": modal, "series": dist, "note": note, "branches": branches,
             })
         venue = ", ".join(x for x in (t.get("LocationCity"), t.get("LocationState")) if x)
         for br, rows in by_bracket.items():

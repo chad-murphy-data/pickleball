@@ -26,7 +26,7 @@ real post.
 | `text.py` | Title + markdown body + per-image captions. |
 | `post_reddit.py` | Gallery submit with body text (PRAW 8), duplicate-safe per date. |
 | `run.py` | The one-shot orchestrator the workflow calls. |
-| `templates/slide.html` | **The template.** All styling lives here; swap it to restyle. |
+| `templates/slide.html` | **The template** — the Claude Design handoff (`design_handoff_pickles_carousel`) ported token for token: colors, Anton/Space Mono/Space Grotesk sizes, card chrome, the close-match rule (favorite under 65% → off-white number + dashed 50% mark), SCENARIO A/B cards, score-distribution block, methodology blocks. Restyle here. |
 
 ## Schedule
 
@@ -41,6 +41,15 @@ Verified 2026-09-05 at 7:34 PM PT: the BFF already served Sunday's finals
 with the decided sides filled in, so an 8:30 PM run sees tomorrow's
 bracket; a side whose semi is still on the court is carried as TBD with
 one number per possible opponent.
+
+## Score formats
+
+Best-of and points-per-game come from the API per bracket round (one
+`getResultMatchInfos` lookup per (event, bracket side, round) group),
+so the series tree and the "best-of-N" footer follow whatever
+pickleball.com serves.  If the tour changes a rule before the API does,
+`SOCIAL_PPA_BEST_OF=3` forces every PPA match to that length (as a repo
+variable it flows into the workflow; drop it once the API catches up).
 
 ## Reddit credentials
 
@@ -65,10 +74,12 @@ Locally, export the same names and run `python social/run.py --post
 The body markup uses these classes, so a restyle is a CSS edit:
 
 - cover: `.kicker`, `h1` (with `.hl` highlighted word), `.sub`, `.chips > .chip`
-- bracket: `.kicker`, `h1`, `.cards[.compact|.list] > .card` with
-  `.lbl`, `.top > .fav + .pct`, `.meter > .fill (+ .mid at near-even)`,
-  `.bot > (.vs .dog) + .meta`; TBD-opponent cards use `.branch` rows
-- methods: `.steps > .step > .k + .t` (copy in `render.METHODS`)
+- bracket: `.kicker`, `h1`, `.cards[.compact|.list] > .card[.close]` with
+  `.lbl`, `.top > .fav + .pct`, `.meter > .fill (+ .mid when close)`,
+  `.bot > (vs .dog) + .meta`; a lone match also gets `.dist` (score
+  distribution); a TBD opponent becomes one SCENARIO card per possibility
+- methods: `.blocks > .block > .k + .t` (copy in `render.METHODS`; the
+  handoff's DUPR comparison line was dropped per the house rule)
 
 Density: ≤3 matches = big cards, 4–6 = `.compact`, 7–9 = `.list`,
 more = paginated slides (9 per slide).  Fonts: Anton (display) + Space Mono, vendored

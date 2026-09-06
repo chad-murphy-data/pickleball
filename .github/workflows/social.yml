@@ -71,6 +71,7 @@ jobs:
           REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
           SOCIAL_SUBREDDIT: ${{ vars.SOCIAL_SUBREDDIT || 'PickleballStats' }}
           SOCIAL_FLAIR_ID: ${{ vars.SOCIAL_FLAIR_ID }}
+          SOCIAL_PPA_BEST_OF: ${{ vars.SOCIAL_PPA_BEST_OF }}
         run: |
           DATE="${{ github.event.inputs.date || 'tomorrow' }}"
           FLAGS=""
