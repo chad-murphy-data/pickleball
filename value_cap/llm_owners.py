@@ -111,8 +111,34 @@ def build_packet(seed=7):
     print(f"packet: {len(key)} players ({sum(a[0]=='W' for a in key)} W / {sum(a[0]=='M' for a in key)} M) -> {OUT/'packet.md'}; key -> key.json")
 
 
+def build_packet_names():
+    """The NAMED arm: nothing but the names of the eligible players, listed
+    alphabetically within gender.  No records, no values.  Whatever the
+    agents bring is outside knowledge."""
+    D.set_board("mlp2026")
+    pids = list(D.BOARD)
+    key = {}
+    for g, tag in (("F", "W"), ("M", "M")):
+        gp = sorted((u for u in pids if F.GENDER[u] == g), key=lambda u: (F.NAME[u].split()[-1], F.NAME[u]))
+        for i, u in enumerate(gp):
+            key[f"{tag}{i+1:02d}"] = u
+    rules = RULES.replace("Players' true quality is whatever it is; you only have the records below.",
+                          "Players' true quality is whatever it is; you have ONLY the names below (no records or statistics are provided).")
+    lines = ["| id | player |", "|---|---|"]
+    for aid in sorted(key, key=lambda a: (a[0], int(a[1:]))):
+        lines.append(f"| {aid} | {F.NAME[key[aid]]} |")
+    OUT.mkdir(exist_ok=True)
+    (OUT / "packet_names.md").write_text(rules + "\nELIGIBLE PLAYERS (W = women, M = men; alphabetical by surname)\n" + "\n".join(lines) + "\n")
+    with (OUT / "key_names.json").open("w") as fh:
+        json.dump(key, fh, indent=0)
+    print(f"names packet: {len(key)} players -> {OUT/'packet_names.md'}; key -> key_names.json")
+
+
+KEY_FILE = "key.json"
+
+
 def load_key():
-    return json.load((OUT / "key.json").open())
+    return json.load((OUT / KEY_FILE).open())
 
 
 def list_prices():
@@ -158,7 +184,17 @@ def spearman(a, b):
     return float(np.corrcoef(ra, rb)[0, 1])
 
 
-def analyze(d):
+def consensus_by_pid(d, keyfile):
+    """pid -> mean ceiling across the sheets in d (ids decoded with keyfile)."""
+    key = json.load((OUT / keyfile).open()); sheets = load_sheets(d); out = defaultdict(float)
+    for sh in sheets:
+        for a, v in sh["ceilings"].items():
+            if a in key:
+                out[key[a]] += v / len(sheets)
+    return out, len(sheets)
+
+
+def analyze(d, compare=None):
     key = load_key(); ids = sorted(key, key=lambda a: (a[0], int(a[1:])))
     lp = list_prices(); name = F.NAME; gender = {a: F.GENDER[key[a]] for a in ids}
     sheets = load_sheets(d)
@@ -222,6 +258,14 @@ def analyze(d):
         for k in order:
             a = ids[k]
             print(f"  {g} {name[key[a]]:24s} mean {M[:, k].mean()/1e3:4.0f}k  max {M[:, k].max()/1e3:4.0f}k  list ${lp.get(key[a], FLOOR)/1e3:.0f}k (#{lrank[a]})")
+    if compare:
+        other_key = "key.json" if KEY_FILE != "key.json" else "key_names.json"
+        oc, n2 = consensus_by_pid(compare, other_key)
+        print(f"\nTHIS ARM vs OTHER ARM ({compare}, {n2} sheets, key {other_key}): consensus-vs-consensus Spearman within gender")
+        for g in "FM":
+            idx = [k for k, a in enumerate(ids) if gender[a] == g]
+            mine = [M[:, k].mean() for k in idx]; theirs = [oc.get(key[ids[k]], 0.0) for k in idx]
+            print(f"  {g}: rho {spearman(mine, theirs):.2f}   (top-8 overlap {len(set(sorted(idx, key=lambda k: -M[:, k].mean())[:8]) & set(sorted(idx, key=lambda k: -oc.get(key[ids[k]], 0.0))[:8]))}/8)")
     return sheets, M, ids, key
 
 
@@ -370,15 +414,22 @@ def rooms(d, seeds, seasons):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--packet", action="store_true")
+    ap.add_argument("--packet-names", action="store_true", help="names-only packet (the named arm)")
+    ap.add_argument("--key", default="key.json", help="key file under llm_owners/ for the sheets being read")
+    ap.add_argument("--compare", metavar="DIR2", help="with --analyze: second sheet dir (other arm), consensus vs consensus")
     ap.add_argument("--analyze", metavar="DIR")
     ap.add_argument("--rooms", metavar="DIR")
     ap.add_argument("--seeds", type=int, default=200)
     ap.add_argument("--seasons", type=int, default=200)
     A = ap.parse_args()
+    global KEY_FILE
+    KEY_FILE = A.key
     if A.packet:
         build_packet()
+    if A.packet_names:
+        build_packet_names()
     if A.analyze:
-        analyze(A.analyze)
+        analyze(A.analyze, A.compare)
     if A.rooms:
         rooms(A.rooms, A.seeds, A.seasons)
 
