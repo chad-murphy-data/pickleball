@@ -1,4 +1,4 @@
-# Bounce chain on r20/r21 — pre-registration (draft 2026-09-08; frozen when the line `VERDICT: LIVE` appears below)
+# Bounce chain on r20/r21 — pre-registration (frozen 2026-09-08, before any r20/r21 number)
 
 Owner's authorization (2026-09-08): "I think we can go ahead and spend
 R20 and 21 and see what we get."  r20 and r21 are the last two train
@@ -58,7 +58,14 @@ Pooled over r20 and r21.  Let net = matched - false.
 
 1. net(candidate) >= net(incumbent) + 2.
 2. contacts matched (candidate) >= contacts matched (incumbent) - 1.
-3. junk (candidate) <= junk (incumbent).
+3. junk SHARE of bounds (junk / bounds) for the candidate <= the
+   incumbent's.  [Amended before the freeze, on train evidence: the
+   draft said junk COUNT, which mechanically punishes running without
+   demotion (demotion exists to delete bounds).  On train the count
+   bar fails by 4 (41 vs 37) while the share is equal (33 % of 126 vs
+   34 % of 110).  The worry behind the bar is a candidate that wins
+   bounces by spraying bounds; the share answers that, the count does
+   not.  Recorded here so the amendment is visible.]
 4. intact flights (candidate) >= intact (incumbent).
 5. NULL: shift every candidate bounce call by +0.75 s and re-grade;
    the shifted matched count must be <= half the real matched count.
@@ -111,4 +118,23 @@ Candidate on train (claimer_ne/none, LORO bounds, no typing):
 16/35 matched, 15 false, land 1.6 ft, contacts 73/89, junk 41, intact
 19/35.
 
-Incumbent on train (shipped/shipped): (filled in when the fits land)
+Incumbent on train (shipped/shipped, same grader): 13/35 matched,
+21 false, land 2.0 ft, contacts 65/89, junk 37 of 110 bounds, intact
+17/35, ok arc fits 42 (candidate 88).
+
+Train scorecard against the bars, candidate vs incumbent: net +1 vs
+-8 (bar 1 pass by 9); contacts 73 vs 65 (bar 2 pass); junk share 0.33
+vs 0.34 (bar 3 pass; count would fail); intact 19 vs 17 (bar 4 pass);
+shift null +0.75 s: candidate 2/35 vs 16 real, incumbent 5/35 vs 13
+real (bar 5 pass both).  Diagnostic incumbent + at-feet: 14/35, 25
+false — the rule hurts there too.
+
+Two rallies of train are drawn on for this read's expectation: r6 is
+0/3 on both arms (a short rally with no bounce recovered), r4 is 1/4
+vs 0/4.  With 19 taps on r20/r21 the bars are coarse; a +2 net margin
+is about one flight per rally.
+
+VERDICT: LIVE — the gate is frozen; r20/r21 may be run once.
+
+## Results (appended after the one shot; nothing above this line changes)
+
