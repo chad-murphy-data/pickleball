@@ -99,4 +99,16 @@ second shot).  The bars never loosen after the numbers are seen.
 
 ## Train evidence (r2-r7 + r17; looked at BEFORE the freeze, allowed)
 
-(filled in at freeze)
+At-feet rule (`tune-feet --bounds claimer_ne --demotion none`, result in
+`tap_feet_tune.json`): **DEAD**.  No typing: 16/35 matched, 15 false,
+net +1.  Best cell W 0.15 / Z 1.0: 22/35 matched (at-feet taps 4/5 vs
+1/5) but 23 false, net -1.  Every cell in the grid loses net; the rule
+finds the half-volleys and pays for them twice over in false calls on
+volley flights.  So the CANDIDATE arm on r20/r21 is claimer_ne bounds +
+demotion none, NO typing; only change 1 is on the line.
+
+Candidate on train (claimer_ne/none, LORO bounds, no typing):
+16/35 matched, 15 false, land 1.6 ft, contacts 73/89, junk 41, intact
+19/35.
+
+Incumbent on train (shipped/shipped): (filled in when the fits land)
