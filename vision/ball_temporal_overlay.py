@@ -12,6 +12,41 @@ import subprocess
 from ball_temporal_baseline import build_model
 
 
+def distinct_candidates(heatmap, width, height, count=5, separation=16):
+    """Rank local maxima; suppress nearby peaks in original-video pixels."""
+    import numpy as np
+    a = np.asarray(heatmap)
+    if a.ndim != 2 or not np.isfinite(a).all() or count < 1 or separation < 0:
+        raise ValueError('Invalid heatmap or candidate settings')
+    h, w = a.shape
+    pad = np.pad(a, 1, constant_values=-np.inf)
+    maxima = np.ones(a.shape, dtype=bool)
+    for dy in range(3):
+        for dx in range(3):
+            maxima &= a >= pad[dy:dy+h, dx:dx+w]
+    indices = np.flatnonzero(maxima)
+    indices = indices[np.argsort(-a.flat[indices], kind='stable')]
+    selected = []
+    for i in indices:
+        x, y = (int(i) % w)/w*width, (int(i)//w)/h*height
+        if any(math.hypot(x-c['x'], y-c['y']) <= separation for c in selected):
+            continue
+        selected.append(dict(rank=len(selected)+1, x=x, y=y, peak_mass=float(a.flat[i])))
+        if len(selected) == count:
+            break
+    return selected
+
+
+def review_windows(rally, specs, fps):
+    result = {}
+    for i, spec in enumerate(specs, 1):
+        lo, hi = map(float, spec.split(':'))
+        if not all(math.isfinite(t) for t in (lo,hi)) or lo < 2/fps or hi <= lo:
+            raise ValueError('Review ranges must be increasing finite source-video seconds')
+        result[f'{rally}_window{i}'] = (math.ceil(lo*fps), math.floor(hi*fps))
+    return result
+
+
 def training_frames(checkpoint):
     selected = [r for r in checkpoint['manifest']['rows'] if r['visibility'] in ('V', 'S')]
     selected = selected[:checkpoint['args']['limit']]
@@ -93,7 +128,8 @@ def run(args):
         raise ValueError('This command expects the same source video as training')
     if (manifest['input_width'], manifest['input_height'], manifest['context_offsets']) != (640, 360, [-2,-1,0,1,2]):
         raise ValueError('Unsupported model input configuration')
-    windows = windows_for(args.rallies, manifest, args.contacts, args.pre_seconds, args.post_seconds)
+    windows = (review_windows(args.rallies[0], args.review_seconds, manifest['fps']) if args.review_seconds
+               else windows_for(args.rallies, manifest, args.contacts, args.pre_seconds, args.post_seconds))
     targets, context = training_frames(checkpoint)
     labels = {int(r['frame']): r for r in manifest['rows']}
     device = args.device
@@ -118,7 +154,7 @@ def run(args):
         out.mkdir(parents=True, exist_ok=False)
         fields = ['frame', 't_s', 'exposure', 'context_overlaps_training', 'predicted_x', 'predicted_y',
                   'peak_mass', 'visibility', 'presence', 'target_x', 'target_y', 'error_px']
-        writers, counts, errors = {}, {}, {}
+        writers, candidate_writers, counts, errors = {}, {}, {}, {}
         for rally in windows:
             folder = out / f'r{rally}'
             folder.mkdir()
@@ -128,11 +164,16 @@ def run(args):
             writer = csv.DictWriter(handle, fieldnames=fields)
             writer.writeheader()
             writers[rally] = writer
+            candidate_file = (folder/'candidates.csv').open('w', newline='')
+            handles.append(candidate_file)
+            candidate_writer = csv.DictWriter(candidate_file, fieldnames=['frame','t_s','rank','x','y','peak_mass'])
+            candidate_writer.writeheader()
+            candidate_writers[rally] = candidate_writer
             counts[rally] = dict(frames=0, training_target=0, training_context_only=0, unseen_center_same_video=0,
                                  context_overlaps_training=0, explicitly_absent_labels=0, unknown_labels=0)
             errors[rally] = []
             encoders[rally] = subprocess.Popen(['ffmpeg', '-v', 'error', '-n', '-f', 'rawvideo',
-                '-pix_fmt', 'bgr24', '-s', f'{width}x{height+100}', '-r', str(fps), '-i', '-', '-an',
+                '-pix_fmt', 'bgr24', '-s', f'{width}x{height+100}', '-r', str(fps*args.playback_speed), '-i', '-', '-an',
                 '-c:v', 'libx264', '-preset', 'fast', '-crf', '18', '-pix_fmt', 'yuv420p',
                 '-movflags', '+faststart', str(folder/'overlay.mp4')], stdin=subprocess.PIPE, stderr=log)
         print(f'{device}: loaded checkpoint; no retraining. Windows: {windows}', flush=True)
@@ -159,13 +200,15 @@ def run(args):
                     raise ValueError('Nonfinite prediction')
                 peak = int(logits.argmax().item())
                 mass = float(torch.softmax(logits, dim=0)[peak].item())
-            return peak % 160 / 160 * width, peak // 160 / 90 * height, mass
+                heatmap = torch.softmax(logits, dim=0).reshape(90,160).cpu().numpy()
+            candidates = distinct_candidates(heatmap, width, height, args.candidates, args.candidate_separation)
+            return peak % 160 / 160 * width, peak // 160 / 90 * height, mass, candidates
 
         first, last = min(a for a,b in windows.values()), max(b for a,b in windows.values())
         for center, frame, prediction in raw_predictions(stream(), first, last, predict):
             if prediction is None:
                 continue
-            x,y,mass = prediction
+            x,y,mass,candidates = prediction
             human = human_fields(labels.get(center))
             category = exposure(center, targets, context)
             overlap = bool(set(range(center-2, center+3)) & context)
@@ -176,6 +219,8 @@ def run(args):
                 writers[rally].writerow(dict(frame=center, t_s=center/fps, exposure=category,
                     context_overlaps_training=int(overlap), predicted_x=x, predicted_y=y,
                     peak_mass=mass, error_px=error, **human))
+                for candidate in candidates:
+                    candidate_writers[rally].writerow(dict(frame=center, t_s=center/fps, **candidate))
                 counts[rally]['frames'] += 1
                 counts[rally][category] += 1
                 counts[rally]['context_overlaps_training'] += int(overlap)
@@ -187,11 +232,17 @@ def run(args):
                 canvas[:height] = frame
                 # Keep the ball pixels unobscured: no center dot, cross, fill, or label.
                 cv2.circle(canvas, (round(x),round(y)), 18, (255,0,255), 2, cv2.LINE_AA)
+                for candidate in candidates[1:]:
+                    cx, cy = round(candidate['x']), round(candidate['y'])
+                    cv2.circle(canvas, (cx,cy), 18, (255,255,0), 1, cv2.LINE_AA)
+                    # Put ranks outside the clear center; keep edge labels inside the image.
+                    tx, ty = min(width-20, max(0,cx+21)), min(height-5, max(15,cy-21))
+                    cv2.putText(canvas, str(candidate['rank']), (tx,ty), cv2.FONT_HERSHEY_SIMPLEX, .55, (255,255,0), 1, cv2.LINE_AA)
                 if human['target_x'] != '':
                     color = (0,220,0) if human['visibility'] in ('V','S') else (0,165,255)
                     cv2.circle(canvas, (round(float(human['target_x'])),round(float(human['target_y']))), 12, color, 2, cv2.LINE_AA)
                 text = [f'R{rally}  frame {center}  {center/fps:.3f}s  {category}',
-                        f'Magenta: prediction  Green: V/S label  Orange: inferred  Human: {human["presence"] or "unlabeled"}',
+                        f'Magenta: rank 1  Cyan: alternatives  Green: V/S  Orange: inferred  Human: {human["presence"] or "unlabeled"}',
                         f'Peak mass {mass:.4f} is NOT presence confidence. Model always predicts a position.']
                 for j,line in enumerate(text):
                     cv2.putText(canvas, line, (10,height+25+j*30), cv2.FONT_HERSHEY_SIMPLEX, .55, (255,255,255), 1, cv2.LINE_AA)
@@ -211,6 +262,8 @@ def run(args):
                 scope='Same-video qualitative review; no cross-video generalization claim')
         report = dict(checkpoint_sha256=hashlib.sha256(Path(args.checkpoint).read_bytes()).hexdigest(),
                       device=device, fps=fps, windows=reports,
+                      candidates=args.candidates, candidate_separation_px=args.candidate_separation,
+                      playback_speed=args.playback_speed, review_seconds=args.review_seconds,
                       contact_window_padding=dict(pre_seconds=args.pre_seconds, post_seconds=args.post_seconds),
                       notes=['Sequential CFR zero-origin decode matches preparation assumptions; visual alignment still needs checking.',
                              'Unknown and inferred labels are excluded from localization metrics.',
@@ -242,7 +295,18 @@ def main():
     p.add_argument('--contacts', default=str(Path(__file__).resolve().parent.parent/'data/vision/contact_labels_chicago0725.csv'))
     p.add_argument('--out', required=True)
     p.add_argument('--device', choices=['auto','cpu','mps','cuda'], default='auto')
-    run(p.parse_args())
+    p.add_argument('--candidates', type=int, default=1, help='Number of spatially distinct heatmap peaks, at most 10')
+    p.add_argument('--candidate-separation', type=float, default=16, help='Peak suppression radius in source pixels')
+    p.add_argument('--review-seconds', nargs='+', help='Source-video start:end ranges, with exactly one --rallies value')
+    p.add_argument('--playback-speed', type=float, default=1, help='0.25 makes quarter-speed video; source timestamps are unchanged')
+    args = p.parse_args()
+    if not 1 <= args.candidates <= 10 or not math.isfinite(args.candidate_separation) or args.candidate_separation < 0:
+        p.error('Use 1–10 candidates and finite, nonnegative separation')
+    if not math.isfinite(args.playback_speed) or not 0 < args.playback_speed <= 1:
+        p.error('Playback speed must be greater than zero and at most one')
+    if args.review_seconds and len(args.rallies) != 1:
+        p.error('--review-seconds requires exactly one rally')
+    run(args)
 
 
 if __name__ == '__main__':
