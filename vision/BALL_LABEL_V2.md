@@ -13,8 +13,9 @@ V2 makes three changes:
 2. It labels every native frame within 0.20 seconds of a known contact and
    every third frame elsewhere. This moves effort toward contacts and fast
    exchanges while retaining coverage of ordinary flight.
-3. It records both the requested timestamp and the timestamp the browser says
-   it displayed. Seek error therefore becomes a measurable field.
+3. It seeks to the midpoint of each requested frame interval, verifies the
+   frame actually decoded, and records both requested and displayed frame
+   identities. Labels remain disabled while a seek is unresolved.
 
 V2 also accepts an optional proposal CSV. Twenty percent of sampled frames
 are deterministically blinded: the proposal is hidden until a human label is
@@ -91,12 +92,13 @@ Each answered sampled frame contains:
 
 | field | meaning |
 |---|---|
-| `schema` | `ball-label-v2.0` |
+| `schema` | `ball-label-v2.1` |
 | `video_name`, `video_duration_s` | source identity check |
 | `fps`, `fps_rational` | probed native frame rate |
 | `rally`, `sample_index`, `source_frame` | sample identity |
 | `nominal_t_s` | requested source-frame timestamp |
 | `displayed_t_s` | browser-reported displayed media time |
+| `displayed_frame` | frame derived from the decoded media time |
 | `seek_drift_frames` | displayed minus nominal time, in native frames |
 | `x`, `y` | native-video pixel coordinate when available |
 | `visibility` | `V`, `S`, `I`, or `N` |
