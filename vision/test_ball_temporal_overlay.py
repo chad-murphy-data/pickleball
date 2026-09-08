@@ -3,10 +3,42 @@ from pathlib import Path
 import tempfile
 import unittest
 
-from ball_temporal_overlay import exposure, human_fields, raw_predictions, training_frames, windows_for
+from ball_temporal_overlay import (distinct_candidates, review_windows, exposure, human_fields,
+                                   raw_predictions, training_frames, windows_for)
 
 
 class OverlayTests(unittest.TestCase):
+    def test_peaks_not_adjacent_pixels(self):
+        import numpy as np
+        heat = np.zeros((9,16), dtype=float)
+        heat[4,4:7] = [.5,1,.5]
+        heat[1,12] = .8
+        peaks = distinct_candidates(heat, 1280,720,2,16)
+        self.assertEqual([(p['x'],p['y']) for p in peaks], [(400,320),(960,80)])
+
+    def test_separation_in_source_pixels_and_edge_peaks(self):
+        import numpy as np
+        heat = np.zeros((90,160), dtype=float)
+        heat[0,0], heat[0,2], heat[89,159] = 1,.9,.8
+        peaks = distinct_candidates(heat,1280,720,2,16)
+        self.assertEqual([(p['x'],p['y']) for p in peaks], [(0,0),(1272,712)])
+        # A smaller radius preserves the second nearby local peak.
+        self.assertEqual(distinct_candidates(heat,1280,720,2,8)[1]['x'],16)
+
+    def test_nan_rejected_and_ties_deterministic(self):
+        import numpy as np
+        with self.assertRaises(ValueError):
+            distinct_candidates(np.array([[float('nan')]]),10,10)
+        peaks = distinct_candidates(np.ones((3,3)),30,30,2,10)
+        self.assertEqual([(p['x'],p['y']) for p in peaks],[(0,0),(20,0)])
+
+    def test_review_times_are_source_times(self):
+        self.assertEqual(review_windows(25,['605.3:606.2','610.6:612.5'],60),
+                         {'25_window1':(36318,36372),'25_window2':(36636,36750)})
+        for spec in ['610:609','nan:612','0:1']:
+            with self.assertRaises(ValueError):
+                review_windows(25,[spec],60)
+
     def test_exact_context_and_no_lookahead_shift(self):
         result = list(raw_predictions(iter(range(20)), 4, 7, lambda frames, c: (frames, c)))
         self.assertEqual([r[0] for r in result], [4,5,6,7])
