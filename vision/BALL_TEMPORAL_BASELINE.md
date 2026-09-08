@@ -85,3 +85,36 @@ and in rally 19. Return report.json, both CSVs, and the videos if practical.
 The decode-window, training-exposure and missing-label logic has automated tests.
 End-to-end inference/encoding still needs local verification with the checkpoint
 and source video; these are not available in the assistant workspace.
+
+## Alternative-candidate diagnostic
+
+Use the unchanged run 3 checkpoint to inspect three manually reviewed failure
+windows in rally 25. The ranges below are full-source video seconds, not offsets
+within the earlier overlay. Quarter-speed output keeps every source frame; the
+footer and CSV timestamps remain source-video time.
+
+```bash
+python3 vision/ball_temporal_overlay.py --video full_match.mp4.webm --checkpoint data/vision/temporal_r18_run3/model.pt --rallies 25 --review-seconds 605.3:606.2 608.8:610.1 610.6:612.5 --candidates 5 --playback-speed 0.25 --out data/vision/temporal_candidates_r25
+```
+
+Outputs live in r25_window1, r25_window2, r25_window3 under that folder.
+Each has overlay.mp4, predictions.csv (original rank-1 prediction), and
+candidates.csv (one row per candidate per source frame). Rank 1 is magenta;
+alternatives are cyan with rank numbers placed outside the hollow rings.
+Ranks can change every frame; numbers are not persistent ball identities.
+
+Candidates are 8-neighbor local maxima of the heatmap, greedily separated by
+more than 16 original-image pixels by default (--candidate-separation).
+This suppresses multiple circles on one peak, but can also suppress a nearby
+ball peak within that radius. Flat plateaus break ties by row-major order.
+Up to five candidates are shown even if weak: they are hypotheses, not ball
+detections or calibrated probabilities. Absence from the five circles means
+absent from this displayed candidate set, not necessarily from the full heatmap.
+No tracking, smoothing, hard spatial masks, or model changes are applied.
+
+For each visible-ball failure, note whether magenta, cyan, or neither covers
+the ball, and whether a candidate is close but slightly displaced. Mark actual
+occlusion separately. These observations decide whether temporal selection
+has promising candidates to work with. Do not interpret unlabeled candidates
+as measured recall. Numerical peak-selection and window tests run without
+PyTorch; full inference/rendering still requires the local checkpoint/video.
