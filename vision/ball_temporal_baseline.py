@@ -87,6 +87,15 @@ def prepare(args):
         cap.release()
 
 
+def build_model():
+    """Checkpoint-compatible architecture shared by training and inference."""
+    from torch import nn
+    return nn.Sequential(nn.Conv2d(15, 24, 5, stride=2, padding=2), nn.ReLU(),
+                         nn.Conv2d(24, 32, 3, stride=2, padding=1), nn.ReLU(),
+                         nn.Conv2d(32, 32, 3, padding=1), nn.ReLU(),
+                         nn.Conv2d(32, 1, 1))
+
+
 def train(args):
     import random
     import numpy as np
@@ -107,10 +116,7 @@ def train(args):
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=False)
     # Full-image spatial softmax avoids the all-background MSE solution.
-    model = nn.Sequential(nn.Conv2d(15, 24, 5, stride=2, padding=2), nn.ReLU(),
-                          nn.Conv2d(24, 32, 3, stride=2, padding=1), nn.ReLU(),
-                          nn.Conv2d(32, 32, 3, padding=1), nn.ReLU(),
-                          nn.Conv2d(32, 1, 1)).to(device)
+    model = build_model().to(device)
     opt = torch.optim.Adam(model.parameters(), lr=args.lr)
     def batch(selected):
         x = np.stack([np.concatenate([frames[r['frame'] + d] for d in range(-2, 3)], axis=2).transpose(2, 0, 1) for r in selected])
