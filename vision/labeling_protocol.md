@@ -207,7 +207,9 @@ AND place; B = time only when the spot is hidden) · V = volley, no
 bounce before the next contact · U = can't tell · X = terminal flight,
 no bounce at all (net, caught, out of frame). Each flight replays at
 half speed from 0.15 s before contact a to 0.15 s after contact b; a
-bounce/V/U/X call moves to the next flight; ⌫ clears. Accuracy bar:
+bounce/V/U/X call moves to the next flight; ⌫ clears. Tapping a
+flight again REPLACES its bounce (a terminal flight keeps up to two;
+there a re-tap within 0.25 s replaces the nearer one). Accuracy bar:
 bounce frame ±1, spot within a foot — don't agonize.
 
 **What is never shown**: the fitter's bounces. T shows only YOUR ball

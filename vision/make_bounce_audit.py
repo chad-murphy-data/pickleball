@@ -149,16 +149,55 @@ def build_cfg(include_holdout=False, only=None):
 
 # --------------------------------------------------------------- score
 
-def read_labels(path):
-    """{rally: {flight_index0: {'call': str, 'b': [(t, x, y)]}}}"""
+SLACK_S = 0.15     # a tap may sit this far outside its flight's window
+DUP_S = 0.15       # two taps in one flight closer than this are one bounce
+
+
+def read_labels(path, quiet=False):
+    """{rally: {flight_index0: {'call': str, 'b': [(t, x, y)]}}}
+
+    Cleans the tool's re-tap slips (builds before 2026-09-08 appended a
+    re-tap instead of replacing it): a tap outside its flight window
+    (+/- SLACK_S) is dropped, two taps closer than DUP_S collapse to the
+    later one, and a non-terminal flight holding two taps is flagged.
+    Every cleanup is printed; the CSV itself is never rewritten.
+    """
+    say = (lambda *a: None) if quiet else print
     out = defaultdict(lambda: defaultdict(lambda: {"call": "", "b": []}))
+    win = {}
     for r in csv.DictReader(open(path)):
-        e = out[int(r["rally_cum"])][int(r["flight"]) - 1]
+        rally, fi = int(r["rally_cum"]), int(r["flight"]) - 1
+        e = out[rally][fi]
         e["call"] = r["call"]
+        if r["t_from_s"] and r["t_to_s"]:
+            win[(rally, fi)] = (float(r["t_from_s"]), float(r["t_to_s"]),
+                               r["hitter_to"] == "")
         if r["t_bounce_s"]:
             e["b"].append((float(r["t_bounce_s"]),
                            float(r["x_px"]) if r["x_px"] else None,
                            float(r["y_px"]) if r["y_px"] else None))
+    for rally in sorted(out):
+        for fi in sorted(out[rally]):
+            e = out[rally][fi]
+            if len(e["b"]) < 2 and (rally, fi) not in win:
+                continue
+            t0, t1, term = win.get((rally, fi), (None, None, True))
+            keep = []
+            for b in sorted(e["b"]):
+                if t0 is not None and not (t0 - SLACK_S <= b[0] <= t1 + SLACK_S):
+                    say(f"  r{rally} f{fi+1}: tap @ {b[0]:.3f} s is outside the "
+                        f"flight [{t0:.3f}, {t1:.3f}] — dropped")
+                    continue
+                if keep and b[0] - keep[-1][0] < DUP_S:
+                    say(f"  r{rally} f{fi+1}: taps @ {keep[-1][0]:.3f} and "
+                        f"{b[0]:.3f} s are one bounce — keeping the later")
+                    keep[-1] = b
+                    continue
+                keep.append(b)
+            if len(keep) == 2 and not term:
+                say(f"  r{rally} f{fi+1}: non-terminal flight holds two taps "
+                    f"({keep[0][0]:.3f}, {keep[1][0]:.3f} s) — check which")
+            e["b"] = keep
     return out
 
 
@@ -422,10 +461,20 @@ function record(x, y){
   if (!V.videoWidth) { flash("load the video first"); return; }
   V.pause(); stopAt = null;
   const e = ent(true), t = +cur().toFixed(3), tap = {t, x, y};
-  if (e.b.length >= 2) e.b[1] = tap; else e.b.push(tap);
-  e.b.sort((a, b) => a.t - b.t);
+  // A re-tap REPLACES: one bounce per flight; a terminal flight may hold
+  // two, and there a re-tap within 0.25 s replaces the nearer one.
+  let msg = "";
+  if (!F().term) { msg = e.b.length ? " (replaced)" : ""; e.b = [tap]; }
+  else {
+    let k = -1, best = 0.25;
+    e.b.forEach((b, i) => { const d = Math.abs(b.t - t); if (d <= best) { best = d; k = i; } });
+    if (k >= 0) { e.b[k] = tap; msg = " (replaced)"; }
+    else if (e.b.length < 2) e.b.push(tap);
+    else { e.b[1] = tap; msg = " (replaced 2nd)"; }
+    e.b.sort((a, b) => a.t - b.t);
+  }
   e.call = "bounce"; save();
-  flash(`bounce @ ${t.toFixed(2)} s` + (x == null ? " (no spot)" : "") +
+  flash(`bounce @ ${t.toFixed(2)} s` + msg + (x == null ? " (no spot)" : "") +
         (e.b.length > 1 ? ` — ${e.b.length} in this flight` : ""));
   render(); next();
 }
@@ -643,6 +692,26 @@ def selftest():
     assert tot["match"] == tot["fit"] == tot["taps"] == 3, tot
     assert max(errs) < 0.01, errs
     assert conf.get(("bounce", "bounce")) == 3 and ("volley", "arc") in conf, conf
+    # loader cleanup: the pre-2026-09-08 tool appended re-taps; the loader
+    # must drop out-of-window taps, collapse near-duplicates, keep pairs
+    # only on terminal flights
+    import tempfile
+    hdr = "rally_cum,flight,bounce_index,t_from_s,t_to_s,hitter_from,hitter_to,call,t_bounce_s,x_px,y_px,video_name\n"
+    rows = [(1, 1, 1, 10.0, 11.0, "A", "B", "bounce", 10.40, 1, 1),
+            (1, 1, 2, 10.0, 11.0, "A", "B", "bounce", 10.45, 2, 2),   # dup -> later kept
+            (1, 2, 1, 11.0, 12.0, "B", "A", "bounce", 12.90, 3, 3),   # outside -> dropped
+            (1, 2, 2, 11.0, 12.0, "B", "A", "bounce", 11.50, 4, 4),
+            (1, 3, 1, 12.0, 14.5, "A", "", "bounce", 12.60, 5, 5),    # terminal pair stays
+            (1, 3, 2, 12.0, 14.5, "A", "", "bounce", 13.90, 6, 6)]
+    with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False) as f:
+        f.write(hdr)
+        for r in rows:
+            f.write(",".join(str(x) for x in r) + ",v\n")
+    lab = read_labels(f.name, quiet=True)
+    assert [b[0] for b in lab[1][0]["b"]] == [10.45], lab[1][0]
+    assert [b[0] for b in lab[1][1]["b"]] == [11.50], lab[1][1]
+    assert [b[0] for b in lab[1][2]["b"]] == [12.60, 13.90], lab[1][2]
+    assert "e.b = [tap]" in HTML and "replaced" in HTML
     print(f"selftest OK — {len(rs)} train rallies, "
           f"{sum(len(d['flights']) for d in cfg['rallies'])} flights; {jsr}; "
           f"r7 round-trip 3/3 matched, max landing error {max(errs):.4f} ft")
@@ -659,10 +728,10 @@ def main():
     if a.selftest:
         selftest()
         return
-    if a.score:
-        score_rows(read_labels(a.score))
-        return
     only = [int(x) for x in a.rallies.split(",")] if a.rallies else None
+    if a.score:
+        score_rows(read_labels(a.score), rallies=only)
+        return
     cfg = build_cfg(a.include_holdout, only)
     html = write_html(cfg, a.out)
     nf = sum(len(d["flights"]) for d in cfg["rallies"])

@@ -14,46 +14,49 @@ measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
 
-## 2026-09-08 (latest) — FIRST BOUNCE TRUTH: 19 rallies, 225 flights, 119 taps; the fitter's bounces hold where it finds them, and its one blind spot is the ball at the receiver's feet
+## 2026-09-08 (latest) — FIRST BOUNCE TRUTH: 19 rallies, 228 flights, 116 taps; the fitter's bounces hold where it finds them, and its one blind spot is the ball at the receiver's feet
 
 The owner coded every train rally in the bounce coder in one sitting
 (`data/vision/bounce_labels_chicago0725.csv`, committed — it is truth,
-not a read). Calls: 115 bounce / 95 volley / 8 no-bounce / 7 unsure
-over 225 of 229 flights (r21 has three flights coded, r9 one skipped).
-Non-terminal bounce share 55%; per rally 29% (r4) to 78% (r14, r20).
+not a read; second upload same day fixed r17 and finished r21).
+Calls: 116 bounce / 97 volley / 8 no-bounce / 7 unsure over 228 of
+229 flights (r9 has one skipped). Non-terminal bounce share 52%; per
+rally 29% (r4) to 78% (r14, r20).
 
 **Audit of the answer key** (`make_bounce_audit.py --score`, the nine
-rallies with a human-path fitter run): 66 taps vs 59 fitter bounces,
+rallies with a human-path fitter run): 65 taps vs 59 fitter bounces,
 **51 match within 0.30 s; landing error median 0.9 ft, p90 2.4 ft**;
 tap − fit time median +18 ms, IQR [+1, +51], 98% within 100 ms. Rally
 1 against the published replay (`rally1_show.json`, not in the scorer
 — no c3 cache): 10 of 11 unique taps match, times within 60 ms. So
 where the fitter calls a bounce, the spot and the frame are right.
 
-**The 15 tap-only bounces sort into three bins, and the first is the
+**The 14 tap-only bounces sort into three bins, and the first is the
 finding.** (i) **Eight are bounces within 0.10 s of the NEXT contact**
 — the ball bouncing at the receiver's feet, a half-volley — and the
 fitter typed every one an ARC (r4 f15 0.05 s before the contact, r5
 f10 0.04, r6 f6 0.05, r7 f7 0.01, r9 f8 0.07, r9 f19 −0.07, r10 f11
 0.09) or, on r2 f6, put its bounce mid-flight at 46.07 where the tap
-is 46.69, 0.06 s before the contact. Across all 19 rallies 14 of 108
-non-terminal bounces (13%) sit within 0.10 s of the next contact, 19
+is 46.69, 0.06 s before the contact. Across all 19 rallies 13 of 109
+non-terminal bounces (12%) sit within 0.10 s of the next contact, 18
 within 0.20 s — a bounce that close to a contact is inside the
 contact's own black-hole window and the fit sees one turn, not two.
 This is a FITTER blind spot, not a tracking one: it is on the owner's
 path. (ii) Four sit in NOT OK flights (r5 f9, r9 f1, r9 f7, r17 f7) —
-no fit at all, so the bounce was never in question. (iii) Three
+no fit at all, so the bounce was never in question. (iii) Two
 others: r9 f29 (terminal, tap 282.50 vs fit 282.13, 0.37 s apart), r10
-f26 (terminal, tap 318.41, fitter arc), r17 f12 (a label slip, below).
+f26 (terminal, tap 318.41, fitter arc).
 Fitter-only bounces (8): two junk fits the owner calls volley (r9 f3
 rms 6.0 px, r10 f10 rms 5.3 px), two the owner marked unsure (r3 f6,
 r9 f20), one confident fit the owner called volley (r4 f5, rms 1.3 px
-— worth a look), one on a terminal flight the owner called no-bounce
+— owner re-watched it: "really close, short-hop/half-volley or a very
+low volley, I'm ok with it being a bounce" — the same at-feet
+ambiguity as bin (i), from the other side; that error class is
+accepted), one on a terminal flight the owner called no-bounce
 (r6 f7), and the two halves of the r2 f6 / r9 f29 time mismatches.
 
-**Bounce/arc cross (flights):** 52 agree bounce, 62 agree arc, 10
-bounce-vs-arc (the seven above + r10 f26 terminal + the two r17
-slips), 4 arc-vs-bounce. Tracked side, 4 rallies: 16 of 34 tracked
+**Bounce/arc cross (flights):** 53 agree bounce, 64 agree arc, 8
+bounce-vs-arc (the seven above + r10 f26 terminal), 3 arc-vs-bounce. Tracked side, 4 rallies: 16 of 34 tracked
 bounces match a tap — the shipped tracker's bounce list is half junk,
 which the intact-flight grader already said.
 
@@ -65,14 +68,21 @@ graded on the taps instead of on the fitter now has real truth; the
 at-feet class needs a rule that lets a bounce and a contact share one
 turn.
 
-**Label slips to fix in the tool (owner; not edited here):** r17 f11
-and f12 taps at 437.63 / 437.53 fall inside f10 (437.12–437.94) — the
-f10 bounce tapped twice while the seek was behind; r21 f1 tap at
-520.96 falls in f4; double taps 14 ms / 24 ms apart on r1 f7 and r8
-f7 (same bounce, two clicks — r8's two spots disagree), r1 f4 0.23 s
-apart, r16 f1 0.11 s apart. The scorer takes them as separate bounces;
-dedupe or re-tap. Four terminal flights carry V instead of X (r1 f25,
-r3 f17, r7 f9, r16 f7) — read as "no bounce seen".
+**Label slips — a TOOL bug, fixed 2026-09-08.** The first upload had
+double taps (r1 f4/f7, r8 f7, r16 f1) and r17 f11/f12 taps that fell
+inside f10; the owner's second upload fixed r17 but the doubles came
+back with more (r20 f1/f4, r21 f1/f3/f4), because `record()` APPENDED
+a re-tap instead of replacing it. Now: a re-tap on a normal flight
+replaces the bounce; on a terminal flight it replaces the tap within
+0.25 s, else adds (cap two). The loader (`read_labels`) also cleans
+old files and prints what it did — drops a tap outside its flight
+(±0.15 s), collapses taps <0.15 s apart to the later one, flags a
+normal flight holding two — so the committed CSV is never rewritten
+by us. After cleanup one item needs the owner: **r21 f4 holds two
+taps 0.42 s apart at different spots (520.39 @ 501,501 vs 520.81 @
+481,231)** — which is the bounce? (r21 has no fitter run, so the
+score above is unaffected.) Four terminal flights carry V instead of
+X (r1 f25, r3 f17, r7 f9, r16 f7) — read as "no bounce seen".
 
 ## 2026-09-05 (later) — LEARNED CLAIMER: intact 13 → 17/35, bounce count 13 → 14; BOUNCE CODER shipped
 

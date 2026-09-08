@@ -161,10 +161,20 @@ function record(x, y){
   if (!V.videoWidth) { flash("load the video first"); return; }
   V.pause(); stopAt = null;
   const e = ent(true), t = +cur().toFixed(3), tap = {t, x, y};
-  if (e.b.length >= 2) e.b[1] = tap; else e.b.push(tap);
-  e.b.sort((a, b) => a.t - b.t);
+  // A re-tap REPLACES: one bounce per flight; a terminal flight may hold
+  // two, and there a re-tap within 0.25 s replaces the nearer one.
+  let msg = "";
+  if (!F().term) { msg = e.b.length ? " (replaced)" : ""; e.b = [tap]; }
+  else {
+    let k = -1, best = 0.25;
+    e.b.forEach((b, i) => { const d = Math.abs(b.t - t); if (d <= best) { best = d; k = i; } });
+    if (k >= 0) { e.b[k] = tap; msg = " (replaced)"; }
+    else if (e.b.length < 2) e.b.push(tap);
+    else { e.b[1] = tap; msg = " (replaced 2nd)"; }
+    e.b.sort((a, b) => a.t - b.t);
+  }
   e.call = "bounce"; save();
-  flash(`bounce @ ${t.toFixed(2)} s` + (x == null ? " (no spot)" : "") +
+  flash(`bounce @ ${t.toFixed(2)} s` + msg + (x == null ? " (no spot)" : "") +
         (e.b.length > 1 ? ` — ${e.b.length} in this flight` : ""));
   render(); next();
 }

@@ -522,20 +522,23 @@ bounce at all.
 ### UPDATE 2026-09-08 — first bounce truth: the fitter's bounces are right where it finds them; it is blind to the bounce at the receiver's feet
 
 The owner tapped every train rally in the bounce coder
-(`data/vision/bounce_labels_chicago0725.csv`, 225 flights, 119 bounce
-taps, 55% of non-terminal flights bounce). Against the nine rallies
-with a human-path fitter run: 51 of 66 taps match a fitter bounce
+(`data/vision/bounce_labels_chicago0725.csv`, 228 flights, 116 bounce
+taps, 52% of non-terminal flights bounce). Against the nine rallies
+with a human-path fitter run: 51 of 65 taps match a fitter bounce
 within 0.30 s, landing error median 0.9 ft / p90 2.4 ft, time offset
 median +18 ms. Rally 1 against the published replay: 10 of 11 match.
 Where the fitter says bounce, believe the spot and the frame.
 
-What it misses: seven of the fifteen unmatched taps are bounces within
+What it misses: eight of the fourteen unmatched taps are bounces within
 0.10 s of the next contact — the half-volley at the receiver's feet —
-and the fitter typed every one an arc. 13% of all bounces in the
-labels are of that kind (14 of 108 within 0.10 s, 19 within 0.20 s).
+and the fitter typed every one an arc. 12% of all bounces in the
+labels are of that kind (13 of 109 within 0.10 s, 18 within 0.20 s).
+The one confident fitter bounce the owner had called a volley (r4 f5)
+is the same ambiguity seen from the other side; the owner accepts it.
 The 35-bounce panel is built from fitter calls, so it undercounts by
 about that much; the taps are the truth to grade boundary typing on
-from here. Details and the label slips to fix: HANDOFF.md 2026-09-08.
+from here. Details, and the tool re-tap bug fixed the same day:
+HANDOFF.md 2026-09-08.
 
 ## The black hole, and why it licenses the non-tracking family
 
