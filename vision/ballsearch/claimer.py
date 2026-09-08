@@ -78,11 +78,29 @@ def load_rally(r):
              angs=dict(angs), anchors=list(anchors), zs=list(c["zs"]),
              floors=c["floors"], sides=br.track_sides(c["floors"]),
              npz=c["npz"], imps=list(c["imps"]), end=float(c["dead"]),
-             h_bnc=bo.human_bounces(c), sh_bounds=list(sh_bounds),
+             h_bnc=(tap_key(r) if KEY == "taps" else bo.human_bounces(c)),
+             sh_bounds=list(sh_bounds),
              sh_evs=list(sh_evs), P=c["P"])
     R["serve"] = R["imps"][0]
     R["pose"] = pose_signals(R["npz"])
     return R
+
+
+KEY = "human"        # --key taps: intact flights keyed on the owner's bounce taps
+TAG = ""             # --tag ne: bounds written to claimer_bounds_ne_r{N}.json
+
+
+def tap_key(r):
+    """Non-terminal bounce TAP times (data/vision/bounce_labels_*.csv) —
+    the direct key that replaces the fitter's human-path bounces
+    (2026-09-08).  A rally without ball clicks has no human path at
+    all, so this is also the only key r20/r21 can have."""
+    from tap_grade import truth
+    return [t for f in truth(r) if not f["term"] for (t, _, _) in f["taps"]]
+
+
+def bounds_path(r):
+    return HERE / f"claimer_bounds{('_' + TAG) if TAG else ''}_r{r}.json"
 
 
 def pose_signals(npz_path):
@@ -307,9 +325,9 @@ def loro(train=TRAIN, save=False, seed=0):
           f"{tot[1][1]:>4} {tot[1][2]:>3}/{nb:<3}")
     if save:
         for r, d in out.items():
-            with open(HERE / f"claimer_bounds_r{r}.json", "w") as f:
+            with open(bounds_path(r), "w") as f:
                 json.dump(d, f)
-        print("saved claimer_bounds_r*.json for the train rallies (LORO bounds)")
+        print(f"saved {bounds_path('N').name} for the train rallies (LORO bounds)")
     return Rs, P, oof
 
 
@@ -321,7 +339,7 @@ def read_eval(train=TRAIN, ev=EVAL, save=False, seed=0):
     X = np.vstack([P[q][1] for q in train])
     y = np.concatenate([P[q][2] for q in train])
     m = fit(X, y, seed)
-    print(f"\nREAD on r{ev} — tau {tau:.2f} fixed on train (intact {key[0]}, "
+    print(f"\nREAD on r{ev} — tau {tau:.2f} fixed on train, key={KEY} (intact {key[0]}, "
           f"cont-junk {key[1]})")
     print(f"{'rally':>6} {'tau':>5} | {'shipped: cont junk intact':^28} | "
           f"{'claimer: cont junk intact':^28}")
@@ -333,10 +351,10 @@ def read_eval(train=TRAIN, ev=EVAL, save=False, seed=0):
         print(f"r{r:<5} {tau:>5.2f} | {fmt(grade(R['sh_bounds'], R)):^28} | "
               f"{fmt(grade(b, R)):^28}")
         if save:
-            with open(HERE / f"claimer_bounds_r{r}.json", "w") as f:
+            with open(bounds_path(r), "w") as f:
                 json.dump(dict(bounds=b, evs=evs_for(b, R), tau=tau), f)
     if save:
-        print("saved claimer_bounds_r*.json for the eval rallies (train-only model)")
+        print(f"saved {bounds_path('N').name} for the eval rallies (train-only model)")
     # importances: permutation on the train panel (in-sample, indicative)
     from sklearn.inspection import permutation_importance
     pi = permutation_importance(m, X, y, n_repeats=5, random_state=0,
@@ -358,18 +376,31 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--train", help="comma-separated train rallies "
                     "(default 2,3,4,5,6,7,17)")
+    ap.add_argument("--key", default="human", choices=["human", "taps"],
+                    help="intact-flight key: the fitter's human-path bounces "
+                         "(09-05) or the owner's bounce taps (09-08)")
+    ap.add_argument("--tag", default="", help="bounds file suffix, e.g. ne")
+    ap.add_argument("--eval", help="comma-separated rallies for --read-eval "
+                    "(default 9,10); r20/r21 need --seal + a live bounce_gate.md")
+    ap.add_argument("--seal", action="store_true")
     ap.add_argument("--no-end-feats", action="store_true",
                     help="drop t_from_serve/t_to_end: the rally window's "
                          "end is last-contact+2 s on most rallies, so "
                          "t_to_end leaks the last contact's position")
     a = ap.parse_args()
+    global KEY, TAG
+    KEY, TAG = a.key, a.tag
     if a.no_end_feats:
         DROP.update(END_FEATS)
+    ev = [int(x) for x in a.eval.split(",")] if a.eval else EVAL
+    from tap_grade import check_seal
+    for r in ev:
+        check_seal(r, a.seal)
     train = [6, 7, 17] if a.manual_only else TRAIN
     if a.train:
         train = [int(x) for x in a.train.split(",")]
     if a.read_eval:
-        read_eval(train, save=a.save, seed=a.seed)
+        read_eval(train, ev=ev, save=a.save, seed=a.seed)
     else:
         loro(train, save=a.save, seed=a.seed)
 

@@ -67,10 +67,18 @@ def build(rally):
     P = c3.dlt(X3, x2)
     floors = br.track_floor(str(npz), P)
 
-    hum = br.human_side(rally, end)
-    h_obs, h_bounds, h_evs = hum
-    h_pa = br.bound_anchor_positions(h_bounds, anchors, floors)
-    h_segs, h_cons = br.reconstruct(P, h_obs, h_bounds, h_evs, h_pa)
+    if (br.DATA / f"ball_path_r{rally}.csv").exists():
+        hum = br.human_side(rally, end)
+        h_obs, h_bounds, h_evs = hum
+        h_pa = br.bound_anchor_positions(h_bounds, anchors, floors)
+        h_segs, h_cons = br.reconstruct(P, h_obs, h_bounds, h_evs, h_pa)
+    else:
+        # no owner ball clicks (r18-r21): no human path, no human fit.
+        # Bounce truth for these rallies is the owner's TAPS (tap_grade).
+        imps0, _ = load_impacts(rally=rally, prefill_ok=True)
+        hum, h_segs, h_cons = ([], list(imps0) + [end], []), [], []
+        h_bounds = hum[1]
+        print(f"r{rally}: no ball_path_r{rally}.csv — human side skipped")
 
     imps, dead = load_impacts(rally=rally, prefill_ok=True)  # r2-r5: prefill bounds until the contact pass
     cache = dict(rally=rally, serve=serve, end=end, t0=t0,

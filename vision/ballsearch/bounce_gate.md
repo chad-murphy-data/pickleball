@@ -1,0 +1,102 @@
+# Bounce chain on r20/r21 — pre-registration (draft 2026-09-08; frozen when the line `VERDICT: LIVE` appears below)
+
+Owner's authorization (2026-09-08): "I think we can go ahead and spend
+R20 and 21 and see what we get."  r20 and r21 are the last two train
+rallies of game 1 that have never been read by any instrument; they have
+contact taps and bounce taps (owner's labels) but NO ball clicks, so
+there is no human ball path and no track-level check possible.  This is
+a one-shot read of the BOUNCE CHAIN (contact bounds -> arc fit -> bounce
+typing) graded on the owner's taps only.  r9/r10 already carry one read
+of the leaky claimer (tau 0.45; HANDOFF 09-05) and are not re-read.
+Rallies 22+ are the temporal-gate holdout and stay untouched.
+
+## What is being decided
+
+Two changes to the bounce chain, adopted TOGETHER or NEITHER:
+
+1. CONTACT BOUNDS from the leak-free claimer (`claimer.py --no-end-feats`,
+   model = HistGradientBoosting on 24 features, no t_from_serve /
+   t_to_end; trained on ALL SEVEN train rallies r2-r7 + r17 with the
+   TAPS key; tau fixed by the train rule) instead of the shipped
+   corridor claim, and NO crossing demotion (the claimer already
+   drops most of what demotion was for; train shows demotion=none
+   keeps more contacts).
+2. AT-FEET TYPING (`tap_grade.feet_type`): an ok ARC flight whose fitted
+   arc dips to z <= Z ft within the last W s before its end is typed a
+   bounce at the first floor crossing.  This targets the fitter's blind
+   spot — `fit_segment` only searches (t0+0.12, t1-0.12), so a half-volley
+   bounce within ~0.10 s of the next contact is always typed ARC; 13 of
+   109 non-terminal bounces in the labels (12 %) are that kind.  The
+   (W, Z) cell is chosen by the frozen rule in `tap_grade.tune_feet`
+   (max pooled matched-false over train vs no typing; ties -> smaller W,
+   then smaller Z; LIVE only if net >= no-typing net + 2; result in
+   `tap_feet_tune.json`).  If the train rule says DEAD, the candidate
+   arm runs WITHOUT typing and only change 1 is on the line.
+
+## Arms (all fed the same tracked obs, `bound_oracle.predem(c, "raw")`)
+
+- INCUMBENT: shipped corridor claim + shipped crossing demotion
+  (`bounce_autopsy.tracked`), no typing.  What HANDOFF calls the shipped
+  bounce count.
+- CANDIDATE: claimer_ne bounds + demotion none + at-feet rule (if LIVE).
+- Diagnostics, reported but not graded: claimer_ne/none without typing;
+  incumbent + at-feet rule.  They say WHICH change carried the result.
+
+## Grade (`tap_grade.py grade`, one number set per arm)
+
+Truth = the owner's non-terminal bounce taps (terminal flights excluded:
+the machine's end-of-rally cut is not what the owner timed).  A machine
+bounce MATCHES a tap within 0.30 s on the same flight (greedy, one per
+tap).  A machine bounce is FALSE if it sits on a volley/nobounce flight
+or on a bounce flight more than 0.30 s from the tap.  Also read:
+landing error (ft, floor homography) for matched bounces, contacts
+matched within 0.25 s, junk bounds, intact flights keyed on taps.
+
+## Bars (one shot on r20+r21 POOLED; no re-tune, no knob override, no second run)
+
+Pooled over r20 and r21.  Let net = matched - false.
+
+1. net(candidate) >= net(incumbent) + 2.
+2. contacts matched (candidate) >= contacts matched (incumbent) - 1.
+3. junk (candidate) <= junk (incumbent).
+4. intact flights (candidate) >= intact (incumbent).
+5. NULL: shift every candidate bounce call by +0.75 s and re-grade;
+   the shifted matched count must be <= half the real matched count.
+   Fails -> the matches are rhythm, not placement, and the read is void
+   regardless of bars 1-4.
+
+All five hold -> ADOPT both changes as the shipped chain (HANDOFF "what
+is built" row + STATS).  Bars 2-4 hold but 1 fails -> the leak-free
+claimer is a wash on bounces; keep it as a diagnostic, shipped chain
+unchanged.  Any of 2-4 fails -> the candidate is REJECTED, no revisit
+without new labeled rallies (r18/r19 once poses exist are TRAIN, not a
+second shot).  The bars never loosen after the numbers are seen.
+
+## Nulls and leaks
+
+- The claimer never sees r20/r21 (train = r2-r7, r17; the taps key uses
+  only train taps).  The at-feet cell is tuned on train only.
+- `t_to_end` was a leak (rally end = last contact + 2 s when no
+  point_dead label; true for r20 and r21) — that is why the model is
+  the `_ne` one.
+- Pose npz for r20/r21 are extracted fresh (rtmpose-balanced, native
+  fps) and used only for anchors (`ball_grade.make_anchors`) and the
+  contact candidates the claimer scores; the owner's taps are never an
+  input to any fit on r20/r21.
+- The shift null (bar 5) is the only null; there are 19 taps on r20/r21
+  so the read is coarse — a +2 net margin is about one flight per rally.
+
+## Discipline
+
+- `tap_grade.check_seal` refuses r>=22 always; r20/r21 need `--seal`
+  AND the literal `VERDICT: LIVE` line in this file.  The line is added
+  in the freeze commit, after the train evidence below is filled in and
+  before any r20/r21 number exists.
+- Each r20/r21 fit and grade runs ONCE; caches (`tapgrade_*_r20/21.pkl`,
+  `claimer_bounds_ne_r20/21.json`) are the record.
+- Results are appended under "Results" and never edited above this line
+  afterwards.
+
+## Train evidence (r2-r7 + r17; looked at BEFORE the freeze, allowed)
+
+(filled in at freeze)
