@@ -522,7 +522,7 @@ bounce at all.
 ### UPDATE 2026-09-08 — first bounce truth: the fitter's bounces are right where it finds them; it is blind to the bounce at the receiver's feet
 
 The owner tapped every train rally in the bounce coder
-(`data/vision/bounce_labels_chicago0725.csv`, 228 flights, 116 bounce
+(`data/vision/bounce_labels_chicago0725.csv`, 228 flights, 115 bounce
 taps, 52% of non-terminal flights bounce). Against the nine rallies
 with a human-path fitter run: 51 of 65 taps match a fitter bounce
 within 0.30 s, landing error median 0.9 ft / p90 2.4 ft, time offset

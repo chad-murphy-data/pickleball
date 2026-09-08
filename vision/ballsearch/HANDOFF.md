@@ -14,7 +14,7 @@ measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
 
-## 2026-09-08 (latest) — FIRST BOUNCE TRUTH: 19 rallies, 228 flights, 116 taps; the fitter's bounces hold where it finds them, and its one blind spot is the ball at the receiver's feet
+## 2026-09-08 (latest) — FIRST BOUNCE TRUTH: 19 rallies, 228 flights, 115 taps; the fitter's bounces hold where it finds them, and its one blind spot is the ball at the receiver's feet
 
 The owner coded every train rally in the bounce coder in one sitting
 (`data/vision/bounce_labels_chicago0725.csv`, committed — it is truth,
@@ -78,10 +78,11 @@ replaces the bounce; on a terminal flight it replaces the tap within
 old files and prints what it did — drops a tap outside its flight
 (±0.15 s), collapses taps <0.15 s apart to the later one, flags a
 normal flight holding two — so the committed CSV is never rewritten
-by us. After cleanup one item needs the owner: **r21 f4 holds two
-taps 0.42 s apart at different spots (520.39 @ 501,501 vs 520.81 @
-481,231)** — which is the bounce? (r21 has no fitter run, so the
-score above is unaffected.) Four terminal flights carry V instead of
+by us. The one ambiguity cleanup could not settle — r21 f4 held two
+taps 0.42 s apart at different spots — the owner ruled the same day:
+520.81 @ 481,231 is the bounce, and the 520.39 row was removed from
+the CSV on that word (the only edit ever made to the file by hand;
+115 taps after it). Four terminal flights carry V instead of
 X (r1 f25, r3 f17, r7 f9, r16 f7) — read as "no bounce seen".
 
 ## 2026-09-05 (later) — LEARNED CLAIMER: intact 13 → 17/35, bounce count 13 → 14; BOUNCE CODER shipped
