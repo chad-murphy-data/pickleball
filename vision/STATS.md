@@ -519,6 +519,24 @@ segment kind. It settles two things nothing else can: whether the 35
 are real (the key itself), and whether the NOT OK flights above hold a
 bounce at all.
 
+### UPDATE 2026-09-08 — first bounce truth: the fitter's bounces are right where it finds them; it is blind to the bounce at the receiver's feet
+
+The owner tapped every train rally in the bounce coder
+(`data/vision/bounce_labels_chicago0725.csv`, 225 flights, 119 bounce
+taps, 55% of non-terminal flights bounce). Against the nine rallies
+with a human-path fitter run: 51 of 66 taps match a fitter bounce
+within 0.30 s, landing error median 0.9 ft / p90 2.4 ft, time offset
+median +18 ms. Rally 1 against the published replay: 10 of 11 match.
+Where the fitter says bounce, believe the spot and the frame.
+
+What it misses: seven of the fifteen unmatched taps are bounces within
+0.10 s of the next contact — the half-volley at the receiver's feet —
+and the fitter typed every one an arc. 13% of all bounces in the
+labels are of that kind (14 of 108 within 0.10 s, 19 within 0.20 s).
+The 35-bounce panel is built from fitter calls, so it undercounts by
+about that much; the taps are the truth to grade boundary typing on
+from here. Details and the label slips to fix: HANDOFF.md 2026-09-08.
+
 ## The black hole, and why it licenses the non-tracking family
 
 Measured 2026-09-03 (`ballsearch/blackhole.py`), the frozen scorer sliced by
