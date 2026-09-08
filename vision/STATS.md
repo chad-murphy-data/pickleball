@@ -519,6 +519,21 @@ segment kind. It settles two things nothing else can: whether the 35
 are real (the key itself), and whether the NOT OK flights above hold a
 bounce at all.
 
+### UPDATE 2026-09-08 (later) — r20/r21 spent on the bounce chain: candidate REJECTED, shipped chain stands
+
+One-shot read under `vision/ballsearch/bounce_gate.md` (frozen before
+any number) on the two train rallies that have contact and bounce
+taps but no ball clicks. Candidate = leak-free learned claimer
+bounds, no demotion; the at-feet typing rule was already DEAD on train
+(finds the half-volleys, pays twice over in false calls). On r20 + r21
+(19 owner bounces): shipped chain 2 matched / 2 false, candidate
+6 matched / 1 false — but the candidate lost one contact bound to
+junk and one intact flight, and the gate rejects a bounce gain bought
+with a worse contact list. Shipped numbers unchanged. What stands:
+on a long dinking rally either chain fits fewer than a third of its
+flights as arcs, so the bounce count there is 2-6 of 15 whichever
+claimer feeds it. Details: HANDOFF.md 2026-09-08 (later).
+
 ### UPDATE 2026-09-08 — first bounce truth: the fitter's bounces are right where it finds them; it is blind to the bounce at the receiver's feet
 
 The owner tapped every train rally in the bounce coder

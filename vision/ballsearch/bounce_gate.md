@@ -138,3 +138,47 @@ VERDICT: LIVE — the gate is frozen; r20/r21 may be run once.
 
 ## Results (appended after the one shot; nothing above this line changes)
 
+
+### 2026-09-08, the one shot (numbers in `bounce_grade_r20r21.txt`; caches `tapgrade_*_r20/21.pkl`, `claimer_bounds_ne_r20/21.json`)
+
+Pooled r20 + r21 (19 taps, 26 contacts; 31 bounds on each arm):
+
+| arm | matched | false | net | land ft | contacts | junk / bounds | intact |
+|---|---|---|---|---|---|---|---|
+| INCUMBENT shipped/shipped | 2/19 | 2 | 0 | 2.5 | 17/26 | 12 / 31 (0.39) | 5/17 |
+| CANDIDATE claimer_ne/none | 6/19 | 1 | +5 | 2.7 | 16/26 | 13 / 31 (0.42) | 4/17 |
+| shift null +0.75 s, candidate | 3/19 | 3 | | | | | |
+
+Per rally: r20 incumbent 2/15 (2 false) vs candidate 5/15 (1 false);
+r21 0/4 vs 1/4, no false either way.
+
+Bars: 1 PASS (+5 vs +2 needed) · 2 PASS on the line (16 vs 16) ·
+3 **FAIL** (0.42 vs 0.39; the count fails too, 13 vs 12) · 4 **FAIL**
+(4 vs 5) · 5 PASS on the line (3 vs 3 allowed).
+
+**VERDICT: REJECTED** as pre-registered ("any of 2-4 fails").  The
+bounce read itself moved the right way — three times the matched taps,
+half the false calls, ok arc fits 14 vs 11 — but the contact layer
+underneath gave back one junk bound and one intact flight, and the
+bars were written so that a bounce gain bought with a worse contact
+list does not ship.  On train the candidate had led the incumbent on
+every contact bar; on the seal it trails on two of them by one each.
+Shipped chain UNCHANGED (shipped claim + shipped demotion).
+
+Two notes for the record.  (i) The run script passed `--feet` to the
+candidate arm although the train rule was DEAD; the tune file's cell
+(W 0.15 / Z 1.0) changed nothing on r20/r21 — the candidate and the
+no-typing diagnostic lines are identical — so the graded numbers are
+the no-typing arm the gate specified.  (ii) The claimer's own read
+(`claimer.py`, tau 0.35 fixed on train) put it behind the shipped
+claim on contacts 16 vs 19 and intact 4 vs 7 before any bounce was
+fit; the bounce gain came from the ok-fit rate on the flights it did
+keep, not from a better bound list.
+
+What this buys: the first bounce read on rallies with no ball clicks,
+and it says the chain recovers 2-6 of 19 owner bounces on a long
+dinking rally either way.  The at-feet miss is not the story on r20
+(1 of 15 taps is at-feet); most misses are flights that never fit as
+an arc (7 ok segs of 22 bounds on the incumbent).  r20/r21 are now
+spent for this chain; r18/r19 (3 + 2 contacts) carry no bounce
+information and stay train.

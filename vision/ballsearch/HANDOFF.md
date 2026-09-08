@@ -14,7 +14,46 @@ measurements, spaghetti, emission, soft-DP) and the per-channel ledger
 in `vision/STATUS.md`; this file is the operational summary. Where they
 disagree on a NUMBER, the notes file is the record.
 
-## 2026-09-08 (latest) — FIRST BOUNCE TRUTH: 19 rallies, 228 flights, 115 taps; the fitter's bounces hold where it finds them, and its one blind spot is the ball at the receiver's feet
+## 2026-09-08 (latest, later) — r20/r21 SPENT on the bounce chain: leak-free claimer REJECTED under `bounce_gate.md`; the at-feet typing rule is DEAD on train
+
+Owner's go: "spend R20 and 21 and see what we get." One pre-registration
+(`bounce_gate.md`, frozen with `VERDICT: LIVE` before any r20/r21
+number; `tap_grade.py` is the grader, `bounce_grade_r20r21.txt` the
+record), two changes on the line together: contact bounds from the
+leak-free claimer (`claimer.py --no-end-feats`, taps key, model on
+r2-r7 + r17, tau 0.35) with no crossing demotion, plus at-feet typing.
+
+**At-feet typing DEAD on train** before the shot (`tap_feet_tune.json`):
+the best of 16 (W, Z) cells lifts at-feet taps 1/5 → 4/5 but pays
+8 more false calls, net −1 vs +1. So the candidate went in as the
+claimer alone.
+
+**Train (7 rallies, 35 taps)**: incumbent 13/35 matched, 21 false;
+candidate 16/35, 15 false; contacts 65 vs 73; junk share 0.34 vs 0.33;
+intact 17 vs 19 — every bar cleared with room.
+
+**Seal (r20 + r21, 19 taps, 26 contacts)**: incumbent 2/19 matched,
+2 false, contacts 17/26, junk 12/31, intact 5/17. Candidate 6/19,
+1 false, contacts 16/26, junk 13/31, intact 4/17. Shift null 3/19.
+Bars 1, 2, 5 pass (2 and 5 on the line); **bars 3 and 4 fail by one
+each → REJECTED**, shipped chain unchanged. The bounce read tripled
+and the contact list under it got one bound worse; the gate was
+written so that does not ship, and it did its job.
+
+What the read says beyond the verdict: on a 22 s dinking rally
+(r20, 15 taps, 20 contacts) either chain recovers 2-5 bounces; the
+incumbent fits only 7 of 22 bounds as ok arcs. The loss is upstream
+of typing. r20/r21 carry no ball clicks, so this is the first read
+graded on taps alone (`tap_grade.py`; contacts within 0.25 s, bounces
+within 0.30 s), and a track-level re-check is not possible without
+clicks. r18/r19 were also extracted and read on train (3 + 2
+contacts, both arms 0/3 taps) — no information, stay train.
+
+Seals now: r9/r10 (claimer, leaky, spent 09-05), r20/r21 (bounce
+chain, spent 09-08). r22+ holdout untouched. Pose npz for r18-r21:
+rtmpose-balanced CPU, `pose_meta_r18to21.json`.
+
+## 2026-09-08 — FIRST BOUNCE TRUTH: 19 rallies, 228 flights, 115 taps; the fitter's bounces hold where it finds them, and its one blind spot is the ball at the receiver's feet
 
 The owner coded every train rally in the bounce coder in one sitting
 (`data/vision/bounce_labels_chicago0725.csv`, committed — it is truth,
@@ -1080,6 +1119,16 @@ apply it to path length, softly. It slots into the fusion's shot-book
 prior term.
 
 ## Next-thread to-do (in order)
+
+-1. **After the r20/r21 shot (2026-09-08)**: the shipped bounce chain
+   stands. The next candidate has to fix the ok-fit rate of the
+   flights the bounds already hold (incumbent 7 ok of 22 bounds on
+   r20), not the bound list — and it needs a fresh seal, which means
+   NEW labeled rallies (r22+ is the temporal holdout; do not touch).
+   Cheapest evidence to gather first: the owner's bounce taps on
+   r9/r10 are already coded, so a train-side profile of WHY a bound
+   pair fails to fit (obs count, gap length, near-body share) can be
+   built on r2-r7 + r17 with no shot spent.
 
 0. **Path-first is the incumbent** (section above; adopted 2026-09-01
    under `pathfirst_gate.md`). Its open edges, each a fresh
