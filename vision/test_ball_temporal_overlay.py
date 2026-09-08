@@ -39,6 +39,9 @@ class OverlayTests(unittest.TestCase):
             p = Path(d)/'contacts.csv'
             p.write_text('rally_cum,contact,source,t_tap_s,t_refined_s\n19,1,manual,10,\n19,1,manual,11,\n')
             self.assertEqual(windows_for([18,19],manifest,p), {18:(100,120),19:(540,720)})
+            self.assertEqual(windows_for([18,19],manifest,p,2,15), {18:(100,120),19:(480,1560)})
+            with self.assertRaises(ValueError):
+                windows_for([19],manifest,p,1,float('nan'))
             with self.assertRaises(ValueError):
                 windows_for([20],manifest,p)
 
