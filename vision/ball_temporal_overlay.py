@@ -28,7 +28,9 @@ def exposure(frame, targets, context):
     return 'unseen_center_same_video'
 
 
-def windows_for(rallies, manifest, contacts_path):
+def windows_for(rallies, manifest, contacts_path, pre_seconds=1.0, post_seconds=1.0):
+    if not all(math.isfinite(x) and x >= 0 for x in (pre_seconds, post_seconds)):
+        raise ValueError('Window padding must be finite and nonnegative')
     rows = manifest['rows']
     trained_rally = int(rows[0]['rally'])
     fps = manifest['fps']
@@ -44,7 +46,7 @@ def windows_for(rallies, manifest, contacts_path):
             if not contacts:
                 raise ValueError(f'No accepted contact timestamps for rally {rally}')
             # This is a contact-centered review window, not a verified rally-end boundary.
-            result[rally] = (math.ceil((min(contacts)-1)*fps), math.floor((max(contacts)+1)*fps))
+            result[rally] = (math.ceil((min(contacts)-pre_seconds)*fps), math.floor((max(contacts)+post_seconds)*fps))
     if any(a < 2 or b < a for a, b in result.values()):
         raise ValueError('Invalid window or insufficient preceding context')
     return result
@@ -91,7 +93,7 @@ def run(args):
         raise ValueError('This command expects the same source video as training')
     if (manifest['input_width'], manifest['input_height'], manifest['context_offsets']) != (640, 360, [-2,-1,0,1,2]):
         raise ValueError('Unsupported model input configuration')
-    windows = windows_for(args.rallies, manifest, args.contacts)
+    windows = windows_for(args.rallies, manifest, args.contacts, args.pre_seconds, args.post_seconds)
     targets, context = training_frames(checkpoint)
     labels = {int(r['frame']): r for r in manifest['rows']}
     device = args.device
@@ -209,10 +211,11 @@ def run(args):
                 scope='Same-video qualitative review; no cross-video generalization claim')
         report = dict(checkpoint_sha256=hashlib.sha256(Path(args.checkpoint).read_bytes()).hexdigest(),
                       device=device, fps=fps, windows=reports,
+                      contact_window_padding=dict(pre_seconds=args.pre_seconds, post_seconds=args.post_seconds),
                       notes=['Sequential CFR zero-origin decode matches preparation assumptions; visual alignment still needs checking.',
                              'Unknown and inferred labels are excluded from localization metrics.',
                              'Absent labels describe annotated samples only; no gap interpolation.',
-                             'Unlabeled rallies have no accuracy score. Review windows use contacts plus one second.',
+                             'Unlabeled rallies have no accuracy score. Contact windows use the recorded padding, not verified point boundaries.',
                              'Five-frame input includes two future frames. MP4 has no audio.'])
         (out/'report.json').write_text(json.dumps(report, indent=2))
         print(f'Wrote overlays, per-frame CSVs and report.json to {out}', flush=True)
@@ -234,6 +237,8 @@ def main():
     p.add_argument('--video', required=True)
     p.add_argument('--checkpoint', required=True)
     p.add_argument('--rallies', nargs='+', type=int, default=[18,19])
+    p.add_argument('--pre-seconds', type=float, default=1.0, help='Padding before first contact for non-training rallies')
+    p.add_argument('--post-seconds', type=float, default=1.0, help='Padding after last contact for non-training rallies')
     p.add_argument('--contacts', default=str(Path(__file__).resolve().parent.parent/'data/vision/contact_labels_chicago0725.csv'))
     p.add_argument('--out', required=True)
     p.add_argument('--device', choices=['auto','cpu','mps','cuda'], default='auto')
