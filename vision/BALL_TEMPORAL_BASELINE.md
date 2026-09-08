@@ -50,3 +50,38 @@ require a local smoke test. No achieved training accuracy is claimed. Begin with
 32 samples; --limit 132 includes all currently labeled V/S examples. No holdout
 split, presence evaluation, contact attribution, or physical speed inference is
 implemented in this initial experiment.
+
+## Saved-checkpoint visual review
+
+Run from the repository root with the existing virtual environment activated:
+
+```bash
+python3 vision/ball_temporal_overlay.py --video full_match.mp4.webm --checkpoint data/vision/temporal_r18_run3/model.pt --rallies 18 19 --out data/vision/temporal_review_r18_r19
+```
+
+This loads the existing checkpoint without training or changing it. The model
+architecture is shared with training and preserves the original checkpoint keys.
+Requires ffmpeg with libx264 (already typically available alongside ffprobe).
+Outputs r18/overlay.mp4, r19/overlay.mp4, per-rally predictions.csv and report.json.
+The MP4 files use H.264 for QuickTime and have no audio.
+
+Magenta hollow circles are predictions; smaller green hollow circles are V/S
+human labels, orange circles are inferred labels. Marker centers are transparent
+and all text is below the image so the ball remains visible. No smoothing, hiding
+low scores, or interpolating labels is applied. Off-screen predictions remain
+visible; peak mass is not a calibrated ball-presence probability.
+
+Rally 18 includes every frame between its first and last labels, including gaps
+and explicitly absent samples. Distinguish training targets from frames that
+only appeared in five-frame input context. Rally 19's review window comes from
+accepted contacts plus one second on either side, not verified rally boundaries.
+It is same-video qualitative testing with no human localization score. The report
+counts any training-context overlap, including neighboring input frames.
+
+Look first at whether the green circles match the ball in rally 18. That checks
+image/label alignment. Then watch where magenta circles go on off-screen frames
+and in rally 19. Return report.json, both CSVs, and the videos if practical.
+
+The decode-window, training-exposure and missing-label logic has automated tests.
+End-to-end inference/encoding still needs local verification with the checkpoint
+and source video; these are not available in the assistant workspace.
