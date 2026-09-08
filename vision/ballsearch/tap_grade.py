@@ -110,7 +110,8 @@ def check_seal(rally, seal):
     if rally >= 22:
         raise SystemExit(f"r{rally} is temporal-gate HOLDOUT — never loaded")
     if rally in SEAL:
-        live = GATE.exists() and "VERDICT: LIVE" in GATE.read_text()
+        live = GATE.exists() and any(
+            l.startswith("VERDICT: LIVE") for l in GATE.read_text().splitlines())
         if not (seal and live):
             raise SystemExit(f"r{rally} is a SEAL: needs --seal and a live "
                              f"verdict in {GATE.name}")
