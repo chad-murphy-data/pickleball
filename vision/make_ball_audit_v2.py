@@ -189,7 +189,9 @@ drop.onclick=()=>videoPick.click(); drop.ondragover=e=>e.preventDefault();
 drop.ondrop=e=>{e.preventDefault();loadVideo(e.dataTransfer.files[0])};
 videoPick.onchange=()=>loadVideo(videoPick.files[0]);
 function loadVideo(file){if(!file)return;video.src=URL.createObjectURL(file);video.dataset.filename=file.name;video.onloadedmetadata=()=>{const nameOK=file.name===CFG.video.name;const durOK=!CFG.video.duration_s||Math.abs(video.duration-CFG.video.duration_s)<=2;videoCheck.className=nameOK&&durOK?'ok':'warn';videoCheck.textContent=`${file.name} · ${video.duration.toFixed(2)}s · expected ${CFG.video.name}${durOK?'':' (duration mismatch)'}`;go(idx)}}
-const decodedFrame=t=>Math.round(t*CFG.video.fps);\nconst centeredSeek=s=>(s.source_frame+0.5)/CFG.video.fps;\nif(video.requestVideoFrameCallback){const watch=(now,meta)=>{displayedTime=meta.mediaTime;displayedFrame=decodedFrame(meta.mediaTime);const wanted=sample().source_frame;if(displayedFrame!==wanted&&seekAttempts<2){seekAttempts++;video.currentTime=Math.max(0,Math.min(video.duration-0.001,video.currentTime+(wanted-displayedFrame+0.25)/CFG.video.fps))}else{frameReady=displayedFrame===wanted;render()}video.requestVideoFrameCallback(watch)};video.requestVideoFrameCallback(watch)}
+const decodedFrame=t=>Math.round(t*CFG.video.fps);
+const centeredSeek=s=>(s.source_frame+0.5)/CFG.video.fps;
+if(video.requestVideoFrameCallback){const watch=(now,meta)=>{displayedTime=meta.mediaTime;displayedFrame=decodedFrame(meta.mediaTime);const wanted=sample().source_frame;if(displayedFrame!==wanted&&seekAttempts<2){seekAttempts++;video.currentTime=Math.max(0,Math.min(video.duration-0.001,video.currentTime+(wanted-displayedFrame+0.25)/CFG.video.fps))}else{frameReady=displayedFrame===wanted;render()}video.requestVideoFrameCallback(watch)};video.requestVideoFrameCallback(watch)}
 
 function go(n){idx=Math.max(0,Math.min(CFG.samples.length-1,n));localStorage.setItem(KEY+':idx',idx);displayedTime=null;displayedFrame=null;frameReady=false;seekAttempts=0;if(video.src){video.pause();video.currentTime=Math.max(0,Math.min(video.duration-0.001,centeredSeek(sample())))}render()}
 function proposalAllowed(s){return showProposals&&proposals[s.source_frame]&&(!s.blind||labels[idx])}
@@ -230,7 +232,8 @@ def selftest() -> None:
                         "video": {"name": "v.mp4", "duration_s": 10,
                                   "fps": fps, "fps_rational": "30000/1001"},
                         "samples": a})
-    assert "__CONFIG__" not in html and "requestVideoFrameCallback" in html\n    assert "centeredSeek" in html and "displayed_frame" in html
+    assert "__CONFIG__" not in html and "requestVideoFrameCallback" in html
+    assert "centeredSeek" in html and "displayed_frame" in html
     print(f"selftest OK — {len(a)} samples, {sum(x['blind'] for x in a)} blind")
 
 
