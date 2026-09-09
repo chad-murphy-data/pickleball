@@ -17,7 +17,7 @@ def read_labels(path):
         raise ValueError('Empty labels')
     seen = set()
     for r in rows:
-        if r['schema'] != 'ball-label-v2.1':
+        if r['schema'] not in ('ball-label-v2.1','ball-label-v2.2'):
             raise ValueError('Use verified v2.1 labels; v2.0 recovery requires visual review')
         frame = int(r['source_frame'])
         if frame != int(r['displayed_frame']):
@@ -35,16 +35,45 @@ def read_labels(path):
         # User clarification applies only to this identified source/rally/run.
         absent = (r['video_name'] == 'full_match.mp4.webm' and r['rally'] == '18'
                   and 40 <= int(r['sample_index']) <= 51 and 27414 <= frame <= 27447)
-        r['presence'] = ('absent' if absent else 'unknown') if r['visibility'] == 'N' else ('visible' if r['visibility'] in ('V', 'S') else 'occluded_inferred')
+        expected_presence = ('absent' if absent else 'unknown') if r['visibility'] == 'N' else ('visible' if r['visibility'] in ('V', 'S') else 'occluded_inferred')
+        r['presence'] = r.get('presence') or expected_presence
+        allowed = ('absent','unknown') if r['visibility']=='N' else (expected_presence,)
+        if r['presence'] not in allowed:
+            raise ValueError('Visibility/presence mismatch')
     if len({(r['video_name'], r['fps'], r['rally']) for r in rows}) != 1:
         raise ValueError('Supply one video and rally per run')
     return sorted(rows, key=lambda r: r['frame'])
 
 
+def combined_labels(paths, plan_path=None):
+    rows = [r for path in paths for r in read_labels(path)]
+    if len({(r['video_name'],float(r['fps'])) for r in rows}) != 1:
+        raise ValueError('Combined preparation requires the same source video/FPS')
+    if len({r['frame'] for r in rows}) != len(rows):
+        raise ValueError('Overlapping/duplicate labels across files')
+    plan = json.loads(Path(plan_path).read_text()) if plan_path else None
+    if len(paths)>1 and plan is None:
+        raise ValueError('Multi-rally preparation requires --plan to preserve the experiment split')
+    if plan:
+        if {int(r['rally']) for r in rows} != set(plan['train_rallies']):
+            raise ValueError('Input rallies differ from the planned training split')
+        if rows[0]['video_name']!=plan['video']['name'] or abs(float(rows[0]['fps'])-plan['video']['fps'])>.001:
+            raise ValueError('Plan source identity differs')
+        for config in plan['configs']:
+            actual={r['frame'] for r in rows if int(r['rally'])==config['rally']}
+            expected={s['source_frame'] for s in config['samples']}
+            if actual != expected:
+                raise ValueError(f'Incomplete or wrong batch frames for rally {config["rally"]}')
+        original=[r for r in rows if r['rally']=='18']
+        if len(original)!=153 or {int(r['sample_index']) for r in original}!=set(range(153)):
+            raise ValueError('Include the complete 153-row rally 18 export')
+    return sorted(rows,key=lambda r:r['frame']),plan
+
+
 def prepare(args):
     import cv2
     import numpy as np
-    rows = read_labels(args.labels)
+    rows,plan = combined_labels(args.labels,args.plan)
     video = Path(args.video)
     if video.name != rows[0]['video_name']:
         raise ValueError('Video filename differs from label source')
@@ -78,8 +107,9 @@ def prepare(args):
         np.savez_compressed(out / 'frames.npz', ids=np.array(ordered), rgb=np.stack([frames[i] for i in ordered]))
         meta = dict(rows=rows, source_width=width, source_height=height,
                     input_width=640, input_height=360, fps=fps,
-                    video=str(video.resolve()), labels_sha256=hashlib.sha256(Path(args.labels).read_bytes()).hexdigest(),
-                    scope='One-rally in-sample debugging; not held-out evaluation',
+                    video=str(video.resolve()), label_sources=[dict(path=str(p),sha256=hashlib.sha256(Path(p).read_bytes()).hexdigest()) for p in args.labels],
+                    experiment_plan=plan,
+                    scope='Training-set diagnostics; not held-out evaluation',
                     context_offsets=[-2, -1, 0, 1, 2])
         (out / 'manifest.json').write_text(json.dumps(meta, indent=2))
         print(f'Prepared {len(rows)} labels and {len(frames)} unique context frames in {out}')
@@ -110,9 +140,14 @@ def train(args):
     meta = json.loads((data / 'manifest.json').read_text())
     archive = np.load(data / 'frames.npz')
     frames = dict(zip(archive['ids'].tolist(), archive['rgb']))
-    rows = [r for r in meta['rows'] if r['visibility'] in ('V', 'S')][:args.limit]
+    eligible = [r for r in meta['rows'] if r['visibility'] in ('V', 'S')]
+    if args.all_samples:
+        args.limit=len(eligible)
+    rows = eligible[:args.limit]
     if not rows:
         raise ValueError('No V/S targets')
+    if args.epochs is not None:
+        args.steps=math.ceil(args.epochs*len(rows)/min(args.batch_size,len(rows)))
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=False)
     # Full-image spatial softmax avoids the all-background MSE solution.
@@ -152,12 +187,17 @@ def train(args):
             x = peak % 160 / 160 * meta['source_width']
             y = peak // 160 / 90 * meta['source_height']
             error = math.hypot(x-float(r['x']), y-float(r['y']))
-            predictions.append(dict(frame=r['frame'], visibility=r['visibility'], sampling_reason=r['sampling_reason'],
+            predictions.append(dict(frame=r['frame'], rally=r['rally'], visibility=r['visibility'], sampling_reason=r['sampling_reason'],
                                     target_x=float(r['x']), target_y=float(r['y']), predicted_x=x, predicted_y=y, error_px=error))
     errors = np.array([p['error_px'] for p in predictions])
     report = dict(scope=meta['scope'], device=device, seed=args.seed, steps=args.steps, samples=len(rows),
+                  expected_exposures=args.steps*min(args.batch_size,len(rows))/len(rows),
                   median_error_px=float(np.median(errors)), p90_error_px=float(np.percentile(errors, 90)),
                   within_px={str(k):float((errors<=k).mean()) for k in (5, 10, 20)}, history=history)
+    report['by_rally'] = {}
+    for rally in sorted({p['rally'] for p in predictions},key=int):
+        e=np.array([p['error_px'] for p in predictions if p['rally']==rally])
+        report['by_rally'][rally]=dict(samples=len(e),median_error_px=float(np.median(e)),within_10px=float((e<=10).mean()))
     (out / 'report.json').write_text(json.dumps(report, indent=2))
     with (out / 'predictions.csv').open('w', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=list(predictions[0]))
@@ -172,19 +212,24 @@ def main():
     subs = p.add_subparsers(dest='command', required=True)
     prep = subs.add_parser('prepare')
     prep.add_argument('--video', required=True)
-    prep.add_argument('--labels', required=True)
+    prep.add_argument('--labels', nargs='+', required=True)
+    prep.add_argument('--plan', help='Batch plan.json required when combining label exports')
     prep.add_argument('--out', required=True)
     tr = subs.add_parser('train')
     tr.add_argument('--data', required=True)
     tr.add_argument('--out', required=True)
     tr.add_argument('--steps', type=int, default=300)
     tr.add_argument('--limit', type=int, default=32)
+    tr.add_argument('--all-samples', action='store_true')
+    tr.add_argument('--epochs',type=float,help='Expected exposures per example; overrides --steps with random sampling')
     tr.add_argument('--batch-size', type=int, default=4)
     tr.add_argument('--lr', type=float, default=.001)
     tr.add_argument('--seed', type=int, default=17)
     args = p.parse_args()
     if args.command == 'train' and min(args.steps, args.limit, args.batch_size, args.lr) <= 0:
         p.error('Training parameters must be positive')
+    if args.command == 'train' and args.epochs is not None and (not math.isfinite(args.epochs) or args.epochs<=0):
+        p.error('--epochs must be finite and positive')
     (prepare if args.command == 'prepare' else train)(args)
 
 
