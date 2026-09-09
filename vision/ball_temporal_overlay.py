@@ -67,12 +67,13 @@ def windows_for(rallies, manifest, contacts_path, pre_seconds=1.0, post_seconds=
     if not all(math.isfinite(x) and x >= 0 for x in (pre_seconds, post_seconds)):
         raise ValueError('Window padding must be finite and nonnegative')
     rows = manifest['rows']
-    trained_rally = int(rows[0]['rally'])
+    trained_rallies = {int(r['rally']) for r in rows}
     fps = manifest['fps']
     result = {}
     for rally in rallies:
-        if rally == trained_rally:
-            result[rally] = (min(int(r['frame']) for r in rows), max(int(r['frame']) for r in rows))
+        if rally in trained_rallies:
+            rally_rows=[r for r in rows if int(r['rally'])==rally]
+            result[rally] = (min(int(r['frame']) for r in rally_rows), max(int(r['frame']) for r in rally_rows))
         else:
             with Path(contacts_path).open(newline='') as f:
                 contacts = [float(r.get('t_refined_s') or r['t_tap_s']) for r in csv.DictReader(f)
