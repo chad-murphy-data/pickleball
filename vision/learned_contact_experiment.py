@@ -12,7 +12,7 @@ import zipfile
 from pathlib import Path
 
 import numpy as np
-from auto_contact_baseline import distance_stream, evaluate
+from auto_contact_baseline import distance_stream, evaluate, match_times
 from ball_hitter_baseline import propose
 from motion_contact_experiment import fit
 
@@ -94,13 +94,42 @@ def predict(model,x):
     return 1/(1+np.exp(-np.clip(transform(x,m,s)@b,-30,30)))
 
 
-def peaks(t,score):
-    candidates=[i for i in range(len(t)) if score[i]>=.5 and
+def peaks(t,score,threshold=.5):
+    candidates=[i for i in range(len(t)) if score[i]>=threshold and
                 score[i]>=score[max(0,i-1):min(len(t),i+2)].max()]
     selected=[]
     for i in sorted(candidates,key=lambda k:(-score[k],t[k])):
         if all(abs(t[i]-t[j])>=.2 for j in selected):selected.append(i)
     return [dict(t_s=float(t[i]),classifier_score=float(score[i])) for i in sorted(selected)]
+
+
+def select_threshold(training):
+    """Inner leave-one-rally-out scores; outer test data never enter here.
+
+    Fixed grid and F0.5 objective declared before outer results. Count event
+    matches, not frame accuracy. Pool inner rallies; ties prefer stricter values.
+    """
+    curves={float(round(x,2)):dict(matched=0,predicted=0,labeled=0)
+            for x in np.arange(.5,1.,.05)}
+    folds=[]
+    for validation in training:
+        fitting=[d for d in training if d['rally']!=validation['rally']]
+        model=train(np.concatenate([d['x'][d['keep']] for d in fitting]),
+                    np.concatenate([d['y'][d['keep']] for d in fitting]))
+        scores=predict(model,validation['x'])
+        folds.append(dict(validation_rally=validation['rally'],training_rallies=[d['rally'] for d in fitting]))
+        for threshold,counts in curves.items():
+            events=peaks(validation['t'],scores,threshold)
+            counts['matched']+=len(match_times(events,validation['labels']))
+            counts['predicted']+=len(events)
+            counts['labeled']+=len(validation['labels'])
+    rows=[]
+    for threshold,c in curves.items():
+        # F_beta = (1+beta^2) TP / (predicted + beta^2 * labeled).
+        denom=c['predicted']+.25*c['labeled']
+        rows.append(dict(threshold=threshold,**c,f05=1.25*c['matched']/denom if denom else 0.))
+    best=max(rows,key=lambda x:(x['f05'],x['threshold']))
+    return best['threshold'],dict(objective='Pooled inner-fold event F0.5; ties prefer higher threshold',folds=folds,curve=rows)
 
 
 def run(a):
@@ -126,18 +155,20 @@ def run(a):
     results=[]
     for test in datasets:
         training=[d for d in datasets if d['rally']!=test['rally']]
+        threshold,selection=(select_threshold(training) if getattr(a,'nested_threshold',False) else (.5,None))
+        print('Selected threshold for rally',test['rally'],threshold,flush=True)
         model=train(np.concatenate([d['x'][d['keep']] for d in training]),np.concatenate([d['y'][d['keep']] for d in training]))
-        scores=predict(model,test['x']);events=peaks(test['t'],scores)
+        scores=predict(model,test['x']);events=peaks(test['t'],scores,threshold)
         for e in events:e['hitter']=propose(test['z'],test['names'],test['ball'],e['t_s'])
         evaluation=evaluate(events,test['labels'])
-        results.append(dict(rally=test['rally'],training_rallies=[d['rally'] for d in training],score=evaluation,events=events,
+        results.append(dict(rally=test['rally'],training_rallies=[d['rally'] for d in training],threshold=threshold,threshold_selection=selection,score=evaluation,events=events,
             model=dict(median=model[0].tolist(),scale=model[1].tolist(),weights=model[2].tolist())))
         print('Held-out rally',test['rally'],{k:evaluation[k] for k in ('matched','missed','extra','correct_hitter')},flush=True)
     summary={k:sum(r['score'][k] for r in results) for k in ('labeled_contacts','predicted_contacts','matched','missed','extra','correct_hitter')}
     summary.update(wrong_hitter=sum(len(r['score']['wrong_hitter']) for r in results),unknown_hitter=sum(len(r['score']['unknown_hitter']) for r in results))
     a.out.mkdir(parents=True,exist_ok=False)
     (a.out/'report.json').write_text(json.dumps(dict(summary=summary,rallies=results,features=FEATURES,
-        parameters=dict(sample_fps=20,positive_window_s=.075,negative_min_distance_s=.25,score_threshold=.5,min_separation_s=.2,ridge=.02,steps=1200),
+        parameters=dict(sample_fps=20,positive_window_s=.075,negative_min_distance_s=.25,score_threshold='nested F0.5' if getattr(a,'nested_threshold',False) else .5,min_separation_s=.2,ridge=.02,steps=1200),
         scope='Leave-one-rally-out contact classifier; exploratory same-match development, upstream detector not held out',
         caveats=['Balanced classifier score is not a calibrated probability','Unlabeled times treated as negatives outside exclusion buffer',
                  'Human identities and contact-derived clip windows retained','Rally 10 includes upstream ball-training data',
@@ -154,6 +185,7 @@ def main():
     p.add_argument('--baseline-report',type=Path,required=True)
     p.add_argument('--state',type=Path,default=Path('data/vision/state_labels_chicago0725.csv'))
     p.add_argument('--out',type=Path,required=True)
+    p.add_argument('--nested-threshold',action='store_true',help='Choose stricter thresholds by inner rally validation, never outer test labels')
     run(p.parse_args())
 
 
