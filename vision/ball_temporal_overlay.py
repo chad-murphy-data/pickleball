@@ -63,7 +63,7 @@ def exposure(frame, targets, context):
     return 'unseen_center_same_video'
 
 
-def windows_for(rallies, manifest, contacts_path, pre_seconds=1.0, post_seconds=1.0):
+def windows_for(rallies, manifest, contacts_path, pre_seconds=1.0, post_seconds=1.0, contact_windows=False):
     if not all(math.isfinite(x) and x >= 0 for x in (pre_seconds, post_seconds)):
         raise ValueError('Window padding must be finite and nonnegative')
     rows = manifest['rows']
@@ -71,7 +71,7 @@ def windows_for(rallies, manifest, contacts_path, pre_seconds=1.0, post_seconds=
     fps = manifest['fps']
     result = {}
     for rally in rallies:
-        if rally in trained_rallies:
+        if rally in trained_rallies and not contact_windows:
             rally_rows=[r for r in rows if int(r['rally'])==rally]
             result[rally] = (min(int(r['frame']) for r in rally_rows), max(int(r['frame']) for r in rally_rows))
         else:
@@ -130,7 +130,8 @@ def run(args):
     if (manifest['input_width'], manifest['input_height'], manifest['context_offsets']) != (640, 360, [-2,-1,0,1,2]):
         raise ValueError('Unsupported model input configuration')
     windows = (review_windows(args.rallies[0], args.review_seconds, manifest['fps']) if args.review_seconds
-               else windows_for(args.rallies, manifest, args.contacts, args.pre_seconds, args.post_seconds))
+               else windows_for(args.rallies, manifest, args.contacts, args.pre_seconds, args.post_seconds,
+                                getattr(args, 'contact_windows', False)))
     targets, context = training_frames(checkpoint)
     labels = {int(r['frame']): r for r in manifest['rows']}
     device = args.device
@@ -291,6 +292,7 @@ def main():
     p.add_argument('--video', required=True)
     p.add_argument('--checkpoint', required=True)
     p.add_argument('--rallies', nargs='+', type=int, default=[18,19])
+    p.add_argument('--contact-windows', action='store_true', help='Export first-to-last contact plus padding even for training rallies; training exposure labels stay intact')
     p.add_argument('--pre-seconds', type=float, default=1.0, help='Padding before first contact for non-training rallies')
     p.add_argument('--post-seconds', type=float, default=1.0, help='Padding after last contact for non-training rallies')
     p.add_argument('--contacts', default=str(Path(__file__).resolve().parent.parent/'data/vision/contact_labels_chicago0725.csv'))
