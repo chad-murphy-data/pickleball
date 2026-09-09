@@ -51,3 +51,34 @@ python3 vision/learned_contact_experiment.py --pose-dir pose \
 
 Report includes source hashes, fold memberships, scaler values, coefficients,
 events and detailed errors. No source labels or existing detector defaults change.
+
+## Nested threshold follow-up
+
+Fixed grid 0.50 through 0.95 in steps of 0.05. For each outer test rally,
+the other four rallies undergo an inner leave-one-rally-out pass. Choose the
+threshold maximizing pooled event F0.5 (precision weighted more than recall),
+with ties preferring higher thresholds. The outer test rally is excluded from
+all threshold selection and preprocessing. Refit on the four training rallies,
+then evaluate the selected threshold on the outer rally once.
+
+| Measure | Fixed 0.5 classifier | Nested threshold | Original proximity |
+|---|---:|---:|---:|
+| Matched contacts | 71 | 51 | 52 |
+| Missed | 7 | 27 | 26 |
+| Extra | 62 | 26 | 27 |
+| Precision | 53.4% | 66.2% | 65.8% |
+| Recall | 91.0% | 65.4% | 66.7% |
+| Correct hitter among matches | 66 | 46 | 49 |
+| Unknown hitter among matches | 5 | 5 | 3 |
+| Wrong hitter among matches | 0 | 0 | 0 |
+
+Outer rally thresholds: r6 0.80, r7 0.80, r8 0.80, r9 0.90, r10 0.75.
+Inner objectives pool event counts, so longer rallies contribute more.
+Class-balanced scores remain uncalibrated. The same upstream and feature-choice
+caveats apply; nested selection does not turn development footage into a final
+untouched test set.
+
+Decision: no clear improvement over the original proximity baseline. Keep the
+experiment optional; do not replace existing defaults or continue selecting
+thresholds from outer test results. Add `--nested-threshold` to the reproduction
+command and choose a new output directory to reproduce this run.
