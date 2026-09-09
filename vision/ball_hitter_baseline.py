@@ -108,13 +108,13 @@ def main():
         ball = read_ball(path)
         events = []
         for e in report['contacts']:
-            if ball[0,0] > e['t_s']-.12 or ball[-1,0] < e['t_s']+.12:
-                raise ValueError(f'Rally {rally}: predictions do not cover contact {e["shot"]}')
+            covered = ball[0,0] <= e['t_s']-.12 and ball[-1,0] >= e['t_s']+.12
             target = e['labeled_hitter']; correction = None
             # Explicit user adjudication for this exact Chicago event only.
             if rally == 10 and e['shot'] == 2 and abs(e['t_s']-296.922)<.002 and target=='Emma Nelson':
                 target='Ting Chieh Wei'; correction='User video review confirmed Ting Chieh Wei; source CSV preserved'
-            q = propose(z, names, ball, e['t_s'])
+            q = (propose(z, names, ball, e['t_s']) if covered else
+                 dict(proposed=None, reason='prediction_window_missing', evidence={}))
             events.append(dict(**e, evaluation_hitter=target, correction=correction,
                                ball_result=q, ball_agrees=q['proposed']==target,
                                reach_agrees=e['proposed_hitter']==target))
