@@ -1,5 +1,83 @@
 # HANDOFF — live-listener launch & receipts
 
+## ► 2026-08-24 — PADDLE-POSITION PROBE (read this first if picking up vision)
+
+**This is a THIRD, SEPARATE vision thread — do not conflate it with the two
+below.** Three distinct things have been tried for "when/what did someone
+hit," at three different levels, with three different verdicts:
+
+| thread | idea | status |
+|---|---|---|
+| **ball tracking** | find the ball itself, whole-frame | **DEAD**, physically capped (`vision/ball_visibility.py`, `vision/POSTMORTEM.md`) — needs NEW FOOTAGE, not more code. Do not re-open. |
+| **swing/contact timing (Gate C)** | pose-only torso-relative wrist velocity, trained detector | **KILLED 2026-08-17** on both instruments tested (`vision/contact_gate.md`) — forward path is labels-at-scale + a temporal model (`vision/temporal_gate.md`), separately gated, not this thread |
+| **paddle position (THIS thread)** | is the PADDLE (not the ball, not just wrist speed) visible + trackable in a small crop around an already-tracked wrist? | **OPEN, mid-diagnosis** — see below |
+
+The premise is narrower than either of the above and is NOT re-litigating
+them: it doesn't search the whole frame (that's the dead ball thread), and
+it doesn't need a trained pose model (that's the killed Gate C thread) — it
+asks whether a small, bounded, wrist-anchored crop plus an off-the-shelf
+zero-shot detector (no training) can localize contact time better than raw
+wrist SPEED does, specifically on soft shots (dink/counter/lob) where wrist
+speed is weak by construction (a dink barely moves the wrist).
+
+**Where it stands:**
+1. `vision/paddle_probe.py` (committed `df45587`) — cheap visibility-only
+   check: is a paddle even there to look at, in a wrist-anchored crop? Run
+   by the user, verdict eyeballed by Claude on the returned HTML contact
+   sheet: **yes, ~85-90%+ of the time** across shot types. This just cleared
+   the bounded-search premise — it did NOT test timing.
+2. `vision/paddle_timing_probe.py` (committed `67f95e6`, then fixed
+   `2805a1b`) — the actual test: does paddle-centroid peak-speed localize
+   contact time tighter than wrist-speed peak, on real video, via a
+   zero-shot OWL-ViT detector (`pip install torch transformers`, no
+   training)? **First real run gave a MIXED, confusing result** — mild
+   aggregate edge to paddle (median 0.236s vs wrist 0.347s, paddle wins
+   17/29), but the flagship soft-shot case (dink) got WORSE with paddle
+   (0.911s vs 0.461s), and so did a control that should have stayed flat
+   (drop: 0.026s → 0.428s) — a genuine red flag, since a broken control
+   means something is wrong with the *setup*, not the hypothesis.
+3. **Root cause found by inspecting the actual extracted frame sequences**
+   (not just the numbers): the crop window was centered on `t_wrist`
+   (wrist-speed's OWN peak-arm-speed guess — sometimes the wrong player
+   entirely, picked from whichever of the 4 tracks had max arm speed
+   anywhere in a ±0.6s window) instead of on `t_true` (the human label).
+   So on exactly the shots where wrist speed is a bad estimator — the
+   whole reason to test dinks — paddle position never got an independent
+   look at the real event; it just chased wherever wrist-speed already
+   (possibly wrongly) pointed. The crops confirmed it: the "dink" sequences
+   showed full dynamic swings, not soft touches — proof the window had
+   drifted off the labeled contact.
+4. **Fixed in `2805a1b`**: `paddle_timing_probe.py` now requires
+   `--review-html` (an already-generated `touch_attribute.py
+   --review-html` file) to look up the LABELED HITTER's own track, and
+   anchors both the crop location and the extraction window on `t_true`
+   directly — independent of whatever wrist-speed guessed. The wrist-speed
+   baseline itself is untouched (still the original unconstrained
+   peak-arm-speed estimate — that's what's being compared against).
+
+**Next step (not yet done — needs the user's machine + ffmpeg):** re-run
+with the fix:
+```
+python3 vision/paddle_timing_probe.py --video full_match.mp4.webm \
+    --pose-dir pose_rtm --review-html review_train.html --n 24
+```
+`review_train.html` / `review_dev.html` already exist from the earlier
+`touch_attribute.py --review-html` run this thread (see the 2026-08-21ish
+entry above for how those were generated — same branch, PR #65). If the
+fixed version STILL shows paddle losing on soft shots, that's a real,
+trustworthy null this time (the confound is gone) and the paddle idea is
+tested-and-rejected. If it now wins on soft shots specifically, a trained
+paddle detector becomes worth building — that would be new work, not yet
+scoped.
+
+**Do not**, on this thread: re-open ball tracking (needs new footage, not
+this crop trick — the ball is invisible ~36% of in-play frames on this
+video's resolution, a physical limit, not fixable by cropping smaller);
+or treat this as the same thing as Gate C's pose-only swing detector (that
+one needed a TRAINED model on hand-timestamped labels and is closed
+separately — this one is zero-shot and open-vocabulary, testing a
+completely different signal, the paddle's own visual position).
+
 ## ► 2026-08-11 — VISION MVP BUILT, MEASURED, AND STOPPED (read this first)
 
 **STOPPED.** Shot-level vision is capped — see the top of
