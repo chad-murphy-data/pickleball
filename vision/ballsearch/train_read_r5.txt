@@ -1,0 +1,61 @@
+rally 5 TRAIN READ: 404 V/S clicks, decode@12 280/404; path-first cell {'p_seed': 0.4, 's_min': 6.0, 'gap': 6} (p-cache ''), gap fill v2 {'gap_max': 0.8, 'd_meet': 40.0}
+  path-first: hyp 959 kept 36 flights 36 selected 21
+  path-first   trackpts  720  at-click 325/404  r@8 201  r@12 274  r@20 317  prec@12 0.84  ADDED@12 43
+    pf[V]      trackpts  720  at-click 227/290  r@8 170  r@12 209  r@20 223  prec@12 0.92  ADDED@12 35
+    pf[S]      trackpts  720  at-click 98/114  r@8 31  r@12 65  r@20 94  prec@12 0.66  ADDED@12 8
+  null-disp    trackpts  720  at-click 325/404  r@8 0  r@12 0  r@20 0  prec@12 0.00  ADDED@12 0
+  null-tshift  trackpts  720  at-click 284/404  r@8 0  r@12 0  r@20 0  prec@12 0.00  ADDED@12 0
+  gap fill v2: tracked half bit-identical to path-first: True; inferred frames 194
+  tracked+inf  trackpts  914  at-click 379/404  r@8 215  r@12 299  r@20 350  prec@12 0.79  ADDED@12 65
+  inferred     trackpts  194  at-click 74/404  r@8 22  r@12 37  r@20 51  prec@12 0.50  ADDED@12 26
+  inferred nulls: displaced 0  time-shift 0
+NOTE: rally 5 has no manual contacts — buckets use its 14 PREFILL contacts (approximate times, folded types)
+-- misses by contact type (14 manual contacts, clicks assigned within +-0.30 s; 'middle' = no contact that close)
+    bucket      n   pf-hit  pf-miss  no-pt | +fill-hit
+    serve       17      3       4      10 |    3
+    return      18     13       0       5 |   17
+    slow       144     75      22      47 |   86
+    fast        48     41       6       1 |   43
+    middle     177    142      19      16 |  150
+    (S clicks only)
+    serve        6      3       3       0
+    slow        47     19      13      15
+    fast         5      1       4       0
+    middle      56     42      13       1
+-- per contact (clicks within +-0.30 s): t type  n  pf  +fill  S-clicks
+    118.78 serve   17   3     3    6
+    119.94 return  18  13    17    0
+    121.30 fast    16  11    11    4
+    121.88 fast    18  18    18    0
+    122.99 slow    17  10    10    7
+    124.39 fast    15  13    15    1
+    125.11 slow    11   7     7    5
+    126.33 slow    18   9    11    0
+    127.16 slow    13  10    13    1
+    128.70 slow    18   8     8   18
+    129.44 slow    16   5     9    9
+    130.71 slow    18  10    10    3
+    131.42 slow    17  15    16    3
+    132.46 slow    16   1     2    1
+-- flights: span | n w rms | density | launch
+    118.82- 119.48 0.68s |  40  33.5  0.7 | 0.82 |  40.7 ft/s loft  21.7 k 1.41
+    119.47- 119.83 0.38s |  23  15.0  1.0 | 0.65 |  50.6 ft/s loft  10.0 k 0.17
+    120.05- 120.92 0.88s |  44  29.3  0.8 | 0.55 |  19.9 ft/s loft   0.8 k 0.00
+    120.93- 121.30 0.38s |  23  19.9  0.7 | 0.86 |  22.4 ft/s loft  32.7 k 0.20
+    121.38- 121.87 0.50s |  28  20.3  1.1 | 0.67 |  82.0 ft/s loft  -2.1 k 0.08
+    121.90- 122.63 0.75s |  43  30.9  1.1 | 0.69 |  23.1 ft/s loft  34.1 k -0.00
+    122.63- 123.03 0.42s |  20  16.4  1.2 | 0.65 |  14.5 ft/s loft  42.0 k 0.00
+    123.02- 123.58 0.58s |  33  29.7  0.8 | 0.85 |  27.1 ft/s loft  63.7 k -0.00
+    124.18- 124.38 0.22s |  13  13.0  0.4 | 0.93 |  27.8 ft/s loft -19.5 k 0.00
+    124.47- 124.90 0.45s |  25  24.2  0.7 | 0.87 |  10.9 ft/s loft  -9.7 k 0.00
+    125.25- 126.02 0.78s |  44  37.7  0.6 | 0.80 |  29.8 ft/s loft  23.9 k 0.44
+    126.33- 127.12 0.80s |  34  30.9  0.8 | 0.63 |  12.3 ft/s loft  64.4 k 0.78
+    127.35- 128.27 0.93s |  53  45.8  0.7 | 0.82 |  32.1 ft/s loft  37.7 k -0.00
+    128.70- 129.35 0.67s |  38  29.5  1.4 | 0.73 |  21.2 ft/s loft  22.3 k 0.00
+    129.70- 130.12 0.43s |  26  18.9  0.4 | 0.70 |  12.4 ft/s loft  57.1 k -0.00
+    130.53- 131.40 0.88s |  43  38.0  0.5 | 0.72 |  34.9 ft/s loft  27.1 k 1.01
+    131.50- 132.15 0.67s |  39  31.7  0.5 | 0.79 |  31.2 ft/s loft  28.5 k 0.62
+    132.75- 133.12 0.38s |  19  14.7  1.0 | 0.60 |  51.0 ft/s loft -18.6 k 0.25
+    133.15- 133.65 0.52s |  26  23.8  1.2 | 0.77 |  16.8 ft/s loft  37.6 k 0.17
+    133.70- 134.07 0.38s |  22  16.5  0.8 | 0.69 |   9.7 ft/s loft  19.6 k -0.05
+    134.20- 134.57 0.38s |  21  17.9  2.0 | 0.77 |  64.8 ft/s loft -14.5 k 0.66

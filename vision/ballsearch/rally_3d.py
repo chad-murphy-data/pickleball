@@ -18,9 +18,13 @@ and drawn dashed; lost flights stay gaps.  Since 2026-09-02 (owner ask,
 this file's relift()) every flight is RE-LIFTED for display: refit to its
 own graded pixels with the four players' floor positions as a soft
 boundary (+4 ft reach) and a floor hinge, which resolves the depth
-degeneracy that put arcs 30 ft behind the baseline.  The 2D track is
-untouched (pixel rms of the re-lift is printed).  Viewer only; nothing is
-tuned or written back.
+degeneracy that put arcs 30 ft behind the baseline.  Strengthened
+2026-09-03 (owner: on rally 4 the ball still ended up behind a player
+before they struck it) — see relift() for the three fixes: an apron
+filter + windowed median so pose blowups can't blow the box open, a
+CONTACT ANCHOR at every attributed hit, and a multi-start fit.  The 2D
+track is untouched (pixel rms of the re-lift is printed).  Viewer only;
+nothing is tuned or written back.
 """
 import json
 import sys
@@ -56,32 +60,96 @@ LANK, RANK = 15, 16
 # Viewer-only: the 2D track (the graded product) is the fit's data and is
 # not written back; the pixel rms of the re-lift vs the graded track is
 # printed so the cost in 2D is on record.
+#
+# 2026-09-03, second pass (rally 4: arcs still sailed past a player before
+# that player hit them; worst contact sat 32.6 ft from its hitter).  Three
+# independent things were wrong and all three are fixed here:
+#   1. THE BOX WAS POLLUTED.  Nearest-sample min/max over four players means
+#      one bad pose/homography frame opens the box.  Rally 4's far-left track
+#      has 188 contiguous junk samples (y down to -10 ft) over the serve and
+#      the first two flights, so the "box" was y[-13, 50] — no constraint at
+#      all.  Fixed by dropping floor points outside the court APRON and
+#      taking a windowed median (pos_at) instead of the nearest sample.
+#   2. NO CONTACT CONSTRAINT.  The box says where the four players are; it
+#      never says the ball must reach the one about to hit it.  Hit
+#      attribution (rally_stats.nearest_player) is done in PIXEL space, so it
+#      survives the depth degeneracy that corrupts the 3D — which makes each
+#      hit a usable anchor: at the hit instant the arc must be within
+#      REACH_FT of the hitter's own floor position, at a plausible height.
+#   3. GAUSS-NEWTON STUCK.  Where the box was right, the fit still left a
+#      10.7 ft excursion for 0.38 px — a local minimum, not a trade-off.
+#      Fixed with multi-start (depth-shifted starts plus one placed at the
+#      first anchor), picking the lowest total cost.
+# Measured on rally 4 (16 flights, 26 anchored contacts): worst contact
+# distance 32.6 -> 5.5 ft, worst box excursion 10.7 -> 0.6 ft, net crossings
+# 5 -> 13, for a pixel cost of median 0.14 -> 0.38 px (max 0.38 -> 0.97).
+# The robust box alone does almost none of that (32.6 -> 32.6 ft); the
+# anchors and the multi-start are the gain.
 PAD_FT = 4.0            # reach beyond the four players' box, ft
 FLOOR_FT = -0.3         # ball radius below z = 0 is the lowest physical centre
-W_BOX = 1.0             # px per ft of excursion (the court-box prior uses 0.5)
-BOX_TOL = 0.3           # s: a player's position counts if a pose sample is this close
+W_BOX = 4.0             # px per ft of excursion (the court-box prior uses 0.5)
+W_ANCHOR = 3.0          # px per ft of contact miss
+BOX_TOL = 0.3           # s: half-width of the window pos_at medians over
 BOX_STEP = 3            # sample the hinge every 3 frames over the flight's span
+APRON = ((-6.0, 26.0), (-4.0, 50.0))   # x, y: a floor point outside this is junk
+DT_ANCHOR = 0.25        # s: how far a hit may sit outside a flight and still anchor it
+REACH_FT = 5.0          # ft: body centre -> paddle
+Z_LO, Z_HI = 0.2, 9.0   # ft: plausible contact height
 
 
-def player_box(players, t):
-    """(xlo, xhi, ylo, yhi) of the players seen within BOX_TOL of t, or None."""
-    xs, ys = [], []
-    for tt, xx, yy in players.values():
-        i = int(np.abs(tt - t).argmin())
-        if abs(tt[i] - t) <= BOX_TOL:
-            xs.append(xx[i])
-            ys.append(yy[i])
-    if len(xs) < 2:
-        return None
+def valid_tracks(players):
+    """Drop floor samples outside the court apron (pose/homography blowups).
+    {label: (t, x, y, median x, median y)}."""
+    out = {}
+    for lab, (tt, xx, yy) in players.items():
+        m = ((xx > APRON[0][0]) & (xx < APRON[0][1]) &
+             (yy > APRON[1][0]) & (yy < APRON[1][1]))
+        out[lab] = (tt[m], xx[m], yy[m], float(np.median(xx[m])), float(np.median(yy[m])))
+    return out
+
+
+def pos_at(vpl, lab, t):
+    """Robust (x, y) of one player at t: median of the valid samples in a
+    widening window, falling back to their rally median."""
+    tt, xx, yy, mx, my = vpl[lab]
+    for tol in (BOX_TOL, 1.0, 3.0):
+        m = np.abs(tt - t) <= tol
+        if m.sum() >= 3:
+            return float(np.median(xx[m])), float(np.median(yy[m]))
+    return mx, my
+
+
+def player_box(vpl, t):
+    """(xlo, xhi, ylo, yhi) around all four players at t, +PAD_FT reach."""
+    pts = [pos_at(vpl, lab, t) for lab in vpl]
+    xs = [p[0] for p in pts]
+    ys = [p[1] for p in pts]
     return min(xs) - PAD_FT, max(xs) + PAD_FT, min(ys) - PAD_FT, max(ys) + PAD_FT
 
 
-def relift(ctx, chosen, inferred, players):
+def anchors_for(fl, hits, vpl, t0):
+    """[(t, x, y, label)] — the contacts that bound this flight, each with the
+    floor position of the player rally_stats attributed the hit to."""
+    out = []
+    for edge in (t0 + fl["fa"] / FPS, t0 + fl["fb"] / FPS):
+        cand = [h for h in hits if abs(h["t"] - edge) <= DT_ANCHOR and h["near"]]
+        if not cand:
+            continue
+        h = min(cand, key=lambda h: abs(h["t"] - edge))
+        x, y = pos_at(vpl, h["near"][0], h["t"])
+        out.append((h["t"], x, y, h["near"][0]))
+    return out
+
+
+def relift(ctx, chosen, inferred, players, hits):
     """Refit every flight to its own projected pixels on its TRACKED frames,
     with the player-box + floor hinge over its full span (inferred extension
-    included).  Returns (flights, rows); rows = (fa, fb, rms_px, exc_before,
-    exc_after) where exc = worst excursion outside the box, ft."""
+    included) and a reach hinge at each attributed contact.  Returns
+    (flights, rows); rows = (fa, fb, rms_px, exc_before, exc_after, d_before,
+    d_after) where exc = worst excursion outside the box and d = the list of
+    contact distances, ft."""
     P, t0 = ctx["P"], ctx["t0"]
+    vpl = valid_tracks(players)
     out, rows = [], []
     for fl in sorted(chosen, key=lambda f: f["fa"]):
         t_ref = fl["t_ref"]
@@ -89,27 +157,62 @@ def relift(ctx, chosen, inferred, players):
                for f in range(fl["fa"], fl["fb"] + 1) if f not in inferred]
         fs = list(range(fl["fa"], fl["fb"] + 1, BOX_STEP))
         taus = np.array([t0 + f / FPS - t_ref for f in fs])
-        boxes = [player_box(players, t0 + f / FPS) for f in fs]
-        lo = np.array([[b[0], b[2], FLOOR_FT] if b else [-np.inf, -np.inf, FLOOR_FT] for b in boxes])
-        hi = np.array([[b[1], b[3], np.inf] if b else [np.inf, np.inf, np.inf] for b in boxes])
+        boxes = [player_box(vpl, t0 + f / FPS) for f in fs]
+        lo = np.array([[b[0], b[2], FLOOR_FT] for b in boxes])
+        hi = np.array([[b[1], b[3], np.inf] for b in boxes])
+        anc = anchors_for(fl, hits, vpl, t0)
+        a_tau = np.array([a[0] - t_ref for a in anc])
+        a_xy = np.array([[a[1], a[2]] for a in anc]) if anc else np.zeros((0, 2))
 
         def excursion(th):
             X = c3.arc_pos(th, taus)
             return np.maximum(lo - X, 0) + np.maximum(X - hi, 0)
 
-        def extra(th):
-            return W_BOX * excursion(th).ravel()
+        def contact_d(th):
+            """How far the arc is from each hitter at their own contact, ft —
+            the direct form of "the ball got behind them before they hit it"."""
+            if not anc:
+                return []
+            X = c3.arc_pos(th, a_tau)
+            return [float(d) for d in np.hypot(X[:, 0] - a_xy[:, 0], X[:, 1] - a_xy[:, 1])]
 
+        def anchor_res(th):
+            if not anc:
+                return np.zeros(0)
+            X = c3.arc_pos(th, a_tau)
+            d = np.hypot(X[:, 0] - a_xy[:, 0], X[:, 1] - a_xy[:, 1])
+            return np.concatenate([np.maximum(d - REACH_FT, 0),
+                                   np.maximum(Z_LO - X[:, 2], 0),
+                                   np.maximum(X[:, 2] - Z_HI, 0)])
+
+        def extra(th):
+            return np.concatenate([W_BOX * excursion(th).ravel(),
+                                   W_ANCHOR * anchor_res(th)])
+
+        th0 = np.array(fl["theta"], float)
         if len(obs) < 4:
             out.append(dict(fl))
-            rows.append((fl["fa"], fl["fb"], 0.0, float(excursion(fl["theta"]).max()), None))
+            rows.append((fl["fa"], fl["fb"], 0.0, float(excursion(th0).max()), None,
+                         contact_d(th0), contact_d(th0)))
             continue
-        th, rms = c3.fit_arc(P, obs, t_ref, theta0=np.array(fl["theta"], float), extra=extra)
+        inits = [th0]
+        for dy in (-8.0, 8.0):                      # push the launch along depth
+            t2 = th0.copy(); t2[1] += dy; inits.append(t2)
+        if anc:                                     # and one start AT the first anchor
+            t2 = th0.copy(); t2[0], t2[1] = anc[0][1], anc[0][2]; t2[2] = 3.0
+            inits.append(t2)
+        best = None
+        for ti in inits:
+            th, rms = c3.fit_arc(P, obs, t_ref, theta0=ti, extra=extra)
+            cost = float(np.sum(extra(th) ** 2) + rms ** 2 * len(obs) * 2)
+            if best is None or cost < best[0]:
+                best = (cost, th, rms)
+        _, th, rms = best
         nf = dict(fl)
         nf["theta"] = th
         out.append(nf)
-        rows.append((fl["fa"], fl["fb"], rms, float(excursion(fl["theta"]).max()),
-                     float(excursion(th).max())))
+        rows.append((fl["fa"], fl["fb"], rms, float(excursion(th0).max()),
+                     float(excursion(th).max()), contact_d(th0), contact_d(th)))
     return out, rows
 
 
@@ -166,7 +269,7 @@ def main():
     pls = rs.players(ctx)
     st = rs.rally_stats(ctx, chosen, evs, pls)
     players = player_tracks(ctx, pls)
-    lifted, lrows = relift(ctx, chosen, res["inferred"], players)
+    lifted, lrows = relift(ctx, chosen, res["inferred"], players, st["hits"])
     path = ball_path(lifted, t0, res["inferred"])
     impacts = [h["t"] for h in st["hits"]]
     out = SP / f"court3d_r{rally}.html"
@@ -193,7 +296,8 @@ def main():
         '<span id="tl"></span><br><span style="color:#999">solid = tracked ball · '
         'dashed = inferred through an occlusion by extending the two arcs (gapfill v2, '
         'right at 12 px about 2 in 3) · breaks = lost track · depth bounded by the four '
-        'players\' positions (+4 ft)</span></div>')
+        'players\' positions (+4 ft) and anchored to the hitter at every contact'
+        '</span></div>')
     assert 'function seg' in html and 'seg(i,"#ffd94a",2)' in html
     out.write_text(html)
     # net-crossing check, free ground truth: the ball must clear the tape
@@ -208,10 +312,16 @@ def main():
                 if X[i, 2] < c3.TAPE_FT:
                     low += 1
     rms = [r[2] for r in lrows]
+    db = [d for r in lrows for d in r[5]]
+    da = [d for r in lrows for d in r[6]]
     print(f"player-box re-lift: {len(lrows)} flights, pixel rms vs graded track "
           f"median {np.median(rms):.2f} max {max(rms):.2f} px; worst excursion outside the "
           f"players' box+{PAD_FT:g} ft: before {max(r[3] for r in lrows):.1f} ft, "
           f"after {max(r[4] for r in lrows if r[4] is not None):.1f} ft")
+    if da:
+        print(f"contact anchors: {len(da)} attributed hits, arc-to-hitter distance "
+              f"median {np.median(db):.1f} -> {np.median(da):.1f} ft, "
+              f"max {max(db):.1f} -> {max(da):.1f} ft (reach hinge at {REACH_FT:g} ft)")
     print(f"wrote {out} ({out.stat().st_size / 1e3:.0f} kB): {len(path)} path samples "
           f"({sum(p[4] for p in path)} inferred) over {len(chosen)} flights, {len(impacts)} hits, "
           f"{len(players)} players; "

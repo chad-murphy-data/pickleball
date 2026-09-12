@@ -1,0 +1,20 @@
+
+=== TRAIN r2+r3+r4+r5+r6+r7+r17: 2302 owner-judged frames on the gate panel
+  band                          frames  human hole  machine claims  machine hits
+  at the contact   (<=0.10 s)      517      13.2%          81.3%        77.5%   (n=449 placed)
+  just after/before(0.10-0.25)     735       5.4%          82.6%        76.7%   (n=695 placed)
+  mid-flight       (0.25-0.60)     977       3.3%          91.0%        89.8%   (n=945 placed)
+  far from contact (>0.60 s)        73       6.8%         100.0%       100.0%   (n=68 placed)
+  ALL                             2302       6.3%          86.6%        83.4%   (n=2157 placed)
+  unrecovered runs (machine miss or human hole): n=64 median 5 fr (0.17 s) p90 19 max 31
+  run-length histogram (30 fps frames): {1: 16, 2: 9, 3: 4, 4: 1, 5: 3, 6: 2, 7: 2, 8: 1, 9: 5, 10: 1, 11: 3, 12: 2, 13: 2, 14: 2, 16: 2, 17: 1, 18: 1, 20: 1, 21: 1, 22: 1, 23: 1, 26: 1, 29: 1, 31: 1}
+
+=== EVAL r9+r10 (spent evaluation; read only): 1502 owner-judged frames on the gate panel
+  band                          frames  human hole  machine claims  machine hits
+  at the contact   (<=0.10 s)      325      10.5%          75.6%        71.5%   (n=291 placed)
+  just after/before(0.10-0.25)     473       4.4%          75.7%        73.0%   (n=452 placed)
+  mid-flight       (0.25-0.60)     641       5.5%          90.4%        90.3%   (n=606 placed)
+  far from contact (>0.60 s)        63      25.4%         100.0%       100.0%   (n=47 placed)
+  ALL                             1502       7.1%          82.9%        81.1%   (n=1396 placed)
+  unrecovered runs (machine miss or human hole): n=45 median 6 fr (0.20 s) p90 18 max 49
+  run-length histogram (30 fps frames): {1: 14, 2: 1, 3: 2, 4: 4, 5: 1, 6: 2, 7: 1, 8: 4, 9: 3, 11: 1, 13: 2, 14: 1, 15: 2, 16: 1, 17: 1, 18: 2, 21: 1, 29: 1, 49: 1}

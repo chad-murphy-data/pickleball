@@ -11,9 +11,16 @@ three rules written down here before any rally was looked at:
                    by the same player within DT_DUP s count once (the
                    double-hit the owner saw on the overlay). Otherwise the
                    event is a bounce / unassigned.
-  speed-up         first flight after the 3rd shot whose launch speed is
-                   >= V_FAST ft/s (a dink leaves the paddle at ~15-25 ft/s,
-                   a drive at 40+); credited to that flight's hitter.
+  speed-up         first shot after the 3rd whose AVERAGE SPEED to the next
+                   contact is >= V_FAST ft/s.  Average speed = the court
+                   distance between the two hitters' feet divided by the time
+                   between their contacts (geom_speed.py; owner call
+                   2026-09-03: "average speed is good enough for speed").
+                   It never uses the ball's depth, which is what broke the
+                   old launch-speed rule (AUC 0.10, inverted).  V_FAST is the
+                   midpoint of the TRAIN-panel medians (fast 44.39, slow
+                   23.94 ft/s) -- rule written before the eval read, set on
+                   r6/r7/r17 only, never on r9/r10.
   last shot        the last flight: who started it, and where the ball was
                    last tracked, in court feet (x from the left sideline as
                    the camera sees it, y from the FAR baseline; net y=22).
@@ -49,7 +56,9 @@ FPS = 60.0
 D_HIT = 3.0        # ft: ball-to-paddle-proxy distance that makes an event a hit
 T_HIT = 0.08       # s: pose sample tolerance around the event time
 DT_DUP = 0.6       # s: same player twice inside this = one hit
-V_FAST = 38.0      # ft/s launch speed (~26 mph) = a speed-up / drive
+V_FAST = 34.2      # ft/s AVERAGE flight speed (~23 mph) = a speed-up / drive.
+                   # Midpoint of the TRAIN medians in geom_speed.txt
+                   # (fast 44.39, slow 23.94); fixed before any eval read.
 LANK, RANK, LWRI, RWRI = 15, 16, 9, 10
 KP_CONF = 0.3
 
@@ -100,8 +109,30 @@ def players(ctx):
     return out
 
 
+def foot_xy(z, P, tid, t, win=0.10):
+    """court (x, y) of one pose track's FEET at time t (median over +-win).
+    Feet sit on the z=0 plane, where the homography is exact (0.06 ft), so
+    this is the one position measurement with no depth degeneracy."""
+    if tid is None:
+        return None
+    m = (z["track"] == tid) & (np.abs(z["t"] - t) <= win)
+    idx = np.where(m)[0]
+    if not len(idx):
+        return None
+    kpt, kpc, box = z["kpt"], z["kpc"], z["box"]
+    pts = []
+    for i in idx:
+        if kpc[i, LANK] >= KP_CONF and kpc[i, RANK] >= KP_CONF:
+            uv = (kpt[i, [LANK, RANK], 0].mean(), kpt[i, [LANK, RANK], 1].mean())
+        else:
+            uv = ((box[i, 0] + box[i, 2]) / 2, box[i, 3])
+        pts.append(ground_point(P, uv))
+    return np.median(pts, axis=0)
+
+
 def nearest_player(ctx, pls, t, uv, scale):
-    """(label, distance ft) of the player whose paddle/wrist is closest to uv at t."""
+    """(label, distance ft, track id) of the player whose paddle/wrist is
+    closest to uv at t.  PIXEL space, so it survives the depth degeneracy."""
     best = None
     for p in pls.values():
         cands = []
@@ -117,7 +148,7 @@ def nearest_player(ctx, pls, t, uv, scale):
         pts = np.vstack(cands)
         d = float(np.hypot(pts[:, 0] - uv[0], pts[:, 1] - uv[1]).min()) / scale
         if best is None or d < best[1]:
-            best = (p["label"], d)
+            best = (p["label"], d, p["tid"])
     return best
 
 
@@ -165,17 +196,23 @@ def rally_stats(ctx, chosen, evs, pls):
             continue
         hits.append(r)
     counts = Counter(h["near"][0] for h in hits)
-    # speed-up: first flight after the 3rd hit with launch >= V_FAST
+    # average speed of each shot: court distance between this hitter's feet
+    # and the next hitter's, over the time between their contacts.  No ball
+    # depth anywhere in it.
+    z = np.load(ctx["c"]["npz"])
+    for h in hits:
+        h["xy"] = foot_xy(z, P, h["near"][2], h["t"])
+    for a, b in zip(hits, hits[1:]):
+        a["dt"] = b["t"] - a["t"]
+        a["v"] = (float(np.linalg.norm(b["xy"] - a["xy"])) / a["dt"]
+                  if a["xy"] is not None and b["xy"] is not None and a["dt"] > 0
+                  else None)
+    # speed-up: first shot after the 3rd hit whose average speed >= V_FAST
     speedup = None
     t3 = hits[2]["t"] if len(hits) >= 3 else t0
-    for i, fl in enumerate(chosen):
-        ta = t0 + fl["fa"] / FPS
-        sp, _ = flight_launch(fl)
-        who = [h for h in hits if abs(h["t"] - ta) <= 0.15]
-        # a speed-up is a SHOT: the flight must start at an attributed hit
-        # (a fragment that starts mid-air or after a bounce is not one)
-        if ta > t3 and sp >= V_FAST and who:
-            speedup = dict(t=ta, speed=sp, i=i, who=who[0]["near"][0])
+    for h in hits:
+        if h["t"] > t3 and h.get("v") and h["v"] >= V_FAST:
+            speedup = dict(t=h["t"], speed=h["v"], i=None, who=h["near"][0])
             break
     last = chosen[-1]
     tb = t0 + last["fb"] / FPS
@@ -184,7 +221,7 @@ def rally_stats(ctx, chosen, evs, pls):
     # the end of the final flight (which may be a post-bounce fragment)
     hl = hits[-1] if hits else None
     last_shot = dict(t_start=hl["t"] if hl else t0 + last["fa"] / FPS, t_end=tb, X_end=Xe,
-                     who=hl["near"][0] if hl else "?", speed=flight_launch(last)[0])
+                     who=hl["near"][0] if hl else "?", speed=hl.get("v") if hl else None)
     return dict(rows=rows, hits=hits, counts=counts, speedup=speedup, last=last_shot)
 
 
@@ -255,7 +292,7 @@ def grade(ctx, pls, st, rally):
     if st["speedup"]:
         su = st["speedup"]
         print(f"  first speed-up (ours):   {name_of.get(su['who'], su['who'])} at {su['t']:.2f}  "
-              f"{su['speed']:.0f} ft/s")
+              f"avg {su['speed']:.0f} ft/s ({su['speed'] * 0.6818:.0f} mph)")
     s = real[-1]
     print(f"  last contact (truth): #{s['i']} {s['name']} at {s['t']:.2f} ({s['type']}); "
           f"ours: {name_of.get(st['last']['who'], st['last']['who'])} at {st['last']['t_start']:.2f}")
@@ -297,7 +334,14 @@ def main():
     for r in st["rows"]:
         nr = f"{r['near'][0]:11s} {r['near'][1]:4.1f}" if r["near"] else f"{'-':11s}  -- "
         print(f"   {r['t']:8.3f} | {r['how']:7s} | {nr} | {'HIT' if r['hit'] else 'bounce/?'}")
-    print("-- flights: start | launch ft/s | hitter")
+    print("-- shots: contact | avg speed to the next contact | hitter")
+    for h in st["hits"]:
+        if h.get("v"):
+            print(f"   {h['t']:8.3f} | {h['v']:5.1f} ft/s {h['v'] * 0.6818:5.1f} mph"
+                  f"{'  FAST' if h['v'] >= V_FAST else '      '} | {h['near'][0]}")
+        else:
+            print(f"   {h['t']:8.3f} |     -- (last shot / no position) | {h['near'][0]}")
+    print("-- flights (3D fit): start | launch ft/s DEPTH-DOMINATED, diagnostic only | hitter")
     hit_at = {}
     for h in st["hits"]:
         hit_at[round(h["t"], 1)] = h["near"][0]
@@ -308,12 +352,14 @@ def main():
         print(f"   {ta:8.3f} | {sp:5.1f}{' FAST' if sp >= V_FAST else '     '} | {who[0] if who else '?'}")
     su = st["speedup"]
     if su:
-        print(f"first speed-up: {su['who']} at {su['t']:.2f} s, flight {su['i'] + 1}, launch {su['speed']:.0f} ft/s "
+        print(f"first speed-up: {su['who']} at {su['t']:.2f} s, average {su['speed']:.0f} ft/s "
               f"({su['speed'] * 0.6818:.0f} mph)")
     else:
         print("first speed-up: none reached the threshold")
     L = st["last"]
-    print(f"last shot: by {L['who']} at {L['t_start']:.2f} s; ball last tracked at "
+    print(f"last shot: by {L['who']} at {L['t_start']:.2f} s"
+          + (f" (avg {L['speed'] * 0.6818:.0f} mph)" if L.get("speed") else "")
+          + f"; ball last tracked at "
           f"{L['t_end']:.2f} s: {describe_xy(L['X_end'])}")
     if a.grade:
         assert a.rally in (9, 10), "labels are for r9/r10 evaluation only"
