@@ -1,0 +1,11 @@
+{
+ "kind": "claimer_ne",
+ "demotion": "none",
+ "W": 0.15,
+ "Z": 1.0,
+ "net": -1,
+ "net0": 1,
+ "verdict": "DEAD",
+ "base": " 16/35  false 15 land  1.6 | feet 1/5 | cont 73/89 junk 41 intact 19/35",
+ "best": " 22/35  false 23 land  2.0 | feet 4/5 | cont 73/89 junk 41 intact 19/35"
+}

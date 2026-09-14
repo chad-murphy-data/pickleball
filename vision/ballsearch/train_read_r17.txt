@@ -1,0 +1,54 @@
+rally 17 TRAIN READ: 379 V/S clicks, decode@12 244/379; path-first cell {'p_seed': 0.4, 's_min': 6.0, 'gap': 6} (p-cache ''), gap fill v2 {'gap_max': 0.8, 'd_meet': 40.0}
+  path-first: hyp 835 kept 24 flights 24 selected 14
+  path-first   trackpts  523  at-click 246/379  r@8 242  r@12 245  r@20 245  prec@12 1.00  ADDED@12 47
+    pf[V]      trackpts  523  at-click 169/269  r@8 168  r@12 169  r@20 169  prec@12 1.00  ADDED@12 36
+    pf[S]      trackpts  523  at-click 77/110  r@8 74  r@12 76  r@20 76  prec@12 0.99  ADDED@12 11
+  null-disp    trackpts  523  at-click 246/379  r@8 0  r@12 0  r@20 0  prec@12 0.00  ADDED@12 0
+  null-tshift  trackpts  523  at-click 225/379  r@8 1  r@12 4  r@20 6  prec@12 0.02  ADDED@12 1
+  gap fill v2: tracked half bit-identical to path-first: True; inferred frames 112
+  tracked+inf  trackpts  635  at-click 268/379  r@8 247  r@12 253  r@20 257  prec@12 0.94  ADDED@12 50
+  inferred     trackpts  112  at-click 35/379  r@8 10  r@12 17  r@20 23  prec@12 0.49  ADDED@12 5
+  inferred nulls: displaced 0  time-shift 0
+-- misses by contact type (15 manual contacts, clicks assigned within +-0.30 s; 'middle' = no contact that close)
+    bucket      n   pf-hit  pf-miss  no-pt | +fill-hit
+    serve       17      7       0      10 |    7
+    return      14      8       0       6 |    8
+    slow        93     45       0      48 |   48
+    fast       113     88       0      25 |   89
+    middle     142     97       1      44 |  101
+    (S clicks only)
+    return       5      5       0       0
+    slow        17      1       0      16
+    fast        49     38       0      11
+    middle      39     32       1       6
+-- per contact (clicks within +-0.30 s): t type  n  pf  +fill  S-clicks
+    428.31 serve   17   7     7    0
+    429.44 return  14   8     8    5
+    430.72 slow    18  15    18    3
+    431.51 fast    16  15    16   11
+    432.12 slow    18   5     5    1
+    432.82 slow    13   5     5    2
+    433.78 slow    18  12    12    4
+    434.98 slow     8   8     8    0
+    435.95 slow    18   0     0    7
+    437.12 fast    18  18    18    7
+    437.94 fast    18  16    16    5
+    438.81 fast    18  18    18   14
+    439.25 fast    18  12    13    3
+    439.75 fast    18  10     9    6
+    440.25 fast    18   7     7    6
+-- flights: span | n w rms | density | launch
+    428.38- 429.12 0.75s |  43  31.3  1.3 | 0.69 |  19.7 ft/s loft  -1.1 k 0.00
+    429.50- 430.35 0.87s |  51  45.9  1.2 | 0.88 |  57.6 ft/s loft  21.6 k 0.77
+    430.53- 431.43 0.92s |  40  33.7  0.6 | 0.57 | 129.9 ft/s loft  16.6 k 1.53
+    431.57- 431.97 0.42s |  25  22.9  0.5 | 0.92 |  47.8 ft/s loft  -0.4 k -0.00
+    432.98- 433.35 0.38s |  23  22.2  0.4 | 0.95 |  42.9 ft/s loft  -6.6 k -0.00
+    433.72- 434.57 0.87s |  48  37.1  0.9 | 0.70 |  11.9 ft/s loft  22.2 k 0.00
+    434.83- 435.37 0.55s |  21  14.7  0.7 | 0.44 |  15.2 ft/s loft  44.7 k -0.00
+    436.28- 437.08 0.82s |  49  47.8  1.3 | 0.98 |  24.5 ft/s loft  24.8 k 0.00
+    437.13- 437.57 0.45s |  26  25.3  0.4 | 0.93 |  65.9 ft/s loft -13.4 k -0.00
+    437.75- 438.78 1.05s |  57  54.2  1.4 | 0.86 |  18.6 ft/s loft  58.9 k -0.00
+    438.83- 439.32 0.50s |  28  24.6  1.3 | 0.80 |  26.1 ft/s loft  74.3 k 1.61
+    439.75- 440.15 0.42s |  20  16.5  0.7 | 0.66 |  48.1 ft/s loft   5.1 k -0.00
+    440.87- 441.27 0.42s |  24  19.7  0.8 | 0.76 | 112.2 ft/s loft -16.5 k 0.45
+    441.97- 442.27 0.32s |  19  16.8  1.1 | 0.87 |  15.8 ft/s loft  42.9 k 0.00
