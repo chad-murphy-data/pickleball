@@ -2194,6 +2194,20 @@ def build_landing(players, games, updated, n_games, R, S=None):
             f'<div class="t-row"><span class="call"><strong>{c}</strong></span>'
             f'<span class="lead"></span><span class="res">{r}</span></div>'
             for c, r in cells)
+    vrows = ""
+    VC = load_price_list()
+    if VC:
+        vtot = sum(r["price"] for r in VC)
+        top = {g_: max((r for r in VC if r["gender"] == g_), key=lambda r: r["price"])
+               for g_ in ("F", "M")}
+        vcells = [(f'W#1 {esc(top["F"]["name"].split()[-1].upper())}' + (" · TAG" if top["F"]["tag"] else ""),
+                   f'${top["F"]["price"]/1e3:,.0f}K'),
+                  (f'M#1 {esc(top["M"]["name"].split()[-1].upper())}', f'${top["M"]["price"]/1e3:,.0f}K'),
+                  ("WOMEN'S SHARE OF $20M", f'{100*sum(r["price"] for r in VC if r["gender"]=="F")/vtot:.0f}%')]
+        vrows = "".join(
+            f'<div class="t-row"><span class="call"><strong>{c}</strong></span>'
+            f'<span class="lead"></span><span class="res">{r}</span></div>'
+            for c, r in vcells)
     if feat:
         best = max((g for g in feat["games"] if g),
                    key=lambda g: max(g["p"], 1 - g["p"]), default=None)
@@ -2261,7 +2275,7 @@ def build_landing(players, games, updated, n_games, R, S=None):
 <header class="landing"><div class="bar">
  <span class="brandchip">PICKLES</span>
  <span class="brandsub">Probabilistic Inference of Competitive Kitchen-Line Expected Scores</span>
- <nav><a href="live.html" id="nav-live">LIVE</a><a href="rankings.html">RANKINGS</a><a href="singles.html">SINGLES</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="insights/">INSIGHTS</a><a href="methods.html">METHODS</a></nav>
+ <nav><a href="live.html" id="nav-live">LIVE</a><a href="rankings.html">RANKINGS</a><a href="singles.html">SINGLES</a><a href="forecast.html">FORECASTS</a><a href="receipts.html">RECEIPTS</a><a href="simulator.html">SIMULATOR</a><a href="valuecap.html">VALUE CAP</a><a href="insights/">INSIGHTS</a><a href="methods.html">METHODS</a></nav>
  <button class="themetog" type="button" title="toggle light/dark">◐</button>
 </div></header>
 {slate}
@@ -2335,6 +2349,12 @@ winners called on {holdout} games the model never saw. Misses kept too.</p>
    <p class="doorblurb">Any hypothetical pairing, weakest-link penalty
 included. Superstar + passenger ≠ two solids.</p>
   </a>
+  <a class="door" href="valuecap.html">
+   <span class="doortag">VALUE CAP</span>
+   <div class="t-rows">{vrows}</div>
+   <p class="doorblurb">What every MLP player is worth under a $1M roster cap —
+one price list, one franchise tag, no star discount.</p>
+  </a>
  </div>
 </section>
 {band}
@@ -2365,6 +2385,134 @@ that" — said out loud, when true.</div>
 
 
 # ---------------------------------------------------------------- main
+
+# ---------------------------------------------------------------- value cap
+
+def load_price_list():
+    """value_cap/price_list.csv (the shipped Phase 2 list) -> list of dict rows."""
+    path = ROOT / "value_cap" / "price_list.csv"
+    if not path.exists():
+        return []
+    rows = []
+    for r in csv.DictReader(path.open()):
+        rows.append({
+            "pid": r["player_id"], "name": r["full_name"], "gender": r["gender"],
+            "price": int(r["price"]), "curve": int(r["curve_price"]), "phi": float(r["phi"]),
+            "dv": float(r["doubles_value"]), "drank": int(r["doubles_rank"]),
+            "sv": float(r["singles_value"]) if r["singles_value"] else None,
+            "sg": int(r["singles_games"]), "tag": r["tagged"] == "1",
+        })
+    return rows
+
+
+def build_valuecap(players, updated):
+    rows = load_price_list()
+    if not rows:
+        print("value cap: value_cap/price_list.csv missing, page skipped")
+        return
+    league = sum(r["price"] for r in rows)
+    n_per = {g: sum(1 for r in rows if r["gender"] == g) for g in ("M", "F")}
+    women_share = sum(r["price"] for r in rows if r["gender"] == "F") / league
+    tag = next(r for r in rows if r["tag"])
+    cheapest = {g: sorted(r["price"] for r in rows if r["gender"] == g and not r["tag"])
+                for g in ("M", "F")}
+    completion = sum(cheapest["F"][:2]) + sum(cheapest["M"][:3])
+
+    def money(x):
+        return f"${x/1e6:g}M" if x >= 1e6 else f"${x/1e3:,.0f}k"
+
+    def pl(r):
+        q = players.get(r["pid"])
+        return plink(q) if q else esc(r["name"])
+
+    def lift(r, prank):
+        d = r["drank"] - prank          # + = prices higher than doubles alone says
+        if d >= 3:
+            return f'<span class="up" title="prices {d} places above doubles rank: DreamBreaker (singles) value">▲</span>'
+        if d <= -3:
+            return f'<span class="down" title="prices {-d} places below doubles rank">▼</span>'
+        return '<span class="flat">—</span>'
+
+    def table(pool):
+        out = []
+        for i, r in enumerate(pool, 1):
+            chip = ' <span class="chip pending" title="franchise-tagged: priced at the most a team can pay and still field a legal roster">TAG</span>' if r["tag"] else ""
+            sing = (f'{r["sg"]}' if r["sg"] else '<span class="gray" title="no singles games: value imputed from doubles">0</span>')
+            out.append(
+                f'<tr><td class="num">{i}</td><td>{pl(r)}{chip}</td>'
+                f'<td class="num"><strong>{money(r["price"])}</strong></td>'
+                f'<td class="num">{100*r["price"]/league:.2f}%</td>'
+                f'<td class="num">{value_points(r["dv"]):+.1f}</td>'
+                f'<td class="num">#{r["drank"]}</td>'
+                f'<td>{lift(r, i)}</td>'
+                f'<td class="num">{sing}</td></tr>')
+        return ('<div class="tblwrap"><table><tr><th class="num">#</th><th>player</th>'
+                '<th class="num">value price</th><th class="num">share of $20M</th>'
+                '<th class="num" title="expected margin with an average partner vs an average pair">doubles pts</th>'
+                '<th class="num">doubles rank</th><th title="price rank vs doubles rank">lift</th>'
+                '<th class="num">singles games</th></tr>' + "".join(out) + "</table></div>")
+
+    tabs, panels = [], []
+    for sec, g_, label, low in (("A", "F", "Women", "women"), ("B", "M", "Men", "men")):
+        pool = sorted((r for r in rows if r["gender"] == g_), key=lambda r: -r["price"])
+        inner = f'<h2><span class="secno">SEC. {sec}</span>{label}</h2>' + table(pool)
+        default = sec == "A"
+        tabs.append(f'<a class="gtab{" on" if default else ""}" href="#{low}"'
+                    + (' aria-current="true"' if default else "") + f'>{label}</a>')
+        panels.append(f'<section class="gsec{" on" if default else ""}" id="sec-{low}">{inner}</section>')
+
+    body = f"""
+<h1 class="runtitle">Value cap</h1>
+<div class="runmeta">MLP $1M ROSTER CAP :: 20 TEAMS × 6 PLAYERS (3W + 3M) :: PRICED POOL {n_per['F']}W + {n_per['M']}M</div>
+<p class="sub">What each player is worth under a $1M roster cap, according to the
+model. Every team spends the same $1M, so the league's payroll is $20M and
+a player's <strong>value price</strong> is their share of it: their share of
+everything that wins MLP ties (four doubles games plus a DreamBreaker at 2–2,
+which is singles). When MLP publishes real prices, a second column and a
+surplus (value minus cost) go next to these.</p>
+<div class="syscheck">
+ <div class="lrow"><span class="lk">LEAGUE PAYROLL (20 × $1M)</span><span class="ldot"></span><span class="lv">{money(league)}</span></div>
+ <div class="lrow"><span class="lk">WOMEN'S SHARE (AN OUTPUT, NOT A RULE)</span><span class="ldot"></span><span class="lv">{pct(women_share, 1)}</span></div>
+ <div class="lrow"><span class="lk">FRANCHISE TAG</span><span class="ldot"></span><span class="lv">{esc(tag['name'])} · {money(tag['price'])}</span></div>
+ <div class="lrow"><span class="lk">CHEAPEST LEGAL ROSTER AROUND HER</span><span class="ldot"></span><span class="lv">{money(completion)}</span></div>
+ <div class="lrow"><span class="lk">STAR PREMIUM (ALPHA)</span><span class="ldot"></span><span class="lv">none — price ∝ value</span></div>
+ <div class="lrow"><span class="lk">VALUES AS OF</span><span class="ldot"></span><span class="lv">{updated}</span></div>
+</div>
+<div class="houserule"><span class="hrtag">ONE TAG</span>{esc(tag['name'])}'s share of the league's value is
+{100*tag['phi']/sum(r['phi'] for r in rows):.1f}%, and a team is 5%. Her straight price
+({money(tag['curve'])}) fits no legal roster, so she is priced at the most a team can pay and
+still field six — cap minus the five cheapest priced teammates — and the
+{money(tag['curve']-tag['price'])} gap is spread over everyone else by value. The team that
+drafts her plus those five is a real favorite (about 66% per tie, roughly a one-in-three title
+shot) — a normal-sized favorite in pro sports, and it belongs to whoever holds that pick, not to a dynasty.
+No pool size, floor, or replacement level we tried changes it; the receipts are in the repo.</div>
+<div class="houserule"><span class="hrtag">READ THE LIFT</span>Prices are in one currency because an MLP
+tie needs both genders — that compares contributions to a tie, not skill across genders
+(<a href="methods.html">house rule</a>). <strong>▲</strong> marks a player priced well above their doubles rank:
+the DreamBreaker channel. Women ranked #5 and #10 in doubles price 3rd and 6th because they are the best
+singles players in the field after the top; a 0 in singles games means the singles value is imputed from doubles
+and carries a wide error bar.</div>
+{TABS_BOOT}
+<nav class="gtabs" aria-label="Choose a price list">{''.join(tabs)}</nav>
+{''.join(panels)}
+<h2><span class="secno">SEC. C</span>How the price is set</h2>
+<p>1. Measure each player's <strong>tie value</strong>: the average change in a team's chance of
+winning an MLP tie when the player is on it instead of a replacement, averaged over the rosters
+they could realistically land on (a Shapley-style average using the same race model as the
+<a href="rankings.html">rankings</a> and the <a href="singles.html">singles ratings</a>, weakest-link
+partner penalty included). 2. Define the priced pool as the top {n_per['F']} women and
+{n_per['M']} men by that value, re-measured until the pool reproduces itself. 3. Price = share of
+tie value × $20M, one pool for both genders, $30k floor. 4. Tag the one player the cap cannot fit.
+Nothing is fitted to a target: the gender split, the tag amount and the one favorite all fall out
+of the arithmetic.</p>
+<p class="note">What this leaves out: injuries and absences (everyone is assumed available, which makes the
+tag roster the most fragile build in the league); real teams cluster talent more than the random
+rosters the value is averaged over, so depth prices (#30–#60) are softer than the top. Full
+method and every sweep: <a href="{REPO}/tree/main/value_cap">value_cap/</a> in the repo.</p>
+""" + TABS_JS
+    write("valuecap.html", style.page("Value cap — PICKLES", body, "valuecap.html", "", updated))
+    return len(rows)
+
 
 def main():
     print("loading model CSVs …")
@@ -2406,6 +2554,8 @@ def main():
     build_results(players, games, updated)
     build_titlerace(players, updated)
     build_simulator(players, updated)
+    n_vc = build_valuecap(players, updated)
+    print(f"value cap: {n_vc} priced players")
     n_live = livepage.build_live(players, CAL, updated, SITE, write)
     print(f"live page: {n_live} player values shipped")
     build_receipts(updated)
