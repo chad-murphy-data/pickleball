@@ -611,6 +611,23 @@ original noindex meta from the unlisted era (user call 2026-07-26).
 Articles: unsolved-meta (Anna Bright DreamBreaker post), smoke-dimension
 (Part II), wind (null-result write-up).
 
+## Reddit forecast carousel (BUILT 2026-09-06; `social/README.md`)
+
+`python social/run.py [--date tomorrow] [--post]` prices tomorrow's
+scheduled PPA/MLP pro matches (`social/slate.py` — the live board's
+pre-match numbers exactly: v2 + weakest link + per-game race DP from the
+real score format + best-of tree; singles suite sd-integrated; MLP via
+make_forecast; TBD finalists priced against each possible opponent),
+renders cover + one slide per bracket + a fixed methods slide
+(`social/render.py`, template `social/templates/slide.html`, 1080x1350,
+Chromium via Playwright, fonts vendored) and posts a Reddit gallery with
+the numbers in the body (`social/post_reddit.py`, PRAW 8, duplicate-safe
+per date). `.github/workflows/social.yml` runs it nightly at 03:30 UTC
+(= 8:30 PM PDT) — verified the BFF serves the next day's match list the
+evening before. Headlines are plain bracket names (user call: no voice).
+Reddit secrets: REDDIT_CLIENT_ID/SECRET/USERNAME/PASSWORD; sub via the
+SOCIAL_SUBREDDIT repo variable (default PickleballStats).
+
 ## Open threads (specced, unbuilt)
 
 **MLP Value Cap (active, 2026-09-04): read `value_cap/HANDOFF.md` FIRST**
