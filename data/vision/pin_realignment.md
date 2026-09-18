@@ -50,3 +50,77 @@ protocol routes around the replay regardless.
   replayed rally's END state.)
 - Rally 3 labels at its live airing: serve ≈ 56-60 s, bug 0-0, Utah
   serving. The tool now seeks there.
+
+## Addendum 2026-09-02 — the "replay at ~91 s" call is WRONG on the video time
+
+Frames pulled straight from the VOD (imageio-ffmpeg, no browser) while
+staging the r2–r5 ball tools:
+
+| t (s) | scorebug | what is on screen |
+|---|---|---|
+| 40.6 | 0-0 | Jones serving, near-right court → rally 2 serve |
+| 59.5 | 0-0 | Tuionetoa tossing to serve, near-LEFT court → rally 3 LIVE serve |
+| 76.0 | 0-0 | rally 3 still in play (Utah at the kitchen) |
+| 91.3 | **1-0** | Tuionetoa serving, near-RIGHT court → **rally 4 live serve** |
+| 103.9 | 1-0 | rally 4 in play at the kitchen (ends ~103.7, Wei into the net) |
+| 118.9 | 2-0 | Tuionetoa serving, near-left → rally 5 serve |
+| 132.6 | 2-0 | rally 5 dinking at the kitchen |
+| 146.4 | 3-0 | serve → rally 6 (matches the manual r6 serve 146.34) |
+
+A replay of rally 3 at 91 s would repeat the 59.5 s picture (same court
+side, same server position); it does not, and the duration arithmetic
+never allowed it (rally 4 = 25 s of log between 91 and the rally-5 serve
+at 118.8). So the 91.19 s pin is rally 4's live serve, and the v4
+window rows are one rally LATE from row 3 onward (row 3 = rally 4,
+row 4 = rally 5, row 5 = rally 6, …). The prefill `t_tap_s` values for
+r2–r5 sit on the right rallies (serves at 40.54 / 59.43 / 91.16 /
+118.78). The row-content mapping (identity) stands; only the pin-time
+reading changes. Consumers: the contact tool's per-row pin seek is
+shifted for rows ≥ 3 (seek by time instead: 40.5 / 59.4 / 91.2 /
+118.8); `windows_from_labels` in pose_extract is unaffected (it reads
+the contact rows, which are right).
+
+## Addendum 2026-09-03 — the drift is not a constant offset, and the tool now seeks the measured serves
+
+Staging the r2–r5 contact pass made the pin↔rally map worth checking end
+to end, against the manual taps in `contact_labels_chicago0725.csv`
+(which are the ground truth wherever they exist):
+
+| pin row | pin time | true serve of that rally | offset |
+|---|---|---|---|
+| 1 | 10.33 | 10.24 (r1 tap) | 0 |
+| 2 | 40.64 | 40.54 | 0 |
+| 3 | 91.19 | 59.43 — 91.19 is **r4** | +1 |
+| 4 | 118.88 | 91.16 — 118.88 is **r5** | +1 |
+| 5 | 146.57 | 118.78 — 146.57 is **r6** (tap 146.34) | +1 |
+| 6 | 166.15 | 146.34 — 166.15 is **r7** (tap 166.03) | +1 |
+| 7 | 190.68 | 166.03 — 190.68 is **r8** (tap 190.57) | +1 |
+| 8 | 211.85 | 190.57 — 211.85 is neither r8 nor r9 | — |
+| 9 | 254.10 | 254.06 (r9 tap) | **0 again** |
+| 10 | 295.78 | 295.68 (r10 tap) | 0 |
+| 15 | 428.47 | 428.31 is **r17**'s tap | +2 |
+| 16 | 456.75 | 456.69 is **r18**'s tap | +2 |
+
+So "one rally late from row 3 onward" is right where it was measured and
+wrong as a general rule: the offset is 0, then +1, then 0 again, then +2.
+Row 8's 211.85 s sits between the r8 and r9 taps and matches no numbered
+rally, which is the shape of an EXTRA pinned rally — an insert like that
+is exactly what would hand the offset back from +1 to 0, and a skipped
+one later is what would take it to +2. Consequence: **a pin is only
+trustworthy where a manual tap confirms it.** The scorebug remains the
+rally's identity; the pins are a seek convenience, not a record.
+
+Fixed in the tool rather than left as a footnote. `make_contact_audit.py`
+now carries `SERVE_FIX = {3: 59.43, 4: 91.16, 5: 118.78}` — the measured
+live serves, taken from the clip windows in
+`vision/ballsearch/pose_meta_r2to5.json` (cut at serve − 1.5 s from the
+owner's own ball-path label spans) and cross-checked against the shifted
+pins, which agree to 0.1 s. The rally's window is rebuilt around the
+measured serve too, so the banner, the seek and the pace-pass replay end
+all point at the same rally. Regenerated
+`contact_audit_chicago0725.html` differs from the previous build in
+exactly those three rallies' `pin`/`t0s`/`t1s` and nothing else.
+
+Rallies 11–16 keep their unverified pins: nobody has tapped them, the
+offset there is unknown (+1 or +2), and guessing a seek is worse than
+the scorebug check the tool already prints. Measure before fixing.
