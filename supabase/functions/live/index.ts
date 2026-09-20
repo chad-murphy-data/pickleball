@@ -98,23 +98,38 @@ async function discover(date: string) {
   for (const t of ts) {
     if (!isPpaTournament(t)) continue;
     const tid = t.TournamentID;
+    const isPro = (g: J) => /pro/i.test(g.group_title) && !/senior|junior/i.test(g.group_title);
     let groups = await bff(
       `/api/v1/results/getListActiveEventsFlatGroup?tournamentId=${tid}&date=${date}`);
     groups = Array.isArray(groups) ? groups : groups.data || [];
-    const pro = groups.filter((g: J) =>
-      /pro/i.test(g.group_title) && !/senior|junior/i.test(g.group_title));
+    let pro = groups.filter(isPro);
+    // The upstream "active groups for this date" listing can stop naming a
+    // Pro group a day before the tournament's other divisions finish (seen
+    // 2026-09-20: PPA Arizona's pro finals were scheduled Saturday evening
+    // and still marked not-completed, but Sunday's active-groups call no
+    // longer lists "Pro Events" at all) — one look-back day recovers it.
+    // gdate carries through to the match sweep so matches come from the
+    // SAME date bucket they were discovered in.
+    let gdate = date;
+    if (!pro.length) {
+      gdate = shiftDate(date, -1);
+      let groups2 = await bff(
+        `/api/v1/results/getListActiveEventsFlatGroup?tournamentId=${tid}&date=${gdate}`);
+      groups2 = Array.isArray(groups2) ? groups2 : groups2.data || [];
+      pro = groups2.filter(isPro);
+    }
     if (!pro.length) continue;
     const ev = (await bff(
       "/api/v1/results/getTournamentEventsShort" +
       `?tournamentId=${tid}&formatId=${pro[0].format_id}` +
       `&playerGroupId=${pro[0].player_group_id}` +
-      `&bracketLevelId=${pro[0].bracket_level_id}&date=${date}`)).data || [];
+      `&bracketLevelId=${pro[0].bracket_level_id}&date=${gdate}`)).data || [];
     // pro doubles + pro singles; the singles flag rides on the EVENT uuid
     // (event titles on the short match payload are the same strings, but
     // discovery is the one place that has the list, so decide it here)
     const events = ev.filter((e: J) => /doubles|singles/i.test(e.title)).map((e: J) => e.uuid);
     const singles = ev.filter((e: J) => /singles/i.test(e.title)).map((e: J) => lc(e.uuid));
-    if (events.length) ppa.push({ tid, title: t.Title, events, singles });
+    if (events.length) ppa.push({ tid, title: t.Title, events, singles, matchDate: gdate });
   }
   let nextDates: string[] = [];
   if (!mlp.length && !ppa.length) {
@@ -129,6 +144,12 @@ async function discover(date: string) {
 }
 
 const lc = (u: string | null | undefined) => (u || "").toLowerCase();
+
+const shiftDate = (date: string, days: number) => {
+  const d = new Date(date + "T00:00:00Z");
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+};
 
 function playerPair(m: J, side: string, camel: boolean) {
   const out: J[] = [];
@@ -312,10 +333,10 @@ async function sweep(date: string) {
       }
     } catch (e) { out.errors.push(`mlp: ${(e as Error).message}`); }
   }
-  for (const { tid, title, events, singles } of d.ppa) {
+  for (const { tid, title, events, singles, matchDate } of d.ppa) {
     try {
       const ms = (await bff(
-        `/api/v1/results/getMatchInfosShort?eventIds=${events.join(",")}&date=${date}`)).data || [];
+        `/api/v1/results/getMatchInfosShort?eventIds=${events.join(",")}&date=${matchDate}`)).data || [];
       const fmts = await resolveFormats(ms);
       const isSg = (m: J) => singles.includes(lc(m.event_uuid)) || /singles/i.test(m.event_title || "");
       out.ppa.push({ tid, title, matches: ms.map((m: J) => compactPpaMatch(m, fmts.get(lc(m.match_uuid)), isSg(m))) });

@@ -54,17 +54,25 @@ function mk(ev, round, bracket, fmtId, n) {
 let DAY = [];
 const lookups = new Map();      // match uuid (lower) -> getResultMatchInfos call count
 const failOnce = new Set();     // uuids whose next lookup returns HTTP 500
+let noProDate = null;           // date string: getListActiveEventsFlatGroup returns no pro group for it
+let matchInfosDates = [];       // dates getMatchInfosShort was actually queried with
 globalThis.fetch = async (url) => {
   const u = new URL(url), p = u.pathname, q = u.searchParams;
   const ok = (body) => new Response(JSON.stringify(body), { status: 200 });
   if (p.endsWith("getTeamLeaguesResultsOnDate")) return ok({ data: [] });
   if (p.endsWith("getTournamentsOnDate")) return ok({ data: [T] });
   if (p.endsWith("getListActiveEventsFlatGroup")) {
+    if (q.get("date") === noProDate) {
+      // the pro bracket's own active day has passed; only lower divisions
+      // are "active" on the queried date, same shape as the real upstream
+      return ok([{ group_title: "Mixed", format_id: 1, player_group_id: 3, bracket_level_id: 0 }]);
+    }
     return ok([{ group_title: "Pro Events", format_id: 0, player_group_id: 0, bracket_level_id: 2 }]);
   }
   if (p.endsWith("getTournamentEventsShort")) return ok({ data: EVENTS });
   if (p.endsWith("getMatchInfosShort")) {
     assert.equal(q.get("eventIds"), "e-md,e-wd,e-ms", "doubles AND singles pro events are swept");
+    matchInfosDates.push(q.get("date"));
     return ok({ data: DAY });
   }
   if (p.endsWith("getResultMatchInfos")) {
@@ -160,5 +168,28 @@ rows = await sweep();
 assert.equal(withFmt(rows), FMT_MAX_LOOKUPS + 3, "the remainder fills in on the next sweep");
 assert.equal(totalLookups(), FMT_MAX_LOOKUPS + 3, "nothing is looked up twice");
 console.log("ok  ceiling: 20 per sweep, remainder next sweep");
+
+// ---- 4. pro group missing on "today" falls back to yesterday's listing
+// (2026-09-20 PPA Arizona bug: the pro bracket's active-groups listing
+// stops naming "Pro Events" a day before the tournament's other divisions
+// finish, even with pending finals — dropping the whole tournament unless
+// discovery looks back one day and the match sweep uses that same date).
+lookups.clear();
+day += 1;
+const yesterday = `2026-10-${String(day).padStart(2, "0")}`;
+day += 1;
+const today = `2026-10-${String(day).padStart(2, "0")}`;
+noProDate = today;
+matchInfosDates = [];
+DAY = [...mk("e-md", 7, "W", "bo3_11", 2)];
+const res4 = await handler(new Request(`https://x.test/api/live?date=${today}`));
+assert.equal(res4.status, 200);
+const body4 = await res4.json();
+assert.equal(body4.errors.length, 0, "the look-back must not surface as a sweep error");
+assert.equal(body4.ppa.length, 1, "the tournament is still found via the look-back day");
+assert.equal(body4.ppa[0].matches.length, 2);
+assert.deepEqual(matchInfosDates, [yesterday], "matches are fetched from the SAME date discovery resolved, not the requested date");
+noProDate = null;
+console.log("ok  pro group missing today: falls back to yesterday, matches follow");
 
 console.log("live proxy format resolution: all checks passed");
