@@ -1607,7 +1607,7 @@ idx,player_id,full_name,gender
 1605,4338e03c-c4e9-4c41-a9dc-e48e3c5f734e,Jason Horychuk,M
 1606,fc306d88-9978-4ca0-9ed1-c91eeb1f0de1,Hailey Munz,
 1607,7b6b98b0-27ab-4a48-96b4-12ad4732a014,Benjamin Huynh,
-1608,617f573b-5a95-4a35-b5ee-44ee16b610a9,Jia Yi Tan,
+1608,617f573b-5a95-4a35-b5ee-44ee16b610a9,Jia Yi Tan,F
 1609,d1d9ab01-d487-4dca-829b-99711c77f3b5,Linda Loch,
 1610,07ba5aa2-4581-4f2e-a62a-ec802353725c,Irina Tereschenko,F
 1611,22220f93-1344-40a4-b468-4db3e29410bb,Michael Massih,M
@@ -1762,3 +1762,36 @@ idx,player_id,full_name,gender
 1760,16deb566-c508-4f05-84d9-a01fb527a005,Michael I,M
 1761,819a323b-bed3-4287-984d-ea784ed471b1,Eric Gilbert,M
 1762,8f150eb8-c932-4f37-8085-ab70d666497e,Jasper Ou,M
+1763,7621edbd-b4cb-4ded-8079-9dbdc075f8d3,Isabelle Bahr,
+1764,fd3dc14e-5e53-4559-a61b-9f362212ca25,Yue Lin Chen,F
+1765,4be45b4a-461b-43e3-b0a4-33effdc2248a,Dalia Garza,F
+1766,cf6c5503-8e61-4af6-a573-0c33e5cebf25,Dustin Kemick,M
+1767,33574a26-0010-4237-84c7-a97361e61b6c,Chris Harradine,M
+1768,f9981acb-09b1-42f7-9565-022d81de4826,Nicholas Yeager,M
+1769,ce91c260-3327-47ae-959a-bed1b5706333,Koa Pagaoa,M
+1770,bbdd3747-45db-45a8-9bf8-3107115c955d,Joe Stafford,M
+1771,de2f6295-2f3f-4d30-927c-50d26936f46d,Jose D,M
+1772,dcf9ca4c-be8c-48c0-a8bb-cd91c9174af7,Scout Bogan,M
+1773,3fb1157e-5ddf-47c2-861f-b73e05dd45b2,Carter Maris,M
+1774,90c73e98-8998-4b48-844f-c56b392c1ca1,Linda Liong,F
+1775,1c6c9093-575b-4f0e-8667-079180708a22,Samuel Trent,M
+1776,bcaa1858-3920-45ee-b292-98ce54ed71c3,Chad Nash,M
+1777,f7069719-67e9-454d-b52b-b785d234b8b6,Max Manley,M
+1778,bf53fad3-e421-4541-bb03-ce4fde375d3e,Jack Swan,M
+1779,246170f3-6ce8-4acf-bb6d-e403b1d31a07,Noah Haslbeck,M
+1780,4b63265f-a11b-472e-b40c-f48ea36f6400,Evan Hollinsky,M
+1781,129a0190-c8e9-4af0-9213-3b0fe02e95e3,Alex Wen,M
+1782,0a6cb418-3e9d-4caa-8d4f-ae2fa4695355,Lucia White,F
+1783,f7bfa4a2-ad90-4878-81cd-0885df20c474,Alexis Debol,F
+1784,46d76c07-49a2-465c-a3b3-7ad109622855,Grace Haley,F
+1785,a1628436-de23-4adc-a7d0-9c82092d8648,Jacob Pelak,M
+1786,297e2cdc-3644-426d-8df6-cc7d2e2dd103,Dmytro Chernyshov,M
+1787,dc392fcf-7741-449a-830d-9ea87120310b,Connor Johnston,M
+1788,08c53e57-3919-4f65-91df-40f10f9bf717,Jack Bellinger,M
+1789,210ee9d6-186c-4f06-8e49-db9c6544c467,Seth Scharich,M
+1790,15d3f056-3f39-4e61-942a-8605ae216958,Isaac Haley,M
+1791,ac19feaa-01d2-4eac-8907-82ff26bc7199,Maximillian Grabel,M
+1792,68a49137-f6cf-41c9-8260-802102fa23d4,Downi Fernburg,
+1793,b47dd7d2-954a-4d45-915b-51e19aed46f9,Dallas Caudill,
+1794,6af083db-c346-4ab9-8379-85da2855e6c1,Alexis Senneker,
+1795,ca3b765c-3994-4a44-bbff-ea456085ac1e,Ola Latala,
