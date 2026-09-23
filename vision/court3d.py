@@ -292,11 +292,58 @@ BOUNCE_MARGIN = 0.8         # px rms the split must win by (was 0.5;
                             # carries the multiplicity burden)
 
 
-def fit_segment(P, obs, t0, t1, events):
+# BOUNCE CORRIDOR (owner rule, 2026-09-04; measured in ballsearch/infront.py)
+#
+# "the ball always bounces in front of the person making contact" -- and it
+# is stronger than that: over 57 human-solved bounces the bounce sits in a
+# NARROW CORRIDOR along the line from the receiver to the previous hitter.
+# In front 98% (56/57); lateral offset from that line median 1.37 ft, p95
+# 3.28, p99 6.75; front/separation p99 1.00.
+#
+# The gate this replaces was `-2 <= x <= 22 and -1 <= y <= 45`, i.e. the
+# whole court plus a margin, which rules out almost nothing.  Bounds below
+# are the measured p99 plus margin, NOT chosen: they keep 56/57 = 98%, the
+# single loss being r17's known hitter-attribution error.
+#
+# Only a bounce is constrained this way.  A CONTACT is at paddle height and
+# this project maps to z=0, where height reads as depth -- contacts sit
+# "behind the feet" 54% of the time and carry no such structure.
+CORRIDOR_LAT = 8.0      # ft off the receiver->hitter line (p99 6.75)
+CORRIDOR_BACK = -2.0    # ft behind the receiver still allowed (p01 -1.65)
+CORRIDOR_PAST = 1.15    # multiples of the separation, past the receiver
+
+
+def in_corridor(xy, corridor):
+    """Is a candidate bounce point in the receiver->hitter corridor?"""
+    if corridor is None:
+        return True
+    hit, rec = corridor
+    if hit is None or rec is None:
+        return True
+    hit = np.asarray(hit, float)[:2]
+    rec = np.asarray(rec, float)[:2]
+    d = hit - rec
+    n = float(np.hypot(*d))
+    if n < 1e-6:
+        return True
+    u = d / n
+    w = np.asarray(xy, float)[:2] - rec
+    front = float(w @ u)
+    lat = abs(float(u[0] * w[1] - u[1] * w[0]))
+    return (lat <= CORRIDOR_LAT and front >= CORRIDOR_BACK
+            and front <= CORRIDOR_PAST * n)
+
+
+def fit_segment(P, obs, t0, t1, events, corridor=None):
     """One arc, or two arcs joined at a z=0 bounce; candidates = an
     interior search grid UNION refined detector events; pick by pixel
     RMS with a 0.5 px acceptance margin + floor/plausibility/
-    restitution constraints. Returns dict."""
+    restitution constraints. Returns dict.
+
+    corridor: optional (hitter_xy, receiver_xy) court positions bounding
+    this flight.  When given, a candidate bounce must also lie in the
+    BOUNCE CORRIDOR (see CORRIDOR_LAT below) rather than merely on the
+    court.  None keeps the old court-wide test."""
     single, rms1 = fit_best(P, obs, t0, default_inits())
     best = {"kind": "arc", "arcs": [(t0, t1, single)], "rms": rms1}
     cands = set()
@@ -340,7 +387,8 @@ def fit_segment(P, obs, t0, t1, events):
             extra=extra2)
         rms = float(np.sqrt((r1**2 * len(o1) + r2**2 * len(o2))
                             / (len(o1) + len(o2))))
-        plausible = -2 <= xy[0] <= 22 and -1 <= xy[1] <= 45
+        plausible = (-2 <= xy[0] <= 22 and -1 <= xy[1] <= 45
+                     and in_corridor(xy[:2], corridor))
         if BOUNCE_VZ_GATES:
             if float(v_in[2]) > BOUNCE_VZ_IN:
                 continue      # not falling in — a volley, not a bounce
