@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{TITLE}}</title>
+<style>
+/* ---- PICKLES carousel slide (1080 x 1350) --------------------------------
+   Ported from the Claude Design handoff (design_handoff_pickles_carousel):
+   tokens, type sizes and spacing are reproduced exactly; render.py fills
+   {{FONT_CSS}} (vendored fonts as data URIs), {{KIND}}, {{HDR_RIGHT}},
+   {{BODY}} and the footer fields.  Restyle here; the Python only assembles
+   the markup fragments documented in social/README.md.                    */
+{{FONT_CSS}}
+:root {
+  --page: #16321e;      /* slide background */
+  --ink-bg: #0d2114;    /* card fill + methodology page */
+  --hl: #d9f154;        /* chartreuse accent */
+  --ink: #edf4e0;       /* off-white text */
+  --sage: #8aa07a;      /* labels, footers, metadata */
+  --body: #c2d3a8;      /* paragraph text */
+  --hair: #3a4a3c;      /* every 1px border */
+  --mono: "Space Mono", ui-monospace, "DejaVu Sans Mono", monospace;
+  --grot: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --display: "Anton", "Impact", "Arial Narrow", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { width: 1080px; height: 1350px; overflow: hidden; background: var(--page);
+  color: var(--ink); font-family: var(--grot); -webkit-font-smoothing: antialiased; }
+.slide { width: 1080px; height: 1350px; padding: 56px 60px; display: flex; flex-direction: column; }
+.slide.methods { background: var(--ink-bg); }
+
+/* header */
+.hdr { display: flex; justify-content: space-between; align-items: baseline; }
+.brand { font-family: var(--mono); font-weight: 700; font-size: 22px; background: var(--hl); color: var(--page); padding: 4px 14px; }
+.hdr .cap { font-family: var(--mono); font-size: 16px; letter-spacing: .14em; color: var(--sage); text-transform: uppercase; }
+
+/* kicker + headline */
+.kicker { font-family: var(--mono); font-weight: 700; font-size: 18px; letter-spacing: .16em; color: var(--sage); margin-top: 44px; text-transform: uppercase; }
+h1 { font-family: var(--display); font-weight: 400; font-size: 74px; line-height: 1.05; text-transform: uppercase; margin: 12px 0 0; }
+h1 .hl { background: var(--hl); color: var(--page); padding: 0 16px; display: inline-block; }
+.cover .kicker { margin-top: 90px; font-size: 20px; }
+.cover h1 { font-size: 104px; line-height: 1.14; margin-top: 20px; }
+.cover .sub { font-family: var(--mono); font-size: 22px; line-height: 1.6; color: var(--body); margin-top: 40px; max-width: 840px; }
+.cover .ftr { margin-top: 0; }
+.cover .chips { margin-top: auto; display: flex; gap: 12px; font-family: var(--mono); font-size: 17px; margin-bottom: 14px; }
+.chip { border: 1px solid var(--hair); padding: 8px 14px; color: var(--sage); text-transform: uppercase; }
+.chip.ok { color: var(--hl); font-weight: 700; }
+
+/* match cards */
+.cards { display: flex; flex-direction: column; gap: 26px; margin-top: 48px; }
+.card { border: 1px solid var(--hair); background: var(--ink-bg); padding: 34px 36px; font-family: var(--mono); }
+.card .lbl { font-size: 15px; letter-spacing: .12em; color: var(--sage); text-transform: uppercase; }
+.card .top { display: flex; justify-content: space-between; align-items: baseline; margin-top: 12px; }
+.card .fav { font-weight: 700; font-size: 29px; text-transform: uppercase; }
+.card .pct { font-weight: 700; font-size: 62px; color: var(--hl); line-height: 1; }
+.card .pct.na { color: var(--sage); }
+.meter { position: relative; height: 24px; background: var(--page); border: 1px solid var(--hair); margin-top: 14px; }
+.meter .fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--hl); }
+.meter .mid { position: absolute; left: 50%; top: -8px; bottom: -8px; width: 0; border-left: 2px dashed var(--sage); }
+.card.close .pct { color: var(--ink); }
+.card.close .meter .fill { background: var(--ink); }
+.card .bot { display: flex; justify-content: space-between; font-size: 16px; color: var(--sage); margin-top: 12px; text-transform: uppercase; }
+.card .dog { font-weight: 700; font-size: 19px; color: var(--ink); }
+.card .meta { text-align: right; }
+
+/* score-distribution block (single-match slides) */
+.dist { border: 1px solid var(--hair); background: var(--ink-bg); padding: 30px 36px; margin-top: 36px; font-family: var(--mono); }
+.dist .lbl { font-size: 15px; letter-spacing: .12em; color: var(--sage); text-transform: uppercase; }
+.dist .grid { display: grid; grid-template-columns: 70px 1fr 90px; gap: 14px 18px; align-items: center; margin-top: 18px; }
+.dist .k { font-size: 19px; color: var(--ink); }
+.dist .bar { height: 18px; background: var(--page); border: 1px solid var(--hair); position: relative; }
+.dist .bar span { position: absolute; left: 0; top: 0; bottom: 0; background: var(--hl); }
+.dist .v { font-size: 19px; font-weight: 700; color: var(--hl); text-align: right; }
+.dist .k.lose, .dist .v.lose { color: var(--sage); font-weight: 400; }
+.dist .bar.lose span { background: var(--sage); }
+
+/* compact density (4-6 matches) */
+.cards.compact { gap: 14px; margin-top: 32px; }
+.compact .card { padding: 18px 30px 18px; }
+.compact .card .lbl { font-size: 13px; }
+.compact .card .top { margin-top: 6px; }
+.compact .card .fav { font-size: 24px; }
+.compact .card .pct { font-size: 40px; }
+.compact .meter { height: 14px; margin-top: 8px; }
+.compact .meter .mid { top: -6px; bottom: -6px; }
+.compact .card .bot { margin-top: 8px; font-size: 13px; }
+.compact .card .dog { font-size: 16px; }
+
+/* list density (7-9 matches): one line per match, thin meter under it */
+.cards.list { gap: 8px; margin-top: 28px; }
+.list .card { padding: 9px 22px 9px; display: grid; column-gap: 18px; row-gap: 0; align-items: center;
+  grid-template-columns: 110px 1fr auto; grid-template-areas: "lbl fav pct" "lbl dog pct" "meter meter meter"; }
+.list .card .top { display: contents; }
+.list .card .lbl { grid-area: lbl; font-size: 13px; }
+.list .card .fav { grid-area: fav; font-size: 19px; }
+.list .card .pct { grid-area: pct; font-size: 30px; align-self: center; }
+.list .card .bot { grid-area: dog; margin: 0; display: block; font-size: 13px; }
+.list .card .dog { font-size: 15px; }
+.list .card .meta { display: none; }
+.list .meter { grid-area: meter; height: 6px; margin-top: 6px; }
+.list .meter .mid { top: -4px; bottom: -4px; }
+
+/* methodology slide */
+.methods h1 { font-size: 58px; }
+.blocks { display: flex; flex-direction: column; gap: 26px; margin-top: 40px; }
+.block { border-left: 3px solid var(--hl); padding-left: 22px; }
+.block .k { font-family: var(--mono); font-weight: 700; font-size: 16px; letter-spacing: .14em; color: var(--hl); text-transform: uppercase; }
+.block .t { font-family: var(--grot); font-size: 21px; line-height: 1.5; color: var(--body); margin-top: 8px; }
+
+/* footer */
+.ftr { margin-top: auto; border-top: 1px solid var(--hair); padding-top: 20px; display: flex; justify-content: space-between;
+  font-family: var(--mono); font-size: 16px; color: var(--sage); text-transform: uppercase; }
+.ftr .url { text-transform: none; }
+</style>
+</head>
+<body>
+<div class="slide {{KIND}}">
+  <div class="hdr"><span class="brand">PICKLES</span><span class="cap">{{HDR_RIGHT}}</span></div>
+  {{BODY}}
+  <div class="ftr"><span class="{{FTR_CLASS}}">{{FTR_LEFT}}</span><span>{{FTR_RIGHT}}</span></div>
+</div>
+</body>
+</html>
