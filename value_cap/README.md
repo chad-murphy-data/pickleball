@@ -6,10 +6,16 @@ published (league price). Surplus is the headline stat. Consumes
 PICKLES (`data/v2_players.csv` etc.) and, where useful, MOTSON — does
 not rebuild either.
 
-**Read `HANDOFF.md` first** — dated 2026-09-04, it's the live status
-snapshot and next-thread to-do for the price-fitting work in progress.
-The rest of this README and the phase docs below are the layered record
-underneath it.
+**New here? `EXPLAINER.md` is the plain-language version of the whole method** (ratings -> tie model -> Shapley-style value -> prices + tag -> fake leagues -> auction -> scheming owners -> rule experiments).
+
+**Read `HANDOFF.md` first** — dated 2026-09-04 (night), it's the live
+status snapshot and next-thread to-do. **Phase 2 is shipped**: the price
+list is `price_list.md` / `price_list.csv` (`price_list.py`) — alpha 1,
+one joint $20M pool, Anna Leigh Waters franchise-tagged; `phase2_pricing.md`
+§8 states the rule and the league reads behind it (draft simulator
+`draft_sim.py`, pool/floor sweep `pool_floor_sweep.py`, speed layer
+`fast_tie.py`). The rest of this README and the phase docs below are the
+layered record underneath it.
 
 Read `phase0_bench_value.md` first for the phase-by-phase background. It's a scoping document, not a
 finished phase: three of the four bench-value rules questions are still
@@ -26,14 +32,27 @@ matter a lot -- see the DreamBreaker-specialist section there and
 production PICKLES race engine; every simplifying assumption is stated
 in its docstring and in `phase1_first_cut.md`.
 
-`phase2_price_model.py` is a first pass at turning V into dollars
-(run: `python value_cap/phase2_price_model.py`). It sweeps the
-star-premium exponent instead of picking one, and searches every
-possible $1M roster instead of checking hand-picked examples. Read
-`phase2_notes.md` before touching alpha or the floor -- it surfaced a
-hard ceiling constraint (a high enough alpha prices a single player
-above the entire team cap) and a benchmark problem (comparing rosters
-against an all-replacement team can't tell a stars-heavy build from a
-balanced one; candidate rosters need to be compared to each other, not
-to replacement level) that the real archetype fit still needs to
-account for. Not yet built: Phase 3 (site).
+`phase2_pricing.py` turns value into dollars (run:
+`python value_cap/phase2_pricing.py --quick`; default basis is phi from
+`shapley_value.py`, `--value total` reproduces the Phase 1 V_total basis).
+It sweeps the star-premium exponent alpha instead of picking one, prices
+both genders from one league pool, and tests a price list with the
+must-buy instrument (best $1M roster with a player vs best without, both
+sides optimizing) rather than hand-picked rosters. `pool.py` defines the
+priced pool. `phase2_notes.md` is the record of the first split-pool pass
+(its script, `phase2_price_model.py`, was removed once `phase2_pricing.py`
+covered it): it surfaced the alpha ceiling (a high enough alpha prices
+one player above the team cap) and the benchmark problem (rosters must be
+compared to each other, not to an all-replacement team), both of which
+`phase2_pricing.md` builds on. Built since: Phase 3 site page (`web/build_site.py:build_valuecap`),
+owner personas (`personas.py` -> `personas.md`), the dials probe
+(`dials_probe.py` -> `dials.md`), the auction draft (`auction_sim.py`
+-> `auction.md`) and the market limit (`market_eq.py` -> `market_eq.md`,
+`market_prices.csv`; the backward induction run to its fixed point with
+roster-planning owners -- Waters the only rationed player, written up
+at the end of `auction.md`; `two_star.py` = the game-by-game read of why
+the two-star chasers are a man + a woman; `toy_auction.py` -> `toy_auction.md`
+= the exactly solved typed toy auction, 2-4 teams; `strategic_auction.py`
+-> `strategic_auction.md` = dial-family strategy search with self-play,
+validated on the toy, run on the 20-team board). Not yet built: the injury/absence layer
+(HANDOFF.md Next steps).
