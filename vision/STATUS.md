@@ -8,6 +8,120 @@ summary disagrees with this table, the summary is wrong.
 Update the table when a measurement lands. Do not update it to match a
 mood.
 
+This file is **where are we**. `vision/ballsearch/ROADMAP.md` is
+**where are we going** — the phase plan, its exit criteria, and the
+parked threads. `vision/STATS.md` is **what comes out the end** — the
+can-get / can't-get stat list and the ship order, including the
+non-tracking family (bounce location without the ball, 5.3 ft).
+
+## In plain language (2026-09-03, owner recap — corrected)
+
+Five sentences, so a "where are we" answer does not have to be assembled
+from the tables below. Every claim here has its number in this file.
+
+- **Where the players are: solved.** Court geometry to 0.06 ft, identity
+  99.25% over 45,689 rallies (from referee logs, no camera), hitter side
+  95%, four-way 85%.
+- **Who hit it and in what order: solved.** Shot counts 161/162, side
+  alternation 0 violations / 229 contacts, team assignment 0
+  contradictions.
+- **When they hit it: works off the BALL, dead off POSE.** From a ball
+  path the machine now beats human labels on a sealed rally (73.1% vs
+  65.4%). From body pose alone it is 40.7% against an 85 bar — closed.
+- **The ball itself: found more often than "when visible" suggests, and
+  lost two OPPOSITE ways.** 64% was isolated single frames; dense
+  contiguous is 92% in-pixels. It is lost when too FAST (streaks carry no
+  yellow, and yellow is the scorer's largest positive weight) and when too
+  CLOSE TO A BODY (dbody + crowd fire on kitchen dinks — r5's failure),
+  plus simply gone on lobs out of frame. "Hidden by bodies" is half the
+  story.
+- **Speed / bounce / landing: three different verdicts, not one.** SPEED
+  OFF THE BALL'S OWN ARC is broken — a labeled `slow` shot reads 84.9 ft/s
+  and a labeled `fast` reads 18.0 in `speed_lab_train.txt` (AUC 0.10,
+  inverted); one camera cannot see toward-or-away motion and no label count
+  fixes it. **SPEED OFF PLAYER GEOMETRY + CONTACT TIMING WORKS** and is a
+  different measurement — see "Speed from geometry" below. BOUNCES are EXACT given human ball
+  positions (r10 human fit = truth 13/13 across 26/26 segments, and all 5
+  disputed calls verified real) — the tracker feeding them is what is off
+  (8 v 13). LANDING/net crossings are in between: 23/23 on r9, 14–15/21
+  on r10.
+
+## Speed from geometry + timing — WORKS (2026-09-03, owner's idea)
+
+Owner: *"If we know where player X is and player Y is, and we know timing,
+then we'd have the answer for speed (more or less)."* Correct, and it is a
+different instrument from the one that failed. It never uses the ball's
+depth. Court position of a player's feet sits on the z=0 plane where the
+homography is exact (0.06 ft); contact times are the one thing the timing
+stream already does better than a human (73.1% vs 65.4% on sealed r10). So
+
+    avg speed over a flight = |xy(hitter_next) - xy(hitter)| / (t_next - t)
+
+`vision/ballsearch/geom_speed.py` → `geom_speed.txt`. LEVEL C (owner-labeled
+contact times), hitter attribution from the owner's clicked ball pixel →
+nearest pose track in PIXEL space, so both sides are ground truth and the
+read grades the SPEED measure, not the tracker. Nothing tuned, no seal.
+
+| panel | dist alone | 1/dt alone | dist/dt | median fast vs slow |
+|---|---|---|---|---|
+| TRAIN r2-r7+r17 (n=64) | 0.652 | 0.792 | **0.856** | 29.4 vs 17.6 mph |
+| EVAL r9+r10 (n=47) | 0.635 | 0.731 | **0.793** | 27.7 vs 18.4 mph |
+| pooled (n=111) | 0.654 | 0.767 | **0.829** | 29.4 vs 17.8 mph |
+
+AUC = separating owner-labeled fast from slow; permutation null ~0.50
+[0.36, 0.65] pooled. Compare the 3D launch fit on the same labels: **0.10**.
+
+Read it honestly: **most of the signal is TIMING, not geometry.** Time
+between contacts alone is as good as the full speed. What the geometry adds
+is physical units — and they are plausible ones (a drive averaging ~30 mph
+over its flight, a dink ~17). Caveats that are real: this is an AVERAGE over
+the flight, not a launch speed; it charges the ball a straight line, so a lob
+reads slow twice over; feet are not the contact point (~2-3 ft of reach);
+and r17's attribution fails its own alternation check (4 violations / 17),
+so its rows are the shakiest in the panel. Free internal validators printed
+by the script: side alternation 0 violations on r6/r7/r9/r10, name→track
+purity 88-100% — and with whiffs excluded (below) every rally except r17
+is now a clean 100%.
+
+**Panel corrected 2026-09-03 (two bugs in this script, both mine).** The
+first read used 63 flights; it should have used 111. `contacts()` skipped
+rows whose `source` column said `prefill`, on the assumption that those
+were un-timed placeholders. They are not: `source` records HOW a tap was
+entered (⏎ following the prefilled hitter/type vs an explicit 1-4 key),
+and every row in `contact_labels_chicago0725.csv` carries a real owner
+tap. That dropped r1-r5 entirely. Second, `contact == 0` rows are WHIFFS —
+a swing with no touch — and were being treated as flight endpoints, which
+inserted false junctions into r6/r7/r9/r10/r17. Both fixed; the read above
+is the corrected one. Direction of the correction: the finding got
+STRONGER (train AUC 0.825 → 0.856 on 3.5x the flights) and the eval barely
+moved (0.788 → 0.793, whiff fix only).
+
+## The black hole is real, and it is AT the contact (2026-09-03)
+
+Owner: *"the ball goes into the black hole of [where the] player changes
+direction ... not through tracking because it's not there, but through
+inference?"* Measured, `vision/ballsearch/blackhole.py` → `blackhole.txt`,
+scored with the frozen CHECK-1 scorer, stratified by distance to the nearest
+owner-labeled contact. Same shape on both panels:
+
+| band | human hole (I/N) | machine claims | machine hits |
+|---|---|---|---|
+| ≤0.10 s from a contact | 13.2% / 10.5% | 81.3% / 75.6% | 77.5% / 71.5% |
+| 0.10-0.25 s | 5.4% / 4.4% | 82.6% / 75.7% | 76.7% / 73.0% |
+| mid-flight 0.25-0.60 s | 3.3% / 5.5% | 91.0% / 90.4% | **89.8% / 90.3%** |
+
+(TRAIN r2-r7+r17, 2,302 frames / EVAL r9+r10, 1,502.) Mid-flight the tracker is a 90% instrument.
+At the contact it drops ~19 points, and the human drops too — the ball is
+genuinely behind a body there. **The loss is not spread over the rally; it is
+concentrated in a ~0.2 s window around every direction change** (unrecovered
+runs: median 6-7 frames, p90 18-22).
+
+That is the good news for inference: the hole is short and it is BRACKETED.
+An arc arrives, an arc departs, and the only unknown is where and when they
+join. `gapfill.py` already bridges by extending both arcs to their closest
+approach; what it does not yet do is require the junction to sit at a
+paddle, which the geometry channel now supplies in court feet. Unbuilt.
+
 ## What works
 
 | channel | number | chance / null | status |
@@ -241,7 +355,7 @@ for this layer, disclosed. Remaining misses are lost-track gaps
 (coverage), not pairing. Hit/bounce typing still unbuilt (5/4, 3/1).**
 
 **Rally stats prototype (2026-09-02, `vision/ballsearch/rally_stats.py`)
-— hits per player and last shot WORK, speed-up does NOT.** Three rules
+— hits per player and last shot WORK; speed-up FIXED 2026-09-03.** Three rules
 fixed before looking (hit = v3 event within 3 ft of a paddle proxy,
 de-duplicated at 0.6 s; speed-up = first ≥ 38 ft/s launch after the
 3rd hit; last shot = last hit + final flight end in court ft), identity
@@ -249,7 +363,15 @@ by court position only. Evaluation vs the owner's r9/r10 labels: hit
 counts within ±1 for all 8 player-rallies (r9 10/5/10/5 vs 9/5/10/5,
 r10 4/9/9/5 vs 5/8/9/4), last hitter right twice; first speed-up wrong
 twice (3D launch speed is depth-dominated and fragment starts inflate
-it). `rally_3d.py` writes the orbitable 3D court view of the same
+it). **SPEED-UP RULE REPLACED 2026-09-03** (owner call: "average speed
+is good enough for speed"): average speed between consecutive attributed
+hits, V_FAST = 34.2 ft/s = the midpoint of the TRAIN medians in
+geom_speed.txt, fixed on r6/r7/r17 before the eval read. Now the right
+PLAYER on both eval rallies and the right SHOT on r9 (257.90 vs truth
+257.84); r10 is 3.8 s late because its true first speed-up measures
+23 ft/s even under perfect labels -- the clock stops at the next
+contact, so a put-away that draws a late reply reads slow. House rule
+and its two labelling consequences: STATS.md. `rally_3d.py` writes the orbitable 3D court view of the same
 flights (`court3d_r{9,10}.html`). Prototype, not a graded channel.
 
 **Hand-off seeding (2026-09-02, `vision/ballsearch/handoff.py`,
@@ -271,7 +393,10 @@ AUC 0.906 / 0.946 vs logistic 0.904 / 0.939 (noise-sized) but the
 97 %-recall tail keeps 0.635 of negatives vs 0.319 → dead, no shot.
 Learning curve: logistic flat from 25 % to 100 % of labels (feature-
 saturated); trees still rising at the full count and overtaking only
-at ≥ 75 %. Next step is clicks (label_picks.md), not model code.
+at ≥ 75 %. ~~Next step is clicks (label_picks.md), not model code.~~
+**SUPERSEDED 2026-09-03 — clicks are NOT the next step; see "Label
+saturation" below.** That reading came from the within-rally curve
+alone; the between-rally curve is flat too.
 
 **Coverage model** (branch `claude/court-coverage-model-8rg94l`), one
 match, 90 of 141 rallies: width share (Alshon .549 / Black .451),
@@ -281,7 +406,88 @@ kitchen-band occupancy. Three findings already withdrawn by its own
 checks (deep poach, crossing rate, ellipse area) — the instrument
 polices itself.
 
+## Label saturation — both axes measured, both flat
+
+**How many clicked rallies does the emission learner need? Zero more**
+(2026-09-03, `vision/ballsearch/label_curve.py` → `label_curve.txt`;
+diagnostic only, no knob / gate / seal, eval + holdout rallies excluded
+by construction). Two axes, both now measured:
+
+| axis | instrument | result |
+|---|---|---|
+| positives WITHIN a rally | `learner_curve.py` | flat — AUC 0.907 @ 50 pos vs 0.904 @ 198 |
+| number of RALLIES pooled | `label_curve.py` | flat — see below |
+
+Leave-one-rally-out over the seven clicked train rallies (663k labeled
+candidates, 1,888 positives):
+
+| k rallies | AUC | neg kept @97% recall |
+|---|---|---|
+| 1 | 0.9377 ± 0.0174 | 0.555 |
+| 2 | 0.9426 ± 0.0165 | 0.554 |
+| 3 | 0.9436 ± 0.0158 | 0.551 |
+| 4 | 0.9451 ± 0.0158 | 0.554 |
+| 5 | 0.9458 ± 0.0155 | 0.554 |
+| 6 | 0.9461 ± 0.0153 | 0.558 |
+
+k=1 → k=6 moves AUC **+0.008**, inside the ±0.015 between-rally spread,
+and the operational metric — junk surviving at 97% recall — does not
+improve at all (0.555 → 0.558; the 3→4 and 5→6 steps are negative).
+So the remaining reasons to click a ball path are GRADING and the
+r18/r19 roadmap batch, **not training**. **Contact TAPS are the opposite
+case and gained a third consumer on 2026-09-03**: they set the panel size
+for `geom_speed.py` and `bounce_proxy.py` as well as unblocking CHECK 2 —
+which is why it mattered that the same day turned up 58 taps on r2-r5
+that had been on disk the whole time and were being filtered out (see
+HANDOFF, "THE r2-r5 CONTACT TAPS ALREADY EXISTED"). Those panels are now
+111 flights and 57 bounces without anyone clicking anything. What this does NOT say: it
+grades the emission scorer in isolation (not the full path-first +
+gap-fill stack), and it says nothing about CONDITIONING — r5's
+dbody/crowd failure is a regime problem, so the n-way refit is still
+the right build, for coverage of kitchen play rather than sample count.
+
+**Click cost by channel, since the question is where effort should go:**
+ball path 362 frame-clicks/rally (68,029 for all 188 rallies, 28–57 h);
+contact type + time ~13 taps/rally (2,350 for the whole match, 3–7 h).
+Contact typing is **28× cheaper per rally** and is the thin channel.
+
+**Scale, for the record (owner asked about 10,000 rallies):** at 362
+clicks/rally that is 3.6M clicks, 1,500–3,000 h. It buys nothing for this
+model class — a 14-feature logistic on candidate boxes is saturated. It
+would only matter by changing the INSTRUMENT (a learned detector trained
+from scratch), and the detector question is closed for a separate reason:
+the oracle licenses human labels only.
+
 ## Measured, not yet a channel
+
+**Swing envelopes** (inventoried 2026-09-03, owner ask: "can we do it over
+the course of X frames"). `data/vision/state_labels_chicago0725.csv` holds
+36 episodes, **26 complete** `start → impact → end` — but 24 are rally 1
+and 2 are rally 6. Geometry: full episode 0.92 s median (27 frames @30,
+range 0.47–1.57), backswing 0.52 s (16 fr), follow-through 0.30 s (9 fr).
+No single window width — 14–47 frames, 3.3× spread.
+NOT a Gate-C knob-turn: `fastslow_check` v2 killed the per-contact pose
+MAGNITUDE version (raw `arm_cmax` AUC 0.445 inverted; drive 0.49× dink,
+lowest of every type; best fold-honest 61.1% vs 56.9% majority, mostly
+cadence), but `arm_cmax` is a maximum and is invariant to how long a motion
+lasts — duration was never a feature anywhere in that run.
+BLOCKER is the join, not the idea: rally 1 has the envelopes AND the fine
+types (dink 8 / smash 5 / counter 5 / speed-up 2 → 8 vs 12 pooled under the
+frozen label-semantics rule) but no pose npz (~20 min CPU) and prefill-era
+types; r6/r7/r17 have pose + trustworthy manual pace and 2 complete
+episodes between them. Only 4 of 26 episodes join to a manual pace label.
+RUNNABLE TODAY after one pose extraction: **forehand vs backhand**, 14 bh /
+12 fh, flat 50% baseline. Per-contact arm (no envelopes) is 58 manual
+slow/fast contacts on pose-bearing train rallies, balanced 29/29 — the arm
+fastslow already saturated near 60%.
+POWER: n=26 needs 18 (69%) to clear p<0.05; the n=20 dink-vs-kitchen-fast
+arm against its 60% majority needs 17 (85%), effectively unreachable.
+LEVEL C vs LEVEL B (phase_grader's own split): owner-marked envelopes are
+the science arm; machine-placed envelopes are the product arm and inherit
+Gate C's wall, since placement is what died at 40.7%. Needs a bar written
+before any number.
+
+
 
 **Paddle visibility near a tracked wrist** (2026-08-29, user eyeball
 of PR #65's `paddle_probe.py` n=24 contact sheet — the pre-build

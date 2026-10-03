@@ -1,0 +1,62 @@
+anchors: 51 (3 blur gap-fill) -> anchors_grade_r20.csv
+anchors: 21 (0 blur gap-fill) -> anchors_grade_r21.csv
+r20: no ball_path_r20.csv — human side skipped
+r20: cached — 696 visited, 43 turns, 51 anchors, human 20 segs (0 ok)
+r21: no ball_path_r21.csv — human side skipped
+r21: cached — 287 visited, 16 turns, 21 anchors, human 6 segs (0 ok)
+panel: r2 42c/18+, r3 48c/23+, r4 52c/30+, r5 47c/21+, r6 17c/12+, r7 27c/14+, r17 44c/26+
+out-of-fold AUC 0.729 (n=277, positives 144)
+
+ rally   tau |  shipped: cont junk intact   |  claimer: cont junk intact  
+r2      0.30 |       9/11     9   1/4       |       7/11     8   1/4      
+r3      0.35 |      12/17     7   4/6       |      14/17     9   3/6      
+r4      0.35 |      14/16     8   2/4       |      12/16     6   2/4      
+r5      0.30 |      13/14     9   5/8       |      13/14     9   5/8      
+r6      0.30 |       5/7      3   0/3       |       6/7      1   1/3      
+r7      0.35 |       7/9      4   2/4       |       9/9      2   4/4      
+r17     0.35 |      11/15     8   1/6       |      12/15     6   3/6      
+ total       |  71/89    48  15/35          |  73/89    41  19/35 
+saved claimer_bounds_ne_rN.json for the train rallies (LORO bounds)
+
+READ on r[20, 21] — tau 0.35 fixed on train, key=taps (intact 19, cont-junk 35)
+ rally   tau |  shipped: cont junk intact   |  claimer: cont junk intact  
+r20     0.35 |      14/20    11   5/14      |      11/20    10   3/14     
+r21     0.35 |       5/6      4   2/3       |       5/6      3   1/3      
+saved claimer_bounds_ne_rN.json for the eval rallies (train-only model)
+
+feature importance (permutation, AUC drop, in-sample):
+  d_anchor_paddle  +0.035
+  dy_pre           +0.031
+  turn_ang         +0.008
+  d_exc_paddle     +0.006
+  dt_prev          +0.005
+  dt_next          +0.005
+  v_out            +0.004
+  side_dy_post     +0.004
+  dy_post          +0.004
+  anchor_z         +0.002
+r20 shipped/shipped: 22 bounds, 7 ok segs
+r21 shipped/shipped: 9 bounds, 4 ok segs
+r20 claimer_ne/none: 22 bounds, 10 ok segs
+r21 claimer_ne/none: 9 bounds, 4 ok segs
+=== INCUMBENT shipped/shipped no typing
+r20    2/15  false  2 land  2.5 | feet 0/2 | cont 13/20 junk  9 intact  4/14
+r21    0/4   false  0 land   -  | feet 0/0 | cont  4/6  junk  3 intact  1/3 
+all    2/19  false  2 land  2.5 | feet 0/2 | cont 17/26 junk 12 intact  5/17
+=== CANDIDATE claimer_ne/none + feet (from tap_feet_tune.json)
+r20    5/15  false  1 land  3.4 | feet 1/2 | cont 11/20 junk 10 intact  3/14
+r21    1/4   false  0 land  1.6 | feet 0/0 | cont  5/6  junk  3 intact  1/3 
+all    6/19  false  1 land  2.7 | feet 1/2 | cont 16/26 junk 13 intact  4/17
+=== DIAG claimer_ne/none no typing
+r20    5/15  false  1 land  3.4 | feet 1/2 | cont 11/20 junk 10 intact  3/14
+r21    1/4   false  0 land  1.6 | feet 0/0 | cont  5/6  junk  3 intact  1/3 
+all    6/19  false  1 land  2.7 | feet 1/2 | cont 16/26 junk 13 intact  4/17
+=== DIAG shipped/shipped + feet
+r20    2/15  false  3 land  2.5 | feet 0/2 | cont 13/20 junk  9 intact  4/14
+r21    1/4   false  0 land  2.0 | feet 0/0 | cont  4/6  junk  3 intact  1/3 
+all    3/19  false  3 land  2.1 | feet 0/2 | cont 17/26 junk 12 intact  5/17
+=== NULL shift +0.75 candidate
+r20    3/15  false  2 land 14.9 | feet 0/2 | cont 11/20 junk 10 intact  3/14
+r21    0/4   false  1 land   -  | feet 0/0 | cont  5/6  junk  3 intact  1/3 
+all    3/19  false  3 land 14.9 | feet 0/2 | cont 16/26 junk 13 intact  4/17
+DONE
