@@ -1,102 +1,17 @@
 {
- "generated": "2026-10-09",
+ "generated": "2026-10-10",
  "mlp": null,
  "ppa": [
   {
    "tournament": "PPA Tour: Rate Las Vegas Open",
    "id": "86926aef-0566-4fbb-87cf-a48068a9f1c6",
    "dates": [
-    "2026-10-03",
     "2026-10-04"
    ],
    "divisions": [
     {
      "title": "Mens Doubles Pro Main Draw",
      "matches": [
-      {
-       "round": 5,
-       "round_text": "Semi-Finals",
-       "match_no": 45,
-       "seed1": 1,
-       "seed2": 10,
-       "best_of": 3,
-       "p1": [
-        "d50310a6-9378-4228-823f-7fb54f7bd698",
-        "6f862c1d-1317-4fe7-bdcd-64caa0dbb088"
-       ],
-       "p2": [
-        "cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a",
-        "a000a067-1bf1-442f-a961-e6c97cb50006"
-       ],
-       "n1": [
-        "Gabriel Tardio",
-        "Ben Johns"
-       ],
-       "n2": [
-        "Jaume Martinez Vich",
-        "Nicolas Acevedo"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         5,
-         6,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 5,
-       "round_text": "Semi-Finals",
-       "match_no": 46,
-       "seed1": 2,
-       "seed2": 3,
-       "best_of": 3,
-       "p1": [
-        "79a11da1-6aeb-4719-9b1e-9918e0163cec",
-        "581183e8-3d9e-459e-b69f-7337d8b6f3d2"
-       ],
-       "p2": [
-        "fc05556e-3e38-4a38-99c2-f855174a7c28",
-        "7edb882c-6d17-4129-8208-710e3c82364c"
-       ],
-       "n1": [
-        "Christian Alshon",
-        "Andrei Daescu"
-       ],
-       "n2": [
-        "Hayden Patriquin",
-        "Federico Staksrud"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         7,
-         8,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
       {
        "round": 6,
        "round_text": "Finals",
@@ -187,90 +102,6 @@
      "title": "Mixed Doubles Pro Main Draw",
      "matches": [
       {
-       "round": 5,
-       "round_text": "Semi-Finals",
-       "match_no": 45,
-       "seed1": 1,
-       "seed2": 4,
-       "best_of": 3,
-       "p1": [
-        "129b2771-34b5-4b7f-9c23-e020a6aa3e6a",
-        "6f862c1d-1317-4fe7-bdcd-64caa0dbb088"
-       ],
-       "p2": [
-        "fec65f7e-f2c8-482f-ab5b-541cf53b1064",
-        "d50310a6-9378-4228-823f-7fb54f7bd698"
-       ],
-       "n1": [
-        "Anna Leigh Waters",
-        "Ben Johns"
-       ],
-       "n2": [
-        "Tyra Hurricane Black",
-        "Gabriel Tardio"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         6,
-         4,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 5,
-       "round_text": "Semi-Finals",
-       "match_no": 46,
-       "seed1": 2,
-       "seed2": 3,
-       "best_of": 3,
-       "p1": [
-        "fc05556e-3e38-4a38-99c2-f855174a7c28",
-        "db5eef5c-99dd-49d9-bbfc-65171a366bda"
-       ],
-       "p2": [
-        "f879086b-e0e5-4772-b0a6-4055c265da69",
-        "79a11da1-6aeb-4719-9b1e-9918e0163cec"
-       ],
-       "n1": [
-        "Hayden Patriquin",
-        "Anna Bright"
-       ],
-       "n2": [
-        "Tina Pisnik",
-        "Christian Alshon"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         7,
-         11,
-         11,
-         0,
-         0
-        ],
-        [
-         11,
-         5,
-         8,
-         0,
-         0
-        ]
-       ]
-      },
-      {
        "round": 6,
        "round_text": "Finals",
        "match_no": 48,
@@ -359,90 +190,6 @@
     {
      "title": "Womens Doubles Pro Main Draw",
      "matches": [
-      {
-       "round": 4,
-       "round_text": "Semi-Finals",
-       "match_no": 25,
-       "seed1": 1,
-       "seed2": 4,
-       "best_of": 3,
-       "p1": [
-        "129b2771-34b5-4b7f-9c23-e020a6aa3e6a",
-        "db5eef5c-99dd-49d9-bbfc-65171a366bda"
-       ],
-       "p2": [
-        "29e8121d-6f86-4192-b7af-ab05b77b89fe",
-        "8f521dcc-1cb5-4c8d-933c-af6b267bd395"
-       ],
-       "n1": [
-        "Anna Leigh Waters",
-        "Anna Bright"
-       ],
-       "n2": [
-        "Ting Chieh Wei",
-        "Meghan Dizon"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         1,
-         2,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 4,
-       "round_text": "Semi-Finals",
-       "match_no": 26,
-       "seed1": 2,
-       "seed2": 3,
-       "best_of": 3,
-       "p1": [
-        "fec65f7e-f2c8-482f-ab5b-541cf53b1064",
-        "9b97206b-783a-4fab-85e9-45a6240325a5"
-       ],
-       "p2": [
-        "a3ed7970-35d2-485c-8285-187c298a2d83",
-        "3af01041-5679-400a-87b8-12c01db8cec4"
-       ],
-       "n1": [
-        "Tyra Hurricane Black",
-        "Catherine Parenteau"
-       ],
-       "n2": [
-        "Lacy Schneemann",
-        "Kate Fahey"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         7,
-         4,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
       {
        "round": 5,
        "round_text": "Finals",
@@ -539,7 +286,8 @@
     "2026-10-06",
     "2026-10-07",
     "2026-10-08",
-    "2026-10-09"
+    "2026-10-09",
+    "2026-10-10"
    ],
    "divisions": [
     {
@@ -2164,8 +1912,8 @@
         "Riley Newman",
         "Noe Khlif"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 4,
        "scores": [
         [
          0,
@@ -2206,19 +1954,19 @@
         "Augustus Ge",
         "Dekel Bar"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         12,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         10,
+         8,
          0,
          0,
          0
@@ -2248,20 +1996,20 @@
         "John Lucian Goins",
         "Mohaned Alhouni"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         6,
+         11,
+         11,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         11,
+         9,
+         2,
          0,
          0
         ]
@@ -2289,6 +2037,90 @@
        "n2": [
         "Dylan Frazier",
         "Armaan Bhatia"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ],
+        [
+         3,
+         2,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 5,
+       "round_text": "Semi-Finals",
+       "match_no": 43,
+       "seed1": 1,
+       "seed2": 3,
+       "best_of": 3,
+       "p1": [
+        "7edb882c-6d17-4129-8208-710e3c82364c",
+        "fc05556e-3e38-4a38-99c2-f855174a7c28"
+       ],
+       "p2": [
+        "ead35052-7367-4296-96d4-064f546cc2b9",
+        "52690a0c-ed4a-4e0b-bf69-4ef416cf7d55"
+       ],
+       "n1": [
+        "Federico Staksrud",
+        "Hayden Patriquin"
+       ],
+       "n2": [
+        "CJ Klinger",
+        "Eric Oncins"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 5,
+       "round_text": "Semi-Finals",
+       "match_no": 44,
+       "seed1": 27,
+       "seed2": 14,
+       "best_of": 3,
+       "p1": [
+        "d8d51930-abf9-468b-9e43-55a9c0728d58",
+        "34049405-b415-4f3a-aade-5be0111ac7db"
+       ],
+       "p2": [
+        "cc8832b9-9a8f-4cbc-8eff-b20e9a7ff09a",
+        "a000a067-1bf1-442f-a961-e6c97cb50006"
+       ],
+       "n1": [
+        "Anouar Braham",
+        "Bruno Faletto"
+       ],
+       "n2": [
+        "Jaume Martinez Vich",
+        "Nicolas Acevedo"
        ],
        "winner": 0,
        "completed_type": 1,
@@ -5114,19 +4946,19 @@
         "Kate Fahey",
         "Federico Staksrud"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         3,
+         6,
          0,
          0,
          0
@@ -5156,19 +4988,19 @@
         "Eric Oncins",
         "Tyra Hurricane Black"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         5,
+         4,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
@@ -5198,19 +5030,19 @@
         "Jonathan Truong",
         "Meghan Dizon"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         2,
+         3,
          0,
          0,
          0
@@ -5239,6 +5071,90 @@
        "n2": [
         "Chao Yi Wang",
         "Armaan Bhatia"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ],
+        [
+         3,
+         3,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 5,
+       "round_text": "Semi-Finals",
+       "match_no": 53,
+       "seed1": 1,
+       "seed2": 5,
+       "best_of": 3,
+       "p1": [
+        "6f862c1d-1317-4fe7-bdcd-64caa0dbb088",
+        "129b2771-34b5-4b7f-9c23-e020a6aa3e6a"
+       ],
+       "p2": [
+        "52690a0c-ed4a-4e0b-bf69-4ef416cf7d55",
+        "fec65f7e-f2c8-482f-ab5b-541cf53b1064"
+       ],
+       "n1": [
+        "Ben Johns",
+        "Anna Leigh Waters"
+       ],
+       "n2": [
+        "Eric Oncins",
+        "Tyra Hurricane Black"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 5,
+       "round_text": "Semi-Finals",
+       "match_no": 54,
+       "seed1": 2,
+       "seed2": 3,
+       "best_of": 3,
+       "p1": [
+        "db5eef5c-99dd-49d9-bbfc-65171a366bda",
+        "fc05556e-3e38-4a38-99c2-f855174a7c28"
+       ],
+       "p2": [
+        "b51ea0fb-c243-4427-85f8-b798febb51ff",
+        "bd061b42-2f82-4bbe-82be-d8bcfb37f9e1"
+       ],
+       "n1": [
+        "Anna Bright",
+        "Hayden Patriquin"
+       ],
+       "n2": [
+        "Jorja Johnson",
+        "JW Johnson"
        ],
        "winner": 0,
        "completed_type": 1,
@@ -8232,19 +8148,19 @@
         "Jade Kawamoto",
         "Jackie Kawamoto"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         5,
+         1,
          0,
          0,
          0
@@ -8274,19 +8190,19 @@
         "Ting Chieh Wei",
         "Meghan Dizon"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         6,
+         2,
          0,
          0,
          0
@@ -8316,19 +8232,19 @@
         "Lacy Schneemann",
         "Jessie Irvine"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         2,
+         7,
          0,
          0,
          0
@@ -8353,6 +8269,90 @@
        "n1": [
         "Sofia Sewing",
         "Jorja Johnson"
+       ],
+       "n2": [
+        "Kate Fahey",
+        "Milan Rane"
+       ],
+       "winner": 2,
+       "completed_type": 5,
+       "scores": [
+        [
+         9,
+         9,
+         0,
+         0,
+         0
+        ],
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 5,
+       "round_text": "Semi-Finals",
+       "match_no": 33,
+       "seed1": 1,
+       "seed2": 3,
+       "best_of": 3,
+       "p1": [
+        "db5eef5c-99dd-49d9-bbfc-65171a366bda",
+        "129b2771-34b5-4b7f-9c23-e020a6aa3e6a"
+       ],
+       "p2": [
+        "50908953-a944-4a34-898b-16af312bc814",
+        "f879086b-e0e5-4772-b0a6-4055c265da69"
+       ],
+       "n1": [
+        "Anna Bright",
+        "Anna Leigh Waters"
+       ],
+       "n2": [
+        "Rachel Rohrabacher",
+        "Tina Pisnik"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 5,
+       "round_text": "Semi-Finals",
+       "match_no": 34,
+       "seed1": 2,
+       "seed2": 8,
+       "best_of": 3,
+       "p1": [
+        "9b97206b-783a-4fab-85e9-45a6240325a5",
+        "fec65f7e-f2c8-482f-ab5b-541cf53b1064"
+       ],
+       "p2": [
+        "3af01041-5679-400a-87b8-12c01db8cec4",
+        "eb14fc6e-ede1-4999-bec3-e36695e7f94e"
+       ],
+       "n1": [
+        "Catherine Parenteau",
+        "Tyra Hurricane Black"
        ],
        "n2": [
         "Kate Fahey",
