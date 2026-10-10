@@ -29,6 +29,10 @@ games.sort(key=lambda g: g["date"])
 sig = lambda x: 1 / (1 + math.exp(-x))
 def team(a, b, date): va, vb = v_at(a, date), v_at(b, date); return va + vb + gam * abs(va - vb)
 
+from datetime import date as _d
+days_between = lambda a, b: (_d.fromisoformat(b) - _d.fromisoformat(a)).days
+pair_ev = collections.defaultdict(list)
+pair_dates = collections.defaultdict(list)   # pair -> dates of prior games together
 together = collections.Counter()          # pair -> games so far
 last_pair = collections.defaultdict(lambda: collections.defaultdict(list))  # player -> partner -> [dates]
 ev_players = collections.defaultdict(set)  # (event, context) -> players who played
@@ -63,10 +67,16 @@ for g in games:
                         if u is not None and u != y:
                             kind = "forced" if u not in pl else "chosen"
                             break
-                rows.append(dict(ev=g["event_id"], k=prior, side=1 if k == 0 else -1, res=res, kind=kind,
+                dts = pair_dates[pair]
+                gap = days_between(dts[-1], g["date"]) if dts else None
+                rec = sum(1 for x in dts if days_between(x, g["date"]) <= 90)
+                evs = pair_ev[pair]
+                rec_ex = sum(1 for x, e in zip(dts, evs) if e != g["event_id"] and days_between(x, g["date"]) <= 90)
+                k_ex = sum(1 for e in evs if e != g["event_id"])
+                rows.append(dict(gap=gap, rec=rec, rec_ex=rec_ex, k_ex=k_ex, ev=g["event_id"], k=prior, side=1 if k == 0 else -1, res=res, kind=kind,
                                  opp=together[tuple(sorted(sides[1 - k]))]))
     for (a, b) in sides:
-        pair = tuple(sorted((a, b))); together[pair] += 1
+        pair = tuple(sorted((a, b))); together[pair] += 1; pair_dates[pair].append(g["date"]); pair_ev[pair].append(g["event_id"])
         cnt[(a, g["context"])][b] += 1; cnt[(b, g["context"])][a] += 1
 
 def cluster_mean(sub):
@@ -95,3 +105,24 @@ for kind in ("forced", "chosen", ""):
          [r for r in fo if r["kind"] == kind])
 fc = [r for r in fo if r["kind"] in ("forced", "chosen")]
 show("forced+chosen", fc)
+
+print("\nDECAY: pairs with >=15 prior games together, residual by days since they last played together")
+est = [r for r in base if r["k"] >= 15 and r["gap"] is not None]
+for lab, lo, hi in (("same event / <=7d", 0, 7), ("8-30d", 8, 30), ("31-90d", 31, 90), ("91-180d", 91, 180), ("181-365d", 181, 365), ("365d+", 366, 10**6)):
+    show(lab, [r for r in est if lo <= r["gap"] <= hi])
+print("GROWTH WITHIN EXPOSURE: games together in the last 90 days (all tenures >=3)")
+for lab, lo, hi in (("0 recent", 0, 0), ("1-4", 1, 4), ("5-9", 5, 9), ("10-19", 10, 19), ("20+", 20, 10**6)):
+    show(lab, [r for r in base if r["k"] >= 3 and lo <= r["rec"] <= hi])
+print("lifetime x recency (is it career games or recent games?): lifetime>=40")
+for lab, lo, hi in (("rec 0-4", 0, 4), ("rec 5-14", 5, 14), ("rec 15+", 15, 10**6)):
+    show("life40+ " + lab, [r for r in base if r["k"] >= 40 and lo <= r["rec"] <= hi])
+for lab, lo, hi in (("rec 0-4", 0, 4), ("rec 5-14", 5, 14), ("rec 15+", 15, 10**6)):
+    show("life6-39 " + lab, [r for r in base if 6 <= r["k"] <= 39 and lo <= r["rec"] <= hi])
+
+print("\nSELECTION-CLEAN VERSIONS: count only games from OTHER events (a within-event run selects on early wins)")
+print("games together at PRIOR events (k_ex), all pairs:")
+for lab, lo, hi in (("0", 0, 0), ("1-5", 1, 5), ("6-14", 6, 14), ("15-39", 15, 39), ("40+", 40, 10**6)):
+    show("prior-event games " + lab, [r for r in base if lo <= r["k_ex"] <= hi])
+print("prior-event games in last 90d (pairs with >=15 prior-event games):")
+for lab, lo, hi in (("0", 0, 0), ("1-9", 1, 9), ("10+", 10, 10**6)):
+    show("recent other-event " + lab, [r for r in base if r["k_ex"] >= 15 and lo <= r["rec_ex"] <= hi])

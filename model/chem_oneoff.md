@@ -38,3 +38,23 @@ n=113 first-ever sides (+/-15-20): too thin to say anything.
   forced-vs-chosen contrast is underpowered. Candidate v2 cleanup stays as in
   finding 5: replace beta_new (selection-shaped, positive) with an unconditional
   familiarity ramp; gate on the holdout.
+
+## Does chemistry GROW with time, and does it DECAY? (same day, follow-up)
+
+Added to `chem_oneoff.py --full`. Two traps handled: (1) counting games from the SAME
+event selects on early wins (a deep run = better form than the monthly rating), so the
+clean versions count only games from OTHER events; (2) pair-fixed-effects would leak the
+pair's future results (stopping-rule artifact, chem_survival.md) so none are used —
+comparisons are across pairs at different tenure, forward-clean.
+
+Growth, prior-EVENT games together (n=17.6k sides): 0: -6.9 +/- 2.1 | 1-5: -9.8 +/- 4.1 |
+6-14: -9.4 +/- 3.1 | 15-39: -0.1 +/- 2.2 | 40+: +2.4 +/- 1.8 (x1e-3 share).
+=> a step up of ~1pp over the first ~15 games together, essentially flat after.
+
+Decay: 91.5% of established-pair games are in the same event as their previous game;
+only 68 follow a layoff of 91+ days (and 6 of a year+), so layoff decay is
+UNTESTABLE in this archive. Recent-activity proxy (other-event games in last 90d, pairs
+with >=15 prior-event games): 0: -3.2 +/- 6.2 | 1-9: -1.7 +/- 5.5 | 10+: +2.4 +/- 1.3 —
+ordered like decay but 0-vs-10+ is -5.6 +/- 6.3, not distinguishable.
+Within-event counting looked stronger (life 6-39: rec 0-4 -11.3 vs rec 15+ -0.5) but that
+version is contaminated by in-event selection; don't quote it.
