@@ -13,7 +13,7 @@ const PKL = require(path.join(HERE, "sitelib", "live_engine.js"));
 const py = `
 import json, sys
 sys.path.insert(0, "web")
-from sitelib.race import (race_dist, sigmoid, team_eta, set_calibration, calibrate,
+from sitelib.race import (price_doubles, race_dist, sigmoid, team_eta, set_calibration, calibrate,
                           game_win_prob_uncertain)
 from sitelib.winprob import (ServeDP, serve_probs, eta_anchor, rally_race_p,
                              display_floor, A1, A2, B1, B2,
@@ -44,6 +44,7 @@ out["singles_dp"] = sg
 out["k_singles"] = K_SINGLES
 out["anchor_singles"] = [eta_anchor_singles(p, K_SINGLES, 11) for p in (0.5, 0.65, 0.88)]
 out["unc"] = [[m, sd, T, game_win_prob_uncertain(m, sd, T)] for (m, sd, T) in ((0.0, 0.0, 11), (0.4, 0.25, 11), (-0.9, 0.6, 15), (1.5, 0.1, 11))]
+out["pd"] = [[m, sd, T, price_doubles(m, sd, T)] for (m, sd, T) in ((0.0, 0.0, 11), (0.4, 0.25, 11), (-0.9, 0.6, 15))]
 out["floor"] = display_floor(0.97)
 out["team_eta"] = team_eta(0.7, 0.2, 0.4, 0.35)
 print(json.dumps(out))
@@ -80,6 +81,7 @@ for (const [eta, T, a, b, s, want] of ref.singles_dp) {
 check("kSingles default", PKL.C.kSingles, ref.k_singles, 1e-12);
 [0.5, 0.65, 0.88].forEach((p, i) => check(`anchorSingles(${p})`, PKL.etaAnchorSingles(p, ref.k_singles, 11), ref.anchor_singles[i], 1e-6));
 for (const [m, sd, T, want] of ref.unc) check(`unc(${m},${sd},${T})`, PKL.gameWinProbUncertain(m, sd, T), want);
+for (const [m, sd, T, want] of ref.pd) check(`priceDoubles(${m},${sd},${T})`, PKL.priceDoubles(m, sd, T), want);
 for (const [a, b, p, want] of ref.rally) check(`rally(${a},${b},${p})`, PKL.rallyRaceTable(p, 21).p(a, b), want);
 [0.5, 0.75, 0.999].forEach((p, i) => check(`cal(${p})`, PKL.calibrate(p), ref.cal[i]));
 check("floor(0.97)", PKL.displayFloor(0.97), ref.floor);

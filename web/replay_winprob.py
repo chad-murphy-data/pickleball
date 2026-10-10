@@ -32,7 +32,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "web"))
 sys.path.insert(0, str(ROOT / "scraper"))
 
-from sitelib.race import (calibrate, race_dist, set_calibration, sigmoid,
+from sitelib.race import (calibrate, price_doubles, race_dist, set_calibration, sigmoid,
                           team_eta)                          # noqa: E402
 from sitelib.winprob import (A1, A2, B1, B2, K_DOUBLES, ServeDP,
                              display_floor, eta_anchor,
@@ -202,7 +202,7 @@ def main():
                     missing.append(u)
             vsum[key] = vv
         eta = team_eta(vsum["v1"][0], vsum["v1"][1], vsum["v2"][0], vsum["v2"][1])
-        p0 = calibrate(race_dist(round(sigmoid(eta), 4), 11)["p_win"])
+        p0 = calibrate(price_doubles(eta, 0.0, 11))
         g.update(eta=eta, p0=p0, names=names, missing=missing)
         games.append(g)
 

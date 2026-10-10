@@ -152,7 +152,8 @@ function priceGame(pair1, pair2, T) {
   const a = pair1.map(resolve), b = pair2.map(resolve);
   if ([...a, ...b].some(p => p.v === null)) return null;
   const eta = PKL.teamEta(a[0].v, a[1].v, b[0].v, b[1].v);
-  const p0 = PKL.calibrate(PKL.raceDist(PKL.sig(eta), T).pw);
+  const sd = Math.sqrt([...a, ...b].reduce((s, p) => s + (p.s ?? 0) ** 2, 0));
+  const p0 = PKL.calibrate(PKL.priceDoubles(eta, sd, T));
   return { eta, p0, nameMatched: [...a, ...b].some(p => p.matched === 'name') };
 }
 
@@ -769,7 +770,8 @@ function slotOf(ab) { ab = (ab || '').toUpperCase();
 function priceIds(ids) {
   if (ids.length !== 4 || ids.some(id => !VALUES[id])) return null;
   const v = ids.map(id => VALUES[id][2]);
-  return PKL.calibrate(PKL.raceDist(PKL.sig(PKL.teamEta(v[0], v[1], v[2], v[3])), 11).pw);
+  const sd = Math.sqrt(ids.reduce((s, id) => s + (VALUES[id][3] ?? 0) ** 2, 0));
+  return PKL.calibrate(PKL.priceDoubles(PKL.teamEta(v[0], v[1], v[2], v[3]), sd, 11));
 }
 function schedule(ms) { clearTimeout(timer); timer = setTimeout(tick, ms); }
 async function tick() {

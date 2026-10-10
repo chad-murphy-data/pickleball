@@ -20,6 +20,7 @@
     gamma: -0.1829,          // weakest-link (race.py GAMMA)
     kDoubles: 0.43,          // measured serve-rally win rate (winprob.py)
     kSingles: 0.525,         // singles serve-rally win rate (winprob.py K_SINGLES)
+    sdMatch: 0.352,          // per-match random-effect sd (race.py SD_MATCH)
     epsFloor: 0.021,         // display floor (winprob.py EPS_FLOOR)
     cal: { a: 0.0, b: 1.0, eps: 0.0 },   // race.py set_calibration
     kDbSingles: 0.42,        // make_forecast.py K_DB_SINGLES
@@ -208,6 +209,11 @@
     return total / wsum;
   }
 
+  // ---- race.py price_doubles: rating sd + per-match random effect ------
+  function priceDoubles(eta, ratingSd, T) {
+    return gameWinProbUncertain(eta, Math.hypot(ratingSd || 0, C.sdMatch), T);
+  }
+
   // ---- DreamBreaker: rally-scored race (winprob.rally_race_p) ----------
   // Iterative DP table (the Python version memoizes a recursion).
   function rallyRaceTable(p, T) {
@@ -281,7 +287,7 @@
   const fp = (p) => (p < 0.005 ? "<1" : p > 0.995 ? ">99" : (100 * p).toFixed(0));
 
   return {
-    configure, C, sig, comb, raceDist, teamEta, calibrate, displayFloor,
+    configure, C, sig, comb, raceDist, teamEta, calibrate, displayFloor, priceDoubles,
     serveProbs, ServeDP, etaAnchor, SinglesDP, etaAnchorSingles,
     gameWinProbUncertain, rallyRaceTable, rallyPForTarget,
     dbWinProb, matchupProb, bestOfProb, fp,

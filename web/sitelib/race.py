@@ -64,6 +64,16 @@ def game_win_prob_uncertain(eta_mean: float, eta_sd: float, T: int = 11) -> floa
     return total / wsum
 
 
+def price_doubles(eta: float, rating_sd: float, T: int = 11) -> float:
+    """Pre-match game win prob as the model actually defines it: the race
+    probability integrated over BOTH player-rating uncertainty and the fitted
+    per-match random effect (SD_MATCH), which the model carries in-sample but
+    which a point eta leaves out.  Omitting it made every probability too
+    sharp (post-June recal slope 0.67-0.73; ~0.9 with it).  Mirrored in
+    live_engine.js priceDoubles — keep in sync."""
+    return game_win_prob_uncertain(eta, math.hypot(rating_sd, SD_MATCH), T)
+
+
 def team_eta(v1: float, v2: float, v3: float, v4: float,
              gamma: float = GAMMA) -> float:
     """Per-point logit of team (v1,v2) vs team (v3,v4), weakest link applied."""

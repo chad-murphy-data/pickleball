@@ -32,6 +32,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import math
 import sys
 from datetime import date, timedelta
 from itertools import combinations
@@ -42,7 +43,7 @@ sys.path.insert(0, str(ROOT / "scraper"))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from harvest import SEASON_START, is_mlp_league            # noqa: E402
 from pb_api import PBClient                                # noqa: E402
-from sitelib.race import (GAMMA, calibrate, race_dist, set_calibration,
+from sitelib.race import (GAMMA, calibrate, price_doubles, race_dist, set_calibration,
                           sigmoid, team_eta)               # noqa: E402
 
 DATA = ROOT / "data"
@@ -106,12 +107,13 @@ def db_win_prob(roster1, roster2, vals, singles):
 
 
 def load_values():
-    """player_uuid -> (full_name, value, gender). Existing consumers index
+    """player_uuid -> (full_name, value, gender, value_sd). Existing consumers index
     [0]/[1]; the gender rides along for best-lineup construction."""
     vals = {}
     for r in csv.DictReader((DATA / "v2_players.csv").open()):
         vals[r["player_id"]] = (r["full_name"], float(r["value_now_mean"]),
-                                r.get("gender") or "")
+                                r.get("gender") or "",
+                                float(r.get("value_now_sd") or 0.0))
     return vals
 
 
@@ -292,8 +294,9 @@ def price_game(pair_a, pair_b, vals):
     except KeyError:
         return None
     eta = team_eta(va[0], va[1], vb[0], vb[1])
-    dist = race_dist(round(sigmoid(eta), 4), 11)
-    p = calibrate(dist["p_win"])
+    dist = race_dist(round(sigmoid(eta), 4), 11)      # score pmf at the point eta
+    sd = math.sqrt(sum(vals[u][3] ** 2 for u in list(pair_a) + list(pair_b)))
+    p = calibrate(price_doubles(eta, sd, 11))         # rating sd + match shock
     scores = ([(11, b, pr) for _, b, pr in dist["win_scores"]]
               + [(a, 11, pr) for a, _, pr in dist["lose_scores"]])
     modal = max(scores, key=lambda s: s[2])

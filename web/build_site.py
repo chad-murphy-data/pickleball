@@ -21,8 +21,13 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sitelib import charts, data as D, livepage, style
 from sitelib.charts import esc
-from sitelib.race import (GAMMA, calibrate, race_dist, set_calibration,
+from sitelib.race import (GAMMA, SD_MATCH, calibrate, price_doubles, race_dist, set_calibration,
                           sigmoid, value_points)
+
+def _logit(p):
+    p = min(max(p, 1e-6), 1 - 1e-6)
+    return math.log(p / (1 - p))
+
 
 CAL = json.loads((Path(__file__).resolve().parent / "calibration.json").read_text())
 set_calibration(CAL["a"], CAL["b"], CAL["eps"])
@@ -763,6 +768,7 @@ convention that no game data can test.</p>
 <script>
 const P = {pdata};
 const GAMMA = {GAMMA}, BETA_NEW = 0.088;
+const SD_MATCH = {SD_MATCH};   // race.py SD_MATCH: per-match random effect
 const CAL = {{ a: {CAL["a"]}, b: {CAL["b"]}, eps: {CAL["eps"]} }};  // web/calibration.json
 function pCal(p) {{
   p = Math.min(Math.max(p, 1e-12), 1 - 1e-12);
@@ -795,7 +801,8 @@ function raceDist(p, T) {{
   return {{ pw, win, lose, deuce, dwin, margin }};
 }}
 function gWin(eta, T) {{ return raceDist(sig(eta), T).pw; }}
-function gWinAvg(mu, sd, T) {{           // integrate over value uncertainty
+function gWinAvg(mu, sdR, T) {{          // integrate over rating uncertainty + match shock
+  const sd = Math.hypot(sdR, SD_MATCH);
   if (sd <= 0) return gWin(mu, T);
   let tot = 0, ws = 0;
   for (let i = 0; i <= 40; i++) {{
@@ -1009,7 +1016,7 @@ def build_results(players, games, updated, days=14):
         if exp is not None:
             w_exp = exp if t1_won else 1 - exp
             T = 15 if g["scoring_format"].endswith("15") else 11
-            pw = calibrate(race_dist(round(w_exp, 4), T)["p_win"])
+            pw = calibrate(price_doubles(_logit(w_exp), 0.0, T))
             price = f"{100 * pw:.0f}%"
             if pw < 0.25:
                 upset = ' <span class="chip miss">UPSET</span>'
@@ -2003,7 +2010,7 @@ def results_day_summary(players, games, day):
         if exp is not None:
             w_exp = exp if s1 > s2 else 1 - exp
             T = 15 if g["scoring_format"].endswith("15") else 11
-            if calibrate(race_dist(round(w_exp, 4), T)["p_win"]) < 0.25:
+            if calibrate(price_doubles(_logit(w_exp), 0.0, T)) < 0.25:
                 upsets += 1
     return graded, upsets
 

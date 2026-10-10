@@ -33,7 +33,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sitelib import data as D
-from sitelib.race import race_dist, sigmoid
+from sitelib.race import SD_MATCH, race_dist, sigmoid
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -83,7 +83,8 @@ def price_holdout():
         if any(u not in train or train[u][2] < MIN_TRAIN_GAMES for u in us):
             continue
         v = [train[u][0] for u in us]
-        sd = math.sqrt(sum(train[u][1] ** 2 for u in us))
+        # rating uncertainty + the fitted per-match random effect (race.price_doubles)
+        sd = math.sqrt(sum(train[u][1] ** 2 for u in us) + SD_MATCH ** 2)
         c1 = chem.get(frozenset((names.get(us[0], ""), names.get(us[1], ""))), 0.0)
         c2 = chem.get(frozenset((names.get(us[2], ""), names.get(us[3], ""))), 0.0)
         mu = ((v[0] + v[1] + GAMMA_TRAIN * abs(v[0] - v[1]))
