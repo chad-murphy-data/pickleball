@@ -75,7 +75,14 @@ grepping the JS bundle for `fetch("` (see recon.md). No token, no browser.
   SRM_MIXTEST, SRM_SAVE_DRAWS). Suffix convention: `_2026`, `_2026core`,
   `_train`, `_2026mm`, etc. map to data/model_*{suffix}.csv inputs.
 - Validation: v2 = 77.4% winner accuracy / 0.165 Brier on 884 post-June-1
-  holdout games (v1 75.2%/0.178). Gate any model change
+  holdout games (v1 75.2%/0.178). **2026-10-10 rolling-cutoff check**
+  (model/rolling_holdout.py; Jun1/Aug1/Sep1 refits, PR #125): since June
+  accuracy is ~73% / Brier 0.183 on 4,494 games — fresher ratings add only
+  ~0.005 Brier. The shortfall was OVERCONFIDENCE: pricing left out the
+  fitted per-match random effect (sd_m ≈ 0.35). Pricing now goes through
+  race.price_doubles / PKL.priceDoubles (rating sd ⊕ SD_MATCH) everywhere
+  and web/calibration.json was refit on it (slope 0.90 → 0.95, raw Brier
+  0.1833 → 0.1810). v2_holdout.py's frozen gate number is unchanged. Gate any model change
   on beating this (`model/v2_holdout.py`; needs a `_train`-suffixed fit
   with SRM2_DATE_BEFORE=2026-06-01).
 

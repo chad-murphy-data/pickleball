@@ -11,7 +11,9 @@ import math
 from functools import lru_cache
 
 GAMMA = -0.1829          # weakest-link coefficient (v2 posterior mean, logit)
-SD_MATCH = 0.352         # per-match random-effect sd (logit) — overdispersion
+SD_MATCH = 0.352         # per-game random-effect sd (logit) — overdispersion
+SD_SHARED = 0.15         # part shared by all games of one best-of-N match (clutch_leverage.md
+                         # variance split: 0.15 shared + 0.35 per game ~ 0.38 total)
 
 
 def sigmoid(x: float) -> float:
@@ -62,6 +64,16 @@ def game_win_prob_uncertain(eta_mean: float, eta_sd: float, T: int = 11) -> floa
         total += w * game_win_prob(eta_mean + z * eta_sd, T)
         wsum += w
     return total / wsum
+
+
+def price_doubles(eta: float, rating_sd: float, T: int = 11) -> float:
+    """Pre-match game win prob as the model actually defines it: the race
+    probability integrated over BOTH player-rating uncertainty and the fitted
+    per-match random effect (SD_MATCH), which the model carries in-sample but
+    which a point eta leaves out.  Omitting it made every probability too
+    sharp (post-June recal slope 0.67-0.73; ~0.9 with it).  Mirrored in
+    live_engine.js priceDoubles — keep in sync."""
+    return game_win_prob_uncertain(eta, math.hypot(rating_sd, SD_MATCH), T)
 
 
 def team_eta(v1: float, v2: float, v3: float, v4: float,
