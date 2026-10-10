@@ -21,7 +21,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from sitelib import charts, data as D, livepage, style
 from sitelib.charts import esc
-from sitelib.race import (GAMMA, SD_MATCH, calibrate, price_doubles, race_dist, set_calibration,
+from sitelib.race import (GAMMA, SD_MATCH, SD_SHARED, calibrate, price_doubles, race_dist, set_calibration,
                           sigmoid, value_points)
 
 def _logit(p):
@@ -769,6 +769,8 @@ convention that no game data can test.</p>
 const P = {pdata};
 const GAMMA = {GAMMA}, BETA_NEW = 0.088;
 const SD_MATCH = {SD_MATCH};   // race.py SD_MATCH: per-match random effect
+const SD_SHARED = {SD_SHARED};  // part of it shared by every game of one match (race.py)
+const SD_GAME = Math.sqrt(SD_MATCH * SD_MATCH - SD_SHARED * SD_SHARED);
 const CAL = {{ a: {CAL["a"]}, b: {CAL["b"]}, eps: {CAL["eps"]} }};  // web/calibration.json
 function pCal(p) {{
   p = Math.min(Math.max(p, 1e-12), 1 - 1e-12);
@@ -804,6 +806,27 @@ function gWin(eta, T) {{ return raceDist(sig(eta), T).pw; }}
 function gWinAvg(mu, sdR, T) {{          // integrate over rating uncertainty + match shock
   const sd = Math.hypot(sdR, SD_MATCH);
   if (sd <= 0) return gWin(mu, T);
+  let tot = 0, ws = 0;
+  for (let i = 0; i <= 40; i++) {{
+    const z = -4 + i * 0.2, w = Math.exp(-0.5 * z * z);
+    tot += w * gWin(mu + z * sd, T); ws += w;
+  }}
+  return tot / ws;
+}}
+function matchProbShared(mu, sdR, T, bo) {{   // best-of-N: integrate the shared match shock
+  if (bo === 1) return null;
+  const sdG = Math.hypot(sdR, SD_GAME);
+  let p = 0, ws = 0, acc = null;
+  for (let i = 0; i <= 40; i++) {{
+    const z = -4 + i * 0.2, w = Math.exp(-0.5 * z * z);
+    const m = matchProb(pCal(gWinAvg1(mu + z * SD_SHARED, sdG, T)), bo);
+    p += w * m.p; ws += w;
+    acc = acc || m.scores.map(s => [s[0], 0]);
+    m.scores.forEach((s, k) => acc[k][1] += w * s[1]);
+  }}
+  return {{ p: p / ws, scores: acc.map(s => [s[0], s[1] / ws]) }};
+}}
+function gWinAvg1(mu, sd, T) {{            // integrate a single sd (no extra match shock)
   let tot = 0, ws = 0;
   for (let i = 0; i <= 40; i++) {{
     const z = -4 + i * 0.2, w = Math.exp(-0.5 * z * z);
@@ -853,7 +876,7 @@ function update(push) {{
   const sd = Math.sqrt(a1.s ** 2 + a2.s ** 2 + b1.s ** 2 + b2.s ** 2);
   const g = pCal(gWinAvg(mu, sd, T));
   const gLo = pCal(gWin(mu - 1.645 * sd, T)), gHi = pCal(gWin(mu + 1.645 * sd, T));
-  const m = matchProb(g, bo), mLo = matchProb(gLo, bo).p, mHi = matchProb(gHi, bo).p;
+  const m = matchProbShared(mu, sd, T, bo) || matchProb(g, bo), mLo = matchProb(gLo, bo).p, mHi = matchProb(gHi, bo).p;
   const dist = raceDist(sig(mu), T);
   const aN = `${{a1.n.split(' ').pop()}}/${{a2.n.split(' ').pop()}}`;
   const bN = `${{b1.n.split(' ').pop()}}/${{b2.n.split(' ').pop()}}`;

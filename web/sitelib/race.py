@@ -11,7 +11,9 @@ import math
 from functools import lru_cache
 
 GAMMA = -0.1829          # weakest-link coefficient (v2 posterior mean, logit)
-SD_MATCH = 0.352         # per-match random-effect sd (logit) — overdispersion
+SD_MATCH = 0.352         # per-game random-effect sd (logit) — overdispersion
+SD_SHARED = 0.15         # part shared by all games of one best-of-N match (clutch_leverage.md
+                         # variance split: 0.15 shared + 0.35 per game ~ 0.38 total)
 
 
 def sigmoid(x: float) -> float:
