@@ -38,8 +38,13 @@ LONG_EDGE = 1568                    # where images get downscaled to
 IMG_TOK = LONG_EDGE * 1071 / 750    # the 3x3 grid's delivered aspect
 PROMPT_TOK = 400                    # fixed instructions, uncached
 CONTACTS_PER_S = 1.13               # measured: 311 contacts / 275 s span
-# (input $/Mtok, output $/Mtok) at list; batch halves both
-TIERS = {"top": (15.0, 75.0), "mid": (3.0, 15.0), "small": (1.0, 5.0)}
+# (input $/Mtok, output $/Mtok) at list; batch halves both.
+# CORRECTED 2026-08-21: "top" was a $15/$75 placeholder guessed before
+# real pricing existed for the most-capable tier. Claude Fable 5 (the
+# actual top tier) is $10/$50 — cheaper than the guess, not pricier.
+# "mid"/"small" already matched real tiers exactly (Claude Sonnet 5
+# $3/$15, Claude Haiku 4.5 $1/$5) and are unchanged.
+TIERS = {"top": (10.0, 50.0), "mid": (3.0, 15.0), "small": (1.0, 5.0)}
 
 
 def cost_table(rally_s, tiers=TIERS, batch=True):
