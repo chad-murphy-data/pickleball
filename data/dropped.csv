@@ -258,11 +258,9 @@ mixed,2026-10-06,203e1164-b4f9-47e9-bacf-ff81f8748025,PPA Tour: Veolia Chicago C
 mixed,2026-10-06,203e1164-b4f9-47e9-bacf-ff81f8748025,PPA Tour: Veolia Chicago Cup,,816ab105-0dbf-4fe1-ab7f-2c666d00a2c8,no played games (forfeit/walkover),Round 64,PPA
 womens,2026-10-07,203e1164-b4f9-47e9-bacf-ff81f8748025,PPA Tour: Veolia Chicago Cup,,36ff74c7-8b89-4c86-bb28-02b9e00ebe15,no played games (forfeit/walkover),Round 32,PPA
 mens,2026-10-09,203e1164-b4f9-47e9-bacf-ff81f8748025,PPA Tour: Veolia Chicago Cup,,855744f9-25dc-4db6-af01-77aa2689a0cd,no played games (forfeit/walkover),Quarter Finals,PPA
-mens,2026-10-11,203e1164-b4f9-47e9-bacf-ff81f8748025,PPA Tour: Veolia Chicago Cup,,a0af370f-d832-4fe4-a40a-b3f396fe4176,match not completed (status=1),Finals,PPA
 womens,2026-10-11,203e1164-b4f9-47e9-bacf-ff81f8748025,PPA Tour: Veolia Chicago Cup,,221fed13-04b6-4e22-ae38-35a3cef0c178,no played games (forfeit/walkover),Bronze,PPA
 mens,2026-10-11,203e1164-b4f9-47e9-bacf-ff81f8748025,PPA Tour: Veolia Chicago Cup,,33ac9ef4-adab-465d-80c5-cb6a320ac325,no played games (forfeit/walkover),Bronze,PPA
 mixed,2026-10-11,203e1164-b4f9-47e9-bacf-ff81f8748025,PPA Tour: Veolia Chicago Cup,,8b1d24de-2409-4e91-908e-17acc08c5d23,no played games (forfeit/walkover),Bronze,PPA
-womens,2026-10-11,203e1164-b4f9-47e9-bacf-ff81f8748025,PPA Tour: Veolia Chicago Cup,,201825bb-59bd-46aa-9a0e-53c6406ccd0d,match not completed (status=1),Finals,PPA
 mixed,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,64ae786d-587f-4690-8b36-d56e9eac1123,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
 mixed,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,c841f90b-b5be-4b1f-aeec-608343878b9a,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
 mixed,2026-04-13,239b912c-544e-4175-8730-0e0ddca8790e,PPA Tour: 2026 Sacramento Open,,452720f7-fe16-480a-8be7-7e63b78f7abc,no played games (forfeit/walkover),Qualifier — Quarter Finals,PPA
@@ -498,6 +496,15 @@ womens,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Bio
 womens,2026-02-09,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,f52d7d4d-5944-449c-9ff0-e00bc46a255f,match not completed (status=1),Qualifier — Semi-Finals,PPA
 womens,2026-02-10,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,900588b2-62f8-417b-9035-4cb81449e0dd,no played games (forfeit/walkover),Round 64,PPA
 mixed,2026-02-12,4133fecd-bede-49e5-af91-34a31f36fdf4,PPA Tour: 2026 Zimmer Biomet Cape Coral Open,,e3b0aa61-1745-4c01-96ad-487b43fcc253,no played games (forfeit/walkover),Round 16,PPA
+mens,2026-10-12,429c7980-e1b9-4800-805f-dfb160781cd9,PPA Tour: Mojo Energy Pouches Virginia Beach Open,,52b08854-3612-4859-8b79-576f94dedfaf,match not completed (status=2),Qualifier — Round 16,PPA
+mens,2026-10-12,429c7980-e1b9-4800-805f-dfb160781cd9,PPA Tour: Mojo Energy Pouches Virginia Beach Open,,c94dcecf-8505-4a73-8415-f55286c2c39b,match not completed (status=2),Qualifier — Quarter Finals,PPA
+womens,2026-10-12,429c7980-e1b9-4800-805f-dfb160781cd9,PPA Tour: Mojo Energy Pouches Virginia Beach Open,,a7ecb366-1857-4791-9e26-6803e6bb40dd,match not completed (status=2),Qualifier — Semi-Finals,PPA
+mens,2026-10-12,429c7980-e1b9-4800-805f-dfb160781cd9,PPA Tour: Mojo Energy Pouches Virginia Beach Open,,00bf7d77-1408-43bd-b6c0-f4fda6184981,match not completed (status=2),Qualifier — Quarter Finals,PPA
+mens,2026-10-12,429c7980-e1b9-4800-805f-dfb160781cd9,PPA Tour: Mojo Energy Pouches Virginia Beach Open,,c4b24a76-8006-4551-aed5-6fbeadd2e2ed,match not completed (status=2),Qualifier — Quarter Finals,PPA
+mixed,2026-10-12,429c7980-e1b9-4800-805f-dfb160781cd9,PPA Tour: Mojo Energy Pouches Virginia Beach Open,,389a22a7-a204-404c-bc30-3f3121e59183,no played games (forfeit/walkover),Qualifier — Finals,PPA
+mixed,2026-10-12,429c7980-e1b9-4800-805f-dfb160781cd9,PPA Tour: Mojo Energy Pouches Virginia Beach Open,,257a7cbb-e74e-4b4b-bc71-586f8ee24f95,no played games (forfeit/walkover),Qualifier — Bronze,PPA
+mens,2026-10-12,429c7980-e1b9-4800-805f-dfb160781cd9,PPA Tour: Mojo Energy Pouches Virginia Beach Open,,ddffa591-7124-462c-8446-99b84cf413bc,match not completed (status=1),Qualifier — Quarter Finals,PPA
+womens,2026-10-12,429c7980-e1b9-4800-805f-dfb160781cd9,PPA Tour: Mojo Energy Pouches Virginia Beach Open,,cecfb10b-e643-4bbd-8a4c-4b018702a7a2,match not completed (status=1),Qualifier — Semi-Finals,PPA
 mens,2025-04-01,4575ae49-0a16-4906-b8cd-def7795b034b,PPA Tour: Veolia North Carolina Open,,b0b7897a-83cb-4289-be5e-5c5571125be1,no played games (forfeit/walkover),Qualifier — Round 32,PPA
 mens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,9cbe2cdb-824d-4164-ac98-37862ce831a6,no played games (forfeit/walkover),,PPA
 mens,2026-02-21,46723c67-4fcc-4cd0-91cb-3f0ab0b19cef,2026 Houston PPA Challenger,,841a98dd-cbe3-4f50-be2f-6c99868f600b,no played games (forfeit/walkover),,PPA
