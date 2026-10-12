@@ -1874,7 +1874,7 @@ idx,player_id,full_name,gender
 1872,f290f950-0f97-4740-af58-76d56173bf99,Alejandro De la Torre,M
 1873,b70da824-5e01-4e66-8c4d-5fc7227c568f,Ruben Rosende Molina,M
 1874,1a620ae9-bc58-4dde-8bfe-2d101230fad0,Marc Caymel Romero,M
-1875,6339a308-8030-4607-bf86-399f36f8e9ab,Rose S,
+1875,6339a308-8030-4607-bf86-399f36f8e9ab,Rose S,F
 1876,01fd917a-8680-4900-b01c-01fdb37f5700,Drew Sandri,M
 1877,3f523db3-f8c4-46c8-a54f-533d7220d27b,Kyle Goodburn,M
 1878,0ea80264-87dc-48e6-b3e0-2ec445e02c08,Kayla Wilkins,
@@ -1908,8 +1908,22 @@ idx,player_id,full_name,gender
 1906,d43db93c-6710-4a18-a406-497eb7a068ce,Spencer Smith,M
 1907,41c836a0-81d8-4da8-8ea4-93d1c98da447,Jessalyn Lopez,
 1908,20b31bab-0fc2-4599-bb4c-209b96e09893,Marykate Washelesky,F
-1909,06899d9b-b0bc-4399-ace6-b27c13171b54,Jennifer Newport,
-1910,08b6b1ca-9a89-4678-b5e5-5b76dc994f64,William East,M
-1911,11f99864-9c20-44e2-beb5-10301bab7ead,Nida Siefferman,
-1912,c9724028-d979-4bcc-83df-4b1ee4138bb4,Adrian Brambila,
+1909,d7a9f127-2bed-4e76-a9f1-8e096ab1baa1,Dan Forsythe,M
+1910,06899d9b-b0bc-4399-ace6-b27c13171b54,Jennifer Newport,
+1911,be850e95-b495-4fc2-86a6-3d18f8b8bd3a,Lucas Schullo,M
+1912,f70e5c80-74a1-451b-91a2-c1ffa73de662,Andres Bella,M
 1913,7bee4b61-53bf-41c1-a04f-1be4ade890ad,Sabrina Palavra,F
+1914,08b6b1ca-9a89-4678-b5e5-5b76dc994f64,William East,M
+1915,c9724028-d979-4bcc-83df-4b1ee4138bb4,Adrian Brambila,M
+1916,45e9deff-8843-42d5-b153-9d99c519f42b,Joshua Chisanga,M
+1917,514968a8-ffdf-4295-8b68-89eb79ef7bc7,John Herron III,M
+1918,1b414aad-42ff-4237-aab5-eb9a07817b20,Dominic Denardo,M
+1919,11f99864-9c20-44e2-beb5-10301bab7ead,Nida Siefferman,
+1920,06a58b35-a42d-4b14-9732-3d5df4d07655,Andrew Arzac,M
+1921,f36db214-170a-4121-b7e4-40078ee9487f,Colin Root,M
+1922,16c5a06e-74ed-423c-aaa6-5c6e9ba17103,Sherwin Torres,M
+1923,454acc26-a271-4843-9bc7-c5a24b3c5f15,Daniel Milewski,M
+1924,f0d2b07d-cc2a-409e-9469-4162ed714e1b,Rocky Dibernardo,M
+1925,dbf4c380-76a9-4a08-9021-b62123040e94,Anthony Fallet,M
+1926,e147245e-ac94-4109-9a8a-05cd64450a8d,Connor Slagill,M
+1927,0db5ebb5-8769-4732-bc09-b396c31dd5c3,Ava Kalist,
