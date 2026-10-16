@@ -56,6 +56,7 @@ MATCH_S = 0.25          # turn <-> anchor and tracked <-> human bound match
 LANK, RANK = 15, 16     # COCO ankles
 KPT_CONF = 0.3
 IMPACT_BAR_FT = 3.0     # frozen gate bar
+BOUNCE_MATCH_S = 0.30   # tracked <-> human bounce time match
 
 
 # ------------------------------------------------- automated person floor
@@ -206,7 +207,7 @@ def bound_anchor_positions(bounds, anchors, floors):
 # ------------------------------------------------------- reconstruction
 
 
-def reconstruct(P, obs_all, bounds, events, panchors):
+def reconstruct(P, obs_all, bounds, events, panchors, corridor=False):
     """court3d's two-pass fit, generalized: arbitrary bounds, player
     anchors supplied per bound (automated), sides derived from the
     anchors' own floor positions. Returns (segs, cons) — cons[k] is the
@@ -221,7 +222,21 @@ def reconstruct(P, obs_all, bounds, events, panchors):
             segs.append(None)
             continue
         seg_obs[k] = obs
-        seg = c3.fit_segment(P, obs, t0, t1, events)
+        # BOUNCE CORRIDOR (owner rule 2026-09-04, measured 98% on 57 human
+        # bounces -- court3d.in_corridor).  This flight runs from the hitter
+        # at bound k to the receiver at bound k+1, and a bounce between them
+        # sits on the line joining them.  Anchors give both positions from
+        # POSE, not from the ball, so the gate is independent of the fit it
+        # constrains.  Missing anchor -> None -> the old court-wide test.
+        # corridor=False for the HUMAN reconstruction: it is the ground
+        # truth this change is graded against, and a gate applied to both
+        # sides silently moves the target (it deleted a real human bounce
+        # on r9, 13 -> 12, the first time this was run).
+        corr = None
+        if corridor:
+            corr = (panchors[k] if k < len(panchors) else None,
+                    panchors[k + 1] if k + 1 < len(panchors) else None)
+        seg = c3.fit_segment(P, obs, t0, t1, events, corridor=corr)
         seg["ok"] = _plausible(seg)
         segs.append(seg)
 
@@ -377,6 +392,20 @@ def track_sides(floors):
     return out
 
 
+def bounce_shaped(points, e, win=0.12):
+    """Does the path FALL then RISE through e?  Image y grows downward,
+    so a real bounce is dy_pre > 0 > dy_post.  Unmeasurable -> True: the
+    test may only delete on positive evidence of the wrong shape."""
+    pts = sorted(points)
+    d = []
+    for seg in ([p for p in pts if e - win <= p[0] < e],
+                [p for p in pts if e < p[0] <= e + win]):
+        if len(seg) < 2 or seg[-1][0] - seg[0][0] < 1e-3:
+            return True
+        d.append((seg[-1][2] - seg[0][2]) / (seg[-1][0] - seg[0][0]))
+    return d[0] > 0 > d[1]
+
+
 def claim_bounds(turns, angs, refined, anchors, sides=None,
                  claim_r=None):
     """claim_r=None and sides=None = the original LOOSE claiming
@@ -456,7 +485,21 @@ def tracked_side(rally, anchors, floors, serve, end, sides=None):
     # and flipped r7's check 3 to FAIL (bounces 0 vs 2, median 3.10).
     # A contact bound requires a hitter-chain anchor, full stop; a
     # missed anchor degrades to a longer segment, not a fake contact.
-    bounce_evs = [e for e in turns if e not in claimed]
+    # A bounce FALLS THEN RISES.  Image y grows downward, so a real
+    # bounce has dy_pre > 0 > dy_post -- a sign test on the local
+    # velocity, nothing to tune.  This is the missing half of the line
+    # below: bounce is the RESIDUAL category, so without it every
+    # tracking wobble an anchor failed to claim becomes a bounce marker.
+    # Measured on all 128 turns of r7/r9/r10/r17 against the owner's
+    # reconstruction (turn_audit.py, ballsearch/bounce_fix.py):
+    # keeps 6/6 real bounces, kills 10/12 junk markers, and the turn
+    # ANGLE the claim already uses does not separate them at all (real
+    # median 91.5 deg, junk 66.5, ranges overlapping).  End to end over
+    # the four rallies: markers 30 -> 14, junk 12 -> 2, missed-contact
+    # markers 12 -> 6, precision 20% -> 43%, contact recall UNCHANGED
+    # at 63/79.  Turns with unmeasurable velocity are kept, not deleted.
+    bounce_evs = [e for e in turns
+                  if e not in claimed and bounce_shaped(timing_ref, e)]
     bounds = matched + [end]
     obs = [(t, x, y, 1.0) for t, x, y in pts]
     return obs, bounds, bounce_evs
@@ -468,7 +511,7 @@ def human_side(rally, end):
         if r["x"] and r["vis"] in c3.W_VIS:
             obs.append((float(r["t_s"]), float(r["x"]), float(r["y"]),
                         c3.W_VIS[r["vis"]]))
-    imps, _ = load_impacts(rally=rally)
+    imps, _ = load_impacts(rally=rally, prefill_ok=True)  # r2-r5: prefill bounds until the contact pass
     bounds = list(imps) + [end]
     evs = detect_events([(t, x, y) for t, x, y, w in obs if w == 1.0])
     return obs, bounds, evs
@@ -485,7 +528,7 @@ def crossing_demotion(P, obs, bounds, evs, floors, anchors, rounds=3):
     in two, and the crossing can only live in one of the pieces."""
     for _ in range(rounds):
         pa = bound_anchor_positions(bounds, anchors, floors)
-        segs, cons = reconstruct(P, obs, bounds, evs, pa)
+        segs, cons = reconstruct(P, obs, bounds, evs, pa, corridor=True)
         demote = None
         for k, seg in enumerate(segs):
             if seg is None or not seg["ok"] or k == 0:
@@ -499,7 +542,7 @@ def crossing_demotion(P, obs, bounds, evs, floors, anchors, rounds=3):
         evs = sorted(evs + [bounds[demote]])
         bounds = bounds[:demote] + bounds[demote + 1:]
     pa = bound_anchor_positions(bounds, anchors, floors)
-    segs, cons = reconstruct(P, obs, bounds, evs, pa)
+    segs, cons = reconstruct(P, obs, bounds, evs, pa, corridor=True)
     return segs, cons, bounds, evs
 
 
@@ -540,6 +583,34 @@ def compare(rally, trk, hum, P, floors, anchors):
     n_h = sum(1 for j, hb in enumerate(h_bounds[:-1])
               if h_cons[j] is not None)
     med = float(np.median(dists)) if dists else float("inf")
+
+    # BOUNCE POINTS -- the product question ("the ball bounced somewhere").
+    # Same time-matching as impacts, but the quantity is the z=0 landing
+    # point in COURT coordinates, which is what a bounce map is read on.
+    # No depth degeneracy here: a bounce is on the plane the homography
+    # solves exactly, and it is bracketed by arcs on both sides.
+    bd, bused = [], set()
+    tb_all = [(float(s["ts"]), np.asarray(s["bounce_xy"], float))
+              for s in t_segs if s and s.get("ok") and s["kind"] == "bounce"]
+    hb_all = [(float(s["ts"]), np.asarray(s["bounce_xy"], float))
+              for s in h_segs if s and s.get("ok") and s["kind"] == "bounce"]
+    for ts, txy in tb_all:
+        m = [(abs(ts - hs), j) for j, (hs, _) in enumerate(hb_all)
+             if j not in bused and abs(ts - hs) <= BOUNCE_MATCH_S]
+        if not m:
+            continue
+        _, j = min(m)
+        bused.add(j)
+        hs, hxy = hb_all[j]
+        bd.append(float(np.linalg.norm(txy - hxy)))
+        print(f"  bounce {ts:7.2f}s <-> {hs:7.2f}s : "
+              f"({txy[0]:5.1f},{txy[1]:5.1f}) vs ({hxy[0]:5.1f},{hxy[1]:5.1f})"
+              f"  court dist {bd[-1]:.2f} ft")
+    print(f"  BOUNCE POINTS: {len(bd)}/{len(hb_all)} human bounces matched, "
+          f"median court dist "
+          f"{np.median(bd) if bd else float('nan'):.2f} ft")
+    globals().setdefault("_BOUNCE_LOG", []).append(
+        dict(rally=rally, matched=len(bd), n_hum=len(hb_all), d=list(bd)))
 
     # net-crossing check on drawn tracked arcs (court3d check: every
     # segment between contacts must cross the net)
