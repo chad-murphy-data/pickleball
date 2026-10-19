@@ -13406,42 +13406,486 @@ a0af370f-d832-4fe4-a40a-b3f396fe4176:g1,10,431,387,450,986,3389,3786,6581,1,1,3,
 a0af370f-d832-4fe4-a40a-b3f396fe4176:g2,5,431,387,450,986,3389,3786,6581,1,1,3,2,PPA Tour: Veolia Chicago Cup,2026-10-11,Finals
 a3fd90c3-73af-4e52-bc69-08e8976332b5:g1,-2,26,727,450,986,909,3786,6582,1,1,3,1,PPA Tour: Veolia Chicago Cup,2026-10-11,Semi-Finals
 a3fd90c3-73af-4e52-bc69-08e8976332b5:g2,-2,26,727,450,986,909,3786,6582,1,1,3,2,PPA Tour: Veolia Chicago Cup,2026-10-11,Semi-Finals
-1eeb7623-3d2d-42d7-8d03-b1dc453dd651:g1,5,641,528,47,925,1806,3917,6583,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-1eeb7623-3d2d-42d7-8d03-b1dc453dd651:g2,7,641,528,47,925,1806,3917,6583,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-2183ad68-e496-4388-a75a-9da08319a89a:g1,9,47,140,1921,1922,3322,3918,6584,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-2183ad68-e496-4388-a75a-9da08319a89a:g2,11,47,140,1921,1922,3322,3918,6584,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-2e932923-7eb6-496f-a44d-9fa7fd5aed5f:g1,3,98,497,1146,599,3919,3301,6585,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-2e932923-7eb6-496f-a44d-9fa7fd5aed5f:g2,-3,98,497,1146,599,3919,3301,6585,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-2e932923-7eb6-496f-a44d-9fa7fd5aed5f:g3,-9,98,497,1146,599,3919,3301,6585,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-3cdaf98a-7420-4874-be5e-e947fae6ba5c:g1,-10,381,548,258,623,3920,3921,6586,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-3cdaf98a-7420-4874-be5e-e947fae6ba5c:g2,-8,381,548,258,623,3920,3921,6586,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-5c560866-72b7-467a-b2d2-e5e8e576950b:g1,11,268,223,1923,1924,1676,3922,6587,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-5c560866-72b7-467a-b2d2-e5e8e576950b:g2,10,268,223,1923,1924,1676,3922,6587,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-6722e9de-15a7-4dc8-a48c-742173ab1fce:g1,4,173,1175,925,98,3923,3924,6588,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-6722e9de-15a7-4dc8-a48c-742173ab1fce:g2,-9,173,1175,925,98,3923,3924,6588,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-6722e9de-15a7-4dc8-a48c-742173ab1fce:g3,4,173,1175,925,98,3923,3924,6588,2,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-67270427-94d7-46b7-99f2-24d2ab0dabd9:g1,5,169,55,258,623,109,3921,6589,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-67270427-94d7-46b7-99f2-24d2ab0dabd9:g2,4,169,55,258,623,109,3921,6589,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-86680395-d47b-47cc-ac67-52c737e95e8b:g1,-2,641,528,169,55,1806,109,6590,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
-86680395-d47b-47cc-ac67-52c737e95e8b:g2,5,641,528,169,55,1806,109,6590,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
-86680395-d47b-47cc-ac67-52c737e95e8b:g3,-2,641,528,169,55,1806,109,6590,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
-935c049a-22f8-4d89-854f-a9e61c81a47c:g1,2,1146,599,66,141,3301,1859,6591,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
-935c049a-22f8-4d89-854f-a9e61c81a47c:g2,9,1146,599,66,141,3301,1859,6591,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
-9580931d-d9bf-4988-b7d4-d41cbb8bd19c:g1,11,1284,599,149,1925,3925,3926,6592,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-9580931d-d9bf-4988-b7d4-d41cbb8bd19c:g2,10,1284,599,149,1925,3925,3926,6592,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-9ddf0103-e2e3-4408-84f6-2d89b2829af8:g1,11,761,14,1320,1744,3852,3927,6593,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-9ddf0103-e2e3-4408-84f6-2d89b2829af8:g2,4,761,14,1320,1744,3852,3927,6593,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-ad2795f4-c73f-4428-877d-aaa210893d4a:g1,-3,1304,1111,623,900,3928,3929,6594,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-ad2795f4-c73f-4428-877d-aaa210893d4a:g2,-4,1304,1111,623,900,3928,3929,6594,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-be3a7a42-8627-4ed8-82f7-c78671b2b6d6:g1,5,5,497,1926,1216,3930,3931,6595,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-be3a7a42-8627-4ed8-82f7-c78671b2b6d6:g2,5,5,497,1926,1216,3930,3931,6595,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-dffca970-5262-414f-975a-12eb5f4670ca:g1,-3,249,1175,1146,599,3932,3301,6596,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-dffca970-5262-414f-975a-12eb5f4670ca:g2,-4,249,1175,1146,599,3932,3301,6596,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-ebd37f04-d5fa-44aa-ba36-cae8d19ffadd:g1,-3,172,173,66,141,115,1859,6597,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-ebd37f04-d5fa-44aa-ba36-cae8d19ffadd:g2,4,172,173,66,141,115,1859,6597,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-ebd37f04-d5fa-44aa-ba36-cae8d19ffadd:g3,-5,172,173,66,141,115,1859,6597,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
-f0b0a416-6f62-48cc-885e-ae31349c2ea8:g1,7,47,925,230,1927,3917,3933,6598,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-f0b0a416-6f62-48cc-885e-ae31349c2ea8:g2,7,47,925,230,1927,3917,3933,6598,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-f29eb570-d9e7-4edb-9b25-31d50c77be59:g1,-2,66,141,900,858,1859,3934,6599,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-f29eb570-d9e7-4edb-9b25-31d50c77be59:g2,2,66,141,900,858,1859,3934,6599,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
-f29eb570-d9e7-4edb-9b25-31d50c77be59:g3,8,66,141,900,858,1859,3934,6599,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+00bf7d77-1408-43bd-b6c0-f4fda6184981:g1,7,268,223,761,14,1676,3852,6583,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+00bf7d77-1408-43bd-b6c0-f4fda6184981:g2,7,268,223,761,14,1676,3852,6583,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+1eeb7623-3d2d-42d7-8d03-b1dc453dd651:g1,5,641,528,47,925,1806,3917,6584,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+1eeb7623-3d2d-42d7-8d03-b1dc453dd651:g2,7,641,528,47,925,1806,3917,6584,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+2183ad68-e496-4388-a75a-9da08319a89a:g1,9,47,140,1921,1922,3322,3918,6585,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+2183ad68-e496-4388-a75a-9da08319a89a:g2,11,47,140,1921,1922,3322,3918,6585,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+2e932923-7eb6-496f-a44d-9fa7fd5aed5f:g1,3,98,497,1146,599,3919,3301,6586,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+2e932923-7eb6-496f-a44d-9fa7fd5aed5f:g2,-3,98,497,1146,599,3919,3301,6586,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+2e932923-7eb6-496f-a44d-9fa7fd5aed5f:g3,-9,98,497,1146,599,3919,3301,6586,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+3cdaf98a-7420-4874-be5e-e947fae6ba5c:g1,-10,381,548,258,623,3920,3921,6587,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+3cdaf98a-7420-4874-be5e-e947fae6ba5c:g2,-8,381,548,258,623,3920,3921,6587,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+52b08854-3612-4859-8b79-576f94dedfaf:g1,2,141,71,1923,1924,3922,3923,6588,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+52b08854-3612-4859-8b79-576f94dedfaf:g2,4,141,71,1923,1924,3922,3923,6588,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+5c560866-72b7-467a-b2d2-e5e8e576950b:g1,11,268,223,1925,1926,1676,3924,6589,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+5c560866-72b7-467a-b2d2-e5e8e576950b:g2,10,268,223,1925,1926,1676,3924,6589,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+6722e9de-15a7-4dc8-a48c-742173ab1fce:g1,4,173,1175,925,98,3925,3926,6590,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+6722e9de-15a7-4dc8-a48c-742173ab1fce:g2,-9,173,1175,925,98,3925,3926,6590,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+6722e9de-15a7-4dc8-a48c-742173ab1fce:g3,4,173,1175,925,98,3925,3926,6590,2,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+67270427-94d7-46b7-99f2-24d2ab0dabd9:g1,5,169,55,258,623,109,3921,6591,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+67270427-94d7-46b7-99f2-24d2ab0dabd9:g2,4,169,55,258,623,109,3921,6591,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+77be7268-cd18-4072-93de-0d0d12c8c220:g1,7,268,223,1284,599,1676,3927,6592,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+77be7268-cd18-4072-93de-0d0d12c8c220:g2,-2,268,223,1284,599,1676,3927,6592,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+77be7268-cd18-4072-93de-0d0d12c8c220:g3,8,268,223,1284,599,1676,3927,6592,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+86680395-d47b-47cc-ac67-52c737e95e8b:g1,-2,641,528,169,55,1806,109,6593,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+86680395-d47b-47cc-ac67-52c737e95e8b:g2,5,641,528,169,55,1806,109,6593,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+86680395-d47b-47cc-ac67-52c737e95e8b:g3,-2,641,528,169,55,1806,109,6593,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+935c049a-22f8-4d89-854f-a9e61c81a47c:g1,2,1146,599,66,141,3301,1859,6594,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+935c049a-22f8-4d89-854f-a9e61c81a47c:g2,9,1146,599,66,141,3301,1859,6594,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+9580931d-d9bf-4988-b7d4-d41cbb8bd19c:g1,11,1284,599,149,1927,3927,3928,6595,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+9580931d-d9bf-4988-b7d4-d41cbb8bd19c:g2,10,1284,599,149,1927,3927,3928,6595,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+9ddf0103-e2e3-4408-84f6-2d89b2829af8:g1,11,761,14,1320,1744,3852,3929,6596,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+9ddf0103-e2e3-4408-84f6-2d89b2829af8:g2,4,761,14,1320,1744,3852,3929,6596,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+a7ecb366-1857-4791-9e26-6803e6bb40dd:g1,3,858,1146,258,169,3319,3930,6597,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+a7ecb366-1857-4791-9e26-6803e6bb40dd:g2,7,858,1146,258,169,3319,3930,6597,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+ad2795f4-c73f-4428-877d-aaa210893d4a:g1,-3,1304,1111,623,900,3931,3932,6598,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+ad2795f4-c73f-4428-877d-aaa210893d4a:g2,-4,1304,1111,623,900,3931,3932,6598,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+be3a7a42-8627-4ed8-82f7-c78671b2b6d6:g1,5,5,497,1928,1216,3933,3934,6599,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+be3a7a42-8627-4ed8-82f7-c78671b2b6d6:g2,5,5,497,1928,1216,3933,3934,6599,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+c4b24a76-8006-4551-aed5-6fbeadd2e2ed:g1,6,208,436,623,900,3586,3932,6600,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+c4b24a76-8006-4551-aed5-6fbeadd2e2ed:g2,9,208,436,623,900,3586,3932,6600,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+c94dcecf-8505-4a73-8415-f55286c2c39b:g1,-2,47,140,5,497,3322,3933,6601,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+c94dcecf-8505-4a73-8415-f55286c2c39b:g2,2,47,140,5,497,3322,3933,6601,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+c94dcecf-8505-4a73-8415-f55286c2c39b:g3,4,47,140,5,497,3322,3933,6601,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+cecfb10b-e643-4bbd-8a4c-4b018702a7a2:g1,9,3,528,173,1175,3780,3925,6602,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+cecfb10b-e643-4bbd-8a4c-4b018702a7a2:g2,3,3,528,173,1175,3780,3925,6602,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+d1cd66ce-9660-45d4-b88d-d621e594408e:g1,9,208,436,47,140,3586,3322,6603,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+d1cd66ce-9660-45d4-b88d-d621e594408e:g2,6,208,436,47,140,3586,3322,6603,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Semi-Finals
+ddffa591-7124-462c-8446-99b84cf413bc:g1,-10,141,71,1284,599,3922,3927,6604,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+ddffa591-7124-462c-8446-99b84cf413bc:g2,-6,141,71,1284,599,3922,3927,6604,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+dffca970-5262-414f-975a-12eb5f4670ca:g1,-3,249,1175,1146,599,3935,3301,6605,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+dffca970-5262-414f-975a-12eb5f4670ca:g2,-4,249,1175,1146,599,3935,3301,6605,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+ebd37f04-d5fa-44aa-ba36-cae8d19ffadd:g1,-3,172,173,66,141,115,1859,6606,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+ebd37f04-d5fa-44aa-ba36-cae8d19ffadd:g2,4,172,173,66,141,115,1859,6606,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+ebd37f04-d5fa-44aa-ba36-cae8d19ffadd:g3,-5,172,173,66,141,115,1859,6606,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Quarter Finals
+f0b0a416-6f62-48cc-885e-ae31349c2ea8:g1,7,47,925,230,1929,3917,3936,6607,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+f0b0a416-6f62-48cc-885e-ae31349c2ea8:g2,7,47,925,230,1929,3917,3936,6607,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+f29eb570-d9e7-4edb-9b25-31d50c77be59:g1,-2,66,141,900,858,1859,3937,6608,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+f29eb570-d9e7-4edb-9b25-31d50c77be59:g2,2,66,141,900,858,1859,3937,6608,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+f29eb570-d9e7-4edb-9b25-31d50c77be59:g3,8,66,141,900,858,1859,3937,6608,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-12,Qualifier — Round 16
+0f660439-6723-4abb-89bf-54e3b5fc926a:g1,4,1930,1931,1932,1933,3938,3939,6609,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+0f660439-6723-4abb-89bf-54e3b5fc926a:g2,10,1930,1931,1932,1933,3938,3939,6609,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+18765583-1833-4026-a1de-2e48e90193ec:g1,11,1934,1404,1935,1936,3940,3941,6610,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+18765583-1833-4026-a1de-2e48e90193ec:g2,10,1934,1404,1935,1936,3940,3941,6610,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+353366b5-2bf3-4733-a231-dcabc80585d7:g1,2,1937,1456,218,1693,3942,3943,6611,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+353366b5-2bf3-4733-a231-dcabc80585d7:g2,4,1937,1456,218,1693,3942,3943,6611,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+3d25ee06-c3d6-4778-b3ea-513f2bfc9302:g1,10,1624,1619,1694,1618,3091,3100,6612,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+3d25ee06-c3d6-4778-b3ea-513f2bfc9302:g2,9,1624,1619,1694,1618,3091,3100,6612,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+6508880c-44e9-40f5-b8e2-d1aad17be6e9:g1,8,1938,1616,1939,1628,3944,3945,6613,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+6508880c-44e9-40f5-b8e2-d1aad17be6e9:g2,4,1938,1616,1939,1628,3944,3945,6613,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+c7ed2b25-521d-46af-aff6-4fcbfeee5463:g1,11,849,1459,1940,1941,3946,3947,6614,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+c7ed2b25-521d-46af-aff6-4fcbfeee5463:g2,11,849,1459,1940,1941,3946,3947,6614,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+fb8806a3-ede3-4c44-9328-b4f6bf7929e7:g1,7,1899,1942,1943,1944,3948,3949,6615,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+fb8806a3-ede3-4c44-9328-b4f6bf7929e7:g2,9,1899,1942,1943,1944,3948,3949,6615,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-13,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+050d91b6-ccff-42c8-b1ab-2123b39aaa0a:g1,8,343,95,234,233,3371,159,6616,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+050d91b6-ccff-42c8-b1ab-2123b39aaa0a:g2,-2,343,95,234,233,3371,159,6616,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+050d91b6-ccff-42c8-b1ab-2123b39aaa0a:g3,6,343,95,234,233,3371,159,6616,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+0c084437-a176-4365-9e77-768856dea40c:g1,-10,845,383,382,1331,3950,3951,6617,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+0c084437-a176-4365-9e77-768856dea40c:g2,10,845,383,382,1331,3950,3951,6617,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+0c084437-a176-4365-9e77-768856dea40c:g3,2,845,383,382,1331,3950,3951,6617,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+20ac446d-14a9-4333-82c0-6d1ad7ed6f9f:g1,2,239,548,41,705,3952,3953,6618,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+20ac446d-14a9-4333-82c0-6d1ad7ed6f9f:g2,3,239,548,41,705,3952,3953,6618,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+290cd36f-8977-4d4c-8af3-44692c7090c3:g1,7,426,131,130,193,664,1131,6619,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+290cd36f-8977-4d4c-8af3-44692c7090c3:g2,6,426,131,130,193,664,1131,6619,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+2ab9b54d-0258-40ed-8321-6dfa59ed7280:g1,6,727,445,268,223,2505,1676,6620,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+2ab9b54d-0258-40ed-8321-6dfa59ed7280:g2,-9,727,445,268,223,2505,1676,6620,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+2ab9b54d-0258-40ed-8321-6dfa59ed7280:g3,7,727,445,268,223,2505,1676,6620,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+3455f568-3974-4094-8693-5d89b219318d:g1,-8,415,396,208,436,3954,3586,6621,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+3455f568-3974-4094-8693-5d89b219318d:g2,5,415,396,208,436,3954,3586,6621,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+3455f568-3974-4094-8693-5d89b219318d:g3,4,415,396,208,436,3954,3586,6621,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+36b5f0b7-11c2-4924-914a-bba594822589:g1,-8,447,399,234,230,3073,3955,6622,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+36b5f0b7-11c2-4924-914a-bba594822589:g2,-8,447,399,234,230,3073,3955,6622,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+5f584517-2245-496f-8c9e-b3a1e770c6d1:g1,2,76,201,435,253,3384,3956,6623,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+5f584517-2245-496f-8c9e-b3a1e770c6d1:g2,-2,76,201,435,253,3384,3956,6623,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+5f584517-2245-496f-8c9e-b3a1e770c6d1:g3,6,76,201,435,253,3384,3956,6623,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+64f767e1-c51b-473d-b617-a7b2ac3edcf4:g1,6,409,313,1146,599,3891,3301,6624,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+64f767e1-c51b-473d-b617-a7b2ac3edcf4:g2,-2,409,313,1146,599,3891,3301,6624,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+64f767e1-c51b-473d-b617-a7b2ac3edcf4:g3,8,409,313,1146,599,3891,3301,6624,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+6a1a7380-6fcd-4d0d-85ba-12e148c6218a:g1,-10,367,368,12,701,257,819,6625,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+6a1a7380-6fcd-4d0d-85ba-12e148c6218a:g2,-6,367,368,12,701,257,819,6625,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+6d445866-c21e-4f2c-8f76-cfb66832dc0b:g1,10,423,359,852,109,3957,3958,6626,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+6d445866-c21e-4f2c-8f76-cfb66832dc0b:g2,10,423,359,852,109,3957,3958,6626,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+7ea83e1e-a610-412b-9c06-f4296531c93f:g1,-4,444,404,1344,1402,3959,2567,6627,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+7ea83e1e-a610-412b-9c06-f4296531c93f:g2,-2,444,404,1344,1402,3959,2567,6627,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+85de159b-cf89-454a-b4c1-0f968d65d664:g1,-6,450,1010,702,425,3960,3801,6628,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+85de159b-cf89-454a-b4c1-0f968d65d664:g2,5,450,1010,702,425,3960,3801,6628,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+85de159b-cf89-454a-b4c1-0f968d65d664:g3,10,450,1010,702,425,3960,3801,6628,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+8e7952b1-e226-404a-ace0-6ba9ed26f23c:g1,2,1,27,61,57,3961,3834,6629,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+8e7952b1-e226-404a-ace0-6ba9ed26f23c:g2,7,1,27,61,57,3961,3834,6629,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+907708e8-8681-4913-93ae-1213f02d1cf2:g1,8,1223,986,66,141,3962,1859,6630,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+907708e8-8681-4913-93ae-1213f02d1cf2:g2,9,1223,986,66,141,3962,1859,6630,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+a0f0cd28-efb3-480d-bb18-b0f840ddd345:g1,3,440,852,140,47,3797,3322,6631,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+a0f0cd28-efb3-480d-bb18-b0f840ddd345:g2,-5,440,852,140,47,3797,3322,6631,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+a0f0cd28-efb3-480d-bb18-b0f840ddd345:g3,-5,440,852,140,47,3797,3322,6631,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+a2aa0319-8749-4a47-964b-6f1c493a5431:g1,8,340,209,77,375,3871,3963,6632,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+a2aa0319-8749-4a47-964b-6f1c493a5431:g2,7,340,209,77,375,3871,3963,6632,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+a45b8c95-7aec-45e6-acbc-519caa91fb41:g1,-3,750,443,345,415,3964,3965,6633,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+a45b8c95-7aec-45e6-acbc-519caa91fb41:g2,4,750,443,345,415,3964,3965,6633,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+a45b8c95-7aec-45e6-acbc-519caa91fb41:g3,5,750,443,345,415,3964,3965,6633,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+b32820b7-54d0-4e96-b1ec-7bc7945dfc9d:g1,7,342,385,1111,3,1986,3522,6634,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+b32820b7-54d0-4e96-b1ec-7bc7945dfc9d:g2,7,342,385,1111,3,1986,3522,6634,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+bef7f7ea-0580-4227-8f6f-04fd91910069:g1,7,358,523,365,398,850,834,6635,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+bef7f7ea-0580-4227-8f6f-04fd91910069:g2,4,358,523,365,398,850,834,6635,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+c6fc826d-14e9-4825-a563-dbcb92ecb435:g1,-6,15,28,1284,599,926,3927,6636,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+c6fc826d-14e9-4825-a563-dbcb92ecb435:g2,5,15,28,1284,599,926,3927,6636,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+c6fc826d-14e9-4825-a563-dbcb92ecb435:g3,-4,15,28,1284,599,926,3927,6636,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+cd6da407-c0fc-4b97-877b-eec134e96aa0:g1,3,522,422,401,15,677,568,6637,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+cd6da407-c0fc-4b97-877b-eec134e96aa0:g2,2,522,422,401,15,677,568,6637,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+d0816aab-f949-4fa9-9143-0f110e4ce376:g1,7,372,394,440,108,657,2788,6638,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+d0816aab-f949-4fa9-9143-0f110e4ce376:g2,5,372,394,440,108,657,2788,6638,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+d51ee57e-38a5-4e74-a9be-312afd2e6c0e:g1,9,727,200,59,41,2532,91,6639,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+d51ee57e-38a5-4e74-a9be-312afd2e6c0e:g2,2,727,200,59,41,2532,91,6639,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+d9d191cd-94e8-482c-9b71-63075543b501:g1,5,360,362,169,55,3966,109,6640,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+d9d191cd-94e8-482c-9b71-63075543b501:g2,2,360,362,169,55,3966,109,6640,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+ed3f79be-44a1-42bf-a772-cd4093e38149:g1,-7,240,365,249,426,3571,321,6641,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+ed3f79be-44a1-42bf-a772-cd4093e38149:g2,2,240,365,249,426,3571,321,6641,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+ed3f79be-44a1-42bf-a772-cd4093e38149:g3,-3,240,365,249,426,3571,321,6641,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+f9d40fa7-d1af-4af4-8557-9aa91d3e00cf:g1,10,441,372,640,641,323,662,6642,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+f9d40fa7-d1af-4af4-8557-9aa91d3e00cf:g2,4,441,372,640,641,323,662,6642,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-13,Round 64
+076b6c23-1898-4f06-9717-42cf128d6955:g1,2,1937,1616,1613,1945,3967,3968,6643,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+076b6c23-1898-4f06-9717-42cf128d6955:g2,2,1937,1616,1613,1945,3967,3968,6643,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+0a90c94a-dbeb-423c-8b05-392b1b74b5c9:g1,10,402,384,1946,1947,3969,3970,6644,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+0a90c94a-dbeb-423c-8b05-392b1b74b5c9:g2,10,402,384,1946,1947,3969,3970,6644,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+101de758-3adf-4ac2-8ca7-26a64cf42719:g1,10,1451,355,1948,1949,3971,3972,6645,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+101de758-3adf-4ac2-8ca7-26a64cf42719:g2,5,1451,355,1948,1949,3971,3972,6645,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+1109d764-02d9-40f7-a8e0-16557082e5b2:g1,9,413,438,1950,1933,3973,3974,6646,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+1109d764-02d9-40f7-a8e0-16557082e5b2:g2,11,413,438,1950,1933,3973,3974,6646,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+233ad8f6-ebab-475b-88e9-e67d80803625:g1,10,1686,1383,1938,1616,3093,3944,6647,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+233ad8f6-ebab-475b-88e9-e67d80803625:g2,7,1686,1383,1938,1616,3093,3944,6647,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+27839618-fe11-4f1a-8f8d-01566052aab4:g1,7,142,322,1633,1951,3975,3976,6648,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+27839618-fe11-4f1a-8f8d-01566052aab4:g2,9,142,322,1633,1951,3975,3976,6648,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+301a2e8f-6942-49fc-88d0-ed93c0cd95d8:g1,2,320,337,402,1688,3874,3977,6649,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+301a2e8f-6942-49fc-88d0-ed93c0cd95d8:g2,3,320,337,402,1688,3874,3977,6649,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+36a5db14-7462-4ae8-a64e-a039a45b36d5:g1,5,851,1383,1624,1952,3978,3979,6650,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+36a5db14-7462-4ae8-a64e-a039a45b36d5:g2,7,851,1383,1624,1952,3978,3979,6650,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+3ff7a523-40c0-4d85-899d-f05eac58fa1e:g1,10,442,350,1953,1628,3388,3980,6651,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+3ff7a523-40c0-4d85-899d-f05eac58fa1e:g2,9,442,350,1953,1628,3388,3980,6651,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+58b91bec-5fa4-457e-9744-48e05af6d294:g1,7,413,370,849,1459,3981,3946,6652,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+58b91bec-5fa4-457e-9744-48e05af6d294:g2,10,413,370,849,1459,3981,3946,6652,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+5f3c4962-d4dc-4052-8b17-3cf5404f2ff9:g1,10,1627,1954,1682,1685,3982,3983,6653,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+5f3c4962-d4dc-4052-8b17-3cf5404f2ff9:g2,-10,1627,1954,1682,1685,3982,3983,6653,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+5f3c4962-d4dc-4052-8b17-3cf5404f2ff9:g3,6,1627,1954,1682,1685,3982,3983,6653,0,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+611e555b-84c4-4876-9ace-5d480529141a:g1,11,1895,1894,1952,1458,3742,3984,6654,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+611e555b-84c4-4876-9ace-5d480529141a:g2,6,1895,1894,1952,1458,3742,3984,6654,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+64578b0f-32e3-404d-a2ad-8865c84253ca:g1,9,332,387,1615,1955,2176,3985,6655,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+64578b0f-32e3-404d-a2ad-8865c84253ca:g2,9,332,387,1615,1955,2176,3985,6655,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+67eefd4e-5264-4562-a29f-035145f967a3:g1,-9,1956,851,940,219,3986,3987,6656,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+67eefd4e-5264-4562-a29f-035145f967a3:g2,-7,1956,851,940,219,3986,3987,6656,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+6c199634-7ad0-4f43-b055-b7324a66c129:g1,7,848,537,1451,755,3988,3989,6657,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+6c199634-7ad0-4f43-b055-b7324a66c129:g2,8,848,537,1451,755,3988,3989,6657,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+6cc23621-3e97-41c6-ab7f-93aa5272d1b7:g1,5,1169,1173,1957,1958,1872,3990,6658,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+6cc23621-3e97-41c6-ab7f-93aa5272d1b7:g2,7,1169,1173,1957,1958,1872,3990,6658,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+7b4edb1f-4c26-4fe9-aa08-2c6c38c09a47:g1,11,1224,442,203,1698,1954,3104,6659,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+7b4edb1f-4c26-4fe9-aa08-2c6c38c09a47:g2,2,1224,442,203,1698,1954,3104,6659,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+802dfbc0-522f-4666-affd-270b272bace2:g1,7,218,219,1959,1698,151,3991,6660,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+802dfbc0-522f-4666-affd-270b272bace2:g2,5,218,219,1959,1698,151,3991,6660,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+8895845b-11a4-42ea-89cb-96d8243a62e3:g1,7,438,427,1934,1404,3347,3940,6661,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+8895845b-11a4-42ea-89cb-96d8243a62e3:g2,9,438,427,1934,1404,3347,3940,6661,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+981137b5-4f74-4ad4-a2ef-097570bf463f:g1,5,521,322,1624,1619,3992,3091,6662,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+981137b5-4f74-4ad4-a2ef-097570bf463f:g2,10,521,322,1624,1619,3992,3091,6662,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+9a2c55c0-d076-4468-b8d7-38624481e6cf:g1,10,352,1225,1690,206,3993,3165,6663,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+9a2c55c0-d076-4468-b8d7-38624481e6cf:g2,6,352,1225,1690,206,3993,3165,6663,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+ab0585bf-b3fe-498d-b0a7-1541e4afb387:g1,10,321,332,1930,1931,3350,3938,6664,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+ab0585bf-b3fe-498d-b0a7-1541e4afb387:g2,10,321,332,1930,1931,3350,3938,6664,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+b2d837cb-42ce-4c34-8167-bed7bf0c3b35:g1,6,203,1698,177,178,3104,119,6665,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+b2d837cb-42ce-4c34-8167-bed7bf0c3b35:g2,5,203,1698,177,178,3104,119,6665,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 64
+b5115d6e-8b48-47b8-bbce-781ff44ddaf7:g1,10,206,537,1960,1627,3010,3994,6666,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+b5115d6e-8b48-47b8-bbce-781ff44ddaf7:g2,11,206,537,1960,1627,3010,3994,6666,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+bb70176f-b94c-4b78-8eed-a00bd820e48b:g1,6,849,33,1692,1614,3995,3996,6667,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+bb70176f-b94c-4b78-8eed-a00bd820e48b:g2,10,849,33,1692,1614,3995,3996,6667,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+c0ba1b44-a809-4fbc-865c-e46a8211749b:g1,-4,384,1022,355,356,3997,248,6668,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+c0ba1b44-a809-4fbc-865c-e46a8211749b:g2,-2,384,1022,355,356,3997,248,6668,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+cb8a7f0a-e168-41d6-aece-e0b27cf006c9:g1,11,352,337,1961,1632,3998,3999,6669,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+cb8a7f0a-e168-41d6-aece-e0b27cf006c9:g2,10,352,337,1961,1632,3998,3999,6669,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+d03f79e0-f0d7-4b03-930d-67abe0a2fe70:g1,10,1688,1459,1938,1693,4000,4001,6670,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 32
+d03f79e0-f0d7-4b03-930d-67abe0a2fe70:g2,8,1688,1459,1938,1693,4000,4001,6670,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 32
+d7a4338e-8d26-425d-aecd-0d66791efc86:g1,3,349,350,1899,1942,244,3948,6671,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+d7a4338e-8d26-425d-aecd-0d66791efc86:g2,8,349,350,1899,1942,244,3948,6671,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+d7db46af-aded-4d73-9f4a-4b43ed553c37:g1,7,1615,1955,1962,1963,3985,4002,6672,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 64
+d7db46af-aded-4d73-9f4a-4b43ed553c37:g2,2,1615,1955,1962,1963,3985,4002,6672,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 64
+d828f08c-1693-4e0f-80de-0ebb3352051c:g1,4,1169,939,1937,1456,4003,3942,6673,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+d828f08c-1693-4e0f-80de-0ebb3352051c:g2,7,1169,939,1937,1456,4003,3942,6673,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+e30fa533-23f9-442a-9194-34617654674b:g1,9,1930,1934,1685,1964,4004,4005,6674,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+e30fa533-23f9-442a-9194-34617654674b:g2,4,1930,1934,1685,1964,4004,4005,6674,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+eead7418-7679-46b5-bcda-b4cfa4c71591:g1,11,418,387,1627,1954,4006,3982,6675,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+eead7418-7679-46b5-bcda-b4cfa4c71591:g2,8,418,387,1627,1954,4006,3982,6675,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+f34aa9d3-982d-49b7-bae4-f323faa234cb:g1,7,1965,1966,1612,1967,4007,4008,6676,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+f34aa9d3-982d-49b7-bae4-f323faa234cb:g2,8,1965,1966,1612,1967,4007,4008,6676,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MEN'S DOUBLES - MAIN DRAW — Round 32
+fc697fb3-519d-4191-a944-043830acb2b2:g1,6,1619,755,1968,1969,4009,4010,6677,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 32
+fc697fb3-519d-4191-a944-043830acb2b2:g2,8,1619,755,1968,1969,4009,4010,6677,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 32
+fdad1daa-8dab-424e-af11-caf5b654432c:g1,2,1173,1970,424,33,4011,3445,6678,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+fdad1daa-8dab-424e-af11-caf5b654432c:g2,-3,1173,1970,424,33,4011,3445,6678,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+fdad1daa-8dab-424e-af11-caf5b654432c:g3,5,1173,1970,424,33,4011,3445,6678,0,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-14,PRO MIXED DOUBLES - MAIN DRAW — Round 32
+04f3cf3d-d12b-4cee-9354-8483bf6ca6ac:g1,3,422,193,415,396,4012,3954,6679,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+04f3cf3d-d12b-4cee-9354-8483bf6ca6ac:g2,10,422,193,415,396,4012,3954,6679,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+219ffd2a-f39e-4537-85a0-53e991582f2d:g1,10,209,450,727,445,4013,2505,6680,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+219ffd2a-f39e-4537-85a0-53e991582f2d:g2,4,209,450,727,445,4013,2505,6680,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+22cb229d-2ea6-4afe-a4cb-7402b0fabb92:g1,9,102,317,340,209,469,3871,6681,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+22cb229d-2ea6-4afe-a4cb-7402b0fabb92:g2,2,102,317,340,209,469,3871,6681,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+2f4c39d5-fe85-47ba-a20b-4f6839df2821:g1,10,200,130,401,381,4014,3377,6682,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+2f4c39d5-fe85-47ba-a20b-4f6839df2821:g2,11,200,130,401,381,4014,3377,6682,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+30fd68a3-9ca0-45ce-bb41-57a099c7905d:g1,10,404,57,1284,599,3378,3927,6683,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+30fd68a3-9ca0-45ce-bb41-57a099c7905d:g2,9,404,57,1284,599,3378,3927,6683,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+3c525ab7-a9c9-417a-9b20-7f5bfe3dbd63:g1,2,336,395,426,131,2410,664,6684,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+3c525ab7-a9c9-417a-9b20-7f5bfe3dbd63:g2,5,336,395,426,131,2410,664,6684,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+3ff0a9c8-e850-43c1-b31b-82690ab01c03:g1,7,1,131,858,1146,369,3319,6685,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+3ff0a9c8-e850-43c1-b31b-82690ab01c03:g2,8,1,131,858,1146,369,3319,6685,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+44bbcc3a-581c-4234-87c5-fa982318f461:g1,-5,398,77,583,233,4015,1152,6686,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+44bbcc3a-581c-4234-87c5-fa982318f461:g2,-2,398,77,583,233,4015,1152,6686,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+4fed7170-b536-4d4e-8ebb-53648fe5a836:g1,3,372,394,26,62,657,4016,6687,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+4fed7170-b536-4d4e-8ebb-53648fe5a836:g2,2,372,394,26,62,657,4016,6687,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+54dfed16-a16c-4a56-ab14-c9799353d7a3:g1,2,394,702,253,345,4017,4018,6688,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+54dfed16-a16c-4a56-ab14-c9799353d7a3:g2,8,394,702,253,345,4017,4018,6688,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+551f6b54-7f5d-4b5b-a770-394dafa924df:g1,9,61,76,109,108,4019,54,6689,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+551f6b54-7f5d-4b5b-a770-394dafa924df:g2,4,61,76,109,108,4019,54,6689,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+64279fbc-f972-486a-855d-31ab2edc642a:g1,-3,1344,1402,727,200,2567,2532,6690,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+64279fbc-f972-486a-855d-31ab2edc642a:g2,7,1344,1402,727,200,2567,2532,6690,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+64279fbc-f972-486a-855d-31ab2edc642a:g3,-4,1344,1402,727,200,2567,2532,6690,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+671bffa2-a612-475f-b0c3-3bdbca4056c7:g1,6,435,407,20,324,1496,328,6691,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+671bffa2-a612-475f-b0c3-3bdbca4056c7:g2,6,435,407,20,324,1496,328,6691,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+6c014e9f-713c-4306-83e0-582b7c6aaf84:g1,7,358,312,234,230,3458,3955,6692,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+6c014e9f-713c-4306-83e0-582b7c6aaf84:g2,8,358,312,234,230,3458,3955,6692,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+6d7c7a0c-fc94-482b-a00e-9d9593ba6d94:g1,6,986,411,239,548,2245,3952,6693,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+6d7c7a0c-fc94-482b-a00e-9d9593ba6d94:g2,6,986,411,239,548,2245,3952,6693,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+78b8529f-812f-4740-9191-58b5c2c1b37d:g1,10,368,336,3,528,4020,3780,6694,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+78b8529f-812f-4740-9191-58b5c2c1b37d:g2,6,368,336,3,528,4020,3780,6694,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+84ef5132-f016-4786-bd66-e67a964df393:g1,8,522,422,750,443,677,3964,6695,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+84ef5132-f016-4786-bd66-e67a964df393:g2,7,522,422,750,443,677,3964,6695,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+89c1b7ae-941d-4e30-98d3-55af166d8f47:g1,4,95,425,326,55,440,4021,6696,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+89c1b7ae-941d-4e30-98d3-55af166d8f47:g2,2,95,425,326,55,440,4021,6696,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+9ec401a7-2c7d-4099-ac64-9e8c3d6fd0ae:g1,-8,360,362,343,95,3966,3371,6697,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+9ec401a7-2c7d-4099-ac64-9e8c3d6fd0ae:g2,-8,360,362,343,95,3966,3371,6697,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+aa60ca2a-90f6-492b-8894-c51accc0c24e:g1,2,342,12,249,426,4022,321,6698,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+aa60ca2a-90f6-492b-8894-c51accc0c24e:g2,7,342,12,249,426,4022,321,6698,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+ad4cc722-2685-4978-8e9c-c9228046cb6b:g1,2,382,429,27,26,4023,13,6699,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+ad4cc722-2685-4978-8e9c-c9228046cb6b:g2,-9,382,429,27,26,4023,13,6699,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+ad4cc722-2685-4978-8e9c-c9228046cb6b:g3,-3,382,429,27,26,4023,13,6699,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+afa408bf-2e18-4282-a42a-722cee36bbe2:g1,-4,76,201,450,1010,3384,3960,6700,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+afa408bf-2e18-4282-a42a-722cee36bbe2:g2,-5,76,201,450,1010,3384,3960,6700,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+bbea4bbf-2647-499d-b796-3bd6bd49caf1:g1,-8,1402,423,845,201,4024,4025,6701,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+bbea4bbf-2647-499d-b796-3bd6bd49caf1:g2,-2,1402,423,845,201,4024,4025,6701,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+cbe5eecc-e2aa-401e-a651-1ba41f2b6fdf:g1,2,1223,986,342,385,3962,1986,6702,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+cbe5eecc-e2aa-401e-a651-1ba41f2b6fdf:g2,7,1223,986,342,385,3962,1986,6702,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+d59ca095-9b15-41f3-b4b2-d5263b955d48:g1,7,701,340,750,1010,4026,1946,6703,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+d59ca095-9b15-41f3-b4b2-d5263b955d48:g2,2,701,340,750,1010,4026,1946,6703,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+db6f6e19-4c30-41d4-a0f7-8dd7c8636030:g1,-2,845,383,378,583,3950,4027,6704,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+db6f6e19-4c30-41d4-a0f7-8dd7c8636030:g2,-8,845,383,378,583,3950,4027,6704,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+e0599db5-8211-4538-9fae-9b3fad6367bd:g1,-6,423,359,358,523,3957,850,6705,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+e0599db5-8211-4538-9fae-9b3fad6367bd:g2,8,423,359,358,523,3957,850,6705,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+e0599db5-8211-4538-9fae-9b3fad6367bd:g3,-3,423,359,358,523,3957,850,6705,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+e1a66472-1fa5-46bd-b92f-f89f4bb867b4:g1,-9,409,313,1,27,3891,3961,6706,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+e1a66472-1fa5-46bd-b92f-f89f4bb867b4:g2,-4,409,313,1,27,3891,3961,6706,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+f8fb0e6c-4813-47f7-8459-db24ccca0492:g1,-6,395,367,140,47,4028,3322,6707,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+f8fb0e6c-4813-47f7-8459-db24ccca0492:g2,9,395,367,140,47,4028,3322,6707,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+f8fb0e6c-4813-47f7-8459-db24ccca0492:g3,10,395,367,140,47,4028,3322,6707,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+fe0b0805-586e-4290-b212-a7b162acc04f:g1,7,443,375,441,372,4029,323,6708,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+fe0b0805-586e-4290-b212-a7b162acc04f:g2,-9,443,375,441,372,4029,323,6708,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+fe0b0805-586e-4290-b212-a7b162acc04f:g3,9,443,375,441,372,4029,323,6708,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-14,Round 32
+0ebf262e-edd6-4151-b6f0-8b7643a52cd5:g1,-5,1451,355,206,537,3971,3010,6709,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+0ebf262e-edd6-4151-b6f0-8b7643a52cd5:g2,-6,1451,355,206,537,3971,3010,6709,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+0f9c9b28-ab1c-42c0-b2d6-46988fab7f01:g1,7,939,1956,203,940,4030,4031,6710,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+0f9c9b28-ab1c-42c0-b2d6-46988fab7f01:g2,9,939,1956,203,940,4030,4031,6710,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+0fe1d257-0574-42d6-b33c-18ffd93e559b:g1,6,321,349,1688,1459,346,4000,6711,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+0fe1d257-0574-42d6-b33c-18ffd93e559b:g2,9,321,349,1688,1459,346,4000,6711,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+140d7db5-e3e7-4ebf-a42d-6d86fc3c93f9:g1,8,521,322,940,219,3992,3987,6712,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+140d7db5-e3e7-4ebf-a42d-6d86fc3c93f9:g2,8,521,322,940,219,3992,3987,6712,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+1ad43a32-7d41-4683-81cb-9578fa03565d:g1,3,438,427,320,337,3347,3874,6713,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+1ad43a32-7d41-4683-81cb-9578fa03565d:g2,-8,438,427,320,337,3347,3874,6713,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+1ad43a32-7d41-4683-81cb-9578fa03565d:g3,3,438,427,320,337,3347,3874,6713,0,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+2d141a80-d215-4d20-ab5c-727137bc770d:g1,-2,142,322,1930,1934,3975,4004,6714,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+2d141a80-d215-4d20-ab5c-727137bc770d:g2,6,142,322,1930,1934,3975,4004,6714,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+2d141a80-d215-4d20-ab5c-727137bc770d:g3,2,142,322,1930,1934,3975,4004,6714,1,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+3302d517-2b02-4b20-903b-73dea715eff3:g1,7,1224,418,1931,1954,4032,4033,6715,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+3302d517-2b02-4b20-903b-73dea715eff3:g2,11,1224,418,1931,1954,4032,4033,6715,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+3fcabf9d-63d8-4b72-9545-9e8f7acf80d1:g1,4,1169,939,352,1225,4003,3993,6716,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+3fcabf9d-63d8-4b72-9545-9e8f7acf80d1:g2,-4,1169,939,352,1225,4003,3993,6716,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+3fcabf9d-63d8-4b72-9545-9e8f7acf80d1:g3,-10,1169,939,352,1225,4003,3993,6716,0,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+45ef4089-c5c3-47e3-b7ff-d12934a1244a:g1,4,352,337,849,33,3998,3995,6717,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+45ef4089-c5c3-47e3-b7ff-d12934a1244a:g2,-2,352,337,849,33,3998,3995,6717,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+45ef4089-c5c3-47e3-b7ff-d12934a1244a:g3,6,352,337,849,33,3998,3995,6717,1,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+4610298e-04e5-4138-866f-da86abbd920c:g1,6,1022,1970,1458,1404,4034,4035,6718,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+4610298e-04e5-4138-866f-da86abbd920c:g2,7,1022,1970,1458,1404,4034,4035,6718,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+6375a2e8-56eb-4d65-93f8-eea4a770651c:g1,8,521,1225,1619,755,2328,4009,6719,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+6375a2e8-56eb-4d65-93f8-eea4a770651c:g2,6,521,1225,1619,755,2328,4009,6719,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+6d7c327a-059e-4f14-895d-ce9061bc000d:g1,5,1899,1894,402,384,3754,3969,6720,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+6d7c327a-059e-4f14-895d-ce9061bc000d:g2,3,1899,1894,402,384,3754,3969,6720,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+7930a2fd-a7f5-49cf-8ade-b08849661ccc:g1,-5,1224,442,413,370,1954,3981,6721,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+7930a2fd-a7f5-49cf-8ade-b08849661ccc:g2,4,1224,442,413,370,1954,3981,6721,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+7930a2fd-a7f5-49cf-8ade-b08849661ccc:g3,5,1224,442,413,370,1954,3981,6721,0,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+7a6024e8-a101-4f5e-a810-dc31679b85f8:g1,2,418,387,355,356,4006,248,6722,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+7a6024e8-a101-4f5e-a810-dc31679b85f8:g2,7,418,387,355,356,4006,248,6722,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+7c39c5cf-ffd8-4eec-939c-a6a1ab2c3764:g1,8,442,350,1965,1966,3388,4007,6723,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+7c39c5cf-ffd8-4eec-939c-a6a1ab2c3764:g2,7,442,350,1965,1966,3388,4007,6723,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+8b457ece-7ad0-44e7-b635-25b28458fdc2:g1,10,332,387,1937,1616,2176,3967,6724,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+8b457ece-7ad0-44e7-b635-25b28458fdc2:g2,10,332,387,1937,1616,2176,3967,6724,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+99d5d4c4-a65e-4c3e-9279-ac703c37d291:g1,9,320,370,356,1686,3811,4036,6725,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+99d5d4c4-a65e-4c3e-9279-ac703c37d291:g2,9,320,370,356,1686,3811,4036,6725,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+9c41add5-0973-45a7-a79c-efb39e53ae89:g1,-4,178,427,1690,1456,4037,4038,6726,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+9c41add5-0973-45a7-a79c-efb39e53ae89:g2,6,178,427,1690,1456,4037,4038,6726,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+9c41add5-0973-45a7-a79c-efb39e53ae89:g3,3,178,427,1690,1456,4037,4038,6726,2,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+9e2bcda7-8660-4b5f-a6fc-ac86781f7619:g1,7,349,350,1895,1894,244,3742,6727,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+9e2bcda7-8660-4b5f-a6fc-ac86781f7619:g2,10,349,350,1895,1894,244,3742,6727,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+b6896703-ee51-47ef-889e-0347dadb299f:g1,-4,1169,1173,851,1383,1872,3978,6728,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+b6896703-ee51-47ef-889e-0347dadb299f:g2,-7,1169,1173,851,1383,1872,3978,6728,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+bca34278-d835-4c40-b981-3f73b995aaa4:g1,10,413,438,218,219,3973,151,6729,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+bca34278-d835-4c40-b981-3f73b995aaa4:g2,8,413,438,218,219,3973,151,6729,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MEN'S DOUBLES - MAIN DRAW — Round 16
+c3e1783c-7ff0-4ebf-ac14-bd586e3720a4:g1,2,1686,1383,848,537,3093,3988,6730,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+c3e1783c-7ff0-4ebf-ac14-bd586e3720a4:g2,-3,1686,1383,848,537,3093,3988,6730,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+c3e1783c-7ff0-4ebf-ac14-bd586e3720a4:g3,-2,1686,1383,848,537,3093,3988,6730,0,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+c5570028-6781-4565-a713-ae7dd1b3c16f:g1,9,321,332,1173,1970,3350,4011,6731,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+c5570028-6781-4565-a713-ae7dd1b3c16f:g2,6,321,332,1173,1970,3350,4011,6731,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO MIXED DOUBLES - MAIN DRAW — Round 16
+da9da8b9-6469-4695-8c7d-79a2cdd45c9a:g1,10,848,1895,424,1942,3781,4039,6732,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+da9da8b9-6469-4695-8c7d-79a2cdd45c9a:g2,2,848,1895,424,1942,3781,4039,6732,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-15,PRO WOMEN'S DOUBLES - MAIN DRAW — Round 16
+0eff1b76-9dd8-4c3b-b089-080b40c8f29c:g1,9,376,62,200,130,4040,4014,6733,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+0eff1b76-9dd8-4c3b-b089-080b40c8f29c:g2,3,376,62,200,130,4040,4014,6733,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+20520fef-f406-4888-af0c-dc109d638711:g1,-2,360,317,27,26,4041,13,6734,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+20520fef-f406-4888-af0c-dc109d638711:g2,-6,360,317,27,26,4041,13,6734,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+4780f36d-bcb3-43fd-a4f2-854ea3354e07:g1,-7,986,411,404,57,2245,3378,6735,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+4780f36d-bcb3-43fd-a4f2-854ea3354e07:g2,5,986,411,404,57,2245,3378,6735,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+4780f36d-bcb3-43fd-a4f2-854ea3354e07:g3,-9,986,411,404,57,2245,3378,6735,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+4d545a0f-732f-4faf-a377-eb19ee917835:g1,6,336,395,378,583,2410,4027,6736,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+4d545a0f-732f-4faf-a377-eb19ee917835:g2,10,336,395,378,583,2410,4027,6736,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+50c48fb6-7b45-4f0d-8bb4-c0011618878f:g1,9,362,354,583,233,2453,1152,6737,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+50c48fb6-7b45-4f0d-8bb4-c0011618878f:g2,-10,362,354,583,233,2453,1152,6737,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+50c48fb6-7b45-4f0d-8bb4-c0011618878f:g3,4,362,354,583,233,2453,1152,6737,2,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+730e7b57-dc46-4cab-a36a-d35322ae4c3d:g1,-5,359,343,1,131,2022,369,6738,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+730e7b57-dc46-4cab-a36a-d35322ae4c3d:g2,4,359,343,1,131,2022,369,6738,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+730e7b57-dc46-4cab-a36a-d35322ae4c3d:g3,3,359,343,1,131,2022,369,6738,2,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+784e9ded-6fc9-4aa3-94f1-8e61b98ec814:g1,7,331,361,727,200,3381,2532,6739,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+784e9ded-6fc9-4aa3-94f1-8e61b98ec814:g2,3,331,361,727,200,3381,2532,6739,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+84a237c6-be9a-4e4b-80ec-014e3e021614:g1,-2,377,361,845,201,3916,4025,6740,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+84a237c6-be9a-4e4b-80ec-014e3e021614:g2,4,377,361,845,201,3916,4025,6740,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+84a237c6-be9a-4e4b-80ec-014e3e021614:g3,7,377,361,845,201,3916,4025,6740,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+91f1c605-a9a4-426f-a616-3feaa7c21820:g1,3,444,383,61,76,3809,4019,6741,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+91f1c605-a9a4-426f-a616-3feaa7c21820:g2,2,444,383,61,76,3809,4019,6741,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+959028fe-aac6-4b2f-a141-05946b4eea17:g1,6,430,353,450,1010,4042,3960,6742,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+959028fe-aac6-4b2f-a141-05946b4eea17:g2,11,430,353,450,1010,4042,3960,6742,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+97ea1c1c-b44e-4513-8a9b-ad9c1bdbcd40:g1,10,102,522,701,340,4043,4026,6743,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+97ea1c1c-b44e-4513-8a9b-ad9c1bdbcd40:g2,5,102,522,701,340,4043,4026,6743,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+98131271-4083-4c10-bcab-987120f6fecd:g1,-5,102,317,343,95,469,3371,6744,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+98131271-4083-4c10-bcab-987120f6fecd:g2,8,102,317,343,95,469,3371,6744,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+98131271-4083-4c10-bcab-987120f6fecd:g3,3,102,317,343,95,469,3371,6744,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+a77bc746-ef4e-4155-8b90-c82a184be69b:g1,3,313,1223,368,336,3400,4020,6745,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+a77bc746-ef4e-4155-8b90-c82a184be69b:g2,-7,313,1223,368,336,3400,4020,6745,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+a77bc746-ef4e-4155-8b90-c82a184be69b:g3,2,313,1223,368,336,3400,4020,6745,2,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+b815b8f5-5df1-4c07-ace6-04fd66891090:g1,4,358,312,443,375,3458,4029,6746,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+b815b8f5-5df1-4c07-ace6-04fd66891090:g2,9,358,312,443,375,3458,4029,6746,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+b9583fd6-7b89-491d-b6c6-73524c1bfb69:g1,-5,1,27,1223,986,3961,3962,6747,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+b9583fd6-7b89-491d-b6c6-73524c1bfb69:g2,-10,1,27,1223,986,3961,3962,6747,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+be48e417-47f5-434e-8369-957b612b1e78:g1,6,449,354,522,422,4044,677,6748,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+be48e417-47f5-434e-8369-957b612b1e78:g2,8,449,354,522,422,4044,677,6748,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+bf33c3cc-f780-4cce-a9cb-8d219bbe02d4:g1,11,331,1344,385,523,3397,4045,6749,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+bf33c3cc-f780-4cce-a9cb-8d219bbe02d4:g2,10,331,1344,385,523,3397,4045,6749,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+c67579db-2dd3-477e-ae7f-c912d60cf51f:g1,10,353,378,95,425,3828,440,6750,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+c67579db-2dd3-477e-ae7f-c912d60cf51f:g2,3,353,378,95,425,3828,440,6750,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+c9b8bbf5-56fc-4b2b-b5a4-e33abca4ee96:g1,-2,376,377,372,394,262,657,6751,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+c9b8bbf5-56fc-4b2b-b5a4-e33abca4ee96:g2,5,376,377,372,394,262,657,6751,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+c9b8bbf5-56fc-4b2b-b5a4-e33abca4ee96:g3,2,376,377,372,394,262,657,6751,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+cefd2a48-f907-4052-ad20-e3975764d49d:g1,-4,12,701,358,523,819,850,6752,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+cefd2a48-f907-4052-ad20-e3975764d49d:g2,-10,12,701,358,523,819,850,6752,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+d625ca72-216e-4967-a42b-83821054f450:g1,8,449,409,435,407,3911,1496,6753,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+d625ca72-216e-4967-a42b-83821054f450:g2,10,449,409,435,407,3911,1496,6753,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+e2beed9b-4a33-4252-b078-c8ef4692ac52:g1,9,430,437,394,702,3403,4017,6754,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+e2beed9b-4a33-4252-b078-c8ef4692ac52:g2,7,430,437,394,702,3403,4017,6754,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+e346d4aa-905f-4da3-9159-f961cd571d89:g1,6,395,367,422,193,4028,4012,6755,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+e346d4aa-905f-4da3-9159-f961cd571d89:g2,-11,395,367,422,193,4028,4012,6755,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+e346d4aa-905f-4da3-9159-f961cd571d89:g3,-7,395,367,422,193,4028,4012,6755,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+f3b6bf6d-e1b4-40d0-8438-db3b2a41af58:g1,-5,342,12,209,450,4022,4013,6756,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+f3b6bf6d-e1b4-40d0-8438-db3b2a41af58:g2,-5,342,12,209,450,4022,4013,6756,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-15,Round 16
+12f6e403-f04d-4539-8e6a-7d707abaa340:g1,7,332,387,206,537,2176,3010,6757,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MEN'S DOUBLES - MAIN DRAW — Quarter Finals
+12f6e403-f04d-4539-8e6a-7d707abaa340:g2,10,332,387,206,537,2176,3010,6757,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MEN'S DOUBLES - MAIN DRAW — Quarter Finals
+239ded40-68aa-4d52-8711-4a6c1411e59c:g1,2,442,350,352,337,3388,3998,6758,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MEN'S DOUBLES - MAIN DRAW — Quarter Finals
+239ded40-68aa-4d52-8711-4a6c1411e59c:g2,7,442,350,352,337,3388,3998,6758,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MEN'S DOUBLES - MAIN DRAW — Quarter Finals
+38da9497-8b4d-46b4-8fc1-c493b3206a91:g1,-6,939,1956,178,427,4030,4037,6759,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO WOMEN'S DOUBLES - MAIN DRAW — Quarter Finals
+38da9497-8b4d-46b4-8fc1-c493b3206a91:g2,-6,939,1956,178,427,4030,4037,6759,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO WOMEN'S DOUBLES - MAIN DRAW — Quarter Finals
+4606174a-7ddd-45c7-9e0c-6cbf7008e79a:g1,-5,142,322,851,1383,3975,3978,6760,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MEN'S DOUBLES - MAIN DRAW — Quarter Finals
+4606174a-7ddd-45c7-9e0c-6cbf7008e79a:g2,-4,142,322,851,1383,3975,3978,6760,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MEN'S DOUBLES - MAIN DRAW — Quarter Finals
+613b81e3-5bd4-4399-941c-f5903269f749:g1,10,321,349,320,370,346,3811,6761,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO WOMEN'S DOUBLES - MAIN DRAW — Quarter Finals
+613b81e3-5bd4-4399-941c-f5903269f749:g2,7,321,349,320,370,346,3811,6761,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO WOMEN'S DOUBLES - MAIN DRAW — Quarter Finals
+6474f419-c608-4478-a094-94a0b21e536e:g1,3,413,438,1899,1894,3973,3754,6762,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MEN'S DOUBLES - MAIN DRAW — Quarter Finals
+6474f419-c608-4478-a094-94a0b21e536e:g2,9,413,438,1899,1894,3973,3754,6762,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MEN'S DOUBLES - MAIN DRAW — Quarter Finals
+70ac76e4-aea6-4802-a313-e97a7f78202d:g1,10,521,322,848,537,3992,3988,6763,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MIXED DOUBLES - MAIN DRAW — Quarter Finals
+70ac76e4-aea6-4802-a313-e97a7f78202d:g2,8,521,322,848,537,3992,3988,6763,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MIXED DOUBLES - MAIN DRAW — Quarter Finals
+913f3ae9-340b-40f0-a561-3a0eb4ba7f0f:g1,7,349,350,1224,442,244,1954,6764,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MIXED DOUBLES - MAIN DRAW — Quarter Finals
+913f3ae9-340b-40f0-a561-3a0eb4ba7f0f:g2,8,349,350,1224,442,244,1954,6764,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MIXED DOUBLES - MAIN DRAW — Quarter Finals
+9dbbda87-e554-4f6b-8fe5-dee4b3426493:g1,8,321,332,438,427,3350,3347,6765,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MIXED DOUBLES - MAIN DRAW — Quarter Finals
+9dbbda87-e554-4f6b-8fe5-dee4b3426493:g2,6,321,332,438,427,3350,3347,6765,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MIXED DOUBLES - MAIN DRAW — Quarter Finals
+b589c20e-058e-42a6-a5a4-1bf31196c4ca:g1,9,1224,418,848,1895,4032,3781,6766,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO WOMEN'S DOUBLES - MAIN DRAW — Quarter Finals
+b589c20e-058e-42a6-a5a4-1bf31196c4ca:g2,9,1224,418,848,1895,4032,3781,6766,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO WOMEN'S DOUBLES - MAIN DRAW — Quarter Finals
+c2b9ec1f-14d2-4e80-a47e-e08803bc8dda:g1,8,521,1225,1022,1970,2328,4034,6767,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO WOMEN'S DOUBLES - MAIN DRAW — Quarter Finals
+c2b9ec1f-14d2-4e80-a47e-e08803bc8dda:g2,8,521,1225,1022,1970,2328,4034,6767,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO WOMEN'S DOUBLES - MAIN DRAW — Quarter Finals
+cb03e422-ca93-4b83-801f-a5ca0775cedc:g1,11,418,387,352,1225,4006,3993,6768,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MIXED DOUBLES - MAIN DRAW — Quarter Finals
+cb03e422-ca93-4b83-801f-a5ca0775cedc:g2,-5,418,387,352,1225,4006,3993,6768,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MIXED DOUBLES - MAIN DRAW — Quarter Finals
+cb03e422-ca93-4b83-801f-a5ca0775cedc:g3,9,418,387,352,1225,4006,3993,6768,0,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-16,PRO MIXED DOUBLES - MAIN DRAW — Quarter Finals
+2acc4423-187a-4c7b-9da6-acdccde72d6e:g1,11,430,353,358,523,4042,850,6769,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+2acc4423-187a-4c7b-9da6-acdccde72d6e:g2,11,430,353,358,523,4042,850,6769,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+46da4c0b-f2ec-4356-ac7f-1c14a8f617bc:g1,7,449,409,422,193,3911,4012,6770,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+46da4c0b-f2ec-4356-ac7f-1c14a8f617bc:g2,7,449,409,422,193,3911,4012,6770,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+790b4d13-5a25-4476-ab7f-b101ed10722b:g1,5,331,361,336,395,3381,2410,6771,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+790b4d13-5a25-4476-ab7f-b101ed10722b:g2,3,331,361,336,395,3381,2410,6771,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+86a115c3-9f8c-4c01-9396-cee7ca7c8987:g1,7,449,354,102,317,4044,469,6772,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+86a115c3-9f8c-4c01-9396-cee7ca7c8987:g2,-3,449,354,102,317,4044,469,6772,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+86a115c3-9f8c-4c01-9396-cee7ca7c8987:g3,2,449,354,102,317,4044,469,6772,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+a0a0e812-85aa-4df2-ad36-affe95fb6e6e:g1,-4,27,26,209,450,13,4013,6773,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+a0a0e812-85aa-4df2-ad36-affe95fb6e6e:g2,-6,27,26,209,450,13,4013,6773,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+f390c97a-3b8d-465e-8949-c0cdde8841b8:g1,-4,376,62,102,522,4040,4043,6774,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+f390c97a-3b8d-465e-8949-c0cdde8841b8:g2,6,376,62,102,522,4040,4043,6774,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+f390c97a-3b8d-465e-8949-c0cdde8841b8:g3,-5,376,62,102,522,4040,4043,6774,2,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+f62dff23-73ba-450b-8ee5-ab78d033aca4:g1,8,376,377,1223,986,262,3962,6775,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+f62dff23-73ba-450b-8ee5-ab78d033aca4:g2,-5,376,377,1223,986,262,3962,6775,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+f62dff23-73ba-450b-8ee5-ab78d033aca4:g3,-6,376,377,1223,986,262,3962,6775,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+fefab954-6ccb-451e-a028-0c89f424bdba:g1,11,331,1344,359,343,3397,2022,6776,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+fefab954-6ccb-451e-a028-0c89f424bdba:g2,6,331,1344,359,343,3397,2022,6776,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-16,Quarter Finals
+41a4ee90-64ed-4080-80a1-89412e645dca:g1,-3,418,387,521,322,4006,3992,6777,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MIXED DOUBLES - MAIN DRAW — Semi-Finals
+41a4ee90-64ed-4080-80a1-89412e645dca:g2,-2,418,387,521,322,4006,3992,6777,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MIXED DOUBLES - MAIN DRAW — Semi-Finals
+5d7f8d9f-7d51-464f-b8b8-3298b97c220f:g1,3,521,1225,1224,418,2328,4032,6778,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO WOMEN'S DOUBLES - MAIN DRAW — Semi-Finals
+5d7f8d9f-7d51-464f-b8b8-3298b97c220f:g2,4,521,1225,1224,418,2328,4032,6778,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO WOMEN'S DOUBLES - MAIN DRAW — Semi-Finals
+61bdf293-195d-456d-908d-e697f06ba569:g1,-4,349,350,321,332,244,3350,6779,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MIXED DOUBLES - MAIN DRAW — Semi-Finals
+61bdf293-195d-456d-908d-e697f06ba569:g2,-5,349,350,321,332,244,3350,6779,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MIXED DOUBLES - MAIN DRAW — Semi-Finals
+66c70ca9-49e7-402d-9fba-b61a0b7485c3:g1,5,321,349,178,427,346,4037,6780,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO WOMEN'S DOUBLES - MAIN DRAW — Semi-Finals
+66c70ca9-49e7-402d-9fba-b61a0b7485c3:g2,9,321,349,178,427,346,4037,6780,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO WOMEN'S DOUBLES - MAIN DRAW — Semi-Finals
+c2fb033c-3734-4e7c-916f-8206949cfcc0:g1,7,442,350,851,1383,3388,3978,6781,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MEN'S DOUBLES - MAIN DRAW — Semi-Finals
+c2fb033c-3734-4e7c-916f-8206949cfcc0:g2,6,442,350,851,1383,3388,3978,6781,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MEN'S DOUBLES - MAIN DRAW — Semi-Finals
+d5b95481-76b4-41dd-9e4e-85ef61385a13:g1,6,332,387,413,438,2176,3973,6782,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MEN'S DOUBLES - MAIN DRAW — Semi-Finals
+d5b95481-76b4-41dd-9e4e-85ef61385a13:g2,2,332,387,413,438,2176,3973,6782,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MEN'S DOUBLES - MAIN DRAW — Semi-Finals
+e4c666b5-2420-4452-a4dd-9a6b5940a20e:g1,-4,321,332,521,322,3350,3992,6783,0,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MIXED DOUBLES - MAIN DRAW — Finals
+e4c666b5-2420-4452-a4dd-9a6b5940a20e:g2,5,321,332,521,322,3350,3992,6783,0,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MIXED DOUBLES - MAIN DRAW — Finals
+e4c666b5-2420-4452-a4dd-9a6b5940a20e:g3,4,321,332,521,322,3350,3992,6783,0,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-17,PRO MIXED DOUBLES - MAIN DRAW — Finals
+7b940ec1-60ac-43b0-a22d-e0dafd81a4f1:g1,9,353,378,358,312,3828,3458,6784,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-17,Quarter Finals
+7b940ec1-60ac-43b0-a22d-e0dafd81a4f1:g2,-5,353,378,358,312,3828,3458,6784,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-17,Quarter Finals
+7b940ec1-60ac-43b0-a22d-e0dafd81a4f1:g3,-5,353,378,358,312,3828,3458,6784,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-17,Quarter Finals
+81eaa154-91db-4ee8-b24c-8445cfddd5ee:g1,-4,430,437,313,1223,3403,3400,6785,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-17,Quarter Finals
+81eaa154-91db-4ee8-b24c-8445cfddd5ee:g2,-5,430,437,313,1223,3403,3400,6785,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-17,Quarter Finals
+9c4341d7-b83e-4a9f-9137-198e924cc635:g1,8,362,354,444,383,2453,3809,6786,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-17,Quarter Finals
+9c4341d7-b83e-4a9f-9137-198e924cc635:g2,3,362,354,444,383,2453,3809,6786,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-17,Quarter Finals
+ee2be6f9-223b-4eab-9fe6-4e773fc53f4d:g1,7,377,361,404,57,3916,3378,6787,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-17,Quarter Finals
+ee2be6f9-223b-4eab-9fe6-4e773fc53f4d:g2,9,377,361,404,57,3916,3378,6787,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-17,Quarter Finals
+38a40328-13e0-49db-b7a4-25e0d1d9a722:g1,6,321,349,521,1225,346,2328,6788,2,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-18,PRO WOMEN'S DOUBLES - MAIN DRAW — Finals
+38a40328-13e0-49db-b7a4-25e0d1d9a722:g2,5,321,349,521,1225,346,2328,6788,2,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-18,PRO WOMEN'S DOUBLES - MAIN DRAW — Finals
+65db6020-c57e-47a7-a84d-3ee155395994:g1,-8,332,387,442,350,2176,3388,6789,1,1,3,1,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-18,PRO MEN'S DOUBLES - MAIN DRAW — Finals
+65db6020-c57e-47a7-a84d-3ee155395994:g2,5,332,387,442,350,2176,3388,6789,1,1,3,2,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-18,PRO MEN'S DOUBLES - MAIN DRAW — Finals
+65db6020-c57e-47a7-a84d-3ee155395994:g3,4,332,387,442,350,2176,3388,6789,1,1,3,3,2026 WALKER Australia Pickleball Cup (PPA1500),2026-10-18,PRO MEN'S DOUBLES - MAIN DRAW — Finals
+06cb42c8-7dd1-44a6-b638-5d0399044be8:g1,-2,1223,986,331,361,3962,3381,6790,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+06cb42c8-7dd1-44a6-b638-5d0399044be8:g2,7,1223,986,331,361,3962,3381,6790,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+06cb42c8-7dd1-44a6-b638-5d0399044be8:g3,-3,1223,986,331,361,3962,3381,6790,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+42864078-9e2f-4768-bf8e-c8907efedfce:g1,-5,449,409,209,450,3911,4013,6791,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+42864078-9e2f-4768-bf8e-c8907efedfce:g2,-4,449,409,209,450,3911,4013,6791,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+53bcd57c-42de-4157-9ec3-6d5bd7d945a6:g1,2,313,1223,362,354,3400,2453,6792,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+53bcd57c-42de-4157-9ec3-6d5bd7d945a6:g2,6,313,1223,362,354,3400,2453,6792,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+547e47c6-deaa-4679-90b3-94389a22ba98:g1,-2,358,312,377,361,3458,3916,6793,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+547e47c6-deaa-4679-90b3-94389a22ba98:g2,-5,358,312,377,361,3458,3916,6793,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+9a275cdb-2420-4a60-9ec7-c2537f4a1b82:g1,-7,377,361,209,450,3916,4013,6794,1,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Finals
+9a275cdb-2420-4a60-9ec7-c2537f4a1b82:g2,7,377,361,209,450,3916,4013,6794,1,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Finals
+9a275cdb-2420-4a60-9ec7-c2537f4a1b82:g3,-7,377,361,209,450,3916,4013,6794,1,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Finals
+b3175f96-dcee-4468-aa36-79413cc538c0:g1,2,331,361,430,353,3381,4042,6795,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Finals
+b3175f96-dcee-4468-aa36-79413cc538c0:g2,-7,331,361,430,353,3381,4042,6795,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Finals
+b3175f96-dcee-4468-aa36-79413cc538c0:g3,-2,331,361,430,353,3381,4042,6795,0,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Finals
+c247f6d7-eff6-42af-bdc7-73c697dac097:g1,3,331,1344,313,1223,3397,3400,6796,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Finals
+c247f6d7-eff6-42af-bdc7-73c697dac097:g2,5,331,1344,313,1223,3397,3400,6796,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Finals
+c8514cc7-b385-4535-9121-355eef84de08:g1,-2,331,1344,102,522,3397,4043,6797,2,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+c8514cc7-b385-4535-9121-355eef84de08:g2,2,331,1344,102,522,3397,4043,6797,2,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+c8514cc7-b385-4535-9121-355eef84de08:g3,2,331,1344,102,522,3397,4043,6797,2,1,3,3,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+d2c1693f-3ae2-4248-b99c-7e52a0c406d4:g1,-7,449,354,430,353,4044,4042,6798,0,1,3,1,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
+d2c1693f-3ae2-4248-b99c-7e52a0c406d4:g2,-5,449,354,430,353,4044,4042,6798,0,1,3,2,PPA Tour: Mojo Energy Pouches Virginia Beach Open,2026-10-18,Semi-Finals
