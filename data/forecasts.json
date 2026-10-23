@@ -1,5 +1,114 @@
 {
- "generated": "2026-10-22",
+ "generated": "2026-10-23",
  "note": "Lineups: official when published, else each team's best lineup from its season roster (last-matchup fallback); DreamBreaker from the singles model; calibrated probabilities.",
- "forecasts": []
+ "forecasts": [
+  {
+   "date": "2026-10-30",
+   "start": "2026-10-30T15:00:00Z",
+   "event": "Nations Cup",
+   "team1": "Asia International",
+   "team2": "Australia",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-30",
+   "start": "2026-10-30T16:30:00Z",
+   "event": "Nations Cup",
+   "team1": "Latin America",
+   "team2": "Europe East",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-30",
+   "start": "2026-10-30T18:00:00Z",
+   "event": "Nations Cup",
+   "team1": "Asia Domestic",
+   "team2": "Europe West",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-30",
+   "start": "2026-10-30T19:30:00Z",
+   "event": "Nations Cup",
+   "team1": "USA",
+   "team2": "Canada",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-30",
+   "start": "2026-10-30T21:00:00Z",
+   "event": "Nations Cup",
+   "team1": "Europe East",
+   "team2": "Australia",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-30",
+   "start": "2026-10-30T22:30:00Z",
+   "event": "Nations Cup",
+   "team1": "Canada",
+   "team2": "Asia Domestic",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  }
+ ]
 }
