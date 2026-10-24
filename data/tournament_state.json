@@ -1,12 +1,11 @@
 {
- "generated": "2026-10-23",
+ "generated": "2026-10-24",
  "mlp": null,
  "ppa": [
   {
    "tournament": "PPA Tour: Mojo Energy Pouches Virginia Beach Open",
    "id": "429c7980-e1b9-4800-805f-dfb160781cd9",
    "dates": [
-    "2026-10-17",
     "2026-10-18"
    ],
    "divisions": [
@@ -186,90 +185,6 @@
     {
      "title": "Mixed Doubles Pro Main Draw",
      "matches": [
-      {
-       "round": 5,
-       "round_text": "Semi-Finals",
-       "match_no": 45,
-       "seed1": 10,
-       "seed2": 4,
-       "best_of": 3,
-       "p1": [
-        "55ed7e0a-ff2d-4ac2-aad6-b6772ef4f448",
-        "a000a067-1bf1-442f-a961-e6c97cb50006"
-       ],
-       "p2": [
-        "9b97206b-783a-4fab-85e9-45a6240325a5",
-        "05b194b3-db88-4f77-a26f-5ef5cfbf6146"
-       ],
-       "n1": [
-        "Layne Sleeth",
-        "Nicolas Acevedo"
-       ],
-       "n2": [
-        "Catherine Parenteau",
-        "Riley Newman"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         9,
-         11,
-         8,
-         0,
-         0
-        ],
-        [
-         11,
-         4,
-         11,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 5,
-       "round_text": "Semi-Finals",
-       "match_no": 46,
-       "seed1": 1,
-       "seed2": 3,
-       "best_of": 3,
-       "p1": [
-        "581183e8-3d9e-459e-b69f-7337d8b6f3d2",
-        "8f521dcc-1cb5-4c8d-933c-af6b267bd395"
-       ],
-       "p2": [
-        "3af01041-5679-400a-87b8-12c01db8cec4",
-        "52690a0c-ed4a-4e0b-bf69-4ef416cf7d55"
-       ],
-       "n1": [
-        "Andrei Daescu",
-        "Meghan Dizon"
-       ],
-       "n2": [
-        "Kate Fahey",
-        "Eric Oncins"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         4,
-         6,
-         0,
-         0,
-         0
-        ],
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
       {
        "round": 6,
        "round_text": "Finals",
@@ -535,97 +450,12 @@
    "tournament": "2026 WALKER Australia Pickleball Cup (PPA1500)",
    "id": "7d0583f0-2e25-4042-b369-07f8e21e8508",
    "dates": [
-    "2026-10-17",
     "2026-10-18"
    ],
    "divisions": [
     {
      "title": "PRO MEN'S DOUBLES - MAIN DRAW",
      "matches": [
-      {
-       "round": 5,
-       "round_text": "Semi-Finals",
-       "match_no": 30,
-       "seed1": 1,
-       "seed2": 4,
-       "best_of": 3,
-       "p1": [
-        "d50310a6-9378-4228-823f-7fb54f7bd698",
-        "fc05556e-3e38-4a38-99c2-f855174a7c28"
-       ],
-       "p2": [
-        "ff38654d-daae-4bad-a1a7-690e4e5706eb",
-        "1de884f8-7bf7-4b49-9de8-3f1fd74cabd6"
-       ],
-       "n1": [
-        "Gabriel Tardio",
-        "Hayden Patriquin"
-       ],
-       "n2": [
-        "Connor Garnett",
-        "Dylan Frazier"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         5,
-         9,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 5,
-       "round_text": "Semi-Finals",
-       "match_no": 31,
-       "seed1": 2,
-       "seed2": 11,
-       "best_of": 3,
-       "p1": [
-        "4af4d4d1-9f87-4dc7-95f2-b10751d44c15",
-        "bd061b42-2f82-4bbe-82be-d8bcfb37f9e1"
-       ],
-       "p2": [
-        "698c5236-e88f-411c-b44f-e54f16b2d6b5",
-        "a51b59c5-1a13-4472-821a-eb9866e72adf"
-       ],
-       "n1": [
-        "Tama Shimabukuro",
-        "JW Johnson"
-       ],
-       "n2": [
-        "George Wall",
-        "Joey Wild"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         4,
-         5,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
       {
        "round": 6,
        "round_text": "Finals",
@@ -667,138 +497,12 @@
          0
         ]
        ]
-      },
-      {
-       "round": 7,
-       "round_text": "Bronze",
-       "match_no": 32,
-       "seed1": 4,
-       "seed2": 11,
-       "best_of": 3,
-       "p1": [
-        "ff38654d-daae-4bad-a1a7-690e4e5706eb",
-        "1de884f8-7bf7-4b49-9de8-3f1fd74cabd6"
-       ],
-       "p2": [
-        "698c5236-e88f-411c-b44f-e54f16b2d6b5",
-        "a51b59c5-1a13-4472-821a-eb9866e72adf"
-       ],
-       "n1": [
-        "Connor Garnett",
-        "Dylan Frazier"
-       ],
-       "n2": [
-        "George Wall",
-        "Joey Wild"
-       ],
-       "winner": 0,
-       "completed_type": 6,
-       "scores": [
-        [
-         0,
-         0,
-         0,
-         0,
-         0
-        ],
-        [
-         0,
-         0,
-         0,
-         0,
-         0
-        ]
-       ]
       }
      ]
     },
     {
      "title": "PRO MIXED DOUBLES - MAIN DRAW",
      "matches": [
-      {
-       "round": 5,
-       "round_text": "Semi-Finals",
-       "match_no": 38,
-       "seed1": 1,
-       "seed2": 3,
-       "best_of": 3,
-       "p1": [
-        "b51ea0fb-c243-4427-85f8-b798febb51ff",
-        "bd061b42-2f82-4bbe-82be-d8bcfb37f9e1"
-       ],
-       "p2": [
-        "fec65f7e-f2c8-482f-ab5b-541cf53b1064",
-        "d50310a6-9378-4228-823f-7fb54f7bd698"
-       ],
-       "n1": [
-        "Jorja Johnson",
-        "JW Johnson"
-       ],
-       "n2": [
-        "Tyra Hurricane Black",
-        "Gabriel Tardio"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         7,
-         6,
-         0,
-         0,
-         0
-        ],
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 5,
-       "round_text": "Semi-Finals",
-       "match_no": 39,
-       "seed1": 2,
-       "seed2": 4,
-       "best_of": 3,
-       "p1": [
-        "8e2f9629-19d0-409d-81dc-b64fe2f3d3ff",
-        "fc05556e-3e38-4a38-99c2-f855174a7c28"
-       ],
-       "p2": [
-        "1728d016-1f02-4789-be73-63d12d5a5b42",
-        "79a11da1-6aeb-4719-9b1e-9918e0163cec"
-       ],
-       "n1": [
-        "Jessie Irvine",
-        "Hayden Patriquin"
-       ],
-       "n2": [
-        "Parris Todd",
-        "Christian Alshon"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         8,
-         9,
-         0,
-         0,
-         0
-        ],
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
       {
        "round": 6,
        "round_text": "Finals",
@@ -840,138 +544,12 @@
          0
         ]
        ]
-      },
-      {
-       "round": 7,
-       "round_text": "Bronze",
-       "match_no": 40,
-       "seed1": 1,
-       "seed2": 2,
-       "best_of": 3,
-       "p1": [
-        "b51ea0fb-c243-4427-85f8-b798febb51ff",
-        "bd061b42-2f82-4bbe-82be-d8bcfb37f9e1"
-       ],
-       "p2": [
-        "8e2f9629-19d0-409d-81dc-b64fe2f3d3ff",
-        "fc05556e-3e38-4a38-99c2-f855174a7c28"
-       ],
-       "n1": [
-        "Jorja Johnson",
-        "JW Johnson"
-       ],
-       "n2": [
-        "Jessie Irvine",
-        "Hayden Patriquin"
-       ],
-       "winner": 0,
-       "completed_type": 6,
-       "scores": [
-        [
-         0,
-         0,
-         0,
-         0,
-         0
-        ],
-        [
-         0,
-         0,
-         0,
-         0,
-         0
-        ]
-       ]
       }
      ]
     },
     {
      "title": "PRO WOMEN'S DOUBLES - MAIN DRAW",
      "matches": [
-      {
-       "round": 4,
-       "round_text": "Semi-Finals",
-       "match_no": 15,
-       "seed1": 1,
-       "seed2": 6,
-       "best_of": 3,
-       "p1": [
-        "fec65f7e-f2c8-482f-ab5b-541cf53b1064",
-        "b51ea0fb-c243-4427-85f8-b798febb51ff"
-       ],
-       "p2": [
-        "1c49ab19-88d1-43b4-94cb-ab7ec9205ec9",
-        "66a6c35b-33a2-4a23-b5db-fa53c96d643a"
-       ],
-       "n1": [
-        "Tyra Hurricane Black",
-        "Jorja Johnson"
-       ],
-       "n2": [
-        "Regina Goldberg",
-        "Kaitlyn Christian"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         6,
-         2,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 4,
-       "round_text": "Semi-Finals",
-       "match_no": 16,
-       "seed1": 2,
-       "seed2": 3,
-       "best_of": 3,
-       "p1": [
-        "1728d016-1f02-4789-be73-63d12d5a5b42",
-        "2c4de762-88d6-47c3-8b2b-af562c5d1f93"
-       ],
-       "p2": [
-        "051f5c82-82ce-4ab8-b4f8-36976638a89b",
-        "8e2f9629-19d0-409d-81dc-b64fe2f3d3ff"
-       ],
-       "n1": [
-        "Parris Todd",
-        "Danni-Elle Townsend"
-       ],
-       "n2": [
-        "Sahra Dennehy",
-        "Jessie Irvine"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         8,
-         7,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
       {
        "round": 5,
        "round_text": "Finals",
@@ -1013,32 +591,466 @@
          0
         ]
        ]
-      },
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "tournament": "PPA Canada Ottawa 125",
+   "id": "94307fed-6e0f-4390-bf19-bda3bfb80d18",
+   "dates": [
+    "2026-10-24"
+   ],
+   "divisions": [
+    {
+     "title": "Pro Men's Doubles",
+     "matches": [
       {
-       "round": 6,
-       "round_text": "Bronze",
-       "match_no": 17,
-       "seed1": 6,
-       "seed2": 3,
+       "round": 1,
+       "round_text": "Round 32",
+       "match_no": 1,
+       "seed1": 18,
+       "seed2": 16,
        "best_of": 3,
        "p1": [
-        "1c49ab19-88d1-43b4-94cb-ab7ec9205ec9",
-        "66a6c35b-33a2-4a23-b5db-fa53c96d643a"
+        "a441a196-75a9-49dd-abc6-88b6f009ee00",
+        "126c4f59-c03a-41d2-9eb4-a4cf2806df7b"
        ],
        "p2": [
-        "051f5c82-82ce-4ab8-b4f8-36976638a89b",
-        "8e2f9629-19d0-409d-81dc-b64fe2f3d3ff"
+        "ba92032a-e5d5-4ec7-9417-a0b6878f3ccc",
+        "e0a39f07-1e8d-4099-b654-d05640fd5fa9"
        ],
        "n1": [
-        "Regina Goldberg",
-        "Kaitlyn Christian"
+        "Jon Freda",
+        "Rylan Hempell"
        ],
        "n2": [
-        "Sahra Dennehy",
-        "Jessie Irvine"
+        "Adam Cheney",
+        "Kade Hendershot"
        ],
        "winner": 0,
-       "completed_type": 6,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 1,
+       "round_text": "Round 32",
+       "match_no": 2,
+       "seed1": 17,
+       "seed2": 19,
+       "best_of": 3,
+       "p1": [
+        "94cb8aa5-d9ef-4a55-a096-74503fa208db",
+        "4e268f12-9396-4311-8326-aa89031e77a3"
+       ],
+       "p2": [
+        "1f614164-3ef6-40ed-93ba-323257c09c1a",
+        "3ec46da3-297e-4a39-8df6-481f7ab386ff"
+       ],
+       "n1": [
+        "Tanner Big Canoe",
+        "Mitchell Collins"
+       ],
+       "n2": [
+        "Aaron Leonard",
+        "Ky Tuong Ly"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 1,
+       "round_text": "Round 32",
+       "match_no": 3,
+       "seed1": 15,
+       "seed2": 14,
+       "best_of": 3,
+       "p1": [
+        "92e1da73-6d05-4c2d-9baa-2987cd838bd8",
+        "31736fab-3fc0-4829-b1cf-59d3c4062053"
+       ],
+       "p2": [
+        "f0954e3d-8664-4866-9068-0376232fa624",
+        "7f192790-9764-4085-999b-8140742dafbc"
+       ],
+       "n1": [
+        "Mika\u00ebl Gaumond",
+        "Kevin Wilson"
+       ],
+       "n2": [
+        "Elton Pang",
+        "Jagjot Khela"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ],
+        [
+         3,
+         2,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 16",
+       "match_no": 4,
+       "seed1": 8,
+       "seed2": 10,
+       "best_of": 3,
+       "p1": [
+        "7857d428-da6a-4fc1-a9c5-b34146e367c6",
+        "6af71579-421d-423b-a3f5-67c3cb460ecf"
+       ],
+       "p2": [
+        "6f3be491-e947-48e5-8ae0-cca7a5347bcb",
+        "d1cae50a-fc6e-4fcd-a968-e26048c36c67"
+       ],
+       "n1": [
+        "Vesper Castillo",
+        "Jamie Carmichael"
+       ],
+       "n2": [
+        "Kyle Hermetz",
+        "Xavier Richard"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         5,
+         5,
+         0,
+         0,
+         0
+        ],
+        [
+         11,
+         4,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 16",
+       "match_no": 5,
+       "seed1": 4,
+       "seed2": 13,
+       "best_of": 3,
+       "p1": [
+        "93a85a33-42b0-46a1-a64c-268ec9098b2c",
+        "26b13d9f-ccab-497c-8e3a-68299be5ea70"
+       ],
+       "p2": [
+        "13f96392-08ed-48b0-aaf6-20563021588f",
+        "7212e0d0-3e4b-4062-a350-5440824c9ebc"
+       ],
+       "n1": [
+        "Dawson Davis",
+        "Daniel Phillips"
+       ],
+       "n2": [
+        "Matthew Kawamoto",
+        "Louis-Charles Amyot"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 16",
+       "match_no": 6,
+       "seed1": 5,
+       "seed2": 11,
+       "best_of": 3,
+       "p1": [
+        "ea0b7d06-7e9f-4786-a4ed-24da5029559f",
+        "86e1b9d3-15ea-4b76-b488-d3135e78aa7c"
+       ],
+       "p2": [
+        "62b0999f-d610-4f68-9944-36e8580f346b",
+        "814bf77a-1430-4f64-82ac-ebd6e7f656f3"
+       ],
+       "n1": [
+        "Dale Kim",
+        "Wade Heerboth"
+       ],
+       "n2": [
+        "Coby Pearce",
+        "Thomas Dill"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 16",
+       "match_no": 7,
+       "seed1": 7,
+       "seed2": 9,
+       "best_of": 3,
+       "p1": [
+        "b191bf5b-58d6-4232-ba55-1defadd14f79",
+        "77f2d09e-1f09-4be1-9e74-5944b02bfb05"
+       ],
+       "p2": [
+        "cca38e2d-faaf-4de4-b2e2-3b5aafc45f35",
+        "e978066b-18da-4a06-b190-c48fb704f34f"
+       ],
+       "n1": [
+        "Diego Lebron Perez",
+        "Trevor Schwarzmann"
+       ],
+       "n2": [
+        "Nathan Dover",
+        "Ashton Bradley"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         11,
+         10,
+         0,
+         0,
+         0
+        ],
+        [
+         1,
+         3,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 16",
+       "match_no": 8,
+       "seed1": 6,
+       "seed2": 12,
+       "best_of": 3,
+       "p1": [
+        "c05ef886-c1d3-4b85-be8f-a880aea59da3",
+        "72781a5b-7e26-47ae-a581-625e4fa96099"
+       ],
+       "p2": [
+        "ac7b6b6b-6541-43b6-8576-25d659c8787d",
+        "30ea1f10-cfdb-4135-9ae6-fa4ff2849fa2"
+       ],
+       "n1": [
+        "Jonah Karczmer",
+        "Hudson De Risi"
+       ],
+       "n2": [
+        "Nolan Smyth",
+        "Marc St-Pierre"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         11,
+         6,
+         0,
+         0,
+         0
+        ],
+        [
+         7,
+         5,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 16",
+       "match_no": 9,
+       "seed1": 1,
+       "seed2": 0,
+       "best_of": 3,
+       "p1": [
+        "69633ccf-87be-4975-a578-53d6e166c91b",
+        "146dd2f7-7f5d-495d-b2f1-96d433742fec"
+       ],
+       "p2": [
+        "",
+        ""
+       ],
+       "n1": [
+        "Wil Shaffer",
+        "Eduardo Santini Ayon"
+       ],
+       "n2": [
+        "",
+        ""
+       ],
+       "winner": 2,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 16",
+       "match_no": 10,
+       "seed1": 2,
+       "seed2": 0,
+       "best_of": 3,
+       "p1": [
+        "ecd31a05-120f-4373-b5c1-21136f8f0bf1",
+        "8a71d348-6401-4068-bedd-f4ed30460d2f"
+       ],
+       "p2": [
+        "",
+        ""
+       ],
+       "n1": [
+        "Braden Jacobson",
+        "Andrew Caldarella"
+       ],
+       "n2": [
+        "",
+        ""
+       ],
+       "winner": 2,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 16",
+       "match_no": 11,
+       "seed1": 3,
+       "seed2": 15,
+       "best_of": 3,
+       "p1": [
+        "9a449e9c-69aa-4a48-8f28-217766ab25f7",
+        "dc69fcde-bcda-4441-8b66-a8bafeb12ded"
+       ],
+       "p2": [
+        "92e1da73-6d05-4c2d-9baa-2987cd838bd8",
+        "31736fab-3fc0-4829-b1cf-59d3c4062053"
+       ],
+       "n1": [
+        "Armaan Jiwa Mawji",
+        "Joel Poland"
+       ],
+       "n2": [
+        "Mika\u00ebl Gaumond",
+        "Kevin Wilson"
+       ],
+       "winner": 0,
+       "completed_type": 1,
        "scores": [
         [
          0,

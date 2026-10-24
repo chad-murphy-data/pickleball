@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-23",
+ "generated": "2026-10-24",
  "note": "Lineups: official when published, else each team's best lineup from its season roster (last-matchup fallback); DreamBreaker from the singles model; calibrated probabilities.",
  "forecasts": [
   {
@@ -98,6 +98,114 @@
    "event": "Nations Cup",
    "team1": "Canada",
    "team2": "Asia Domestic",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-31",
+   "start": "2026-10-31T15:00:00Z",
+   "event": "Nations Cup",
+   "team1": "Asia International",
+   "team2": "Latin America",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-31",
+   "start": "2026-10-31T16:30:00Z",
+   "event": "Nations Cup",
+   "team1": "Europe West",
+   "team2": "USA",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-31",
+   "start": "2026-10-31T18:00:00Z",
+   "event": "Nations Cup",
+   "team1": "Europe East",
+   "team2": "Asia International",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-31",
+   "start": "2026-10-31T19:30:00Z",
+   "event": "Nations Cup",
+   "team1": "Australia",
+   "team2": "Latin America",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-31",
+   "start": "2026-10-31T21:00:00Z",
+   "event": "Nations Cup",
+   "team1": "Asia Domestic",
+   "team2": "USA",
+   "lineups_from": {
+    "team1": null,
+    "team2": null
+   },
+   "games": [
+    null,
+    null,
+    null,
+    null
+   ],
+   "tree": null
+  },
+  {
+   "date": "2026-10-31",
+   "start": "2026-10-31T22:30:00Z",
+   "event": "Nations Cup",
+   "team1": "Canada",
+   "team2": "Europe West",
    "lineups_from": {
     "team1": null,
     "team2": null
