@@ -1,0 +1,38 @@
+
+ROOMS: 200 rooms x 200 seasons, 20 of 20 sheets per room, random sale order
+  Waters paid          750k [750,750]   (list $769k; hand-coded no-sheet room $570k default mix)
+  her team win / title 61.1% / 0.6%   best team is hers in 0% of rooms
+  best team            92.5%;  parity spread 81.6 pts;  runner-up title 31.3%;  teams at 10%+ 2.3
+  unspent per team     $462k of $1,000k;  top-30 list players unsold 0.0
+  who buys her:        star_scrubs 100%
+
+  persona              win%   title%
+  balanced_six          73.3   13.8
+  singles_minded        61.4    1.1
+  risk_averse           48.9    1.8
+  four_starters         48.8   16.4
+  free                  44.9    0.0
+  two_stars             37.4    0.0
+  star_scrubs           33.7    0.2
+
+  room price vs list, by list band (median paid / list):
+    #1-5       50% of list (n=5)
+    #6-15      37% of list (n=10)
+    #16-30     38% of list (n=12)
+    #31-60     59% of list (n=21)
+    #61-120    82% of list (n=41)
+    #unpriced  117% of list (n=31)
+
+  top prices (median paid across rooms):
+    Anna Leigh Waters         750k  [750,750]  list $769k
+    Ben Johns                 405k  [405,405]  list $474k
+    Gabriel Tardio            355k  [285,355]  list $409k
+    Anna Bright               305k  [305,305]  list $613k
+    Federico Staksrud         215k  [205,215]  list $315k
+    Christian Alshon          205k  [185,205]  list $400k
+    JW Johnson                190k  [190,205]  list $430k
+    Hayden Patriquin          190k  [185,190]  list $421k
+    Kate Fahey                175k  [175,175]  list $453k
+    Catherine Parenteau       165k  [165,180]  list $267k
+    Jorja Johnson             165k  [165,170]  list $475k
+    Parris Todd               160k  [160,160]  list $489k
