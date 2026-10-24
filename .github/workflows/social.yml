@@ -1,0 +1,93 @@
+# Evening forecast carousel -> r/PickleballStats.
+#
+# Every evening (03:30 UTC = 8:30 PM PDT / 7:30 PM PST) price tomorrow's
+# scheduled PPA / MLP pro matches, render the slide deck, and post it as a
+# Reddit gallery with the numbers in the body.  Quiet days exit early with
+# "nothing scheduled".  Change the cron line to move the posting time.
+#
+# Secrets (repo Settings -> Secrets and variables -> Actions):
+#   REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET   a "script" app from reddit.com/prefs/apps
+#   REDDIT_USERNAME, REDDIT_PASSWORD         the posting account
+# Variables (optional): SOCIAL_SUBREDDIT (default PickleballStats), SOCIAL_FLAIR_ID
+#
+# Manual runs: Actions -> social -> Run workflow, pick a date and dry-run.
+# The rendered PNGs + post.md are uploaded as an artifact either way.
+name: social
+
+on:
+  schedule:
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "YYYY-MM-DD | today | tomorrow"
+        default: "tomorrow"
+      post:
+        description: "post to Reddit (unchecked = render only)"
+        type: boolean
+        default: false
+      dry_run:
+        description: "with post: print the submission instead of sending it"
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: social
+  cancel-in-progress: false
+
+jobs:
+  carousel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # the harvester's response cache (shared with site.yml) — MLP roster
+      # walks are free when it's warm; PPA-only days barely touch it
+      - name: Restore raw API cache
+        uses: actions/cache/restore@v4
+        with:
+          path: raw
+          key: raw-${{ github.run_id }}
+          restore-keys: raw-
+
+      - name: Install
+        run: |
+          pip install httpx praw playwright
+          playwright install --with-deps chromium
+
+      - name: Build + post
+        env:
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          REDDIT_USERNAME: ${{ secrets.REDDIT_USERNAME }}
+          REDDIT_PASSWORD: ${{ secrets.REDDIT_PASSWORD }}
+          SOCIAL_SUBREDDIT: ${{ vars.SOCIAL_SUBREDDIT || 'PickleballStats' }}
+          SOCIAL_FLAIR_ID: ${{ vars.SOCIAL_FLAIR_ID }}
+          SOCIAL_PPA_BEST_OF: ${{ vars.SOCIAL_PPA_BEST_OF }}
+        run: |
+          DATE="${{ github.event.inputs.date || 'tomorrow' }}"
+          FLAGS=""
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event.inputs.post }}" = "true" ]; then
+            FLAGS="--post"
+          fi
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then
+            FLAGS="$FLAGS --dry-run"
+          fi
+          python social/run.py --date "$DATE" $FLAGS
+
+      - name: Upload deck
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: social-deck
+          path: social/out/
+          if-no-files-found: ignore
+          retention-days: 14
