@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-26",
+ "generated": "2026-10-27",
  "mlp": {
   "group": "90442752-2dc4-426b-ab12-95316b0dfeac",
   "event": "Nations Cup",
@@ -82,6 +82,84 @@
     "bracket": "RR",
     "round": "Round 2",
     "mnum": 3
+   },
+   {
+    "uuid": "b1c4ecea-266d-4ba6-ab24-229f5341b314",
+    "date": "2026-10-31",
+    "start": "2026-10-31T15:00:00Z",
+    "team1": "Asia International",
+    "team2": "Latin America",
+    "abbr1": "ASINT",
+    "abbr2": "LA",
+    "pool": "c68664c1",
+    "bracket": "RR",
+    "round": "Round 2",
+    "mnum": 3
+   },
+   {
+    "uuid": "b27d39f8-eae6-412d-8778-11031ba0401a",
+    "date": "2026-10-31",
+    "start": "2026-10-31T16:30:00Z",
+    "team1": "Europe West",
+    "team2": "USA",
+    "abbr1": "EURW",
+    "abbr2": "USA",
+    "pool": "da96b09b",
+    "bracket": "RR",
+    "round": "Round 2",
+    "mnum": 4
+   },
+   {
+    "uuid": "4a2405d7-ccf4-4c4c-9e8d-cf1ed3c9a08e",
+    "date": "2026-10-31",
+    "start": "2026-10-31T18:00:00Z",
+    "team1": "Europe East",
+    "team2": "Asia International",
+    "abbr1": "EURE",
+    "abbr2": "ASINT",
+    "pool": "c68664c1",
+    "bracket": "RR",
+    "round": "Round 3",
+    "mnum": 6
+   },
+   {
+    "uuid": "3b3f4989-3211-45d8-9c70-f35ca8e5f1d0",
+    "date": "2026-10-31",
+    "start": "2026-10-31T19:30:00Z",
+    "team1": "Australia",
+    "team2": "Latin America",
+    "abbr1": "AUS",
+    "abbr2": "LA",
+    "pool": "c68664c1",
+    "bracket": "RR",
+    "round": "Round 3",
+    "mnum": 5
+   },
+   {
+    "uuid": "24069ad3-6204-47e5-b0f1-3a6e46d77a04",
+    "date": "2026-10-31",
+    "start": "2026-10-31T21:00:00Z",
+    "team1": "Asia Domestic",
+    "team2": "USA",
+    "abbr1": "ASD",
+    "abbr2": "USA",
+    "pool": "da96b09b",
+    "bracket": "RR",
+    "round": "Round 3",
+    "mnum": 6
+   },
+   {
+    "uuid": "ce0620fd-811c-4e61-ad02-90be960ee681",
+    "date": "2026-10-31",
+    "start": "2026-10-31T22:30:00Z",
+    "team1": "Canada",
+    "team2": "Europe West",
+    "abbr1": "CAN",
+    "abbr2": "EURW",
+    "pool": "da96b09b",
+    "bracket": "RR",
+    "round": "Round 3",
+    "mnum": 5
    }
   ],
   "matrix": {}
