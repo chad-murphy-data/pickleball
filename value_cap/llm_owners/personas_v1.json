@@ -1,0 +1,33 @@
+{
+ "personas": {
+  "star_scrubs": "Your philosophy: You believe titles come from ONE superstar. Plan: spend the overwhelming majority of the budget on the single best player available (either gender) and fill the other five slots as cheaply as possible.",
+  "two_stars": "Your philosophy: You believe in two stars: the best woman and the best man you can get, roughly 40% of the budget each, and four cheap fill-ins. The two stars can pair together in mixed doubles.",
+  "four_starters": "Your philosophy: You believe four good players beat one great one: two solid women and two solid men who will actually play every tie, roughly a fifth of the budget each, plus two cheap bench players.",
+  "balanced_six": "Your philosophy: You believe depth and balance win: six good players at roughly equal prices, nobody expensive, no weak link anywhere on the roster.",
+  "singles_minded": "Your philosophy: You believe the DreamBreaker decides close ties, so at least one of your six must be a genuinely strong singles player, even if their doubles record is ordinary. Otherwise build four solid starters and two cheap bench players.",
+  "risk_averse": "Your philosophy: You hate surprises. You want four solid starters plus a real bench (two players good enough to start), and you heavily discount players you read as injury, bench or part-time risks.",
+  "free": "No particular philosophy: build the team you think wins the most ties for the money."
+ },
+ "seats": [
+  "star_scrubs",
+  "star_scrubs",
+  "star_scrubs",
+  "two_stars",
+  "two_stars",
+  "two_stars",
+  "four_starters",
+  "four_starters",
+  "four_starters",
+  "balanced_six",
+  "balanced_six",
+  "balanced_six",
+  "singles_minded",
+  "singles_minded",
+  "singles_minded",
+  "risk_averse",
+  "risk_averse",
+  "risk_averse",
+  "free",
+  "free"
+ ]
+}
