@@ -1,903 +1,382 @@
 {
- "generated": "2026-10-30",
+ "generated": "2026-10-31",
  "mlp": {
   "group": "90442752-2dc4-426b-ab12-95316b0dfeac",
   "event": "Nations Cup",
-  "completed": [],
-  "remaining": [
+  "completed": [
    {
-    "uuid": "b1c4ecea-266d-4ba6-ab24-229f5341b314",
-    "date": "2026-10-31",
-    "start": "2026-10-31T15:00:00Z",
+    "uuid": "c2b55ebc-fafa-4d32-b697-cc66c9b93771",
+    "date": "2026-10-30",
+    "start": "2026-10-30T15:00:00Z",
     "team1": "Asia International",
-    "team2": "Latin America",
+    "team2": "Australia",
     "abbr1": "ASINT",
-    "abbr2": "LA",
+    "abbr2": "AUS",
     "pool": "c68664c1",
     "bracket": "RR",
-    "round": "Round 2",
-    "mnum": 3
+    "round": "Round 1",
+    "mnum": 2,
+    "games1": 1,
+    "games2": 3,
+    "pts1": 33,
+    "pts2": 45,
+    "winner": 2
    },
    {
-    "uuid": "b27d39f8-eae6-412d-8778-11031ba0401a",
-    "date": "2026-10-31",
-    "start": "2026-10-31T16:30:00Z",
-    "team1": "Europe West",
-    "team2": "USA",
-    "abbr1": "EURW",
-    "abbr2": "USA",
-    "pool": "da96b09b",
-    "bracket": "RR",
-    "round": "Round 2",
-    "mnum": 4
-   },
-   {
-    "uuid": "4a2405d7-ccf4-4c4c-9e8d-cf1ed3c9a08e",
-    "date": "2026-10-31",
-    "start": "2026-10-31T18:00:00Z",
-    "team1": "Europe East",
-    "team2": "Asia International",
-    "abbr1": "EURE",
-    "abbr2": "ASINT",
+    "uuid": "64922b24-8e63-405d-b723-abe163aecb55",
+    "date": "2026-10-30",
+    "start": "2026-10-30T16:30:00Z",
+    "team1": "Latin America",
+    "team2": "Europe East",
+    "abbr1": "LA",
+    "abbr2": "EURE",
     "pool": "c68664c1",
     "bracket": "RR",
-    "round": "Round 3",
-    "mnum": 6
+    "round": "Round 1",
+    "mnum": 1,
+    "games1": 0,
+    "games2": 3,
+    "pts1": 21,
+    "pts2": 33,
+    "winner": 2
    },
    {
-    "uuid": "3b3f4989-3211-45d8-9c70-f35ca8e5f1d0",
-    "date": "2026-10-31",
-    "start": "2026-10-31T19:30:00Z",
-    "team1": "Australia",
-    "team2": "Latin America",
-    "abbr1": "AUS",
-    "abbr2": "LA",
-    "pool": "c68664c1",
-    "bracket": "RR",
-    "round": "Round 3",
-    "mnum": 5
-   },
-   {
-    "uuid": "24069ad3-6204-47e5-b0f1-3a6e46d77a04",
-    "date": "2026-10-31",
-    "start": "2026-10-31T21:00:00Z",
+    "uuid": "86bc4a49-350f-4326-9424-4469029475d9",
+    "date": "2026-10-30",
+    "start": "2026-10-30T18:00:00Z",
     "team1": "Asia Domestic",
-    "team2": "USA",
-    "abbr1": "ASD",
-    "abbr2": "USA",
-    "pool": "da96b09b",
-    "bracket": "RR",
-    "round": "Round 3",
-    "mnum": 6
-   },
-   {
-    "uuid": "ce0620fd-811c-4e61-ad02-90be960ee681",
-    "date": "2026-10-31",
-    "start": "2026-10-31T22:30:00Z",
-    "team1": "Canada",
     "team2": "Europe West",
-    "abbr1": "CAN",
+    "abbr1": "ASD",
     "abbr2": "EURW",
     "pool": "da96b09b",
     "bracket": "RR",
-    "round": "Round 3",
-    "mnum": 5
+    "round": "Round 1",
+    "mnum": 2,
+    "games1": 3,
+    "games2": 1,
+    "pts1": 37,
+    "pts2": 30,
+    "winner": 1
+   },
+   {
+    "uuid": "2a006939-0034-4405-8780-17262aa6c640",
+    "date": "2026-10-30",
+    "start": "2026-10-30T19:30:00Z",
+    "team1": "USA",
+    "team2": "Canada",
+    "abbr1": "USA",
+    "abbr2": "CAN",
+    "pool": "da96b09b",
+    "bracket": "RR",
+    "round": "Round 1",
+    "mnum": 1,
+    "games1": 3,
+    "games2": 1,
+    "pts1": 38,
+    "pts2": 16,
+    "winner": 1
+   },
+   {
+    "uuid": "6909d8a4-720f-4f39-969e-caa9f485b34f",
+    "date": "2026-10-30",
+    "start": "2026-10-30T21:00:00Z",
+    "team1": "Europe East",
+    "team2": "Australia",
+    "abbr1": "EURE",
+    "abbr2": "AUS",
+    "pool": "c68664c1",
+    "bracket": "RR",
+    "round": "Round 2",
+    "mnum": 4,
+    "games1": 1,
+    "games2": 3,
+    "pts1": 26,
+    "pts2": 40,
+    "winner": 2
+   },
+   {
+    "uuid": "365f6d7a-17e3-45a2-8d36-51430c80ffe4",
+    "date": "2026-10-30",
+    "start": "2026-10-30T22:30:00Z",
+    "team1": "Canada",
+    "team2": "Asia Domestic",
+    "abbr1": "CAN",
+    "abbr2": "ASD",
+    "pool": "da96b09b",
+    "bracket": "RR",
+    "round": "Round 2",
+    "mnum": 3,
+    "games1": 0,
+    "games2": 3,
+    "pts1": 19,
+    "pts2": 34,
+    "winner": 2
    }
   ],
-  "matrix": {}
+  "remaining": [],
+  "matrix": {
+   "Asia Domestic|Asia International": {
+    "p_win": 0.9696,
+    "p_40": 0.604,
+    "p_31": 0.3309,
+    "p_db": 0.0606,
+    "p_13": 0.0044,
+    "p_04": 0.0001,
+    "p_db_win": 0.5728
+   },
+   "Asia Domestic|Australia": {
+    "p_win": 0.5912,
+    "p_40": 0.0747,
+    "p_31": 0.3076,
+    "p_db": 0.3918,
+    "p_13": 0.1942,
+    "p_04": 0.0317,
+    "p_db_win": 0.5331
+   },
+   "Asia Domestic|Canada": {
+    "p_win": 0.8126,
+    "p_40": 0.2368,
+    "p_31": 0.4277,
+    "p_db": 0.2651,
+    "p_13": 0.065,
+    "p_04": 0.0055,
+    "p_db_win": 0.5588
+   },
+   "Asia Domestic|Europe East": {
+    "p_win": 0.4414,
+    "p_40": 0.0327,
+    "p_31": 0.2018,
+    "p_db": 0.3915,
+    "p_13": 0.2983,
+    "p_04": 0.0757,
+    "p_db_win": 0.5284
+   },
+   "Asia Domestic|Europe West": {
+    "p_win": 0.6355,
+    "p_40": 0.0963,
+    "p_31": 0.3124,
+    "p_db": 0.3684,
+    "p_13": 0.1878,
+    "p_04": 0.035,
+    "p_db_win": 0.6153
+   },
+   "Asia Domestic|Latin America": {
+    "p_win": 0.3582,
+    "p_40": 0.0256,
+    "p_31": 0.164,
+    "p_db": 0.3651,
+    "p_13": 0.3363,
+    "p_04": 0.109,
+    "p_db_win": 0.4616
+   },
+   "Asia Domestic|USA": {
+    "p_win": 0.0282,
+    "p_40": 0.0001,
+    "p_31": 0.0052,
+    "p_db": 0.0712,
+    "p_13": 0.3545,
+    "p_04": 0.569,
+    "p_db_win": 0.3209
+   },
+   "Asia International|Australia": {
+    "p_win": 0.0652,
+    "p_40": 0.0002,
+    "p_31": 0.0103,
+    "p_db": 0.1191,
+    "p_13": 0.4209,
+    "p_04": 0.4496,
+    "p_db_win": 0.4595
+   },
+   "Asia International|Canada": {
+    "p_win": 0.1564,
+    "p_40": 0.0029,
+    "p_31": 0.0451,
+    "p_db": 0.2231,
+    "p_13": 0.4379,
+    "p_04": 0.291,
+    "p_db_win": 0.4858
+   },
+   "Asia International|Europe East": {
+    "p_win": 0.0212,
+    "p_40": 0.0001,
+    "p_31": 0.0026,
+    "p_db": 0.0409,
+    "p_13": 0.2775,
+    "p_04": 0.679,
+    "p_db_win": 0.4553
+   },
+   "Asia International|Europe West": {
+    "p_win": 0.0645,
+    "p_40": 0.0003,
+    "p_31": 0.0095,
+    "p_db": 0.1006,
+    "p_13": 0.3902,
+    "p_04": 0.4993,
+    "p_db_win": 0.5436
+   },
+   "Asia International|Latin America": {
+    "p_win": 0.0138,
+    "p_40": 0.0,
+    "p_31": 0.0016,
+    "p_db": 0.0311,
+    "p_13": 0.2501,
+    "p_04": 0.7171,
+    "p_db_win": 0.3898
+   },
+   "Asia International|USA": {
+    "p_win": 0.0106,
+    "p_40": 0.0,
+    "p_31": 0.0,
+    "p_db": 0.0025,
+    "p_13": 0.0814,
+    "p_04": 0.9161,
+    "p_db_win": 0.2584
+   },
+   "Australia|Canada": {
+    "p_win": 0.7556,
+    "p_40": 0.1941,
+    "p_31": 0.4042,
+    "p_db": 0.2991,
+    "p_13": 0.0925,
+    "p_04": 0.0102,
+    "p_db_win": 0.5258
+   },
+   "Australia|Europe East": {
+    "p_win": 0.3687,
+    "p_40": 0.0188,
+    "p_31": 0.1539,
+    "p_db": 0.3953,
+    "p_13": 0.3406,
+    "p_04": 0.0915,
+    "p_db_win": 0.4958
+   },
+   "Australia|Europe West": {
+    "p_win": 0.5557,
+    "p_40": 0.0661,
+    "p_31": 0.2659,
+    "p_db": 0.3834,
+    "p_13": 0.2341,
+    "p_04": 0.0505,
+    "p_db_win": 0.5836
+   },
+   "Australia|Latin America": {
+    "p_win": 0.2898,
+    "p_40": 0.015,
+    "p_31": 0.1247,
+    "p_db": 0.3498,
+    "p_13": 0.3767,
+    "p_04": 0.1337,
+    "p_db_win": 0.4288
+   },
+   "Australia|USA": {
+    "p_win": 0.0155,
+    "p_40": 0.0001,
+    "p_31": 0.0029,
+    "p_db": 0.0431,
+    "p_13": 0.2806,
+    "p_04": 0.6734,
+    "p_db_win": 0.2916
+   },
+   "Canada|Europe East": {
+    "p_win": 0.1525,
+    "p_40": 0.0034,
+    "p_31": 0.046,
+    "p_db": 0.2194,
+    "p_13": 0.4322,
+    "p_04": 0.2991,
+    "p_db_win": 0.47
+   },
+   "Canada|Europe West": {
+    "p_win": 0.2953,
+    "p_40": 0.0134,
+    "p_31": 0.1074,
+    "p_db": 0.3128,
+    "p_13": 0.3905,
+    "p_04": 0.176,
+    "p_db_win": 0.5582
+   },
+   "Canada|Latin America": {
+    "p_win": 0.1064,
+    "p_40": 0.0022,
+    "p_31": 0.0326,
+    "p_db": 0.1776,
+    "p_13": 0.4215,
+    "p_04": 0.3662,
+    "p_db_win": 0.4035
+   },
+   "Canada|USA": {
+    "p_win": 0.0106,
+    "p_40": 0.0,
+    "p_31": 0.0003,
+    "p_db": 0.0101,
+    "p_13": 0.1516,
+    "p_04": 0.8381,
+    "p_db_win": 0.2702
+   },
+   "Europe East|Europe West": {
+    "p_win": 0.6969,
+    "p_40": 0.1239,
+    "p_31": 0.3622,
+    "p_db": 0.3586,
+    "p_13": 0.1383,
+    "p_04": 0.017,
+    "p_db_win": 0.5878
+   },
+   "Europe East|Latin America": {
+    "p_win": 0.4287,
+    "p_40": 0.0471,
+    "p_31": 0.219,
+    "p_db": 0.3755,
+    "p_13": 0.281,
+    "p_04": 0.0773,
+    "p_db_win": 0.4329
+   },
+   "Europe East|USA": {
+    "p_win": 0.0407,
+    "p_40": 0.0003,
+    "p_31": 0.0099,
+    "p_db": 0.1031,
+    "p_13": 0.3927,
+    "p_04": 0.494,
+    "p_db_win": 0.2957
+   },
+   "Europe West|Latin America": {
+    "p_win": 0.2472,
+    "p_40": 0.0151,
+    "p_31": 0.1184,
+    "p_db": 0.327,
+    "p_13": 0.3807,
+    "p_04": 0.1588,
+    "p_db_win": 0.3479
+   },
+   "Europe West|USA": {
+    "p_win": 0.0117,
+    "p_40": 0.0001,
+    "p_31": 0.0025,
+    "p_db": 0.0411,
+    "p_13": 0.2806,
+    "p_04": 0.6757,
+    "p_db_win": 0.2241
+   },
+   "Latin America|USA": {
+    "p_win": 0.0568,
+    "p_40": 0.0006,
+    "p_31": 0.0142,
+    "p_db": 0.1178,
+    "p_13": 0.3979,
+    "p_04": 0.4696,
+    "p_db_win": 0.3562
+   }
+  }
  },
  "ppa": [
   {
    "tournament": "PPA Canada Ottawa 125",
    "id": "94307fed-6e0f-4390-bf19-bda3bfb80d18",
    "dates": [
-    "2026-10-24",
     "2026-10-25"
    ],
    "divisions": [
-    {
-     "title": "Pro Men's Doubles",
-     "matches": [
-      {
-       "round": 1,
-       "round_text": "Round 32",
-       "match_no": 1,
-       "seed1": 18,
-       "seed2": 16,
-       "best_of": 3,
-       "p1": [
-        "a441a196-75a9-49dd-abc6-88b6f009ee00",
-        "126c4f59-c03a-41d2-9eb4-a4cf2806df7b"
-       ],
-       "p2": [
-        "ba92032a-e5d5-4ec7-9417-a0b6878f3ccc",
-        "e0a39f07-1e8d-4099-b654-d05640fd5fa9"
-       ],
-       "n1": [
-        "Jon Freda",
-        "Rylan Hempell"
-       ],
-       "n2": [
-        "Adam Cheney",
-        "Kade Hendershot"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         5,
-         7,
-         0,
-         0,
-         0
-        ],
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 1,
-       "round_text": "Round 32",
-       "match_no": 2,
-       "seed1": 17,
-       "seed2": 19,
-       "best_of": 3,
-       "p1": [
-        "94cb8aa5-d9ef-4a55-a096-74503fa208db",
-        "4e268f12-9396-4311-8326-aa89031e77a3"
-       ],
-       "p2": [
-        "1f614164-3ef6-40ed-93ba-323257c09c1a",
-        "3ec46da3-297e-4a39-8df6-481f7ab386ff"
-       ],
-       "n1": [
-        "Tanner Big Canoe",
-        "Mitchell Collins"
-       ],
-       "n2": [
-        "Aaron Leonard",
-        "Ky Tuong Ly"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         2,
-         2,
-         0,
-         0,
-         0
-        ],
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 1,
-       "round_text": "Round 32",
-       "match_no": 3,
-       "seed1": 15,
-       "seed2": 14,
-       "best_of": 3,
-       "p1": [
-        "92e1da73-6d05-4c2d-9baa-2987cd838bd8",
-        "31736fab-3fc0-4829-b1cf-59d3c4062053"
-       ],
-       "p2": [
-        "f0954e3d-8664-4866-9068-0376232fa624",
-        "7f192790-9764-4085-999b-8140742dafbc"
-       ],
-       "n1": [
-        "Mika\u00ebl Gaumond",
-        "Kevin Wilson"
-       ],
-       "n2": [
-        "Elton Pang",
-        "Jagjot Khela"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         3,
-         2,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 2,
-       "round_text": "Round 16",
-       "match_no": 4,
-       "seed1": 8,
-       "seed2": 10,
-       "best_of": 3,
-       "p1": [
-        "7857d428-da6a-4fc1-a9c5-b34146e367c6",
-        "6af71579-421d-423b-a3f5-67c3cb460ecf"
-       ],
-       "p2": [
-        "6f3be491-e947-48e5-8ae0-cca7a5347bcb",
-        "d1cae50a-fc6e-4fcd-a968-e26048c36c67"
-       ],
-       "n1": [
-        "Vesper Castillo",
-        "Jamie Carmichael"
-       ],
-       "n2": [
-        "Kyle Hermetz",
-        "Xavier Richard"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         5,
-         11,
-         3,
-         0,
-         0
-        ],
-        [
-         11,
-         8,
-         11,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 2,
-       "round_text": "Round 16",
-       "match_no": 5,
-       "seed1": 4,
-       "seed2": 13,
-       "best_of": 3,
-       "p1": [
-        "93a85a33-42b0-46a1-a64c-268ec9098b2c",
-        "26b13d9f-ccab-497c-8e3a-68299be5ea70"
-       ],
-       "p2": [
-        "13f96392-08ed-48b0-aaf6-20563021588f",
-        "7212e0d0-3e4b-4062-a350-5440824c9ebc"
-       ],
-       "n1": [
-        "Dawson Davis",
-        "Daniel Phillips"
-       ],
-       "n2": [
-        "Matthew Kawamoto",
-        "Louis-Charles Amyot"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         12,
-         9,
-         11,
-         0,
-         0
-        ],
-        [
-         10,
-         11,
-         7,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 2,
-       "round_text": "Round 16",
-       "match_no": 6,
-       "seed1": 5,
-       "seed2": 11,
-       "best_of": 3,
-       "p1": [
-        "ea0b7d06-7e9f-4786-a4ed-24da5029559f",
-        "86e1b9d3-15ea-4b76-b488-d3135e78aa7c"
-       ],
-       "p2": [
-        "62b0999f-d610-4f68-9944-36e8580f346b",
-        "814bf77a-1430-4f64-82ac-ebd6e7f656f3"
-       ],
-       "n1": [
-        "Dale Kim",
-        "Wade Heerboth"
-       ],
-       "n2": [
-        "Coby Pearce",
-        "Thomas Dill"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         6,
-         8,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 2,
-       "round_text": "Round 16",
-       "match_no": 7,
-       "seed1": 7,
-       "seed2": 9,
-       "best_of": 3,
-       "p1": [
-        "b191bf5b-58d6-4232-ba55-1defadd14f79",
-        "77f2d09e-1f09-4be1-9e74-5944b02bfb05"
-       ],
-       "p2": [
-        "cca38e2d-faaf-4de4-b2e2-3b5aafc45f35",
-        "e978066b-18da-4a06-b190-c48fb704f34f"
-       ],
-       "n1": [
-        "Diego Lebron Perez",
-        "Trevor Schwarzmann"
-       ],
-       "n2": [
-        "Nathan Dover",
-        "Ashton Bradley"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         1,
-         3,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 2,
-       "round_text": "Round 16",
-       "match_no": 8,
-       "seed1": 6,
-       "seed2": 12,
-       "best_of": 3,
-       "p1": [
-        "c05ef886-c1d3-4b85-be8f-a880aea59da3",
-        "72781a5b-7e26-47ae-a581-625e4fa96099"
-       ],
-       "p2": [
-        "ac7b6b6b-6541-43b6-8576-25d659c8787d",
-        "30ea1f10-cfdb-4135-9ae6-fa4ff2849fa2"
-       ],
-       "n1": [
-        "Jonah Karczmer",
-        "Hudson De Risi"
-       ],
-       "n2": [
-        "Nolan Smyth",
-        "Marc St-Pierre"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         7,
-         11,
-         0,
-         0
-        ],
-        [
-         7,
-         11,
-         9,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 2,
-       "round_text": "Round 16",
-       "match_no": 9,
-       "seed1": 1,
-       "seed2": 16,
-       "best_of": 3,
-       "p1": [
-        "69633ccf-87be-4975-a578-53d6e166c91b",
-        "146dd2f7-7f5d-495d-b2f1-96d433742fec"
-       ],
-       "p2": [
-        "ba92032a-e5d5-4ec7-9417-a0b6878f3ccc",
-        "e0a39f07-1e8d-4099-b654-d05640fd5fa9"
-       ],
-       "n1": [
-        "Wil Shaffer",
-        "Eduardo Santini Ayon"
-       ],
-       "n2": [
-        "Adam Cheney",
-        "Kade Hendershot"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         8,
-         2,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 2,
-       "round_text": "Round 16",
-       "match_no": 10,
-       "seed1": 2,
-       "seed2": 19,
-       "best_of": 3,
-       "p1": [
-        "ecd31a05-120f-4373-b5c1-21136f8f0bf1",
-        "8a71d348-6401-4068-bedd-f4ed30460d2f"
-       ],
-       "p2": [
-        "1f614164-3ef6-40ed-93ba-323257c09c1a",
-        "3ec46da3-297e-4a39-8df6-481f7ab386ff"
-       ],
-       "n1": [
-        "Braden Jacobson",
-        "Andrew Caldarella"
-       ],
-       "n2": [
-        "Aaron Leonard",
-        "Ky Tuong Ly"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         0,
-         1,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 2,
-       "round_text": "Round 16",
-       "match_no": 11,
-       "seed1": 3,
-       "seed2": 15,
-       "best_of": 3,
-       "p1": [
-        "9a449e9c-69aa-4a48-8f28-217766ab25f7",
-        "dc69fcde-bcda-4441-8b66-a8bafeb12ded"
-       ],
-       "p2": [
-        "92e1da73-6d05-4c2d-9baa-2987cd838bd8",
-        "31736fab-3fc0-4829-b1cf-59d3c4062053"
-       ],
-       "n1": [
-        "Armaan Jiwa Mawji",
-        "Joel Poland"
-       ],
-       "n2": [
-        "Mika\u00ebl Gaumond",
-        "Kevin Wilson"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         3,
-         2,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 3,
-       "round_text": "Quarter Finals",
-       "match_no": 19,
-       "seed1": 4,
-       "seed2": 5,
-       "best_of": 3,
-       "p1": [
-        "93a85a33-42b0-46a1-a64c-268ec9098b2c",
-        "26b13d9f-ccab-497c-8e3a-68299be5ea70"
-       ],
-       "p2": [
-        "ea0b7d06-7e9f-4786-a4ed-24da5029559f",
-        "86e1b9d3-15ea-4b76-b488-d3135e78aa7c"
-       ],
-       "n1": [
-        "Dawson Davis",
-        "Daniel Phillips"
-       ],
-       "n2": [
-        "Dale Kim",
-        "Wade Heerboth"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         4,
-         7,
-         0,
-         0,
-         0
-        ],
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 3,
-       "round_text": "Quarter Finals",
-       "match_no": 20,
-       "seed1": 1,
-       "seed2": 10,
-       "best_of": 3,
-       "p1": [
-        "69633ccf-87be-4975-a578-53d6e166c91b",
-        "146dd2f7-7f5d-495d-b2f1-96d433742fec"
-       ],
-       "p2": [
-        "6f3be491-e947-48e5-8ae0-cca7a5347bcb",
-        "d1cae50a-fc6e-4fcd-a968-e26048c36c67"
-       ],
-       "n1": [
-        "Wil Shaffer",
-        "Eduardo Santini Ayon"
-       ],
-       "n2": [
-        "Kyle Hermetz",
-        "Xavier Richard"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         9,
-         11,
-         0,
-         0
-        ],
-        [
-         4,
-         11,
-         2,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 3,
-       "round_text": "Quarter Finals",
-       "match_no": 21,
-       "seed1": 2,
-       "seed2": 7,
-       "best_of": 3,
-       "p1": [
-        "ecd31a05-120f-4373-b5c1-21136f8f0bf1",
-        "8a71d348-6401-4068-bedd-f4ed30460d2f"
-       ],
-       "p2": [
-        "b191bf5b-58d6-4232-ba55-1defadd14f79",
-        "77f2d09e-1f09-4be1-9e74-5944b02bfb05"
-       ],
-       "n1": [
-        "Braden Jacobson",
-        "Andrew Caldarella"
-       ],
-       "n2": [
-        "Diego Lebron Perez",
-        "Trevor Schwarzmann"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         4,
-         5,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 3,
-       "round_text": "Quarter Finals",
-       "match_no": 22,
-       "seed1": 3,
-       "seed2": 6,
-       "best_of": 3,
-       "p1": [
-        "9a449e9c-69aa-4a48-8f28-217766ab25f7",
-        "dc69fcde-bcda-4441-8b66-a8bafeb12ded"
-       ],
-       "p2": [
-        "c05ef886-c1d3-4b85-be8f-a880aea59da3",
-        "72781a5b-7e26-47ae-a581-625e4fa96099"
-       ],
-       "n1": [
-        "Armaan Jiwa Mawji",
-        "Joel Poland"
-       ],
-       "n2": [
-        "Jonah Karczmer",
-        "Hudson De Risi"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         0,
-         8,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 4,
-       "round_text": "Semi-Finals",
-       "match_no": 29,
-       "seed1": 1,
-       "seed2": 5,
-       "best_of": 3,
-       "p1": [
-        "69633ccf-87be-4975-a578-53d6e166c91b",
-        "146dd2f7-7f5d-495d-b2f1-96d433742fec"
-       ],
-       "p2": [
-        "ea0b7d06-7e9f-4786-a4ed-24da5029559f",
-        "86e1b9d3-15ea-4b76-b488-d3135e78aa7c"
-       ],
-       "n1": [
-        "Wil Shaffer",
-        "Eduardo Santini Ayon"
-       ],
-       "n2": [
-        "Dale Kim",
-        "Wade Heerboth"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         8,
-         9,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 4,
-       "round_text": "Semi-Finals",
-       "match_no": 30,
-       "seed1": 2,
-       "seed2": 3,
-       "best_of": 3,
-       "p1": [
-        "ecd31a05-120f-4373-b5c1-21136f8f0bf1",
-        "8a71d348-6401-4068-bedd-f4ed30460d2f"
-       ],
-       "p2": [
-        "9a449e9c-69aa-4a48-8f28-217766ab25f7",
-        "dc69fcde-bcda-4441-8b66-a8bafeb12ded"
-       ],
-       "n1": [
-        "Braden Jacobson",
-        "Andrew Caldarella"
-       ],
-       "n2": [
-        "Armaan Jiwa Mawji",
-        "Joel Poland"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         11,
-         0,
-         0,
-         0
-        ],
-        [
-         7,
-         5,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 5,
-       "round_text": "Finals",
-       "match_no": 34,
-       "seed1": 1,
-       "seed2": 2,
-       "best_of": 3,
-       "p1": [
-        "69633ccf-87be-4975-a578-53d6e166c91b",
-        "146dd2f7-7f5d-495d-b2f1-96d433742fec"
-       ],
-       "p2": [
-        "ecd31a05-120f-4373-b5c1-21136f8f0bf1",
-        "8a71d348-6401-4068-bedd-f4ed30460d2f"
-       ],
-       "n1": [
-        "Wil Shaffer",
-        "Eduardo Santini Ayon"
-       ],
-       "n2": [
-        "Braden Jacobson",
-        "Andrew Caldarella"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         4,
-         11,
-         6,
-         0,
-         0
-        ],
-        [
-         11,
-         8,
-         11,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 6,
-       "round_text": "Bronze",
-       "match_no": 33,
-       "seed1": 3,
-       "seed2": 5,
-       "best_of": 3,
-       "p1": [
-        "9a449e9c-69aa-4a48-8f28-217766ab25f7",
-        "dc69fcde-bcda-4441-8b66-a8bafeb12ded"
-       ],
-       "p2": [
-        "ea0b7d06-7e9f-4786-a4ed-24da5029559f",
-        "86e1b9d3-15ea-4b76-b488-d3135e78aa7c"
-       ],
-       "n1": [
-        "Armaan Jiwa Mawji",
-        "Joel Poland"
-       ],
-       "n2": [
-        "Dale Kim",
-        "Wade Heerboth"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         11,
-         12,
-         0,
-         0,
-         0
-        ],
-        [
-         4,
-         10,
-         0,
-         0,
-         0
-        ]
-       ]
-      }
-     ]
-    },
     {
      "title": "Pro Mixed Doubles",
      "matches": [
@@ -1441,179 +920,6 @@
         [
          10,
          0,
-         0,
-         0,
-         0
-        ]
-       ]
-      }
-     ]
-    },
-    {
-     "title": "Pro Women's Doubles",
-     "matches": [
-      {
-       "round": 1,
-       "round_text": "Semi-Finals",
-       "match_no": 1,
-       "seed1": 3,
-       "seed2": 4,
-       "best_of": 1,
-       "p1": [
-        "cdb01e3a-b0e0-449b-a7c5-278127f2cd61",
-        "37a2a373-8d3e-4177-bf1b-e6c9eaa52f5e"
-       ],
-       "p2": [
-        "420727ea-c560-4737-b9c0-5e44bdd36c88",
-        "b29911d0-207c-41c7-b526-e24c7530f02b"
-       ],
-       "n1": [
-        "Mary McGowan",
-        "Natalia Simson"
-       ],
-       "n2": [
-        "Marie-Claude Boisvert-B\u00e9gin",
-        "Marie-Pier Huet"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         15,
-         0,
-         0,
-         0,
-         0
-        ],
-        [
-         3,
-         0,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 1,
-       "round_text": "Semi-Finals",
-       "match_no": 2,
-       "seed1": 1,
-       "seed2": 2,
-       "best_of": 1,
-       "p1": [
-        "f6e249dc-5bb9-483a-a99f-df364df93341",
-        "34270d82-e968-407d-a918-8aa57f0123a6"
-       ],
-       "p2": [
-        "266a0e82-ac0c-4b4f-b5b6-28e5d27c102f",
-        "6adb8550-39b0-4945-92bd-6b96cb62831f"
-       ],
-       "n1": [
-        "Kelly Goodnow",
-        "Elsie Hendershot"
-       ],
-       "n2": [
-        "Jessica Kawamoto",
-        "Tara Di Giuseppe"
-       ],
-       "winner": 1,
-       "completed_type": 5,
-       "scores": [
-        [
-         15,
-         0,
-         0,
-         0,
-         0
-        ],
-        [
-         9,
-         0,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 2,
-       "round_text": "Finals",
-       "match_no": 4,
-       "seed1": 3,
-       "seed2": 1,
-       "best_of": 3,
-       "p1": [
-        "cdb01e3a-b0e0-449b-a7c5-278127f2cd61",
-        "37a2a373-8d3e-4177-bf1b-e6c9eaa52f5e"
-       ],
-       "p2": [
-        "f6e249dc-5bb9-483a-a99f-df364df93341",
-        "34270d82-e968-407d-a918-8aa57f0123a6"
-       ],
-       "n1": [
-        "Mary McGowan",
-        "Natalia Simson"
-       ],
-       "n2": [
-        "Kelly Goodnow",
-        "Elsie Hendershot"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         9,
-         10,
-         0,
-         0,
-         0
-        ],
-        [
-         11,
-         12,
-         0,
-         0,
-         0
-        ]
-       ]
-      },
-      {
-       "round": 3,
-       "round_text": "Bronze",
-       "match_no": 3,
-       "seed1": 4,
-       "seed2": 2,
-       "best_of": 3,
-       "p1": [
-        "420727ea-c560-4737-b9c0-5e44bdd36c88",
-        "b29911d0-207c-41c7-b526-e24c7530f02b"
-       ],
-       "p2": [
-        "266a0e82-ac0c-4b4f-b5b6-28e5d27c102f",
-        "6adb8550-39b0-4945-92bd-6b96cb62831f"
-       ],
-       "n1": [
-        "Marie-Claude Boisvert-B\u00e9gin",
-        "Marie-Pier Huet"
-       ],
-       "n2": [
-        "Jessica Kawamoto",
-        "Tara Di Giuseppe"
-       ],
-       "winner": 2,
-       "completed_type": 5,
-       "scores": [
-        [
-         6,
-         1,
-         0,
-         0,
-         0
-        ],
-        [
-         11,
-         11,
          0,
          0,
          0
