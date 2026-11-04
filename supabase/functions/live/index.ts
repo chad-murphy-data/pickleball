@@ -80,7 +80,12 @@ const isMlpLeague = (tl: J) =>
 
 function isPpaTournament(t: J) {
   const title = t.Title || t.title || "";
-  const email = (t.RegistrationContactEmail || t.registrationContactEmail || "").toLowerCase();
+  // Every ContactForm* field, as harvest.is_ppa_tournament reads them. The
+  // API has no RegistrationContactEmail, so reading only that left the
+  // title regex as the sole gate and dropped PPA events without "PPA" in
+  // the title (2026 Opendoor Pickleball World Championships).
+  const email = Object.keys(t).filter((k) => k.startsWith("ContactForm"))
+    .map((k) => String(t[k] ?? "")).join(" ").toLowerCase();
   if (/australia|asia|college/i.test(title)) return false;
   return email.includes("ppatour.com") || /\bPPA\b/.test(title);
 }

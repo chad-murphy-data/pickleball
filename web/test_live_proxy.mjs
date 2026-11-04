@@ -13,7 +13,10 @@ import assert from "node:assert/strict";
 
 const FMT_MAX_LOOKUPS = 20;   // mirrors the constant in live.mjs
 
-const T = { TournamentID: "t-1", Title: "PPA Tour: Test Open", RegistrationContactEmail: "ops@ppatour.com" };
+// No "PPA" in the title: discovery must admit it on the ContactForm* emails
+// alone, as the API serves them (2026 Worlds regression).
+const T = { TournamentID: "t-1", Title: "2026 Test Pickleball World Championships",
+  ContactFormRegistration: "worlds@ppatour.com", ContactFormPublicDisplayEmail: "" };
 const EVENTS = [
   { uuid: "e-md", title: "Mens Doubles Pro Main Draw" },
   { uuid: "e-wd", title: "Womens Doubles Pro Main Draw" },
