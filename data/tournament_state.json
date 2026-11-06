@@ -1,117 +1,9 @@
 {
- "generated": "2026-11-05",
+ "generated": "2026-11-06",
  "mlp": {
   "group": "90442752-2dc4-426b-ab12-95316b0dfeac",
   "event": "Nations Cup",
   "completed": [
-   {
-    "uuid": "c2b55ebc-fafa-4d32-b697-cc66c9b93771",
-    "date": "2026-10-30",
-    "start": "2026-10-30T15:00:00Z",
-    "team1": "Asia International",
-    "team2": "Australia",
-    "abbr1": "ASINT",
-    "abbr2": "AUS",
-    "pool": "c68664c1",
-    "bracket": "RR",
-    "round": "Round 1",
-    "mnum": 2,
-    "games1": 1,
-    "games2": 3,
-    "pts1": 33,
-    "pts2": 45,
-    "winner": 2
-   },
-   {
-    "uuid": "64922b24-8e63-405d-b723-abe163aecb55",
-    "date": "2026-10-30",
-    "start": "2026-10-30T16:30:00Z",
-    "team1": "Latin America",
-    "team2": "Europe East",
-    "abbr1": "LA",
-    "abbr2": "EURE",
-    "pool": "c68664c1",
-    "bracket": "RR",
-    "round": "Round 1",
-    "mnum": 1,
-    "games1": 0,
-    "games2": 3,
-    "pts1": 21,
-    "pts2": 33,
-    "winner": 2
-   },
-   {
-    "uuid": "86bc4a49-350f-4326-9424-4469029475d9",
-    "date": "2026-10-30",
-    "start": "2026-10-30T18:00:00Z",
-    "team1": "Asia Domestic",
-    "team2": "Europe West",
-    "abbr1": "ASD",
-    "abbr2": "EURW",
-    "pool": "da96b09b",
-    "bracket": "RR",
-    "round": "Round 1",
-    "mnum": 2,
-    "games1": 3,
-    "games2": 1,
-    "pts1": 37,
-    "pts2": 30,
-    "winner": 1
-   },
-   {
-    "uuid": "2a006939-0034-4405-8780-17262aa6c640",
-    "date": "2026-10-30",
-    "start": "2026-10-30T19:30:00Z",
-    "team1": "USA",
-    "team2": "Canada",
-    "abbr1": "USA",
-    "abbr2": "CAN",
-    "pool": "da96b09b",
-    "bracket": "RR",
-    "round": "Round 1",
-    "mnum": 1,
-    "games1": 3,
-    "games2": 1,
-    "pts1": 38,
-    "pts2": 16,
-    "winner": 1
-   },
-   {
-    "uuid": "6909d8a4-720f-4f39-969e-caa9f485b34f",
-    "date": "2026-10-30",
-    "start": "2026-10-30T21:00:00Z",
-    "team1": "Europe East",
-    "team2": "Australia",
-    "abbr1": "EURE",
-    "abbr2": "AUS",
-    "pool": "c68664c1",
-    "bracket": "RR",
-    "round": "Round 2",
-    "mnum": 4,
-    "games1": 1,
-    "games2": 3,
-    "pts1": 26,
-    "pts2": 40,
-    "winner": 2
-   },
-   {
-    "uuid": "365f6d7a-17e3-45a2-8d36-51430c80ffe4",
-    "date": "2026-10-30",
-    "start": "2026-10-30T22:30:00Z",
-    "team1": "Canada",
-    "team2": "Asia Domestic",
-    "abbr1": "CAN",
-    "abbr2": "ASD",
-    "pool": "da96b09b",
-    "bracket": "RR",
-    "round": "Round 2",
-    "mnum": 3,
-    "games1": 0,
-    "games2": 3,
-    "pts1": 19,
-    "pts2": 34,
-    "winner": 2
-   },
    {
     "uuid": "b1c4ecea-266d-4ba6-ab24-229f5341b314",
     "date": "2026-10-31",
@@ -278,31 +170,31 @@
   "remaining": [],
   "matrix": {
    "Asia Domestic|Asia International": {
-    "p_win": 0.8897,
+    "p_win": 0.8884,
     "p_40": 0.4043,
     "p_31": 0.4224,
     "p_db": 0.151,
     "p_13": 0.0213,
     "p_04": 0.001,
-    "p_db_win": 0.4174
+    "p_db_win": 0.4086
    },
    "Asia Domestic|Australia": {
-    "p_win": 0.6046,
+    "p_win": 0.604,
     "p_40": 0.0874,
     "p_31": 0.3216,
     "p_db": 0.3814,
     "p_13": 0.1807,
     "p_04": 0.029,
-    "p_db_win": 0.5132
+    "p_db_win": 0.5116
    },
    "Asia Domestic|Canada": {
-    "p_win": 0.8245,
+    "p_win": 0.8241,
     "p_40": 0.2603,
     "p_31": 0.431,
     "p_db": 0.2465,
     "p_13": 0.0575,
     "p_04": 0.0047,
-    "p_db_win": 0.5405
+    "p_db_win": 0.5389
    },
    "Asia Domestic|Europe East": {
     "p_win": 0.4118,
@@ -314,22 +206,22 @@
     "p_db_win": 0.5047
    },
    "Asia Domestic|Europe West": {
-    "p_win": 0.6459,
+    "p_win": 0.6451,
     "p_40": 0.1022,
     "p_31": 0.3254,
     "p_db": 0.3668,
     "p_13": 0.1754,
     "p_04": 0.0301,
-    "p_db_win": 0.5949
+    "p_db_win": 0.5929
    },
    "Asia Domestic|Latin America": {
-    "p_win": 0.1915,
+    "p_win": 0.1912,
     "p_40": 0.0065,
     "p_31": 0.0677,
     "p_db": 0.256,
     "p_13": 0.419,
     "p_04": 0.2507,
-    "p_db_win": 0.458
+    "p_db_win": 0.4569
    },
    "Asia Domestic|USA": {
     "p_win": 0.0348,
@@ -341,49 +233,49 @@
     "p_db_win": 0.3637
    },
    "Asia International|Australia": {
-    "p_win": 0.205,
+    "p_win": 0.2068,
     "p_40": 0.0019,
     "p_31": 0.0463,
     "p_db": 0.2633,
     "p_13": 0.4624,
     "p_04": 0.2261,
-    "p_db_win": 0.5955
+    "p_db_win": 0.6026
    },
    "Asia International|Canada": {
-    "p_win": 0.3986,
+    "p_win": 0.4011,
     "p_40": 0.0157,
     "p_31": 0.1464,
     "p_db": 0.3802,
     "p_13": 0.3576,
     "p_04": 0.1,
-    "p_db_win": 0.6218
+    "p_db_win": 0.6284
    },
    "Asia International|Europe East": {
-    "p_win": 0.0796,
+    "p_win": 0.0806,
     "p_40": 0.0004,
     "p_31": 0.0121,
     "p_db": 0.1142,
     "p_13": 0.4071,
     "p_04": 0.4662,
-    "p_db_win": 0.5872
+    "p_db_win": 0.596
    },
    "Asia International|Europe West": {
-    "p_win": 0.2183,
+    "p_win": 0.2198,
     "p_40": 0.0025,
     "p_31": 0.0469,
     "p_db": 0.2509,
     "p_13": 0.4514,
     "p_04": 0.2483,
-    "p_db_win": 0.6734
+    "p_db_win": 0.6791
    },
    "Asia International|Latin America": {
-    "p_win": 0.0198,
+    "p_win": 0.0201,
     "p_40": 0.0,
     "p_31": 0.0019,
     "p_db": 0.0331,
     "p_13": 0.2542,
     "p_04": 0.7108,
-    "p_db_win": 0.541
+    "p_db_win": 0.5489
    },
    "Asia International|USA": {
     "p_win": 0.0106,
@@ -392,7 +284,7 @@
     "p_db": 0.0094,
     "p_13": 0.1651,
     "p_04": 0.8253,
-    "p_db_win": 0.4449
+    "p_db_win": 0.4532
    },
    "Australia|Canada": {
     "p_win": 0.7595,
@@ -404,31 +296,31 @@
     "p_db_win": 0.5274
    },
    "Australia|Europe East": {
-    "p_win": 0.3291,
+    "p_win": 0.3297,
     "p_40": 0.0155,
     "p_31": 0.1334,
     "p_db": 0.3667,
     "p_13": 0.3652,
     "p_04": 0.1192,
-    "p_db_win": 0.4916
+    "p_db_win": 0.4932
    },
    "Australia|Europe West": {
-    "p_win": 0.5539,
+    "p_win": 0.5537,
     "p_40": 0.0689,
     "p_31": 0.2653,
     "p_db": 0.3773,
     "p_13": 0.2347,
     "p_04": 0.0538,
-    "p_db_win": 0.5821
+    "p_db_win": 0.5816
    },
    "Australia|Latin America": {
-    "p_win": 0.147,
+    "p_win": 0.1473,
     "p_40": 0.0023,
     "p_31": 0.0417,
     "p_db": 0.2319,
     "p_13": 0.4652,
     "p_04": 0.2589,
-    "p_db_win": 0.4444
+    "p_db_win": 0.4454
    },
    "Australia|USA": {
     "p_win": 0.0189,
@@ -437,25 +329,25 @@
     "p_db": 0.0446,
     "p_13": 0.2827,
     "p_04": 0.6695,
-    "p_db_win": 0.3513
+    "p_db_win": 0.3528
    },
    "Canada|Europe East": {
-    "p_win": 0.1286,
+    "p_win": 0.1289,
     "p_40": 0.0023,
     "p_31": 0.0358,
     "p_db": 0.1949,
     "p_13": 0.4319,
     "p_04": 0.335,
-    "p_db_win": 0.4642
+    "p_db_win": 0.4658
    },
    "Canada|Europe West": {
-    "p_win": 0.2921,
+    "p_win": 0.292,
     "p_40": 0.0137,
     "p_31": 0.107,
     "p_db": 0.3089,
     "p_13": 0.3896,
     "p_04": 0.1809,
-    "p_db_win": 0.5551
+    "p_db_win": 0.5546
    },
    "Canada|Latin America": {
     "p_win": 0.0437,
@@ -464,7 +356,7 @@
     "p_db": 0.0863,
     "p_13": 0.3834,
     "p_04": 0.5226,
-    "p_db_win": 0.4179
+    "p_db_win": 0.4184
    },
    "Canada|USA": {
     "p_win": 0.0106,
@@ -473,25 +365,25 @@
     "p_db": 0.0107,
     "p_13": 0.1562,
     "p_04": 0.8328,
-    "p_db_win": 0.3266
+    "p_db_win": 0.3281
    },
    "Europe East|Europe West": {
-    "p_win": 0.7293,
+    "p_win": 0.7286,
     "p_40": 0.1453,
     "p_31": 0.3826,
     "p_db": 0.3411,
     "p_13": 0.118,
     "p_04": 0.0129,
-    "p_db_win": 0.5903
+    "p_db_win": 0.5883
    },
    "Europe East|Latin America": {
-    "p_win": 0.2743,
+    "p_win": 0.2742,
     "p_40": 0.0127,
     "p_31": 0.1112,
     "p_db": 0.3322,
     "p_13": 0.3888,
     "p_04": 0.155,
-    "p_db_win": 0.4527
+    "p_db_win": 0.4522
    },
    "Europe East|USA": {
     "p_win": 0.0607,
@@ -503,31 +395,31 @@
     "p_db_win": 0.3592
    },
    "Europe West|Latin America": {
-    "p_win": 0.1188,
+    "p_win": 0.119,
     "p_40": 0.0024,
     "p_31": 0.0391,
     "p_db": 0.2121,
     "p_13": 0.4463,
     "p_04": 0.3001,
-    "p_db_win": 0.3647
+    "p_db_win": 0.3657
    },
    "Europe West|USA": {
-    "p_win": 0.0146,
+    "p_win": 0.0147,
     "p_40": 0.0001,
     "p_31": 0.0028,
     "p_db": 0.0422,
     "p_13": 0.2776,
     "p_04": 0.6773,
-    "p_db_win": 0.2786
+    "p_db_win": 0.2799
    },
    "Latin America|USA": {
-    "p_win": 0.1755,
+    "p_win": 0.1756,
     "p_40": 0.0041,
     "p_31": 0.0618,
     "p_db": 0.271,
     "p_13": 0.4396,
     "p_04": 0.2236,
-    "p_db_win": 0.4045
+    "p_db_win": 0.4051
    }
   }
  },
@@ -539,7 +431,8 @@
     "2026-11-02",
     "2026-11-03",
     "2026-11-04",
-    "2026-11-05"
+    "2026-11-05",
+    "2026-11-06"
    ],
    "divisions": [
     {
@@ -2500,19 +2393,19 @@
         "Christopher Crouch",
         "Anouar Braham"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         1,
+         9,
          0,
          0,
          0
@@ -2542,19 +2435,19 @@
         "Eunggwon Kim",
         "Hong Kit Wong"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         6,
+         7,
          0,
          0,
          0
@@ -2584,19 +2477,19 @@
         "Pablo Tellez",
         "Roscoe Bellamy"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         4,
+         1,
          0,
          0,
          0
@@ -2626,20 +2519,20 @@
         "Will Mackinnon",
         "Hunter Johnson"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         3,
+         11,
+         3,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         11,
+         7,
+         11,
          0,
          0
         ]
@@ -2668,19 +2561,19 @@
         "Dekel Bar",
         "Wyatt Stone"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         4,
+         3,
          0,
          0,
          0
@@ -2710,20 +2603,20 @@
         "Augustus Ge",
         "Jack Sock"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         2,
+         11,
+         11,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         11,
+         8,
+         7,
          0,
          0
         ]
@@ -2752,19 +2645,19 @@
         "Matt Wright",
         "John Lucian Goins"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         5,
+         6,
          0,
          0,
          0
@@ -2793,6 +2686,174 @@
        "n2": [
         "Rafa Hewett",
         "Luc Pham"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         11,
+         11,
+         0,
+         0
+        ],
+        [
+         13,
+         0,
+         4,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 55,
+       "seed1": 1,
+       "seed2": 6,
+       "best_of": 3,
+       "p1": [
+        "6f862c1d-1317-4fe7-bdcd-64caa0dbb088",
+        "d50310a6-9378-4228-823f-7fb54f7bd698"
+       ],
+       "p2": [
+        "ff38654d-daae-4bad-a1a7-690e4e5706eb",
+        "1de884f8-7bf7-4b49-9de8-3f1fd74cabd6"
+       ],
+       "n1": [
+        "Ben Johns",
+        "Gabriel Tardio"
+       ],
+       "n2": [
+        "Connor Garnett",
+        "Dylan Frazier"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 56,
+       "seed1": 3,
+       "seed2": 18,
+       "best_of": 3,
+       "p1": [
+        "581183e8-3d9e-459e-b69f-7337d8b6f3d2",
+        "79a11da1-6aeb-4719-9b1e-9918e0163cec"
+       ],
+       "p2": [
+        "81535c8c-27d9-452c-a72a-61fc9f755b01",
+        "8160ad59-4654-46b1-b229-8d5f2a9a45f9"
+       ],
+       "n1": [
+        "Andrei Daescu",
+        "Christian Alshon"
+       ],
+       "n2": [
+        "Will Mackinnon",
+        "Hunter Johnson"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 57,
+       "seed1": 2,
+       "seed2": 5,
+       "best_of": 3,
+       "p1": [
+        "7edb882c-6d17-4129-8208-710e3c82364c",
+        "fc05556e-3e38-4a38-99c2-f855174a7c28"
+       ],
+       "p2": [
+        "ead35052-7367-4296-96d4-064f546cc2b9",
+        "52690a0c-ed4a-4e0b-bf69-4ef416cf7d55"
+       ],
+       "n1": [
+        "Federico Staksrud",
+        "Hayden Patriquin"
+       ],
+       "n2": [
+        "CJ Klinger",
+        "Eric Oncins"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 58,
+       "seed1": 4,
+       "seed2": 7,
+       "best_of": 3,
+       "p1": [
+        "4af4d4d1-9f87-4dc7-95f2-b10751d44c15",
+        "bd061b42-2f82-4bbe-82be-d8bcfb37f9e1"
+       ],
+       "p2": [
+        "05b194b3-db88-4f77-a26f-5ef5cfbf6146",
+        "1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4"
+       ],
+       "n1": [
+        "Tama Shimabukuro",
+        "JW Johnson"
+       ],
+       "n2": [
+        "Riley Newman",
+        "Noe Khlif"
        ],
        "winner": 0,
        "completed_type": 1,
@@ -6374,19 +6435,19 @@
         "Lacy Schneemann",
         "Jack Sock"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         2,
+         8,
          0,
          0,
          0
@@ -6416,20 +6477,20 @@
         "Sahra Dennehy",
         "Tama Shimabukuro"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         5,
+         11,
+         6,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         11,
+         6,
+         11,
          0,
          0
         ]
@@ -6458,19 +6519,19 @@
         "CJ Klinger",
         "Danni-Elle Townsend"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         3,
+         8,
          0,
          0,
          0
@@ -6500,19 +6561,19 @@
         "Mari Humberg",
         "Pablo Tellez"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         1,
+         8,
          0,
          0,
          0
@@ -6542,19 +6603,19 @@
         "Mohaned Alhouni",
         "Lina Padegimaite"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
          0,
-         0,
+         4,
          0,
          0,
          0
@@ -6584,20 +6645,20 @@
         "Tina Pisnik",
         "Noe Khlif"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         12,
+         10,
+         11,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         10,
+         12,
+         3,
          0,
          0
         ]
@@ -6626,19 +6687,19 @@
         "Riley Newman",
         "Layne Sleeth"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         9,
+         3,
          0,
          0,
          0
@@ -6667,6 +6728,174 @@
        "n2": [
         "Dylan Frazier",
         "Kaitlyn Christian"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ],
+        [
+         5,
+         8,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 57,
+       "seed1": 1,
+       "seed2": 11,
+       "best_of": 3,
+       "p1": [
+        "6f862c1d-1317-4fe7-bdcd-64caa0dbb088",
+        "129b2771-34b5-4b7f-9c23-e020a6aa3e6a"
+       ],
+       "p2": [
+        "051f5c82-82ce-4ab8-b4f8-36976638a89b",
+        "4af4d4d1-9f87-4dc7-95f2-b10751d44c15"
+       ],
+       "n1": [
+        "Ben Johns",
+        "Anna Leigh Waters"
+       ],
+       "n2": [
+        "Sahra Dennehy",
+        "Tama Shimabukuro"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 58,
+       "seed1": 4,
+       "seed2": 5,
+       "best_of": 3,
+       "p1": [
+        "50908953-a944-4a34-898b-16af312bc814",
+        "79a11da1-6aeb-4719-9b1e-9918e0163cec"
+       ],
+       "p2": [
+        "fec65f7e-f2c8-482f-ab5b-541cf53b1064",
+        "d50310a6-9378-4228-823f-7fb54f7bd698"
+       ],
+       "n1": [
+        "Rachel Rohrabacher",
+        "Christian Alshon"
+       ],
+       "n2": [
+        "Tyra Hurricane Black",
+        "Gabriel Tardio"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 59,
+       "seed1": 2,
+       "seed2": 6,
+       "best_of": 3,
+       "p1": [
+        "db5eef5c-99dd-49d9-bbfc-65171a366bda",
+        "fc05556e-3e38-4a38-99c2-f855174a7c28"
+       ],
+       "p2": [
+        "1728d016-1f02-4789-be73-63d12d5a5b42",
+        "581183e8-3d9e-459e-b69f-7337d8b6f3d2"
+       ],
+       "n1": [
+        "Anna Bright",
+        "Hayden Patriquin"
+       ],
+       "n2": [
+        "Parris Todd",
+        "Andrei Daescu"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 60,
+       "seed1": 3,
+       "seed2": 8,
+       "best_of": 3,
+       "p1": [
+        "b51ea0fb-c243-4427-85f8-b798febb51ff",
+        "bd061b42-2f82-4bbe-82be-d8bcfb37f9e1"
+       ],
+       "p2": [
+        "9b97206b-783a-4fab-85e9-45a6240325a5",
+        "52690a0c-ed4a-4e0b-bf69-4ef416cf7d55"
+       ],
+       "n1": [
+        "Jorja Johnson",
+        "JW Johnson"
+       ],
+       "n2": [
+        "Catherine Parenteau",
+        "Eric Oncins"
        ],
        "winner": 0,
        "completed_type": 1,
@@ -10416,18 +10645,18 @@
         "Christa Gecheva",
         "Lina Padegimaite"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
+         3,
          0,
          0,
          0,
@@ -10458,20 +10687,20 @@
         "Chao Yi Wang",
         "Layne Sleeth"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         5,
+         11,
+         5,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         11,
+         4,
+         11,
          0,
          0
         ]
@@ -10500,19 +10729,19 @@
         "Victoria Dimuzio",
         "Zoey Weil"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         1,
+         1,
          0,
          0,
          0
@@ -10542,20 +10771,20 @@
         "Brooke Buckner",
         "Kaitlyn Christian"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         11,
+         10,
+         6,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         6,
+         12,
+         11,
          0,
          0
         ]
@@ -10584,19 +10813,19 @@
         "Genie Erokhina",
         "Kiora Kunimoto"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         8,
+         7,
          0,
          0,
          0
@@ -10626,20 +10855,20 @@
         "Sahra Dennehy",
         "Danni-Elle Townsend"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         11,
+         7,
+         11,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         7,
+         11,
+         2,
          0,
          0
         ]
@@ -10668,20 +10897,20 @@
         "Carlota Trevino",
         "Isabella Dunlap"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         11,
+         11,
+         11,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         13,
+         3,
+         4,
          0,
          0
         ]
@@ -10705,6 +10934,174 @@
        "n1": [
         "Lacy Schneemann",
         "Ting Chieh Wei"
+       ],
+       "n2": [
+        "Mari Humberg",
+        "Milan Rane"
+       ],
+       "winner": 2,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         7,
+         6,
+         0,
+         0
+        ],
+        [
+         8,
+         11,
+         11,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 41,
+       "seed1": 1,
+       "seed2": 11,
+       "best_of": 3,
+       "p1": [
+        "db5eef5c-99dd-49d9-bbfc-65171a366bda",
+        "129b2771-34b5-4b7f-9c23-e020a6aa3e6a"
+       ],
+       "p2": [
+        "20684550-cb89-4ea2-9e2f-0f44eb920b45",
+        "55ed7e0a-ff2d-4ac2-aad6-b6772ef4f448"
+       ],
+       "n1": [
+        "Anna Bright",
+        "Anna Leigh Waters"
+       ],
+       "n2": [
+        "Chao Yi Wang",
+        "Layne Sleeth"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 42,
+       "seed1": 3,
+       "seed2": 12,
+       "best_of": 3,
+       "p1": [
+        "50908953-a944-4a34-898b-16af312bc814",
+        "1728d016-1f02-4789-be73-63d12d5a5b42"
+       ],
+       "p2": [
+        "06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf",
+        "66a6c35b-33a2-4a23-b5db-fa53c96d643a"
+       ],
+       "n1": [
+        "Rachel Rohrabacher",
+        "Parris Todd"
+       ],
+       "n2": [
+        "Brooke Buckner",
+        "Kaitlyn Christian"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 43,
+       "seed1": 2,
+       "seed2": 5,
+       "best_of": 3,
+       "p1": [
+        "fec65f7e-f2c8-482f-ab5b-541cf53b1064",
+        "b51ea0fb-c243-4427-85f8-b798febb51ff"
+       ],
+       "p2": [
+        "b9bacc1e-29b5-4a92-a9c1-24e08ac72215",
+        "9b97206b-783a-4fab-85e9-45a6240325a5"
+       ],
+       "n1": [
+        "Tyra Hurricane Black",
+        "Jorja Johnson"
+       ],
+       "n2": [
+        "Sofia Sewing",
+        "Catherine Parenteau"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 4,
+       "round_text": "Quarter Finals",
+       "match_no": 44,
+       "seed1": 4,
+       "seed2": 9,
+       "best_of": 3,
+       "p1": [
+        "3af01041-5679-400a-87b8-12c01db8cec4",
+        "f879086b-e0e5-4772-b0a6-4055c265da69"
+       ],
+       "p2": [
+        "b1ab7d76-a859-4136-8405-3ed7c9be287a",
+        "eb14fc6e-ede1-4999-bec3-e36695e7f94e"
+       ],
+       "n1": [
+        "Kate Fahey",
+        "Tina Pisnik"
        ],
        "n2": [
         "Mari Humberg",
