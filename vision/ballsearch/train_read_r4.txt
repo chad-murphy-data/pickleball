@@ -1,0 +1,14 @@
+rally 4 TRAIN READ: 379 V/S clicks, decode@12 167/379; path-first cell {'p_seed': 0.4, 's_min': 6.0, 'gap': 6} (p-cache ''), gap fill v2 {'gap_max': 0.8, 'd_meet': 40.0}
+  path-first: hyp 806 kept 32 flights 32 selected 16
+  path-first   trackpts  598  at-click 278/379  r@8 263  r@12 266  r@20 274  prec@12 0.96  ADDED@12 104
+    pf[V]      trackpts  598  at-click 190/273  r@8 183  r@12 186  r@20 190  prec@12 0.98  ADDED@12 83
+    pf[S]      trackpts  598  at-click 88/106  r@8 80  r@12 80  r@20 84  prec@12 0.91  ADDED@12 21
+  null-disp    trackpts  598  at-click 278/379  r@8 0  r@12 0  r@20 0  prec@12 0.00  ADDED@12 0
+  null-tshift  trackpts  598  at-click 237/379  r@8 0  r@12 2  r@20 5  prec@12 0.01  ADDED@12 1
+  gap fill v2: tracked half bit-identical to path-first: True; inferred frames 52
+  tracked+inf  trackpts  650  at-click 296/379  r@8 273  r@12 275  r@20 282  prec@12 0.93  ADDED@12 113
+  inferred     trackpts   52  at-click 27/379  r@8 13  r@12 13  r@20 17  prec@12 0.48  ADDED@12 11
+  inferred nulls: displaced 0  time-shift 0
+NOTE: rally 4 has no manual contacts — buckets use its 16 PREFILL contacts (approximate times, folded types)
+-- misses by contact type (16 manual contacts, clicks assigned within +-0.30 s; 'middle' = no contact that close)
+    bucket      n   pf-hit  pf-miss  no-pt | +fill-hit
