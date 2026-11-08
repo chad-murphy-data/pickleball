@@ -1,122 +1,6 @@
 {
- "generated": "2026-11-07",
- "mlp": {
-  "group": "90442752-2dc4-426b-ab12-95316b0dfeac",
-  "event": "Nations Cup",
-  "completed": [
-   {
-    "uuid": "890d97b9-7dae-4ec5-951b-56e2464ea65e",
-    "date": "2026-11-01",
-    "start": "2026-11-01T16:00:00Z",
-    "team1": "Latin America",
-    "team2": "Asia Domestic",
-    "abbr1": "LA",
-    "abbr2": "ASD",
-    "pool": "85fc855d",
-    "bracket": "W",
-    "round": "Semi-Finals",
-    "mnum": 2,
-    "games1": 3,
-    "games2": 1,
-    "pts1": 42,
-    "pts2": 20,
-    "winner": 1
-   },
-   {
-    "uuid": "8f5a5d08-e0b9-4cb2-8d14-e1be74842fce",
-    "date": "2026-11-01",
-    "start": "2026-11-01T17:30:00Z",
-    "team1": "USA",
-    "team2": "Europe East",
-    "abbr1": "USA",
-    "abbr2": "EURE",
-    "pool": "85fc855d",
-    "bracket": "W",
-    "round": "Semi-Finals",
-    "mnum": 1,
-    "games1": 3,
-    "games2": 1,
-    "pts1": 45,
-    "pts2": 30,
-    "winner": 1
-   },
-   {
-    "uuid": "878f69d5-c2b4-410b-b9e8-57dc2f97ea98",
-    "date": "2026-11-01",
-    "start": "2026-11-01T20:00:00Z",
-    "team1": "Latin America",
-    "team2": "USA",
-    "abbr1": "LA",
-    "abbr2": "USA",
-    "pool": "85fc855d",
-    "bracket": "GS",
-    "round": "Finals",
-    "mnum": 1,
-    "games1": 0,
-    "games2": 3,
-    "pts1": 16,
-    "pts2": 33,
-    "winner": 2
-   }
-  ],
-  "remaining": [],
-  "matrix": {
-   "Asia Domestic|Europe East": {
-    "p_win": 0.412,
-    "p_40": 0.0301,
-    "p_31": 0.1878,
-    "p_db": 0.3841,
-    "p_13": 0.312,
-    "p_04": 0.0859,
-    "p_db_win": 0.5053
-   },
-   "Asia Domestic|Latin America": {
-    "p_win": 0.1912,
-    "p_40": 0.0065,
-    "p_31": 0.0677,
-    "p_db": 0.256,
-    "p_13": 0.419,
-    "p_04": 0.2507,
-    "p_db_win": 0.4569
-   },
-   "Asia Domestic|USA": {
-    "p_win": 0.0348,
-    "p_40": 0.0002,
-    "p_31": 0.0066,
-    "p_db": 0.0769,
-    "p_13": 0.3571,
-    "p_04": 0.5592,
-    "p_db_win": 0.3637
-   },
-   "Europe East|Latin America": {
-    "p_win": 0.2742,
-    "p_40": 0.0127,
-    "p_31": 0.1112,
-    "p_db": 0.3322,
-    "p_13": 0.3888,
-    "p_04": 0.155,
-    "p_db_win": 0.4522
-   },
-   "Europe East|USA": {
-    "p_win": 0.0607,
-    "p_40": 0.0005,
-    "p_31": 0.0141,
-    "p_db": 0.1285,
-    "p_13": 0.4215,
-    "p_04": 0.4354,
-    "p_db_win": 0.3587
-   },
-   "Latin America|USA": {
-    "p_win": 0.1755,
-    "p_40": 0.0041,
-    "p_31": 0.0618,
-    "p_db": 0.271,
-    "p_13": 0.4396,
-    "p_04": 0.2236,
-    "p_db_win": 0.4045
-   }
-  }
- },
+ "generated": "2026-11-08",
+ "mlp": null,
  "ppa": [
   {
    "tournament": "2026 Opendoor Pickleball World Championships",
@@ -127,7 +11,8 @@
     "2026-11-04",
     "2026-11-05",
     "2026-11-06",
-    "2026-11-07"
+    "2026-11-07",
+    "2026-11-08"
    ],
    "divisions": [
     {
@@ -2592,19 +2477,19 @@
         "Andrei Daescu",
         "Christian Alshon"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         9,
+         6,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
@@ -2629,6 +2514,48 @@
        "n1": [
         "CJ Klinger",
         "Eric Oncins"
+       ],
+       "n2": [
+        "Tama Shimabukuro",
+        "JW Johnson"
+       ],
+       "winner": 2,
+       "completed_type": 5,
+       "scores": [
+        [
+         4,
+         6,
+         0,
+         0,
+         0
+        ],
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 6,
+       "round_text": "Finals",
+       "match_no": 62,
+       "seed1": 3,
+       "seed2": 4,
+       "best_of": 5,
+       "p1": [
+        "581183e8-3d9e-459e-b69f-7337d8b6f3d2",
+        "79a11da1-6aeb-4719-9b1e-9918e0163cec"
+       ],
+       "p2": [
+        "4af4d4d1-9f87-4dc7-95f2-b10751d44c15",
+        "bd061b42-2f82-4bbe-82be-d8bcfb37f9e1"
+       ],
+       "n1": [
+        "Andrei Daescu",
+        "Christian Alshon"
        ],
        "n2": [
         "Tama Shimabukuro",
@@ -6718,19 +6645,19 @@
         "Rachel Rohrabacher",
         "Christian Alshon"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         8,
+         5,
          0,
          0,
          0
@@ -6755,6 +6682,48 @@
        "n1": [
         "Anna Bright",
         "Hayden Patriquin"
+       ],
+       "n2": [
+        "Jorja Johnson",
+        "JW Johnson"
+       ],
+       "winner": 2,
+       "completed_type": 5,
+       "scores": [
+        [
+         2,
+         4,
+         0,
+         0,
+         0
+        ],
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 6,
+       "round_text": "Finals",
+       "match_no": 64,
+       "seed1": 1,
+       "seed2": 3,
+       "best_of": 5,
+       "p1": [
+        "6f862c1d-1317-4fe7-bdcd-64caa0dbb088",
+        "129b2771-34b5-4b7f-9c23-e020a6aa3e6a"
+       ],
+       "p2": [
+        "b51ea0fb-c243-4427-85f8-b798febb51ff",
+        "bd061b42-2f82-4bbe-82be-d8bcfb37f9e1"
+       ],
+       "n1": [
+        "Ben Johns",
+        "Anna Leigh Waters"
        ],
        "n2": [
         "Jorja Johnson",
@@ -9164,20 +9133,20 @@
         "Connor McCartney",
         "Wade Heerboth"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         11,
+         9,
+         3,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         6,
+         11,
+         11,
          0,
          0
         ]
@@ -9206,8 +9175,265 @@
         "Mike Radermacher",
         "Matt Burkhardt"
        ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         12,
+         8,
+         11,
+         0,
+         0
+        ],
+        [
+         10,
+         11,
+         8,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Finals",
+       "match_no": 4,
+       "seed1": 6,
+       "seed2": 1,
+       "best_of": 3,
+       "p1": [
+        "0517f4a6-2648-470e-a9ff-8cf78eee3421",
+        "86e1b9d3-15ea-4b76-b488-d3135e78aa7c"
+       ],
+       "p2": [
+        "f843b220-41cb-4203-831b-6aac32b8f02a",
+        "5c817399-aea7-481d-9a83-aab7431eabc1"
+       ],
+       "n1": [
+        "Connor McCartney",
+        "Wade Heerboth"
+       ],
+       "n2": [
+        "Riley Inn",
+        "Alex Emery"
+       ],
+       "winner": 2,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         7,
+         6,
+         0,
+         0
+        ],
+        [
+         6,
+         11,
+         11,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 3,
+       "round_text": "Bronze",
+       "match_no": 3,
+       "seed1": 2,
+       "seed2": 3,
+       "best_of": 3,
+       "p1": [
+        "ce7e7707-c94e-4d33-b34a-37efe3363774",
+        "89647b43-f3f5-49e6-896f-614f0175a3f5"
+       ],
+       "p2": [
+        "a6f57d71-bf90-48fc-b05b-abe66980a132",
+        "cb9ea037-f204-4216-ac56-930a01009166"
+       ],
+       "n1": [
+        "Eli Steiner",
+        "Jackson Ayotte"
+       ],
+       "n2": [
+        "Mike Radermacher",
+        "Matt Burkhardt"
+       ],
        "winner": 0,
-       "completed_type": 1,
+       "completed_type": 6,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      }
+     ]
+    },
+    {
+     "title": "PPA CHALLENGER SHOWDOWN: Mixed Doubles",
+     "matches": [
+      {
+       "round": 1,
+       "round_text": "Semi-Finals",
+       "match_no": 1,
+       "seed1": 1,
+       "seed2": 3,
+       "best_of": 3,
+       "p1": [
+        "55b78314-2f02-4a0c-83c2-b7cbfd8b4329",
+        "4553e8f7-d51d-41cd-bc23-752742441bff"
+       ],
+       "p2": [
+        "c3066b2d-fc90-4774-a571-cde5fc5583d4",
+        "cb9ea037-f204-4216-ac56-930a01009166"
+       ],
+       "n1": [
+        "Madalina Grigoriu",
+        "Garrison Eaby"
+       ],
+       "n2": [
+        "Chloe Diskin",
+        "Matt Burkhardt"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         12,
+         11,
+         0,
+         0,
+         0
+        ],
+        [
+         10,
+         7,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 1,
+       "round_text": "Semi-Finals",
+       "match_no": 2,
+       "seed1": 2,
+       "seed2": 4,
+       "best_of": 3,
+       "p1": [
+        "8620b5f6-d9d5-4cb9-9a28-ed21da77511e",
+        "14f68da3-a855-4656-a618-81b5d8ff6bec"
+       ],
+       "p2": [
+        "f13c20c3-1fed-4a9e-abec-f3f3bf1f8f91",
+        "53eadec7-a6b1-4ce3-9825-d76affdc3f4f"
+       ],
+       "n1": [
+        "Lauren Cole",
+        "Jarryd Woog"
+       ],
+       "n2": [
+        "Anne-Sophie Courteau",
+        "Juan Varon"
+       ],
+       "winner": 2,
+       "completed_type": 5,
+       "scores": [
+        [
+         3,
+         8,
+         0,
+         0,
+         0
+        ],
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Finals",
+       "match_no": 4,
+       "seed1": 1,
+       "seed2": 4,
+       "best_of": 3,
+       "p1": [
+        "55b78314-2f02-4a0c-83c2-b7cbfd8b4329",
+        "4553e8f7-d51d-41cd-bc23-752742441bff"
+       ],
+       "p2": [
+        "f13c20c3-1fed-4a9e-abec-f3f3bf1f8f91",
+        "53eadec7-a6b1-4ce3-9825-d76affdc3f4f"
+       ],
+       "n1": [
+        "Madalina Grigoriu",
+        "Garrison Eaby"
+       ],
+       "n2": [
+        "Anne-Sophie Courteau",
+        "Juan Varon"
+       ],
+       "winner": 2,
+       "completed_type": 5,
+       "scores": [
+        [
+         6,
+         12,
+         7,
+         0,
+         0
+        ],
+        [
+         11,
+         10,
+         11,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 3,
+       "round_text": "Bronze",
+       "match_no": 3,
+       "seed1": 3,
+       "seed2": 2,
+       "best_of": 3,
+       "p1": [
+        "c3066b2d-fc90-4774-a571-cde5fc5583d4",
+        "cb9ea037-f204-4216-ac56-930a01009166"
+       ],
+       "p2": [
+        "8620b5f6-d9d5-4cb9-9a28-ed21da77511e",
+        "14f68da3-a855-4656-a618-81b5d8ff6bec"
+       ],
+       "n1": [
+        "Chloe Diskin",
+        "Matt Burkhardt"
+       ],
+       "n2": [
+        "Lauren Cole",
+        "Jarryd Woog"
+       ],
+       "winner": 0,
+       "completed_type": 6,
        "scores": [
         [
          0,
@@ -9235,37 +9461,37 @@
        "round_text": "Semi-Finals",
        "match_no": 1,
        "seed1": 1,
-       "seed2": 6,
+       "seed2": 5,
        "best_of": 3,
        "p1": [
         "dcd029fb-2814-401b-a1cb-0c4269d9954b",
         "55b78314-2f02-4a0c-83c2-b7cbfd8b4329"
        ],
        "p2": [
-        "9e8ad96a-17a3-48bf-9363-7b35cc96b2b8",
-        "a6255e5f-36a9-41ec-9108-88e110b6d0fe"
+        "f13c20c3-1fed-4a9e-abec-f3f3bf1f8f91",
+        "c3066b2d-fc90-4774-a571-cde5fc5583d4"
        ],
        "n1": [
         "Allie Reichert",
         "Madalina Grigoriu"
        ],
        "n2": [
-        "Averee Beck",
-        "Bella Nelson"
+        "Anne-Sophie Courteau",
+        "Chloe Diskin"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         13,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         4,
+         11,
          0,
          0,
          0
@@ -9277,26 +9503,110 @@
        "round_text": "Semi-Finals",
        "match_no": 2,
        "seed1": 3,
-       "seed2": 5,
+       "seed2": 6,
        "best_of": 3,
        "p1": [
         "53cffd68-8c08-4ad7-88fd-a72ee20d716e",
         "f2a996de-50a0-4d1d-b16f-f6450daa4a1e"
        ],
        "p2": [
-        "f13c20c3-1fed-4a9e-abec-f3f3bf1f8f91",
-        "c3066b2d-fc90-4774-a571-cde5fc5583d4"
+        "9e8ad96a-17a3-48bf-9363-7b35cc96b2b8",
+        "a6255e5f-36a9-41ec-9108-88e110b6d0fe"
        ],
        "n1": [
         "Marisa Ruiz",
         "Kelsey Laurente"
        ],
        "n2": [
+        "Averee Beck",
+        "Bella Nelson"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ],
+        [
+         3,
+         5,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Finals",
+       "match_no": 4,
+       "seed1": 1,
+       "seed2": 3,
+       "best_of": 3,
+       "p1": [
+        "dcd029fb-2814-401b-a1cb-0c4269d9954b",
+        "55b78314-2f02-4a0c-83c2-b7cbfd8b4329"
+       ],
+       "p2": [
+        "53cffd68-8c08-4ad7-88fd-a72ee20d716e",
+        "f2a996de-50a0-4d1d-b16f-f6450daa4a1e"
+       ],
+       "n1": [
+        "Allie Reichert",
+        "Madalina Grigoriu"
+       ],
+       "n2": [
+        "Marisa Ruiz",
+        "Kelsey Laurente"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         9,
+         11,
+         11,
+         0,
+         0
+        ],
+        [
+         11,
+         8,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 3,
+       "round_text": "Bronze",
+       "match_no": 3,
+       "seed1": 5,
+       "seed2": 6,
+       "best_of": 3,
+       "p1": [
+        "f13c20c3-1fed-4a9e-abec-f3f3bf1f8f91",
+        "c3066b2d-fc90-4774-a571-cde5fc5583d4"
+       ],
+       "p2": [
+        "9e8ad96a-17a3-48bf-9363-7b35cc96b2b8",
+        "a6255e5f-36a9-41ec-9108-88e110b6d0fe"
+       ],
+       "n1": [
         "Anne-Sophie Courteau",
         "Chloe Diskin"
        ],
+       "n2": [
+        "Averee Beck",
+        "Bella Nelson"
+       ],
        "winner": 0,
-       "completed_type": 1,
+       "completed_type": 6,
        "scores": [
         [
          0,
@@ -11190,19 +11500,19 @@
         "Rachel Rohrabacher",
         "Parris Todd"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         3,
+         5,
          0,
          0,
          0
@@ -11231,6 +11541,48 @@
        "n2": [
         "Kate Fahey",
         "Tina Pisnik"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ],
+        [
+         5,
+         5,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 6,
+       "round_text": "Finals",
+       "match_no": 48,
+       "seed1": 1,
+       "seed2": 5,
+       "best_of": 5,
+       "p1": [
+        "db5eef5c-99dd-49d9-bbfc-65171a366bda",
+        "129b2771-34b5-4b7f-9c23-e020a6aa3e6a"
+       ],
+       "p2": [
+        "b9bacc1e-29b5-4a92-a9c1-24e08ac72215",
+        "9b97206b-783a-4fab-85e9-45a6240325a5"
+       ],
+       "n1": [
+        "Anna Bright",
+        "Anna Leigh Waters"
+       ],
+       "n2": [
+        "Sofia Sewing",
+        "Catherine Parenteau"
        ],
        "winner": 0,
        "completed_type": 1,
