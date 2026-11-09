@@ -14015,65 +14015,715 @@ ea75afcc-7c92-43d1-bcfc-83cf5966a774:g1,-6,1225,851,1010,353,4083,4116,6873,0,0,
 db7200b7-116a-4c42-91d2-db6befc37406:g1,-10,353,986,416,378,2473,4084,6883,1,0,1,1,Nations Cup,2026-11-01,Finals GS
 de9b31b4-26e7-44aa-9559-0db6cf3aac6f:g1,4,386,416,63,319,4089,4111,6884,0,0,1,1,Nations Cup,2026-11-01,Semi-Finals W
 ea57ca10-09a5-4647-95c6-0e7a0e62c35e:g1,-2,102,1010,386,430,4106,2187,6885,2,0,1,1,Nations Cup,2026-11-01,Finals GS
-09416ece-ca30-4467-9a96-8eeb17a5d529:g1,8,931,428,229,609,4120,4121,6886,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-09416ece-ca30-4467-9a96-8eeb17a5d529:g2,-5,931,428,229,609,4120,4121,6886,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-09416ece-ca30-4467-9a96-8eeb17a5d529:g3,6,931,428,229,609,4120,4121,6886,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-1098d0b7-c928-4fc1-9fc6-d2bef3b84a7c:g1,6,750,234,599,253,4122,4123,6887,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-1098d0b7-c928-4fc1-9fc6-d2bef3b84a7c:g2,6,750,234,599,253,4122,4123,6887,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-1352bef0-437c-4e7b-b2fe-31184ba27d90:g1,3,104,528,262,268,4124,187,6888,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-1352bef0-437c-4e7b-b2fe-31184ba27d90:g2,2,104,528,262,268,4124,187,6888,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-1ba38975-3277-4cf8-9646-a898a641e842:g1,3,118,7,98,141,3320,4125,6889,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-1ba38975-3277-4cf8-9646-a898a641e842:g2,-5,118,7,98,141,3320,4125,6889,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-1ba38975-3277-4cf8-9646-a898a641e842:g3,-6,118,7,98,141,3320,4125,6889,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-1cc90c4f-905f-4776-ace7-7ca6b946a885:g1,2,731,701,297,1025,4103,4126,6890,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-1cc90c4f-905f-4776-ace7-7ca6b946a885:g2,7,731,701,297,1025,4103,4126,6890,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-228b1a5b-935f-4e83-ac93-76a2754813bc:g1,-3,363,439,493,998,564,3126,6891,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-228b1a5b-935f-4e83-ac93-76a2754813bc:g2,-7,363,439,493,998,564,3126,6891,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-3f38e362-69ff-44cc-ae9b-0c2f7f6d0f39:g1,-2,380,381,382,472,264,4127,6892,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-3f38e362-69ff-44cc-ae9b-0c2f7f6d0f39:g2,2,380,381,382,472,264,4127,6892,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-3f38e362-69ff-44cc-ae9b-0c2f7f6d0f39:g3,5,380,381,382,472,264,4127,6892,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-4ff2fc98-6130-467e-97ee-526d7a9a1fe9:g1,7,211,624,1058,223,4128,3116,6893,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-4ff2fc98-6130-467e-97ee-526d7a9a1fe9:g2,-8,211,624,1058,223,4128,3116,6893,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-4ff2fc98-6130-467e-97ee-526d7a9a1fe9:g3,-7,211,624,1058,223,4128,3116,6893,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-5f2c22f8-701b-466d-94c4-5e38bb018f73:g1,-2,446,408,186,266,4129,4130,6894,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-5f2c22f8-701b-466d-94c4-5e38bb018f73:g2,2,446,408,186,266,4129,4130,6894,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-5f2c22f8-701b-466d-94c4-5e38bb018f73:g3,-2,446,408,186,266,4129,4130,6894,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-612ab3ed-8adb-4556-8336-25d364c8ed3d:g1,-5,1934,1404,217,250,3940,813,6895,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-612ab3ed-8adb-4556-8336-25d364c8ed3d:g2,5,1934,1404,217,250,3940,813,6895,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-612ab3ed-8adb-4556-8336-25d364c8ed3d:g3,2,1934,1404,217,250,3940,813,6895,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-6b1ab31d-fa04-42fb-bab2-0091175c4644:g1,2,436,233,14,754,4131,1032,6896,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-6b1ab31d-fa04-42fb-bab2-0091175c4644:g2,8,436,233,14,754,4131,1032,6896,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-6ef019de-648f-48c2-8a14-c55c7c278f33:g1,-4,347,810,291,212,4132,1421,6897,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-6ef019de-648f-48c2-8a14-c55c7c278f33:g2,-8,347,810,291,212,4132,1421,6897,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-7411d9a7-8736-4d5a-9303-b6ace0d6efc8:g1,3,249,77,803,236,4133,3535,6898,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-7411d9a7-8736-4d5a-9303-b6ace0d6efc8:g2,9,249,77,803,236,4133,3535,6898,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-760129ac-fa0a-4a46-a679-5ab895ae7ae6:g1,4,59,41,258,548,91,3861,6899,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-760129ac-fa0a-4a46-a679-5ab895ae7ae6:g2,5,59,41,258,548,91,3861,6899,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-7d909fb6-61bd-424c-9eb9-7ea654249385:g1,8,344,241,594,643,3746,3430,6900,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-7d909fb6-61bd-424c-9eb9-7ea654249385:g2,8,344,241,594,643,3746,3430,6900,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-82d6ff91-6d4d-4cca-a0fd-e67d8d242434:g1,4,1111,3,757,623,3522,4134,6901,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-82d6ff91-6d4d-4cca-a0fd-e67d8d242434:g2,3,1111,3,757,623,3522,4134,6901,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-8b0715fc-2dfb-44e7-b8ae-66706b475f29:g1,2,21,1331,1296,173,4135,2648,6902,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-8b0715fc-2dfb-44e7-b8ae-66706b475f29:g2,-4,21,1331,1296,173,4135,2648,6902,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-8b0715fc-2dfb-44e7-b8ae-66706b475f29:g3,3,21,1331,1296,173,4135,2648,6902,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-a017915d-f57e-47c0-b35a-11fd268add0c:g1,3,1930,1458,1994,921,4136,4137,6903,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-a017915d-f57e-47c0-b35a-11fd268add0c:g2,6,1930,1458,1994,921,4136,4137,6903,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-a47fd6e8-3186-41c6-8bac-2d7e0329105d:g1,10,314,406,1995,1996,663,4138,6904,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-a47fd6e8-3186-41c6-8bac-2d7e0329105d:g2,11,314,406,1995,1996,663,4138,6904,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-af6503a0-ec6d-4334-b642-51391ff7f633:g1,-6,365,398,1305,726,834,3674,6905,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-af6503a0-ec6d-4334-b642-51391ff7f633:g2,2,365,398,1305,726,834,3674,6905,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-af6503a0-ec6d-4334-b642-51391ff7f633:g3,-4,365,398,1305,726,834,3674,6905,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-c8511358-22eb-4913-840e-c2163068aab8:g1,10,325,375,766,724,4139,1300,6906,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-c8511358-22eb-4913-840e-c2163068aab8:g2,5,325,375,766,724,4139,1300,6906,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-d8c8803a-398a-43db-819c-ff38c4f421eb:g1,6,58,208,330,852,4140,4141,6907,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-d8c8803a-398a-43db-819c-ff38c4f421eb:g2,-5,58,208,330,852,4140,4141,6907,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-d8c8803a-398a-43db-819c-ff38c4f421eb:g3,9,58,208,330,852,4140,4141,6907,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-dbb5c392-b2f9-46be-8b94-3813cce58f59:g1,3,162,851,718,767,4142,4143,6908,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-dbb5c392-b2f9-46be-8b94-3813cce58f59:g2,7,162,851,718,767,4142,4143,6908,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-e5d3e46a-081d-4d87-be96-fa1813910336:g1,-6,414,515,780,709,3111,3675,6909,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-e5d3e46a-081d-4d87-be96-fa1813910336:g2,-2,414,515,780,709,3111,3675,6909,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-f5c48168-73b4-4b24-b599-c376b673cadf:g1,11,396,74,717,1997,4144,4145,6910,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-f5c48168-73b4-4b24-b599-c376b673cadf:g2,10,396,74,717,1997,4144,4145,6910,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-ff05f093-c9bc-4fb6-a7d8-f7e350591703:g1,-3,401,15,169,55,568,109,6911,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-ff05f093-c9bc-4fb6-a7d8-f7e350591703:g2,2,401,15,169,55,568,109,6911,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
-ff05f093-c9bc-4fb6-a7d8-f7e350591703:g3,-3,401,15,169,55,568,109,6911,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+07a82f1c-3f54-4271-a696-77c634f57a17:g1,7,1458,726,1994,1995,4120,4121,6886,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+07a82f1c-3f54-4271-a696-77c634f57a17:g2,11,1458,726,1994,1995,4120,4121,6886,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+0931935c-8d18-4915-a9eb-e86892139d60:g1,4,314,406,334,399,663,3202,6887,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+0931935c-8d18-4915-a9eb-e86892139d60:g2,8,314,406,334,399,663,3202,6887,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+09416ece-ca30-4467-9a96-8eeb17a5d529:g1,8,931,428,229,609,4122,4123,6888,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+09416ece-ca30-4467-9a96-8eeb17a5d529:g2,-5,931,428,229,609,4122,4123,6888,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+09416ece-ca30-4467-9a96-8eeb17a5d529:g3,6,931,428,229,609,4122,4123,6888,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+09e35c84-42bd-40c2-afd5-7899d9630f1b:g1,5,250,643,1996,804,4124,4125,6889,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+09e35c84-42bd-40c2-afd5-7899d9630f1b:g2,2,250,643,1996,804,4124,4125,6889,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+0ec68dd5-33c9-495d-a42c-eef24f3d0fd7:g1,3,60,335,104,528,855,4126,6890,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+0ec68dd5-33c9-495d-a42c-eef24f3d0fd7:g2,-5,60,335,104,528,855,4126,6890,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+0ec68dd5-33c9-495d-a42c-eef24f3d0fd7:g3,5,60,335,104,528,855,4126,6890,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+0f4d97e9-30bf-45c5-9c3b-2363b22dc58d:g1,-6,14,44,236,745,4127,1283,6891,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+0f4d97e9-30bf-45c5-9c3b-2363b22dc58d:g2,11,14,44,236,745,4127,1283,6891,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+0f4d97e9-30bf-45c5-9c3b-2363b22dc58d:g3,3,14,44,236,745,4127,1283,6891,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+0fd4c904-c161-4d74-8fd4-8acf445cbc51:g1,7,493,308,1734,1997,4128,4129,6892,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+0fd4c904-c161-4d74-8fd4-8acf445cbc51:g2,2,493,308,1734,1997,4128,4129,6892,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+1098d0b7-c928-4fc1-9fc6-d2bef3b84a7c:g1,6,750,234,599,253,4130,4131,6893,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+1098d0b7-c928-4fc1-9fc6-d2bef3b84a7c:g2,6,750,234,599,253,4130,4131,6893,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+10c1a16e-563e-4676-b489-5cd3ecc2a08c:g1,11,931,624,1519,1862,4132,4133,6894,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+10c1a16e-563e-4676-b489-5cd3ecc2a08c:g2,7,931,624,1519,1862,4132,4133,6894,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+1352bef0-437c-4e7b-b2fe-31184ba27d90:g1,3,104,528,262,268,4126,187,6895,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+1352bef0-437c-4e7b-b2fe-31184ba27d90:g2,2,104,528,262,268,4126,187,6895,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+15e23957-b57e-4c94-ad32-c00b1bd34486:g1,5,429,1010,931,428,1603,4122,6896,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+15e23957-b57e-4c94-ad32-c00b1bd34486:g2,-3,429,1010,931,428,1603,4122,6896,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+15e23957-b57e-4c94-ad32-c00b1bd34486:g3,9,429,1010,931,428,1603,4122,6896,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+1ba38975-3277-4cf8-9646-a898a641e842:g1,3,118,7,98,141,3320,4134,6897,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+1ba38975-3277-4cf8-9646-a898a641e842:g2,-5,118,7,98,141,3320,4134,6897,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+1ba38975-3277-4cf8-9646-a898a641e842:g3,-6,118,7,98,141,3320,4134,6897,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+1ba3aa43-1d05-4e02-bc68-9ee7183cb70a:g1,7,1305,709,824,761,4135,4136,6898,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+1ba3aa43-1d05-4e02-bc68-9ee7183cb70a:g2,5,1305,709,824,761,4135,4136,6898,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+1cc90c4f-905f-4776-ace7-7ca6b946a885:g1,2,731,701,297,1025,4103,4137,6899,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+1cc90c4f-905f-4776-ace7-7ca6b946a885:g2,7,731,701,297,1025,4103,4137,6899,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+1db332da-5e21-4320-84a1-403dac9bc04f:g1,-5,325,375,780,709,4138,3675,6900,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+1db332da-5e21-4320-84a1-403dac9bc04f:g2,-3,325,375,780,709,4138,3675,6900,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+1f2c0b2a-5a5e-4762-95f8-f53cb1b92bf4:g1,6,654,599,1890,1998,2740,4139,6901,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+1f2c0b2a-5a5e-4762-95f8-f53cb1b92bf4:g2,4,654,599,1890,1998,2740,4139,6901,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+228b1a5b-935f-4e83-ac93-76a2754813bc:g1,-3,363,439,493,998,564,3126,6902,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+228b1a5b-935f-4e83-ac93-76a2754813bc:g2,-7,363,439,493,998,564,3126,6902,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+2d9dfcfc-9acd-4340-b56c-b438ce848d36:g1,9,1131,1598,1999,2000,4140,4141,6903,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+2d9dfcfc-9acd-4340-b56c-b438ce848d36:g2,10,1131,1598,1999,2000,4140,4141,6903,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+30a0f231-ae98-476b-9922-c9e186be7f0c:g1,3,344,241,21,1331,3746,4142,6904,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+30a0f231-ae98-476b-9922-c9e186be7f0c:g2,2,344,241,21,1331,3746,4142,6904,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+372cea5d-b8cf-4858-a1d6-33201788b454:g1,4,60,335,1058,223,855,3116,6905,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+372cea5d-b8cf-4858-a1d6-33201788b454:g2,5,60,335,1058,223,855,3116,6905,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+3a6c87fc-c995-49e4-ab38-22d8790cf0dd:g1,7,396,74,1305,726,4143,3674,6906,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+3a6c87fc-c995-49e4-ab38-22d8790cf0dd:g2,9,396,74,1305,726,4143,3674,6906,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+3b624f4d-79d8-4221-a00e-7edfa35d5882:g1,9,472,253,66,169,3512,4144,6907,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+3b624f4d-79d8-4221-a00e-7edfa35d5882:g2,-5,472,253,66,169,3512,4144,6907,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+3b624f4d-79d8-4221-a00e-7edfa35d5882:g3,-2,472,253,66,169,3512,4144,6907,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+3f38e362-69ff-44cc-ae9b-0c2f7f6d0f39:g1,-2,380,381,382,472,264,4145,6908,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+3f38e362-69ff-44cc-ae9b-0c2f7f6d0f39:g2,2,380,381,382,472,264,4145,6908,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+3f38e362-69ff-44cc-ae9b-0c2f7f6d0f39:g3,5,380,381,382,472,264,4145,6908,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+3faf19e8-666d-4d50-bbc6-4ced31f5a58a:g1,-6,1209,2001,594,172,4146,4147,6909,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+3faf19e8-666d-4d50-bbc6-4ced31f5a58a:g2,-6,1209,2001,594,172,4146,4147,6909,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+40039b07-9914-4546-9eb9-668fcf326460:g1,-2,55,90,603,639,4148,653,6910,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+40039b07-9914-4546-9eb9-668fcf326460:g2,-2,55,90,603,639,4148,653,6910,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+42a39ef3-dcc0-4d04-a477-363465eb43a9:g1,2,249,77,493,998,4149,3126,6911,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+42a39ef3-dcc0-4d04-a477-363465eb43a9:g2,5,249,77,493,998,4149,3126,6911,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+4ff2fc98-6130-467e-97ee-526d7a9a1fe9:g1,7,211,624,1058,223,4150,3116,6912,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+4ff2fc98-6130-467e-97ee-526d7a9a1fe9:g2,-8,211,624,1058,223,4150,3116,6912,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+4ff2fc98-6130-467e-97ee-526d7a9a1fe9:g3,-7,211,624,1058,223,4150,3116,6912,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+525775d5-4d73-4fb0-8391-fe0b1a2ff784:g1,2,731,701,931,428,4103,4122,6913,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+525775d5-4d73-4fb0-8391-fe0b1a2ff784:g2,-6,731,701,931,428,4103,4122,6913,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+525775d5-4d73-4fb0-8391-fe0b1a2ff784:g3,-7,731,701,931,428,4103,4122,6913,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+59008ee0-69e0-46fb-99ba-fbf9fdf4e3cb:g1,-8,1934,1404,750,234,3940,4130,6914,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+59008ee0-69e0-46fb-99ba-fbf9fdf4e3cb:g2,-7,1934,1404,750,234,3940,4130,6914,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+5f2c22f8-701b-466d-94c4-5e38bb018f73:g1,-2,446,408,186,266,4151,4152,6915,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+5f2c22f8-701b-466d-94c4-5e38bb018f73:g2,2,446,408,186,266,4151,4152,6915,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+5f2c22f8-701b-466d-94c4-5e38bb018f73:g3,-2,446,408,186,266,4151,4152,6915,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+60a0a779-ee66-4e16-8fe6-f301608c48e3:g1,-3,944,517,97,96,4153,48,6916,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+60a0a779-ee66-4e16-8fe6-f301608c48e3:g2,-4,944,517,97,96,4153,48,6916,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+6101c3a0-155a-4b98-a675-aed38d9cda55:g1,-2,1994,1995,2002,2003,4121,4154,6917,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+6101c3a0-155a-4b98-a675-aed38d9cda55:g2,5,1994,1995,2002,2003,4121,4154,6917,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+6101c3a0-155a-4b98-a675-aed38d9cda55:g3,6,1994,1995,2002,2003,4121,4154,6917,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+612ab3ed-8adb-4556-8336-25d364c8ed3d:g1,-5,1934,1404,217,250,3940,813,6918,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+612ab3ed-8adb-4556-8336-25d364c8ed3d:g2,5,1934,1404,217,250,3940,813,6918,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+612ab3ed-8adb-4556-8336-25d364c8ed3d:g3,2,1934,1404,217,250,3940,813,6918,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+612e1dce-df06-4bf8-961d-f051d942cc66:g1,6,780,3,754,717,4155,4156,6919,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+612e1dce-df06-4bf8-961d-f051d942cc66:g2,5,780,3,754,717,4155,4156,6919,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+6199cf6a-9d63-4aeb-9885-e70e681d600d:g1,-2,14,44,654,599,4127,2740,6920,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+6199cf6a-9d63-4aeb-9885-e70e681d600d:g2,-6,14,44,654,599,4127,2740,6920,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+67388e8d-1c3e-4caa-b78e-dce85d9e0593:g1,5,58,208,396,74,4157,4143,6921,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+67388e8d-1c3e-4caa-b78e-dce85d9e0593:g2,2,58,208,396,74,4157,4143,6921,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+69c3e93a-6a0f-49e0-8b78-a2bb1fbeff11:g1,-3,531,532,2004,2005,502,4158,6922,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+69c3e93a-6a0f-49e0-8b78-a2bb1fbeff11:g2,7,531,532,2004,2005,502,4158,6922,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+69c3e93a-6a0f-49e0-8b78-a2bb1fbeff11:g3,10,531,532,2004,2005,502,4158,6922,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+6b1ab31d-fa04-42fb-bab2-0091175c4644:g1,2,436,233,14,754,4159,1032,6923,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+6b1ab31d-fa04-42fb-bab2-0091175c4644:g2,8,436,233,14,754,4159,1032,6923,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+6ef019de-648f-48c2-8a14-c55c7c278f33:g1,-4,347,810,291,212,4160,1421,6924,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+6ef019de-648f-48c2-8a14-c55c7c278f33:g2,-8,347,810,291,212,4160,1421,6924,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+7411d9a7-8736-4d5a-9303-b6ace0d6efc8:g1,3,249,77,803,236,4149,3535,6925,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+7411d9a7-8736-4d5a-9303-b6ace0d6efc8:g2,9,249,77,803,236,4149,3535,6925,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+744ace33-0ddc-4a1b-a66d-9e6d2e477a90:g1,-2,757,258,98,925,2718,3926,6926,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+744ace33-0ddc-4a1b-a66d-9e6d2e477a90:g2,-6,757,258,98,925,2718,3926,6926,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+760129ac-fa0a-4a46-a679-5ab895ae7ae6:g1,4,59,41,258,548,91,3861,6927,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+760129ac-fa0a-4a46-a679-5ab895ae7ae6:g2,5,59,41,258,548,91,3861,6927,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+7a7be91f-3d5f-4458-9372-6894228e0f1a:g1,5,623,1753,603,639,4161,653,6928,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+7a7be91f-3d5f-4458-9372-6894228e0f1a:g2,-4,623,1753,603,639,4161,653,6928,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+7a7be91f-3d5f-4458-9372-6894228e0f1a:g3,-2,623,1753,603,639,4161,653,6928,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+7c2eb269-32bc-473f-b0f2-abf73964b2f7:g1,5,603,639,29,45,653,4162,6929,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+7c2eb269-32bc-473f-b0f2-abf73964b2f7:g2,-3,603,639,29,45,653,4162,6929,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+7c2eb269-32bc-473f-b0f2-abf73964b2f7:g3,-10,603,639,29,45,653,4162,6929,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+7d6f5627-0c08-4a4d-a564-cac37153c08b:g1,7,609,211,739,738,3250,919,6930,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+7d6f5627-0c08-4a4d-a564-cac37153c08b:g2,7,609,211,739,738,3250,919,6930,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+7d909fb6-61bd-424c-9eb9-7ea654249385:g1,8,344,241,594,643,3746,3430,6931,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+7d909fb6-61bd-424c-9eb9-7ea654249385:g2,8,344,241,594,643,3746,3430,6931,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+80f6f8d2-e3cd-4bd4-9fbb-ff5f8f9305fe:g1,4,731,781,192,842,4163,2027,6932,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+80f6f8d2-e3cd-4bd4-9fbb-ff5f8f9305fe:g2,6,731,781,192,842,4163,2027,6932,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+82a59cb3-ef41-4049-953e-6098b26a663c:g1,5,931,624,1305,709,4132,4135,6933,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+82a59cb3-ef41-4049-953e-6098b26a663c:g2,-4,931,624,1305,709,4132,4135,6933,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+82a59cb3-ef41-4049-953e-6098b26a663c:g3,-5,931,624,1305,709,4132,4135,6933,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+82d6ff91-6d4d-4cca-a0fd-e67d8d242434:g1,4,1111,3,757,623,3522,4164,6934,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+82d6ff91-6d4d-4cca-a0fd-e67d8d242434:g2,3,1111,3,757,623,3522,4164,6934,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+891eb874-4989-40b3-ad9c-ecc3bdf85880:g1,3,512,513,2006,2007,422,4165,6935,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+891eb874-4989-40b3-ad9c-ecc3bdf85880:g2,-9,512,513,2006,2007,422,4165,6935,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+891eb874-4989-40b3-ad9c-ecc3bdf85880:g3,5,512,513,2006,2007,422,4165,6935,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+8b0715fc-2dfb-44e7-b8ae-66706b475f29:g1,2,21,1331,1296,173,4142,2648,6936,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+8b0715fc-2dfb-44e7-b8ae-66706b475f29:g2,-4,21,1331,1296,173,4142,2648,6936,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+8b0715fc-2dfb-44e7-b8ae-66706b475f29:g3,3,21,1331,1296,173,4142,2648,6936,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+8b3db68f-30c7-4658-950b-4e7f9f9e4ea6:g1,2,718,724,609,211,1297,3250,6937,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Quarter Finals
+8b3db68f-30c7-4658-950b-4e7f9f9e4ea6:g2,-5,718,724,609,211,1297,3250,6937,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Quarter Finals
+8b3db68f-30c7-4658-950b-4e7f9f9e4ea6:g3,-5,718,724,609,211,1297,3250,6937,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Quarter Finals
+8e70d4f5-ec69-4731-888c-a57429d31526:g1,9,357,140,531,532,4166,502,6938,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+8e70d4f5-ec69-4731-888c-a57429d31526:g2,8,357,140,531,532,4166,502,6938,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+8f2d44c1-4e6a-4cb7-b222-d91bdfb0b5d2:g1,8,236,745,2008,2009,1283,4167,6939,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+8f2d44c1-4e6a-4cb7-b222-d91bdfb0b5d2:g2,6,236,745,2008,2009,1283,4167,6939,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+8fb4060d-5865-45e0-a11e-2bc72988a3a1:g1,10,130,193,380,381,1131,264,6940,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+8fb4060d-5865-45e0-a11e-2bc72988a3a1:g2,7,130,193,380,381,1131,264,6940,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+9146c34a-224f-458b-894d-35ba79a5df13:g1,2,97,96,1111,1161,48,4168,6941,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+9146c34a-224f-458b-894d-35ba79a5df13:g2,3,97,96,1111,1161,48,4168,6941,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+92fdf755-2d4a-4393-8b5a-854cb90c401a:g1,8,1111,3,104,528,3522,4126,6942,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+92fdf755-2d4a-4393-8b5a-854cb90c401a:g2,-4,1111,3,104,528,3522,4126,6942,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+92fdf755-2d4a-4393-8b5a-854cb90c401a:g3,-10,1111,3,104,528,3522,4126,6942,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+97704da8-227a-4e7a-8e57-ecba241785fd:g1,-2,212,141,920,985,4169,4170,6943,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+97704da8-227a-4e7a-8e57-ecba241785fd:g2,5,212,141,920,985,4169,4170,6943,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+97704da8-227a-4e7a-8e57-ecba241785fd:g3,5,212,141,920,985,4169,4170,6943,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+98224882-682a-4927-adf3-15c9303e59d6:g1,6,59,41,186,266,91,4152,6944,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+98224882-682a-4927-adf3-15c9303e59d6:g2,5,59,41,186,266,91,4152,6944,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+9ab44e98-4a9e-4527-bacf-77f874998379:g1,3,268,223,594,172,1676,4147,6945,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+9ab44e98-4a9e-4527-bacf-77f874998379:g2,5,268,223,594,172,1676,4147,6945,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+a017915d-f57e-47c0-b35a-11fd268add0c:g1,3,1930,1458,2010,921,4171,4172,6946,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+a017915d-f57e-47c0-b35a-11fd268add0c:g2,6,1930,1458,2010,921,4171,4172,6946,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+a47fd6e8-3186-41c6-8bac-2d7e0329105d:g1,10,314,406,2011,2004,663,4173,6947,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+a47fd6e8-3186-41c6-8bac-2d7e0329105d:g2,11,314,406,2011,2004,663,4173,6947,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+a627de64-2996-4e68-a9a1-25b52df6eea0:g1,-2,130,193,750,234,1131,4130,6948,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+a627de64-2996-4e68-a9a1-25b52df6eea0:g2,-3,130,193,750,234,1131,4130,6948,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+a93b561c-0e73-4474-9b35-2c6e48cc887c:g1,2,1458,726,98,925,4120,3926,6949,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Quarter Finals
+a93b561c-0e73-4474-9b35-2c6e48cc887c:g2,4,1458,726,98,925,4120,3926,6949,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Quarter Finals
+ad798dae-d9ac-4180-b014-feca929dc1b2:g1,6,402,62,291,212,1366,1421,6950,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+ad798dae-d9ac-4180-b014-feca929dc1b2:g2,8,402,62,291,212,1366,1421,6950,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+adc4ecf4-fabe-4fd7-8fcf-4e4b7e9cf81d:g1,6,29,45,79,297,4162,209,6951,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+adc4ecf4-fabe-4fd7-8fcf-4e4b7e9cf81d:g2,2,29,45,79,297,4162,209,6951,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+af6503a0-ec6d-4334-b642-51391ff7f633:g1,-6,365,398,1305,726,834,3674,6952,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+af6503a0-ec6d-4334-b642-51391ff7f633:g2,2,365,398,1305,726,834,3674,6952,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+af6503a0-ec6d-4334-b642-51391ff7f633:g3,-4,365,398,1305,726,834,3674,6952,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+bdd609ca-d4da-455d-b592-94542169e00f:g1,9,944,517,1131,1598,4153,4140,6953,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+bdd609ca-d4da-455d-b592-94542169e00f:g2,9,944,517,1131,1598,4153,4140,6953,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+bea4e7a5-1756-4fc7-8906-a82917e4f8d1:g1,-11,766,767,1734,1997,953,4129,6954,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+bea4e7a5-1756-4fc7-8906-a82917e4f8d1:g2,3,766,767,1734,1997,953,4129,6954,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+bea4e7a5-1756-4fc7-8906-a82917e4f8d1:g3,-4,766,767,1734,1997,953,4129,6954,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+c6997f68-7b20-4249-a214-812de3f37b4a:g1,3,429,1010,169,55,1603,109,6955,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+c6997f68-7b20-4249-a214-812de3f37b4a:g2,5,429,1010,169,55,1603,109,6955,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+c8511358-22eb-4913-840e-c2163068aab8:g1,10,325,375,766,724,4138,1300,6956,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+c8511358-22eb-4913-840e-c2163068aab8:g2,5,325,375,766,724,4138,1300,6956,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+c870d2dd-d5ef-45c3-939d-bfcf7ac1c519:g1,4,402,62,436,233,1366,4159,6957,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+c870d2dd-d5ef-45c3-939d-bfcf7ac1c519:g2,2,402,62,436,233,1366,4159,6957,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+c9ced6a9-2679-4449-b91e-b945aaa0bbeb:g1,3,780,3,66,169,4155,4144,6958,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Quarter Finals
+c9ced6a9-2679-4449-b91e-b945aaa0bbeb:g2,3,780,3,66,169,4155,4144,6958,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Quarter Finals
+cb91638b-1402-460b-848c-185be023b4af:g1,11,291,528,2012,2013,4174,4175,6959,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+cb91638b-1402-460b-848c-185be023b4af:g2,10,291,528,2012,2013,4174,4175,6959,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+ccd55b55-fe34-47e4-9c24-7532bc6ce61b:g1,-6,1058,266,718,724,4176,1297,6960,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+ccd55b55-fe34-47e4-9c24-7532bc6ce61b:g2,-8,1058,266,718,724,4176,1297,6960,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+cfcd7167-e8ad-4669-9e03-8efce3fbc64a:g1,6,268,223,748,911,1676,4177,6961,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+cfcd7167-e8ad-4669-9e03-8efce3fbc64a:g2,10,268,223,748,911,1676,4177,6961,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+d6062c15-fdf9-4779-a476-06db63dbf45c:g1,-9,388,457,186,784,2125,4178,6962,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+d6062c15-fdf9-4779-a476-06db63dbf45c:g2,-6,388,457,186,784,2125,4178,6962,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+d8c8803a-398a-43db-819c-ff38c4f421eb:g1,6,58,208,330,852,4157,4179,6963,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+d8c8803a-398a-43db-819c-ff38c4f421eb:g2,-5,58,208,330,852,4157,4179,6963,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+d8c8803a-398a-43db-819c-ff38c4f421eb:g3,9,58,208,330,852,4157,4179,6963,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+d8c99cbb-cb46-4ba6-9354-4537f46df51a:g1,-9,780,709,344,241,3675,3746,6964,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+d8c99cbb-cb46-4ba6-9354-4537f46df51a:g2,-4,780,709,344,241,3675,3746,6964,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+da56d4bb-79c8-4337-9441-782ac683eaf4:g1,9,314,406,59,41,663,91,6965,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+da56d4bb-79c8-4337-9441-782ac683eaf4:g2,7,314,406,59,41,663,91,6965,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+dbb5c392-b2f9-46be-8b94-3813cce58f59:g1,3,162,851,718,767,4180,4181,6966,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+dbb5c392-b2f9-46be-8b94-3813cce58f59:g2,7,162,851,718,767,4180,4181,6966,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+de0f72d9-3a2c-4a98-be18-8b91275c87e3:g1,5,1930,1458,98,141,4171,4134,6967,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+de0f72d9-3a2c-4a98-be18-8b91275c87e3:g2,3,1930,1458,98,141,4171,4134,6967,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+e1136a9d-0b1b-435d-99cd-523ca8b6d229:g1,-7,357,140,212,141,4166,4169,6968,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+e1136a9d-0b1b-435d-99cd-523ca8b6d229:g2,-2,357,140,212,141,4166,4169,6968,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+e12cf44e-790c-40aa-b02b-1d139c7fbff3:g1,7,436,233,654,1585,4159,2973,6969,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+e12cf44e-790c-40aa-b02b-1d139c7fbff3:g2,-3,436,233,654,1585,4159,2973,6969,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+e12cf44e-790c-40aa-b02b-1d139c7fbff3:g3,9,436,233,654,1585,4159,2973,6969,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+e4696a9f-57ad-4b13-96c5-4338fd4dcc3b:g1,-4,1930,1458,249,77,4171,4149,6970,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+e4696a9f-57ad-4b13-96c5-4338fd4dcc3b:g2,-7,1930,1458,249,77,4171,4149,6970,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+e5d3e46a-081d-4d87-be96-fa1813910336:g1,-6,414,515,780,709,3111,3675,6971,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+e5d3e46a-081d-4d87-be96-fa1813910336:g2,-2,414,515,780,709,3111,3675,6971,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+e9d30ebd-80f4-4ac9-bd6e-159608ec5778:g1,9,186,784,952,764,4178,4182,6972,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+e9d30ebd-80f4-4ac9-bd6e-159608ec5778:g2,8,186,784,952,764,4178,4182,6972,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+ecb5f4b6-7d26-451c-8a15-d7dc5de0ea20:g1,6,1519,1862,2014,2015,4133,4183,6973,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+ecb5f4b6-7d26-451c-8a15-d7dc5de0ea20:g2,2,1519,1862,2014,2015,4133,4183,6973,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+eed55f39-cbbe-4c55-9aad-603a794930c3:g1,9,291,528,250,643,4174,4124,6974,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Quarter Finals
+eed55f39-cbbe-4c55-9aad-603a794930c3:g2,7,291,528,250,643,4174,4124,6974,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Quarter Finals
+eedd276f-bdef-4f56-b0a4-0698955d9bc2:g1,-2,162,851,58,208,4180,4157,6975,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+eedd276f-bdef-4f56-b0a4-0698955d9bc2:g2,-2,162,851,58,208,4180,4157,6975,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+f005edb1-09dd-47ac-bd7a-2535fd045800:g1,-6,493,308,731,781,4128,4163,6976,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+f005edb1-09dd-47ac-bd7a-2535fd045800:g2,-3,493,308,731,781,4128,4163,6976,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 16
+f5c48168-73b4-4b24-b599-c376b673cadf:g1,11,396,74,717,2016,4143,4184,6977,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+f5c48168-73b4-4b24-b599-c376b673cadf:g2,10,396,74,717,2016,4143,4184,6977,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+f880c0c4-e4fd-4df2-a6c4-440ff31b0bcf:g1,-8,497,1296,748,911,4185,4177,6978,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+f880c0c4-e4fd-4df2-a6c4-440ff31b0bcf:g2,5,497,1296,748,911,4185,4177,6978,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+f880c0c4-e4fd-4df2-a6c4-440ff31b0bcf:g3,-4,497,1296,748,911,4185,4177,6978,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+fe34c119-709a-499d-bc8b-b6db929bfebe:g1,9,388,457,512,513,2125,422,6979,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+fe34c119-709a-499d-bc8b-b6db929bfebe:g2,9,388,457,512,513,2125,422,6979,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 32
+ff05f093-c9bc-4fb6-a7d8-f7e350591703:g1,-3,401,15,169,55,568,109,6980,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+ff05f093-c9bc-4fb6-a7d8-f7e350591703:g2,2,401,15,169,55,568,109,6980,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+ff05f093-c9bc-4fb6-a7d8-f7e350591703:g3,-3,401,15,169,55,568,109,6980,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-02,Qualifier — Round 64
+021502d6-8b9a-46ce-b9e1-d2ea682dc74a:g1,2,321,332,314,406,3350,663,6981,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+021502d6-8b9a-46ce-b9e1-d2ea682dc74a:g2,11,321,332,314,406,3350,663,6981,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+0579d70b-1dc5-4acf-88b3-405620a0443f:g1,-3,438,427,1690,206,3347,3165,6982,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+0579d70b-1dc5-4acf-88b3-405620a0443f:g2,7,438,427,1690,206,3347,3165,6982,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+0579d70b-1dc5-4acf-88b3-405620a0443f:g3,8,438,427,1690,206,3347,3165,6982,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+0bbd6c77-c86f-4e93-bcab-cb02c988e6ee:g1,10,521,449,60,335,443,855,6983,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+0bbd6c77-c86f-4e93-bcab-cb02c988e6ee:g2,5,521,449,60,335,443,855,6983,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+0d7e989e-fb22-4023-8c94-1b90b21bfb24:g1,5,411,360,7,704,319,3455,6984,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+0d7e989e-fb22-4023-8c94-1b90b21bfb24:g2,10,411,360,7,704,319,3455,6984,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+0ff0a5e9-50f9-49e4-9271-a58782eab67c:g1,2,62,583,363,345,1750,4186,6985,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+0ff0a5e9-50f9-49e4-9271-a58782eab67c:g2,-5,62,583,363,345,1750,4186,6985,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+0ff0a5e9-50f9-49e4-9271-a58782eab67c:g3,9,62,583,363,345,1750,4186,6985,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+15f304d8-c026-485e-9d8e-46d8f89167f2:g1,10,376,377,424,33,262,3445,6986,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+15f304d8-c026-485e-9d8e-46d8f89167f2:g2,5,376,377,424,33,262,3445,6986,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+189a1004-5af9-4391-a96e-eede771d6efc:g1,4,402,851,234,335,3364,3461,6987,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+189a1004-5af9-4391-a96e-eede771d6efc:g2,-2,402,851,234,335,3364,3461,6987,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+189a1004-5af9-4391-a96e-eede771d6efc:g3,-7,402,851,234,335,3364,3461,6987,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+1aeb555e-2f35-471a-a404-3105600f3097:g1,4,386,387,750,234,267,4130,6988,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+1aeb555e-2f35-471a-a404-3105600f3097:g2,6,386,387,750,234,267,4130,6988,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+1e3027b1-57b6-4b58-b08c-b1ca06f9487e:g1,-5,369,397,1173,1970,1376,4011,6989,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+1e3027b1-57b6-4b58-b08c-b1ca06f9487e:g2,-4,369,397,1173,1970,1376,4011,6989,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+3838e50d-13dc-41d3-9566-1d020b90d851:g1,7,361,377,186,784,3916,4178,6990,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+3838e50d-13dc-41d3-9566-1d020b90d851:g2,10,361,377,186,784,3916,4178,6990,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+41180ff2-b2bf-4b2f-92cb-0ab5e3bb0232:g1,-5,1690,162,59,414,4187,1524,6991,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+41180ff2-b2bf-4b2f-92cb-0ab5e3bb0232:g2,-8,1690,162,59,414,4187,1524,6991,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+42a0440c-b4b1-4237-ad59-5c878293e93c:g1,-3,351,450,209,370,4188,3112,6992,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+42a0440c-b4b1-4237-ad59-5c878293e93c:g2,5,351,450,209,370,4188,3112,6992,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+42a0440c-b4b1-4237-ad59-5c878293e93c:g3,-10,351,450,209,370,4188,3112,6992,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+44560a19-ca9e-4d68-a7e7-e9d2fa1cc911:g1,6,342,395,217,240,4189,4190,6993,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+44560a19-ca9e-4d68-a7e7-e9d2fa1cc911:g2,7,342,395,217,240,4189,4190,6993,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+45e62f98-3b4d-4112-994c-0bdb7db33255:g1,5,323,1970,702,1010,4191,2677,6994,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+45e62f98-3b4d-4112-994c-0bdb7db33255:g2,7,323,1970,702,1010,4191,2677,6994,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+4e02f422-ee9c-471a-8fb6-91ec4b12d5da:g1,9,435,15,239,316,4192,223,6995,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+4e02f422-ee9c-471a-8fb6-91ec4b12d5da:g2,8,435,15,239,316,4192,223,6995,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+4ec3770d-78dc-4f63-805d-7d96dc0851bc:g1,9,320,337,26,1,3874,1822,6996,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+4ec3770d-78dc-4f63-805d-7d96dc0851bc:g2,8,320,337,26,1,3874,1822,6996,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+516a282d-5eca-45f6-a0a3-845c046ac5be:g1,5,384,76,372,394,4193,657,6997,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+516a282d-5eca-45f6-a0a3-845c046ac5be:g2,-6,384,76,372,394,4193,657,6997,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+516a282d-5eca-45f6-a0a3-845c046ac5be:g3,-3,384,76,372,394,4193,657,6997,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+536ea0b3-f212-42a8-a927-509fd00faf5d:g1,-7,434,394,750,1331,307,4194,6998,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+536ea0b3-f212-42a8-a927-509fd00faf5d:g2,2,434,394,750,1331,307,4194,6998,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+536ea0b3-f212-42a8-a927-509fd00faf5d:g3,-6,434,394,750,1331,307,4194,6998,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+5f64a3d7-5f64-4b8f-b27e-97c378de437f:g1,6,420,352,358,385,4195,4196,6999,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+5f64a3d7-5f64-4b8f-b27e-97c378de437f:g2,7,420,352,358,385,4195,4196,6999,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+60076256-ec73-408f-826e-56375368a7c6:g1,11,405,61,98,925,3819,3926,7000,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+60076256-ec73-408f-826e-56375368a7c6:g2,11,405,61,98,925,3819,3926,7000,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+619d03ed-887f-49d4-b33b-63ba2511305f:g1,8,344,384,326,548,4197,2362,7001,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+619d03ed-887f-49d4-b33b-63ba2511305f:g2,2,344,384,326,548,4197,2362,7001,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+63368954-9f6c-4401-9d86-f1371cf8ca14:g1,-2,33,375,372,319,4198,447,7002,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+63368954-9f6c-4401-9d86-f1371cf8ca14:g2,2,33,375,372,319,4198,447,7002,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+63368954-9f6c-4401-9d86-f1371cf8ca14:g3,-2,33,375,372,319,4198,447,7002,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+637c0da6-854c-48f5-b511-ead398f8ab9a:g1,8,1224,442,411,61,1954,4199,7003,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+637c0da6-854c-48f5-b511-ead398f8ab9a:g2,-2,1224,442,411,61,1954,4199,7003,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+637c0da6-854c-48f5-b511-ead398f8ab9a:g3,2,1224,442,411,61,1954,4199,7003,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+64dc734c-dbbf-4bd1-8a56-55c8157daca9:g1,9,201,209,208,436,3897,3586,7004,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+64dc734c-dbbf-4bd1-8a56-55c8157daca9:g2,-2,201,209,208,436,3897,3586,7004,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+64dc734c-dbbf-4bd1-8a56-55c8157daca9:g3,-4,201,209,208,436,3897,3586,7004,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+6a27bb2b-3a94-408c-b887-8ed469dce380:g1,6,361,1223,849,323,2000,4200,7005,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+6a27bb2b-3a94-408c-b887-8ed469dce380:g2,8,361,1223,849,323,2000,4200,7005,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+6b64d174-9cbd-4484-8053-993d7dea0e22:g1,8,312,354,404,583,1136,2583,7006,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+6b64d174-9cbd-4484-8053-993d7dea0e22:g2,-2,312,354,404,583,1136,2583,7006,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+6b64d174-9cbd-4484-8053-993d7dea0e22:g3,3,312,354,404,583,1136,2583,7006,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+715bbfbd-3f64-43ea-b8c9-26961f2ed12b:g1,-4,130,77,428,325,2722,4201,7007,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+715bbfbd-3f64-43ea-b8c9-26961f2ed12b:g2,4,130,77,428,325,2722,4201,7007,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+715bbfbd-3f64-43ea-b8c9-26961f2ed12b:g3,6,130,77,428,325,2722,4201,7007,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+756d638b-2275-459d-ad44-8ea2e0e9b81f:g1,7,410,322,344,241,668,3746,7008,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+756d638b-2275-459d-ad44-8ea2e0e9b81f:g2,9,410,322,344,241,668,3746,7008,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+8a9f6d77-0a8c-4a86-8c9e-a062049626dc:g1,6,95,425,382,229,440,1586,7009,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+8a9f6d77-0a8c-4a86-8c9e-a062049626dc:g2,2,95,425,382,229,440,1586,7009,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+8d8da08b-e771-432a-94da-2dbed141b1f2:g1,4,383,443,445,63,2833,1717,7010,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+8d8da08b-e771-432a-94da-2dbed141b1f2:g2,-2,383,443,445,63,2833,1717,7010,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+8d8da08b-e771-432a-94da-2dbed141b1f2:g3,-5,383,443,445,63,2833,1717,7010,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+9a74b65f-a277-4dbf-8bec-61e83ed96144:g1,-2,336,395,1451,1022,2410,4202,7011,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+9a74b65f-a277-4dbf-8bec-61e83ed96144:g2,-2,336,395,1451,1022,2410,4202,7011,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+9cf215ee-ffd6-4dda-b8ed-e41c9d3f04fa:g1,10,367,12,447,399,4203,3073,7012,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+9cf215ee-ffd6-4dda-b8ed-e41c9d3f04fa:g2,8,367,12,447,399,4203,3073,7012,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+9ddefb58-07bb-4cd8-8fef-0b1c20c2f5bf:g1,-2,360,359,444,845,4204,4205,7013,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+9ddefb58-07bb-4cd8-8fef-0b1c20c2f5bf:g2,5,360,359,444,845,4204,4205,7013,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+9ddefb58-07bb-4cd8-8fef-0b1c20c2f5bf:g3,3,360,359,444,845,4204,4205,7013,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+ab3bf70c-5197-4b7c-8caf-8686919fd980:g1,4,424,385,401,381,3390,3377,7014,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+ab3bf70c-5197-4b7c-8caf-8686919fd980:g2,5,424,385,401,381,3390,3377,7014,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+add5ff36-fa7a-4419-af05-32ef714f0c67:g1,8,416,417,58,208,284,4157,7015,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+add5ff36-fa7a-4419-af05-32ef714f0c67:g2,9,416,417,58,208,284,4157,7015,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+b5e977fe-2c56-4ed9-ac56-eed421800982:g1,8,378,1225,434,422,1958,4206,7016,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+b5e977fe-2c56-4ed9-ac56-eed421800982:g2,6,378,1225,434,422,1958,4206,7016,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+b6a728d7-17db-4fac-9d10-c9393c9b32ea:g1,9,349,350,249,77,244,4149,7017,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+b6a728d7-17db-4fac-9d10-c9393c9b32ea:g2,9,349,350,249,77,244,4149,7017,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+b6f044ba-776c-4e32-8884-3abb702d194e:g1,-6,331,353,429,1010,3816,1603,7018,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+b6f044ba-776c-4e32-8884-3abb702d194e:g2,6,331,353,429,1010,3816,1603,7018,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+b6f044ba-776c-4e32-8884-3abb702d194e:g3,2,331,353,429,1010,3816,1603,7018,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+ba6e95fd-15da-4bbe-992a-1582f312e9df:g1,5,206,537,249,426,3010,321,7019,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+ba6e95fd-15da-4bbe-992a-1582f312e9df:g2,5,206,537,249,426,3010,321,7019,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+c6210766-939f-4a9e-920e-2832f90e4a69:g1,2,355,379,702,317,4207,1617,7020,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+c6210766-939f-4a9e-920e-2832f90e4a69:g2,-7,355,379,702,317,4207,1617,7020,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+c6210766-939f-4a9e-920e-2832f90e4a69:g3,-10,355,379,702,317,4207,1617,7020,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+cb590b49-1057-4338-aa43-349e74589016:g1,11,449,322,97,96,3398,48,7021,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+cb590b49-1057-4338-aa43-349e74589016:g2,2,449,322,97,96,3398,48,7021,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+cea52614-a79e-432e-a40d-401eccbb1359:g1,3,537,131,343,95,3355,3371,7022,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+cea52614-a79e-432e-a40d-401eccbb1359:g2,-6,537,131,343,95,3355,3371,7022,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+cea52614-a79e-432e-a40d-401eccbb1359:g3,-11,537,131,343,95,3355,3371,7022,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+d0c99671-d9a3-424b-bc01-bd803040eade:g1,10,320,74,609,211,4208,3250,7023,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+d0c99671-d9a3-424b-bc01-bd803040eade:g2,-2,320,74,609,211,4208,3250,7023,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+d0c99671-d9a3-424b-bc01-bd803040eade:g3,8,320,74,609,211,4208,3250,7023,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+d9c58f4f-ab89-4665-8680-aea3876d9a32:g1,-3,409,845,441,230,2025,4209,7024,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+d9c58f4f-ab89-4665-8680-aea3876d9a32:g2,-4,409,845,441,230,2025,4209,7024,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+dd752640-1bad-4bdf-baf5-2d58709e3bd5:g1,6,312,358,852,5,3458,4210,7025,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+dd752640-1bad-4bdf-baf5-2d58709e3bd5:g2,6,312,358,852,5,3458,4210,7025,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+e1750bb1-3377-4ae8-837b-0290d578ddc2:g1,-3,430,431,402,62,293,1366,7026,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+e1750bb1-3377-4ae8-837b-0290d578ddc2:g2,8,430,431,402,62,293,1366,7026,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+e1750bb1-3377-4ae8-837b-0290d578ddc2:g3,7,430,431,402,62,293,1366,7026,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+e255b610-8303-41eb-8f28-67a9e5e20c9a:g1,6,28,26,446,41,336,1169,7027,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+e255b610-8303-41eb-8f28-67a9e5e20c9a:g2,2,28,26,446,41,336,1169,7027,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+ecdbc024-42bc-4f6d-95cf-d2cc796f1789:g1,2,373,696,345,415,1126,3965,7028,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+ecdbc024-42bc-4f6d-95cf-d2cc796f1789:g2,9,373,696,345,415,1126,3965,7028,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+ed6cfdb2-531c-4d43-90a9-4fda08c7c3bc:g1,8,102,342,522,425,4211,3353,7029,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+ed6cfdb2-531c-4d43-90a9-4fda08c7c3bc:g2,5,102,342,522,425,4211,3353,7029,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+efaa68e6-d586-4f5e-b506-08d3c4abe201:g1,3,412,413,324,362,282,4212,7030,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+efaa68e6-d586-4f5e-b506-08d3c4abe201:g2,-2,412,413,324,362,282,4212,7030,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+efaa68e6-d586-4f5e-b506-08d3c4abe201:g3,5,412,413,324,362,282,4212,7030,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+f050e7f9-c79c-4ff5-a6aa-b000834e8a39:g1,6,403,20,319,405,4213,4214,7031,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+f050e7f9-c79c-4ff5-a6aa-b000834e8a39:g2,-6,403,20,319,405,4213,4214,7031,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+f050e7f9-c79c-4ff5-a6aa-b000834e8a39:g3,-4,403,20,319,405,4213,4214,7031,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+f3315257-be26-46ec-8c69-edb8c61ae500:g1,2,12,313,28,340,4215,4216,7032,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+f3315257-be26-46ec-8c69-edb8c61ae500:g2,5,12,313,28,340,4215,4216,7032,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+f4e107db-cf17-4a71-99b3-0689b0f91054:g1,-3,338,418,848,27,1479,4217,7033,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+f4e107db-cf17-4a71-99b3-0689b0f91054:g2,-10,338,418,848,27,1479,4217,7033,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+f5984f68-91ea-49a2-9488-274158f5b8d9:g1,2,448,423,200,201,820,141,7034,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+f5984f68-91ea-49a2-9488-274158f5b8d9:g2,-3,448,423,200,201,820,141,7034,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+f5984f68-91ea-49a2-9488-274158f5b8d9:g3,4,448,423,200,201,820,141,7034,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-03,Round 64
+00331d28-0fd1-4a3d-87ac-1d1fb9469ce9:g1,4,368,362,241,1585,4218,4219,7035,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+00331d28-0fd1-4a3d-87ac-1d1fb9469ce9:g2,5,368,362,241,1585,4218,4219,7035,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+092f3763-b673-4681-9c59-2add70263c94:g1,-9,29,45,324,20,4162,328,7036,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+092f3763-b673-4681-9c59-2add70263c94:g2,-10,29,45,324,20,4162,328,7036,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+0cb0f399-26af-42f1-b671-2441f8f4275f:g1,-4,312,354,448,423,1136,820,7037,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+0cb0f399-26af-42f1-b671-2441f8f4275f:g2,-3,312,354,448,423,1136,820,7037,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+0dc9a1af-040b-4141-a7c2-43a18710a6d1:g1,9,1402,337,104,21,2570,4220,7038,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+0dc9a1af-040b-4141-a7c2-43a18710a6d1:g2,5,1402,337,104,21,2570,4220,7038,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+10c7e454-d65f-4466-bee7-bfcd832a2ea5:g1,10,449,322,95,425,3398,440,7039,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+10c7e454-d65f-4466-bee7-bfcd832a2ea5:g2,5,449,322,95,425,3398,440,7039,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+14c2ff52-c2a0-4db9-ae62-223be4757d26:g1,2,848,27,102,342,4217,4211,7040,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+14c2ff52-c2a0-4db9-ae62-223be4757d26:g2,-6,848,27,102,342,4217,4211,7040,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+14c2ff52-c2a0-4db9-ae62-223be4757d26:g3,-7,848,27,102,342,4217,4211,7040,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+1b1a0c9e-c955-426a-8665-af0c38014f98:g1,4,378,353,212,141,3828,4169,7041,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+1b1a0c9e-c955-426a-8665-af0c38014f98:g2,9,378,353,212,141,3828,4169,7041,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+23b997b4-22bc-428d-8182-5d2e0b47a803:g1,-4,361,1223,360,359,2000,4204,7042,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+23b997b4-22bc-428d-8182-5d2e0b47a803:g2,3,361,1223,360,359,2000,4204,7042,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+23b997b4-22bc-428d-8182-5d2e0b47a803:g3,5,361,1223,360,359,2000,4204,7042,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+2734a8d1-edfd-42c7-bfa7-288a17e065cc:g1,9,416,332,372,319,297,447,7043,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+2734a8d1-edfd-42c7-bfa7-288a17e065cc:g2,8,416,332,372,319,297,447,7043,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+2a8376b0-c437-455b-b2d9-3e258af2fbbe:g1,8,376,377,412,413,262,282,7044,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+2a8376b0-c437-455b-b2d9-3e258af2fbbe:g2,-8,376,377,412,413,262,282,7044,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+2a8376b0-c437-455b-b2d9-3e258af2fbbe:g3,6,376,377,412,413,262,282,7044,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+2b417a49-f5fe-41de-b900-b890ad97c39b:g1,4,102,359,368,362,1400,4218,7045,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+2b417a49-f5fe-41de-b900-b890ad97c39b:g2,-4,102,359,368,362,1400,4218,7045,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+2b417a49-f5fe-41de-b900-b890ad97c39b:g3,2,102,359,368,362,1400,4218,7045,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+33accddd-e239-42f9-a908-0ce58a040a67:g1,11,193,352,380,415,4221,4222,7046,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+33accddd-e239-42f9-a908-0ce58a040a67:g2,4,193,352,380,415,4221,4222,7046,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+34d8b314-ded5-4f95-bd0c-69565b8b5e2b:g1,11,410,521,314,340,1171,361,7047,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+34d8b314-ded5-4f95-bd0c-69565b8b5e2b:g2,9,410,521,314,340,1171,361,7047,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+38a2f94c-7ef5-491b-80b6-62f3974d2169:g1,11,386,417,424,385,327,3390,7048,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+38a2f94c-7ef5-491b-80b6-62f3974d2169:g2,10,386,417,424,385,327,3390,7048,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+3d480ec0-d86b-4c3d-ad92-2729524b8b23:g1,5,349,350,372,394,244,657,7049,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+3d480ec0-d86b-4c3d-ad92-2729524b8b23:g2,7,349,350,372,394,244,657,7049,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+48e3a15d-d2f9-4eff-9bd9-c2f865f5caff:g1,-3,373,696,445,63,1126,1717,7050,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+48e3a15d-d2f9-4eff-9bd9-c2f865f5caff:g2,-10,373,696,445,63,1126,1717,7050,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+496ee333-c566-4719-87ac-cf1bcda8c7fc:g1,2,1169,1173,654,599,1872,2740,7051,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+496ee333-c566-4719-87ac-cf1bcda8c7fc:g2,3,1169,1173,654,599,1872,2740,7051,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+4a8bf4f5-7f29-4eaa-b9af-eaf6457a715b:g1,2,410,322,209,370,668,3112,7052,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+4a8bf4f5-7f29-4eaa-b9af-eaf6457a715b:g2,5,410,322,209,370,668,3112,7052,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+6b6d5085-32d3-427a-9191-51bedbca3b03:g1,7,331,353,343,95,3816,3371,7053,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+6b6d5085-32d3-427a-9191-51bedbca3b03:g2,2,331,353,343,95,3816,3371,7053,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+703b6307-b668-4259-9381-b6ecbc485903:g1,8,430,376,397,233,306,3817,7054,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+703b6307-b668-4259-9381-b6ecbc485903:g2,2,430,376,397,233,306,3817,7054,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+76b4bbdf-d1d9-4349-b214-dfbc92719425:g1,10,386,387,320,337,267,3874,7055,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+76b4bbdf-d1d9-4349-b214-dfbc92719425:g2,9,386,387,320,337,267,3874,7055,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+76dbc3ce-1f8c-493e-a041-32a26c82e69f:g1,8,1224,442,1097,1169,1954,4223,7056,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+76dbc3ce-1f8c-493e-a041-32a26c82e69f:g2,6,1224,442,1097,1169,1954,4223,7056,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+78523c9d-8e4a-4cb9-bb99-e9633fd8965c:g1,11,416,417,702,317,284,1617,7057,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+78523c9d-8e4a-4cb9-bb99-e9633fd8965c:g2,10,416,417,702,317,284,1617,7057,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+7c51c626-593a-45b1-a133-6143c16ba92c:g1,2,406,407,365,445,1972,4224,7058,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+7c51c626-593a-45b1-a133-6143c16ba92c:g2,2,406,407,365,445,1972,4224,7058,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+7eed4865-36ac-42ea-b0a1-9acdfd8d0311:g1,10,76,63,718,724,717,1297,7059,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+7eed4865-36ac-42ea-b0a1-9acdfd8d0311:g2,8,76,63,718,724,717,1297,7059,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+8400c84b-4b59-4f39-a383-f9e9075b168c:g1,4,420,408,58,330,4225,3391,7060,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+8400c84b-4b59-4f39-a383-f9e9075b168c:g2,9,420,408,58,330,4225,3391,7060,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+86f769c6-f7d6-4da1-a782-287569fb955f:g1,6,430,431,319,405,293,4214,7061,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+86f769c6-f7d6-4da1-a782-287569fb955f:g2,11,430,431,319,405,293,4214,7061,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+9139bc29-508c-4bdc-8a47-ea5758105659:g1,9,321,332,1173,1970,3350,4011,7062,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+9139bc29-508c-4bdc-8a47-ea5758105659:g2,2,321,332,1173,1970,3350,4011,7062,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+932e4e3a-6a52-4696-bfbb-8e34a641bf76:g1,2,313,418,62,583,4226,1750,7063,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+932e4e3a-6a52-4696-bfbb-8e34a641bf76:g2,5,313,418,62,583,4226,1750,7063,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+93880c8e-6c32-4326-9ef4-f9c2407227cc:g1,-3,1451,1022,378,1225,4202,1958,7064,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+93880c8e-6c32-4326-9ef4-f9c2407227cc:g2,-10,1451,1022,378,1225,4202,1958,7064,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+94978218-e952-4942-bfc0-a47040327273:g1,6,701,522,291,528,1185,4174,7065,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+94978218-e952-4942-bfc0-a47040327273:g2,6,701,522,291,528,1185,4174,7065,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+96b134e2-169d-4851-99f3-5257a2a3e850:g1,2,361,377,404,27,3916,4227,7066,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+96b134e2-169d-4851-99f3-5257a2a3e850:g2,10,361,377,404,27,3916,4227,7066,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+984c5cb7-ff68-491d-97c1-05844bc3d6d0:g1,8,321,349,405,61,346,3819,7067,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+984c5cb7-ff68-491d-97c1-05844bc3d6d0:g2,10,321,349,405,61,346,3819,7067,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+9ba0a945-b9e7-4cab-9644-7718391c886b:g1,5,438,427,12,313,3347,4215,7068,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+9ba0a945-b9e7-4cab-9644-7718391c886b:g2,4,438,427,12,313,3347,4215,7068,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+9cb13d05-7f29-4ad6-b491-34b81c745ef4:g1,-2,355,696,344,384,1166,4197,7069,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+9cb13d05-7f29-4ad6-b491-34b81c745ef4:g2,9,355,696,344,384,1166,4197,7069,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+9cb13d05-7f29-4ad6-b491-34b81c745ef4:g3,-2,355,696,344,384,1166,4197,7069,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+a4b7557c-3a93-4d20-bd23-30092437b0fd:g1,4,431,387,435,15,3389,4192,7070,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+a4b7557c-3a93-4d20-bd23-30092437b0fd:g2,8,431,387,435,15,3389,4192,7070,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+aa4f6b8b-4697-44d1-a18d-069db0a31c15:g1,4,314,340,118,60,361,1739,7071,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+aa4f6b8b-4697-44d1-a18d-069db0a31c15:g2,3,314,340,118,60,361,1739,7071,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+ae341bf9-7a52-4105-8787-779da362c300:g1,2,442,350,731,781,3388,4163,7072,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+ae341bf9-7a52-4105-8787-779da362c300:g2,7,442,350,731,781,3388,4163,7072,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+b6da511f-0558-4821-8c48-6efce15ae448:g1,4,338,422,441,230,478,4209,7073,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+b6da511f-0558-4821-8c48-6efce15ae448:g2,2,338,422,441,230,478,4209,7073,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+bcd12e54-da7e-4ddf-a798-963be1a2510e:g1,8,351,354,130,77,869,2722,7074,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+bcd12e54-da7e-4ddf-a798-963be1a2510e:g2,6,351,354,130,77,869,2722,7074,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+cae5dd20-37d6-46f7-b04c-f013fef431fa:g1,6,442,350,369,429,3388,4228,7075,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+cae5dd20-37d6-46f7-b04c-f013fef431fa:g2,8,442,350,369,429,3388,4228,7075,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+cf1c328e-3ea2-404f-8dc7-85bb1fb977af:g1,4,200,383,780,3,4229,4155,7076,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+cf1c328e-3ea2-404f-8dc7-85bb1fb977af:g2,3,200,383,780,3,4229,4155,7076,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+d101353f-96ad-438c-b98b-431bd2a74e78:g1,3,312,358,367,12,3458,4203,7077,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+d101353f-96ad-438c-b98b-431bd2a74e78:g2,-6,312,358,367,12,3458,4203,7077,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+d101353f-96ad-438c-b98b-431bd2a74e78:g3,-11,312,358,367,12,3458,4203,7077,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+d20506b9-4ce6-419e-98b3-fd8fc9329089:g1,3,404,27,1451,1934,4227,4230,7078,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+d20506b9-4ce6-419e-98b3-fd8fc9329089:g2,4,404,27,1451,1934,4227,4230,7078,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+d3c5027d-9797-48c3-b9f4-5b3146561256:g1,-3,603,639,324,20,653,328,7079,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+d3c5027d-9797-48c3-b9f4-5b3146561256:g2,-6,603,639,324,20,653,328,7079,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+d7327fcb-ecc0-46ac-a349-8755420ebd55:g1,4,413,438,1305,709,3973,4135,7080,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+d7327fcb-ecc0-46ac-a349-8755420ebd55:g2,8,413,438,1305,709,3973,4135,7080,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+d7ebd326-a63a-409c-8271-4f34300eac51:g1,8,448,373,420,408,4231,4225,7081,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+d7ebd326-a63a-409c-8271-4f34300eac51:g2,10,448,373,420,408,4231,4225,7081,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+d862fbfb-041c-4d85-9634-f3f4765039f4:g1,11,378,353,406,407,3828,1972,7082,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+d862fbfb-041c-4d85-9634-f3f4765039f4:g2,2,378,353,406,407,3828,1972,7082,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+de6cdd7b-2cf9-4c5c-afa3-4b911fbd8340:g1,-10,1224,1225,750,1331,2015,4194,7083,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+de6cdd7b-2cf9-4c5c-afa3-4b911fbd8340:g2,6,1224,1225,750,1331,2015,4194,7083,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+de6cdd7b-2cf9-4c5c-afa3-4b911fbd8340:g3,9,1224,1225,750,1331,2015,4194,7083,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+e2757be7-577d-444d-8ef8-f08d4977d51e:g1,6,369,429,705,348,4228,4232,7084,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+e2757be7-577d-444d-8ef8-f08d4977d51e:g2,2,369,429,705,348,4228,4232,7084,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+e7f18e10-9162-4a81-a5ed-becc513f4e69:g1,9,1344,331,59,414,3397,1524,7085,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+e7f18e10-9162-4a81-a5ed-becc513f4e69:g2,11,1344,331,59,414,3397,1524,7085,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+ea9a24b6-e9d6-4aaa-b336-041197e166ae:g1,-2,131,1,1458,726,369,4120,7086,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+ea9a24b6-e9d6-4aaa-b336-041197e166ae:g2,6,131,1,1458,726,369,4120,7086,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+ea9a24b6-e9d6-4aaa-b336-041197e166ae:g3,7,131,1,1458,726,369,4120,7086,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+eb8c3614-58b3-4712-a6c2-3a7ffad6ed77:g1,2,317,423,268,223,3358,1676,7087,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+eb8c3614-58b3-4712-a6c2-3a7ffad6ed77:g2,8,317,423,268,223,3358,1676,7087,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+ee848180-5e97-445c-be69-267e373deeb0:g1,9,521,449,420,352,443,4195,7088,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+ee848180-5e97-445c-be69-267e373deeb0:g2,8,521,449,420,352,443,4195,7088,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+ef16af38-7f26-4210-bb3a-2c33da94494a:g1,-5,1169,1173,1402,337,1872,2570,7089,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+ef16af38-7f26-4210-bb3a-2c33da94494a:g2,3,1169,1173,1402,337,1872,2570,7089,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+ef16af38-7f26-4210-bb3a-2c33da94494a:g3,4,1169,1173,1402,337,1872,2570,7089,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+f29137f1-c3a2-438e-bc40-2e7a3560acb4:g1,-9,398,403,76,63,4233,717,7090,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+f29137f1-c3a2-438e-bc40-2e7a3560acb4:g2,4,398,403,76,63,4233,717,7090,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+f29137f1-c3a2-438e-bc40-2e7a3560acb4:g3,-2,398,403,76,63,4233,717,7090,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 32
+f623acbf-d734-4522-85e2-f50c92c24812:g1,6,1022,1404,397,233,4234,3817,7091,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+f623acbf-d734-4522-85e2-f50c92c24812:g2,-2,1022,1404,397,233,4234,3817,7091,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+f623acbf-d734-4522-85e2-f50c92c24812:g3,-8,1022,1404,397,233,4234,3817,7091,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+f9db45b0-563a-441e-b86e-fcfcd162c10b:g1,-2,355,696,1520,1846,1166,4235,7092,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+f9db45b0-563a-441e-b86e-fcfcd162c10b:g2,3,355,696,1520,1846,1166,4235,7092,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+f9db45b0-563a-441e-b86e-fcfcd162c10b:g3,9,355,696,1520,1846,1166,4235,7092,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+ffeb804b-48d7-4997-a180-648bb1315343:g1,11,338,422,440,520,478,4236,7093,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+ffeb804b-48d7-4997-a180-648bb1315343:g2,10,338,422,440,520,478,4236,7093,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-04,Round 64
+05d3ab1d-1f2c-4d42-83a8-59ac14645214:g1,9,336,1223,323,1970,4237,4191,7094,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+05d3ab1d-1f2c-4d42-83a8-59ac14645214:g2,3,336,1223,323,1970,4237,4191,7094,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+09484ef2-d2d7-4530-8ec7-896a1b33fc66:g1,-5,411,360,193,352,319,4221,7095,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+09484ef2-d2d7-4530-8ec7-896a1b33fc66:g2,-7,411,360,193,352,319,4221,7095,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+0b45503b-12f6-49db-81bb-eb3775772fb3:g1,-6,430,431,1224,442,293,1954,7096,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+0b45503b-12f6-49db-81bb-eb3775772fb3:g2,5,430,431,1224,442,293,1954,7096,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+0b45503b-12f6-49db-81bb-eb3775772fb3:g3,-5,430,431,1224,442,293,1954,7096,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+0b611968-f9c2-4116-a08b-6c5accc23059:g1,9,416,417,448,423,284,820,7097,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+0b611968-f9c2-4116-a08b-6c5accc23059:g2,3,416,417,448,423,284,820,7097,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+1ea67246-075f-453c-bc94-45767b792fea:g1,5,413,438,1169,1173,3973,1872,7098,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+1ea67246-075f-453c-bc94-45767b792fea:g2,4,413,438,1169,1173,3973,1872,7098,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+222f994c-10cd-42f7-a79f-7245c123e234:g1,10,416,332,28,26,297,336,7099,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+222f994c-10cd-42f7-a79f-7245c123e234:g2,2,416,332,28,26,297,336,7099,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+33a08aba-d7a0-4020-97c1-c0f458503597:g1,8,317,423,206,537,3358,3010,7100,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+33a08aba-d7a0-4020-97c1-c0f458503597:g2,6,317,423,206,537,3358,3010,7100,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+35a81120-1712-4ec3-a794-bf32142392b7:g1,9,413,438,208,436,3973,3586,7101,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+35a81120-1712-4ec3-a794-bf32142392b7:g2,7,413,438,208,436,3973,3586,7101,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+384fc56d-f68c-4c8c-b47b-4f8e3ee03b0e:g1,2,521,449,376,377,443,262,7102,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+384fc56d-f68c-4c8c-b47b-4f8e3ee03b0e:g2,-2,521,449,376,377,443,262,7102,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+384fc56d-f68c-4c8c-b47b-4f8e3ee03b0e:g3,8,521,449,376,377,443,262,7102,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+40b67615-fd1a-4e19-89a6-dcbdbb9d8626:g1,-7,849,443,28,26,4238,336,7103,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+40b67615-fd1a-4e19-89a6-dcbdbb9d8626:g2,-6,849,443,28,26,4238,336,7103,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+4cf61096-adc4-4972-a585-f91f19fe71c1:g1,6,331,353,438,427,3816,3347,7104,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+4cf61096-adc4-4972-a585-f91f19fe71c1:g2,3,331,353,438,427,3816,3347,7104,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+6c307a6f-2591-4b3e-b65e-87ed79155917:g1,-2,430,376,200,383,306,4229,7105,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+6c307a6f-2591-4b3e-b65e-87ed79155917:g2,8,430,376,200,383,306,4229,7105,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+6c307a6f-2591-4b3e-b65e-87ed79155917:g3,7,430,376,200,383,306,4229,7105,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+755f7015-91b4-4f60-8c4e-3fe037ca85ca:g1,2,349,350,361,1223,244,2000,7106,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+755f7015-91b4-4f60-8c4e-3fe037ca85ca:g2,8,349,350,361,1223,244,2000,7106,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+83216089-e61f-412d-88b2-74972b792087:g1,8,410,322,378,1225,668,1958,7107,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+83216089-e61f-412d-88b2-74972b792087:g2,3,410,322,378,1225,668,1958,7107,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+9a5fc355-3528-4347-93be-a63aa73b5947:g1,8,386,417,76,63,327,717,7108,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+9a5fc355-3528-4347-93be-a63aa73b5947:g2,11,386,417,76,63,327,717,7108,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+a1ffc14f-ffa6-41e4-8672-d48fb8da9a32:g1,6,343,427,131,1,3401,369,7109,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+a1ffc14f-ffa6-41e4-8672-d48fb8da9a32:g2,5,343,427,131,1,3401,369,7109,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+c004bd17-4746-4bf0-875d-2ae2e93da9f2:g1,7,449,322,342,395,3398,4189,7110,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+c004bd17-4746-4bf0-875d-2ae2e93da9f2:g2,10,449,322,342,395,3398,4189,7110,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+cb03fc56-2050-45fe-947f-351a101c13b0:g1,5,313,418,343,427,4226,3401,7111,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+cb03fc56-2050-45fe-947f-351a101c13b0:g2,-2,313,418,343,427,4226,3401,7111,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+cb03fc56-2050-45fe-947f-351a101c13b0:g3,-5,313,418,343,427,4226,3401,7111,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+cc76b566-8662-4f69-abc9-8fb7725d8beb:g1,-10,1097,848,701,522,4239,1185,7112,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+cc76b566-8662-4f69-abc9-8fb7725d8beb:g2,-6,1097,848,701,522,4239,1185,7112,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+d1b520b6-8874-4e1b-93da-1e9b741e9fba:g1,-9,378,353,317,423,3828,3358,7113,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+d1b520b6-8874-4e1b-93da-1e9b741e9fba:g2,3,378,353,317,423,3828,3358,7113,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+d1b520b6-8874-4e1b-93da-1e9b741e9fba:g3,4,378,353,317,423,3828,3358,7113,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+d7eb6c32-6710-41e7-aec6-588191091e69:g1,3,448,373,102,359,4231,1400,7114,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+d7eb6c32-6710-41e7-aec6-588191091e69:g2,-4,448,373,102,359,4231,1400,7114,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+d7eb6c32-6710-41e7-aec6-588191091e69:g3,-5,448,373,102,359,4231,1400,7114,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+e921402f-df45-4d25-9a5a-b5709b8b2792:g1,-2,342,395,234,335,4189,3461,7115,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+e921402f-df45-4d25-9a5a-b5709b8b2792:g2,7,342,395,234,335,4189,3461,7115,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+e921402f-df45-4d25-9a5a-b5709b8b2792:g3,6,342,395,234,335,4189,3461,7115,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+ea9ad53b-d176-452b-8cdc-3ee8f4e506de:g1,11,386,387,445,63,267,1717,7116,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+ea9ad53b-d176-452b-8cdc-3ee8f4e506de:g2,7,386,387,445,63,267,1717,7116,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+eb47bb16-805f-4a54-ada4-05bdfab2dd4e:g1,2,444,370,320,74,3393,4208,7117,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+eb47bb16-805f-4a54-ada4-05bdfab2dd4e:g2,3,444,370,320,74,3393,4208,7117,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 32
+fbaa2f19-41d8-4495-a106-d64f8e306247:g1,6,442,350,367,12,3388,4203,7118,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+fbaa2f19-41d8-4495-a106-d64f8e306247:g2,5,442,350,367,12,3388,4203,7118,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+ff60a85c-87bb-4b5e-850a-c988f285af1d:g1,10,321,332,102,342,3350,4211,7119,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+ff60a85c-87bb-4b5e-850a-c988f285af1d:g2,3,321,332,102,342,3350,4211,7119,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-05,Round 16
+0f71dc42-a182-46df-a418-8a6daecd0268:g1,-2,1202,47,36,90,1896,4240,7120,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+0f71dc42-a182-46df-a418-8a6daecd0268:g2,2,1202,47,36,90,1896,4240,7120,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+0f71dc42-a182-46df-a418-8a6daecd0268:g3,-2,1202,47,36,90,1896,4240,7120,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+1d1756a3-ddc3-48b8-9fcb-94a893724554:g1,7,410,322,321,332,668,3350,7121,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+1d1756a3-ddc3-48b8-9fcb-94a893724554:g2,4,410,322,321,332,668,3350,7121,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+1dffad61-7e31-43c1-a72b-0e5028e1b57f:g1,-3,431,387,378,353,3389,3828,7122,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+1dffad61-7e31-43c1-a72b-0e5028e1b57f:g2,-7,431,387,378,353,3389,3828,7122,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+2254bc31-d124-46ae-a66a-2d372dc18fcb:g1,-5,624,931,1305,140,4132,4241,7123,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+2254bc31-d124-46ae-a66a-2d372dc18fcb:g2,2,624,931,1305,140,4132,4241,7123,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+2254bc31-d124-46ae-a66a-2d372dc18fcb:g3,4,624,931,1305,140,4132,4241,7123,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+2b86bd62-a567-4b6a-a394-109978221284:g1,-8,324,20,193,352,328,4221,7124,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+2b86bd62-a567-4b6a-a394-109978221284:g2,4,324,20,193,352,328,4221,7124,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+2b86bd62-a567-4b6a-a394-109978221284:g3,-8,324,20,193,352,328,4221,7124,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+2cb6dbda-0028-4bc9-b1ac-1e48dfd570ea:g1,11,780,3,570,98,4155,3241,7125,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+2cb6dbda-0028-4bc9-b1ac-1e48dfd570ea:g2,5,780,3,570,98,4155,3241,7125,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+310107c4-32c8-4bf0-9149-413e462ce94f:g1,-6,268,223,90,496,1676,4242,7126,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+310107c4-32c8-4bf0-9149-413e462ce94f:g2,2,268,223,90,496,1676,4242,7126,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+310107c4-32c8-4bf0-9149-413e462ce94f:g3,6,268,223,90,496,1676,4242,7126,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+399c57e8-d38b-437f-ae10-b2719d72a392:g1,-2,211,609,528,291,3250,4174,7127,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+399c57e8-d38b-437f-ae10-b2719d72a392:g2,-3,211,609,528,291,3250,4174,7127,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+3b983754-a15b-49e2-8d7d-03c5d61f4a17:g1,9,528,624,470,140,2975,4243,7128,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+3b983754-a15b-49e2-8d7d-03c5d61f4a17:g2,-4,528,624,470,140,2975,4243,7128,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+3b983754-a15b-49e2-8d7d-03c5d61f4a17:g3,6,528,624,470,140,2975,4243,7128,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+3fd7e5cf-9cc7-477e-9032-1b02155fdbd9:g1,4,493,308,90,496,4128,4242,7129,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+3fd7e5cf-9cc7-477e-9032-1b02155fdbd9:g2,-7,493,308,90,496,4128,4242,7129,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+3fd7e5cf-9cc7-477e-9032-1b02155fdbd9:g3,6,493,308,90,496,4128,4242,7129,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+44482b51-4df6-4968-8d96-767b2bf2404d:g1,10,528,291,1058,266,4174,4176,7130,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+44482b51-4df6-4968-8d96-767b2bf2404d:g2,5,528,291,1058,266,4174,4176,7130,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+4516e5a4-713f-4447-a1bd-be50d0859da5:g1,8,780,3,470,950,4155,2054,7131,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+4516e5a4-713f-4447-a1bd-be50d0859da5:g2,2,780,3,470,950,4155,2054,7131,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+45e76525-9bef-4e44-8287-4b946efd0a0e:g1,6,36,9,1058,266,924,4176,7132,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+45e76525-9bef-4e44-8287-4b946efd0a0e:g2,3,36,9,1058,266,924,4176,7132,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+46f228c8-398e-4b43-8a1e-9e749de621d4:g1,-11,528,624,780,141,2975,4244,7133,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+46f228c8-398e-4b43-8a1e-9e749de621d4:g2,8,528,624,780,141,2975,4244,7133,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+46f228c8-398e-4b43-8a1e-9e749de621d4:g3,7,528,624,780,141,2975,4244,7133,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+48023f59-f6ee-4daa-8558-ffab76e320c8:g1,-2,361,377,344,384,3916,4197,7134,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+48023f59-f6ee-4daa-8558-ffab76e320c8:g2,11,361,377,344,384,3916,4197,7134,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+48023f59-f6ee-4daa-8558-ffab76e320c8:g3,7,361,377,344,384,3916,4197,7134,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+56e3c97f-ad3f-4fe9-a437-5c124c672f8f:g1,6,416,417,1224,442,284,1954,7135,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+56e3c97f-ad3f-4fe9-a437-5c124c672f8f:g2,11,416,417,1224,442,284,1954,7135,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+5a565d1d-36ee-4d0d-a28d-54b9ee2bf0b2:g1,4,1344,331,1224,1225,3397,2015,7136,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+5a565d1d-36ee-4d0d-a28d-54b9ee2bf0b2:g2,-4,1344,331,1224,1225,3397,2015,7136,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+5a565d1d-36ee-4d0d-a28d-54b9ee2bf0b2:g3,9,1344,331,1224,1225,3397,2015,7136,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+5b3ac3da-4e5f-4ef0-b506-74b59625d23d:g1,4,540,1000,232,709,4245,4246,7137,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+5b3ac3da-4e5f-4ef0-b506-74b59625d23d:g2,2,540,1000,232,709,4245,4246,7137,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+690618c4-97f6-4f6b-804d-38d78bbfc4ab:g1,2,3,1111,780,141,3522,4244,7138,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+690618c4-97f6-4f6b-804d-38d78bbfc4ab:g2,-6,3,1111,780,141,3522,4244,7138,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+690618c4-97f6-4f6b-804d-38d78bbfc4ab:g3,8,3,1111,780,141,3522,4244,7138,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+70e3b476-b136-4f9b-8833-3bf0e6e40f8c:g1,2,36,9,528,291,924,4174,7139,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+70e3b476-b136-4f9b-8833-3bf0e6e40f8c:g2,8,36,9,528,291,924,4174,7139,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+7abb9991-4d4e-4bce-8d47-f326f2b5c7dd:g1,3,211,609,36,9,3250,924,7140,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+7abb9991-4d4e-4bce-8d47-f326f2b5c7dd:g2,-2,211,609,36,9,3250,924,7140,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+7abb9991-4d4e-4bce-8d47-f326f2b5c7dd:g3,-7,211,609,36,9,3250,924,7140,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+7d3e246a-1068-4090-9fe4-c7084720fa02:g1,2,540,1000,1305,140,4245,4241,7141,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+7d3e246a-1068-4090-9fe4-c7084720fa02:g2,2,540,1000,1305,140,4245,4241,7141,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+7d525a67-cd77-4321-bde0-a64ecef99302:g1,2,430,376,102,359,306,1400,7142,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+7d525a67-cd77-4321-bde0-a64ecef99302:g2,2,430,376,102,359,306,1400,7142,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+8bf42edf-5d2a-4871-b7ca-228ff3d6f568:g1,9,386,387,521,449,267,443,7143,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+8bf42edf-5d2a-4871-b7ca-228ff3d6f568:g2,8,386,387,521,449,267,443,7143,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+93de769a-5f27-484d-b513-2857e0e636d4:g1,3,493,308,268,223,4128,1676,7144,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+93de769a-5f27-484d-b513-2857e0e636d4:g2,3,493,308,268,223,4128,1676,7144,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+9b6423e9-4018-461d-b308-68bc5ad3278f:g1,10,3,1111,470,140,3522,4243,7145,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+9b6423e9-4018-461d-b308-68bc5ad3278f:g2,8,3,1111,470,140,3522,4243,7145,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+9d4763aa-1c73-4a29-a0b7-8f99209f049c:g1,4,416,332,413,438,297,3973,7146,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+9d4763aa-1c73-4a29-a0b7-8f99209f049c:g2,2,416,332,413,438,297,3973,7146,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+a0764942-6a66-468a-9f95-f75d6391332f:g1,8,470,950,570,98,2054,3241,7147,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+a0764942-6a66-468a-9f95-f75d6391332f:g2,2,470,950,570,98,2054,3241,7147,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+a33b7349-8863-4014-b614-dfef356e7cfb:g1,-5,211,609,1058,266,3250,4176,7148,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+a33b7349-8863-4014-b614-dfef356e7cfb:g2,-2,211,609,1058,266,3250,4176,7148,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+b0ebac01-5f3d-43f8-b1cd-78eb8e5acd5a:g1,7,291,223,211,1305,4247,4248,7149,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+b0ebac01-5f3d-43f8-b1cd-78eb8e5acd5a:g2,4,291,223,211,1305,4247,4248,7149,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+bab86b47-33bc-4988-b342-927f86445c98:g1,4,540,1000,624,931,4245,4132,7150,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+bab86b47-33bc-4988-b342-927f86445c98:g2,4,540,1000,624,931,4245,4132,7150,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+c452125b-bbb3-48d9-9bd1-178971804ec9:g1,2,449,322,193,352,3398,4221,7151,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+c452125b-bbb3-48d9-9bd1-178971804ec9:g2,8,449,322,193,352,3398,4221,7151,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+c637bc08-59d6-4dd1-b239-e4b688c5e28b:g1,6,349,350,331,353,244,3816,7152,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+c637bc08-59d6-4dd1-b239-e4b688c5e28b:g2,9,349,350,331,353,244,3816,7152,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+cad85cfc-0616-45e9-af1b-57cc57ff567f:g1,2,141,6,90,496,4249,4242,7153,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+cad85cfc-0616-45e9-af1b-57cc57ff567f:g2,-7,141,6,90,496,4249,4242,7153,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+cad85cfc-0616-45e9-af1b-57cc57ff567f:g3,-10,141,6,90,496,4249,4242,7153,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+cb800a8d-dcd2-47dd-a0d3-e54c4184d2c6:g1,2,410,521,343,427,1171,3401,7154,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+cb800a8d-dcd2-47dd-a0d3-e54c4184d2c6:g2,4,410,521,343,427,1171,3401,7154,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+cd8d7539-0bd6-43fc-aa58-a9989f4173df:g1,10,386,417,336,1223,327,4237,7155,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+cd8d7539-0bd6-43fc-aa58-a9989f4173df:g2,7,386,417,336,1223,327,4237,7155,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Quarter Finals
+d1cd4f0b-23ec-4a97-8847-81398e64a8e5:g1,8,268,223,141,6,1676,4249,7156,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+d1cd4f0b-23ec-4a97-8847-81398e64a8e5:g2,-3,268,223,141,6,1676,4249,7156,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+d1cd4f0b-23ec-4a97-8847-81398e64a8e5:g3,3,268,223,141,6,1676,4249,7156,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+daf32590-5fb1-4bce-b993-27a8060a6933:g1,7,431,387,338,422,3389,478,7157,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+daf32590-5fb1-4bce-b993-27a8060a6933:g2,8,431,387,338,422,3389,478,7157,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+dd9660cb-3324-446a-8531-da11766999b0:g1,-7,470,950,238,1229,2054,4250,7158,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+dd9660cb-3324-446a-8531-da11766999b0:g2,-6,470,950,238,1229,2054,4250,7158,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+e30a8cd3-f9c1-41f9-9154-1c3c75cb97bf:g1,-3,238,1229,570,98,4250,3241,7159,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+e30a8cd3-f9c1-41f9-9154-1c3c75cb97bf:g2,5,238,1229,570,98,4250,3241,7159,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+e30a8cd3-f9c1-41f9-9154-1c3c75cb97bf:g3,3,238,1229,570,98,4250,3241,7159,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+e8eaed87-a3bb-4ca0-b5f4-6db5d8cf9855:g1,8,780,3,238,1229,4155,4250,7160,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+e8eaed87-a3bb-4ca0-b5f4-6db5d8cf9855:g2,-2,780,3,238,1229,4155,4250,7160,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+e8eaed87-a3bb-4ca0-b5f4-6db5d8cf9855:g3,4,780,3,238,1229,4155,4250,7160,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Women's Doubles
+e969a5fc-c31d-40af-92d7-348862d4d18f:g1,8,493,308,141,6,4128,4249,7161,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+e969a5fc-c31d-40af-92d7-348862d4d18f:g2,3,493,308,141,6,4128,4249,7161,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+eb9c2a19-ba8c-4425-94ed-41f04fd0da0a:g1,10,410,521,701,522,1171,1185,7162,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+eb9c2a19-ba8c-4425-94ed-41f04fd0da0a:g2,10,410,521,701,522,1171,1185,7162,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+fb1462ad-1e65-4669-a84d-a9923bf4a5dc:g1,8,232,709,1305,140,4246,4241,7163,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+fb1462ad-1e65-4669-a84d-a9923bf4a5dc:g2,7,232,709,1305,140,4246,4241,7163,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+fd2e6097-dda7-4348-99a0-b1d44103eada:g1,3,321,349,444,370,346,3393,7164,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+fd2e6097-dda7-4348-99a0-b1d44103eada:g2,4,321,349,444,370,346,3393,7164,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+fdaead2b-c8a1-4e60-badb-af7908a1be4c:g1,-6,351,354,336,1223,869,4237,7165,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+fdaead2b-c8a1-4e60-badb-af7908a1be4c:g2,7,351,354,336,1223,869,4237,7165,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+fdaead2b-c8a1-4e60-badb-af7908a1be4c:g3,-6,351,354,336,1223,869,4237,7165,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,Round 16
+fffbe923-33c4-49ed-8fc1-cfb876be6181:g1,4,624,931,232,709,4132,4246,7166,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+fffbe923-33c4-49ed-8fc1-cfb876be6181:g2,-4,624,931,232,709,4132,4246,7166,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+fffbe923-33c4-49ed-8fc1-cfb876be6181:g3,-4,624,931,232,709,4132,4246,7166,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-06,PPA CHALLENGER SHOWDOWN: Men's Doubles
+09607f55-41ff-48b1-9a0d-bc52dd8847c9:g1,-8,1202,47,528,624,1896,2975,7167,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles — Semi-Finals
+09607f55-41ff-48b1-9a0d-bc52dd8847c9:g2,-3,1202,47,528,624,1896,2975,7167,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles — Semi-Finals
+0e662f00-9e28-47cd-863f-45662bcf60f3:g1,7,780,3,528,291,4155,4174,7168,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Women's Doubles — Semi-Finals
+0e662f00-9e28-47cd-863f-45662bcf60f3:g2,2,780,3,528,291,4155,4174,7168,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Women's Doubles — Semi-Finals
+0e977bbe-3a5b-403f-82f9-a1f88d56fb53:g1,-3,211,1305,36,90,4248,4240,7169,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+0e977bbe-3a5b-403f-82f9-a1f88d56fb53:g2,-7,211,1305,36,90,4248,4240,7169,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+0f8373a8-f208-46dd-adfc-772a8c96d5c4:g1,-4,321,349,1344,331,346,3397,7170,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,Quarter Finals
+0f8373a8-f208-46dd-adfc-772a8c96d5c4:g2,-8,321,349,1344,331,346,3397,7170,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,Quarter Finals
+41a5db0d-c0ab-4606-ad4c-0655b3f5cbab:g1,6,3,1111,528,624,3522,2975,7171,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+41a5db0d-c0ab-4606-ad4c-0655b3f5cbab:g2,-2,3,1111,528,624,3522,2975,7171,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+41a5db0d-c0ab-4606-ad4c-0655b3f5cbab:g3,5,3,1111,528,624,3522,2975,7171,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+49bd9b42-1be0-4a76-917d-f4f9b400ce1e:g1,8,386,417,410,521,327,1171,7172,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,Semi-Finals
+49bd9b42-1be0-4a76-917d-f4f9b400ce1e:g2,6,386,417,410,521,327,1171,7172,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,Semi-Finals
+4d29eeb6-4977-4035-bed4-bf6fabd6de5b:g1,3,416,417,410,322,284,668,7173,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,Semi-Finals
+4d29eeb6-4977-4035-bed4-bf6fabd6de5b:g2,6,416,417,410,322,284,668,7173,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,Semi-Finals
+657464d6-13fd-409f-b15c-bc1322eb76c6:g1,-7,780,141,470,140,4244,4243,7174,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+657464d6-13fd-409f-b15c-bc1322eb76c6:g2,8,780,141,470,140,4244,4243,7174,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+657464d6-13fd-409f-b15c-bc1322eb76c6:g3,-3,780,141,470,140,4244,4243,7174,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+7fab1fbd-5b87-4b9a-bdb6-fba62071f028:g1,2,291,223,36,90,4247,4240,7175,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+7fab1fbd-5b87-4b9a-bdb6-fba62071f028:g2,7,291,223,36,90,4247,4240,7175,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+835be965-eee9-4a2b-8d1d-5b7adcfbb017:g1,-9,386,387,349,350,267,244,7176,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,Semi-Finals
+835be965-eee9-4a2b-8d1d-5b7adcfbb017:g2,-7,386,387,349,350,267,244,7176,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,Semi-Finals
+903cb4cc-26cd-4861-8f18-24a1933aecef:g1,6,442,350,361,377,3388,3916,7177,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,Quarter Finals
+903cb4cc-26cd-4861-8f18-24a1933aecef:g2,6,442,350,361,377,3388,3916,7177,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,Quarter Finals
+91507310-d406-41cf-b1c5-b61f4b93cc87:g1,4,1202,47,291,223,1896,4247,7178,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+91507310-d406-41cf-b1c5-b61f4b93cc87:g2,4,1202,47,291,223,1896,4247,7178,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+91d6aa36-1003-426e-85b6-46d1a5bee28f:g1,11,1202,47,211,1305,1896,4248,7179,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+91d6aa36-1003-426e-85b6-46d1a5bee28f:g2,4,1202,47,211,1305,1896,4248,7179,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles
+d7bae0b4-c624-49a1-bea1-706a8023d3fe:g1,2,3,1111,291,223,3522,4247,7180,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles — Semi-Finals
+d7bae0b4-c624-49a1-bea1-706a8023d3fe:g2,4,3,1111,291,223,3522,4247,7180,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Mixed Doubles — Semi-Finals
+d7bfccf1-9d40-4b26-80c2-79b16d408a2f:g1,2,540,1000,268,223,4245,1676,7181,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Men's Doubles — Semi-Finals
+d7bfccf1-9d40-4b26-80c2-79b16d408a2f:g2,-3,540,1000,268,223,4245,1676,7181,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Men's Doubles — Semi-Finals
+d7bfccf1-9d40-4b26-80c2-79b16d408a2f:g3,3,540,1000,268,223,4245,1676,7181,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Men's Doubles — Semi-Finals
+e5a085b6-2920-4be3-b569-058dcf8a6f17:g1,-2,416,332,449,322,297,3398,7182,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,Semi-Finals
+e5a085b6-2920-4be3-b569-058dcf8a6f17:g2,-5,416,332,449,322,297,3398,7182,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,Semi-Finals
+e79da54b-59a1-4b25-9f4c-f1909f890b57:g1,-2,780,3,36,9,4155,924,7183,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Women's Doubles — Finals
+e79da54b-59a1-4b25-9f4c-f1909f890b57:g2,3,780,3,36,9,4155,924,7183,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Women's Doubles — Finals
+e79da54b-59a1-4b25-9f4c-f1909f890b57:g3,11,780,3,36,9,4155,924,7183,2,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Women's Doubles — Finals
+f1e5edc7-e20d-48f4-ba15-59d1e322353c:g1,8,36,9,238,1229,924,4250,7184,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Women's Doubles — Semi-Finals
+f1e5edc7-e20d-48f4-ba15-59d1e322353c:g2,6,36,9,238,1229,924,4250,7184,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Women's Doubles — Semi-Finals
+f7d786f1-6ef4-4db3-843e-3d03189747e0:g1,5,493,308,232,709,4128,4246,7185,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Men's Doubles — Semi-Finals
+f7d786f1-6ef4-4db3-843e-3d03189747e0:g2,-2,493,308,232,709,4128,4246,7185,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Men's Doubles — Semi-Finals
+f7d786f1-6ef4-4db3-843e-3d03189747e0:g3,-8,493,308,232,709,4128,4246,7185,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-07,PPA CHALLENGER SHOWDOWN: Men's Doubles — Semi-Finals
+2ea284ca-b135-44ce-bc09-03b270ddcc76:g1,6,1344,331,430,376,3397,306,7186,2,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-08,Semi-Finals
+2ea284ca-b135-44ce-bc09-03b270ddcc76:g2,6,1344,331,430,376,3397,306,7186,2,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-08,Semi-Finals
+4d1698be-2e86-4ac2-ad54-f1b316ff8ff6:g1,7,386,417,1344,331,327,3397,7187,2,1,5,1,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+4d1698be-2e86-4ac2-ad54-f1b316ff8ff6:g2,2,386,417,1344,331,327,3397,7187,2,1,5,2,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+4d1698be-2e86-4ac2-ad54-f1b316ff8ff6:g3,6,386,417,1344,331,327,3397,7187,2,1,5,3,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+624f2bcb-0275-4af2-9bd3-a3a7b7f1a4ee:g1,-2,416,417,349,350,284,244,7188,0,1,5,1,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+624f2bcb-0275-4af2-9bd3-a3a7b7f1a4ee:g2,5,416,417,349,350,284,244,7188,0,1,5,2,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+624f2bcb-0275-4af2-9bd3-a3a7b7f1a4ee:g3,2,416,417,349,350,284,244,7188,0,1,5,3,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+624f2bcb-0275-4af2-9bd3-a3a7b7f1a4ee:g4,-8,416,417,349,350,284,244,7188,0,1,5,4,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+624f2bcb-0275-4af2-9bd3-a3a7b7f1a4ee:g5,7,416,417,349,350,284,244,7188,0,1,5,5,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+7fdb7e69-cf82-467d-93e6-36dcbd706b2e:g1,5,232,709,540,1000,4246,4245,7189,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-08,PPA CHALLENGER SHOWDOWN: Men's Doubles — Finals
+7fdb7e69-cf82-467d-93e6-36dcbd706b2e:g2,-4,232,709,540,1000,4246,4245,7189,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-08,PPA CHALLENGER SHOWDOWN: Men's Doubles — Finals
+7fdb7e69-cf82-467d-93e6-36dcbd706b2e:g3,-5,232,709,540,1000,4246,4245,7189,1,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-08,PPA CHALLENGER SHOWDOWN: Men's Doubles — Finals
+dde231bf-59b4-42f5-b89c-e68ed675265f:g1,6,449,322,442,350,3398,3388,7190,1,1,5,1,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+dde231bf-59b4-42f5-b89c-e68ed675265f:g2,6,449,322,442,350,3398,3388,7190,1,1,5,2,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+dde231bf-59b4-42f5-b89c-e68ed675265f:g3,-7,449,322,442,350,3398,3388,7190,1,1,5,3,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+dde231bf-59b4-42f5-b89c-e68ed675265f:g4,-3,449,322,442,350,3398,3388,7190,1,1,5,4,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+dde231bf-59b4-42f5-b89c-e68ed675265f:g5,-7,449,322,442,350,3398,3388,7190,1,1,5,5,2026 Opendoor Pickleball World Championships,2026-11-08,Finals
+de913c88-1d7f-4726-befb-f0306d0d48e3:g1,-5,3,1111,528,624,3522,2975,7191,0,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-08,PPA CHALLENGER SHOWDOWN: Mixed Doubles — Finals
+de913c88-1d7f-4726-befb-f0306d0d48e3:g2,2,3,1111,528,624,3522,2975,7191,0,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-08,PPA CHALLENGER SHOWDOWN: Mixed Doubles — Finals
+de913c88-1d7f-4726-befb-f0306d0d48e3:g3,-4,3,1111,528,624,3522,2975,7191,0,1,3,3,2026 Opendoor Pickleball World Championships,2026-11-08,PPA CHALLENGER SHOWDOWN: Mixed Doubles — Finals
+febcb5e6-ea20-4897-9240-8808ab3249c3:g1,-7,378,353,442,350,3828,3388,7192,1,1,3,1,2026 Opendoor Pickleball World Championships,2026-11-08,Semi-Finals
+febcb5e6-ea20-4897-9240-8808ab3249c3:g2,-5,378,353,442,350,3828,3388,7192,1,1,3,2,2026 Opendoor Pickleball World Championships,2026-11-08,Semi-Finals
