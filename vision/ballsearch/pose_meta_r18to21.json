@@ -1,0 +1,44 @@
+{
+ "video": "full_match.webm",
+ "backend": "rtmpose-balanced",
+ "fps": 60.0,
+ "width": 1280,
+ "device": "auto",
+ "iou_min": 0.15,
+ "gap_s": 0.6,
+ "runtime_s": 3455.0,
+ "rallies": {
+  "18": {
+   "detections": 2647,
+   "tracks": 7,
+   "sided_tracks": 5,
+   "window": "labels",
+   "t0": 455.19,
+   "t1": 466.19
+  },
+  "19": {
+   "detections": 1561,
+   "tracks": 5,
+   "sided_tracks": 4,
+   "window": "labels",
+   "t0": 476.79,
+   "t1": 483.28
+  },
+  "20": {
+   "detections": 7531,
+   "tracks": 17,
+   "sided_tracks": 17,
+   "window": "labels",
+   "t0": 483.78,
+   "t1": 514.99
+  },
+  "21": {
+   "detections": 2669,
+   "tracks": 5,
+   "sided_tracks": 5,
+   "window": "labels",
+   "t0": 515.49,
+   "t1": 527.14
+  }
+ }
+}

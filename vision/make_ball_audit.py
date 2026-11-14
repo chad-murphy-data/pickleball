@@ -81,6 +81,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import sys
 import json
 import math
 import random
@@ -102,10 +103,20 @@ MIN_SEP_S = 0.25       # min separation between detected events, frozen
 CONTACTS = DATA / "contact_labels_chicago0725.csv"
 
 
-def load_impacts(state_path=STATE, rally=RALLY):
+PREFILL_PRE_S = 1.5     # prefill contact times carry pop-era jitter:
+PREFILL_POST_S = 3.0    # widen the span both ways (the owner stops at dead)
+
+
+def load_impacts(state_path=STATE, rally=RALLY, prefill_ok=False):
     """Answer key: rally 1 keeps its frozen state-label impacts; other
     rallies use the manual contact taps (ball_gate.md's reference).
-    point_dead from the state labels bounds the window when present."""
+    point_dead from the state labels bounds the window when present.
+    prefill_ok=True: a rally with NO manual taps falls back to its
+    prefill rows (pop-era types, approximate times — verified on the
+    video 2026-09-02 for r2-r5 to sit on the real serves) and returns
+    (imps, dead) with a wider dead margin; a warning is printed. The
+    prefill contacts are a SPAN and a rough bucket key only — never a
+    recall target for a grade."""
     imps, dead = [], None
     for r in csv.DictReader(open(state_path)):
         if int(r["rally_cum"]) != rally:
@@ -122,10 +133,21 @@ def load_impacts(state_path=STATE, rally=RALLY):
                 # contact=0 rows are WHIFFS — no ball contact, so the
                 # path correctly has no turn there; never a recall target
                 imps.append(float(r["t_refined_s"] or r["t_tap_s"]))
+    post = 2.0
+    if not imps and rally != RALLY and prefill_ok:
+        for r in csv.DictReader(open(CONTACTS)):
+            if (int(r["rally_cum"]) == rally and r["source"] == "prefill"
+                    and r.get("contact", "1") != "0"):
+                imps.append(float(r["t_refined_s"] or r["t_tap_s"]))
+        if imps:
+            post = PREFILL_POST_S
+            print(f"WARNING: rally {rally} has no manual taps — using "
+                  f"{len(imps)} PREFILL contacts (approximate) for the span",
+                  file=sys.stderr)
     if not imps:
         raise SystemExit(f"no impacts for rally {rally}")
     imps.sort()
-    return imps, (dead if dead is not None else imps[-1] + 2.0)
+    return imps, (dead if dead is not None else imps[-1] + post)
 
 
 def detect_events(points, turn_deg=TURN_DEG, min_sep=MIN_SEP_S):
@@ -435,6 +457,9 @@ def main():
     ap.add_argument("--score", metavar="BALL_CSV")
     ap.add_argument("--out", default=None)
     ap.add_argument("--selftest", action="store_true")
+    ap.add_argument("--prefill-ok", action="store_true",
+                    help="build the tool off PREFILL contacts when the "
+                         "rally has no manual taps (span only)")
     a = ap.parse_args()
     if a.selftest:
         selftest()
@@ -443,8 +468,9 @@ def main():
         run_score(a.score, a.state, a.rally)
         return
     out = a.out or str(DATA / f"ball_audit_r{a.rally}.html")
-    impacts, dead = load_impacts(a.state, a.rally)
-    cfg = {"t0": round(impacts[0] - PRE_S, 3), "t1": round(dead, 3)}
+    impacts, dead = load_impacts(a.state, a.rally, prefill_ok=a.prefill_ok)
+    pre = PREFILL_PRE_S if (a.prefill_ok and dead - impacts[-1] > 2.5) else PRE_S
+    cfg = {"t0": round(impacts[0] - pre, 3), "t1": round(dead, 3)}
     n = int((cfg["t1"] - cfg["t0"]) * FPS)
     Path(out).write_text(HTML.replace("__CFG__", json.dumps(cfg))
                          .replace("__RALLY__", str(a.rally)))

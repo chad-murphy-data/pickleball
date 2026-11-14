@@ -1,0 +1,23 @@
+  r2     80763 labeled cands   195 pos
+  r3    142424 labeled cands   345 pos
+  r4    107427 labeled cands   360 pos
+  r5    108923 labeled cands   258 pos
+  r6     57099 labeled cands   198 pos
+  r7     68476 labeled cands   161 pos
+  r17    97811 labeled cands   371 pos
+
+leave-one-rally-out: pool k train rallies, test on the held-out one
+ k               AUC     neg kept @97% recall   draws
+ 1  0.9377 ± 0.0174   0.555 ± 0.127   n=42
+ 2  0.9426 ± 0.0165   0.554 ± 0.127   n=84
+ 3  0.9436 ± 0.0158   0.551 ± 0.116   n=84
+ 4  0.9451 ± 0.0158   0.554 ± 0.116   n=84
+ 5  0.9458 ± 0.0155   0.554 ± 0.118   n=42
+ 6  0.9461 ± 0.0153   0.558 ± 0.120   n=7
+
+marginal gain per added rally (neg kept, lower is better):
+  1 -> 2:  AUC +0.0048   neg kept -0.0013
+  2 -> 3:  AUC +0.0010   neg kept -0.0026
+  3 -> 4:  AUC +0.0015   neg kept +0.0027
+  4 -> 5:  AUC +0.0007   neg kept -0.0001
+  5 -> 6:  AUC +0.0004   neg kept +0.0040
