@@ -240,7 +240,7 @@
  "01f8bc01-6aa9-45e3-95f2-ba4250adca73": {
   "canonical": "Raquel Amaro",
   "variants": {
-   "Raquel Amaro": 22
+   "Raquel Amaro": 28
   },
   "needs_review": false
  },
@@ -1087,7 +1087,7 @@
  "0993dc87-41c8-4d12-aa5c-1793ebc012b1": {
   "canonical": "Kate Tynan",
   "variants": {
-   "Kate Tynan": 3
+   "Kate Tynan": 5
   },
   "needs_review": false
  },
@@ -1963,7 +1963,7 @@
  "12a2f384-b5cf-4b05-b850-0b9c17d11614": {
   "canonical": "Brayden Peck",
   "variants": {
-   "Brayden Peck": 4
+   "Brayden Peck": 6
   },
   "needs_review": false
  },
@@ -2019,7 +2019,7 @@
  "1320d24f-93a3-418e-9d8c-8314fe4e9255": {
   "canonical": "Adri\u00e1n Jimenez Pueyo",
   "variants": {
-   "Adri\u00e1n Jimenez Pueyo": 10
+   "Adri\u00e1n Jimenez Pueyo": 13
   },
   "needs_review": false
  },
@@ -2565,7 +2565,7 @@
  "17aca301-08ac-4cf2-a3a5-dc721f87f60c": {
   "canonical": "Noesjka Brink",
   "variants": {
-   "Noesjka Brink": 3
+   "Noesjka Brink": 7
   },
   "needs_review": false
  },
@@ -2691,7 +2691,7 @@
  "192613f1-44a9-4ad2-b8da-0a89a02fed8b": {
   "canonical": "Alexandra Zapletalov\u00e1",
   "variants": {
-   "Alexandra Zapletalov\u00e1": 10
+   "Alexandra Zapletalov\u00e1": 12
   },
   "needs_review": false
  },
@@ -3076,7 +3076,7 @@
  "1c732c21-8e92-44de-8350-95ebd0e17ca0": {
   "canonical": "Jesus Campos",
   "variants": {
-   "Jesus Campos": 5
+   "Jesus Campos": 10
   },
   "needs_review": false
  },
@@ -3839,7 +3839,7 @@
  "22b044df-0e9b-4137-9132-aabd0120018e": {
   "canonical": "Ornella Ohayon",
   "variants": {
-   "Ornella Ohayon": 4
+   "Ornella Ohayon": 8
   },
   "needs_review": false
  },
@@ -3860,9 +3860,9 @@
  "22eba532-eafa-4196-b858-e4eda2ddd0e3": {
   "canonical": "Joris Weimar",
   "variants": {
-   "Joris Weimar": 2
+   "Joris Weimar": 4
   },
-  "needs_review": true
+  "needs_review": false
  },
  "22f29e1b-2ba0-4ef1-840c-de2ba4b37139": {
   "canonical": "Parker Eggli",
@@ -4214,6 +4214,13 @@
   },
   "needs_review": false
  },
+ "263e07aa-6aa9-4f9d-8d6e-6effd64fb97d": {
+  "canonical": "Helena Korompis",
+  "variants": {
+   "Helena Korompis": 2
+  },
+  "needs_review": true
+ },
  "2651f20f-1b40-478a-8394-349ff2294423": {
   "canonical": "Laviniu Caba",
   "variants": {
@@ -4252,7 +4259,7 @@
  "26a8d2ca-443d-46e9-a37c-b2e30d530fca": {
   "canonical": "Pim Huberts",
   "variants": {
-   "Pim Huberts": 3
+   "Pim Huberts": 5
   },
   "needs_review": false
  },
@@ -4287,7 +4294,7 @@
  "26d1e474-221a-4a0f-a267-246a8c51f9ae": {
   "canonical": "Maxence Schirrecker",
   "variants": {
-   "Maxence Schirrecker": 15
+   "Maxence Schirrecker": 20
   },
   "needs_review": false
  },
@@ -4588,7 +4595,7 @@
  "2968280c-0a70-4028-a7a0-c80aeef9b46f": {
   "canonical": "Adeline Nguyen",
   "variants": {
-   "Adeline Nguyen": 3
+   "Adeline Nguyen": 7
   },
   "needs_review": false
  },
@@ -4728,7 +4735,7 @@
  "2af6516c-48ed-4e4b-b7c9-67090f92b4a6": {
   "canonical": "Theo Platel",
   "variants": {
-   "Theo Platel": 30
+   "Theo Platel": 37
   },
   "needs_review": false
  },
@@ -5092,7 +5099,7 @@
  "2db69b3e-ca93-4272-8398-1b20968aa926": {
   "canonical": "Ori Maior",
   "variants": {
-   "Ori Maior": 5
+   "Ori Maior": 9
   },
   "needs_review": false
  },
@@ -5267,7 +5274,7 @@
  "2ee9ccf5-8306-42e3-abd9-a376c223830b": {
   "canonical": "Krisztian Kaszoni",
   "variants": {
-   "Krisztian Kaszoni": 17
+   "Krisztian Kaszoni": 23
   },
   "needs_review": false
  },
@@ -5708,7 +5715,7 @@
  "333d0ebb-4ffd-4f21-a05b-6816156ff93f": {
   "canonical": "Max Noah Washington",
   "variants": {
-   "Max Noah Washington": 3
+   "Max Noah Washington": 7
   },
   "needs_review": false
  },
@@ -6338,7 +6345,7 @@
  "38cd66a3-eaf4-4c22-a95c-0a9ca98f8f82": {
   "canonical": "Myriam Enmer",
   "variants": {
-   "Myriam Enmer": 10
+   "Myriam Enmer": 16
   },
   "needs_review": false
  },
@@ -6842,7 +6849,7 @@
  "3dabbb14-cf51-478f-a709-0d0fc94d8589": {
   "canonical": "Mathilde Sarcelet",
   "variants": {
-   "Mathilde Sarcelet": 4
+   "Mathilde Sarcelet": 7
   },
   "needs_review": false
  },
@@ -7731,7 +7738,7 @@
  "44dbbb24-c788-45c4-93b6-992773dda356": {
   "canonical": "Anna Marija Bukina",
   "variants": {
-   "Anna Marija Bukina": 17
+   "Anna Marija Bukina": 22
   },
   "needs_review": false
  },
@@ -8361,7 +8368,7 @@
  "4a3eea39-b916-4d68-a3e2-5569c379168d": {
   "canonical": "Marina Sicic",
   "variants": {
-   "Marina Sicic": 19
+   "Marina Sicic": 27
   },
   "needs_review": false
  },
@@ -9307,7 +9314,7 @@
  "52be8e53-d403-4a7b-b2d4-c003a1878a26": {
   "canonical": "Hector Sanchez Vidal",
   "variants": {
-   "Hector Sanchez Vidal": 22
+   "Hector Sanchez Vidal": 27
   },
   "needs_review": false
  },
@@ -10184,7 +10191,7 @@
  "597ec525-f440-4d2b-9c12-7ed74ce219ef": {
   "canonical": "Polly Po Kuen Lam",
   "variants": {
-   "Polly Po Kuen Lam": 3
+   "Polly Po Kuen Lam": 6
   },
   "needs_review": false
  },
@@ -10507,7 +10514,7 @@
  "5c4a8848-8e77-4893-9c90-9aa188561e1d": {
   "canonical": "Boris Paque",
   "variants": {
-   "Boris Paque": 18
+   "Boris Paque": 24
   },
   "needs_review": false
  },
@@ -13651,7 +13658,7 @@
  "787d8221-789c-4720-9a3a-b7569342b942": {
   "canonical": "Caroline Nothnagel",
   "variants": {
-   "Caroline Nothnagel": 11
+   "Caroline Nothnagel": 20
   },
   "needs_review": false
  },
@@ -13679,14 +13686,14 @@
  "78d2a2b8-1cf6-42d4-947e-6314a455a6b9": {
   "canonical": "Cyril Peltier",
   "variants": {
-   "Cyril Peltier": 18
+   "Cyril Peltier": 23
   },
   "needs_review": false
  },
  "78dbd513-76f2-45d7-bced-a3260a5fcd48": {
   "canonical": "Klara Thell-Lenntorp",
   "variants": {
-   "Klara Thell-Lenntorp": 11
+   "Klara Thell-Lenntorp": 19
   },
   "needs_review": false
  },
@@ -13892,6 +13899,13 @@
    "Austin Mireles": 20
   },
   "needs_review": false
+ },
+ "7a78be25-04ea-403a-8799-5c9aae98e5b2": {
+  "canonical": "Christophe Van Parys",
+  "variants": {
+   "Christophe Van Parys": 2
+  },
+  "needs_review": true
  },
  "7a8c963b-9ded-47fb-aea4-cf0332ff1e39": {
   "canonical": "Savannah K",
@@ -14183,9 +14197,9 @@
  "7ce35276-16aa-47e7-bada-8002f3a75135": {
   "canonical": "John Paul O Connell",
   "variants": {
-   "John Paul O Connell": 2
+   "John Paul O Connell": 4
   },
-  "needs_review": true
+  "needs_review": false
  },
  "7ce4430b-b9b6-450d-a77a-997cb8a16d34": {
   "canonical": "Karina Lam",
@@ -14365,7 +14379,7 @@
  "7e90c73f-d98f-450d-9357-7ca8cfd5737f": {
   "canonical": "Alberto Seccia",
   "variants": {
-   "Alberto Seccia": 16
+   "Alberto Seccia": 24
   },
   "needs_review": false
  },
@@ -14975,7 +14989,7 @@
  "844ece56-9b09-43f0-ad2c-58eac43475a6": {
   "canonical": "Nicolas Ebran",
   "variants": {
-   "Nicolas Ebran": 5
+   "Nicolas Ebran": 6
   },
   "needs_review": false
  },
@@ -16214,7 +16228,7 @@
  "8f62717f-c19d-4c11-a681-1818ce1c0ab1": {
   "canonical": "Alexia Alvarez",
   "variants": {
-   "Alexia Alvarez": 21
+   "Alexia Alvarez": 26
   },
   "needs_review": false
  },
@@ -17521,6 +17535,13 @@
   },
   "needs_review": true
  },
+ "9adec653-4666-4be6-a78a-fb4ebffa3640": {
+  "canonical": "Cato Tangkau",
+  "variants": {
+   "Cato Tangkau": 2
+  },
+  "needs_review": true
+ },
  "9ae9ddf2-68f6-4050-884c-5f616b18f6eb": {
   "canonical": "Riley Durkin",
   "variants": {
@@ -17716,6 +17737,13 @@
    "Carlos Subero": 7
   },
   "needs_review": false
+ },
+ "9cdcc094-d44b-472d-b9e1-557789498721": {
+  "canonical": "Alix Schelfhout",
+  "variants": {
+   "Alix Schelfhout": 2
+  },
+  "needs_review": true
  },
  "9ce32de7-16c9-4786-a7b0-8c1c2c623d69": {
   "canonical": "Rafael Lenhard",
@@ -17923,7 +17951,7 @@
  "9f215d77-4f5b-4917-848c-72d6519551d5": {
   "canonical": "Anne Servaes",
   "variants": {
-   "Anne Servaes": 3
+   "Anne Servaes": 9
   },
   "needs_review": false
  },
@@ -19870,7 +19898,7 @@
  "af976153-5900-4d7e-b492-04ae59f9a78d": {
   "canonical": "Francie Fitzpatrick",
   "variants": {
-   "Francie Fitzpatrick": 3
+   "Francie Fitzpatrick": 6
   },
   "needs_review": false
  },
@@ -19954,7 +19982,7 @@
  "b0853416-9c7a-4aaf-99b9-86be68976786": {
   "canonical": "Gianne Meijer",
   "variants": {
-   "Gianne Meijer": 3
+   "Gianne Meijer": 6
   },
   "needs_review": false
  },
@@ -20409,7 +20437,7 @@
  "b5091f60-153f-4f96-86dd-a89bb5ed124c": {
   "canonical": "Micha\u0142 Pochopie\u0144",
   "variants": {
-   "Micha\u0142 Pochopie\u0144": 3
+   "Micha\u0142 Pochopie\u0144": 5
   },
   "needs_review": false
  },
@@ -20969,7 +20997,7 @@
  "ba4f83fd-f7b2-4e4d-acda-3b38a8fdb18e": {
   "canonical": "James Ling",
   "variants": {
-   "James Ling": 23
+   "James Ling": 32
   },
   "needs_review": false
  },
@@ -21711,7 +21739,7 @@
  "c0d4c4ee-b1a9-4ead-a64d-5f69de48ac2a": {
   "canonical": "Ellie Tomkinson",
   "variants": {
-   "Ellie Tomkinson": 18
+   "Ellie Tomkinson": 29
   },
   "needs_review": false
  },
@@ -21837,7 +21865,7 @@
  "c263bd93-bd93-4722-bf88-d24529837529": {
   "canonical": "Martin Thomas",
   "variants": {
-   "Martin Thomas": 39
+   "Martin Thomas": 45
   },
   "needs_review": false
  },
@@ -21991,7 +22019,7 @@
  "c3713865-ced7-4193-b6e7-43daa0553299": {
   "canonical": "Anouk Van Hoek",
   "variants": {
-   "Anouk Van Hoek": 3
+   "Anouk Van Hoek": 9
   },
   "needs_review": false
  },
@@ -22741,7 +22769,7 @@
  "ca9256a2-4442-43af-b810-69d22af3a65f": {
   "canonical": "Laura Falceto Font",
   "variants": {
-   "Laura Falceto Font": 13
+   "Laura Falceto Font": 16
   },
   "needs_review": false
  },
@@ -23280,7 +23308,7 @@
  "cf05e953-2d5a-48fb-9d1b-af995cb7835d": {
   "canonical": "Bartosz Karbownik",
   "variants": {
-   "Bartosz Karbownik": 12
+   "Bartosz Karbownik": 20
   },
   "needs_review": false
  },
@@ -23854,7 +23882,7 @@
  "d42cfe32-b34c-41aa-b76f-10d2fb5a7f35": {
   "canonical": "Karolina Owczarek",
   "variants": {
-   "Karolina Owczarek": 27
+   "Karolina Owczarek": 33
   },
   "needs_review": false
  },
@@ -23910,7 +23938,7 @@
  "d45a6042-ce12-4a0c-8413-1e56d4e45fce": {
   "canonical": "Javier Gallego Ruiz-Mateos",
   "variants": {
-   "Javier Gallego Ruiz-Mateos": 5
+   "Javier Gallego Ruiz-Mateos": 9
   },
   "needs_review": false
  },
@@ -24687,7 +24715,7 @@
  "dc549667-632d-4c0c-af89-6f9da8af1e88": {
   "canonical": "Viktoria Kanichova",
   "variants": {
-   "Viktoria Kanichova": 13
+   "Viktoria Kanichova": 21
   },
   "needs_review": false
  },
@@ -24912,7 +24940,7 @@
  "de616602-24e3-40fd-9e05-b3b3fc30e3ae": {
   "canonical": "Davide Vendrame",
   "variants": {
-   "Davide Vendrame": 16
+   "Davide Vendrame": 24
   },
   "needs_review": false
  },
@@ -25444,7 +25472,7 @@
  "e3737496-75c5-4241-b3c7-ab3deaaf468f": {
   "canonical": "Miko\u0142aj Biedermann",
   "variants": {
-   "Miko\u0142aj Biedermann": 17
+   "Miko\u0142aj Biedermann": 28
   },
   "needs_review": false
  },
@@ -26772,6 +26800,13 @@
   },
   "needs_review": false
  },
+ "ef40f862-13f0-4985-94da-5af3295c5212": {
+  "canonical": "Michael Goris",
+  "variants": {
+   "Michael Goris": 2
+  },
+  "needs_review": true
+ },
  "ef48b1dc-afd3-4788-bed3-246eb81b57e6": {
   "canonical": "Cheng En Tsai",
   "variants": {
@@ -26852,7 +26887,7 @@
  "efd775c2-f5a3-4d7a-aa42-b1bec33c4258": {
   "canonical": "Bobby Fitzpatrick",
   "variants": {
-   "Bobby Fitzpatrick": 4
+   "Bobby Fitzpatrick": 7
   },
   "needs_review": false
  },
@@ -27769,7 +27804,7 @@
  "f75beae4-0def-4eaf-b2e5-ba9a4d3af9fc": {
   "canonical": "Mathieu Roy",
   "variants": {
-   "Mathieu Roy": 9
+   "Mathieu Roy": 12
   },
   "needs_review": false
  },
@@ -27811,7 +27846,7 @@
  "f7fd24b1-a55c-4a6a-a544-1d97f0d12ed5": {
   "canonical": "Ana\u00efs Geslin",
   "variants": {
-   "Ana\u00efs Geslin": 4
+   "Ana\u00efs Geslin": 8
   },
   "needs_review": false
  },
@@ -27958,7 +27993,7 @@
  "f8cb1877-abae-4153-a65e-a0e87d04e5ca": {
   "canonical": "Thaila Rodrigues",
   "variants": {
-   "Thaila Rodrigues": 11
+   "Thaila Rodrigues": 13
   },
   "needs_review": false
  },
@@ -28602,7 +28637,7 @@
  "feb0fc40-878a-443c-ab00-932e3764cd1a": {
   "canonical": "Aubin Duchier",
   "variants": {
-   "Aubin Duchier": 7
+   "Aubin Duchier": 9
   },
   "needs_review": false
  },
@@ -28616,9 +28651,9 @@
  "fedaa784-ccc9-4c8a-ae83-9af4ff006afc": {
   "canonical": "Maja Nieradzik",
   "variants": {
-   "Maja Nieradzik": 2
+   "Maja Nieradzik": 6
   },
-  "needs_review": true
+  "needs_review": false
  },
  "feea2ac1-13ec-4fef-91a5-64d8ea1e7087": {
   "canonical": "Courtney Glenn",

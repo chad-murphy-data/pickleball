@@ -279,5 +279,7 @@ mixed,2026-07-24,1b0ea3f0-cc0f-46a4-ac87-fdb0085cb450,MLP Chicago,eb147030-3624-
 ,,,,,MLP fixture faa39479-f27c-4d1a-8c7d-bf3d72e3975d has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture fcd95bdb-7131-4814-9783-c515ddf6ecf4 has 3 non-DB games (expect 4),,,MLP
 ,,,,,MLP fixture ff1bf2ac-919d-424b-91b0-92c6665aebeb has 3 non-DB games (expect 4),,,MLP
+womens,2026-11-14,04a30133-11cc-4280-97f7-3027404c05b3,PPA TOUR EUROPE - P125 LILLE,b7eddd78-7411-4df9-bac6-634138ecfb30:g1,"deuce game should end exactly 2 apart (to 11, got 15-9)",15-9,,PPA
+womens,2026-11-14,04a30133-11cc-4280-97f7-3027404c05b3,PPA TOUR EUROPE - P125 LILLE,ced32add-5453-4bee-b033-c62c2fa31201:g1,"deuce game should end exactly 2 apart (to 11, got 15-7)",15-7,,PPA
 mixed,2024-09-01,2edb8f20-82c0-4edf-ba16-7f67bcaf92fb,PPA Tour: Gold Coast Open,2cbf0bfe-1fd7-4d80-9ecb-2aa8ee637472:g2,"deuce game should end exactly 2 apart (to 11, got 9-12)",9-12,Pro Mixed Doubles Main Draw (4.5+) — Bronze,PPA
 womens,2026-07-25,9a2ca136-b5c6-4bbf-ac8c-dbddd0abcef8,PPA Italy P125 Portoroz,69fd3376-d5d8-4fad-b273-6506871d2620:g1,"deuce game should end exactly 1 apart (to 7, got 17-15)",17-15,,PPA
