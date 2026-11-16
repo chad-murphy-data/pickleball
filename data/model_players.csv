@@ -38,7 +38,7 @@ idx,player_id,full_name,gender
 36,53cffd68-8c08-4ad7-88fd-a72ee20d716e,Marisa Ruiz,F
 37,404094a4-c65d-4e15-8023-f025ac226e30,Riley Bohnert,F
 38,0d14405e-2e45-4dcb-8fb7-73558c261b4f,Seone Mendez,F
-39,c9f03b76-b64d-4176-b338-a6b3a180a23c,Jessica Warren,F
+39,c9f03b76-b64d-4176-b338-a6b3a180a23c,Jessica Evanier,F
 40,cecffdc0-29ee-46c0-9832-2dbe04700307,Nejc Sitar,M
 41,79ee2d66-5ba3-47cc-bc43-f489a09d2d5a,George Rangelov,M
 42,c7579768-3bba-418b-90ca-4f0e09e701d1,Joe Wiencek,M
@@ -1883,7 +1883,7 @@ idx,player_id,full_name,gender
 1881,942f9732-eed8-457a-ae5c-aa8fe3bade1b,Harin Youn,
 1882,2ea13a1a-f5df-438e-a4e9-de261944fad1,Yee Lam Isabelle Xiong,
 1883,a69b724a-443c-49d6-bf7a-2ecb7aac861e,Molly O'Donoghue,F
-1884,f020eaf9-1742-4767-9f69-d7b74df279cc,Đạt Trần,
+1884,f020eaf9-1742-4767-9f69-d7b74df279cc,Đạt Trần,M
 1885,8e0cc51c-cf1e-425f-a38e-e1ecbc826c93,Quynh Fan,
 1886,96b4319e-8158-4a5d-8eaa-ee8476457076,Chris Patrick,M
 1887,5f53796a-48a2-463a-8799-16e283b2ae17,Nicklaus Vu,M
@@ -2016,3 +2016,59 @@ idx,player_id,full_name,gender
 2014,339e98c3-c331-4bac-baf6-11aa7bef4752,Niles Parungao,M
 2015,c25adb59-f6c8-4097-91e3-2bffdc21abca,Tyler Slagill,M
 2016,76bf5fc5-0b1d-45e2-98c3-d2b95e31215c,Adam Jones,
+2017,844ece56-9b09-43f0-ad2c-58eac43475a6,Nicolas Ebran,M
+2018,22b044df-0e9b-4137-9132-aabd0120018e,Ornella Ohayon,F
+2019,597ec525-f440-4d2b-9c12-7ed74ce219ef,Polly Po Kuen Lam,F
+2020,b0853416-9c7a-4aaf-99b9-86be68976786,Gianne Meijer,F
+2021,875d73b5-1e99-4a88-b937-77ccaef16311,Yuri Syromolotov Netrebin Sr,M
+2022,9beac467-df42-4662-b83c-4ec3bee6d68b,Romano Frantzen,M
+2023,333d0ebb-4ffd-4f21-a05b-6816156ff93f,Max Noah Washington,M
+2024,ba258211-43b9-4c3a-befa-472219140258,Jean Iau,F
+2025,57dd1fd2-ea99-441d-ba63-59a86918829a,Pepijn De Petter,M
+2026,7450bc8c-25f5-4028-8de9-dcceae29c919,Simon Verkuylen,M
+2027,cdb767f3-e21a-4910-a11a-3099387f19c0,Barend Hoes,M
+2028,00dc4cfd-a040-4a9f-ba68-8ec5cd8b3e06,Barry Brouns,M
+2029,fedaa784-ccc9-4c8a-ae83-9af4ff006afc,Maja Nieradzik,F
+2030,d2026cc3-336e-4285-a6a4-9d5578aa8cc9,Klaudia Piadek,F
+2031,94a1ef57-8510-461f-80fb-36e7278b48df,Baptiste Dussart,M
+2032,d43dbed5-ab7b-47fb-8037-9f7e2c5af7b9,Alexis Aubry,M
+2033,83104a79-6aaf-4453-8193-0d13636cbc1c,Urbain Richard,M
+2034,e775cb12-dbaa-4bed-a7ac-c271e5e0a7a5,Björn Bemelmans,M
+2035,c3713865-ced7-4193-b6e7-43daa0553299,Anouk Van Hoek,F
+2036,17aca301-08ac-4cf2-a3a5-dc721f87f60c,Noesjka Brink,F
+2037,12a2f384-b5cf-4b05-b850-0b9c17d11614,Brayden Peck,M
+2038,efd775c2-f5a3-4d7a-aa42-b1bec33c4258,Bobby Fitzpatrick,M
+2039,638766c2-c5d2-42f0-9f4f-893cb10e5e5a,Ronan Le Roch,M
+2040,b5036dec-67bf-4164-a921-0327a2ac6532,Sebastiaan Wesselink,M
+2041,eadbc22d-68ec-45a4-9a95-5fadd02ddb0f,Piet Bemelmans,M
+2042,8c763b20-4cea-44b1-a4cb-a5f0317af851,Clovis Dame,M
+2043,a68d2a3a-587c-4fa7-97a3-e04e0f27479a,Alban Sauce,M
+2044,f41b5dcc-59f1-4b88-b2c3-138b75337b82,Vincent De Geoffroy,M
+2045,f8996bb0-ee7d-4bf3-b2bc-c928c4cd9c74,Melvin Vendôme,M
+2046,b5091f60-153f-4f96-86dd-a89bb5ed124c,Michał Pochopień,M
+2047,26a8d2ca-443d-46e9-a37c-b2e30d530fca,Pim Huberts,M
+2048,2db69b3e-ca93-4272-8398-1b20968aa926,Ori Maior,M
+2049,1df6ce03-2b77-4d29-a82a-5ca9ad65ab3d,Ori Weizman,M
+2050,3dabbb14-cf51-478f-a709-0d0fc94d8589,Mathilde Sarcelet,F
+2051,f7fd24b1-a55c-4a6a-a544-1d97f0d12ed5,Anaïs Geslin,F
+2052,9f215d77-4f5b-4917-848c-72d6519551d5,Anne Servaes,F
+2053,8e50eee7-4770-4600-8996-8dbd1e090d7d,Ariane Minos,F
+2054,3a38b134-4e73-4c06-ab33-c8be4b5a4113,Lisa Lefèvre,F
+2055,b9787f83-f0ee-4fae-94ee-0f88cbcecb00,Britton Pemberton,F
+2056,e7c1b440-124e-4380-80bf-473d681b3fd6,Payton Pemberton,F
+2057,d45a6042-ce12-4a0c-8413-1e56d4e45fce,Javier Gallego Ruiz-Mateos,M
+2058,1c732c21-8e92-44de-8350-95ebd0e17ca0,Jesus Campos,M
+2059,2968280c-0a70-4028-a7a0-c80aeef9b46f,Adeline Nguyen,F
+2060,af976153-5900-4d7e-b492-04ae59f9a78d,Francie Fitzpatrick,F
+2061,0993dc87-41c8-4d12-aa5c-1793ebc012b1,Kate Tynan,F
+2062,4867a988-31c5-4bd9-ba79-35c5c888f223,Šimon Vališ,M
+2063,8c46e9a6-d783-425d-9025-e3fc09608bb6,Kai Dawson,M
+2064,22eba532-eafa-4196-b858-e4eda2ddd0e3,Joris Weimar,M
+2065,9adec653-4666-4be6-a78a-fb4ebffa3640,Cato Tangkau,
+2066,263e07aa-6aa9-4f9d-8d6e-6effd64fb97d,Helena Korompis,
+2067,7a78be25-04ea-403a-8799-5c9aae98e5b2,Christophe Van Parys,
+2068,7ce35276-16aa-47e7-bada-8002f3a75135,John Paul O Connell,M
+2069,ef40f862-13f0-4985-94da-5af3295c5212,Michael Goris,
+2070,9cdcc094-d44b-472d-b9e1-557789498721,Alix Schelfhout,
+2071,e2854f86-c41a-4bd3-aaa8-2911800b3315,Arnold Foote III,
+2072,e81c6421-c955-4eb6-a5fd-b1d0ed108079,Rebecca Levy,
