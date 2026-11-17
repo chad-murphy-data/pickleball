@@ -41,13 +41,16 @@ def spec(rally):
 
 
 def stage_spec(rally):
-    """(offset, frames) from the manual contact taps (never prefill)."""
+    """(offset, frames) covering the audit tool's span: manual taps, or
+    the prefill contacts with the tool's wider margins when the rally
+    has no taps yet (r2-r5, 2026-09-02)."""
     import sys as _s
     _s.path.insert(0, "/home/user/pickleball/vision")
-    from make_ball_audit import load_impacts
-    imps, _dead = load_impacts(rally=rally)
-    off = int((imps[0] - 1.5) * 10) / 10.0
-    n = int(round((imps[-1] + 2.5 - off) * 60))
+    from make_ball_audit import load_impacts, PRE_S, PREFILL_PRE_S
+    imps, dead = load_impacts(rally=rally, prefill_ok=True)
+    pre = PREFILL_PRE_S if dead - imps[-1] > 2.5 else PRE_S
+    off = int((imps[0] - pre - 0.5) * 10) / 10.0
+    n = int(round((dead + 0.5 - off) * 60))
     return off, n
 
 

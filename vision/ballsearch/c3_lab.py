@@ -28,7 +28,15 @@ WINDOWS = {                            # rally -> (serve, end, npz)
     7:  (164.70, 175.20, SP / "r0007.npz"),
     9:  (252.60, 282.53, SP / "r0009.npz"),
     10: (294.30, 318.45, SP / "r0010.npz"),
-    17: (427.31, 442.25, SP / "r0017.npz"),   # click package 2026-09-02: first tap - 1.0 / last tap + 2.0 (audit-tool span); npz pending
+    # r2-r5 (2026-09-02, owner: "fill out the training set"): PREFILL-contact
+    # spans (first prefill - 1.5 / last + 3.0 = the audit-tool span); the
+    # prefill times were checked on the video frames (serves at 40.5 / 59.4 /
+    # 91.2 / 118.8 s, bug 0-0 / 0-0 / 1-0 / 2-0); npz = CPU rtmpose here
+    2: (40.54, 52.47, SP / "r0002.npz"),
+    3: (59.43, 78.81, SP / "r0003.npz"),
+    4: (91.16, 106.69, SP / "r0004.npz"),
+    5: (118.78, 135.46, SP / "r0005.npz"),
+    17: (427.31, 442.25, SP / "r0017.npz"),   # click package 2026-09-02: first tap - 1.0 / last tap + 2.0 (audit-tool span); npz = CPU rtmpose-balanced here (gitignored; re-extract or take the Colab npz)
     18: (455.69, 461.91, SP / "r0018.npz"),   # click package 2026-09-02: first tap - 1.0 / last tap + 2.0 (audit-tool span); npz pending
     19: (477.29, 481.75, SP / "r0019.npz"),   # click package 2026-09-02: first tap - 1.0 / last tap + 2.0 (audit-tool span); npz pending
     20: (484.28, 506.64, SP / "r0020.npz"),   # click package 2026-09-02: first tap - 1.0 / last tap + 2.0 (audit-tool span); npz pending
@@ -59,12 +67,20 @@ def build(rally):
     P = c3.dlt(X3, x2)
     floors = br.track_floor(str(npz), P)
 
-    hum = br.human_side(rally, end)
-    h_obs, h_bounds, h_evs = hum
-    h_pa = br.bound_anchor_positions(h_bounds, anchors, floors)
-    h_segs, h_cons = br.reconstruct(P, h_obs, h_bounds, h_evs, h_pa)
+    if (br.DATA / f"ball_path_r{rally}.csv").exists():
+        hum = br.human_side(rally, end)
+        h_obs, h_bounds, h_evs = hum
+        h_pa = br.bound_anchor_positions(h_bounds, anchors, floors)
+        h_segs, h_cons = br.reconstruct(P, h_obs, h_bounds, h_evs, h_pa)
+    else:
+        # no owner ball clicks (r18-r21): no human path, no human fit.
+        # Bounce truth for these rallies is the owner's TAPS (tap_grade).
+        imps0, _ = load_impacts(rally=rally, prefill_ok=True)
+        hum, h_segs, h_cons = ([], list(imps0) + [end], []), [], []
+        h_bounds = hum[1]
+        print(f"r{rally}: no ball_path_r{rally}.csv — human side skipped")
 
-    imps, dead = load_impacts(rally=rally)
+    imps, dead = load_impacts(rally=rally, prefill_ok=True)  # r2-r5: prefill bounds until the contact pass
     cache = dict(rally=rally, serve=serve, end=end, t0=t0,
                  visited=visited, refined=refined, timing_ref=timing_ref,
                  turns=turns, angs=angs, anchors=anchors, zs=zs,
@@ -80,5 +96,7 @@ def build(rally):
 
 
 if __name__ == "__main__":
-    for r in (7, 6, 9, 10):
+    # `python3 c3_lab.py 17 18` builds those; no args = the original four
+    rallies = [int(a) for a in sys.argv[1:]] or [7, 6, 9, 10]
+    for r in rallies:
         build(r)

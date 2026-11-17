@@ -1,0 +1,17 @@
+LEAD_FT fixed on TRAIN at the median receiver-to-bounce offset: 8.7 ft
+
+=== TRAIN r2+r3+r4+r5+r6+r7+r17: 31 human-fit bounces matched to a following contact
+  estimator     median err     p90  median DEPTH err  depth bias
+  feet              8.7 ft   16.1            8.1 ft       -3.7 ft
+  feet+lead 8.7ft      4.0 ft    8.7            3.2 ft       -0.3 ft
+  midpoint         10.8 ft   19.1           10.2 ft       +6.5 ft
+  receiver-to-bounce offset: median 8.7 ft, IQR 5.5-10.9, time from bounce to contact 0.35 s
+  categorical agreement -- court side 94%, left/right half 87%, kitchen-vs-deep 94%
+
+=== EVAL r9+r10 (spent evaluation; lead comes from TRAIN, nothing refit): 26 human-fit bounces matched to a following contact
+  estimator     median err     p90  median DEPTH err  depth bias
+  feet              6.3 ft   15.1            6.1 ft       -2.8 ft
+  feet+lead 8.7ft      5.3 ft    7.1            3.8 ft       +0.0 ft
+  midpoint          8.0 ft   13.9            6.9 ft       +5.2 ft
+  receiver-to-bounce offset: median 6.3 ft, IQR 3.5-11.5, time from bounce to contact 0.34 s
+  categorical agreement -- court side 92%, left/right half 92%, kitchen-vs-deep 73%

@@ -1,0 +1,170 @@
+<!doctype html><html><head><meta charset="utf-8">
+<title>ball audit — rally 5</title>
+<style>
+ body{font:14px system-ui;margin:0;background:#111;color:#ddd}
+ #wrap{max-width:1040px;margin:0 auto;padding:12px}
+ #vbox{position:relative}
+ video{width:100%;display:block;background:#000;border-radius:6px}
+ #ov{position:absolute;left:0;top:0;cursor:crosshair}
+ #drop{border:2px dashed #555;border-radius:8px;padding:18px;text-align:center;
+       cursor:pointer;margin:8px 0}
+ .bar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:6px 0}
+ button{background:#2a2a2a;color:#ddd;border:1px solid #555;border-radius:5px;
+        padding:4px 10px;cursor:pointer}
+ kbd{background:#333;border-radius:4px;padding:1px 6px;border:1px solid #555}
+ #note{color:#999;font-size:12px;line-height:1.6;margin-top:8px}
+ #imode{color:#cc7;font-weight:bold;visibility:hidden}
+ #prog{height:10px;background:#222;border-radius:5px;overflow:hidden}
+ #progfill{height:100%;background:#4a7;width:0}
+ input{background:#222;color:#ddd;border:1px solid #555;border-radius:4px}
+</style></head><body><div id="wrap">
+<h3>Ball audit — rally 5, every frame</h3>
+<div id="drop">🎬 <b>Load the match video</b> — click or drag
+<input type="file" id="fpick" accept="video/*,.webm,.mp4,.mkv" hidden></div>
+<div id="vbox"><video id="v" preload="auto"></video><canvas id="ov"></canvas></div>
+<div class="bar">
+ <span id="status">—</span>
+ <span id="imode">—</span>
+ <span style="flex:1"></span>
+ <label>fps <input id="fps" type="number" value="30" step="0.01" style="width:60px"></label>
+ <button id="bexp">⬇ export</button>
+ <button id="bimp">⬆ import</button>
+ <input type="file" id="csvpick" accept=".csv" hidden>
+</div>
+<div id="prog"><div id="progfill"></div></div>
+<div id="note">
+<b>One answer per frame — four kinds:</b><br>
+🟢 <b>See a clean ball → just click it.</b> Records visible (V) and
+auto-advances. When the ball moves cleanly you'll settle into
+click-click-click rhythm.<br>
+🔵 <b>See a streak/blur that IS the ball → press <kbd>S</kbd>, then
+click the streak's center.</b> "I know where it is… kinda" — the ball
+is in the pixels, just smeared.<br>
+🟠 <b>Ball hidden behind a body or paddle → press <kbd>I</kbd>, then
+click where it must be.</b> "I know it's right behind her" — the ball
+is NOT in the pixels; your trajectory sense supplies the position.<br>
+⚫ <b>Genuinely can't place it → press <kbd>N</kbd>.</b> No click, no
+guess — an honest N is data too.<br><br>
+After <kbd>S</kbd> or <kbd>I</kbd> a colored banner shows the armed
+mode; it resets to plain-click after each answer. Dots are HIDDEN by
+default so they never sit on the ball — lost it? press <kbd>T</kbd> to
+show your last second of positions, follow the trail, <kbd>T</kbd>
+again to hide.
+<b>Accuracy bar:</b> center-of-blob is fine, don't agonize; be
+consistent on streaks (always the center).<br><br>
+<b>Navigation:</b> <kbd>←</kbd>/<kbd>→</kbd> step ±1 frame without
+answering · <kbd>,</kbd>/<kbd>.</kbd> jump ±10 · <kbd>⌫</kbd> clear
+this frame (then re-answer).<br>
+<b>Stopping:</b> anytime — progress autosaves in this browser. At the
+end of every sitting hit <b>⬇ export</b> and save as
+<code>ball_path_r5.csv</code> into data/vision/ (partial is fine;
+⬆ import restores it exactly). Score with:
+<code>python3 vision/make_ball_audit.py --rally 5 --score data/vision/ball_path_r5.csv</code>
+</div>
+</div><script>
+const CFG = {"t0": 117.279, "t1": 135.464};
+const LSK = "ball_audit_r" + 5;
+let store = JSON.parse(localStorage.getItem(LSK) || "{}");
+const save = () => localStorage.setItem(LSK, JSON.stringify(store));
+const V = document.getElementById("v"), OV = document.getElementById("ov");
+const fpsEl = document.getElementById("fps");
+let k = +(localStorage.getItem(LSK + "_k") || 0), mode = "V";
+let trail = localStorage.getItem(LSK + "_trail") === "1";
+const fps = () => (+fpsEl.value || 30);
+const NF = Math.round((CFG.t1 - CFG.t0) * 30);
+const tOf = j => CFG.t0 + j / fps();
+
+drop.onclick = () => fpick.click();
+drop.ondragover = e => e.preventDefault();
+drop.ondrop = e => {e.preventDefault(); loadf(e.dataTransfer.files[0]);};
+fpick.onchange = () => loadf(fpick.files[0]);
+function loadf(f){ if(f){ V.src = URL.createObjectURL(f); go(k); } }
+
+function go(j){
+  k = Math.max(0, Math.min(NF - 1, j));
+  if (V.src) { V.pause(); V.currentTime = tOf(k); }
+  localStorage.setItem(LSK + "_k", k);
+  render();
+}
+function render(){
+  const done = Object.keys(store).length;
+  const a = store[k];
+  status.innerHTML = `frame <b>${k + 1}</b>/${NF} (t=${tOf(k).toFixed(2)}s)` +
+    ` — this frame: <b>${a ? a.vis : "·"}</b> — answered ${done}/${NF}`;
+  progfill.style.width = (100 * done / NF) + "%";
+  imodeEl.style.visibility = mode === "V" ? "hidden" : "visible";
+  imodeEl.textContent = mode === "I"
+    ? "INFERRED mode — click where it must be (behind the body)"
+    : "SMEAR mode — click the streak's center";
+  imodeEl.style.color = mode === "I" ? "#cc7" : "#7ac";
+  draw();
+}
+const imodeEl = document.getElementById("imode");
+function draw(){
+  OV.width = V.clientWidth; OV.height = V.clientHeight;
+  const c = OV.getContext("2d");
+  c.clearRect(0, 0, OV.width, OV.height);
+  if (!V.videoWidth || !trail) return;
+  const sx = OV.width / V.videoWidth, sy = OV.height / V.videoHeight;
+  for (let j = k - 30; j <= k; j++){
+    const a = store[j];
+    if (!a || a.vis === "N") continue;
+    const r = j === k ? 6 : 2.5;
+    c.beginPath();
+    c.arc(a.x * sx, a.y * sy, r, 0, 7);
+    c.fillStyle = ({V: "#4caf50", S: "#55aacc", I: "#cc7722"}[a.vis]
+                   || "#888") + (j === k ? "" : "88");
+    c.fill();
+  }
+}
+V.onloadedmetadata = render;
+V.onseeked = render;
+new ResizeObserver(draw).observe(V);
+
+OV.onclick = e => {
+  if (!V.videoWidth) return;
+  const x = e.offsetX * V.videoWidth / OV.width;
+  const y = e.offsetY * V.videoHeight / OV.height;
+  store[k] = {vis: mode, x: Math.round(x), y: Math.round(y)};
+  mode = "V"; save(); go(k + 1);
+};
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT") return;
+  const key = e.key.toLowerCase();
+  if (key === "arrowright") go(k + 1);
+  else if (key === "arrowleft") go(k - 1);
+  else if (key === ".") go(k + 10);
+  else if (key === ",") go(k - 10);
+  else if (key === "i") { mode = mode === "I" ? "V" : "I"; render(); }
+  else if (key === "s") { mode = mode === "S" ? "V" : "S"; render(); }
+  else if (key === "t") { trail = !trail;
+    localStorage.setItem(LSK + "_trail", trail ? "1" : "0"); render(); }
+  else if (key === "n") { store[k] = {vis: "N"}; mode = "V"; save(); go(k + 1); }
+  else if (key === "backspace") { delete store[k]; save(); render(); }
+  else return;
+  e.preventDefault();
+});
+bexp.onclick = () => {
+  let out = "frame,t_s,x,y,vis\n";
+  for (let j = 0; j < NF; j++){
+    const a = store[j]; if (!a) continue;
+    out += `${j},${tOf(j).toFixed(3)},${a.x ?? ""},${a.y ?? ""},${a.vis}\n`;
+  }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([out], {type: "text/csv"}));
+  a.download = "ball_path_r" + 5 + ".csv"; a.click();
+};
+bimp.onclick = () => csvpick.click();
+csvpick.onchange = () => {
+  const rd = new FileReader();
+  rd.onload = () => {
+    rd.result.trim().split("\n").slice(1).forEach(line => {
+      const [j, , x, y, vis] = line.split(",");
+      store[+j] = vis === "N" ? {vis: "N"} : {vis, x: +x, y: +y};
+    });
+    save(); render();
+  };
+  rd.readAsText(csvpick.files[0]);
+};
+render();
+</script></body></html>
