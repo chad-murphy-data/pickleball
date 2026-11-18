@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-17",
+ "generated": "2026-11-18",
  "mlp": null,
  "ppa": [
   {
@@ -2846,7 +2846,8 @@
    "id": "12a61e43-1dc7-4d48-a926-10d3aa1a66cb",
    "dates": [
     "2026-11-16",
-    "2026-11-17"
+    "2026-11-17",
+    "2026-11-18"
    ],
    "divisions": [
     {
@@ -2875,19 +2876,19 @@
         "Armaan Jiwa Mawji",
         "Maverick Messinger"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         8,
+         6,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
@@ -2917,20 +2918,20 @@
         "Ethan Bakalinsky",
         "Francis Chi"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         7,
+         12,
+         9,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         11,
+         10,
+         11,
          0,
          0
         ]
@@ -2959,19 +2960,19 @@
         "Ahmad El-Zarif",
         "Stephen Preissler"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         6,
+         2,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
@@ -3001,19 +3002,19 @@
         "Pesa Teoni",
         "Mota Alhouni"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         3,
+         2,
          0,
          0,
          0
@@ -3043,19 +3044,19 @@
         "Zach Gonnering",
         "Miles Hoover"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         4,
+         6,
          0,
          0,
          0
@@ -3085,20 +3086,20 @@
         "Chuck Taylor",
         "John Cincola"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         6,
+         11,
+         11,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         11,
+         3,
+         8,
          0,
          0
         ]
@@ -3127,19 +3128,19 @@
         "Matteo Cugliari",
         "Matthew Finnerty"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         5,
+         6,
          0,
          0,
          0
@@ -3169,20 +3170,20 @@
         "Edgaras Zilys",
         "Nicholas Wade"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         11,
+         9,
+         9,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         6,
+         11,
+         11,
          0,
          0
         ]
@@ -3211,8 +3212,8 @@
         "Travis Rettenmaier",
         "George Rangelov"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 4,
        "scores": [
         [
          0,
@@ -3252,6 +3253,510 @@
        "n2": [
         "Matt Burkhardt",
         "Mike Radermacher"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         14,
+         11,
+         0,
+         0,
+         0
+        ],
+        [
+         12,
+         5,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 11,
+       "seed1": 15,
+       "seed2": 18,
+       "best_of": 3,
+       "p1": [
+        "99b25b49-2a51-412d-9fbf-e1b6804acce0",
+        "a91e2b68-7357-4518-baf9-f59b0b4c2477"
+       ],
+       "p2": [
+        "0d23964f-d43f-4006-b1e0-13001393216c",
+        "06ba18e0-687b-4aa3-822d-1c86981f576b"
+       ],
+       "n1": [
+        "Camden Chaffin",
+        "Christopher Haworth"
+       ],
+       "n2": [
+        "Ross Whittaker",
+        "Rafa Hewett"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 12,
+       "seed1": 6,
+       "seed2": 30,
+       "best_of": 3,
+       "p1": [
+        "8160ad59-4654-46b1-b229-8d5f2a9a45f9",
+        "925c1306-6b3b-4510-8482-f34168a0842a"
+       ],
+       "p2": [
+        "9a449e9c-69aa-4a48-8f28-217766ab25f7",
+        "26898786-4fd1-4dd9-bc18-a5c515a6b0ef"
+       ],
+       "n1": [
+        "Hunter Johnson",
+        "Roscoe Bellamy"
+       ],
+       "n2": [
+        "Armaan Jiwa Mawji",
+        "Maverick Messinger"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 13,
+       "seed1": 12,
+       "seed2": 33,
+       "best_of": 3,
+       "p1": [
+        "763b4d27-8140-47cd-86f5-982706cd4ebb",
+        "4fdcaa8b-8ebf-4cba-b759-d7c8e9d55ec0"
+       ],
+       "p2": [
+        "d0a30dc1-a7d7-475c-bfc9-d55e0aa8e7e3",
+        "f684d481-25b9-4def-8af3-b7b2a8e507ce"
+       ],
+       "n1": [
+        "Michael Loyd",
+        "Elliott Schupp"
+       ],
+       "n2": [
+        "Ethan Bakalinsky",
+        "Francis Chi"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 14,
+       "seed1": 16,
+       "seed2": 37,
+       "best_of": 3,
+       "p1": [
+        "cd1bf109-4907-4208-bca1-4d12f9494a4c",
+        "b03ff4de-9b8f-46a8-a530-d8f19e9d6ec9"
+       ],
+       "p2": [
+        "086c9ee0-0aa3-4d2e-bc64-22a683f44d73",
+        "95015a41-423e-4439-94ee-84e275c45787"
+       ],
+       "n1": [
+        "Casey Diamond",
+        "Max Freeman"
+       ],
+       "n2": [
+        "Ahmad El-Zarif",
+        "Stephen Preissler"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 15,
+       "seed1": 5,
+       "seed2": 27,
+       "best_of": 3,
+       "p1": [
+        "05b194b3-db88-4f77-a26f-5ef5cfbf6146",
+        "1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4"
+       ],
+       "p2": [
+        "c84377c6-b0ca-42dd-bc1a-2fd3d3c4ef9f",
+        "2aa8ced3-d599-4c83-86dd-ecc80196833b"
+       ],
+       "n1": [
+        "Riley Newman",
+        "Noe Khlif"
+       ],
+       "n2": [
+        "Ryan Torresin",
+        "Luca Mack"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 16,
+       "seed1": 10,
+       "seed2": 17,
+       "best_of": 3,
+       "p1": [
+        "62955f38-bdf5-46af-9622-13c7afe90619",
+        "7886d6aa-2310-4ae8-9874-f0fc9c3e534f"
+       ],
+       "p2": [
+        "1bab49f1-6891-4d3e-8f77-42aa4fc1d18e",
+        "9ce32de7-16c9-4786-a7b0-8c1c2c623d69"
+       ],
+       "n1": [
+        "Jonathan Truong",
+        "James Delgado"
+       ],
+       "n2": [
+        "Mohaned Alhouni",
+        "Rafael Lenhard"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 17,
+       "seed1": 14,
+       "seed2": 24,
+       "best_of": 3,
+       "p1": [
+        "e96d9339-cfb6-473d-bcb3-23f2887a3e0f",
+        "a9a168ae-7822-4d31-b07b-fba40480c1fc"
+       ],
+       "p2": [
+        "7b85c35f-6a90-4c61-af0b-565658feeb3c",
+        "7464628e-931a-44c9-b0df-749a7cb32eaa"
+       ],
+       "n1": [
+        "John Lucian Goins",
+        "Brandon French"
+       ],
+       "n2": [
+        "Freddie Powell",
+        "Adam Harvey"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 18,
+       "seed1": 7,
+       "seed2": 25,
+       "best_of": 3,
+       "p1": [
+        "ecd31a05-120f-4373-b5c1-21136f8f0bf1",
+        "6160a7c7-6b90-41f1-96d3-af5fa1623ca5"
+       ],
+       "p2": [
+        "35f81e87-382e-41cc-9bab-687116861954",
+        "1e5d81dc-961d-455a-b80f-d6c30c518cde"
+       ],
+       "n1": [
+        "Braden Jacobson",
+        "Collin Johns"
+       ],
+       "n2": [
+        "Jace Morris",
+        "Caden Nemoff"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 19,
+       "seed1": 9,
+       "seed2": 23,
+       "best_of": 3,
+       "p1": [
+        "81535c8c-27d9-452c-a72a-61fc9f755b01",
+        "f86cff72-5f9c-40b1-9f28-f28aafae245f"
+       ],
+       "p2": [
+        "306da673-de7e-44f5-bc16-0738b44bd089",
+        "3d9c8684-953f-4008-b355-b6104ee56a5b"
+       ],
+       "n1": [
+        "Will Mackinnon",
+        "Wyatt Stone"
+       ],
+       "n2": [
+        "Christopher Crouch",
+        "Connor Mogle"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 20,
+       "seed1": 13,
+       "seed2": 38,
+       "best_of": 3,
+       "p1": [
+        "d0f19d1e-2a6e-4eb3-b10c-1311edd599a8",
+        "50c2125b-406c-41e7-aad6-5432c7cd8e1c"
+       ],
+       "p2": [
+        "666db10a-f8de-4310-a988-cb0005f38a30",
+        "7867cc51-11d1-471f-a8bb-9d8370b6a698"
+       ],
+       "n1": [
+        "Will Howells",
+        "AJ Koller"
+       ],
+       "n2": [
+        "Edgaras Zilys",
+        "Nicholas Wade"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 21,
+       "seed1": 8,
+       "seed2": 29,
+       "best_of": 3,
+       "p1": [
+        "f0484f0e-f240-4b6f-9da5-b6dba3fa370e",
+        "698c5236-e88f-411c-b44f-e54f16b2d6b5"
+       ],
+       "p2": [
+        "a9782e86-e5ae-46d3-9194-ac89fdaed622",
+        "0c5b84bb-4c04-4906-86bc-deb533ff4eec"
+       ],
+       "n1": [
+        "Kenta Miyoshi",
+        "George Wall"
+       ],
+       "n2": [
+        "Alexander Crum",
+        "Zane Ford"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 22,
+       "seed1": 11,
+       "seed2": 21,
+       "best_of": 3,
+       "p1": [
+        "b68c0204-d9d4-4cba-bf23-46706abd77bf",
+        "d8d51930-abf9-468b-9e43-55a9c0728d58"
+       ],
+       "p2": [
+        "dc69fcde-bcda-4441-8b66-a8bafeb12ded",
+        "146dd2f7-7f5d-495d-b2f1-96d433742fec"
+       ],
+       "n1": [
+        "Clayton Powell",
+        "Anouar Braham"
+       ],
+       "n2": [
+        "Joel Poland",
+        "Eduardo Santini Ayon"
        ],
        "winner": 0,
        "completed_type": 1,
@@ -4061,19 +4566,19 @@
         "Jade Rau",
         "Yates Johnson"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         1,
+         6,
          0,
          0,
          0
@@ -4103,19 +4608,19 @@
         "Rafa Hewett",
         "Nicole Conard"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         4,
+         5,
          0,
          0,
          0
@@ -4145,19 +4650,19 @@
         "Eduardo Santini Ayon",
         "Alexa Quintanilla"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         3,
+         5,
          0,
          0,
          0
@@ -4187,20 +4692,20 @@
         "Ava Cavataio",
         "Collin Johns"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         11,
+         9,
+         11,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         4,
+         11,
+         5,
          0,
          0
         ]
@@ -4229,19 +4734,19 @@
         "Kenta Miyoshi",
         "Genie Bouchard"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         2,
+         6,
          0,
          0,
          0
@@ -4271,20 +4776,20 @@
         "Jalina Ingram",
         "Mota Alhouni"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         11,
+         7,
+         10,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         6,
+         11,
+         12,
          0,
          0
         ]
@@ -4313,19 +4818,19 @@
         "Mya Bui",
         "Luca Mack"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         13,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         11,
+         9,
          0,
          0,
          0
@@ -4355,19 +4860,19 @@
         "Christopher Crouch",
         "Luana Stanciu"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         4,
+         9,
          0,
          0,
          0
@@ -4397,20 +4902,20 @@
         "Naomi Nguyen",
         "James Delgado"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         11,
+         2,
+         11,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         8,
+         11,
+         3,
          0,
          0
         ]
@@ -4439,19 +4944,19 @@
         "Mehvish Safdar",
         "Nicholas Wade"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         2,
+         4,
          0,
          0,
          0
@@ -4481,19 +4986,19 @@
         "Andrea Koop",
         "Brandon French"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         7,
+         2,
          0,
          0,
          0
@@ -4523,19 +5028,19 @@
         "Wil Shaffer",
         "Circa Luna S"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         12,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         10,
+         7,
          0,
          0,
          0
@@ -4565,19 +5070,19 @@
         "Hanna Duncan",
         "Edgaras Zilys"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         2,
+         4,
          0,
          0,
          0
@@ -4607,19 +5112,19 @@
         "Freddie Powell",
         "Martina Frantova"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         7,
+         7,
          0,
          0,
          0
@@ -4649,19 +5154,19 @@
         "Jace Morris",
         "Lindsey Newman"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 2,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         6,
+         8,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
@@ -4691,19 +5196,19 @@
         "Lauren Stratman",
         "Julian Arnold"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         6,
+         9,
          0,
          0,
          0
@@ -4733,19 +5238,19 @@
         "Braden Jacobson",
         "Kelly Goodnow"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         8,
+         1,
          0,
          0,
          0
@@ -4775,19 +5280,19 @@
         "Ryan Torresin",
         "Angie Walker"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
+         11,
+         11,
          0,
          0,
          0
         ],
         [
-         0,
-         0,
+         5,
+         7,
          0,
          0,
          0
@@ -4817,19 +5322,19 @@
         "Jaeda Minniefield",
         "George Wall"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         11,
+         5,
+         11,
          0,
          0
         ],
         [
-         0,
-         0,
+         5,
+         11,
          0,
          0,
          0
@@ -4858,6 +5363,510 @@
        "n2": [
         "Brooke Caruso",
         "Adam Harvey"
+       ],
+       "winner": 1,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         11,
+         0,
+         0,
+         0
+        ],
+        [
+         4,
+         2,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 21,
+       "seed1": 13,
+       "seed2": 24,
+       "best_of": 3,
+       "p1": [
+        "d0f19d1e-2a6e-4eb3-b10c-1311edd599a8",
+        "719e2d3b-d10d-402d-a195-41f072214679"
+       ],
+       "p2": [
+        "52726ab1-2ac9-46c0-be90-6b0e7a2d56eb",
+        "bf84d952-c6a8-4494-943d-064b223e764f"
+       ],
+       "n1": [
+        "Will Howells",
+        "Isabella Dunlap"
+       ],
+       "n2": [
+        "Pablo Tellez",
+        "Estee Widdershoven"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 22,
+       "seed1": 9,
+       "seed2": 17,
+       "best_of": 3,
+       "p1": [
+        "05b194b3-db88-4f77-a26f-5ef5cfbf6146",
+        "55ed7e0a-ff2d-4ac2-aad6-b6772ef4f448"
+       ],
+       "p2": [
+        "d8d51930-abf9-468b-9e43-55a9c0728d58",
+        "eb14fc6e-ede1-4999-bec3-e36695e7f94e"
+       ],
+       "n1": [
+        "Riley Newman",
+        "Layne Sleeth"
+       ],
+       "n2": [
+        "Anouar Braham",
+        "Milan Rane"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 23,
+       "seed1": 15,
+       "seed2": 37,
+       "best_of": 3,
+       "p1": [
+        "34270d82-e968-407d-a918-8aa57f0123a6",
+        "8160ad59-4654-46b1-b229-8d5f2a9a45f9"
+       ],
+       "p2": [
+        "574957ae-e8d5-486e-aabc-a1cc6a392f8d",
+        "cfb42bdb-d0a0-4fc7-b1ea-a77c40aff2d2"
+       ],
+       "n1": [
+        "Elsie Hendershot",
+        "Hunter Johnson"
+       ],
+       "n2": [
+        "Jalina Ingram",
+        "Mota Alhouni"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 24,
+       "seed1": 6,
+       "seed2": 26,
+       "best_of": 3,
+       "p1": [
+        "1728d016-1f02-4789-be73-63d12d5a5b42",
+        "581183e8-3d9e-459e-b69f-7337d8b6f3d2"
+       ],
+       "p2": [
+        "1bab49f1-6891-4d3e-8f77-42aa4fc1d18e",
+        "25104e43-16f9-4ce3-9085-70243d8b350a"
+       ],
+       "n1": [
+        "Parris Todd",
+        "Andrei Daescu"
+       ],
+       "n2": [
+        "Mohaned Alhouni",
+        "Ella Yeh"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 25,
+       "seed1": 11,
+       "seed2": 18,
+       "best_of": 3,
+       "p1": [
+        "ba491f1c-0112-47a8-a348-4695289e958a",
+        "ec4cdfe2-c6f6-4de1-824e-9adcaeb31196"
+       ],
+       "p2": [
+        "71992955-8b6f-470b-a991-796cfa56a826",
+        "763b4d27-8140-47cd-86f5-982706cd4ebb"
+       ],
+       "n1": [
+        "Augustus Ge",
+        "Judit Castillo"
+       ],
+       "n2": [
+        "Liz Truluck",
+        "Michael Loyd"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 26,
+       "seed1": 16,
+       "seed2": 20,
+       "best_of": 3,
+       "p1": [
+        "b1ab7d76-a859-4136-8405-3ed7c9be287a",
+        "4fdcaa8b-8ebf-4cba-b759-d7c8e9d55ec0"
+       ],
+       "p2": [
+        "6a87bc44-5190-44db-8a2f-467de4de48c6",
+        "9ce32de7-16c9-4786-a7b0-8c1c2c623d69"
+       ],
+       "n1": [
+        "Mari Humberg",
+        "Elliott Schupp"
+       ],
+       "n2": [
+        "Christa Gecheva",
+        "Rafael Lenhard"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 27,
+       "seed1": 7,
+       "seed2": 31,
+       "best_of": 3,
+       "p1": [
+        "62955f38-bdf5-46af-9622-13c7afe90619",
+        "8e2f9629-19d0-409d-81dc-b64fe2f3d3ff"
+       ],
+       "p2": [
+        "925c1306-6b3b-4510-8482-f34168a0842a",
+        "a226291c-c48b-408b-a846-f45400d313a9"
+       ],
+       "n1": [
+        "Jonathan Truong",
+        "Jessie Irvine"
+       ],
+       "n2": [
+        "Roscoe Bellamy",
+        "Alexa Schull"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 28,
+       "seed1": 12,
+       "seed2": 33,
+       "best_of": 3,
+       "p1": [
+        "ead35052-7367-4296-96d4-064f546cc2b9",
+        "a95df9a8-772c-4dbf-8c28-e200b7308584"
+       ],
+       "p2": [
+        "35f81e87-382e-41cc-9bab-687116861954",
+        "bd7773b4-7b8e-4da2-96ce-98fe3490ee93"
+       ],
+       "n1": [
+        "CJ Klinger",
+        "Kiora Kunimoto"
+       ],
+       "n2": [
+        "Jace Morris",
+        "Lindsey Newman"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 29,
+       "seed1": 4,
+       "seed2": 29,
+       "best_of": 3,
+       "p1": [
+        "52690a0c-ed4a-4e0b-bf69-4ef416cf7d55",
+        "fec65f7e-f2c8-482f-ab5b-541cf53b1064"
+       ],
+       "p2": [
+        "518626d4-2600-4134-8c6a-0ae9315f9625",
+        "9eff9049-c45c-42ee-9a49-e9a797cc2116"
+       ],
+       "n1": [
+        "Eric Oncins",
+        "Tyra Hurricane Black"
+       ],
+       "n2": [
+        "Cason Campbell",
+        "Cailyn Campbell"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 30,
+       "seed1": 14,
+       "seed2": 23,
+       "best_of": 3,
+       "p1": [
+        "e96d9339-cfb6-473d-bcb3-23f2887a3e0f",
+        "646f7432-e6ad-4ccf-95ee-a0e5d9514d28"
+       ],
+       "p2": [
+        "1d701c30-6b5d-485f-ae97-60f3b0c50896",
+        "f86cff72-5f9c-40b1-9f28-f28aafae245f"
+       ],
+       "n1": [
+        "John Lucian Goins",
+        "Alix Truong"
+       ],
+       "n2": [
+        "Zoey Weil",
+        "Wyatt Stone"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 31,
+       "seed1": 8,
+       "seed2": 28,
+       "best_of": 3,
+       "p1": [
+        "9b97206b-783a-4fab-85e9-45a6240325a5",
+        "cd1bf109-4907-4208-bca1-4d12f9494a4c"
+       ],
+       "p2": [
+        "b68c0204-d9d4-4cba-bf23-46706abd77bf",
+        "f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1"
+       ],
+       "n1": [
+        "Catherine Parenteau",
+        "Casey Diamond"
+       ],
+       "n2": [
+        "Clayton Powell",
+        "Alex Walker"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 32,
+       "seed1": 10,
+       "seed2": 19,
+       "best_of": 3,
+       "p1": [
+        "b9bacc1e-29b5-4a92-a9c1-24e08ac72215",
+        "1bb8b2c1-ca6f-45ac-afdd-fab7e77d69d4"
+       ],
+       "p2": [
+        "06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf",
+        "99b25b49-2a51-412d-9fbf-e1b6804acce0"
+       ],
+       "n1": [
+        "Sofia Sewing",
+        "Noe Khlif"
+       ],
+       "n2": [
+        "Brooke Buckner",
+        "Camden Chaffin"
        ],
        "winner": 0,
        "completed_type": 1,
@@ -6003,20 +7012,20 @@
         "Circa Luna S",
         "Janet Liu"
        ],
-       "winner": 0,
-       "completed_type": 1,
+       "winner": 1,
+       "completed_type": 5,
        "scores": [
         [
-         0,
-         0,
-         0,
+         1,
+         11,
+         11,
          0,
          0
         ],
         [
-         0,
-         0,
-         0,
+         11,
+         2,
+         8,
          0,
          0
         ]
@@ -6044,6 +7053,510 @@
        "n2": [
         "Jessica Evanier",
         "Alexa Quintanilla"
+       ],
+       "winner": 2,
+       "completed_type": 5,
+       "scores": [
+        [
+         11,
+         5,
+         0,
+         0,
+         0
+        ],
+        [
+         13,
+         11,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 3,
+       "seed1": 14,
+       "seed2": 18,
+       "best_of": 3,
+       "p1": [
+        "5925398b-b2a9-4e8f-ae46-5c2b59b1b818",
+        "574957ae-e8d5-486e-aabc-a1cc6a392f8d"
+       ],
+       "p2": [
+        "70c18684-f615-4d05-9aa9-5cbdbd53ab9f",
+        "dd2f2fe3-5333-4036-9d88-f108bdcee3fc"
+       ],
+       "n1": [
+        "Nicole Conard",
+        "Jalina Ingram"
+       ],
+       "n2": [
+        "Carlota Trevino",
+        "Giovanna Morelli"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 4,
+       "seed1": 5,
+       "seed2": 26,
+       "best_of": 3,
+       "p1": [
+        "646f7432-e6ad-4ccf-95ee-a0e5d9514d28",
+        "8e2f9629-19d0-409d-81dc-b64fe2f3d3ff"
+       ],
+       "p2": [
+        "7cf93ef3-86b7-4bb4-937b-5b5dc4c72c32",
+        "efedfcd1-7638-4c6e-8225-fea7f8d40031"
+       ],
+       "n1": [
+        "Alix Truong",
+        "Jessie Irvine"
+       ],
+       "n2": [
+        "Valerie R Simon",
+        "Victoria Simon"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 5,
+       "seed1": 12,
+       "seed2": 19,
+       "best_of": 3,
+       "p1": [
+        "5f367bee-cf3e-4aad-a6e6-72cca04d97e2",
+        "f76f4ac5-e3cc-4fe6-a4bc-a968b8b991b1"
+       ],
+       "p2": [
+        "d1ca938d-f130-4aa7-a753-1004bd0661e6",
+        "9c9c45e5-6fb8-4f4f-a85e-16cebb11972d"
+       ],
+       "n1": [
+        "Angie Walker",
+        "Alex Walker"
+       ],
+       "n2": [
+        "Caroline Maguire",
+        "Andi Godwin"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 6,
+       "seed1": 13,
+       "seed2": 22,
+       "best_of": 3,
+       "p1": [
+        "1d701c30-6b5d-485f-ae97-60f3b0c50896",
+        "bf84d952-c6a8-4494-943d-064b223e764f"
+       ],
+       "p2": [
+        "c3012322-e95e-4e38-a0d8-106f9e236869",
+        "dba7cf49-9f57-43e3-878d-a63ced26a243"
+       ],
+       "n1": [
+        "Zoey Weil",
+        "Estee Widdershoven"
+       ],
+       "n2": [
+        "Keilly Ulery",
+        "Jaeda Minniefield"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 7,
+       "seed1": 6,
+       "seed2": 28,
+       "best_of": 3,
+       "p1": [
+        "b1ab7d76-a859-4136-8405-3ed7c9be287a",
+        "eb14fc6e-ede1-4999-bec3-e36695e7f94e"
+       ],
+       "p2": [
+        "f8b6b217-f9f8-4fd3-a71d-ae4dfcbb9c89",
+        "4e73b5b4-d734-4258-91cf-b678d08200a9"
+       ],
+       "n1": [
+        "Mari Humberg",
+        "Milan Rane"
+       ],
+       "n2": [
+        "Ava Ignatowich",
+        "Maria Ford"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 8,
+       "seed1": 11,
+       "seed2": 24,
+       "best_of": 3,
+       "p1": [
+        "6a87bc44-5190-44db-8a2f-467de4de48c6",
+        "34270d82-e968-407d-a918-8aa57f0123a6"
+       ],
+       "p2": [
+        "53b056f9-095a-40fa-881d-142629905f8a",
+        "4da698bf-605d-4c6c-8566-6bfbdb6c1a24"
+       ],
+       "n1": [
+        "Christa Gecheva",
+        "Elsie Hendershot"
+       ],
+       "n2": [
+        "Luana Stanciu",
+        "Genie Bouchard"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 9,
+       "seed1": 16,
+       "seed2": 20,
+       "best_of": 3,
+       "p1": [
+        "76419f3a-712c-4241-8940-6f9bda847ba7",
+        "45e53881-72e4-4de1-9763-c2e7f7f854ba"
+       ],
+       "p2": [
+        "03db4060-fcb3-41f7-83d5-7ee732dd8841",
+        "be74032b-1035-4ece-bf4f-773b45da4d58"
+       ],
+       "n1": [
+        "Lauren Stratman",
+        "Andrea Koop"
+       ],
+       "n2": [
+        "Jade Rau",
+        "Mehvish Safdar"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 10,
+       "seed1": 7,
+       "seed2": 25,
+       "best_of": 3,
+       "p1": [
+        "06dc9b8a-5c01-49cf-bb4d-70d7b5f85acf",
+        "ec4cdfe2-c6f6-4de1-824e-9adcaeb31196"
+       ],
+       "p2": [
+        "3fc70f61-f10c-4539-9b5a-82911efc966a",
+        "6aa0a796-9759-40f5-9c8f-bf4461d032fb"
+       ],
+       "n1": [
+        "Brooke Buckner",
+        "Judit Castillo"
+       ],
+       "n2": [
+        "Ava Cavataio",
+        "Helena Jansen"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 11,
+       "seed1": 10,
+       "seed2": 23,
+       "best_of": 3,
+       "p1": [
+        "bd7773b4-7b8e-4da2-96ce-98fe3490ee93",
+        "719e2d3b-d10d-402d-a195-41f072214679"
+       ],
+       "p2": [
+        "fd565e56-6223-4ef0-882e-02346e7e0573",
+        "5883c77e-d6e0-4848-9473-866396578248"
+       ],
+       "n1": [
+        "Lindsey Newman",
+        "Isabella Dunlap"
+       ],
+       "n2": [
+        "Brooke Caruso",
+        "Audrey Adele Brown"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 12,
+       "seed1": 15,
+       "seed2": 21,
+       "best_of": 3,
+       "p1": [
+        "ad6e69ff-7913-4b21-86dd-9489f749be01",
+        "87d60b6f-6f2e-4610-ab89-487e8acc097e"
+       ],
+       "p2": [
+        "25104e43-16f9-4ce3-9085-70243d8b350a",
+        "a0581131-7d36-4424-b7f1-a5a4eaaed30f"
+       ],
+       "n1": [
+        "Paula Rives",
+        "Mya Bui"
+       ],
+       "n2": [
+        "Ella Yeh",
+        "Cc Eleven Sacca"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 13,
+       "seed1": 8,
+       "seed2": 30,
+       "best_of": 3,
+       "p1": [
+        "55ed7e0a-ff2d-4ac2-aad6-b6772ef4f448",
+        "9eff9049-c45c-42ee-9a49-e9a797cc2116"
+       ],
+       "p2": [
+        "c9f03b76-b64d-4176-b338-a6b3a180a23c",
+        "d1045e15-2ae2-4e2c-b7ba-21a326affe05"
+       ],
+       "n1": [
+        "Layne Sleeth",
+        "Cailyn Campbell"
+       ],
+       "n2": [
+        "Jessica Evanier",
+        "Alexa Quintanilla"
+       ],
+       "winner": 0,
+       "completed_type": 1,
+       "scores": [
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ],
+        [
+         0,
+         0,
+         0,
+         0,
+         0
+        ]
+       ]
+      },
+      {
+       "round": 2,
+       "round_text": "Round 32",
+       "match_no": 14,
+       "seed1": 9,
+       "seed2": 17,
+       "best_of": 3,
+       "p1": [
+        "71992955-8b6f-470b-a991-796cfa56a826",
+        "a95df9a8-772c-4dbf-8c28-e200b7308584"
+       ],
+       "p2": [
+        "f6e249dc-5bb9-483a-a99f-df364df93341",
+        "12c765d0-8384-41d3-a498-de63fd7c37da"
+       ],
+       "n1": [
+        "Liz Truluck",
+        "Kiora Kunimoto"
+       ],
+       "n2": [
+        "Kelly Goodnow",
+        "Naomi Nguyen"
        ],
        "winner": 0,
        "completed_type": 1,
