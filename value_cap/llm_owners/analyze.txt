@@ -1,0 +1,64 @@
+20 sheets
+missing ids per sheet: []
+
+file                               persona         #priced    max  top6 sum
+balanced_six_1.json                balanced_six        172   250k     1120k
+balanced_six_2.json                balanced_six        183   250k     1225k
+balanced_six_3.json                balanced_six        164   175k     1000k
+four_starters_1.json               four_starters       152   240k     1000k
+four_starters_2.json               four_starters         6   240k     1000k
+four_starters_3.json               four_starters       183   400k     2080k
+free_1.json                        free                179   210k      940k
+free_2.json                        free                183   250k     1120k
+risk_averse_1.json                 risk_averse         130   190k     1000k
+risk_averse_2.json                 risk_averse          86   220k     1115k
+risk_averse_3.json                 risk_averse          51   160k      830k
+singles_minded_1.json              singles_minded      183   200k      995k
+singles_minded_2.json              singles_minded      183   220k     1000k
+singles_minded_3.json              singles_minded      183   260k     1120k
+star_scrubs_1.json                 star_scrubs           6   800k     1000k
+star_scrubs_2.json                 star_scrubs         154   745k     1000k
+star_scrubs_3.json                 star_scrubs         183   700k     1500k
+two_stars_1.json                   two_stars           105   420k     1560k
+two_stars_2.json                   two_stars           174   380k     1630k
+two_stars_3.json                   two_stars           109   420k     1035k
+
+DISAGREEMENT (pairwise Spearman of ceilings within gender; 1.0 = twenty copies of one owner)
+  F: same persona median 0.74 [0.31,0.96]  different persona median 0.71 [-0.09,0.95]
+  M: same persona median 0.71 [0.31,0.94]  different persona median 0.67 [-0.11,0.91]
+
+VS THE SHIPPED LIST (Spearman within gender; the agents never saw it)
+  F: per-owner median 0.51 [0.30,0.63]; consensus (mean ceiling) 0.56
+  M: per-owner median 0.46 [0.16,0.60]; consensus (mean ceiling) 0.49
+
+VS RAW SAME-GENDER WIN% (did they just sort one column?)
+  F: per-owner median 0.79 [0.31,0.90]
+  M: per-owner median 0.60 [0.24,0.69]
+
+ANNA LEIGH WATERS = W36. Ceilings by persona (k$):
+  balanced_six     250  250    0
+  four_starters    200  240  400
+  free             210  250
+  risk_averse      190  220  160
+  singles_minded   200  220  260
+  star_scrubs      800  745  700
+  two_stars        420  380  420
+  all: median 250k, max 800k, second-highest 745k (= roughly what she sells for in a 20-seat room)
+
+CONSENSUS TOP 8 PER GENDER (mean ceiling across owners) vs list rank
+  F Anna Leigh Waters        mean  326k  max  800k  list $769k (#1)
+  F Anna Bright              mean  162k  max  350k  list $613k (#2)
+  F Kate Fahey               mean  112k  max  280k  list $453k (#5)
+  F Jorja Johnson            mean  112k  max  250k  list $475k (#4)
+  F Catherine Parenteau      mean   94k  max  180k  list $267k (#15)
+  F Parris Todd              mean   94k  max  160k  list $489k (#3)
+  F Tyra Hurricane Black     mean   87k  max  200k  list $386k (#10)
+  F Tina Pisnik              mean   86k  max  200k  list $416k (#8)
+  M Ben Johns                mean  194k  max  420k  list $474k (#1)
+  M Gabriel Tardio           mean  161k  max  370k  list $409k (#4)
+  M Christian Alshon         mean  126k  max  300k  list $400k (#5)
+  M Hayden Patriquin         mean  125k  max  300k  list $421k (#3)
+  M Federico Staksrud        mean  118k  max  280k  list $315k (#7)
+  M JW Johnson               mean  114k  max  250k  list $430k (#2)
+  M Andrei Daescu            mean   97k  max  230k  list $323k (#6)
+  M Augustus Ge              mean   89k  max  200k  list $102k (#30)

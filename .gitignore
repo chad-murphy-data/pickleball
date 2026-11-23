@@ -39,3 +39,6 @@ data/vision/ball_audit_r1.html
 data/vision/ball_visibility_audit.html
 data/vision/court_calibration.html
 data/vision/court3d_r1.html
+
+# value_cap speed layer: game-probability grid, regenerable in ~1.5 min via value_cap/fast_tie.py
+value_cap/cache/
