@@ -14877,9 +14877,277 @@ f76e4c8a-cd09-4768-b2d7-c28365602dc6:g2,-3,1520,1500,1854,1531,4299,3702,7259,0,
 f76e4c8a-cd09-4768-b2d7-c28365602dc6:g3,7,1520,1500,1854,1531,4299,3702,7259,0,1,3,3,PPA TOUR EUROPE - P125 LILLE,2026-11-15,Quarter Finals
 20b83967-c470-4394-a2a8-91ed65711290:g1,-4,241,654,104,64,4310,4311,7260,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
 20b83967-c470-4394-a2a8-91ed65711290:g2,-2,241,654,104,64,4310,4311,7260,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
-5ee9f771-d24f-4c19-90c8-103a3f443574:g1,11,104,64,2071,2072,4311,4312,7261,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 32
-5ee9f771-d24f-4c19-90c8-103a3f443574:g2,11,104,64,2071,2072,4311,4312,7261,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 32
-9ce85fa4-f9da-4180-b985-3f48c954a62f:g1,-5,47,165,316,1303,1275,4313,7262,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
-9ce85fa4-f9da-4180-b985-3f48c954a62f:g2,-5,47,165,316,1303,1275,4313,7262,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
-f373ea1b-1aa3-4096-9fdc-e80d23e10df7:g1,2,28,347,268,266,4314,4315,7263,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 16
-f373ea1b-1aa3-4096-9fdc-e80d23e10df7:g2,10,28,347,268,266,4314,4315,7263,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 16
+563c974e-d11c-438d-b9cf-d7c4142103e1:g1,-6,98,68,39,1303,4312,3244,7261,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+563c974e-d11c-438d-b9cf-d7c4142103e1:g2,-2,98,68,39,1303,4312,3244,7261,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+5c31299d-d717-428f-9ec8-c4565185c01f:g1,-2,440,47,88,89,2739,44,7262,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 16
+5c31299d-d717-428f-9ec8-c4565185c01f:g2,2,440,47,88,89,2739,44,7262,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 16
+5c31299d-d717-428f-9ec8-c4565185c01f:g3,2,440,47,88,89,2739,44,7262,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 16
+5ee9f771-d24f-4c19-90c8-103a3f443574:g1,11,104,64,2071,2072,4311,4313,7263,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 32
+5ee9f771-d24f-4c19-90c8-103a3f443574:g2,11,104,64,2071,2072,4311,4313,7263,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 32
+9ce85fa4-f9da-4180-b985-3f48c954a62f:g1,-5,47,165,316,1303,1275,4314,7264,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+9ce85fa4-f9da-4180-b985-3f48c954a62f:g2,-5,47,165,316,1303,1275,4314,7264,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+a6e1ae02-b427-4103-aa5f-34737957220f:g1,-5,78,163,1231,2073,4315,4316,7265,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 32
+a6e1ae02-b427-4103-aa5f-34737957220f:g2,-9,78,163,1231,2073,4315,4316,7265,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 32
+a7cc986f-13c1-4f9e-b321-a5fb731064c1:g1,-2,440,47,617,90,2739,4317,7266,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+a7cc986f-13c1-4f9e-b321-a5fb731064c1:g2,-9,440,47,617,90,2739,4317,7266,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+a9c50d4e-e0be-4fe9-a06e-a2cb81130dea:g1,4,140,7,44,133,1072,4318,7267,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+a9c50d4e-e0be-4fe9-a06e-a2cb81130dea:g2,11,140,7,44,133,1072,4318,7267,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+b10016a9-aff4-45d9-ab3e-c1780beb441c:g1,2,28,347,106,68,4319,122,7268,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+b10016a9-aff4-45d9-ab3e-c1780beb441c:g2,-2,28,347,106,68,4319,122,7268,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+b10016a9-aff4-45d9-ab3e-c1780beb441c:g3,2,28,347,106,68,4319,122,7268,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+cf82119e-d9ed-4bf6-87ab-7e67a5df5b4b:g1,3,223,268,1481,50,1676,2759,7269,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+cf82119e-d9ed-4bf6-87ab-7e67a5df5b4b:g2,3,223,268,1481,50,1676,2759,7269,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+dd0eda7e-737e-49c8-9e32-f93a2eb5408e:g1,-9,348,1585,617,2074,4320,4321,7270,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+dd0eda7e-737e-49c8-9e32-f93a2eb5408e:g2,4,348,1585,617,2074,4320,4321,7270,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+dd0eda7e-737e-49c8-9e32-f93a2eb5408e:g3,2,348,1585,617,2074,4320,4321,7270,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Quarter Finals
+f373ea1b-1aa3-4096-9fdc-e80d23e10df7:g1,2,28,347,268,266,4319,4322,7271,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 16
+f373ea1b-1aa3-4096-9fdc-e80d23e10df7:g2,10,28,347,268,266,4319,4322,7271,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-16,Qualifier — Round 16
+12ac293a-bed1-4b67-adb1-488c18b74ae3:g1,5,382,324,617,90,4323,4317,7272,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+12ac293a-bed1-4b67-adb1-488c18b74ae3:g2,-2,382,324,617,90,4323,4317,7272,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+12ac293a-bed1-4b67-adb1-488c18b74ae3:g3,-2,382,324,617,90,4323,4317,7272,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+1543eedb-2442-4850-bed1-aac98320115a:g1,-4,406,407,240,654,1972,751,7273,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+1543eedb-2442-4850-bed1-aac98320115a:g2,2,406,407,240,654,1972,751,7273,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+1543eedb-2442-4850-bed1-aac98320115a:g3,-2,406,407,240,654,1972,751,7273,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+22978138-935c-43b5-bb93-0c0720d6d49c:g1,10,409,383,325,407,4324,4325,7274,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+22978138-935c-43b5-bb93-0c0720d6d49c:g2,5,409,383,325,407,4324,4325,7274,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+23222187-b134-475f-9f18-c510fa9c6a2d:g1,-2,609,211,39,1303,3250,3244,7275,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+23222187-b134-475f-9f18-c510fa9c6a2d:g2,-6,609,211,39,1303,3250,3244,7275,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+2bbae2c8-fc63-4c83-80f0-cf3be4c850d1:g1,7,26,359,750,355,4326,4327,7276,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+2bbae2c8-fc63-4c83-80f0-cf3be4c850d1:g2,-2,26,359,750,355,4326,4327,7276,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+2bbae2c8-fc63-4c83-80f0-cf3be4c850d1:g3,6,26,359,750,355,4326,4327,7276,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+381dea52-6fb7-453a-b7ae-14e650e5824a:g1,2,312,418,348,1585,1703,4320,7277,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+381dea52-6fb7-453a-b7ae-14e650e5824a:g2,4,312,418,348,1585,1703,4320,7277,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+39d18625-e576-48fd-bd0d-754df479e874:g1,-5,2075,2076,96,97,4328,48,7278,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+39d18625-e576-48fd-bd0d-754df479e874:g2,-9,2075,2076,96,97,4328,48,7278,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+3c72f202-1d04-4e9f-a14a-88ef110cb91d:g1,-10,366,169,1585,266,4329,4330,7279,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+3c72f202-1d04-4e9f-a14a-88ef110cb91d:g2,9,366,169,1585,266,4329,4330,7279,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+3c72f202-1d04-4e9f-a14a-88ef110cb91d:g3,3,366,169,1585,266,4329,4330,7279,2,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+5166ef7c-e004-4e13-802d-ac73ef74aba9:g1,4,76,201,103,375,3384,453,7280,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+5166ef7c-e004-4e13-802d-ac73ef74aba9:g2,9,76,201,103,375,3384,453,7280,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+51ea0458-a829-476c-9340-5109b94f1b24:g1,4,378,370,104,64,1701,4311,7281,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+51ea0458-a829-476c-9340-5109b94f1b24:g2,4,378,370,104,64,1701,4311,7281,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+5b3790ff-40bd-4f69-8430-e02aceb96610:g1,-5,200,425,436,397,4331,4332,7282,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+5b3790ff-40bd-4f69-8430-e02aceb96610:g2,-3,200,425,436,397,4331,4332,7282,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+662c443b-5e55-42e7-ab3a-bf272cd4cda2:g1,6,845,394,60,851,4333,4334,7283,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+662c443b-5e55-42e7-ab3a-bf272cd4cda2:g2,-6,845,394,60,851,4333,4334,7283,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+662c443b-5e55-42e7-ab3a-bf272cd4cda2:g3,11,845,394,60,851,4333,4334,7283,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+6a399481-d15a-4149-9003-8c0b668bf1cf:g1,7,317,320,28,347,4335,4319,7284,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+6a399481-d15a-4149-9003-8c0b668bf1cf:g2,2,317,320,28,347,4335,4319,7284,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+7126d511-f814-4348-96f1-f699d306712b:g1,3,420,404,233,443,4336,4337,7285,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+7126d511-f814-4348-96f1-f699d306712b:g2,-9,420,404,233,443,4336,4337,7285,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+7126d511-f814-4348-96f1-f699d306712b:g3,8,420,404,233,443,4336,4337,7285,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+719c81cf-d584-48fc-b938-7ab21436200b:g1,7,343,95,58,20,3371,1128,7286,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+719c81cf-d584-48fc-b938-7ab21436200b:g2,9,343,95,58,20,3371,1128,7286,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+82bd03ea-e872-4772-bcf4-8a82a46ff27d:g1,2,445,323,1,27,4338,3961,7287,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+82bd03ea-e872-4772-bcf4-8a82a46ff27d:g2,2,445,323,1,27,4338,3961,7287,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+88f3a39c-8e18-49af-987d-3a4cf4db4b8a:g1,8,731,27,388,446,4339,4340,7288,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+88f3a39c-8e18-49af-987d-3a4cf4db4b8a:g2,9,731,27,388,446,4339,4340,7288,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+8efe79db-94e3-46b7-97cd-92c76526d477:g1,7,342,61,344,130,4341,1808,7289,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+8efe79db-94e3-46b7-97cd-92c76526d477:g2,6,342,61,344,130,4341,1808,7289,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+aabe2acd-4062-4d38-b3b1-a4af2b60db6a:g1,5,324,362,405,406,4212,278,7290,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+aabe2acd-4062-4d38-b3b1-a4af2b60db6a:g2,2,324,362,405,406,4212,278,7290,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+af604f08-86c8-481f-aac9-d935f3d62505:g1,6,522,422,731,434,677,4342,7291,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+af604f08-86c8-481f-aac9-d935f3d62505:g2,4,522,422,731,434,677,4342,7291,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+b11c0903-b2ab-4f29-b9e6-91250741b7e2:g1,9,62,352,849,345,4343,4344,7292,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+b11c0903-b2ab-4f29-b9e6-91250741b7e2:g2,5,62,352,849,345,4343,4344,7292,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+b122c3e1-6838-4a20-a17f-85539bfbdde3:g1,9,395,1010,2074,617,4345,4321,7293,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+b122c3e1-6838-4a20-a17f-85539bfbdde3:g2,7,395,1010,2074,617,4345,4321,7293,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+cbfa8df0-7a73-4552-bc5d-4bc2e908f5b6:g1,8,361,1223,316,1303,2000,4314,7294,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+cbfa8df0-7a73-4552-bc5d-4bc2e908f5b6:g2,6,361,1223,316,1303,2000,4314,7294,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+d3e5d9b3-f557-421a-999a-023e1795a7ba:g1,9,102,209,77,90,4346,3653,7295,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+d3e5d9b3-f557-421a-999a-023e1795a7ba:g2,7,102,209,77,90,4346,3653,7295,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+e48c0b11-1101-4a99-8637-dbdf2344fce3:g1,6,28,15,1554,5,926,4347,7296,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+e48c0b11-1101-4a99-8637-dbdf2344fce3:g2,5,28,15,1554,5,926,4347,7296,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+e68cefac-5df6-4021-9281-4ec65d0d8bd8:g1,7,445,201,140,7,4348,1072,7297,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+e68cefac-5df6-4021-9281-4ec65d0d8bd8:g2,5,445,201,140,7,4348,1072,7297,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+e788064f-8d9b-41b9-b923-312c99be6af5:g1,2,239,316,223,268,223,1676,7298,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+e788064f-8d9b-41b9-b923-312c99be6af5:g2,6,239,316,223,268,223,1676,7298,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+e870337a-6934-43ba-9d31-090bd281ce98:g1,-3,217,348,230,548,4349,4350,7299,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+e870337a-6934-43ba-9d31-090bd281ce98:g2,-5,217,348,230,548,4349,4350,7299,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+ee7d2b69-63da-4fcd-9d28-a8e4cab6e57f:g1,5,358,385,340,446,4196,4351,7300,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+ee7d2b69-63da-4fcd-9d28-a8e4cab6e57f:g2,-4,358,385,340,446,4196,4351,7300,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+ee7d2b69-63da-4fcd-9d28-a8e4cab6e57f:g3,-2,358,385,340,446,4196,4351,7300,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+ef68c15a-99c5-4ced-8591-f13d4585d412:g1,3,12,313,249,583,4215,1645,7301,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+ef68c15a-99c5-4ced-8591-f13d4585d412:g2,10,12,313,249,583,4215,1645,7301,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+fefa77cf-9bc0-4b1f-a620-1124b248c0c5:g1,-5,436,326,399,357,4352,888,7302,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+fefa77cf-9bc0-4b1f-a620-1124b248c0c5:g2,8,436,326,399,357,4352,888,7302,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+fefa77cf-9bc0-4b1f-a620-1124b248c0c5:g3,3,436,326,399,357,4352,888,7302,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-17,Round 64
+13f4ae80-ad3a-4a9a-b07d-c60c12b49663:g1,4,12,375,104,20,4353,1191,7303,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+13f4ae80-ad3a-4a9a-b07d-c60c12b49663:g2,2,12,375,104,20,4353,1191,7303,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+2002536e-01be-4300-8d03-19a2f1e51101:g1,4,378,370,436,397,1701,4332,7304,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+2002536e-01be-4300-8d03-19a2f1e51101:g2,7,378,370,436,397,1701,4332,7304,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+2bba8fa9-f89a-4979-9930-a1cb1ae37a00:g1,4,102,209,76,201,4346,3384,7305,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+2bba8fa9-f89a-4979-9930-a1cb1ae37a00:g2,7,102,209,76,201,4346,3384,7305,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+2dcbd282-e218-43ab-8715-7fb8129183ed:g1,7,317,320,420,404,4335,4336,7306,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+2dcbd282-e218-43ab-8715-7fb8129183ed:g2,9,317,320,420,404,4335,4336,7306,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+5a88e62a-466a-40ba-80d6-f89ff9bb1a36:g1,3,312,418,395,1010,1703,4345,7307,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+5a88e62a-466a-40ba-80d6-f89ff9bb1a36:g2,-4,312,418,395,1010,1703,4345,7307,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+5a88e62a-466a-40ba-80d6-f89ff9bb1a36:g3,8,312,418,395,1010,1703,4345,7307,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+64373d1c-bbe5-4f62-a61f-8f6031724bef:g1,7,130,340,200,385,1525,4354,7308,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+64373d1c-bbe5-4f62-a61f-8f6031724bef:g2,4,130,340,200,385,1525,4354,7308,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+6ec76ed4-2ef5-4121-8a9b-8a719ca4c066:g1,4,845,26,239,316,2199,223,7309,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+6ec76ed4-2ef5-4121-8a9b-8a719ca4c066:g2,-2,845,26,239,316,2199,223,7309,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+6ec76ed4-2ef5-4121-8a9b-8a719ca4c066:g3,8,845,26,239,316,2199,223,7309,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+73e534be-2c7f-45ff-adde-18c05b4e75f2:g1,4,62,352,340,446,4343,4351,7310,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+73e534be-2c7f-45ff-adde-18c05b4e75f2:g2,5,62,352,340,446,4343,4351,7310,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+7ad4ecac-7598-4c55-ba57-ce569c6eaafe:g1,8,353,321,324,362,1743,4212,7311,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+7ad4ecac-7598-4c55-ba57-ce569c6eaafe:g2,-3,353,321,324,362,1743,4212,7311,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+7ad4ecac-7598-4c55-ba57-ce569c6eaafe:g3,11,353,321,324,362,1743,4212,7311,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+829600ea-e313-450b-a6d6-b790d42757be:g1,8,521,449,445,323,443,4338,7312,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+829600ea-e313-450b-a6d6-b790d42757be:g2,2,521,449,445,323,443,4338,7312,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+90d93622-00dd-424b-b58c-ab242baacfb2:g1,6,331,1402,845,394,4355,4333,7313,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+90d93622-00dd-424b-b58c-ab242baacfb2:g2,2,331,1402,845,394,4355,4333,7313,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+a15896d6-1a3f-4db9-8ca8-5f701bdcf92f:g1,7,434,394,258,622,307,4356,7314,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+a15896d6-1a3f-4db9-8ca8-5f701bdcf92f:g2,7,434,394,258,622,307,4356,7314,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+b0a01ea9-c2bd-4540-8a98-1399b71a20f4:g1,8,409,383,342,61,4324,4341,7315,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+b0a01ea9-c2bd-4540-8a98-1399b71a20f4:g2,5,409,383,342,61,4324,4341,7315,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+b7016e3e-64a0-4bd5-92e4-1b59033e29eb:g1,6,404,209,240,654,4357,751,7316,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+b7016e3e-64a0-4bd5-92e4-1b59033e29eb:g2,2,404,209,240,654,4357,751,7316,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+c98662cf-baed-4a71-a934-e54e8611f764:g1,-4,1344,377,343,95,4358,3371,7317,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+c98662cf-baed-4a71-a934-e54e8611f764:g2,5,1344,377,343,95,4358,3371,7317,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+c98662cf-baed-4a71-a934-e54e8611f764:g3,3,1344,377,343,95,4358,3371,7317,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+d3268e87-db43-4921-a69e-e9a46cd490fa:g1,8,12,313,522,422,4215,677,7318,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+d3268e87-db43-4921-a69e-e9a46cd490fa:g2,9,12,313,522,422,4215,677,7318,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+e08d516e-ad4c-4a2f-899e-dd4e6c72182a:g1,-2,361,1223,26,359,2000,4326,7319,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+e08d516e-ad4c-4a2f-899e-dd4e6c72182a:g2,2,361,1223,26,359,2000,4326,7319,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+e08d516e-ad4c-4a2f-899e-dd4e6c72182a:g3,-6,361,1223,26,359,2000,4326,7319,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+e657a26c-fc72-44ef-8f12-449824b2689e:g1,3,95,425,365,344,440,4359,7320,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+e657a26c-fc72-44ef-8f12-449824b2689e:g2,-5,95,425,365,344,440,4359,7320,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+e657a26c-fc72-44ef-8f12-449824b2689e:g3,9,95,425,365,344,440,4359,7320,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+e7f10a7b-3f7e-498b-8731-87cbad1b8ec6:g1,2,313,418,108,109,4226,54,7321,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+e7f10a7b-3f7e-498b-8731-87cbad1b8ec6:g2,8,313,418,108,109,4226,54,7321,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+f86aaed0-4113-4b7c-a413-45a331441bae:g1,10,849,851,852,55,1168,4360,7322,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+f86aaed0-4113-4b7c-a413-45a331441bae:g2,-4,849,851,852,55,1168,4360,7322,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+f86aaed0-4113-4b7c-a413-45a331441bae:g3,9,849,851,852,55,1168,4360,7322,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-18,Round 32
+02bbb326-84cc-4da2-b461-fed5b9bc2a12:g1,-3,312,418,378,370,1703,1701,7323,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+02bbb326-84cc-4da2-b461-fed5b9bc2a12:g2,-7,312,418,378,370,1703,1701,7323,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+03c007d4-a143-4951-bdeb-536c0898e163:g1,7,420,370,583,233,4361,1152,7324,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+03c007d4-a143-4951-bdeb-536c0898e163:g2,8,420,370,583,233,4361,1152,7324,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+0aaf5673-50c0-4b78-815b-a78f102d503b:g1,7,1402,358,96,97,3807,48,7325,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+0aaf5673-50c0-4b78-815b-a78f102d503b:g2,6,1402,358,96,97,3807,48,7325,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+0fe5b413-766f-4986-9b2b-5b7e20f32f48:g1,11,521,449,317,320,443,4335,7326,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+0fe5b413-766f-4986-9b2b-5b7e20f32f48:g2,11,521,449,317,320,443,4335,7326,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+10cc88eb-7e1b-4007-aba2-1214216b600e:g1,-7,353,321,12,313,1743,4215,7327,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+10cc88eb-7e1b-4007-aba2-1214216b600e:g2,6,353,321,12,313,1743,4215,7327,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+10cc88eb-7e1b-4007-aba2-1214216b600e:g3,7,353,321,12,313,1743,4215,7327,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+129d246a-4216-4e7a-9a95-72baca2e62c6:g1,-10,331,1402,1344,377,4355,4358,7328,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+129d246a-4216-4e7a-9a95-72baca2e62c6:g2,-6,331,1402,1344,377,4355,4358,7328,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+16a9dc39-9938-443e-8634-c5e9ffe30927:g1,5,386,322,102,209,4362,4346,7329,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+16a9dc39-9938-443e-8634-c5e9ffe30927:g2,3,386,322,102,209,4362,4346,7329,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+16fa01cb-565d-4b0b-a841-e9108c3a598b:g1,8,397,383,58,401,4363,4364,7330,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+16fa01cb-565d-4b0b-a841-e9108c3a598b:g2,8,397,383,58,401,4363,4364,7330,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+1ed94cac-5bf6-4c6a-8b96-742c43dde4c2:g1,9,386,417,130,340,327,1525,7331,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+1ed94cac-5bf6-4c6a-8b96-742c43dde4c2:g2,9,386,417,130,340,327,1525,7331,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+28f62f00-b1ff-4e19-ba67-8fb4dfdca333:g1,4,312,443,445,201,4365,4348,7332,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+28f62f00-b1ff-4e19-ba67-8fb4dfdca333:g2,-7,312,443,445,201,4365,4348,7332,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+28f62f00-b1ff-4e19-ba67-8fb4dfdca333:g3,-5,312,443,445,201,4365,4348,7332,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+3fe4cb19-68be-40e7-8714-57ebe776fe74:g1,2,416,417,409,383,284,4324,7333,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+3fe4cb19-68be-40e7-8714-57ebe776fe74:g2,7,416,417,409,383,284,4324,7333,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+4914ddd6-72d6-4c16-81ee-7a2155595cae:g1,6,409,435,617,90,4366,4317,7334,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+4914ddd6-72d6-4c16-81ee-7a2155595cae:g2,10,409,435,617,90,4366,4317,7334,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+52f0f16c-61f4-4f6b-80fe-4cee33b670eb:g1,-2,1223,362,39,1303,4367,3244,7335,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+52f0f16c-61f4-4f6b-80fe-4cee33b670eb:g2,-2,1223,362,39,1303,4367,3244,7335,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+5472c5e8-6d92-462a-98c5-d2a05633479e:g1,2,193,422,28,15,4012,926,7336,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+5472c5e8-6d92-462a-98c5-d2a05633479e:g2,2,193,422,28,15,4012,926,7336,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+563f2503-07ad-466b-ad49-dde0576944bf:g1,4,352,395,230,548,732,4350,7337,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+563f2503-07ad-466b-ad49-dde0576944bf:g2,2,352,395,230,548,732,4350,7337,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+56447bd5-5777-4538-84dc-47facd5ebc5e:g1,4,349,350,62,352,244,4343,7338,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+56447bd5-5777-4538-84dc-47facd5ebc5e:g2,4,349,350,62,352,244,4343,7338,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+588a3224-1abe-4fe3-a604-77dcc759629d:g1,2,249,355,436,326,4368,4352,7339,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+588a3224-1abe-4fe3-a604-77dcc759629d:g2,-7,249,355,436,326,4368,4352,7339,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+588a3224-1abe-4fe3-a604-77dcc759629d:g3,-5,249,355,436,326,4368,4352,7339,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+6391ce63-9212-4fee-a45b-a570dcb01809:g1,6,76,62,347,345,3463,4369,7340,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+6391ce63-9212-4fee-a45b-a570dcb01809:g2,8,76,62,347,345,3463,4369,7340,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+6ec877a6-dc32-4e5c-9276-bce0f7d223db:g1,10,449,322,95,425,3398,440,7341,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+6ec877a6-dc32-4e5c-9276-bce0f7d223db:g2,8,449,322,95,425,3398,440,7341,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+70ddb025-47a0-4040-b8af-e49adbc6b4c2:g1,-8,343,320,750,1331,4370,4194,7342,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+70ddb025-47a0-4040-b8af-e49adbc6b4c2:g2,6,343,320,750,1331,4370,4194,7342,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+70ddb025-47a0-4040-b8af-e49adbc6b4c2:g3,4,343,320,750,1331,4370,4194,7342,2,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+7c4d7d40-55da-4501-a18d-fb6caf570804:g1,10,522,61,118,60,4371,1739,7343,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+7c4d7d40-55da-4501-a18d-fb6caf570804:g2,10,522,61,118,60,4371,1739,7343,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+8269e7b4-7417-4164-8575-8113df764f1a:g1,10,321,349,325,77,346,4372,7344,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+8269e7b4-7417-4164-8575-8113df764f1a:g2,9,321,349,325,77,346,4372,7344,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+8337cf7f-aab6-42df-9bb5-ec0feee435bf:g1,8,361,377,731,27,3916,4339,7345,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+8337cf7f-aab6-42df-9bb5-ec0feee435bf:g2,4,361,377,731,27,3916,4339,7345,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+86674abc-c603-46e9-8ad1-593349057ecf:g1,8,102,359,366,169,1400,4329,7346,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+86674abc-c603-46e9-8ad1-593349057ecf:g2,9,102,359,366,169,1400,4329,7346,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+a13a0468-4b7a-4fb6-a4b3-0ca96607fccc:g1,-4,131,1,323,241,369,4373,7347,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+a13a0468-4b7a-4fb6-a4b3-0ca96607fccc:g2,-3,131,1,323,241,369,4373,7347,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 32
+a2dc166e-4a3a-4cfe-bcf9-9a53d1edf449:g1,-3,317,350,12,375,2181,4353,7348,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+a2dc166e-4a3a-4cfe-bcf9-9a53d1edf449:g2,8,317,350,12,375,2181,4353,7348,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+a2dc166e-4a3a-4cfe-bcf9-9a53d1edf449:g3,8,317,350,12,375,2181,4353,7348,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+ae8f0bde-c8f8-4106-b04d-881b26da6153:g1,-6,343,320,397,383,4370,4363,7349,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+ae8f0bde-c8f8-4106-b04d-881b26da6153:g2,8,343,320,397,383,4370,4363,7349,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+ae8f0bde-c8f8-4106-b04d-881b26da6153:g3,-11,343,320,397,383,4370,4363,7349,2,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+b4c0ebcf-7d30-47d0-82be-46c099a79c98:g1,10,410,521,323,241,1171,4373,7350,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+b4c0ebcf-7d30-47d0-82be-46c099a79c98:g2,11,410,521,323,241,1171,4373,7350,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+d1bcbe5e-02a9-4ab7-b359-89a1c0750800:g1,-4,410,431,26,359,4374,4326,7351,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+d1bcbe5e-02a9-4ab7-b359-89a1c0750800:g2,8,410,431,26,359,4374,4326,7351,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+d1bcbe5e-02a9-4ab7-b359-89a1c0750800:g3,3,410,431,26,359,4374,4326,7351,0,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+d643b76b-fcd5-40e0-bbc0-4468d8da149b:g1,2,352,395,404,209,732,4357,7352,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+d643b76b-fcd5-40e0-bbc0-4468d8da149b:g2,4,352,395,404,209,732,4357,7352,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+eb2b83e6-cdba-41a9-894d-c6cb7f6c60c3:g1,-9,436,326,193,422,4352,4012,7353,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+eb2b83e6-cdba-41a9-894d-c6cb7f6c60c3:g2,-2,436,326,193,422,4352,4012,7353,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-19,Round 16
+0c6911fd-241b-44d9-9278-6befa30806dc:g1,2,353,321,1344,377,1743,4358,7354,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+0c6911fd-241b-44d9-9278-6befa30806dc:g2,11,353,321,1344,377,1743,4358,7354,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+148109c8-a4b6-48b2-ad6f-ca66e3b4d325:g1,-6,39,1303,420,370,3244,4361,7355,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+148109c8-a4b6-48b2-ad6f-ca66e3b4d325:g2,-2,39,1303,420,370,3244,4361,7355,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+212484ce-cf16-40c9-a345-d959e145744b:g1,9,321,349,397,383,346,4363,7356,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+212484ce-cf16-40c9-a345-d959e145744b:g2,5,321,349,397,383,346,4363,7356,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+2478d09e-029c-4d54-b19f-edfcfe01b919:g1,10,416,417,410,431,284,4374,7357,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+2478d09e-029c-4d54-b19f-edfcfe01b919:g2,3,416,417,410,431,284,4374,7357,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+2c78e4bb-174c-466f-9f1c-200f8625e02e:g1,3,409,435,845,26,4366,2199,7358,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+2c78e4bb-174c-466f-9f1c-200f8625e02e:g2,3,409,435,845,26,4366,2199,7358,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+5c3093b2-2873-4725-a873-d367ef88f4e4:g1,4,349,350,521,449,244,443,7359,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+5c3093b2-2873-4725-a873-d367ef88f4e4:g2,6,349,350,521,449,244,443,7359,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+6b326e3c-c268-47b3-8aed-24ae920fa2af:g1,10,1344,331,522,61,3397,4371,7360,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+6b326e3c-c268-47b3-8aed-24ae920fa2af:g2,6,1344,331,522,61,3397,4371,7360,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+79f3ccfe-a55f-453d-b906-d60303bc8743:g1,5,378,353,1402,358,3828,3807,7361,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+79f3ccfe-a55f-453d-b906-d60303bc8743:g2,5,378,353,1402,358,3828,3807,7361,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+82eee7eb-ed79-407c-99fd-9ebc12980a06:g1,2,386,322,378,370,4362,1701,7362,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+82eee7eb-ed79-407c-99fd-9ebc12980a06:g2,4,386,322,378,370,4362,1701,7362,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+9250cac2-ed05-4098-a5d7-9a75ee0ccb0e:g1,-2,102,359,76,62,1400,3463,7363,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+9250cac2-ed05-4098-a5d7-9a75ee0ccb0e:g2,9,102,359,76,62,1400,3463,7363,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+9250cac2-ed05-4098-a5d7-9a75ee0ccb0e:g3,2,102,359,76,62,1400,3463,7363,2,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+9d351162-ac2d-4bf2-8752-b7d3076e84bd:g1,7,386,417,313,418,327,4226,7364,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+9d351162-ac2d-4bf2-8752-b7d3076e84bd:g2,5,386,417,313,418,327,4226,7364,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+c03251ea-ceac-4e21-b312-5b493ca6ba15:g1,-4,378,353,361,377,3828,3916,7365,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+c03251ea-ceac-4e21-b312-5b493ca6ba15:g2,9,378,353,361,377,3828,3916,7365,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+c03251ea-ceac-4e21-b312-5b493ca6ba15:g3,-9,378,353,361,377,3828,3916,7365,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+c1c08787-0bd8-4ce6-9b50-220ebfd22831:g1,-3,313,418,434,394,4226,307,7366,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+c1c08787-0bd8-4ce6-9b50-220ebfd22831:g2,8,313,418,434,394,4226,307,7366,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+c1c08787-0bd8-4ce6-9b50-220ebfd22831:g3,8,313,418,434,394,4226,307,7366,2,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+c2e34369-8497-4899-8438-f31fdb66b30e:g1,2,361,377,445,201,3916,4348,7367,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+c2e34369-8497-4899-8438-f31fdb66b30e:g2,2,361,377,445,201,3916,4348,7367,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+e8e20a09-6d50-41d8-967d-550aedcacf96:g1,-3,849,851,845,26,1168,2199,7368,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+e8e20a09-6d50-41d8-967d-550aedcacf96:g2,-6,849,851,845,26,1168,2199,7368,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+f212b745-f121-4c9b-8c52-8ee14152be76:g1,4,317,350,193,422,2181,4012,7369,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+f212b745-f121-4c9b-8c52-8ee14152be76:g2,4,317,350,193,422,2181,4012,7369,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Quarter Finals
+fbb7fcf8-d2d2-432f-86ac-b2fbefd3b3a2:g1,-5,342,431,409,435,4375,4366,7370,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+fbb7fcf8-d2d2-432f-86ac-b2fbefd3b3a2:g2,-2,342,431,409,435,4375,4366,7370,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-20,Round 16
+1d807dcf-fcf0-4cb7-9c24-bb719909e167:g1,7,386,322,353,321,4362,1743,7371,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-21,Semi-Finals
+1d807dcf-fcf0-4cb7-9c24-bb719909e167:g2,10,386,322,353,321,4362,1743,7371,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-21,Semi-Finals
+20928769-904f-4eed-b753-f40649df4743:g1,5,449,322,352,395,3398,732,7372,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-21,Quarter Finals
+20928769-904f-4eed-b753-f40649df4743:g2,-4,449,322,352,395,3398,732,7372,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-21,Quarter Finals
+20928769-904f-4eed-b753-f40649df4743:g3,2,449,322,352,395,3398,732,7372,1,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-21,Quarter Finals
+46e752a9-28bf-4f6b-bf21-08374856a1b9:g1,4,317,350,409,435,2181,4366,7373,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-21,Semi-Finals
+46e752a9-28bf-4f6b-bf21-08374856a1b9:g2,6,317,350,409,435,2181,4366,7373,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-21,Semi-Finals
+7866ab3a-2cc7-44c5-be7f-6d688d2034df:g1,-6,1344,331,102,359,3397,1400,7374,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-21,Quarter Finals
+7866ab3a-2cc7-44c5-be7f-6d688d2034df:g2,3,1344,331,102,359,3397,1400,7374,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-21,Quarter Finals
+7866ab3a-2cc7-44c5-be7f-6d688d2034df:g3,-2,1344,331,102,359,3397,1400,7374,2,1,3,3,PPA Tour: Proton Daytona Beach Open,2026-11-21,Quarter Finals
+850f5641-88d7-475e-bcf9-ca16a941d700:g1,8,416,417,349,350,284,244,7375,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-21,Semi-Finals
+850f5641-88d7-475e-bcf9-ca16a941d700:g2,6,416,417,349,350,284,244,7375,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-21,Semi-Finals
+860981b7-1a64-4122-a35e-66bceac216d6:g1,8,410,521,420,370,1171,4361,7376,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-21,Quarter Finals
+860981b7-1a64-4122-a35e-66bceac216d6:g2,10,410,521,420,370,1171,4361,7376,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-21,Quarter Finals
+a2fa268a-0a99-4e4c-941d-53fe640b626e:g1,7,386,417,102,359,327,1400,7377,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-21,Semi-Finals
+a2fa268a-0a99-4e4c-941d-53fe640b626e:g2,10,386,417,102,359,327,1400,7377,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-21,Semi-Finals
+b7fc89d1-28e9-4558-aa9e-0b7062c55d38:g1,2,449,322,361,377,3398,3916,7378,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-21,Semi-Finals
+b7fc89d1-28e9-4558-aa9e-0b7062c55d38:g2,2,449,322,361,377,3398,3916,7378,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-21,Semi-Finals
+95487ad0-d0e6-4e88-9d4a-ec8e6d769a3e:g1,7,416,417,386,322,284,4362,7379,0,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-22,Finals
+95487ad0-d0e6-4e88-9d4a-ec8e6d769a3e:g2,3,416,417,386,322,284,4362,7379,0,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-22,Finals
+cd2a4b0a-a16c-4aa8-a623-ca561b567b53:g1,9,386,417,321,349,327,346,7380,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-22,Finals
+cd2a4b0a-a16c-4aa8-a623-ca561b567b53:g2,7,386,417,321,349,327,346,7380,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-22,Finals
+e11c2a36-c6a7-4895-91fd-8b5630ed9dfa:g1,-3,449,322,317,350,3398,2181,7381,1,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-22,Finals
+e11c2a36-c6a7-4895-91fd-8b5630ed9dfa:g2,-8,449,322,317,350,3398,2181,7381,1,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-22,Finals
+fa25fac7-8556-4d4f-862b-1ed808d03442:g1,6,321,349,410,521,346,1171,7382,2,1,3,1,PPA Tour: Proton Daytona Beach Open,2026-11-22,Semi-Finals
+fa25fac7-8556-4d4f-862b-1ed808d03442:g2,8,321,349,410,521,346,1171,7382,2,1,3,2,PPA Tour: Proton Daytona Beach Open,2026-11-22,Semi-Finals
