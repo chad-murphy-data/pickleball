@@ -1,0 +1,236 @@
+rally_cum,flight,bounce_index,t_from_s,t_to_s,hitter_from,hitter_to,call,t_bounce_s,x_px,y_px,video_name
+1,1,1,10.224,11.333,Emma Nelson,Allyce Jones,bounce,10.988,900,527,full_match.mp4.webm
+1,2,1,11.333,12.691,Allyce Jones,Emma Nelson,bounce,12.409,516,203,full_match.mp4.webm
+1,3,1,12.691,13.967,Emma Nelson,Allyce Jones,bounce,13.690,821,386,full_match.mp4.webm
+1,4,1,13.967,15.076,Allyce Jones,Ting Chieh Wei,bounce,14.748,827,256,full_match.mp4.webm
+1,4,2,13.967,15.076,Allyce Jones,Ting Chieh Wei,bounce,14.806,827,258,full_match.mp4.webm
+1,5,0,15.076,15.810,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+1,6,1,15.810,16.891,Etta Tuionetoa,Emma Nelson,bounce,16.589,513,279,full_match.mp4.webm
+1,7,1,16.891,18.010,Emma Nelson,Etta Tuionetoa,bounce,17.697,321,396,full_match.mp4.webm
+1,7,2,16.891,18.010,Emma Nelson,Etta Tuionetoa,bounce,17.734,316,400,full_match.mp4.webm
+1,8,0,18.010,18.791,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+1,9,0,18.791,19.233,Emma Nelson,Allyce Jones,volley,,,,full_match.mp4.webm
+1,10,0,19.233,19.635,Allyce Jones,Emma Nelson,volley,,,,full_match.mp4.webm
+1,11,0,19.635,20.600,Emma Nelson,Allyce Jones,volley,,,,full_match.mp4.webm
+1,12,0,20.600,21.143,Allyce Jones,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+1,13,0,21.143,21.600,Ting Chieh Wei,Allyce Jones,volley,,,,full_match.mp4.webm
+1,14,0,21.600,22.010,Allyce Jones,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+1,15,1,22.010,22.900,Ting Chieh Wei,Allyce Jones,bounce,22.864,682,400,full_match.mp4.webm
+1,16,1,22.900,24.201,Allyce Jones,Emma Nelson,bounce,23.915,418,292,full_match.mp4.webm
+1,17,0,24.201,25.233,Emma Nelson,Allyce Jones,unsure,,,,full_match.mp4.webm
+1,18,0,25.233,25.976,Allyce Jones,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+1,19,1,25.976,27.143,Ting Chieh Wei,Etta Tuionetoa,bounce,26.873,394,385,full_match.mp4.webm
+1,20,1,27.143,28.476,Etta Tuionetoa,Ting Chieh Wei,bounce,28.198,849,270,full_match.mp4.webm
+1,21,0,28.476,28.933,Ting Chieh Wei,Allyce Jones,volley,,,,full_match.mp4.webm
+1,22,0,28.933,29.376,Allyce Jones,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+1,23,1,29.376,30.043,Ting Chieh Wei,Etta Tuionetoa,bounce,29.959,688,437,full_match.mp4.webm
+1,24,0,30.043,30.943,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+1,25,0,30.943,32.066,Ting Chieh Wei,,volley,,,,full_match.mp4.webm
+2,1,1,40.544,42.070,Allyce Jones,Emma Nelson,bounce,41.672,475,202,full_match.mp4.webm
+2,2,1,42.070,43.325,Emma Nelson,Etta Tuionetoa,bounce,43.003,459,554,full_match.mp4.webm
+2,3,0,43.325,44.034,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+2,4,1,44.034,44.889,Emma Nelson,Allyce Jones,bounce,44.554,752,502,full_match.mp4.webm
+2,5,0,44.889,45.821,Allyce Jones,Emma Nelson,volley,,,,full_match.mp4.webm
+2,6,1,45.821,46.747,Emma Nelson,Allyce Jones,bounce,46.687,796,517,full_match.mp4.webm
+2,7,0,46.747,47.729,Allyce Jones,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+2,8,0,47.729,48.267,Ting Chieh Wei,Allyce Jones,volley,,,,full_match.mp4.webm
+2,9,0,48.267,49.146,Allyce Jones,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+2,10,0,49.146,49.471,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+2,11,0,49.471,51.971,Etta Tuionetoa,,nobounce,,,,full_match.mp4.webm
+3,1,1,59.427,60.591,Etta Tuionetoa,Ting Chieh Wei,bounce,60.212,788,209,full_match.mp4.webm
+3,2,1,60.591,61.872,Ting Chieh Wei,Etta Tuionetoa,bounce,61.570,379,545,full_match.mp4.webm
+3,3,0,61.872,62.462,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+3,4,1,62.462,63.167,Ting Chieh Wei,Allyce Jones,bounce,63.005,679,561,full_match.mp4.webm
+3,5,0,63.167,64.140,Allyce Jones,Emma Nelson,volley,,,,full_match.mp4.webm
+3,6,0,64.140,65.081,Emma Nelson,Etta Tuionetoa,unsure,,,,full_match.mp4.webm
+3,7,0,65.081,65.971,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+3,8,0,65.971,66.597,Ting Chieh Wei,Allyce Jones,volley,,,,full_match.mp4.webm
+3,9,1,66.597,68.990,Allyce Jones,Ting Chieh Wei,bounce,68.247,545,182,full_match.mp4.webm
+3,10,0,68.990,71.063,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+3,11,1,71.063,71.869,Etta Tuionetoa,Ting Chieh Wei,bounce,71.468,736,230,full_match.mp4.webm
+3,12,0,71.869,72.669,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+3,13,1,72.669,73.608,Etta Tuionetoa,Emma Nelson,bounce,73.312,449,215,full_match.mp4.webm
+3,14,0,73.608,74.586,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+3,15,0,74.586,75.152,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+3,16,0,75.152,75.810,Ting Chieh Wei,Allyce Jones,volley,,,,full_match.mp4.webm
+3,17,0,75.810,78.310,Allyce Jones,,volley,,,,full_match.mp4.webm
+4,1,1,91.155,92.318,Etta Tuionetoa,Emma Nelson,bounce,91.983,450,201,full_match.mp4.webm
+4,2,1,92.318,93.441,Emma Nelson,Etta Tuionetoa,bounce,93.137,539,492,full_match.mp4.webm
+4,3,0,93.441,94.265,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+4,4,0,94.265,94.724,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+4,5,0,94.724,95.642,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+4,6,0,95.642,96.696,Ting Chieh Wei,Etta Tuionetoa,unsure,,,,full_match.mp4.webm
+4,7,0,96.696,97.600,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+4,8,0,97.600,98.294,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+4,9,0,98.294,99.158,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+4,10,0,99.158,99.579,Emma Nelson,Allyce Jones,volley,,,,full_match.mp4.webm
+4,11,0,99.579,100.627,Allyce Jones,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+4,12,0,100.627,101.005,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+4,13,1,101.005,102.213,Etta Tuionetoa,Emma Nelson,bounce,101.952,551,262,full_match.mp4.webm
+4,14,0,102.213,102.866,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+4,15,1,102.866,103.686,Etta Tuionetoa,Ting Chieh Wei,bounce,103.640,788,257,full_match.mp4.webm
+4,16,0,103.686,106.186,Ting Chieh Wei,,nobounce,,,,full_match.mp4.webm
+5,1,1,118.779,119.938,Etta Tuionetoa,Ting Chieh Wei,bounce,119.473,767,233,full_match.mp4.webm
+5,2,1,119.938,121.298,Ting Chieh Wei,Etta Tuionetoa,bounce,120.977,631,539,full_match.mp4.webm
+5,3,0,121.298,121.876,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+5,4,1,121.876,122.991,Emma Nelson,Allyce Jones,bounce,122.675,784,478,full_match.mp4.webm
+5,5,0,122.991,124.391,Allyce Jones,Emma Nelson,volley,,,,full_match.mp4.webm
+5,6,0,124.391,125.106,Emma Nelson,Allyce Jones,unsure,,,,full_match.mp4.webm
+5,7,1,125.106,126.331,Allyce Jones,Emma Nelson,bounce,126.110,478,258,full_match.mp4.webm
+5,8,0,126.331,127.163,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+5,9,1,127.163,128.696,Etta Tuionetoa,Ting Chieh Wei,bounce,128.371,817,278,full_match.mp4.webm
+5,10,1,128.696,129.443,Ting Chieh Wei,Etta Tuionetoa,bounce,129.403,433,412,full_match.mp4.webm
+5,11,1,129.443,130.707,Etta Tuionetoa,Emma Nelson,bounce,130.369,516,256,full_match.mp4.webm
+5,12,0,130.707,131.416,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+5,13,1,131.416,132.464,Etta Tuionetoa,Ting Chieh Wei,bounce,132.260,825,279,full_match.mp4.webm
+5,14,0,132.464,134.964,Ting Chieh Wei,,nobounce,,,,full_match.mp4.webm
+6,1,1,146.340,147.476,Etta Tuionetoa,Emma Nelson,bounce,147.099,490,215,full_match.mp4.webm
+6,2,1,147.476,148.620,Emma Nelson,Etta Tuionetoa,bounce,148.262,566,471,full_match.mp4.webm
+6,3,0,148.620,149.559,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+6,4,0,149.559,150.072,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+6,5,0,150.072,150.499,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+6,6,1,150.499,150.873,Ting Chieh Wei,Allyce Jones,bounce,150.819,841,476,full_match.mp4.webm
+6,7,0,150.873,151.873,Allyce Jones,,nobounce,,,,full_match.mp4.webm
+7,1,1,166.030,167.047,Emma Nelson,Etta Tuionetoa,bounce,166.793,884,556,full_match.mp4.webm
+7,2,1,167.047,168.372,Etta Tuionetoa,Ting Chieh Wei,bounce,167.970,688,217,full_match.mp4.webm
+7,3,0,168.372,169.205,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+7,4,1,169.205,170.482,Etta Tuionetoa,Ting Chieh Wei,bounce,170.174,759,276,full_match.mp4.webm
+7,5,0,170.482,170.950,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+7,6,0,170.950,171.706,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+7,7,1,171.706,172.077,Emma Nelson,Etta Tuionetoa,bounce,172.068,375,460,full_match.mp4.webm
+7,8,0,172.077,173.250,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+7,9,0,173.250,175.750,Ting Chieh Wei,,volley,,,,full_match.mp4.webm
+8,1,1,190.572,191.703,Emma Nelson,Allyce Jones,bounce,191.427,354,594,full_match.mp4.webm
+8,2,1,191.703,193.079,Allyce Jones,Emma Nelson,bounce,192.571,506,245,full_match.mp4.webm
+8,3,0,193.079,194.008,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+8,4,0,194.008,194.637,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+8,5,0,194.637,195.424,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+8,6,0,195.424,195.996,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+8,7,1,195.996,198.496,Emma Nelson,,bounce,196.667,257,586,full_match.mp4.webm
+8,7,2,195.996,198.496,Emma Nelson,,bounce,196.690,258,585,full_match.mp4.webm
+9,1,1,254.062,255.200,Etta Tuionetoa,Emma Nelson,bounce,254.797,475,223,full_match.mp4.webm
+9,2,1,255.200,256.520,Emma Nelson,Allyce Jones,bounce,256.113,654,540,full_match.mp4.webm
+9,3,0,256.520,257.843,Allyce Jones,Emma Nelson,volley,,,,full_match.mp4.webm
+9,4,1,257.843,258.782,Emma Nelson,Etta Tuionetoa,bounce,258.445,544,442,full_match.mp4.webm
+9,5,0,258.782,259.205,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+9,6,0,259.205,259.897,Emma Nelson,Allyce Jones,volley,,,,full_match.mp4.webm
+9,7,1,259.897,261.279,Allyce Jones,Emma Nelson,bounce,260.985,532,274,full_match.mp4.webm
+9,8,1,261.279,262.036,Emma Nelson,Allyce Jones,bounce,261.968,874,404,full_match.mp4.webm
+9,9,1,262.036,263.329,Allyce Jones,Emma Nelson,bounce,263.015,521,302,full_match.mp4.webm
+9,10,0,263.329,263.906,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+9,11,1,263.906,265.003,Etta Tuionetoa,Ting Chieh Wei,bounce,264.782,794,267,full_match.mp4.webm
+9,12,1,265.003,266.114,Ting Chieh Wei,Etta Tuionetoa,bounce,265.870,651,409,full_match.mp4.webm
+9,13,0,266.114,266.895,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+9,14,1,266.895,268.066,Ting Chieh Wei,Etta Tuionetoa,bounce,267.839,418,386,full_match.mp4.webm
+9,15,1,268.066,268.999,Etta Tuionetoa,Ting Chieh Wei,bounce,268.809,860,279,full_match.mp4.webm
+9,16,0,268.999,269.873,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+9,17,0,269.873,270.264,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+9,18,0,270.264,270.704,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+9,19,1,270.704,271.382,Etta Tuionetoa,Ting Chieh Wei,bounce,271.450,731,245,full_match.mp4.webm
+9,20,0,271.382,272.839,Ting Chieh Wei,Allyce Jones,unsure,,,,full_match.mp4.webm
+9,21,1,272.839,274.904,Allyce Jones,Ting Chieh Wei,bounce,274.283,453,187,full_match.mp4.webm
+9,22,0,274.904,276.513,Ting Chieh Wei,Allyce Jones,volley,,,,full_match.mp4.webm
+9,23,1,276.513,277.372,Allyce Jones,Emma Nelson,bounce,276.844,763,250,full_match.mp4.webm
+9,24,0,277.372,277.921,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+9,25,1,277.921,278.863,Etta Tuionetoa,Emma Nelson,bounce,278.582,708,198,full_match.mp4.webm
+9,26,0,278.863,279.824,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+9,27,1,279.824,280.977,Etta Tuionetoa,Emma Nelson,bounce,280.659,773,218,full_match.mp4.webm
+9,29,1,281.826,284.326,Etta Tuionetoa,,bounce,282.497,619,340,full_match.mp4.webm
+10,1,1,295.780,296.922,Allyce Jones,Emma Nelson,bounce,296.480,763,223,full_match.mp4.webm
+10,2,1,296.922,298.057,Emma Nelson,Etta Tuionetoa,bounce,297.751,446,503,full_match.mp4.webm
+10,3,1,298.057,299.193,Etta Tuionetoa,Ting Chieh Wei,bounce,298.950,769,283,full_match.mp4.webm
+10,4,1,299.193,300.232,Ting Chieh Wei,Etta Tuionetoa,bounce,299.937,425,405,full_match.mp4.webm
+10,5,1,300.232,301.317,Etta Tuionetoa,Ting Chieh Wei,bounce,301.032,853,282,full_match.mp4.webm
+10,6,0,301.317,302.336,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+10,7,1,302.336,302.885,Etta Tuionetoa,Emma Nelson,bounce,302.645,562,254,full_match.mp4.webm
+10,8,0,302.885,304.033,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+10,9,0,304.033,304.637,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+10,10,0,304.637,305.550,Ting Chieh Wei,Allyce Jones,volley,,,,full_match.mp4.webm
+10,11,1,305.550,306.010,Allyce Jones,Ting Chieh Wei,bounce,305.924,732,190,full_match.mp4.webm
+10,12,0,306.010,306.873,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+10,13,1,306.873,307.472,Etta Tuionetoa,Emma Nelson,bounce,307.269,418,208,full_match.mp4.webm
+10,14,0,307.472,308.771,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+10,15,1,308.771,309.454,Etta Tuionetoa,Ting Chieh Wei,bounce,309.136,789,230,full_match.mp4.webm
+10,16,0,309.454,310.151,Ting Chieh Wei,Allyce Jones,volley,,,,full_match.mp4.webm
+10,17,1,310.151,311.073,Allyce Jones,Ting Chieh Wei,bounce,310.582,635,242,full_match.mp4.webm
+10,18,0,311.073,312.077,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+10,19,1,312.077,313.052,Etta Tuionetoa,Ting Chieh Wei,bounce,312.848,756,262,full_match.mp4.webm
+10,20,1,313.052,314.323,Ting Chieh Wei,Allyce Jones,bounce,313.965,674,401,full_match.mp4.webm
+10,21,1,314.323,315.328,Allyce Jones,Emma Nelson,bounce,315.065,444,273,full_match.mp4.webm
+10,22,0,315.328,316.000,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+10,23,0,316.000,316.533,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+10,24,0,316.533,316.961,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+10,25,0,316.961,317.436,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+10,26,1,317.436,319.936,Emma Nelson,,bounce,318.411,260,384,full_match.mp4.webm
+17,1,1,428.307,429.442,Emma Nelson,Etta Tuionetoa,bounce,429.149,848,528,full_match.mp4.webm
+17,2,1,429.442,430.724,Etta Tuionetoa,Ting Chieh Wei,bounce,430.334,607,223,full_match.mp4.webm
+17,3,0,430.724,431.514,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+17,4,0,431.514,432.115,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+17,5,0,432.115,432.818,Ting Chieh Wei,Allyce Jones,volley,,,,full_match.mp4.webm
+17,6,1,432.818,433.781,Allyce Jones,Emma Nelson,bounce,433.490,491,254,full_match.mp4.webm
+17,7,1,433.781,434.982,Emma Nelson,Etta Tuionetoa,bounce,434.683,670,402,full_match.mp4.webm
+17,8,1,434.982,435.949,Etta Tuionetoa,Ting Chieh Wei,bounce,435.692,809,268,full_match.mp4.webm
+17,9,0,435.949,437.115,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+17,10,1,437.115,437.944,Etta Tuionetoa,Emma Nelson,bounce,437.592,614,262,full_match.mp4.webm
+17,11,0,437.944,438.808,Emma Nelson,Allyce Jones,volley,,,,full_match.mp4.webm
+17,12,0,438.808,439.246,Allyce Jones,Emma Nelson,volley,,,,full_match.mp4.webm
+17,13,0,439.246,439.754,Emma Nelson,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+17,14,0,439.754,440.251,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+17,15,0,440.251,442.751,Ting Chieh Wei,,nobounce,,,,full_match.mp4.webm
+13,1,1,332.009,333.827,Allyce Jones,Emma Nelson,bounce,333.319,523,210,full_match.mp4.webm
+13,2,1,333.827,336.327,Emma Nelson,,bounce,334.962,496,682,full_match.mp4.webm
+14,1,1,358.946,360.113,Allyce Jones,Ting Chieh Wei,bounce,359.677,719,224,full_match.mp4.webm
+14,2,1,360.113,361.661,Ting Chieh Wei,Etta Tuionetoa,bounce,361.333,463,593,full_match.mp4.webm
+14,3,0,361.661,362.456,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+14,4,1,362.456,363.380,Ting Chieh Wei,Etta Tuionetoa,bounce,363.283,528,581,full_match.mp4.webm
+14,5,0,363.380,364.441,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+14,6,0,364.441,365.644,Emma Nelson,Allyce Jones,unsure,,,,full_match.mp4.webm
+14,7,1,365.644,366.836,Allyce Jones,Emma Nelson,bounce,366.533,446,283,full_match.mp4.webm
+14,8,1,366.836,368.113,Emma Nelson,Allyce Jones,bounce,367.814,661,377,full_match.mp4.webm
+14,9,1,368.113,369.292,Allyce Jones,Ting Chieh Wei,bounce,369.015,876,271,full_match.mp4.webm
+14,10,1,369.292,371.543,Ting Chieh Wei,Etta Tuionetoa,bounce,370.858,507,635,full_match.mp4.webm
+14,11,0,371.543,374.043,Etta Tuionetoa,,nobounce,,,,full_match.mp4.webm
+15,1,1,391.472,392.481,Emma Nelson,Etta Tuionetoa,bounce,392.246,864,567,full_match.mp4.webm
+15,2,1,392.481,394.981,Etta Tuionetoa,,bounce,393.297,682,326,full_match.mp4.webm
+16,1,1,408.527,409.699,Emma Nelson,Allyce Jones,bounce,409.119,678,306,full_match.mp4.webm
+16,1,2,408.527,409.699,Emma Nelson,Allyce Jones,bounce,409.208,549,511,full_match.mp4.webm
+16,2,1,409.699,411.015,Allyce Jones,Ting Chieh Wei,bounce,410.624,722,231,full_match.mp4.webm
+16,3,0,411.015,411.949,Ting Chieh Wei,Allyce Jones,volley,,,,full_match.mp4.webm
+16,4,1,411.949,412.941,Allyce Jones,Ting Chieh Wei,bounce,412.644,759,268,full_match.mp4.webm
+16,5,0,412.941,413.385,Ting Chieh Wei,Etta Tuionetoa,volley,,,,full_match.mp4.webm
+16,6,0,413.385,414.032,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+16,7,0,414.032,416.532,Ting Chieh Wei,,volley,,,,full_match.mp4.webm
+18,1,1,456.686,458.519,Ting Chieh Wei,Allyce Jones,bounce,458.177,417,570,full_match.mp4.webm
+18,2,1,458.519,459.912,Allyce Jones,Emma Nelson,bounce,459.563,452,213,full_match.mp4.webm
+18,3,0,459.912,462.412,Emma Nelson,,nobounce,,,,full_match.mp4.webm
+19,1,1,478.291,479.753,Etta Tuionetoa,Emma Nelson,bounce,479.392,479,207,full_match.mp4.webm
+19,2,0,479.753,482.253,Emma Nelson,,nobounce,,,,full_match.mp4.webm
+20,1,1,485.284,486.733,Etta Tuionetoa,Ting Chieh Wei,bounce,486.301,372,540,full_match.mp4.webm
+20,1,2,485.284,486.733,Etta Tuionetoa,Ting Chieh Wei,bounce,487.510,692,229,full_match.mp4.webm
+20,2,1,486.733,487.902,Ting Chieh Wei,Etta Tuionetoa,bounce,487.522,700,220,full_match.mp4.webm
+20,3,0,487.902,488.479,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+20,4,1,488.479,489.565,Ting Chieh Wei,Etta Tuionetoa,bounce,489.235,753,224,full_match.mp4.webm
+20,4,2,488.479,489.565,Ting Chieh Wei,Etta Tuionetoa,bounce,489.248,748,226,full_match.mp4.webm
+20,5,1,489.565,490.818,Etta Tuionetoa,Emma Nelson,bounce,490.518,868,379,full_match.mp4.webm
+20,6,1,490.818,491.713,Emma Nelson,Allyce Jones,bounce,491.595,593,266,full_match.mp4.webm
+20,7,1,491.713,492.902,Allyce Jones,Ting Chieh Wei,bounce,492.550,446,411,full_match.mp4.webm
+20,8,1,492.902,493.633,Ting Chieh Wei,Etta Tuionetoa,bounce,493.611,788,276,full_match.mp4.webm
+20,9,0,493.633,494.604,Etta Tuionetoa,Emma Nelson,unsure,,,,full_match.mp4.webm
+20,10,1,494.604,495.714,Emma Nelson,Etta Tuionetoa,bounce,495.613,619,268,full_match.mp4.webm
+20,11,1,495.714,496.965,Etta Tuionetoa,Emma Nelson,bounce,496.652,919,431,full_match.mp4.webm
+20,12,1,496.965,498.102,Emma Nelson,Etta Tuionetoa,bounce,497.857,814,278,full_match.mp4.webm
+20,13,0,498.102,498.720,Etta Tuionetoa,Emma Nelson,volley,,,,full_match.mp4.webm
+20,14,1,498.720,499.432,Emma Nelson,Allyce Jones,bounce,499.375,640,265,full_match.mp4.webm
+20,15,0,499.432,500.725,Allyce Jones,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+20,16,1,500.725,501.612,Ting Chieh Wei,Allyce Jones,bounce,501.468,607,271,full_match.mp4.webm
+20,17,1,501.612,502.968,Allyce Jones,Ting Chieh Wei,bounce,502.621,618,411,full_match.mp4.webm
+20,18,1,502.968,504.506,Ting Chieh Wei,Etta Tuionetoa,bounce,503.690,635,252,full_match.mp4.webm
+20,19,0,504.506,504.637,Etta Tuionetoa,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+20,20,1,504.637,507.137,Ting Chieh Wei,,bounce,505.336,647,286,full_match.mp4.webm
+21,1,1,516.992,518.089,Etta Tuionetoa,Emma Nelson,bounce,517.766,887,546,full_match.mp4.webm
+21,1,2,516.992,518.089,Etta Tuionetoa,Emma Nelson,bounce,520.963,652,581,full_match.mp4.webm
+21,2,1,518.089,519.359,Emma Nelson,Etta Tuionetoa,bounce,519.102,662,206,full_match.mp4.webm
+21,3,1,519.359,520.296,Etta Tuionetoa,Emma Nelson,bounce,520.784,489,234,full_match.mp4.webm
+21,4,1,520.296,521.024,Emma Nelson,Allyce Jones,bounce,520.805,481,231,full_match.mp4.webm
+21,5,0,521.024,521.620,Allyce Jones,Ting Chieh Wei,volley,,,,full_match.mp4.webm
+21,6,1,521.620,524.120,Ting Chieh Wei,,bounce,522.122,608,341,full_match.mp4.webm
